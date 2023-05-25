@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import MetadataForm, {
   MetadataFormType,
   getSubmittableMetadata,
@@ -28,6 +29,7 @@ const NewReservation = ({
   onClose: () => void
   locationId?: string
 }) => {
+  const { t } = useTranslation()
   const { mutateAsync: createReservation } = useAdminCreateReservation()
   const form = useForm<NewReservationFormType>({
     defaultValues: {
@@ -51,11 +53,15 @@ const NewReservation = ({
 
     createReservation(payload, {
       onSuccess: () => {
-        notification("Success", "Successfully created reservation", "success")
+        notification(
+          t("Success"),
+          t("Successfully created reservation"),
+          "success"
+        )
         onClose()
       },
       onError: (err: Error) => {
-        notification("Error", getErrorMessage(err), "error")
+        notification(t("Error"), getErrorMessage(err), "error")
       },
     })
   }
@@ -80,10 +86,10 @@ const NewReservation = ({
                 type="button"
                 onClick={onClose}
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button size="small" variant="primary" type="submit">
-                Save reservation
+                {t("Save reservation")}
               </Button>
             </div>
           </div>
@@ -91,13 +97,13 @@ const NewReservation = ({
         <FocusModal.Main className="no-scrollbar flex w-full justify-center">
           <div className="medium:w-7/12 large:w-6/12 small:w-4/5 my-16 max-w-[700px]">
             <h1 className="mb-base text-grey-90 text-xlarge font-semibold">
-              Reserve Item
+              {t("Reserve Item")}
             </h1>
             <div className="mt-xlarge gap-y-xlarge flex w-full pb-0.5">
               <ReservationForm form={nestedForm(form, "general")} />
             </div>
             <div className="border-grey border-grey-20 w-full items-center border-t pt-6">
-              <p className="inter-base-semibold mb-2">Metadata</p>
+              <p className="inter-base-semibold mb-2">{t("Metadata")}</p>
               <MetadataForm form={nestedForm(form, "metadata")} />
             </div>
           </div>

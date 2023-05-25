@@ -1,5 +1,6 @@
 import { useAdminPriceList } from "medusa-react"
 import { useParams } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import BackButton from "../../../components/atoms/back-button"
 import RawJSON from "../../../components/organisms/raw-json"
 import { mapPriceListToFormValues } from "../pricing-form/form/mappers"
@@ -8,6 +9,7 @@ import Header from "./sections/header"
 import PricesDetails from "./sections/prices-details"
 
 const PricingDetails = () => {
+  const { t } = useTranslation()
   const { id } = useParams()
 
   const { price_list, isLoading } = useAdminPriceList(id!)
@@ -15,7 +17,7 @@ const PricingDetails = () => {
   return (
     <div className="pb-large">
       <BackButton
-        label="Back to Pricing"
+        label={t("Back to Pricing")}
         path="/a/pricing"
         className="mb-xsmall"
       />
@@ -27,7 +29,7 @@ const PricingDetails = () => {
 
             <PricesDetails id={price_list?.id} />
 
-            <RawJSON data={price_list} title="Raw price list" />
+            <RawJSON data={price_list} title={t("Raw price list")} />
           </div>
         </PriceListFormProvider>
       ) : null}

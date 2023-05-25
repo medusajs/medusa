@@ -1,6 +1,7 @@
 import { Product } from "@medusajs/medusa"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import useNotification from "../../../hooks/use-notification"
 import { FormImage } from "../../../types/shared"
@@ -21,6 +22,7 @@ type MediaFormWrapper = {
 }
 
 const MediaModal = ({ product, open, onClose }: Props) => {
+  const { t } = useTranslation()
   const { onUpdate, updating } = useEditProductActions(product.id)
   const form = useForm<MediaFormWrapper>({
     defaultValues: getDefaultValues(product),
@@ -49,17 +51,21 @@ const MediaModal = ({ product, open, onClose }: Props) => {
     try {
       preppedImages = await prepareImages(data.media.images)
     } catch (error) {
-      let errorMessage = "Something went wrong while trying to upload images."
+      let errorMessage = t(
+        "Something went wrong while trying to upload images."
+      )
       const response = (error as any).response as Response
 
       if (response.status === 500) {
         errorMessage =
           errorMessage +
           " " +
-          "You might not have a file service configured. Please contact your administrator"
+          t(
+            "You might not have a file service configured. Please contact your administrator"
+          )
       }
 
-      notification("Error", errorMessage, "error")
+      notification(t("Error"), errorMessage, "error")
       return
     }
     const urls = preppedImages.map((image) => image.url)
@@ -76,14 +82,14 @@ const MediaModal = ({ product, open, onClose }: Props) => {
     <Modal open={open} handleClose={onReset} isLargeModal>
       <Modal.Body>
         <Modal.Header handleClose={onReset}>
-          <h1 className="inter-xlarge-semibold m-0">Edit Media</h1>
+          <h1 className="inter-xlarge-semibold m-0">{t("Edit Media")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div>
-              <h2 className="inter-large-semibold mb-2xsmall">Media</h2>
+              <h2 className="inter-large-semibold mb-2xsmall">{t("Media")}</h2>
               <p className="inter-base-regular text-grey-50 mb-large">
-                Add images to your product.
+                {t("Add images to your product.")}
               </p>
               <div>
                 <MediaForm form={nestedForm(form, "media")} />
@@ -98,7 +104,7 @@ const MediaModal = ({ product, open, onClose }: Props) => {
                 type="button"
                 onClick={onReset}
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 size="small"
@@ -107,7 +113,7 @@ const MediaModal = ({ product, open, onClose }: Props) => {
                 disabled={!isDirty}
                 loading={updating}
               >
-                Save and close
+                {t("Save and close")}
               </Button>
             </div>
           </Modal.Footer>

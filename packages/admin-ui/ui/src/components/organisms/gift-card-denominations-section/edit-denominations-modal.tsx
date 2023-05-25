@@ -7,6 +7,7 @@ import {
 } from "medusa-react"
 import { useCallback, useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { nestedForm } from "../../../utils/nested-form"
@@ -31,6 +32,7 @@ const EditDenominationsModal = ({
   onClose,
   open,
 }: EditDenominationsModalProps) => {
+  const { t } = useTranslation()
   const { store } = useAdminStore()
   const { mutate, isLoading } = useAdminUpdateVariant(denomination.product_id)
 
@@ -91,15 +93,15 @@ const EditDenominationsModal = ({
       {
         onSuccess: () => {
           notification(
-            "Denomination updated",
-            "A new denomination was succesfully updated",
+            t("Denomination updated"),
+            t("A new denomination was succesfully updated"),
             "success"
           )
           queryClient.invalidateQueries(adminProductKeys.all)
           handleClose()
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification(t("Error"), getErrorMessage(error), "error")
         },
       }
     )
@@ -109,7 +111,7 @@ const EditDenominationsModal = ({
     <Modal open={open} handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <h1 className="inter-xlarge-semibold">Edit Denomination</h1>
+          <h1 className="inter-xlarge-semibold">{t("Edit Denomination")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
@@ -123,7 +125,7 @@ const EditDenominationsModal = ({
                 type="button"
                 onClick={handleClose}
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -132,7 +134,7 @@ const EditDenominationsModal = ({
                 loading={isLoading}
                 disabled={!isDirty || isLoading}
               >
-                Save and close
+                {t("Save and close")}
               </Button>
             </div>
           </Modal.Footer>

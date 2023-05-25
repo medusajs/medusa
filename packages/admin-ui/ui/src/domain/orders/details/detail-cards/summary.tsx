@@ -5,6 +5,7 @@ import {
 } from "@medusajs/medusa"
 import { DisplayTotal, PaymentDetails } from "../templates"
 import React, { useContext, useMemo } from "react"
+import { useTranslation } from "react-i18next"
 
 import { ActionType } from "../../../../components/molecules/actionables"
 import Badge from "../../../../components/fundamentals/badge"
@@ -27,6 +28,7 @@ type SummaryCardProps = {
 }
 
 const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
+  const { t } = useTranslation()
   const {
     state: reservationModalIsOpen,
     open: showReservationModal,
@@ -151,13 +153,13 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
     const actionables: ActionType[] = []
     if (isFeatureEnabled("order_editing")) {
       actionables.push({
-        label: "Edit Order",
+        label: t("Edit Order"),
         onClick: showModal,
       })
     }
     if (isFeatureEnabled("inventoryService") && !allItemsReserved) {
       actionables.push({
-        label: "Allocate",
+        label: t("Allocate"),
         onClick: showReservationModal,
       })
     }
@@ -182,8 +184,8 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
             variant={allItemsReserved || !isAllocatable ? "success" : "danger"}
             title={
               allItemsReserved || !isAllocatable
-                ? "Allocated"
-                : "Not fully allocated"
+                ? t("Allocated")
+                : t("Not fully allocated")
             }
             className="rounded-rounded border px-3 py-1.5"
           />
@@ -204,7 +206,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
         <DisplayTotal
           currency={order.currency_code}
           totalAmount={order.subtotal}
-          totalTitle={"Subtotal"}
+          totalTitle={t("Subtotal")}
         />
         {order?.discounts?.map((discount, index) => (
           <DisplayTotal
@@ -213,7 +215,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
             totalAmount={-1 * order.discount_total}
             totalTitle={
               <div className="inter-small-regular text-grey-90 flex items-center">
-                Discount:{" "}
+                {t("Discount:")}{" "}
                 <Badge className="ml-3" variant="default">
                   {discount.code}
                 </Badge>
@@ -246,18 +248,18 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
         <DisplayTotal
           currency={order.currency_code}
           totalAmount={order.shipping_total}
-          totalTitle={"Shipping"}
+          totalTitle={t("Shipping")}
         />
         <DisplayTotal
           currency={order.currency_code}
           totalAmount={order.tax_total}
-          totalTitle={`Tax`}
+          totalTitle={t(`Tax`)}
         />
         <DisplayTotal
           variant={"large"}
           currency={order.currency_code}
           totalAmount={order.total}
-          totalTitle={hasMovements ? "Original Total" : "Total"}
+          totalTitle={hasMovements ? t("Original Total") : t("Total")}
         />
         <PaymentDetails
           manualRefund={manualRefund}

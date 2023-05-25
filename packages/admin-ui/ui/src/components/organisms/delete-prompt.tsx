@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { useTranslation } from "react-i18next"
 
 import useNotification from "../../hooks/use-notification"
 import { getErrorMessage } from "../../utils/error-messages"
@@ -16,14 +17,15 @@ type DeletePromptProps = {
 }
 
 const DeletePrompt: React.FC<DeletePromptProps> = ({
-  heading = "Are you sure you want to delete?",
+  heading,
   text = "",
-  successText = "Delete successful",
-  cancelText = "No, cancel",
-  confirmText = "Yes, remove",
+  successText,
+  cancelText,
+  confirmText,
   handleClose,
   onDelete,
 }) => {
+  const { t } = useTranslation()
   const notification = useNotification()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -34,7 +36,11 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
     onDelete()
       .then(() => {
         if (successText) {
-          notification("Success", successText, "success")
+          notification(
+            t("Success"),
+            successText || t("Delete successful"),
+            "success"
+          )
         }
       })
       .catch((err) => notification("Error", getErrorMessage(err), "error"))
@@ -49,7 +55,9 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
       <Modal.Body>
         <Modal.Content>
           <div className="flex flex-col">
-            <span className="inter-large-semibold">{heading}</span>
+            <span className="inter-large-semibold">
+              {heading || t("Are you sure you want to delete?")}
+            </span>
             <span className="inter-base-regular text-grey-50 mt-1">{text}</span>
           </div>
         </Modal.Content>
@@ -61,7 +69,7 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
               size="small"
               onClick={handleClose}
             >
-              {cancelText}
+              {cancelText || t("No, cancel")}
             </Button>
             <Button
               loading={isLoading}
@@ -71,7 +79,7 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
               onClick={handleSubmit}
               disabled={isLoading}
             >
-              {confirmText}
+              {confirmText || t("Yes, remove")}
             </Button>
           </div>
         </Modal.Footer>

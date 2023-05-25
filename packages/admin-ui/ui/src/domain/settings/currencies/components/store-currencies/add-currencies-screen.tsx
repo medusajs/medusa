@@ -2,6 +2,7 @@ import { Currency } from "@medusajs/medusa"
 import { useAdminCurrencies, useAdminUpdateStore } from "medusa-react"
 import React, { useContext, useState } from "react"
 import { usePagination, useRowSelect, useSortBy, useTable } from "react-table"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
 import { LayeredModalContext } from "../../../../../components/molecules/modal/layered-modal"
@@ -17,6 +18,7 @@ const AddCurrenciesScreen = () => {
   const [offset, setOffset] = useState(0)
   const [selectedRowIds, setSelectedRowIds] = useState<string[]>([])
 
+  const { t } = useTranslation()
   const { onClose, store } = useEditCurrenciesModal()
   const { reset, pop } = useContext(LayeredModalContext)
 
@@ -43,11 +45,15 @@ const AddCurrenciesScreen = () => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Successfully updated currencies", "success")
+          notification(
+            t("Success"),
+            t("Successfully updated currencies"),
+            "success"
+          )
           next()
         },
         onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
+          notification(t("Error"), getErrorMessage(err), "error")
         },
       }
     )
@@ -97,7 +103,7 @@ const AddCurrenciesScreen = () => {
       <Modal.Footer>
         <div className="gap-x-xsmall flex w-full items-center justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             variant="primary"
@@ -108,7 +114,7 @@ const AddCurrenciesScreen = () => {
               })
             }
           >
-            Save and go back
+            {t("Save and go back")}
           </Button>
           <Button
             variant="primary"
@@ -122,7 +128,7 @@ const AddCurrenciesScreen = () => {
               })
             }
           >
-            Save and close
+            {t("Save and close")}
           </Button>
         </div>
       </Modal.Footer>
@@ -132,10 +138,11 @@ const AddCurrenciesScreen = () => {
 
 export const useAddCurrenciesModalScreen = () => {
   const { pop, push } = useContext(LayeredModalContext)
+  const { t } = useTranslation()
 
   return {
     screen: {
-      title: "Add Store Currencies",
+      title: t("Add Store Currencies"),
       onBack: pop,
       view: <AddCurrenciesScreen />,
     },

@@ -1,4 +1,5 @@
 import BackButton from "../../../components/atoms/back-button"
+import { useTranslation } from "react-i18next"
 import CurrencyTaxSetting from "./components/currency-tax-setting"
 import DefaultStoreCurrency from "./components/default-store-currency"
 import FeatureToggle from "../../../components/fundamentals/feature-toggle"
@@ -14,6 +15,7 @@ import { useNavigate } from "react-router-dom"
 
 const CurrencySettings = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { trackCurrencies } = useAnalytics()
   const { store, status, error } = useAdminStore({
     onSuccess: (data) => {
@@ -24,7 +26,7 @@ const CurrencySettings = () => {
   })
 
   if (error) {
-    let message = "An unknown error occurred"
+    let message = t("An unknown error occurred")
 
     const errorStatus = getErrorStatus(error)
 
@@ -39,7 +41,7 @@ const CurrencySettings = () => {
 
     // temp needs design
     return (
-      <Section title="Error">
+      <Section title={t("Error")}>
         <p className="inter-base-regular">{message}</p>
 
         <div className="mt-base px-base py-xsmall">
@@ -61,7 +63,7 @@ const CurrencySettings = () => {
   return (
     <div className="pb-xlarge">
       <BackButton
-        label="Back to Settings"
+        label={t("Back to Settings")}
         path="/a/settings"
         className="mb-xsmall"
       />
@@ -69,7 +71,7 @@ const CurrencySettings = () => {
         <div className="gap-y-xsmall col-span-2 flex flex-col ">
           <Section title="Currencies">
             <p className="text-grey-50 inter-base-regular mt-2xsmall">
-              Manage the markets that you will operate within.
+              {t("Manage the markets that you will operate within.")}
             </p>
           </Section>
 
@@ -83,11 +85,11 @@ const CurrencySettings = () => {
                 <FeatureToggle featureFlag="tax_inclusive_pricing">
                   <Tooltip
                     side="top"
-                    content={
+                    content={t(
                       "Decide if you want to include or exclude taxes whenever you define a price in this currency"
-                    }
+                    )}
                   >
-                    <p>Tax Incl. Prices</p>
+                    <p>{t("Tax Incl. Prices")}</p>
                   </Tooltip>
                 </FeatureToggle>
               </div>

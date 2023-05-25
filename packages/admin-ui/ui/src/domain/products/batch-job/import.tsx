@@ -9,6 +9,7 @@ import {
   useAdminDeleteFile,
   useAdminUploadProtectedFile,
 } from "medusa-react"
+import { useTranslation } from "react-i18next"
 
 import UploadModal from "../../../components/organisms/upload-modal"
 import useNotification from "../../../hooks/use-notification"
@@ -49,6 +50,7 @@ function ImportProducts(props: ImportProductsProps) {
   const [fileKey, setFileKey] = useState()
   const [batchJobId, setBatchJobId] = useState()
 
+  const { t } = useTranslation()
   const notification = useNotification()
 
   const { resetInterval } = usePolling()
@@ -84,8 +86,10 @@ function ImportProducts(props: ImportProductsProps) {
   const onSubmit = async () => {
     await confirmBatchJob()
     notification(
-      "Success",
-      "Import confirmed for processing. Progress info is available in the activity drawer.",
+      t("Success"),
+      t(
+        "Import confirmed for processing. Progress info is available in the activity drawer."
+      ),
       "success"
     )
     props.handleClose()
@@ -110,7 +114,7 @@ function ImportProducts(props: ImportProductsProps) {
 
       setBatchJobId(batchJob.batch_job.id)
     } catch (e) {
-      notification("Error", "Import failed.", "error")
+      notification(t("Error"), t("Import failed."), "error")
       if (fileKey) {
         await deleteFile({ file_key: fileKey })
       }
@@ -145,14 +149,14 @@ function ImportProducts(props: ImportProductsProps) {
       try {
         deleteFile({ file_key: fileKey })
       } catch (e) {
-        notification("Error", "Failed to delete the CSV file", "error")
+        notification(t("Error"), t("Failed to delete the CSV file"), "error")
       }
     }
 
     try {
       cancelBathJob()
     } catch (e) {
-      notification("Error", "Failed to cancel the batch job", "error")
+      notification(t("Error"), t("Failed to cancel the batch job"), "error")
     }
 
     setBatchJobId(undefined)
@@ -189,12 +193,16 @@ function ImportProducts(props: ImportProductsProps) {
       summary={getSummary()}
       onFileRemove={onFileRemove}
       processUpload={processUpload}
-      fileTitle={"products list"}
+      fileTitle={t("products list")}
       templateLink="/temp/product-import-template.csv"
       errorMessage={batchJob?.result?.errors?.join(" \n")}
-      description2Title="Unsure about how to arrange your list?"
-      description2Text="Download the template below to ensure you are following the correct format."
-      description1Text="Through imports you can add or update products. To update existing products/variants you must set an existing id in the Product/Variant id columns. If the value is unset a new record will be created. You will be asked for confirmation before we import products."
+      description2Title={t("Unsure about how to arrange your list?")}
+      description2Text={t(
+        "Download the template below to ensure you are following the correct format."
+      )}
+      description1Text={t(
+        "Through imports you can add or update products. To update existing products/variants you must set an existing id in the Product/Variant id columns. If the value is unset a new record will be created. You will be asked for confirmation before we import products."
+      )}
     />
   )
 }

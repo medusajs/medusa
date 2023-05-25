@@ -1,5 +1,6 @@
 import { useAdminStore } from "medusa-react"
 import React, { useState } from "react"
+import { useTranslation } from "react-i18next"
 
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import BuildingsIcon from "../../fundamentals/icons/buildings-icon"
@@ -17,6 +18,7 @@ import UserMenu from "../../molecules/user-menu"
 const ICON_SIZE = 20
 
 const Sidebar: React.FC = () => {
+  const { t } = useTranslation()
   const [currentlyOpen, setCurrentlyOpen] = useState(-1)
 
   const { isFeatureEnabled } = useFeatureFlag()
@@ -46,7 +48,9 @@ const Sidebar: React.FC = () => {
           </div>
         </div>
         <div className="my-base flex flex-col px-2">
-          <span className="text-grey-50 text-small font-medium">Store</span>
+          <span className="text-grey-50 text-small font-medium">
+            {t("Store")}
+          </span>
           <span className="text-grey-90 text-medium font-medium">
             {store?.name}
           </span>
@@ -56,19 +60,19 @@ const Sidebar: React.FC = () => {
             pageLink={"/a/orders"}
             icon={<CartIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
-            text={"Orders"}
+            text={t("Orders")}
           />
           <SidebarMenuItem
             pageLink={"/a/products"}
             icon={<TagIcon size={ICON_SIZE} />}
-            text={"Products"}
+            text={t("Products")}
             triggerHandler={triggerHandler}
           />
           {isFeatureEnabled("product_categories") && (
             <SidebarMenuItem
               pageLink={"/a/product-categories"}
               icon={<SwatchIcon size={ICON_SIZE} />}
-              text={"Categories"}
+              text={t("Categories")}
               triggerHandler={triggerHandler}
             />
           )}
@@ -76,39 +80,39 @@ const Sidebar: React.FC = () => {
             pageLink={"/a/customers"}
             icon={<UsersIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
-            text={"Customers"}
+            text={t("Customers")}
           />
           {inventoryEnabled && (
             <SidebarMenuItem
               pageLink={"/a/inventory"}
               icon={<BuildingsIcon size={ICON_SIZE} />}
               triggerHandler={triggerHandler}
-              text={"Inventory"}
+              text={t("Inventory")}
             />
           )}
           <SidebarMenuItem
             pageLink={"/a/discounts"}
             icon={<SaleIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
-            text={"Discounts"}
+            text={t("Discounts")}
           />
           <SidebarMenuItem
             pageLink={"/a/gift-cards"}
             icon={<GiftIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
-            text={"Gift Cards"}
+            text={t("Gift Cards")}
           />
           <SidebarMenuItem
             pageLink={"/a/pricing"}
             icon={<CashIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
-            text={"Pricing"}
+            text={t("Pricing")}
           />
           <SidebarMenuItem
             pageLink={"/a/settings"}
             icon={<GearIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
-            text={"Settings"}
+            text={t("Settings")}
           />
         </div>
       </div>

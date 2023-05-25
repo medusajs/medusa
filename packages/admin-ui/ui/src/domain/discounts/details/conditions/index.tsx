@@ -7,6 +7,7 @@ import AddCondition from "./add-condition"
 import { ConditionsProvider } from "./add-condition/conditions-provider"
 import EditConditionsModal from "./edit-condition/edit-condition-modal"
 import { useDiscountConditions } from "./use-discount-conditions"
+import { useTranslation } from "react-i18next"
 
 type DiscountDetailsConditionsProps = {
   discount: Discount
@@ -15,6 +16,7 @@ type DiscountDetailsConditionsProps = {
 const DiscountDetailsConditions: React.FC<DiscountDetailsConditionsProps> = ({
   discount,
 }) => {
+  const { t } = useTranslation()
   const [show, setShow] = useState(false)
 
   const { conditions, selectedCondition, deSelectCondition } =
@@ -24,12 +26,12 @@ const DiscountDetailsConditions: React.FC<DiscountDetailsConditionsProps> = ({
     <ConditionsProvider discount={discount}>
       <div>
         <BodyCard
-          title="Conditions"
+          title={t("Conditions")}
           className="min-h-[200px]"
           forceDropdown
           actionables={[
             {
-              label: "Add condition",
+              label: t("Add condition"),
               icon: <PlusIcon size={16} />,
               onClick: () => setShow(true),
             },
@@ -57,7 +59,7 @@ const DiscountDetailsConditions: React.FC<DiscountDetailsConditionsProps> = ({
           ) : (
             <div className="gap-y-small flex flex-1 flex-col items-center justify-center">
               <span className="inter-base-regular text-grey-50">
-                This discount has no conditions
+                {t("This discount has no conditions")}
               </span>
             </div>
           )}

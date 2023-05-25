@@ -1,5 +1,6 @@
 import clsx from "clsx"
 import { useForm, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import useNotification from "../../../hooks/use-notification"
 import { useAnalytics } from "../../../providers/analytics-provider"
 import {
@@ -21,6 +22,7 @@ type AnalyticsPreferenceFormType = {
 }
 
 const AnalyticsPreferencesModal = () => {
+  const { t } = useTranslation()
   const notification = useNotification()
   const { mutate, isLoading } = useAdminCreateAnalyticsConfig()
 
@@ -59,8 +61,8 @@ const AnalyticsPreferencesModal = () => {
     mutate(config, {
       onSuccess: () => {
         notification(
-          "Success",
-          "Your preferences were successfully updated",
+          t("Success"),
+          t("Your preferences were successfully updated"),
           "success"
         )
 
@@ -71,7 +73,7 @@ const AnalyticsPreferencesModal = () => {
         setSubmittingConfig(false)
       },
       onError: (err) => {
-        notification("Error", getErrorMessage(err), "error")
+        notification(t("Error"), getErrorMessage(err), "error")
         setSubmittingConfig(false)
       },
     })
@@ -83,27 +85,25 @@ const AnalyticsPreferencesModal = () => {
         <div className="flex flex-col items-center">
           <div className="mt-5xlarge flex w-full max-w-[664px] flex-col">
             <h1 className="inter-xlarge-semibold mb-large">
-              Help us get better
+              {t("Help us get better")}
             </h1>
             <p className="text-grey-50">
-              To create the most compelling e-commerce experience we would like
-              to gain insights in how you use Medusa. User insights allow us to
-              build a better, more engaging, and more usable products. We only
-              collect data for product improvements. Read what data we gather in
-              our{" "}
+              {t(
+                "To create the most compelling e-commerce experience we would like to gain insights in how you use Medusa. User insights allow us to build a better, more engaging, and more usable products. We only collect data for product improvements. Read what data we gather in our"
+              )}{" "}
               <a
                 href="https://docs.medusajs.com/usage"
                 rel="noreferrer noopener"
                 target="_blank"
                 className="text-violet-60"
               >
-                documentation
+                {t("documentation")}
               </a>
               .
             </p>
             <div className="mt-xlarge gap-y-xlarge flex flex-col">
               <InputField
-                label="Email"
+                label={"Email"}
                 placeholder="you@company.com"
                 disabled={watchOptOut || watchAnonymize}
                 className={clsx("transition-opacity", {
@@ -111,7 +111,7 @@ const AnalyticsPreferencesModal = () => {
                 })}
                 {...register("email", {
                   pattern: {
-                    message: "Please enter a valid email",
+                    message: t("Please enter a valid email"),
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   },
                 })}
@@ -126,7 +126,7 @@ const AnalyticsPreferencesModal = () => {
                 loading={isLoading}
                 onClick={onSubmit}
               >
-                Continue
+                {t("Continue")}
               </Button>
             </div>
           </div>

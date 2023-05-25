@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import EditFlowVariantForm, {
   EditFlowVariantFormType,
 } from "../../forms/product/variant-inventory-form/edit-flow-variant-form"
@@ -30,6 +31,7 @@ type Props = {
 }
 
 const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
+  const { t } = useTranslation()
   const { client } = useMedusa()
   const layeredModalContext = useContext(LayeredModalContext)
   const {
@@ -191,7 +193,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
   return (
     <LayeredModal context={layeredModalContext} handleClose={handleClose}>
       <Modal.Header handleClose={handleClose}>
-        <h1 className="inter-xlarge-semibold">Edit stock & inventory</h1>
+        <h1 className="inter-xlarge-semibold">{t("Edit stock & inventory")}</h1>
       </Modal.Header>
       {!isLoadingInventory && (
         <StockForm
@@ -222,6 +224,7 @@ const StockForm = ({
   handleClose: () => void
   updatingVariant: boolean
 }) => {
+  const { t } = useTranslation()
   const form = useForm<EditFlowVariantFormType>({
     // @ts-ignore
     defaultValues: getEditVariantDefaultValues(variantInventory, variant),
@@ -259,7 +262,7 @@ const StockForm = ({
               handleClose()
             }}
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             variant="primary"
@@ -268,7 +271,7 @@ const StockForm = ({
             disabled={!isDirty}
             loading={updatingVariant}
           >
-            Save and close
+            {t("Save and close")}
           </Button>
         </div>
       </Modal.Footer>

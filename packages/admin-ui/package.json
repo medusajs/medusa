@@ -22,6 +22,7 @@
   "scripts": {
     "dev": "vite -c vite.config.dev.ts --port 7001",
     "build": "tsc --build",
+    "sync:i18n": "i18next 'ui/src/**/*.{ts,tsx,js,jsx}' -c 'ui/i18next-parser.config.js'",
     "test:ui": "vitest --config vite.config.dev.ts",
     "test:ui:once": "vitest --config vite.config.dev.ts --run",
     "test": "echo \"Tests disabled temporarily\""
@@ -50,6 +51,9 @@
     "copy-to-clipboard": "^3.3.1",
     "emoji-picker-react": "^4.4.3",
     "framer-motion": "^9.1.6",
+    "i18next": "^22.5.0",
+    "i18next-browser-languagedetector": "^7.0.1",
+    "i18next-http-backend": "^2.2.1",
     "medusa-react": "^9.0.3",
     "moment": "^2.29.4",
     "pluralize": "^8.0.0",
@@ -68,6 +72,7 @@
     "react-hook-form": "7.38.0",
     "react-hot-toast": "2.4.0",
     "react-hotkeys-hook": "^3.4.7",
+    "react-i18next": "^12.3.1",
     "react-json-tree": "^0.17.0",
     "react-jwt": "^1.1.4",
     "react-nestable": "^2.0.0",
@@ -93,6 +98,7 @@
     "@types/react-datepicker": "^4.10.0",
     "@types/react-dom": "^18.0.10",
     "@types/react-table": "^7.7.9",
+    "i18next-parser": "^8.0.0",
     "typescript": "^4.9.3",
     "vitest": "^0.28.5"
   },

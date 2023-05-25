@@ -3,11 +3,12 @@ import type { Identifier, XYCoord } from "dnd-core"
 import { useContext, useEffect, useRef } from "react"
 import { useDrag, useDrop } from "react-dnd"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Tooltip from "../../../../../components/atoms/tooltip"
 import { CustomsFormType } from "../../../../../components/forms/product/customs-form"
 import { DimensionsFormType } from "../../../../../components/forms/product/dimensions-form"
 import CreateFlowVariantForm, {
-  CreateFlowVariantFormType
+  CreateFlowVariantFormType,
 } from "../../../../../components/forms/product/variant-form/create-flow-variant-form"
 import { VariantOptionValueType } from "../../../../../components/forms/product/variant-form/variant-select-options-form"
 import Button from "../../../../../components/fundamentals/button"
@@ -20,7 +21,7 @@ import Actionables from "../../../../../components/molecules/actionables"
 import IconTooltip from "../../../../../components/molecules/icon-tooltip"
 import Modal from "../../../../../components/molecules/modal"
 import LayeredModal, {
-  LayeredModalContext
+  LayeredModalContext,
 } from "../../../../../components/molecules/modal/layered-modal"
 import useImperativeDialog from "../../../../../hooks/use-imperative-dialog"
 import useToggleState from "../../../../../hooks/use-toggle-state"
@@ -55,6 +56,7 @@ const NewVariant = ({
   productDimensions,
   productCustoms,
 }: Props) => {
+  const { t } = useTranslation()
   const { state, toggle, close } = useToggleState()
   const localForm = useForm<CreateFlowVariantFormType>({
     defaultValues: source,
@@ -84,7 +86,7 @@ const NewVariant = ({
     if (!saved) {
       localForm.setError("options", {
         type: "deps",
-        message: "A variant with these options already exists.",
+        message: t("A variant with these options already exists."),
       })
       return
     }
@@ -96,8 +98,8 @@ const NewVariant = ({
 
   const onDelete = async () => {
     const confirmed = await warning({
-      text: "Are you sure you want to delete this variant?",
-      heading: "Delete Variant",
+      text: t("Are you sure you want to delete this variant?"),
+      heading: t("Delete Variant"),
     })
 
     if (confirmed) {
@@ -209,12 +211,12 @@ const NewVariant = ({
             forceDropdown
             actions={[
               {
-                label: "Edit",
+                label: t("Edit"),
                 icon: <EditIcon size={20} />,
                 onClick: toggle,
               },
               {
-                label: "Delete",
+                label: t("Delete"),
                 icon: <TrashIcon size={20} />,
                 onClick: onDelete,
                 variant: "danger",
@@ -239,7 +241,7 @@ const NewVariant = ({
         <Modal.Body>
           <Modal.Header handleClose={closeAndReset}>
             <h1 className="inter-xlarge-semibold">
-              Edit Variant
+              {t("Edit Variant")}
               {source.general.title && (
                 <span className="inter-xlarge-regular ml-xsmall text-grey-50">
                   ({source.general.title})
@@ -262,7 +264,7 @@ const NewVariant = ({
                 type="button"
                 onClick={closeAndReset}
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -270,7 +272,7 @@ const NewVariant = ({
                 type="button"
                 onClick={onUpdate}
               >
-                Save and close
+                {t("Save and close")}
               </Button>
             </div>
           </Modal.Footer>

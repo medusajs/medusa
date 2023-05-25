@@ -7,6 +7,8 @@ import {
   useEffect,
   useState,
 } from "react"
+import { useTranslation } from "react-i18next"
+
 import useNotification from "../../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../../utils/error-messages"
 import {
@@ -68,6 +70,7 @@ export const ConditionsProvider = ({
   discount,
   children,
 }: ConditionsProviderProps) => {
+  const { t } = useTranslation()
   const [conditions, setConditions] = useState<ConditionMap>(defaultConditions)
   const { mutate } = useAdminUpdateDiscount(discount.id)
 
@@ -130,8 +133,8 @@ export const ConditionsProvider = ({
       {
         onSuccess: () => {
           notification(
-            "Condtions were succesfully added",
-            "Discount conditions updated",
+            t("Condtions were succesfully added"),
+            t("Discount conditions updated"),
             "success"
           )
         },
@@ -175,9 +178,10 @@ export const ConditionsProvider = ({
 }
 
 export const useConditions = () => {
+  const { t } = useTranslation()
   const context = useContext(ConditionsContext)
   if (context === null) {
-    throw new Error("useConditions must be used within a ConditionsProvider")
+    throw new Error(t("useConditions must be used within a ConditionsProvider"))
   }
   return context
 }

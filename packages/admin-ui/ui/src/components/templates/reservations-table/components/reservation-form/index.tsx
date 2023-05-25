@@ -1,6 +1,7 @@
 import Button from "../../../../fundamentals/button"
 import { Controller } from "react-hook-form"
 import { DecoratedInventoryItemDTO } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 import InputField from "../../../../molecules/input"
 import ItemSearch from "../../../../molecules/item-search"
 import LocationDropdown from "../../../../molecules/location-dropdown"
@@ -19,6 +20,7 @@ type Props = {
 }
 
 const ReservationForm: React.FC<Props> = ({ form }) => {
+  const { t } = useTranslation()
   const { register, path, watch, control, setValue } = form
 
   const locationId = watch(path("location"))
@@ -36,8 +38,10 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
     <div className="flex w-full flex-col gap-6">
       <div className="grid w-full grid-cols-2 items-center">
         <div>
-          <p className="inter-base-semibold mb-1">Location</p>
-          <p className="text-grey-50">Choose where you wish to reserve from.</p>
+          <p className="inter-base-semibold mb-1">{t("Location")}</p>
+          <p className="text-grey-50">
+            {t("Choose where you wish to reserve from.")}
+          </p>
         </div>
         <Controller
           control={control}
@@ -57,9 +61,9 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
       </div>
       <div className="grid w-full grid-cols-2 items-center">
         <div>
-          <p className="inter-base-semibold mb-1">Item to reserve</p>
+          <p className="inter-base-semibold mb-1">{t("Item to reserve")}</p>
           <p className="text-grey-50">
-            Select the item that you wish to reserve.
+            {t("Select the item that you wish to reserve.")}
           </p>
         </div>
         <Controller
@@ -87,20 +91,20 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
             [&>*:nth-child(even)]:pr-4 [&>*:nth-child(even)]:text-right 
             [&>*:nth-child(-n+2)]:border-t`}
             >
-              <div className="rounded-tl-rounded">Item</div>
+              <div className="rounded-tl-rounded">{t("Item")}</div>
               <div className="rounded-tr-rounded">
                 {selectedItem!.title ?? "N/A"}
               </div>
               <div>SKU</div>
               <div>{selectedItem.sku ?? "N/A"}</div>
-              <div>In stock</div>
+              <div>{t("In stock")}</div>
               <div>{locationLevel?.stocked_quantity}</div>
-              <div>Available</div>
+              <div>{t("Available")}</div>
               <div>
                 {locationLevel?.stocked_quantity -
                   locationLevel?.reserved_quantity}
               </div>
-              <div className="rounded-bl-rounded">Reserve</div>
+              <div className="rounded-bl-rounded">{t("Reserve")}</div>
               <div className="bg-grey-0 rounded-br-rounded text-grey-80 flex items-center">
                 <input
                   className="remove-number-spinner inter-base-regular w-full shrink border-none bg-transparent text-right font-normal outline-none outline-0"
@@ -124,7 +128,7 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
                 type="button"
                 onClick={() => setValue(path("item"), undefined)}
               >
-                Remove item
+                {t("Remove item")}
               </Button>
             </div>
           </div>
@@ -132,12 +136,14 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
       </div>
       <div className="border-grey border-grey-20 grid w-full grid-cols-2 items-center border-t py-6">
         <div>
-          <p className="inter-base-semibold mb-1">Description</p>
-          <p className="text-grey-50">What type of reservation is this?</p>
+          <p className="inter-base-semibold mb-1">{t("Description")}</p>
+          <p className="text-grey-50">
+            {t("What type of reservation is this?")}
+          </p>
         </div>
         <InputField
           {...register(path("description"))}
-          placeholder="Description"
+          placeholder={t("Description")}
         />
       </div>
     </div>

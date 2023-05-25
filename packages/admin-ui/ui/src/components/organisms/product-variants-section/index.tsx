@@ -1,5 +1,6 @@
 import OptionsProvider, { useOptionsContext } from "./options-provider"
 import { Product, ProductVariant, VariantInventory } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 
 import { ActionType } from "../../molecules/actionables"
 import AddVariantModal from "./add-variant-modal"
@@ -28,6 +29,7 @@ type Props = {
 const ProductVariantsSection = ({ product }: Props) => {
   const queryClient = useQueryClient()
   const { client } = useMedusa()
+  const { t } = useTranslation()
 
   const { isFeatureEnabled } = useFeatureFlag()
 
@@ -69,22 +71,22 @@ const ProductVariantsSection = ({ product }: Props) => {
 
   const actions: ActionType[] = [
     {
-      label: "Add Variant",
+      label: t("Add Variant"),
       onClick: toggleAddVariant,
       icon: <PlusIcon size="20" />,
     },
     {
-      label: "Edit Prices",
+      label: t("Edit Prices"),
       onClick: toggleEditPrices,
       icon: <DollarSignIcon size="20" />,
     },
     {
-      label: "Edit Variants",
+      label: t("Edit Variants"),
       onClick: toggleEditVariants,
       icon: <EditIcon size="20" />,
     },
     {
-      label: "Edit Options",
+      label: t("Edit Options"),
       onClick: toggleOptions,
       icon: <GearIcon size="20" />,
     },
@@ -130,7 +132,7 @@ const ProductVariantsSection = ({ product }: Props) => {
         <ProductOptions />
         <div className="mt-xlarge">
           <h2 className="inter-large-semibold mb-base">
-            Product variants{" "}
+            {t("Product variants")}{" "}
             <span className="inter-large-regular text-grey-50">
               ({product.variants.length})
             </span>

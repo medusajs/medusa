@@ -1,6 +1,7 @@
 import { useAdminDeleteDiscount, useAdminDiscount } from "medusa-react"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import DeletePrompt from "../../../components/organisms/delete-prompt"
@@ -13,6 +14,7 @@ import Configurations from "./configurations"
 import General from "./general"
 
 const Edit = () => {
+  const { t } = useTranslation()
   const { id } = useParams()
 
   const { discount, isLoading } = useAdminDiscount(
@@ -29,10 +31,10 @@ const Edit = () => {
   const handleDelete = () => {
     deleteDiscount.mutate(undefined, {
       onSuccess: () => {
-        notification("Success", "Discount deleted", "success")
+        notification(t("Success"), t("Discount deleted"), "success")
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification(t("Error"), getErrorMessage(error), "error")
       },
     })
   }
@@ -43,15 +45,15 @@ const Edit = () => {
         <DeletePrompt
           handleClose={() => setShowDelete(!showDelete)}
           onDelete={async () => handleDelete()}
-          successText="Discount deleted"
-          confirmText="Yes, delete"
-          text="Are you sure you want to delete this discount?"
-          heading="Delete discount"
+          successText={t("Discount deleted")}
+          confirmText={t("Yes, delete")}
+          text={t("Are you sure you want to delete this discount?")}
+          heading={t("Delete discount")}
         />
       )}
 
       <BackButton
-        label="Back to Discounts"
+        label={t("Back to Discounts")}
         path="/a/discounts"
         className="mb-xsmall"
       />
@@ -65,7 +67,7 @@ const Edit = () => {
             <General discount={discount} />
             <Configurations discount={discount} />
             <DiscountDetailsConditions discount={discount} />
-            <RawJSON data={discount} title="Raw discount" />
+            <RawJSON data={discount} title={t("Raw discount")} />
           </DiscountFormProvider>
         </div>
       )}

@@ -8,6 +8,7 @@ import {
   useAdminUpdateOrderEdit,
 } from "medusa-react"
 import clsx from "clsx"
+import { useTranslation } from "react-i18next"
 
 import LayeredModal, {
   LayeredModalContext,
@@ -33,13 +34,14 @@ type TotalsSectionProps = {
  * Totals section displaying order and order edit subtotals.
  */
 function TotalsSection(props: TotalsSectionProps) {
+  const { t } = useTranslation()
   const { currencyCode, amountPaid, newTotal, differenceDue } = props
 
   return (
     <>
       <div className="bg-grey-20 mb-6 h-px w-full" />
       <div className="mb-2 flex h-[40px] justify-between">
-        <span className="text-gray-500">Amount Paid</span>
+        <span className="text-gray-500">{t("Amount Paid")}</span>
         <span className="text-gray-900">
           {formatAmountWithSymbol({
             amount: amountPaid,
@@ -50,7 +52,7 @@ function TotalsSection(props: TotalsSectionProps) {
       </div>
 
       <div className="mb-2 flex h-[40px] justify-between">
-        <span className="font-semibold text-gray-900">New Total</span>
+        <span className="font-semibold text-gray-900">{t("New Total")}</span>
         <span className="text-2xl font-semibold">
           {formatAmountWithSymbol({
             amount: newTotal,
@@ -60,7 +62,7 @@ function TotalsSection(props: TotalsSectionProps) {
       </div>
 
       <div className="flex justify-between">
-        <span className="text-gray-500">Difference Due</span>
+        <span className="text-gray-500">{t("Difference Due")}</span>
         <span
           className={clsx("text-gray-900", {
             "text-rose-500": differenceDue < 0,
@@ -92,6 +94,7 @@ type AddProductVariantProps = {
  * Add product variant modal screen
  */
 export function AddProductVariant(props: AddProductVariantProps) {
+  const { t } = useTranslation()
   const { pop } = React.useContext(LayeredModalContext)
 
   const [selectedVariants, setSelectedVariants] = useState<ProductVariant[]>([])
@@ -123,10 +126,10 @@ export function AddProductVariant(props: AddProductVariantProps) {
       <Modal.Footer>
         <div className="space-x-xsmall flex w-full justify-end">
           <Button variant="secondary" size="small" onClick={onBack}>
-            Back
+            {t("Back")}
           </Button>
           <Button variant="primary" size="small" onClick={onSubmit}>
-            Save and go back
+            {t("Save and go back")}
           </Button>
         </div>
       </Modal.Footer>
@@ -160,6 +163,8 @@ function OrderEditModal(props: OrderEditModalProps) {
     refundedTotal,
   } = props
 
+  const { t } = useTranslation()
+
   const filterRef = useRef()
   const notification = useNotification()
   const [note, setNote] = useState<string | undefined>()
@@ -192,9 +197,9 @@ function OrderEditModal(props: OrderEditModalProps) {
         await updateOrderEdit({ internal_note: note })
       }
 
-      notification("Success", "Order edit set as requested", "success")
+      notification(t("Success"), t("Order edit set as requested"), "success")
     } catch (e) {
-      notification("Error", "Failed to request confirmation", "error")
+      notification(t("Error"), t("Failed to request confirmation"), "error")
     }
     close()
   }
@@ -219,9 +224,9 @@ function OrderEditModal(props: OrderEditModalProps) {
 
       await Promise.all(promises)
 
-      notification("Success", "Added successfully", "success")
+      notification(t("Success"), t("Added successfully"), "success")
     } catch (e) {
-      notification("Error", "Error occurred", "error")
+      notification(t("Error"), t("Error occurred"), "error")
     }
   }
 
@@ -246,7 +251,7 @@ function OrderEditModal(props: OrderEditModalProps) {
   }
 
   const addProductVariantScreen = {
-    title: "Add Product Variants",
+    title: t("Add Product Variants"),
     onBack: layeredModalContext.pop,
     view: (
       <AddProductVariant
@@ -267,12 +272,12 @@ function OrderEditModal(props: OrderEditModalProps) {
     >
       <Modal.Body>
         <Modal.Header handleClose={onCancel}>
-          <h1 className="inter-xlarge-semibold">Edit Order</h1>
+          <h1 className="inter-xlarge-semibold">{t("Edit Order")}</h1>
         </Modal.Header>
         <Modal.Content>
           <div className="mb-4 flex items-center justify-between">
             <span className="text-large font-semibold text-gray-900">
-              Items
+              {t("Items")}
             </span>
             <div className="flex items-center justify-between">
               <Button
@@ -283,7 +288,7 @@ function OrderEditModal(props: OrderEditModalProps) {
                   layeredModalContext.push(addProductVariantScreen)
                 }
               >
-                Add items
+                {t("Add items")}
               </Button>
               {!showFilter && (
                 <Button
@@ -304,7 +309,7 @@ function OrderEditModal(props: OrderEditModalProps) {
                   ref={filterRef}
                   value={filterTerm}
                   onDelete={hideFilter}
-                  placeholder="Filter items..."
+                  placeholder={t("Filter items...")}
                   onChange={(e) => setFilterTerm(e.target.value)}
                   prefix={<SearchIcon size={14} className="text-gray-400" />}
                 />
@@ -346,10 +351,10 @@ function OrderEditModal(props: OrderEditModalProps) {
           {/* NOTE */}
           {hasChanges && (
             <div className="flex items-center justify-between">
-              <span className="text-gray-500">Note</span>
+              <span className="text-gray-500">{t("Note")}</span>
               <InputField
                 className="max-w-[455px]"
-                placeholder="Add a note..."
+                placeholder={t("Add a note...")}
                 onChange={(e) => setNote(e.target.value)}
                 value={note}
               />
@@ -364,7 +369,7 @@ function OrderEditModal(props: OrderEditModalProps) {
               type="button"
               onClick={onCancel}
             >
-              Cancel
+              {t("Cancel")}
             </Button>
             <Button
               variant="primary"
@@ -374,7 +379,7 @@ function OrderEditModal(props: OrderEditModalProps) {
               loading={isUpdating || isRequestingConfirmation}
               onClick={onSave}
             >
-              Save and close
+              {t("Save and close")}
             </Button>
           </div>
         </Modal.Footer>

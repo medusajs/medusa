@@ -7,6 +7,7 @@ import {
   useAdminVariantsInventory,
   useMedusa,
 } from "medusa-react"
+import { useTranslation } from "react-i18next"
 
 import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
@@ -38,6 +39,7 @@ const ReserveItemsModal: React.FC<ReserveItemsModalProps> = ({
   close,
   reservationItemsMap,
 }) => {
+  const { t } = useTranslation()
   const { mutateAsync: createReservation } = useAdminCreateReservation()
   const { client: medusaClient } = useMedusa()
   const notification = useNotification()
@@ -100,11 +102,11 @@ const ReserveItemsModal: React.FC<ReserveItemsModalProps> = ({
         .map(({ error }) => getErrorMessage(error))
         .join(", ")
 
-      notification("Couldn't allocate items", error, "error")
+      notification(t("Couldn't allocate items"), error, "error")
     } else {
       notification(
-        "Items allocated",
-        "Items have been allocated successfully",
+        t("Items allocated"),
+        t("Items have been allocated successfully"),
         "success"
       )
 
@@ -127,25 +129,27 @@ const ReserveItemsModal: React.FC<ReserveItemsModalProps> = ({
                 type="button"
                 onClick={close}
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button size="small" variant="primary" type="submit">
-                Save reservation
+                {t("Save reservation")}
               </Button>
             </div>
           </div>
         </FocusModal.Header>
         <FocusModal.Main className="medium:w-6/12">
           {isLoading || !stock_locations ? (
-            <div>Loading...</div>
+            <div>{t("Loading...")}</div>
           ) : (
             <div className="mt-16 flex flex-col">
-              <h1 className="inter-xlarge-semibold">Allocate order items</h1>
+              <h1 className="inter-xlarge-semibold">
+                {t("Allocate order items")}
+              </h1>
               <div className="mt-6 flex w-full items-center justify-between">
                 <div>
-                  <p className="inter-base-semibold">Location</p>
+                  <p className="inter-base-semibold">{t("Location")}</p>
                   <p className="inter-base-regular">
-                    Choose where you wish to allocate from
+                    {t("Choose where you wish to allocate from")}
                   </p>
                 </div>
                 <div className="w-1/2">
@@ -172,9 +176,11 @@ const ReserveItemsModal: React.FC<ReserveItemsModalProps> = ({
                 )}
               >
                 <div>
-                  <p className="inter-base-semibold mt-8">Items to allocate</p>
+                  <p className="inter-base-semibold mt-8">
+                    {t("Items to allocate")}
+                  </p>
                   <p className="inter-base-regular">
-                    Select the number of items that you wish to allocate.
+                    {t("Select the number of items that you wish to allocate.")}
                   </p>
                   {items?.map((item, i) => {
                     return (

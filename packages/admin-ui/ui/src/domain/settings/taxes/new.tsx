@@ -1,6 +1,7 @@
 import { useAdminCreateTaxRate } from "medusa-react"
 import { useContext } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Button from "../../../components/fundamentals/button"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import Modal from "../../../components/molecules/modal"
@@ -30,6 +31,7 @@ type NewTaxRateFormData = {
 }
 
 const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
+  const { t } = useTranslation()
   const { mutate, isLoading } = useAdminCreateTaxRate()
   const form = useForm<NewTaxRateFormData>({
     defaultValues: {
@@ -56,11 +58,15 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Successfully created tax rate.", "success")
+          notification(
+            t("Success"),
+            t("Successfully created tax rate."),
+            "success"
+          )
           onDismiss()
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification(t("Error"), getErrorMessage(error), "error")
         },
       }
     )
@@ -98,13 +104,13 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
         <Modal.Body>
           <Modal.Header handleClose={onDismiss}>
             <div>
-              <h1 className="inter-xlarge-semibold">Add Tax Rate</h1>
+              <h1 className="inter-xlarge-semibold">{t("Add Tax Rate")}</h1>
             </div>
           </Modal.Header>
           <Modal.Content>
             <EditTaxRateDetails form={nestedForm(form, "details")} />
             <div>
-              <p className="inter-base-semibold mb-base">Overrides</p>
+              <p className="inter-base-semibold mb-base">{t("Overrides")}</p>
               {(product_types.length > 0 ||
                 products.length > 0 ||
                 shipping_options.length > 0) && (
@@ -128,10 +134,10 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                         )
                       }}
                       index={1}
-                      name="Product Rules"
-                      description={`Applies to ${products.length} product${
-                        products.length > 1 ? "s" : ""
-                      }`}
+                      name={t("Product Rules")}
+                      description={t("Applies to {count} productWithCount", {
+                        count: products.length,
+                      })}
                     />
                   )}
                   {product_types.length > 0 && (
@@ -156,10 +162,13 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                         )
                       }}
                       index={2}
-                      name="Product Type Rules"
-                      description={`Applies to ${
-                        product_types.length
-                      } product type${product_types.length > 1 ? "s" : ""}`}
+                      name={t("Product Type Rules")}
+                      description={t(
+                        "Applies to {count} product typeWithCount",
+                        {
+                          count: product_types.length,
+                        }
+                      )}
                     />
                   )}
                   {shipping_options.length > 0 && (
@@ -184,12 +193,13 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                         )
                       }}
                       index={3}
-                      name="Shipping Option Rules"
-                      description={`Applies to ${
-                        shipping_options.length
-                      } shipping option${
-                        shipping_options.length > 1 ? "s" : ""
-                      }`}
+                      name={t("Shipping Option Rules")}
+                      description={t(
+                        "Applies to {count} shipping optionWithCount",
+                        {
+                          count: shipping_options.length,
+                        }
+                      )}
                     />
                   )}
                 </div>
@@ -214,7 +224,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                   size="medium"
                   variant="secondary"
                 >
-                  <PlusIcon /> Add Overrides
+                  <PlusIcon /> {t("Add Overrides")}
                 </Button>
               )}
             </div>
@@ -228,7 +238,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                 size="small"
                 className="w-eventButton justify-center"
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 type="submit"
@@ -238,7 +248,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                 loading={isLoading}
                 disabled={isLoading}
               >
-                Create
+                {t("Create")}
               </Button>
             </div>
           </Modal.Footer>
