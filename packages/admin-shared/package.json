@@ -10,6 +10,9 @@
     "url": "https:www.github.com/medusajs/medusa.git",
     "directory": "packages/admin-shared"
   },
+  "bugs": {
+    "url": "https:www.github.com/medusajs/medusa/issues"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json"
   },
