@@ -6202,6 +6202,7 @@ __metadata:
     "@types/jsonwebtoken": ^8.5.9
     "@types/lodash": ^4.14.191
     "@types/multer": ^1.4.7
+    "@types/papaparse": ^5.3.7
     awilix: ^8.0.0
     body-parser: ^1.19.0
     boxen: ^5.0.1
@@ -6234,7 +6235,7 @@ __metadata:
     morgan: ^1.9.1
     multer: ^1.4.5-lts.1
     node-schedule: ^2.1.1
-    papaparse: ^5.3.2
+    papaparse: 5.3.2
     passport: ^0.6.0
     passport-http-bearer: ^1.0.1
     passport-jwt: ^4.0.1
@@ -11951,6 +11952,15 @@ __metadata:
   version: 4.1.4
   resolution: "@types/npmlog@npm:4.1.4"
   checksum: 5670c38db51f2c4a5da05657920d7597bf9da00615920b42a001fde9011f05ab1e8ec8cbc671abb47915028e3e0ace5c3d981c23684c202a00bf518f16ece01d
+  languageName: node
+  linkType: hard
+
+"@types/papaparse@npm:^5.3.7":
+  version: 5.3.7
+  resolution: "@types/papaparse@npm:5.3.7"
+  dependencies:
+    "@types/node": "*"
+  checksum: fd234e7872aa7ed86c539583e7b4bac387f3efe55c5f403c590712e7125dfe73f7f0a84e646d5d222bf7e36b4c6213a85a0ae4406db9006a5b9a1b6bc03b6e50
   languageName: node
   linkType: hard
 
@@ -32514,7 +32524,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"papaparse@npm:^5.3.2":
+"papaparse@npm:5.3.2, papaparse@npm:^5.3.2":
   version: 5.3.2
   resolution: "papaparse@npm:5.3.2"
   checksum: fdc50cae03fdf94fa2b78da86fe18fa53ca36753ccd6619ca7f738df097cdd2cbf572a9c048a72c05118db7cf0ccb25d574f39a720c5e1a8d8c6903b0fd30765
