@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "SDK for building admin extensions for Medusa",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
-  "bin": "./bin/index.js",
+  "bin": {
+    "medusa-admin-sdk": "./dist/index.js"
+  },
   "main": "./dist/index.js",
   "repository": {
     "type": "git",
