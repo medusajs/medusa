@@ -1,4 +1,4 @@
-import { InjectionZone, LoadedWidget } from "@medusajs/types"
+import type { InjectionZone, Widget } from "@medusajs/admin-shared"
 import { useQueryClient } from "@tanstack/react-query"
 import { MedusaProvider } from "medusa-react"
 import React from "react"
@@ -9,7 +9,7 @@ import { useWidgetContainerProps } from "./use-widget-container-props"
 
 type WidgetContainerProps<T extends keyof EntityMap> = {
   injectionZone: T
-  widget: LoadedWidget
+  widget: Widget
   entity: EntityMap[T]
 }
 
@@ -18,7 +18,7 @@ const WidgetContainer = <T extends InjectionZone>({
   widget,
   entity,
 }: WidgetContainerProps<T>) => {
-  const { name, origin, Component } = widget
+  const { Widget, origin } = widget
 
   const props = useWidgetContainerProps({
     injectionZone,
@@ -35,14 +35,8 @@ const WidgetContainer = <T extends InjectionZone>({
       }}
       baseUrl={MEDUSA_BACKEND_URL}
     >
-      <ExtensionErrorBoundary
-        type="widget"
-        info={{
-          name,
-          origin,
-        }}
-      >
-        {React.createElement(Component, props)}
+      <ExtensionErrorBoundary type="widget" origin={origin}>
+        {React.createElement(Widget, props)}
       </ExtensionErrorBoundary>
     </MedusaProvider>
   )

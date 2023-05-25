@@ -11,7 +11,7 @@ import RawJSON from "../../../components/organisms/raw-json"
 import WidgetContainer from "../../../components/organisms/widget-container"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
-import { useInjectionZones } from "../../../providers/injection-zone-provider"
+import { useWidgets } from "../../../providers/injection-zone-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import EditGiftCardModal from "./edit-gift-card-modal"
@@ -26,7 +26,7 @@ const GiftCardDetails = () => {
 
   const updateGiftCard = useAdminUpdateGiftCard(giftCard?.id!)
 
-  const { getWidgets } = useInjectionZones()
+  const { getWidgets } = useWidgets()
 
   const notification = useNotification()
 

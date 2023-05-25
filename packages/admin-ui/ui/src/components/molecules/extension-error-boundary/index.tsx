@@ -5,14 +5,13 @@ import WarningCircleIcon from "../../fundamentals/icons/warning-circle"
 import XCircleIcon from "../../fundamentals/icons/x-circle-icon"
 
 type ExtensionInfo = {
-  name: string
   origin: string
 }
 
 type Props = {
   type: "widget" | "page"
   children: React.ReactNode
-  info: ExtensionInfo
+  origin: string
 }
 
 type State = {
@@ -32,7 +31,7 @@ class ExtensionErrorBoundary extends React.Component<Props, State> {
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     if (process.env.NODE_ENV !== "production") {
       console.group(
-        `%cAn error occurred in the widget ${this.props.info.name} from ${this.props.info.origin}:`,
+        `%cAn error occurred in a ${this.props.type} from ${this.props.origin}:`,
         "color: red; font-weight: bold, background-color: #fff;"
       )
       console.error(error)
@@ -57,11 +56,11 @@ class ExtensionErrorBoundary extends React.Component<Props, State> {
     if (process.env.NODE_ENV !== "production" && !this.state.hidden) {
       switch (this.props.type) {
         case "page":
-          return <FallbackPage info={this.props.info} />
+          return <FallbackPage origin={this.props.origin} />
         case "widget":
           return (
             <FallbackWidget
-              info={this.props.info}
+              origin={this.props.origin}
               reset={this.handleResetError.bind(this)}
               hide={this.hideError.bind(this)}
             />
@@ -83,11 +82,11 @@ class ExtensionErrorBoundary extends React.Component<Props, State> {
 }
 
 const FallbackWidget = ({
-  info,
+  origin,
   reset,
   hide,
 }: {
-  info: ExtensionInfo
+  origin: string
   reset: () => void
   hide: () => void
 }) => {
@@ -103,8 +102,8 @@ const FallbackWidget = ({
       <div className="text-rose-40 inter-small-regular w-full pr-[20px]">
         <h1 className="inter-base-semibold mb-2xsmall">Uncaught error</h1>
         <p className="mb-small">
-          The widget <strong>{info.name}</strong> from{" "}
-          <strong>{info.origin}</strong> crashed. See the console for more info.
+          A widget from <strong>{origin}</strong> crashed. See the console for
+          more info.
         </p>
         <p className="mb-large">
           <strong>What should I do?</strong>
@@ -144,7 +143,7 @@ const FallbackWidget = ({
   )
 }
 
-const FallbackPage = ({ info }: { info: ExtensionInfo }) => {
+const FallbackPage = ({ origin }: { origin: string }) => {
   return <div>Not implemented</div>
 }
 

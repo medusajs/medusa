@@ -15,7 +15,7 @@ import RawJSON from "../../../components/organisms/raw-json"
 import Section from "../../../components/organisms/section"
 import WidgetContainer from "../../../components/organisms/widget-container"
 import CustomerOrdersTable from "../../../components/templates/customer-orders-table"
-import { useInjectionZones } from "../../../providers/injection-zone-provider"
+import { useWidgets } from "../../../providers/injection-zone-provider"
 import { getErrorStatus } from "../../../utils/get-error-status"
 import EditCustomerModal from "./edit"
 
@@ -42,7 +42,7 @@ const CustomerDetail = () => {
     },
   ]
 
-  const { getWidgets } = useInjectionZones()
+  const { getWidgets } = useWidgets()
 
   if (error) {
     const errorStatus = getErrorStatus(error)

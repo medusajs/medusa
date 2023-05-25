@@ -1,90 +1,42 @@
 import {
-  Application,
-  Extension,
-  InjectionZone,
-  InjectionZones,
-  PagePointKey,
-  Widget,
-  WidgetsConfig,
-} from "@medusajs/types"
+  ExtensionsEntry,
+  isPageExtension,
+  isWidgetExtension,
+  PageRegistry,
+  WidgetRegistry,
+} from "@medusajs/admin-shared"
 import React from "react"
 import App from "./App"
 import { Providers } from "./providers/providers"
 
 type MedusaAppConfig = {
-  extensions?: Extension[]
+  entries?: ExtensionsEntry[]
 }
 
-interface Result {
-  injectionZone: InjectionZone
-  widgets: Widget[]
-}
+class MedusaApp {
+  private widgets: WidgetRegistry = new WidgetRegistry()
+  private pages: PageRegistry = new PageRegistry()
 
-type PagePoint = {
-  [key in PagePointKey]?: Widget[]
-}
+  constructor({ entries = [] }: MedusaAppConfig) {
+    entries.forEach((entry) => {
+      const origin = entry.identifier
 
-class MedusaApp implements Application {
-  private injectionZones: InjectionZones
-  private customizations: Extension[]
+      entry.extensions.forEach((extension) => {
+        if (isPageExtension(extension)) {
+          this.pages.registerPage(origin, extension)
+        }
 
-  constructor(config: MedusaAppConfig) {
-    this.injectionZones = new Map()
-    this.customizations = config.extensions || []
-  }
-
-  private findArraysInWidgets_(
-    widgets: WidgetsConfig,
-    path: string = ""
-  ): Result[] {
-    const results: Result[] = []
-
-    Object.entries(widgets).forEach(([key, value]) => {
-      if (Array.isArray(value)) {
-        results.push({
-          injectionZone: (path ? `${path}.${key}` : key) as InjectionZone,
-          widgets: value,
-        })
-      } else {
-        results.push(
-          ...this.findArraysInWidgets_(
-            value as WidgetsConfig,
-            path ? `${path}.${key}` : key
-          )
-        )
-      }
-    })
-
-    return results
-  }
-
-  registerWidgets(identifier: string, config: WidgetsConfig): void {
-    const results = this.findArraysInWidgets_(config)
-
-    results.forEach(({ injectionZone, widgets }) => {
-      if (!this.injectionZones.has(injectionZone)) {
-        this.injectionZones.set(injectionZone, [])
-      }
-
-      const currentWidgets = this.injectionZones.get(injectionZone) || []
-
-      this.injectionZones.set(injectionZone, [
-        ...currentWidgets,
-        ...widgets.map((w) => ({ ...w, origin: identifier })),
-      ])
-    })
-  }
-
-  initialize(): void {
-    this.customizations.forEach((c) => {
-      c.setup(this)
+        if (isWidgetExtension(extension)) {
+          this.widgets.registerWidget(origin, extension)
+        }
+      })
     })
   }
 
   render() {
     return (
       <React.StrictMode>
-        <Providers injectionZones={this.injectionZones}>
+        <Providers widgetRegistry={this.widgets} pageRegistry={this.pages}>
           <App />
         </Providers>
       </React.StrictMode>

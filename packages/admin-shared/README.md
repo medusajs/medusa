@@ -4,7 +4,7 @@
   </a>
 </p>
 <h1 align="center">
-  @medusajs/admin-sdk
+  @medusajs/admin-shared
 </h1>
 
 <h4 align="center">
@@ -35,42 +35,6 @@ An open source composable commerce engine built for developers.
   </a>
 </p>
 
-## Installation
+## Introduction
 
-```sh
-yarn add -D @medusajs/admin-sdk
-```
-
-## CLI
-
-The SDK comes with a CLI that can be used to build admin extensions.
-
-```sh
-admin-sdk build [options]
-```
-
-### Options
-
-| Option       | Description                              | Default |
-| ------------ | ---------------------------------------- | ------- |
-| -w, --watch  | Build the extensions in watch mode       | false   |
-| -m, --minify | Whether to minify the build using terser | true    |
-
-## Types
-
-The SDK exports types for various types of admin extensions. These can be imported as follows:
-
-```tsx
-import type { OrderWidgetProps, ExtensionConfig } from "@medusajs/admin-sdk"
-
-const Widget = ({ order, notify }: OrderWidgetProps) => {
-  return <div>Widget</div>
-}
-
-export const config: ExtensionConfig = {
-  type: "widget",
-  zone: "order.details",
-}
-
-export default Widget
-```
+This package contains shared logic and types for the Medusa Admin. The package is for internal usage, and should not be installed directly.

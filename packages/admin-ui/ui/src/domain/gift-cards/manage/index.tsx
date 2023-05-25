@@ -10,7 +10,7 @@ import ProductMediaSection from "../../../components/organisms/product-media-sec
 import ProductRawSection from "../../../components/organisms/product-raw-section"
 import ProductThumbnailSection from "../../../components/organisms/product-thumbnail-section"
 import WidgetContainer from "../../../components/organisms/widget-container"
-import { useInjectionZones } from "../../../providers/injection-zone-provider"
+import { useWidgets } from "../../../providers/injection-zone-provider"
 import { getErrorStatus } from "../../../utils/get-error-status"
 
 const Manage = () => {
@@ -27,7 +27,7 @@ const Manage = () => {
 
   const giftCard = products?.[0] as Product | undefined
 
-  const { getWidgets } = useInjectionZones()
+  const { getWidgets } = useWidgets()
 
   if (!giftCard) {
     return (

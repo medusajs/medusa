@@ -25,7 +25,7 @@ import DeletePrompt from "../../../components/organisms/delete-prompt"
 import WidgetContainer from "../../../components/organisms/widget-container"
 import { AddressType } from "../../../components/templates/address-form"
 import useNotification from "../../../hooks/use-notification"
-import { useInjectionZones } from "../../../providers/injection-zone-provider"
+import { useWidgets } from "../../../providers/injection-zone-provider"
 import { isoAlpha2Countries } from "../../../utils/countries"
 import { getErrorMessage } from "../../../utils/error-messages"
 import extractCustomerName from "../../../utils/extract-customer-name"
@@ -121,7 +121,7 @@ const DraftOrderDetails = () => {
     })
   }
 
-  const { getWidgets } = useInjectionZones()
+  const { getWidgets } = useWidgets()
 
   const widgets = getWidgets("draft_order.details")
 

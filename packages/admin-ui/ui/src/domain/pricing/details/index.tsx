@@ -4,7 +4,7 @@ import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import RawJSON from "../../../components/organisms/raw-json"
 import WidgetContainer from "../../../components/organisms/widget-container"
-import { useInjectionZones } from "../../../providers/injection-zone-provider"
+import { useWidgets } from "../../../providers/injection-zone-provider"
 import { getErrorStatus } from "../../../utils/get-error-status"
 import { mapPriceListToFormValues } from "../pricing-form/form/mappers"
 import { PriceListFormProvider } from "../pricing-form/form/pricing-form-context"
@@ -16,7 +16,7 @@ const PricingDetails = () => {
   const navigate = useNavigate()
 
   const { price_list, isLoading, error } = useAdminPriceList(id!)
-  const { getWidgets } = useInjectionZones()
+  const { getWidgets } = useWidgets()
 
   if (error) {
     const errorStatus = getErrorStatus(error)

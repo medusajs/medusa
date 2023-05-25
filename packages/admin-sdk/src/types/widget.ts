@@ -1,3 +1,4 @@
+import { ExtensionProps } from "@medusajs/admin-shared"
 import type {
   Customer,
   CustomerGroup,
@@ -9,48 +10,47 @@ import type {
   Product,
   ProductCollection,
 } from "@medusajs/medusa"
-import type { WidgetProps } from "@medusajs/types"
 
-export interface OrderWidgetProps extends WidgetProps {
+export interface OrderWidgetProps extends ExtensionProps {
   order: Order
 }
 
-export interface ProductWidgetProps extends WidgetProps {
+export interface ProductWidgetProps extends ExtensionProps {
   product: Product
 }
 
-export interface ProductCollectionWidgetProps extends WidgetProps {
+export interface ProductCollectionWidgetProps extends ExtensionProps {
   productCollection: ProductCollection
 }
 
-export interface CustomerWidgetProps extends WidgetProps {
+export interface CustomerWidgetProps extends ExtensionProps {
   customer: Customer
 }
 
-export interface CustomerGroupWidgetProps extends WidgetProps {
+export interface CustomerGroupWidgetProps extends ExtensionProps {
   customerGroup: CustomerGroup
 }
 
-export interface DiscountWidgetProps extends WidgetProps {
+export interface DiscountWidgetProps extends ExtensionProps {
   discount: Discount
 }
 
-export interface PriceListWidgetProps extends WidgetProps {
+export interface PriceListWidgetProps extends ExtensionProps {
   priceList: PriceList
 }
 
-export interface GiftCardWidgetProps extends WidgetProps {
+export interface GiftCardWidgetProps extends ExtensionProps {
   giftCard: Product
 }
 
-export interface CustomGiftCardWidgetProps extends WidgetProps {
+export interface CustomGiftCardWidgetProps extends ExtensionProps {
   giftCard: GiftCard
 }
 
-export interface DraftOrderWidgetProps extends WidgetProps {
+export interface DraftOrderWidgetProps extends ExtensionProps {
   draftOrder: DraftOrder
 }
 
-export interface ListWidgetProps extends WidgetProps {}
+export interface ListWidgetProps extends ExtensionProps {}
 
-export interface LoginWidgetProps extends WidgetProps {}
+export interface LoginWidgetProps extends ExtensionProps {}

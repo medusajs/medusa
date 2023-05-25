@@ -21,7 +21,7 @@ import CollectionModal from "../../../components/templates/collection-modal"
 import AddProductsTable from "../../../components/templates/collection-product-table/add-product-table"
 import ViewProductsTable from "../../../components/templates/collection-product-table/view-products-table"
 import useNotification from "../../../hooks/use-notification"
-import { useInjectionZones } from "../../../providers/injection-zone-provider"
+import { useWidgets } from "../../../providers/injection-zone-provider"
 import Medusa from "../../../services/api"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { getErrorStatus } from "../../../utils/get-error-status"
@@ -110,7 +110,7 @@ const CollectionDetails = () => {
     }
   }, [collection?.products])
 
-  const { getWidgets } = useInjectionZones()
+  const { getWidgets } = useWidgets()
 
   if (error) {
     const errorStatus = getErrorStatus(error)
