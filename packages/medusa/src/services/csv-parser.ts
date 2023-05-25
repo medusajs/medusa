@@ -29,13 +29,15 @@ class CsvParser<
   ): Promise<TParserResult[]> {
     const csvStream = Papa.parse(Papa.NODE_STREAM_INPUT, options)
 
-    const parsedContent: TParserResult[] = []
-    readableStream.pipe(csvStream)
-    for await (const chunk of csvStream) {
-      parsedContent.push(chunk)
-    }
+    return new Promise((resolve, reject) => {
+      const parsedContent: TParserResult[] = []
 
-    return parsedContent
+      readableStream
+        .pipe(csvStream)
+        .on("data", (data: TParserResult) => parsedContent.push(data))
+        .on("end", () => resolve(parsedContent))
+        .on("error", reject)
+    })
   }
 
   async buildData(data: TParserResult[]): Promise<TOutputResult[]> {
