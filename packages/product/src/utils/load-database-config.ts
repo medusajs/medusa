@@ -5,7 +5,8 @@ import {
 import { Modules } from "@medusajs/modules-sdk"
 
 function getEnv(key: string): string {
-  const value = process.env[`${Modules.PRODUCT}_${key}`]
+  const value =
+    process.env[`${Modules.PRODUCT}_${key}`] ?? process.env[`${key}`]
   return value ?? ""
 }
 
