@@ -6238,7 +6238,7 @@ __metadata:
     tslib: 2.5.0
     typescript: 5.0.4
   bin:
-    medusa-admin-sdk: ./dist/cli/index.js
+    medusa-admin-sdk: ./bin/index.js
   languageName: unknown
   linkType: soft
 
