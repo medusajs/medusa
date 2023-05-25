@@ -27,8 +27,7 @@
     "picocolors": "1.0.0",
     "rollup": "3.20.7",
     "rollup-plugin-esbuild": "5.0.0",
-    "tslib": "2.5.0",
-    "uuid": "9.0.0"
+    "tslib": "2.5.0"
   },
   "devDependencies": {
     "@babel/types": "7.21.5",
