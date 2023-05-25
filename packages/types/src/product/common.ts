@@ -131,7 +131,7 @@ export interface FilterableProductProps {
   categories?: {
     id?: string | OperatorMap<string>
   }
-  category_ids?: string | OperatorMap<string>
+  category_ids?: string | string[] | OperatorMap<string>
 }
 
 export interface FilterableProductTagProps {
