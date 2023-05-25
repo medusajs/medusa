@@ -16,6 +16,7 @@ import {
   useAdminUpdateReservation,
 } from "medusa-react"
 import { useEffect, useMemo } from "react"
+import { useTranslation } from "react-i18next"
 
 import { AllocationLineItemForm } from "./allocate-items-modal"
 import Button from "../../../../components/fundamentals/button"
@@ -47,6 +48,7 @@ const EditAllocationDrawer = ({
   item?: LineItem
   totalReservedQuantity?: number
 }) => {
+  const { t } = useTranslation()
   const form = useForm<EditAllocationLineItemForm>({
     defaultValues: {
       item: {
@@ -92,14 +94,14 @@ const EditAllocationDrawer = ({
     deleteReservation(undefined, {
       onSuccess: () => {
         notification(
-          "Allocation was deleted",
-          "The allocated items have been released.",
+          t("Allocation was deleted"),
+          t("Allocation was deleted"),
           "success"
         )
         close()
       },
       onError: () => {
-        notification("Error", "Failed to delete the allocation ", "error")
+        notification(t("Error"), t("Failed to delete the allocation "), "error")
       },
     })
   }
@@ -145,14 +147,14 @@ const EditAllocationDrawer = ({
       {
         onSuccess: () => {
           notification(
-            "Allocation was updated",
-            "The allocation change was saved.",
+            t("Allocation was updated"),
+            t("The allocation change was saved."),
             "success"
           )
           close()
         },
         onError: () => {
-          notification("Errors", "Failed to update allocation", "error")
+          notification(t("Errors"), t("Failed to update allocation"), "error")
         },
       }
     )
@@ -206,7 +208,7 @@ const EditAllocationDrawer = ({
       >
         <div className="flex h-full flex-col justify-between">
           <div className="border-grey-20 flex items-center justify-between border-b px-8 py-6">
-            <h1 className="inter-large-semibold ">Edit allocation</h1>
+            <h1 className="inter-large-semibold ">{t("Edit allocation")}</h1>
             <Button
               variant="ghost"
               className="p-1.5"
@@ -220,9 +222,11 @@ const EditAllocationDrawer = ({
             <div className="flex h-full flex-col justify-between gap-y-8 px-8 pb-8 pt-6">
               <div className="flex flex-col gap-y-6">
                 <div>
-                  <h2 className="inter-base-semibold">Location</h2>
+                  <h2 className="inter-base-semibold">{t("Location")}</h2>
                   <span className="inter-base-regular text-grey-50">
-                    Choose which location you want to ship the items from.
+                    {t(
+                      "Choose which location you want to ship the items from."
+                    )}
                   </span>
                   <Controller
                     name="location"
@@ -240,9 +244,11 @@ const EditAllocationDrawer = ({
                 </div>
 
                 <div>
-                  <h2 className="inter-base-semibold">Items to Allocate</h2>
+                  <h2 className="inter-base-semibold">
+                    {t("Items to Allocate")}
+                  </h2>
                   <span className="inter-base-regular text-grey-50">
-                    Select the number of items that you wish to allocate.
+                    {t("Select the number of items that you wish to allocate.")}
                   </span>
                   <div
                     className={`
@@ -284,25 +290,27 @@ const EditAllocationDrawer = ({
                       />
                       <span className="text-grey-50 nowrap whitespace-nowrap pl-2">
                         {maxReservation
-                          ? ` / ${maxReservation} requested`
-                          : " reserved"}
+                          ? t(" / {maxReservation} requested", {
+                              maxReservation,
+                            })
+                          : t(" reserved")}
                       </span>
                     </div>
                   </div>
                 </div>
                 <div className="border-grey-20 inter-base-regular border-t pt-6">
-                  <p className="inter-base-semibold">Description</p>
+                  <p className="inter-base-semibold">{t("Description")}</p>
                   <p className="text-grey-50 mb-6">
-                    What type of reservation is this?
+                    {t("What type of reservation is this?")}
                   </p>
                   <InputField
                     {...register("item.description")}
-                    placeholder="Description"
+                    placeholder={t("Description")}
                   />
                 </div>
                 <div className="border-grey border-grey-20 w-full items-center border-t pt-6">
                   <div className="mb-2 flex justify-between">
-                    <p className="inter-base-semibold ">Metadata</p>
+                    <p className="inter-base-semibold ">{t("Metadata")}</p>
                     <Button
                       size="small"
                       variant="ghost"
@@ -310,7 +318,7 @@ const EditAllocationDrawer = ({
                       className="border"
                       onClick={toggleHasMetadata}
                     >
-                      {hasMetadata ? "Remove metadata" : "Add metadata"}
+                      {hasMetadata ? t("Remove metadata") : t("Add metadata")}
                     </Button>
                   </div>
                   {hasMetadata && (
@@ -326,7 +334,7 @@ const EditAllocationDrawer = ({
                 onClick={handleDelete}
                 type="button"
               >
-                Delete allocation
+                {t("Delete allocation")}
               </Button>
             </div>
           </div>
@@ -337,10 +345,10 @@ const EditAllocationDrawer = ({
               className="border"
               onClick={close}
             >
-              Cancel
+              {t("Cancel")}
             </Button>
             <Button variant="primary" size="small" type="submit">
-              Save and close
+              {t("Save and close")}
             </Button>
           </div>
         </div>

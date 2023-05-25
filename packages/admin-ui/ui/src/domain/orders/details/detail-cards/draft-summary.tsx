@@ -5,6 +5,7 @@ import {
   DraftOrder,
   VariantInventory,
 } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 import Badge from "../../../../components/fundamentals/badge"
 import ImagePlaceholder from "../../../../components/fundamentals/image-placeholder"
 import BodyCard from "../../../../components/organisms/body-card"
@@ -25,6 +26,8 @@ type DraftSummaryCardProps = {
 }
 
 const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
+  const { t } = useTranslation()
+
   const { client } = useMedusa()
   const { isFeatureEnabled } = useFeatureFlag()
   const inventoryEnabled = useMemo(() => {
@@ -148,7 +151,7 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
           <StatusIndicator
             onClick={allItemsReserved ? undefined : showAllocationModal}
             variant={allItemsReserved ? "success" : "danger"}
-            title={allItemsReserved ? "Allocated" : "Awaits allocation"}
+            title={allItemsReserved ? t("Allocated") : t("Awaits allocation")}
             className="rounded-rounded border px-3 py-1.5"
           />
         )
@@ -220,7 +223,7 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
         <DisplayTotal
           currency={region?.currency_code}
           totalAmount={order?.cart?.subtotal}
-          totalTitle={"Subtotal"}
+          totalTitle={t("Subtotal")}
         />
         {cart?.discounts?.map((discount, index) => (
           <div key={index} className="mt-4 flex items-center justify-between">
@@ -244,18 +247,18 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
         <DisplayTotal
           currency={region?.currency_code}
           totalAmount={cart?.shipping_total}
-          totalTitle={"Shipping"}
+          totalTitle={t("Shipping")}
         />
         <DisplayTotal
           currency={region?.currency_code}
           totalAmount={cart?.tax_total}
-          totalTitle={`Tax`}
+          totalTitle={t(`Tax`)}
         />
         <DisplayTotal
           currency={region?.currency_code}
           variant="large"
           totalAmount={cart?.total}
-          totalTitle={`Total`}
+          totalTitle={t(`Total`)}
         />
       </div>
       {allocationModalIsOpen && (

@@ -1,9 +1,9 @@
-import { capitalize } from "lodash"
 import {
   useAdminCancelClaimFulfillment,
   useAdminCancelFulfillment,
   useAdminCancelSwapFulfillment,
 } from "medusa-react"
+import { useTranslation } from "react-i18next"
 import IconBadge from "../../../../components/fundamentals/icon-badge"
 import BuildingsIcon from "../../../../components/fundamentals/icons/buildings-icon"
 import CancelIcon from "../../../../components/fundamentals/icons/cancel-icon"
@@ -14,6 +14,7 @@ import useNotification from "../../../../hooks/use-notification"
 import useStockLocations from "../../../../hooks/use-stock-locations"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { TrackingLink } from "./tracking-link"
+import { capitalize } from "lodash"
 
 export const FormattedFulfillment = ({
   setFullfilmentToShip,
@@ -22,6 +23,7 @@ export const FormattedFulfillment = ({
 }) => {
   const dialog = useImperativeDialog()
   const notification = useNotification()
+  const { t } = useTranslation()
 
   const cancelFulfillment = useAdminCancelFulfillment(order.id)
   const cancelSwapFulfillment = useAdminCancelSwapFulfillment(order.id)
@@ -52,8 +54,8 @@ export const FormattedFulfillment = ({
     const { resourceId, resourceType } = getData()
 
     const shouldCancel = await dialog({
-      heading: "Cancel fulfillment?",
-      text: "Are you sure you want to cancel the fulfillment?",
+      heading: t("Cancel fulfillment?"),
+      text: t("Are you sure you want to cancel the fulfillment?"),
     })
 
     if (!shouldCancel) {
@@ -66,9 +68,13 @@ export const FormattedFulfillment = ({
           { swap_id: resourceId, fulfillment_id: fulfillment.id },
           {
             onSuccess: () =>
-              notification("Success", "Successfully canceled swap", "success"),
+              notification(
+                t("Success"),
+                t("Successfully canceled swap"),
+                "success"
+              ),
             onError: (err) =>
-              notification("Error", getErrorMessage(err), "error"),
+              notification(t("Error"), getErrorMessage(err), "error"),
           }
         )
       case "claim":
@@ -76,21 +82,25 @@ export const FormattedFulfillment = ({
           { claim_id: resourceId, fulfillment_id: fulfillment.id },
           {
             onSuccess: () =>
-              notification("Success", "Successfully canceled claim", "success"),
+              notification(
+                t("Success"),
+                t("Successfully canceled claim"),
+                "success"
+              ),
             onError: (err) =>
-              notification("Error", getErrorMessage(err), "error"),
+              notification(t("Error"), getErrorMessage(err), "error"),
           }
         )
       default:
         return cancelFulfillment.mutate(fulfillment.id, {
           onSuccess: () =>
             notification(
-              "Success",
-              "Successfully canceled fulfillment",
+              t("Success"),
+              t("Successfully canceled fulfillment"),
               "success"
             ),
           onError: (err) =>
-            notification("Error", getErrorMessage(err), "error"),
+            notification(t("Error"), getErrorMessage(err), "error"),
         })
     }
   }
@@ -100,13 +110,14 @@ export const FormattedFulfillment = ({
       <div className="flex flex-col space-y-1 py-4">
         <div className="text-grey-90">
           {fulfillment.canceled_at
-            ? "Fulfillment has been canceled"
-            : `${fulfillmentObj.title} Fulfilled by ${capitalize(
-                fulfillment.provider_id
-              )}`}
+            ? t("Fulfillment has been canceled")
+            : t("{title} Fulfilled by {provider}", {
+                title: fulfillmentObj.title,
+                provider: capitalize(fulfillment.provider_id),
+              })}
         </div>
         <div className="text-grey-50 flex">
-          {!fulfillment.shipped_at ? "Not shipped" : "Tracking"}
+          {!fulfillment.shipped_at ? t("Not shipped") : t("Tracking")}
           {hasLinks &&
             fulfillment.tracking_links.map((tl, j) => (
               <TrackingLink key={j} trackingLink={tl} />
@@ -115,7 +126,7 @@ export const FormattedFulfillment = ({
         {!fulfillment.canceled_at && fulfillment.location_id && (
           <div className="flex flex-col">
             <div className="text-grey-50 font-semibold">
-              {fulfillment.shipped_at ? "Shipped" : "Shipping"} from{" "}
+              {fulfillment.shipped_at ? t("Shipped from") : t("Shipping from")}{" "}
             </div>
             <div className="flex items-center pt-2">
               <IconBadge className="mr-2">
@@ -131,12 +142,12 @@ export const FormattedFulfillment = ({
           <Actionables
             actions={[
               {
-                label: "Mark Shipped",
+                label: t("Mark Shipped"),
                 icon: <PackageIcon size={"20"} />,
                 onClick: () => setFullfilmentToShip(fulfillment),
               },
               {
-                label: "Cancel Fulfillment",
+                label: t("Cancel Fulfillment"),
                 icon: <CancelIcon size={"20"} />,
                 onClick: () => handleCancelFulfillment(),
               },

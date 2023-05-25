@@ -2,6 +2,7 @@ import { ClaimReason, Order, StockLocationDTO } from "@medusajs/medusa"
 import { useAdminStockLocations, useAdminCreateClaim } from "medusa-react"
 import { useEffect } from "react"
 import { Controller, useForm, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Spinner from "../../../../components/atoms/spinner"
 import Button from "../../../../components/fundamentals/button"
 import Modal from "../../../../components/molecules/modal"
@@ -56,6 +57,7 @@ type Props = {
 const RegisterClaimMenu = ({ order, onClose }: Props) => {
   const context = useLayeredModal()
   const { mutate, isLoading } = useAdminCreateClaim(order.id)
+  const { t } = useTranslation()
 
   const { isFeatureEnabled } = useFeatureFlag()
   const isLocationFulfillmentEnabled =
@@ -107,8 +109,8 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
 
     if (isDirty) {
       shouldClose = await dialog({
-        heading: "Are you sure you want to close?",
-        text: "You have unsaved changes, are you sure you want to close?",
+        heading: t("Are you sure you want to close?"),
+        text: t("You have unsaved changes, are you sure you want to close?"),
       })
     }
 
@@ -157,7 +159,7 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
           `return_items.items.${index}.return_reason_details`,
           {
             type: "manual",
-            message: "Please select a reason",
+            message: t("Please select a reason"),
           },
           { shouldFocus: true }
         )
@@ -171,7 +173,7 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
         `replacement_shipping.option`,
         {
           type: "manual",
-          message: "A shipping method for replacement items is required",
+          message: t("A shipping method for replacement items is required"),
         },
         { shouldFocus: true }
       )
@@ -223,14 +225,16 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
       {
         onSuccess: () => {
           notification(
-            "Successfully created claim",
-            `A claim for order #${order.display_id} was successfully created`,
+            t("Successfully created claim"),
+            t("A claim for order #{display_id} was successfully created", {
+              display_id: order.display_id,
+            }),
             "success"
           )
           handleClose()
         },
         onError: (err) => {
-          notification("Error creating claim", getErrorMessage(err), "error")
+          notification(t("Error creating claim"), getErrorMessage(err), "error")
         },
       }
     )
@@ -255,7 +259,7 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
     >
       <Modal.Body>
         <Modal.Header handleClose={onCancel}>
-          <h1 className="inter-xlarge-semibold">Create Claim</h1>
+          <h1 className="inter-xlarge-semibold">{t("Create Claim")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit} data-testid="register-claim-form">
           <Modal.Content>
@@ -274,9 +278,11 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
 
               {isLocationFulfillmentEnabled && (
                 <div className="mb-8">
-                  <h3 className="inter-base-semibold ">Location</h3>
+                  <h3 className="inter-base-semibold ">{t("Location")}</h3>
                   <p className="inter-base-regular text-grey-50">
-                    Choose which location you want to return the items to.
+                    {t(
+                      "Choose which location you want to return the items to."
+                    )}
                   </p>
                   {isLoadingLocations ? (
                     <Spinner />
@@ -288,7 +294,7 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
                         return (
                           <Select
                             className="mt-2"
-                            placeholder="Select Location to Return to"
+                            placeholder={t("Select Location to Return to")}
                             value={value}
                             isMulti={false}
                             onChange={onChange}
@@ -340,14 +346,14 @@ const RegisterClaimMenu = ({ order, onClose }: Props) => {
                   type="button"
                   onClick={onCancel}
                 >
-                  Cancel
+                  {t("Cancel")}
                 </Button>
                 <Button
                   variant="primary"
                   size="small"
                   disabled={!isDirty || isLoading || watchedItems?.length < 1}
                 >
-                  Submit and close
+                  {t("Submit and close")}
                 </Button>
               </div>
             </div>

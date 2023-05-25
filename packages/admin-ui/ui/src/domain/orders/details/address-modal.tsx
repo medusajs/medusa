@@ -7,6 +7,7 @@ import {
 import { MutateOptions } from "@tanstack/react-query"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import AddressContactForm, {
   AddressContactFormType,
 } from "../../../components/forms/general/address-contact-form"
@@ -67,6 +68,7 @@ const AddressModal = ({
   type,
   submitting = false,
 }: AddressModalProps) => {
+  const { t } = useTranslation()
   const form = useForm<AddressModalFormType>({
     defaultValues: getDefaultValues(address),
   })
@@ -114,10 +116,10 @@ const AddressModal = ({
 
     return onSave(updateObj, {
       onSuccess: () => {
-        notification("Success", "Successfully updated address", "success")
+        notification(t("Success"), t("Successfully updated address"), "success")
         onClose()
       },
-      onError: (err) => notification("Error", getErrorMessage(err), "error"),
+      onError: (err) => notification(t("Error"), getErrorMessage(err), "error"),
     })
   })
 
@@ -127,24 +129,26 @@ const AddressModal = ({
         <Modal.Body>
           <Modal.Header handleClose={onClose}>
             <span className="inter-xlarge-semibold">
-              {type === AddressType.BILLING ? "Billing" : "Shipping"} Address
+              {type === AddressType.BILLING
+                ? t("Billing Address")
+                : t("Shipping Address")}
             </span>
           </Modal.Header>
           <Modal.Content>
             <div className="gap-y-xlarge flex flex-col">
               <div>
-                <h2 className="inter-base-semibold mb-base">Contact</h2>
+                <h2 className="inter-base-semibold mb-base">{t("Contact")}</h2>
                 <AddressContactForm form={nestedForm(form, "contact")} />
               </div>
               <div>
-                <h2 className="inter-base-semibold mb-base">Location</h2>
+                <h2 className="inter-base-semibold mb-base">{t("Location")}</h2>
                 <AddressLocationForm
                   form={nestedForm(form, "location")}
                   countryOptions={countryOptions}
                 />
               </div>
               <div>
-                <h2 className="inter-base-semibold mb-base">Metadata</h2>
+                <h2 className="inter-base-semibold mb-base">{t("Metadata")}</h2>
                 <MetadataForm form={nestedForm(form, "metadata")} />
               </div>
             </div>
@@ -157,7 +161,7 @@ const AddressModal = ({
                 onClick={onClose}
                 type="button"
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 size="small"
@@ -166,7 +170,7 @@ const AddressModal = ({
                 loading={submitting}
                 disabled={submitting || !isDirty}
               >
-                Save and close
+                {t("Save and close")}
               </Button>
             </div>
           </Modal.Footer>
