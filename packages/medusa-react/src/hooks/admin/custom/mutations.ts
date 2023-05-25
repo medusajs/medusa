@@ -4,6 +4,7 @@ import {
   QueryKey,
   useMutation,
   UseMutationOptions,
+  UseMutationResult,
   useQueryClient,
 } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -101,7 +102,7 @@ export const useAdminCreateCustomEntity = <
   queryKey: QueryKey,
   options?: UseMutationOptions<Response<TResponse>, Error, TPayload>,
   relatedDomains?: RelatedDomains
-) => {
+): UseMutationResult<Response<TResponse>, Error, TPayload> => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
@@ -121,7 +122,7 @@ export const useAdminUpdateCustomEntity = <
   queryKey: QueryKey,
   options?: UseMutationOptions<Response<TResponse>, Error, TPayload>,
   relatedDomains?: RelatedDomains
-) => {
+): UseMutationResult<Response<TResponse>, Error, TPayload> => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
@@ -138,7 +139,7 @@ export const useAdminDeleteCustomEntity = <TResponse>(
   queryKey: QueryKey,
   options?: UseMutationOptions<Response<TResponse>, Error, void>,
   relatedDomains?: RelatedDomains
-) => {
+): UseMutationResult<Response<TResponse>, Error, void> => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
