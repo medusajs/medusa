@@ -2,8 +2,16 @@
   "name": "@medusajs/admin-shared",
   "version": "0.0.1",
   "author": "Kasper Kristensen <kasper@medusajs.com>",
-  "main": "dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -14,11 +22,17 @@
     "url": "https:www.github.com/medusajs/medusa/issues"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsup"
+  },
+  "peerDependencies": {
+    "react": ">=18.2.0"
   },
   "devDependencies": {
+    "@swc/core": "1.3.60",
+    "@types/react": "18.2.7",
     "react": "18.2.0",
     "react-router-dom": "6.8.0",
+    "tsup": "6.7.0",
     "typescript": "5.0.4"
   },
   "packageManager": "yarn@3.2.1"

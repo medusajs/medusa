@@ -4,6 +4,7 @@
     "declarationMap": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "jsx": "react-jsx",
     "module": "CommonJS",
     "moduleResolution": "node",
     "noEmit": false,
