@@ -21,10 +21,28 @@ export function loadDatabaseConfig(
     | ProductServiceInitializeOptions
     | ProductServiceInitializeCustomDataLayerOptions
 ): ProductServiceInitializeOptions["database"] {
+  const defaultDriverOptions = process.env.NODE_ENV?.match(/prod/i)
+    ? {
+        connection: {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        },
+      }
+    : process.env.NODE_ENV?.match(/dev/i)
+    ? {
+        connection: {
+          ssl: false,
+        },
+      }
+    : {}
+
   const database: ProductServiceInitializeOptions["database"] = {
     clientUrl: getEnv("POSTGRES_URL"),
-    schema: getEnv("POSTGRES_SCHEMA"),
-    driverOptions: JSON.parse(getEnv("POSTGRES_DRIVER_OPTIONS") || "{}"),
+    schema: getEnv("POSTGRES_SCHEMA") ?? "public",
+    driverOptions: JSON.parse(
+      getEnv("POSTGRES_DRIVER_OPTIONS") || JSON.stringify(defaultDriverOptions)
+    ),
   }
 
   if (isProductServiceInitializeOptions(options)) {
