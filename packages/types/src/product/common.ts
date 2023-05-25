@@ -1,4 +1,5 @@
-import { BaseFilterable, OperatorMap } from "../dal"
+import { BaseFilterable } from "../dal"
+import { OperatorMap } from "../dal/utils"
 
 export enum ProductStatus {
   DRAFT = "draft",
