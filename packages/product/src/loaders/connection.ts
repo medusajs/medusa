@@ -17,6 +17,7 @@ import {
   ProductServiceInitializeCustomDataLayerOptions,
   ProductServiceInitializeOptions,
 } from "../types"
+import { loadDatabaseConfig } from "../utils/load-database-config"
 
 export default async (
   {
@@ -38,7 +39,7 @@ export default async (
   const customManager = (
     options as ProductServiceInitializeCustomDataLayerOptions
   )?.manager
-  const dbData = (options as ProductServiceInitializeOptions)?.database
+  const dbData = loadDatabaseConfig(options)
 
   if (!customManager) {
     await loadDefault({ database: dbData, container })
