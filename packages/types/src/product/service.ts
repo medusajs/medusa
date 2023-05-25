@@ -31,13 +31,13 @@ export interface IProductService<
 
   listTags(
     filter: FilterableProductTagProps,
-    config?: FindConfig<ProductVariantDTO>,
+    config?: FindConfig<ProductTagDTO>,
     context?: SharedContext
   ): Promise<ProductTagDTO[]>
 
   listVariants(
     filter: FilterableProductVariantProps,
-    config?: FindConfig<ProductTagDTO>,
+    config?: FindConfig<ProductVariantDTO>,
     context?: SharedContext
   ): Promise<ProductVariantDTO[]>
 
