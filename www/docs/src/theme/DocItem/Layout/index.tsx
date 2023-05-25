@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React from "react"
 import clsx from "clsx"
 import { useWindowSize } from "@docusaurus/theme-common"
 import { useDoc } from "@docusaurus/theme-common/internal"
@@ -12,7 +12,7 @@ import DocItemContent from "@theme/DocItem/Content"
 import DocBreadcrumbs from "@theme/DocBreadcrumbs"
 import type { Props } from "@theme/DocItem/Layout"
 import Footer from "@theme/Footer"
-import { SidebarContext } from "@site/src/context/sidebar"
+import { useSidebar } from "@site/src/providers/Sidebar"
 
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
@@ -40,7 +40,7 @@ function useDocTOC() {
 
 export default function DocItemLayout({ children }: Props): JSX.Element {
   const docTOC = useDocTOC()
-  const sidebarContext = useContext(SidebarContext)
+  const sidebarContext = useSidebar()
   return (
     <div className="row tw-m-0">
       <div
