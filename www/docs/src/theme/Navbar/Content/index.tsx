@@ -1,4 +1,4 @@
-import React, { useContext, type ReactNode } from "react"
+import React, { type ReactNode } from "react"
 import { useThemeConfig } from "@docusaurus/theme-common"
 import {
   splitNavbarItems,
@@ -13,7 +13,7 @@ import Tooltip from "@site/src/components/Tooltip"
 import { ThemeConfig } from "@medusajs/docs"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import clsx from "clsx"
-import { SidebarContext } from "@site/src/context/sidebar"
+import { useSidebar } from "@site/src/providers/Sidebar"
 
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -70,7 +70,7 @@ export default function NavbarContent(): JSX.Element {
       sidebar: { hideable },
     },
   } = useThemeConfig() as ThemeConfig
-  const sidebarContext = useContext(SidebarContext)
+  const sidebarContext = useSidebar()
   const isBrowser = useIsBrowser()
 
   const isApple = isBrowser

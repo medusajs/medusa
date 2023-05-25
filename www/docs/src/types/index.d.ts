@@ -119,10 +119,10 @@ declare module "@medusajs/docs" {
   export declare type NavbarActionButton = NavbarActionBase & {
     type: "button"
     events?: {
-      onClick?: (e: any) => any
-      onMouseEnter?: (e: any) => any
-      onMouseLeave?: (e: any) => any
-      onMouseOver?: (e: any) => any
+      onClick?: (e: MouseEvent) => void
+      onMouseEnter?: (e: MouseEvent) => void
+      onMouseLeave?: (e: MouseEvent) => void
+      onMouseOver?: (e: MouseEvent) => void
     }
   }
 
