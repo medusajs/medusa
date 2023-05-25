@@ -5,6 +5,14 @@
   "author": "Kasper Kristensen <kasper@medusajs.com>",
   "bin": "./bin/index.js",
   "main": "./dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https:www.github.com/medusajs/medusa.git",
+    "directory": "packages/admin-sdk"
+  },
+  "bugs": {
+    "url": "https:www.github.com/medusajs/medusa/issues"
+  },
   "scripts": {
     "build": "tsc"
   },
