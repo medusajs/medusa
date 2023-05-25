@@ -4,6 +4,7 @@ import {
   useAdminDeleteDiscountConditionResourceBatch,
 } from "medusa-react"
 import { createContext, ReactNode, useContext } from "react"
+import { useTranslation } from "react-i18next"
 import { LayeredModalContext } from "../../../../../components/molecules/modal/layered-modal"
 import useNotification from "../../../../../hooks/use-notification"
 
@@ -33,6 +34,7 @@ export const EditConditionProvider = ({
   onClose,
   children,
 }: ConditionsProviderProps) => {
+  const { t } = useTranslation()
   const notification = useNotification()
 
   const { pop, reset } = useContext(LayeredModalContext)
@@ -54,14 +56,14 @@ export const EditConditionProvider = ({
       {
         onSuccess: () => {
           notification(
-            "Success",
-            "The resources were successfully added",
+            t("Success"),
+            t("The resources were successfully added"),
             "success"
           )
           onSuccessCallback?.()
         },
         onError: () =>
-          notification("Error", "Failed to add resources", "error"),
+          notification(t("Error"), t("Failed to add resources"), "error"),
       }
     )
   }
@@ -72,13 +74,13 @@ export const EditConditionProvider = ({
       {
         onSuccess: () => {
           notification(
-            "Success",
-            "The resources were successfully removed",
+            t("Success"),
+            t("The resources were successfully removed"),
             "success"
           )
         },
         onError: () =>
-          notification("Error", "Failed to remove resources", "error"),
+          notification(t("Error"), t("Failed to remove resources"), "error"),
       }
     )
   }
@@ -115,7 +117,7 @@ export const useEditConditionContext = () => {
   const context = useContext(EditConditionContext)
   if (context === null) {
     throw new Error(
-      "useEditConditionContext must be used within an EditConditionProvider"
+      t("useEditConditionContext must be used within an EditConditionProvider")
     )
   }
   return context

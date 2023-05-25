@@ -2,6 +2,7 @@ import { Discount } from "@medusajs/medusa"
 import { useAdminUpdateDiscount } from "medusa-react"
 import React, { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import DiscountConfigurationForm, {
   DiscountConfigurationFormType,
 } from "../../../../components/forms/discount/discount-configuration-form"
@@ -26,6 +27,8 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
   onClose,
   open,
 }) => {
+  const { t } = useTranslation()
+
   const { mutate, isLoading } = useAdminUpdateDiscount(discount.id)
   const notification = useNotification()
 
@@ -48,12 +51,16 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
       },
       {
         onSuccess: ({ discount }) => {
-          notification("Success", "Discount updated successfully", "success")
+          notification(
+            t("Success"),
+            t("Discount updated successfully"),
+            "success"
+          )
           reset(getDefaultValues(discount))
           onClose()
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification(t("Error"), getErrorMessage(error), "error")
         },
       }
     )
@@ -69,7 +76,7 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
     <Modal open={open} handleClose={onClose} isLargeModal>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h1 className="inter-xlarge-semibold">Edit configurations</h1>
+          <h1 className="inter-xlarge-semibold">{t("Edit configurations")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
@@ -84,7 +91,7 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
                 type="button"
                 onClick={onClose}
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -94,7 +101,7 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
                 loading={isLoading}
                 disabled={isLoading}
               >
-                Save
+                {t("Save")}
               </Button>
             </div>
           </Modal.Footer>

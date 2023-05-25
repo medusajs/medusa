@@ -1,4 +1,5 @@
 import { ReactNode } from "react"
+import { useTranslation } from "react-i18next"
 
 import { ActionType } from "../../../../components/molecules/actionables"
 import ClockIcon from "../../../../components/fundamentals/icons/clock-icon"
@@ -32,23 +33,24 @@ const CommonDescription = ({ text }) => (
 )
 
 const useDiscountConfigurations = (discount: Discount) => {
+  const { t } = useTranslation()
   const updateDiscount = useAdminUpdateDiscount(discount.id)
   const notification = useNotification()
 
   const conditions: displaySetting[] = []
 
   conditions.push({
-    title: "Start date",
+    title: t("Start date"),
     description: <DisplaySettingsDateDescription date={discount.starts_at} />,
   })
 
   if (discount.ends_at) {
     conditions.push({
-      title: "End date",
+      title: t("End date"),
       description: <DisplaySettingsDateDescription date={discount.ends_at} />,
       actions: [
         {
-          label: "Delete configuration",
+          label: t("Delete configuration"),
           icon: <TrashIcon size={20} />,
           variant: "danger",
           onClick: async () =>
@@ -57,13 +59,13 @@ const useDiscountConfigurations = (discount: Discount) => {
               {
                 onSuccess: () => {
                   notification(
-                    "Success",
-                    "Discount end date removed",
+                    t("Success"),
+                    t("Discount end date removed"),
                     "success"
                   )
                 },
                 onError: (error) => {
-                  notification("Error", getErrorMessage(error), "error")
+                  notification(t("Error"), getErrorMessage(error), "error")
                 },
               }
             ),
@@ -73,13 +75,13 @@ const useDiscountConfigurations = (discount: Discount) => {
   }
   if (discount.usage_limit) {
     conditions.push({
-      title: "Number of redemptions",
+      title: t("Number of redemptions"),
       description: (
         <CommonDescription text={discount.usage_limit.toLocaleString("en")} />
       ),
       actions: [
         {
-          label: "Delete configuration",
+          label: t("Delete configuration"),
           icon: <TrashIcon size={20} />,
           variant: "danger",
           onClick: async () =>
@@ -87,10 +89,14 @@ const useDiscountConfigurations = (discount: Discount) => {
               { usage_limit: null },
               {
                 onSuccess: () => {
-                  notification("Success", "Redemption limit removed", "success")
+                  notification(
+                    t("Success"),
+                    t("Redemption limit removed"),
+                    "success"
+                  )
                 },
                 onError: (error) => {
-                  notification("Error", getErrorMessage(error), "error")
+                  notification(t("Error"), getErrorMessage(error), "error")
                 },
               }
             ),
@@ -110,7 +116,7 @@ const useDiscountConfigurations = (discount: Discount) => {
       ),
       actions: [
         {
-          label: "Delete setting",
+          label: t("Delete setting"),
           icon: <TrashIcon size={20} />,
           variant: "danger",
           onClick: async () =>
@@ -119,13 +125,13 @@ const useDiscountConfigurations = (discount: Discount) => {
               {
                 onSuccess: () => {
                   notification(
-                    "Success",
-                    "Discount duration removed",
+                    t("Success"),
+                    t("Discount duration removed"),
                     "success"
                   )
                 },
                 onError: (error) => {
-                  notification("Error", getErrorMessage(error), "error")
+                  notification(t("Error"), getErrorMessage(error), "error")
                 },
               }
             ),
