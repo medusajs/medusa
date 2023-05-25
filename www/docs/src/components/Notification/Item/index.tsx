@@ -4,7 +4,7 @@ import IconExclamationCircleSolid from "@site/src/theme/Icon/ExclamationCircleSo
 import IconInformationCircleSolid from "@site/src/theme/Icon/InformationCircleSolid"
 import IconXCircleSolid from "@site/src/theme/Icon/XCircleSolid"
 import clsx from "clsx"
-import React, { Ref, forwardRef } from "react"
+import React from "react"
 
 export type NotificationItemProps = {
   type?: "info" | "error" | "warning" | "success" | "numbered"
@@ -15,8 +15,8 @@ export type NotificationItemProps = {
   isClosable?: boolean
   placement?: "top" | "bottom"
   show?: boolean
-  setShow?: (value: boolean) => any
-  onClose?: () => any
+  setShow?: (value: boolean) => void
+  onClose?: () => void
   stepNumber?: number
 } & React.HTMLAttributes<HTMLDivElement>
 
@@ -37,8 +37,6 @@ const Notification = ({
     setShow?.(false)
     onClose?.()
   }
-
-  console.log("show-notif", show)
 
   return (
     <div

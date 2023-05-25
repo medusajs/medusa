@@ -7,7 +7,7 @@ import React, { useRef, useState } from "react"
 type RatingProps = {
   event?: string
   className?: string
-  onRating?: () => any
+  onRating?: () => void
 } & React.HTMLAttributes<HTMLDivElement>
 
 const Rating: React.FC<RatingProps> = ({
