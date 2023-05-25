@@ -32,11 +32,13 @@ const Rating: React.FC<RatingProps> = ({
     }
     if (isBrowser) {
       if (window.analytics) {
-        window.analytics
-          .track(event, {
+        window.analytics.track(
+          event,
+          {
             rating: selectedRating,
-          })
-          .finally(() => onRating?.())
+          },
+          () => onRating?.()
+        )
       } else {
         onRating?.()
       }
