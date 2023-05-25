@@ -6,7 +6,6 @@ import React, {
   useState,
 } from "react"
 import { prefersReducedMotion } from "@docusaurus/theme-common"
-import useIsBrowser from "@docusaurus/useIsBrowser"
 
 type SidebarContextType = {
   hasSidebar: boolean
