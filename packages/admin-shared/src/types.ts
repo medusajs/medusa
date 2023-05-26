@@ -11,26 +11,37 @@ export type WidgetConfig = {
   zone: InjectionZone
 }
 
-export type PageConfig = {
-  type: "page"
+export type RouteConfig = {
+  type: "route"
   path: string
   title: string
   icon?: ComponentType
 }
 
-export type ExtensionConfig = WidgetConfig | PageConfig
+export type NestedRouteConfig = {
+  type: "nested-route"
+  path: string
+  parent: string
+}
+
+export type ExtensionConfig = WidgetConfig | RouteConfig | NestedRouteConfig
 
 export type WidgetExtension = {
   Component: React.ComponentType<any>
   config: WidgetConfig
 }
 
-export type PageExtension = {
+export type RouteExtension = {
   Component: React.ComponentType<any>
-  config: PageConfig
+  config: RouteConfig
 }
 
-export type Extension = WidgetExtension | PageExtension
+export type NestedRouteExtension = {
+  Component: React.ComponentType<any>
+  config: NestedRouteConfig
+}
+
+export type Extension = WidgetExtension | RouteExtension | NestedRouteExtension
 
 export type ExtensionsEntry = {
   identifier: string
@@ -48,7 +59,14 @@ export type Route = {
   Page: ComponentType<any>
 }
 
-export type Link = Pick<PageConfig, "path" | "title" | "icon">
+export type NestedRoute = {
+  origin: string
+  parent: string
+  path: string
+  Page: ComponentType<any>
+}
+
+export type Link = Pick<RouteConfig, "path" | "title" | "icon">
 
 type Notify = {
   success: (title: string, message: string) => void

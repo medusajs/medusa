@@ -68,6 +68,7 @@ export const getCustomViteConfig = (config: AdminBuildConfig): InlineConfig => {
         "@tanstack/react-query": resolve(
           require.resolve("@tanstack/react-query")
         ),
+        "react-router-dom": resolve(require.resolve("react-router-dom")),
       },
     },
     clearScreen: false,

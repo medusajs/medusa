@@ -22,6 +22,7 @@ export const getCustomViteDevConfig = ({
         "@tanstack/react-query": resolve(
           require.resolve("@tanstack/react-query")
         ),
+        "react-router-dom": resolve(require.resolve("react-router-dom")),
       },
     },
     server: {

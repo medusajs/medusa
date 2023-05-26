@@ -48,14 +48,13 @@ function isValidType(val: any): val is ExtensionType {
 }
 
 /**
- * Tests if the given properties are valid for a page config
+ * Tests if the given properties are valid for a route config
  * @param properties
  * @returns
  */
-function validatePageConfig(
+function validateRouteConfig(
   properties: (ObjectMethod | ObjectProperty | SpreadElement)[]
 ): boolean {
-  // Find the path property
   const pathProperty = properties.find(
     (p) =>
       p.type === "ObjectProperty" &&
@@ -140,6 +139,52 @@ function validateWidgetConfig(
   return true
 }
 
+function validateNestedRouteConfig(
+  properties: (ObjectMethod | ObjectProperty | SpreadElement)[]
+): boolean {
+  const pathProperty = properties.find(
+    (p) =>
+      p.type === "ObjectProperty" &&
+      p.key.type === "Identifier" &&
+      p.key.name === "path"
+  ) as ObjectProperty | undefined
+
+  if (!pathProperty) {
+    return false
+  }
+
+  const pathValue =
+    pathProperty.value.type === "StringLiteral"
+      ? pathProperty.value.value
+      : null
+
+  if (!pathValue) {
+    return false
+  }
+
+  const parentProperty = properties.find(
+    (p) =>
+      p.type === "ObjectProperty" &&
+      p.key.type === "Identifier" &&
+      p.key.name === "parent"
+  ) as ObjectProperty | undefined
+
+  if (!parentProperty) {
+    return false
+  }
+
+  const parentValue =
+    parentProperty.value.type === "StringLiteral"
+      ? parentProperty.value.value
+      : null
+
+  if (!parentValue) {
+    return false
+  }
+
+  return true
+}
+
 /**
  * Tests if the given properties are valid for a extension config
  * @param properties
@@ -171,8 +216,12 @@ function validateConfig(
     return false
   }
 
-  if (typeValue === "page") {
-    isValidConfig = validatePageConfig(properties)
+  if (typeValue === "route") {
+    isValidConfig = validateRouteConfig(properties)
+  }
+
+  if (typeValue === "nested-route") {
+    isValidConfig = validateNestedRouteConfig(properties)
   }
 
   if (typeValue === "widget") {

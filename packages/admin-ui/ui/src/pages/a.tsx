@@ -2,7 +2,7 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { useHotkeys } from "react-hotkeys-hook"
 import { Route, Routes, useNavigate } from "react-router-dom"
-import PageErrorElement from "../components/molecules/page-error-element"
+import RouteContainer from "../components/organisms/route-container"
 import PrivateRoute from "../components/private-route"
 import SEO from "../components/seo"
 import Layout from "../components/templates/layout"
@@ -37,7 +37,7 @@ const IndexPage = () => {
 }
 
 const DashboardRoutes = () => {
-  const { getRoutes } = usePages()
+  const { getRoutes, getNestedRoutes } = usePages()
 
   const injectedRoutes = getRoutes() || []
 
@@ -67,15 +67,18 @@ const DashboardRoutes = () => {
               element={<PublishableApiKeys />}
             />
             <Route path="inventory/*" element={<Inventory />} />
-            {injectedRoutes.map(({ path, origin, Page }, index) => {
-              const cleanPath = path.replace("/a/", "")
+            {injectedRoutes.map((route, index) => {
+              const nestedRoutes = getNestedRoutes(route.path)
+
+              const topLevelPath = nestedRoutes.length
+                ? `${route.path}/*`
+                : route.path
 
               return (
                 <Route
                   key={index}
-                  path={cleanPath}
-                  element={<Page />}
-                  errorElement={<PageErrorElement origin={origin} />}
+                  path={topLevelPath}
+                  element={<RouteContainer route={route} />}
                 />
               )
             })}

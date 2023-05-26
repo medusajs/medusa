@@ -1,15 +1,16 @@
-import { Link, PageRegistry, Route } from "@medusajs/admin-shared"
+import { Link, Route, RouteRegistry } from "@medusajs/admin-shared"
 import React, { PropsWithChildren, useCallback, useMemo } from "react"
 
-type PageContextType = {
+type RouteContextType = {
   getRoutes: () => Route[]
+  getNestedRoutes: (parent: string) => Route[]
   getLinks: () => Link[]
 }
 
-const PageContext = React.createContext<PageContextType | null>(null)
+const RouteContext = React.createContext<RouteContextType | null>(null)
 
 export const usePages = () => {
-  const context = React.useContext(PageContext)
+  const context = React.useContext(RouteContext)
 
   if (!context) {
     throw new Error("useWidgets must be used within a WidgetContext")
@@ -18,20 +19,32 @@ export const usePages = () => {
   return context
 }
 
-type PageProviderProps = PropsWithChildren<{
-  registry: PageRegistry
+type RouteProviderProps = PropsWithChildren<{
+  registry: RouteRegistry
 }>
 
-export const PageProvider = ({ registry, children }: PageProviderProps) => {
+export const RouteProvider = ({ registry, children }: RouteProviderProps) => {
   const getRoutes = useCallback(() => {
     return registry.getRoutes()
   }, [registry])
+
+  const getNestedRoutes = useCallback(
+    (parent: string) => {
+      return registry.getNestedRoutes(parent)
+    },
+    [registry]
+  )
 
   const getLinks = useCallback(() => {
     return registry.getLinks()
   }, [registry])
 
-  const values = useMemo(() => ({ getRoutes, getLinks }), [getRoutes, getLinks])
+  const values = useMemo(
+    () => ({ getRoutes, getNestedRoutes, getLinks }),
+    [getRoutes, getNestedRoutes, getLinks]
+  )
 
-  return <PageContext.Provider value={values}>{children}</PageContext.Provider>
+  return (
+    <RouteContext.Provider value={values}>{children}</RouteContext.Provider>
+  )
 }

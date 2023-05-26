@@ -1,8 +1,9 @@
 import {
   ExtensionsEntry,
-  isPageExtension,
+  isNestedRouteExtension,
+  isRouteExtension,
   isWidgetExtension,
-  PageRegistry,
+  RouteRegistry,
   WidgetRegistry,
 } from "@medusajs/admin-shared"
 import React from "react"
@@ -15,15 +16,19 @@ type MedusaAppConfig = {
 
 class MedusaApp {
   private widgets: WidgetRegistry = new WidgetRegistry()
-  private pages: PageRegistry = new PageRegistry()
+  private routes: RouteRegistry = new RouteRegistry()
 
   constructor({ entries = [] }: MedusaAppConfig) {
     entries.forEach((entry) => {
       const origin = entry.identifier
 
       entry.extensions.forEach((extension) => {
-        if (isPageExtension(extension)) {
-          this.pages.registerPage(origin, extension)
+        if (isRouteExtension(extension)) {
+          this.routes.registerRoute(origin, extension)
+        }
+
+        if (isNestedRouteExtension(extension)) {
+          this.routes.registerNestedRoute(origin, extension)
         }
 
         if (isWidgetExtension(extension)) {
@@ -36,7 +41,7 @@ class MedusaApp {
   render() {
     return (
       <React.StrictMode>
-        <Providers widgetRegistry={this.widgets} pageRegistry={this.pages}>
+        <Providers widgetRegistry={this.widgets} routeRegistry={this.routes}>
           <App />
         </Providers>
       </React.StrictMode>

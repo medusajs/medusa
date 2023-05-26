@@ -1,17 +1,17 @@
-import { PageRegistry, WidgetRegistry } from "@medusajs/admin-shared"
+import { RouteRegistry, WidgetRegistry } from "@medusajs/admin-shared"
 import { PropsWithChildren } from "react"
 import { HelmetProvider } from "react-helmet-async"
 import { LayeredModalProvider } from "../components/molecules/modal/layered-modal"
 import { SteppedProvider } from "../components/molecules/modal/stepped-modal"
 import { FeatureFlagProvider } from "./feature-flag-provider"
 import { MedusaProvider } from "./medusa-provider"
-import { PageProvider } from "./page-provider"
+import { RouteProvider } from "./page-provider"
 import { PollingProvider } from "./polling-provider"
 import { WidgetProvider } from "./widget-provider"
 
 type Props = PropsWithChildren<{
   widgetRegistry: WidgetRegistry
-  pageRegistry: PageRegistry
+  routeRegistry: RouteRegistry
 }>
 
 /**
@@ -19,7 +19,7 @@ type Props = PropsWithChildren<{
  */
 export const Providers = ({
   widgetRegistry,
-  pageRegistry,
+  routeRegistry,
   children,
 }: Props) => {
   return (
@@ -30,9 +30,9 @@ export const Providers = ({
             <SteppedProvider>
               <LayeredModalProvider>
                 <WidgetProvider registry={widgetRegistry}>
-                  <PageProvider registry={pageRegistry}>
+                  <RouteProvider registry={routeRegistry}>
                     {children}
-                  </PageProvider>
+                  </RouteProvider>
                 </WidgetProvider>
               </LayeredModalProvider>
             </SteppedProvider>
