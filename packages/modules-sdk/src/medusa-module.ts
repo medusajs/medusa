@@ -22,6 +22,7 @@ export class MedusaModule {
     moduleKey: string,
     defaultPath: string,
     declaration?: InternalModuleDeclaration | ExternalModuleDeclaration,
+    moduleDefinition?: any,
     injectedDependencies?: Record<string, any>
   ): Promise<{
     [key: string]: any
@@ -49,8 +50,13 @@ export class MedusaModule {
     }
 
     const moduleResolutions = registerMedusaModule(moduleKey, modDeclaration!)
+    moduleResolutions[moduleKey].moduleDefinition = moduleDefinition
 
-    await moduleLoader({ container, moduleResolutions, logger })
+    await moduleLoader({
+      container,
+      moduleResolutions,
+      logger,
+    })
 
     const services = {}
 

@@ -2,14 +2,15 @@ import {
   Constructor,
   InternalModuleDeclaration,
   Logger,
+  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-  MedusaContainer,
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
 import { createMedusaContainer } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
+
 // import { trackInstallation } from "medusa-telemetry"
 
 export async function loadInternalModule(
@@ -24,7 +25,9 @@ export async function loadInternalModule(
 
   let loadedModule: ModuleExports
   try {
-    loadedModule = (await import(resolution.resolutionPath as string)).default
+    loadedModule =
+      resolution.moduleDefinition ??
+      (await import(resolution.resolutionPath as string)).default
   } catch (error) {
     if (
       resolution.definition.isRequired &&

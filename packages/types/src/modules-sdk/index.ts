@@ -1,5 +1,6 @@
 import { Logger as _Logger } from "winston"
 import { MedusaContainer } from "../common/medusa-container"
+
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
 
@@ -52,6 +53,7 @@ export type ModuleResolution = {
   options?: Record<string, unknown>
   dependencies?: string[]
   moduleDeclaration?: InternalModuleDeclaration | ExternalModuleDeclaration
+  moduleDefinition?: any
 }
 
 export type ModuleDefinition = {

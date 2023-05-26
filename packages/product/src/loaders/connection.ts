@@ -1,5 +1,4 @@
 import { asValue } from "awilix"
-import fs from "fs"
 
 import {
   InternalModuleDeclaration,
@@ -12,7 +11,7 @@ import { MedusaError } from "@medusajs/utils"
 import { EntitySchema } from "@mikro-orm/core"
 import { MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql"
 
-import * as ProductModels from "../models"
+import * as ProductModels from "@models"
 import {
   ProductServiceInitializeCustomDataLayerOptions,
   ProductServiceInitializeOptions,
@@ -50,30 +49,6 @@ export default async (
   }
 }
 
-async function getEntities(): Promise<any[]> {
-  /*if (process.env.WEBPACK) {
-    const modules = require.context("../models", true, /\.ts$/)
-
-    return modules
-      .keys()
-      .map((r) => modules(r))
-      .flatMap((mod) => Object.keys(mod).map((className) => mod[className]))
-  }*/
-
-  const ignoreFiles = ["index.js", "index.ts", "index.d.ts", "index.js.map"]
-
-  const promises = fs
-    .readdirSync(__dirname + "/../models")
-    .map((file) => !ignoreFiles.includes(file) && import(`../models/${file}`))
-    .filter((v) => v)
-
-  const modules = await Promise.all(promises)
-
-  return modules.flatMap((mod) =>
-    Object.keys(mod).map((className) => mod[className])
-  )
-}
-
 async function loadDefault({ database, container }) {
   if (!database) {
     throw new MedusaError(
@@ -87,7 +62,7 @@ async function loadDefault({ database, container }) {
   const orm = await MikroORM.init<PostgreSqlDriver>({
     // entitiesTs: entities,
     discovery: { disableDynamicFileAccess: true },
-    entities: await getEntities(),
+    entities,
     debug: process.env.NODE_ENV === "development",
     baseDir: process.cwd(),
     clientUrl: database.clientUrl,

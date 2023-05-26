@@ -5,8 +5,8 @@ import {
   ModuleDefinition,
   ModuleResolution,
 } from "@medusajs/types"
-import resolveCwd from "resolve-cwd"
 import MODULE_DEFINITIONS from "../definitions"
+import resolveCwd from "resolve-cwd"
 
 export const registerModules = (
   modules?: Record<
