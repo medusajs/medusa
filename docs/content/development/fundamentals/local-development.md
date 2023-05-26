@@ -10,7 +10,7 @@ In this document, you’ll learn how to customize Medusa’s core and run tests.
 
 As an open-source platform, Medusa’s core can be completely customized.
 
-Whether you want to implement something differently, introduce a new future as part of Medusa’s core or any of the other packages, or contribute to Medusa, this guide helps you learn how to run Medusa’s integration tests, as well as test your own Medusa core in a local backend.
+Whether you want to implement something differently, introduce a new feature as part of Medusa’s core or any of the other packages, or contribute to Medusa, this guide helps you learn how to run Medusa’s integration tests, as well as test your own Medusa core in a local backend.
 
 ### Medusa Repository Overview
 

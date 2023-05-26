@@ -37,18 +37,14 @@ There are other important attributes discussed in later sections. Check out the 
 Returns can be created in three ways:
 
 1. Created directly, typically by a client or customer.
-2. Created automatically and linked to a swap when a swap is created. You can learn more about the overall swap process in the Swaps documentation. The Mark Return as Received section applies for swaps as well.
-3. Created automatically and linked to a claim when a claim is created. The Mark Return as Received section applies for claims as well.
+2. Created automatically and linked to a swap when a swap is created. You can learn more about the overall swap process in the [Swaps documentation](./swaps.md). The Mark Return as Received section applies for swaps as well.
+3. Created automatically and linked to a claim when a claim is created. You can learn more about the overall claim process in the [Claims documentation] The Mark Return as Received section applies for claims as well.
 
 ### Idempotency Key
 
-An Idempotency Key is a unique key associated with a return. It is generated when the return creation process is started by the customer. The idempotency key is stored in the `Return` entity in the attribute `idempotency_key`.
+An Idempotency Key is a unique key associated with a return. It is generated when the return creation process is started by the customer and can be used to retry the return creation safely if an error occurs. The idempotency key is stored in the `Return` entity in the attribute `idempotency_key`.
 
-That Idempotency Key is then set in the header under the `Idempotency-Key` response header field along with the header field `Access-Control-Expose-Headers` set to `Idempotency-Key`.
-
-The backend wraps essential parts of the return creation process in its own step and stores the current step (known as recovery point) of the process with its associated Idempotency Key.
-
-Then, if the request is interrupted for any reason or an error occurs, the client can retry creating the return using the Idempotency Key, and the flow will continue from the last stored step.
+You can learn more about idempotency keys [here](../../development/idempotency-key/overview.mdx).
 
 ### Return Creation Process Through the Customer
 
@@ -119,7 +115,7 @@ You can access the swap’s ID using the `swap_id` property. You can also access
 
 ### ClaimOrder
 
-The return can be associated with a claim. A claim is represented by the `ClaimOrder` entity.
+The return can be associated with a [claim](./claims.md). A claim is represented by the `ClaimOrder` entity.
 
 You can access the claim’s ID using the `claim_order_id` property. You can also access the claim by expanding the `claim_order` relation and accessing `return.claim_order`.
 
@@ -133,5 +129,7 @@ You can access the shipping method by expanding the `shipping_method` relation a
 
 ## See Also
 
+- [How to manage returns](./admin/manage-returns.mdx)
 - [Orders architecture overview](./orders.md)
 - [Swaps architecture overview](./swaps.md)
+- [Claims architecture overview](./claims.md)

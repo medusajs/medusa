@@ -193,7 +193,7 @@ npm run build
 Then, run your backend with the following command:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 If you try accessing the endpoints you added the middleware to, you should see your implementation working as expected.

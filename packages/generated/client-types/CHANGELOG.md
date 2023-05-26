@@ -1,5 +1,17 @@
 # @medusajs/client-types
 
+## 0.2.2
+
+### Patch Changes
+
+- [#3924](https://github.com/medusajs/medusa/pull/3924) [`cfcd2d54f`](https://github.com/medusajs/medusa/commit/cfcd2d54fd281fd98de881fc6dfbcc6b1b47c855) Thanks [@pevey](https://github.com/pevey)! - Add separator after tmpdir base
+
+## 0.2.1
+
+### Patch Changes
+
+- [#3971](https://github.com/medusajs/medusa/pull/3971) [`7fd22ecb4`](https://github.com/medusajs/medusa/commit/7fd22ecb4d5190e92c6750a9fbf2d8534bb9f4ab) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Feat(client-types, inventory, medusa, types): add `title`, `thumbnail` and `description to inventory item and `description` to reservation item.
+
 ## 0.2.0
 
 ### Minor Changes

@@ -1,11 +1,11 @@
+import { simpleSalesChannelFactory } from "../../../factories"
+
 const path = require("path")
 const setupServer = require("../../../../helpers/setup-server")
 const { useApi } = require("../../../../helpers/use-api")
 const { initDb, useDb } = require("../../../../helpers/use-db")
 
-const {
-  simpleProductCategoryFactory,
-} = require("../../../factories")
+const { simpleProductCategoryFactory } = require("../../../factories")
 
 const productSeeder = require("../../../helpers/store-product-seeder")
 const adminSeeder = require("../../../helpers/admin-seeder")
@@ -26,7 +26,7 @@ describe("/store/products", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
-      env: { MEDUSA_FF_PRODUCT_CATEGORIES: true }
+      env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
     })
   })
 
@@ -51,9 +51,15 @@ describe("/store/products", () => {
     const internalCategoryWithProductId = "inactive-category-with-product-id"
 
     beforeEach(async () => {
-      const manager = dbConnection.manager
+      const defaultSalesChannel = await simpleSalesChannelFactory(
+        dbConnection,
+        {
+          id: "sales-channel",
+          is_default: true,
+        }
+      )
 
-      await productSeeder(dbConnection)
+      await productSeeder(dbConnection, defaultSalesChannel)
       await adminSeeder(dbConnection)
 
       categoryWithProduct = await simpleProductCategoryFactory(dbConnection, {
@@ -76,25 +82,31 @@ describe("/store/products", () => {
         }
       )
 
-      inactiveCategoryWithProduct = await simpleProductCategoryFactory(dbConnection, {
-        id: inactiveCategoryWithProductId,
-        name: "inactive category with Product",
-        products: [{ id: testProductFilteringId2 }],
-        parent_category: nestedCategoryWithProduct,
-        is_active: false,
-        is_internal: false,
-        rank: 0,
-      })
+      inactiveCategoryWithProduct = await simpleProductCategoryFactory(
+        dbConnection,
+        {
+          id: inactiveCategoryWithProductId,
+          name: "inactive category with Product",
+          products: [{ id: testProductFilteringId2 }],
+          parent_category: nestedCategoryWithProduct,
+          is_active: false,
+          is_internal: false,
+          rank: 0,
+        }
+      )
 
-      internalCategoryWithProduct = await simpleProductCategoryFactory(dbConnection, {
-        id: inactiveCategoryWithProductId,
-        name: "inactive category with Product",
-        products: [{ id: testProductFilteringId2 }],
-        parent_category: nestedCategoryWithProduct,
-        is_active: true,
-        is_internal: true,
-        rank: 1,
-      })
+      internalCategoryWithProduct = await simpleProductCategoryFactory(
+        dbConnection,
+        {
+          id: internalCategoryWithProductId,
+          name: "inactive category with Product",
+          products: [{ id: testProductFilteringId2 }],
+          parent_category: nestedCategoryWithProduct,
+          is_active: true,
+          is_internal: true,
+          rank: 1,
+        }
+      )
 
       nested2CategoryWithProduct = await simpleProductCategoryFactory(
         dbConnection,
@@ -202,6 +214,51 @@ describe("/store/products", () => {
           }),
           expect.objectContaining({
             id: testProductId1,
+          }),
+        ])
+      )
+    })
+
+    it("returns only active and public products with include_category_children when categories are expanded", async () => {
+      const api = useApi()
+
+      const params = `id[]=${testProductFilteringId2}&expand=categories`
+      let response = await api.get(`/store/products?${params}`)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(1)
+
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: testProductFilteringId2,
+            categories: [],
+          }),
+        ])
+      )
+
+      const category = await simpleProductCategoryFactory(dbConnection, {
+        id: categoryWithProductId,
+        name: "category with Product 2",
+        products: [{ id: response.data.products[0].id }],
+        is_active: true,
+        is_internal: false,
+      })
+
+      response = await api.get(`/store/products?${params}`)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(1)
+
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: testProductFilteringId2,
+            categories: expect.arrayContaining([
+              expect.objectContaining({
+                id: category.id,
+              }),
+            ]),
           }),
         ])
       )

@@ -1,8 +1,9 @@
-import { IInventoryService } from "@medusajs/types"
-import { isDefined } from "@medusajs/utils"
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
+
 import { EntityManager } from "typeorm"
+import { IInventoryService } from "@medusajs/types"
 import { LineItemService } from "../../../../services"
+import { isDefined } from "@medusajs/utils"
 import { validateUpdateReservationQuantity } from "./utils/validate-reservation-quantity"
 
 /**
@@ -119,6 +120,10 @@ export class AdminPostReservationsReservationReq {
   @IsString()
   @IsOptional()
   location_id?: string
+
+  @IsString()
+  @IsOptional()
+  description?: string
 
   @IsObject()
   @IsOptional()

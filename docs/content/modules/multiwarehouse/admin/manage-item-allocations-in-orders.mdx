@@ -78,7 +78,7 @@ Item allocations are created automatically for items that are associated with pr
 
 You can create an item allocation by sending a request to the [Create a Reservation endpoint](/api/admin#tag/Reservations/operation/PostReservations):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -174,7 +174,7 @@ When listing item allocations, by default, you’ll be retrieving all item alloc
 
 You can retrieve the item allocations of a line item in an order using the [List Reservations endpoint](/api/admin#tag/Reservations/operation/GetReservations):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -251,7 +251,7 @@ The request returns the reservations along with [pagination fields](/api/admin#s
 
 You can retrieve a single item allocation by its ID using the [Get a Reservation endpoint](/api/admin#tag/Reservations/operation/GetReservationsReservation):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -317,7 +317,7 @@ The request returns the reservation as an object.
 
 You can update an item allocation to change the location to allocate from or the quantity to allocate by sending a request to the [Update Reservation endpoint](/api/admin#tag/Reservations/operation/PostReservationsReservation):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -404,7 +404,7 @@ Deleting an item allocation means that the quantity that was previously reserved
 
 You can delete an item allocation by sending a request to the [Delete Reservation endpoint](/api/admin#tag/Reservations/operation/DeleteReservationsReservation):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -475,7 +475,7 @@ The request returns the following fields:
 
 When you create a fulfillment of an order, you can specify the location to fulfill the item from by passing the `location_id` parameter:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -581,7 +581,7 @@ You can learn more about this endpoint’s parameters and response in the [API r
 
 When requesting a return, you can specify the location to return the item to by passing the `location_id` parameter:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
