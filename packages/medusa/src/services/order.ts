@@ -1,5 +1,10 @@
 import { IInventoryService } from "@medusajs/types"
-import { isDefined, MedusaError } from "@medusajs/utils"
+import {
+  buildRelations,
+  buildSelects,
+  isDefined,
+  MedusaError,
+} from "@medusajs/utils"
 import {
   EntityManager,
   FindManyOptions,
@@ -55,13 +60,7 @@ import {
 } from "../types/fulfillment"
 import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
-import {
-  buildQuery,
-  buildRelations,
-  buildSelects,
-  isString,
-  setMetadata,
-} from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
 
