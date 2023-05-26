@@ -1,12 +1,13 @@
-import { Brackets, EntityManager, FindOptionsWhere } from "typeorm"
 import {
   ExtendedFindConfig,
   FilterableInventoryItemProps,
   FindConfig,
 } from "@medusajs/types"
-import { buildQuery, objectToStringPath } from "@medusajs/utils"
+import { objectToStringPath } from "@medusajs/utils"
+import { EntityManager, FindOptionsWhere, Brackets } from "typeorm"
 
 import { InventoryItem } from "../models"
+import { buildQuery } from "./build-query"
 
 export function getListQuery(
   manager: EntityManager,
