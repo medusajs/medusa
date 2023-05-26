@@ -15,7 +15,7 @@ import RawJSON from "../../../components/organisms/raw-json"
 import Section from "../../../components/organisms/section"
 import WidgetContainer from "../../../components/organisms/widget-container"
 import CustomerOrdersTable from "../../../components/templates/customer-orders-table"
-import { useWidgets } from "../../../providers/injection-zone-provider"
+import { useWidgets } from "../../../providers/widget-provider"
 import { getErrorStatus } from "../../../utils/get-error-status"
 import EditCustomerModal from "./edit"
 

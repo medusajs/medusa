@@ -1,4 +1,4 @@
-export const extensionTypes = ["widget", "page"] as const
+export const extensionTypes = ["widget", "route", "nested-route"] as const
 
 export const injectionZones = [
   // Order injection zones

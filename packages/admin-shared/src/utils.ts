@@ -3,7 +3,8 @@ import {
   Extension,
   ExtensionType,
   InjectionZone,
-  PageExtension,
+  NestedRouteExtension,
+  RouteExtension,
   WidgetExtension,
 } from "./types"
 
@@ -19,13 +20,20 @@ function isWidgetExtension(extension: Extension): extension is WidgetExtension {
   return extension.config.type === "widget"
 }
 
-function isPageExtension(extension: Extension): extension is PageExtension {
-  return extension.config.type === "page"
+function isRouteExtension(extension: Extension): extension is RouteExtension {
+  return extension.config.type === "route"
+}
+
+function isNestedRouteExtension(
+  extension: Extension
+): extension is NestedRouteExtension {
+  return extension.config.type === "nested-route"
 }
 
 export {
   isValidExtensionType,
   isValidInjectionZone,
   isWidgetExtension,
-  isPageExtension,
+  isRouteExtension,
+  isNestedRouteExtension,
 }

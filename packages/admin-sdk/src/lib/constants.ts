@@ -8,6 +8,7 @@ export const SHARED_DEPENDENCIES = [
   "@tanstack/react-table",
   "@medusajs/medusa-js",
   "react-router-dom",
+  "@remix-run/router",
   "medusa-react",
   "react",
 ]

@@ -1,22 +1,27 @@
-import { PageRegistry, WidgetRegistry } from "@medusajs/admin-shared"
+import { RouteRegistry, WidgetRegistry } from "@medusajs/admin-shared"
 import { PropsWithChildren } from "react"
 import { HelmetProvider } from "react-helmet-async"
 import { LayeredModalProvider } from "../components/molecules/modal/layered-modal"
 import { SteppedProvider } from "../components/molecules/modal/stepped-modal"
 import { FeatureFlagProvider } from "./feature-flag-provider"
-import { WidgetProvider } from "./injection-zone-provider"
 import { MedusaProvider } from "./medusa-provider"
+import { RouteProvider } from "./page-provider"
 import { PollingProvider } from "./polling-provider"
+import { WidgetProvider } from "./widget-provider"
 
 type Props = PropsWithChildren<{
   widgetRegistry: WidgetRegistry
-  pageRegistry: PageRegistry
+  routeRegistry: RouteRegistry
 }>
 
 /**
  * This component wraps all providers into a single component.
  */
-export const Providers = ({ widgetRegistry, children }: Props) => {
+export const Providers = ({
+  widgetRegistry,
+  routeRegistry,
+  children,
+}: Props) => {
   return (
     <HelmetProvider>
       <MedusaProvider>
@@ -25,7 +30,9 @@ export const Providers = ({ widgetRegistry, children }: Props) => {
             <SteppedProvider>
               <LayeredModalProvider>
                 <WidgetProvider registry={widgetRegistry}>
-                  {children}
+                  <RouteProvider registry={routeRegistry}>
+                    {children}
+                  </RouteProvider>
                 </WidgetProvider>
               </LayeredModalProvider>
             </SteppedProvider>
