@@ -25,7 +25,8 @@ const NotificationContainer = () => {
             key={notification.id}
             timeout={200}
             classNames={{
-              exit: "animate__animated animate__fadeOut animate__fastest",
+              enter: "animate__animated animate__slideInRight animate__fastest",
+              exit: "animate__animated animate__slideOutRight animate__fastest",
             }}
           >
             <NotificationItem

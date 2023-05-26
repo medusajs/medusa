@@ -14,7 +14,7 @@ const LearningPathStep: React.FC<LearningPathStepProps> = ({
   return (
     <div>
       {step?.descriptionJSX && (
-        <span className="tw-text-label-small tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark">
+        <span className="tw-text-label-small tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark tw-mb-1 tw-block">
           {step.descriptionJSX}
         </span>
       )}
