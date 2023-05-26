@@ -72,6 +72,7 @@ export default class InventoryItemService {
       selector,
       config
     )
+
     return await queryBuilder.getManyAndCount()
   }
 

@@ -132,6 +132,9 @@ export default (app) => {
 export const defaultAdminInventoryItemFields: (keyof InventoryItemDTO)[] = [
   "id",
   "sku",
+  "title",
+  "description",
+  "thumbnail",
   "origin_country",
   "hs_code",
   "requires_shipping",

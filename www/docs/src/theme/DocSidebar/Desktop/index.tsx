@@ -7,7 +7,7 @@ import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
 import AnnouncementBar from "../../AnnouncementBar/index"
 
-function DocSidebarDesktop({ path, sidebar, isHidden }: Props) {
+function DocSidebarDesktop({ path, sidebar }: Props) {
   const {
     navbar: { hideOnScroll },
   } = useThemeConfig()

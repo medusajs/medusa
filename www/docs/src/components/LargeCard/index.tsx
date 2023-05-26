@@ -3,6 +3,7 @@ import BorderedIcon from "../BorderedIcon"
 import clsx from "clsx"
 import Badge from "../Badge"
 import { IconProps } from "@site/src/theme/Icon/index"
+import Link from "@docusaurus/Link"
 
 type LargeCardProps = {
   Icon: React.FC<IconProps>
@@ -78,13 +79,13 @@ const LargeCard: React.FC<LargeCardProps> = ({
           {children}
         </div>
       </div>
-      <a
+      <Link
         href={href}
         className={clsx(
           "tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-z-[4] tw-rounded",
           isSoon && "group-hover:tw-pointer-events-none"
         )}
-      ></a>
+      ></Link>
     </article>
   )
 }
