@@ -88,7 +88,9 @@ const VariantsTable = ({ variants, actions }: Props) => {
   const { isFeatureEnabled } = useFeatureFlag()
   const hasInventoryService = isFeatureEnabled("inventoryService")
   const columns = useVariantsTableColumns(hasInventoryService)
-  const [showDelete, setShowDelete] = useState(false)
+  const [variantToRemove, setVariantToRemove] = useState<ProductVariant | null>(
+    null
+  )
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
@@ -134,7 +136,7 @@ const VariantsTable = ({ variants, actions }: Props) => {
       },
       {
         label: "Delete Variant",
-        onClick: () => setShowDelete(true),
+        onClick: () => setVariantToRemove(variant),
         icon: <TrashIcon size="20" />,
         variant: "danger",
       },
@@ -179,10 +181,10 @@ const VariantsTable = ({ variants, actions }: Props) => {
               <Table.Cell>
                 <div className="float-right">
                   <Actionables forceDropdown actions={actionables} />
-                  {showDelete && (
+                  {variantToRemove && (
                     <DeletePrompt
-                      onDelete={async () => deleteVariant(row.original.id)}
-                      handleClose={() => setShowDelete(false)}
+                      onDelete={async () => deleteVariant(variantToRemove.id)}
+                      handleClose={() => setVariantToRemove(null)}
                       confirmText="Yes, delete"
                       heading="Delete variant"
                       text={`Are you sure you want to delete this variant? ${
