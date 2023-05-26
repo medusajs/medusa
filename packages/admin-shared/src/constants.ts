@@ -29,4 +29,7 @@ export const injectionZones = [
   "gift_card.details",
   "gift_card.list",
   "custom_gift_card",
+  // Login
+  "login.before",
+  "login.after",
 ] as const
