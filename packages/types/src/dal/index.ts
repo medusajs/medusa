@@ -1,8 +1,9 @@
 import { Dictionary, FilterQuery, Order } from "./utils"
 
+export { FilterQuery } from "./utils"
 export interface BaseFilterable<T> {
   $and?: T
-  $or: T
+  $or?: T
 }
 
 export interface OptionsQuery<T, P extends string = never> {
