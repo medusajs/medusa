@@ -10,12 +10,12 @@ import {
   InjectEntityManager,
   MedusaContext,
   MedusaError,
-  buildQuery,
   isDefined,
 } from "@medusajs/utils"
 import { EntityManager, FindManyOptions } from "typeorm"
 import { InventoryLevelService } from "."
 import { ReservationItem } from "../models"
+import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
