@@ -7,6 +7,7 @@ import {
   useAdminPublishableApiKeySalesChannels,
   useAdminSalesChannels,
 } from "medusa-react"
+import { useTranslation } from "react-i18next"
 
 import Button from "../../../components/fundamentals/button"
 import SideModal from "../../../components/molecules/modal/side-modal"
@@ -30,6 +31,7 @@ function AddScreen(props: {
   isVisible: boolean
 }) {
   const tableRef = useRef()
+  const { t } = useTranslation()
 
   const [selectedSalesChannels, setSelectedChannels] = useState({})
   const notification = useNotification()
@@ -65,12 +67,18 @@ function AddScreen(props: {
       })),
     })
       .then(() => {
-        notification("Success", "Sales channels added to the scope", "success")
+        notification(
+          t("Success"),
+          t("Sales channels added to the scope"),
+          "success"
+        )
       })
       .catch(() => {
         notification(
-          "Error",
-          "Error occurred while adding sales channels to the scope of the key",
+          t("Error"),
+          t(
+            "Error occurred while adding sales channels to the scope of the key"
+          ),
           "success"
         )
       })
@@ -90,7 +98,7 @@ function AddScreen(props: {
           >
             <UTurnIcon size={18} />
           </Button>
-          Add sales channels
+          {t("Add sales channels")}
         </h3>
         <Button
           variant="secondary"
@@ -110,7 +118,7 @@ function AddScreen(props: {
             type="string"
             value={search}
             className="h-[32px]"
-            placeholder="Find channels"
+            placeholder={t("Find channels")}
             prefix={<SearchIcon size={16} />}
             onChange={(ev) => setSearch(ev.target.value)}
           />
@@ -138,7 +146,7 @@ function AddScreen(props: {
 
       <div className="flex justify-end gap-2">
         <Button size="small" variant="ghost" onClick={props.close}>
-          Cancel
+          {t("Cancel")}
         </Button>
         <Button
           size="small"
@@ -146,7 +154,7 @@ function AddScreen(props: {
           onClick={onSave(props.goBack)}
           disabled={!Object.keys(selectedSalesChannels).length}
         >
-          Add and go back
+          {t("Add and go back")}
         </Button>
         <Button
           size="small"
@@ -154,7 +162,7 @@ function AddScreen(props: {
           onClick={onSave(props.close)}
           disabled={!Object.keys(selectedSalesChannels).length}
         >
-          Add and close
+          {t("Add and close")}
         </Button>
       </div>
     </div>
@@ -181,6 +189,7 @@ function EditScreen(props: {
 
   const selectedCount = Object.keys(selectedChannels).length
 
+  const { t } = useTranslation()
   const notification = useNotification()
 
   const [offset, setOffset] = useState(0)
@@ -212,8 +221,8 @@ function EditScreen(props: {
     })
       .then(() => {
         notification(
-          "Success",
-          "Sales channels removed from the scope",
+          t("Success"),
+          t("Sales channels removed from the scope"),
           "success"
         )
         setSelectedChannels({})
@@ -221,8 +230,10 @@ function EditScreen(props: {
       })
       .catch(() => {
         notification(
-          "Error",
-          "Error occurred while removing sales channels from the scope of the key",
+          t("Error"),
+          t(
+            "Error occurred while removing sales channels from the scope of the key"
+          ),
           "success"
         )
       })
@@ -249,7 +260,7 @@ function EditScreen(props: {
 
       <div className="flex items-center justify-between">
         <h3 className="inter-large-semibold flex items-center gap-2 text-xl text-gray-900">
-          Edit sales channels
+          {t("Edit sales channels")}
         </h3>
         <Button
           variant="secondary"
@@ -269,7 +280,7 @@ function EditScreen(props: {
             type="string"
             value={search}
             className="h-[32px]"
-            placeholder="Find channels"
+            placeholder={t("Find channels")}
             prefix={<SearchIcon size={14} />}
             onChange={(ev) => setSearch(ev.target.value)}
           />
@@ -277,7 +288,7 @@ function EditScreen(props: {
           {selectedCount ? (
             <div className="flex h-[32px] items-center justify-between gap-2">
               <span className="text-small text-grey-50 whitespace-nowrap px-2">
-                {selectedCount} selected
+                {t("selectedWithCounts", { count: selectedCount })}
               </span>
               <Button
                 size="small"
@@ -285,7 +296,7 @@ function EditScreen(props: {
                 variant="secondary"
                 onClick={onDeselect}
               >
-                Deselect
+                {t("Deselect")}
               </Button>
               <Button
                 size="small"
@@ -293,7 +304,7 @@ function EditScreen(props: {
                 variant="secondary"
                 onClick={onRemove}
               >
-                Remove
+                {t("Remove")}
               </Button>
             </div>
           ) : (
@@ -303,7 +314,7 @@ function EditScreen(props: {
               variant="secondary"
               onClick={props.goAdd}
             >
-              Add channels
+              {t("Add channels")}
             </Button>
           )}
         </div>
@@ -330,7 +341,7 @@ function EditScreen(props: {
 
       <div className="flex justify-end gap-2">
         <Button size="small" variant="secondary" onClick={close}>
-          Close
+          {t("Close")}
         </Button>
       </div>
     </div>
