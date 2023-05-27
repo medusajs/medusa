@@ -1,7 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table"
 import React, { ChangeEvent, useCallback, useMemo } from "react"
 import { Controller, useWatch } from "react-hook-form"
-const { t } = useTranslation()
+import { useTranslation } from "react-i18next"
 import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
 import Thumbnail from "../../../../components/atoms/thumbnail"
 import IndeterminateCheckbox from "../../../../components/molecules/indeterminate-checkbox"
@@ -12,7 +12,6 @@ import {
   ItemsToReceiveFormType,
   ReceiveReturnObject,
 } from "./items-to-receive-form"
-import { useTranslation } from "react-i18next"
 
 const columnHelper = createColumnHelper<ReceiveReturnObject>()
 
