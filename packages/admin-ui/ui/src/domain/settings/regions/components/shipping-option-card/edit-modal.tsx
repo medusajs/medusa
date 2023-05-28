@@ -2,6 +2,7 @@ import { ShippingOption } from "@medusajs/medusa"
 import { useAdminUpdateShippingOption } from "medusa-react"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import {
   getMetadataFormValues,
   getSubmittableMetadata,
@@ -22,6 +23,7 @@ type Props = {
 }
 
 const EditModal = ({ open, onClose, option }: Props) => {
+  const { t } = useTranslation()
   const form = useForm<ShippingOptionFormType>({
     defaultValues: getDefaultValues(option),
   })
@@ -58,11 +60,11 @@ const EditModal = ({ open, onClose, option }: Props) => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Shipping option updated", "success")
+          notification(t("Success"), t("Shipping option updated"), "success")
           closeAndReset()
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification(t("Error"), getErrorMessage(error), "error")
         },
       }
     )
@@ -72,12 +74,12 @@ const EditModal = ({ open, onClose, option }: Props) => {
     <Modal open={open} handleClose={closeAndReset}>
       <Modal.Body>
         <Modal.Header handleClose={closeAndReset}>
-          <h1 className="inter-xlarge-semibold">Edit Shipping Option</h1>
+          <h1 className="inter-xlarge-semibold">{t("Edit Shipping Option")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div>
-              <p className="inter-base-semibold">Fulfillment Method</p>
+              <p className="inter-base-semibold">{t("Fulfillment Method")}</p>
               <p className="inter-base-regular text-grey-50">
                 {option.data.id as string} via {option.provider_id}
               </p>
@@ -92,7 +94,7 @@ const EditModal = ({ open, onClose, option }: Props) => {
           <Modal.Footer>
             <div className="gap-x-xsmall flex w-full items-center justify-end">
               <Button variant="secondary" size="small" onClick={closeAndReset}>
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -101,7 +103,7 @@ const EditModal = ({ open, onClose, option }: Props) => {
                 loading={isLoading}
                 disabled={isLoading || !isDirty}
               >
-                Save and close
+                {t("Save and close")}
               </Button>
             </div>
           </Modal.Footer>

@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import SettingsCard from "../../components/atoms/settings-card"
 import FeatureToggle from "../../components/fundamentals/feature-toggle"
 import ChannelsIcon from "../../components/fundamentals/icons/channels-icon"
@@ -22,75 +23,78 @@ import Taxes from "./taxes"
 import Users from "./users"
 
 const SettingsIndex = () => {
+  const { t } = useTranslation()
   return (
     <SettingsOverview>
       <SettingsCard
-        heading={"Regions"}
-        description={"Manage the markets you will operate within"}
+        heading={t("Regions")}
+        description={t("Manage the markets you will operate within")}
         icon={<MapPinIcon />}
         to={`/a/settings/regions`}
       />
       <SettingsCard
-        heading={"Currencies"}
-        description={"Manage the markets you will operate within"}
+        heading={t("Currencies")}
+        description={t("Manage the markets you will operate within")}
         icon={<CoinsIcon />}
         to={`/a/settings/currencies`}
       />
       <SettingsCard
-        heading={"Store Details"}
-        description={"Manage your business details"}
+        heading={t("Store Details")}
+        description={t("Manage your business details")}
         icon={<CrosshairIcon />}
         to={`/a/settings/details`}
       />
       <SettingsCard
-        heading={"Shipping"}
-        description={"Manage shipping profiles"}
+        heading={t("Shipping")}
+        description={t("Manage shipping profiles")}
         icon={<TruckIcon />}
         to={`/a/settings/shipping-profiles`}
         disabled={true}
       />
       <SettingsCard
-        heading={"Return Reasons"}
-        description={"Manage Order settings"}
+        heading={t("Return Reasons")}
+        description={t("Manage Order settings")}
         icon={<DollarSignIcon />}
         to={`/a/settings/return-reasons`}
       />
       <SettingsCard
-        heading={"The Team"}
-        description={"Manage users of your Medusa Store"}
+        heading={t("The Team")}
+        description={t("Manage users of your Medusa Store")}
         icon={<UsersIcon />}
         to={`/a/settings/team`}
       />
       <SettingsCard
-        heading={"Personal Information"}
-        description={"Manage your Medusa profile"}
+        heading={t("Personal Information")}
+        description={t("Manage your Medusa profile")}
         icon={<HappyIcon />}
         to={`/a/settings/personal-information`}
       />
       <SettingsCard
         heading={"hello@medusajs.com"}
-        description={"Can’t find the answers you’re looking for?"}
+        description={t("Can’t find the answers you’re looking for?")}
         icon={<MailIcon />}
         externalLink={"mailto: hello@medusajs.com"}
       />
       <SettingsCard
-        heading={"Tax Settings"}
-        description={"Manage taxes across regions and products"}
+        heading={t("Tax Settings")}
+        description={t("Manage taxes across regions and products")}
         icon={<TaxesIcon />}
         to={`/a/settings/taxes`}
       />
       <FeatureToggle featureFlag="sales_channels">
         <SettingsCard
-          heading={"Sales channels"}
-          description={"Control which products are available in which channels"}
+          heading={t("Sales channels")}
+          description={t(
+            "Control which products are available in which channels"
+          )}
           icon={<ChannelsIcon />}
           to={`/a/sales-channels`}
         />
       </FeatureToggle>
       <FeatureToggle featureFlag="publishable_api_keys">
         <SettingsCard
-          heading={"API key management"}
-          description={"Create and manage API keys"}
+          heading={t("API key management")}
+          description={t("Create and manage API keys")}
           icon={<KeyIcon />}
           to={`/a/publishable-api-keys`}
         />
