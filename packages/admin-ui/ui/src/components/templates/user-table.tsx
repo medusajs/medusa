@@ -1,7 +1,7 @@
 import { Invite, User } from "@medusajs/medusa"
 import copy from "copy-to-clipboard"
 import { useAdminStore } from "medusa-react"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import useNotification from "../../hooks/use-notification"
 import Medusa from "../../services/api"
@@ -105,6 +105,16 @@ const UserTable: React.FC<UserTableProps> = ({
     )
   }
 
+  const inviteLink = useMemo(() => {
+    if (store?.invite_link_template) {
+      return store.invite_link_template
+    }
+
+    return `${window.location.origin}${
+      __BASE__ ? `${__BASE__}/` : "/"
+    }invite?token={invite_token}`
+  }, [store])
+
   const getInviteTableRow = (invite: Invite, index: number) => {
     return (
       <Table.Row
@@ -130,11 +140,7 @@ const UserTable: React.FC<UserTableProps> = ({
             label: t("Copy invite link"),
             disabled: isLoading,
             onClick: () => {
-              const link_template =
-                store?.invite_link_template ??
-                `${window.location.origin}/invite?token={invite_token}`
-
-              copy(link_template.replace("{invite_token}", invite.token))
+              copy(inviteLink.replace("{invite_token}", invite.token))
               notification(
                 t("Success"),
                 t("Invite link copied to clipboard"),

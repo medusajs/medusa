@@ -10,8 +10,9 @@ import {
   ReserveQuantityContext,
 } from "@medusajs/types"
 import { LineItem, Product, ProductVariant } from "../models"
-import { MedusaError, TransactionBaseService, isDefined } from "@medusajs/utils"
+import { MedusaError, isDefined } from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
+import { TransactionBaseService } from "../interfaces"
 
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import ProductVariantService from "./product-variant"

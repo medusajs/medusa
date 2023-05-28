@@ -40,7 +40,6 @@ import {
 } from "../types/product-variant"
 import {
   buildQuery,
-  buildRelations,
   hasChanges,
   isObject,
   isString,
@@ -54,6 +53,7 @@ import { ProductRepository } from "../repositories/product"
 import { ProductOptionValueRepository } from "../repositories/product-option-value"
 import EventBusService from "./event-bus"
 import RegionService from "./region"
+import { buildRelations } from "@medusajs/utils"
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {

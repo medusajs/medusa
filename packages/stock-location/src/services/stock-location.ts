@@ -10,7 +10,6 @@ import {
   UpdateStockLocationInput,
 } from "@medusajs/types"
 import {
-  buildQuery,
   InjectEntityManager,
   isDefined,
   MedusaContext,
@@ -18,7 +17,9 @@ import {
   setMetadata,
 } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
+
 import { StockLocation, StockLocationAddress } from "../models"
+import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
   manager: EntityManager
