@@ -1,4 +1,5 @@
 import { Product } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import useToggleState from "../../../hooks/use-toggle-state"
 import {
@@ -22,6 +23,7 @@ type Props = {
 }
 
 const ProductGeneralSection = ({ product }: Props) => {
+  const { t } = useTranslation()
   const { onDelete, onStatusChange } = useEditProductActions(product.id)
   const {
     state: infoState,
@@ -39,12 +41,12 @@ const ProductGeneralSection = ({ product }: Props) => {
 
   const actions: ActionType[] = [
     {
-      label: "Edit General Information",
+      label: t("Edit General Information"),
       onClick: toggleInfo,
       icon: <EditIcon size={20} />,
     },
     {
-      label: "Delete",
+      label: t("Delete"),
       onClick: onDelete,
       variant: "danger",
       icon: <TrashIcon size={20} />,
@@ -53,7 +55,7 @@ const ProductGeneralSection = ({ product }: Props) => {
 
   if (isFeatureEnabled("sales_channels")) {
     actions.splice(1, 0, {
-      label: "Edit Sales Channels",
+      label: t("Edit Sales Channels"),
       onClick: toggleChannels,
       icon: <ChannelsIcon size={20} />,
     })
@@ -68,8 +70,8 @@ const ProductGeneralSection = ({ product }: Props) => {
         status={
           <StatusSelector
             isDraft={product?.status === "draft"}
-            activeState="Published"
-            draftState="Draft"
+            activeState={t("Published")}
+            draftState={t("Draft")}
             onChange={() => onStatusChange(product.status)}
           />
         }
@@ -123,33 +125,32 @@ const Detail = ({ title, value }: DetailProps) => {
 
 const ProductDetails = ({ product }: Props) => {
   const { isFeatureEnabled } = useFeatureFlag()
+  const { t } = useTranslation()
 
   return (
     <div className="mt-8 flex flex-col gap-y-3">
-      <h2 className="inter-base-semibold">Details</h2>
-      <Detail title="Subtitle" value={product.subtitle} />
-      <Detail title="Handle" value={product.handle} />
-      <Detail title="Type" value={product.type?.value} />
-      <Detail title="Collection" value={product.collection?.title} />
+      <h2 className="inter-base-semibold">{t("Details")}</h2>
+      <Detail title={t("Subtitle")} value={product.subtitle} />
+      <Detail title={t("Handle")} value={product.handle} />
+      <Detail title={t("Type")} value={product.type?.value} />
+      <Detail title={t("Collection")} value={product.collection?.title} />
       {isFeatureEnabled(FeatureFlag.PRODUCT_CATEGORIES) && (
         <Detail
-          title="Category"
+          title={t("Category")}
           value={product.categories.map((c) => c.name)}
         />
       )}
       <Detail
-        title="Discountable"
-        value={product.discountable ? "True" : "False"}
+        title={t("Discountable")}
+        value={product.discountable ? t("True") : t("False")}
       />
       <Detail
-        title="Metadata"
+        title={t("Metadata")}
         value={
           Object.entries(product.metadata || {}).length > 0
-            ? `${Object.entries(product.metadata || {}).length} ${
-                Object.keys(product.metadata || {}).length === 1
-                  ? "item"
-                  : "items"
-              }`
+            ? t("itemsWithCount", {
+                count: Object.keys(product.metadata || {}).length,
+              })
             : undefined
         }
       />
@@ -176,10 +177,11 @@ const ProductTags = ({ product }: Props) => {
 }
 
 const ProductSalesChannels = ({ product }: Props) => {
+  const { t } = useTranslation()
   return (
     <FeatureToggle featureFlag="sales_channels">
       <div className="mt-xlarge">
-        <h2 className="inter-base-semibold mb-xsmall">Sales channels</h2>
+        <h2 className="inter-base-semibold mb-xsmall">{t("Sales channels")}</h2>
         <SalesChannelsDisplay channels={product.sales_channels} />
       </div>
     </FeatureToggle>

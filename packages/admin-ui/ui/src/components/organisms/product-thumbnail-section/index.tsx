@@ -1,5 +1,6 @@
 import { Product } from "@medusajs/medusa"
 import clsx from "clsx"
+import { useTranslation } from "react-i18next"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
@@ -14,6 +15,7 @@ type Props = {
 }
 
 const ProductThumbnailSection = ({ product }: Props) => {
+  const { t } = useTranslation()
   const { onUpdate, updating } = useEditProductActions(product.id)
   const { state, toggle, close } = useToggleState()
 
@@ -27,10 +29,14 @@ const ProductThumbnailSection = ({ product }: Props) => {
       },
       {
         onSuccess: () => {
-          notification("Success", "Successfully deleted thumbnail", "success")
+          notification(
+            t("Success"),
+            t("Successfully deleted thumbnail"),
+            "success"
+          )
         },
         onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
+          notification(t("Error"), getErrorMessage(err), "error")
         },
       }
     )
@@ -48,7 +54,7 @@ const ProductThumbnailSection = ({ product }: Props) => {
               type="button"
               onClick={toggle}
             >
-              {product.thumbnail ? "Edit" : "Upload"}
+              {product.thumbnail ? t("Edit") : t("Upload")}
             </Button>
             {product.thumbnail && (
               <TwoStepDelete onDelete={handleDelete} deleting={updating} />

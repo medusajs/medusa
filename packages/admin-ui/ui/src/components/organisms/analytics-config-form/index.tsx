@@ -1,6 +1,7 @@
 import clsx from "clsx"
 import { useEffect } from "react"
 import { Controller, useWatch } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { NestedForm } from "../../../utils/nested-form"
 import Switch from "../../atoms/switch"
 
@@ -15,6 +16,7 @@ type Props = {
 
 const AnalyticsConfigForm = ({ form }: Props) => {
   const { control, setValue, path } = form
+  const { t } = useTranslation()
 
   const watchOptOut = useWatch({
     control,
@@ -36,11 +38,13 @@ const AnalyticsConfigForm = ({ form }: Props) => {
         })}
       >
         <div className="gap-y-2xsmall flex flex-1 flex-col">
-          <h2 className="inter-base-semibold">Anonymize my usage data</h2>
+          <h2 className="inter-base-semibold">
+            {t("Anonymize my usage data")}
+          </h2>
           <p className="inter-base-regular text-grey-50">
-            You can choose to anonymize your usage data. If this option is
-            selected, we will not collect your personal information, such as
-            your name and email address.
+            {t(
+              "You can choose to anonymize your usage data. If this option is selected, we will not collect your personal information, such as your name and email address."
+            )}
           </p>
         </div>
         <Controller
@@ -60,10 +64,12 @@ const AnalyticsConfigForm = ({ form }: Props) => {
       <div className="flex items-start">
         <div className="gap-y-2xsmall flex flex-1 flex-col">
           <h2 className="inter-base-semibold">
-            Opt out of sharing my usage data
+            {t("Opt out of sharing my usage data")}
           </h2>
           <p className="inter-base-regular text-grey-50">
-            You can always opt out of sharing your usage data at any time.
+            {t(
+              "You can always opt out of sharing your usage data at any time."
+            )}
           </p>
         </div>
         <Controller

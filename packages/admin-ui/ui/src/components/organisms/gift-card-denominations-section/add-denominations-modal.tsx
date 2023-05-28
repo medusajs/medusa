@@ -2,6 +2,7 @@ import { Product } from "@medusajs/medusa"
 import { useAdminCreateVariant, useAdminStore } from "medusa-react"
 import { useCallback, useMemo } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { nestedForm } from "../../../utils/nested-form"
@@ -31,6 +32,7 @@ type AddDenominationModalFormType = {
 }
 
 const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
+  const { t } = useTranslation()
   const { mutate, isLoading: isMutating } = useAdminCreateVariant(giftCard.id)
 
   const { store } = useAdminStore()
@@ -114,8 +116,8 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
     mutate(payload, {
       onSuccess: () => {
         notification(
-          "Denomination added",
-          "A new denomination was succesfully added",
+          t("Denomination added"),
+          t("A new denomination was succesfully added"),
           "success"
         )
         handleClose()
@@ -124,13 +126,13 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
         const errorMessage = () => {
           // @ts-ignore
           if (error.response?.data?.type === "duplicate_error") {
-            return `A denomination with that default value already exists`
+            return t("A denomination with that default value already exists")
           } else {
             return getErrorMessage(error)
           }
         }
 
-        notification("Error", errorMessage(), "error")
+        notification(t("Error"), errorMessage(), "error")
       },
     })
   })
@@ -139,7 +141,7 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
     <Modal open={open} handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <h1 className="inter-xlarge-semibold">Add Denomination</h1>
+          <h1 className="inter-xlarge-semibold">{t("Add Denomination")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
@@ -153,7 +155,7 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
                 type="button"
                 onClick={handleClose}
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -162,7 +164,7 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
                 disabled={isMutating || !isDirty}
                 loading={isMutating}
               >
-                Save and close
+                {t("Save and close")}
               </Button>
             </div>
           </Modal.Footer>

@@ -6,6 +6,7 @@ import {
 } from "medusa-react"
 import { useEffect, useMemo } from "react"
 import { useFieldArray, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import useNotification from "../../../hooks/use-notification"
 import FormValidator from "../../../utils/form-validator"
 import Button from "../../fundamentals/button"
@@ -41,6 +42,7 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
     product.id
   )
 
+  const { t } = useTranslation()
   const { refetch } = useOptionsContext()
 
   const {
@@ -140,7 +142,7 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
     })
 
     if (errors.length === toCreate.length + toUpdate.length + toDelete.length) {
-      notification("Error", "Failed to update product options", "error")
+      notification(t("Error"), t("Failed to update product options"), "error")
       return
     }
 
@@ -153,7 +155,11 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
     }
 
     refetch()
-    notification("Success", "Successfully updated product options", "success")
+    notification(
+      t("Success"),
+      t("Successfully updated product options"),
+      "success"
+    )
     handleClose()
   })
 
@@ -161,13 +167,17 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
     <Modal open={open} handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <h1 className="inter-xlarge-semibold">Edit Options</h1>
+          <h1 className="inter-xlarge-semibold">{t("Edit Options")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
-            <h2 className="inter-large-semibold mb-base">Product options</h2>
+            <h2 className="inter-large-semibold mb-base">
+              {t("Product options")}
+            </h2>
             <div className="gap-y-small flex flex-col">
-              <p className="inter-small-semibold text-grey-50">Option title</p>
+              <p className="inter-small-semibold text-grey-50">
+                {t("Option title")}
+              </p>
               <div className="gap-y-xsmall flex flex-col">
                 {fields.map((field, index) => {
                   return (
@@ -179,7 +189,7 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
                         key={field.id}
                         placeholder="Color"
                         {...register(`options.${index}.title`, {
-                          required: "Option title is required",
+                          required: t("Option title is required"),
                           minLength:
                             FormValidator.minOneCharRule("Option title"),
                           pattern: FormValidator.whiteSpaceRule("Option title"),
@@ -205,7 +215,7 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
               type="button"
               onClick={handleAddAnOption}
             >
-              <PlusIcon size="20" /> Add an option
+              <PlusIcon size="20" /> {t("Add an option")}
             </Button>
           </Modal.Content>
           <Modal.Footer>
@@ -216,7 +226,7 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
                 type="button"
                 onClick={handleClose}
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -225,7 +235,7 @@ const OptionsModal = ({ product, open, onClose }: Props) => {
                 disabled={!isDirty}
                 loading={isSubmitting}
               >
-                Save and close
+                {t("Save and close")}
               </Button>
             </div>
           </Modal.Footer>

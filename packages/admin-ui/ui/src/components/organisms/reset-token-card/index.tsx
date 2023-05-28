@@ -1,6 +1,7 @@
 import { useAdminSendResetPasswordToken } from "medusa-react"
 import React, { useState } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
 import FormValidator from "../../../utils/form-validator"
@@ -22,6 +23,7 @@ const emailRegex = new RegExp(
 )
 
 const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
+  const { t } = useTranslation()
   const [mailSent, setSentMail] = useState(false)
   const {
     register,
@@ -42,7 +44,7 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
           setSentMail(true)
         },
         onError: (error) => {
-          notification("Error", getErrorMessage(error), "error")
+          notification(t("Error"), getErrorMessage(error), "error")
         },
       }
     )
@@ -52,25 +54,25 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
     <form onSubmit={onSubmit}>
       <div className="flex flex-col items-center">
         <h1 className="inter-xlarge-semibold text-grey-90 mb-xsmall text-[20px]">
-          Reset your password
+          {t("Reset your password")}
         </h1>
         <span className="inter-base-regular text-grey-50 mb-large text-center">
-          Enter your email address below, and we&apos;ll
+          {t("Enter your email address below, and we&apos;ll")}
           <br />
-          send you instructions on how to reset
+          {t("send you instructions on how to reset")}
           <br />
-          your password.
+          {t("your password.")}
         </span>
         {!mailSent ? (
           <>
             <div className="w-[280px]">
               <SigninInput
-                placeholder="Email"
+                placeholder={t("Email")}
                 {...register("email", {
                   required: FormValidator.required("Email"),
                   pattern: {
                     value: emailRegex,
-                    message: "This is not a valid email",
+                    message: t("This is not a valid email"),
                   },
                 })}
               />
@@ -83,7 +85,7 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
               type="submit"
               loading={isLoading}
             >
-              Send reset instructions
+              {t("Send reset instructions")}
             </Button>
           </>
         ) : (
@@ -93,7 +95,7 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
             </div>
             <div className="gap-y-2xsmall flex flex-col">
               <span className="inter-base-regular">
-                Succesfully sent you an email
+                {t("Succesfully sent you an email")}
               </span>
             </div>
           </div>
@@ -102,7 +104,7 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
           className="inter-small-regular text-grey-50 mt-8 cursor-pointer"
           onClick={goBack}
         >
-          Go back to sign in
+          {t("Go back to sign in")}
         </span>
       </div>
     </form>
