@@ -1,6 +1,7 @@
 import { Product } from "@medusajs/medusa"
 import { useAdminDeleteProduct, useAdminUpdateProduct } from "medusa-react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
@@ -13,6 +14,7 @@ import { ActionType } from "../../molecules/actionables"
 import useCopyProduct from "./use-copy-product"
 
 const useProductActions = (product: Product) => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const notification = useNotification()
   const dialog = useImperativeDialog()
@@ -22,8 +24,8 @@ const useProductActions = (product: Product) => {
 
   const handleDelete = async () => {
     const shouldDelete = await dialog({
-      heading: "Delete Product",
-      text: "Are you sure you want to delete this product?",
+      heading: t("Delete Product"),
+      text: t("Are you sure you want to delete this product?"),
     })
 
     if (shouldDelete) {
@@ -33,14 +35,15 @@ const useProductActions = (product: Product) => {
 
   const getActions = (): ActionType[] => [
     {
-      label: "Edit",
+      label: t("Edit"),
       onClick: () => navigate(`/a/products/${product.id}`),
       icon: <EditIcon size={20} />,
     },
     {
-      label: product.status === "published" ? "Unpublish" : "Publish",
+      label: product.status === "published" ? t("Unpublish") : t("Publish"),
       onClick: () => {
-        const newStatus = product.status === "published" ? "draft" : "published"
+        const newStatus =
+          product.status === "published" ? t("draft") : t("published")
         updateProduct.mutate(
           {
             status: newStatus,
@@ -48,15 +51,15 @@ const useProductActions = (product: Product) => {
           {
             onSuccess: () => {
               notification(
-                "Success",
-                `Successfully ${
-                  product.status === "published" ? "unpublished" : "published"
-                } product`,
+                t("Success"),
+                product.status === "published"
+                  ? t("Successfully unpublished product")
+                  : t("Successfully published product"),
                 "success"
               )
             },
             onError: (err) =>
-              notification("Error", getErrorMessage(err), "error"),
+              notification(t("Error"), getErrorMessage(err), "error"),
           }
         )
       },
@@ -68,12 +71,12 @@ const useProductActions = (product: Product) => {
         ),
     },
     {
-      label: "Duplicate",
+      label: t("Duplicate"),
       onClick: () => copyProduct(product),
       icon: <DuplicateIcon size={20} />,
     },
     {
-      label: "Delete",
+      label: t("Delete"),
       variant: "danger",
       onClick: handleDelete,
       icon: <TrashIcon size={20} />,

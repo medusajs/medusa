@@ -1,24 +1,26 @@
 import moment from "moment"
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import { getColor } from "../../../utils/color"
 import StatusDot from "../../fundamentals/status-indicator"
 import CustomerAvatarItem from "../../molecules/customer-avatar-item"
 import Table from "../../molecules/table"
 
 const useDraftOrderTableColumns = () => {
+  const { t } = useTranslation()
   const decideStatus = (status) => {
     switch (status) {
       case "completed":
-        return <StatusDot variant="success" title={"Completed"} />
+        return <StatusDot variant="success" title={t("Completed")} />
       default:
-        return <StatusDot variant="primary" title={"Open"} />
+        return <StatusDot variant="primary" title={t("Open")} />
     }
   }
 
   const columns = useMemo(
     () => [
       {
-        Header: "Draft",
+        Header: t("Draft"),
         accessor: "display_id",
         Cell: ({ cell: { value, getCellProps } }) => (
           <Table.Cell
@@ -28,7 +30,7 @@ const useDraftOrderTableColumns = () => {
         ),
       },
       {
-        Header: "Order",
+        Header: t("Order"),
         accessor: "order",
         Cell: ({ cell: { value, getCellProps } }) => {
           return (
@@ -39,7 +41,7 @@ const useDraftOrderTableColumns = () => {
         },
       },
       {
-        Header: "Date added",
+        Header: t("Date added"),
         accessor: "created_at",
         Cell: ({ cell: { value, getCellProps } }) => (
           <Table.Cell {...getCellProps()}>
@@ -48,7 +50,7 @@ const useDraftOrderTableColumns = () => {
         ),
       },
       {
-        Header: "Customer",
+        Header: t("Customer"),
         accessor: "cart",
         Cell: ({ row, cell: { value, getCellProps } }) => (
           <Table.Cell {...getCellProps()}>
@@ -64,7 +66,7 @@ const useDraftOrderTableColumns = () => {
         ),
       },
       {
-        Header: "Status",
+        Header: t("Status"),
         accessor: "status",
         Cell: ({ cell: { value, getCellProps } }) => (
           <Table.Cell {...getCellProps()} className="pr-2">

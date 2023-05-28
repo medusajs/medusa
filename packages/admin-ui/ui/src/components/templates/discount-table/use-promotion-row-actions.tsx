@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import { useAdminDeleteDiscount, useAdminUpdateDiscount } from "medusa-react"
 import useImperativeDialog from "../../../hooks/use-imperative-dialog"
 import useNotification from "../../../hooks/use-notification"
@@ -11,6 +12,7 @@ import useCopyPromotion from "./use-copy-promotion"
 import { useNavigate } from "react-router-dom"
 
 const usePromotionActions = (promotion) => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const notification = useNotification()
   const dialog = useImperativeDialog()
@@ -22,8 +24,8 @@ const usePromotionActions = (promotion) => {
 
   const handleDelete = async () => {
     const shouldDelete = await dialog({
-      heading: "Delete Discount",
-      text: "Are you sure you want to delete this Discount?",
+      heading: t("Delete Discount"),
+      text: t("Are you sure you want to delete this Discount?"),
     })
 
     if (shouldDelete) {
@@ -39,7 +41,7 @@ const usePromotionActions = (promotion) => {
         onClick: () => navigate(`/a/discounts/${promotion.id}`),
       },
       {
-        label: promotion.is_disabled ? "Publish" : "Unpublish",
+        label: promotion.is_disabled ? t("Publish") : t("Unpublish"),
         icon: promotion.is_disabled ? (
           <PublishIcon size={20} />
         ) : (
@@ -53,26 +55,26 @@ const usePromotionActions = (promotion) => {
             {
               onSuccess: () => {
                 notification(
-                  "Success",
-                  `Successfully ${
-                    promotion.is_disabled ? "published" : "unpublished"
-                  } discount`,
+                  t("Success"),
+                  promotion.is_disabled
+                    ? t("Successfully published discount")
+                    : t("Successfully unpublished discount"),
                   "success"
                 )
               },
               onError: (err) =>
-                notification("Error", getErrorMessage(err), "error"),
+                notification(t("Error"), getErrorMessage(err), "error"),
             }
           )
         },
       },
       {
-        label: "Duplicate",
+        label: t("Duplicate"),
         icon: <DuplicateIcon size={20} />,
         onClick: () => copyPromotion(promotion),
       },
       {
-        label: "Delete",
+        label: t("Delete"),
         icon: <TrashIcon size={20} />,
         variant: "danger",
         onClick: handleDelete,
