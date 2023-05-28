@@ -915,12 +915,9 @@ module.exports = {
           },
         },
         {
-          type: "link",
-          href: "#",
+          type: "doc",
+          id: "modules/taxes/taxes",
           label: "Taxes",
-          customProps: {
-            sidebar_is_soon: true,
-          },
         },
         {
           type: "doc",
@@ -1286,7 +1283,7 @@ module.exports = {
       items: [
         {
           type: "category",
-          label: "Entities",
+          label: "Entity",
           items: [
             {
               type: "doc",
@@ -1296,7 +1293,7 @@ module.exports = {
             {
               type: "doc",
               id: "development/entities/migrations/overview",
-              label: "Migrations",
+              label: "Migration",
             },
             {
               type: "ref",
@@ -1334,7 +1331,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Endpoints",
+          label: "Endpoint",
           items: [
             {
               type: "doc",
@@ -1356,7 +1353,7 @@ module.exports = {
             {
               type: "doc",
               id: "development/endpoints/add-middleware",
-              label: "Middlewares",
+              label: "Middleware",
             },
             {
               type: "doc",
@@ -1367,7 +1364,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Services",
+          label: "Service",
           items: [
             {
               type: "doc",
@@ -1400,7 +1397,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Events",
+          label: "Event",
           items: [
             {
               type: "doc",
@@ -1410,7 +1407,7 @@ module.exports = {
             {
               type: "doc",
               id: "development/events/subscribers",
-              label: "Subscribers",
+              label: "Subscriber",
             },
             {
               type: "doc",
@@ -1455,7 +1452,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Loaders",
+          label: "Loader",
           items: [
             {
               type: "doc",
@@ -1478,7 +1475,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Scheduled Jobs",
+          label: "Scheduled Job",
           items: [
             {
               type: "doc",
@@ -1501,7 +1498,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Modules",
+          label: "Module",
           items: [
             {
               type: "doc",
@@ -1529,7 +1526,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Plugins",
+          label: "Plugin",
           items: [
             {
               type: "doc",
@@ -1607,7 +1604,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Publishable API Keys",
+          label: "Publishable API Key",
           items: [
             {
               type: "doc",
@@ -1635,7 +1632,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Notifications",
+          label: "Notification",
           items: [
             {
               type: "doc",
@@ -1704,7 +1701,30 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Batch Jobs",
+          label: "Idempotency Key",
+          items: [
+            {
+              type: "doc",
+              id: "development/idempotency-key/overview",
+              label: "Overview",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/idempotency-key/use-service",
+              label: "Use IdempotencyKeyService",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Batch Job",
           items: [
             {
               type: "doc",
@@ -1732,7 +1752,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Strategies",
+          label: "Strategy",
           items: [
             {
               type: "doc",
@@ -1755,7 +1775,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Feature Flags",
+          label: "Feature Flag",
           items: [
             {
               type: "doc",

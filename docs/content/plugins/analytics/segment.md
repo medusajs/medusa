@@ -130,7 +130,7 @@ const plugins = [
 Run your backend with the following command:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 Then, try triggering one of the [mentioned events earlier in this document](#events-that-the-segment-plugin-tracks). For example, you can place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the [Next.js starter storefront](../../starters/nextjs-medusa-starter.mdx).

@@ -58,8 +58,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
 
   const featureFlagRouter = featureFlagLoader(configModule)
 
-  const dbType = configModule.projectConfig.database_type
-  if (migrate && dbType !== "sqlite") {
+  if (migrate) {
     const { coreMigrations } = getMigrations(directory, featureFlagRouter)
 
     const { migrations: moduleMigrations } = getModuleSharedResources(
@@ -68,7 +67,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
     )
 
     const connectionOptions = {
-      type: configModule.projectConfig.database_type,
+      type: "postgres",
       database: configModule.projectConfig.database_database,
       schema: configModule.projectConfig.database_schema,
       url: configModule.projectConfig.database_url,
@@ -171,6 +170,33 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       await shippingOptionService.withTransaction(tx).create(so)
     }
 
+    const createProductCategory = async (
+      parameters,
+      parentCategoryId: string | null = null
+    ) => {
+      // default to the categories being visible and public
+      parameters.is_active = parameters.is_active || true
+      parameters.is_internal = parameters.is_internal || false
+      parameters.parent_category_id = parentCategoryId
+
+      const categoryChildren = parameters.category_children || []
+      delete parameters.category_children
+
+      const category = await productCategoryService
+        .withTransaction(tx)
+        .create(parameters as CreateProductCategoryInput)
+
+      if (categoryChildren.length) {
+        for (const categoryChild of categoryChildren) {
+          await createProductCategory(categoryChild, category.id)
+        }
+      }
+    }
+
+    for (const c of categories) {
+      await createProductCategory(c)
+    }
+
     for (const p of products) {
       const variants = p.variants
       delete p.variants
@@ -207,35 +233,6 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
             .withTransaction(tx)
             .create(newProd.id, variant)
         }
-      }
-    }
-
-    const createProductCategory = async (
-      parameters,
-      parentCategoryId: string | null = null
-    ) => {
-      // default to the categories being visible and public
-      parameters.is_active = parameters.is_active || true
-      parameters.is_internal = parameters.is_internal || false
-      parameters.parent_category_id = parentCategoryId
-
-      const categoryChildren = parameters.category_children || []
-      delete parameters.category_children
-
-      const category = await productCategoryService
-        .withTransaction(tx)
-        .create(parameters as CreateProductCategoryInput)
-
-      if (categoryChildren.length) {
-        for (const categoryChild of categoryChildren) {
-          await createProductCategory(categoryChild, category.id)
-        }
-      }
-    }
-
-    if (dbType !== "sqlite") {
-      for (const c of categories) {
-        await createProductCategory(c, null)
       }
     }
   })

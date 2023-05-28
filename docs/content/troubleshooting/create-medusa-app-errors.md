@@ -8,7 +8,7 @@ To resolve this issue, make sure you change into the `backend` directory of the 
 
 ```bash npm2yarn
 cd backend
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 ## Other Errors

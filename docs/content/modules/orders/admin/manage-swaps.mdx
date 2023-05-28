@@ -67,7 +67,7 @@ If you want to view all swaps in your system, and not swaps specific to an order
 
 You can view an order’s swaps by retrieving the order using the [Get Order endpoint](/api/admin#tag/Orders/operation/GetOrdersOrder):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -147,7 +147,7 @@ Processing a swap’s payment can mean either refunding or capturing payment, de
 
 Regardless of whether you need to refund or capture the payment, you can process the swap’s payment by sending a request to the [Process Swap Payment endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderSwapsSwapProcessPayment):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -222,7 +222,7 @@ Fulfillments are available on a swap object under the `fulfillments` property, w
 
 You can create a fulfillment for a swap by sending a request to the [Create Swap Fulfillment endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderSwapsSwapFulfillments):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -294,7 +294,7 @@ The request returns the updated order as an object. You can access the order’s
 
 You can create a shipment for a swap’s fulfillment using the [Create Swap Shipment endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderSwapsSwapShipments):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -388,7 +388,7 @@ You can’t cancel a fulfillment that has a shipment
 
 You can cancel a fulfillment by sending a request to the [Cancel Swap Fulfillment endpoint](/api/admin#tag/Orders/operation/PostOrdersSwapFulfillmentsCancel):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -472,7 +472,7 @@ You can’t cancel a swap that has been refunded. You must also cancel all swap�
 
 You can cancel a swap by sending a request to the [Cancel Swap endpoint](/api/admin#tag/Orders/operation/PostOrdersSwapCancel):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts

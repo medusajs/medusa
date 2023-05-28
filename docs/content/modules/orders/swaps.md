@@ -39,15 +39,11 @@ In Medusa, Swaps are created by the customer through the storefront. This ensure
 
 ### Idempotency Key
 
-An Idempotency Key is a unique key associated with a swap. It is generated when the swap creation process is started. The idempotency key is stored in the `Swap` entity under the attribute `idempotency_key`.
-
-That Idempotency Key is then set in the header under the `Idempotency-Key` response header field along with the header field `Access-Control-Expose-Headers` set to `Idempotency-Key`.
-
-The backend wraps essential parts of the swap creation process in its own step and stores the current step (known as recovery point) of the process with its associated Idempotency Key.
-
-Then, if the request is interrupted for any reason or an error occurs, the client can retry creating the swap using the Idempotency Key, and the flow will continue from the last stored step.
+An Idempotency Key is a unique key associated with a swap. It is generated when the swap creation process is started and can be used to retry the swap creation safely if an error occurs. The idempotency key is stored in the `Swap` entity under the attribute `idempotency_key`.
 
 Keep in mind that the idempotency key stored in the swap is only used when creating the swap. All operations related to the swap’s cart and its completion use the [cart’s idempotency key](../carts-and-checkout/cart.md#idempotency-key).
+
+You can learn more about idempotency keys [here](../../development/idempotency-key/overview.mdx).
 
 ### Swap Creation Process
 

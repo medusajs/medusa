@@ -10,12 +10,12 @@ import {
   InjectEntityManager,
   MedusaContext,
   MedusaError,
-  buildQuery,
   isDefined,
 } from "@medusajs/utils"
 import { EntityManager, FindManyOptions } from "typeorm"
 import { InventoryLevelService } from "."
 import { ReservationItem } from "../models"
+import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -60,6 +60,7 @@ export default class ReservationItemService {
     const itemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery(selector, config) as FindManyOptions
+
     return await itemRepository.find(query)
   }
 
@@ -79,6 +80,7 @@ export default class ReservationItemService {
     const itemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery(selector, config) as FindManyOptions
+
     return await itemRepository.findAndCount(query)
   }
 

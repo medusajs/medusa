@@ -42,13 +42,9 @@ Returns can be created in three ways:
 
 ### Idempotency Key
 
-An Idempotency Key is a unique key associated with a return. It is generated when the return creation process is started by the customer. The idempotency key is stored in the `Return` entity in the attribute `idempotency_key`.
+An Idempotency Key is a unique key associated with a return. It is generated when the return creation process is started by the customer and can be used to retry the return creation safely if an error occurs. The idempotency key is stored in the `Return` entity in the attribute `idempotency_key`.
 
-That Idempotency Key is then set in the header under the `Idempotency-Key` response header field along with the header field `Access-Control-Expose-Headers` set to `Idempotency-Key`.
-
-The backend wraps essential parts of the return creation process in its own step and stores the current step (known as recovery point) of the process with its associated Idempotency Key.
-
-Then, if the request is interrupted for any reason or an error occurs, the client can retry creating the return using the Idempotency Key, and the flow will continue from the last stored step.
+You can learn more about idempotency keys [here](../../development/idempotency-key/overview.mdx).
 
 ### Return Creation Process Through the Customer
 

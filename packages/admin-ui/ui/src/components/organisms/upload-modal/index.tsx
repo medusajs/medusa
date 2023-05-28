@@ -1,15 +1,16 @@
-import { ReactNode, useState } from "react"
 import clsx from "clsx"
+import { ReactNode, useState } from "react"
+import { useHref } from "react-router-dom"
 
+import Tooltip from "../../atoms/tooltip"
 import Button from "../../fundamentals/button"
 import CheckCircleIcon from "../../fundamentals/icons/check-circle-icon"
 import CrossIcon from "../../fundamentals/icons/cross-icon"
 import DownloadIcon from "../../fundamentals/icons/download-icon"
 import FileIcon from "../../fundamentals/icons/file-icon"
-import Modal from "../../molecules/modal"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
 import WarningCircleIcon from "../../fundamentals/icons/warning-circle"
-import Tooltip from "../../atoms/tooltip"
+import Modal from "../../molecules/modal"
 
 type FileSummaryProps = {
   name: string
@@ -215,6 +216,8 @@ function UploadModal(props: UploadModalProps) {
     onFileRemove()
   }
 
+  const download = useHref(templateLink)
+
   return (
     <Modal open handleClose={onClose}>
       <Modal.Body>
@@ -272,11 +275,7 @@ function UploadModal(props: UploadModalProps) {
             name="medusa-template.csv"
             size={2967}
             action={
-              <a
-                className="h-6 w-6 cursor-pointer"
-                href={templateLink}
-                download
-              >
+              <a className="h-6 w-6 cursor-pointer" href={download} download>
                 <DownloadIcon stroke="#9CA3AF" />
               </a>
             }

@@ -40,7 +40,6 @@ import {
 } from "../types/product-variant"
 import {
   buildQuery,
-  buildRelations,
   hasChanges,
   isObject,
   isString,
@@ -54,6 +53,7 @@ import { ProductRepository } from "../repositories/product"
 import { ProductOptionValueRepository } from "../repositories/product-option-value"
 import EventBusService from "./event-bus"
 import RegionService from "./region"
+import { buildRelations } from "@medusajs/utils"
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {
@@ -719,15 +719,14 @@ class ProductVariantService extends TransactionBaseService {
 
       const prices = await this.priceSelectionStrategy_
         .withTransaction(manager)
-        .calculateVariantPrice(variantId, {
+        .calculateVariantPrice([{ variantId, quantity: context.quantity }], {
           region_id: context.regionId,
           currency_code: region.currency_code,
-          quantity: context.quantity,
           customer_id: context.customer_id,
           include_discount_prices: !!context.include_discount_prices,
         })
 
-      return prices.calculatedPrice
+      return prices.get(variantId)!.calculatedPrice
     })
   }
 

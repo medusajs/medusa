@@ -7,7 +7,6 @@ import {
   SharedContext,
 } from "@medusajs/types"
 import {
-  buildQuery,
   InjectEntityManager,
   isDefined,
   MedusaContext,
@@ -16,6 +15,7 @@ import {
 import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
 import { InventoryItem } from "../models"
 import { getListQuery } from "../utils/query"
+import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -72,6 +72,7 @@ export default class InventoryItemService {
       selector,
       config
     )
+
     return await queryBuilder.getManyAndCount()
   }
 
