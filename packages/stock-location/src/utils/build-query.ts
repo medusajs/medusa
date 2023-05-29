@@ -1,7 +1,9 @@
+import { ExtendedFindConfig, FindConfig } from "@medusajs/types"
 import {
   And,
   FindManyOptions,
   FindOperator,
+  FindOptionsOrder,
   FindOptionsRelations,
   FindOptionsSelect,
   FindOptionsWhere,
@@ -13,10 +15,6 @@ import {
   MoreThan,
   MoreThanOrEqual,
 } from "typeorm"
-import { ExtendedFindConfig, FindConfig } from "../types/common"
-
-import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
-import { isObject } from "./is-object"
 import { buildOrder, buildRelations, buildSelects } from "@medusajs/utils"
 
 const operatorsMap = {
@@ -153,79 +151,4 @@ function buildWhere<TWhereKeys extends object, TEntity>(
   }
 
   return where
-}
-
-/**
- * Revert new object structure of find options to the legacy structure of previous version
- * @deprecated in favor of import { objectToStringPath } from "@medusajs/utils"
- * @example
- * input: {
- *   test: {
- *     test1: true,
- *     test2: true,
- *     test3: {
- *       test4: true
- *     },
- *   },
- *   test2: true
- * }
- * output: ['test.test1', 'test.test2', 'test.test3.test4', 'test2']
- * @param input
- */
-export function buildLegacyFieldsListFrom<TEntity>(
-  input:
-    | FindOptionsWhere<TEntity>
-    | FindOptionsSelect<TEntity>
-    | FindOptionsOrder<TEntity>
-    | FindOptionsRelations<TEntity> = {}
-): (keyof TEntity)[] {
-  if (!Object.keys(input).length) {
-    return []
-  }
-
-  const output: Set<string> = new Set(Object.keys(input))
-
-  for (const key of Object.keys(input)) {
-    if (input[key] != undefined && typeof input[key] === "object") {
-      const deepRes = buildLegacyFieldsListFrom(input[key])
-
-      const items = deepRes.reduce((acc, val) => {
-        acc.push(`${key}.${val}`)
-        return acc
-      }, [] as string[])
-
-      items.forEach((item) => output.add(item))
-      continue
-    }
-
-    output.add(key)
-  }
-
-  return Array.from(output) as (keyof TEntity)[]
-}
-
-export function addOrderToSelect<TEntity>(
-  order: FindOptionsOrder<TEntity>,
-  select: FindOptionsSelect<TEntity>
-): void {
-  for (const orderBy of Object.keys(order)) {
-    if (isObject(order[orderBy])) {
-      select[orderBy] =
-        select[orderBy] && isObject(select[orderBy]) ? select[orderBy] : {}
-      addOrderToSelect(order[orderBy], select[orderBy])
-      continue
-    }
-
-    select[orderBy] = isObject(select[orderBy])
-      ? { ...select[orderBy], id: true, [orderBy]: true }
-      : true
-  }
-}
-
-export function nullableValue(value: any): FindOperator<any> {
-  if (value === null) {
-    return IsNull()
-  } else {
-    return value
-  }
 }
