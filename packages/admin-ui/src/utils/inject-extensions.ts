@@ -176,7 +176,7 @@ async function writeExtensionsEntry(
 }
 
 export async function injectExtensions() {
-  const base = resolve(__dirname, "..", "..", "ui")
+  const base = resolve(__dirname, "..", "ui")
   const extensions = await getExtensions()
 
   await writeTailwindConfigContent(extensions, base)
