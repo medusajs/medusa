@@ -103,6 +103,7 @@ const useCopyProduct = () => {
           "product",
           "product_id",
           "variant_rank",
+          "purchasable"
         ])
 
         const variantBase = Object.entries(rest).reduce((acc, [key, value]) => {
