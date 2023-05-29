@@ -7,7 +7,7 @@ export const getCustomViteDevConfig = ({
   backend = "http://localhost:9000",
   port = 7001,
 }: AdminDevConfig): InlineConfig => {
-  const uiPath = resolve(__dirname, "..", "..", "ui")
+  const uiPath = resolve(__dirname, "..", "ui")
 
   return {
     define: {
