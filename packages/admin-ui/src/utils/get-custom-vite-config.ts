@@ -7,7 +7,7 @@ import { formatBase } from "./format-base"
 export const getCustomViteConfig = (config: AdminBuildConfig): InlineConfig => {
   const { globals = {}, build = {} } = config
 
-  const uiPath = resolve(__dirname, "..", "..", "ui")
+  const uiPath = resolve(__dirname, "..", "ui")
 
   const globalReplacements = () => {
     let backend = undefined
