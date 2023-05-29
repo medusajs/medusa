@@ -32,7 +32,7 @@ A Medusa backend is required to be set up before following along with this docum
 In the directory of your Medusa backend, run the following command to install the local file service plugin:
 
 ```bash npm2yarn
-npm install medusa-file-local
+npm install @medusajs/file-local
 ```
 
 Then, configure your `medusa-config.js` to include the plugin with the required options:
@@ -41,7 +41,7 @@ Then, configure your `medusa-config.js` to include the plugin with the require
 const plugins = [
   // ...
   {
-    resolve: `medusa-file-local`,
+    resolve: `@medusajs/file-local`,
     options: {
       // optional
     },
