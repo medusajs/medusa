@@ -30,11 +30,10 @@ export default async function ({
         user_email: email,
       })
       Logger.info(`Invite token: ${invite[0].token}`)
-      return
+    } else {
+      const userService = container.resolve("userService")
+      await userService.create({ id, email }, password)
     }
-
-    const userService = container.resolve("userService")
-    await userService.create({ id, email }, password)
   } catch (err) {
     console.error(err)
     process.exit(1)
