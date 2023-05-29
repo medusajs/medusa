@@ -1,0 +1,60 @@
+.theme-doc-toc-desktop {
+  @apply tw-pt-3;
+}
+
+.theme-doc-toc-desktop .table-of-contents {
+  @apply !tw-border-l-0 !tw-p-0 tw-text-[12px] tw-relative tw-overflow-y-hidden;
+  @apply before:tw-bg-toc dark:before:tw-bg-toc-dark;
+  @apply before:tw-bg-no-repeat before:tw-bg-[length:14px_10px] before:tw-bg-[center_left];
+  @apply before:tw-pl-[22px] before:tw-content-['On_this_page'] before:tw-pb-0 tw-text-label-small-plus;
+  @apply after:tw-content-[''] after:tw-absolute after:tw-left-0 after:tw-top-[40px];
+  @apply after:tw-h-full after:tw-w-[1px] after:tw-bg-medusa-border-base dark:after:tw-bg-medusa-border-base-dark;
+}
+
+.theme-doc-toc-desktop .table-of-contents .table-of-contents__link {
+  @apply tw-pl-[11px];
+}
+
+.theme-doc-toc-desktop .table-of-contents > li {
+  @apply first:tw-mt-1 [&:not(:first-child)]:tw-mt-0 last:tw-mb-0 [&:not(:last-child)]:tw-mb-[4px];
+}
+
+.theme-doc-toc-desktop .table-of-contents li a + ul {
+  @apply tw-mt-[4px];
+}
+
+.theme-doc-toc-desktop .table-of-contents__link {
+  @apply tw-relative tw-text-label-x-small-plus;
+  @apply hover:tw-text-medusa-text-base dark:hover:tw-text-medusa-text-base-dark;
+}
+
+.theme-doc-toc-desktop .table-of-contents__link:hover code {
+  @apply tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark;
+}
+
+.theme-doc-toc-desktop .table-of-contents__link--active {
+  @apply tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark;
+  @apply after:tw-content-[''] after:tw-absolute after:tw-left-0 after:tw-top-0;
+  @apply after:tw-h-full after:tw-w-[1px] after:tw-bg-medusa-text-base dark:after:tw-bg-medusa-text-base-dark;
+  @apply tw-z-[1];
+}
+
+.theme-doc-toc-desktop .table-of-contents__link--active code {
+  @apply tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark;
+}
+
+.theme-doc-toc-desktop .table-of-contents li {
+  @apply tw-mx-0;
+}
+
+.theme-doc-toc-desktop .table-of-contents ul li {
+  @apply tw-mt-0;
+}
+
+.table-of-contents ul {
+  @apply tw-pl-0;
+}
+
+.table-of-contents ul .table-of-contents__link {
+  @apply !tw-pl-[27px];
+}

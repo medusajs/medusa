@@ -83,8 +83,8 @@ You can also pass the following props to Medusa Provider:
 
 | Props               | Default                   | Description                                               |
 | ------------------- | ------------------------- | --------------------------------------------------------- |
-| `apiKey`            | `''`                      | Optional API key used for authenticating admin requests.  |
-| `publishableApiKey` | `''`                      | Optional publishable API key used for storefront requests.|
+| `apiKey`            | `''`                      | Optional API key used for authenticating admin requests. Follow [this guide](/api/admin#section/Authentication/api_token) to learn how to create an API key for an admin user.  |
+| `publishableApiKey` | `''`                      | Optional publishable API key used for storefront requests. You can create a publishable API key either using the [admin APIs](../development/publishable-api-keys/admin/manage-publishable-api-keys.mdx) or the [Medusa admin](../user-guide/settings/publishable-api-keys.mdx). |
 
 ### Queries
 

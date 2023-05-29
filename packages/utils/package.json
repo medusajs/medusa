@@ -26,9 +26,6 @@
   },
   "dependencies": {
     "awilix": "^8.0.0",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.0",
-    "typeorm": "^0.3.16",
     "ulid": "^2.3.0"
   },
   "scripts": {

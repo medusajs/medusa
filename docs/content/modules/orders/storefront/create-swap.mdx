@@ -62,7 +62,7 @@ You can optionally allow customers to choose a return shipping option that they�
 
 After collecting the swap details in step 1, you can create a swap in the Medusa backend by sending a request to the [Create Swap endpoint](/api/store#tag/Swaps/operation/PostSwaps):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -190,7 +190,7 @@ When you complete the cart, the returned `type` field can be used to indicate th
 
 During your checkout flow, you might need to retrieve the swap using the cart’s ID. For example, if you want to display the swap’s details after the cart is successfully completed. You can do that using the [Get by Cart ID endpoint](/api/store#tag/Swaps/operation/GetSwapsSwapCartId):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
