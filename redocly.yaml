@@ -12,6 +12,8 @@ theme:
           dark: "#161618"
       sidebar:
         width: "250px"
+      codeBlock: 
+        backgroundColor: "#1C1C1F"
     disableSearch: true
     expandResponses: "200,204"
     generatedPayloadSamplesMaxDepth: 4
