@@ -149,21 +149,32 @@ const LearningPathProvider: React.FC<LearningPathProviderProps> = ({
 
   const initPath = () => {
     if (isBrowser) {
-      const storedPath = localStorage.getItem("learning-path")
-      if (storedPath) {
-        const storedPathParsed = JSON.parse(storedPath)
-        const currentPath = getLearningPath(storedPathParsed?.pathName)
-        if (currentPath) {
-          setPath(currentPath)
-          setCurrentStep(storedPathParsed?.currentStep || 0)
+      // give query parameters higher precedence over local storage
+      const queryPathName = new URLSearchParams(history.location.search).get(
+        "path"
+      )
+      const queryPath = getLearningPath(queryPathName)
+      if (queryPath) {
+        startPath(queryPath)
+      } else {
+        const storedPath = localStorage.getItem("learning-path")
+        if (storedPath) {
+          const storedPathParsed = JSON.parse(storedPath)
+          const currentPath = getLearningPath(storedPathParsed?.pathName)
+          if (currentPath) {
+            setPath(currentPath)
+            setCurrentStep(storedPathParsed?.currentStep || 0)
+          }
         }
       }
     }
   }
 
-  if (!path) {
-    initPath()
-  }
+  useEffect(() => {
+    if (isBrowser && !path) {
+      initPath()
+    }
+  }, [isBrowser])
 
   return (
     <LearningPathContext.Provider

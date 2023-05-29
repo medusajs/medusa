@@ -79,5 +79,6 @@ const paths: LearningPathType[] = [
 
 export const getLearningPaths = () => paths
 
-export const getLearningPath = (pathName: string) =>
-  paths.find((path) => path.name === pathName)
+export const getLearningPath = (
+  pathName: string
+): LearningPathType | undefined => paths.find((path) => path.name === pathName)
