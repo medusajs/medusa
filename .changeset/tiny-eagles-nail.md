@@ -1,5 +1,5 @@
 ---
-"medusa-file-local": patch
+"@medusajs/file-local": patch
 ---
 
-feat(medusa-file-local): Add plugin for local file storage
+feat(file-local): Add plugin for local file storage
