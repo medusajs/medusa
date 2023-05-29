@@ -16,10 +16,11 @@ const NotificationContainer = () => {
   }
 
   const renderFilteredNotifications = (
-    condition: (notificaiton: NotificationItemType) => boolean
+    condition: (notificaiton: NotificationItemType) => boolean,
+    className?: string
   ) => {
     return (
-      <TransitionGroup>
+      <TransitionGroup className={className}>
         {notifications.filter(condition).map((notification) => (
           <CSSTransition
             key={notification.id}
@@ -45,16 +46,14 @@ const NotificationContainer = () => {
 
   return (
     <>
-      <div className="tw-flex tw-fixed tw-flex-col tw-gap-0.5 tw-right-1 tw-top-1 tw-z-[400]">
-        {renderFilteredNotifications(
-          (notification) => notification.placement === "top"
-        )}
-      </div>
-      <div className="tw-flex tw-flex-col tw-gap-0.5 tw-fixed tw-right-1 tw-bottom-1 tw-z-[400]">
-        {renderFilteredNotifications(
-          (notification) => notification.placement !== "top"
-        )}
-      </div>
+      {renderFilteredNotifications(
+        (notification) => notification.placement === "top",
+        "tw-flex tw-fixed tw-flex-col tw-gap-0.5 tw-right-1 tw-top-1 tw-z-[400]"
+      )}
+      {renderFilteredNotifications(
+        (notification) => notification.placement !== "top",
+        "tw-flex tw-flex-col tw-gap-0.5 tw-fixed tw-right-1 tw-bottom-1 tw-z-[400]"
+      )}
     </>
   )
 }
