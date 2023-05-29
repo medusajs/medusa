@@ -1,17 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/admin/tax-rates creates a tax rate 1`] = `
-Object {
-  "code": "tricks",
-  "created_at": Any<String>,
-  "id": StringMatching /\\^txr_\\*/,
-  "name": "special",
-  "rate": null,
-  "region_id": "test-region",
-  "updated_at": Any<String>,
-}
-`;
-
 exports[`/admin/tax-rates deletes a tax rate 1`] = `
 Object {
   "deleted": true,
