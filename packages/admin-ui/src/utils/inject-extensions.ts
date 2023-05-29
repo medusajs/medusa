@@ -86,6 +86,9 @@ async function writeTailwindConfigContent(
   const content = resolve(basePath, "tailwind.content.js")
   const config = resolve(basePath, "tailwind.config.js")
 
+  // Ensure that contet file path exists before writing to it, otherwise create it
+  await fse.ensureFile(content)
+
   // In case there are no extensions, we write an empty module
   if (!extensionPaths || extensionPaths.length === 0) {
     const empty = dedent`module.exports = {
