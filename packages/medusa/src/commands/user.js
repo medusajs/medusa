@@ -5,8 +5,16 @@ import express from "express"
 import { track } from "medusa-telemetry"
 
 import loaders from "../loaders"
+import Logger from "../loaders/logger"
 
-export default async function ({ directory, id, email, password, keepAlive }) {
+export default async function ({
+  directory,
+  id,
+  email,
+  password,
+  keepAlive,
+  invite,
+}) {
   track("CLI_USER", { with_id: !!id })
   const app = express()
   try {
@@ -14,6 +22,16 @@ export default async function ({ directory, id, email, password, keepAlive }) {
       directory,
       expressApp: app,
     })
+
+    if (invite) {
+      const inviteService = container.resolve("inviteService")
+      await inviteService.create(email, "admin")
+      const invite = await inviteService.list({
+        user_email: email,
+      })
+      Logger.info(`Invite token: ${invite[0].token}`)
+      return
+    }
 
     const userService = container.resolve("userService")
     await userService.create({ id, email }, password)
