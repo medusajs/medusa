@@ -4,8 +4,7 @@ const ReservationsFeatureFlag: FlagSettings = {
   key: "reservations",
   default_val: false,
   env_key: "MEDUSA_FF_RESERVATIONS",
-  description:
-    "Enable Medusa to collect data on usage, errors and performance for the purpose of improving the product",
+  description: "[WIP] Enable the reservations feature from the Inventory Module",
 }
 
 export default ReservationsFeatureFlag
