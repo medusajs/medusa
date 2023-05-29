@@ -1,0 +1,22 @@
+apis:
+  admin:
+    root: ./docs/api/admin/openapi.yaml
+  store:
+    root: ./docs/api/store/openapi.yaml
+
+theme:
+  openapi:
+    theme:
+      colors:
+        primary:
+          dark: "#161618"
+      sidebar:
+        width: "250px"
+    disableSearch: true
+    expandResponses: "200,204"
+    generatedPayloadSamplesMaxDepth: 4
+    hideRequestPayloadSample: true
+    nativeScrollbars: true
+    requiredPropsFirst: true
+    showObjectSchemaExamples: true
+    sortTagsAlphabetically: true
