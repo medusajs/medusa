@@ -183,7 +183,7 @@ export class AdminPostTaxRatesTaxRateReq {
 
   @IsOptional()
   @IsNumber()
-  rate?: number
+  rate?: number | null
 
   @IsOptional()
   @IsArray()
