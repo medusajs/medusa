@@ -16,7 +16,7 @@ theme:
         backgroundColor: "#1C1C1F"
     disableSearch: true
     expandResponses: "200,204"
-    generatedPayloadSamplesMaxDepth: 4
+    generatedPayloadSamplesMaxDepth: 2
     hideRequestPayloadSample: true
     nativeScrollbars: true
     requiredPropsFirst: true
