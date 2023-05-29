@@ -134,6 +134,9 @@ async function writeExtensionsEntry(
 ) {
   const entrypoint = resolve(basePath, "src", "extensions.ts")
 
+  // Ensure that entrypoint file path exists before writing to it, otherwise create it
+  await fse.ensureFile(entrypoint)
+
   // In case there are no extensions, we write an empty module
   if (!extensionPaths || extensionPaths.length === 0) {
     const empty = dedent`
