@@ -9,14 +9,9 @@ import {
   ProductServiceInitializeCustomDataLayerOptions,
   ProductServiceInitializeOptions,
 } from "../types"
-import { GatewayService } from "@services"
-import loadContainer from "../loaders/container"
-import loadConnection from "../loaders/connection"
-import * as ProductModels from "@models"
+import { moduleDefinition } from "../module-definition"
 
-const service = GatewayService
-const loaders = [loadContainer, loadConnection] as any
-const models = Object.values(ProductModels)
+const definition = moduleDefinition
 
 export const initialize = async (
   options?:
@@ -33,11 +28,7 @@ export const initialize = async (
     serviceKey,
     "@medusajs/product",
     options as InternalModuleDeclaration | ExternalModuleDeclaration,
-    {
-      service,
-      loaders,
-      models,
-    },
+    definition,
     injectedDependencies
   )
 
