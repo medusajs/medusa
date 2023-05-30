@@ -1,9 +1,10 @@
 import fetch from "node-fetch"
-import uuidv4 from "uuid/v4"
-import { getConfigStore } from "./get-config-store"
+import { v4 as uuidv4 } from "uuid"
+import { getConfigStore } from "./get-config-store.js"
+import medusaPackage from "../../package.json" assert { type: "json" }
 
 const store = getConfigStore()
-const medusaCliVersion = require(`../package.json`).version
+const medusaCliVersion = medusaPackage.version
 
 const analyticsApi =
   process.env.MEDUSA_TELEMETRY_API ||
@@ -43,5 +44,7 @@ export const track = (eventType: string, args?: any): void => {
         },
       ],
     }),
-  }).catch(() => {}) /* do nothing, it's telemetry */
+  }).catch(() => {
+    /* do nothing, it's telemetry */
+  })
 }
