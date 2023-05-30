@@ -9,15 +9,13 @@ import {
 import { MedusaError } from "@medusajs/utils"
 
 import { EntitySchema } from "@mikro-orm/core"
-import { MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql"
 
 import * as ProductModels from "@models"
 import {
   ProductServiceInitializeCustomDataLayerOptions,
   ProductServiceInitializeOptions,
 } from "../types"
-import { loadDatabaseConfig } from "../utils/load-database-config"
-import { TSMigrationGenerator } from "@mikro-orm/migrations"
+import { createConnection, loadDatabaseConfig } from "../utils"
 
 export default async (
   {
@@ -59,31 +57,7 @@ async function loadDefault({ database, container }) {
   }
 
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
-
-  const orm = await MikroORM.init<PostgreSqlDriver>({
-    discovery: { disableDynamicFileAccess: true },
-    entities,
-    debug: process.env.NODE_ENV === "development",
-    baseDir: process.cwd(),
-    clientUrl: database.clientUrl,
-    schema: database.schema ?? "public",
-    driverOptions: database.driverOptions ?? {
-      connection: { ssl: true },
-    },
-    tsNode: process.env.APP_ENV === "development",
-    type: "postgresql",
-    migrations: {
-      path: "../migrations",
-      pathTs: "../migrations",
-      glob: "!(*.d).{js,ts}",
-      silent: true,
-      dropTables: true,
-      transactional: true,
-      allOrNothing: true,
-      safe: false,
-      generator: TSMigrationGenerator,
-    },
-  })
+  const orm = await createConnection(database, entities)
 
   container.register({
     manager: asValue(orm.em.fork()),

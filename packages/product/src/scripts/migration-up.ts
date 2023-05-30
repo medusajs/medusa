@@ -1,43 +1,44 @@
-import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/types"
+import { LoaderOptions } from "@medusajs/types"
 import {
   ProductServiceInitializeCustomDataLayerOptions,
   ProductServiceInitializeOptions,
 } from "../types"
-import connectionLoader from "../loaders/connection"
-import { createMedusaContainer } from "@medusajs/utils"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { createConnection, loadDatabaseConfig } from "../utils"
+import * as ProductModels from "@models"
+import { EntitySchema } from "@mikro-orm/core"
 
 /**
- * This scripts is only valid for mikro orm managers. If a user provide a custom manager
+ * This script is only valid for mikro orm managers. If a user provide a custom manager
  * he is in charge of running the migrations.
  * @param options
  * @param logger
  * @param moduleDeclaration
  */
-export async function runMigrations(
-  {
-    options,
-    logger,
-  }: Pick<
-    LoaderOptions<
-      | ProductServiceInitializeOptions
-      | ProductServiceInitializeCustomDataLayerOptions
-    >,
-    "options" | "logger"
+export async function runMigrations({
+  options,
+  logger,
+}: Pick<
+  LoaderOptions<
+    | ProductServiceInitializeOptions
+    | ProductServiceInitializeCustomDataLayerOptions
   >,
-  moduleDeclaration?: InternalModuleDeclaration
-) {
-  const container = createMedusaContainer()
-  await connectionLoader({ options, logger, container }, moduleDeclaration)
+  "options" | "logger"
+>) {
+  const dbData = loadDatabaseConfig(options)
+  const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
-  const manager: SqlEntityManager = container.resolve("manager")
+  const orm = await createConnection(dbData, entities)
 
   try {
-    const migrator = manager.getPlatform().getMigrator(manager)
+    const migrator = orm.getMigrator()
+
+    console.log("Running migrations", migrator)
     await migrator.up()
 
     logger?.info("Product module migration executed")
   } catch (error) {
     logger?.error(`Product module migration failed to run - Error: ${error}`)
   }
+
+  await orm.close()
 }
