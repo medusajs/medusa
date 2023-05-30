@@ -53,7 +53,7 @@ export type ModuleResolution = {
   options?: Record<string, unknown>
   dependencies?: string[]
   moduleDeclaration?: InternalModuleDeclaration | ExternalModuleDeclaration
-  moduleDefinition?: any
+  moduleExports?: ModuleExports
 }
 
 export type ModuleDefinition = {

@@ -26,7 +26,7 @@ export async function loadInternalModule(
   let loadedModule: ModuleExports
   try {
     loadedModule =
-      resolution.moduleDefinition ??
+      resolution.moduleExports ??
       (await import(resolution.resolutionPath as string)).default
   } catch (error) {
     if (

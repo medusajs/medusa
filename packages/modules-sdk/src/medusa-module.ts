@@ -3,6 +3,7 @@ import {
   InternalModuleDeclaration,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  ModuleExports,
 } from "@medusajs/types"
 import { createMedusaContainer } from "@medusajs/utils"
 import { asValue } from "awilix"
@@ -22,7 +23,7 @@ export class MedusaModule {
     moduleKey: string,
     defaultPath: string,
     declaration?: InternalModuleDeclaration | ExternalModuleDeclaration,
-    moduleDefinition?: any,
+    moduleExports?: ModuleExports,
     injectedDependencies?: Record<string, any>
   ): Promise<{
     [key: string]: any
@@ -50,7 +51,7 @@ export class MedusaModule {
     }
 
     const moduleResolutions = registerMedusaModule(moduleKey, modDeclaration!)
-    moduleResolutions[moduleKey].moduleDefinition = moduleDefinition
+    moduleResolutions[moduleKey].moduleExports = moduleExports
 
     await moduleLoader({
       container,
