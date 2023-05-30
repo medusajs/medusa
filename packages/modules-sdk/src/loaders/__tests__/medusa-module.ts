@@ -19,8 +19,6 @@ jest.mock("./../../loaders", () => ({
 
 describe("Medusa Module", () => {
   beforeEach(() => {
-    ;(MedusaModule as any).instances_ = new Map()
-
     jest.resetModules()
     jest.clearAllMocks()
   })

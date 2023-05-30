@@ -5,8 +5,10 @@ import { Product } from "@models"
 import * as CustomRepositories from "../__fixtures__/module"
 import { ProductRepository } from "../__fixtures__/module"
 import { productsData } from "../__fixtures__/product/data"
+import { MedusaModule } from "@medusajs/modules-sdk"
 
 const beforeEach_ = async () => {
+  ;(MedusaModule as any).instances_ = new Map()
   await TestDatabase.setupDatabase()
   return await TestDatabase.forkManager()
 }
