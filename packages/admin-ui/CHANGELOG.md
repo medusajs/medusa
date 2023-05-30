@@ -1,5 +1,28 @@
 # @medusajs/admin-ui
 
+## 1.8.7
+
+### Patch Changes
+
+- [#4071](https://github.com/medusajs/medusa/pull/4071) [`0476f5251`](https://github.com/medusajs/medusa/commit/0476f52519237c622b37d29de0718f9774b6add7) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): update edit allocation modal design
+
+- [#4184](https://github.com/medusajs/medusa/pull/4184) [`0f87d3d64`](https://github.com/medusajs/medusa/commit/0f87d3d642b56bf19de8136e1f5bfedf364c5193) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(medusa,admin-ui): Add reservations FF
+
+- [#4173](https://github.com/medusajs/medusa/pull/4173) [`9a46c11f2`](https://github.com/medusajs/medusa/commit/9a46c11f2acab1eba10c2cad6854c0a7f4a0ee13) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Ensures that the default invite link uses the **BASE** in constructing the link if it exists
+
+- [#4163](https://github.com/medusajs/medusa/pull/4163) [`f47b11293`](https://github.com/medusajs/medusa/commit/f47b11293e273d9a5a5238e5114c9a3a530ecf1b) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Delete variant
+
+- [#4051](https://github.com/medusajs/medusa/pull/4051) [`294576949`](https://github.com/medusajs/medusa/commit/294576949792f8c4dc2a8c1a03fdc9db73a8a00e) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): fix allow_backorder updates
+
+- [#4180](https://github.com/medusajs/medusa/pull/4180) [`5988fa8f4`](https://github.com/medusajs/medusa/commit/5988fa8f4ca1c5538e4b48cfe9b600bf43037998) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Omit purchasable variant prop on duplicate
+
+- [#4081](https://github.com/medusajs/medusa/pull/4081) [`4f3c8f5d7`](https://github.com/medusajs/medusa/commit/4f3c8f5d70b5ae4a11e9d4a2fea4a8410b2daf47) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa,client-types,medusa-js,admin-ui,medusa-react): add reservation table and creation
+
+- [#4178](https://github.com/medusajs/medusa/pull/4178) [`063d9b6d5`](https://github.com/medusajs/medusa/commit/063d9b6d5535e548356e8b47656371a8fbc54936) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): On duplicate product ensure order of variant options matches product options
+
+- Updated dependencies [[`4f3c8f5d7`](https://github.com/medusajs/medusa/commit/4f3c8f5d70b5ae4a11e9d4a2fea4a8410b2daf47)]:
+  - medusa-react@9.0.0
+
 ## 1.8.6
 
 ### Patch Changes
