@@ -21,27 +21,14 @@ export function loadDatabaseConfig(
     | ProductServiceInitializeOptions
     | ProductServiceInitializeCustomDataLayerOptions
 ): ProductServiceInitializeOptions["database"] {
-  const defaultDriverOptions = process.env.NODE_ENV?.match(/prod/i)
-    ? {
-        connection: {
-          ssl: {
-            rejectUnauthorized: false,
-          },
-        },
-      }
-    : process.env.NODE_ENV?.match(/dev/i)
-    ? {
-        connection: {
-          ssl: false,
-        },
-      }
-    : {}
+  const clientUrl = getEnv("POSTGRES_URL")
 
   const database: ProductServiceInitializeOptions["database"] = {
     clientUrl: getEnv("POSTGRES_URL"),
     schema: getEnv("POSTGRES_SCHEMA") ?? "public",
     driverOptions: JSON.parse(
-      getEnv("POSTGRES_DRIVER_OPTIONS") || JSON.stringify(defaultDriverOptions)
+      getEnv("POSTGRES_DRIVER_OPTIONS") ||
+        JSON.stringify(getDefaultDriverOptions(clientUrl))
     ),
   }
 
@@ -52,4 +39,32 @@ export function loadDatabaseConfig(
   }
 
   return database
+}
+
+function getDefaultDriverOptions(
+  clientUrl: string
+): ProductServiceInitializeOptions["database"]["driverOptions"] {
+  const localOptions = {
+    connection: {
+      ssl: false,
+    },
+  }
+
+  const remoteOptions = {
+    connection: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
+  }
+
+  if (clientUrl) {
+    return clientUrl.match(/localhost/i) ? localOptions : remoteOptions
+  }
+
+  return process.env.NODE_ENV?.match(/prod/i)
+    ? remoteOptions
+    : process.env.NODE_ENV?.match(/dev/i)
+    ? localOptions
+    : {}
 }
