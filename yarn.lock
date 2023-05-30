@@ -6298,6 +6298,7 @@ __metadata:
     moment: ^2.29.4
     pluralize: ^8.0.0
     postcss: ^8.4.21
+    prism-react-renderer: ^2.0.4
     query-string: ^8.1.0
     react: ^18.2.0
     react-collapsible: ^2.8.3
@@ -12364,6 +12365,13 @@ __metadata:
   version: 1.0.1
   resolution: "@types/pretty-hrtime@npm:1.0.1"
   checksum: e990110a3626e987319092c5149d5ea244785b83fbbd8e62605714ec1fa4317a3524ae0b6381cdc2ca92619d9a451b3fe9ff4085c42826f5398e3380d3031bff
+  languageName: node
+  linkType: hard
+
+"@types/prismjs@npm:^1.26.0":
+  version: 1.26.0
+  resolution: "@types/prismjs@npm:1.26.0"
+  checksum: dce1388a626c20b95fa2715917deef5a401eec33e9e181f202840ee3b3c7d8a84d5558c834af4c29b8e007741a6a18639b074db8ecccdd6e7de15280fc4dfdd2
   languageName: node
   linkType: hard
 
@@ -34477,6 +34485,18 @@ __metadata:
   version: 1.0.3
   resolution: "pretty-hrtime@npm:1.0.3"
   checksum: 67cb3fc283a72252b49ac488647e6a01b78b7aa1b8f2061834aa1650691229081518ef3ca940f77f41cc8a8f02ba9eeb74b843481596670209e493062f2e89e0
+  languageName: node
+  linkType: hard
+
+"prism-react-renderer@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "prism-react-renderer@npm:2.0.4"
+  dependencies:
+    "@types/prismjs": ^1.26.0
+    clsx: ^1.2.1
+  peerDependencies:
+    react: ">=16.0.0"
+  checksum: 37b0fd3f6f646d471863e2a11814fbfb9a5a4944bcb280b86ff52898a1d4fb4e87e01d36af8d6e6eb5cf06e3b9d93a6bb169c3c742d4f03667932894afd3f877
   languageName: node
   linkType: hard
 

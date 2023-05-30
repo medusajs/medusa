@@ -10,11 +10,13 @@ import UploadIcon from "../../../components/fundamentals/icons/upload-icon"
 import BodyCard from "../../../components/organisms/body-card"
 import TableViewHeader from "../../../components/organisms/custom-table-header"
 import ExportModal from "../../../components/organisms/export-modal"
+import WidgetContainer from "../../../components/organisms/widget-container"
 import AddCollectionModal from "../../../components/templates/collection-modal"
 import CollectionsTable from "../../../components/templates/collections-table"
 import ProductTable from "../../../components/templates/product-table"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
+import { useWidgets } from "../../../providers/injection-zone-provider"
 import { usePolling } from "../../../providers/polling-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
 import ImportProducts from "../batch-job/import"
@@ -30,7 +32,10 @@ const Overview = () => {
     state: createProductState,
     close: closeProductCreate,
     open: openProductCreate,
-  } = useToggleState()
+  } = useToggleState(
+    !location.search.includes("view=collections") &&
+      location.search.includes("modal=new")
+  )
 
   const { resetInterval } = usePolling()
   const createBatchJob = useAdminCreateBatchJob()
@@ -38,6 +43,8 @@ const Overview = () => {
   const notification = useNotification()
 
   const createCollection = useAdminCreateCollection()
+
+  const { getWidgets } = useWidgets()
 
   useEffect(() => {
     if (location.search.includes("?view=collections")) {
@@ -110,13 +117,19 @@ const Overview = () => {
     open: openExportModal,
     close: closeExportModal,
     state: exportModalOpen,
-  } = useToggleState(false)
+  } = useToggleState(
+    !location.search.includes("view=collections") &&
+      location.search.includes("modal=export")
+  )
 
   const {
     open: openImportModal,
     close: closeImportModal,
     state: importModalOpen,
-  } = useToggleState(false)
+  } = useToggleState(
+    !location.search.includes("view=collections") &&
+      location.search.includes("modal=import")
+  )
 
   const handleCreateCollection = async (data, colMetadata) => {
     const metadata = colMetadata
@@ -164,6 +177,16 @@ const Overview = () => {
   return (
     <>
       <div className="flex h-full grow flex-col">
+        {getWidgets("product.list.before").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              injectionZone={"product.list.before"}
+              widget={w}
+              entity={undefined}
+            />
+          )
+        })}
         <div className="flex w-full grow flex-col">
           <BodyCard
             forceDropdown={false}
@@ -181,6 +204,16 @@ const Overview = () => {
           </BodyCard>
           <Spacer />
         </div>
+        {getWidgets("product.list.after").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              injectionZone={"product.list.after"}
+              widget={w}
+              entity={undefined}
+            />
+          )
+        })}
       </div>
 
       {showNewCollection && (
