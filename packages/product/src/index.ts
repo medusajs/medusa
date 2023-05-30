@@ -1,7 +1,7 @@
 // import migrations from "./migrations"
 // import { revertMigration, runMigrations } from "./migrations/run-migration"
 
-import moduleDefinition from "@medusajs/inventory"
+import { moduleDefinition } from "./module-definition"
 
 export default moduleDefinition
 export * from "./initialize"
