@@ -252,10 +252,19 @@ export const MoneyAmountRepository = dataSource
         include_tax_inclusive_pricing
       )
 
-      return [result[0][variant_id], result[1]]
+      return [result[variant_id], result[1]]
     },
 
-    async findManyForVariantsInRegion(
+    // TODO: create a new method findManyAndCountForVariantsInRegion and make this method return without a count
+    // both can use a protected method that will build the query builder and they will just have to call the appropriate method
+    // on the query builder (getMany/getManyAndCount.
+    // Finally remove the shouldCount parameter
+    async findManyForVariantsInRegion<
+      TShouldCount extends boolean = true,
+      TResult = TShouldCount extends true
+        ? [Record<string, MoneyAmount[]>, number]
+        : Record<string, MoneyAmount[]>
+    >(
       variant_ids: string | string[],
       region_id?: string,
       currency_code?: string,
@@ -263,7 +272,7 @@ export const MoneyAmountRepository = dataSource
       include_discount_prices?: boolean,
       include_tax_inclusive_pricing = false,
       shouldCount = true
-    ): Promise<[Record<string, MoneyAmount[]>, number]> {
+    ): Promise<TResult> {
       variant_ids = Array.isArray(variant_ids) ? variant_ids : [variant_ids]
 
       const date = new Date()
@@ -342,7 +351,9 @@ export const MoneyAmountRepository = dataSource
 
       const groupedPrices = groupBy(prices, "variant_id")
 
-      return [groupedPrices, count]
+      return (shouldCount
+        ? [groupedPrices, count]
+        : groupedPrices) as unknown as TResult
     },
 
     async updatePriceListPrices(

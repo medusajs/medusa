@@ -113,7 +113,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       this.moneyAmountRepository_
     )
 
-    const [variantsPrices] = await moneyRepo.findManyForVariantsInRegion(
+    const variantsPrices = await moneyRepo.findManyForVariantsInRegion<false>(
       data.map((d) => d.variantId),
       context.region_id,
       context.currency_code,
@@ -214,7 +214,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       this.moneyAmountRepository_
     )
 
-    const [variantsPrices] = await moneyRepo.findManyForVariantsInRegion(
+    const variantsPrices = await moneyRepo.findManyForVariantsInRegion<false>(
       data.map((d) => d.variantId),
       context.region_id,
       context.currency_code,
