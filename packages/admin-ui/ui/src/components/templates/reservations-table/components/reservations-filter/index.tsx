@@ -2,23 +2,23 @@ import * as RadixCollapsible from "@radix-ui/react-collapsible"
 import * as RadixPopover from "@radix-ui/react-popover"
 
 import React, { useEffect, useState } from "react"
-
-import Button from "../../../../fundamentals/button"
-import FilterDropdownContainer from "../../../../molecules/filter-dropdown/container"
-import Switch from "../../../../atoms/switch"
-import clsx from "clsx"
-import InputField from "../../../../molecules/input"
-import TagDotIcon from "../../../../fundamentals/icons/tag-dot-icon"
-import { CalendarComponent } from "../../../../atoms/date-picker/date-picker"
-import moment from "moment"
-import CalendarIcon from "../../../../fundamentals/icons/calendar-icon"
 import { useAdminInventoryItems, useAdminUsers } from "medusa-react"
-import { User } from "@medusajs/medusa"
-import CheckIcon from "../../../../fundamentals/icons/check-icon"
-import { InventoryItemDTO } from "@medusajs/types"
-import CrossIcon from "../../../../fundamentals/icons/cross-icon"
-import { removeNullish } from "../../../../../utils/remove-nullish"
+
 import AdjustmentsIcon from "../../../../fundamentals/icons/adjustments-icon"
+import Button from "../../../../fundamentals/button"
+import { CalendarComponent } from "../../../../atoms/date-picker/date-picker"
+import CalendarIcon from "../../../../fundamentals/icons/calendar-icon"
+import CheckIcon from "../../../../fundamentals/icons/check-icon"
+import CrossIcon from "../../../../fundamentals/icons/cross-icon"
+import FilterDropdownContainer from "../../../../molecules/filter-dropdown/container"
+import InputField from "../../../../molecules/input"
+import { InventoryItemDTO } from "@medusajs/types"
+import Switch from "../../../../atoms/switch"
+import TagDotIcon from "../../../../fundamentals/icons/tag-dot-icon"
+import { User } from "@medusajs/medusa"
+import clsx from "clsx"
+import moment from "moment"
+import { removeNullish } from "../../../../../utils/remove-nullish"
 
 type PasswordlessUser = Omit<User, "password_hash">
 
@@ -72,7 +72,7 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
           />
           <TextFilterItem
             title="Description"
-            value={tempState.additionalFilters.q}
+            value={tempState.additionalFilters.description}
             options={[
               { label: "Equals", value: "equals" },
               { label: "Contains", value: "contains" },
@@ -81,7 +81,9 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
               setTempState((state) => {
                 return {
                   ...state,
-                  q: val,
+                  additionalFilters: {
+                    description: val,
+                  },
                 }
               })
             }}
@@ -752,7 +754,7 @@ const CollapsibleWrapper = ({
 } & React.HTMLAttributes<HTMLDivElement>) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
   return (
-    <div className={clsx("w-full border-b")}>
+    <div className={clsx("border-grey-5 w-full border-b")}>
       <RadixCollapsible.Root
         defaultOpen={defaultOpen}
         onOpenChange={(open) => {
@@ -763,7 +765,7 @@ const CollapsibleWrapper = ({
       >
         <RadixCollapsible.Trigger
           className={clsx(
-            "hover:bg-grey-5 text-grey-60 flex w-full cursor-pointer items-center justify-between rounded py-1.5 px-3"
+            "text-grey-50 flex w-full cursor-pointer items-center justify-between rounded py-1.5 px-3"
           )}
         >
           <p>{title}</p>

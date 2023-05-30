@@ -1,11 +1,12 @@
+import {
+  DateComparisonOperator,
+  NumericalComparisonOperator,
+  StringComparisonOperator,
+} from "@medusajs/types"
 import { useMemo, useReducer } from "react"
 
 import qs from "qs"
 import { relativeDateFormatToTimestamp } from "../../../utils/time"
-import {
-  DateComparisonOperator,
-  NumericalComparisonOperator,
-} from "@medusajs/types"
 
 type ReservationDateFilter = null | {
   gt?: string
@@ -35,6 +36,7 @@ type ReservationAdditionalFilters = {
   created_at?: DateComparisonOperator
   created_by?: string[]
   location_id?: string
+  description?: string | StringComparisonOperator
 }
 
 type ReservationDefaultFilters = {
@@ -44,7 +46,7 @@ type ReservationDefaultFilters = {
 }
 
 const allowedFilters = [
-  "q",
+  "description",
   "offset",
   "limit",
   "location_id",
@@ -60,7 +62,7 @@ const stateFilterMap = {
   created_at: "created_at",
   date: "created_at",
   created_by: "created_by",
-  description: "q",
+  description: "description",
   query: "q",
   offset: "offset",
   limit: "limit",
@@ -189,6 +191,11 @@ export const useReservationFilters = (
 
   const getQueryObject = () => {
     const toQuery: any = { ...state.additionalFilters }
+
+    if (typeof toQuery.description?.["equals"] === "string") {
+      toQuery.description = toQuery.description["equals"]
+    }
+
     for (const [key, value] of Object.entries(state)) {
       if (key === "query") {
         if (value && typeof value === "string") {
@@ -287,8 +294,8 @@ const parseQueryString = (
             }
             break
           }
-          case "q": {
-            defaultVal.query = value as string
+          case "description": {
+            defaultVal.additionalFilters.description = value as string
             break
           }
           case "quantity": {
