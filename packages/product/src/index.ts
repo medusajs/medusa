@@ -4,6 +4,7 @@
 import { moduleDefinition } from "./module-definition"
 
 export default moduleDefinition
+
 export * from "./initialize"
 export * from "./types"
 export * from "./loaders"

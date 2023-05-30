@@ -11,8 +11,6 @@ import {
 } from "../types"
 import { moduleDefinition } from "../module-definition"
 
-const definition = moduleDefinition
-
 export const initialize = async (
   options?:
     | ProductServiceInitializeOptions
@@ -28,7 +26,7 @@ export const initialize = async (
     serviceKey,
     "@medusajs/product",
     options as InternalModuleDeclaration | ExternalModuleDeclaration,
-    definition,
+    moduleDefinition,
     injectedDependencies
   )
 
