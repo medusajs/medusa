@@ -14,7 +14,7 @@ Medusa's core package `@medusajs/medusa` is a Node.js backend built on top of [E
 
 The backend connects to a **database**, such as [PostgreSQL](https://www.postgresql.org/), to store the ecommerce store’s data. The tables in that database are represented by [**Entities**](../entities/overview.mdx), built on top of [Typeorm](https://typeorm.io/). Entities can also be reflected in the database using [**Migrations**](../entities/migrations/overview.mdx).
 
-The retrieval, manipulation, and other utility methods related to that entity are created inside a [**Service**](../services/overview.mdx). Services are TypeScript or JavaScript classes that, similar along with other resources, can be accessed throughout the Medusa backend through [**dependency injection**](./dependency-injection.md).
+The retrieval, manipulation, and other utility methods related to that entity are created inside a [**Service**](../services/overview.mdx). Services are TypeScript or JavaScript classes that, along with other resources, can be accessed throughout the Medusa backend through [**dependency injection**](./dependency-injection.md).
 
 The backend does not have any tightly-coupled frontend. Instead, it exposes [**Endpoints**](../endpoints/overview.mdx) which are REST APIs that frontends such as an admin or a storefront can use to communicate with the backend. Endpoints are [Express routes](https://expressjs.com/en/guide/routing.html).
 

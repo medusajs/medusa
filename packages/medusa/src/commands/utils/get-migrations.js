@@ -162,6 +162,11 @@ export default (directory, featureFlagRouter) => {
     const exists = existsSync(`${p.resolve}/migrations`)
     if (exists) {
       migrationDirs.push(`${p.resolve}/migrations/*.js`)
+      continue
+    }
+    const distExists = existsSync(`${p.resolve}/dist/migrations`)
+    if (distExists) {
+      migrationDirs.push(`${p.resolve}/dist/migrations/*.js`)
     }
   }
 
