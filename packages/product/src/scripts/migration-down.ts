@@ -18,9 +18,12 @@ export async function revertMigrations(
   {
     options,
     logger,
-  }: LoaderOptions<
-    | ProductServiceInitializeOptions
-    | ProductServiceInitializeCustomDataLayerOptions
+  }: Pick<
+    LoaderOptions<
+      | ProductServiceInitializeOptions
+      | ProductServiceInitializeCustomDataLayerOptions
+    >,
+    "options" | "logger"
   >,
   moduleDeclaration?: InternalModuleDeclaration
 ) {
