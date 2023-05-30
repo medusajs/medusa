@@ -17,6 +17,7 @@ import {
   ProductServiceInitializeOptions,
 } from "../types"
 import { loadDatabaseConfig } from "../utils/load-database-config"
+import { TSMigrationGenerator } from "@mikro-orm/migrations"
 
 export default async (
   {
@@ -60,7 +61,6 @@ async function loadDefault({ database, container }) {
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
   const orm = await MikroORM.init<PostgreSqlDriver>({
-    // entitiesTs: entities,
     discovery: { disableDynamicFileAccess: true },
     entities,
     debug: process.env.NODE_ENV === "development",
@@ -72,6 +72,17 @@ async function loadDefault({ database, container }) {
     },
     tsNode: process.env.APP_ENV === "development",
     type: "postgresql",
+    migrations: {
+      path: "../migrations",
+      pathTs: "../migrations",
+      glob: "!(*.d).{js,ts}",
+      silent: true,
+      dropTables: true,
+      transactional: true,
+      allOrNothing: true,
+      safe: false,
+      generator: TSMigrationGenerator,
+    },
   })
 
   container.register({
