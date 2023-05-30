@@ -1,4 +1,5 @@
 import { AdminPostStockLocationsReq, SalesChannel } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 import GeneralForm, { GeneralFormType } from "../components/general-form"
 import MetadataForm, {
   MetadataFormType,
@@ -38,6 +39,7 @@ type NewLocationForm = {
 }
 
 const NewLocation = ({ onClose }: { onClose: () => void }) => {
+  const { t } = useTranslation()
   const [accordionValue, setAccordionValue] = React.useState("general")
   const form = useForm<NewLocationForm>({
     defaultValues: {
@@ -111,12 +113,18 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
         )
       )
         .then(() => {
-          notification("Success", "Location added successfully", "success")
+          notification(
+            t("Success"),
+            t("Location added successfully"),
+            "success"
+          )
         })
         .catch(() => {
           notification(
-            "Error",
-            "Location was created successfully, but there was an error associating sales channels",
+            t("Error"),
+            t(
+              "Location was created successfully, but there was an error associating sales channels"
+            ),
             "error"
           )
         })
@@ -124,7 +132,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
           onClose()
         })
     } catch (err) {
-      notification("Error", getErrorMessage(err), "error")
+      notification(t("Error"), getErrorMessage(err), "error")
     }
   }
 
@@ -143,9 +151,11 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
             </Button>
             {isShowingClosePrompt && (
               <DeletePrompt
-                heading="Are you sure you want to cancel with unsaved changes"
-                confirmText="Yes, cancel"
-                cancelText="No, continue creating"
+                heading={t(
+                  "Are you sure you want to cancel with unsaved changes"
+                )}
+                confirmText={t("Yes, cancel")}
+                cancelText={t("No, continue creating")}
                 successText={false}
                 handleClose={closeClosePrompt}
                 onDelete={async () => onClose()}
@@ -158,7 +168,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 type="submit"
                 disabled={!isDirty}
               >
-                Add location
+                {t("Add location")}
               </Button>
             </div>
           </div>
@@ -166,7 +176,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
         <FocusModal.Main className="no-scrollbar flex w-full justify-center">
           <div className="medium:w-7/12 large:w-6/12 small:w-4/5 my-16 max-w-[700px]">
             <h1 className="mb-base text-grey-90 text-xlarge px-1 font-semibold">
-              Add new location
+              {t("Add new location")}
             </h1>
             <Accordion
               value={accordionValue}
@@ -175,17 +185,19 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
             >
               <Accordion.Item
                 value={"general"}
-                title={"General Information"}
+                title={t("General Information")}
                 required
               >
                 <p className="inter-base-regular text-grey-50">
-                  Specify the details about this location
+                  {t("Specify the details about this location")}
                 </p>
                 <div className="mt-xlarge gap-y-xlarge flex flex-col pb-0.5">
                   <GeneralForm form={nestedForm(form, "general")} />
                   <AddressForm form={nestedForm(form, "address")} />
                   <div>
-                    <h2 className="inter-base-semibold mb-base">Metadata</h2>
+                    <h2 className="inter-base-semibold mb-base">
+                      {t("Metadata")}
+                    </h2>
                     <MetadataForm form={nestedForm(form, "metadata")} />
                   </div>
                 </div>
@@ -196,8 +208,9 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                   title={"Sales Channels"}
                 >
                   <p className="inter-base-regular text-grey-50">
-                    Specify which Sales Channels this location's items can be
-                    purchased through.
+                    {t(
+                      "Specify which Sales Channels this location's items can be purchased through."
+                    )}
                   </p>
                   <div className="mt-xlarge flex">
                     <SalesChannelsForm

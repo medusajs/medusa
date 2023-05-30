@@ -1,15 +1,17 @@
 import moment from "moment"
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import StatusIndicator from "../../fundamentals/status-indicator"
 import IconTooltip from "../../molecules/icon-tooltip"
 import Table from "../../molecules/table"
 
 const useGiftCardTableColums = () => {
+  const { t } = useTranslation()
   const columns = useMemo(
     () => [
       {
-        Header: <div className="pl-2">Code</div>,
+        Header: <div className="pl-2">{t("Code")}</div>,
         accessor: "code",
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell
@@ -21,7 +23,7 @@ const useGiftCardTableColums = () => {
         ),
       },
       {
-        Header: "Order",
+        Header: t("Order"),
         accessor: "order",
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell
@@ -37,7 +39,7 @@ const useGiftCardTableColums = () => {
         ),
       },
       {
-        Header: "Original Amount",
+        Header: t("Original Amount"),
         accessor: "value",
         Cell: ({ row, cell: { value }, index }) => (
           <Table.Cell key={index}>
@@ -56,7 +58,7 @@ const useGiftCardTableColums = () => {
         ),
       },
       {
-        Header: "Balance",
+        Header: t("Balance"),
         accessor: "balance",
         Cell: ({ row, cell: { value }, index }) => (
           <Table.Cell key={index}>
@@ -69,11 +71,11 @@ const useGiftCardTableColums = () => {
               ) : (
                 <div className="flex items-center space-x-2">
                   <span>N / A</span>
-                  <IconTooltip content={"Region has been deleted"} />
+                  <IconTooltip content={t("Region has been deleted")} />
                 </div>
               )
             ) : (
-              <StatusIndicator title="None" variant="danger" />
+              <StatusIndicator title={t("None")} variant="danger" />
             )}
           </Table.Cell>
         ),
@@ -81,7 +83,7 @@ const useGiftCardTableColums = () => {
       {
         Header: () => (
           <div className="rounded-rounded flex w-full justify-end pr-2">
-            Created
+            {t("Created")}
           </div>
         ),
         accessor: "created_at",

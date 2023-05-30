@@ -1,5 +1,6 @@
 import { useAdminCreatePriceList, useAdminUpdatePriceList } from "medusa-react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import useNotification from "../../../../hooks/use-notification"
@@ -21,6 +22,7 @@ import {
 } from "../types"
 
 const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
+  const { t } = useTranslation()
   const { handleSubmit } = usePriceListForm()
   const navigate = useNavigate()
   const notification = useNotification()
@@ -48,7 +50,7 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
         navigate(`/a/pricing/${price_list.id}`)
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification(t("Error"), getErrorMessage(error), "error")
       },
     })
   }
@@ -63,7 +65,7 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
         navigate(`/a/pricing/${price_list.id}`)
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification(t("Error"), getErrorMessage(error), "error")
       },
     })
   }
@@ -75,11 +77,15 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
     }
     updatePriceList.mutate(data, {
       onSuccess: ({ price_list }) => {
-        notification("Success", "Successfully updated price list", "success")
+        notification(
+          t("Success"),
+          t("Successfully updated price list"),
+          "success"
+        )
         closeForm()
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification(t("Error"), getErrorMessage(error), "error")
       },
     })
   }
@@ -90,7 +96,7 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
         props.onClose && props.onClose()
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification(t("Error"), getErrorMessage(error), "error")
       },
     })
   }
@@ -101,31 +107,31 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
   switch (props.viewType) {
     case ViewType.CREATE:
       mainAction = {
-        label: "Publish price list",
+        label: t("Publish price list"),
         onClick: handleSubmit(onPublish),
       }
       secondaryAction = {
-        label: "Save as draft",
+        label: t("Save as draft"),
         onClick: handleSubmit(onSaveAsDraft),
       }
       break
     case ViewType.EDIT_DETAILS:
       mainAction = {
-        label: "Save changes",
+        label: t("Save changes"),
         onClick: handleSubmit(onUpdateDetails),
       }
       secondaryAction = {
-        label: "Cancel",
+        label: t("Cancel"),
         onClick: closeForm,
       }
       break
     case ViewType.EDIT_PRICES:
       mainAction = {
-        label: "Save changes",
+        label: t("Save changes"),
         onClick: handleSubmit(onUpdatePrices),
       }
       secondaryAction = {
-        label: "Cancel",
+        label: t("Cancel"),
         onClick: closeForm,
       }
       break

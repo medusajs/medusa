@@ -3,6 +3,7 @@ import Button from "../../../../../../components/fundamentals/button"
 import { LayeredModalContext } from "../../../../../../components/molecules/modal/layered-modal"
 import { DiscountConditionOperator } from "../../../../types"
 import { useDiscountForm } from "../../form/discount-form-context"
+import { useTranslation } from "react-i18next"
 
 type AddConditionFooterProps = {
   type:
@@ -22,6 +23,7 @@ const AddConditionFooter: React.FC<AddConditionFooterProps> = ({
   operator,
   onClose,
 }) => {
+  const { t } = useTranslation()
   const { pop, reset } = useContext(LayeredModalContext)
   const { updateCondition } = useDiscountForm()
 
@@ -35,7 +37,7 @@ const AddConditionFooter: React.FC<AddConditionFooterProps> = ({
           reset()
         }}
       >
-        Cancel
+        {t("Cancel")}
       </Button>
       <Button
         variant="primary"
@@ -49,7 +51,7 @@ const AddConditionFooter: React.FC<AddConditionFooterProps> = ({
           pop()
         }}
       >
-        Save and add more
+        {t("Save and add more")}
       </Button>
       <Button
         variant="primary"
@@ -60,7 +62,7 @@ const AddConditionFooter: React.FC<AddConditionFooterProps> = ({
           reset()
         }}
       >
-        Save and close
+        {t("Save and close")}
       </Button>
     </div>
   )

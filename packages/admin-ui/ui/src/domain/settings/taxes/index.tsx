@@ -1,6 +1,7 @@
 import { useAdminRegions } from "medusa-react"
 import { useCallback, useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import GearIcon from "../../../components/fundamentals/icons/gear-icon"
@@ -14,6 +15,7 @@ const Taxes = () => {
   const regId: string | undefined = params["*"]
 
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const { regions, isLoading } = useAdminRegions()
 
@@ -48,18 +50,18 @@ const Taxes = () => {
       <div>
         <BackButton
           path="/a/settings"
-          label="Back to settings"
+          label={t("Back to settings")}
           className="mb-xsmall"
         />
         <TwoSplitPane threeCols>
           <BodyCard
             forceDropdown
-            title="Regions"
-            subtitle="Select the region you wish to manage taxes for"
+            title={t("Regions")}
+            subtitle={t("Select the region you wish to manage taxes for")}
             actionables={[
               {
                 icon: <GearIcon />,
-                label: "Go to Region settings",
+                label: t("Go to Region settings"),
                 onClick: () => navigate("/a/settings/regions"),
               },
             ]}

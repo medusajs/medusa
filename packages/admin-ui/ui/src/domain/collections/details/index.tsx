@@ -5,6 +5,7 @@ import {
 } from "medusa-react"
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import EditIcon from "../../../components/fundamentals/icons/edit-icon"
@@ -20,10 +21,12 @@ import ViewProductsTable from "../../../components/templates/collection-product-
 import useNotification from "../../../hooks/use-notification"
 import Medusa from "../../../services/api"
 import { getErrorMessage } from "../../../utils/error-messages"
+import { useTranslation } from "react-i18next"
 
 const CollectionDetails = () => {
   const { id } = useParams()
 
+  const { t } = useTranslation()
   const { collection, isLoading, refetch } = useAdminCollection(id!)
   const deleteCollection = useAdminDeleteCollection(id!)
   const updateCollection = useAdminUpdateCollection(id!)
@@ -92,10 +95,10 @@ const CollectionDetails = () => {
       }
 
       setShowAddProducts(false)
-      notification("Success", "Updated products in collection", "success")
+      notification(t("Success"), t("Updated products in collection"), "success")
       refetch()
     } catch (error) {
-      notification("Error", getErrorMessage(error), "error")
+      notification(t("Error"), getErrorMessage(error), "error")
     }
   }
 
@@ -111,7 +114,7 @@ const CollectionDetails = () => {
         <BackButton
           className="mb-xsmall"
           path="/a/products?view=collections"
-          label="Back to Collections"
+          label={t("Back to Collections")}
         />
         <div className="rounded-rounded py-large px-xlarge border-grey-20 bg-grey-0 mb-large border">
           {isLoading || !collection ? (
@@ -129,12 +132,12 @@ const CollectionDetails = () => {
                     forceDropdown
                     actions={[
                       {
-                        label: "Edit Collection",
+                        label: t("Edit Collection"),
                         onClick: () => setShowEdit(true),
                         icon: <EditIcon size="20" />,
                       },
                       {
-                        label: "Delete",
+                        label: t("Delete"),
                         onClick: () => setShowDelete(!showDelete),
                         variant: "danger",
                         icon: <TrashIcon size="20" />,
@@ -148,7 +151,7 @@ const CollectionDetails = () => {
               </div>
               {collection.metadata && (
                 <div className="mt-large gap-y-base flex flex-col">
-                  <h3 className="inter-base-semibold">Metadata</h3>
+                  <h3 className="inter-base-semibold">{t("Metadata")}</h3>
                   <div>
                     <JSONView data={collection.metadata} />
                   </div>
@@ -161,14 +164,14 @@ const CollectionDetails = () => {
           title="Products"
           actions={[
             {
-              label: "Edit Products",
+              label: t("Edit Products"),
               icon: <EditIcon size="20" />,
               onClick: () => setShowAddProducts(!showAddProducts),
             },
           ]}
         >
           <p className="text-grey-50 inter-base-regular mt-xsmall mb-base">
-            To start selling, all you need is a name, price, and image.
+            {t("To start selling, all you need is a name, price, and image.")}
           </p>
           {collection && (
             <ViewProductsTable
@@ -190,10 +193,10 @@ const CollectionDetails = () => {
       {showDelete && (
         <DeletePrompt
           handleClose={() => setShowDelete(!showDelete)}
-          heading="Delete collection"
-          successText="Successfully deleted collection"
+          heading={t("Delete collection")}
+          successText={t("Successfully deleted collection")}
           onDelete={async () => handleDelete()}
-          confirmText="Yes, delete"
+          confirmText={t("Yes, delete")}
         />
       )}
       {showAddProducts && (

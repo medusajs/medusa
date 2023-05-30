@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import LockIcon from "../../../components/fundamentals/icons/lock-icon"
 import Input from "../../../components/molecules/input"
 import FormValidator from "../../../utils/form-validator"
@@ -18,6 +19,7 @@ export const EditTaxRateDetails = ({
   lockName = false,
   form,
 }: EditTaxRateProps) => {
+  const { t } = useTranslation()
   const {
     register,
     path,
@@ -26,14 +28,14 @@ export const EditTaxRateDetails = ({
 
   return (
     <div>
-      <p className="inter-base-semibold mb-base">Details</p>
+      <p className="inter-base-semibold mb-base">{t("Details")}</p>
       <Input
         disabled={lockName}
-        label="Name"
+        label={t("Name")}
         prefix={
           lockName ? <LockIcon size={16} className="text-grey-40" /> : undefined
         }
-        placeholder={lockName ? "Default" : "Rate name"}
+        placeholder={lockName ? t("Default") : t("Rate name")}
         {...register(path("name"), {
           required: !lockName ? FormValidator.required("Name") : undefined,
         })}
@@ -47,7 +49,7 @@ export const EditTaxRateDetails = ({
         max={100}
         step={0.01}
         formNoValidate
-        label="Tax Rate"
+        label={t("Tax Rate")}
         prefix="%"
         placeholder="12"
         {...register(path("rate"), {
@@ -62,7 +64,7 @@ export const EditTaxRateDetails = ({
       />
       <Input
         placeholder="1000"
-        label="Tax Code"
+        label={t("Tax Code")}
         {...register(path("code"), {
           required: FormValidator.required("Tax Code"),
         })}

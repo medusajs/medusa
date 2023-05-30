@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { adminStoreKeys, useAdminUpdateCurrency } from "medusa-react"
 import { useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Switch from "../../../../components/atoms/switch"
 import CoinsIcon from "../../../../components/fundamentals/icons/coins-icon"
 import useNotification from "../../../../hooks/use-notification"
@@ -18,6 +19,7 @@ type Props = {
 }
 
 const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
   const { mutate } = useAdminUpdateCurrency(currency.code)
   const { handleSubmit, control, reset } = useForm<CurrencyTaxSettingFormType>({
@@ -37,13 +39,17 @@ const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
   const onSubmit = handleSubmit((data: CurrencyTaxSettingFormType) => {
     mutate(data, {
       onSuccess: () => {
-        notification("Success", "Successfully updated currency", "success")
+        notification(
+          t("Success"),
+          t("Successfully updated currency"),
+          "success"
+        )
 
         // When we update a currency, we need to invalidate the store in order for this change to be reflected across admin
         queryClient.invalidateQueries(adminStoreKeys.all)
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification(t("Error"), getErrorMessage(error), "error")
         reset({
           includes_tax: currency.includes_tax,
         })
@@ -66,7 +72,9 @@ const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
           </div>
           {isDefault && (
             <div className="bg-grey-10 rounded-rounded px-xsmall py-[2px]">
-              <p className="inter-small-semibold text-grey-50">Default</p>
+              <p className="inter-small-semibold text-grey-50">
+                {t("Default")}
+              </p>
             </div>
           )}
         </div>

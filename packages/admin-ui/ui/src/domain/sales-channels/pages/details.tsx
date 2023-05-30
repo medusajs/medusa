@@ -8,6 +8,7 @@ import {
   useAdminStore,
   useAdminUpdateSalesChannel,
 } from "medusa-react"
+import { useTranslation } from "react-i18next"
 
 import { useNavigate, useParams } from "react-router-dom"
 import BackButton from "../../../components/atoms/back-button"
@@ -58,6 +59,7 @@ function ListIndicator(props: ListIndicatorProps) {
  * List indicator for disabled SC.
  */
 function DisabledLabel() {
+  const { t } = useTranslation()
   return (
     <div
       className="
@@ -67,7 +69,7 @@ function DisabledLabel() {
       h-[28px] w-[54px] items-center
       justify-center rounded-xl font-semibold"
     >
-      Draft
+      {t("Draft")}
     </div>
   )
 }
@@ -129,6 +131,7 @@ function SalesChannelsHeader(props: SalesChannelsHeaderProps) {
   const [showFilter, setShowFilter] = useState(false)
 
   const inputRef = useRef()
+  const { t } = useTranslation()
 
   const classes = {
     "translate-y-[-50px]": showFilter,
@@ -146,7 +149,7 @@ function SalesChannelsHeader(props: SalesChannelsHeaderProps) {
         <div className="h-[55px]">
           <div className="mb-1 flex items-center justify-between">
             <h2 className="text-xlarge text-grey-90 font-semibold">
-              Sales channels
+              {t("Sales channels")}
             </h2>
             <div className="flex items-center justify-between gap-4">
               <SearchIcon
@@ -162,7 +165,7 @@ function SalesChannelsHeader(props: SalesChannelsHeaderProps) {
             </div>
           </div>
           <div className="text-grey-50 text-small mb-6 block max-w-[100%] overflow-hidden truncate">
-            Control which products are available in which channels
+            {t("Control which products are available in which channels")}
           </div>
         </div>
 
@@ -172,7 +175,7 @@ function SalesChannelsHeader(props: SalesChannelsHeaderProps) {
             ref={inputRef}
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
-            placeholder="Search by title or description"
+            placeholder={t("Search by title or description")}
             className="remove-number-spinner leading-base text-grey-90 caret-violet-60 placeholder-grey-40 w-full bg-inherit font-normal outline-none outline-0"
             onBlur={() => setShowFilter(!!filterText)}
             autoComplete="off"
@@ -246,6 +249,7 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
     resetDetails,
     showProductsAdd,
   } = props
+  const { t } = useTranslation()
 
   const { mutate: deleteSalesChannel } = useAdminDeleteSalesChannel(
     salesChannel.id
@@ -259,8 +263,10 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
 
   const onDelete = async () => {
     const confirmed = await confirmation({
-      text: "Are you sure you want to delete this sales channel? The setup you made will be gone forever.",
-      heading: "Delete Channel",
+      text: t(
+        "Are you sure you want to delete this sales channel? The setup you made will be gone forever."
+      ),
+      heading: t("Delete Channel"),
       extraConfirmation: true,
       entityName: salesChannel.name,
     })
@@ -274,12 +280,12 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
   const actions = useMemo(() => {
     const _actions: ActionType[] = [
       {
-        label: "Edit general info",
+        label: t("Edit general info"),
         icon: <EditIcon size="20" />,
         onClick: openUpdateModal,
       },
       {
-        label: "Add products",
+        label: t("Add products"),
         icon: <PlusIcon />,
         onClick: () => showProductsAdd(),
       },
@@ -287,7 +293,7 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
 
     if (!isDefault) {
       _actions.push({
-        label: "Delete channel",
+        label: t("Delete channel"),
         icon: <TrashIcon size={20} />,
         variant: "danger",
         onClick: onDelete,
@@ -308,8 +314,8 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
             updateSalesChannel({ is_disabled: !salesChannel.is_disabled })
           }
           isDraft={salesChannel.is_disabled}
-          draftState="Disabled"
-          activeState="Enabled"
+          draftState={t("Disabled")}
+          activeState={t("Enabled")}
         />
         <Actionables forceDropdown={true} actions={actions} />
       </div>
@@ -371,6 +377,7 @@ function SalesChannelDetails(props: SalesChannelDetailsProps) {
  */
 function Details() {
   const { id: routeSalesChannelId } = useParams()
+  const { t } = useTranslation()
 
   const [filterText, setFilterText] = useState<string>()
   const [showCreateModal, setShowCreateModal] = useState(false)
@@ -448,7 +455,7 @@ function Details() {
     <div>
       <BackButton
         path="/a/settings"
-        label="Back to settings"
+        label={t("Back to settings")}
         className="mb-xsmall"
       />
 

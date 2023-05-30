@@ -2,6 +2,7 @@ import { AdminPostTaxRatesTaxRateReq, TaxRate } from "@medusajs/medusa"
 import { useAdminUpdateRegion, useAdminUpdateTaxRate } from "medusa-react"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import Button from "../../../components/fundamentals/button"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import Modal from "../../../components/molecules/modal"
@@ -35,6 +36,7 @@ const EditTaxRate = ({
   taxRate,
   onDismiss,
 }: EditTaxRateProps) => {
+  const { t } = useTranslation()
   const { mutate, isLoading } = useAdminUpdateTaxRate(taxRate.id)
 
   const [updatedRules, setUpdatedRules] = useState({})
@@ -72,11 +74,15 @@ const EditTaxRate = ({
 
     mutate(toSubmit, {
       onSuccess: () => {
-        notification("Success", "Successfully updated Tax Rate.", "success")
+        notification(
+          t("Success"),
+          t("Successfully updated Tax Rate."),
+          "success"
+        )
         onDismiss()
       },
       onError: (error) => {
-        notification("Error", getErrorMessage(error), "error")
+        notification(t("Error"), getErrorMessage(error), "error")
       },
     })
   })
@@ -120,7 +126,7 @@ const EditTaxRate = ({
           <EditTaxRateDetails form={nestedForm(form, "details")} />
         </div>
         <div>
-          <p className="inter-base-semibold mb-base">Overrides</p>
+          <p className="inter-base-semibold mb-base">{t("Overrides")}</p>
           {(product_types.length > 0 ||
             products.length > 0 ||
             shipping_options.length > 0) && (
@@ -144,10 +150,10 @@ const EditTaxRate = ({
                     )
                   }}
                   index={1}
-                  name="Product Rules"
-                  description={`Applies to ${products.length} product${
-                    products.length > 1 ? "s" : ""
-                  }`}
+                  name={t("Product Rules")}
+                  description={t("Applies to {count} productWithCount", {
+                    count: products.length,
+                  })}
                 />
               )}
               {product_types.length > 0 && (
@@ -172,10 +178,10 @@ const EditTaxRate = ({
                     )
                   }}
                   index={2}
-                  name="Product Type Rules"
-                  description={`Applies to ${
-                    product_types.length
-                  } product type${product_types.length > 1 ? "s" : ""}`}
+                  name={t("Product Type Rules")}
+                  description={t("Applies to {count} product typeWithCount", {
+                    count: product_types.length,
+                  })}
                 />
               )}
               {shipping_options.length > 0 && (
@@ -200,10 +206,13 @@ const EditTaxRate = ({
                     )
                   }}
                   index={3}
-                  name="Shipping Option Rules"
-                  description={`Applies to ${
-                    shipping_options.length
-                  } shipping option${shipping_options.length > 1 ? "s" : ""}`}
+                  name={t("Shipping Option Rules")}
+                  description={t(
+                    "Applies to {count} shipping optionWithCount",
+                    {
+                      count: shipping_options.length,
+                    }
+                  )}
                 />
               )}
             </div>
@@ -228,7 +237,7 @@ const EditTaxRate = ({
               size="medium"
               variant="secondary"
             >
-              <PlusIcon /> Add Overrides
+              <PlusIcon /> {t("Add Overrides")}
             </Button>
           )}
         </div>
@@ -242,7 +251,7 @@ const EditTaxRate = ({
             size="small"
             className="w-eventButton justify-center"
           >
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             type="submit"
@@ -252,7 +261,7 @@ const EditTaxRate = ({
             loading={isLoading}
             disabled={isLoading}
           >
-            Save
+            {t("Save")}
           </Button>
         </div>
       </Modal.Footer>

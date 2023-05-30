@@ -1,4 +1,5 @@
 import { Controller } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { NextSelect } from "../../../../../components/molecules/select/next-select"
 import { Option } from "../../../../../types/shared"
 import { NestedForm } from "../../../../../utils/nested-form"
@@ -19,6 +20,7 @@ const RegionProvidersForm = ({ form }: Props) => {
     path,
     formState: { errors },
   } = form
+  const { t } = useTranslation()
   const { fulfillmentProviderOptions, paymentProviderOptions } = useStoreData()
 
   return (
@@ -27,17 +29,17 @@ const RegionProvidersForm = ({ form }: Props) => {
         control={control}
         name={path("payment_providers")}
         rules={{
-          required: "Payment providers are required",
+          required: t("Payment providers are required"),
           minLength: {
             value: 1,
-            message: "Payment providers are required",
+            message: t("Payment providers are required"),
           },
         }}
         render={({ field: { value, onBlur, onChange } }) => {
           return (
             <NextSelect
-              label="Payment Providers"
-              placeholder="Choose payment providers..."
+              label={t("Payment Providers")}
+              placeholder={t("Choose payment providers...")}
               options={paymentProviderOptions}
               isMulti
               isClearable
@@ -56,17 +58,17 @@ const RegionProvidersForm = ({ form }: Props) => {
         control={control}
         name={path("fulfillment_providers")}
         rules={{
-          required: "Fulfillment providers are required",
+          required: t("Fulfillment providers are required"),
           minLength: {
             value: 1,
-            message: "Fulfillment providers are required",
+            message: t("Fulfillment providers are required"),
           },
         }}
         render={({ field: { onBlur, onChange, value } }) => {
           return (
             <NextSelect
-              label="Fulfillment Providers"
-              placeholder="Choose fulfillment providers..."
+              label={t("Fulfillment Providers")}
+              placeholder={t("Choose fulfillment providers...")}
               options={fulfillmentProviderOptions}
               required
               isMulti

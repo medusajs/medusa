@@ -3,6 +3,7 @@ import { LineItem } from "@medusajs/medusa"
 import { sum } from "lodash"
 import { ReservationItemDTO } from "@medusajs/types"
 import { useAdminStockLocations, useAdminVariantsInventory } from "medusa-react"
+import { useTranslation } from "react-i18next"
 import Tooltip from "../../../../components/atoms/tooltip"
 import CircleQuarterSolid from "../../../../components/fundamentals/icons/circle-quarter-solid"
 import WarningCircleIcon from "../../../../components/fundamentals/icons/warning-circle"
@@ -17,6 +18,7 @@ const ReservationIndicator = ({
   reservations?: ReservationItemDTO[]
   lineItem: LineItem
 }) => {
+  const { t } = useTranslation()
   const { variant, isLoading, isFetching } = useAdminVariantsInventory(
     lineItem.variant_id!,
     {
@@ -57,7 +59,9 @@ const ReservationIndicator = ({
               <div className="gap-y-base grid grid-cols-1 divide-y">
                 {!!awaitingAllocation && (
                   <span className="flex w-full items-center">
-                    {awaitingAllocation} items await allocation
+                    {t("{awaitingAllocation} items await allocation", {
+                      awaitingAllocation,
+                    })}
                   </span>
                 )}
                 {reservations?.map((reservation) => (
@@ -73,7 +77,7 @@ const ReservationIndicator = ({
               </div>
             ) : (
               <span className="flex w-full items-center">
-                This item has been fulfilled.
+                {t("This item has been fulfilled.")}
               </span>
             )}
           </div>
@@ -114,16 +118,20 @@ const EditAllocationButton = ({
   lineItem: LineItem
   onClick: () => void
 }) => {
+  const { t } = useTranslation()
   return (
     <div className="pt-base first:pt-0">
-      {`${reservation.quantity} item: ${locationName}`}
+      {t("{quantity} item: ${locationName}", {
+        quantity: reservation.quantity,
+        locationName,
+      })}
       <Button
         onClick={onClick}
         variant="ghost"
         size="small"
         className="mt-2 w-full border"
       >
-        Edit Allocation
+        {t("Edit Allocation")}
       </Button>
     </div>
   )

@@ -1,10 +1,12 @@
 import { useAdminCreateDiscount } from "medusa-react"
 import { useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { removeFalsy } from "../../../utils/remove-nullish"
 
 const useCopyPromotion = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const notification = useNotification()
   const createPromotion = useAdminCreateDiscount()
@@ -60,10 +62,10 @@ const useCopyPromotion = () => {
     await createPromotion.mutate(copy, {
       onSuccess: (result) => {
         navigate(`/a/discounts/${result.discount.id}`)
-        notification("Success", "Successfully copied discount", "success")
+        notification(t("Success"), t("Successfully copied discount"), "success")
       },
       onError: (err) => {
-        notification("Error", getErrorMessage(err), "error")
+        notification(t("Error"), getErrorMessage(err), "error")
       },
     })
   }

@@ -20,6 +20,7 @@ import Modal from "../../../components/molecules/modal"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { nestedForm } from "../../../utils/nested-form"
+import { useTranslation } from "react-i18next"
 
 type CustomerGroupModalProps = {
   open: boolean
@@ -40,6 +41,7 @@ function CustomerGroupModal({
   onClose,
   open,
 }: CustomerGroupModalProps) {
+  const { t } = useTranslation()
   const form = useForm<CustomerGroupModalFormType>({
     defaultValues: getDefaultValues(customerGroup),
   })
@@ -64,10 +66,10 @@ function CustomerGroupModal({
     const { general, metadata } = data
 
     const onSuccess = () => {
-      const title = customerGroup ? "Group Updated" : "Group Created"
+      const title = customerGroup ? t("Group Updated") : t("Group Created")
       const msg = customerGroup
-        ? "The customer group has been updated"
-        : "The customer group has been created"
+        ? t("The customer group has been updated")
+        : t("The customer group has been created")
 
       notification(title, msg, "success")
 
@@ -110,7 +112,9 @@ function CustomerGroupModal({
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
           <span className="inter-xlarge-semibold">
-            {customerGroup ? "Edit" : "Create a New"} Customer Group
+            {customerGroup
+              ? t("Edit Customer Group")
+              : t("Create a New Customer Group")}
           </span>
         </Modal.Header>
 
@@ -118,11 +122,11 @@ function CustomerGroupModal({
           <Modal.Content>
             <div className="gap-y-xlarge flex flex-col">
               <div>
-                <h2 className="inter-base-semibold mb-base">Details</h2>
+                <h2 className="inter-base-semibold mb-base">{t("Details")}</h2>
                 <CustomerGroupGeneralForm form={nestedForm(form, "general")} />
               </div>
               <div>
-                <h2 className="inter-base-semibold mb-base">Metadata</h2>
+                <h2 className="inter-base-semibold mb-base">{t("Metadata")}</h2>
                 <MetadataForm form={nestedForm(form, "metadata")} />
               </div>
             </div>
@@ -137,10 +141,12 @@ function CustomerGroupModal({
                 type="button"
                 onClick={onClose}
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button size="small" variant="primary" type="submit">
-                <span>{customerGroup ? "Edit" : "Publish"} Group</span>
+                <span>
+                  {customerGroup ? t("Edit Group") : t("Publish Group")}
+                </span>
               </Button>
             </div>
           </Modal.Footer>

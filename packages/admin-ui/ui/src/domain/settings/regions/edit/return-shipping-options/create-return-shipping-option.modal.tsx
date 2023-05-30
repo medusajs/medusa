@@ -1,6 +1,7 @@
 import { Region } from "@medusajs/medusa"
 import { useAdminCreateShippingOption } from "medusa-react"
 import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
 import { getSubmittableMetadata } from "../../../../../components/forms/general/metadata-form"
 import Button from "../../../../../components/fundamentals/button"
 import Modal from "../../../../../components/molecules/modal"
@@ -18,6 +19,7 @@ type Props = {
 }
 
 const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
+  const { t } = useTranslation()
   const form = useForm<ShippingOptionFormType>()
   const {
     formState: { isDirty },
@@ -56,11 +58,11 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
       },
       {
         onSuccess: () => {
-          notifcation("Success", "Shipping option created", "success")
+          notifcation(t("Success"), t("Shipping option created"), "success")
           closeAndReset()
         },
         onError: (error) => {
-          notifcation("Error", getErrorMessage(error), "error")
+          notifcation(t("Error"), getErrorMessage(error), "error")
         },
       }
     )
@@ -70,7 +72,9 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
     <Modal open={open} handleClose={closeAndReset}>
       <Modal.Body>
         <Modal.Header handleClose={closeAndReset}>
-          <h1 className="inter-xlarge-semibold">Add Return Shipping Option</h1>
+          <h1 className="inter-xlarge-semibold">
+            {t("Add Return Shipping Option")}
+          </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
@@ -84,7 +88,7 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
                 type="button"
                 onClick={closeAndReset}
               >
-                Cancel
+                {t("Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -93,7 +97,7 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
                 loading={isLoading}
                 disabled={isLoading || !isDirty}
               >
-                Save and close
+                {t("Save and close")}
               </Button>
             </div>
           </Modal.Footer>

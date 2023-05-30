@@ -1,4 +1,5 @@
 import React, { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import { normalizeAmount } from "../../../utils/prices"
 import EditIcon from "../../fundamentals/icons/edit-icon"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
@@ -38,19 +39,20 @@ const GiftCardBanner: React.FC<GiftCardBannerProps> = ({
   onUnpublish,
   onDelete,
 }) => {
+  const { t } = useTranslation()
   const actions: ActionType[] = [
     {
-      label: "Edit",
+      label: t("Edit"),
       onClick: onEdit,
       icon: <EditIcon size={16} />,
     },
     {
-      label: status === "published" ? "Unpublish" : "Publish",
+      label: status === "published" ? t("Unpublish") : t("Publish"),
       onClick: onUnpublish,
       icon: <UnpublishIcon size={16} />,
     },
     {
-      label: "Delete",
+      label: t("Delete"),
       onClick: onDelete,
       icon: <TrashIcon size={16} />,
       variant: "danger",
@@ -84,7 +86,7 @@ const GiftCardBanner: React.FC<GiftCardBannerProps> = ({
           <TagGrid tags={denominations} badgeVariant="default" />
           <StatusIndicator
             variant={status === "published" ? "success" : "danger"}
-            title={status === "published" ? "Published" : "Unpublished"}
+            title={status === "published" ? t("Published") : t("Unpublished")}
           />
         </div>
       </BannerCard.Footer>

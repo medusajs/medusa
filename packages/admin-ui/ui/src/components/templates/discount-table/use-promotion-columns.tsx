@@ -1,5 +1,6 @@
 import { end, parse } from "iso8601-duration"
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import Badge from "../../fundamentals/badge"
 import StatusDot from "../../fundamentals/status-indicator"
@@ -34,19 +35,19 @@ const getPromotionStatus = (promotion) => {
   return PromotionStatus.DISABLED
 }
 
-const getPromotionStatusDot = (promotion) => {
+const getPromotionStatusDot = (promotion, t) => {
   const status = getPromotionStatus(promotion)
   switch (status) {
     case PromotionStatus.SCHEDULED:
-      return <StatusDot title="Scheduled" variant="warning" />
+      return <StatusDot title={t("Scheduled")} variant="warning" />
     case PromotionStatus.EXPIRED:
-      return <StatusDot title="Expired" variant="danger" />
+      return <StatusDot title={t("Expired")} variant="danger" />
     case PromotionStatus.ACTIVE:
-      return <StatusDot title="Active" variant="success" />
+      return <StatusDot title={t("Active")} variant="success" />
     case PromotionStatus.DISABLED:
-      return <StatusDot title="Disabled" variant="default" />
+      return <StatusDot title={t("Disabled")} variant="default" />
     default:
-      return <StatusDot title="Disabled" variant="default" />
+      return <StatusDot title={t("Disabled")} variant="default" />
   }
 }
 
@@ -60,7 +61,7 @@ const getCurrencySymbol = (promotion) => {
   return ""
 }
 
-const getPromotionAmount = (promotion) => {
+const getPromotionAmount = (promotion, t) => {
   switch (promotion.rule.type) {
     case "fixed":
       if (!promotion.regions?.length) {
@@ -73,17 +74,18 @@ const getPromotionAmount = (promotion) => {
     case "percentage":
       return `${promotion.rule.value}%`
     case "free_shipping":
-      return "Free Shipping"
+      return t("Free Shipping")
     default:
       return ""
   }
 }
 
 export const usePromotionTableColumns = () => {
+  const { t } = useTranslation()
   const columns = useMemo(
     () => [
       {
-        Header: <div className="pl-2">Code</div>,
+        Header: <div className="pl-2">{t("Code")}</div>,
         accessor: "code",
         Cell: ({ cell: { value } }) => (
           <div className="overflow-hidden">
@@ -94,16 +96,16 @@ export const usePromotionTableColumns = () => {
         ),
       },
       {
-        Header: "Description",
+        Header: t("Description"),
         accessor: "rule.description",
         Cell: ({ cell: { value } }) => value,
       },
       {
-        Header: <div className="text-right">Amount</div>,
+        Header: <div className="text-right">{t("Amount")}</div>,
         id: "amount",
         Cell: ({ row: { original } }) => {
           return (
-            <div className="text-right">{getPromotionAmount(original)}</div>
+            <div className="text-right">{getPromotionAmount(original, t)}</div>
           )
         },
       },
@@ -115,14 +117,14 @@ export const usePromotionTableColumns = () => {
         ),
       },
       {
-        Header: "Status",
+        Header: t("Status"),
         accessor: "ends_at",
         Cell: ({ row: { original } }) => (
-          <div>{getPromotionStatusDot(original)}</div>
+          <div>{getPromotionStatusDot(original, t)}</div>
         ),
       },
       {
-        Header: () => <div className="text-right">Redemptions</div>,
+        Header: () => <div className="text-right">{t("Redemptions")}</div>,
         accessor: "usage_count",
         Cell: ({ row: { original } }) => {
           return (

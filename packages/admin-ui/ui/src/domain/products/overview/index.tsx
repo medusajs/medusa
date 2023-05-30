@@ -1,6 +1,7 @@
 import { useAdminCreateBatchJob, useAdminCreateCollection } from "medusa-react"
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 import Fade from "../../../components/atoms/fade-wrapper"
 import Spacer from "../../../components/atoms/spacer"
 import Button from "../../../components/fundamentals/button"
@@ -23,6 +24,7 @@ import NewProduct from "../new"
 const VIEWS = ["products", "collections"]
 
 const Overview = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
   const [view, setView] = useState("products")
@@ -69,7 +71,7 @@ const Overview = () => {
               onClick={() => openImportModal()}
             >
               <UploadIcon size={20} />
-              Import Products
+              {t("Import Products")}
             </Button>
             <Button
               variant="secondary"
@@ -77,7 +79,7 @@ const Overview = () => {
               onClick={() => openExportModal()}
             >
               <ExportIcon size={20} />
-              Export Products
+              {t("Export Products")}
             </Button>
             <Button
               variant="secondary"
@@ -85,7 +87,7 @@ const Overview = () => {
               onClick={openProductCreate}
             >
               <PlusIcon size={20} />
-              New Product
+              {t("New Product")}
             </Button>
           </div>
         )
@@ -98,7 +100,7 @@ const Overview = () => {
               onClick={() => setShowNewCollection(!showNewCollection)}
             >
               <PlusIcon size={20} />
-              New Collection
+              {t("New Collection")}
             </Button>
           </div>
         )
@@ -132,11 +134,16 @@ const Overview = () => {
       { ...data, metadata },
       {
         onSuccess: ({ collection }) => {
-          notification("Success", "Successfully created collection", "success")
+          notification(
+            t("Success"),
+            t("Successfully created collection"),
+            "success"
+          )
           navigate(`/a/collections/${collection.id}`)
           setShowNewCollection(false)
         },
-        onError: (err) => notification("Error", getErrorMessage(err), "error"),
+        onError: (err) =>
+          notification(t("Error"), getErrorMessage(err), "error"),
       }
     )
   }
@@ -151,10 +158,14 @@ const Overview = () => {
     createBatchJob.mutate(reqObj, {
       onSuccess: () => {
         resetInterval()
-        notification("Success", "Successfully initiated export", "success")
+        notification(
+          t("Success"),
+          t("Successfully initiated export"),
+          "success"
+        )
       },
       onError: (err) => {
-        notification("Error", getErrorMessage(err), "error")
+        notification(t("Error"), getErrorMessage(err), "error")
       },
     })
 

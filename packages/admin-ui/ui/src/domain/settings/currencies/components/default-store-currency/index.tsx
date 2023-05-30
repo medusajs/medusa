@@ -1,4 +1,5 @@
 import { Store } from "@medusajs/medusa"
+import { useTranslation } from "react-i18next"
 import DefaultCurrencySelector from "./default-currency-selector"
 
 type Props = {
@@ -6,14 +7,15 @@ type Props = {
 }
 
 const DefaultStoreCurrency = ({ store }: Props) => {
+  const { t } = useTranslation()
   return (
     <div className="gap-y-large flex flex-col">
       <div>
         <h3 className="inter-large-semibold mb-2xsmall">
-          Default store currency
+          {t("Default store currency")}
         </h3>
         <p className="inter-base-regular text-grey-50">
-          This is the currency your prices are shown in.
+          {t("This is the currency your prices are shown in.")}
         </p>
       </div>
 

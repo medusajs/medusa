@@ -2,6 +2,7 @@ import { Invite, User } from "@medusajs/medusa"
 import copy from "copy-to-clipboard"
 import { useAdminStore } from "medusa-react"
 import React, { useEffect, useMemo, useState } from "react"
+import { useTranslation } from "react-i18next"
 import useNotification from "../../hooks/use-notification"
 import Medusa from "../../services/api"
 import ClipboardCopyIcon from "../fundamentals/icons/clipboard-copy-icon"
@@ -42,6 +43,7 @@ const UserTable: React.FC<UserTableProps> = ({
   const [selectedInvite, setSelectedInvite] = useState<Invite | null>(null)
   const notification = useNotification()
   const { store, isLoading } = useAdminStore()
+  const { t } = useTranslation()
 
   useEffect(() => {
     setElements([
@@ -75,12 +77,12 @@ const UserTable: React.FC<UserTableProps> = ({
         color={"inherit"}
         actions={[
           {
-            label: "Edit User",
+            label: t("Edit User"),
             onClick: () => setSelectedUser(user),
             icon: <EditIcon size={20} />,
           },
           {
-            label: "Remove User",
+            label: t("Remove User"),
             variant: "danger",
             onClick: () => {
               setDeleteUser(true)
@@ -119,14 +121,14 @@ const UserTable: React.FC<UserTableProps> = ({
         key={`invite-${index}`}
         actions={[
           {
-            label: "Resend Invitation",
+            label: t("Resend Invitation"),
             onClick: () => {
               Medusa.invites
                 .resend(invite.id)
                 .then(() => {
                   notification(
-                    "Success",
-                    "Invitiation link has been resent",
+                    t("Success"),
+                    t("Invitiation link has been resent"),
                     "success"
                   )
                 })
@@ -135,20 +137,20 @@ const UserTable: React.FC<UserTableProps> = ({
             icon: <RefreshIcon size={20} />,
           },
           {
-            label: "Copy invite link",
+            label: t("Copy invite link"),
             disabled: isLoading,
             onClick: () => {
               copy(inviteLink.replace("{invite_token}", invite.token))
               notification(
-                "Success",
-                "Invite link copied to clipboard",
+                t("Success"),
+                t("Invite link copied to clipboard"),
                 "success"
               )
             },
             icon: <ClipboardCopyIcon size={20} />,
           },
           {
-            label: "Remove Invitation",
+            label: t("Remove Invitation"),
             variant: "danger",
             onClick: () => {
               setSelectedInvite(invite)
@@ -166,9 +168,9 @@ const UserTable: React.FC<UserTableProps> = ({
         <Table.Cell></Table.Cell>
         <Table.Cell>
           {new Date(invite?.expires_at) < new Date() ? (
-            <StatusIndicator title={"Expired"} variant={"danger"} />
+            <StatusIndicator title={t("Expired")} variant={"danger"} />
           ) : (
-            <StatusIndicator title={"Pending"} variant={"success"} />
+            <StatusIndicator title={t("Pending")} variant={"success"} />
           )}
         </Table.Cell>
       </Table.Row>
@@ -180,12 +182,12 @@ const UserTable: React.FC<UserTableProps> = ({
       title: "Team permissions",
       options: [
         {
-          title: "All",
+          title: t("All"),
           count: elements.length,
           onClick: () => setShownElements(elements),
         },
         {
-          title: "Member",
+          title: t("Member"),
           count: elements.filter(
             (e) => e.entityType === "user" && e.entity.role === "member"
           ).length,
@@ -197,7 +199,7 @@ const UserTable: React.FC<UserTableProps> = ({
             ),
         },
         {
-          title: "Admin",
+          title: t("Admin"),
           count: elements.filter(
             (e) => e.entityType === "user" && e.entity.role === "admin"
           ).length,
@@ -209,7 +211,7 @@ const UserTable: React.FC<UserTableProps> = ({
             ),
         },
         {
-          title: "No team permissions",
+          title: t("No team permissions"),
           count: elements.filter((e) => e.entityType === "invite").length,
           onClick: () =>
             setShownElements(elements.filter((e) => e.entityType === "invite")),
@@ -217,21 +219,21 @@ const UserTable: React.FC<UserTableProps> = ({
       ],
     },
     {
-      title: "Status",
+      title: t("Status"),
       options: [
         {
-          title: "All",
+          title: t("All"),
           count: elements.length,
           onClick: () => setShownElements(elements),
         },
         {
-          title: "Active",
+          title: t("Active"),
           count: elements.filter((e) => e.entityType === "user").length,
           onClick: () =>
             setShownElements(elements.filter((e) => e.entityType === "user")),
         },
         {
-          title: "Pending",
+          title: t("Pending"),
           count: elements.filter(
             (e) =>
               e.entityType === "invite" &&
@@ -247,7 +249,7 @@ const UserTable: React.FC<UserTableProps> = ({
             ),
         },
         {
-          title: "Expired",
+          title: t("Expired"),
           count: elements.filter(
             (e) =>
               e.entityType === "invite" &&
@@ -287,9 +289,11 @@ const UserTable: React.FC<UserTableProps> = ({
       >
         <Table.Head>
           <Table.HeadRow>
-            <Table.HeadCell className="w-72">Name</Table.HeadCell>
-            <Table.HeadCell className="w-80">Email</Table.HeadCell>
-            <Table.HeadCell className="w-72">Team permissions</Table.HeadCell>
+            <Table.HeadCell className="w-72">{t("Name")}</Table.HeadCell>
+            <Table.HeadCell className="w-80">{t("Email")}</Table.HeadCell>
+            <Table.HeadCell className="w-72">
+              {t("Team permissions")}
+            </Table.HeadCell>
             <Table.HeadCell>Status</Table.HeadCell>
           </Table.HeadRow>
         </Table.Head>
@@ -298,11 +302,15 @@ const UserTable: React.FC<UserTableProps> = ({
       {selectedUser &&
         (deleteUser ? (
           <DeletePrompt
-            text={"Are you sure you want to remove this user?"}
-            heading={"Remove user"}
+            text={t("Are you sure you want to remove this user?")}
+            heading={t("Remove user")}
             onDelete={() =>
               Medusa.users.delete(selectedUser.id).then(() => {
-                notification("Success", "User has been removed", "success")
+                notification(
+                  t("Success"),
+                  t("User has been removed"),
+                  "success"
+                )
                 triggerRefetch()
               })
             }
@@ -317,11 +325,15 @@ const UserTable: React.FC<UserTableProps> = ({
         ))}
       {selectedInvite && (
         <DeletePrompt
-          text={"Are you sure you want to remove this invite?"}
-          heading={"Remove invite"}
+          text={t("Are you sure you want to remove this invite?")}
+          heading={t("Remove invite")}
           onDelete={() =>
             Medusa.invites.delete(selectedInvite.id).then(() => {
-              notification("Success", "Invitiation has been removed", "success")
+              notification(
+                t("Success"),
+                t("Invitiation has been removed"),
+                "success"
+              )
               triggerRefetch()
             })
           }
