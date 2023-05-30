@@ -1,5 +1,4 @@
 import { Controller, useForm, useWatch } from "react-hook-form"
-import { LineItem } from "@medusajs/medusa"
 import { NestedForm, nestedForm } from "../../../../utils/nested-form"
 import React, { useEffect, useMemo } from "react"
 import {
@@ -13,6 +12,8 @@ import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import FocusModal from "../../../../components/molecules/modal/focus-modal"
 import InputField from "../../../../components/molecules/input"
+import { LineItem } from "@medusajs/medusa"
+import { ReservationItemDTO } from "@medusajs/types"
 import Select from "../../../../components/molecules/select/next-select/select"
 import Thumbnail from "../../../../components/atoms/thumbnail"
 import clsx from "clsx"
@@ -20,7 +21,6 @@ import { getErrorMessage } from "../../../../utils/error-messages"
 import { getFulfillableQuantity } from "../create-fulfillment/item-table"
 import { sum } from "lodash"
 import useNotification from "../../../../hooks/use-notification"
-import { ReservationItemDTO } from "@medusajs/types"
 
 type AllocationModalFormData = {
   location?: { label: string; value: string }
@@ -205,6 +205,7 @@ export type AllocationLineItemForm = {
   inventory_item_id: string
   line_item_id: string
   quantity: number
+  description?: string | null
 }
 
 export const AllocationLineItem: React.FC<{

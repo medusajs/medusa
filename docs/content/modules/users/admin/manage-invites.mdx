@@ -56,7 +56,7 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 You can list invites by sending a request to the [List Invite endpoint](/api/admin#tag/Invites/operation/GetInvites):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -127,7 +127,7 @@ The request returns an array of invite endpoints.
 
 You can create an invite by sending a request to the [Create Invite endpoint](/api/admin#tag/Invites/operation/PostInvites):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -215,7 +215,7 @@ A logged-out user can accept an invite, which would create a user for that user.
 
 You can accept an invite by sending a request to the [Accept Invite endpoint](/api/admin#tag/Invites/operation/PostInvitesInviteAccept):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -319,7 +319,7 @@ The request does not return any data. If the invite was accepted successfully, t
 
 You can resend an invite if it’s not accepted yet. To resend an invite, send a request to the [Resend Invite endpoint](/api/admin#tag/Invites/operation/PostInvitesInviteResend):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -384,7 +384,7 @@ The request does not return any data. If the invite was resent successfully, the
 
 You can delete an invite by sending a request to the [Delete Invite endpoint](/api/admin#tag/Invites/operation/DeleteInvitesInvite):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts

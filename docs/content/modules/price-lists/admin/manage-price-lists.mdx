@@ -76,7 +76,7 @@ You can learn more about what the conditions you can apply on a price list and i
 
 For example, sending the following request creates a price list with two prices: one that is applied when the maximum quantity of the product variant in the cart is 3; another is applied when the minimum quantity of the same variant in the cart is 4:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
@@ -232,7 +232,7 @@ You can check the full list of request body parameters in the [API reference](/a
 
 You can retrieve all of a price list’s details using the Get a Price List endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
@@ -298,7 +298,7 @@ After creating a price list, you can update all of its fields including its stat
 
 For example, by sending the following request the end date of the price list will be updated:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
@@ -387,7 +387,7 @@ You can also set the `override` request body parameter to `true` to replace the 
 
 For example, sending the following request adds a new price to the price list:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
@@ -490,7 +490,7 @@ For a full list of request body parameters, check out the [API reference](/api/a
 
 You can delete all the prices of a product’s variants using the [Delete Product Prices](/api/admin/#tag/Price-List/operation/DeletePriceListsPriceListProductsProductPrices) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```tsx
@@ -564,7 +564,7 @@ This request returns the IDs of the deleted prices.
 
 You can delete all the prices of a variant using the [Delete Variant Prices](/api/admin/#tag/Price-List/operation/DeletePriceListsPriceListVariantsVariantPrices) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```tsx
@@ -641,7 +641,7 @@ This request returns the IDs of the deleted prices.
 
 You can delete a price list, and subsequently all prices defined in it, using the [Delete Price List](/api/admin/#tag/Price-List/operation/DeletePriceListsPriceList) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```jsx
