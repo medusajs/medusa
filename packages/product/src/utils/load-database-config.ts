@@ -2,11 +2,9 @@ import {
   ProductServiceInitializeCustomDataLayerOptions,
   ProductServiceInitializeOptions,
 } from "../types"
-import { Modules } from "@medusajs/modules-sdk"
 
 function getEnv(key: string): string {
-  const value =
-    process.env[`${Modules.PRODUCT}_${key}`] ?? process.env[`${key}`]
+  const value = process.env[`PRODUCT_${key}`] ?? process.env[`${key}`]
   return value ?? ""
 }
 
