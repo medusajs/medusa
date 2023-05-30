@@ -1,5 +1,12 @@
 # @medusajs/cache-inmemory
 
+## 1.8.7
+
+### Patch Changes
+
+- Updated dependencies [[`e73c3e51c`](https://github.com/medusajs/medusa/commit/e73c3e51c9cd192eeae7a57b24b07bd466214145)]:
+  - @medusajs/modules-sdk@1.8.7
+
 ## 1.8.6
 
 ### Patch Changes
