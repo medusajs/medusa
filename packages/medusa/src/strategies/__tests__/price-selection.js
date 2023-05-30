@@ -300,7 +300,8 @@ const toTest = [
             "dkk",
             undefined,
             undefined,
-            true
+            true,
+            false
           )
         } else {
           expect(
@@ -310,7 +311,9 @@ const toTest = [
             "test-region",
             "dkk",
             undefined,
-            undefined
+            undefined,
+            false,
+            false
           )
         }
 
@@ -354,7 +357,8 @@ const toTest = [
             "dkk",
             "test-customer-1",
             undefined,
-            true
+            true,
+            false
           )
         } else {
           expect(
@@ -364,7 +368,9 @@ const toTest = [
             "test-region",
             "dkk",
             "test-customer-1",
-            undefined
+            undefined,
+            false,
+            false
           )
         }
       },
@@ -617,7 +623,8 @@ const taxInclusiveTesting = [
           "dkk",
           undefined,
           undefined,
-          true
+          true,
+          false
         )
 
         expect(value.get(variantId)).toEqual({
@@ -666,7 +673,8 @@ const taxInclusiveTesting = [
           "dkk",
           undefined,
           undefined,
-          true
+          true,
+          false
         )
 
         expect(value.get(variantId)).toEqual({
@@ -715,7 +723,8 @@ const taxInclusiveTesting = [
           "dkk",
           undefined,
           undefined,
-          true
+          true,
+          false
         )
         expect(value.get(variantId)).toEqual({
           originalPrice: 100,
@@ -763,7 +772,8 @@ const taxInclusiveTesting = [
           "dkk",
           undefined,
           undefined,
-          true
+          true,
+          false
         )
         expect(value.get(variantId)).toEqual({
           originalPrice: 100,
@@ -828,7 +838,8 @@ const taxInclusiveTesting = [
           "dkk",
           undefined,
           undefined,
-          true
+          true,
+          false
         )
 
         expect(value.get(variantId)).toEqual({
