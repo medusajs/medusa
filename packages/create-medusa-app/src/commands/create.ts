@@ -19,7 +19,7 @@ import onProcessTerminated from "../utils/on-process-terminated.js"
 import createAbortController, {
   isAbortError,
 } from "../utils/create-abort-controller.js"
-import { track } from "../utils/track.js"
+import { track } from "medusa-telemetry"
 
 const slugify = slugifyType.default
 const isEmail = isEmailImported.default

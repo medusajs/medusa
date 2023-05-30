@@ -8,4 +8,4 @@ program
   .option("--seed", "Seed the created database with demo data.")
   .parse()
 
-await create(program.opts())
+void create(program.opts())
