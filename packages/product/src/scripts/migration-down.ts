@@ -33,11 +33,9 @@ export async function revertMigrations({
     const migrator = orm.getMigrator()
     await migrator.down()
 
-    logger?.info("Product module migration revert executed")
+    logger?.info("Product module migration executed")
   } catch (error) {
-    logger?.error(
-      `Product module migration revert failed to run - Error: ${error}`
-    )
+    logger?.error(`Product module migration failed to run - Error: ${error}`)
   }
 
   await orm.close()

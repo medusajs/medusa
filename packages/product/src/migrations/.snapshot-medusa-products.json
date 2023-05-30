@@ -685,6 +685,14 @@
       "schema": "public",
       "indexes": [
         {
+          "keyName": "IDX_product_option_product_id",
+          "columnNames": [],
+          "composite": false,
+          "primary": false,
+          "unique": false,
+          "expression": "CREATE INDEX \"IDX_product_option_product_id\" ON \"product_option\" (\"product_id\") WHERE deleted_at IS NULL;"
+        },
+        {
           "keyName": "product_option_pkey",
           "columnNames": [
             "id"

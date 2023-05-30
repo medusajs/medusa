@@ -3,6 +3,7 @@ import {
   Cascade,
   Collection,
   Entity,
+  Index,
   ManyToOne,
   OneToMany,
   PrimaryKey,
@@ -14,6 +15,11 @@ import { Product } from "./index"
 import ProductOptionValue from "./product-option-value"
 
 @Entity({ tableName: "product_option" })
+@Index({
+  name: "IDX_product_option_product_id",
+  expression:
+    'CREATE INDEX "IDX_product_option_product_id" ON "product_option" ("product_id") WHERE deleted_at IS NULL;',
+})
 class ProductOption {
   @PrimaryKey({ columnType: "text" })
   id!: string

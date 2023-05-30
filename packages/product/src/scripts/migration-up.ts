@@ -31,8 +31,6 @@ export async function runMigrations({
 
   try {
     const migrator = orm.getMigrator()
-
-    console.log("Running migrations", migrator)
     await migrator.up()
 
     logger?.info("Product module migration executed")

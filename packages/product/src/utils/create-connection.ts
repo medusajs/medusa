@@ -1,7 +1,7 @@
 import { resolve } from "path"
 import { MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql"
-import { TSMigrationGenerator } from "@mikro-orm/migrations"
 import { ProductServiceInitializeOptions } from "../types"
+import { TSMigrationGenerator } from "@mikro-orm/migrations"
 
 export async function createConnection(
   database: ProductServiceInitializeOptions["database"],
@@ -20,14 +20,14 @@ export async function createConnection(
     tsNode: process.env.APP_ENV === "development",
     type: "postgresql",
     migrations: {
-      path: resolve(__dirname, "../migrations"),
-      pathTs: resolve(__dirname, "../migrations"),
+      path: resolve(__dirname, "../../dist/migrations"),
+      pathTs: resolve(__dirname, "../../src/migrations"),
       glob: "!(*.d).{js,ts}",
-      silent: true,
-      dropTables: true,
+      silent: false,
+      dropTables: false,
       transactional: true,
       allOrNothing: true,
-      safe: false,
+      safe: true,
       generator: TSMigrationGenerator,
     },
   })
