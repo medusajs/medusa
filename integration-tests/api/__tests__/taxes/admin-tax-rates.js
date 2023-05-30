@@ -397,11 +397,84 @@ describe("/admin/tax-rates", () => {
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.tax_rate).toMatchSnapshot({
-      id: expect.stringMatching(/^txr_*/),
-      created_at: expect.any(String),
-      updated_at: expect.any(String),
+    expect(response.data.tax_rate).toEqual(
+      expect.objectContaining({
+        id: expect.stringMatching(/^txr_*/),
+        name: "special",
+        code: "tricks",
+        rate: null,
+      })
+    )
+  })
+
+  test("creates a tax rate with a rate", async () => {
+    await adminSeeder(dbConnection)
+
+    const api = useApi()
+    await simpleRegionFactory(dbConnection, {
+      id: "test-region",
     })
+
+    const response = await api.post(
+      `/admin/tax-rates`,
+      {
+        name: "special",
+        code: "tricks",
+        region_id: "test-region",
+        rate: 2,
+      },
+      {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      }
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.tax_rate).toEqual(
+      expect.objectContaining({
+        id: expect.stringMatching(/^txr_*/),
+        name: "special",
+        code: "tricks",
+        region_id: "test-region",
+        rate: 2,
+      })
+    )
+  })
+
+  test("creates a tax rate with a null rate", async () => {
+    await adminSeeder(dbConnection)
+
+    const api = useApi()
+    await simpleRegionFactory(dbConnection, {
+      id: "test-region",
+    })
+
+    const response = await api.post(
+      `/admin/tax-rates`,
+      {
+        name: "special",
+        code: "tricks",
+        region_id: "test-region",
+        rate: null,
+      },
+      {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      }
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.tax_rate).toEqual(
+      expect.objectContaining({
+        id: expect.stringMatching(/^txr_*/),
+        name: "special",
+        code: "tricks",
+        region_id: "test-region",
+        rate: null,
+      })
+    )
   })
 
   test("creates a tax rate and assigns products", async () => {
@@ -453,6 +526,7 @@ describe("/admin/tax-rates", () => {
       {
         name: "special",
         code: "something new",
+        rate: 5,
       },
       {
         headers: {
@@ -462,13 +536,48 @@ describe("/admin/tax-rates", () => {
     )
 
     expect(response.status).toEqual(200)
-    expect(response.data.tax_rate).toMatchSnapshot({
-      id: expect.stringMatching(/^txr_*/),
-      code: "special",
-      code: "something new",
-      created_at: expect.any(String),
-      updated_at: expect.any(String),
+    expect(response.data.tax_rate).toEqual(
+      expect.objectContaining({
+        id: expect.stringMatching(/^txr_*/),
+        name: "special",
+        code: "something new",
+        rate: 5,
+      })
+    )
+  })
+
+  test("updates a tax rate with null rate", async () => {
+    await adminSeeder(dbConnection)
+
+    await simpleRegionFactory(dbConnection, { id: "test-region" })
+
+    const rate = await simpleTaxRateFactory(dbConnection, {
+      name: "test",
+      code: "something",
+      rate: 10,
+      region_id: "test-region",
     })
+
+    const api = useApi()
+    const response = await api.post(
+      `/admin/tax-rates/${rate.id}`,
+      {
+        rate: null,
+      },
+      {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      }
+    )
+
+    expect(response.status).toEqual(200)
+    expect(response.data.tax_rate).toEqual(
+      expect.objectContaining({
+        id: expect.stringMatching(/^txr_*/),
+        rate: null,
+      })
+    )
   })
 
   test("deletes a tax rate", async () => {

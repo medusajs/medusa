@@ -1,5 +1,11 @@
 # @medusajs/types
 
+## 1.8.7
+
+### Patch Changes
+
+- [#3979](https://github.com/medusajs/medusa/pull/3979) [`3a38c84f8`](https://github.com/medusajs/medusa/commit/3a38c84f88b05f74ee0a172af3e3f78b2ec8c2d2) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(client-types, inventory, medusa, types): add additional filtering capabilities to list-reservations
+
 ## 1.8.6
 
 ### Patch Changes
