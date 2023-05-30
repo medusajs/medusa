@@ -119,7 +119,8 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       context.currency_code,
       context.customer_id,
       context.include_discount_prices,
-      true
+      true,
+      false
     )
 
     const variantPricesMap = new Map<string, PriceSelectionResult>()
@@ -218,7 +219,9 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
       context.region_id,
       context.currency_code,
       context.customer_id,
-      context.include_discount_prices
+      context.include_discount_prices,
+      false,
+      false
     )
 
     const variantPricesMap = new Map<string, PriceSelectionResult>()

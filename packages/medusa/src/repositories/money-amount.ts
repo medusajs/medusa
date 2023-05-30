@@ -261,7 +261,8 @@ export const MoneyAmountRepository = dataSource
       currency_code?: string,
       customer_id?: string,
       include_discount_prices?: boolean,
-      include_tax_inclusive_pricing = false
+      include_tax_inclusive_pricing = false,
+      shouldCount = true
     ): Promise<[Record<string, MoneyAmount[]>, number]> {
       variant_ids = Array.isArray(variant_ids) ? variant_ids : [variant_ids]
 
@@ -328,7 +329,17 @@ export const MoneyAmountRepository = dataSource
         )
       }
 
-      const [prices, count] = await qb.getManyAndCount()
+      let prices
+      let count = 0
+
+      if (shouldCount) {
+        const results = await qb.getManyAndCount()
+        prices = results[0]
+        count = results[1]
+      } else {
+        prices = await qb.getMany()
+      }
+
       const groupedPrices = groupBy(prices, "variant_id")
 
       return [groupedPrices, count]
