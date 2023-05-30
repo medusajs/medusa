@@ -17441,6 +17441,7 @@ __metadata:
     eslint-config-prettier: ^8.8.0
     eslint-plugin-prettier: ^4.2.1
     inquirer: ^9.2.2
+    medusa-telemetry: ^0.0.16
     nanoid: ^4.0.2
     node-fetch: ^3.3.1
     open: ^9.1.0
