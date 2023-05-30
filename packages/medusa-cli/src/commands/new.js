@@ -300,7 +300,9 @@ const verifyPgCreds = async (creds) => {
 
 const interactiveDbCreds = async (dbName, dbCreds = {}) => {
   const credentials = Object.assign({}, defaultDBCreds, dbCreds)
-  let collecting = true
+
+  const collecting = true
+
   while (collecting) {
     const result = await inquirer
       .prompt([
@@ -309,10 +311,9 @@ const interactiveDbCreds = async (dbName, dbCreds = {}) => {
           name: "continueWithDefault",
           message: `
 
-Will attempt to setup database "${dbName}" with credentials:
+Will attempt to setup Postgres database "${dbName}" with credentials:
   user: ${credentials.user}
   password: ***
-  database: ${credentials.database}
   port: ${credentials.port}
   host: ${credentials.host}
 Do you wish to continue with these credentials?
@@ -352,14 +353,6 @@ Do you wish to continue with these credentials?
           default: credentials.host,
           message: `DB host`,
         },
-        {
-          type: "input",
-          when: ({ continueWithDefault }) =>
-            continueWithDefault === `Change credentials`,
-          name: "database",
-          default: credentials.database,
-          message: `DB database`,
-        },
       ])
       .then(async (answers) => {
         const collectedCreds = Object.assign({}, credentials, {
@@ -367,7 +360,6 @@ Do you wish to continue with these credentials?
           password: answers.password,
           host: answers.host,
           port: answers.port,
-          database: answers.database,
         })
 
         switch (answers.continueWithDefault) {
@@ -428,32 +420,25 @@ const setupDB = async (dbName, dbCreds = {}) => {
     })
 }
 
-const setupEnvVars = async (
-  rootPath,
-  dbName,
-  dbCreds = {},
-  isPostgres = true
-) => {
+const setupEnvVars = async (rootPath, dbName, dbCreds = {}) => {
   const templatePath = sysPath.join(rootPath, ".env.template")
   const destination = sysPath.join(rootPath, ".env")
   if (existsSync(templatePath)) {
     fs.renameSync(templatePath, destination)
   }
 
-  if (isPostgres) {
-    const credentials = Object.assign({}, defaultDBCreds, dbCreds)
-    let dbUrl = ""
-    if (
-      credentials.user !== defaultDBCreds.user ||
-      credentials.password !== defaultDBCreds.password
-    ) {
-      dbUrl = `postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}`
-    } else {
-      dbUrl = `postgres://${credentials.host}:${credentials.port}/${dbName}`
-    }
-
-    fs.appendFileSync(destination, `DATABASE_URL=${dbUrl}\n`)
+  const credentials = Object.assign({}, defaultDBCreds, dbCreds)
+  let dbUrl = ""
+  if (
+    credentials.user !== defaultDBCreds.user ||
+    credentials.password !== defaultDBCreds.password
+  ) {
+    dbUrl = `postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}`
+  } else {
+    dbUrl = `postgres://${credentials.host}:${credentials.port}/${dbName}`
   }
+
+  fs.appendFileSync(destination, `DATABASE_URL=${dbUrl}\n`)
 }
 
 const runMigrations = async (rootPath) => {
@@ -610,10 +595,6 @@ medusa new ${rootPath} [url-to-starter]
   } else {
     await copy(starterPath, rootPath)
   }
-
-  const medusaConfig = getMedusaConfig(rootPath)
-
-  let isPostgres = false
 
   track("CLI_NEW_LAYOUT_COMPLETED")
 
