@@ -10,7 +10,7 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:22](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/middleware.ts#L22)
+[medusa/src/services/middleware.ts:22](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/middleware.ts#L22)
 
 ## Properties
 
@@ -20,7 +20,7 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:17](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/middleware.ts#L17)
+[medusa/src/services/middleware.ts:17](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/middleware.ts#L17)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:18](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/middleware.ts#L18)
+[medusa/src/services/middleware.ts:18](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/middleware.ts#L18)
 
 ___
 
@@ -40,7 +40,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:19](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/middleware.ts#L19)
+[medusa/src/services/middleware.ts:19](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/middleware.ts#L19)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:20](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/middleware.ts#L20)
+[medusa/src/services/middleware.ts:20](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/middleware.ts#L20)
 
 ## Methods
 
@@ -75,7 +75,7 @@ void
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:60](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/middleware.ts#L60)
+[medusa/src/services/middleware.ts:60](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/middleware.ts#L60)
 
 ___
 
@@ -100,7 +100,7 @@ void
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:79](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/middleware.ts#L79)
+[medusa/src/services/middleware.ts:79](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/middleware.ts#L79)
 
 ___
 
@@ -122,7 +122,7 @@ Adds a middleware function to be called before cart creation
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:96](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/middleware.ts#L96)
+[medusa/src/services/middleware.ts:96](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/middleware.ts#L96)
 
 ___
 
@@ -143,7 +143,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:29](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/middleware.ts#L29)
+[medusa/src/services/middleware.ts:29](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/middleware.ts#L29)
 
 ___
 
@@ -163,7 +163,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:34](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/middleware.ts#L34)
+[medusa/src/services/middleware.ts:34](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/middleware.ts#L34)
 
 ___
 
@@ -185,7 +185,7 @@ Adds post authentication middleware to an express app.
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:106](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/middleware.ts#L106)
+[medusa/src/services/middleware.ts:106](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/middleware.ts#L106)
 
 ___
 
@@ -207,7 +207,7 @@ Adds pre authentication middleware to an express app.
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:117](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/middleware.ts#L117)
+[medusa/src/services/middleware.ts:117](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/middleware.ts#L117)
 
 ___
 
@@ -221,7 +221,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:123](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/middleware.ts#L123)
+[medusa/src/services/middleware.ts:123](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/middleware.ts#L123)
 
 ___
 
@@ -245,4 +245,4 @@ nothing if the middleware is a function
 
 #### Defined in
 
-[medusa/src/services/middleware.ts:43](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/middleware.ts#L43)
+[medusa/src/services/middleware.ts:43](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/middleware.ts#L43)

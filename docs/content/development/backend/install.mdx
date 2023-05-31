@@ -13,19 +13,7 @@ This document will guide you through setting up your Medusa backend in a three s
 
 ## Prerequisites
 
-### Node.js
-
-Medusa supports Node v16 or greater. You can check which version of Node you have by running the following command:
-
-```bash noReport
-node -v
-```
-
-You can install Node from the [official website](https://nodejs.org/en/).
-
-### Git
-
-Git is required for this setup. You can find instructions on how to install it from the [Set up your dev environment documentation](../../development/backend/prepare-environment.mdx#git).
+Medusa requires Node.js v16+, Git, and PostgreSQL to be installed. If you don't have them installed already, you can check out the [Prepare Environment](./prepare-environment.mdx) documnetation to learn how to install them.
 
 ---
 
@@ -54,6 +42,14 @@ If you run into any errors while installing the CLI tool, check out the [trouble
    ```bash noReport
    medusa new my-medusa-store --seed
    ```
+   
+   You'll then be asked to specify your PostgreSQL database credentials. You can choose "Continue" to use the default credentials shown in the terminal, choose "Change credentials" to specify your PostgreSQL credentails, or choose "Skip database setup" to create the database later.
+   
+   :::warning
+   
+   If you choose "Skip database setup" you will need to [set the database configurations](./configurations.md#database-configuration) and [run migrations](../entities/migrations/overview.mdx#migrate-command) later.
+   
+   :::
 
 ### 3. Start your Medusa backend
 
