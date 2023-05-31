@@ -1,14 +1,12 @@
-import { initialize } from "../../src"
-import { databaseOptions, TestDatabase } from "../utils"
-import { createProductAndTags } from "../__fixtures__/product"
 import { Product } from "@models"
+import { initialize } from "../../src"
 import * as CustomRepositories from "../__fixtures__/module"
 import { ProductRepository } from "../__fixtures__/module"
+import { createProductAndTags } from "../__fixtures__/product"
 import { productsData } from "../__fixtures__/product/data"
-import { MedusaModule } from "@medusajs/modules-sdk"
+import { databaseOptions, TestDatabase } from "../utils"
 
 const beforeEach_ = async () => {
-  ;(MedusaModule as any).instances_ = new Map()
   await TestDatabase.setupDatabase()
   return await TestDatabase.forkManager()
 }

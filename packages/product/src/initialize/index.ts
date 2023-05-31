@@ -5,11 +5,11 @@ import {
   Modules,
 } from "@medusajs/modules-sdk"
 import { IEventBusService, IProductService } from "@medusajs/types"
+import { moduleDefinition } from "../module-definition"
 import {
   ProductServiceInitializeCustomDataLayerOptions,
   ProductServiceInitializeOptions,
 } from "../types"
-import { moduleDefinition } from "../module-definition"
 
 export const initialize = async (
   options?:

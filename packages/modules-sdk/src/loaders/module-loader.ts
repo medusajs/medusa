@@ -1,8 +1,8 @@
 import {
   Logger,
+  MODULE_SCOPE,
   MedusaContainer,
   ModuleResolution,
-  MODULE_SCOPE,
 } from "@medusajs/types"
 import { asValue } from "awilix"
 import { EOL } from "os"
