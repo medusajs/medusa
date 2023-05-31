@@ -8,11 +8,6 @@ jobs:
       NODE_ENV: CI
       REDIS_URL: redis://localhost:6379
       DATABASE_URL: "postgres://postgres:postgres@localhost/cli-test"
-
-    strategy:
-      matrix:
-        db: [postgres]
-
     services:
       redis:
         image: redis
@@ -56,7 +51,7 @@ jobs:
 
       - name: Create Medusa project
         run: |
-          medusa new cli-test 'https://github.com/medusajs/medusa-starter-default/tree/ci-test'
+          medusa new cli-test --skip-db
         working-directory: ..
 
       - name: run medusa dev
@@ -64,28 +59,20 @@ jobs:
         working-directory: ../cli-test
 
       - name: Run migrations
-        env:
-          DATABASE_TYPE: ${{ matrix.db }}
         run: medusa migrations run
         working-directory: ../cli-test
 
       - name: Seed db
-        env:  
-          DATABASE_TYPE: ${{ matrix.db }}
         run: yarn seed
         working-directory: ../cli-test
 
       - name: Create admin user
-        env:  
-          DATABASE_TYPE: ${{ matrix.db }}
         run: medusa user -e test@test.com -p password -i admin_123
         working-directory: ../cli-test
 
       ##########################  Test medusa develop  ###############################
 
       - name: Run development server
-        env:  
-          DATABASE_TYPE: ${{ matrix.db }}
         run: medusa develop &
         working-directory: ../cli-test
 
@@ -95,8 +82,6 @@ jobs:
       ###########################  Test medusa start  ################################
 
       - name: Starting medusa
-        env:  
-          DATABASE_TYPE: ${{ matrix.db }}
         run: medusa start &
         working-directory: ../cli-test
 
