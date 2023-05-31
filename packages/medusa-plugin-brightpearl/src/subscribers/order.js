@@ -8,7 +8,7 @@ class OrderSubscriber {
     brightpearlService,
     claimService,
     fulfillmentService,
-    featureFlagrouter,
+    featureFlagRouter,
   }) {
     this.orderService_ = orderService
     this.brightpearlService_ = brightpearlService
@@ -17,7 +17,7 @@ class OrderSubscriber {
     this.paymentProviderService_ = paymentProviderService
     this.fulfillmentService_ = fulfillmentService
     this.claimService_ = claimService
-    this.featureFlagRouter = featureFlagrouter
+    this.featureFlagRouter = featureFlagRouter
 
     eventBusService.subscribe("order.placed", this.sendToBrightpearl)
 
