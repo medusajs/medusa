@@ -4,6 +4,8 @@ addHowToData: true
 ---
 
 import Feedback from '@site/src/components/Feedback';
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
 
 # Install Medusa Backend
 
@@ -83,26 +85,23 @@ You can access `/health` to get health status of your backend.
 
 ## Next Steps
 
-### Learn about the Architecture
-
-Medusa backend is made up of different resources that make it a powerful server. Get an overview of them in the [Medusa Architecture Overview](../fundamentals/architecture-overview.md) documentation.
-
-### Set Up Development Environment
-
-For an optimal experience developing with Medusa and to make sure you can use its advanced functionalities, you'll need to install more tools such as PostgreSQL.
-
-Follow [this documentation to learn how to set up your development environment](../../development/backend/prepare-environment.mdx).
-
-### Backend Configurations
-
-It's important to configure your Medusa backend properly and learn how environment variables are loaded.
-
-You can learn more about configuring your backend and loading environment variables in the [Configure your Backend documentation](../../development/backend/configurations.md).
-
-### File Service Plugin
-
-To upload product images to your Medusa backend, you must install and configure one of the following file service plugins:
-
-- [MinIO](../../plugins/file-service/minio.md) (Recommended for local development)
-- [S3](../../plugins/file-service/s3.md)
-- [DigitalOcean Spaces](../../plugins/file-service/spaces.md)
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/development/fundamentals/architecture-overview',
+    label: 'Backend Architecture',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the different resources that your Medusa backend is made of.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/backend/install',
+    label: 'Backend Configurations',
+    customProps: {
+      icon: Icons['tools-solid'],
+      description: 'Learn about configuring your backend and loading environment variables.'
+    }
+  }
+]} />
