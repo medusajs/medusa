@@ -12,8 +12,7 @@ import EditAllocationDrawer from "../../../domain/orders/details/allocations/edi
 import EditIcon from "../../fundamentals/icons/edit-icon"
 import Fade from "../../atoms/fade-wrapper"
 import NewReservation from "./new"
-import { NextSelect } from "../../molecules/select/next-select"
-import { ReservationItemDTO } from "@medusajs/types"
+import { ReservationItemDTO, StockLocationDTO } from "@medusajs/types"
 import ReservationsFilters from "./components/reservations-filter"
 import Table from "../../molecules/table"
 import TableContainer from "../../../components/organisms/table-container"
@@ -25,6 +24,9 @@ import { useLocation } from "react-router-dom"
 import { useReservationFilters } from "./use-reservation-filters"
 import useReservationsTableColumns from "./use-reservations-columns"
 import useToggleState from "../../../hooks/use-toggle-state"
+import * as RadixPopover from "@radix-ui/react-popover"
+import TagDotIcon from "../../fundamentals/icons/tag-dot-icon"
+import BuildingsIcon from "../../fundamentals/icons/buildings-icon"
 
 const DEFAULT_PAGE_SIZE = 15
 
@@ -37,38 +39,76 @@ const LocationDropdown = ({
   selectedLocation: string
   onChange: (id: string) => void
 }) => {
+  const [open, setOpen] = useState(false)
+
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
 
-  useEffect(() => {
-    if (!selectedLocation && !isLoading && locations?.length) {
-      onChange(locations[0].id)
+  const locationOptions = useMemo(() => {
+    let locationOptions = []
+    if (!isLoading && locations) {
+      locationOptions = locations.map((l: StockLocationDTO) => ({
+        label: l.name,
+        value: l.id,
+      }))
     }
-  }, [isLoading, locations, onChange, selectedLocation])
+
+    locationOptions.unshift({ label: "All locations", value: undefined })
+
+    return locationOptions
+  }, [isLoading, locations])
 
   const selectedLocObj = useMemo(() => {
-    if (!isLoading && locations) {
-      return locations.find((l) => l.id === selectedLocation)
+    if (locationOptions?.length) {
+      return (
+        locationOptions.find(
+          (l: { value: string; label: string }) => l.value === selectedLocation
+        ) ?? locationOptions[0]
+      )
     }
     return null
-  }, [selectedLocation, locations, isLoading])
+  }, [selectedLocation, locationOptions])
 
-  if (isLoading || !locations || !selectedLocObj) {
+  if (isLoading || !locationOptions?.length) {
     return null
   }
-
   return (
-    <div className="h-[40px] w-[200px]">
-      <NextSelect
-        isMulti={false}
-        onChange={(loc) => {
-          onChange(loc!.value)
-        }}
-        options={locations.map((l) => ({
-          label: l.name,
-          value: l.id,
-        }))}
-        value={{ value: selectedLocObj.id, label: selectedLocObj.name }}
-      />
+    <div className="w-[130px]">
+      <RadixPopover.Root open={open} onOpenChange={setOpen}>
+        <RadixPopover.Trigger className="w-full">
+          <Button
+            size="small"
+            variant="secondary"
+            className="w-full items-center justify-start"
+          >
+            <BuildingsIcon size={20} />
+            <p className="truncate">{selectedLocObj.label}</p>
+          </Button>
+        </RadixPopover.Trigger>
+        <RadixPopover.Content
+          side="bottom"
+          align="center"
+          sideOffset={2}
+          className="rounded-rounded z-50 w-52 border bg-white p-1"
+        >
+          {locationOptions.map((o, i) => (
+            <div
+              key={i}
+              className="hover:bg-grey-5 rounded-rounded mb-1 flex py-1.5 px-2"
+              onClick={() => {
+                setOpen(false)
+                onChange(o!.value)
+              }}
+            >
+              <div className="mr-2 h-[20px] w-[20px]">
+                {selectedLocObj.value === o.value && (
+                  <TagDotIcon size={20} outerColor="#FFF" color="#111827" />
+                )}
+              </div>
+              <p>{o.label}</p>
+            </div>
+          ))}
+        </RadixPopover.Content>
+      </RadixPopover.Root>
     </div>
   )
 }
@@ -226,7 +266,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
         isLoading={isLoading}
       >
         <Table
-          enableSearch
+          // enableSearch
           searchClassName="h-[40px]"
           handleSearch={setQuery}
           searchValue={query}
@@ -238,9 +278,7 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
                 filters={filters}
               />
               <LocationDropdown
-                selectedLocation={
-                  queryObject.location_id || store?.default_location_id
-                }
+                selectedLocation={queryObject.location_id}
                 onChange={(id) => {
                   setLocationFilter(id)
                   gotoPage(0)
