@@ -2,7 +2,7 @@ import * as RadixCollapsible from "@radix-ui/react-collapsible"
 import * as RadixPopover from "@radix-ui/react-popover"
 
 import React, { useEffect, useState } from "react"
-import { useAdminInventoryItems, useAdminUsers } from "medusa-react"
+import { useAdminInventoryItems, useAdminUsers, useMedusa } from "medusa-react"
 
 import AdjustmentsIcon from "../../../../fundamentals/icons/adjustments-icon"
 import Button from "../../../../fundamentals/button"
@@ -13,6 +13,7 @@ import CrossIcon from "../../../../fundamentals/icons/cross-icon"
 import FilterDropdownContainer from "../../../../molecules/filter-dropdown/container"
 import InputField from "../../../../molecules/input"
 import { InventoryItemDTO } from "@medusajs/types"
+import Spinner from "../../../../atoms/spinner"
 import Switch from "../../../../atoms/switch"
 import TagDotIcon from "../../../../fundamentals/icons/tag-dot-icon"
 import { User } from "@medusajs/medusa"
@@ -144,11 +145,26 @@ const SearchableFilterInventoryItem = ({
   value: any
   setFilter: (newFilter: any) => void
 }) => {
-  const [selectedItems, setSelectedItems] = useState<Set<string>>(
-    new Set(value)
+  const [selectedItems, setSelectedItems] = useState<Set<InventoryItemDTO>>(
+    new Set()
   )
   const [searchTerm, setSearchTerm] = useState<string>("")
   const [query, setQuery] = useState<string | undefined>()
+
+  const { client } = useMedusa()
+
+  useEffect(() => {
+    const getSelectedItems = async (value: any) => {
+      if (value) {
+        const { inventory_items } = await client.admin.inventoryItems.list({
+          id: [...new Set(value)] as string[],
+        })
+        setSelectedItems(new Set(inventory_items))
+      }
+    }
+
+    getSelectedItems(value)
+  }, [client.admin.inventoryItems, value])
 
   // Debounced search
   useEffect(() => {
@@ -169,8 +185,8 @@ const SearchableFilterInventoryItem = ({
     }
   )
 
-  const toggleUser = (item: InventoryItemDTO) => {
-    const newState = getNewSetState(selectedItems, item.id)
+  const toggleInventoryItem = (item: InventoryItemDTO) => {
+    const newState = getNewSetState(selectedItems, item)
 
     setSelectedItems(newState)
     setFilter([...newState])
@@ -212,31 +228,64 @@ const SearchableFilterInventoryItem = ({
               onChange={(e) => setQuery(e.target.value)}
             />
           </div>
-          {!isLoading && searchTerm && (
-            <div className="gap-y-1">
-              {inventory_items?.map((item: InventoryItemDTO, i: number) => (
-                <div
-                  key={`item-${i}`}
-                  onClick={() => toggleUser(item)}
-                  className="hover:bg-grey-10 rounded-rounded flex items-center py-1.5 px-2"
-                >
-                  <div className="mr-2 flex h-[20px] w-[20px] items-center">
-                    {selectedItems.has(item.id) && (
-                      <CheckIcon size={16} color="#111827" />
-                    )}
-                  </div>
-                  <div className="flex w-full items-center justify-between">
-                    <p>{item.title}</p> <p>{item.sku}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+          {[...selectedItems].map((item, i) => {
+            return (
+              <InventoryItemItem
+                key={`selected-item-${i}`}
+                onClick={() => toggleInventoryItem(item)}
+                selected={true}
+                item={item}
+              />
+            )
+          })}
+          {searchTerm &&
+            (isLoading ? (
+              <Spinner />
+            ) : (
+              <div className="gap-y-1">
+                {inventory_items
+                  ?.filter((item) => !selectedItems.has(item))
+                  .map((item: InventoryItemDTO, i: number) => (
+                    <InventoryItemItem
+                      key={`item-${i}`}
+                      onClick={() => toggleInventoryItem(item)}
+                      selected={false}
+                      item={item}
+                    />
+                  ))}
+              </div>
+            ))}
         </div>
       </CollapsibleWrapper>
     </div>
   )
 }
+
+const InventoryItemItem = ({
+  key,
+  onClick,
+  selected,
+  item,
+}: {
+  key: string
+  onClick: () => void
+  selected: boolean
+  item: InventoryItemDTO
+}) => (
+  <div
+    key={key}
+    onClick={onClick}
+    className="hover:bg-grey-10 rounded-rounded flex items-center py-1.5 px-2"
+  >
+    <div className="mr-2 flex h-[20px] w-[20px] items-center">
+      {selected && <CheckIcon size={16} color="#111827" />}
+    </div>
+    <div className="inter-small-regular flex w-full items-center justify-between">
+      <p className="text-grey-90">{item.title}</p>{" "}
+      <p className="text-grey-50">{item.sku}</p>
+    </div>
+  </div>
+)
 
 const CreatedByFilterItem = ({
   title,
@@ -247,8 +296,8 @@ const CreatedByFilterItem = ({
   value: any
   setFilter: (newFilter: any) => void
 }) => {
-  const [selectedUsers, setSelectedUsers] = useState<Set<string>>(
-    new Set(value)
+  const [selectedUsers, setSelectedUsers] = useState<Set<PasswordlessUser>>(
+    new Set()
   )
   const [searchTerm, setSearchTerm] = useState<string | undefined>()
   const [query, setQuery] = useState<string | undefined>()
@@ -281,7 +330,7 @@ const CreatedByFilterItem = ({
   }, [searchTerm, users])
 
   const toggleUser = (user: PasswordlessUser) => {
-    const newState = getNewSetState(selectedUsers, user.id)
+    const newState = getNewSetState(selectedUsers, user)
 
     setSelectedUsers(newState)
     setFilter([...newState])
@@ -320,26 +369,55 @@ const CreatedByFilterItem = ({
               }
             />
           </div>
+          {[...selectedUsers].map((user, i) => {
+            return (
+              <CreatedByItem
+                key={`user-${i}`}
+                onClick={() => toggleUser(user)}
+                selected={true}
+                user={user}
+              />
+            )
+          })}
           {!isLoading && searchTerm && (
             <div className="gap-y-1">
               {displayUsers?.map((u, i) => (
-                <div
+                <CreatedByItem
                   key={`user-${i}`}
                   onClick={() => toggleUser(u)}
-                  className="hover:bg-grey-10 rounded-rounded flex items-center py-1.5 px-2"
-                >
-                  <div className="mr-2 flex h-[20px] w-[20px] items-center">
-                    {selectedUsers.has(u.id) && (
-                      <CheckIcon size={16} color="#111827" />
-                    )}
-                  </div>
-                  <div>{`${u.first_name} ${u.last_name}`}</div>
-                </div>
+                  selected={false}
+                  user={u}
+                />
               ))}
             </div>
           )}
         </div>
       </CollapsibleWrapper>
+    </div>
+  )
+}
+
+const CreatedByItem = ({
+  key,
+  onClick,
+  selected,
+  user,
+}: {
+  key: string
+  onClick: () => void
+  selected: boolean
+  user: PasswordlessUser
+}) => {
+  return (
+    <div
+      key={key}
+      onClick={onClick}
+      className="hover:bg-grey-10 rounded-rounded flex items-center py-1.5 px-2"
+    >
+      <div className="mr-2 flex h-[20px] w-[20px] items-center">
+        {selected && <CheckIcon size={16} color="#111827" />}
+      </div>
+      <div>{`${user.first_name} ${user.last_name}`}</div>
     </div>
   )
 }
@@ -777,7 +855,7 @@ const CollapsibleWrapper = ({
   )
 }
 
-const getNewSetState = (state: Set<string>, value: string) => {
+function getNewSetState<T>(state: Set<T>, value: T) {
   if (state.has(value)) {
     state.delete(value)
     return new Set(state)
