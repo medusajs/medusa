@@ -67,7 +67,7 @@ export default (rootDirectory, pluginOptions) => {
   }
 
   const anotherRouter = Router()
-  router.get("/store/*", (req, res, next) => {
+  anotherRouter.get("/store/*", (req, res, next) => {
     // TODO perform an actions for all store endpoints
     next()
   })
