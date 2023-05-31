@@ -49,11 +49,13 @@ const AddConditionsModal = ({
     <LayeredModal context={layeredModalContext} handleClose={onClose}>
       <Modal.Body className="flex h-[calc(100vh-134px)] flex-col">
         <Modal.Header handleClose={onClose}>
-          <span className="inter-xlarge-semibold">Add Conditions</span>
-          <span className="text-grey-90 mt-6 flex items-center gap-1 font-semibold">
-            Choose a condition type{" "}
-            <IconTooltip content="You can only add one of each type of condition" />
-          </span>
+          <div className="flex-col">
+            <span className="inter-xlarge-semibold flex">Add Conditions</span>
+            <span className="text-grey-90 mt-6 flex items-center gap-1 font-semibold">
+              Choose a condition type{" "}
+              <IconTooltip content="You can only add one of each type of condition" />
+            </span>
+          </div>
         </Modal.Header>
 
         <Modal.Content className="flex-1">

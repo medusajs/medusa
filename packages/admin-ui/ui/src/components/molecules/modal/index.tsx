@@ -129,7 +129,7 @@ Modal.Header = ({ handleClose = undefined, children }) => {
       onClick={(e) => e.stopPropagation()}
     >
       <div className="flex flex-grow">{children}</div>
-      <div className="self-end">
+      <div>
         {handleClose && (
           <Button
             variant="ghost"
