@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[medusa/src/services/token.ts:16](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/token.ts#L16)
+[medusa/src/services/token.ts:16](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/token.ts#L16)
 
 ## Properties
 
@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[medusa/src/services/token.ts:14](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/token.ts#L14)
+[medusa/src/services/token.ts:14](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/token.ts#L14)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/token.ts:12](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/token.ts#L12)
+[medusa/src/services/token.ts:12](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/token.ts#L12)
 
 ## Methods
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/token.ts:34](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/token.ts#L34)
+[medusa/src/services/token.ts:34](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/token.ts#L34)
 
 ___
 
@@ -76,4 +76,4 @@ ___
 
 #### Defined in
 
-[medusa/src/services/token.ts:20](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/token.ts#L20)
+[medusa/src/services/token.ts:20](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/token.ts#L20)
