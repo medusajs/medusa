@@ -11,10 +11,11 @@ import InputHeader from "../../fundamentals/input-header"
 import CustomHeader from "./custom-header"
 import { DateTimePickerProps } from "./types"
 
-const getDateClassname = (d: Date, tempDate: Date) => {
+const getDateClassname = (d: Date, tempDate: Date, greyPast: boolean) => {
   return moment(d).format("YY,MM,DD") === moment(tempDate).format("YY,MM,DD")
     ? "date chosen"
     : `date ${
+        greyPast &&
         moment(d).format("YY,MM,DD") < moment(new Date()).format("YY,MM,DD")
           ? "past"
           : ""
@@ -121,18 +122,20 @@ type CalendarComponentProps = {
     date: Date | null,
     event: React.SyntheticEvent<any, Event> | undefined
   ) => void
+  greyPast?: boolean
 }
 
 export const CalendarComponent = ({
   date,
   onChange,
+  greyPast = true,
 }: CalendarComponentProps) => (
   <ReactDatePicker
     selected={date}
     inline
     onChange={onChange}
     calendarClassName="date-picker"
-    dayClassName={(d) => getDateClassname(d, date)}
+    dayClassName={(d) => getDateClassname(d, date, greyPast)}
     renderCustomHeader={({ ...props }) => <CustomHeader {...props} />}
   />
 )
