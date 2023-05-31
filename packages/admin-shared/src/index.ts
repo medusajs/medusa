@@ -1,7 +1,5 @@
-import RouteRegistry from "./route-registry"
-import WidgetRegistry from "./widget-registry"
-
 export * from "./constants"
 export * from "./types"
 export * from "./utils"
-export { WidgetRegistry, RouteRegistry }
+export { default as WidgetRegistry } from "./widget-registry"
+export { default as RouteRegistry } from "./route-registry"

@@ -16,11 +16,11 @@ import CollectionsTable from "../../../components/templates/collections-table"
 import ProductTable from "../../../components/templates/product-table"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
-import { useWidgets } from "../../../providers/injection-zone-provider"
 import { usePolling } from "../../../providers/polling-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
 import ImportProducts from "../batch-job/import"
 import NewProduct from "../new"
+import { useWidgets } from "../../../providers/widget-provider"
 
 const VIEWS = ["products", "collections"]
 

@@ -12,12 +12,22 @@ import PublicLayout from "../components/templates/login-layout"
 import useNotification from "../hooks/use-notification"
 import { getErrorMessage } from "../utils/error-messages"
 import FormValidator from "../utils/form-validator"
+import {
+  analytics,
+  useAdminAnalyticsConfig,
+  useAdminCreateAnalyticsConfig,
+} from "../services/analytics"
+import AnalyticsConfigForm, {
+  AnalyticsConfigFormType,
+} from "../components/organisms/analytics-config-form"
+import { nestedForm } from "../utils/nested-form"
 
 type FormValues = {
   password: string
   repeat_password: string
   first_name: string
   last_name: string
+  analytics: AnalyticsConfigFormType
 }
 
 const InvitePage = () => {
@@ -25,7 +35,17 @@ const InvitePage = () => {
   const parsed = qs.parse(location.search.substring(1))
   const [signUp, setSignUp] = useState(false)
 
-  let token: Object | null = null
+  const { analytics_config, isLoading: analyticsLoading } =
+    useAdminAnalyticsConfig()
+
+  console.log(analytics_config)
+
+  let token: {
+    iat: number
+    invite_id: string
+    role: string
+    user_email: string
+  } | null = null
   if (parsed?.token) {
     try {
       token = decodeToken(parsed.token as string)
@@ -34,21 +54,35 @@ const InvitePage = () => {
     }
   }
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setError,
-  } = useForm<FormValues>({
+  const form = useForm<FormValues>({
     defaultValues: {
       first_name: "",
       last_name: "",
       password: "",
       repeat_password: "",
+      analytics: {
+        opt_out: false,
+        anonymize: false,
+      },
     },
   })
 
-  const { mutate, isLoading } = useAdminAcceptInvite()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = form
+
+  const { mutate: acceptInvite, isLoading: acceptInviteIsLoading } =
+    useAdminAcceptInvite()
+  const {
+    mutate: createAnalyticsConfig,
+    isLoading: createAnalyticsConfigIsLoading,
+  } = useAdminCreateAnalyticsConfig()
+
+  const isLoading = acceptInviteIsLoading || createAnalyticsConfigIsLoading
+
   const navigate = useNavigate()
   const notification = useNotification()
 
@@ -68,7 +102,7 @@ const InvitePage = () => {
       return
     }
 
-    mutate(
+    acceptInvite(
       {
         token: parsed.token as string,
         user: {
@@ -78,8 +112,24 @@ const InvitePage = () => {
         },
       },
       {
-        onSuccess: () => {
-          navigate("/login")
+        onSuccess: async () => {
+          const shouldTrackEmail =
+            !data.analytics.anonymize &&
+            !data.analytics.opt_out &&
+            token?.user_email
+
+          await createAnalyticsConfig(data.analytics, {
+            onSuccess: () => {
+              navigate("/login")
+
+              if (shouldTrackEmail) {
+                analytics.track("userEmail", { email: token?.user_email })
+              }
+            },
+            onError: (err) => {
+              notification("Error", getErrorMessage(err), "error")
+            },
+          })
         },
         onError: (err) => {
           notification("Error", getErrorMessage(err), "error")
@@ -119,24 +169,7 @@ const InvitePage = () => {
             </h1>
             <div className="gap-y-small flex flex-col">
               <div>
-                <SigninInput
-                  placeholder="First name"
-                  {...register("first_name", {
-                    required: FormValidator.required("First name"),
-                  })}
-                  autoComplete="given-name"
-                />
-                <InputError errors={errors} name="first_name" />
-              </div>
-              <div>
-                <SigninInput
-                  placeholder="Last name"
-                  {...register("last_name", {
-                    required: FormValidator.required("Last name"),
-                  })}
-                  autoComplete="family-name"
-                />
-                <InputError errors={errors} name="last_name" />
+                <SigninInput readOnly placeholder={token.user_email} />
               </div>
               <div>
                 <SigninInput
@@ -159,6 +192,9 @@ const InvitePage = () => {
                 />
                 <InputError errors={errors} name="repeat_password" />
               </div>
+            </div>
+            <div className="gap-y-small my-8 flex w-[560px] flex-col">
+              <AnalyticsConfigForm form={nestedForm(form, "analytics")} />
             </div>
             <Button
               variant="secondary"

@@ -1,7 +1,7 @@
 import { useAdminLogin } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
-import { useWidgets } from "../../../providers/injection-zone-provider"
+import { useWidgets } from "../../../providers/widget-provider"
 import InputError from "../../atoms/input-error"
 import Button from "../../fundamentals/button"
 import SigninInput from "../../molecules/input-signin"

@@ -15,7 +15,7 @@ import { usePolling } from "../../providers/polling-provider"
 import { getErrorMessage } from "../../utils/error-messages"
 import Details from "./details"
 import { transformFiltersAsExportContext } from "./utils"
-import { useWidgets } from "../../providers/injection-zone-provider"
+import { useWidgets } from "../../providers/widget-provider"
 import WidgetContainer from "../../components/organisms/widget-container"
 
 const VIEWS = ["orders", "drafts"]

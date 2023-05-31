@@ -31,7 +31,7 @@ const AnalyticsConfigForm = ({ form }: Props) => {
   return (
     <div className="gap-y-xlarge flex flex-col">
       <div
-        className={clsx("flex items-start transition-opacity", {
+        className={clsx("flex items-center gap-3 transition-opacity", {
           "opacity-50": watchOptOut,
         })}
       >
@@ -57,7 +57,7 @@ const AnalyticsConfigForm = ({ form }: Props) => {
           }}
         />
       </div>
-      <div className="flex items-start">
+      <div className="flex items-center gap-3">
         <div className="gap-y-2xsmall flex flex-1 flex-col">
           <h2 className="inter-base-semibold">
             Opt out of sharing my usage data
