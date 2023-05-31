@@ -2150,6 +2150,16 @@ module.exports = {
                 "Learn how to integrate Spaces with the Medusa backend.",
             },
           },
+          {
+            type: "doc",
+            id: "plugins/file-service/local",
+            label: "Local File Storage",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to use local file storage in your Medusa backend",
+            },
+          },
         ],
       },
     ],
