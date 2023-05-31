@@ -600,21 +600,25 @@ medusa new ${rootPath} [url-to-starter]
 
   let creds = dbCredentials
 
+  const dbName = `medusa-db-${Math.random().toString(36).substring(2, 7)}` // generate random 5 character string
+
   if (!useDefaults && !skipDb && !skipEnv) {
-    creds = await interactiveDbCreds(rootPath, dbCredentials)
+    creds = await interactiveDbCreds(dbName, dbCredentials)
   }
 
   if (creds === null) {
-    reporter.info("Skipping automatic database setup")
+    reporter.info(
+      "Skipping automatic database setup. Please note that you need to create a database and run migrations before you can run your Medusa backend"
+    )
   } else {
     if (!skipDb) {
       track("CLI_NEW_SETUP_DB")
-      await setupDB(rootPath, creds)
+      await setupDB(dbName, creds)
     }
 
     if (!skipEnv) {
       track("CLI_NEW_SETUP_ENV")
-      await setupEnvVars(rootPath, rootPath, creds)
+      await setupEnvVars(rootPath, dbName, creds)
     }
 
     if (!skipMigrations) {
