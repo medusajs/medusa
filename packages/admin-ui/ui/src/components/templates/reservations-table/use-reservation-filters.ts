@@ -203,7 +203,7 @@ export const useReservationFilters = (
         }
       } else if (key === "offset" || key === "limit") {
         toQuery[key] = value
-      } else if (value.open) {
+      } else if (value?.open) {
         if (key === "date") {
           toQuery[stateFilterMap[key]] = formatDateFilter(
             value.filter as ReservationDateFilter
@@ -212,7 +212,11 @@ export const useReservationFilters = (
           toQuery[stateFilterMap[key]] = value.filter
         }
       } else if (key === "location") {
-        toQuery[stateFilterMap[key]] = value
+        if (value) {
+          toQuery[stateFilterMap[key]] = value
+        } else {
+          delete toQuery[stateFilterMap[key]]
+        }
       }
     }
 
