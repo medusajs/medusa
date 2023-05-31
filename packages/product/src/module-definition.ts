@@ -3,6 +3,7 @@ import { GatewayService } from "@services"
 import loadContainer from "./loaders/container"
 import loadConnection from "./loaders/connection"
 import * as ProductModels from "@models"
+import { revertMigration, runMigrations } from "./scripts"
 
 const service = GatewayService
 const loaders = [loadContainer, loadConnection] as any
@@ -10,9 +11,8 @@ const models = Object.values(ProductModels)
 
 export const moduleDefinition: ModuleExports = {
   service,
-  // migrations,
   loaders,
   models,
-  // runMigrations,
-  // revertMigration,
+  runMigrations,
+  revertMigration,
 }

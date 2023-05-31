@@ -14,7 +14,7 @@ import { EntitySchema } from "@mikro-orm/core"
  * @param logger
  * @param moduleDeclaration
  */
-export async function revertMigrations({
+export async function revertMigration({
   options,
   logger,
 }: Pick<
