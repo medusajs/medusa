@@ -552,8 +552,6 @@ const DateFilterItem = ({
     { label: "Between", value: "between" },
   ]
 
-  const [isOpen, setIsOpen] = useState(!!value)
-
   const getInitialFilter = (value: any) => {
     const keyLength = value ? Object.keys(value).length : 0
 
@@ -693,10 +691,10 @@ const FilterDatePicker = ({
     </RadixPopover.Trigger>
     <RadixPopover.Content
       side={side}
-      sideOffset={2}
-      className="bg-grey-0 rounded-rounded w-52 border p-1"
+      sideOffset={8}
+      className="bg-grey-0 rounded-rounded border p-1"
     >
-      <CalendarComponent date={date} onChange={setDate} />
+      <CalendarComponent date={date} onChange={setDate} greyPast={false} />
     </RadixPopover.Content>
   </RadixPopover.Root>
 )
