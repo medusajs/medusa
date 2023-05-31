@@ -381,14 +381,16 @@ const CreatedByFilterItem = ({
           })}
           {!isLoading && searchTerm && (
             <div className="gap-y-1">
-              {displayUsers?.map((u, i) => (
-                <CreatedByItem
-                  key={`user-${i}`}
-                  onClick={() => toggleUser(u)}
-                  selected={false}
-                  user={u}
-                />
-              ))}
+              {displayUsers
+                ?.filter((user) => !selectedUsers.has(user))
+                .map((u, i) => (
+                  <CreatedByItem
+                    key={`user-${i}`}
+                    onClick={() => toggleUser(u)}
+                    selected={false}
+                    user={u}
+                  />
+                ))}
             </div>
           )}
         </div>
