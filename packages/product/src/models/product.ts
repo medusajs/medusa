@@ -11,9 +11,8 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import kebabCase from "lodash/kebabCase"
 
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId, kebabCase } from "@medusajs/utils"
 import { ProductTypes } from "@medusajs/types"
 import ProductTag from "./product-tag"
 import ProductCollection from "./product-collection"

@@ -5,9 +5,8 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import kebabCase from "lodash/kebabCase"
 
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId, kebabCase } from "@medusajs/utils"
 
 @Entity({ tableName: "product_collection" })
 class ProductCollection {

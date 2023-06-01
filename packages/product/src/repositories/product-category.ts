@@ -3,15 +3,15 @@ import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
-  EntityField,
-  Collection,
 } from "@mikro-orm/core"
 import { deduplicateIfNecessary } from "../utils"
 import { ProductCategory } from "@models"
 import { DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
 
-export class ProductCategoryRepository implements DAL.RepositoryService<ProductCategory> {
+export class ProductCategoryRepository
+  implements DAL.RepositoryService<ProductCategory>
+{
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }) {
@@ -21,21 +21,22 @@ export class ProductCategoryRepository implements DAL.RepositoryService<ProductC
   async find(
     findOptions: DAL.FindOptions<ProductCategory> = { where: {} },
     transformOptions: ProductCategoryTransformOptions = {},
-    context: { transaction?: any } = {},
+    context: { transaction?: any } = {}
   ): Promise<ProductCategory[]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
     const { includeDescendantsTree } = transformOptions
 
     findOptions_.options ??= {}
-    const fields = findOptions_.options.fields ??= []
+    const fields = (findOptions_.options.fields ??= [])
     findOptions_.options.limit ??= 15
 
     // Ref: Building descendants
     // mpath and parent_category_id needs to be added to the query for the tree building to be done accurately
     if (includeDescendantsTree) {
       fields.indexOf("mpath") === -1 && fields.push("mpath")
-      fields.indexOf("parent_category_id") === -1 && fields.push("parent_category_id")
+      fields.indexOf("parent_category_id") === -1 &&
+        fields.push("parent_category_id")
     }
 
     if (findOptions_.options.populate) {
@@ -60,19 +61,21 @@ export class ProductCategoryRepository implements DAL.RepositoryService<ProductC
       return productCategories
     }
 
-    return this.buildProductCategoriesWithDescendants(productCategories, findOptions_)
+    return this.buildProductCategoriesWithDescendants(
+      productCategories,
+      findOptions_
+    )
   }
-
 
   async buildProductCategoriesWithDescendants(
     productCategories: ProductCategory[],
-    findOptions: DAL.FindOptions<ProductCategory> = { where: {} },
+    findOptions: DAL.FindOptions<ProductCategory> = { where: {} }
   ): Promise<ProductCategory[]> {
     for (let productCategory of productCategories) {
       const whereOptions = {
         ...findOptions.where,
         mpath: {
-          $like: `${productCategory.mpath}%`
+          $like: `${productCategory.mpath}%`,
         },
       }
       delete whereOptions.parent_category_id
@@ -85,11 +88,11 @@ export class ProductCategoryRepository implements DAL.RepositoryService<ProductC
 
       const descendantsByParentId = groupBy(
         descendantsForCategory,
-        pc => pc.parent_category_id
+        (pc) => pc.parent_category_id
       )
 
       const addChildrenToCategory = (category, children) => {
-        category.category_children = (children || []).map(categoryChild => {
+        category.category_children = (children || []).map((categoryChild) => {
           const moreChildren = descendantsByParentId[categoryChild.id] || []
 
           return addChildrenToCategory(categoryChild, moreChildren)
@@ -108,7 +111,7 @@ export class ProductCategoryRepository implements DAL.RepositoryService<ProductC
   async findAndCount(
     findOptions: DAL.FindOptions<ProductCategory> = { where: {} },
     transformOptions: ProductCategoryTransformOptions = {},
-    context: { transaction?: any } = {},
+    context: { transaction?: any } = {}
   ): Promise<[ProductCategory[], number]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }

@@ -29,7 +29,7 @@ export class MedusaModule {
     [key: string]: any
   }> {
     const hashKey = simpleHash(
-      JSON.stringify({ moduleKey, defaultPath, declaration })
+      JSON.stringifyCircular({ moduleKey, defaultPath, declaration })
     )
 
     if (MedusaModule.instances_.has(hashKey)) {
