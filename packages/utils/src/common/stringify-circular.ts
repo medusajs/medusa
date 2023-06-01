@@ -13,7 +13,7 @@ const toPointer = (parts: string[]) =>
     .map((part) => String(part).replace(/~/g, "~0").replace(/\//g, "~1"))
     .join("/")
 
-export const decycle = () => {
+const decycle = () => {
   const paths = new WeakMap()
 
   return function replacer(this: any, key: string | symbol, value: any) {
@@ -31,15 +31,9 @@ export const decycle = () => {
   }
 }
 
-Object.defineProperties(JSON, {
-  decycle: {
-    value: (object: any, space?: string | number): string =>
-      JSON.stringify(object, decycle(), space),
-  },
-})
-
-declare global {
-  export interface JSON {
-    stringifyCircular: (object: any, space?: string | number) => string
-  }
+export function stringifyCircular(
+  object: any,
+  space?: string | number
+): string {
+  return JSON.stringify(object, decycle(), space)
 }

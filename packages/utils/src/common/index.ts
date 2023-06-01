@@ -14,5 +14,4 @@ export * from "./set-metadata"
 export * from "./simple-hash"
 export * from "./wrap-handler"
 export * from "./to-kebab-case"
-
-import "./strip-circular-reference"
+export * from "./stringify-circular"

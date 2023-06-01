@@ -5,7 +5,11 @@ import {
   MODULE_SCOPE,
   ModuleExports,
 } from "@medusajs/types"
-import { createMedusaContainer, simpleHash } from "@medusajs/utils"
+import {
+  createMedusaContainer,
+  simpleHash,
+  stringifyCircular,
+} from "@medusajs/utils"
 import { asValue } from "awilix"
 import { moduleLoader, registerMedusaModule } from "./loaders"
 import { loadModuleMigrations } from "./loaders/utils"
@@ -29,7 +33,7 @@ export class MedusaModule {
     [key: string]: any
   }> {
     const hashKey = simpleHash(
-      JSON.stringifyCircular({ moduleKey, defaultPath, declaration })
+      stringifyCircular({ moduleKey, defaultPath, declaration })
     )
 
     if (MedusaModule.instances_.has(hashKey)) {
