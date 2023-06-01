@@ -113,7 +113,7 @@ You can find the format of the PostgreSQL database URL in [PostgreSQL’s docume
 
 :::
 
-Then, in `medusa-config.js` in the exported object, comment out or remove the SQLite database configurations and add the PostgreSQL database configurations:
+Then, in `medusa-config.js` in the exported object, add the PostgreSQL database configurations:
 
 ```jsx title=medusa-config.js
 module.exports = {
@@ -121,9 +121,6 @@ module.exports = {
     // ...
     database_url: DATABASE_URL,
     database_type: "postgres",
-    // REMOVE OR COMMENT OUT THE BELOW:
-    // database_database: "./medusa-db.sql",
-    // database_type: "sqlite",
   },
 }
 ```

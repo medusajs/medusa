@@ -22,29 +22,7 @@ Some of the configurations mentioned in this document are already defined in `me
 
 ## Database Configuration
 
-Medusa supports two database types: SQLite and PostgreSQL.
-
-:::tip
-
-You can use SQLite for development purposes, however, it’s recommended to use PostgreSQL.
-
-:::
-
-### SQLite Configurations
-
-For SQLite you mainly need two configurations:
-
-```jsx
-module.exports = {
-  projectConfig: {
-    // ...other configurations
-    database_type: "sqlite",
-    database_database: "./medusa-db.sql",
-  },
-}
-```
-
-Where `database_type` is `sqlite` and `database_database` is the location you want the SQLite database to be created in.
+Medusa only supports using a PostgreSQL database.
 
 ### PostgreSQL Configurations
 
@@ -54,9 +32,9 @@ Before getting started with configuring PostgreSQL, you should have created a Po
 
 :::
 
-For PostgreSQL you mainly need two configurations:
+The following configurations are required for PostgreSQL
 
-```jsx
+```js
 module.exports = {
   projectConfig: {
     // ...other configurations
@@ -86,9 +64,9 @@ postgres://localhost/store?options=-c search_path=test
 
 Where `test` is the name of the database schema that should be used instead of `public`.
 
-### Changing Database Type
+### Changing or Setting Database
 
-Remember to run migrations after you change your database type to `postgres` from another type:
+Remember to run migrations after you change or set your database:
 
 ```bash
 npx @medusajs/medusa-cli migrations run
@@ -103,7 +81,7 @@ As Medusa internally uses [Typeorm](https://typeorm.io/) to connect to the datab
 
 These configurations are not required and can be omitted.
 
-```jsx
+```js
 module.exports = {
   projectConfig: {
     // ...other configurations
