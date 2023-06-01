@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/order-edit-item-change.ts:33](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/order-edit-item-change.ts#L33)
+[medusa/src/services/order-edit-item-change.ts:33](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order-edit-item-change.ts#L33)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit-item-change.ts:29](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/order-edit-item-change.ts#L29)
+[medusa/src/services/order-edit-item-change.ts:29](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order-edit-item-change.ts#L29)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit-item-change.ts:30](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/order-edit-item-change.ts#L30)
+[medusa/src/services/order-edit-item-change.ts:30](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order-edit-item-change.ts#L30)
 
 ___
 
@@ -100,7 +100,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit-item-change.ts:28](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/order-edit-item-change.ts#L28)
+[medusa/src/services/order-edit-item-change.ts:28](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order-edit-item-change.ts#L28)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit-item-change.ts:31](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/order-edit-item-change.ts#L31)
+[medusa/src/services/order-edit-item-change.ts:31](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order-edit-item-change.ts#L31)
 
 ___
 
@@ -134,7 +134,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -151,7 +151,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit-item-change.ts:22](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/order-edit-item-change.ts#L22)
+[medusa/src/services/order-edit-item-change.ts:22](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order-edit-item-change.ts#L22)
 
 ## Accessors
 
@@ -169,7 +169,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -208,7 +208,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -228,7 +228,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit-item-change.ts:81](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/order-edit-item-change.ts#L81)
+[medusa/src/services/order-edit-item-change.ts:81](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order-edit-item-change.ts#L81)
 
 ___
 
@@ -248,7 +248,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit-item-change.ts:97](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/order-edit-item-change.ts#L97)
+[medusa/src/services/order-edit-item-change.ts:97](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order-edit-item-change.ts#L97)
 
 ___
 
@@ -269,7 +269,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit-item-change.ts:69](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/order-edit-item-change.ts#L69)
+[medusa/src/services/order-edit-item-change.ts:69](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order-edit-item-change.ts#L69)
 
 ___
 
@@ -290,7 +290,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/order-edit-item-change.ts:48](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/order-edit-item-change.ts#L48)
+[medusa/src/services/order-edit-item-change.ts:48](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order-edit-item-change.ts#L48)
 
 ___
 
@@ -314,7 +314,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -338,4 +338,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
