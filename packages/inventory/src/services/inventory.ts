@@ -441,7 +441,7 @@ export default class InventoryService implements IInventoryService {
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async deleteReservationItemsByLineItem(
-    lineItemId: string,
+    lineItemId: string | string[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     return await this.reservationItemService_.deleteByLineItem(

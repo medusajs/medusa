@@ -607,7 +607,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     const itemIds = Array.isArray(lineItemId) ? lineItemId : [lineItemId]
-    await this.inventoryService_.deleteReservationItemsByLineItem(itemIds)
+    await this.inventoryService_.deleteReservationItemsByLineItem(itemIds, {
+      transactionManager: this.activeManager_,
+    })
   }
 
   /**
