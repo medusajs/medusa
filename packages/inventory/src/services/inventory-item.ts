@@ -42,11 +42,10 @@ export default class InventoryItemService {
    * @param config - Configuration for query.
    * @return Resolves to the list of inventory items that match the filter.
    */
-  @InjectEntityManager()
   async list(
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<InventoryItemDTO[]> {
     const queryBuilder = getListQuery(
       context.transactionManager!,
@@ -57,37 +56,16 @@ export default class InventoryItemService {
   }
 
   /**
-   * @param selector - Filter options for inventory items.
-   * @param config - Configuration for query.
-   * @return - Resolves to the list of inventory items that match the filter and the count of all matching items.
-   */
-  @InjectEntityManager()
-  async listAndCount(
-    selector: FilterableInventoryItemProps = {},
-    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext() context: SharedContext = {}
-  ): Promise<[InventoryItemDTO[], number]> {
-    const queryBuilder = getListQuery(
-      context.transactionManager!,
-      selector,
-      config
-    )
-
-    return await queryBuilder.getManyAndCount()
-  }
-
-  /**
    * Retrieves an inventory item by its id.
    * @param inventoryItemId - the id of the inventory item to retrieve.
    * @param config - the configuration options for the find operation.
    * @return The retrieved inventory item.
    * @throws If the inventory item id is not defined or if the inventory item is not found.
    */
-  @InjectEntityManager()
   async retrieve(
     inventoryItemId: string,
     config: FindConfig<InventoryItem> = {},
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<InventoryItem> {
     if (!isDefined(inventoryItemId)) {
       throw new MedusaError(
@@ -110,6 +88,25 @@ export default class InventoryItemService {
     }
 
     return inventoryItem
+  }
+
+  /**
+   * @param selector - Filter options for inventory items.
+   * @param config - Configuration for query.
+   * @return - Resolves to the list of inventory items that match the filter and the count of all matching items.
+   */
+  async listAndCount(
+    selector: FilterableInventoryItemProps = {},
+    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
+    context: SharedContext = {}
+  ): Promise<[InventoryItemDTO[], number]> {
+    const queryBuilder = getListQuery(
+      context.transactionManager!,
+      selector,
+      config
+    )
+
+    return await queryBuilder.getManyAndCount()
   }
 
   /**

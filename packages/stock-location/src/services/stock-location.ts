@@ -55,14 +55,10 @@ export default class StockLocationService {
    * @param config - Additional configuration for the query.
    * @return A list of stock locations.
    */
-  @InjectEntityManager(
-    (target) =>
-      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
-  )
   async list(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<StockLocation[]> {
     const manager = context.transactionManager!
     const locationRepo = manager.getRepository(StockLocation)
@@ -77,14 +73,10 @@ export default class StockLocationService {
    * @param config - Additional configuration for the query.
    * @return A list of stock locations and the count of matching stock locations.
    */
-  @InjectEntityManager(
-    (target) =>
-      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
-  )
   async listAndCount(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<[StockLocation[], number]> {
     const manager = context.transactionManager!
     const locationRepo = manager.getRepository(StockLocation)
@@ -100,14 +92,10 @@ export default class StockLocationService {
    * @return The stock location.
    * @throws If the stock location ID is not definedor the stock location with the given ID was not found.
    */
-  @InjectEntityManager(
-    (target) =>
-      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
-  )
   async retrieve(
     stockLocationId: string,
     config: FindConfig<StockLocation> = {},
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<StockLocation> {
     if (!isDefined(stockLocationId)) {
       throw new MedusaError(

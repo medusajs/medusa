@@ -8,9 +8,9 @@ import {
 } from "@medusajs/types"
 import {
   InjectEntityManager,
+  isDefined,
   MedusaContext,
   MedusaError,
-  isDefined,
 } from "@medusajs/utils"
 import { EntityManager, FindManyOptions } from "typeorm"
 import { InventoryLevelService } from "."
@@ -50,11 +50,10 @@ export default class ReservationItemService {
    * @param config - Configuration for the query.
    * @return Array of reservation items that match the selector.
    */
-  @InjectEntityManager()
   async list(
     selector: FilterableReservationItemProps = {},
     config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<ReservationItem[]> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
@@ -70,11 +69,10 @@ export default class ReservationItemService {
    * @param config - Configuration for the query.
    * @return Array of reservation items that match the selector and the total count.
    */
-  @InjectEntityManager()
   async listAndCount(
     selector: FilterableReservationItemProps = {},
     config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<[ReservationItem[], number]> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
@@ -91,11 +89,10 @@ export default class ReservationItemService {
    * @return The reservation item with the provided id.
    * @throws If reservationItemId is not defined or if the reservation item was not found.
    */
-  @InjectEntityManager()
   async retrieve(
     reservationItemId: string,
     config: FindConfig<ReservationItem> = {},
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<ReservationItem> {
     if (!isDefined(reservationItemId)) {
       throw new MedusaError(
@@ -295,6 +292,7 @@ export default class ReservationItemService {
    * Deletes a reservation item by id.
    * @param reservationItemId - the id of the reservation item to delete.
    */
+  @InjectEntityManager()
   async delete(
     reservationItemId: string | string[],
     @MedusaContext() context: SharedContext = {}
