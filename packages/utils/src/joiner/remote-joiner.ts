@@ -130,8 +130,8 @@ export class RemoteJoiner {
         throw new Error(`Service ${serviceName} not found`)
       }
 
-      const service = this.serviceConfigCache.get(serviceName)!
-      service.relationships.push(...relationships)
+      const service = this.serviceConfigCache.get(serviceName)
+      service!.relationships.push(...relationships)
     }
 
     return serviceConfigs
