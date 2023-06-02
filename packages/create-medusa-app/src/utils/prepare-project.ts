@@ -65,7 +65,7 @@ export default async ({
     fact = showFact(fact, spinner)
     interval = setInterval(() => {
       fact = showFact(fact, spinner)
-    }, 6000)
+    }, 10000)
 
     onProcessTerminated(() => clearInterval(interval))
   }
