@@ -338,22 +338,15 @@ export const MoneyAmountRepository = dataSource
         )
       }
 
-      let prices
-      let count = 0
-
       if (shouldCount) {
-        const results = await qb.getManyAndCount()
-        prices = results[0]
-        count = results[1]
+        const [prices, count] = await qb.getManyAndCount()
+        const groupedPrices = groupBy(prices, "variant_id")
+        return [groupedPrices, count] as TResult
       } else {
-        prices = await qb.getMany()
+        const prices = await qb.getMany()
+        const groupedPrices = groupBy(prices, "variant_id")
+        return groupedPrices as TResult
       }
-
-      const groupedPrices = groupBy(prices, "variant_id")
-
-      return (shouldCount
-        ? [groupedPrices, count]
-        : groupedPrices) as unknown as TResult
     },
 
     async updatePriceListPrices(
