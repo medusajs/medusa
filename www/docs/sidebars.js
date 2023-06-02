@@ -384,11 +384,6 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "troubleshooting/transaction-error-in-checkout",
-              label: "Error 409 in checkout",
-            },
-            {
-              type: "doc",
               id: "troubleshooting/missing-payment-providers",
               label: "Payment provider missing",
             },
@@ -2172,6 +2167,16 @@ module.exports = {
               iconName: "bolt-solid",
               description:
                 "Learn how to integrate Spaces with the Medusa backend.",
+            },
+          },
+          {
+            type: "doc",
+            id: "plugins/file-service/local",
+            label: "Local File Storage",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to use local file storage in your Medusa backend",
             },
           },
         ],
