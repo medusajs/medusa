@@ -387,6 +387,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
         )
       }
 
+      const moduleContext = {
+        transactionManager: this.activeManager_,
+      }
+
       const [locations, count] =
         await this.inventoryService_.listInventoryLevels(
           {
@@ -394,9 +398,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
             inventory_item_id: variantInventory[0].inventory_item_id,
           },
           undefined,
-          {
-            transactionManager: this.activeManager_,
-          }
+          moduleContext
         )
 
       if (count === 0) {
@@ -419,9 +421,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
             inventory_item_id: inventoryPart.inventory_item_id,
             quantity: itemQuantity,
           },
-          {
-            transactionManager: this.activeManager_,
-          }
+          moduleContext
         )
       })
     )
