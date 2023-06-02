@@ -31,6 +31,6 @@
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
     "watch": "tsc --build --watch",
-    "test": "jest -- ./__tests__/joiner/remote-joiner-data.ts"
+    "test": "jest"
   }
 }
