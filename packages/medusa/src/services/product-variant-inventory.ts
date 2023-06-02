@@ -375,6 +375,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     let locationId = context.locationId
+    const moduleContext = {
+      transactionManager: this.activeManager_,
+    }
+
     if (!isDefined(locationId) && context.salesChannelId) {
       const locationIds = await this.salesChannelLocationService_
         .withTransaction(this.activeManager_)
@@ -385,10 +389,6 @@ class ProductVariantInventoryService extends TransactionBaseService {
           MedusaError.Types.INVALID_DATA,
           "Must provide location_id or sales_channel_id to a Sales Channel that has associated Stock Locations"
         )
-      }
-
-      const moduleContext = {
-        transactionManager: this.activeManager_,
       }
 
       const [locations, count] =
