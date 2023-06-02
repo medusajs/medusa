@@ -103,7 +103,11 @@ export class RemoteJoiner {
     for (const service of serviceConfigs) {
       // self-reference
       const propName = service.serviceName.toLowerCase()
-      service.relationships.push({
+      if (service.relationships) {
+        service.relationships = []
+      }
+
+      service.relationships?.push({
         alias: propName,
         foreignKey: propName + "_id",
         primaryKey: "id",
@@ -131,7 +135,7 @@ export class RemoteJoiner {
       }
 
       const service = this.serviceConfigCache.get(serviceName)
-      service!.relationships.push(...relationships)
+      service!.relationships?.push(...relationships)
     }
 
     return serviceConfigs
