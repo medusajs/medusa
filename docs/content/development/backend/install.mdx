@@ -40,7 +40,7 @@ If you run into any errors while installing the CLI tool, check out the [trouble
 ### 2. Create a new Medusa project
 
    ```bash noReport
-   medusa new my-medusa-store --seed
+   medusa new my-medusa-store
    ```
    
    You'll then be asked to specify your PostgreSQL database credentials. You can choose "Continue" to use the default credentials shown in the terminal, choose "Change credentials" to specify your PostgreSQL credentails, or choose "Skip database setup" to create the database later.
@@ -64,6 +64,14 @@ If you run into any errors while installing the CLI tool, check out the [trouble
    positiveQuestion="Is there anything that should improved?"
    negativeQuestion="Please describe the issue you faced."
 />
+
+### Seed Data 
+
+For better testing, you can add demo data to your Medusa backend by running the seed command in your Medusa backend directory:
+
+```bash
+medusa seed --seed-file=data/seed.json
+```
 
 ### Test the Backend
 
