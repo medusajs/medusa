@@ -1,8 +1,7 @@
 import { MedusaContainer, RemoteExpandProperty } from "@medusajs/types"
-import { RemoteJoiner } from "./../../joiner"
-
+import { lowerCaseFirst, toPascalCase } from "@medusajs/utils"
 import { serviceConfigs, serviceMock } from "../../__mocks__/joiner/mock_data"
-import { lowerCaseFirst, toPascalCase } from "../../common"
+import { RemoteJoiner } from "./../../joiner"
 
 const container = {
   resolve: (serviceName) => {

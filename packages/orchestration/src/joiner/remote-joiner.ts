@@ -5,7 +5,7 @@ import {
   RemoteJoinerQuery,
   RemoteNestedExpands,
 } from "@medusajs/types"
-import { isDefined, toPascalCase } from "../common"
+import { isDefined, toPascalCase } from "@medusajs/utils"
 import GraphQLParser from "./graphql-ast"
 
 const BASE_PATH = "_root"
@@ -103,7 +103,7 @@ export class RemoteJoiner {
     for (const service of serviceConfigs) {
       // self-reference
       const propName = service.serviceName.toLowerCase()
-      if (service.relationships) {
+      if (!service.relationships) {
         service.relationships = []
       }
 
