@@ -13,8 +13,13 @@ const paths: LearningPathType[] = [
         path: "/starters/nextjs-medusa-starter",
       },
       {
-        description: "Deploy your backend to your preferred hosting.",
-        path: "/deployments/server",
+        path: "/deployments/server/deploying-on-railway",
+        descriptionJSX: (
+          <>
+            Deploy your backend to Railway. You can alternatively check out{" "}
+            <Link href="/deployments/server">other deployment guides</Link>
+          </>
+        ),
       },
       {
         description: "Deploy your storefront to your preferred hosting.",
@@ -64,16 +69,86 @@ const paths: LearningPathType[] = [
         ),
       },
       {
-        description:
-          "Build a storefront either using the Next.js starter or from scratch.",
         path: "/starters/nextjs-medusa-starter",
+        descriptionJSX: (
+          <>
+            Build a storefront either using the Next.js starter or{" "}
+            <Link href="/storefront/roadmap">from scratch</Link>.
+          </>
+        ),
+      },
+      {
+        path: "/deployments/server/deploying-on-railway",
+        descriptionJSX: (
+          <>
+            Deploy your backend to Railway. You can alternatively check out{" "}
+            <Link href="/deployments/server">other deployment guides</Link>
+          </>
+        ),
+      },
+    ],
+    finish: {
+      type: "rating",
+      step: {
+        title: "Congratulations on building your marketplace!",
+        description: "Please rate your experience using this learning path.",
+        eventName: "rating_path_marketplace",
+      },
+    },
+  },
+  {
+    name: "subscriptions",
+    label: "Build Subscription-based Purchases",
+    steps: [
+      {
+        path: "/development/entities/extend-entity",
+        descriptionJSX: (
+          <>
+            Extend entities to associate them with the Store. You can also{" "}
+            <Link href="/development/entities/create">
+              Create a custom entity
+            </Link>
+            .
+          </>
+        ),
       },
       {
         description:
-          "Deploy your backend to the hosting provider of your choice.",
-        path: "/deployments/server",
+          "Create a subscriber that listens to the order.placed event and handles creating the subscription in Medusa.",
+        path: "/development/events/create-subscriber",
+      },
+      {
+        description:
+          "Create a scheduled job that checks daily for subscriptions that needs renewal.",
+        path: "/development/scheduled-jobs/create",
+      },
+      {
+        path: "/starters/nextjs-medusa-starter",
+        descriptionJSX: (
+          <>
+            Build a storefront either using the Next.js starter or{" "}
+            <Link href="/storefront/roadmap">from scratch</Link>.
+          </>
+        ),
+      },
+      {
+        path: "/deployments/server/deploying-on-railway",
+        descriptionJSX: (
+          <>
+            Deploy your backend to Railway. You can alternatively check out{" "}
+            <Link href="/deployments/server">other deployment guides</Link>
+          </>
+        ),
       },
     ],
+    finish: {
+      type: "rating",
+      step: {
+        title: "Congratulations on implementing subscription-based purchases!",
+        description: "Please rate your experience using this learning path.",
+        eventName: "rating_path_subscriptions",
+      },
+    },
   },
 ]
 
