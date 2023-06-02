@@ -1,6 +1,6 @@
 # Signing in to Medusa Admin
 
-If you've created a new Medusa backend with the `--seed` option or used the `seed` script or command, the default credentials are:
+If you've created a new Medusa backend and used the `seed` command, the default credentials are:
 
 ```bash noReport
 email: admin@medusa-test.com
