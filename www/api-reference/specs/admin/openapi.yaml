@@ -13,8 +13,7 @@ info:
     There are two ways to send authenticated requests to the Medusa server:
     Using a user's API token, or using a Cookie Session ID.
 
-
-    <!-- ReDoc-Inject: <SecurityDefinitions> -->
+    <Security />
 
 
     ## Expanding Fields

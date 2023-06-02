@@ -1,0 +1,191 @@
+code[class*="language-"],
+pre[class*="language-"] {
+	@apply text-left whitespace-pre text-medusa-code-block-text bg-medusa-code-block-bg;
+	@apply font-monospace text-body-regular;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+
+	/* -moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none; */
+}
+
+code[class*="language-"]::-moz-selection,
+pre[class*="language-"]::-moz-selection,
+code[class*="language-"] ::-moz-selection,
+pre[class*="language-"] ::-moz-selection {
+	@apply bg-medusa-code-block-bg;
+}
+
+code[class*="language-"]::selection,
+pre[class*="language-"]::selection,
+code[class*="language-"] ::selection,
+pre[class*="language-"] ::selection {
+	@apply bg-medusa-code-block-bg;
+}
+
+:not(pre) > code[class*="language-"] {
+	@apply whitespace-normal rounded p-1;
+}
+
+pre[class*="language-"] {
+	@apply overflow-auto relative my-2 p-1 rounded;
+}
+
+[class*="language-"] .namespace {
+	color: rgb(178, 204, 214);
+}
+
+.token.atrule {
+	color: rgb(199, 146, 234);
+}
+
+.token.attr-name {
+	color: rgb(255, 203, 107);
+}
+
+.token.attr-value {
+	color: rgb(191, 199, 213);
+}
+
+.token.attribute {
+	color: rgb(191, 199, 213);
+}
+
+.token.boolean {
+	color: rgb(255, 88, 116);
+}
+
+.token.builtin {
+	color: rgb(130, 170, 255);
+}
+
+.token.cdata {
+	color: rgb(195, 232, 141);
+}
+
+.token.char {
+	color: rgb(130, 170, 255);
+}
+
+/* .token.class {
+	color: #ffcb6b;
+} */
+
+.token.class-name {
+	color: rgb(255, 203, 107);
+}
+
+.token.comment {
+	@apply italic;
+	color: rgb(105, 112, 152);
+}
+
+.token.constant {
+	color: rgb(130, 170, 255);
+}
+
+.token.deleted {
+	color: rgb(255, 85, 114);
+}
+
+.token.doctype {
+	color: rgb(199, 146, 234);
+	@apply italic;
+}
+
+.token.entity {
+	color: rgb(255, 85, 114);
+}
+
+.token.function {
+	color: rgb(130, 170, 255);
+}
+
+.token.hexcode {
+	color: rgb(255, 203, 107);
+}
+
+.token.id {
+	color: rgb(199, 146, 234);
+	font-weight: bold;
+}
+
+.token.important {
+	color: rgb(199, 146, 234);
+	font-weight: bold;
+}
+
+.token.inserted {
+	color: rgb(195, 232, 141);
+}
+
+.token.keyword {
+	@apply italic;
+}
+
+.token.number {
+	color: rgb(247, 140, 108);
+}
+
+.token.operator {
+	color: rgb(137, 221, 255);
+}
+
+.token.prolog {
+	color: rgb(105, 112, 152);
+}
+
+.token.property {
+	color: rgb(195, 232, 141);
+}
+
+.token.pseudo-class {
+	color: rgb(195, 232, 141);
+}
+
+.token.pseudo-element {
+	color: rgb(195, 232, 141);
+}
+
+.token.punctuation {
+	color: rgb(199, 146, 234);
+}
+
+.token.regex {
+	color: rgb(255, 203, 107);
+}
+
+.token.selector {
+	color: rgb(199, 146, 234);
+}
+
+.token.string {
+	color: rgb(195, 232, 141);
+}
+
+.token.symbol {
+	color: rgb(199, 146, 234);
+}
+
+.token.tag {
+	color: rgb(255, 85, 114);
+}
+
+.token.unit {
+	color: rgb(247, 140, 108);
+}
+
+.token.url {
+	color: rgb(221, 221, 221);
+}
+
+.token.variable {
+	color: rgb(191, 199, 213);
+}

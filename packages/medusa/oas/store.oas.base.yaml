@@ -9,7 +9,7 @@ info:
 
     To send requests as an authenticated customer, you must use the Cookie Session ID.
 
-    <!-- ReDoc-Inject: <SecurityDefinitions> -->
+    <Security />
 
     ## Expanding Fields
 
