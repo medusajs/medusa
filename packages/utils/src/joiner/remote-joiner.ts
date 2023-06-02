@@ -83,20 +83,6 @@ export class RemoteJoiner {
     return parser.parseQuery()
   }
 
-  private static createSelfReferences(serviceConfigs: JoinerServiceConfig[]) {
-    for (const service of serviceConfigs) {
-      const propName = service.serviceName.toLowerCase()
-      service.relationships.push({
-        alias: propName,
-        foreignKey: propName + "_id",
-        primaryKey: "id",
-        serviceName: service.serviceName,
-      })
-    }
-
-    return serviceConfigs
-  }
-
   constructor(
     serviceConfigs: JoinerServiceConfig[],
     private remoteFetchData: (
@@ -109,7 +95,46 @@ export class RemoteJoiner {
       path?: string
     }>
   ) {
-    this.serviceConfigs = RemoteJoiner.createSelfReferences(serviceConfigs)
+    this.serviceConfigs = this.buildReferences(serviceConfigs)
+  }
+
+  private buildReferences(serviceConfigs: JoinerServiceConfig[]) {
+    const expandedRelationships: Map<string, JoinerRelationship[]> = new Map()
+    for (const service of serviceConfigs) {
+      // self-reference
+      const propName = service.serviceName.toLowerCase()
+      service.relationships.push({
+        alias: propName,
+        foreignKey: propName + "_id",
+        primaryKey: "id",
+        serviceName: service.serviceName,
+      })
+
+      this.serviceConfigCache.set(service.serviceName, service)
+
+      if (!service.extends) {
+        continue
+      }
+
+      for (const extend of service.extends) {
+        if (!expandedRelationships.has(extend.serviceName)) {
+          expandedRelationships.set(extend.serviceName, [])
+        }
+
+        expandedRelationships.get(extend.serviceName)!.push(extend.resolve)
+      }
+    }
+
+    for (const [serviceName, relationships] of expandedRelationships) {
+      if (!this.serviceConfigCache.has(serviceName)) {
+        throw new Error(`Service ${serviceName} not found`)
+      }
+
+      const service = this.serviceConfigCache.get(serviceName)!
+      service.relationships.push(...relationships)
+    }
+
+    return serviceConfigs
   }
 
   private findServiceConfig(

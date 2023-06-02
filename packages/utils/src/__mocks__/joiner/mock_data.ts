@@ -1,5 +1,5 @@
 import { JoinerServiceConfig } from "@medusajs/types"
-import { remoteJoinerData } from "../../__fixtures__/joiner/data"
+import { remoteJoinerData } from "./../../__fixtures__/joiner/data"
 
 export const serviceConfigs: JoinerServiceConfig[] = [
   {
@@ -11,6 +11,17 @@ export const serviceConfigs: JoinerServiceConfig[] = [
         serviceName: "Product",
         primaryKey: "id",
         alias: "product",
+      },
+    ],
+    extends: [
+      {
+        serviceName: "Variant",
+        resolve: {
+          foreignKey: "user_id",
+          serviceName: "User",
+          primaryKey: "id",
+          alias: "user",
+        },
       },
     ],
   },
@@ -30,12 +41,6 @@ export const serviceConfigs: JoinerServiceConfig[] = [
     serviceName: "Variant",
     primaryKeys: ["id"],
     relationships: [
-      {
-        foreignKey: "user_id",
-        serviceName: "User",
-        primaryKey: "id",
-        alias: "user",
-      },
       {
         foreignKey: "product_id",
         serviceName: "Product",

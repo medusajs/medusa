@@ -9,7 +9,11 @@ export type JoinerRelationship = {
 export interface JoinerServiceConfig {
   serviceName: string
   primaryKeys: string[]
-  relationships: JoinerRelationship[]
+  relationships?: JoinerRelationship[]
+  extends?: {
+    serviceName: string
+    resolve: JoinerRelationship
+  }[]
 }
 
 export interface JoinerArgument {
