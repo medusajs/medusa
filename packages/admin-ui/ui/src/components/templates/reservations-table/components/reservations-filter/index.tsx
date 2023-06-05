@@ -189,7 +189,7 @@ const SearchableFilterInventoryItem = ({
     const newState = getNewSetState(selectedItems, item)
 
     setSelectedItems(newState)
-    setFilter([...newState])
+    setFilter([...newState].map((i) => i.id))
   }
 
   const reset = () => {
@@ -316,6 +316,17 @@ const CreatedByFilterItem = ({
   const [displayUsers, setDisplayUsers] = useState<PasswordlessUser[]>([])
 
   useEffect(() => {
+    const getSelectedItems = async (value: any) => {
+      if (value && users) {
+        const selectedUsers = users.filter((u) => value.includes(u.id))
+        setSelectedUsers(new Set(selectedUsers))
+      }
+    }
+
+    getSelectedItems(value)
+  }, [value])
+
+  useEffect(() => {
     if (searchTerm && users?.length) {
       setDisplayUsers(
         users
@@ -333,7 +344,7 @@ const CreatedByFilterItem = ({
     const newState = getNewSetState(selectedUsers, user)
 
     setSelectedUsers(newState)
-    setFilter([...newState])
+    setFilter([...newState].map((u) => u.id))
   }
 
   const reset = () => {
