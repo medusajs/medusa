@@ -155,7 +155,7 @@ const SearchableFilterInventoryItem = ({
 
   useEffect(() => {
     const getSelectedItems = async (value: any) => {
-      if (value) {
+      if (value?.length) {
         const { inventory_items } = await client.admin.inventoryItems.list({
           id: [...new Set(value)] as string[],
         })
@@ -186,7 +186,7 @@ const SearchableFilterInventoryItem = ({
   )
 
   const toggleInventoryItem = (item: InventoryItemDTO) => {
-    const newState = getNewSetState(selectedItems, item)
+    const newState = getNewSetState(new Set(selectedItems), item)
 
     setSelectedItems(newState)
     setFilter([...newState].map((i) => i.id))
