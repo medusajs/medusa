@@ -2,8 +2,10 @@ export const extensionTypes = ["widget", "route", "nested-route"] as const
 
 export const injectionZones = [
   // Order injection zones
-  "order.details",
-  "order.list",
+  "order.details.before",
+  "order.details.after",
+  "order.list.before",
+  "order.list.after",
   // Draft order injection zones
   "draft_order.list",
   "draft_order.details",
@@ -14,8 +16,10 @@ export const injectionZones = [
   "customer_group.details",
   "customer_group.list",
   // Product injection zones
-  "product.details",
-  "product.list",
+  "product.details.before",
+  "product.details.after",
+  "product.list.before",
+  "product.list.after",
   // Product collection injection zones
   "product_collection.details",
   "product_collection.list",

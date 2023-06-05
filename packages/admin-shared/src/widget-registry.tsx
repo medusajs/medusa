@@ -8,10 +8,14 @@ class WidgetRegistry {
   public registerWidget(origin: string, widget: WidgetExtension) {
     const { zone } = widget.config
 
-    const widgets = this.widgets.get(zone) || []
-    widgets.push({ origin, Widget: widget.Component })
+    const zones = Array.isArray(zone) ? zone : [zone]
 
-    this.widgets.set(zone, widgets)
+    for (let widgetZone of zones) {
+      const widgets = this.widgets.get(widgetZone) || []
+      widgets.push({ origin, Widget: widget.Component })
+
+      this.widgets.set(widgetZone, widgets)
+    }
   }
 
   public getWidgets(zone: InjectionZone) {

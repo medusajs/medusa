@@ -15,6 +15,8 @@ import { usePolling } from "../../providers/polling-provider"
 import { getErrorMessage } from "../../utils/error-messages"
 import Details from "./details"
 import { transformFiltersAsExportContext } from "./utils"
+import { useWidgets } from "../../providers/widget-provider"
+import WidgetContainer from "../../components/organisms/widget-container"
 
 const VIEWS = ["orders", "drafts"]
 
@@ -34,6 +36,8 @@ const OrderIndex = () => {
     close: closeExportModal,
     state: exportModalOpen,
   } = useToggleState(false)
+
+  const { getWidgets } = useWidgets()
 
   const actions = useMemo(() => {
     return [
@@ -74,6 +78,16 @@ const OrderIndex = () => {
   return (
     <>
       <div className="flex h-full grow flex-col">
+        {getWidgets("order.list.before").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              injectionZone={"order.list.before"}
+              widget={w}
+              entity={undefined}
+            />
+          )
+        })}
         <div className="flex w-full grow flex-col">
           <BodyCard
             customHeader={
@@ -94,6 +108,16 @@ const OrderIndex = () => {
           </BodyCard>
           <Spacer />
         </div>
+        {getWidgets("order.list.after").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              injectionZone={"order.list.after"}
+              widget={w}
+              entity={undefined}
+            />
+          )
+        })}
       </div>
       {exportModalOpen && (
         <ExportModal

@@ -67,7 +67,7 @@ export default (rootDirectory, pluginOptions) => {
   }
 
   const anotherRouter = Router()
-  router.get("/store/*", (req, res, next) => {
+  anotherRouter.get("/store/*", (req, res, next) => {
     // TODO perform an actions for all store endpoints
     next()
   })
@@ -105,7 +105,7 @@ import {
 import { 
   ConfigModule, 
 } from "@medusajs/medusa/dist/types/global"
-import * as cors from "cors"
+import cors from "cors"
 ```
 
 Next, in the exported function, retrieve the CORS configurations of your backend using the utility functions you imported:

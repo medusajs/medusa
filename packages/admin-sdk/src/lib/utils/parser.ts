@@ -126,19 +126,16 @@ function validateWidgetConfig(
     return false
   }
 
-  console.log(zoneProperty.value.type)
+  let zoneIsValid = false
 
-  const zoneValue =
-    zoneProperty.value.type === "StringLiteral" &&
-    isValidZone(zoneProperty.value.value)
-      ? zoneProperty.value.value
-      : null
+  if (zoneProperty.value.type === "StringLiteral")
+    zoneIsValid = isValidZone(zoneProperty.value.value)
+  else if (zoneProperty.value.type === "ArrayExpression")
+    zoneIsValid = zoneProperty.value.elements.every(
+      (zone) => zone.type === "StringLiteral" && isValidZone(zone.value)
+    )
 
-  if (!zoneValue) {
-    return false
-  }
-
-  return true
+  return zoneIsValid
 }
 
 function validateNestedRouteConfig(
@@ -343,7 +340,10 @@ function isComponentExport(ast: ParseResult<any>, exportName: string): boolean {
         node,
         {
           ReturnStatement(path) {
-            if (path.node.argument?.type === "JSXElement") {
+            if (
+              path.node.argument?.type === "JSXElement" ||
+              path.node.argument?.type === "JSXFragment"
+            ) {
               isComponent = true
             }
           },

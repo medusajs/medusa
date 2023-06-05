@@ -301,6 +301,18 @@ const OrderDetails = () => {
           </BodyCard>
         ) : (
           <>
+            <div>
+              {getWidgets("order.details.before").map((widget, i) => {
+                return (
+                  <WidgetContainer
+                    key={i}
+                    injectionZone={"order.details.before"}
+                    widget={widget}
+                    entity={order}
+                  />
+                )
+              })}
+            </div>
             <div className="flex space-x-4">
               <div className="gap-y-base flex h-full w-7/12 flex-col">
                 <BodyCard
@@ -531,11 +543,11 @@ const OrderDetails = () => {
                   </div>
                 </BodyCard>
                 <div>
-                  {getWidgets("order.details").map((widget, i) => {
+                  {getWidgets("order.details.after").map((widget, i) => {
                     return (
                       <WidgetContainer
                         key={i}
-                        injectionZone={"order.details"}
+                        injectionZone={"order.details.after"}
                         widget={widget}
                         entity={order}
                       />

@@ -8,7 +8,7 @@ export type ExtensionType = typeof extensionTypes[number]
 
 export type WidgetConfig = {
   type: "widget"
-  zone: InjectionZone
+  zone: InjectionZone | InjectionZone[]
 }
 
 export type RouteConfig = {

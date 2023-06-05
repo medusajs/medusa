@@ -83,6 +83,7 @@ const SigninInput = React.forwardRef(
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className="text-grey-40 focus:text-violet-60 px-4 focus:outline-none"
+            tabIndex={-1}
           >
             {showPassword ? <EyeIcon size={16} /> : <EyeOffIcon size={16} />}
           </button>
