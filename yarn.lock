@@ -6285,11 +6285,6 @@ __metadata:
     ts-node: ^10.9.1
     tsc-alias: ^1.8.6
     typescript: ^4.4.4
-  peerDependencies:
-    "@mikro-orm/migrations": 5.7.4
-  peerDependenciesMeta:
-    "@mikro-orm/migrations":
-      optional: true
   languageName: unknown
   linkType: soft
 
