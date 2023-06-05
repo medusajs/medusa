@@ -1,21 +1,25 @@
+import * as RadixPopover from "@radix-ui/react-popover"
+
 import { Cell, Row, TableRowProps, usePagination, useTable } from "react-table"
 import React, { useEffect, useMemo, useState } from "react"
+import { ReservationItemDTO, StockLocationDTO } from "@medusajs/types"
 import {
   useAdminReservations,
   useAdminStockLocations,
   useAdminStore,
 } from "medusa-react"
 
+import BuildingsIcon from "../../fundamentals/icons/buildings-icon"
 import Button from "../../fundamentals/button"
 import DeletePrompt from "../../organisms/delete-prompt"
 import EditIcon from "../../fundamentals/icons/edit-icon"
 import EditReservationDrawer from "../../../domain/orders/details/reservation/edit-reservation-modal"
 import Fade from "../../atoms/fade-wrapper"
 import NewReservation from "./new"
-import { ReservationItemDTO, StockLocationDTO } from "@medusajs/types"
 import ReservationsFilters from "./components/reservations-filter"
 import Table from "../../molecules/table"
 import TableContainer from "../../../components/organisms/table-container"
+import TagDotIcon from "../../fundamentals/icons/tag-dot-icon"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
 import { isEmpty } from "lodash"
 import qs from "qs"
@@ -24,9 +28,6 @@ import { useLocation } from "react-router-dom"
 import { useReservationFilters } from "./use-reservation-filters"
 import useReservationsTableColumns from "./use-reservations-columns"
 import useToggleState from "../../../hooks/use-toggle-state"
-import * as RadixPopover from "@radix-ui/react-popover"
-import TagDotIcon from "../../fundamentals/icons/tag-dot-icon"
-import BuildingsIcon from "../../fundamentals/icons/buildings-icon"
 
 const DEFAULT_PAGE_SIZE = 15
 
@@ -72,23 +73,25 @@ const LocationDropdown = ({
     return null
   }
   return (
-    <div className="w-[130px]">
+    <div className="max-w-[220px]">
       <RadixPopover.Root open={open} onOpenChange={setOpen}>
         <RadixPopover.Trigger className="w-full">
           <Button
             size="small"
             variant="secondary"
-            className="w-full items-center justify-start"
+            className="max-w-[220px] items-center justify-start"
           >
             <BuildingsIcon size={20} />
-            <p className="truncate">{selectedLocObj.label}</p>
+            <span className="max-w-[166px] truncate">
+              {selectedLocObj.label}
+            </span>
           </Button>
         </RadixPopover.Trigger>
         <RadixPopover.Content
           side="bottom"
           align="center"
           sideOffset={2}
-          className="rounded-rounded z-50 w-52 border bg-white p-1"
+          className="rounded-rounded z-50 w-[220px] border bg-white p-1"
         >
           {locationOptions.map((o, i) => (
             <div
@@ -104,7 +107,7 @@ const LocationDropdown = ({
                   <TagDotIcon size={20} outerColor="#FFF" color="#111827" />
                 )}
               </div>
-              <p>{o.label}</p>
+              <p className="line-clamp-1 w-[166px]">{o.label}</p>
             </div>
           ))}
         </RadixPopover.Content>
