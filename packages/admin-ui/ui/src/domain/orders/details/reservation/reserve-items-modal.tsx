@@ -22,18 +22,18 @@ import { getFulfillableQuantity } from "../create-fulfillment/item-table"
 import { sum } from "lodash"
 import useNotification from "../../../../hooks/use-notification"
 
-type AllocationModalFormData = {
+type ReserveModalFormData = {
   location?: { label: string; value: string }
-  items: AllocationLineItemForm[]
+  items: ReserveLineItemForm[]
 }
 
-type AllocateItemsModalProps = {
+type ReserveItemsModalProps = {
   items: LineItem[]
   reservationItemsMap: Record<string, ReservationItemDTO[]>
   close: () => void
 }
 
-const AllocateItemsModal: React.FC<AllocateItemsModalProps> = ({
+const ReserveItemsModal: React.FC<ReserveItemsModalProps> = ({
   items,
   close,
   reservationItemsMap,
@@ -42,7 +42,7 @@ const AllocateItemsModal: React.FC<AllocateItemsModalProps> = ({
   const { client: medusaClient } = useMedusa()
   const notification = useNotification()
 
-  const form = useForm<AllocationModalFormData>({
+  const form = useForm<ReserveModalFormData>({
     defaultValues: {
       items: [],
     },
@@ -64,7 +64,7 @@ const AllocateItemsModal: React.FC<AllocateItemsModalProps> = ({
     }))
   }, [stock_locations])
 
-  const onSubmit = async (data: AllocationModalFormData) => {
+  const onSubmit = async (data: ReserveModalFormData) => {
     if (!data.location?.value) {
       return
     }
@@ -130,7 +130,7 @@ const AllocateItemsModal: React.FC<AllocateItemsModalProps> = ({
                 Cancel
               </Button>
               <Button size="small" variant="primary" type="submit">
-                Save allocation
+                Save reservation
               </Button>
             </div>
           </div>
@@ -178,7 +178,7 @@ const AllocateItemsModal: React.FC<AllocateItemsModalProps> = ({
                   </p>
                   {items?.map((item, i) => {
                     return (
-                      <AllocationLineItem
+                      <ReservationLineItem
                         form={nestedForm(form, `items.${i}` as "items.0")}
                         item={item}
                         key={i}
@@ -201,15 +201,15 @@ const AllocateItemsModal: React.FC<AllocateItemsModalProps> = ({
   )
 }
 
-export type AllocationLineItemForm = {
+export type ReserveLineItemForm = {
   inventory_item_id: string
   line_item_id: string
   quantity: number
   description?: string | null
 }
 
-export const AllocationLineItem: React.FC<{
-  form: NestedForm<AllocationLineItemForm>
+export const ReservationLineItem: React.FC<{
+  form: NestedForm<ReserveLineItemForm>
   item: LineItem
   locationId?: string
   reservedQuantity?: number
@@ -321,4 +321,4 @@ export const AllocationLineItem: React.FC<{
   )
 }
 
-export default AllocateItemsModal
+export default ReserveItemsModal
