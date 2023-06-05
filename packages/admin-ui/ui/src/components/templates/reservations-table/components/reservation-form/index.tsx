@@ -1,16 +1,16 @@
 import Button from "../../../../fundamentals/button"
 import { Controller } from "react-hook-form"
+import { DecoratedInventoryItemDTO } from "@medusajs/medusa"
 import InputField from "../../../../molecules/input"
 import ItemSearch from "../../../../molecules/item-search"
 import LocationDropdown from "../../../../molecules/location-dropdown"
 import { NestedForm } from "../../../../../utils/nested-form"
-import { DecoratedInventoryItemDTO } from "@medusajs/medusa"
 import React from "react"
 
 export type GeneralFormType = {
-  location: string
-  items: Partial<DecoratedInventoryItemDTO>
-  description: string
+  location: string | undefined
+  item: Partial<DecoratedInventoryItemDTO> | undefined
+  description: string | undefined
   quantity: number
 }
 
@@ -22,7 +22,9 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
   const { register, path, watch, control, setValue } = form
 
   const selectedItem = watch(path("item"))
-  const selectedLocation = watch(path("location"))
+  const [selectedLocation, setSelectedLocation] = React.useState<
+    string | undefined
+  >(undefined)
 
   const locationLevel = selectedItem?.location_levels?.find(
     (l) => l.location_id === selectedLocation
@@ -41,7 +43,10 @@ const ReservationForm: React.FC<Props> = ({ form }) => {
           render={({ field: { onChange } }) => {
             return (
               <LocationDropdown
-                onChange={onChange}
+                onChange={(v) => {
+                  onChange(v)
+                  setSelectedLocation(v)
+                }}
                 selectedLocation={selectedLocation}
               />
             )
