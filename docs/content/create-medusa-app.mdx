@@ -121,12 +121,6 @@ yarn dev
 
 The commands will differ based on your choices in previous prompts.
 
-:::note
-
-Please note that the `yarn dev` command is shown by default for storefronts and is the correct command for Medusa's Next.js storefront. If you used a different storefront, you might need to check what the correct command of that storefront is.
-
-:::
-
 ### Step 5: Configuring your Backend Database
 
 Before you can start your backend, you must configure your PostgreSQL database and run migrations.
@@ -144,7 +138,7 @@ DATABASE_TYPE=postgres
 DATABASE_URL=<YOUR_DATABASE_URL>
 ```
 
-Where `<YOUR_DATABASE_URL>` is the connection URL of your database. For example, `postgres://localhost/medusa-store`. You can learn about its format and other configurations [here](./development/backend/configurations.md).
+Where `<YOUR_DATABASE_URL>` is the connection URL to your PostgreSQL database. For example, `postgres://localhost/medusa-store`. You can learn about its format and other configurations [here](./development/backend/configurations.md).
 
 :::note
 
@@ -152,7 +146,7 @@ Make sure to create your PostgreSQL database that you refer to in the connection
 
 :::
 
-Then, run the following command to migrate the schema to your database:
+Then, run the following command to migrate the Medusa schema to your database:
 
 <Tabs groupId="npxyarn" isCodeTabs={true}>
   <TabItem value="npx" label="NPX" default>
@@ -217,7 +211,7 @@ This will start your backend on `localhost:9000`. While your backend is running,
 npm run develop
 ```
 
-If you open your storefront now in your browser, everything should be working as expected. If you're not seeing any products, you can run the `seed` command as instructed earlier or install the [Medusa admin plugin](./admin/quickstart.mdx) to start adding products.
+If you open your storefront now in your browser on `localhost:8000`, everything should be working as expected. If you're not seeing any products, you can run the `seed` command as instructed earlier or install the [Medusa admin plugin](./admin/quickstart.mdx) to start adding products.
 
 <Feedback 
    event="survey_create-medusa-app"
