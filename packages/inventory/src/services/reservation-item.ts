@@ -48,6 +48,7 @@ export default class ReservationItemService {
    * Lists reservation items that match the provided filter.
    * @param selector - Filters to apply to the reservation items.
    * @param config - Configuration for the query.
+   * @param context
    * @return Array of reservation items that match the selector.
    */
   async list(
@@ -55,7 +56,7 @@ export default class ReservationItemService {
     config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 },
     context: SharedContext = {}
   ): Promise<ReservationItem[]> {
-    const manager = context.transactionManager!
+    const manager = context.transactionManager ?? this.manager_
     const itemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery(selector, config) as FindManyOptions
@@ -67,6 +68,7 @@ export default class ReservationItemService {
    * Lists reservation items that match the provided filter and returns the total count.
    * @param selector - Filters to apply to the reservation items.
    * @param config - Configuration for the query.
+   * @param context
    * @return Array of reservation items that match the selector and the total count.
    */
   async listAndCount(
@@ -74,7 +76,7 @@ export default class ReservationItemService {
     config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 },
     context: SharedContext = {}
   ): Promise<[ReservationItem[], number]> {
-    const manager = context.transactionManager!
+    const manager = context.transactionManager ?? this.manager_
     const itemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery(selector, config) as FindManyOptions
@@ -86,6 +88,7 @@ export default class ReservationItemService {
    * Retrieves a reservation item by its id.
    * @param reservationItemId - The id of the reservation item to retrieve.
    * @param config - Configuration for the query.
+   * @param context
    * @return The reservation item with the provided id.
    * @throws If reservationItemId is not defined or if the reservation item was not found.
    */
@@ -101,7 +104,7 @@ export default class ReservationItemService {
       )
     }
 
-    const manager = context.transactionManager!
+    const manager = context.transactionManager ?? this.manager_
     const reservationItemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery(
@@ -123,6 +126,7 @@ export default class ReservationItemService {
   /**
    * Create a new reservation item.
    * @param data - The reservation item data.
+   * @param context
    * @return The created reservation item.
    */
   @InjectEntityManager()
@@ -165,6 +169,7 @@ export default class ReservationItemService {
    * Update a reservation item.
    * @param reservationItemId - The reservation item's id.
    * @param data - The reservation item data to update.
+   * @param context
    * @return The updated reservation item.
    */
   @InjectEntityManager()
@@ -229,6 +234,7 @@ export default class ReservationItemService {
   /**
    * Deletes a reservation item by line item id.
    * @param lineItemId - the id of the line item to delete.
+   * @param context
    */
   @InjectEntityManager()
   async deleteByLineItem(
@@ -267,6 +273,7 @@ export default class ReservationItemService {
   /**
    * Deletes reservation items by location ID.
    * @param locationId - The ID of the location to delete reservations for.
+   * @param context
    */
   @InjectEntityManager()
   async deleteByLocationId(
@@ -291,6 +298,7 @@ export default class ReservationItemService {
   /**
    * Deletes a reservation item by id.
    * @param reservationItemId - the id of the reservation item to delete.
+   * @param context
    */
   @InjectEntityManager()
   async delete(
