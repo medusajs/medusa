@@ -33,6 +33,21 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
           scroll={true}
           onClick={() => changeActiveItem(item.path)}
         >
+          {item.method && (
+            <span
+              className={clsx(
+                "text-medusa-text-on-color text-label-x-small mr-0.5 rounded py-[2px] px-[4px] text-[10px]",
+                item.method === "get" &&
+                  "bg-medusa-tag-green-icon dark:bg-medusa-tag-green-icon-dark",
+                item.method === "post" &&
+                  "bg-medusa-tag-blue-icon dark:bg-medusa-tag-blue-icon-dark",
+                item.method === "delete" &&
+                  "bg-medusa-tag-red-icon dark:bg-medusa-tag-red-icon-dark"
+              )}
+            >
+              {item.method.toUpperCase()}
+            </span>
+          )}
           {item.title}
         </Link>
         {item.children && (

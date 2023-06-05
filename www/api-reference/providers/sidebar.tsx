@@ -1,5 +1,6 @@
 "use client"
 
+import { OpenAPIV3 } from "openapi-types"
 import { ReactNode, createContext, useContext, useState } from "react"
 
 export enum SidebarItemSections {
@@ -10,6 +11,7 @@ export enum SidebarItemSections {
 export type SidebarItemType = {
   path: string
   title: string
+  method?: OpenAPIV3.HttpMethods
   children?: SidebarItemType[]
 }
 

@@ -33,11 +33,11 @@ const TagSectionPaths = ({ tag }: TagSectionPathsProps) => {
       paths.forEach((path) => {
         Object.entries(path).map(([method, operation]) => {
           const definedOperation = operation as Operation
+          const definedMethod = method as OpenAPIV3.HttpMethods
           items.push({
             path: getSectionId([definedOperation.operationId]),
-            title: `${method}: ${
-              definedOperation.summary || definedOperation.operationId
-            }`,
+            title: definedOperation.summary || definedOperation.operationId,
+            method: definedMethod,
           })
         })
       })
@@ -55,7 +55,7 @@ const TagSectionPaths = ({ tag }: TagSectionPathsProps) => {
       {paths.length > 0 && (
         <ul>
           {paths.map((path, pathIndex) => (
-            <>
+            <div key={pathIndex}>
               {Object.entries(path).map(
                 ([method, operation], operationIndex) => (
                   <TagOperation
@@ -66,7 +66,7 @@ const TagSectionPaths = ({ tag }: TagSectionPathsProps) => {
                   />
                 )
               )}
-            </>
+            </div>
           ))}
         </ul>
       )}

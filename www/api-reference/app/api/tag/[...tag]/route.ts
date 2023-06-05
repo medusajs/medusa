@@ -7,6 +7,8 @@ import readSpecDocument from "@/utils/read-spec-document"
 import resolveRefs from "@/utils/resolve-refs"
 import getSectionId from "@/utils/get-section-id"
 import { Operation } from "@/types/openapi"
+import flattenArray from "@/utils/flatten-array"
+import convertToOpenApi from "@/utils/convert-to-openapi"
 
 export async function GET(req: NextRequest) {
   const tagName = req.nextUrl.pathname.replace("/api/tag/", "").replace("/", "")
@@ -37,29 +39,32 @@ export async function GET(req: NextRequest) {
     documents.map(async (document) => {
       // load all references in document
       const keys = Object.keys(document)
-      const values = (
-        await Promise.all(
-          Object.values(document).map(async (operation) => {
-            if (typeof operation === "string") {
-              return operation
-            }
-
-            if ("operationId" in operation && operation.operationId) {
-              return await resolveRefs(operation, basePath)
-            }
-
+      let values = await Promise.all(
+        Object.values(document).map(async (operation) => {
+          if (typeof operation === "string") {
             return operation
-          })
-        )
-      ).map((value) => {
-        if (Array.isArray(value)) {
-          return Object.assign({}, ...value)
+          }
+
+          if ("operationId" in operation && operation.operationId) {
+            return await resolveRefs(operation, basePath)
+          }
+
+          return operation
+        })
+      )
+      values = flattenArray(values)
+
+      values.map((v) => {
+        if (typeof v === "string") {
+          return v
         }
 
-        return value
+        return convertToOpenApi(v)
       })
 
-      return mergeObjects(keys, values)
+      const result = mergeObjects(keys, values)
+
+      return result
     })
   )
 

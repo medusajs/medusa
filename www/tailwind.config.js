@@ -437,6 +437,28 @@ module.exports = {
                 dark: "#0D3868",
               },
             },
+            red: {
+              bg: {
+                DEFAULT: "#FFE5E5",
+                dark: "#481A1D",
+                hover: {
+                  DEFAULT: "#FDD8D8",
+                  dark: "#541B1F",
+                },
+              },
+              text: {
+                DEFAULT: "#CD2B31",
+                dark: "#FF6369",
+              },
+              icon: {
+                DEFAULT: "#E5484D",
+                dark: "#E5484D",
+              },
+              border: {
+                DEFAULT: "#F9C6C6",
+                dark: "#671E22",
+              },
+            },
             neutral: {
               bg: {
                 DEFAULT: "#F1F3F5",
