@@ -192,6 +192,10 @@ const SearchableFilterInventoryItem = ({
     setFilter([...newState].map((i) => i.id))
   }
 
+  const selectedIds = React.useMemo(() => {
+    return new Set([...selectedItems].map((i) => i.id))
+  }, [selectedItems])
+
   const reset = () => {
     setSelectedItems(new Set())
     setFilter(undefined)
@@ -245,7 +249,7 @@ const SearchableFilterInventoryItem = ({
               ) : (
                 <>
                   {inventory_items
-                    ?.filter((item) => !selectedItems.has(item))
+                    ?.filter((item) => !selectedIds.has(item.id))
                     .map((item: InventoryItemDTO, i: number) => (
                       <InventoryItemItem
                         key={`item-${i}`}
