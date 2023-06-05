@@ -93,7 +93,9 @@ function getInternalModuleResolution(
   if (definition.canOverride && (isString || (isObj && moduleConfig.resolve))) {
     resolutionPath = !moduleExports
       ? resolveCwd(isString ? moduleConfig : (moduleConfig.resolve as string))
-      : ""
+      : // Explicitly assign an empty string, later, we will check if the value is exactly false.
+        // This allows to continue the module loading while using the module exports instead of re importing the module itself during the process.
+        ""
   }
 
   const moduleDeclaration = isObj ? moduleConfig : {}
