@@ -38,7 +38,7 @@ const InvitePage = () => {
   const { analytics_config, isLoading: analyticsLoading } =
     useAdminAnalyticsConfig()
 
-  console.log(analytics_config)
+  const firstRun = !!parsed.firstRun
 
   let token: {
     iat: number
@@ -212,13 +212,21 @@ const InvitePage = () => {
       ) : (
         <div className="flex flex-col items-center text-center">
           <h1 className="inter-xlarge-semibold text-[20px]">
-            You have been invited to join the team
+            {firstRun
+              ? `Let's get you started!`
+              : `You have been invited to join the team`}
           </h1>
-          <p className="inter-base-regular text-grey-50 mt-xsmall">
-            You can now join the team. Sign up below and get started
-            <br />
-            with your Medusa account right away.
-          </p>
+          {firstRun ? (
+            <p className="inter-base-regular text-grey-50 mt-xsmall">
+              Create an admin account to access your <br /> Medusa dashboard.
+            </p>
+          ) : (
+            <p className="inter-base-regular text-grey-50 mt-xsmall">
+              You can now join the team. Sign up below and get started
+              <br />
+              with your Medusa account right away.
+            </p>
+          )}
           <Button
             variant="secondary"
             size="medium"
