@@ -38,7 +38,7 @@ Instead of using the default Medusa backend starter, you must use the [Contentfu
 In your terminal, run the following command to install the backend:
 
 ```bash
-medusa new medusa-contentful https://github.com/medusajs/medusa-starter-contentful
+npx @medusajs/medusa-cli@latest new medusa-contentful https://github.com/medusajs/medusa-starter-contentful
 ```
 
 This installs a new Medusa backend in the directory `medusa-contentful`.
@@ -113,7 +113,7 @@ You can find the format of the PostgreSQL database URL in [PostgreSQL’s docume
 
 :::
 
-Then, in `medusa-config.js` in the exported object, comment out or remove the SQLite database configurations and add the PostgreSQL database configurations:
+Then, in `medusa-config.js` in the exported object, add the PostgreSQL database configurations:
 
 ```jsx title=medusa-config.js
 module.exports = {
@@ -121,9 +121,6 @@ module.exports = {
     // ...
     database_url: DATABASE_URL,
     database_type: "postgres",
-    // REMOVE OR COMMENT OUT THE BELOW:
-    // database_database: "./medusa-db.sql",
-    // database_type: "sqlite",
   },
 }
 ```

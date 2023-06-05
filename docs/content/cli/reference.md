@@ -115,7 +115,6 @@ medusa new [<backend_name> [<starter_url>]]
 
 | Name | Description |
 | --- | --- |
-| `--seed` | If the flag is set the command will attempt to seed the database after setup. |
 | `-y`, `--useDefaults` | If the flag is set the command will not interactively collect database credentials. |
 | `--skip-db` | If the flag is set the command will not attempt to complete the database setup. |
 | `--skip-migrations` | If the flag is set the command will not attempt to complete the database migration. |
