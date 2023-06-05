@@ -33,7 +33,9 @@ export function loadDatabaseConfig(
   if (isProductServiceInitializeOptions(options)) {
     database.clientUrl = options.database.clientUrl ?? database.clientUrl
     database.schema = options.database.schema ?? database.schema
-    database.driverOptions = options.database.driverOptions ?? {}
+    database.driverOptions =
+      options.database.driverOptions ??
+      getDefaultDriverOptions(database.clientUrl)
   }
 
   return database
