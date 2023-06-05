@@ -58,11 +58,11 @@ export class MedusaModule {
       }
     }
 
-    const moduleResolutions = registerMedusaModule(moduleKey, modDeclaration!)
-
-    if (moduleResolutions[moduleKey]) {
-      moduleResolutions[moduleKey].moduleExports = moduleExports
-    }
+    const moduleResolutions = registerMedusaModule(
+      moduleKey,
+      modDeclaration!,
+      moduleExports
+    )
 
     await moduleLoader({
       container,

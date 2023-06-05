@@ -3,6 +3,7 @@ import {
   InternalModuleDeclaration,
   MODULE_SCOPE,
   ModuleDefinition,
+  ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
 import MODULE_DEFINITIONS from "../definitions"
@@ -39,7 +40,8 @@ export const registerModules = (
 
 export const registerMedusaModule = (
   moduleKey: string,
-  moduleDeclaration: InternalModuleDeclaration | ExternalModuleDeclaration
+  moduleDeclaration: InternalModuleDeclaration | ExternalModuleDeclaration,
+  moduleExports?: ModuleExports
 ): Record<string, ModuleResolution> => {
   const moduleResolutions = {} as Record<string, ModuleResolution>
 
@@ -55,7 +57,8 @@ export const registerMedusaModule = (
 
     moduleResolutions[definition.key] = getInternalModuleResolution(
       definition,
-      moduleDeclaration as InternalModuleDeclaration
+      moduleDeclaration as InternalModuleDeclaration,
+      moduleExports
     )
   }
 
@@ -64,7 +67,8 @@ export const registerMedusaModule = (
 
 function getInternalModuleResolution(
   definition: ModuleDefinition,
-  moduleConfig: InternalModuleDeclaration | false | string
+  moduleConfig: InternalModuleDeclaration | false | string,
+  moduleExports?: ModuleExports
 ): ModuleResolution {
   if (typeof moduleConfig === "boolean") {
     if (!moduleConfig && definition.isRequired) {
@@ -86,7 +90,11 @@ function getInternalModuleResolution(
 
   // If user added a module and it's overridable, we resolve that instead
   const isString = typeof moduleConfig === "string"
-  if (definition.canOverride && (isString || (isObj && moduleConfig.resolve))) {
+  if (
+    !moduleExports &&
+    definition.canOverride &&
+    (isString || (isObj && moduleConfig.resolve))
+  ) {
     resolutionPath = resolveCwd(
       isString ? moduleConfig : (moduleConfig.resolve as string)
     )
@@ -107,6 +115,7 @@ function getInternalModuleResolution(
       ...definition.defaultModuleDeclaration,
       ...moduleDeclaration,
     },
+    moduleExports,
     options: isObj ? moduleConfig.options ?? {} : {},
   }
 }
