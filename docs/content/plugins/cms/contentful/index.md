@@ -38,7 +38,7 @@ Instead of using the default Medusa backend starter, you must use the [Contentfu
 In your terminal, run the following command to install the backend:
 
 ```bash
-medusa new medusa-contentful https://github.com/medusajs/medusa-starter-contentful
+npx @medusajs/medusa-cli@latest new medusa-contentful https://github.com/medusajs/medusa-starter-contentful
 ```
 
 This installs a new Medusa backend in the directory `medusa-contentful`.

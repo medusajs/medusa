@@ -25,16 +25,14 @@ Migrations are used to apply changes to the database schema. However, there are 
 
 ---
 
-## How to Run Migrations
-
-Migrations in Medusa can be done in one of two ways:
+## Migration Commands
 
 ### Migrate Command
 
 Using the Medusa CLI tool, you can run migrations with the following command:
 
 ```bash
-medusa migrations run
+npx @medusajs/medusa-cli migrations run
 ```
 
 This will check for any migrations that contain changes to your database schema that aren't applied yet and run them on your backend.
@@ -46,10 +44,22 @@ Seeding is the process of filling your database with data that is either essenti
 You can use the following command to seed your database:
 
 ```bash npm2yarn
-npm run seed
+npx @medusajs/medusa-cli@latest seed -f ./data/seed.json
 ```
 
-This will use the underlying `seed` command provided by Medusa's CLI to seed your database with data from the file `data/seed.json` on your Medusa backend.
+This assumes that you have the file `data/seed.json` in your Medusa backend, which is available by default. It includes the demo data to seed into your database.
+
+### Revert Migrations
+
+To revert the last migration you ran, run the following command:
+
+```bash
+npx @medusajs/medusa-cli@latest migrations revert
+```
+
+### Other Migrations Commands
+
+You can learn about migration commands available in the Medusa CLI tool by referring to the [Medusa CLI reference](../../../cli/reference.md#migrations)
 
 ---
 
