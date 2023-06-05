@@ -112,19 +112,8 @@ export default async (req, res) => {
   res.json({ variant })
 }
 
-export class StoreGetVariantsVariantParams
-  extends PriceSelectionParams
-  implements FindParams
-{
+export class StoreGetVariantsVariantParams extends PriceSelectionParams {
   @IsString()
   @IsOptional()
   sales_channel_id?: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
-
-  @IsString()
-  @IsOptional()
-  expand?: string
 }
