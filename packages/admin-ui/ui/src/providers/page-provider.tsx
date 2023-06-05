@@ -13,7 +13,7 @@ export const usePages = () => {
   const context = React.useContext(RouteContext)
 
   if (!context) {
-    throw new Error("useWidgets must be used within a WidgetContext")
+    throw new Error("usePages must be used within a RouteContext")
   }
 
   return context

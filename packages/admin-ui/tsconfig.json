@@ -11,9 +11,14 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": ".",
     "skipLibCheck": true
   },
-  "include": ["src", "../vite.config.dev.ts", "../tsup.config.ts"],
+  "include": [
+    "src",
+    "vite.config.dev.ts",
+    "tsup.config.ts",
+    "webpack.config.ts"
+  ],
   "exclude": ["**/node_modules", "ui"]
 }

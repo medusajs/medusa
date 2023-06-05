@@ -80,9 +80,7 @@ export default async function setupAdmin() {
       `Admin build is out of sync with the current configuration. Rebuild initialized${EOL}`
     )
 
-    await build({
-      ...buildOptions,
-    }).catch((err) => {
+    await build().catch((err) => {
       spinner.fail(`Failed to build Admin UI${EOL}`)
       reporter.panic(err)
     })

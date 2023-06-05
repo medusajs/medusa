@@ -126,6 +126,8 @@ function validateWidgetConfig(
     return false
   }
 
+  console.log(zoneProperty.value.type)
+
   const zoneValue =
     zoneProperty.value.type === "StringLiteral" &&
     isValidZone(zoneProperty.value.value)

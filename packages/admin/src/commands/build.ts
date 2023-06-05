@@ -73,9 +73,7 @@ export default async function build(args: BuildArgs) {
   const time = Date.now()
   const spinner = ora().start(`Building Admin UI${EOL}`)
 
-  await buildAdmin({
-    ...config,
-  }).catch((err) => {
+  await buildAdmin().catch((err) => {
     spinner.fail(`Failed to build Admin UI${EOL}`)
     reporter.panic(err)
   })
