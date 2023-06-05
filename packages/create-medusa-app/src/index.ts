@@ -115,8 +115,7 @@ export const run = async (): Promise<void> => {
     Medusa Backend
     1. Change to the backend directory: cd ${projectRoot}/backend
     2. Create a PostgreSQL database and make sure your PostgreSQL server is running.
-    3. Add the following environment variables to the \`.env\` file:
-        DATABASE_TYPE=postgres
+    3. Add the following environment variable to the \`.env\` file:
         DATABASE_URL=postgres://localhost/medusa-store # This is the default URL, change it to your own database URL
     4. Run migrations:
         npx @medusajs/medusa-cli@latest migrations run
