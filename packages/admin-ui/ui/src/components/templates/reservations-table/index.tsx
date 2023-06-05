@@ -79,6 +79,7 @@ const LocationDropdown = ({
           <Button
             size="small"
             variant="secondary"
+            spanClassName="flex grow"
             className="max-w-[220px] items-center justify-start"
           >
             <BuildingsIcon size={20} />
