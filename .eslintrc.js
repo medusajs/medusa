@@ -140,6 +140,9 @@ module.exports = {
         sourceType: "module", // Allows for the use of imports
         project: "./packages/admin-ui/ui/tsconfig.json",
       },
+      globals: {
+        __BASE__: "readonly",
+      },
       env: {
         browser: true,
       },
