@@ -32,7 +32,7 @@ import WarningCircleIcon from "../../../../components/fundamentals/icons/warning
 import { displayAmount } from "../../../../utils/prices"
 import { getAllReturnableItems } from "../utils/create-filtering"
 import { getErrorMessage } from "../../../../utils/error-messages"
-import { removeNullish } from "../../../../utils/remove-nullish"
+import { removeFalsy } from "../../../../utils/remove-nullish"
 import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import useNotification from "../../../../hooks/use-notification"
 
@@ -181,7 +181,7 @@ const ReturnMenu: React.FC<ReturnMenuProps> = ({ order, onDismiss }) => {
         ...value,
       }
       delete toSet.reason
-      const clean = removeNullish(toSet)
+      const clean = removeFalsy(toSet)
       return {
         item_id: key,
         ...(clean as { quantity: number }),
