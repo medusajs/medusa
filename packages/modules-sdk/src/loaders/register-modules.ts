@@ -90,14 +90,10 @@ function getInternalModuleResolution(
 
   // If user added a module and it's overridable, we resolve that instead
   const isString = typeof moduleConfig === "string"
-  if (
-    !moduleExports &&
-    definition.canOverride &&
-    (isString || (isObj && moduleConfig.resolve))
-  ) {
-    resolutionPath = resolveCwd(
-      isString ? moduleConfig : (moduleConfig.resolve as string)
-    )
+  if (definition.canOverride && (isString || (isObj && moduleConfig.resolve))) {
+    resolutionPath = !moduleExports
+      ? resolveCwd(isString ? moduleConfig : (moduleConfig.resolve as string))
+      : ""
   }
 
   const moduleDeclaration = isObj ? moduleConfig : {}

@@ -1,7 +1,7 @@
 import {
   Logger,
-  MODULE_SCOPE,
   MedusaContainer,
+  MODULE_SCOPE,
   ModuleResolution,
 } from "@medusajs/types"
 import { asValue } from "awilix"
@@ -41,7 +41,7 @@ async function loadModule(
     }
   }
 
-  if (!resolution.resolutionPath) {
+  if (resolution.resolutionPath === false) {
     container.register({
       [registrationName]: asValue(undefined),
     })
