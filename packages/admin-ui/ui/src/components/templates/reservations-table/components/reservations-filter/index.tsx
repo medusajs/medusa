@@ -214,7 +214,7 @@ const SearchableFilterInventoryItem = ({
               value={query}
               className="pr-1"
               prefix={
-                selectedItems.size && (
+                selectedItems.size === 0 ? null : (
                   <div
                     onClick={reset}
                     className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
@@ -228,33 +228,35 @@ const SearchableFilterInventoryItem = ({
               onChange={(e) => setQuery(e.target.value)}
             />
           </div>
-          {[...selectedItems].map((item, i) => {
-            return (
-              <InventoryItemItem
-                key={`selected-item-${i}`}
-                onClick={() => toggleInventoryItem(item)}
-                selected={true}
-                item={item}
-              />
-            )
-          })}
-          {searchTerm &&
-            (isLoading ? (
-              <Spinner />
-            ) : (
-              <div className="gap-y-1">
-                {inventory_items
-                  ?.filter((item) => !selectedItems.has(item))
-                  .map((item: InventoryItemDTO, i: number) => (
-                    <InventoryItemItem
-                      key={`item-${i}`}
-                      onClick={() => toggleInventoryItem(item)}
-                      selected={false}
-                      item={item}
-                    />
-                  ))}
-              </div>
-            ))}
+          <div className="flex flex-col gap-y-1">
+            {[...selectedItems].map((item, i) => {
+              return (
+                <InventoryItemItem
+                  key={`selected-item-${i}`}
+                  onClick={() => toggleInventoryItem(item)}
+                  selected={true}
+                  item={item}
+                />
+              )
+            })}
+            {searchTerm &&
+              (isLoading ? (
+                <Spinner />
+              ) : (
+                <div className="gap-y-1">
+                  {inventory_items
+                    ?.filter((item) => !selectedItems.has(item))
+                    .map((item: InventoryItemDTO, i: number) => (
+                      <InventoryItemItem
+                        key={`item-${i}`}
+                        onClick={() => toggleInventoryItem(item)}
+                        selected={false}
+                        item={item}
+                      />
+                    ))}
+                </div>
+              ))}
+          </div>
         </div>
       </CollapsibleWrapper>
     </div>
@@ -370,40 +372,44 @@ const CreatedByFilterItem = ({
               placeholder="Find user"
               onChange={(e) => setQuery(e.target.value)}
               prefix={
-                <div
-                  onClick={reset}
-                  className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
-                >
-                  <span className="text-grey-50">{selectedUsers.size}</span>
-                  <CrossIcon size={16} />
-                </div>
+                selectedUsers.size === 0 ? null : (
+                  <div
+                    onClick={reset}
+                    className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
+                  >
+                    <span className="text-grey-50">{selectedUsers.size}</span>
+                    <CrossIcon size={16} />
+                  </div>
+                )
               }
             />
           </div>
-          {[...selectedUsers].map((user, i) => {
-            return (
-              <CreatedByItem
-                key={`user-${i}`}
-                onClick={() => toggleUser(user)}
-                selected={true}
-                user={user}
-              />
-            )
-          })}
-          {!isLoading && searchTerm && (
-            <div className="gap-y-1">
-              {displayUsers
-                ?.filter((user) => !selectedUsers.has(user))
-                .map((u, i) => (
-                  <CreatedByItem
-                    key={`user-${i}`}
-                    onClick={() => toggleUser(u)}
-                    selected={false}
-                    user={u}
-                  />
-                ))}
-            </div>
-          )}
+          <div className="flex flex-col gap-y-1">
+            {[...selectedUsers].map((user, i) => {
+              return (
+                <CreatedByItem
+                  key={`user-${i}`}
+                  onClick={() => toggleUser(user)}
+                  selected={true}
+                  user={user}
+                />
+              )
+            })}
+            {!isLoading && searchTerm && (
+              <div className="gap-y-1">
+                {displayUsers
+                  ?.filter((user) => !selectedUsers.has(user))
+                  .map((u, i) => (
+                    <CreatedByItem
+                      key={`user-${i}`}
+                      onClick={() => toggleUser(u)}
+                      selected={false}
+                      user={u}
+                    />
+                  ))}
+              </div>
+            )}
+          </div>
         </div>
       </CollapsibleWrapper>
     </div>
