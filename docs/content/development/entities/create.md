@@ -177,6 +177,12 @@ await postRepository.softDelete(post.id)
 
 ---
 
+## Advanced Entity Definitions
+
+With entities, you can create relationships, index keys, and more. As Medusa uses Typeorm, you can learn about using these functionalities through [Typeorm's documentation](https://typeorm.io/).
+
+---
+
 ## See Also
 
 - [Extend Entity](./extend-entity.md)
