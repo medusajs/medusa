@@ -663,12 +663,12 @@ const DateFilterItem = ({
   }
 
   const getDate1 = (value: DateComparisonOperator) => {
-    const a = getInitialFilter(value)
+    const initialFilter = getInitialFilter(value)
 
-    switch (a.value) {
+    switch (initialFilter.value) {
       case "lt":
       case "gt":
-        return value?.[a.value] ?? null
+        return value?.[initialFilter.value] ?? null
       case "between":
         return value?.["gt"] ?? null
     }
@@ -676,9 +676,9 @@ const DateFilterItem = ({
   }
 
   const getDate2 = (value: DateComparisonOperator) => {
-    const a = getInitialFilter(value)
+    const initialFilter = getInitialFilter(value)
 
-    switch (a.value) {
+    switch (initialFilter.value) {
       case "between":
         return value["lt"] ?? null
     }
