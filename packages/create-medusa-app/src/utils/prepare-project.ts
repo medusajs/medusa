@@ -115,7 +115,7 @@ export default async ({
       process: async () => {
         const proc = await promiseExec(
           // TODO replace with latest version
-          `npx -y @medusajs/medusa-cli@1.3.16-snapshot-20230530160902 user -e ${admin.email} --invite`,
+          `npx -y @medusajs/medusa-cli@1.3.16-snapshot-20230605093446 user -e ${admin.email} --invite`,
           execOptions
         )
         // get invite token from stdout
