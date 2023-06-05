@@ -186,7 +186,7 @@ const SearchableFilterInventoryItem = ({
   )
 
   const toggleInventoryItem = (item: InventoryItemDTO) => {
-    const newState = getNewSetState(new Set(selectedItems), item)
+    const newState = getNewSetState(selectedItems, item)
 
     setSelectedItems(newState)
     setFilter([...newState].map((i) => i.id))
@@ -243,7 +243,7 @@ const SearchableFilterInventoryItem = ({
               (isLoading ? (
                 <Spinner />
               ) : (
-                <div className="gap-y-1">
+                <>
                   {inventory_items
                     ?.filter((item) => !selectedItems.has(item))
                     .map((item: InventoryItemDTO, i: number) => (
@@ -254,7 +254,7 @@ const SearchableFilterInventoryItem = ({
                         item={item}
                       />
                     ))}
-                </div>
+                </>
               ))}
           </div>
         </div>
@@ -365,51 +365,49 @@ const CreatedByFilterItem = ({
           }
         }}
       >
-        <div className="pb-2">
-          <div className="gap-y-xsmall flex w-full flex-col pt-2">
-            <InputField
-              value={query}
-              placeholder="Find user"
-              onChange={(e) => setQuery(e.target.value)}
-              prefix={
-                selectedUsers.size === 0 ? null : (
-                  <div
-                    onClick={reset}
-                    className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
-                  >
-                    <span className="text-grey-50">{selectedUsers.size}</span>
-                    <CrossIcon size={16} />
-                  </div>
-                )
-              }
-            />
-          </div>
-          <div className="flex flex-col gap-y-1">
-            {[...selectedUsers].map((user, i) => {
-              return (
-                <CreatedByItem
-                  key={`user-${i}`}
-                  onClick={() => toggleUser(user)}
-                  selected={true}
-                  user={user}
-                />
+        <div className="gap-y-xsmall mb-2 flex w-full flex-col pt-2">
+          <InputField
+            value={query}
+            placeholder="Find user"
+            onChange={(e) => setQuery(e.target.value)}
+            prefix={
+              selectedUsers.size === 0 ? null : (
+                <div
+                  onClick={reset}
+                  className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
+                >
+                  <span className="text-grey-50">{selectedUsers.size}</span>
+                  <CrossIcon size={16} />
+                </div>
               )
-            })}
-            {!isLoading && searchTerm && (
-              <div className="gap-y-1">
-                {displayUsers
-                  ?.filter((user) => !selectedUsers.has(user))
-                  .map((u, i) => (
-                    <CreatedByItem
-                      key={`user-${i}`}
-                      onClick={() => toggleUser(u)}
-                      selected={false}
-                      user={u}
-                    />
-                  ))}
-              </div>
-            )}
-          </div>
+            }
+          />
+        </div>
+        <div className="flex flex-col gap-y-1">
+          {[...selectedUsers].map((user, i) => {
+            return (
+              <CreatedByItem
+                key={`selected-user-${i}`}
+                onClick={() => toggleUser(user)}
+                selected={true}
+                user={user}
+              />
+            )
+          })}
+          {!isLoading && searchTerm && (
+            <>
+              {displayUsers
+                ?.filter((user) => !selectedUsers.has(user))
+                .map((u, i) => (
+                  <CreatedByItem
+                    key={`user-${i}`}
+                    onClick={() => toggleUser(u)}
+                    selected={false}
+                    user={u}
+                  />
+                ))}
+            </>
+          )}
         </div>
       </CollapsibleWrapper>
     </div>
@@ -431,9 +429,9 @@ const CreatedByItem = ({
     <div
       key={key}
       onClick={onClick}
-      className="hover:bg-grey-10 rounded-rounded flex items-center py-1.5 px-2"
+      className="hover:bg-grey-10 inter-small-regular rounded-rounded flex items-center py-1.5 px-2"
     >
-      <div className="mr-2 flex h-[20px] w-[20px] items-center">
+      <div className="inter-small-regular mr-2 flex h-[20px] w-[20px] items-center">
         {selected && <CheckIcon size={16} color="#111827" />}
       </div>
       <div>{`${user.first_name} ${user.last_name}`}</div>
