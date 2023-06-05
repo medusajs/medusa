@@ -1,4 +1,8 @@
-import { Transform, Type } from "class-transformer"
+import {
+  CartService,
+  ProductService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 import {
   IsArray,
   IsBoolean,
@@ -7,20 +11,17 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import {
-  CartService,
-  ProductService,
-  ProductVariantInventoryService,
-} from "../../../../services"
-import PricingService from "../../../../services/pricing"
+import { Transform, Type } from "class-transformer"
+
 import { DateComparisonOperator } from "../../../../types/common"
-import { PriceSelectionParams } from "../../../../types/price-selection"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { IsType } from "../../../../utils/validators/is-type"
+import { PriceSelectionParams } from "../../../../types/price-selection"
+import PricingService from "../../../../services/pricing"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { defaultStoreCategoryScope } from "../product-categories"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [get] /store/products
@@ -283,14 +284,6 @@ export default async (req, res) => {
 }
 
 export class StoreGetProductsPaginationParams extends PriceSelectionParams {
-  @IsString()
-  @IsOptional()
-  fields?: string
-
-  @IsString()
-  @IsOptional()
-  expand?: string
-
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
