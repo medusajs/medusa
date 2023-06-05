@@ -18,10 +18,13 @@ const { simpleSalesChannelFactory } = require("../../../../api/factories")
 
 const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
 
-describe("Create Variant", () => {
+describe("Get products", () => {
   let appContainer
   let dbConnection
   let express
+  const productId = "test-product"
+  const variantId = "test-variant"
+  let invItem
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
@@ -47,63 +50,58 @@ describe("Create Variant", () => {
     return await db.teardown()
   })
 
-  describe("list-products", () => {
-    const productId = "test-product"
-    const variantId = "test-variant"
-    let invItem
-    beforeEach(async () => {
-      await adminSeeder(dbConnection)
+  beforeEach(async () => {
+    await adminSeeder(dbConnection)
 
-      const productVariantInventoryService = appContainer.resolve(
-        "productVariantInventoryService"
-      )
-      const inventoryService = appContainer.resolve("inventoryService")
+    const productVariantInventoryService = appContainer.resolve(
+      "productVariantInventoryService"
+    )
+    const inventoryService = appContainer.resolve("inventoryService")
 
-      await simpleProductFactory(
-        dbConnection,
-        {
-          id: productId,
-          status: "published",
-          variants: [{ id: variantId }],
-        },
-        100
-      )
+    await simpleProductFactory(
+      dbConnection,
+      {
+        id: productId,
+        status: "published",
+        variants: [{ id: variantId }],
+      },
+      100
+    )
 
-      invItem = await inventoryService.createInventoryItem({
-        sku: "test-sku",
-      })
-      await productVariantInventoryService.attachInventoryItem(
-        variantId,
-        invItem.id
-      )
+    invItem = await inventoryService.createInventoryItem({
+      sku: "test-sku",
     })
+    await productVariantInventoryService.attachInventoryItem(
+      variantId,
+      invItem.id
+    )
+  })
 
-    it("Expands inventory items when getting variant", async () => {
-      const api = useApi()
+  it("Expands inventory items when getting product with expand parameters", async () => {
+    const api = useApi()
 
-      const res = await api.get(
-        `/store/products/${productId}?expand=variants,variants.inventory_items`,
-        adminHeaders
-      )
+    const res = await api.get(
+      `/store/products/${productId}?expand=variants,variants.inventory_items`,
+      adminHeaders
+    )
 
-      expect(res.status).toEqual(200)
-      expect(res.data.product).toEqual(
-        expect.objectContaining({
-          id: productId,
-          variants: [
-            expect.objectContaining({
-              id: variantId,
-              inventory_items: [
-                expect.objectContaining({
-                  inventory_item_id: invItem.id,
-                  variant_id: variantId,
-                }),
-              ],
-            }),
-          ],
-        }),
-        expect.objectContaining({})
-      )
-    })
+    expect(res.status).toEqual(200)
+    expect(res.data.product).toEqual(
+      expect.objectContaining({
+        id: productId,
+        variants: [
+          expect.objectContaining({
+            id: variantId,
+            inventory_items: [
+              expect.objectContaining({
+                inventory_item_id: invItem.id,
+                variant_id: variantId,
+              }),
+            ],
+          }),
+        ],
+      }),
+      expect.objectContaining({})
+    )
   })
 })
