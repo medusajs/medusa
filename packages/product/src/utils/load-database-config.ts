@@ -11,7 +11,7 @@ function getEnv(key: string): string {
 function isProductServiceInitializeOptions(
   obj: unknown
 ): obj is ProductServiceInitializeOptions {
-  return !!(obj as ProductServiceInitializeOptions).database
+  return !!(obj as ProductServiceInitializeOptions)?.database
 }
 
 export function loadDatabaseConfig(

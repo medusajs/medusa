@@ -1,4 +1,4 @@
-import { LoaderOptions } from "@medusajs/types"
+import { LoaderOptions, Logger } from "@medusajs/types"
 import {
   ProductServiceInitializeCustomDataLayerOptions,
   ProductServiceInitializeOptions,
@@ -23,7 +23,9 @@ export async function runMigrations({
     | ProductServiceInitializeCustomDataLayerOptions
   >,
   "options" | "logger"
->) {
+> = {}) {
+  logger ??= console as unknown as Logger
+
   const dbData = loadDatabaseConfig(options)
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 

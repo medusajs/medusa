@@ -31,8 +31,8 @@
   },
   "devDependencies": {
     "@medusajs/types": "workspace:^",
-    "@mikro-orm/cli": "^5.7.4",
-    "@mikro-orm/migrations": "^5.7.4",
+    "@mikro-orm/cli": "5.7.4",
+    "@mikro-orm/migrations": "5.7.4",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "medusa-test-utils": "^1.1.40",
@@ -45,8 +45,14 @@
   "dependencies": {
     "@medusajs/modules-sdk": "^1.8.3",
     "@medusajs/utils": "^1.8.2",
-    "@mikro-orm/core": "^5.7.4",
-    "@mikro-orm/postgresql": "^5.7.4",
+    "@mikro-orm/core": "5.7.4",
+    "@mikro-orm/postgresql": "5.7.4",
     "awilix": "^8.0.0"
+  },
+  "peerDependencies": {
+    "@mikro-orm/migrations": {
+        "version": "5.7.4",
+        "optional": true
+    }
   }
 }
