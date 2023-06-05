@@ -52,7 +52,7 @@ npm install cors
 Then, create the file `src/api/routes/create-product.ts` with the following content:
 
 ```ts title=src/api/routes/create-product.ts
-import * as cors from "cors"
+import cors from "cors"
 import { Router } from "express"
 import { 
   registerLoggedInUser,

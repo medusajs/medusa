@@ -1,5 +1,47 @@
 # Change Log
 
+## 1.12.0
+
+### Minor Changes
+
+- [`81eeaa329`](https://github.com/medusajs/medusa/commit/81eeaa32942b1a7148126a7218ceb168ce8d6cac) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(medusa): Minor bump
+
+### Patch Changes
+
+- [#4154](https://github.com/medusajs/medusa/pull/4154) [`0a35f21af`](https://github.com/medusajs/medusa/commit/0a35f21af7ac8b6cdc1af12a403e95f9bf6142fe) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Feat(medusa,inventory): search inventory items based on title and description
+
+- [#4066](https://github.com/medusajs/medusa/pull/4066) [`4fb443c0e`](https://github.com/medusajs/medusa/commit/4fb443c0ea38bde3148bce059c0ee3b91dfff3d4) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa,client-types): add location_id filtering to list-location levels
+
+- [#4071](https://github.com/medusajs/medusa/pull/4071) [`0476f5251`](https://github.com/medusajs/medusa/commit/0476f52519237c622b37d29de0718f9774b6add7) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feaet(medusa): add description to reservation default fields
+
+- [#4184](https://github.com/medusajs/medusa/pull/4184) [`0f87d3d64`](https://github.com/medusajs/medusa/commit/0f87d3d642b56bf19de8136e1f5bfedf364c5193) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(medusa,admin-ui): Add reservations FF
+
+- [#3703](https://github.com/medusajs/medusa/pull/3703) [`ed382f2ee`](https://github.com/medusajs/medusa/commit/ed382f2ee510cbf96164991efa7ff75e3ce659ff) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Improve prices flow
+
+- [#4174](https://github.com/medusajs/medusa/pull/4174) [`92f01cefb`](https://github.com/medusajs/medusa/commit/92f01cefbc4a190defce425fb237d2d68728fa9a) Thanks [@fPolic](https://github.com/fPolic)! - fix(medusa): fix CSV parsing issues by downgrading the version of the parsing library
+
+- [#3956](https://github.com/medusajs/medusa/pull/3956) [`e3cfbcd4a`](https://github.com/medusajs/medusa/commit/e3cfbcd4a78073c63ecd9829bc531e50d3944f07) Thanks [@dwene](https://github.com/dwene)! - fix(medusa): migrations cli should look for migrations in plugin dist folder
+
+- [#4189](https://github.com/medusajs/medusa/pull/4189) [`6998666c6`](https://github.com/medusajs/medusa/commit/6998666c6edd6617ca61a8d39c26435bad1273e3) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa): Upserting tax rates
+
+- [#4094](https://github.com/medusajs/medusa/pull/4094) [`e2d29d35c`](https://github.com/medusajs/medusa/commit/e2d29d35c4c477bc9b4a3ddce1279276fd072875) Thanks [@juanzgc](https://github.com/juanzgc)! - feat(plugins): Pass Config Modules to plugin
+
+- [#3979](https://github.com/medusajs/medusa/pull/3979) [`3a38c84f8`](https://github.com/medusajs/medusa/commit/3a38c84f88b05f74ee0a172af3e3f78b2ec8c2d2) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(client-types, inventory, medusa, types): add additional filtering capabilities to list-reservations
+
+- [#4081](https://github.com/medusajs/medusa/pull/4081) [`4f3c8f5d7`](https://github.com/medusajs/medusa/commit/4f3c8f5d70b5ae4a11e9d4a2fea4a8410b2daf47) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa,client-types,medusa-js,admin-ui,medusa-react): add reservation table and creation
+
+- [#4026](https://github.com/medusajs/medusa/pull/4026) [`a91987fab`](https://github.com/medusajs/medusa/commit/a91987fab33745f9864eab21bd1c27e8e3e24571) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Remove sqlite support
+
+- [#4130](https://github.com/medusajs/medusa/pull/4130) [`bf18bd0c8`](https://github.com/medusajs/medusa/commit/bf18bd0c8a284dd0042d4c54d84acb2e7c10edd3) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Revert pricing service setVariantPrices API
+
+- [#4146](https://github.com/medusajs/medusa/pull/4146) [`db4199530`](https://github.com/medusajs/medusa/commit/db419953075e0907b8c4d27ab5188e9bd3e3d72b) Thanks [@fPolic](https://github.com/fPolic)! - chore(medusa, utils, inventory, stock-location): clear deps in the utils package
+
+- Updated dependencies [[`3a38c84f8`](https://github.com/medusajs/medusa/commit/3a38c84f88b05f74ee0a172af3e3f78b2ec8c2d2), [`a91987fab`](https://github.com/medusajs/medusa/commit/a91987fab33745f9864eab21bd1c27e8e3e24571), [`e73c3e51c`](https://github.com/medusajs/medusa/commit/e73c3e51c9cd192eeae7a57b24b07bd466214145), [`db4199530`](https://github.com/medusajs/medusa/commit/db419953075e0907b8c4d27ab5188e9bd3e3d72b), [`c0e527d6e`](https://github.com/medusajs/medusa/commit/c0e527d6e0a67d0c53577a0b9c3d16ee8dc5740f)]:
+  - @medusajs/types@1.8.7
+  - @medusajs/medusa-cli@1.3.15
+  - @medusajs/utils@1.9.0
+  - @medusajs/modules-sdk@1.8.7
+
 ## 1.11.0
 
 ### Minor Changes
