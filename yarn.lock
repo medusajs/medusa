@@ -6479,7 +6479,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-js@6.0.0, @medusajs/medusa-js@workspace:packages/medusa-js":
+"@medusajs/medusa-js@*, @medusajs/medusa-js@workspace:packages/medusa-js":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
@@ -6524,7 +6524,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@1.12.0, @medusajs/medusa@^1.12.0, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@1.12.0, @medusajs/medusa@^1.12.0, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -6675,7 +6675,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@1.8.7, @medusajs/types@workspace:packages/types":
+"@medusajs/types@*, @medusajs/types@1.8.7, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -30357,7 +30357,7 @@ __metadata:
   dependencies:
     "@babel/core": ^7.16.0
     "@medusajs/medusa": 1.12.0
-    "@medusajs/medusa-js": 6.0.0
+    "@medusajs/medusa-js": "*"
     "@storybook/addon-essentials": ^6.3.12
     "@storybook/addon-links": ^6.3.12
     "@storybook/addons": ^6.3.12
