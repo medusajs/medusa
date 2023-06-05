@@ -1,6 +1,7 @@
 import * as RadixCollapsible from "@radix-ui/react-collapsible"
 import * as RadixPopover from "@radix-ui/react-popover"
 
+import { DateComparisonOperator, InventoryItemDTO } from "@medusajs/types"
 import React, { useEffect, useState } from "react"
 import { useAdminInventoryItems, useAdminUsers, useMedusa } from "medusa-react"
 
@@ -12,7 +13,6 @@ import CheckIcon from "../../../../fundamentals/icons/check-icon"
 import CrossIcon from "../../../../fundamentals/icons/cross-icon"
 import FilterDropdownContainer from "../../../../molecules/filter-dropdown/container"
 import InputField from "../../../../molecules/input"
-import { InventoryItemDTO } from "@medusajs/types"
 import Spinner from "../../../../atoms/spinner"
 import Switch from "../../../../atoms/switch"
 import TagDotIcon from "../../../../fundamentals/icons/tag-dot-icon"
@@ -649,12 +649,12 @@ const DateFilterItem = ({
     { label: "Between", value: "between" },
   ]
 
-  const getInitialFilter = (value: any) => {
+  const getInitialFilter = (value: DateComparisonOperator) => {
     const keyLength = value ? Object.keys(value).length : 0
 
     if (keyLength === 1) {
       return (
-        options.find((o) => o.label === Object.keys(value)[0]) || options[0]
+        options.find((o) => o.value === Object.keys(value)[0]) || options[0]
       )
     } else if (keyLength === 2) {
       return { label: "Between", value: "between" }
@@ -662,29 +662,27 @@ const DateFilterItem = ({
     return options[0]
   }
 
-  const getDate1 = (value) => {
+  const getDate1 = (value: DateComparisonOperator) => {
     const a = getInitialFilter(value)
 
     switch (a.value) {
       case "lt":
       case "gt":
-        return value?.[a.value]
+        return value?.[a.value] ?? null
       case "between":
-        return value?.["gt"]
-      default:
-        return null
+        return value?.["gt"] ?? null
     }
+    return null
   }
 
-  const getDate2 = (value) => {
+  const getDate2 = (value: DateComparisonOperator) => {
     const a = getInitialFilter(value)
 
     switch (a.value) {
       case "between":
-        return value["lt"]
-      default:
-        return null
+        return value["lt"] ?? null
     }
+    return null
   }
 
   const [filterType, setFilterType] = useState<{
@@ -705,7 +703,7 @@ const DateFilterItem = ({
 
     switch (filterType.value) {
       case "lt":
-      case "lg": {
+      case "gt": {
         if (date1) {
           setFilter({
             [filterType.value]: date1,
@@ -725,6 +723,29 @@ const DateFilterItem = ({
     }
   }
 
+  const updateFilterType = (newFilter: { value: string; label: string }) => {
+    switch (newFilter.value) {
+      case "lt":
+      case "gt":
+        if (date1) {
+          setFilter({
+            [newFilter.value]: date1,
+          })
+          setDate2(null)
+        }
+        break
+      case "between":
+        if (date1 && date2) {
+          setFilter({
+            lt: date2,
+            gt: date1,
+          })
+        }
+        break
+    }
+    setFilterType(newFilter)
+  }
+
   return (
     <div className={clsx("w-full border-b")}>
       <CollapsibleWrapper
@@ -740,7 +761,7 @@ const DateFilterItem = ({
           <PopoverSelect
             options={options}
             value={filterType}
-            onChange={setFilterType}
+            onChange={updateFilterType}
           />
 
           <div className="flex items-center gap-x-2">
