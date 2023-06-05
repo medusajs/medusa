@@ -1,5 +1,23 @@
 # @medusajs/inventory
 
+## 1.9.0
+
+### Minor Changes
+
+- [#4146](https://github.com/medusajs/medusa/pull/4146) [`db4199530`](https://github.com/medusajs/medusa/commit/db419953075e0907b8c4d27ab5188e9bd3e3d72b) Thanks [@fPolic](https://github.com/fPolic)! - chore(medusa, utils, inventory, stock-location): clear deps in the utils package
+
+### Patch Changes
+
+- [#4154](https://github.com/medusajs/medusa/pull/4154) [`0a35f21af`](https://github.com/medusajs/medusa/commit/0a35f21af7ac8b6cdc1af12a403e95f9bf6142fe) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Feat(medusa,inventory): search inventory items based on title and description
+
+- [#3979](https://github.com/medusajs/medusa/pull/3979) [`3a38c84f8`](https://github.com/medusajs/medusa/commit/3a38c84f88b05f74ee0a172af3e3f78b2ec8c2d2) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(client-types, inventory, medusa, types): add additional filtering capabilities to list-reservations
+
+- [#4155](https://github.com/medusajs/medusa/pull/4155) [`5c01b4e6b`](https://github.com/medusajs/medusa/commit/5c01b4e6b66f2e6d6be12fc1e75940236ebbcb08) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(inventory): update revert migration
+
+- Updated dependencies [[`a91987fab`](https://github.com/medusajs/medusa/commit/a91987fab33745f9864eab21bd1c27e8e3e24571), [`e73c3e51c`](https://github.com/medusajs/medusa/commit/e73c3e51c9cd192eeae7a57b24b07bd466214145), [`db4199530`](https://github.com/medusajs/medusa/commit/db419953075e0907b8c4d27ab5188e9bd3e3d72b), [`c0e527d6e`](https://github.com/medusajs/medusa/commit/c0e527d6e0a67d0c53577a0b9c3d16ee8dc5740f)]:
+  - @medusajs/utils@1.9.0
+  - @medusajs/modules-sdk@1.8.7
+
 ## 1.8.6
 
 ### Patch Changes

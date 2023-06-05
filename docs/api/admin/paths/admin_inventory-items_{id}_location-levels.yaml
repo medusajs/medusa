@@ -11,6 +11,15 @@ get:
       schema:
         type: string
     - in: query
+      name: location_id
+      style: form
+      explode: false
+      description: Locations ids to search for.
+      schema:
+        type: array
+        items:
+          type: string
+    - in: query
       name: expand
       description: Comma separated list of relations to include in the results.
       schema:
