@@ -29,7 +29,9 @@ export default async function ({
       const invite = await inviteService.list({
         user_email: email,
       })
-      Logger.info(`Invite token: ${invite[0].token}`)
+      Logger.info(`
+      Invite token: ${invite[0].token}
+      Open the invite in Medusa Admin at: [your-admin-url]/invite?token=${invite[0].token}`)
     } else {
       const userService = container.resolve("userService")
       await userService.create({ id, email }, password)
