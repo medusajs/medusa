@@ -20,6 +20,7 @@ import createAbortController, {
   isAbortError,
 } from "../utils/create-abort-controller.js"
 import { track } from "medusa-telemetry"
+import { createFactBox, resetFactBox } from "../utils/facts.js"
 
 const slugify = slugifyType.default
 const isEmail = isEmailImported.default
@@ -121,9 +122,14 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
     },
   ])
 
-  const spinner = ora(chalk.white("Setting up project")).start()
+  const spinner = ora().start()
 
   onProcessTerminated(() => spinner.stop())
+
+  let interval: NodeJS.Timer | null = createFactBox(
+    spinner,
+    "Setting up project..."
+  )
 
   // clone repository
   try {
@@ -137,16 +143,21 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
       process.exit()
     }
 
+    spinner.stop()
     logMessage({
       message: `An error occurred while setting up your project: ${e}`,
       type: "error",
     })
   }
 
-  spinner.succeed(chalk.green("Created project directory")).start()
+  interval = resetFactBox(
+    interval,
+    spinner,
+    "Created project directory",
+    "Creating database..."
+  )
 
   if (client) {
-    spinner.text = chalk.white("Creating database...")
     const dbName = `medusa-${nanoid(4)}`
     // create postgres database
     try {
@@ -155,6 +166,7 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
         db: dbName,
       })
     } catch (e) {
+      spinner.stop()
       logMessage({
         message: `An error occurred while trying to create your database: ${e}`,
         type: "error",
@@ -169,10 +181,8 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
       db: dbName,
     })
 
-    spinner.succeed(chalk.green(`Database ${dbName} created`)).start()
+    resetFactBox(interval, spinner, `Database ${dbName} created`)
   }
-
-  spinner.text = chalk.white("Preparing project...")
 
   // prepare project
   let inviteToken: string | undefined = undefined
@@ -192,6 +202,7 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
       process.exit()
     }
 
+    spinner.stop()
     logMessage({
       message: `An error occurred while preparing project: ${e}`,
       type: "error",
@@ -229,7 +240,7 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
   }).then(async () =>
     open(
       inviteToken
-        ? `http://localhost:9000/app/invite?token=${inviteToken}`
+        ? `http://localhost:9000/app/invite?token=${inviteToken}&first_run=true`
         : "http://localhost:9000/app"
     )
   )

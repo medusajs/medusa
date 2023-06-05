@@ -1,3 +1,8 @@
+import boxen from "boxen"
+import chalk from "chalk"
+import { Ora } from "ora"
+import onProcessTerminated from "./on-process-terminated.js"
+
 const facts = [
   "Plugins allow you to integrate third-party services for payment, fulfillment, notifications, and more.",
   "You can specify a product's availability in one or more sales channels.",
@@ -18,15 +23,54 @@ const facts = [
   "The cache module is responsible for caching data that requires heavy computation.",
 ]
 
-export default (lastFact = "") => {
-  let index = 0
-  if (lastFact.length) {
-    const lastFactIndex = facts.findIndex((fact) => fact === lastFact)
+export const getFact = () => {
+  const randIndex = Math.floor(Math.random() * facts.length)
 
-    if (lastFactIndex !== facts.length - 1) {
-      index = lastFactIndex + 1
-    }
+  return facts[randIndex]
+}
+
+export const showFact = (spinner: Ora, title: string) => {
+  const fact = getFact()
+  spinner.text = `${boxen(fact, {
+    title: chalk.cyan(title),
+    titleAlignment: "center",
+    textAlignment: "center",
+    padding: 1,
+    margin: 1,
+    float: "center",
+  })}`
+}
+
+export const createFactBox = (spinner: Ora, title: string): NodeJS.Timer => {
+  spinner.spinner = {
+    frames: [""],
+  }
+  showFact(spinner, title)
+  const interval = setInterval(() => {
+    showFact(spinner, title)
+  }, 10000)
+
+  onProcessTerminated(() => clearInterval(interval))
+
+  return interval
+}
+
+export const resetFactBox = (
+  interval: NodeJS.Timer | null,
+  spinner: Ora,
+  successMessage: string,
+  newTitle?: string
+): NodeJS.Timer | null => {
+  if (interval) {
+    clearInterval(interval)
   }
 
-  return facts[index]
+  spinner.spinner = "dots"
+  spinner.succeed(chalk.green(successMessage)).start()
+  let newInterval = null
+  if (newTitle) {
+    newInterval = createFactBox(spinner, newTitle)
+  }
+
+  return newInterval
 }

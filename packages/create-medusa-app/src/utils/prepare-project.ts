@@ -5,9 +5,7 @@ import { Ora } from "ora"
 import promiseExec from "./promise-exec.js"
 import { EOL } from "os"
 import runProcess from "./run-process.js"
-import getFact from "./get-fact.js"
-import onProcessTerminated from "./on-process-terminated.js"
-import boxen from "boxen"
+import { createFactBox, resetFactBox } from "./facts.js"
 
 type PrepareOptions = {
   directory: string
@@ -16,21 +14,8 @@ type PrepareOptions = {
     email: string
   }
   seed?: boolean
-  spinner?: Ora
+  spinner: Ora
   abortController?: AbortController
-}
-
-const showFact = (lastFact: string, spinner: Ora): string => {
-  const fact = getFact(lastFact)
-  spinner.text = `${boxen(fact, {
-    title: chalk.cyan("Installing Dependencies..."),
-    titleAlignment: "center",
-    textAlignment: "center",
-    padding: 1,
-    margin: 1,
-    float: "center",
-  })}`
-  return fact
 }
 
 export default async ({
@@ -56,19 +41,10 @@ export default async ({
     `DATABASE_TYPE=postgres${EOL}DATABASE_URL=${dbConnectionString}`
   )
 
-  let interval: NodeJS.Timer | undefined = undefined
-  let fact = ""
-  if (spinner) {
-    spinner.spinner = {
-      frames: [""],
-    }
-    fact = showFact(fact, spinner)
-    interval = setInterval(() => {
-      fact = showFact(fact, spinner)
-    }, 10000)
-
-    onProcessTerminated(() => clearInterval(interval))
-  }
+  let interval: NodeJS.Timer | null = createFactBox(
+    spinner,
+    "Installing dependencies..."
+  )
 
   await runProcess({
     process: async () => {
@@ -83,15 +59,12 @@ export default async ({
     ignoreERESOLVE: true,
   })
 
-  if (interval) {
-    clearInterval(interval)
-  }
-
-  if (spinner) {
-    spinner.spinner = "dots"
-    spinner.succeed(chalk.green("Installed Dependencies"))
-    spinner.start(chalk.white("Running Migrations..."))
-  }
+  interval = resetFactBox(
+    interval,
+    spinner,
+    "Installed Dependencies",
+    "Running Migrations...."
+  )
 
   // run migrations
   await runProcess({
@@ -103,13 +76,11 @@ export default async ({
     },
   })
 
-  spinner?.succeed(chalk.green("Ran Migrations")).start()
+  interval = resetFactBox(interval, spinner, "Ran Migrations")
 
   if (admin) {
     // create admin user
-    if (spinner) {
-      spinner.text = chalk.white("Creating an admin user...")
-    }
+    interval = createFactBox(spinner, "Creating an admin user...")
 
     await runProcess({
       process: async () => {
@@ -124,13 +95,11 @@ export default async ({
       },
     })
 
-    spinner?.succeed(chalk.green("Created admin user")).start()
+    interval = resetFactBox(interval, spinner, "Created admin user")
   }
 
   if (seed) {
-    if (spinner) {
-      spinner.text = chalk.white("Seeding database...")
-    }
+    interval = createFactBox(spinner, "Seeding database...")
 
     // check if a seed file exists in the project
     if (!fs.existsSync(path.join(directory, "data", "seed.jsons"))) {
@@ -144,10 +113,6 @@ export default async ({
       return
     }
 
-    if (spinner) {
-      spinner.text = chalk.white("Seeding database with demo data...")
-    }
-
     await runProcess({
       process: async () => {
         await promiseExec(
@@ -159,8 +124,7 @@ export default async ({
         )
       },
     })
-
-    spinner?.succeed(chalk.green("Seeded database with demo data")).start()
+    resetFactBox(interval, spinner, "Seeded database with demo data")
   }
 
   return inviteToken
