@@ -25,7 +25,7 @@ AbstractSearchService.constructor
 
 #### Defined in
 
-[medusa/src/services/search.ts:16](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/search.ts#L16)
+[medusa/src/services/search.ts:16](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/search.ts#L16)
 
 ## Properties
 
@@ -39,7 +39,7 @@ AbstractSearchService.isDefault
 
 #### Defined in
 
-[medusa/src/services/search.ts:11](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/search.ts#L11)
+[medusa/src/services/search.ts:11](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/search.ts#L11)
 
 ___
 
@@ -49,7 +49,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/search.ts:13](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/search.ts#L13)
+[medusa/src/services/search.ts:13](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/search.ts#L13)
 
 ___
 
@@ -63,7 +63,7 @@ AbstractSearchService.options\_
 
 #### Defined in
 
-[medusa/src/services/search.ts:14](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/search.ts#L14)
+[medusa/src/services/search.ts:14](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/search.ts#L14)
 
 ## Accessors
 
@@ -107,7 +107,7 @@ AbstractSearchService.addDocuments
 
 #### Defined in
 
-[medusa/src/services/search.ts:40](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/search.ts#L40)
+[medusa/src/services/search.ts:40](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/search.ts#L40)
 
 ___
 
@@ -132,7 +132,7 @@ AbstractSearchService.createIndex
 
 #### Defined in
 
-[medusa/src/services/search.ts:28](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/search.ts#L28)
+[medusa/src/services/search.ts:28](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/search.ts#L28)
 
 ___
 
@@ -156,7 +156,7 @@ AbstractSearchService.deleteAllDocuments
 
 #### Defined in
 
-[medusa/src/services/search.ts:69](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/search.ts#L69)
+[medusa/src/services/search.ts:69](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/search.ts#L69)
 
 ___
 
@@ -181,7 +181,7 @@ AbstractSearchService.deleteDocument
 
 #### Defined in
 
-[medusa/src/services/search.ts:60](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/search.ts#L60)
+[medusa/src/services/search.ts:60](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/search.ts#L60)
 
 ___
 
@@ -205,7 +205,7 @@ AbstractSearchService.getIndex
 
 #### Defined in
 
-[medusa/src/services/search.ts:34](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/search.ts#L34)
+[medusa/src/services/search.ts:34](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/search.ts#L34)
 
 ___
 
@@ -231,7 +231,7 @@ AbstractSearchService.replaceDocuments
 
 #### Defined in
 
-[medusa/src/services/search.ts:50](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/search.ts#L50)
+[medusa/src/services/search.ts:50](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/search.ts#L50)
 
 ___
 
@@ -257,7 +257,7 @@ AbstractSearchService.search
 
 #### Defined in
 
-[medusa/src/services/search.ts:75](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/search.ts#L75)
+[medusa/src/services/search.ts:75](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/search.ts#L75)
 
 ___
 
@@ -282,4 +282,4 @@ AbstractSearchService.updateSettings
 
 #### Defined in
 
-[medusa/src/services/search.ts:86](https://github.com/medusajs/medusa/blob/5a42c1152/packages/medusa/src/services/search.ts#L86)
+[medusa/src/services/search.ts:86](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/search.ts#L86)
