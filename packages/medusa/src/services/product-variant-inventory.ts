@@ -612,7 +612,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * @param quantity quantity to release
    */
   async deleteReservationsByLineItem(
-    lineItemId: string,
+    lineItemId: string | string[],
     variantId: string,
     quantity: number
   ): Promise<void> {
@@ -634,7 +634,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
     }
 
-    await this.inventoryService_.deleteReservationItemsByLineItem(lineItemId, {
+    const itemIds = Array.isArray(lineItemId) ? lineItemId : [lineItemId]
+    await this.inventoryService_.deleteReservationItemsByLineItem(itemIds, {
       transactionManager: this.activeManager_,
     })
   }
