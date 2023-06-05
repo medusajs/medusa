@@ -6286,7 +6286,10 @@ __metadata:
     tsc-alias: ^1.8.6
     typescript: ^4.4.4
   peerDependencies:
-    "@mikro-orm/migrations": "*"
+    "@mikro-orm/migrations": 5.7.4
+  peerDependenciesMeta:
+    "@mikro-orm/migrations":
+      optional: true
   languageName: unknown
   linkType: soft
 
