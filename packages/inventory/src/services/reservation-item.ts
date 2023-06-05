@@ -8,11 +8,11 @@ import {
 } from "@medusajs/types"
 import {
   InjectEntityManager,
+  isDefined,
   MedusaContext,
   MedusaError,
-  isDefined,
 } from "@medusajs/utils"
-import { EntityManager, FindManyOptions } from "typeorm"
+import { EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryLevelService } from "."
 import { ReservationItem } from "../models"
 import { buildQuery } from "../utils/build-query"
@@ -235,21 +235,24 @@ export default class ReservationItemService {
    */
   @InjectEntityManager()
   async deleteByLineItem(
-    lineItemId: string,
+    lineItemId: string | string[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
 
+    const itemsIds = Array.isArray(lineItemId) ? lineItemId : [lineItemId]
+
     const items = await this.list(
-      { line_item_id: lineItemId },
+      { line_item_id: itemsIds },
       undefined,
       context
     )
 
     const ops: Promise<unknown>[] = [
-      itemRepository.softDelete({ line_item_id: lineItemId }),
+      itemRepository.softDelete({ line_item_id: In(itemsIds) }),
     ]
+
     for (const item of items) {
       ops.push(
         this.inventoryLevelService_.adjustReservedQuantity(
@@ -260,6 +263,7 @@ export default class ReservationItemService {
         )
       )
     }
+
     await Promise.all(ops)
 
     await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
