@@ -86,7 +86,7 @@ You can use the Strapi plugin on an existing Medusa backend, however, existing d
 To create your Medusa backend, run the following command:
 
 ```bash
-medusa new medusa-backend
+npx @medusajs/medusa-cli@latest new medusa-backend
 ```
 
 ### Configure your Backend
@@ -107,13 +107,13 @@ You must then configure your backend to:
 After configuring the connection to the database, you must run migrations to add the necessary database schema definitions in your database. To do that, run the following command in the `medusa-backend` directory:
 
 ```bash
-medusa migrations run
+npx @medusajs/medusa-cli@latest migrations run
 ```
 
 You can optionally seed your database with demo data by running the `seed` command:
 
 ```bash
-medusa seed --seed-file=data/seed.json
+npx @medusajs/medusa-cli@latest seed --seed-file=data/seed.json
 ```
 
 ---
