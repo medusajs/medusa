@@ -149,7 +149,7 @@ const DraftSummaryCard: React.FC<DraftSummaryCardProps> = ({ order }) => {
           <StatusIndicator
             onClick={allItemsReserved ? undefined : showReservationModal}
             variant={allItemsReserved ? "success" : "danger"}
-            title={allItemsReserved ? "Allocated" : "Not fully reserved"}
+            title={allItemsReserved ? "Allocated" : "Not fully allocated"}
             className="rounded-rounded border px-3 py-1.5"
           />
         )

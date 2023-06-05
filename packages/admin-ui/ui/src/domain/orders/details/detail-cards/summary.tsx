@@ -183,7 +183,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
             title={
               allItemsReserved || !isAllocatable
                 ? "Allocated"
-                : "Not fully reserved"
+                : "Not fully allocated"
             }
             className="rounded-rounded border px-3 py-1.5"
           />
