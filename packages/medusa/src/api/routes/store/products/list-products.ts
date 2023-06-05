@@ -216,81 +216,63 @@ export default async (req, res) => {
     }
   }
 
-  const manager = req.scope.resolve("manager")
+  const promises: Promise<any>[] = []
 
-  const [computedProducts, count] = await manager.transaction(
-    async (transactionManager) => {
-      const promises: Promise<any>[] = []
+  promises.push(productService.listAndCount(filterableFields, listConfig))
 
-      promises.push(
-        productService
-          .withTransaction(transactionManager)
-          .listAndCount(filterableFields, listConfig)
-      )
+  if (validated.cart_id) {
+    promises.push(
+      cartService.retrieve(validated.cart_id, {
+        select: ["id", "region_id"] as any,
+        relations: ["region"],
+      })
+    )
+  }
 
-      if (validated.cart_id) {
-        promises.push(
-          cartService
-            .withTransaction(transactionManager)
-            .retrieve(validated.cart_id, {
-              select: ["id", "region_id"] as any,
-              relations: ["region"],
-            })
-        )
-      }
+  const [[rawProducts, count], cart] = await Promise.all(promises)
 
-      const [[rawProducts, count], cart] = await Promise.all(promises)
+  if (validated.cart_id) {
+    regionId = cart.region_id
+    currencyCode = cart.region.currency_code
+  }
 
-      if (validated.cart_id) {
-        regionId = cart.region_id
-        currencyCode = cart.region.currency_code
-      }
+  // Create a new reference just for naming purpose
+  const computedProducts = rawProducts
 
-      // Create a new reference just for naming purpose
-      const computedProducts = rawProducts
-
-      // We only set prices if variants.prices are requested
-      const shouldSetPricing = ["variants", "variants.prices"].every(
-        (relation) => listConfig.relations?.includes(relation)
-      )
-
-      // We only set availability if variants are requested
-      const shouldSetAvailability = listConfig.relations?.includes("variants")
-
-      const decoratePromises: Promise<any>[] = []
-
-      if (shouldSetPricing) {
-        decoratePromises.push(
-          pricingService
-            .withTransaction(transactionManager)
-            .setProductPrices(computedProducts, {
-              cart_id: cart_id,
-              region_id: regionId,
-              currency_code: currencyCode,
-              customer_id: req.user?.customer_id,
-              include_discount_prices: true,
-            })
-        )
-      }
-
-      if (shouldSetAvailability) {
-        decoratePromises.push(
-          productVariantInventoryService
-            .withTransaction(transactionManager)
-            .setProductAvailability(
-              computedProducts,
-              filterableFields.sales_channel_id
-            )
-        )
-      }
-
-      // We can run them concurrently as the new properties are assigned to the references
-      // of the appropriate entity
-      await Promise.all(decoratePromises)
-
-      return [computedProducts, count]
-    }
+  // We only set prices if variants.prices are requested
+  const shouldSetPricing = ["variants", "variants.prices"].every((relation) =>
+    listConfig.relations?.includes(relation)
   )
+
+  // We only set availability if variants are requested
+  const shouldSetAvailability = listConfig.relations?.includes("variants")
+
+  const decoratePromises: Promise<any>[] = []
+
+  if (shouldSetPricing) {
+    decoratePromises.push(
+      pricingService.setProductPrices(computedProducts, {
+        cart_id: cart_id,
+        region_id: regionId,
+        currency_code: currencyCode,
+        customer_id: req.user?.customer_id,
+        include_discount_prices: true,
+      })
+    )
+  }
+
+  if (shouldSetAvailability) {
+    decoratePromises.push(
+      productVariantInventoryService.setProductAvailability(
+        computedProducts,
+        filterableFields.sales_channel_id
+      )
+    )
+  }
+
+  // We can run them concurrently as the new properties are assigned to the references
+  // of the appropriate entity
+  await Promise.all(decoratePromises)
 
   res.json({
     products: cleanResponseData(computedProducts, req.allowedProperties || []),
