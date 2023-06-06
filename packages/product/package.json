@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@medusajs/modules-sdk": "^1.8.3",
-    "@medusajs/types": "workspace:^",
+    "@medusajs/types": "*",
     "@medusajs/utils": "^1.8.2",
     "@mikro-orm/core": "5.7.4",
     "@mikro-orm/migrations": "5.7.4",
