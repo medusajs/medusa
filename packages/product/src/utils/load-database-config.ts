@@ -2,6 +2,7 @@ import {
   ProductServiceInitializeCustomDataLayerOptions,
   ProductServiceInitializeOptions,
 } from "../types"
+import { MedusaError } from "@medusajs/utils"
 
 function getEnv(key: string): string {
   const value = process.env[`PRODUCT_${key}`] ?? process.env[`${key}`]
@@ -72,7 +73,8 @@ export function loadDatabaseConfig(
   }
 
   if (!database.clientUrl) {
-    throw new Error(
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
       "No database clientUrl provided. Please provide the clientUrl through the PRODUCT_POSTGRES_URL or POSTGRES_URL environment variable or the options object in the initialize function."
     )
   }
