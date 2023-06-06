@@ -47,10 +47,6 @@ const program = new Commander.Command(pkg.name)
     `-s --starter-url`,
     `A GitHub URL to a repository that contains a Medusa starter project to bootstrap from`
   )
-  .option(
-    `--no-seed`,
-    `If run with the no-seed flag the script will skip seeding the database upon setup`
-  )
   .option(`-v --verbose`, `Show all installation output`)
   .parse(process.argv)
 
@@ -92,9 +88,6 @@ export const run = async (): Promise<void> => {
 
   const progOptions = program.opts()
 
-  const noSeed = progOptions.noSeed
-  track("SEED_SELECTED", { seed: !noSeed })
-
   const { storefront } = (await prompt(questions.storefront)) as {
     storefront: string
   }
@@ -103,7 +96,6 @@ export const run = async (): Promise<void> => {
   await newStarter({
     starter,
     root: path.join(projectRoot, `backend`),
-    seed: !noSeed,
     verbose: progOptions.verbose,
   })
 
@@ -118,18 +110,27 @@ export const run = async (): Promise<void> => {
   }
 
   console.log(`
-  Your project is ready 🚀. The available commands are:
+  Your project is ready 🚀. To start your Medusa project:
   
-    Medusa API
-    cd ${projectRoot}/backend
-    yarn start
+    Medusa Backend
+    1. Change to the backend directory: cd ${projectRoot}/backend
+    2. Create a PostgreSQL database and make sure your PostgreSQL server is running.
+    3. Add the following environment variable to the \`.env\` file:
+        DATABASE_URL=postgres://localhost/medusa-store # This is the default URL, change it to your own database URL
+    4. Run migrations:
+        npx @medusajs/medusa-cli@latest migrations run
+    5. Optionally seed database with dummy data:
+        npx @medusajs/medusa-cli@latest seed -f ./data/seed.json
+    6. Start backend:
+        npx @medusajs/medusa-cli@latest develop
   `)
 
   if (hasStorefront) {
     console.log(`
     Storefront
-    cd ${projectRoot}/storefront
-    yarn dev
+    1. Run the backend as explained above.
+    2. Change to the storefront directory: cd ${projectRoot}/storefront
+    3. Run storefront: yarn dev
     `)
   }
 }

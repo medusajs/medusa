@@ -28,7 +28,7 @@ If you run into any errors while installing the CLI tool, check out the [trouble
 The recommended way to create a plugin is using the Medusa CLI. Run the following command to create a new Medusa project:
 
 ```bash
-medusa new medusa-plugin-custom
+npx @medusajs/medusa-cli@latest new medusa-plugin-custom
 ```
 
 Where `medusa-plugin-custom` is the name of the plugin you’re creating. In Medusa, plugins are named based on their functionalities.

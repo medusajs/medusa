@@ -6,33 +6,58 @@ import clsx from "clsx"
 
 type NavbarActionsProps = {
   items: NavbarAction[]
+  className?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
-const NavbarActions: React.FC<NavbarActionsProps> = ({ items = [] }) => {
+const NavbarActions: React.FC<NavbarActionsProps> = ({
+  items = [],
+  className = "",
+}) => {
   return (
-    <div className="lg:tw-block tw-hidden">
+    <div className={clsx("lg:tw-block tw-hidden", className)}>
       {items.map((item, index) => {
+        // eslint-disable-next-line no-case-declarations
+        const ItemIcon = item.icon ? Icon[item.icon] : null
         switch (item.type) {
           case "link":
-            // eslint-disable-next-line no-case-declarations
-            const ItemIcon = item.icon ? Icon[item.icon] : null
             return (
-              <Tooltip text={item.title} key={index}>
+              <Tooltip
+                text={item.title}
+                html={item.html}
+                key={index}
+                tooltipClassName="!tw-text-label-x-small-plus"
+              >
                 <a
                   href={item.href}
                   title={item.title}
-                  // className={`${ItemIcon ? "navbar-link-icon" : ""} ${
-                  //   item.className || ""
-                  // }`}
                   className={clsx(
-                    ItemIcon &&
-                      "tw-bg-medusa-button-secondary dark:tw-bg-medusa-button-secondary-dark tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark tw-rounded tw-w-2 tw-h-2 tw-flex tw-justify-center tw-items-center hover:tw-bg-medusa-button-secondary-hover dark:hover:tw-bg-medusa-button-secondary-hover-dark",
+                    ItemIcon && "navbar-action-icon-item",
                     item.className
                   )}
                 >
                   {item.label}
                   {ItemIcon && <ItemIcon />}
                 </a>
+              </Tooltip>
+            )
+          case "button":
+            return (
+              <Tooltip
+                text={item.title}
+                html={item.html}
+                key={index}
+                tooltipClassName="!tw-text-label-x-small-plus"
+              >
+                <button
+                  className={clsx(
+                    ItemIcon && "navbar-action-icon-item",
+                    item.className
+                  )}
+                  {...item.events}
+                >
+                  {item.label}
+                  {ItemIcon && <ItemIcon />}
+                </button>
               </Tooltip>
             )
           default:

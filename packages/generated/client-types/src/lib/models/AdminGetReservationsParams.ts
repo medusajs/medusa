@@ -38,6 +38,46 @@ export interface AdminGetReservationsParams {
     gte?: number
   }
   /**
+   * A param for search reservation descriptions
+   */
+  description?:
+    | string
+    | {
+        /**
+         * filter by reservation description containing search string.
+         */
+        contains?: string
+        /**
+         * filter by reservation description starting with search string.
+         */
+        starts_with?: string
+        /**
+         * filter by reservation description ending with search string.
+         */
+        ends_with?: string
+      }
+  /**
+   * Date comparison for when resulting reservations were created.
+   */
+  created_at?: {
+    /**
+     * filter by dates less than this date
+     */
+    lt?: string
+    /**
+     * filter by dates greater than this date
+     */
+    gt?: string
+    /**
+     * filter by dates less than or equal to this date
+     */
+    lte?: string
+    /**
+     * filter by dates greater than or equal to this date
+     */
+    gte?: string
+  }
+  /**
    * How many Reservations to skip in the result.
    */
   offset?: number
