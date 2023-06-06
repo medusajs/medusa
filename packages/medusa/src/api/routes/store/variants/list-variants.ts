@@ -1,4 +1,3 @@
-import { IsInt, IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -6,15 +5,16 @@ import {
   ProductVariantService,
   RegionService,
 } from "../../../../services"
+import { IsInt, IsOptional, IsString } from "class-validator"
 
-import { Type } from "class-transformer"
-import { omit } from "lodash"
-import { defaultStoreVariantRelations } from "."
+import { FilterableProductVariantProps } from "../../../../types/product-variant"
+import { IsType } from "../../../../utils/validators/is-type"
 import { NumericalComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
-import { FilterableProductVariantProps } from "../../../../types/product-variant"
+import { Type } from "class-transformer"
+import { defaultStoreVariantRelations } from "."
+import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
-import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [get] /store/variants
@@ -182,10 +182,6 @@ export class StoreGetVariantsParams extends PriceSelectionParams {
   @IsInt()
   @Type(() => Number)
   offset?: number = 0
-
-  @IsOptional()
-  @IsString()
-  expand?: string
 
   @IsOptional()
   @IsString()

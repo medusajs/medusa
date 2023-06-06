@@ -30,14 +30,6 @@ export const getPackageManager = (npmConfigUserAgent) => {
   return `npm`
 }
 
-const removeUndefined = (obj) => {
-  return Object.fromEntries(
-    Object.entries(obj)
-      .filter(([_, v]) => v != null)
-      .map(([k, v]) => [k, v === Object(v) ? removeEmpty(v) : v])
-  )
-}
-
 const spawnWithArgs = (file, args, options) =>
   execa(file, args, { stdio: "ignore", preferLocal: false, ...options })
 
@@ -114,8 +106,6 @@ const install = async (rootPath, verbose) => {
   console.log() // Add some space
 
   process.chdir(rootPath)
-
-  const npmConfigUserAgent = process.env.npm_config_user_agent
 
   try {
     if (getPackageManager() === `yarn` && checkForYarn()) {
@@ -218,21 +208,6 @@ const clone = async (hostInfo, rootPath, keepGit, verbose = false) => {
   if (!isGit) await createInitialGitCommit(rootPath, url)
 }
 
-const getMedusaConfig = (rootPath) => {
-  try {
-    const configPath = sysPath.join(rootPath, "medusa-config.js")
-    if (existsSync(configPath)) {
-      const resolved = sysPath.resolve(configPath)
-      const configModule = require(resolved)
-      return configModule
-    }
-    throw Error()
-  } catch (err) {
-    return null
-  }
-  return {}
-}
-
 const getPaths = async (starterPath, rootPath) => {
   let selectedOtherStarter = false
 
@@ -243,14 +218,6 @@ const getPaths = async (starterPath, rootPath) => {
   return { starterPath, rootPath, selectedOtherStarter }
 }
 
-const successMessage = (path) => {
-  reporter.info(`Your new Medusa project is ready for you! To start developing run:
-
-  cd ${path}
-  medusa develop
-`)
-}
-
 const setupEnvVars = async (rootPath) => {
   const templatePath = sysPath.join(rootPath, ".env.template")
   const destination = sysPath.join(rootPath, ".env")
@@ -259,51 +226,11 @@ const setupEnvVars = async (rootPath) => {
   }
 }
 
-const attemptSeed = async (rootPath) => {
-  const stop = spin("Seeding database")
-
-  const pkgPath = sysPath.resolve(rootPath, "package.json")
-  if (existsSync(pkgPath)) {
-    const pkg = require(pkgPath)
-    if (pkg.scripts && pkg.scripts.seed) {
-      await setupEnvVars(rootPath)
-
-      const proc = execa(getPackageManager(), [`run`, `seed`], {
-        cwd: rootPath,
-      })
-
-      // Useful for development
-      proc.stdout.pipe(process.stdout)
-
-      await proc
-        .then(() => {
-          stop()
-          console.log()
-          reporter.success("Seed completed")
-        })
-        .catch((err) => {
-          stop()
-          console.log()
-          reporter.error("Failed to complete seed; skipping")
-          console.error(err)
-        })
-    } else {
-      stop()
-      console.log()
-      reporter.error("Starter doesn't provide a seed command; skipping.")
-    }
-  } else {
-    stop()
-    console.log()
-    reporter.error("Could not find package.json")
-  }
-}
-
 /**
  * Main function that clones or copies the starter.
  */
 export const newStarter = async (args) => {
-  const { starter, root, verbose, seed, keepGit } = args
+  const { starter, root, verbose, keepGit } = args
 
   const { starterPath, rootPath, selectedOtherStarter } = await getPaths(
     starter,
@@ -362,9 +289,5 @@ export const newStarter = async (args) => {
     await copy(starterPath, rootPath, verbose)
   }
 
-  const medusaConfig = getMedusaConfig(rootPath)
-
-  if (medusaConfig && seed) {
-    await attemptSeed(rootPath)
-  }
+  await setupEnvVars(rootPath)
 }
