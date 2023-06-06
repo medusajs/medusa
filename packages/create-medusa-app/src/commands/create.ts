@@ -21,6 +21,7 @@ import createAbortController, {
 } from "../utils/create-abort-controller.js"
 import { track } from "medusa-telemetry"
 import { createFactBox, resetFactBox } from "../utils/facts.js"
+import boxen from "boxen"
 
 const slugify = slugifyType.default
 const isEmail = isEmailImported.default
@@ -234,6 +235,31 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
       type: "error",
     })
   }
+
+  // the SIGINT event is triggered twice once the backend runs
+  // this ensures that the message isn't printed twice to the user
+  let printedMessage = false
+
+  onProcessTerminated(() => {
+    if (!printedMessage) {
+      printedMessage = true
+      console.log(
+        boxen(
+          chalk.green(
+            `Change to the ${projectName} directory to explore your Medusa project. Check out the Medusa documentation to start your development:
+            https://docs.medusajs.com/`
+          ),
+          {
+            titleAlignment: "center",
+            textAlignment: "center",
+            padding: 1,
+            margin: 1,
+            float: "center",
+          }
+        )
+      )
+    }
+  })
 
   await waitOn({
     resources: ["http://localhost:9000/health"],
