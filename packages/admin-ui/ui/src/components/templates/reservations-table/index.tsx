@@ -127,7 +127,7 @@ const LocationDropdown = ({
                   <TagDotIcon size={20} outerColor="#FFF" color="#111827" />
                 )}
               </div>
-              <p className="line-clamp-1 w-[166px]">{o.label}</p>
+              <p className="w-[166px]">{o.label}</p>
             </div>
           ))}
         </RadixPopover.Content>
