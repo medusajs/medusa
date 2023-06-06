@@ -176,7 +176,7 @@ const plugins = [
               "images",
             ],
           },
-          transform: (product) => ({ 
+          transformer: (product) => ({ 
             id: product.id, 
             // other attributes...
           }),
