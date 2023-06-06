@@ -1,9 +1,10 @@
 import * as RadixPopover from "@radix-ui/react-popover"
 
 import { Cell, Row, TableRowProps, usePagination, useTable } from "react-table"
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { ReservationItemDTO, StockLocationDTO } from "@medusajs/types"
 import {
+  useAdminDeleteReservation,
   useAdminReservations,
   useAdminStockLocations,
   useAdminStore,
@@ -20,10 +21,11 @@ import ReservationsFilters from "./components/reservations-filter"
 import Table from "../../molecules/table"
 import TableContainer from "../../../components/organisms/table-container"
 import TagDotIcon from "../../fundamentals/icons/tag-dot-icon"
+import Tooltip from "../../atoms/tooltip"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
+import clsx from "clsx"
 import { isEmpty } from "lodash"
 import qs from "qs"
-import { useAdminDeleteReservation } from "medusa-react"
 import { useLocation } from "react-router-dom"
 import { useReservationFilters } from "./use-reservation-filters"
 import useReservationsTableColumns from "./use-reservations-columns"
@@ -41,6 +43,7 @@ const LocationDropdown = ({
   onChange: (id: string) => void
 }) => {
   const [open, setOpen] = useState(false)
+  const ref = useRef(null)
 
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
 
@@ -69,24 +72,40 @@ const LocationDropdown = ({
     return null
   }, [selectedLocation, locationOptions])
 
+  const isEllipsisActive = (
+    e: { offsetWidth: number; scrollWidth: number } | null
+  ) => {
+    if (!e) {
+      return false
+    }
+    return e.offsetWidth < e.scrollWidth
+  }
+
   if (isLoading || !locationOptions?.length) {
     return null
   }
+
   return (
     <div className="max-w-[220px]">
       <RadixPopover.Root open={open} onOpenChange={setOpen}>
         <RadixPopover.Trigger className="w-full">
-          <Button
-            size="small"
-            variant="secondary"
-            spanClassName="flex grow"
-            className="max-w-[220px] items-center justify-start"
+          <Tooltip
+            className={clsx({ hidden: !isEllipsisActive(ref.current) })}
+            delayDuration={1000}
+            content={<div>{selectedLocObj.label}</div>}
           >
-            <BuildingsIcon size={20} />
-            <span className="max-w-[166px] truncate">
-              {selectedLocObj.label}
-            </span>
-          </Button>
+            <Button
+              size="small"
+              variant="secondary"
+              spanClassName="flex grow"
+              className="max-w-[220px] items-center justify-start"
+            >
+              <BuildingsIcon size={20} />
+              <span ref={ref} className="max-w-[166px] truncate">
+                {selectedLocObj.label}
+              </span>
+            </Button>
+          </Tooltip>
         </RadixPopover.Trigger>
         <RadixPopover.Content
           side="bottom"
