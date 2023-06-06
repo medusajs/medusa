@@ -10,6 +10,7 @@ const getDevServerConfig = () => {
 
   return {
     ...devConfig,
+    context: path.resolve(__dirname, "ui"),
     ...{
       devServer: {
         port: 7001,
@@ -19,5 +20,4 @@ const getDevServerConfig = () => {
   }
 }
 
-// Dev config for running the admin ui in development mode from within the monorepo
 module.exports = getDevServerConfig()

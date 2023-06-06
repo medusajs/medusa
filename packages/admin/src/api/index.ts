@@ -1,11 +1,12 @@
 import { getDevMiddleware } from "@medusajs/admin-ui"
+import history from "connect-history-api-fallback"
 import { Router } from "express"
 import { PluginOptions } from "../types"
 
 export default function (_rootDirectory: string, options: PluginOptions) {
   const app = Router()
 
-  const { serve = true, path = "app", outDir } = options
+  const { serve = true, path = "/app", outDir } = options
 
   // if (serve) {
   //   let buildPath: string
@@ -71,10 +72,14 @@ export default function (_rootDirectory: string, options: PluginOptions) {
   // return app
 
   if (serve) {
+    app.use("/app", history())
+
     if (process.env.NODE_ENV === "production") {
       return
     } else {
-      const { adminDevMiddleware, adminHotMiddleware } = getDevMiddleware()
+      const { adminDevMiddleware, adminHotMiddleware } = getDevMiddleware({
+        publicPath: "/app",
+      })
 
       app.use(adminDevMiddleware)
       app.use(adminHotMiddleware)

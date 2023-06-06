@@ -57,31 +57,35 @@ export default async function ({ port, directory }) {
     process.exit(1)
   })
 
-  chokidar.watch(`${directory}/src`).on("change", (file) => {
-    const f = file.split("src")[1]
-    Logger.info(`${f} changed: restarting...`)
-
-    if (process.platform === "win32") {
-      execSync(`taskkill /PID ${child.pid} /F /T`)
-    }
-
-    child.kill("SIGINT")
-
-    execSync(`${babelPath} src -d dist --extensions ".ts,.js"`, {
-      cwd: directory,
-      stdio: ["pipe", process.stdout, process.stderr],
+  chokidar
+    .watch(`${directory}/src`, {
+      ignored: `${directory}/src/admin`,
     })
+    .on("change", (file) => {
+      const f = file.split("src")[1]
+      Logger.info(`${f} changed: restarting...`)
 
-    Logger.info("Rebuilt")
+      if (process.platform === "win32") {
+        execSync(`taskkill /PID ${child.pid} /F /T`)
+      }
 
-    child = spawn(cliPath, [`start`, ...args], {
-      cwd: directory,
-      env: process.env,
-      stdio: ["pipe", process.stdout, process.stderr],
+      child.kill("SIGINT")
+
+      execSync(`${babelPath} src -d dist --extensions ".ts,.js"`, {
+        cwd: directory,
+        stdio: ["pipe", process.stdout, process.stderr],
+      })
+
+      Logger.info("Rebuilt")
+
+      child = spawn(cliPath, [`start`, ...args], {
+        cwd: directory,
+        env: process.env,
+        stdio: ["pipe", process.stdout, process.stderr],
+      })
+      child.on("error", function (err) {
+        console.log("Error ", err)
+        process.exit(1)
+      })
     })
-    child.on("error", function (err) {
-      console.log("Error ", err)
-      process.exit(1)
-    })
-  })
 }

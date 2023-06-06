@@ -1,4 +1,4 @@
-import { build } from "@medusajs/admin-ui"
+import { build, watchLocalExtensions } from "@medusajs/admin-ui"
 import fse from "fs-extra"
 import ora from "ora"
 import { EOL } from "os"
@@ -8,10 +8,14 @@ import { loadConfig, reporter, validatePath } from "../utils"
 export default async function setupAdmin() {
   const { path, outDir, serve, autoRebuild } = loadConfig()
 
+  if (process.env.NODE_ENV === "development") {
+    watchLocalExtensions()
+  }
+
   // If the user has not specified that the admin UI should be served,
   // we should not build it. Furthermore, if the user has not specified that they want
   // the admin UI to be rebuilt on changes, we should not build it here.
-  if (!serve || !autoRebuild) {
+  if (!serve || !autoRebuild || process.env.NODE_ENV !== "production") {
     return
   }
 
@@ -80,7 +84,9 @@ export default async function setupAdmin() {
       `Admin build is out of sync with the current configuration. Rebuild initialized${EOL}`
     )
 
-    await build().catch((err) => {
+    await build({
+      publicPath: "/app",
+    }).catch((err) => {
       spinner.fail(`Failed to build Admin UI${EOL}`)
       reporter.panic(err)
     })

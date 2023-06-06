@@ -1,20 +1,12 @@
-import { ExtensionsEntry } from "@medusajs/admin-shared"
 import ReactDOM from "react-dom/client"
 import "./assets/styles/global.css"
+import { getExtensions, loadExtensions } from "./dynamic-extensions"
 import MedusaApp from "./medusa-app"
 
 async function run() {
-  let exts: ExtensionsEntry[] = []
+  await loadExtensions()
 
-  try {
-    // @ts-ignore - this file is generated at build time
-    const { default: extensions }: ExtensionsEntry[] = await import(
-      "./extensions"
-    )
-    exts = extensions
-  } catch (_) {
-    // noop - no extensions
-  }
+  const exts = getExtensions()
 
   const app = new MedusaApp({ entries: exts })
 

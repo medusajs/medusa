@@ -143,6 +143,10 @@ async function writeExtensionsEntry(
       const extensions = []
 
       export default extensions
+
+      if (module.hot) {
+        module.hot.accept()
+      }
       
     `
 
@@ -169,6 +173,10 @@ async function writeExtensionsEntry(
     ${exports}
 
     export default extensions
+
+    if (module.hot) {
+       module.hot.accept()
+    }
     
   `
 

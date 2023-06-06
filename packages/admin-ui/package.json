@@ -23,7 +23,7 @@
     "ui"
   ],
   "scripts": {
-    "webpack:dev": "webpack-dev-server --mode=development --config ./src/webpack.config.ts",
+    "webpack:dev": "webpack-dev-server --mode=development --config ./webpack.config.ts",
     "dev": "vite -c vite.config.dev.ts --port 7001",
     "dev:build": "vite build -c vite.config.dev.ts",
     "build": "tsup",
@@ -54,6 +54,7 @@
     "@tanstack/react-query": "4.22.0",
     "@tanstack/react-table": "^8.7.9",
     "autoprefixer": "^10.4.13",
+    "chokidar": "^3.5.3",
     "clsx": "^1.2.1",
     "copy-to-clipboard": "^3.3.1",
     "css-loader": "^6.8.1",
@@ -69,8 +70,8 @@
     "postcss": "^8.4.21",
     "postcss-loader": "^7.3.2",
     "postcss-preset-env": "^8.4.1",
-    "process": "^0.11.10",
     "prism-react-renderer": "^2.0.4",
+    "process": "^0.11.10",
     "query-string": "^8.1.0",
     "react": "^18.2.0",
     "react-collapsible": "^2.8.3",

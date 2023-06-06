@@ -10,7 +10,22 @@ export function getDevMiddleware(options: BuildOptions) {
 
   return {
     adminDevMiddleware: webpackDevMiddleware(compiler, {
-      publicPath: "/app",
+      stats: {
+        colors: true,
+        hash: false,
+        version: false,
+        timings: false,
+        assets: false,
+        chunks: false,
+        modules: false,
+        reasons: false,
+        children: false,
+        source: false,
+        errors: false,
+        errorDetails: false,
+        warnings: false,
+        publicPath: false,
+      },
     }),
     adminHotMiddleware: webpackHotMiddleware(compiler as any),
   }

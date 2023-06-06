@@ -1,5 +1,10 @@
 import { InjectionZone, Widget, WidgetRegistry } from "@medusajs/admin-shared"
-import React, { PropsWithChildren, useCallback, useMemo } from "react"
+import React, {
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useMemo,
+} from "react"
 
 type WidgetContextType = {
   getWidgets: (injectionZone: InjectionZone) => Widget[]
@@ -30,6 +35,10 @@ export const WidgetProvider = ({ registry, children }: WidgetProviderProps) => {
   )
 
   const values = useMemo(() => ({ getWidgets }), [getWidgets])
+
+  useEffect(() => {
+    console.log("Rerendering widget provider")
+  }, [])
 
   return (
     <WidgetContext.Provider value={values}>{children}</WidgetContext.Provider>

@@ -7193,17 +7193,24 @@ __metadata:
     "@types/react-table": ^7.7.9
     "@types/webpack-hot-middleware": ^2.25.6
     autoprefixer: ^10.4.13
+    chokidar: ^3.5.3
     clsx: ^1.2.1
     copy-to-clipboard: ^3.3.1
     css-loader: ^6.8.1
     emoji-picker-react: ^4.4.3
     framer-motion: ^9.1.6
-    medusa-react: 9.0.0
+    html-webpack-plugin: ^5.5.1
+    md5: ^2.3.0
+    medusa-react: "*"
+    mini-css-extract-plugin: ^2.7.6
     moment: ^2.29.4
     path-browserify: ^1.0.1
     pluralize: ^8.0.0
     postcss: ^8.4.21
+    postcss-loader: ^7.3.2
+    postcss-preset-env: ^8.4.1
     prism-react-renderer: ^2.0.4
+    process: ^0.11.10
     query-string: ^8.1.0
     react: ^18.2.0
     react-collapsible: ^2.8.3
@@ -7249,11 +7256,12 @@ __metadata:
     "@medusajs/admin-ui": 1.8.7
     "@types/express": ^4.17.13
     commander: ^10.0.0
+    connect-history-api-fallback: ^2.0.0
     dotenv: ^16.0.3
     express: ^4.17.1
     fs-extra: ^11.1.0
     medusa-core-utils: 1.2.0
-    ora: 5.4.0
+    ora: 5.4.1
     picocolors: ^1.0.0
     ts-dedent: ^2.2.0
     typescript: ^4.9.3
@@ -7382,10 +7390,10 @@ __metadata:
     configstore: 5.0.1
     core-js: ^3.6.5
     cross-env: ^5.2.1
-    dotenv: ^8.2.0
+    dotenv: 16.0.3
     execa: ^5.1.1
     fs-exists-cached: ^1.0.0
-    fs-extra: ^10.0.0
+    fs-extra: 11.1.1
     hosted-git-info: ^4.0.2
     inquirer: ^8.0.0
     is-valid-path: ^0.1.1
@@ -20832,7 +20840,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^16.0.3":
+"dotenv@npm:16.0.3, dotenv@npm:^16.0.3":
   version: 16.0.3
   resolution: "dotenv@npm:16.0.3"
   checksum: 109457ac5f9e930ca8066ea33887b6f839ab24d647a7a8b49ddcd1f32662e2c35591c5e5b9819063e430148a664d0927f0cbe60cf9575d89bc524f47ff7e78f0
@@ -20846,7 +20854,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^8.0.0, dotenv@npm:^8.1.0, dotenv@npm:^8.2.0, dotenv@npm:^8.6.0":
+"dotenv@npm:^8.0.0, dotenv@npm:^8.1.0, dotenv@npm:^8.6.0":
   version: 8.6.0
   resolution: "dotenv@npm:8.6.0"
   checksum: 6750431dea8efbd54b9f2d9681b04e1ccc7989486461dcf058bb708d9e3d63b04115fcdf8840e38ad1e24a4a2e1e7c1560626c5e3ac7bc09371b127c49e2d45f
@@ -32061,7 +32069,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-react@9.0.0, medusa-react@workspace:packages/medusa-react":
+"medusa-react@*, medusa-react@workspace:packages/medusa-react":
   version: 0.0.0-use.local
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:
@@ -34224,24 +34232,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ora@npm:5.4.0":
-  version: 5.4.0
-  resolution: "ora@npm:5.4.0"
-  dependencies:
-    bl: ^4.1.0
-    chalk: ^4.1.0
-    cli-cursor: ^3.1.0
-    cli-spinners: ^2.5.0
-    is-interactive: ^1.0.0
-    is-unicode-supported: ^0.1.0
-    log-symbols: ^4.1.0
-    strip-ansi: ^6.0.0
-    wcwidth: ^1.0.1
-  checksum: 264f1d99848ed913f512fbccec0fe66e524f4d64fdeb7c27502db709cb34033a4a32f475bb3157cae148ddf8716f19668859b1ea1a35aa3b9bdd97573f4b1777
-  languageName: node
-  linkType: hard
-
-"ora@npm:^5.4.1":
+"ora@npm:5.4.1, ora@npm:^5.4.1":
   version: 5.4.1
   resolution: "ora@npm:5.4.1"
   dependencies:
@@ -40043,6 +40034,17 @@ __metadata:
     socket.io-adapter: ~2.1.0
     socket.io-parser: ~4.0.3
   checksum: bb0fb1d7a8d339c999700571e17665865560696fd027922988ab34b21acc64bf7d1a565ecc8f34f8503f0c19cc5c1302c821a42d7f1450790ea08c3f7ae2e7c8
+  languageName: node
+  linkType: hard
+
+"sockjs@npm:^0.3.24":
+  version: 0.3.24
+  resolution: "sockjs@npm:0.3.24"
+  dependencies:
+    faye-websocket: ^0.11.3
+    uuid: ^8.3.2
+    websocket-driver: ^0.7.4
+  checksum: aa102c7d921bf430215754511c81ea7248f2dcdf268fbdb18e4d8183493a86b8793b164c636c52f474a886f747447c962741df2373888823271efdb9d2594f33
   languageName: node
   linkType: hard
 
