@@ -42,7 +42,7 @@ This exports a function that returns an Express router. The function receives tw
 
 ### Defining Multiple Routes or Middlewares
 
-Instead of returning an Express router in the function, you can return an array of routes and [middlewares](./add-middleware.md).
+Instead of returning an Express router in the function, you can return an array of routes and [middlewares](./add-middleware.mdx).
 
 For example:
 

@@ -136,7 +136,7 @@ It was previously required to output your files into the root of the plugin's di
 This guide doesn't cover how to create different files and components. If you’re interested in learning how to do that, you can check out these guides:
 
 - How to [create endpoints](../endpoints/create.md)
-- How to [create a service](../services/create-service.md)
+- How to [create a service](../services/create-service.mdx)
 - How to [create a subscriber](../events/create-subscriber.md)
 - How to [create an entity](../entities/create.md)
 - How to [create a migration](../entities/migrations/create.md)

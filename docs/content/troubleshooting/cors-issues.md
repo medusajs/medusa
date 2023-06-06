@@ -1,6 +1,8 @@
-# CORS issues
+---
+title: 'CORS issues'
+---
 
-If you are experiencing connection issues when trying to access your Medusa backend from a storefront, it is most likely due to Cross-Origin Resource Sharing (CORS) issues.
+If you are experiencing connection issues when trying to access your Medusa backend from a storefront or the admin dashboard, it is most likely due to Cross-Origin Resource Sharing (CORS) issues.
 
 You might see a log in your browser console, that looks like this:
 

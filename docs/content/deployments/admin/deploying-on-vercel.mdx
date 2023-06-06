@@ -3,6 +3,9 @@ description: 'Learn step-by-step.'
 addHowToData: true
 ---
 
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import CorsErrorSection from '../../troubleshooting/cors-issues.md'
+
 # Deploy Admin to Vercel
 
 In this document, you’ll learn how to deploy the admin dashboard to Vercel.
@@ -57,7 +60,7 @@ git init
 git remote add origin <GITHUB_URL>
 ```
 
-Where `<GITHUB_URL>` is the URL you just copied.
+Where `<GITHUB_URL>` is the URL you just copied.
 
 Then, add, commit, and push the changes into the repository:
 
@@ -125,14 +128,14 @@ This section covers how to deploy the admin, either using the Vercel website or 
 
 This section explains how to deploy the admin using the Vercel website:
 
-1. Open the [Vercel dashboard](https://vercel.com/dashboard) after logging in.
+1. Open the [Vercel dashboard](https://vercel.com/dashboard) after logging in.
 2. Click on the “Add New…” button next to the search bar.
 3. Choose Project from the dropdown.
 4. In the new page that opens, find the Git repository that holds your Medusa backend and click on the Import button. If you haven’t connected your Vercel account to any Git provider, you must do that first.
 5. In the Configure Project form:
     1. Set the Framework Preset to Vite.
     2. Open the Build and Output Settings collapsible, and set the Build Command to `yarn build:admin` and the Output Directory to `build`. If you’ve configured the admin to use a different output directory, then change it to that directory.
-    3. Open the Environment Variables collapsible, and add an environment variable with the name `MEDUSA_BACKEND_URL` with the value being the URL to your deployed Medusa backend.
+    3. Open the Environment Variables collapsible, and add an environment variable with the name `MEDUSA_BACKEND_URL` with the value being the URL to your deployed Medusa backend.
     4. You can optionally edit the Project Name.
 6. Once you’re done, click on the “Deploy” button.
 
@@ -140,13 +143,13 @@ This will start the deployment of the admin. Once it’s done, you’ll be redir
 
 :::note
 
-At this point, when you visit the admin, you will face errors related to Cross-Origin Resource Sharing (CORS) while using the admin. Before you start using the admin, follow along the [Configure CORS on the Medusa Backend](#step-6-configure-cors-on-the-medusa-backend) section.
+At this point, when you visit the admin, you will face errors related to Cross-Origin Resource Sharing (CORS) while using the admin. Before you start using the admin, follow along the [Configure CORS on the Medusa Backend](#step-6-configure-cors-on-the-medusa-backend) section.
 
 :::
 
 ### Option 2: Using Vercel’s CLI Tool
 
-This section explains how to deploy the admin using the Vercel CLI tool. You should have the CLI tool installed first, as explained in [Vercel’s documentation](https://vercel.com/docs/cli).
+This section explains how to deploy the admin using the Vercel CLI tool. You should have the CLI tool installed first, as explained in [Vercel’s documentation](https://vercel.com/docs/cli).
 
 In the directory of your Medusa backend, run the following command to deploy your admin:
 
@@ -154,13 +157,13 @@ In the directory of your Medusa backend, run the following command to deploy you
 vercel --build-env MEDUSA_BACKEND_URL=<YOUR_BACKEND_URL>
 ```
 
-Where `<YOUR_BACKEND_URL>` is the URL of your deployed Medusa backend.
+Where `<YOUR_BACKEND_URL>` is the URL of your deployed Medusa backend.
 
 You’ll then be asked to log in if you haven’t already, and to choose the scope to deploy your project to. You can also decide to link the admin to an existing project, or change the project’s name.
 
-When asked, ”In which directory is your code located?”, keep the default `./` and just press Enter.
+When asked, ”In which directory is your code located?”, keep the default `./` and just press Enter.
 
-The project setup will then start. When asked if you want to modify the settings, answer `y`. You’ll then be asked a series of questions:
+The project setup will then start. When asked if you want to modify the settings, answer `y`. You’ll then be asked a series of questions:
 
 1. “Which settings would you like to overwrite”: select Build Command and Output Directory using the space bar, then press Enter.
 2. “What's your **Build Command**?”: enter `yarn build:admin`.
@@ -170,7 +173,7 @@ After that, it will take a couple of minutes for the deployment to finish. The l
 
 :::note
 
-At this point, when you visit the admin, you will face errors related to Cross-Origin Resource Sharing (CORS) while using the admin. Before you start using the admin, follow along the [Configure CORS on the Medusa Backend](#step-6-configure-cors-on-the-medusa-backend) section.
+At this point, when you visit the admin, you will face errors related to Cross-Origin Resource Sharing (CORS) while using the admin. Before you start using the admin, follow along the [Configure CORS on the Medusa Backend](#step-6-configure-cors-on-the-medusa-backend) section.
 
 :::
 
@@ -178,11 +181,11 @@ At this point, when you visit the admin, you will face errors related to Cross-O
 
 ## Step 6: Configure CORS on the Medusa Backend
 
-To send requests to the Medusa backend from the admin dashboard, you must set the `ADMIN_CORS` environment variable on your backend to the admin’s URL.
+To send requests to the Medusa backend from the admin dashboard, you must set the `ADMIN_CORS` environment variable on your backend to the admin’s URL.
 
 :::note
 
-If you want to set a custom domain to your admin dashboard on Vercel, make sure to do it before this step. You can refer to this guide on [Vercel’s documentation](https://vercel.com/docs/concepts/projects/domains/add-a-domain).
+If you want to set a custom domain to your admin dashboard on Vercel, make sure to do it before this step. You can refer to this guide on [Vercel’s documentation](https://vercel.com/docs/concepts/projects/domains/add-a-domain).
 
 :::
 
@@ -192,6 +195,19 @@ On your Medusa backend, add the following environment variable:
 ADMIN_CORS=<ADMIN_URL>
 ```
 
-Where `<ADMIN_URL>` is the URL of your admin dashboard that you just deployed.
+Where `<ADMIN_URL>` is the URL of your admin dashboard that you just deployed.
 
 Then, restart your Medusa backend. Once the backend is running again, you can use your admin dashboard.
+
+---
+
+## Troubleshooting
+
+<Troubleshooting
+  sections={[
+    {
+      title: 'CORS Error',
+      content: <CorsErrorSection />
+    },
+  ]}
+/>
