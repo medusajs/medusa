@@ -5,11 +5,12 @@ import {
   ProductVariantService,
   RegionService,
 } from "../../../../services"
+import { IsOptional, IsString } from "class-validator"
 
+import { FindParams } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { defaultStoreVariantRelations } from "."
 import { validator } from "../../../../utils/validator"
-import { IsOptional, IsString } from "class-validator"
 
 /**
  * @oas [get] /store/variants/{variant_id}
@@ -75,9 +76,7 @@ export default async (req, res) => {
 
   const customer_id = req.user?.customer_id
 
-  const rawVariant = await variantService.retrieve(id, {
-    relations: defaultStoreVariantRelations,
-  })
+  const rawVariant = await variantService.retrieve(id, req.retrieveConfig)
 
   let sales_channel_id = validated.sales_channel_id
   if (req.publishableApiKeyScopes?.sales_channel_ids.length === 1) {
