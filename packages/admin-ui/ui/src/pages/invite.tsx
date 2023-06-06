@@ -38,7 +38,7 @@ const InvitePage = () => {
   const { analytics_config, isLoading: analyticsLoading } =
     useAdminAnalyticsConfig()
 
-  const firstRun = !!parsed.firstRun
+  const first_run = !!parsed.first_run
 
   let token: {
     iat: number
@@ -193,8 +193,11 @@ const InvitePage = () => {
                 <InputError errors={errors} name="repeat_password" />
               </div>
             </div>
-            <div className="gap-y-small my-8 flex w-[560px] flex-col">
-              <AnalyticsConfigForm form={nestedForm(form, "analytics")} />
+            <div className="gap-y-small my-8 flex w-[300px] flex-col">
+              <AnalyticsConfigForm
+                form={nestedForm(form, "analytics")}
+                compact={true}
+              />
             </div>
             <Button
               variant="secondary"
@@ -212,11 +215,11 @@ const InvitePage = () => {
       ) : (
         <div className="flex flex-col items-center text-center">
           <h1 className="inter-xlarge-semibold text-[20px]">
-            {firstRun
+            {first_run
               ? `Let's get you started!`
               : `You have been invited to join the team`}
           </h1>
-          {firstRun ? (
+          {first_run ? (
             <p className="inter-base-regular text-grey-50 mt-xsmall">
               Create an admin account to access your <br /> Medusa dashboard.
             </p>
