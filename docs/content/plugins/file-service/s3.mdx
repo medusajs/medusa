@@ -3,6 +3,9 @@ description: 'Learn how to integrate the S3 plugin with the Medusa backend. Lear
 addHowToData: true
 ---
 
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import AclErrorSection from '../../troubleshooting/s3-acl-error.md'
+
 # S3
 
 In this document, you’ll learn how to install the [S3 plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-file-s3) on your Medusa backend and use it for storage.
@@ -19,7 +22,7 @@ Medusa provides three different options to handle your file storage. This docume
 
 ### Medusa Backend
 
-A Medusa backend is required to be set up before following along with this document. You can follow the [quickstart guide](../../development/backend/install.mdx) to get started in minutes.
+A Medusa backend is required to be set up before following along with this document. You can follow the [quickstart guide](../../development/backend/install.mdx) to get started in minutes.
 
 ### Required Accounts
 
@@ -166,7 +169,7 @@ Make sure to define `S3_REGION`, `S3_ACCESS_KEY_ID`, and `S3_SECRET_ACCESS_KEY` 
 
 :::caution
 
-If you have multiple storage plugins configured, the last plugin declared in the `medusa-config.js` file will be used.
+If you have multiple storage plugins configured, the last plugin declared in the `medusa-config.js` file will be used.
 
 :::
 
@@ -194,11 +197,11 @@ You can also check that the image was uploaded on the S3 bucket’s page.
 
 ## Next.js Storefront Configuration
 
-If you’re using a [Next.js](../../starters/nextjs-medusa-starter.mdx) storefront, you need to add an additional configuration that adds the S3 bucket domain name into the configured images’ domain names. This is because all URLs of product images will be from the S3 bucket.
+If you’re using a [Next.js](../../starters/nextjs-medusa-starter.mdx) storefront, you need to add an additional configuration that adds the S3 bucket domain name into the configured images’ domain names. This is because all URLs of product images will be from the S3 bucket.
 
-If this configuration is not added, you’ll receive the error ["next/image Un-configured Host”](https://nextjs.org/docs/messages/next-image-unconfigured-host).
+If this configuration is not added, you’ll receive the error ["next/image Un-configured Host”](https://nextjs.org/docs/messages/next-image-unconfigured-host).
 
-In `next.config.js` add the following option in the exported object:
+In `next.config.js` add the following option in the exported object:
 
 ```jsx title=next.config.js
 const { withStoreConfig } = require("./store-config")
@@ -220,8 +223,21 @@ Where `<BUCKET_NAME>` is the name of the S3 bucket you’re using.
 
 ---
 
+## Troubleshooting
+
+<Troubleshooting
+  sections={[
+    {
+      title: 'Error: AccessControlListNotSupported: The bucket does not allow ACLs',
+      content: <AclErrorSection />
+    }
+  ]}
+/>
+
+---
+
 ## See Also
 
-- Check out [more plugins](../overview.mdx) you can add to your store.
+- Check out [more plugins](../overview.mdx) you can add to your store.
 - [Deploy the Medusa backend](../../deployments/server/index.mdx)
 - Install the [Next.js](../../starters/nextjs-medusa-starter.mdx) starter storefront.

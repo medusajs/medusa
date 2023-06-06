@@ -3,6 +3,10 @@ description: 'Learn how to add a middleware in Medusa. A middleware is a functio
 addHowToData: true
 ---
 
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import ServiceLifetimeSection from '../../troubleshooting/awilix-resolution-error/_service-lifetime.md'
+import CustomRegistrationSection from '../../troubleshooting/awilix-resolution-error/_custom-registration.md'
+
 # Middlewares
 
 In this document, you’ll learn how to add a middleware to an existing or custom route in Medusa.
@@ -103,7 +107,7 @@ In some cases, you may need to register a resource to use within your commerce a
 
 :::tip
 
-If you want to register a logged-in user and access it in your resources, you can check out [this example guide](./example-logged-in-user.md).
+If you want to register a logged-in user and access it in your resources, you can check out [this example guide](./example-logged-in-user.mdx).
 
 :::
 
@@ -151,7 +155,7 @@ Notice that you have to wrap your usage of the new resource in a try-catch block
 
 ### Note About Services Lifetime
 
-If you want to access new registrations in the dependency container within a service, you must set the lifetime of the service either to `Lifetime.SCOPED` or `Lifetime.TRANSIENT`.  Services that have a `Lifetime.SINGLETON` lifetime can't access new registrations since they're resolved and cached in the root dependency container beforehand. You can learn more in the [Create Services documentation](../services/create-service.md#service-life-time).
+If you want to access new registrations in the dependency container within a service, you must set the lifetime of the service either to `Lifetime.SCOPED` or `Lifetime.TRANSIENT`.  Services that have a `Lifetime.SINGLETON` lifetime can't access new registrations since they're resolved and cached in the root dependency container beforehand. You can learn more in the [Create Services documentation](../services/create-service.mdx#service-life-time).
 
 For custom services, no additional action is required as the default lifetime is `Lifetime.SCOPED`. However, if you extend a core service, you must change the lifetime since the default lifetime for core services is `Lifetime.SINGLETON`.
 
@@ -186,6 +190,23 @@ class ProductService extends MedusaProductService {
 
 export default ProductService
 ```
+
+---
+
+## Troubleshooting
+
+<Troubleshooting 
+  sections={[
+    {
+      title: 'AwilixResolutionError: Could Not Resolve X',
+      content: <ServiceLifetimeSection />
+    },
+    {
+      title: 'AwilixResolutionError: Could Not Resolve X (Custom Registration)',
+      content: <CustomRegistrationSection />
+    }
+  ]}
+/>
 
 ---
 
