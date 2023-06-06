@@ -71,5 +71,10 @@ export function loadDatabaseConfig(
       getDefaultDriverOptions(database.clientUrl)
   }
 
+  if (!database.clientUrl) {
+    throw new Error(
+      "No database clientUrl provided. Please provide the clientUrl through the PRODUCT_POSTGRES_URL or POSTGRES_URL environment variable or the options object in the initialize function."
+    )
+  }
   return database
 }
