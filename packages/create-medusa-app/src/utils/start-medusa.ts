@@ -1,4 +1,7 @@
 import { exec } from "child_process"
+import onProcessTerminated from "./on-process-terminated.js"
+import boxen from "boxen"
+import chalk from "chalk"
 
 type StartOptions = {
   directory: string
@@ -12,4 +15,22 @@ export default ({ directory, abortController }: StartOptions) => {
   })
 
   childProcess.stdout?.pipe(process.stdout)
+
+  onProcessTerminated(() =>
+    console.log(
+      boxen(
+        chalk.green(
+          `Change to the ${directory} directory to explore your Medusa project. Check out the Medusa documentation to start your development:
+          https://docs.medusajs.com/`
+        ),
+        {
+          titleAlignment: "center",
+          textAlignment: "center",
+          padding: 1,
+          margin: 1,
+          float: "center",
+        }
+      )
+    )
+  )
 }
