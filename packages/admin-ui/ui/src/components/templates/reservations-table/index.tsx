@@ -17,6 +17,7 @@ import EditIcon from "../../fundamentals/icons/edit-icon"
 import EditReservationDrawer from "../../../domain/orders/details/reservation/edit-reservation-modal"
 import Fade from "../../atoms/fade-wrapper"
 import NewReservation from "./new"
+import { Option } from "../../../types/shared"
 import ReservationsFilters from "./components/reservations-filter"
 import Table from "../../molecules/table"
 import TableContainer from "../../../components/organisms/table-container"
@@ -48,7 +49,7 @@ const LocationDropdown = ({
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
 
   const locationOptions = useMemo(() => {
-    let locationOptions = []
+    let locationOptions: { label: string; value?: string }[] = []
     if (!isLoading && locations) {
       locationOptions = locations.map((l: StockLocationDTO) => ({
         label: l.name,
@@ -65,11 +66,10 @@ const LocationDropdown = ({
     if (locationOptions?.length) {
       return (
         locationOptions.find(
-          (l: { value: string; label: string }) => l.value === selectedLocation
+          (l: { value?: string; label: string }) => l.value === selectedLocation
         ) ?? locationOptions[0]
       )
     }
-    return null
   }, [selectedLocation, locationOptions])
 
   const isEllipsisActive = (
@@ -92,7 +92,7 @@ const LocationDropdown = ({
           <Tooltip
             className={clsx({ hidden: !isEllipsisActive(ref.current) })}
             delayDuration={1000}
-            content={<div>{selectedLocObj.label}</div>}
+            content={<div>{selectedLocObj?.label}</div>}
           >
             <Button
               size="small"
@@ -102,7 +102,7 @@ const LocationDropdown = ({
             >
               <BuildingsIcon size={20} />
               <span ref={ref} className="max-w-[166px] truncate">
-                {selectedLocObj.label}
+                {selectedLocObj?.label}
               </span>
             </Button>
           </Tooltip>
@@ -123,7 +123,7 @@ const LocationDropdown = ({
               }}
             >
               <div className="mr-2 h-[20px] w-[20px]">
-                {selectedLocObj.value === o.value && (
+                {selectedLocObj?.value === o.value && (
                   <TagDotIcon size={20} outerColor="#FFF" color="#111827" />
                 )}
               </div>
