@@ -57,7 +57,7 @@ import {
 
 class ProductService extends MedusaProductService {
   // The default life time for a core service is SINGLETON
-  static LIFE_TIME = LifeTime.SCOPED
+  static LIFE_TIME = Lifetime.SCOPED
     
   // ...
 }
@@ -80,7 +80,7 @@ npm run build
 Then, start the backend:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 You should see the customizations you made in effect.

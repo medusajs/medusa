@@ -9,7 +9,7 @@ This document will guide you through installing the MinIO file service plugin on
 
 ## Overview
 
-To manage images in Medusa, you need a file service plugin responsible for hosting. Without a file service plugin, you will face issues while working with Medusa, such as when uploading images for products.
+To upload and manage file assets in Medusa, you need a file service plugin responsible for hosting the files. Without a file service plugin, you will face issues while working with Medusa, such as when uploading images for products.
 
 Medusa provides three different options to handle your file storage. This document will focus on setting up [MinIO](https://min.io) on your local machine and connecting Medusa to it.
 
@@ -34,7 +34,7 @@ In MinIO’s documentation, port `9000` is used for the address of the MinIO bac
 After setting up and installing MinIO on your system/sub-system, you can run the following command to change MinIO port to `9001` (or any other available port) instead of `9000` to avoid the port clash:
 
 ```bash
-minio backend ~/minio --console-address :9090 --address :9001
+minio server ~/minio --console-address :9090 --address :9001
 ```
 
 ### Create a MinIO bucket

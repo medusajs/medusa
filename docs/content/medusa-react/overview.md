@@ -83,12 +83,12 @@ You can also pass the following props to Medusa Provider:
 
 | Props               | Default                   | Description                                               |
 | ------------------- | ------------------------- | --------------------------------------------------------- |
-| `apiKey`            | `''`                      | Optional API key used for authenticating admin requests.  |
-| `publishableApiKey` | `''`                      | Optional publishable API key used for storefront requests.|
+| `apiKey`            | `''`                      | Optional API key used for authenticating admin requests. Follow [this guide](/api/admin#section/Authentication/api_token) to learn how to create an API key for an admin user.  |
+| `publishableApiKey` | `''`                      | Optional publishable API key used for storefront requests. You can create a publishable API key either using the [admin APIs](../development/publishable-api-keys/admin/manage-publishable-api-keys.mdx) or the [Medusa admin](../user-guide/settings/publishable-api-keys.mdx). |
 
 ### Queries
 
-To fetch data from the Medusa backend (in other words, perform `GET` requests), you can use [Queries](https://tanstack.com/query/v4/docs/react/guides/queries). Query hooks simply wrap around Tanstack Query's `useQuery` hook to fetch data from your medusa backend.
+To fetch data from the Medusa backend (in other words, perform `GET` requests), you can use [Queries](https://tanstack.com/query/v4/docs/react/guides/queries). Query hooks simply wrap around Tanstack Query's `useQuery` hook to fetch data from your Medusa backend.
 
 For example, to fetch products from your Medusa backend:
 
@@ -133,7 +133,7 @@ You can learn more about using queries in [Tanstack Query’s documentation](htt
 
 ### Mutations
 
-To create, update, or delete data on the Medusa backend (in other words, perform `POST`, `PUT`, and `DELETE` requests), you can use [Mutations](https://tanstack.com/query/v4/docs/react/guides/mutations). Mutation hooks wrap around Tanstack Query's `useMutation` to mutate data on your medusa backend.
+To create, update, or delete data on the Medusa backend (in other words, perform `POST`, `PUT`, and `DELETE` requests), you can use [Mutations](https://tanstack.com/query/v4/docs/react/guides/mutations). Mutation hooks wrap around Tanstack Query's `useMutation` to mutate data on your Medusa backend.
 
 For example, to create a cart:
 
@@ -356,7 +356,7 @@ To facilitate building custom storefronts, `medusa-react` also exposes a `CartP
 
 `CartProvider` makes use of some of the hooks already exposed by `medusa-react` to perform cart operations on the Medusa backend. You can use it to create a cart, start the checkout flow, authorize payment sessions, and so on.
 
-It also manages one single global piece of state which represents a cart, exactly like the one created on your medusa backend.
+It also manages one single global piece of state which represents a cart, exactly like the one created on your Medusa backend.
 
 To use `CartProvider`, you first have to insert it somewhere in your component tree below the `MedusaProvider`.
 

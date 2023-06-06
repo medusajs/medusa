@@ -4,12 +4,12 @@ import {
   FilterableStockLocationProps,
   FindConfig,
   IEventBusService,
+  MODULE_RESOURCE_TYPE,
   SharedContext,
   StockLocationAddressInput,
   UpdateStockLocationInput,
 } from "@medusajs/types"
 import {
-  buildQuery,
   InjectEntityManager,
   isDefined,
   MedusaContext,
@@ -17,7 +17,9 @@ import {
   setMetadata,
 } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
+
 import { StockLocation, StockLocationAddress } from "../models"
+import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -41,7 +43,7 @@ export default class StockLocationService {
   constructor(
     { eventBusService, manager }: InjectedDependencies,
     options?: unknown,
-    moduleDeclaration?: InternalModuleDeclaration
+    protected readonly moduleDeclaration?: InternalModuleDeclaration
   ) {
     this.manager_ = manager
     this.eventBusService_ = eventBusService
@@ -53,7 +55,10 @@ export default class StockLocationService {
    * @param config - Additional configuration for the query.
    * @return A list of stock locations.
    */
-  @InjectEntityManager()
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async list(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
@@ -72,7 +77,10 @@ export default class StockLocationService {
    * @param config - Additional configuration for the query.
    * @return A list of stock locations and the count of matching stock locations.
    */
-  @InjectEntityManager()
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async listAndCount(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
@@ -92,7 +100,10 @@ export default class StockLocationService {
    * @return The stock location.
    * @throws If the stock location ID is not definedor the stock location with the given ID was not found.
    */
-  @InjectEntityManager()
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async retrieve(
     stockLocationId: string,
     config: FindConfig<StockLocation> = {},
@@ -126,7 +137,10 @@ export default class StockLocationService {
    * @param data - The input data for creating a Stock Location.
    * @returns The created stock location.
    */
-  @InjectEntityManager()
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async create(
     data: CreateStockLocationInput,
     @MedusaContext() context: SharedContext = {}
@@ -170,7 +184,10 @@ export default class StockLocationService {
    * @param updateData - The update data for the stock location.
    * @returns The updated stock location.
    */
-  @InjectEntityManager()
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async update(
     stockLocationId: string,
     updateData: UpdateStockLocationInput,
@@ -216,7 +233,10 @@ export default class StockLocationService {
    * @param address - The update data for the address.
    * @returns The updated stock location address.
    */
-  @InjectEntityManager()
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   protected async updateAddress(
     addressId: string,
     address: StockLocationAddressInput,
@@ -257,7 +277,10 @@ export default class StockLocationService {
    * @param id - The ID of the stock location to delete.
    * @returns An empty promise.
    */
-  @InjectEntityManager()
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async delete(
     id: string,
     @MedusaContext() context: SharedContext = {}

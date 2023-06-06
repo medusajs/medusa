@@ -362,6 +362,41 @@ describe("Inventory Items endpoints", () => {
       expect(variantInventoryRes.status).toEqual(200)
     })
 
+    it("lists location levels based on id param constraint", async () => {
+      const api = useApi()
+      const inventoryItemId = inventoryItems[0].id
+
+      await api.post(
+        `/admin/inventory-items/${inventoryItemId}/location-levels`,
+        {
+          location_id: location2Id,
+          stocked_quantity: 10,
+        },
+        adminHeaders
+      )
+
+      await api.post(
+        `/admin/inventory-items/${inventoryItemId}/location-levels`,
+        {
+          location_id: location3Id,
+          stocked_quantity: 5,
+        },
+        adminHeaders
+      )
+
+      const result = await api.get(
+        `/admin/inventory-items/${inventoryItemId}/location-levels?location_id[]=${location2Id}`,
+        adminHeaders
+      )
+
+      expect(result.status).toEqual(200)
+      expect(result.data.inventory_item.location_levels).toHaveLength(1)
+      expect(result.data.inventory_item.location_levels[0]).toEqual(
+        expect.objectContaining({
+          stocked_quantity: 10,
+        })
+      )
+    })
     describe("List inventory items", () => {
       it("Lists inventory items with location", async () => {
         const api = useApi()
@@ -498,8 +533,53 @@ describe("Inventory Items endpoints", () => {
                 available_quantity: 5,
               }),
             ]),
+            reserved_quantity: 0,
+            stocked_quantity: 15,
           })
         )
+      })
+
+      it("Lists inventory items searching by title, description and sku", async () => {
+        const api = useApi()
+
+        const inventoryService = appContainer.resolve("inventoryService")
+
+        await Promise.all([
+          inventoryService.createInventoryItem({
+            title: "Test Item",
+          }),
+          inventoryService.createInventoryItem({
+            description: "Test Desc",
+          }),
+          inventoryService.createInventoryItem({
+            sku: "Test Sku",
+          }),
+        ])
+
+        const response = await api.get(
+          `/admin/inventory-items?q=test`,
+          adminHeaders
+        )
+
+        expect(response.data.inventory_items).not.toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              sku: "MY_SKU",
+            }),
+          ])
+        )
+        expect(response.data.inventory_items).toHaveLength(3)
+        expect(response.data.inventory_items).toEqual([
+          expect.objectContaining({
+            sku: "Test Sku",
+          }),
+          expect.objectContaining({
+            description: "Test Desc",
+          }),
+          expect.objectContaining({
+            title: "Test Item",
+          }),
+        ])
       })
     })
 

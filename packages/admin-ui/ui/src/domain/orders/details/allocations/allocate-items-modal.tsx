@@ -1,5 +1,4 @@
 import { Controller, useForm, useWatch } from "react-hook-form"
-import { LineItem, Order, ReservationItemDTO } from "@medusajs/medusa"
 import { NestedForm, nestedForm } from "../../../../utils/nested-form"
 import React, { useEffect, useMemo } from "react"
 import {
@@ -13,6 +12,8 @@ import Button from "../../../../components/fundamentals/button"
 import CrossIcon from "../../../../components/fundamentals/icons/cross-icon"
 import FocusModal from "../../../../components/molecules/modal/focus-modal"
 import InputField from "../../../../components/molecules/input"
+import { LineItem } from "@medusajs/medusa"
+import { ReservationItemDTO } from "@medusajs/types"
 import Select from "../../../../components/molecules/select/next-select/select"
 import Thumbnail from "../../../../components/atoms/thumbnail"
 import clsx from "clsx"
@@ -27,13 +28,13 @@ type AllocationModalFormData = {
 }
 
 type AllocateItemsModalProps = {
-  order: Order
+  items: LineItem[]
   reservationItemsMap: Record<string, ReservationItemDTO[]>
   close: () => void
 }
 
 const AllocateItemsModal: React.FC<AllocateItemsModalProps> = ({
-  order,
+  items,
   close,
   reservationItemsMap,
 }) => {
@@ -175,7 +176,7 @@ const AllocateItemsModal: React.FC<AllocateItemsModalProps> = ({
                   <p className="inter-base-regular">
                     Select the number of items that you wish to allocate.
                   </p>
-                  {order.items?.map((item, i) => {
+                  {items?.map((item, i) => {
                     return (
                       <AllocationLineItem
                         form={nestedForm(form, `items.${i}` as "items.0")}
@@ -204,6 +205,7 @@ export type AllocationLineItemForm = {
   inventory_item_id: string
   line_item_id: string
   quantity: number
+  description?: string | null
 }
 
 export const AllocationLineItem: React.FC<{

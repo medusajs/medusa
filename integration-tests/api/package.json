@@ -9,12 +9,12 @@
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
-    "@medusajs/cache-inmemory": "workspace:*",
-    "@medusajs/event-bus-local": "workspace:*",
-    "@medusajs/medusa": "workspace:*",
+    "@medusajs/cache-inmemory": "workspace:^",
+    "@medusajs/event-bus-local": "workspace:^",
+    "@medusajs/medusa": "workspace:^",
     "faker": "^5.5.3",
     "medusa-interfaces": "1.3.7",
-    "typeorm": "^0.3.11"
+    "typeorm": "^0.3.16"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",

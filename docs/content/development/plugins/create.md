@@ -45,23 +45,42 @@ A basic Medusa backend installed with the `medusa new` command has dependencies 
 
 ```json title=package.json
 "dependencies": {
-  "@medusajs/medusa": "^1.3.1",
-  "@medusajs/medusa-cli": "^1.3.0",
-  "medusa-fulfillment-manual": "^1.1.31",
-  "medusa-interfaces": "^1.3.0",
-  "medusa-payment-manual": "^1.0.16",
-  "medusa-payment-stripe": "^1.1.38",
-  "typeorm": "^0.2.36"
-},
-"devDependencies": {
-  "@babel/cli": "^7.14.3",
-  "@babel/core": "^7.14.3",
-  "@babel/preset-typescript": "^7.14.5",
-  "babel-preset-medusa-package": "^1.1.19"
-}
+    "@babel/preset-typescript": "^7.21.4",
+    "@medusajs/cache-inmemory": "^1.8.0",
+    "@medusajs/cache-redis": "^1.8.0",
+    "@medusajs/event-bus-local": "^1.8.0",
+    "@medusajs/event-bus-redis": "^1.8.0",
+    "@medusajs/medusa": "^1.8.0",
+    "@medusajs/medusa-cli": "^1.3.9",
+    "babel-preset-medusa-package": "^1.1.13",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.2",
+    "medusa-fulfillment-manual": "^1.1.37",
+    "medusa-interfaces": "^1.3.7",
+    "medusa-payment-manual": "^1.0.23",
+    "medusa-payment-stripe": "^2.0.0",
+    "typeorm": "^0.3.11"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@types/express": "^4.17.13",
+    "@types/jest": "^27.4.0",
+    "@types/node": "^17.0.8",
+    "babel-preset-medusa-package": "^1.1.13",
+    "cross-env": "^5.2.1",
+    "eslint": "^6.8.0",
+    "jest": "^27.3.1",
+    "mongoose": "^5.13.14",
+    "rimraf": "^3.0.2",
+    "ts-jest": "^27.0.7",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.2"
+  },
 ```
 
-For a plugin, some dependencies are not necessary. You can remove the packages `medusa-fulfillment-manual`, `medusa-payment-manual`, and `medusa-payment-stripe` as they are fulfillment and payment plugins necessary for a Medusa backend, but not for a plugin.
+For a plugin, some dependencies are not necessary. For example, can remove the packages `medusa-fulfillment-manual`, `medusa-payment-manual`, and `medusa-payment-stripe` as they are fulfillment and payment plugins necessary for a Medusa backend, but not for a plugin. The same goes for modules like `@medusajs/cache-inmemory`.
 
 Additionally, you can remove `@medusajs/medusa-cli` as you don’t need to use the Medusa CLI while developing a plugin.
 
@@ -71,24 +90,24 @@ Once you’re done making these changes, re-run the install command to update yo
 npm install
 ```
 
-### Recommended: Change scripts
+### Recommended: Change Scripts
 
 It's recommended to remove the `seed` and `start` scripts from your `package.json` as they aren't necessary for plugin development.
 
-Furthermore, it's recommended to change the `build` command and add a new `watch` command:
+Furthermore, if you don't have a `watch` command in your `package.json` it's recommended to add it:
 
 ```json title=package.json
 "scripts": {
-  "build": "babel src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\"",
-  "watch": "babel -w src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\""
+  // other scripts...
+  "watch": "tsc --watch"
 }
 ```
 
-The change to the `build` command ensures that the built files are placed as explained in the [plugin structure section](#plugin-structure). The `watch` command makes the [testing of the plugin](#test-your-plugin) easier.
+The `watch` command makes the [testing of the plugin](#test-your-plugin) easier.
 
-:::caution
+:::tip
 
-If you don't make changes to the `build` and `watch` commands, please be aware of the [expected plugin structure](#plugin-structure).
+The `watch` command outputs the files in the destination specified in the value of `outDir` in `tsconfig.json`, and the same goes for the `build` command. If you made changes to `tsconfig.json`, make sure the destination is either the `dist` directory or the root of the plugin. You can learn more in the [plugin structure section](#plugin-structure).
 
 :::
 
@@ -100,40 +119,17 @@ Now, You can start developing your plugin. This can include adding services, end
 
 ### Plugin Structure
 
-While developing your plugin, you can create your TypeScript or JavaScript files under the `src` directory. This includes creating services, endpoints, migrations, etc...
+While developing your plugin, you can create your TypeScript or JavaScript files under the `src` directory. This includes creating services, endpoints, migrations, and other resources.
 
-However, before you test the changes on a Medusa backend or publish your plugin, you must transpile your files, which moves them into the root of your plugin directory.
+However, before you test the changes on a Medusa backend or publish your plugin, you must transpile your files and move them either to a `dist` directory or to the root of the plugin's directory.
 
-For example, if you have an endpoint in `src/api/index.js`, after running the `build` or `watch` commands [as defined earlier](#change-scripts), the file should be transpiled into `api/index.js` in your plugin's root.
+For example, if you have an endpoint in `src/api/index.js`, after running the `build` or `watch` commands [as defined earlier](#recommended-change-scripts), the file should be transpiled into `dist/api/index.js` in your plugin's root. You can alternative transpile them into the `api/index.js` in your plugin's root.
 
-If files and directories aren't placed in the root of your plugin, the Medusa backend won't detect or load them.
+:::note
 
-An example of a plugin's directory before testing or publishing:
+It was previously required to output your files into the root of the plugin's directory (for example, `api/index.js` instead of `dist/api/index.js`). As of v1.8, you can either have your files in the root of the directory or under the `dist` directory.
 
-```bash noReport
-medusa-plugin-custom
-|
-|_ _ _ api
-|      |
-|      |_ _ _ index.js
-|
-|_ _ _ migrations
-|      |
-|      |_ _ _ <TIMESTAMP>_UserChanged.js
-|
-|_ _ _ src
-|      |
-|      |_ _ _ api
-|      |     |
-|      |     |_ _ _ index.ts
-|      |
-|      |_ _ _ migrations
-|      |
-|      |_ _ _ <TIMESTAMP>_UserChanged.ts
-|
-|_ _ _ package.json
-//... other files
-```
+:::
 
 ### Development Resources
 
@@ -239,7 +235,7 @@ If you’re running the `watch` command, you don’t need to run the `build` com
 
 Then, add your plugin into the array of plugins in `medusa-config.js`:
 
-```jsx title=medusa-config.js
+```js title=medusa-config.js
 const plugins = [
   // ...
   {

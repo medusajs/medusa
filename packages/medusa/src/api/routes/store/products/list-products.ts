@@ -7,20 +7,19 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import {
   CartService,
   ProductService,
   ProductVariantInventoryService,
 } from "../../../../services"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import PricingService from "../../../../services/pricing"
 import { DateComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { IsType } from "../../../../utils/validators/is-type"
-import { cleanResponseData } from "../../../../utils/clean-response-data"
-import { Cart, Product } from "../../../../models"
 import { defaultStoreCategoryScope } from "../product-categories"
 
 /**
@@ -204,7 +203,7 @@ export default async (req, res) => {
   filterableFields["categories"] = {
     ...(filterableFields.categories || {}),
     // Store APIs are only allowed to query active and public categories
-    ...defaultStoreCategoryScope
+    ...defaultStoreCategoryScope,
   }
 
   if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
@@ -217,47 +216,81 @@ export default async (req, res) => {
     }
   }
 
-  const promises: Promise<any>[] = []
+  const manager = req.scope.resolve("manager")
 
-  promises.push(productService.listAndCount(filterableFields, listConfig))
+  const [computedProducts, count] = await manager.transaction(
+    async (transactionManager) => {
+      const promises: Promise<any>[] = []
 
-  if (validated.cart_id) {
-    promises.push(
-      cartService.retrieve(validated.cart_id, {
-        select: ["id", "region_id"] as any,
-        relations: ["region"],
-      })
-    )
-  }
+      promises.push(
+        productService
+          .withTransaction(transactionManager)
+          .listAndCount(filterableFields, listConfig)
+      )
 
-  const [[rawProducts, count], cart] = (await Promise.all(promises)) as [
-    [Product[], number],
-    Cart
-  ]
+      if (validated.cart_id) {
+        promises.push(
+          cartService
+            .withTransaction(transactionManager)
+            .retrieve(validated.cart_id, {
+              select: ["id", "region_id"] as any,
+              relations: ["region"],
+            })
+        )
+      }
 
-  if (validated.cart_id) {
-    regionId = cart.region_id
-    currencyCode = cart.region.currency_code
-  }
+      const [[rawProducts, count], cart] = await Promise.all(promises)
 
-  // Create a new reference just for naming purpose
-  const computedProducts = rawProducts
+      if (validated.cart_id) {
+        regionId = cart.region_id
+        currencyCode = cart.region.currency_code
+      }
 
-  // We can run them concurrently as the new properties are assigned to the references
-  // of the appropriate entity
-  await Promise.all([
-    pricingService.setProductPrices(computedProducts, {
-      cart_id: cart_id,
-      region_id: regionId,
-      currency_code: currencyCode,
-      customer_id: req.user?.customer_id,
-      include_discount_prices: true,
-    }),
-    productVariantInventoryService.setProductAvailability(
-      computedProducts,
-      filterableFields.sales_channel_id
-    ),
-  ])
+      // Create a new reference just for naming purpose
+      const computedProducts = rawProducts
+
+      // We only set prices if variants.prices are requested
+      const shouldSetPricing = ["variants", "variants.prices"].every(
+        (relation) => listConfig.relations?.includes(relation)
+      )
+
+      // We only set availability if variants are requested
+      const shouldSetAvailability = listConfig.relations?.includes("variants")
+
+      const decoratePromises: Promise<any>[] = []
+
+      if (shouldSetPricing) {
+        decoratePromises.push(
+          pricingService
+            .withTransaction(transactionManager)
+            .setProductPrices(computedProducts, {
+              cart_id: cart_id,
+              region_id: regionId,
+              currency_code: currencyCode,
+              customer_id: req.user?.customer_id,
+              include_discount_prices: true,
+            })
+        )
+      }
+
+      if (shouldSetAvailability) {
+        decoratePromises.push(
+          productVariantInventoryService
+            .withTransaction(transactionManager)
+            .setProductAvailability(
+              computedProducts,
+              filterableFields.sales_channel_id
+            )
+        )
+      }
+
+      // We can run them concurrently as the new properties are assigned to the references
+      // of the appropriate entity
+      await Promise.all(decoratePromises)
+
+      return [computedProducts, count]
+    }
+  )
 
   res.json({
     products: cleanResponseData(computedProducts, req.allowedProperties || []),

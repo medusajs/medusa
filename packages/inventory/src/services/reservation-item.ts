@@ -7,15 +7,15 @@ import {
   UpdateReservationItemInput,
 } from "@medusajs/types"
 import {
-  buildQuery,
   InjectEntityManager,
-  isDefined,
   MedusaContext,
   MedusaError,
+  isDefined,
 } from "@medusajs/utils"
 import { EntityManager, FindManyOptions } from "typeorm"
 import { InventoryLevelService } from "."
 import { ReservationItem } from "../models"
+import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -60,6 +60,7 @@ export default class ReservationItemService {
     const itemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery(selector, config) as FindManyOptions
+
     return await itemRepository.find(query)
   }
 
@@ -79,6 +80,7 @@ export default class ReservationItemService {
     const itemRepository = manager.getRepository(ReservationItem)
 
     const query = buildQuery(selector, config) as FindManyOptions
+
     return await itemRepository.findAndCount(query)
   }
 
@@ -132,18 +134,21 @@ export default class ReservationItemService {
     @MedusaContext() context: SharedContext = {}
   ): Promise<ReservationItem> {
     const manager = context.transactionManager!
-    const itemRepository = manager.getRepository(ReservationItem)
+    const reservationItemRepository = manager.getRepository(ReservationItem)
 
-    const inventoryItem = itemRepository.create({
+    const reservationItem = reservationItemRepository.create({
       inventory_item_id: data.inventory_item_id,
       line_item_id: data.line_item_id,
       location_id: data.location_id,
       quantity: data.quantity,
       metadata: data.metadata,
+      external_id: data.external_id,
+      description: data.description,
+      created_by: data.created_by,
     })
 
-    const [newInventoryItem] = await Promise.all([
-      itemRepository.save(inventoryItem),
+    const [newReservationItem] = await Promise.all([
+      reservationItemRepository.save(reservationItem),
       this.inventoryLevelService_.adjustReservedQuantity(
         data.inventory_item_id,
         data.location_id,
@@ -153,10 +158,10 @@ export default class ReservationItemService {
     ])
 
     await this.eventBusService_?.emit?.(ReservationItemService.Events.CREATED, {
-      id: newInventoryItem.id,
+      id: newReservationItem.id,
     })
 
-    return newInventoryItem
+    return newReservationItem
   }
 
   /**
@@ -174,7 +179,7 @@ export default class ReservationItemService {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
 
-    const item = await this.retrieve(reservationItemId)
+    const item = await this.retrieve(reservationItemId, undefined, context)
 
     const shouldUpdateQuantity =
       isDefined(data.quantity) && data.quantity !== item.quantity
@@ -243,7 +248,7 @@ export default class ReservationItemService {
     )
 
     const ops: Promise<unknown>[] = [
-      itemRepository.softDelete({ line_item_id: lineItemId })
+      itemRepository.softDelete({ line_item_id: lineItemId }),
     ]
     for (const item of items) {
       ops.push(
@@ -299,10 +304,10 @@ export default class ReservationItemService {
       : [reservationItemId]
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
-    const items = await this.list({ id: ids })
+    const items = await this.list({ id: ids }, undefined, context)
 
     const promises: Promise<unknown>[] = items.map(async (item) => {
-      this.inventoryLevelService_.adjustReservedQuantity(
+      await this.inventoryLevelService_.adjustReservedQuantity(
         item.inventory_item_id,
         item.location_id,
         item.quantity * -1,
