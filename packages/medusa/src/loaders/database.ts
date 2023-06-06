@@ -7,7 +7,7 @@ import {
 } from "typeorm"
 import { ConfigModule } from "../types/global"
 import "../utils/naming-strategy"
-import { EOL } from "os"
+import { handlePostgresDatabaseError } from "@medusajs/utils"
 
 type Options = {
   configModule: ConfigModule
@@ -53,70 +53,15 @@ export default async ({
       (configModule.projectConfig.database_logging || false),
   } as DataSourceOptions)
 
-  try {
-    await dataSource.initialize()
-  } catch (err) {
-    handleError(err)
-  }
+  await dataSource.initialize().catch(handlePostgresDatabaseError)
 
   // If migrations are not included in the config, we assume you are attempting to start the server
   // Therefore, throw if the database is not migrated
   if (!dataSource.migrations?.length) {
-    try {
-      await dataSource.query(`select * from migrations`)
-    } catch (err) {
-      handleError(err)
-    }
+    await dataSource
+      .query(`select * from migrations`)
+      .catch(handlePostgresDatabaseError)
   }
 
   return dataSource
-}
-
-const DatabaseErrorCode = {
-  databaseDoesNotExist: "3D000",
-  connectionFailure: "ECONNREFUSED",
-  wrongCredentials: "28000",
-  notFound: "ENOTFOUND",
-  migrationMissing: "42P01",
-}
-
-function handleError(err: any) {
-  if (DatabaseErrorCode.databaseDoesNotExist === err.code) {
-    throw new Error(
-      `The specified PostgreSQL database does not exist. Please create it and try again.${EOL}${err.message}`
-    )
-  }
-
-  if (DatabaseErrorCode.connectionFailure === err.code) {
-    throw new Error(
-      `The connection cannot be established to the specified PostgreSQL database. Please, check the following point.
-      - Is the database running?
-      - Is the database url correct?
-      - Is the database port correct?
-      Please, also verify that your medusa-config.js database_url is correctly formatted. It should be in the following format:
-      postgres://user:password@host:post/db_name - If there is no password, you can omit it.
-      ${EOL}
-      ${err.message}`
-    )
-  }
-
-  if (DatabaseErrorCode.wrongCredentials === err.code) {
-    throw new Error(
-      `The specified credentials does not exists for the specified PostgreSQL database.${EOL}${err.message}`
-    )
-  }
-
-  if (DatabaseErrorCode.notFound === err.code) {
-    throw new Error(
-      `The specified connection url for your PostgreSQL database might contains illegal characters. Please check that all the connection segments contains only allowed characters [a-zA-Z0-9]${EOL}${err.message}`
-    )
-  }
-
-  if (DatabaseErrorCode.migrationMissing === err.code) {
-    throw new Error(
-      `Migrations missing. Please run 'medusa migrations run' and try again.`
-    )
-  }
-
-  throw err
 }
