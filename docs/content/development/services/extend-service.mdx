@@ -3,6 +3,9 @@ description: 'Learn how to create a service in Medusa. This guide also includes 
 addHowToData: true
 ---
 
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import ServiceLifetimeSection from '../../troubleshooting/awilix-resolution-error/_service-lifetime.md'
+
 # How to Extend a Service
 
 In this document, you’ll learn how to extend a core service in Medusa.
@@ -65,7 +68,7 @@ class ProductService extends MedusaProductService {
 export default ProductService
 ```
 
-You can learn more details about the service lifetime and other considerations when creating a service in the [Create Service documentation](./create-service.md).
+You can learn more details about the service lifetime and other considerations when creating a service in the [Create Service documentation](./create-service.mdx).
 
 ---
 
@@ -84,3 +87,16 @@ npx @medusajs/medusa-cli develop
 ```
 
 You should see the customizations you made in effect.
+
+---
+
+## Troubleshooting
+
+<Troubleshooting 
+  sections={[
+    {
+      title: 'AwilixResolutionError: Could Not Resolve X (Service Lifetime)',
+      content: <ServiceLifetimeSection />
+    }
+  ]}
+/>

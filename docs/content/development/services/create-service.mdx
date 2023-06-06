@@ -3,6 +3,9 @@ description: 'Learn how to create a service in Medusa. This guide also includes 
 addHowToData: true
 ---
 
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import ServiceLifetimeSection from '../../troubleshooting/awilix-resolution-error/_service-lifetime.md'
+
 # How to Create a Service
 
 In this document, you’ll learn how you can create a [Service](./overview.mdx) and use it across your Medusa backend just like any of the core services.
@@ -140,6 +143,19 @@ class MySubscriber {
   // ...
 }
 ```
+
+---
+
+## Troubleshooting
+
+<Troubleshooting 
+  sections={[
+    {
+      title: 'AwilixResolutionError: Could Not Resolve X',
+      content: <ServiceLifetimeSection />
+    }
+  ]}
+/>
 
 ---
 
