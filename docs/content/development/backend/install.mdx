@@ -6,6 +6,10 @@ addHowToData: true
 import Feedback from '@site/src/components/Feedback';
 import DocCardList from '@theme/DocCardList';
 import Icons from '@theme/Icon';
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import SaslSection from '../../troubleshooting/database-errors/_sasl.md'
+import ConnectionErrorSection from '../../troubleshooting/database-errors/_connection-error.md'
+import FreshInstallationSection from '../../troubleshooting/awilix-resolution-error/_fresh-installation.md'
 
 # Install Medusa Backend
 
@@ -13,7 +17,11 @@ This document will guide you through setting up your Medusa backend in a three s
 
 ## Prerequisites
 
-Medusa requires Node.js v16+, Git, and PostgreSQL to be installed. If you don't have them installed already, you can check out the [Prepare Environment](./prepare-environment.mdx) documnetation to learn how to install them.
+Before you can install and use Medusa, you need the following tools installed on your machine:
+
+- [Node.js v16+](./prepare-environment.mdx#nodejs)
+- [Git](./prepare-environment.mdx#git)
+- [PostgreSQL](./prepare-environment.mdx#postgresql)
 
 ---
 
@@ -45,18 +53,30 @@ If you run into any errors while installing the CLI tool, check out the [trouble
    
    You'll then be asked to specify your PostgreSQL database credentials. You can choose "Continue" to use the default credentials shown in the terminal, choose "Change credentials" to specify your PostgreSQL credentails, or choose "Skip database setup" to create the database later.
    
-   :::warning
-   
-   If you choose "Skip database setup" you will need to [set the database configurations](./configurations.md#database-configuration) and [run migrations](../entities/migrations/overview.mdx#migrate-command) later.
-   
-   :::
+:::warning
+
+If you choose "Skip database setup" you will need to [set the database configurations](./configurations.md#database-configuration) and [run migrations](../entities/migrations/overview.mdx#migrate-command) later.
+
+:::
 
 ### 3. Start your Medusa backend
+
+:::note
+
+Make sure your PostgreSQL server is running before you run the Medusa backend.
+
+:::
 
    ```bash noReport
    cd my-medusa-store
    medusa develop
    ```
+
+After these three steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
+
+```bash noReport
+curl localhost:9000/store/products
+```
 
 <Feedback 
    event="survey_server_quickstart"
@@ -65,7 +85,30 @@ If you run into any errors while installing the CLI tool, check out the [trouble
    negativeQuestion="Please describe the issue you faced."
 />
 
-### Seed Data 
+---
+
+## Troubleshooting Installation
+
+<Troubleshooting
+  sections={[
+    {
+      title: 'Error: SASL: SCRAM-SERVER-FIRST-MESSAGE: Client password must be a string',
+      content: <SaslSection />
+    },
+    {
+      title: 'Error: connect ECONNREFUSED ::1:5432',
+      content: <ConnectionErrorSection />
+    },
+    {
+      title: 'AwilixResolutionError: Could Not Resolve X',
+      content: <FreshInstallationSection />
+    },
+  ]}
+/>
+
+---
+
+## Seed Data 
 
 For better testing, you can add demo data to your Medusa backend by running the seed command in your Medusa backend directory:
 
@@ -73,15 +116,9 @@ For better testing, you can add demo data to your Medusa backend by running the 
 medusa seed --seed-file=data/seed.json
 ```
 
-### Test the Backend
+---
 
-After these three steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
-
-```bash noReport
-curl localhost:9000/store/products
-```
-
-### Health Route
+## Health Route
 
 You can access `/health` to get health status of your backend.
 

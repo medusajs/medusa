@@ -3,6 +3,9 @@ description: 'Learn how to integrate Stripe with the Medusa backend. Learn how t
 addHowToData: true
 ---
 
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import MissingPaymentProvider from '../../troubleshooting/missing-payment-providers.md'
+
 # Stripe
 
 This document guides you through setting up Stripe payments in your Medusa backend, admin, and storefront using the [Stripe Plugin](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-stripe).
@@ -19,9 +22,9 @@ You can also follow this video guide to learn how the setup works:
 
 ## Overview
 
-[Stripe](https://stripe.com/) is a battle-tested and unified platform for transaction handling. Stripe supplies you with the technical components needed to handle transactions safely and all the analytical features necessary to gain insight into your sales. These features are also available in a safe test environment which allows for a concern-free development process.
+[Stripe](https://stripe.com/) is a battle-tested and unified platform for transaction handling. Stripe supplies you with the technical components needed to handle transactions safely and all the analytical features necessary to gain insight into your sales. These features are also available in a safe test environment which allows for a concern-free development process.
 
-Using the `medusa-payment-stripe` plugin, this guide shows you how to set up your Medusa project with Stripe as a payment processor.
+Using the `medusa-payment-stripe` plugin, this guide shows you how to set up your Medusa project with Stripe as a payment processor.
 
 ---
 
@@ -376,6 +379,19 @@ This plugin handles the following Stripe webhook events:
 - `payment_intent.succeeded`: If the payment is associated with a payment collection, the plugin will capture the payments within it. Otherwise, it checks first if an order is created and, if not, completes the cart which creates the order. It will also capture the payment of the order associated with the cart if it's not captured already.
 - `payment_intent.amount_capturable_updated`: If no order is created for the cart associated with the payment, the cart is completed which creates the order.
 - `payment_intent.payment_failed`: prints the error message received from Stripe into the logs.
+
+---
+
+## Troubleshooting
+
+<Troubleshooting
+  sections={[
+    {
+      title: 'Stripe not showing in checkout',
+      content: <MissingPaymentProvider />
+    }
+  ]}
+/>
 
 ---
 

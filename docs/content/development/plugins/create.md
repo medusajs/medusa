@@ -28,7 +28,7 @@ If you run into any errors while installing the CLI tool, check out the [trouble
 The recommended way to create a plugin is using the Medusa CLI. Run the following command to create a new Medusa project:
 
 ```bash
-medusa new medusa-plugin-custom
+npx @medusajs/medusa-cli@latest new medusa-plugin-custom
 ```
 
 Where `medusa-plugin-custom` is the name of the plugin you’re creating. In Medusa, plugins are named based on their functionalities.
@@ -136,7 +136,7 @@ It was previously required to output your files into the root of the plugin's di
 This guide doesn't cover how to create different files and components. If you’re interested in learning how to do that, you can check out these guides:
 
 - How to [create endpoints](../endpoints/create.md)
-- How to [create a service](../services/create-service.md)
+- How to [create a service](../services/create-service.mdx)
 - How to [create a subscriber](../events/create-subscriber.md)
 - How to [create an entity](../entities/create.md)
 - How to [create a migration](../entities/migrations/create.md)
