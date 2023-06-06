@@ -49,6 +49,7 @@
     "@mikro-orm/core": "5.7.4",
     "@mikro-orm/migrations": "5.7.4",
     "@mikro-orm/postgresql": "5.7.4",
-    "awilix": "^8.0.0"
+    "awilix": "^8.0.0",
+    "lodash": "^4.17.21"
   }
 }
