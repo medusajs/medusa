@@ -62,7 +62,7 @@ describe("handlePostgresDataError", function () {
 
   it("should throw a specific message on database not found", function () {
     const error = new Error("database does not exist")
-    Object.assign(error, { code: DatabaseErrorCode.wrongCredentials })
+    Object.assign(error, { code: DatabaseErrorCode.notFound })
 
     let outputError: any
     try {
@@ -78,7 +78,7 @@ describe("handlePostgresDataError", function () {
 
   it("should throw a specific message on database migration missing", function () {
     const error = new Error("database does not exist")
-    Object.assign(error, { code: DatabaseErrorCode.wrongCredentials })
+    Object.assign(error, { code: DatabaseErrorCode.migrationMissing })
 
     let outputError: any
     try {
