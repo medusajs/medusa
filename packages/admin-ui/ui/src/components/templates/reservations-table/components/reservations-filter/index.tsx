@@ -212,55 +212,53 @@ const SearchableFilterInventoryItem = ({
           }
         }}
       >
-        <div className="pb-2">
-          <div className="gap-y-xsmall mb-2 flex w-full flex-col pt-2">
-            <InputField
-              value={query}
-              className="pr-1"
-              prefix={
-                selectedItems.size === 0 ? null : (
-                  <div
-                    onClick={reset}
-                    className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
-                  >
-                    <span className="text-grey-50">{selectedItems.size}</span>
-                    <CrossIcon size={16} />
-                  </div>
-                )
-              }
-              placeholder={selectedItems.size ? "Items selected" : "Find items"}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-          </div>
-          <div className="flex flex-col gap-y-1">
-            {[...selectedItems].map((item, i) => {
-              return (
-                <InventoryItemItem
-                  key={`selected-item-${i}`}
-                  onClick={() => toggleInventoryItem(item)}
-                  selected={true}
-                  item={item}
-                />
+        <div className="gap-y-xsmall mb-2 flex w-full flex-col pt-2">
+          <InputField
+            value={query}
+            className="pr-1"
+            prefix={
+              selectedItems.size === 0 ? null : (
+                <div
+                  onClick={reset}
+                  className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
+                >
+                  <span className="text-grey-50">{selectedItems.size}</span>
+                  <CrossIcon size={16} />
+                </div>
               )
-            })}
-            {searchTerm &&
-              (isLoading ? (
-                <Spinner />
-              ) : (
-                <>
-                  {inventory_items
-                    ?.filter((item) => !selectedIds.has(item.id))
-                    .map((item: InventoryItemDTO, i: number) => (
-                      <InventoryItemItem
-                        key={`item-${i}`}
-                        onClick={() => toggleInventoryItem(item)}
-                        selected={false}
-                        item={item}
-                      />
-                    ))}
-                </>
-              ))}
-          </div>
+            }
+            placeholder={selectedItems.size ? "Items selected" : "Find items"}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </div>
+        <div className="flex flex-col gap-y-1 pb-2">
+          {[...selectedItems].map((item, i) => {
+            return (
+              <InventoryItemItem
+                key={`selected-item-${i}`}
+                onClick={() => toggleInventoryItem(item)}
+                selected={true}
+                item={item}
+              />
+            )
+          })}
+          {searchTerm &&
+            (isLoading ? (
+              <Spinner />
+            ) : (
+              <>
+                {inventory_items
+                  ?.filter((item) => !selectedIds.has(item.id))
+                  .map((item: InventoryItemDTO, i: number) => (
+                    <InventoryItemItem
+                      key={`item-${i}`}
+                      onClick={() => toggleInventoryItem(item)}
+                      selected={false}
+                      item={item}
+                    />
+                  ))}
+              </>
+            ))}
         </div>
       </CollapsibleWrapper>
     </div>
@@ -387,7 +385,7 @@ const CreatedByFilterItem = ({
             }
           />
         </div>
-        <div className="flex flex-col gap-y-1">
+        <div className="flex flex-col gap-y-1 pb-2">
           {[...selectedUsers].map((user, i) => {
             return (
               <CreatedByItem
