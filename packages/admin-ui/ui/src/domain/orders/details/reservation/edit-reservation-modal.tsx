@@ -179,7 +179,9 @@ const EditReservationDrawer = ({
 
   const maxReservation = useMemo(() => {
     if (!item) {
-      return typeof availableQuantity === "number" ? availableQuantity : 0
+      return typeof availableQuantity === "number"
+        ? availableQuantity + reservation.quantity
+        : reservation.quantity
     }
 
     const lineItemReservationCapacity =
