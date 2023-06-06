@@ -23,6 +23,7 @@ export async function createConnection(
       path: resolve(__dirname, "../../dist/migrations"),
       pathTs: resolve(__dirname, "../../src/migrations"),
       glob: "!(*.d).{js,ts}",
+      disableForeignKeys: false,
       silent: false,
       dropTables: false,
       transactional: true,
