@@ -4,6 +4,9 @@ description: 'Learn how to install the Next.js starter storefront to use with Me
 
 import Feedback from '@site/src/components/Feedback';
 import QueryNote from '@site/src/components/QueryNote';
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import ModuleXErrorSection from '../troubleshooting/common-installation-errors/_module-x-error.mdx'
+import CorsErrorSection from '../troubleshooting/cors-issues.md'
 
 # Next.js Storefront Quickstart
 
@@ -87,11 +90,22 @@ Your Next.js storefront is now running at `localhost:8000`!
    negativeQuestion="Please describe the issue you faced."
 />
 
-:::tip
+---
 
-If you run into errors during the installation, check out [this troubleshooting guide](../troubleshooting/common-installation-errors.mdx).
+## Troubleshooting Installation
 
-:::
+<Troubleshooting
+  sections={[
+    {
+      title: 'CORS Error',
+      content: <CorsErrorSection />
+    },
+    {
+      title: 'Resolve "Cannot find module X" Errors',
+      content: <ModuleXErrorSection />
+    },
+  ]}
+/>
 
 ---
 
@@ -193,7 +207,7 @@ Then, restart the Next.js backend. You’ll be able to search through available 
 
 ### Stripe Payment Integration
 
-Stripe integration is supported by default. Make sure you have Stripe installed and enabled on your Medusa backend first. You can [follow this guide to learn how to install it](../plugins/payment/stripe.md).
+Stripe integration is supported by default. Make sure you have Stripe installed and enabled on your Medusa backend first. You can [follow this guide to learn how to install it](../plugins/payment/stripe.mdx).
 
 Then, in your Next.js storefront, set the environment variable necessary for the Stripe integration:
 
@@ -278,4 +292,4 @@ You can learn more about development with Next.js through [their documentation](
 
 - [Storefront API reference](https://docs.medusajs.com/api/store)
 - [Install Medusa Admin](../admin/quickstart.mdx).
-- [Install Stripe as a payment processor](../plugins/payment/stripe.md#add-to-nextjs-storefront)
+- [Install Stripe as a payment processor](../plugins/payment/stripe.mdx#add-to-nextjs-storefront)

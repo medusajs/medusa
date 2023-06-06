@@ -3,6 +3,9 @@ description: 'Learn step-by-step.'
 addHowToData: true
 ---
 
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import CorsErrorSection from '../../troubleshooting/cors-issues.md'
+
 # Deploy Next.js Storefront on Vercel
 
 In this document, you’ll learn how to deploy the Next.js Storefront on Vercel.
@@ -20,7 +23,7 @@ Alternatively, you can directly deploy the Next.js storefront to Vercel with thi
 
 It is assumed you already have installed the Next.js storefront locally. If not, please follow along with [this guide](../../starters/nextjs-medusa-starter.mdx) instead.
 
-It’s also assumed you already have the Medusa backend deployed, which the Next.js storefront interacts with. If not, you can check out one of the [deployment documentation related to the Medusa backend](../server/index.mdx).
+It’s also assumed you already have the Medusa backend deployed, which the Next.js storefront interacts with. If not, you can check out one of the [deployment documentation related to the Medusa backend](../server/index.mdx).
 
 ### Required Accounts
 
@@ -66,7 +69,7 @@ git init
 git remote add origin <GITHUB_URL>
 ```
 
-Where `<GITHUB_URL>` is the URL you just copied.
+Where `<GITHUB_URL>` is the URL you just copied.
 
 Then, add, commit, and push the changes into the repository:
 
@@ -101,7 +104,7 @@ This will start the deployment of the storefront. Once it’s done, you’ll be 
 
 :::note
 
-At this point, when you visit the storefront, you will face errors related to Cross-Origin Resource Sharing (CORS) while using the storefront. Before you start using the storefront, follow along the [Configure CORS on the Medusa Backend](#step-3-configure-cors-on-the-medusa-backend) section.
+At this point, when you visit the storefront, you will face errors related to Cross-Origin Resource Sharing (CORS) while using the storefront. Before you start using the storefront, follow along the [Configure CORS on the Medusa Backend](#step-3-configure-cors-on-the-medusa-backend) section.
 
 :::
 
@@ -127,7 +130,7 @@ It will take a couple of minutes for the deployment to finish. The link to the s
 
 :::note
 
-At this point, when you visit the storefront, you will face errors related to Cross-Origin Resource Sharing (CORS) while using the storefront. Before you start using the storefront, follow along the [Configure CORS on the Medusa Backend](#step-3-configure-cors-on-the-medusa-backend) section.
+At this point, when you visit the storefront, you will face errors related to Cross-Origin Resource Sharing (CORS) while using the storefront. Before you start using the storefront, follow along the [Configure CORS on the Medusa Backend](#step-3-configure-cors-on-the-medusa-backend) section.
 
 :::
 
@@ -135,11 +138,11 @@ At this point, when you visit the storefront, you will face errors related to Cr
 
 ## Step 3: Configure CORS on the Medusa Backend
 
-To send requests to the Medusa backend from the Next.js storefront, you must set the `STORE_CORS` environment variable on your backend to the Next.js storefront’s URL.
+To send requests to the Medusa backend from the Next.js storefront, you must set the `STORE_CORS` environment variable on your backend to the Next.js storefront’s URL.
 
 :::tip
 
-If you want to set a custom domain to your Next.js storefront website on Vercel, make sure to do it before this step. You can refer to this guide on [Vercel’s documentation](https://vercel.com/docs/concepts/projects/domains/add-a-domain).
+If you want to set a custom domain to your Next.js storefront website on Vercel, make sure to do it before this step. You can refer to this guide on [Vercel’s documentation](https://vercel.com/docs/concepts/projects/domains/add-a-domain).
 
 :::
 
@@ -149,6 +152,19 @@ On your Medusa backend, add the following environment variable:
 STORE_CORS=<STOREFRONT_URL>
 ```
 
-Where `<STOREFRONT_URL>` is the URL of your Next.js storefront that you just deployed.
+Where `<STOREFRONT_URL>` is the URL of your Next.js storefront that you just deployed.
 
 Then, restart your Medusa backend. Once the backend is running again, you can use your Next.js storefront.
+
+---
+
+## Troubleshooting
+
+<Troubleshooting
+  sections={[
+    {
+      title: 'CORS Error',
+      content: <CorsErrorSection />
+    },
+  ]}
+/>
