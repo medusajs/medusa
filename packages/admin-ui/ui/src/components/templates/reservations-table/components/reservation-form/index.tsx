@@ -21,10 +21,12 @@ type Props = {
 const ReservationForm: React.FC<Props> = ({ form }) => {
   const { register, path, watch, control, setValue } = form
 
+  const locationId = watch(path("location"))
+
   const selectedItem = watch(path("item"))
   const [selectedLocation, setSelectedLocation] = React.useState<
     string | undefined
-  >(undefined)
+  >(locationId)
 
   const locationLevel = selectedItem?.location_levels?.find(
     (l) => l.location_id === selectedLocation
