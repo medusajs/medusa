@@ -26,6 +26,7 @@ import { ConfigModule } from "../types/global"
 import { CreateProductInput } from "../types/product"
 import { CreateProductCategoryInput } from "../types/product-category"
 import getMigrations, { getModuleSharedResources } from "./utils/get-migrations"
+import PublishableApiKeyService from "../services/publishable-api-key"
 
 type SeedOptions = {
   directory: string
@@ -101,6 +102,9 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
   const productCategoryService: ProductCategoryService = container.resolve(
     "productCategoryService"
   )
+  const publishableApiKeyService: PublishableApiKeyService = container.resolve(
+    "publishableApiKeyService"
+  )
 
   /* eslint-disable */
   const productVariantService: ProductVariantService = container.resolve(
@@ -122,6 +126,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       categories = [],
       shipping_options,
       users,
+      publishable_api_keys = [],
     } = JSON.parse(fs.readFileSync(resolvedPath, `utf-8`))
 
     const gcProfile = await shippingProfileService.retrieveGiftCardDefault()
@@ -234,6 +239,12 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
             .create(newProd.id, variant)
         }
       }
+    }
+
+    for (const pak of publishable_api_keys) {
+      await publishableApiKeyService.withTransaction(tx).create(pak, {
+        loggedInUserId: "",
+      })
     }
   })
 
