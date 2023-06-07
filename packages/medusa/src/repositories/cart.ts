@@ -1,9 +1,12 @@
 import { objectToStringPath } from "@medusajs/utils"
-import { groupBy, map, merge } from "lodash"
 import { FindManyOptions, FindOptionsRelations } from "typeorm"
 import { dataSource } from "../loaders/database"
 import { Cart } from "../models"
-import { getGroupedRelations, queryEntityWithIds } from "../utils/repository"
+import {
+  getGroupedRelations,
+  mergeEntitiesWithRelations,
+  queryEntityWithIds,
+} from "../utils/repository"
 
 export const CartRepository = dataSource.getRepository(Cart).extend({
   async findWithRelations(
@@ -22,10 +25,7 @@ export const CartRepository = dataSource.getRepository(Cart).extend({
     })
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
 
-    const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-    return map(entitiesAndRelationsById, (entityAndRelations) =>
-      merge({}, ...entityAndRelations)
-    )
+    return mergeEntitiesWithRelations<Cart>(entitiesAndRelations)
   },
 
   async findOneWithRelations(
