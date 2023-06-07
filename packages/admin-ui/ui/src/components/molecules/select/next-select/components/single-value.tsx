@@ -28,9 +28,17 @@ const SingleValue = <
     return (e.offsetParent as HTMLDivElement).offsetWidth < e.scrollWidth
   }
 
-  const toolTip = !getValue().length
-    ? null
-    : ((getValue()?.[0] as { label: string })?.label as string) ?? null
+  const getToolTipValue = () => {
+    const values = getValue()
+    if (!values.length) {
+      return null
+    }
+
+    const value = values[0] as { label: string } // option with label
+    return value.label ?? null
+  }
+
+  const toolTip = getToolTipValue()
 
   const ref = useRef(null)
 

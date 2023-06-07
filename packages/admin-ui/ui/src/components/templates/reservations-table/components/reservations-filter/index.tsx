@@ -812,7 +812,7 @@ const FilterDatePicker = ({
       sideOffset={8}
       className="bg-grey-0 rounded-rounded border p-1"
     >
-      <CalendarComponent date={date} onChange={setDate} greyPast={false} />
+      <CalendarComponent date={date} onChange={setDate} greyPastDates={false} />
     </RadixPopover.Content>
   </RadixPopover.Root>
 )

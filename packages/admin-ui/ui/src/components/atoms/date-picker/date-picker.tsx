@@ -1,25 +1,37 @@
-import * as PopoverPrimitive from "@radix-ui/react-popover"
-import clsx from "clsx"
-import moment from "moment"
-import React, { useEffect, useState } from "react"
-import ReactDatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
-import Button from "../../fundamentals/button"
+
+import * as PopoverPrimitive from "@radix-ui/react-popover"
+
+import React, { useEffect, useState } from "react"
+
 import ArrowDownIcon from "../../fundamentals/icons/arrow-down-icon"
-import InputContainer from "../../fundamentals/input-container"
-import InputHeader from "../../fundamentals/input-header"
+import Button from "../../fundamentals/button"
 import CustomHeader from "./custom-header"
 import { DateTimePickerProps } from "./types"
+import InputContainer from "../../fundamentals/input-container"
+import InputHeader from "../../fundamentals/input-header"
+import ReactDatePicker from "react-datepicker"
+import clsx from "clsx"
+import moment from "moment"
 
-const getDateClassname = (d: Date, tempDate: Date, greyPast: boolean) => {
-  return moment(d).format("YY,MM,DD") === moment(tempDate).format("YY,MM,DD")
-    ? "date chosen"
-    : `date ${
-        greyPast &&
-        moment(d).format("YY,MM,DD") < moment(new Date()).format("YY,MM,DD")
-          ? "past"
-          : ""
-      }`
+const getDateClassname = (
+  d: Date,
+  tempDate: Date | null,
+  greyPastDates: boolean = true
+): string => {
+  const classes: string[] = ["date"]
+  if (
+    tempDate &&
+    moment(d).format("YY,MM,DD") === moment(tempDate).format("YY,MM,DD")
+  ) {
+    classes.push("chosen")
+  } else if (
+    greyPastDates &&
+    moment(d).format("YY,MM,DD") < moment(new Date()).format("YY,MM,DD")
+  ) {
+    classes.push("past")
+  }
+  return classes.join(" ")
 }
 
 const DatePicker: React.FC<DateTimePickerProps> = ({
@@ -122,20 +134,20 @@ type CalendarComponentProps = {
     date: Date | null,
     event: React.SyntheticEvent<any, Event> | undefined
   ) => void
-  greyPast?: boolean
+  greyPastDates?: boolean
 }
 
 export const CalendarComponent = ({
   date,
   onChange,
-  greyPast = true,
+  greyPastDates = true,
 }: CalendarComponentProps) => (
   <ReactDatePicker
     selected={date}
     inline
     onChange={onChange}
     calendarClassName="date-picker"
-    dayClassName={(d) => getDateClassname(d, date, greyPast)}
+    dayClassName={(d) => getDateClassname(d, date, greyPastDates)}
     renderCustomHeader={({ ...props }) => <CustomHeader {...props} />}
   />
 )
