@@ -6278,6 +6278,7 @@ __metadata:
     "@mikro-orm/postgresql": 5.7.4
     awilix: ^8.0.0
     cross-env: ^5.2.1
+    dotenv: ^16.1.4
     jest: ^25.5.4
     lodash: ^4.17.21
     medusa-test-utils: ^1.1.40
@@ -18780,6 +18781,13 @@ __metadata:
   version: 16.1.3
   resolution: "dotenv@npm:16.1.3"
   checksum: d80483222c5f129c6e5bc4ce46be563497eb39a7aa034245408e570f09fa770d73da3e019454394c197593535ecb908b0f5699ce721f5313ffd06ee44bcab85f
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:^16.1.4":
+  version: 16.1.4
+  resolution: "dotenv@npm:16.1.4"
+  checksum: 47cf5ce136bf2a5e8402fc9855d95848973cfee423fe0adf1a7cd565c842c51e5b8c95889b075140c26b092b74dd2a319970ff496cd7159ab3f1fc58edfc0ede
   languageName: node
   linkType: hard
 
