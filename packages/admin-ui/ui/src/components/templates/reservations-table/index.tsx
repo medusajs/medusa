@@ -289,7 +289,6 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
         isLoading={isLoading}
       >
         <Table
-          // enableSearch
           searchClassName="h-[40px]"
           handleSearch={setQuery}
           searchValue={query}
