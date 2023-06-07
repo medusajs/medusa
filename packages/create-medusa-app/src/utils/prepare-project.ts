@@ -102,7 +102,7 @@ export default async ({
     interval = createFactBox(spinner, "Seeding database...")
 
     // check if a seed file exists in the project
-    if (!fs.existsSync(path.join(directory, "data", "seed.jsons"))) {
+    if (!fs.existsSync(path.join(directory, "data", "seed.json"))) {
       spinner
         ?.warn(
           chalk.yellow(
@@ -110,7 +110,7 @@ export default async ({
           )
         )
         .start()
-      return
+      return inviteToken
     }
 
     await runProcess({

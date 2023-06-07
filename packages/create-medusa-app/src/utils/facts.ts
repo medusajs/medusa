@@ -13,7 +13,7 @@ const facts = [
   "You can specify the inventory of products per location and sales channel.",
   "Publishable-API Keys allow you to send requests to the backend within a scoped resource.",
   "You can create custom endpoints by creating a TypeScript file under the src/api directory.",
-  "You can listen to events to perform asynchornus actions using Subscribers.",
+  "You can listen to events to perform asynchronous actions using Subscribers.",
   "An entity represents a table in the database. You can create a table by creating a custom entity and migration.",
   "Medusa's store endpoint paths are prefixed by /store. The admin endpoints are prefixed by /admin.",
   "Medusa provides a JavaScript client and a React library that you can use to build a storefront or a custom admin.",
