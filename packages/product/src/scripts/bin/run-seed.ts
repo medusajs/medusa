@@ -4,8 +4,9 @@ import { config } from "dotenv"
 
 config()
 
-const args = process.argv.slice(2)
-const path = args[0] as string
+const args = process.argv
+const path = args.pop() as string
+console.log(path)
 
 export default (async () => {
   if (!path) {
