@@ -177,6 +177,18 @@ class UserService extends TransactionBaseService {
       }
 
       const validatedEmail = validateEmail(user.email)
+
+      const userEntity = await userRepo.findOne({
+        where: { email: validatedEmail },
+      })
+
+      if (userEntity) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "A user with the same email already exists."
+        )
+      }
+
       if (password) {
         const hashedPassword = await this.hashPassword_(password)
         createData.password_hash = hashedPassword
