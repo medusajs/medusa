@@ -2,6 +2,7 @@ import {
   And,
   FindManyOptions,
   FindOperator,
+  FindOptionsOrder,
   FindOptionsRelations,
   FindOptionsSelect,
   FindOptionsWhere,
@@ -15,7 +16,6 @@ import {
 } from "typeorm"
 import { ExtendedFindConfig, FindConfig } from "../types/common"
 
-import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { isObject } from "./is-object"
 import { buildOrder, buildRelations, buildSelects } from "@medusajs/utils"
 
