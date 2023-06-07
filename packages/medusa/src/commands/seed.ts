@@ -17,6 +17,7 @@ import {
   ProductService,
   ProductVariantService,
   RegionService,
+  SalesChannelService,
   ShippingOptionService,
   ShippingProfileService,
   StoreService,
@@ -26,6 +27,8 @@ import { ConfigModule } from "../types/global"
 import { CreateProductInput } from "../types/product"
 import { CreateProductCategoryInput } from "../types/product-category"
 import getMigrations, { getModuleSharedResources } from "./utils/get-migrations"
+import PublishableApiKeyService from "../services/publishable-api-key"
+import { SalesChannel } from "../models"
 
 type SeedOptions = {
   directory: string
@@ -101,6 +104,12 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
   const productCategoryService: ProductCategoryService = container.resolve(
     "productCategoryService"
   )
+  const publishableApiKeyService: PublishableApiKeyService = container.resolve(
+    "publishableApiKeyService"
+  )
+  const salesChannelService: SalesChannelService = container.resolve(
+    "salesChannelService"
+  )
 
   /* eslint-disable */
   const productVariantService: ProductVariantService = container.resolve(
@@ -122,6 +131,7 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
       categories = [],
       shipping_options,
       users,
+      publishable_api_keys = [],
     } = JSON.parse(fs.readFileSync(resolvedPath, `utf-8`))
 
     const gcProfile = await shippingProfileService.retrieveGiftCardDefault()
@@ -233,6 +243,31 @@ const seed = async function ({ directory, migrate, seedFile }: SeedOptions) {
             .withTransaction(tx)
             .create(newProd.id, variant)
         }
+      }
+    }
+
+    let defaultSalesChannel: SalesChannel | null = null
+
+    try {
+      defaultSalesChannel = await salesChannelService
+        .withTransaction(tx)
+        .retrieveDefault()
+    } catch (e) {
+      defaultSalesChannel = null
+    }
+
+    for (const pak of publishable_api_keys) {
+      const publishableApiKey = await publishableApiKeyService
+        .withTransaction(tx)
+        .create(pak, {
+          loggedInUserId: "",
+        })
+
+      // attach to default sales channel if exists
+      if (defaultSalesChannel) {
+        await publishableApiKeyService.addSalesChannels(publishableApiKey.id, [
+          defaultSalesChannel.id,
+        ])
       }
     }
   })
