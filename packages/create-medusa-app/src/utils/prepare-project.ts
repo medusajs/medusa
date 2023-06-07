@@ -125,6 +125,24 @@ export default async ({
       },
     })
     resetFactBox(interval, spinner, "Seeded database with demo data")
+  } else if (
+    fs.existsSync(path.join(directory, "data", "seed-onboarding.json"))
+  ) {
+    // seed the database with onboarding seed
+    interval = createFactBox(spinner, "Finish preparation...")
+
+    await runProcess({
+      process: async () => {
+        await promiseExec(
+          `npx -y @medusajs/medusa-cli@latest seed --seed-file=${path.join(
+            "data",
+            "seed-onboarding.json"
+          )}`,
+          execOptions
+        )
+      },
+    })
+    resetFactBox(interval, spinner, "Finished Preparation")
   }
 
   return inviteToken
