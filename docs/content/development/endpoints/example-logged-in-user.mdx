@@ -3,13 +3,17 @@ description: 'In this document, you’ll see an example of how you can use middl
 addHowToData: true
 ---
 
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import ServiceLifetimeSection from '../../troubleshooting/awilix-resolution-error/_service-lifetime.md'
+import CustomRegistrationSection from '../../troubleshooting/awilix-resolution-error/_custom-registration.md'
+
 # Example: Access Logged-In User
 
 In this document, you’ll see an example of how you can use middlewares and endpoints to register the logged-in user in the dependency container of your commerce application. You can then access the logged-in user in other resources, such as services.
 
 This guide showcases how to register the logged-in admin user, but you can apply the same steps if you want to register the current customer.
 
-This documentation does not explain the basics of [middlewares](./add-middleware.md) and [endpoints](./create.md). You can refer to their respective guides for more details about each.
+This documentation does not explain the basics of [middlewares](./add-middleware.mdx) and [endpoints](./create.md). You can refer to their respective guides for more details about each.
 
 ## Step 1: Create the Middleware
 
@@ -178,7 +182,7 @@ class ProductService extends MedusaProductService {
 export default ProductService
 ```
 
-You can learn more about the importance of changing the service lifetime in the [Middlewares documentation](./add-middleware.md#note-about-services-lifetime).
+You can learn more about the importance of changing the service lifetime in the [Middlewares documentation](./add-middleware.mdx#note-about-services-lifetime).
 
 ---
 
@@ -197,3 +201,20 @@ npx @medusajs/medusa-cli develop
 ```
 
 If you try accessing the endpoints you added the middleware to, you should see your implementation working as expected.
+
+---
+
+## Troubleshooting
+
+<Troubleshooting 
+  sections={[
+    {
+      title: 'AwilixResolutionError: Could Not Resolve X',
+      content: <ServiceLifetimeSection />
+    },
+    {
+      title: 'AwilixResolutionError: Could Not Resolve X (Custom Registration)',
+      content: <CustomRegistrationSection />
+    }
+  ]}
+/>
