@@ -1,8 +1,9 @@
 import { objectToStringPath } from "@medusajs/utils"
-import { flatten, groupBy, map, merge } from "lodash"
-import { FindManyOptions, FindOptionsRelations, In } from "typeorm"
+import { groupBy, map, merge } from "lodash"
+import { FindManyOptions, FindOptionsRelations } from "typeorm"
 import { dataSource } from "../loaders/database"
 import { Cart } from "../models"
+import { getGroupedRelations, queryEntityWithIds } from "../utils/repository"
 
 export const CartRepository = dataSource.getRepository(Cart).extend({
   async findWithRelations(
@@ -12,25 +13,13 @@ export const CartRepository = dataSource.getRepository(Cart).extend({
     const entities = await this.find(optionsWithoutRelations)
     const entitiesIds = entities.map(({ id }) => id)
 
-    const groupedRelations = {}
-    for (const rel of objectToStringPath(relations)) {
-      const [topLevel] = rel.split(".")
-      if (groupedRelations[topLevel]) {
-        groupedRelations[topLevel].push(rel)
-      } else {
-        groupedRelations[topLevel] = [rel]
-      }
-    }
+    const groupedRelations = getGroupedRelations(objectToStringPath(relations))
 
-    const entitiesIdsWithRelations = await Promise.all(
-      Object.entries(groupedRelations).map(async ([_, rels]) => {
-        return this.find({
-          where: { id: In(entitiesIds) },
-          select: ["id"],
-          relations: rels as string[],
-        })
-      })
-    ).then(flatten)
+    const entitiesIdsWithRelations = await queryEntityWithIds({
+      repository: this,
+      entityIds: entitiesIds,
+      groupedRelations,
+    })
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
 
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
