@@ -17,12 +17,11 @@ export function handlePostgresDatabaseError(err: any): never {
 
   if (DatabaseErrorCode.connectionFailure === err.code) {
     throw new Error(
-      `The connection cannot be established to the specified PostgreSQL database. Please, check the following point.
-      - Is the database running?
-      - Is the database url correct?
-      - Is the database port correct?
-      Please, also verify that your medusa-config.js database_url is correctly formatted. It should be in the following format:
-      postgres://user:password@host:post/db_name - If there is no password, you can omit it.
+      `Failed to establish a connection to PostgreSQL. Please ensure the following is true and try again:
+      - You have a PostgreSQL database running
+      - You have passed the correct credentials in medusa-config.js
+      - You have formatted the database connection string correctly. See below:
+      "postgres://[username]:[password]@[host]:[post]/[db_name]" - If there is no password, you can omit it from the connection string
       ${EOL}
       ${err.message}`
     )
@@ -36,7 +35,7 @@ export function handlePostgresDatabaseError(err: any): never {
 
   if (DatabaseErrorCode.notFound === err.code) {
     throw new Error(
-      `The specified connection url for your PostgreSQL database might contains illegal characters. Please check that all the connection segments contains only allowed characters [a-zA-Z0-9]${EOL}${err.message}`
+      `The specified connection string for your PostgreSQL database might have illegal characters. Please check that it only contains allowed characters [a-zA-Z0-9]${EOL}${err.message}`
     )
   }
 
