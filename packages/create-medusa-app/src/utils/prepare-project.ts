@@ -53,7 +53,7 @@ export default async ({
       } catch (e) {
         // yarn isn't available
         // use npm
-        await promiseExec(`npm install`, execOptions)
+        await promiseExec(`npm install --legacy-peer-deps`, execOptions)
       }
     },
     ignoreERESOLVE: true,
