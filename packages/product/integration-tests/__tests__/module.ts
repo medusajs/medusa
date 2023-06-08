@@ -90,7 +90,6 @@ describe("Product module", function () {
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
-
       products = await createProductAndTags(testManager, productsData)
 
       module = await initialize({
@@ -101,11 +100,9 @@ describe("Product module", function () {
 
     afterEach(afterEach_)
 
-    it("should initialize", async () => {
+    it("should initialize and return a list of product", async () => {
       expect(module).toBeDefined()
-    })
 
-    it("should return a list of product", async () => {
       const products = await module.list()
 
       expect(ProductRepository.prototype.find).toHaveBeenCalled()

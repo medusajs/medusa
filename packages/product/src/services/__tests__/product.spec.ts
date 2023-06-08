@@ -35,6 +35,9 @@ describe("Product service", function () {
     expect(productRepository.find).toHaveBeenCalledWith({
       where: {},
       options: {
+        fields: undefined,
+        limit: undefined,
+        offset: undefined,
         populate: [],
       },
     })
@@ -55,9 +58,14 @@ describe("Product service", function () {
 
     expect(productRepository.find).toHaveBeenCalledWith({
       where: {
-        tags: { value: { $in: filters.tags } },
+        tags: {
+          $in: filters.tags
+        },
       },
       options: {
+        fields: undefined,
+        limit: undefined,
+        offset: undefined,
         populate: [],
       },
     })
@@ -78,9 +86,14 @@ describe("Product service", function () {
 
     expect(productRepository.find).toHaveBeenCalledWith({
       where: {
-        tags: { value: { $in: filters.tags } },
+        tags: {
+          $in: filters.tags
+        },
       },
       options: {
+        fields: undefined,
+        limit: undefined,
+        offset: undefined,
         populate: ["tags"],
       },
     })
