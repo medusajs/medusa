@@ -2,5 +2,3 @@
 /build
 .vercel
 /ui/preview
-/ui/src/extensions.ts
-/ui/tailwind.content.js
