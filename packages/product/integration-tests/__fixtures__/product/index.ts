@@ -1,10 +1,10 @@
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   Product,
   ProductCategory,
   ProductCollection,
   ProductVariant,
 } from "@models"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import ProductOption from "../../../src/models/product-option"
 
 export async function createProductAndTags(

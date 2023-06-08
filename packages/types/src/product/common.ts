@@ -131,7 +131,7 @@ export interface FilterableProductProps
   id?: string | string[]
   tags?: { value?: string[] }
   categories?: {
-    id?: string | OperatorMap<string>
+    id?: string | string[] | OperatorMap<string>
   }
   category_ids?: string | string[] | OperatorMap<string>
 }
@@ -151,7 +151,7 @@ export interface FilterableProductCollectionProps
 export interface FilterableProductVariantProps
   extends BaseFilterable<FilterableProductVariantProps> {
   id?: string | string[]
-  sku?: string
+  sku?: string | string[]
   options?: { id?: string[] }
 }
 

@@ -12,14 +12,14 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-import { generateEntityId, kebabCase } from "@medusajs/utils"
 import { ProductTypes } from "@medusajs/types"
-import ProductTag from "./product-tag"
+import { generateEntityId, kebabCase } from "@medusajs/utils"
+import ProductCategory from "./product-category"
 import ProductCollection from "./product-collection"
+import ProductOption from "./product-option"
+import ProductTag from "./product-tag"
 import ProductType from "./product-type"
 import ProductVariant from "./product-variant"
-import ProductOption from "./product-option"
-import ProductCategory from "./product-category"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =

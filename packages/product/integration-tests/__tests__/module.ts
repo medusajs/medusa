@@ -5,7 +5,6 @@ import { ProductRepository } from "../__fixtures__/module"
 import { createProductAndTags } from "../__fixtures__/product"
 import { productsData } from "../__fixtures__/product/data"
 import { databaseOptions, TestDatabase } from "../utils"
-import { MedusaModule } from "@medusajs/modules-sdk"
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -23,7 +22,6 @@ describe("Product module", function () {
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
-
       products = await createProductAndTags(testManager, productsData)
 
       module = await initialize({
@@ -86,13 +84,12 @@ describe("Product module", function () {
     })
   })
 
-  describe.only("Using custom data access layer and connection", function () {
+  describe("Using custom data access layer and connection", function () {
     let module
     let products: Product[]
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
-      ;(MedusaModule as any).instances_.clear()
 
       products = await createProductAndTags(testManager, productsData)
 

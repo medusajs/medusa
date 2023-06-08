@@ -37,9 +37,9 @@ export default async (
   const customManager = (
     options as ProductServiceInitializeCustomDataLayerOptions
   )?.manager
-  const dbData = loadDatabaseConfig(options)
 
   if (!customManager) {
+    const dbData = loadDatabaseConfig(options)
     await loadDefault({ database: dbData, container })
   } else {
     container.register({

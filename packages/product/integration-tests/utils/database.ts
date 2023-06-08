@@ -1,7 +1,7 @@
-import { databaseOptions } from "./config"
-import * as ProductModels from "@models"
-import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
 import { TSMigrationGenerator } from "@mikro-orm/migrations"
+import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
+import * as ProductModels from "@models"
+import { databaseOptions } from "./config"
 
 const ORMConfig: Options = {
   type: "postgresql",
@@ -69,7 +69,7 @@ export const TestDatabase: TestDatabase = {
       throw "ORM not configured"
     }
 
-    this.manager = await this.orm.em
+    this.manager = this.orm.em
 
     // ensure the database exists
     // drop the schema if exists
