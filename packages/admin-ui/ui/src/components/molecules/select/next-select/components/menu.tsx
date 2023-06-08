@@ -1,5 +1,3 @@
-import clsx from "clsx"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import {
   ActionMeta,
   CX,
@@ -12,11 +10,14 @@ import {
   OptionsOrGroups,
   PropsValue,
 } from "react-select"
+import { hasPrefix, hasSuffix, optionIsDisabled } from "../utils"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+
 import Button from "../../../../fundamentals/button"
 import CheckIcon from "../../../../fundamentals/icons/check-icon"
 import ListArrowIcon from "../../../../fundamentals/icons/list-arrow-icon"
-import { hasPrefix, hasSuffix, optionIsDisabled } from "../utils"
 import SelectPrimitives from "./select-primitives"
+import clsx from "clsx"
 
 const Menu = <
   Option,
@@ -279,7 +280,7 @@ export const Option = <
           },
           {
             "h-xlarge": size === "sm",
-            "h-10": size === "md" || !size,
+            "min-h-10": size === "md" || !size,
           },
           className
         )

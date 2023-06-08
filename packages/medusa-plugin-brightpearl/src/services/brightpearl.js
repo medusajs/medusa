@@ -553,7 +553,10 @@ class BrightpearlService extends BaseService {
         currency: parentSo.currency,
         ref: parentSo.ref,
         externalRef: `${parentSo.externalRef}.${fromRefund.id}`,
-        channelId: this.options.channel_id || `1`,
+        channelId:
+          fromOrder.sales_channel?.metadata?.bp_id ||
+          this.options.channel_id ||
+          `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
         delivery: parentSo.delivery,
@@ -889,7 +892,10 @@ class BrightpearlService extends BaseService {
         currency: parentSo.currency,
         ref: parentSo.ref,
         externalRef: `${parentSo.externalRef}.${fromReturn.id}`,
-        channelId: this.options.channel_id || `1`,
+        channelId:
+          fromOrder.sales_channel?.metadata?.bp_id ||
+          this.options.channel_id ||
+          `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
         delivery: parentSo.delivery,
@@ -1129,7 +1135,10 @@ class BrightpearlService extends BaseService {
       },
       ref: `${fromOrder.display_id}-S${sIndex + 1}`,
       externalRef: `${fromOrder.id}.${fromSwap.id}`,
-      channelId: this.options.channel_id || `1`,
+      channelId:
+        fromOrder.sales_channel?.metadata?.bp_id ||
+        this.options.channel_id ||
+        `1`,
       installedIntegrationInstanceId: authData.installation_instance_id,
       statusId:
         this.options.swap_status_id || this.options.default_status_id || `3`,
@@ -1216,7 +1225,10 @@ class BrightpearlService extends BaseService {
         currency: parentSo.currency,
         ref: `${parentSo.ref}-C${cIndex + 1}`,
         externalRef: `${parentSo.externalRef}.${fromClaim.id}`,
-        channelId: this.options.channel_id || `1`,
+        channelId:
+          fromOrder.sales_channel?.metadata?.bp_id ||
+          this.options.channel_id ||
+          `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
         delivery: parentSo.delivery,
@@ -1310,7 +1322,10 @@ class BrightpearlService extends BaseService {
         currency: parentSo.currency,
         ref: `${parentSo.ref}-S${sIndex + 1}`,
         externalRef: `${parentSo.externalRef}.${fromSwap.id}`,
-        channelId: this.options.channel_id || `1`,
+        channelId:
+          fromOrder.sales_channel?.metadata?.bp_id ||
+          this.options.channel_id ||
+          `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
         delivery: parentSo.delivery,
@@ -1554,7 +1569,10 @@ class BrightpearlService extends BaseService {
       priceListId: this.options.cost_price_list || `1`,
       ref: `${fromOrder.display_id}-C${cIndex + 1}`,
       externalRef: `${fromOrder.id}.${fromClaim.id}`,
-      channelId: this.options.channel_id || `1`,
+      channelId:
+        fromOrder.sales_channel?.metadata?.bp_id ||
+        this.options.channel_id ||
+        `1`,
       installedIntegrationInstanceId: authData.installation_instance_id,
       statusId:
         this.options.claim_status_id || this.options.default_status_id || `3`,
