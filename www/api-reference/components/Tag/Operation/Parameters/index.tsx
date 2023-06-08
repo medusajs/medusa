@@ -1,9 +1,20 @@
+import Loading from "@/app/loading"
 import { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
-import TagOperationParametersObject from "./Types/Object"
-import TagOperationParametersDefault from "./Types/Default"
-import TagOperationParametersArray from "./Types/Array"
-import TagOperationParametersUnion from "./Types/Union"
+import dynamic from "next/dynamic"
+
+const TagOperationParametersObject = dynamic(() => import("./Types/Object"), {
+  loading: () => <Loading />
+})
+const TagOperationParametersDefault = dynamic(() => import("./Types/Default"), {
+  loading: () => <Loading />
+})
+const TagOperationParametersArray = dynamic(() => import("./Types/Array"), {
+  loading: () => <Loading />
+})
+const TagOperationParametersUnion = dynamic(() => import("./Types/Union"), {
+  loading: () => <Loading />
+})
 
 type TagOperationParametersProps = {
   schemaObject: SchemaObject

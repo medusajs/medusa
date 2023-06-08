@@ -3,18 +3,21 @@
 import getSectionId from "@/utils/get-section-id"
 import { OpenAPIV3 } from "openapi-types"
 import Section from "../../Section"
-import TagSectionPaths from "../Paths"
 import MDXContentClient from "@/components/MDXContent/Client"
 import { useInView } from "react-intersection-observer"
-import { useState } from "react"
-import Skeleton from "react-loading-skeleton"
+import { Suspense, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useSidebar } from "@/providers/sidebar"
-import "react-loading-skeleton/dist/skeleton.css"
+import dynamic from 'next/dynamic'
+import Loading from "@/app/loading"
 
 type TagSectionProps = {
   tag: OpenAPIV3.TagObject
 } & React.HTMLAttributes<HTMLDivElement>
+
+const TagPaths = dynamic(() => import('../Paths'), {
+  loading: () => <Loading />
+})
 
 const TagSection = ({ tag }: TagSectionProps) => {
   const { changeActiveItem } = useSidebar()
@@ -38,14 +41,16 @@ const TagSection = ({ tag }: TagSectionProps) => {
     <div className="min-h-screen" id={slugTagName} ref={ref}>
       <h2>{tag.name}</h2>
       {tag.description && (
-        <Section
-          addToSidebar={false}
-          content={<MDXContentClient content={tag.description} />}
-        />
+        <Suspense fallback={<Loading />}>
+          <Section
+            addToSidebar={false}
+            content={<MDXContentClient content={tag.description} />}
+          />
+        </Suspense>
       )}
-      {loadPaths && <TagSectionPaths tag={tag} />}
+      {loadPaths && <TagPaths tag={tag} />}
       {!loadPaths && (
-        <Skeleton count={10} containerClassName="w-api-ref-content block" />
+        <Loading />
       )}
     </div>
   )

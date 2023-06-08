@@ -10,11 +10,11 @@ type TagsProps = {
 
 const Tags = ({ tags }: TagsProps) => {
   return (
-    <div>
+    <>
       {tags.map((tag, index) => (
         <TagSection tag={tag} key={index} />
       ))}
-    </div>
+    </>
   )
 }
 

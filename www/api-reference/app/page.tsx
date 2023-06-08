@@ -1,7 +1,9 @@
-import Description from "@/components/Description"
-import Tags from "@/components/Tag"
 import getBaseUrl from "@/utils/get-hostname"
+import dynamic from "next/dynamic"
 import { OpenAPIV3 } from "openapi-types"
+
+const Description = dynamic(() => import("@/components/Description"))
+const Tags = dynamic(() => import("@/components/Tag"))
 
 const getBaseSpecs = async () => {
   const res = await fetch(`${getBaseUrl()}/api/base-specs`)

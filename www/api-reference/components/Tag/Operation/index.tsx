@@ -1,8 +1,14 @@
 import { Operation } from "@/types/openapi"
 import clsx from "clsx"
 import { OpenAPIV3 } from "openapi-types"
-import TagOperationParameters from "./Parameters"
 import getSectionId from "@/utils/get-section-id"
+import { Suspense } from "react"
+import dynamic from "next/dynamic"
+import Loading from "@/app/loading"
+
+const TagOperationParameters = dynamic(() => import("./Parameters"), {
+  loading: () => <Loading />
+})
 
 type TagOperationProps = {
   operation: Operation
@@ -13,7 +19,8 @@ type TagOperationProps = {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TagOperation = ({ operation, method }: TagOperationProps) => {
   return (
-    <div className={clsx("flex min-h-screen")} id={getSectionId([operation.operationId])}>
+    <Suspense fallback={<Loading />}>
+      <div className={clsx("flex min-h-screen")} id={getSectionId([operation.operationId])}>
       <div className={clsx("w-api-ref-content")}>
         <h3>{operation.summary}</h3>
         <p>{operation.description}</p>
@@ -37,14 +44,14 @@ const TagOperation = ({ operation, method }: TagOperationProps) => {
             />
           </>
         )}
-        <h3>Responses</h3>
+        <h4>Responses</h4>
         {Object.entries(operation.responses).map(([code, response]) => (
           <div key={code}>
             {response.content && (
               <details>
                 <summary
                   className={clsx(
-                    "mb-1 rounded-sm p-0.5",
+                    "mb-1 rounded-sm py-0.5 px-1",
                     code.match(/20[0-9]/) &&
                       "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",
                     !code.match(/20[0-9]/) &&
@@ -70,6 +77,7 @@ const TagOperation = ({ operation, method }: TagOperationProps) => {
         ))}
       </div>
     </div>
+    </Suspense>
   )
 }
 

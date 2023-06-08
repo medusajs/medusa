@@ -1,6 +1,11 @@
 import { SchemaObject } from "@/types/openapi"
 import TagOperationParametersDefault from "../Default"
-import TagOperationParametersProperties from "../Properties"
+import dynamic from "next/dynamic"
+import Loading from "@/app/loading"
+
+const TagOperationParametersProperties = dynamic(() => import("../Properties"), {
+  loading: () => <Loading />
+})
 
 type TagOperationParametersUnionProps = {
   name: string

@@ -3,9 +3,7 @@
 import getSectionId from "@/utils/get-section-id"
 import fetcher from "@/utils/swr-fetcher"
 import { OpenAPIV3 } from "openapi-types"
-import Skeleton from "react-loading-skeleton"
 import useSWR from "swr"
-import TagOperation from "../Operation"
 import { Operation, Path } from "@/types/openapi"
 import {
   SidebarItemSections,
@@ -13,12 +11,18 @@ import {
   useSidebar,
 } from "@/providers/sidebar"
 import { useEffect } from "react"
+import dynamic from "next/dynamic"
+import Loading from "@/app/loading"
+
+const TagOperation = dynamic(() => import("../Operation"), {
+  loading: () => <Loading />
+})
 
 type TagSectionPathsProps = {
   tag: OpenAPIV3.TagObject
 } & React.HTMLAttributes<HTMLDivElement>
 
-const TagSectionPaths = ({ tag }: TagSectionPathsProps) => {
+const TagPaths = ({ tag }: TagSectionPathsProps) => {
   const tagSlugName = getSectionId([tag.name])
   const { data } = useSWR<{
     paths: Path[]
@@ -52,7 +56,7 @@ const TagSectionPaths = ({ tag }: TagSectionPathsProps) => {
 
   return (
     <div>
-      {!paths && <Skeleton count={10} containerClassName="w-api-ref-content" />}
+      {!paths && <Loading />}
       {paths.length > 0 && (
         <>
           {paths.map((path, pathIndex) => (
@@ -75,4 +79,4 @@ const TagSectionPaths = ({ tag }: TagSectionPathsProps) => {
   )
 }
 
-export default TagSectionPaths
+export default TagPaths
