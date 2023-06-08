@@ -2,41 +2,54 @@ import {
   ProductService,
   ProductTagService,
   ProductVariantService,
+  ProductCategoryService,
 } from "@services"
-import { Product, ProductCollection, ProductTag, ProductVariant } from "@models"
+import {
+  Product,
+  ProductCollection,
+  ProductTag,
+  ProductVariant,
+  ProductCategory
+} from "@models"
 import { FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
 
 type InjectedDependencies = {
   productService: ProductService<any>
   productVariantService: ProductVariantService<any>
   productTagService: ProductTagService<any>
+  productCategoryService: ProductCategoryService<any>
 }
 
 export default class GatewayService<
   TProduct = Product,
   TProductVariant = ProductVariant,
   TProductTag = ProductTag,
-  TProductCollection = ProductCollection
+  TProductCollection = ProductCollection,
+  TProductCategory = ProductCategory
 > implements
     ProductTypes.IProductService<
       TProduct,
       TProductVariant,
       TProductTag,
-      TProductCollection
+      TProductCollection,
+      TProductCategory
     >
 {
   protected readonly productService_: ProductService<TProduct>
   protected readonly productVariantService: ProductVariantService<TProductVariant>
+  protected readonly productCategoryService: ProductCategoryService<TProductCategory>
   protected readonly productTagService: ProductTagService<TProductTag>
 
   constructor({
     productService,
     productVariantService,
     productTagService,
+    productCategoryService,
   }: InjectedDependencies) {
     this.productService_ = productService
     this.productVariantService = productVariantService
     this.productTagService = productTagService
+    this.productCategoryService = productCategoryService
   }
 
   async list(

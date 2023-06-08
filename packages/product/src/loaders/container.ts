@@ -4,6 +4,7 @@ import { asClass } from "awilix"
 import {
   GatewayService,
   ProductService,
+  ProductCategoryService,
   ProductTagService,
   ProductVariantService,
 } from "@services"
@@ -36,6 +37,7 @@ export default async ({
   container.register({
     gatewayService: asClass(GatewayService).singleton(),
     productService: asClass(ProductService).singleton(),
+    productCategoryService: asClass(ProductService).singleton(),
     productVariantService: asClass(ProductVariantService).singleton(),
     productTagService: asClass(ProductTagService).singleton(),
   })

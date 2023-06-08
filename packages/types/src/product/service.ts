@@ -15,7 +15,8 @@ export interface IProductService<
   TProduct = any,
   TProductVariant = any,
   TProductTag = any,
-  TProductCollection = any
+  TProductCollection = any,
+  TProductCategory = any
 > {
   list(
     filter: FilterableProductProps,
