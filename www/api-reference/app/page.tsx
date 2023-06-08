@@ -1,10 +1,10 @@
 import Description from "@/components/Description"
 import Tags from "@/components/Tag"
-import getHostName from "@/utils/get-hostname"
+import getBaseUrl from "@/utils/get-hostname"
 import { OpenAPIV3 } from "openapi-types"
 
 const getBaseSpecs = async () => {
-  const res = await fetch(`${getHostName()}/api/base-specs`)
+  const res = await fetch(`${getBaseUrl()}/api/base-specs`)
   return res.json() as unknown as OpenAPIV3.Document
 }
 

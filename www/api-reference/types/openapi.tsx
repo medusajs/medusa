@@ -20,7 +20,13 @@ export type Operation = OpenAPIV3.OperationObject<{
     }
   }
   responses: {
-    [code: string]: OpenAPIV3.ResponseObject
+    [code: string]: OpenAPIV3.ResponseObject & {
+      content: {
+        [media: string]: OpenAPIV3.MediaTypeObject & {
+          schema: SchemaObject
+        }
+      }
+    }
   }
 }>
 

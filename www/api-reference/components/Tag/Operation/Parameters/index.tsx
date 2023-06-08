@@ -8,6 +8,7 @@ type TagOperationParametersProps = {
 const TagOperationParameters = ({
   schemaObject,
 }: TagOperationParametersProps) => {
+  console.log(schemaObject)
   return (
     <div>
       {schemaObject.properties && (

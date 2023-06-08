@@ -4,7 +4,7 @@ import mergeObjects from "./merge-object"
 
 const max_depth = process.env.REFS_MAX_DEPTH
   ? parseInt(process.env.REFS_MAX_DEPTH)
-  : 4
+  : 12
 
 export default async function resolveRefs(
   obj: Record<string, any>,

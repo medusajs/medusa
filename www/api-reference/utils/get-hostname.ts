@@ -1,3 +1,3 @@
-export default function getHostName() {
-  return process.env.NEXT_PUBLIC_HOSTNAME || "http://locahost:3000"
+export default function getBaseUrl() {
+  return process.env.NEXT_PUBLIC_BASE_URL || "http://locahost:3000"
 }
