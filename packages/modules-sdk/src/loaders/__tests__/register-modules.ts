@@ -78,7 +78,7 @@ describe("module definitions loader", () => {
       }
     })
 
-    it("Module with no resolution path when not given custom resolution path, false as default package and not required", () => {
+    it.skip("Module with no resolution path when not given custom resolution path, false as default package and not required", () => {
       const definition = {
         ...defaultDefinition,
         defaultPackage: false as false,

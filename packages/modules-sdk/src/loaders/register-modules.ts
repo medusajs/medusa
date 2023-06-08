@@ -25,7 +25,7 @@ export const registerModules = (
     const customConfig = projectModules[definition.key]
 
     if (!customConfig && !definition.isRequired && !definition.defaultPackage) {
-      continue
+      //continue
     }
 
     const isObj = isObject(customConfig)
