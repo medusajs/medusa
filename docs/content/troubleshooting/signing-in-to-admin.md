@@ -1,4 +1,6 @@
-# Signing in to Medusa Admin
+---
+title: 'Signing in to Medusa Admin'
+---
 
 If you've created a new Medusa backend and used the `seed` command, the default credentials are:
 
@@ -17,4 +19,4 @@ npx @medusajs/medusa-cli user -e some@email.com -p somepassword
 
 ## See Also
 
-- [Medusa CLI tool reference](../cli/reference.md)
+- [Medusa CLI tool reference](../cli/reference.mdx)
