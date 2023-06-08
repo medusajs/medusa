@@ -69,7 +69,7 @@ export const TestDatabase: TestDatabase = {
       throw "ORM not configured"
     }
 
-    this.manager = this.orm.em
+    this.manager = await this.orm.em
 
     // ensure the database exists
     // drop the schema if exists

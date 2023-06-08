@@ -23,6 +23,9 @@ const logger: any = {
 
 export class MedusaModule {
   private static instances_: Map<string, any> = new Map()
+  public static clearInstances(): void {
+    MedusaModule.instances_.clear()
+  }
   public static async bootstrap(
     moduleKey: string,
     defaultPath: string,

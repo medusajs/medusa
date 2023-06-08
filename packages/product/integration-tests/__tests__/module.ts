@@ -1,3 +1,4 @@
+import { MedusaModule } from "@medusajs/modules-sdk"
 import { Product } from "@models"
 import { initialize } from "../../src"
 import * as CustomRepositories from "../__fixtures__/module"
@@ -56,6 +57,7 @@ describe("Product module", function () {
       const testManager = await beforeEach_()
 
       products = await createProductAndTags(testManager, productsData)
+      MedusaModule.clearInstances()
 
       module = await initialize({
         database: {
@@ -93,6 +95,8 @@ describe("Product module", function () {
 
       products = await createProductAndTags(testManager, productsData)
 
+      MedusaModule.clearInstances()
+
       module = await initialize({
         manager: testManager,
         repositories: CustomRepositories,
@@ -104,7 +108,6 @@ describe("Product module", function () {
     it("should initialize", async () => {
       expect(module).toBeDefined()
     })
-
     it("should return a list of product", async () => {
       const products = await module.list()
 

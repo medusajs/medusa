@@ -7,33 +7,48 @@ const isObject = (value: any): value is object =>
   !(value instanceof RegExp) &&
   !(value instanceof String)
 
-const toPointer = (parts: string[]) =>
-  "#" +
-  parts
-    .map((part) => String(part).replace(/~/g, "~0").replace(/\//g, "~1"))
-    .join("/")
+function decycle(object: any, replacer?: Function) {
+  const objects = new WeakMap()
 
-const decycle = () => {
-  const paths = new WeakMap()
+  function deepCopy(value, path) {
+    let oldPath
+    let newObj
 
-  return function replacer(this: any, key: string | symbol, value: any) {
-    if (key !== "$ref" && isObject(value)) {
-      const seen = paths.has(value)
+    if (replacer !== undefined) {
+      value = replacer(value)
+    }
 
-      if (seen) {
-        return { $ref: toPointer(paths.get(value)) }
-      } else {
-        paths.set(value, [...(paths.get(this) ?? []), key])
+    if (isObject(value)) {
+      oldPath = objects.get(value)
+      if (oldPath !== undefined) {
+        return { $ref: oldPath }
       }
+
+      objects.set(value, path)
+
+      if (Array.isArray(value)) {
+        newObj = []
+        value.forEach((el, idx) => {
+          newObj[idx] = deepCopy(el, path + "[" + idx + "]")
+        })
+      } else {
+        newObj = {}
+        Object.keys(value).forEach((name) => {
+          newObj[name] = deepCopy(
+            value[name],
+            path + "[" + JSON.stringify(name) + "]"
+          )
+        })
+      }
+      return newObj
     }
 
     return value
   }
+
+  return deepCopy(object, "$")
 }
 
-export function stringifyCircular(
-  object: any,
-  space?: string | number
-): string {
-  return JSON.stringify(object, decycle(), space)
+export function stringifyCircular(object: any, replacer?: Function): string {
+  return decycle(object, replacer)
 }
