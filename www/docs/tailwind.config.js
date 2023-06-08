@@ -142,8 +142,8 @@ module.exports = {
               },
             },
             highlight: {
-              DEFAULT: "#EDE9FE",
-              dark: "#2C2250",
+              DEFAULT: "#E1F0FF",
+              dark: "#102A4C",
             },
             "toggle-off": {
               DEFAULT: "#C1C8CD",
@@ -350,6 +350,7 @@ module.exports = {
               },
               title: "#7E7D86",
             },
+            "text-highlight": "#102A4C",
           },
           tag: {
             purple: {
