@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "lib": ["es2020"],
-    "target": "es2020",
+    "lib": ["es5", "es6", "es2019"],
+    "target": "es5",
     "outDir": "./dist",
     "esModuleInterop": true,
     "declaration": true,
@@ -15,11 +15,12 @@
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "allowJs": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "downlevelIteration": true // to use ES5 specific tooling
   },
-  "include": ["src"],
+  "include": ["./src/**/*", "index.d.ts"],
   "exclude": [
-    "dist",
+    "./dist/**/*",
     "./src/**/__tests__",
     "./src/**/__mocks__",
     "node_modules"

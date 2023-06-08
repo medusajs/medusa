@@ -23,12 +23,12 @@ export const registerModules = (
 
   for (const definition of MODULE_DEFINITIONS) {
     const customConfig = projectModules[definition.key]
-    const isObj = isObject(customConfig)
 
     if (!customConfig && !definition.isRequired && !definition.defaultPackage) {
       continue
     }
 
+    const isObj = isObject(customConfig)
     if (isObj && customConfig.scope === MODULE_SCOPE.EXTERNAL) {
       // TODO: getExternalModuleResolution(...)
       throw new Error("External Modules are not supported yet.")
