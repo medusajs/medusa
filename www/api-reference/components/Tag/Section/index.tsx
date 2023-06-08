@@ -2,10 +2,8 @@
 
 import getSectionId from "@/utils/get-section-id"
 import { OpenAPIV3 } from "openapi-types"
-import Section from "../../Section"
-import MDXContentClient from "@/components/MDXContent/Client"
 import { useInView } from "react-intersection-observer"
-import { Suspense, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useSidebar } from "@/providers/sidebar"
 import dynamic from 'next/dynamic'
@@ -16,6 +14,14 @@ type TagSectionProps = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 const TagPaths = dynamic(() => import('../Paths'), {
+  loading: () => <Loading />
+})
+
+const Section = dynamic(() => import("../../Section"), {
+  loading: () => <Loading />
+})
+
+const MDXContentClient = dynamic(() => import("@/components/MDXContent/Client"), {
   loading: () => <Loading />
 })
 
@@ -41,12 +47,10 @@ const TagSection = ({ tag }: TagSectionProps) => {
     <div className="min-h-screen" id={slugTagName} ref={ref}>
       <h2>{tag.name}</h2>
       {tag.description && (
-        <Suspense fallback={<Loading />}>
-          <Section
-            addToSidebar={false}
-            content={<MDXContentClient content={tag.description} />}
-          />
-        </Suspense>
+        <Section
+          addToSidebar={false}
+          content={<MDXContentClient content={tag.description} />}
+        />
       )}
       {loadPaths && <TagPaths tag={tag} />}
       {!loadPaths && (
