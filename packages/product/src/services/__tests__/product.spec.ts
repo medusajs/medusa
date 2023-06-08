@@ -48,7 +48,11 @@ describe("Product service", function () {
     const productRepository = container.resolve("productRepository")
 
     const filters = {
-      tags: ["test"],
+      tags: {
+        value: {
+          $in: ["test"],
+        }
+      }
     }
     const config = {
       relations: [],
@@ -59,7 +63,9 @@ describe("Product service", function () {
     expect(productRepository.find).toHaveBeenCalledWith({
       where: {
         tags: {
-          $in: filters.tags
+          value: {
+            $in: ["test"]
+          }
         },
       },
       options: {
@@ -76,7 +82,11 @@ describe("Product service", function () {
     const productRepository = container.resolve("productRepository")
 
     const filters = {
-      tags: ["test"],
+      tags: {
+        value: {
+          $in: ["test"],
+        }
+      }
     }
     const config = {
       relations: ["tags"],
@@ -87,7 +97,9 @@ describe("Product service", function () {
     expect(productRepository.find).toHaveBeenCalledWith({
       where: {
         tags: {
-          $in: filters.tags
+          value: {
+            $in: ["test"]
+          }
         },
       },
       options: {
