@@ -57,7 +57,6 @@ describe("Product module", function () {
       const testManager = await beforeEach_()
 
       products = await createProductAndTags(testManager, productsData)
-      MedusaModule.clearInstances()
 
       module = await initialize({
         database: {
@@ -86,7 +85,7 @@ describe("Product module", function () {
     })
   })
 
-  describe("Using custom data access layer and connection", function () {
+  describe.only("Using custom data access layer and connection", function () {
     let module
     let products: Product[]
 

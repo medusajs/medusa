@@ -57,6 +57,7 @@ async function loadDefault({ database, container }) {
   }
 
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
+
   const orm = await createConnection(database, entities)
 
   container.register({

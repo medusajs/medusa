@@ -7,14 +7,18 @@ const isObject = (value: any): value is object =>
   !(value instanceof RegExp) &&
   !(value instanceof String)
 
-function decycle(object: any, replacer?: Function) {
+const isPrimitive = (val) => {
+  return val !== Object(val)
+}
+
+function decycle(object: any, replacer?: Function | null) {
   const objects = new WeakMap()
 
   function deepCopy(value, path) {
     let oldPath
     let newObj
 
-    if (replacer !== undefined) {
+    if (replacer != null) {
       value = replacer(value)
     }
 
@@ -43,12 +47,16 @@ function decycle(object: any, replacer?: Function) {
       return newObj
     }
 
-    return value
+    return !isPrimitive(value) ? value + "" : value
   }
 
   return deepCopy(object, "$")
 }
 
-export function stringifyCircular(object: any, replacer?: Function): string {
-  return decycle(object, replacer)
+export function stringifyCircular(
+  object: any,
+  replacer?: Function | null,
+  space?: number
+): string {
+  return JSON.stringify(decycle(object, replacer), null, space)
 }

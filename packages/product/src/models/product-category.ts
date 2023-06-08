@@ -1,3 +1,4 @@
+import { generateEntityId, kebabCase } from "@medusajs/utils"
 import {
   BeforeCreate,
   Collection,
@@ -10,7 +11,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { generateEntityId, kebabCase } from "@medusajs/utils"
 
 import Product from "./product"
 
