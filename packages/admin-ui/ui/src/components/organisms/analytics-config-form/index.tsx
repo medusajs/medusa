@@ -50,7 +50,7 @@ const AnalyticsConfigForm = ({ form, compact }: Props) => {
               your name and email address."
                 side="top"
               >
-                <InfoIcon size="18px" />
+                <InfoIcon size="18px" color={"#889096"} />
               </Tooltip>
             )}
           </div>
@@ -87,7 +87,7 @@ const AnalyticsConfigForm = ({ form, compact }: Props) => {
                 content="You can always opt out of sharing your usage data at any time."
                 side="top"
               >
-                <InfoIcon size="18px" />
+                <InfoIcon size="18px" color={"#889096"} />
               </Tooltip>
             )}
           </div>

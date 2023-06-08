@@ -163,7 +163,7 @@ const InvitePage = () => {
       <SEO title="Create Account" />
       {signUp ? (
         <form onSubmit={handleAcceptInvite}>
-          <div className="flex flex-col items-center">
+          <div className="flex w-[300px] flex-col items-center">
             <h1 className="inter-xlarge-semibold mb-large text-[20px]">
               Create your Medusa account
             </h1>
@@ -202,7 +202,7 @@ const InvitePage = () => {
             <Button
               variant="secondary"
               size="medium"
-              className="mt-large w-[280px]"
+              className="mt-large w-[300px]"
               loading={isLoading}
             >
               Create account
@@ -233,7 +233,7 @@ const InvitePage = () => {
           <Button
             variant="secondary"
             size="medium"
-            className="mt-xlarge w-[280px]"
+            className="mt-xlarge w-[300px]"
             onClick={() => setSignUp(true)}
           >
             Sign up
