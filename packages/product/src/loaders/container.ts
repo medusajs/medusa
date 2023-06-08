@@ -37,7 +37,7 @@ export default async ({
   container.register({
     gatewayService: asClass(GatewayService).singleton(),
     productService: asClass(ProductService).singleton(),
-    productCategoryService: asClass(ProductService).singleton(),
+    productCategoryService: asClass(ProductCategoryService).singleton(),
     productVariantService: asClass(ProductVariantService).singleton(),
     productTagService: asClass(ProductTagService).singleton(),
   })
