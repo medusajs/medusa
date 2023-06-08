@@ -6,6 +6,7 @@
       "packages/medusa",
       "packages/medusa-js",
       "packages/medusa-react",
+      "packages/*",
       "packages/generated/*",
       "packages/oas/*",
       "integration-tests/**/*"
