@@ -9,8 +9,8 @@ type TagOperationProps = {
   tag: OpenAPIV3.TagObject
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TagOperation = ({ operation, method }: TagOperationProps) => {
-  console.log(operation)
   return (
     <div className={clsx("flex min-h-screen")}>
       <div className={clsx("w-api-ref-content")}>

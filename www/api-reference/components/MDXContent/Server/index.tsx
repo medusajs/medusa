@@ -7,6 +7,7 @@ import rehypeMdxCodeProps from "rehype-mdx-code-props"
 import rehypePrism from "@mapbox/rehype-prism"
 
 type MDXContentServerProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content: any
 } & Partial<MDXRemoteProps>
 

@@ -1,10 +1,11 @@
 "use client"
 
+import { ReactNode } from "react"
 import getCustomComponents from "../../MDXComponents"
 import { MDXProvider } from "@mdx-js/react"
 
 type MDXContentClientProps = {
-  content: React.ReactNode
+  content: ReactNode
 }
 
 const MDXContentClient = ({ content }: MDXContentClientProps) => {
