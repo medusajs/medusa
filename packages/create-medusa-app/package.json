@@ -1,55 +1,62 @@
 {
   "name": "create-medusa-app",
   "version": "0.0.10",
-  "main": "dist/index.js",
-  "bin": "cli.js",
+  "description": "Create a Medusa project using a single command.",
+  "type": "module",
+  "exports": "./dist/index.js",
+  "bin": "dist/index.js",
   "license": "MIT",
-  "files": [
-    "dist/index.js",
-    "cli.js"
-  ],
   "scripts": {
-    "build": "microbundle -i src/index.ts --no-pkg-main --target=node -f=cjs --sourcemap=false --compress --alias worker_threads=@ascorbic/worker-threads-shim",
-    "watch": "microbundle -i src/index.ts --no-pkg-main --target=node -f=cjs --sourcemap=false --alias worker_threads=@ascorbic/worker-threads-shim --watch",
-    "prepare": "yarn build"
+    "dev": "ts-node --esm src/index.ts",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "prepare": "cross-env NODE_ENV=production yarn run build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.15.4"
+    "boxen": "^7.1.0",
+    "chalk": "^5.2.0",
+    "commander": "^10.0.1",
+    "inquirer": "^9.2.2",
+    "medusa-telemetry": "^0.0.16",
+    "nanoid": "^4.0.2",
+    "node-fetch": "^3.3.1",
+    "open": "^9.1.0",
+    "ora": "^6.3.0",
+    "pg": "^8.10.0",
+    "slugify": "^1.6.6",
+    "uuid": "^9.0.0",
+    "validator": "^13.9.0",
+    "wait-on": "^7.0.1"
   },
   "devDependencies": {
-    "@ascorbic/worker-threads-shim": "^1.0.0",
-    "@babel/runtime": "^7.15.4",
     "@types/chalk": "^2.2.0",
     "@types/commander": "^2.12.2",
-    "@types/configstore": "^4.0.0",
-    "@types/fs-extra": "^9.0.13",
-    "@types/node": "^14.18.36",
-    "ansi-wordwrap": "^1.0.2",
-    "chalk": "^4.1.2",
-    "commander": "^8.1.0",
-    "common-tags": "^1.8.2",
+    "@types/configstore": "^6.0.0",
+    "@types/inquirer": "^9.0.3",
+    "@types/pg": "^8.6.6",
+    "@types/uuid": "^9.0.1",
+    "@types/validator": "^13.7.17",
+    "@types/wait-on": "^5.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.5",
+    "@typescript-eslint/parser": "^5.59.5",
     "configstore": "^6.0.0",
-    "enquirer": "^2.3.6",
-    "execa": "^5.1.1",
-    "fs-exists-cached": "^1.0.0",
-    "fs-extra": "^10.0.0",
-    "hosted-git-info": "^4.0.2",
-    "is-valid-path": "^0.1.1",
-    "microbundle": "^0.13.3",
-    "node-fetch": "^2.6.9",
-    "prompts": "^2.4.2",
-    "string-length": "^4.0.2",
-    "terminal-link": "^2.1.1",
-    "tiny-spin": "^1.0.2",
-    "url": "^0.11.0",
-    "uuid": "3.4.0"
+    "eslint": "^8.40.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.8",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  },
+  "engines": {
+    "node": ">=14.16"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa.git",
     "directory": "packages/create-medusa-app"
   },
-  "author": "Sebastian Rindom <seb@medusa-commerce.com>",
+  "author": "Medusa",
   "publishConfig": {
     "access": "public"
   },

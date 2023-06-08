@@ -1,27 +1,9 @@
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+---
+title: 'General Errors'
+---
 
-# Resolve "Cannot find module X" Errors
+import ModuleXErrorSection from './common-installation-errors/_module-x-error.mdx'
 
-This error can occur while installing one of the storefronts or the Medusa admin. There is no specific cause to this error.
+## Resolve "Cannot find module X" Errors
 
-One way to resolve it is by removing the `node_modules` directory in the project and re-installing the dependencies:
-
-<Tabs groupId="operating-systems" isCodeTabs={true}>
-<TabItem value="unix" label="MacOS / Linux" default>
-
-```bash
-rm -rf node_modules
-yarn install
-```
-
-</TabItem>
-<TabItem value="windows" label="Windows">
-
-```bash
-rd /s /q node_modules
-yarn install
-```
-
-</TabItem>
-</Tabs>
+<ModuleXErrorSection />

@@ -27,7 +27,7 @@ By integrating Contentful to Medusa, you can benefit from powerful features in y
 - Redis. You can follow [their documentation to learn how to install it](https://redis.io/docs/getting-started/installation/).
 - Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../../development/backend/prepare-environment.mdx#git).
 - Gatsby’s CLI tool. You can follow [this documentation to install it](https://www.gatsbyjs.com/docs/reference/gatsby-cli/#how-to-use-gatsby-cli).
-- Medusa’s CLI tool. You can follow [this documentation to install it](../../../cli/reference.md#how-to-install-cli-tool).
+- Medusa’s CLI tool. You can follow [this documentation to install it](../../../cli/reference.mdx#how-to-install-cli-tool).
 
 ---
 

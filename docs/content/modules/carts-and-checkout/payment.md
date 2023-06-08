@@ -42,7 +42,7 @@ The manual payment plugin is still considered a payment provider since it does n
 
 ### How Payment Processor is Created
 
-A Payment Processor is essentially a Medusa [service](../../development/services/create-service.md) with a unique identifier, and it extends the `AbstractPaymentProcessor` from the core Medusa package `@medusajs/medusa`. You can create it as part of a [plugin](../../development/plugins/overview.mdx), or just as a service file in your Medusa backend.
+A Payment Processor is essentially a Medusa [service](../../development/services/create-service.mdx) with a unique identifier, and it extends the `AbstractPaymentProcessor` from the core Medusa package `@medusajs/medusa`. You can create it as part of a [plugin](../../development/plugins/overview.mdx), or just as a service file in your Medusa backend.
 
 As a developer, you will mainly work with the Payment Processor when integrating a payment method in Medusa.
 
