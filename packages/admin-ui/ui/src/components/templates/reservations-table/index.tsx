@@ -1,25 +1,32 @@
+import * as RadixPopover from "@radix-ui/react-popover"
+
 import { Cell, Row, TableRowProps, usePagination, useTable } from "react-table"
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
+import { ReservationItemDTO, StockLocationDTO } from "@medusajs/types"
 import {
+  useAdminDeleteReservation,
   useAdminReservations,
   useAdminStockLocations,
   useAdminStore,
 } from "medusa-react"
 
+import BuildingsIcon from "../../fundamentals/icons/buildings-icon"
 import Button from "../../fundamentals/button"
 import DeletePrompt from "../../organisms/delete-prompt"
 import EditIcon from "../../fundamentals/icons/edit-icon"
 import EditReservationDrawer from "../../../domain/orders/details/reservation/edit-reservation-modal"
 import Fade from "../../atoms/fade-wrapper"
 import NewReservation from "./new"
-import { NextSelect } from "../../molecules/select/next-select"
-import { ReservationItemDTO } from "@medusajs/types"
+import { Option } from "../../../types/shared"
+import ReservationsFilters from "./components/reservations-filter"
 import Table from "../../molecules/table"
 import TableContainer from "../../../components/organisms/table-container"
+import TagDotIcon from "../../fundamentals/icons/tag-dot-icon"
+import Tooltip from "../../atoms/tooltip"
 import TrashIcon from "../../fundamentals/icons/trash-icon"
+import clsx from "clsx"
 import { isEmpty } from "lodash"
 import qs from "qs"
-import { useAdminDeleteReservation } from "medusa-react"
 import { useLocation } from "react-router-dom"
 import { useReservationFilters } from "./use-reservation-filters"
 import useReservationsTableColumns from "./use-reservations-columns"
@@ -36,38 +43,95 @@ const LocationDropdown = ({
   selectedLocation: string
   onChange: (id: string) => void
 }) => {
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+
   const { stock_locations: locations, isLoading } = useAdminStockLocations()
 
-  useEffect(() => {
-    if (!selectedLocation && !isLoading && locations?.length) {
-      onChange(locations[0].id)
+  const locationOptions = useMemo(() => {
+    let locationOptions: { label: string; value?: string }[] = []
+    if (!isLoading && locations) {
+      locationOptions = locations.map((l: StockLocationDTO) => ({
+        label: l.name,
+        value: l.id,
+      }))
     }
-  }, [isLoading, locations, onChange, selectedLocation])
+
+    locationOptions.unshift({ label: "All locations", value: undefined })
+
+    return locationOptions
+  }, [isLoading, locations])
 
   const selectedLocObj = useMemo(() => {
-    if (!isLoading && locations) {
-      return locations.find((l) => l.id === selectedLocation)
+    if (locationOptions?.length) {
+      return (
+        locationOptions.find(
+          (l: { value?: string; label: string }) => l.value === selectedLocation
+        ) ?? locationOptions[0]
+      )
     }
-    return null
-  }, [selectedLocation, locations, isLoading])
+  }, [selectedLocation, locationOptions])
 
-  if (isLoading || !locations || !selectedLocObj) {
+  const isEllipsisActive = (
+    e: { offsetWidth: number; scrollWidth: number } | null
+  ) => {
+    if (!e) {
+      return false
+    }
+    return e.offsetWidth < e.scrollWidth
+  }
+
+  if (isLoading || !locationOptions?.length) {
     return null
   }
 
   return (
-    <div className="h-[40px] w-[200px]">
-      <NextSelect
-        isMulti={false}
-        onChange={(loc) => {
-          onChange(loc!.value)
-        }}
-        options={locations.map((l) => ({
-          label: l.name,
-          value: l.id,
-        }))}
-        value={{ value: selectedLocObj.id, label: selectedLocObj.name }}
-      />
+    <div className="max-w-[220px]">
+      <RadixPopover.Root open={open} onOpenChange={setOpen}>
+        <RadixPopover.Trigger className="w-full">
+          <Tooltip
+            className={clsx({ hidden: !isEllipsisActive(ref.current) })}
+            delayDuration={1000}
+            content={<div>{selectedLocObj?.label}</div>}
+          >
+            <Button
+              size="small"
+              variant="secondary"
+              spanClassName="flex grow"
+              className="max-w-[220px] items-center justify-start"
+            >
+              <BuildingsIcon size={20} />
+              <span ref={ref} className="max-w-[166px] truncate">
+                {selectedLocObj?.label}
+              </span>
+            </Button>
+          </Tooltip>
+        </RadixPopover.Trigger>
+        <RadixPopover.Content
+          side="bottom"
+          align="center"
+          sideOffset={2}
+          className="rounded-rounded z-50 w-[220px] border bg-white p-1"
+        >
+          {locationOptions.map((o, i) => (
+            <div
+              key={i}
+              className="hover:bg-grey-5 rounded-rounded mb-1 flex py-1.5 px-2"
+              onClick={() => {
+                setOpen(false)
+                onChange(o!.value)
+              }}
+            >
+              <div className="mr-2 h-[20px] w-[20px]">
+                {selectedLocObj?.value === o.value && (
+                  <TagDotIcon size={20} outerColor="#FFF" color="#111827" />
+                )}
+              </div>
+              <p className="w-[166px]">{o.label}</p>
+            </div>
+          ))}
+        </RadixPopover.Content>
+      </RadixPopover.Root>
     </div>
   )
 }
@@ -98,6 +162,9 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
     setQuery: setFreeText,
     queryObject,
     representationObject,
+    filters,
+    setFilters,
+    setDefaultFilters,
   } = useReservationFilters(location.search, defaultQuery)
 
   const offs = parseInt(queryObject.offset) || 0
@@ -222,16 +289,18 @@ const ReservationsTable: React.FC<ReservationsTableProps> = () => {
         isLoading={isLoading}
       >
         <Table
-          enableSearch
           searchClassName="h-[40px]"
           handleSearch={setQuery}
           searchValue={query}
           tableActions={
             <div className="flex gap-2">
+              <ReservationsFilters
+                submitFilters={setFilters}
+                clearFilters={setDefaultFilters}
+                filters={filters}
+              />
               <LocationDropdown
-                selectedLocation={
-                  queryObject.location_id || store?.default_location_id
-                }
+                selectedLocation={queryObject.location_id}
                 onChange={(id) => {
                   setLocationFilter(id)
                   gotoPage(0)
