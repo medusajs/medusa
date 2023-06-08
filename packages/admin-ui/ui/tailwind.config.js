@@ -1,12 +1,19 @@
 const path = require("path")
-const extensions = require("./tailwind.content")
+
+let extensionPaths = []
+
+try {
+  extensionPaths = require("./tailwind.content").content
+} catch (e) {
+  // ignore
+}
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     path.join(__dirname, "src/**/*.{js,ts,jsx,tsx}"),
     path.join(__dirname, "./index.html"),
-  ].concat(extensions.content.map((ext) => path.join(__dirname, ext))),
+  ].concat(extensionPaths.map((ext) => path.join(__dirname, ext))),
   theme: {
     screens: {},
     extend: {

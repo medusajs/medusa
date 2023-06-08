@@ -79,3 +79,9 @@ export interface ExtensionProps {
   navigate: NavigateFunction
   notify: Notify
 }
+
+export type ValidPageResult = {
+  path: string
+  hasConfig: boolean
+  file: string
+}

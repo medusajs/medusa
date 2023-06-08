@@ -23,13 +23,8 @@
     "ui"
   ],
   "scripts": {
-    "webpack:dev": "webpack-dev-server --mode=development --config ./webpack.config.ts",
-    "dev": "vite -c vite.config.dev.ts --port 7001",
-    "dev:build": "vite build -c vite.config.dev.ts",
-    "build": "tsup",
-    "test:ui": "vitest --config vite.config.dev.ts",
-    "test:ui:once": "vitest --config vite.config.dev.ts --run",
-    "test": "echo \"Tests disabled temporarily\""
+    "dev": "webpack-dev-server --mode=development --config ./webpack.development.config.ts",
+    "build": "tsup"
   },
   "dependencies": {
     "@hookform/error-message": "^2.0.1",
@@ -93,6 +88,7 @@
     "react-router-dom": "6.8.0",
     "react-select": "^5.5.4",
     "react-table": "^7.7.0",
+    "source-map-loader": "^4.0.1",
     "style-loader": "^3.3.3",
     "swc-loader": "^0.2.3",
     "swc-minify-webpack-plugin": "^2.1.1",
@@ -102,7 +98,8 @@
     "type-fest": "^3.6.0",
     "webpack": "^5.84.1",
     "webpack-dev-middleware": "^6.1.1",
-    "webpack-hot-middleware": "^2.25.3"
+    "webpack-hot-middleware": "^2.25.3",
+    "webpackbar": "^5.0.2"
   },
   "devDependencies": {
     "@medusajs/medusa": "*",
@@ -113,9 +110,11 @@
     "@types/react-dom": "^18.0.10",
     "@types/react-table": "^7.7.9",
     "@types/webpack-hot-middleware": "^2.25.6",
+    "duplicate-dependencies-webpack-plugin": "^1.0.2",
     "ts-node": "^10.9.1",
     "tsup": "6.7.0",
     "typescript": "^4.9.3",
+    "webpack-bundle-analyzer": "^4.9.0",
     "webpack-cli": "^5.1.1",
     "webpack-dev-server": "^4.15.0"
   },

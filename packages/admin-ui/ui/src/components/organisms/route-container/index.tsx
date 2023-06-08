@@ -1,17 +1,20 @@
 import type { Route as InjectedRoute } from "@medusajs/admin-shared"
 import { Route, Routes } from "react-router-dom"
-import { usePages } from "../../../providers/page-provider"
+import { useRoutes } from "../../../providers/route-provider"
 
 type RouteContainerProps = {
   route: InjectedRoute
+  previousPath?: string
 }
 
-const RouteContainer = ({ route }: RouteContainerProps) => {
+const RouteContainer = ({ route, previousPath = "" }: RouteContainerProps) => {
   const { Page, path } = route
 
-  const { getNestedRoutes } = usePages()
+  const { getNestedRoutes } = useRoutes()
 
-  const nestedRoutes = getNestedRoutes(path)
+  const fullPath = `${previousPath}${path}`
+
+  const nestedRoutes = getNestedRoutes(fullPath)
 
   const hasNestedRoutes = nestedRoutes.length > 0
 
@@ -24,7 +27,11 @@ const RouteContainer = ({ route }: RouteContainerProps) => {
       <Routes>
         <Route path={"/"} element={<Page />} />
         {nestedRoutes.map((r, i) => (
-          <Route path={r.path} key={i} element={<RouteContainer route={r} />} />
+          <Route
+            path={r.path}
+            key={i}
+            element={<RouteContainer route={r} previousPath={fullPath} />}
+          />
         ))}
       </Routes>
     </>

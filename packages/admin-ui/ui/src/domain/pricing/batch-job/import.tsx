@@ -171,8 +171,8 @@ function ImportPrices(props: ImportPricesProps) {
     }
   }
 
-  const templateLink = __BASE__
-    ? `${__BASE__}/temp/price-list-import-template.csv`
+  const templateLink = process.env.ADMIN_PATH
+    ? `${process.env.ADMIN_PATH}/temp/price-list-import-template.csv`
     : `/temp/price-list-import-template.csv`
 
   return (

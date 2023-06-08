@@ -21,7 +21,7 @@ export async function createVirtualEntry(
   `
 
   const imports = extensions.map((ext, i) => {
-    return `import ext${i}, { config as config${i}} from "${ext}"`
+    return `import ext${i}, { config as config${i} } from "${ext}"`
   })
 
   const body = dedent`

@@ -9,12 +9,6 @@
 /loaders
 /setup
 
-# Vite cache
-.cache
-
-# Vite build output
-build
-
 # Platform-specific files
 .DS_Store
 Thumbs.db
