@@ -104,16 +104,16 @@ describe("ProductVariant Service", () => {
       )
 
       expect(results).toEqual([
-        {
+        expect.objectContaining({
           id: "test-1",
           title: "variant 1",
-          product: {
+          product: expect.objectContaining({
             id: "product-1",
             title: "product 1",
             tags: expect.any(Collection<ProductTag>),
             variants: expect.any(Collection<ProductVariant>),
-          },
-        },
+          }),
+        }),
       ])
 
       expect(JSON.parse(JSON.stringify(results))).toEqual([

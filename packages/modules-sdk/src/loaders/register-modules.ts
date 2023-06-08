@@ -6,8 +6,12 @@ import {
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
-import MODULE_DEFINITIONS from "../definitions"
+import MODULE_DEFINITIONS, { Modules } from "../definitions"
 import resolveCwd from "resolve-cwd"
+
+// Note: Temporarily adding this here as registering modules doesn't
+// currently support external scope.
+const MODULES_TO_SKIP: string[] = [Modules.PRODUCT]
 
 export const registerModules = (
   modules?: Record<
@@ -21,6 +25,10 @@ export const registerModules = (
   const projectModules = modules ?? {}
 
   for (const definition of MODULE_DEFINITIONS) {
+    if (MODULES_TO_SKIP.includes(definition.key)) {
+      continue
+    }
+
     const customConfig = projectModules[definition.key]
     const isObj = typeof customConfig === "object"
 
