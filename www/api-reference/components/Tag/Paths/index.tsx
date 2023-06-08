@@ -47,6 +47,7 @@ const TagSectionPaths = ({ tag }: TagSectionPathsProps) => {
         parentPath: tagSlugName,
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paths])
 
   return (

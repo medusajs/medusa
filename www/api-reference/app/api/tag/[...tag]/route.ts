@@ -15,6 +15,10 @@ export async function GET(req: NextRequest) {
 
   // get path files
   const basePath = path.join(process.cwd(), "specs/admin/paths")
+  // this is just to ensure that vercel picks up these files on build
+  path.join(process.cwd(), "specs/admin/code_samples")
+  path.join(process.cwd(), "specs/admin/components")
+
   const files = await fs.readdir(basePath)
 
   let documents: OpenAPIV3.PathItemObject<Operation>[] = await Promise.all(
