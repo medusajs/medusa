@@ -6,6 +6,10 @@ addHowToData: true
 import Feedback from '@site/src/components/Feedback';
 import DocCardList from '@theme/DocCardList';
 import Icons from '@theme/Icon';
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import SaslSection from '../../troubleshooting/database-errors/_sasl.md'
+import ConnectionErrorSection from '../../troubleshooting/database-errors/_connection-error.md'
+import FreshInstallationSection from '../../troubleshooting/awilix-resolution-error/_fresh-installation.md'
 
 # Install Medusa Backend
 
@@ -68,6 +72,12 @@ Make sure your PostgreSQL server is running before you run the Medusa backend.
    medusa develop
    ```
 
+After these three steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
+
+```bash noReport
+curl localhost:9000/store/products
+```
+
 <Feedback 
    event="survey_server_quickstart"
    question="Did you set up the backend successfully?"
@@ -75,7 +85,30 @@ Make sure your PostgreSQL server is running before you run the Medusa backend.
    negativeQuestion="Please describe the issue you faced."
 />
 
-### Seed Data 
+---
+
+## Troubleshooting Installation
+
+<Troubleshooting
+  sections={[
+    {
+      title: 'Error: SASL: SCRAM-SERVER-FIRST-MESSAGE: Client password must be a string',
+      content: <SaslSection />
+    },
+    {
+      title: 'Error: connect ECONNREFUSED ::1:5432',
+      content: <ConnectionErrorSection />
+    },
+    {
+      title: 'AwilixResolutionError: Could Not Resolve X',
+      content: <FreshInstallationSection />
+    },
+  ]}
+/>
+
+---
+
+## Seed Data 
 
 For better testing, you can add demo data to your Medusa backend by running the seed command in your Medusa backend directory:
 
@@ -83,15 +116,9 @@ For better testing, you can add demo data to your Medusa backend by running the 
 medusa seed --seed-file=data/seed.json
 ```
 
-### Test the Backend
+---
 
-After these three steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
-
-```bash noReport
-curl localhost:9000/store/products
-```
-
-### Health Route
+## Health Route
 
 You can access `/health` to get health status of your backend.
 

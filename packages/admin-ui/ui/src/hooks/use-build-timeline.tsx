@@ -162,15 +162,20 @@ export interface NotificationEvent extends TimelineEvent {
 export const useBuildTimeline = (orderId: string) => {
   const { orderRelations } = useOrdersExpandParam()
 
-  const { order, refetch } = useAdminOrder(orderId, {
+  const {
+    order,
+    refetch,
+    isLoading: isOrderLoading,
+  } = useAdminOrder(orderId, {
     expand: orderRelations,
   })
 
-  const { order_edits: edits } = useAdminOrderEdits({ order_id: orderId })
+  const { order_edits: edits, isLoading: isOrderEditsLoading } =
+    useAdminOrderEdits({ order_id: orderId })
 
   const { isFeatureEnabled } = useFeatureFlag()
 
-  const { notes } = useAdminNotes({
+  const { notes, isLoading: isNotesLoading } = useAdminNotes({
     resource_id: orderId,
     limit: 100,
     offset: 0,
@@ -182,6 +187,10 @@ export const useBuildTimeline = (orderId: string) => {
 
   const events: TimelineEvent[] | undefined = useMemo(() => {
     if (!order) {
+      return undefined
+    }
+
+    if (isOrderLoading || isNotesLoading || isOrderEditsLoading) {
       return undefined
     }
 
@@ -541,9 +550,21 @@ export const useBuildTimeline = (orderId: string) => {
     events[events.length - 1].first = true
 
     return events
-  }, [order, edits, notes, notifications, isFeatureEnabled])
+  }, [
+    order,
+    edits,
+    notes,
+    notifications,
+    isFeatureEnabled,
+    isOrderLoading,
+    isNotesLoading,
+    isOrderEditsLoading,
+  ])
 
-  return { events, refetch }
+  return {
+    events,
+    refetch,
+  }
 }
 
 function getLineItem(allItems, itemId) {
