@@ -34,8 +34,25 @@ export type Path = OpenAPIV3.PathItemObject & {
   [method in OpenAPIV3.HttpMethods]?: Operation
 }
 
-export type SchemaObject = OpenAPIV3.SchemaObject & {
-  properties?: {
-    [name: string]: OpenAPIV3.SchemaObject
+export type ArraySchemaObject = Omit<
+  OpenAPIV3.ArraySchemaObject,
+  "properties" | "anyOf"
+> & {
+  items: SchemaObject
+  properties: {
+    [name: string]: SchemaObject
   }
+  anyOf?: SchemaObject[]
 }
+
+export type NonArraySchemaObject = Omit<
+  OpenAPIV3.NonArraySchemaObject,
+  "properties" | "anyOf"
+> & {
+  properties: {
+    [name: string]: SchemaObject
+  }
+  anyOf?: SchemaObject[]
+}
+
+export type SchemaObject = ArraySchemaObject | NonArraySchemaObject

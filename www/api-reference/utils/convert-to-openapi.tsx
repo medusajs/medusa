@@ -16,7 +16,7 @@ const keysToConvert = [
 
 const max_depth = process.env.REFS_MAX_DEPTH
   ? parseInt(process.env.REFS_MAX_DEPTH)
-  : 12
+  : 15
 
 export default function convertToOpenApi(obj: Record<string, any>) {
   Object.keys(obj).forEach((key) => {
