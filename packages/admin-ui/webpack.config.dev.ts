@@ -1,8 +1,13 @@
+import { DuplicateReporterPlugin } from "duplicate-dependencies-webpack-plugin"
 import path from "path"
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 import { Configuration } from "webpack-dev-server"
-import { getWebpackConfig } from "./src/node/webpack/webpack.config"
+import { getWebpackConfig } from "./src/node/webpack/get-webpack-config"
 
 const getDevServerConfig = () => {
+  const analyzeBundle = process.env.ANALYZE_BUNDLE
+  const analyzeDuplicateDependencies = process.env.ANALYZE_DEPS
+
   const devConfig = getWebpackConfig({
     cacheDir: __dirname,
     dest: path.resolve(__dirname, "build"),
@@ -13,6 +18,14 @@ const getDevServerConfig = () => {
       publicPath: "/",
     },
   })
+
+  if (analyzeBundle) {
+    devConfig.plugins?.push(new BundleAnalyzerPlugin())
+  }
+
+  if (analyzeDuplicateDependencies === "true") {
+    devConfig.plugins?.push(new DuplicateReporterPlugin())
+  }
 
   return {
     ...devConfig,

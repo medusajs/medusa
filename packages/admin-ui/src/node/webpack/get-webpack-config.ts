@@ -6,19 +6,9 @@ import { SwcMinifyWebpackPlugin } from "swc-minify-webpack-plugin"
 import type { Configuration } from "webpack"
 import webpack from "webpack"
 import WebpackBar from "webpackbar"
-import { getClientEnv } from "../utils/get-client-env"
-import { webpackAlias } from "./webpack.alias"
-
-type GetCustomWebpackConfigArgs = {
-  entry: string
-  dest: string
-  cacheDir: string
-  env: "development" | "production"
-  options?: {
-    backend?: string
-    publicPath?: string
-  }
-}
+import { WebpackConfigArgs } from "../types"
+import { getClientEnv } from "../utils"
+import { webpackAliases } from "./webpack-aliases"
 
 export function getWebpackConfig({
   entry,
@@ -26,7 +16,7 @@ export function getWebpackConfig({
   cacheDir,
   env,
   options,
-}: GetCustomWebpackConfigArgs): Configuration {
+}: WebpackConfigArgs): Configuration {
   const isProd = env === "production"
 
   const envVars = getClientEnv({
@@ -125,7 +115,7 @@ export function getWebpackConfig({
       ],
     },
     resolve: {
-      alias: webpackAlias,
+      alias: webpackAliases,
       symlinks: false,
       extensions: [".js", ".jsx", ".ts", ".tsx"],
       mainFields: ["browser", "module", "main"],

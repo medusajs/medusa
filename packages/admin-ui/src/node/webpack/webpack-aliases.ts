@@ -10,7 +10,10 @@ const packages = [
   "@tanstack/react-table",
 ]
 
-export const webpackAlias = packages.reduce((acc, pkg) => {
+/**
+ * Ensure that the admin-ui uses the same version of these packages as the project.
+ */
+export const webpackAliases = packages.reduce((acc, pkg) => {
   acc[`${pkg}$`] = require.resolve(pkg)
   return acc
 }, {})

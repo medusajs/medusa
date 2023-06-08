@@ -27,10 +27,24 @@ async function createExtensionsEntry({
   let localPages: ValidPageResult[] = []
 
   if (hasLocalExtensions) {
+    const filterFunc = (src: string, _dest: string): boolean => {
+      const fileName = src.substring(src.lastIndexOf("/") + 1)
+      const fileExtension = fileName.substring(fileName.lastIndexOf("."))
+
+      if (fileName.startsWith("webpack.config") && fileExtension !== "") {
+        return false
+      }
+
+      return true
+    }
+
     try {
       await fse.copy(
         localExtensionsPath,
-        path.resolve(dest, "admin", "src", "extensions")
+        path.resolve(dest, "admin", "src", "extensions"),
+        {
+          filter: filterFunc,
+        }
       )
     } catch (err) {
       logger.panic(

@@ -23,10 +23,14 @@
     "ui"
   ],
   "scripts": {
-    "dev": "webpack-dev-server --mode=development --config ./webpack.development.config.ts",
+    "dev": "webpack serve --mode=development --config ./webpack.config.dev.ts --progress profile",
+    "analyze:bundle": "ANALYZE_BUNDLE=true webpack --config ./webpack.config.dev.ts",
+    "analyze:deps": "ANALYZE_DEPS=true webpack serve --config ./webpack.config.dev.ts --progress profile",
     "build": "tsup"
   },
   "dependencies": {
+    "@babel/parser": "7.21.9",
+    "@babel/traverse": "7.21.5",
     "@hookform/error-message": "^2.0.1",
     "@medusajs/admin-shared": "*",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
@@ -97,11 +101,10 @@
     "ts-dedent": "^2.2.0",
     "type-fest": "^3.6.0",
     "webpack": "^5.84.1",
-    "webpack-dev-middleware": "^6.1.1",
-    "webpack-hot-middleware": "^2.25.3",
     "webpackbar": "^5.0.2"
   },
   "devDependencies": {
+    "@babel/types": "7.21.5",
     "@medusajs/medusa": "*",
     "@medusajs/types": "*",
     "@types/pluralize": "^0.0.29",

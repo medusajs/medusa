@@ -14,11 +14,6 @@
     "rootDir": ".",
     "skipLibCheck": true
   },
-  "include": [
-    "src",
-    "vite.config.dev.ts",
-    "tsup.config.ts",
-    "webpack.development.config.ts"
-  ],
-  "exclude": ["**/node_modules", "ui"]
+  "include": ["src", "tsup.config.ts", "webpack.config.dev.ts"],
+  "exclude": ["node_modules", "ui"]
 }
