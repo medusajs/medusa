@@ -1,7 +1,7 @@
 import {
-  ModuleDefinition,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  ModuleDefinition,
 } from "@medusajs/types"
 
 export enum Modules {

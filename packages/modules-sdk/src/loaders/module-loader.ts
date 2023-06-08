@@ -16,11 +16,17 @@ async function loadModule(
   resolution: ModuleResolution,
   logger: Logger
 ): Promise<{ error?: Error } | void> {
-  const registrationName = resolution.definition.registrationName
+  const modDefinition = resolution.definition
+  const registrationName = modDefinition.registrationName
 
   const { scope, resources } = resolution.moduleDeclaration ?? ({} as any)
 
-  if (scope === MODULE_SCOPE.EXTERNAL) {
+  const canSkip =
+    !resolution.resolutionPath &&
+    !modDefinition.isRequired &&
+    !modDefinition.defaultPackage
+
+  if (scope === MODULE_SCOPE.EXTERNAL && !canSkip) {
     // TODO: implement external Resolvers
     // return loadExternalModule(...)
     throw new Error("External Modules are not supported yet.")
