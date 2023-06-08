@@ -8,14 +8,13 @@ type TagOperationParametersProps = {
 const TagOperationParameters = ({
   schemaObject,
 }: TagOperationParametersProps) => {
-  console.log(schemaObject)
   return (
     <div>
       {schemaObject.properties && (
         <ul>
           {Object.entries(schemaObject.properties).map(([key, value]) => (
             <li className="mt-0.5 flex" key={key}>
-              <span className="font-monospace w-1/3">
+              <span className="font-monospace w-1/3 ">
                 {key}
                 {schemaObject.required?.includes(key) && (
                   <>

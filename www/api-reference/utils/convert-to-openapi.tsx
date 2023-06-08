@@ -14,6 +14,10 @@ const keysToConvert = [
   },
 ]
 
+const max_depth = process.env.REFS_MAX_DEPTH
+  ? parseInt(process.env.REFS_MAX_DEPTH)
+  : 12
+
 export default function convertToOpenApi(obj: Record<string, any>) {
   Object.keys(obj).forEach((key) => {
     const keyToConvert = keysToConvert.find((k) => k.key === key)
@@ -32,8 +36,13 @@ function arrayToObject(
   options: {
     removeNumericalKeys: boolean
     numericalKeysExceptions?: string[]
+    currentDepth?: number
   }
 ): any {
+  const { currentDepth = 1 } = options
+  if (currentDepth > max_depth) {
+    return arr
+  }
   if (arr.length !== 1) {
     if (!isArrayOfObjects(arr)) {
       return arr
@@ -49,7 +58,10 @@ function arrayToObject(
   if (isObject(arr[0])) {
     Object.keys(arr[0]).forEach((key) => {
       arr[0][key] = Array.isArray(arr[0][key])
-        ? arrayToObject(arr[0][key], options)
+        ? arrayToObject(arr[0][key], {
+            ...options,
+            currentDepth: currentDepth + 1,
+          })
         : arr[0][key]
     })
   }
@@ -62,7 +74,10 @@ function arrayToObject(
     const values = Object.values(arr[0])
 
     if (Array.isArray(values)) {
-      return arrayToObject(values, options)
+      return arrayToObject(values, {
+        ...options,
+        currentDepth: currentDepth + 1,
+      })
     }
 
     return values
