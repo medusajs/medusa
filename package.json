@@ -3,7 +3,9 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/*",
+      "packages/medusa",
+      "packages/medusa-js",
+      "packages/medusa-react",
       "packages/generated/*",
       "packages/oas/*",
       "integration-tests/**/*"
