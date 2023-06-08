@@ -1,8 +1,7 @@
 import { revertMigration } from "../migration-down"
-import { config } from "dotenv"
-
-config()
 
 export default (async () => {
+  const { config } = await import("dotenv")
+  config()
   await revertMigration()
 })()

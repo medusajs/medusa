@@ -1,8 +1,7 @@
 import { runMigrations } from "../migration-up"
-import { config } from "dotenv"
-
-config()
 
 export default (async () => {
+  const { config } = await import("dotenv")
+  config()
   await runMigrations()
 })()
