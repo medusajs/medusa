@@ -43,7 +43,7 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
     const redisClient = redis.createClient(configModule.projectConfig.redis_url)
     sessionOpts.store = new RedisStore({
       client: redisClient,
-      prefix: `${configModule.projectConfig.redis_prefix ?? ""}sess:`,
+      prefix: `${configModule?.projectConfig?.redis_prefix ?? ""}sess:`,
     })
   }
 

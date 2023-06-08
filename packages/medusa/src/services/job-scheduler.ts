@@ -30,7 +30,7 @@ export default class JobSchedulerService {
     this.config_ = config
     this.logger_ = logger
 
-    const prefix = `${config.projectConfig?.redis_prefix ?? ""}${
+    const prefix = `${config?.projectConfig?.redis_prefix ?? ""}${
       this.constructor.name
     }`
 
