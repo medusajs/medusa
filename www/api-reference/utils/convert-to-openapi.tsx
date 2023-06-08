@@ -23,7 +23,6 @@ export default function convertToOpenApi(obj: Record<string, any>) {
     const keyToConvert = keysToConvert.find((k) => k.key === key)
     if (keyToConvert) {
       // flatten everything recursively
-      // console.log(key, obj[key])
       obj[key] = arrayToObject(obj[keyToConvert.key], keyToConvert.options)
     }
   })
@@ -45,6 +44,23 @@ function arrayToObject(
   }
   if (arr.length !== 1) {
     if (!isArrayOfObjects(arr)) {
+      return arr
+    }
+    
+    if (hasOverlappingObjects(arr)) {
+      arr = arr.map((item: Record<string, any>) => {
+        Object.keys(item).forEach((key) => {
+          if (Array.isArray(key)) {
+            item[key] = arrayToObject(item[key], {
+              ...options,
+              currentDepth: currentDepth + 1,
+            })
+          }
+        })
+
+        return item
+      })
+
       return arr
     }
     const tempObj = {}
@@ -109,5 +125,11 @@ function isNumericalKey(key: string, exceptions: string[] = []) {
   return !exceptions.some((exception) => {
     const exceptionRegex = new RegExp(exception)
     return key.match(exceptionRegex)
+  })
+}
+
+function hasOverlappingObjects (arr: any[]) {
+  return arr.some((item: Record<string, any>) => {
+    return Object.entries(item).some(([key, value]) => arr.some((item2) => item !== item2 && key in item2 && item2[key] === value))
   })
 }

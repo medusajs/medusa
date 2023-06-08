@@ -36,13 +36,13 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
           {item.method && (
             <span
               className={clsx(
-                "text-medusa-text-on-color text-label-x-small mr-0.5 rounded py-[2px] px-[4px] text-[10px]",
+                "text-label-x-small mr-0.5 rounded py-[4px] px-0.5 !text-[10px]",
                 item.method === "get" &&
-                  "bg-medusa-tag-green-icon dark:bg-medusa-tag-green-icon-dark",
+                  "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",
                 item.method === "post" &&
-                  "bg-medusa-tag-blue-icon dark:bg-medusa-tag-blue-icon-dark",
+                  "bg-medusa-tag-blue-bg dark:bg-medusa-tag-blue-bg-dark text-medusa-tag-blue-text dark:text-medusa-tag-blue-text-dark",
                 item.method === "delete" &&
-                  "bg-medusa-tag-red-icon dark:bg-medusa-tag-red-icon-dark"
+                  "bg-medusa-tag-red-bg dark:bg-medusa-tag-red-bg-dark text-medusa-tag-red-text dark:text-medusa-tag-red-text-dark"
               )}
             >
               {item.method.toUpperCase()}

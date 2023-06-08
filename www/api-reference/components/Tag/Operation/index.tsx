@@ -2,6 +2,7 @@ import { Operation } from "@/types/openapi"
 import clsx from "clsx"
 import { OpenAPIV3 } from "openapi-types"
 import TagOperationParameters from "./Parameters"
+import getSectionId from "@/utils/get-section-id"
 
 type TagOperationProps = {
   operation: Operation
@@ -12,7 +13,7 @@ type TagOperationProps = {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TagOperation = ({ operation, method }: TagOperationProps) => {
   return (
-    <div className={clsx("flex min-h-screen")}>
+    <div className={clsx("flex min-h-screen")} id={getSectionId([operation.operationId])}>
       <div className={clsx("w-api-ref-content")}>
         <h3>{operation.summary}</h3>
         <p>{operation.description}</p>

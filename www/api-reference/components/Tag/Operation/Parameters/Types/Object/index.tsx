@@ -1,5 +1,6 @@
 import { SchemaObject } from "@/types/openapi"
 import TagOperationParametersDefault from "../Default"
+import TagOperationParametersProperties from "../Properties"
 
 type TagOperationParamatersObject = {
   name: string
@@ -25,23 +26,7 @@ const TagOperationParametersObject = ({
         />
       </summary>
 
-      {Object.entries(schema.properties).map(([key, value]) => {
-        const anyOfObject = value.anyOf?.find((type) => type.type === "object")
-        return (
-          <div key={key}>
-            {value.type === "object" && value.properties && (
-              <TagOperationParametersObject
-                name={key}
-                schema={value}
-                is_required={schema.required?.includes(key)}
-              />
-            )}
-            {value.type !== "object" && (
-              <TagOperationParametersDefault name={key} schema={value} />
-            )}
-          </div>
-        )
-      })}
+      <TagOperationParametersProperties schema={schema} />
     </details>
   )
 }

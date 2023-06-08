@@ -54,7 +54,7 @@ const TagSectionPaths = ({ tag }: TagSectionPathsProps) => {
     <div>
       {!paths && <Skeleton count={10} containerClassName="w-api-ref-content" />}
       {paths.length > 0 && (
-        <ul>
+        <>
           {paths.map((path, pathIndex) => (
             <div key={pathIndex}>
               {Object.entries(path).map(
@@ -69,7 +69,7 @@ const TagSectionPaths = ({ tag }: TagSectionPathsProps) => {
               )}
             </div>
           ))}
-        </ul>
+        </>
       )}
     </div>
   )
