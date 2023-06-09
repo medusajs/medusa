@@ -3,12 +3,6 @@ import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
 import * as ProductModels from "@models"
 import * as process from "process"
 
-if (typeof process.env.DB_TEMP_NAME === "undefined") {
-  const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
-  process.env.DB_TEMP_NAME = `medusa-integration-${tempName}`
-  process.env.MEDUSA_PRODUCT_DB_SCHEMA = "medusa-product"
-}
-
 const DB_HOST = process.env.DB_HOST ?? "localhost"
 const DB_USERNAME = process.env.DB_USERNAME ?? ""
 const DB_PASSWORD = process.env.DB_PASSWORD

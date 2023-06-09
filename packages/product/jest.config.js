@@ -15,5 +15,7 @@ module.exports = {
   },
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `ts`],
-  modulePathIgnorePatterns: ["dist/"]
+  modulePathIgnorePatterns: ["dist/"],
+  setupFiles: ["<rootDir>/integration-tests/setup-env.js"],
+  setupFilesAfterEnv: ["<rootDir>/integration-tests/setup.js"],
 }

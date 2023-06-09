@@ -6328,6 +6328,7 @@ __metadata:
     jest: ^25.5.4
     lodash: ^4.17.21
     medusa-test-utils: ^1.1.40
+    pg-god: ^1.0.12
     rimraf: ^5.0.0
     ts-jest: ^25.5.1
     ts-node: ^10.9.1
