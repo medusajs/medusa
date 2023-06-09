@@ -1,4 +1,4 @@
-import { Constructor, DAL } from "@medusajs/types"
+import { Constructor, DAL, IEventBusService } from "@medusajs/types"
 
 export type ProductServiceInitializeOptions = {
   database: {
@@ -11,4 +11,8 @@ export type ProductServiceInitializeOptions = {
 export type ProductServiceInitializeCustomDataLayerOptions = {
   manager?: any
   repositories?: { [key: string]: Constructor<DAL.RepositoryService> }
+}
+
+export type InitializeModuleInjectableDependencies = {
+  eventBusService?: IEventBusService
 }

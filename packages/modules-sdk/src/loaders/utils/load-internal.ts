@@ -11,8 +11,6 @@ import {
 import { createMedusaContainer } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
 
-// import { trackInstallation } from "medusa-telemetry"
-
 export async function loadInternalModule(
   container: MedusaContainer,
   resolution: ModuleResolution,
@@ -25,6 +23,10 @@ export async function loadInternalModule(
 
   let loadedModule: ModuleExports
   try {
+    // When loading manually, we pass the exports to be loaded, meaning that we do not need to import the package to find
+    // the exports. This is useful when a package export an initialize function which will bootstrap itself and therefore
+    // does not need to import the package that is currently being loaded as it would create a
+    // circular reference.
     loadedModule =
       resolution.moduleExports ??
       (await import(resolution.resolutionPath as string)).default
@@ -121,16 +123,6 @@ export async function loadInternalModule(
       )
     }).singleton(),
   })
-
-  /*
-  trackInstallation(
-    {
-      module: resolution.definition.key,
-      resolution: resolution.resolutionPath,
-    },
-    "module"
-  )
-  */
 }
 
 export async function loadModuleMigrations(

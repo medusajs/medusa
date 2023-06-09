@@ -5,7 +5,6 @@ import {
 } from "@medusajs/types"
 import { createMedusaContainer } from "medusa-core-utils"
 import { EOL } from "os"
-// import { trackInstallation } from "../__mocks__/medusa-telemetry"
 import { moduleLoader } from "../module-loader"
 
 const logger = {

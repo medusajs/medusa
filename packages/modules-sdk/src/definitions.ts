@@ -66,9 +66,9 @@ export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
   },
   [Modules.PRODUCT]: {
     key: Modules.PRODUCT,
-    registrationName: "productService",
+    registrationName: Modules.PRODUCT,
     defaultPackage: false,
-    label: "productService",
+    label: "ProductService",
     isRequired: false,
     canOverride: true,
     dependencies: [],

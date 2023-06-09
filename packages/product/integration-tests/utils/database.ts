@@ -47,7 +47,7 @@ export const TestDatabase: TestDatabase = {
 
   getManager() {
     if (this.manager === null) {
-      throw "manager entity not available"
+      throw new Error("manager entity not available")
     }
 
     return this.manager
@@ -55,7 +55,7 @@ export const TestDatabase: TestDatabase = {
 
   async forkManager() {
     if (this.manager === null) {
-      throw "manager entity not available"
+      throw new Error("manager entity not available")
     }
 
     return await this.manager.fork()
@@ -63,7 +63,7 @@ export const TestDatabase: TestDatabase = {
 
   getORM() {
     if (this.orm === null) {
-      throw "orm entity not available"
+      throw new Error("orm entity not available")
     }
 
     return this.orm
@@ -74,7 +74,7 @@ export const TestDatabase: TestDatabase = {
     this.orm = await MikroORM.init(ORMConfig)
 
     if (this.orm === null) {
-      throw "ORM not configured"
+      throw new Error("ORM not configured")
     }
 
     this.manager = await this.orm.em
@@ -84,7 +84,7 @@ export const TestDatabase: TestDatabase = {
 
   async clearDatabase() {
     if (this.orm === null) {
-      throw "ORM not configured"
+      throw new Error("ORM not configured")
     }
 
     await this.orm.close()

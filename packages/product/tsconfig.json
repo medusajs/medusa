@@ -18,6 +18,7 @@
     "skipLibCheck": true,
     "downlevelIteration": true, // to use ES5 specific tooling
     "baseUrl": ".",
+    "resolveJsonModule": true,
     "paths": {
       "@models": ["./src/models"],
       "@services": ["./src/services"],

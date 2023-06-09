@@ -4,9 +4,10 @@ import {
   MedusaModule,
   Modules,
 } from "@medusajs/modules-sdk"
-import { IEventBusService, IProductService } from "@medusajs/types"
+import { IProductService } from "@medusajs/types"
 import { moduleDefinition } from "../module-definition"
 import {
+  InitializeModuleInjectableDependencies,
   ProductServiceInitializeCustomDataLayerOptions,
   ProductServiceInitializeOptions,
 } from "../types"
@@ -16,9 +17,7 @@ export const initialize = async (
     | ProductServiceInitializeOptions
     | ProductServiceInitializeCustomDataLayerOptions
     | ExternalModuleDeclaration,
-  injectedDependencies?: {
-    eventBusService?: IEventBusService
-  }
+  injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<IProductService> => {
   const serviceKey = Modules.PRODUCT
 

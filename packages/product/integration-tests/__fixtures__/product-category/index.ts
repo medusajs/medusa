@@ -19,7 +19,7 @@ export async function createProductCategories(
 
     const category = await manager.create(ProductCategory, {
       ...categoryDataClone,
-      parent_category: parentCategory
+      parent_category: parentCategory,
     })
 
     categories.push(category)
