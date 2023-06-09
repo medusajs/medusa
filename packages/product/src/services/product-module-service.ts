@@ -1,9 +1,9 @@
 import {
   ProductCategoryService,
+  ProductCollectionService,
   ProductService,
   ProductTagService,
   ProductVariantService,
-  ProductCollectionService,
 } from "@services"
 import {
   Product,
@@ -29,7 +29,7 @@ export default class ProductModuleService<
   TProductCollection = ProductCollection,
   TProductCategory = ProductCategory
 > implements
-    ProductTypes.IProductService<
+    ProductTypes.IProductModuleService<
       TProduct,
       TProductVariant,
       TProductTag,
@@ -93,7 +93,7 @@ export default class ProductModuleService<
     const variants = await this.productVariantService.list(
       filters,
       config,
-      sharedContext,
+      sharedContext
     )
 
     return JSON.parse(JSON.stringify(variants))
@@ -107,7 +107,7 @@ export default class ProductModuleService<
     const tags = await this.productTagService.list(
       filters,
       config,
-      sharedContext,
+      sharedContext
     )
 
     return JSON.parse(JSON.stringify(tags))
@@ -121,7 +121,7 @@ export default class ProductModuleService<
     const collections = await this.productCollectionService.list(
       filters,
       config,
-      sharedContext,
+      sharedContext
     )
 
     return JSON.parse(JSON.stringify(collections))
@@ -135,7 +135,7 @@ export default class ProductModuleService<
     const categories = await this.productCategoryService.list(
       filters,
       config,
-      sharedContext,
+      sharedContext
     )
 
     return JSON.parse(JSON.stringify(categories))

@@ -1,8 +1,10 @@
 import {
+  FilterableProductCategoryProps,
   FilterableProductCollectionProps,
   FilterableProductProps,
   FilterableProductTagProps,
   FilterableProductVariantProps,
+  ProductCategoryDTO,
   ProductCollectionDTO,
   ProductDTO,
   ProductTagDTO,
@@ -11,7 +13,7 @@ import {
 import { FindConfig } from "../common"
 import { SharedContext } from "../shared-context"
 
-export interface IProductService<
+export interface IProductModuleService<
   TProduct = any,
   TProductVariant = any,
   TProductTag = any,
@@ -47,4 +49,10 @@ export interface IProductService<
     config?: FindConfig<ProductCollectionDTO>,
     context?: SharedContext
   ): Promise<ProductCollectionDTO[]>
+
+  listCategories(
+    filters: FilterableProductCategoryProps,
+    config?: FindConfig<ProductCategoryDTO>,
+    sharedContext?: SharedContext
+  ): Promise<ProductCategoryDTO[]>
 }
