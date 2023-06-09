@@ -3,6 +3,7 @@ import {
   ProductService,
   ProductTagService,
   ProductVariantService,
+  ProductCollectionService,
 } from "@services"
 import {
   Product,
@@ -18,6 +19,7 @@ type InjectedDependencies = {
   productVariantService: ProductVariantService<any>
   productTagService: ProductTagService<any>
   productCategoryService: ProductCategoryService<any>
+  productCollectionService: ProductCollectionService<any>
 }
 
 export default class ProductModuleService<
@@ -39,17 +41,20 @@ export default class ProductModuleService<
   protected readonly productVariantService: ProductVariantService<TProductVariant>
   protected readonly productCategoryService: ProductCategoryService<TProductCategory>
   protected readonly productTagService: ProductTagService<TProductTag>
+  protected readonly productCollectionService: ProductCollectionService<TProductCollection>
 
   constructor({
     productService,
     productVariantService,
     productTagService,
     productCategoryService,
+    productCollectionService,
   }: InjectedDependencies) {
     this.productService_ = productService
     this.productVariantService = productVariantService
     this.productTagService = productTagService
     this.productCategoryService = productCategoryService
+    this.productCollectionService = productCollectionService
   }
 
   async list(
@@ -85,7 +90,12 @@ export default class ProductModuleService<
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: SharedContext
   ): Promise<ProductTypes.ProductVariantDTO[]> {
-    const variants = await this.productVariantService.list()
+    const variants = await this.productVariantService.list(
+      filters,
+      config,
+      sharedContext,
+    )
+
     return JSON.parse(JSON.stringify(variants))
   }
 
@@ -94,11 +104,40 @@ export default class ProductModuleService<
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
     sharedContext?: SharedContext
   ): Promise<ProductTypes.ProductTagDTO[]> {
-    const tags = await this.productTagService.list()
+    const tags = await this.productTagService.list(
+      filters,
+      config,
+      sharedContext,
+    )
+
     return JSON.parse(JSON.stringify(tags))
   }
 
-  async listCollections(): Promise<ProductTypes.ProductCollectionDTO[]> {
-    return [] as ProductTypes.ProductCollectionDTO[]
+  async listCollections(
+    filters: ProductTypes.FilterableProductCollectionProps = {},
+    config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
+    sharedContext?: SharedContext
+  ): Promise<ProductTypes.ProductCollectionDTO[]> {
+    const collections = await this.productCollectionService.list(
+      filters,
+      config,
+      sharedContext,
+    )
+
+    return JSON.parse(JSON.stringify(collections))
+  }
+
+  async listCategories(
+    filters: ProductTypes.FilterableProductCategoryProps = {},
+    config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
+    sharedContext?: SharedContext
+  ): Promise<ProductTypes.ProductCategoryDTO[]> {
+    const categories = await this.productCategoryService.list(
+      filters,
+      config,
+      sharedContext,
+    )
+
+    return JSON.parse(JSON.stringify(categories))
   }
 }
