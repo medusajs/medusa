@@ -6,6 +6,7 @@ import promiseExec from "./promise-exec.js"
 import { EOL } from "os"
 import runProcess from "./run-process.js"
 import { createFactBox, resetFactBox } from "./facts.js"
+import clearProject from "./clear-project.js"
 
 type PrepareOptions = {
   directory: string
@@ -14,6 +15,7 @@ type PrepareOptions = {
     email: string
   }
   seed?: boolean
+  boilerplate?: boolean
   spinner: Ora
   abortController?: AbortController
 }
@@ -23,6 +25,7 @@ export default async ({
   dbConnectionString,
   admin,
   seed,
+  boilerplate,
   spinner,
   abortController,
 }: PrepareOptions) => {
@@ -59,12 +62,32 @@ export default async ({
     ignoreERESOLVE: true,
   })
 
-  interval = resetFactBox(
-    interval,
-    spinner,
-    "Installed Dependencies",
-    "Running Migrations...."
-  )
+  interval = resetFactBox(interval, spinner, "Installed Dependencies")
+
+  if (boilerplate) {
+    interval = createFactBox(spinner, "Preparing Project Directory...")
+    // delete files and directories related to onboarding
+    clearProject(directory)
+    interval = resetFactBox(interval, spinner, "Prepared Project Directory")
+  }
+
+  interval = createFactBox(spinner, "Building Project...")
+  await runProcess({
+    process: async () => {
+      try {
+        await promiseExec(`yarn build`, execOptions)
+      } catch (e) {
+        // yarn isn't available
+        // use npm
+        await promiseExec(`npm run build`, execOptions)
+      }
+    },
+    ignoreERESOLVE: true,
+  })
+
+  interval = resetFactBox(interval, spinner, "Project Built")
+
+  interval = createFactBox(spinner, "Running Migrations...")
 
   // run migrations
   await runProcess({
@@ -85,7 +108,7 @@ export default async ({
     await runProcess({
       process: async () => {
         const proc = await promiseExec(
-          `npx -y @medusajs/medusa-cli@latest user -e ${admin.email} --invite`,
+          `npx -y @medusajs/medusa-cli@1.3.16-snapshot-20230605093446 user -e ${admin.email} --invite`,
           execOptions
         )
         // get invite token from stdout

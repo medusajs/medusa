@@ -16,6 +16,7 @@
     "boxen": "^7.1.0",
     "chalk": "^5.2.0",
     "commander": "^10.0.1",
+    "glob": "^10.2.7",
     "inquirer": "^9.2.2",
     "medusa-telemetry": "^0.0.16",
     "nanoid": "^4.0.2",
