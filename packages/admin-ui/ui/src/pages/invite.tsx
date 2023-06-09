@@ -1,4 +1,4 @@
-import { useAdminAcceptInvite } from "medusa-react"
+import { useAdminAcceptInvite, useAdminLogin } from "medusa-react"
 import qs from "qs"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -12,11 +12,7 @@ import PublicLayout from "../components/templates/login-layout"
 import useNotification from "../hooks/use-notification"
 import { getErrorMessage } from "../utils/error-messages"
 import FormValidator from "../utils/form-validator"
-import {
-  analytics,
-  useAdminAnalyticsConfig,
-  useAdminCreateAnalyticsConfig,
-} from "../services/analytics"
+import { analytics, useAdminCreateAnalyticsConfig } from "../services/analytics"
 import AnalyticsConfigForm, {
   AnalyticsConfigFormType,
 } from "../components/organisms/analytics-config-form"
@@ -34,9 +30,6 @@ const InvitePage = () => {
   const location = useLocation()
   const parsed = qs.parse(location.search.substring(1))
   const [signUp, setSignUp] = useState(false)
-
-  const { analytics_config, isLoading: analyticsLoading } =
-    useAdminAnalyticsConfig()
 
   const first_run = !!parsed.first_run
 
@@ -80,8 +73,10 @@ const InvitePage = () => {
     mutate: createAnalyticsConfig,
     isLoading: createAnalyticsConfigIsLoading,
   } = useAdminCreateAnalyticsConfig()
+  const { mutate: doLogin, isLoading: loginIsLoading } = useAdminLogin()
 
-  const isLoading = acceptInviteIsLoading || createAnalyticsConfigIsLoading
+  const isLoading =
+    acceptInviteIsLoading || createAnalyticsConfigIsLoading || loginIsLoading
 
   const navigate = useNavigate()
   const notification = useNotification()
@@ -113,23 +108,37 @@ const InvitePage = () => {
       },
       {
         onSuccess: async () => {
-          const shouldTrackEmail =
-            !data.analytics.anonymize &&
-            !data.analytics.opt_out &&
-            token?.user_email
+          if (token?.user_email) {
+            doLogin(
+              { email: token.user_email, password: data.password },
+              {
+                onSuccess: async () => {
+                  const shouldTrackEmail =
+                    !data.analytics.anonymize &&
+                    !data.analytics.opt_out &&
+                    token?.user_email
 
-          await createAnalyticsConfig(data.analytics, {
-            onSuccess: () => {
-              navigate("/login")
+                  await createAnalyticsConfig(data.analytics, {
+                    onSuccess: () => {
+                      navigate("/a/orders")
 
-              if (shouldTrackEmail) {
-                analytics.track("userEmail", { email: token?.user_email })
+                      if (shouldTrackEmail) {
+                        analytics.track("userEmail", {
+                          email: token?.user_email,
+                        })
+                      }
+                    },
+                    onError: (err) => {
+                      notification("Error", getErrorMessage(err), "error")
+                    },
+                  })
+                },
+                onError: (err) => {
+                  notification("Error", getErrorMessage(err), "error")
+                },
               }
-            },
-            onError: (err) => {
-              notification("Error", getErrorMessage(err), "error")
-            },
-          })
+            )
+          }
         },
         onError: (err) => {
           notification("Error", getErrorMessage(err), "error")
