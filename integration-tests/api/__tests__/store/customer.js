@@ -538,7 +538,7 @@ describe("/store/customers", () => {
       await doAfterEach()
     })
 
-    it("Returns 204 for non-existent customer", async () => {
+    it("Returns 401 for non-existent customer", async () => {
       const api = useApi()
 
       const response = await api
