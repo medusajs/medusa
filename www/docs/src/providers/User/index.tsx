@@ -41,7 +41,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     options?: Record<string, any>,
     callback?: () => void
   ) => {
-    console.debug(event, options)
     if (isBrowser) {
       if (window.analytics) {
         window.analytics.track(
