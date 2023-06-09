@@ -81,7 +81,7 @@ describe("Product module", function () {
     })
   })
 
-  describe.only("Using custom data access layer and connection", function () {
+  describe("Using custom data access layer and connection", function () {
     let module
     let products: Product[]
 
