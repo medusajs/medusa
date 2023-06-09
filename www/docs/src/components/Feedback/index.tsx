@@ -117,8 +117,8 @@ const Feedback: React.FC<FeedbackProps> = ({
             nodeRef.current.addEventListener("transitionend", done, false)
           }}
           classNames={{
-            enter: "animate__animated animate__fadeIn",
-            exit: "animate__animated animate__fadeOut",
+            enter: "animate__animated animate__fadeIn animate__fastest",
+            exit: "animate__animated animate__fadeOut animate__fastest",
           }}
         >
           <>
