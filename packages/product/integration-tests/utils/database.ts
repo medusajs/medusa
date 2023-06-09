@@ -1,13 +1,18 @@
 import { TSMigrationGenerator } from "@mikro-orm/migrations"
 import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
 import * as ProductModels from "@models"
-import { databaseOptions } from "./config"
+
+if (typeof process.env.DB_TEMP_NAME === "undefined") {
+  const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
+  process.env.DB_TEMP_NAME = `medusa-integration-${tempName}`
+  process.env.MEDUSA_PRODUCT_DB_SCHEMA = "medusa-product"
+}
 
 const ORMConfig: Options = {
   type: "postgresql",
-  dbName: databaseOptions!.clientUrl,
+  dbName: process.env.DB_TEMP_NAME,
   entities: Object.values(ProductModels),
-  schema: databaseOptions!.schema,
+  schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
   debug: false,
   migrations: {
     path: "../../src/migrations",
@@ -71,10 +76,9 @@ export const TestDatabase: TestDatabase = {
 
     this.manager = await this.orm.em
 
-    // ensure the database exists
-    // drop the schema if exists
-    // create the schema from scratch
-    await this.orm.schema.refreshDatabase()
+    const generator = this.orm.getSchemaGenerator()
+    await generator.refreshDatabase() // ensure db exists and is fresh
+    await generator.clearDatabase() // removes all data
   },
 
   async clearDatabase() {

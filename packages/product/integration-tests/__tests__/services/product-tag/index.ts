@@ -8,6 +8,8 @@ import { TestDatabase } from "../../../utils"
 import { createProductAndTags } from "../../../__fixtures__/product"
 import { ProductTypes } from "@medusajs/types"
 
+jest.setTimeout(30000)
+
 describe("Product Service", () => {
   let service: ProductTagService
   let testManager: SqlEntityManager

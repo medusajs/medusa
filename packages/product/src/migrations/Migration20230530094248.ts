@@ -6,10 +6,10 @@ export class Migration20230530094248 extends Migration {
       'create table "product_category" ("id" text not null, "name" text not null, "description" text not null default \'\', "handle" text not null, "mpath" text null, "is_active" boolean not null default false, "is_internal" boolean not null default false, "rank" numeric not null default 0, "parent_category_id" text null, "created_at" timestamptz not null, "updated_at" timestamptz not null, constraint "product_category_pkey" primary key ("id"));'
     )
     this.addSql(
-      'CREATE UNIQUE INDEX "IDX_product_category_handle" ON "product_category" ("handle");'
+      'CREATE UNIQUE INDEX IF NOT EXISTS "IDX_product_category_handle" ON "product_category" ("handle");'
     )
     this.addSql(
-      'CREATE INDEX "IDX_product_category_path" ON "product_category" ("mpath");'
+      'CREATE INDEX IF NOT EXISTS "IDX_product_category_path" ON "product_category" ("mpath");'
     )
 
     this.addSql(
@@ -38,7 +38,7 @@ export class Migration20230530094248 extends Migration {
       'create table "product_option" ("id" text not null, "title" text not null, "product_id" text not null, "metadata" jsonb null, "deleted_at" timestamptz null, constraint "product_option_pkey" primary key ("id"));'
     )
     this.addSql(
-      'CREATE INDEX "IDX_product_option_product_id" ON "product_option" ("product_id") WHERE deleted_at IS NULL;;'
+      'CREATE INDEX IF NOT EXISTS "IDX_product_option_product_id" ON "product_option" ("product_id") WHERE deleted_at IS NULL;;'
     )
 
     this.addSql(
@@ -69,7 +69,7 @@ export class Migration20230530094248 extends Migration {
       'create table "product_option_value" ("id" text not null, "value" text not null, "option_id" text not null, "variant_id" text not null, "metadata" jsonb null, "deleted_at" timestamptz null, constraint "product_option_value_pkey" primary key ("id"));'
     )
     this.addSql(
-      'create index "IDX_product_option_value_product_option" on "product_option_value" ("option_id");'
+      'create index IF NOT EXISTS "IDX_product_option_value_product_option" on "product_option_value" ("option_id");'
     )
 
     this.addSql(

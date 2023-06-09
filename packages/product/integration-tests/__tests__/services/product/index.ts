@@ -28,6 +28,8 @@ const productTagService = {
   list: jest.fn(),
 } as unknown as ProductTagService
 
+jest.setTimeout(30000)
+
 describe("Product Service", () => {
   let service: ProductService
   let testManager: SqlEntityManager
@@ -123,7 +125,10 @@ describe("Product Service", () => {
         products = await createProductAndTags(testManager, productsData)
         workingProduct = products.find((p) => p.id === "test-1") as Product
         categories = await createProductCategories(testManager, categoriesData)
-        workingCategory = await testManager.findOne(ProductCategory, "category-1") as ProductCategory
+        workingCategory = (await testManager.findOne(
+          ProductCategory,
+          "category-1"
+        )) as ProductCategory
 
         workingProduct = await assignCategoriesToProduct(
           testManager,

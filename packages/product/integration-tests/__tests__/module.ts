@@ -5,7 +5,7 @@ import * as CustomRepositories from "../__fixtures__/module"
 import { ProductRepository } from "../__fixtures__/module"
 import { createProductAndTags } from "../__fixtures__/product"
 import { productsData } from "../__fixtures__/product/data"
-import { databaseOptions, TestDatabase } from "../utils"
+import { TestDatabase } from "../utils"
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -27,9 +27,7 @@ describe("Product module", function () {
 
       module = await initialize({
         database: {
-          clientUrl: `postgres://postgres@localhost:5432/${
-            databaseOptions!.clientUrl
-          }`,
+          clientUrl: process.env.DB_TEMP_NAME!,
           driverOptions: {
             connection: { ssl: false },
           },
@@ -60,9 +58,7 @@ describe("Product module", function () {
 
       module = await initialize({
         database: {
-          clientUrl: `postgres://postgres@localhost:5432/${
-            databaseOptions!.clientUrl
-          }`,
+          clientUrl: process.env.DB_TEMP_NAME!,
           driverOptions: {
             connection: { ssl: false },
           },

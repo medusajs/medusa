@@ -28,7 +28,7 @@ class ProductCategory {
   @Index({
     name: "IDX_product_category_handle",
     properties: ["handle"],
-    expression: `CREATE UNIQUE INDEX "IDX_product_category_handle" ON "product_category" ("handle")`,
+    expression: `CREATE UNIQUE INDEX IF NOT EXISTS "IDX_product_category_handle" ON "product_category" ("handle")`,
   })
   @Property({ columnType: "text", nullable: false })
   handle?: string
@@ -36,7 +36,7 @@ class ProductCategory {
   @Index({
     name: "IDX_product_category_path",
     properties: ["mpath"],
-    expression: `CREATE INDEX "IDX_product_category_path" ON "product_category" ("mpath")`,
+    expression: `CREATE INDEX IF NOT EXISTS "IDX_product_category_path" ON "product_category" ("mpath")`,
   })
   // TODO: mpath shouldn't be nullable, remove this when mpath is processed before create
   @Property({ columnType: "text", nullable: true })

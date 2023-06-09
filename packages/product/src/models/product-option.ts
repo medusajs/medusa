@@ -18,7 +18,7 @@ import ProductOptionValue from "./product-option-value"
 @Index({
   name: "IDX_product_option_product_id",
   expression:
-    'CREATE INDEX "IDX_product_option_product_id" ON "product_option" ("product_id") WHERE deleted_at IS NULL;',
+    'CREATE INDEX IF NOT EXISTS "IDX_product_option_product_id" ON "product_option" ("product_id") WHERE deleted_at IS NULL;',
 })
 class ProductOption {
   @PrimaryKey({ columnType: "text" })

@@ -7,6 +7,8 @@ import { ProductCollectionRepository } from "@repositories"
 import { TestDatabase } from "../../../utils"
 import { createCollections } from "../../../__fixtures__/product"
 
+jest.setTimeout(30000)
+
 describe("Product Service", () => {
   let service: ProductCollectionService
   let testManager: SqlEntityManager
