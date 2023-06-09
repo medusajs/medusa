@@ -53,9 +53,9 @@ const Feedback: React.FC<FeedbackProps> = ({
 
   function handleFeedback(e) {
     const feedback = e.target.classList.contains("positive")
-    submitFeedback(e, feedback)
     setPositiveFeedback(feedback)
     setShowForm(true)
+    submitFeedback(e, feedback)
   }
 
   function submitFeedback(e, feedback = null) {
