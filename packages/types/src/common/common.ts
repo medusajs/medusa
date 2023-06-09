@@ -126,6 +126,7 @@ export type DeleteResponse = {
 }
 
 export interface EmptyQueryParams {}
+// TODO: Build a tree repository options from this
 export interface RepositoryTransformOptions {}
 
 export interface DateComparisonOperator {

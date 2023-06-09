@@ -77,19 +77,6 @@ describe("module definitions loader", () => {
         )
       }
     })
-
-    it.skip("Module with no resolution path when not given custom resolution path, false as default package and not required", () => {
-      const definition = {
-        ...defaultDefinition,
-        defaultPackage: false as false,
-      }
-
-      MODULE_DEFINITIONS.push(definition)
-
-      const res = registerModules({})
-
-      expect(res[defaultDefinition.key]).toEqual(undefined)
-    })
   })
 
   it("Module with no resolution path when not given custom resolution path, false as default package and required", () => {
