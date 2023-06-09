@@ -9,7 +9,7 @@ export enum Modules {
   STOCK_LOCATION = "stockLocationService",
   INVENTORY = "inventoryService",
   CACHE = "cacheService",
-  PRODUCT = "productService",
+  PRODUCT = "productModuleService",
 }
 
 export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
@@ -68,7 +68,7 @@ export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
     key: Modules.PRODUCT,
     registrationName: Modules.PRODUCT,
     defaultPackage: false,
-    label: "ProductService",
+    label: "ProductModuleService",
     isRequired: false,
     canOverride: true,
     dependencies: [],
