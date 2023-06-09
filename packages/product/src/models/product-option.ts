@@ -38,9 +38,6 @@ class ProductOption {
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
 
-  /**
-   * Soft deleted will be an update of the record which set the deleted_at to new Date()
-   */
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date
 

@@ -14,7 +14,6 @@ import { generateEntityId } from "@medusajs/utils"
 import { Product } from "@models"
 import ProductOptionValue from "./product-option-value"
 
-// type OptionalRelations = 'product'
 type OptionalFields =
   | "created_at"
   | "updated_at"
@@ -22,7 +21,7 @@ type OptionalFields =
   | "deleted_at"
   | "allow_backorder"
   | "manage_inventory"
-  | "productss"
+  | "products"
 
 @Entity({ tableName: "product_variant" })
 class ProductVariant {
@@ -126,9 +125,6 @@ class ProductVariant {
   })
   updated_at: Date
 
-  /**
-   * Soft deleted will be an update of the record which set the deleted_at to new Date()
-   */
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date
 
@@ -137,24 +133,10 @@ class ProductVariant {
   })
   product!: Product
 
-  // @OneToMany(() => MoneyAmount, (ma) => ma.variant, {
-  //   cascade: [ "persist", "remove" ],
-  // })
-  // prices = new Collection<MoneyAmount>(this)
-
   @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
     cascade: [Cascade.PERSIST, Cascade.REMOVE],
   })
   options = new Collection<ProductOptionValue>(this)
-
-  // @OneToMany(
-  //   () => ProductVariantInventoryItem,
-  //   (inventoryItem) => inventoryItem.variant,
-  //   {
-  //     cascade: ["soft-remove", "remove"],
-  //   }
-  // )
-  // inventory_items = new Collection<ProductVariantInventoryItem>(this)
 
   @BeforeCreate()
   onCreate() {

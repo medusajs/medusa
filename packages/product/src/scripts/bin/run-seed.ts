@@ -3,7 +3,6 @@ import { EOL } from "os"
 
 const args = process.argv
 const path = args.pop() as string
-console.log(path)
 
 export default (async () => {
   const { config } = await import("dotenv")

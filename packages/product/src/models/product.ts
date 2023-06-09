@@ -60,6 +60,7 @@ class Product {
   @Enum(() => ProductTypes.ProductStatus)
   status!: ProductTypes.ProductStatus
 
+  // TODO: add images model
   // images: Image[]
 
   @Property({ columnType: "text", nullable: true })
@@ -129,9 +130,6 @@ class Product {
   })
   updated_at: Date
 
-  /**
-   * Soft deleted will be an update of the record which set the deleted_at to new Date()
-   */
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date
 
