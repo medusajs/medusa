@@ -1,6 +1,7 @@
 import { TSMigrationGenerator } from "@mikro-orm/migrations"
 import { MikroORM, Options, SqlEntityManager } from "@mikro-orm/postgresql"
 import * as ProductModels from "@models"
+import * as process from "process"
 
 if (typeof process.env.DB_TEMP_NAME === "undefined") {
   const tempName = parseInt(process.env.JEST_WORKER_ID || "1")
@@ -8,9 +9,17 @@ if (typeof process.env.DB_TEMP_NAME === "undefined") {
   process.env.MEDUSA_PRODUCT_DB_SCHEMA = "medusa-product"
 }
 
+const DB_HOST = process.env.DB_HOST ?? "localhost"
+const DB_USERNAME = process.env.DB_USERNAME ?? "postgres"
+const DB_PASSWORD = process.env.DB_PASSWORD
+const DB_NAME = process.env.DB_TEMP_NAME
+export const DB_URL = `postgres://${DB_USERNAME}${
+  DB_PASSWORD ? `:${DB_PASSWORD}` : ""
+}@${DB_HOST}/${DB_NAME}`
+
 const ORMConfig: Options = {
   type: "postgresql",
-  dbName: process.env.DB_TEMP_NAME,
+  clientUrl: DB_URL,
   entities: Object.values(ProductModels),
   schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
   debug: false,
@@ -76,9 +85,7 @@ export const TestDatabase: TestDatabase = {
 
     this.manager = await this.orm.em
 
-    const generator = this.orm.getSchemaGenerator()
-    await generator.refreshDatabase() // ensure db exists and is fresh
-    await generator.clearDatabase() // removes all data
+    await this.orm.schema.refreshDatabase() // ensure db exists and is fresh
   },
 
   async clearDatabase() {
