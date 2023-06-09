@@ -28,6 +28,7 @@ describe("Product module", function () {
       module = await initialize({
         database: {
           clientUrl: DB_URL,
+          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
         },
       })
     })
@@ -56,6 +57,7 @@ describe("Product module", function () {
       module = await initialize({
         database: {
           clientUrl: DB_URL,
+          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
         },
         repositories: CustomRepositories,
       })
