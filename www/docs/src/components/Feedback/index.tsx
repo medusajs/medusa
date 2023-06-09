@@ -132,7 +132,7 @@ const Feedback: React.FC<FeedbackProps> = ({
                 </span>
                 <Button
                   onClick={handleFeedback}
-                  className="tw-w-fit tw-mr-0.5 last:tw-mr-0"
+                  className="tw-w-fit tw-mr-0.5 last:tw-mr-0 positive"
                 >
                   {positiveBtn}
                 </Button>
