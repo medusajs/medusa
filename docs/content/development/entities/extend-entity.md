@@ -202,3 +202,9 @@ You can also add custom relations by changing the following defined variables:
 - `defaultStoreProductsRelations`: The relations of a product that are retrieved and returned by default in the product's store endpoints.
 
 If you want to apply this example for a different entity or set of endpoints, you would need to change the import path `@medusajs/medusa/dist/api/routes/store/products/index` to the path of the endpoints you're targeting. You also need to change `allowedStoreProductsFields` and `defaultStoreProductsFields` to the names of the variables in that file, and the same goes for relations. Typically, these names would be of the format `(allowed|default)(Store|Admin)(Entity)(Fields|Relation)`.
+
+---
+
+## Advanced Entity Definitions
+
+With entities, you can create relationships, index keys, and more. As Medusa uses Typeorm, you can learn about using these functionalities through [Typeorm's documentation](https://typeorm.io/).

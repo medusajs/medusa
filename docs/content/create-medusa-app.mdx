@@ -8,6 +8,11 @@ import TabItem from '@theme/TabItem';
 import Feedback from '@site/src/components/Feedback';
 import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import TypeErrorSection from "./troubleshooting/create-medusa-app-errors/_typeerror.md"
+import OtherErrorsSection from "./troubleshooting/create-medusa-app-errors/_other-errors.md"
+import ConnectionErrorSection from './troubleshooting/database-errors/_connection-error.md'
+import FreshInstallationSection from './troubleshooting/awilix-resolution-error/_fresh-installation.md'
 
 # Install Medusa with create-medusa-app
 
@@ -120,7 +125,26 @@ Once you're logged in, you can start using Medusa! Try following the setup guide
 
 ## Troubleshooting
 
-If you run into any errors during the installation, please refer to [this troubleshooting guide](./troubleshooting/create-medusa-app-errors.md) for a potential help.
+<Troubleshooting
+  sections={[
+    {
+      title: "TypeError: cmd is not a function",
+      content: <TypeErrorSection />
+    },
+    {
+      title: "Error: connect ECONNREFUSED ::1:5432",
+      content: <ConnectionErrorSection />
+    },
+    {
+      title: 'AwilixResolutionError: Could Not Resolve X',
+      content: <FreshInstallationSection />
+    },
+    {
+      title: "Other Errors",
+      content: <OtherErrorsSection />
+    },
+  ]}
+/>
 
 ---
 

@@ -7,13 +7,13 @@ import { DisplayTotal, PaymentDetails } from "../templates"
 import React, { useContext, useMemo } from "react"
 
 import { ActionType } from "../../../../components/molecules/actionables"
-import AllocateItemsModal from "../allocations/allocate-items-modal"
 import Badge from "../../../../components/fundamentals/badge"
 import BodyCard from "../../../../components/organisms/body-card"
 import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
 import { OrderEditContext } from "../../edit/context"
 import OrderLine from "../order-line"
 import { ReservationItemDTO } from "@medusajs/types"
+import ReserveItemsModal from "../reservation/reserve-items-modal"
 import { Response } from "@medusajs/medusa-js"
 import StatusIndicator from "../../../../components/fundamentals/status-indicator"
 import { sum } from "lodash"
@@ -28,9 +28,9 @@ type SummaryCardProps = {
 
 const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
   const {
-    state: allocationModalIsOpen,
-    open: showAllocationModal,
-    close: closeAllocationModal,
+    state: reservationModalIsOpen,
+    open: showReservationModal,
+    close: closeReservationModal,
   } = useToggleState()
 
   const { showModal } = useContext(OrderEditContext)
@@ -158,11 +158,11 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
     if (isFeatureEnabled("inventoryService") && !allItemsReserved) {
       actionables.push({
         label: "Allocate",
-        onClick: showAllocationModal,
+        onClick: showReservationModal,
       })
     }
     return actionables
-  }, [showModal, isFeatureEnabled, showAllocationModal, allItemsReserved])
+  }, [showModal, isFeatureEnabled, showReservationModal, allItemsReserved])
 
   const isAllocatable = !["canceled", "archived"].includes(order.status)
 
@@ -177,13 +177,13 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
             onClick={
               allItemsReserved || !isAllocatable
                 ? undefined
-                : showAllocationModal
+                : showReservationModal
             }
             variant={allItemsReserved || !isAllocatable ? "success" : "danger"}
             title={
               allItemsReserved || !isAllocatable
                 ? "Allocated"
-                : "Awaits allocation"
+                : "Not fully allocated"
             }
             className="rounded-rounded border px-3 py-1.5"
           />
@@ -269,11 +269,11 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
           currency={order.currency_code}
         />
       </div>
-      {allocationModalIsOpen && (
-        <AllocateItemsModal
+      {reservationModalIsOpen && (
+        <ReserveItemsModal
           reservationItemsMap={reservationItemsMap}
           items={order.items}
-          close={closeAllocationModal}
+          close={closeReservationModal}
         />
       )}
     </BodyCard>

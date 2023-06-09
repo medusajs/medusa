@@ -44,7 +44,23 @@ module.exports = {
 }
 ```
 
-Where `database_type` is `postgres` and `DATABASE_URL` is the URL connection string to your PostgreSQL database. You can check out how to format it in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).
+Where `database_type` is `postgres` and `DATABASE_URL` is the URL connection string to your PostgreSQL database. The connection URL should be of the following format:
+
+```bash
+postgres://[user][:password]@[host][:port]/[dbname]
+```
+
+Where:
+
+- `[user]`: (required) your PostgreSQL username. If not specified, the system's username is used by default.
+- `[:password]`: an optional password for the user. When provided, make sure to put `:` before the password.
+- `[host]`: (required) your PostgreSQL host. When run locally, it should be `localhost`.
+- `[:post]`: an optional port that the PostgreSQL server is listening on. By default, it's `5432`. When provided, make sure to put `:` before the port.
+- `[dbname]`: (required) the name of the database.
+
+For example, the connection URL can be `postgres://postgres@localhost/medusa-store`.
+
+You can learn more about the connection URL format in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).
 
 It's recommended to set the Database URL as an environment variable:
 
@@ -59,7 +75,7 @@ Where `<YOUR_DATABASE_URL>` is the URL of your PostgreSQL database.
 By default, the `public` schema is used in PostgreSQL. You can change it to use a custom schema by passing the `search_path` option in the database URL. For example:
 
 ```bash
-postgres://localhost/store?options=-c search_path=test
+postgres://postgres@localhost/store?options=-c search_path=test
 ```
 
 Where `test` is the name of the database schema that should be used instead of `public`.

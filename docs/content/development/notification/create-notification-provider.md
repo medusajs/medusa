@@ -67,7 +67,7 @@ Notification Providers must extend `NotificationService` from `medusa-interfa
 
 :::info
 
-Following the naming convention of Services, the name of the file should be the slug name of the Notification Provider, and the name of the class should be the camel case name of the Notification Provider suffixed with “Service”. In the example above, the name of the file should be `email-sender.js`. You can learn more in the [service documentation](../services/create-service.md).
+Following the naming convention of Services, the name of the file should be the slug name of the Notification Provider, and the name of the class should be the camel case name of the Notification Provider suffixed with “Service”. In the example above, the name of the file should be `email-sender.js`. You can learn more in the [service documentation](../services/create-service.mdx).
 
 :::
 

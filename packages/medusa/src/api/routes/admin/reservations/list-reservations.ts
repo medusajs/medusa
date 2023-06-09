@@ -221,6 +221,11 @@ export class AdminGetReservationsParams extends extendedFindParamsMixin({
   @IsOptional()
   line_item_id?: string[]
 
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  created_by?: string[]
+
   @IsOptional()
   @ValidateNested()
   @Type(() => NumericalComparisonOperator)
