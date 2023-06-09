@@ -3,23 +3,16 @@ import {
   Cascade,
   Collection,
   Entity,
-  Index,
   ManyToOne,
   OneToMany,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 import { generateEntityId } from "@medusajs/utils"
-
 import { Product } from "./index"
 import ProductOptionValue from "./product-option-value"
 
 @Entity({ tableName: "product_option" })
-@Index({
-  name: "IDX_product_option_product_id",
-  expression:
-    'CREATE INDEX IF NOT EXISTS "IDX_product_option_product_id" ON "product_option" ("product_id") WHERE deleted_at IS NULL;',
-})
 class ProductOption {
   @PrimaryKey({ columnType: "text" })
   id!: string

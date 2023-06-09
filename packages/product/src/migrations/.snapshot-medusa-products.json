@@ -49,7 +49,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": true,
+          "nullable": false,
           "mappedType": "text"
         },
         "is_active": {
@@ -116,24 +116,22 @@
       "schema": "public",
       "indexes": [
         {
-          "keyName": "IDX_product_category_handle",
-          "columnNames": [
-            "handle"
-          ],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX \"IDX_product_category_handle\" ON \"product_category\" (\"handle\")"
-        },
-        {
           "keyName": "IDX_product_category_path",
           "columnNames": [
             "mpath"
           ],
           "composite": false,
           "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX \"IDX_product_category_path\" ON \"product_category\" (\"mpath\")"
+          "unique": false
+        },
+        {
+          "keyName": "IDX_product_category_handle",
+          "columnNames": [
+            "handle"
+          ],
+          "composite": false,
+          "primary": false,
+          "unique": true
         },
         {
           "keyName": "product_category_pkey",
@@ -221,8 +219,7 @@
           ],
           "composite": false,
           "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS IDX_product_collection_handle_unique ON product_collection (handle) WHERE deleted_at IS NULL"
+          "unique": true
         },
         {
           "keyName": "product_collection_pkey",
@@ -583,14 +580,22 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": [
+            "type_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_product_type_id",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "IDX_product_handle_unique",
           "columnNames": [
             "handle"
           ],
           "composite": false,
           "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS IDX_product_handle_unique ON product (handle) WHERE deleted_at IS NULL"
+          "unique": true
         },
         {
           "keyName": "product_pkey",
@@ -684,14 +689,6 @@
       "name": "product_option",
       "schema": "public",
       "indexes": [
-        {
-          "keyName": "IDX_product_option_product_id",
-          "columnNames": [],
-          "composite": false,
-          "primary": false,
-          "unique": false,
-          "expression": "CREATE INDEX \"IDX_product_option_product_id\" ON \"product_option\" (\"product_id\") WHERE deleted_at IS NULL;"
-        },
         {
           "keyName": "product_option_pkey",
           "columnNames": [
@@ -1067,44 +1064,49 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": [
+            "product_id"
+          ],
+          "composite": false,
+          "keyName": "product_variant_product_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "IDX_product_variant_sku_unique",
           "columnNames": [
             "sku"
           ],
           "composite": false,
           "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS IDX_product_variant_sku_unique ON product_variant (sku) WHERE deleted_at IS NULL"
+          "unique": true
         },
         {
-          "keyName": "IDX_product_variant_sku_unique",
+          "keyName": "IDX_product_variant_barcode_unique",
           "columnNames": [
             "barcode"
           ],
           "composite": false,
           "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS IDX_product_variant_barcode_unique ON product_variant (barcode) WHERE deleted_at IS NULL"
+          "unique": true
         },
         {
-          "keyName": "IDX_product_variant_sku_unique",
+          "keyName": "IDX_product_variant_ean_unique",
           "columnNames": [
             "ean"
           ],
           "composite": false,
           "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS IDX_product_variant_ean_unique ON product_variant (ean) WHERE deleted_at IS NULL"
+          "unique": true
         },
         {
-          "keyName": "IDX_product_variant_sku_unique",
+          "keyName": "IDX_product_variant_upc_unique",
           "columnNames": [
             "upc"
           ],
           "composite": false,
           "primary": false,
-          "unique": false,
-          "expression": "CREATE UNIQUE INDEX IF NOT EXISTS IDX_product_variant_upc_unique ON product_variant (upc) WHERE deleted_at IS NULL"
+          "unique": true
         },
         {
           "keyName": "product_variant_pkey",

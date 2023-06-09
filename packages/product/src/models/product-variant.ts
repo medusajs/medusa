@@ -3,12 +3,12 @@ import {
   Cascade,
   Collection,
   Entity,
-  Index,
   ManyToOne,
   OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
+  Unique,
 } from "@mikro-orm/core"
 import { generateEntityId } from "@medusajs/utils"
 import { Product } from "@models"
@@ -21,7 +21,8 @@ type OptionalFields =
   | "deleted_at"
   | "allow_backorder"
   | "manage_inventory"
-  | "products"
+  | "product"
+  | "product_id"
 
 @Entity({ tableName: "product_variant" })
 class ProductVariant {
@@ -34,42 +35,30 @@ class ProductVariant {
   title: string
 
   @Property({ columnType: "text", nullable: true })
-  @Index({
+  @Unique({
     name: "IDX_product_variant_sku_unique",
     properties: ["sku"],
-    expression:
-      "CREATE UNIQUE INDEX IF NOT EXISTS IDX_product_variant_sku_unique ON product_variant (sku) WHERE deleted_at IS NULL",
   })
   sku?: string | null
 
-  /*  @Index({ name: "IDX_product_variant_product_id" })
-  @Property({ columnType: "text" })
-  product_id: string*/
-
   @Property({ columnType: "text", nullable: true })
-  @Index({
-    name: "IDX_product_variant_sku_unique",
+  @Unique({
+    name: "IDX_product_variant_barcode_unique",
     properties: ["barcode"],
-    expression:
-      "CREATE UNIQUE INDEX IF NOT EXISTS IDX_product_variant_barcode_unique ON product_variant (barcode) WHERE deleted_at IS NULL",
   })
   barcode?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  @Index({
-    name: "IDX_product_variant_sku_unique",
+  @Unique({
+    name: "IDX_product_variant_ean_unique",
     properties: ["ean"],
-    expression:
-      "CREATE UNIQUE INDEX IF NOT EXISTS IDX_product_variant_ean_unique ON product_variant (ean) WHERE deleted_at IS NULL",
   })
   ean?: string | null
 
   @Property({ columnType: "text", nullable: true })
-  @Index({
-    name: "IDX_product_variant_sku_unique",
+  @Unique({
+    name: "IDX_product_variant_upc_unique",
     properties: ["upc"],
-    expression:
-      "CREATE UNIQUE INDEX IF NOT EXISTS IDX_product_variant_upc_unique ON product_variant (upc) WHERE deleted_at IS NULL",
   })
   upc?: string | null
 
@@ -130,6 +119,7 @@ class ProductVariant {
 
   @ManyToOne(() => Product, {
     onDelete: "cascade",
+    index: "product_variant_product_id_index",
   })
   product!: Product
 

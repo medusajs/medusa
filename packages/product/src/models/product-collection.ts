@@ -1,9 +1,9 @@
 import {
   BeforeCreate,
   Entity,
-  Index,
   PrimaryKey,
   Property,
+  Unique,
 } from "@mikro-orm/core"
 
 import { generateEntityId, kebabCase } from "@medusajs/utils"
@@ -17,11 +17,9 @@ class ProductCollection {
   title: string
 
   @Property({ columnType: "text" })
-  @Index({
+  @Unique({
     name: "IDX_product_collection_handle_unique",
     properties: ["handle"],
-    expression:
-      "CREATE UNIQUE INDEX IF NOT EXISTS IDX_product_collection_handle_unique ON product_collection (handle) WHERE deleted_at IS NULL",
   })
   handle: string
 

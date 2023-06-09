@@ -3,13 +3,13 @@ import {
   Collection,
   Entity,
   Enum,
-  Index,
   ManyToMany,
   ManyToOne,
   OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
+  Unique,
 } from "@mikro-orm/core"
 
 import { ProductTypes } from "@medusajs/types"
@@ -40,11 +40,9 @@ class Product {
   title: string
 
   @Property({ columnType: "text" })
-  @Index({
+  @Unique({
     name: "IDX_product_handle_unique",
     properties: ["handle"],
-    expression:
-      "CREATE UNIQUE INDEX IF NOT EXISTS IDX_product_handle_unique ON product (handle) WHERE deleted_at IS NULL",
   })
   handle?: string | null
 
@@ -99,12 +97,16 @@ class Product {
   @ManyToOne(() => ProductCollection, { nullable: true })
   collection!: ProductCollection
 
-  @ManyToOne(() => ProductType, { nullable: true })
+  @ManyToOne(() => ProductType, {
+    nullable: true,
+    index: "IDX_product_type_id",
+  })
   type!: ProductType
 
   @ManyToMany(() => ProductTag, "products", {
     owner: true,
     pivotTable: "product_tags",
+    index: "IDX_product_tag_id",
   })
   tags = new Collection<ProductTag>(this)
 
