@@ -2,6 +2,7 @@ import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   MedusaModule,
+  MODULE_PACKAGE_NAMES,
   Modules,
 } from "@medusajs/modules-sdk"
 import { IProductService } from "@medusajs/types"
@@ -23,7 +24,7 @@ export const initialize = async (
 
   const loaded = await MedusaModule.bootstrap(
     serviceKey,
-    "@medusajs/product",
+    MODULE_PACKAGE_NAMES[Modules.PRODUCT],
     options as InternalModuleDeclaration | ExternalModuleDeclaration,
     moduleDefinition,
     injectedDependencies

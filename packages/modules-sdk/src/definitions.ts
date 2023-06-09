@@ -81,4 +81,8 @@ export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
 export const MODULE_DEFINITIONS: ModuleDefinition[] =
   Object.values(ModulesDefinition)
 
+export const MODULE_PACKAGE_NAMES = {
+  [Modules.PRODUCT]: "@medusajs/product",
+}
+
 export default MODULE_DEFINITIONS
