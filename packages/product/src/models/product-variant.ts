@@ -119,7 +119,7 @@ class ProductVariant {
 
   @ManyToOne(() => Product, {
     onDelete: "cascade",
-    index: "product_variant_product_id_index",
+    index: "IDX_product_variant_product_id_index",
   })
   product!: Product
 
