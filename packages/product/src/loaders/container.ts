@@ -2,18 +2,18 @@ import { LoaderOptions } from "@medusajs/modules-sdk"
 
 import { asClass } from "awilix"
 import {
-  GatewayService,
-  ProductService,
   ProductCategoryService,
+  ProductModuleService,
+  ProductService,
   ProductTagService,
   ProductVariantService,
 } from "@services"
 import * as DefaultRepositories from "@repositories"
 import {
+  ProductCategoryRepository,
   ProductCollectionRepository,
   ProductRepository,
   ProductTagRepository,
-  ProductCategoryRepository,
   ProductVariantRepository,
 } from "@repositories"
 import {
@@ -35,7 +35,7 @@ export default async ({
   )?.repositories
 
   container.register({
-    gatewayService: asClass(GatewayService).singleton(),
+    productModuleService: asClass(ProductModuleService).singleton(),
     productService: asClass(ProductService).singleton(),
     productCategoryService: asClass(ProductCategoryService).singleton(),
     productVariantService: asClass(ProductVariantService).singleton(),

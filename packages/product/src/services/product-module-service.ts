@@ -1,15 +1,15 @@
 import {
+  ProductCategoryService,
   ProductService,
   ProductTagService,
   ProductVariantService,
-  ProductCategoryService,
 } from "@services"
 import {
   Product,
+  ProductCategory,
   ProductCollection,
   ProductTag,
   ProductVariant,
-  ProductCategory
 } from "@models"
 import { FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
 
@@ -20,7 +20,7 @@ type InjectedDependencies = {
   productCategoryService: ProductCategoryService<any>
 }
 
-export default class GatewayService<
+export default class ProductModuleService<
   TProduct = Product,
   TProductVariant = ProductVariant,
   TProductTag = ProductTag,
