@@ -1,4 +1,4 @@
-import useIsBrowser from "@docusaurus/useIsBrowser"
+import { useUser } from "@site/src/providers/User"
 import IconStar from "@site/src/theme/Icon/Star"
 import IconStarSolid from "@site/src/theme/Icon/StarSolid"
 import clsx from "clsx"
@@ -19,7 +19,7 @@ const Rating: React.FC<RatingProps> = ({
   const [hoverRating, setHoverRating] = useState(0)
   const starElms = useRef<HTMLElement[]>([])
   const starArr = Array.from(Array(5).keys())
-  const isBrowser = useIsBrowser()
+  const { track } = useUser()
 
   const handleRating = (selectedRating: number) => {
     if (rating) {
@@ -30,21 +30,13 @@ const Rating: React.FC<RatingProps> = ({
     for (let i = 0; i < selectedRating; i++) {
       starElms.current[i].classList.add("animate__animated", "animate__tada")
     }
-    if (isBrowser) {
-      if (window.analytics) {
-        window.analytics.track(
-          event,
-          {
-            rating: selectedRating,
-          },
-          () => onRating?.()
-        )
-      } else {
-        onRating?.()
-      }
-    } else {
-      onRating?.()
-    }
+    track(
+      event,
+      {
+        rating: selectedRating,
+      },
+      () => onRating?.()
+    )
   }
 
   return (

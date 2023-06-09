@@ -3,6 +3,7 @@ import { getLearningPath } from "@site/src/utils/learning-paths"
 import React, { createContext, useContext, useEffect, useState } from "react"
 import { useHistory } from "@docusaurus/router"
 import { LearningPathFinishType } from "@site/src/components/LearningPath/Finish"
+import { useUser } from "../User"
 
 export type LearningPathType = {
   name: string
@@ -48,6 +49,7 @@ const LearningPathProvider: React.FC<LearningPathProviderProps> = ({
   const [currentStep, setCurrentStep] = useState(-1)
   const isBrowser = useIsBrowser()
   const history = useHistory()
+  const { track } = useUser()
 
   const startPath = (path: LearningPathType) => {
     setPath(path)
@@ -61,6 +63,11 @@ const LearningPathProvider: React.FC<LearningPathProviderProps> = ({
         })
       )
     }
+
+    track(`learning_path_${path.name}`, {
+      url: history.location.pathname,
+      state: `start`,
+    })
   }
 
   useEffect(() => {
@@ -70,6 +77,17 @@ const LearningPathProvider: React.FC<LearningPathProviderProps> = ({
   }, [path])
 
   const endPath = () => {
+    const didFinish = currentStep === path.steps.length - 1
+    const reachedIndex = currentStep === -1 ? 0 : currentStep
+    track(`learning_path_${path.name}`, {
+      url: history.location.pathname,
+      state: !didFinish ? `closed` : `end`,
+      reachedStep:
+        path.steps[reachedIndex]?.title ||
+        path.steps[reachedIndex]?.description ||
+        path.steps[reachedIndex]?.descriptionJSX ||
+        reachedIndex,
+    })
     setPath(null)
     setCurrentStep(-1)
     if (isBrowser) {

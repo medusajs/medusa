@@ -15,8 +15,10 @@ const useCurrentLearningPath = () => {
   } = useNotifications()
 
   // used when a notification closed (finished or not)
-  const handleClose = (notificationId: string) => {
-    endPath()
+  const handleClose = (notificationId: string, shouldEndPath = true) => {
+    if (shouldEndPath) {
+      endPath()
+    }
     removeNotification(notificationId)
   }
 
@@ -33,7 +35,7 @@ const useCurrentLearningPath = () => {
             {...path.finish}
             onRating={() =>
               setTimeout(() => {
-                handleClose(notificationId)
+                handleClose(notificationId, false)
               }, 1500)
             }
           />
