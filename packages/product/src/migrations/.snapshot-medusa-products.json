@@ -690,6 +690,15 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": [
+            "product_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_product_option_product_id",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "product_option_pkey",
           "columnNames": [
             "id"
@@ -1068,7 +1077,7 @@
             "product_id"
           ],
           "composite": false,
-          "keyName": "product_variant_product_id_index",
+          "keyName": "IDX_product_variant_product_id_index",
           "primary": false,
           "unique": false
         },

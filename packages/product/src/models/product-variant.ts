@@ -104,6 +104,9 @@ class ProductVariant {
   @Property({ columnType: "numeric", nullable: true })
   variant_rank?: number | null
 
+  @Property({ persist: false })
+  product_id!: string
+
   @Property({ onCreate: () => new Date(), columnType: "timestamptz" })
   created_at: Date
 
@@ -120,6 +123,7 @@ class ProductVariant {
   @ManyToOne(() => Product, {
     onDelete: "cascade",
     index: "IDX_product_variant_product_id_index",
+    fieldName: "product_id",
   })
   product!: Product
 

@@ -20,7 +20,12 @@ class ProductOption {
   @Property({ columnType: "text" })
   title: string
 
-  @ManyToOne(() => Product)
+  @Property({ persist: false })
+  product_id!: number
+
+  @ManyToOne(() => Product, {
+    index: "IDX_product_option_product_id",
+  })
   product: Product
 
   @OneToMany(() => ProductOptionValue, (value) => value.option, {

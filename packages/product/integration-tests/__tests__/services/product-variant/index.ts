@@ -120,6 +120,7 @@ describe("ProductVariant Service", () => {
         {
           id: "test-1",
           title: "variant 1",
+          product_id: "product-1",
           product: {
             id: "product-1",
             title: "product 1",
