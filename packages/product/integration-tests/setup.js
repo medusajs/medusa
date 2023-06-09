@@ -16,7 +16,7 @@ afterAll(async () => {
     await dropDatabase({ databaseName: DB_NAME }, pgGodCredentials)
   } catch (e) {
     console.error(
-      `This might fail if it is run during the unit tests since there is no database to drop. Otherwise, please check what is the issue.${EOL}${e}`
+      `This might fail if it is run during the unit tests since there is no database to drop. Otherwise, please check what is the issue. ${e}`
     )
   }
 })
