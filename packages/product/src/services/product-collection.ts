@@ -25,11 +25,6 @@ export default class ProductCollectionService<TEntity = ProductCollection> {
       queryOptions.where["title"] = { $like: filters.title }
     }
 
-    // TODO: remove
-    if (filters.id) {
-      queryOptions.where["id"] = filters.id
-    }
-
     return await this.productCollectionRepository_.find(queryOptions)
   }
 }

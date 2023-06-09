@@ -7,6 +7,7 @@ import {
   ProductService,
   ProductTagService,
   ProductVariantService,
+  ProductCollectionService,
 } from "@services"
 import * as DefaultRepositories from "@repositories"
 import {
@@ -40,6 +41,7 @@ export default async ({
     productCategoryService: asClass(ProductCategoryService).singleton(),
     productVariantService: asClass(ProductVariantService).singleton(),
     productTagService: asClass(ProductTagService).singleton(),
+    productCollectionService: asClass(ProductCollectionService).singleton(),
   })
 
   if (customRepositories) {
