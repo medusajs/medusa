@@ -20,14 +20,14 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/medusa": "1.12.0",
+    "@medusajs/medusa": "^1.12.0",
     "@types/stripe": "^8.0.417",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "typescript": "^4.9.5"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "1.12.0"
+    "@medusajs/medusa": "^1.12.0"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

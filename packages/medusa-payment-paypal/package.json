@@ -20,7 +20,7 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/medusa": "1.12.0",
+    "@medusajs/medusa": "^1.12.0",
     "@types/stripe": "^8.0.417",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
