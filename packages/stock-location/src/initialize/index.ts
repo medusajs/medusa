@@ -6,6 +6,7 @@ import {
 } from "@medusajs/modules-sdk"
 import { IEventBusService, IStockLocationService } from "@medusajs/types"
 import { StockLocationServiceInitializeOptions } from "../types"
+import { moduleDefinition } from "../module-definition"
 
 export const initialize = async (
   options: StockLocationServiceInitializeOptions | ExternalModuleDeclaration,
@@ -18,6 +19,7 @@ export const initialize = async (
     serviceKey,
     "@medusajs/stock-location",
     options as InternalModuleDeclaration | ExternalModuleDeclaration,
+    moduleDefinition,
     injectedDependencies
   )
 

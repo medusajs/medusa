@@ -1,6 +1,12 @@
-import { useMemo } from "react"
+import * as RadixPopover from "@radix-ui/react-popover"
 
+import { Navigate, useNavigate } from "react-router-dom"
+
+import Button from "../../fundamentals/button"
 import ImagePlaceholder from "../../fundamentals/image-placeholder"
+import { InventoryLevelDTO } from "@medusajs/types"
+import Tooltip from "../../atoms/tooltip"
+import { useMemo } from "react"
 
 const useInventoryTableColumn = () => {
   const columns = useMemo(
@@ -38,28 +44,55 @@ const useInventoryTableColumn = () => {
         Cell: ({ cell: { value } }) => value,
       },
       {
-        Header: "Incoming",
-        accessor: "incoming_quantity",
-        Cell: ({ row: { original } }) => (
-          <div>
-            {original.location_levels.reduce(
-              (acc, next) => acc + next.incoming_quantity,
-              0
-            )}
-          </div>
-        ),
+        Header: "Reserved",
+        accessor: "reserved_quantity",
+        Cell: ({ row: { original } }) => {
+          const navigate = useNavigate()
+
+          return (
+            <div className="flex grow">
+              <Tooltip
+                content={
+                  <Button
+                    size="small"
+                    className="inter-small-regular w-full"
+                    variant="ghost"
+                    onClick={() => {
+                      navigate(
+                        `/a/inventory/reservations?inventory_item_id%5B0%5D=${original.id}`
+                      )
+                    }}
+                  >
+                    Go to reservations
+                  </Button>
+                }
+              >
+                <div>
+                  {original.location_levels.reduce(
+                    (acc: number, next: InventoryLevelDTO) =>
+                      acc + next.reserved_quantity,
+                    0
+                  )}
+                </div>
+              </Tooltip>
+            </div>
+          )
+        },
       },
       {
         Header: "In stock",
         accessor: "stocked_quantity",
-        Cell: ({ row: { original } }) => (
-          <div>
-            {original.location_levels.reduce(
-              (acc, next) => acc + next.stocked_quantity,
-              0
-            )}
-          </div>
-        ),
+        Cell: ({ row: { original } }) => {
+          return (
+            <div className="bg-green-20">
+              {original.location_levels.reduce(
+                (acc: number, next: InventoryLevelDTO) =>
+                  acc + next.stocked_quantity,
+                0
+              )}
+            </div>
+          )
+        },
       },
     ],
     []

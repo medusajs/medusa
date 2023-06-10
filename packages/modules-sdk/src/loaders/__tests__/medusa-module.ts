@@ -24,38 +24,37 @@ describe("Medusa Module", () => {
   })
 
   it("MedusaModule bootstrap - Singleton instances", async () => {
-    await MedusaModule.bootstrap(
-      "moduleKey",
-      "@path",
-      {
-        scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
-        resolve: "@path",
-        options: {
-          abc: 123,
-        },
-      } as InternalModuleDeclaration,
-      {}
-    )
+    await MedusaModule.bootstrap("moduleKey", "@path", {
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.ISOLATED,
+      resolve: "@path",
+      options: {
+        abc: 123,
+      },
+    } as InternalModuleDeclaration)
 
     expect(mockRegisterMedusaModule).toBeCalledTimes(1)
     expect(mockModuleLoader).toBeCalledTimes(1)
 
-    await MedusaModule.bootstrap(
-      "moduleKey",
-      "@path",
-      {
-        scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
-        resolve: "@path",
-        options: {
-          abc: 123,
-        },
-      } as InternalModuleDeclaration,
-      {}
-    )
+    await MedusaModule.bootstrap("moduleKey", "@path", {
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.ISOLATED,
+      resolve: "@path",
+      options: {
+        abc: 123,
+      },
+    } as InternalModuleDeclaration)
 
-    expect(mockRegisterMedusaModule).toBeCalledTimes(1)
-    expect(mockModuleLoader).toBeCalledTimes(1)
+    await MedusaModule.bootstrap("moduleKey", "@path", {
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.ISOLATED,
+      resolve: "@path",
+      options: {
+        different_options: "abc",
+      },
+    } as InternalModuleDeclaration)
+
+    expect(mockRegisterMedusaModule).toBeCalledTimes(2)
+    expect(mockModuleLoader).toBeCalledTimes(2)
   })
 })
