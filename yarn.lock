@@ -23513,7 +23513,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^10.2.7":
+"glob@npm:^10.2.5, glob@npm:^10.2.7":
   version: 10.2.7
   resolution: "glob@npm:10.2.7"
   dependencies:
