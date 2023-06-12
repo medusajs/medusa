@@ -15,11 +15,12 @@
     "strictFunctionTypes": true,
     "noImplicitThis": true,
     "allowJs": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "downlevelIteration": true // to use ES5 specific tooling
   },
-  "include": ["src"],
+  "include": ["./src/**/*"],
   "exclude": [
-    "dist",
+    "./dist/**/*",
     "./src/**/__tests__",
     "./src/**/__mocks__",
     "node_modules"
