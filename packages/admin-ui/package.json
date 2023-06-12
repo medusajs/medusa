@@ -29,8 +29,8 @@
     "build": "tsup"
   },
   "dependencies": {
-    "@babel/parser": "7.22.5",
-    "@babel/traverse": "7.22.5",
+    "@babel/parser": "7.12.7",
+    "@babel/traverse": "7.12.7",
     "@hookform/error-message": "^2.0.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@radix-ui/react-accordion": "^1.0.1",
@@ -103,7 +103,7 @@
     "webpackbar": "^5.0.2"
   },
   "devDependencies": {
-    "@babel/types": "7.22.5",
+    "@babel/types": "7.12.7",
     "@medusajs/medusa": "*",
     "@medusajs/types": "*",
     "@types/pluralize": "^0.0.29",
