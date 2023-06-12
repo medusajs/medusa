@@ -186,4 +186,4 @@ With entities, you can create relationships, index keys, and more. As Medusa use
 ## See Also
 
 - [Extend Entity](./extend-entity.md)
-- [Create a Plugin](../plugins/create.md)
+- [Create a Plugin](../plugins/create.mdx)

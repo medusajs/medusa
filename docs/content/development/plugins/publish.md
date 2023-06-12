@@ -9,7 +9,7 @@ In this document, you'll learn how to publish a Medusa plugin to NPM and what ar
 
 ## Prerequisites
 
-If you haven't created a plugin yet, please check [this guide to learn how to create a plugin](./create.md).
+If you haven't created a plugin yet, please check [this guide to learn how to create a plugin](./create.mdx).
 
 ---
 
@@ -46,7 +46,7 @@ Make sure you add the `publish` command to your `scripts` field and make the fol
 "prepare": "cross-env NODE_ENV=production npm run build"
 ```
 
-The `build` command ensures that the plugin's built files are placed as explained in the [plugin structure](./create.md#plugin-structure) section of the Create Plugin documentation.
+The `build` command ensures that the plugin's built files are placed as explained in the [plugin structure](./create.mdx#plugin-structure) section of the Create Plugin documentation.
 
 The `prepare` command facilitates your publishing process. You would typically run this script before publishing your plugin.
 
@@ -58,7 +58,7 @@ npm install --save-dev cross-env
 
 ### Plugin Structure
 
-Make sure your plugin's structure is as described in the [Create Plugin](./create.md#plugin-structure) documentation. If you've made the changes mentioned in [the above section to the scripts](#scripts-in-packagejson) in `package.json`, you should have the correct structure when you run the `prepare` command.
+Make sure your plugin's structure is as described in the [Create Plugin](./create.mdx#plugin-structure) documentation. If you've made the changes mentioned in [the above section to the scripts](#scripts-in-packagejson) in `package.json`, you should have the correct structure when you run the `prepare` command.
 
 ### NPM Ignore File
 

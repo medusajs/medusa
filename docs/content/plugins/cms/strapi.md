@@ -199,4 +199,4 @@ If you try to update products on Medusa either using the [REST APIs](/api/admin/
 ## See Also
 
 - [Deploy the Medusa backend](../../deployments/server/index.mdx)
-- [Create your own plugin](../../development/plugins/create.md)
+- [Create your own plugin](../../development/plugins/create.mdx)
