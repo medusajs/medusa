@@ -1,6 +1,7 @@
 import boxen from "boxen"
 import chalk from "chalk"
 import { Ora } from "ora"
+import { emojify } from "node-emoji"
 import onProcessTerminated from "./on-process-terminated.js"
 
 const facts = [
@@ -31,7 +32,7 @@ export const getFact = () => {
 
 export const showFact = (spinner: Ora, title: string) => {
   const fact = getFact()
-  spinner.text = `${boxen(fact, {
+  spinner.text = `${boxen(`${emojify(":bulb:")} Medusa Tips\n\n${fact}`, {
     title: chalk.cyan(title),
     titleAlignment: "center",
     textAlignment: "center",
