@@ -24,6 +24,9 @@
     "lodash": "^4.17.21",
     "meilisearch": "^0.32.3"
   },
+  "peerDependencies": {
+    "@medusajs/medusa": "^1.12.0"
+  },
   "devDependencies": {
     "@medusajs/medusa": "^1.12.0",
     "@medusajs/types": "^1.8.7",

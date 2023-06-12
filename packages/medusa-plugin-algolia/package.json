@@ -19,7 +19,6 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.8.7",
     "@medusajs/utils": "^1.9.0",
     "algoliasearch": "^4.15.0"
   },
