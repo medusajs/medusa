@@ -22,6 +22,7 @@ import createAbortController, {
 import { track } from "medusa-telemetry"
 import { createFactBox, resetFactBox } from "../utils/facts.js"
 import boxen from "boxen"
+import { emojify } from "node-emoji"
 
 const slugify = slugifyType.default
 const isEmail = isEmailImported.default
@@ -123,6 +124,12 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
       },
     },
   ])
+
+  logMessage({
+    message: `${emojify(
+      ":rocket:"
+    )} Starting project setup, this may take a few minutes.`,
+  })
 
   const spinner = ora().start()
 
