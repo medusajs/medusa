@@ -446,7 +446,7 @@
         displayedAttributes: ["title"],,
       },
       primaryKey: "id"
-      transformer: (document) => ({ id: "yo" })
+      transformer: async (document, container) => ({ id: "yo" })
     },
   },
   ```

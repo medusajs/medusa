@@ -141,7 +141,7 @@ const plugins = [
             ],
           },
           primaryKey: "id",
-          transformer: (product) => ({
+          transformer: async (product, container) => ({
             id: product.id, 
             // other attributes...
           }),

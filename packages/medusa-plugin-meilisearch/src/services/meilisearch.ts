@@ -1,5 +1,6 @@
 import { SearchTypes } from "@medusajs/types"
 import { SearchUtils } from "@medusajs/utils"
+import { AwilixContainer } from "awilix"
 import { MeiliSearch, Settings } from "meilisearch"
 import { meilisearchErrorCodes, MeilisearchPluginOptions } from "../types"
 import { transformProduct } from "../utils/transformer"
@@ -9,11 +10,13 @@ class MeiliSearchService extends SearchUtils.AbstractSearchService {
 
   protected readonly config_: MeilisearchPluginOptions
   protected readonly client_: MeiliSearch
+  protected readonly container_: AwilixContainer
 
-  constructor(_, options: MeilisearchPluginOptions) {
-    super(_, options)
+  constructor(container: AwilixContainer, options: MeilisearchPluginOptions) {
+    super(container, options)
 
     this.config_ = options
+    this.container_ = container
 
     if (process.env.NODE_ENV !== "development") {
       if (!options.config?.apiKey) {
@@ -44,7 +47,7 @@ class MeiliSearchService extends SearchUtils.AbstractSearchService {
   }
 
   async addDocuments(indexName: string, documents: any, type: string) {
-    const transformedDocuments = this.getTransformedDocuments(type, documents)
+    const transformedDocuments = await this.getTransformedDocuments(type, documents)
 
     return await this.client_
       .index(indexName)
@@ -52,7 +55,7 @@ class MeiliSearchService extends SearchUtils.AbstractSearchService {
   }
 
   async replaceDocuments(indexName: string, documents: any, type: string) {
-    const transformedDocuments = this.getTransformedDocuments(type, documents)
+    const transformedDocuments = await this.getTransformedDocuments(type, documents)
 
     return await this.client_
       .index(indexName)
@@ -110,7 +113,7 @@ class MeiliSearchService extends SearchUtils.AbstractSearchService {
           this.config_.settings?.[SearchTypes.indexTypes.PRODUCTS]
             ?.transformer ?? transformProduct
 
-        return documents.map(productsTransformer)
+        return Promise.all(documents.map(doc => productsTransformer(doc, this.container_)))
       default:
         return documents
     }
