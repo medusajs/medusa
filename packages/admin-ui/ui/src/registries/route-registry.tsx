@@ -1,5 +1,4 @@
-import { Link, Route, RouteExtension } from "../../../src/client/types"
-import { validatePath } from "../../../src/client/utils"
+import { Link, Route, RouteExtension } from "../types/extensions"
 
 type RouteNode = {
   [pathSegment: string]: RouteNode | Route
@@ -16,12 +15,6 @@ class RouteRegistry {
 
   register(origin: string, { Component, config }: RouteExtension) {
     const { path, link } = config
-
-    const result = validatePath(path, origin)
-
-    if (!result.valid) {
-      throw new Error(result.error)
-    }
 
     const pathSegments = path.split("/").filter(Boolean)
     let currentNode = this.routes

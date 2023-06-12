@@ -78,7 +78,6 @@ const OrderIndex = () => {
   return (
     <>
       <div className="flex h-full grow flex-col">
-        {/* <p>hey</p> */}
         {getWidgets("order.list.before").map((w, i) => {
           return (
             <WidgetContainer

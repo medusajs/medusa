@@ -7,7 +7,7 @@ import {
   validatePage,
   validateWidget,
 } from "./validate-extensions"
-import { watchLocalExtensions } from "./watch-local-extensions"
+import { watchLocalAdminFolder } from "./watch-local-admin-folder"
 
 export {
   logger,
@@ -17,5 +17,5 @@ export {
   validatePage,
   findAllValidWidgets,
   findAllValidPages,
-  watchLocalExtensions,
+  watchLocalAdminFolder,
 }

@@ -110,7 +110,7 @@ const Sidebar: React.FC = () => {
             triggerHandler={triggerHandler}
             text={"Pricing"}
           />
-          {getLinks().map(({ path, title, icon }, index) => {
+          {getLinks().map(({ path, label, icon }, index) => {
             const cleanLink = path.replace("/a/", "")
 
             const Icon = icon ? icon : SquaresPlus
@@ -121,7 +121,7 @@ const Sidebar: React.FC = () => {
                 pageLink={`/a/${cleanLink}`}
                 icon={icon ? <Icon /> : <SquaresPlus size={ICON_SIZE} />}
                 triggerHandler={triggerHandler}
-                text={title}
+                text={label}
               />
             )
           })}

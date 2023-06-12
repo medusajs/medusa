@@ -1,6 +1,5 @@
-import type { ExtensionProps } from "@medusajs/admin-shared"
-import { useNavigate } from "react-router-dom"
 import useNotification from "../../../hooks/use-notification"
+import { WidgetProps } from "../../../types/extensions"
 import { EntityMap, PropKeyMap } from "./types"
 
 type UseWidgetContainerProps<T extends keyof EntityMap> = {
@@ -12,13 +11,6 @@ export const useWidgetContainerProps = <T extends keyof EntityMap>({
   injectionZone,
   entity,
 }: UseWidgetContainerProps<T>) => {
-  /** Feature Flags */
-  // const featureFlags = useFeatureFlag()
-
-  /** Navigation */
-  const navigate = useNavigate()
-
-  /** Notifications */
   const notification = useNotification()
 
   const notify = {
@@ -28,7 +20,7 @@ export const useWidgetContainerProps = <T extends keyof EntityMap>({
     error: (title: string, message: string) => {
       notification(title, message, "error")
     },
-    warning: (title: string, message: string) => {
+    warn: (title: string, message: string) => {
       notification(title, message, "warning")
     },
     info: (title: string, message: string) => {
@@ -37,9 +29,8 @@ export const useWidgetContainerProps = <T extends keyof EntityMap>({
   }
 
   /** Base props that are always passed to a widget */
-  const baseProps: ExtensionProps = {
+  const baseProps: WidgetProps = {
     notify,
-    navigate,
   }
 
   /**

@@ -3,15 +3,19 @@ import traverse, { NodePath } from "@babel/traverse"
 import type {
   ExportDefaultDeclaration,
   ExportNamedDeclaration,
+  ObjectExpression,
   ObjectMethod,
   ObjectProperty,
   SpreadElement,
 } from "@babel/types"
 import fse from "fs-extra"
 import path from "node:path"
-import { ValidPageResult } from "../../client/types"
-import { isValidInjectionZone } from "../../client/utils"
+import { forbiddenRoutes, InjectionZone, injectionZones } from "../../client"
 import { logger } from "./logger"
+
+function isValidInjectionZone(zone: any): zone is InjectionZone {
+  return injectionZones.includes(zone)
+}
 
 /**
  * Validates that the widget config export is valid.
@@ -48,9 +52,36 @@ function validateWidgetConfigExport(
 function validatePageConfigExport(
   properties: (ObjectMethod | ObjectProperty | SpreadElement)[]
 ): boolean {
-  const isValidPageConfig = false
+  const linkProperty = properties.find(
+    (p) =>
+      p.type === "ObjectProperty" &&
+      p.key.type === "Identifier" &&
+      p.key.name === "link"
+  ) as ObjectProperty | undefined
 
-  return isValidPageConfig
+  // Link property is optional for routes
+  if (!linkProperty) {
+    return true
+  }
+
+  const linkValue = linkProperty.value as ObjectExpression
+
+  let labelIsValid = false
+
+  // Check that the linkProperty is an object and has a `label` property that is a string
+  if (
+    linkValue.properties.some(
+      (p) =>
+        p.type === "ObjectProperty" &&
+        p.key.type === "Identifier" &&
+        p.key.name === "label" &&
+        p.value.type === "StringLiteral"
+    )
+  ) {
+    labelIsValid = true
+  }
+
+  return labelIsValid
 }
 
 function validateConfigExport(
@@ -204,26 +235,87 @@ async function validateWidget(file: string) {
  * It converts the file path to a URL path by replacing any
  * square brackets with colons, and then removing the "page.[jt]s" suffix.
  */
-function transformFilePath(filePath: string): string {
+function createPath(filePath: string): string {
   const regex = /\[(.*?)\]/g
   const strippedPath = filePath.replace(regex, ":$1")
-  const finalPath = strippedPath.replace(/\/page\.[jt]sx?$/i, "")
 
-  return finalPath
+  const url = strippedPath.replace(/\/page\.[jt]sx?$/i, "")
+
+  return url
+}
+
+function isForbiddenRoute(path: any): boolean {
+  return forbiddenRoutes.includes(path)
+}
+
+function validatePath(
+  path: string,
+  origin: string
+): {
+  valid: boolean
+  error: string
+} {
+  if (isForbiddenRoute(path)) {
+    return {
+      error: `A route from ${origin} is using a forbidden path: ${path}.`,
+      valid: false,
+    }
+  }
+
+  const specialChars = ["/", ":"]
+
+  for (let i = 0; i < path.length; i++) {
+    const currentChar = path[i]
+
+    if (
+      !specialChars.includes(currentChar) &&
+      !/^[a-z0-9]$/i.test(currentChar)
+    ) {
+      return {
+        error: `A route from ${origin} is using an invalid path: ${path}. All paths must only contain alphanumeric characters, "/" and ":".`,
+        valid: false,
+      }
+    }
+
+    if (currentChar === ":" && (i === 0 || path[i - 1] !== "/")) {
+      return {
+        error: `A route from ${origin} is using an invalid path: ${path}. All paths must only contain alphanumeric characters, "/" and ":".`,
+        valid: false,
+      }
+    }
+  }
+
+  return {
+    valid: true,
+    error: "",
+  }
 }
 
 /**
- * Validates that a file is a valid page.
+ * Validates that a file is a valid route.
  * This is determined by checking if the file exports a valid React component
- * as the default export, and a optional page config as a named export.
- * If the file is not a valid page, `null` is returned.
- * If the file is a valid page, a `ValidPageResult` is returned.
+ * as the default export, and a optional route config as a named export.
+ * If the file is not a valid route, `null` is returned.
+ * If the file is a valid route, a `ValidRouteResult` is returned.
  */
-async function validatePage(
+async function validateRoute(
   file: string,
   basePath: string
-): Promise<ValidPageResult | null> {
-  const url = transformFilePath(file.replace(basePath, ""))
+): Promise<{
+  path: string
+  hasConfig: boolean
+  file: string
+} | null> {
+  const cleanPath = createPath(file.replace(basePath, ""))
+
+  const { valid, error } = validatePath(cleanPath, file)
+
+  if (!valid) {
+    logger.error(
+      `The page ${file} is invalid and will not be injected. ${error}`
+    )
+    return null
+  }
 
   const content = await fse.readFile(file, "utf-8")
 
@@ -259,7 +351,7 @@ async function validatePage(
   }
 
   return {
-    path: url,
+    path: cleanPath,
     hasConfig: hasConfigExport,
     file,
   }
@@ -328,7 +420,7 @@ async function findAllValidPages(dir: string) {
 
       if (fileStat.isDirectory()) {
         await traverseDirectory(filePath)
-      } else if (fileStat.isFile() && /\/page\.[jt]sx?$/i.test(file)) {
+      } else if (fileStat.isFile() && /^(.*\/)?page\.[jt]sx?$/i.test(file)) {
         pageFiles.push(filePath)
       }
     }
@@ -337,7 +429,7 @@ async function findAllValidPages(dir: string) {
   await traverseDirectory(dir)
 
   const promises = pageFiles.map(async (file) => {
-    return validatePage(file, dir)
+    return validateRoute(file, dir)
   })
 
   const validFiles = await Promise.all(promises)
@@ -345,4 +437,9 @@ async function findAllValidPages(dir: string) {
   return validFiles.filter((file) => file !== null)
 }
 
-export { validateWidget, validatePage, findAllValidWidgets, findAllValidPages }
+export {
+  validateWidget,
+  validateRoute as validatePage,
+  findAllValidWidgets,
+  findAllValidPages,
+}

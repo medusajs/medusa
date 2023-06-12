@@ -85,6 +85,17 @@ const GiftCardDetails = () => {
       ) : (
         <>
           <div className="gap-y-xsmall flex flex-col">
+            {getWidgets("custom_gift_card.before").map((w, i) => {
+              return (
+                <WidgetContainer
+                  key={i}
+                  widget={w}
+                  entity={giftCard}
+                  injectionZone="custom_gift_card.before"
+                />
+              )
+            })}
+
             <BodyCard
               className={"h-auto min-h-0 w-full"}
               title={`${giftCard?.code}`}
@@ -151,16 +162,18 @@ const GiftCardDetails = () => {
                 </div>
               </div>
             </BodyCard>
-            {getWidgets("custom_gift_card").map((w, i) => {
+
+            {getWidgets("custom_gift_card.after").map((w, i) => {
               return (
                 <WidgetContainer
                   key={i}
                   widget={w}
                   entity={giftCard}
-                  injectionZone="custom_gift_card"
+                  injectionZone="custom_gift_card.after"
                 />
               )
             })}
+
             <RawJSON data={giftCard} title="Raw gift card" />
           </div>
 

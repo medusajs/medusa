@@ -11,7 +11,7 @@ type CleanArgs = {
  */
 export async function clean({ appDir, outDir }: CleanArgs) {
   const cacheDir = path.join(appDir, ".cache")
-  const buildDir = path.join(outDir, "build")
+  const buildDir = path.resolve(appDir, outDir)
 
   await fse.remove(buildDir)
   await fse.remove(cacheDir)

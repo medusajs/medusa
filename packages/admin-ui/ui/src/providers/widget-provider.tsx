@@ -4,8 +4,8 @@ import React, {
   useEffect,
   useMemo,
 } from "react"
-import { InjectionZone, Widget } from "../../../src/client/types"
 import WidgetRegistry from "../registries/widget-registry"
+import { InjectionZone, Widget } from "../types/extensions"
 
 type WidgetContextType = {
   getWidgets: (injectionZone: InjectionZone) => Widget[]

@@ -1,5 +1,6 @@
+import type { ConfigModule } from "@medusajs/medusa"
 import { getConfigFile } from "medusa-core-utils"
-import { ConfigModule, PluginOptions } from "../types"
+import { PluginOptions } from "../types"
 
 export const loadConfig = () => {
   const { configModule } = getConfigFile<ConfigModule>(
@@ -13,21 +14,28 @@ export const loadConfig = () => {
       (typeof p === "object" && p.resolve === "@medusajs/admin")
   )
 
-  let defaultConfig: PluginOptions = {
+  let config: PluginOptions = {
     serve: true,
     autoRebuild: false,
     path: "app",
+    outDir: "build",
   }
 
   if (typeof plugin !== "string") {
     const { options } = plugin as { options: PluginOptions }
-    defaultConfig = {
-      serve: options.serve ?? defaultConfig.serve,
-      autoRebuild: options.autoRebuild ?? defaultConfig.autoRebuild,
-      path: options.path ?? defaultConfig.path,
-      outDir: options.outDir ?? defaultConfig.outDir,
+
+    const serve = options.serve !== undefined ? options.serve : config.serve
+
+    const backend = serve ? options.backend : "/"
+
+    config = {
+      serve,
+      autoRebuild: options.autoRebuild ?? config.autoRebuild,
+      path: options.path ?? config.path,
+      outDir: options.outDir ?? config.outDir,
+      backend,
     }
   }
 
-  return defaultConfig
+  return config
 }

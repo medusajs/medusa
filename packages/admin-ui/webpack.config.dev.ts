@@ -15,8 +15,9 @@ const getDevServerConfig = () => {
     env: "development",
     options: {
       backend: "http://localhost:9000",
-      publicPath: "/",
+      path: "/",
     },
+    template: path.resolve(__dirname, "ui", "src", "index.html"),
   })
 
   if (analyzeBundle) {

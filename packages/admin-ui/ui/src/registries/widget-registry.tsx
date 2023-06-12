@@ -1,8 +1,4 @@
-import {
-  InjectionZone,
-  Widget,
-  WidgetExtension,
-} from "../../../src/client/types"
+import { InjectionZone, Widget, WidgetExtension } from "../types/extensions"
 
 type Widgets = Map<InjectionZone, Widget[]>
 

@@ -16,13 +16,14 @@ export function getWebpackConfig({
   cacheDir,
   env,
   options,
+  template,
 }: WebpackConfigArgs): Configuration {
   const isProd = env === "production"
 
   const envVars = getClientEnv({
     env,
-    backend: options?.backend,
-    publicPath: options?.publicPath || "/app",
+    backend: options?.backend || "/",
+    path: options?.path || "/app",
   })
 
   const webpackPlugins = isProd
@@ -128,7 +129,7 @@ export function getWebpackConfig({
     plugins: [
       new HtmlWebpackPlugin({
         inject: true,
-        template: path.resolve(__dirname, "..", "..", "..", "ui", "index.html"),
+        template: template || path.resolve(__dirname, "..", "ui", "index.html"),
       }),
 
       new webpack.DefinePlugin(envVars),

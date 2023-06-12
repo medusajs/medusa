@@ -61,19 +61,34 @@ const Manage = () => {
       />
       <div className="gap-x-base grid grid-cols-12">
         <div className="gap-y-xsmall col-span-8 flex flex-col">
-          <ProductGeneralSection product={giftCard} />
-          <GiftCardDenominationsSection giftCard={giftCard} />
-          <ProductAttributesSection product={giftCard} />
-          {getWidgets("gift_card.details").map((w, i) => {
+          {getWidgets("gift_card.details.before").map((w, i) => {
             return (
               <WidgetContainer
                 key={i}
                 widget={w}
-                injectionZone={"gift_card.details"}
+                injectionZone={"gift_card.details.before"}
                 entity={giftCard}
               />
             )
           })}
+
+          <ProductGeneralSection product={giftCard} />
+
+          <GiftCardDenominationsSection giftCard={giftCard} />
+
+          <ProductAttributesSection product={giftCard} />
+
+          {getWidgets("gift_card.details.after").map((w, i) => {
+            return (
+              <WidgetContainer
+                key={i}
+                widget={w}
+                injectionZone={"gift_card.details.after"}
+                entity={giftCard}
+              />
+            )
+          })}
+
           <ProductRawSection product={giftCard} />
         </div>
         <div className="gap-y-xsmall col-span-4 flex flex-col">

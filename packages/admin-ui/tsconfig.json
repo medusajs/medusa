@@ -14,6 +14,11 @@
     "rootDir": ".",
     "skipLibCheck": true
   },
-  "include": ["src", "tsup.config.ts", "webpack.config.dev.ts"],
+  "include": [
+    "src",
+    "tsup.config.ts",
+    "webpack.config.dev.ts",
+    "src/node/webpack/get-webpack-config.ts"
+  ],
   "exclude": ["node_modules", "ui"]
 }

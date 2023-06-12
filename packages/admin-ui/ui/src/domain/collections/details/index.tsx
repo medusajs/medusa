@@ -145,6 +145,17 @@ const CollectionDetails = () => {
           label="Back to Collections"
         />
         <div className="gap-y-xsmall flex flex-col">
+          {getWidgets("product_collection.details.after").map((w, i) => {
+            return (
+              <WidgetContainer
+                key={i}
+                entity={collection}
+                injectionZone="product_collection.details.after"
+                widget={w}
+              />
+            )
+          })}
+
           <div className="rounded-rounded py-large px-xlarge border-grey-20 bg-grey-0 border">
             <div>
               <div>
@@ -183,6 +194,7 @@ const CollectionDetails = () => {
               )}
             </div>
           </div>
+
           <Section
             title="Products"
             actions={[
@@ -204,16 +216,18 @@ const CollectionDetails = () => {
               />
             )}
           </Section>
-          {getWidgets("product_collection.details").map((w, i) => {
+
+          {getWidgets("product_collection.details.after").map((w, i) => {
             return (
               <WidgetContainer
                 key={i}
                 entity={collection}
-                injectionZone="product_collection.details"
+                injectionZone="product_collection.details.after"
                 widget={w}
               />
             )
           })}
+
           <RawJSON data={collection} title="Raw collection" />
         </div>
         <Spacer />

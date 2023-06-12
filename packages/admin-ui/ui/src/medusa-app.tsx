@@ -1,10 +1,10 @@
 import React from "react"
-import { ExtensionsEntry } from "../../src/client/types"
-import { isRouteExtension, isWidgetExtension } from "../../src/client/utils"
 import App from "./App"
 import { Providers } from "./providers/providers"
 import RouteRegistry from "./registries/route-registry"
 import WidgetRegistry from "./registries/widget-registry"
+import { ExtensionsEntry } from "./types/extensions"
+import { isRouteExtension, isWidgetExtension } from "./utils/extensions"
 
 type MedusaAppConfig = {
   entries?: ExtensionsEntry[]

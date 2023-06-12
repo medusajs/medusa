@@ -1,24 +1,19 @@
 import path from "node:path"
 import webpack, { WebpackError } from "webpack"
+import { BuildArgs } from "../types"
 import { logger } from "../utils"
 import { createCacheDir } from "../utils/create-cache-dir"
 import { getCustomWebpackConfig } from "../webpack"
 
-type BuildArgs = {
-  appDir: string
-  buildDir: string
-  plugins?: string[]
-}
-
 /**
  * Builds the admin UI.
  */
-export async function build({ appDir, buildDir, plugins }: BuildArgs) {
+export async function build({ appDir, buildDir, plugins, options }: BuildArgs) {
   await createCacheDir({ appDir, plugins })
 
   const cacheDir = path.resolve(appDir, ".cache")
   const entry = path.resolve(cacheDir, "admin", "src", "main.tsx")
-  const dest = path.resolve(buildDir, "build")
+  const dest = path.resolve(appDir, buildDir)
   const env = "production"
 
   const config = await getCustomWebpackConfig(appDir, {
@@ -26,6 +21,7 @@ export async function build({ appDir, buildDir, plugins }: BuildArgs) {
     dest,
     cacheDir,
     env,
+    options,
   })
 
   const compiler = webpack(config)

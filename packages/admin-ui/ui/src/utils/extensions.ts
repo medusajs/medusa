@@ -1,12 +1,12 @@
-import { forbiddenRoutes } from "./forbidden-routes"
-import { injectionZones } from "./injection-zones"
+import { forbiddenRoutes } from "../constants/forbidden-routes"
+import { injectionZones } from "../constants/injection-zones"
 import {
   Extension,
   ForbiddenRoute,
   InjectionZone,
   RouteExtension,
   WidgetExtension,
-} from "./types"
+} from "../types/extensions"
 
 export function isValidInjectionZone(zone: any): zone is InjectionZone {
   return injectionZones.includes(zone)
