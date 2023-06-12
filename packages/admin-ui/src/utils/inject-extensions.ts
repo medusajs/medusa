@@ -150,6 +150,7 @@ async function writeExtensionsEntry(
       return `import ext${i} from "${p}"`
     })
     .join("\n")
+    .replace("\\", "\\\\")
 
   const exports = `export const extensions = [${relativePaths
     .map((_, i) => {
