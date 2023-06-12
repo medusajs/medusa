@@ -5,10 +5,7 @@ import { createBuildManifest, shouldBuild } from "../utils/build-manifest"
 export default async function setupAdmin() {
   const { autoRebuild, serve, backend, outDir, path } = loadConfig()
 
-  // Get name of current command being run
-  const command = process.argv[2]
-
-  if (command !== "start") {
+  if (process.env.NODE_ENV !== "production") {
     return
   }
 

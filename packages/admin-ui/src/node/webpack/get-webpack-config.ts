@@ -10,6 +10,18 @@ import { WebpackConfigArgs } from "../types"
 import { getClientEnv } from "../utils"
 import { webpackAliases } from "./webpack-aliases"
 
+function formatPublicPath(path?: string) {
+  if (!path) {
+    return "/app/"
+  }
+
+  if (path === "/") {
+    return path
+  }
+
+  return path.endsWith("/") ? path : `${path}/`
+}
+
 export function getWebpackConfig({
   entry,
   dest,
@@ -26,6 +38,8 @@ export function getWebpackConfig({
     backend: options?.backend || "/",
     path: options?.path || "/app",
   })
+
+  const publicPath = formatPublicPath(options?.path)
 
   const webpackPlugins = isProd
     ? [
@@ -133,7 +147,7 @@ export function getWebpackConfig({
       new HtmlWebpackPlugin({
         inject: true,
         template: template || path.resolve(__dirname, "..", "ui", "index.html"),
-        publicPath: options?.path ? `${options.path}/` : "/app/",
+        publicPath: publicPath,
       }),
 
       new webpack.DefinePlugin(envVars),
