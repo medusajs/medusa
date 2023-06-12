@@ -1,11 +1,12 @@
-import { build, clean } from "@medusajs/admin-ui"
+import { build, clean, logger } from "@medusajs/admin-ui"
 import { getPluginPaths, loadConfig } from "../utils"
 import { createBuildManifest, shouldBuild } from "../utils/build-manifest"
 
 export default async function setupAdmin() {
   const { autoRebuild, serve, backend, outDir, path } = loadConfig()
 
-  if (process.env.NODE_ENV !== "production") {
+  if (process.env.COMMAND_INITIATED_BY === "develop") {
+    logger.info("Running in development mode. Skipping setup.")
     return
   }
 

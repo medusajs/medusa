@@ -50,7 +50,7 @@ export default async function ({ port, directory }) {
   const cliPath = path.join(directory, "node_modules", ".bin", "medusa")
   let child = spawn(cliPath, [`start`, ...args], {
     cwd: directory,
-    env: process.env,
+    env: { ...process.env, COMMAND_INITIATED_BY: "develop" },
     stdio: ["pipe", process.stdout, process.stderr],
   })
   child.on("error", function (err) {
