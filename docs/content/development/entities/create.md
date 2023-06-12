@@ -136,10 +136,10 @@ You can access your custom entity data in the database in services or subscriber
 
 ```ts
 import { TransactionBaseService } from "@medusajs/medusa"
-import PostRepository from "../repositories/post";
+import PostRepository from "../repositories/post"
 
 class PostService extends TransactionBaseService {
-  protected readonly postRepository_: typeof PostRepository;
+  protected readonly postRepository_: typeof PostRepository
   
   constructor({ postRepository, manager }) {
     super({ postRepository, manager })
