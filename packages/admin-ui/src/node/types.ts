@@ -6,6 +6,8 @@ export type AdminOptions = {
   outDir?: string
 }
 
+type BuildReporting = "minimal" | "fancy"
+
 export type WebpackConfigArgs = {
   entry: string
   dest: string
@@ -13,6 +15,7 @@ export type WebpackConfigArgs = {
   env: "development" | "production"
   options?: AdminOptions
   template?: string
+  reporting?: BuildReporting
 }
 
 export type CustomWebpackConfigArgs = WebpackConfigArgs & {
@@ -24,6 +27,7 @@ export type BuildArgs = {
   buildDir: string
   plugins?: string[]
   options?: AdminOptions
+  reporting?: BuildReporting
 }
 
 export type DevelopArgs = {

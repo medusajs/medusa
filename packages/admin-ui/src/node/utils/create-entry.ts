@@ -55,18 +55,18 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
     }
   })
 
-  const routesArray = localRoutes.map((page, index) => {
+  const routesArray = localRoutes.map((route, index) => {
     const relativePath = path
-      .relative(path.resolve(dest, "admin", "src", "extensions"), page.file)
+      .relative(path.resolve(dest, "admin", "src", "extensions"), route.file)
       .replace(FILE_EXT_REGEX, "")
 
-    const importStatement = page.hasConfig
+    const importStatement = route.hasConfig
       ? `import Page${index}, { config as routeConfig${index} } from "./${relativePath}"`
       : `import Page${index} from "./${relativePath}"`
 
-    const extension = page.hasConfig
-      ? `{ Component: Page${index}, config: { ...routeConfig${index}, path: "${page.path}" } }`
-      : `{ Component: Page${index}, config: { path: "${page.path}" } }`
+    const extension = route.hasConfig
+      ? `{ Component: Page${index}, config: { ...routeConfig${index}, path: "${route.path}" } }`
+      : `{ Component: Page${index}, config: { path: "${route.path}" } }`
 
     return {
       importStatement,

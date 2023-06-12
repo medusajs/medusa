@@ -8,7 +8,13 @@ import { getCustomWebpackConfig } from "../webpack"
 /**
  * Builds the admin UI.
  */
-export async function build({ appDir, buildDir, plugins, options }: BuildArgs) {
+export async function build({
+  appDir,
+  buildDir,
+  plugins,
+  options,
+  reporting = "fancy",
+}: BuildArgs) {
   await createCacheDir({ appDir, plugins })
 
   const cacheDir = path.resolve(appDir, ".cache")
@@ -22,6 +28,7 @@ export async function build({ appDir, buildDir, plugins, options }: BuildArgs) {
     cacheDir,
     env,
     options,
+    reporting,
   })
 
   const compiler = webpack(config)

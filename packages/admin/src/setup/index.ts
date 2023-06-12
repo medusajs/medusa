@@ -5,7 +5,10 @@ import { createBuildManifest, shouldBuild } from "../utils/build-manifest"
 export default async function setupAdmin() {
   const { autoRebuild, serve, backend, outDir, path } = loadConfig()
 
-  if (process.env.NODE_ENV !== "production") {
+  // Get name of current command being run
+  const command = process.argv[2]
+
+  if (command !== "start") {
     return
   }
 
@@ -19,7 +22,7 @@ export default async function setupAdmin() {
 
   const appDir = process.cwd()
 
-  const shouldContinue = shouldBuild(appDir, {
+  const shouldContinue = await shouldBuild(appDir, {
     backend,
     path,
     outDir,
@@ -45,6 +48,7 @@ export default async function setupAdmin() {
       outDir,
     },
     plugins,
+    reporting: "minimal", // The fancy reporting does not work well when run as part of the setup script
   })
 
   await createBuildManifest(appDir, {

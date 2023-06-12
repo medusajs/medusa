@@ -5294,14 +5294,12 @@ __metadata:
     "@rollup/plugin-virtual": ^3.0.1
     "@types/express": ^4.17.13
     commander: ^10.0.0
-    connect-history-api-fallback: 2.0.0
     dotenv: 16.0.3
     esbuild: 0.17.18
     express: 4.18.2
     fs-extra: 11.1.0
+    lodash: ^4.17.21
     medusa-core-utils: 1.2.0
-    ora: 5.4.1
-    picocolors: ^1.0.0
     rollup: 3.20.7
     rollup-plugin-esbuild: 5.0.0
     ts-dedent: ^2.2.0
@@ -16703,7 +16701,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"connect-history-api-fallback@npm:2.0.0, connect-history-api-fallback@npm:^2.0.0":
+"connect-history-api-fallback@npm:^2.0.0":
   version: 2.0.0
   resolution: "connect-history-api-fallback@npm:2.0.0"
   checksum: 90fa8b16ab76e9531646cc70b010b1dbd078153730c510d3142f6cf07479ae8a812c5a3c0e40a28528dd1681a62395d0cfdef67da9e914c4772ac85d69a3ed87
@@ -31349,7 +31347,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ora@npm:5.4.1, ora@npm:^5.4.1":
+"ora@npm:^5.4.1":
   version: 5.4.1
   resolution: "ora@npm:5.4.1"
   dependencies:

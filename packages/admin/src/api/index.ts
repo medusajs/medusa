@@ -10,7 +10,7 @@ export default function (_rootDirectory: string, options: PluginOptions) {
 
   const { serve = true, path = "/app", outDir } = options
 
-  if (serve && process.env.NODE_ENV === "production") {
+  if (serve) {
     const buildPath: string = resolve(process.cwd(), outDir || "build")
 
     const htmlPath = resolve(buildPath, "index.html")
@@ -44,16 +44,16 @@ export default function (_rootDirectory: string, options: PluginOptions) {
       res.setHeader("Vary", "Origin, Cache-Control")
     }
 
-    app.get(`/${path}`, sendHtml)
+    app.get(`${path}`, sendHtml)
     app.use(
-      `/${path}`,
+      `${path}`,
       express.static(buildPath, {
         setHeaders: setStaticHeaders,
       })
     )
-    app.get(`/${path}/*`, sendHtml)
+    app.get(`${path}/*`, sendHtml)
   } else {
-    app.get(`/${path}`, (_req, res) => {
+    app.get(`${path}`, (_req, res) => {
       res.send("Admin not enabled")
     })
   }

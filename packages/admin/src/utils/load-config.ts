@@ -17,8 +17,9 @@ export const loadConfig = () => {
   let config: PluginOptions = {
     serve: true,
     autoRebuild: false,
-    path: "app",
+    path: "/app",
     outDir: "build",
+    backend: "/",
   }
 
   if (typeof plugin !== "string") {
@@ -26,14 +27,18 @@ export const loadConfig = () => {
 
     const serve = options.serve !== undefined ? options.serve : config.serve
 
-    const backend = serve ? options.backend : "/"
+    const serverUrl = serve
+      ? config.backend
+      : options.backend
+      ? options.backend
+      : "/"
 
     config = {
       serve,
       autoRebuild: options.autoRebuild ?? config.autoRebuild,
       path: options.path ?? config.path,
       outDir: options.outDir ?? config.outDir,
-      backend,
+      backend: serverUrl,
     }
   }
 

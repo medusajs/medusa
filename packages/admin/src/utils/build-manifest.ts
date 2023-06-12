@@ -1,9 +1,14 @@
 import { AdminOptions } from "@medusajs/admin-ui"
 import fse from "fs-extra"
+import isEqual from "lodash/isEqual"
 import path from "node:path"
 import { getPluginPaths } from "./get-plugin-paths"
 
-const MANIFEST_PATH = path.resolve(__dirname, "admin-build-manifest.json")
+const MANIFEST_PATH = path.resolve(
+  process.cwd(),
+  ".cache",
+  "admin-build-manifest.json"
+)
 
 async function getPackageVersions(appDir: string) {
   const packageJsonPath = path.resolve(appDir, "package.json")
@@ -19,36 +24,31 @@ async function getPackageVersions(appDir: string) {
   }
 }
 
-async function getLastTimeModified(appDir: string) {
+async function getLastTimeModifiedAt(appDir: string) {
   const adminPath = path.resolve(appDir, "src", "admin")
 
-  const hasAdminCode = await fse.pathExists(adminPath)
+  // Get the most recent time a file in the admin directory was modified and do it recursively for all subdirectories and files
+  let mostRecentTimestamp = 0
 
-  if (!hasAdminCode) {
-    return null
-  }
-
-  try {
-    const files = await fse.readdir(adminPath)
-    const lastModifiedTimes: Date[] = []
+  async function processFolder(path) {
+    const files = await fse.readdir(path)
 
     for (const file of files) {
-      const filePath = `${adminPath}/${file}`
+      const filePath = `${path}/${file}`
       const stats = await fse.stat(filePath)
-      lastModifiedTimes.push(stats.mtime)
-    }
 
-    // Find the latest modified time
-    const lastModifiedTime = lastModifiedTimes.reduce(
-      (maxTime, currentTime) => {
-        return currentTime > maxTime ? currentTime : maxTime
+      if (stats.isDirectory()) {
+        await processFolder(filePath) // Recursively process subfolders
+      } else {
+        const { mtimeMs } = stats
+        mostRecentTimestamp = Math.max(mostRecentTimestamp, mtimeMs)
       }
-    )
-
-    return lastModifiedTime
-  } catch (_error) {
-    return null
+    }
   }
+
+  await processFolder(adminPath)
+
+  return mostRecentTimestamp
 }
 
 export async function createBuildManifest(
@@ -56,7 +56,7 @@ export async function createBuildManifest(
   options: AdminOptions
 ) {
   const packageVersions = await getPackageVersions(appDir)
-  const lastModificationTime = await getLastTimeModified(appDir)
+  const lastModificationTime = await getLastTimeModifiedAt(appDir)
   const plugins = await getPluginPaths()
 
   const { dependencies } = packageVersions
@@ -68,28 +68,11 @@ export async function createBuildManifest(
     options,
   }
 
+  await fse.ensureFile(MANIFEST_PATH)
+
   await fse.writeJson(MANIFEST_PATH, buildManifest, {
     spaces: 2,
   })
-}
-
-function compareStringArrays(array1: string[], array2: string[]): boolean {
-  if (array1.length !== array2.length) {
-    return false
-  }
-
-  return array1.every((value) => array2.includes(value))
-}
-
-function compareObjects(obj1: object, obj2: object): boolean {
-  const obj1Keys = Object.keys(obj1)
-  const obj2Keys = Object.keys(obj2)
-
-  if (obj1Keys.length !== obj2Keys.length) {
-    return false
-  }
-
-  return obj1Keys.every((key) => obj2Keys.includes(key))
 }
 
 export async function shouldBuild(appDir: string, options: AdminOptions) {
@@ -109,7 +92,7 @@ export async function shouldBuild(appDir: string, options: AdminOptions) {
       options: buildManifestOptions,
     } = buildManifest
 
-    const optionsChanged = !compareObjects(options, buildManifestOptions)
+    const optionsChanged = !isEqual(options, buildManifestOptions)
 
     if (optionsChanged) {
       return true
@@ -123,23 +106,22 @@ export async function shouldBuild(appDir: string, options: AdminOptions) {
 
     const { dependencies } = packageVersions
 
-    const dependenciesChanged = Object.keys(dependencies).some(
-      (dependency) =>
-        buildManifestDependencies[dependency] !== dependencies[dependency]
+    const dependenciesChanged = !isEqual(
+      dependencies,
+      buildManifestDependencies
     )
 
     if (dependenciesChanged) {
       return true
     }
 
-    const modifiedAt = await getLastTimeModified(appDir)
+    const modifiedAt = await getLastTimeModifiedAt(appDir)
 
     if (!modifiedAt) {
       return true
     }
 
-    const lastModificationTimeChanged =
-      modifiedAt > new Date(buildManifestModifiedAt)
+    const lastModificationTimeChanged = modifiedAt > buildManifestModifiedAt
 
     if (lastModificationTimeChanged) {
       return true
@@ -147,7 +129,7 @@ export async function shouldBuild(appDir: string, options: AdminOptions) {
 
     const plugins = await getPluginPaths()
 
-    const pluginsChanged = !compareStringArrays(plugins, buildManifestPlugins)
+    const pluginsChanged = !isEqual(plugins, buildManifestPlugins)
 
     if (pluginsChanged) {
       return true

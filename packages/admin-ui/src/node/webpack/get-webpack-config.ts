@@ -17,6 +17,7 @@ export function getWebpackConfig({
   env,
   options,
   template,
+  reporting = "fancy",
 }: WebpackConfigArgs): Configuration {
   const isProd = env === "production"
 
@@ -32,7 +33,10 @@ export function getWebpackConfig({
           filename: "[name].[chunkhash].css",
           chunkFilename: "[name].[chunkhash].css",
         }),
-        new WebpackBar(),
+        new WebpackBar({
+          basic: reporting === "minimal",
+          fancy: reporting === "fancy",
+        }),
       ]
     : [new MiniCssExtractPlugin()]
 
@@ -43,7 +47,6 @@ export function getWebpackConfig({
     entry: [entry],
     output: {
       path: dest,
-      publicPath: "/",
       filename: isProd ? "[name].[contenthash:8].js" : "[name].bundle.js",
       chunkFilename: isProd
         ? "[name].[contenthash:8].chunk.js"
@@ -130,6 +133,7 @@ export function getWebpackConfig({
       new HtmlWebpackPlugin({
         inject: true,
         template: template || path.resolve(__dirname, "..", "ui", "index.html"),
+        publicPath: options?.path ? `${options.path}/` : "/app/",
       }),
 
       new webpack.DefinePlugin(envVars),
