@@ -164,7 +164,7 @@ Then, run the following command to migrate the Medusa schema to your database:
   <TabItem value="pnpm" label="pnpm">
 
   ```bash
-  pnpm @medusajs/medusa-cli@latest migrations run
+  pnpm dlx @medusajs/medusa-cli@latest migrations run
   ```
 
   </TabItem>
@@ -183,7 +183,7 @@ You can optionally seed your database with demo data by running the following co
   <TabItem value="pnpm" label="pnpm">
 
   ```bash
-  pnpm @medusajs/medusa-cli@latest seed -f ./data/seed.json
+  pnpm dlx @medusajs/medusa-cli@latest seed -f ./data/seed.json
   ```
 
   </TabItem>
@@ -204,7 +204,7 @@ While in your `backend` directory, run the following command to start your Medus
   <TabItem value="pnpm" label="pnpm">
 
   ```bash
-  pnpm @medusajs/medusa-cli@latest develop
+  pnpm dlx @medusajs/medusa-cli@latest develop
   ```
 
   </TabItem>
@@ -213,7 +213,7 @@ While in your `backend` directory, run the following command to start your Medus
 This will start your backend on `localhost:9000`. While your backend is running, you can also go to the `storefront` directory of your project and start the storefront. If you're using the Medusa Next.js storefront the following command starts it:
 
 ```bash npm2yarn
-npm run develop
+npm run dev
 ```
 
 If you open your storefront now in your browser on `localhost:8000`, everything should be working as expected. If you're not seeing any products, you can run the `seed` command as instructed earlier or install the [Medusa admin plugin](./admin/quickstart.mdx) to start adding products.

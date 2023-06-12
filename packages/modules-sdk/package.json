@@ -26,13 +26,12 @@
     "@medusajs/types": "1.8.7",
     "@medusajs/utils": "1.9.0",
     "awilix": "^8.0.0",
-    "glob": "7.1.6",
-    "medusa-telemetry": "^0.0.16",
     "resolve-cwd": "^3.0.0"
   },
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
-    "test": "jest"
+    "test": "jest",
+    "watch": "tsc --build --watch"
   }
 }

@@ -396,7 +396,7 @@ npm run build
 
 :::note
 
-This section explains how to test out your implementation if the search service was created in the Medusa backend codebase. You can refer to [the plugin documentation](../plugins/create.md#test-your-plugin) on how to test a plugin.
+This section explains how to test out your implementation if the search service was created in the Medusa backend codebase. You can refer to [the plugin documentation](../plugins/create.mdx#test-your-plugin) on how to test a plugin.
 
 :::
 
@@ -412,5 +412,5 @@ You can then send a request to the [Search Products endpoint](/api/store#tag/Pro
 
 ## See Also
 
-- [How to create a plugin](../plugins/create.md)
+- [How to create a plugin](../plugins/create.mdx)
 - [How to publish a plugin](../plugins/publish.md)

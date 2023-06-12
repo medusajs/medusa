@@ -5,7 +5,6 @@ import {
 } from "@medusajs/types"
 import { createMedusaContainer } from "medusa-core-utils"
 import { EOL } from "os"
-import { trackInstallation } from "../__mocks__/medusa-telemetry"
 import { moduleLoader } from "../module-loader"
 
 const logger = {
@@ -81,6 +80,7 @@ describe("modules loader", () => {
       {}
     )
 
+    /*
     expect(trackInstallation).toHaveBeenCalledWith(
       {
         module: moduleResolutions.testService.definition.key,
@@ -88,6 +88,7 @@ describe("modules loader", () => {
       },
       "module"
     )
+    */
     expect(testService).toBeTruthy()
     expect(typeof testService).toEqual("object")
   })
