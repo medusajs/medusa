@@ -193,6 +193,8 @@ Learn more about how you can use mutations in [Tanstack Query’s documentation]
 Medusa React provides a utility function `createCustomAdminHooks` that allows developers to consume their admin custom endpoints using the same Medusa React methods and conventions. It returns custom mutation and query hooks that you can use to retrieve and manipulate data using your custom endpoints. This utility function is useful when customizing the admin with widgets.
 
 ```ts
+import { createCustomAdminHooks } from "medusa-react"
+
 const {
   useAdminEntity,
   useAdminEntities,
