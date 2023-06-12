@@ -73,7 +73,7 @@ npm run build
 
 :::note
 
-This section explains how to test out the loader if it’s created in the Medusa backend codebase. If you’re creating your loader in a plugin, you can learn how to test it in the [plugins documentation](../plugins/create.md#test-your-plugin). Alternatively, if you’re creating your loader in a module, you can learn how to test it in the [modules documentation](../modules/create.mdx#step-4-test-your-module).
+This section explains how to test out the loader if it’s created in the Medusa backend codebase. If you’re creating your loader in a plugin, you can learn how to test it in the [plugins documentation](../plugins/create.mdx#test-your-plugin). Alternatively, if you’re creating your loader in a module, you can learn how to test it in the [modules documentation](../modules/create.mdx#step-4-test-your-module).
 
 :::
 
