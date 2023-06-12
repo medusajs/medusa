@@ -5,7 +5,12 @@ addHowToData: true
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import Feedback from '@site/src/components/Feedback';
+import Feedback from '@site/src/components/Feedback'
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import TypeErrorSection from "./troubleshooting/create-medusa-app-errors/_typeerror.md"
+import OtherErrorsSection from "./troubleshooting/create-medusa-app-errors/_other-errors.md"
+import ConnectionErrorSection from './troubleshooting/database-errors/_connection-error.md'
+import FreshInstallationSection from './troubleshooting/awilix-resolution-error/_fresh-installation.md'
 
 # Install Medusa with create-medusa-app
 
@@ -159,7 +164,7 @@ Then, run the following command to migrate the Medusa schema to your database:
   <TabItem value="pnpm" label="pnpm">
 
   ```bash
-  pnpm @medusajs/medusa-cli@latest migrations run
+  pnpm dlx @medusajs/medusa-cli@latest migrations run
   ```
 
   </TabItem>
@@ -178,7 +183,7 @@ You can optionally seed your database with demo data by running the following co
   <TabItem value="pnpm" label="pnpm">
 
   ```bash
-  pnpm @medusajs/medusa-cli@latest seed -f ./data/seed.json
+  pnpm dlx @medusajs/medusa-cli@latest seed -f ./data/seed.json
   ```
 
   </TabItem>
@@ -199,7 +204,7 @@ While in your `backend` directory, run the following command to start your Medus
   <TabItem value="pnpm" label="pnpm">
 
   ```bash
-  pnpm @medusajs/medusa-cli@latest develop
+  pnpm dlx @medusajs/medusa-cli@latest develop
   ```
 
   </TabItem>
@@ -208,7 +213,7 @@ While in your `backend` directory, run the following command to start your Medus
 This will start your backend on `localhost:9000`. While your backend is running, you can also go to the `storefront` directory of your project and start the storefront. If you're using the Medusa Next.js storefront the following command starts it:
 
 ```bash npm2yarn
-npm run develop
+npm run dev
 ```
 
 If you open your storefront now in your browser on `localhost:8000`, everything should be working as expected. If you're not seeing any products, you can run the `seed` command as instructed earlier or install the [Medusa admin plugin](./admin/quickstart.mdx) to start adding products.
@@ -224,7 +229,26 @@ If you open your storefront now in your browser on `localhost:8000`, everything 
 
 ## Troubleshooting
 
-If you run into any errors during the installation, please refer to [this troubleshooting guide](./troubleshooting/create-medusa-app-errors.md) for a potential help.
+<Troubleshooting
+  sections={[
+    {
+      title: "TypeError: cmd is not a function",
+      content: <TypeErrorSection />
+    },
+    {
+      title: "Error: connect ECONNREFUSED ::1:5432",
+      content: <ConnectionErrorSection />
+    },
+    {
+      title: 'AwilixResolutionError: Could Not Resolve X',
+      content: <FreshInstallationSection />
+    },
+    {
+      title: "Other Errors",
+      content: <OtherErrorsSection />
+    },
+  ]}
+/>
 
 ---
 

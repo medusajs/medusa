@@ -51,7 +51,7 @@ const SigninInput = React.forwardRef(
     return (
       <div
         className={clsx(
-          "rounded-rounded h-[40px] w-[280px] overflow-hidden border",
+          "rounded-rounded h-[40px] w-[300px] overflow-hidden border",
           "bg-grey-5 inter-base-regular placeholder:text-grey-40",
           "focus-within:shadow-input focus-within:border-violet-60",
           "flex items-center",

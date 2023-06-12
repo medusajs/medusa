@@ -1,4 +1,4 @@
-import { useAdminAcceptInvite } from "medusa-react"
+import { useAdminAcceptInvite, useAdminLogin } from "medusa-react"
 import qs from "qs"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -12,11 +12,7 @@ import PublicLayout from "../components/templates/login-layout"
 import useNotification from "../hooks/use-notification"
 import { getErrorMessage } from "../utils/error-messages"
 import FormValidator from "../utils/form-validator"
-import {
-  analytics,
-  useAdminAnalyticsConfig,
-  useAdminCreateAnalyticsConfig,
-} from "../services/analytics"
+import { analytics, useAdminCreateAnalyticsConfig } from "../services/analytics"
 import AnalyticsConfigForm, {
   AnalyticsConfigFormType,
 } from "../components/organisms/analytics-config-form"
@@ -35,10 +31,7 @@ const InvitePage = () => {
   const parsed = qs.parse(location.search.substring(1))
   const [signUp, setSignUp] = useState(false)
 
-  const { analytics_config, isLoading: analyticsLoading } =
-    useAdminAnalyticsConfig()
-
-  const firstRun = !!parsed.firstRun
+  const first_run = !!parsed.first_run
 
   let token: {
     iat: number
@@ -80,8 +73,10 @@ const InvitePage = () => {
     mutate: createAnalyticsConfig,
     isLoading: createAnalyticsConfigIsLoading,
   } = useAdminCreateAnalyticsConfig()
+  const { mutate: doLogin, isLoading: loginIsLoading } = useAdminLogin()
 
-  const isLoading = acceptInviteIsLoading || createAnalyticsConfigIsLoading
+  const isLoading =
+    acceptInviteIsLoading || createAnalyticsConfigIsLoading || loginIsLoading
 
   const navigate = useNavigate()
   const notification = useNotification()
@@ -113,23 +108,37 @@ const InvitePage = () => {
       },
       {
         onSuccess: async () => {
-          const shouldTrackEmail =
-            !data.analytics.anonymize &&
-            !data.analytics.opt_out &&
-            token?.user_email
+          if (token?.user_email) {
+            doLogin(
+              { email: token.user_email, password: data.password },
+              {
+                onSuccess: async () => {
+                  const shouldTrackEmail =
+                    !data.analytics.anonymize &&
+                    !data.analytics.opt_out &&
+                    token?.user_email
 
-          await createAnalyticsConfig(data.analytics, {
-            onSuccess: () => {
-              navigate("/login")
+                  await createAnalyticsConfig(data.analytics, {
+                    onSuccess: () => {
+                      navigate("/a/orders")
 
-              if (shouldTrackEmail) {
-                analytics.track("userEmail", { email: token?.user_email })
+                      if (shouldTrackEmail) {
+                        analytics.track("userEmail", {
+                          email: token?.user_email,
+                        })
+                      }
+                    },
+                    onError: (err) => {
+                      notification("Error", getErrorMessage(err), "error")
+                    },
+                  })
+                },
+                onError: (err) => {
+                  notification("Error", getErrorMessage(err), "error")
+                },
               }
-            },
-            onError: (err) => {
-              notification("Error", getErrorMessage(err), "error")
-            },
-          })
+            )
+          }
         },
         onError: (err) => {
           notification("Error", getErrorMessage(err), "error")
@@ -163,7 +172,7 @@ const InvitePage = () => {
       <SEO title="Create Account" />
       {signUp ? (
         <form onSubmit={handleAcceptInvite}>
-          <div className="flex flex-col items-center">
+          <div className="flex w-[300px] flex-col items-center">
             <h1 className="inter-xlarge-semibold mb-large text-[20px]">
               Create your Medusa account
             </h1>
@@ -193,13 +202,16 @@ const InvitePage = () => {
                 <InputError errors={errors} name="repeat_password" />
               </div>
             </div>
-            <div className="gap-y-small my-8 flex w-[560px] flex-col">
-              <AnalyticsConfigForm form={nestedForm(form, "analytics")} />
+            <div className="gap-y-small my-8 flex w-[300px] flex-col">
+              <AnalyticsConfigForm
+                form={nestedForm(form, "analytics")}
+                compact={true}
+              />
             </div>
             <Button
               variant="secondary"
               size="medium"
-              className="mt-large w-[280px]"
+              className="mt-large w-[300px]"
               loading={isLoading}
             >
               Create account
@@ -212,11 +224,11 @@ const InvitePage = () => {
       ) : (
         <div className="flex flex-col items-center text-center">
           <h1 className="inter-xlarge-semibold text-[20px]">
-            {firstRun
+            {first_run
               ? `Let's get you started!`
               : `You have been invited to join the team`}
           </h1>
-          {firstRun ? (
+          {first_run ? (
             <p className="inter-base-regular text-grey-50 mt-xsmall">
               Create an admin account to access your <br /> Medusa dashboard.
             </p>
@@ -230,7 +242,7 @@ const InvitePage = () => {
           <Button
             variant="secondary"
             size="medium"
-            className="mt-xlarge w-[280px]"
+            className="mt-xlarge w-[300px]"
             onClick={() => setSignUp(true)}
           >
             Sign up

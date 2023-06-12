@@ -25,7 +25,7 @@ By integrating Strapi to Medusa, you can benefit from powerful features in your 
 
 ### Medusa CLI
 
-[Medusa’s CLI tool](../../cli/reference.md#how-to-install-cli-tool) is required to set up a new Medusa backend.
+[Medusa’s CLI tool](../../cli/reference.mdx#how-to-install-cli-tool) is required to set up a new Medusa backend.
 
 ### Redis
 
@@ -199,4 +199,4 @@ If you try to update products on Medusa either using the [REST APIs](/api/admin/
 ## See Also
 
 - [Deploy the Medusa backend](../../deployments/server/index.mdx)
-- [Create your own plugin](../../development/plugins/create.md)
+- [Create your own plugin](../../development/plugins/create.mdx)
