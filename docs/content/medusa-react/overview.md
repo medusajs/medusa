@@ -190,9 +190,23 @@ Learn more about how you can use mutations in [Tanstack Query’s documentation]
 
 ### Custom Hooks
 
-Medusa React provides a utility function that allows developers to consume their admin custom endpoints using the same Medusa React methods and conventions. It returns custom mutation and query hooks that you can use to retrieve and manipulate data using your custom endpoints. This utility function is useful when customizing the admin with widgets.
+Medusa React provides a utility function `createCustomAdminHooks` that allows developers to consume their admin custom endpoints using the same Medusa React methods and conventions. It returns custom mutation and query hooks that you can use to retrieve and manipulate data using your custom endpoints. This utility function is useful when customizing the admin with widgets.
 
-The utility function is `createCustomAdminHooks`. It accepts the following parameters:
+```ts
+const {
+  useAdminEntity,
+  useAdminEntities,
+  useAdminCreateMutation,
+  useAdminUpdateMutation,
+  useAdminDeleteMutation,
+} = createCustomAdminHooks(
+  `/vendors`, 
+  "vendors",
+  { product: true }
+)
+```
+
+It accepts the following parameters:
 
 1. `path`: (required) the first parameter is a string that indicates the base path to the custom endpoint. For example, if you have custom endpoints that begin with `/admin/vendors`, the value of this parameter would be `vendors`. The `/admin` prefix will be added automatically.
 2. `queryKey`: (required) the second parameter is a string used to generate query keys for all `GET` hooks, which is used by Tanstack Query for caching. When a mutation related to this same key succeeds, the key will be automatically invalidated.
@@ -229,7 +243,7 @@ type PostVendorRes = {
 
 const MyWidget = () => {
   const { 
-    useAdminCreateMutation: useCreateVendor
+    useAdminCreateMutation: useCreateVendor,
   } = createCustomAdminHooks(
     `/vendors`, 
     "vendors",
@@ -245,11 +259,11 @@ const MyWidget = () => {
 
   const handleCreate = () => {
     mutate({
-      name: "Vendor 1"
+      name: "Vendor 1",
     }, {
       onSuccess({ vendor }) {
         console.log(vendor)
-      }
+      },
     })
   }
 
