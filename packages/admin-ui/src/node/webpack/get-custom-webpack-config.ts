@@ -12,24 +12,15 @@ export async function getCustomWebpackConfig(
 ) {
   let config = getWebpackConfig(args)
 
-  const adminConfigPath = path.join(appDir, "src", "admin", "webpack.config")
+  const adminConfigPath = path.join(appDir, "src", "admin", "webpack.config.js")
 
-  const webpackConfigJS = `${adminConfigPath}.js`
-  const webpackConfigTS = `${adminConfigPath}.ts`
+  const pathExists = await fse.pathExists(adminConfigPath)
 
-  let actualConfigPath: string | null = null
-
-  if (fse.existsSync(webpackConfigTS)) {
-    actualConfigPath = webpackConfigTS
-  } else if (fse.existsSync(webpackConfigJS)) {
-    actualConfigPath = webpackConfigJS
-  }
-
-  if (actualConfigPath) {
+  if (pathExists) {
     let webpackAdminConfig: ReturnType<typeof withCustomWebpackConfig>
 
     try {
-      webpackAdminConfig = await import(actualConfigPath)
+      webpackAdminConfig = require(adminConfigPath)
     } catch (e) {
       logger.panic(`Error loading custom webpack config: ${e.message}`)
     }
@@ -40,6 +31,8 @@ export async function getCustomWebpackConfig(
       }
 
       config = webpackAdminConfig(config, webpack)
+
+      console.log(JSON.stringify(config, null, 2))
 
       if (!config) {
         logger.panic(
