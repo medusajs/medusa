@@ -31,7 +31,6 @@ async function createCacheDir({ appDir, plugins }: CreateCacheDirArgs) {
 
   await copyAdmin(cacheDir)
 
-  // await createExtensionsEntry({ dest: cacheDir, plugins })
   await createEntry({
     appDir,
     dest: cacheDir,

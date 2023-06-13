@@ -9,7 +9,7 @@ import type {
   Product,
 } from "@medusajs/medusa"
 
-import type { WidgetProps } from "@medusajs/admin-ui"
+import type { WidgetConfig, WidgetProps } from "@medusajs/admin-ui"
 
 export interface ProductDetailsWidgetProps extends WidgetProps {
   product: Product
@@ -47,4 +47,4 @@ export interface CustomerCustomWidgetProps extends WidgetProps {
   customerGroup: CustomerGroup
 }
 
-export { WidgetProps }
+export { WidgetProps, WidgetConfig }

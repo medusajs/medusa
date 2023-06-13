@@ -8,6 +8,7 @@
 /types
 /loaders
 /setup
+/lib
 
 # Platform-specific files
 .DS_Store

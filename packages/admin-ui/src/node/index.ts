@@ -1,5 +1,5 @@
 export { build, clean, develop } from "./actions"
 export { ALIASED_PACKAGES } from "./constants"
 export type { AdminOptions, DevelopArgs } from "./types"
-export { findAllValidPages, findAllValidWidgets, logger } from "./utils"
+export { findAllValidRoutes, findAllValidWidgets, logger } from "./utils"
 export { withCustomWebpackConfig } from "./webpack"

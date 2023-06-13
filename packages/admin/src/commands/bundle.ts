@@ -1,6 +1,6 @@
 import {
   ALIASED_PACKAGES,
-  findAllValidPages,
+  findAllValidRoutes,
   findAllValidWidgets,
   logger,
 } from "@medusajs/admin-ui"
@@ -45,7 +45,7 @@ export async function bundle() {
   const identifier = pkg.name as string
 
   const [routes, widgets] = await Promise.all([
-    findAllValidPages(path.resolve(adminDir, "routes")),
+    findAllValidRoutes(path.resolve(adminDir, "routes")),
     findAllValidWidgets(path.resolve(adminDir, "widgets")),
   ])
 

@@ -2,9 +2,9 @@ import { createCacheDir } from "./create-cache-dir"
 import { getClientEnv } from "./get-client-env"
 import { logger } from "./logger"
 import {
-  findAllValidPages,
+  findAllValidRoutes,
   findAllValidWidgets,
-  validatePage,
+  validateRoute,
   validateWidget,
 } from "./validate-extensions"
 import { watchLocalAdminFolder } from "./watch-local-admin-folder"
@@ -14,8 +14,8 @@ export {
   getClientEnv,
   createCacheDir,
   validateWidget,
-  validatePage,
+  validateRoute,
   findAllValidWidgets,
-  findAllValidPages,
+  findAllValidRoutes,
   watchLocalAdminFolder,
 }

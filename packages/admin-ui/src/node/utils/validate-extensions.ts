@@ -399,10 +399,10 @@ async function findAllValidWidgets(dir: string) {
 }
 
 /**
- * Scans a directory for valid pages.
- * A valid page is a file that exports a optional page config and a valid React component.
+ * Scans a directory for valid routes.
+ * A valid route is a file that exports a optional route config and a valid React component.
  */
-async function findAllValidPages(dir: string) {
+async function findAllValidRoutes(dir: string) {
   const pageFiles: string[] = []
 
   const dirExists = await fse.pathExists(dir)
@@ -439,7 +439,7 @@ async function findAllValidPages(dir: string) {
 
 export {
   validateWidget,
-  validateRoute as validatePage,
+  validateRoute,
   findAllValidWidgets,
-  findAllValidPages,
+  findAllValidRoutes,
 }

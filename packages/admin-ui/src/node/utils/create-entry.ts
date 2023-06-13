@@ -3,7 +3,7 @@ import path from "node:path"
 import dedent from "ts-dedent"
 import { copyFilter } from "./copy-filter"
 import { logger } from "./logger"
-import { findAllValidPages, findAllValidWidgets } from "./validate-extensions"
+import { findAllValidRoutes, findAllValidWidgets } from "./validate-extensions"
 
 const FILE_EXT_REGEX = /\.[^/.]+$/
 
@@ -40,7 +40,7 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
     path.resolve(dest, "admin", "src", "extensions", "widgets")
   )
 
-  const localRoutes = await findAllValidPages(
+  const localRoutes = await findAllValidRoutes(
     path.resolve(dest, "admin", "src", "extensions", "routes")
   )
 
