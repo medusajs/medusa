@@ -30413,7 +30413,7 @@ __metadata:
     medusa-core-utils: ^1.2.0
     typescript: ^4.4.4
   peerDependencies:
-    "@medusajs/medusa": 1.12.0
+    "@medusajs/medusa": ^1.12.0
   languageName: unknown
   linkType: soft
 
