@@ -2,12 +2,12 @@ import type { ComponentType } from "react"
 import { forbiddenRoutes } from "../constants/forbidden-routes"
 import { injectionZones } from "../constants/injection-zones"
 
-export type InjectionZone = typeof injectionZones[number]
+export type InjectionZone = (typeof injectionZones)[number]
 
-export type ForbiddenRoute = typeof forbiddenRoutes[number]
+export type ForbiddenRoute = (typeof forbiddenRoutes)[number]
 
 export type WidgetConfig = {
-  zone: InjectionZone
+  zone: InjectionZone | InjectionZone[]
 }
 
 export type LinkConfig = {
