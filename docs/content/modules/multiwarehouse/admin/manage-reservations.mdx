@@ -93,7 +93,9 @@ const Reservations = () => {
   return (
     <div>
       {isLoading && <span>Loading...</span>}
-      {reservations && !reservations.length && <span>No reservations</span>}
+      {reservations && !reservations.length && (
+        <span>No Reservations</span>
+      )}
       {reservations && reservations.length > 0 && (
         <ul>
           {reservations.map((reservation) => (
