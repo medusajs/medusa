@@ -150,3 +150,7 @@
 .redocusaurus [role=menuitem] {
   @apply hover:!tw-text-medusa-text-subtle dark:hover:!tw-text-medusa-text-subtle-dark;
 }
+
+.redocusaurus [data-section-id^="operation/"] {
+  @apply max-[1199px]:[&>*]:!tw-w-auto;
+}
