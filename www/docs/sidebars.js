@@ -839,6 +839,11 @@ module.exports = {
           label: "Install Modules",
         },
         {
+          type: "doc",
+          id: "modules/multiwarehouse/serverless-modules",
+          label: "Serverless Modules",
+        },
+        {
           type: "html",
           value: "Architecture",
           customProps: {
