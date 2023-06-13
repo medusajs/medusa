@@ -11,7 +11,7 @@ In this document, you’ll learn how to use the Products module in a serverless 
 
 Medusa’s modules increase extensibility and customization capabilities. Instead of having to manage a fully-fledged ecommerce system, you can use these modules in serverless applications, such as a Next.js project.
 
-The Module only needs to connect to a PostgreSQL database. You can also connect it to an existing Medusa database. Then, you can use the Product module to connect directly to the PostgreSQL database and retrieve or manipulate data.
+The module only needs to connect to a PostgreSQL database. You can also connect it to an existing Medusa database. Then, you can use the Product module to connect directly to the PostgreSQL database and retrieve or manipulate data.
 
 This guide explains how to use the Product Module in a Next.js application as an example.
 
@@ -243,7 +243,7 @@ export async function GET(request: Request) {
 }
 ```
 
-This creates a `GET` endpoint at the route `/api/products`. This endpoint invokes the `initializeProductModule` function imported from `@medusajs/product`, which returns an instance of the `ProductService`. Using the product service’s `list` method, you retrieve all available products and return them in the response of the endpoint.
+This creates a `GET` endpoint at the route `/api/products`. You import the `initialize` function, aliased as `initializeProductModule`, from `@medusajs/product`. Then, in the endpoint, you invoke the `initializeProductModule` function, which returns an instance of the `ProductService`. Using the product service’s `list` method, you retrieve all available products and return them in the response of the endpoint.
 
 ### Step 6: Test Next.js Application
 
