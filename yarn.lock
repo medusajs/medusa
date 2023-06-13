@@ -5457,7 +5457,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-js@*, @medusajs/medusa-js@workspace:packages/medusa-js":
+"@medusajs/medusa-js@workspace:*, @medusajs/medusa-js@workspace:packages/medusa-js":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
@@ -29236,7 +29236,7 @@ __metadata:
   dependencies:
     "@babel/core": ^7.16.0
     "@medusajs/medusa": 1.12.0
-    "@medusajs/medusa-js": "*"
+    "@medusajs/medusa-js": "workspace:*"
     "@storybook/addon-essentials": ^6.3.12
     "@storybook/addon-links": ^6.3.12
     "@storybook/addons": ^6.3.12
