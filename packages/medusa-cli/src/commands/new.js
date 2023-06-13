@@ -633,22 +633,24 @@ medusa new ${rootPath} [url-to-starter]
     }
   }
 
-  reporter.info("Final project preparations...")
-  // remove demo files
-  const files = globSync([
-    sysPath.join(rootPath, `src`, `admin/**/*`),
-    sysPath.join(rootPath, `src`, `**/onboarding/`),
-    sysPath.join(rootPath, `src`, `types`),
-    sysPath.join(rootPath, `src`, `**/*.{ts,tsx,js,jsx}`),
-  ])
-  files.forEach((file) =>
-    fs.rmSync(file, {
-      recursive: true,
-      force: true,
-    })
-  )
-  // add empty typescript file to avoid build errors
-  fs.openSync(sysPath.join(rootPath, "src", "index.ts"), "w")
+  if (!selectedOtherStarter) {
+    reporter.info("Final project preparations...")
+    // remove demo files
+    const files = globSync([
+      sysPath.join(rootPath, `src`, `admin/**/*`),
+      sysPath.join(rootPath, `src`, `**/onboarding/`),
+      sysPath.join(rootPath, `src`, `types`),
+      sysPath.join(rootPath, `src`, `**/*.{ts,tsx,js,jsx}`),
+    ])
+    files.forEach((file) =>
+      fs.rmSync(file, {
+        recursive: true,
+        force: true,
+      })
+    )
+    // add empty typescript file to avoid build errors
+    fs.openSync(sysPath.join(rootPath, "src", "index.ts"), "w")
+  }
 
   successMessage(rootPath)
   track("CLI_NEW_SUCCEEDED")
