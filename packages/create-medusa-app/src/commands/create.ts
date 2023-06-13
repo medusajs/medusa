@@ -15,7 +15,6 @@ import fs from "fs"
 import { nanoid } from "nanoid"
 import isEmailImported from "validator/lib/isEmail.js"
 import logMessage from "../utils/log-message.js"
-import onProcessTerminated from "../utils/on-process-terminated.js"
 import createAbortController, {
   isAbortError,
 } from "../utils/create-abort-controller.js"
@@ -23,6 +22,7 @@ import { track } from "medusa-telemetry"
 import { createFactBox, resetFactBox } from "../utils/facts.js"
 import boxen from "boxen"
 import { emojify } from "node-emoji"
+import ProcessManager from "../utils/process-manager.js"
 
 const slugify = slugifyType.default
 const isEmail = isEmailImported.default
@@ -41,7 +41,8 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
   if (seed) {
     track("SEED_SELECTED", { seed })
   }
-  const abortController = createAbortController()
+  const processManager = new ProcessManager()
+  const abortController = createAbortController(processManager)
 
   const { projectName } = await inquirer.prompt([
     {
@@ -133,11 +134,12 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
 
   const spinner = ora().start()
 
-  onProcessTerminated(() => spinner.stop())
+  processManager.onTerminated(() => spinner.stop())
 
   let interval: NodeJS.Timer | null = createFactBox(
     spinner,
-    "Setting up project..."
+    "Setting up project...",
+    processManager
   )
 
   // clone repository
@@ -163,6 +165,7 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
     interval,
     spinner,
     "Created project directory",
+    processManager,
     "Creating database..."
   )
 
@@ -190,7 +193,12 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
       db: dbName,
     })
 
-    resetFactBox(interval, spinner, `Database ${dbName} created`)
+    resetFactBox(
+      interval,
+      spinner,
+      `Database ${dbName} created`,
+      processManager
+    )
   }
 
   // prepare project
@@ -205,6 +213,7 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
       seed,
       boilerplate,
       spinner,
+      processManager,
       abortController,
     })
   } catch (e: any) {
@@ -249,17 +258,17 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
   // this ensures that the message isn't printed twice to the user
   let printedMessage = false
 
-  onProcessTerminated(() => {
+  processManager.onTerminated(() => {
     if (!printedMessage) {
       printedMessage = true
       console.log(
         boxen(
           chalk.green(
             `Change to the \`${projectName}\` directory to explore your Medusa project.
-            
+
             Check out the Medusa documentation to start your development:
             https://docs.medusajs.com/
-            
+
             Star us on GitHub if you like what we're building:
             https://github.com/medusajs/medusa/stargazers`
           ),

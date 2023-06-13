@@ -4,9 +4,10 @@ import path from "path"
 import { Ora } from "ora"
 import promiseExec from "./promise-exec.js"
 import { EOL } from "os"
-import runProcess from "./run-process.js"
+// import runProcess from "./run-process.js"
 import { createFactBox, resetFactBox } from "./facts.js"
 import clearProject from "./clear-project.js"
+import ProcessManager from "./process-manager.js"
 
 type PrepareOptions = {
   directory: string
@@ -17,6 +18,7 @@ type PrepareOptions = {
   seed?: boolean
   boilerplate?: boolean
   spinner: Ora
+  processManager: ProcessManager
   abortController?: AbortController
 }
 
@@ -27,6 +29,7 @@ export default async ({
   seed,
   boilerplate,
   spinner,
+  processManager,
   abortController,
 }: PrepareOptions) => {
   // initialize execution options
@@ -46,10 +49,11 @@ export default async ({
 
   let interval: NodeJS.Timer | null = createFactBox(
     spinner,
-    "Installing dependencies..."
+    "Installing dependencies...",
+    processManager
   )
 
-  await runProcess({
+  await processManager.runProcess({
     process: async () => {
       try {
         await promiseExec(`yarn`, execOptions)
@@ -62,17 +66,31 @@ export default async ({
     ignoreERESOLVE: true,
   })
 
-  interval = resetFactBox(interval, spinner, "Installed Dependencies")
+  interval = resetFactBox(
+    interval,
+    spinner,
+    "Installed Dependencies",
+    processManager
+  )
 
   if (boilerplate) {
-    interval = createFactBox(spinner, "Preparing Project Directory...")
+    interval = createFactBox(
+      spinner,
+      "Preparing Project Directory...",
+      processManager
+    )
     // delete files and directories related to onboarding
     clearProject(directory)
-    interval = resetFactBox(interval, spinner, "Prepared Project Directory")
+    interval = resetFactBox(
+      interval,
+      spinner,
+      "Prepared Project Directory",
+      processManager
+    )
   }
 
-  interval = createFactBox(spinner, "Building Project...")
-  await runProcess({
+  interval = createFactBox(spinner, "Building Project...", processManager)
+  await processManager.runProcess({
     process: async () => {
       try {
         await promiseExec(`yarn build`, execOptions)
@@ -85,12 +103,12 @@ export default async ({
     ignoreERESOLVE: true,
   })
 
-  interval = resetFactBox(interval, spinner, "Project Built")
+  interval = resetFactBox(interval, spinner, "Project Built", processManager)
 
-  interval = createFactBox(spinner, "Running Migrations...")
+  interval = createFactBox(spinner, "Running Migrations...", processManager)
 
   // run migrations
-  await runProcess({
+  await processManager.runProcess({
     process: async () => {
       await promiseExec(
         "npx -y @medusajs/medusa-cli@latest migrations run",
@@ -99,13 +117,17 @@ export default async ({
     },
   })
 
-  interval = resetFactBox(interval, spinner, "Ran Migrations")
+  interval = resetFactBox(interval, spinner, "Ran Migrations", processManager)
 
   if (admin) {
     // create admin user
-    interval = createFactBox(spinner, "Creating an admin user...")
+    interval = createFactBox(
+      spinner,
+      "Creating an admin user...",
+      processManager
+    )
 
-    await runProcess({
+    await processManager.runProcess({
       process: async () => {
         const proc = await promiseExec(
           `npx -y @medusajs/medusa-cli@1.3.16-snapshot-20230605093446 user -e ${admin.email} --invite`,
@@ -117,11 +139,16 @@ export default async ({
       },
     })
 
-    interval = resetFactBox(interval, spinner, "Created admin user")
+    interval = resetFactBox(
+      interval,
+      spinner,
+      "Created admin user",
+      processManager
+    )
   }
 
   if (seed) {
-    interval = createFactBox(spinner, "Seeding database...")
+    interval = createFactBox(spinner, "Seeding database...", processManager)
 
     // check if a seed file exists in the project
     if (!fs.existsSync(path.join(directory, "data", "seed.json"))) {
@@ -135,7 +162,7 @@ export default async ({
       return inviteToken
     }
 
-    await runProcess({
+    await processManager.runProcess({
       process: async () => {
         await promiseExec(
           `npx -y @medusajs/medusa-cli@latest seed --seed-file=${path.join(
@@ -146,14 +173,19 @@ export default async ({
         )
       },
     })
-    resetFactBox(interval, spinner, "Seeded database with demo data")
+    resetFactBox(
+      interval,
+      spinner,
+      "Seeded database with demo data",
+      processManager
+    )
   } else if (
     fs.existsSync(path.join(directory, "data", "seed-onboarding.json"))
   ) {
     // seed the database with onboarding seed
-    interval = createFactBox(spinner, "Finish preparation...")
+    interval = createFactBox(spinner, "Finish preparation...", processManager)
 
-    await runProcess({
+    await processManager.runProcess({
       process: async () => {
         await promiseExec(
           `npx -y @medusajs/medusa-cli@latest seed --seed-file=${path.join(
@@ -164,7 +196,7 @@ export default async ({
         )
       },
     })
-    resetFactBox(interval, spinner, "Finished Preparation")
+    resetFactBox(interval, spinner, "Finished Preparation", processManager)
   }
 
   return inviteToken
