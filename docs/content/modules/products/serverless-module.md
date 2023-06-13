@@ -197,7 +197,7 @@ The first command runs the migrations, and the second command allows you to opti
 Then run the first and optionally second commands to migrate the database schema:
 
 ```bash npm2yarn
-npm run products:migrations:run
+npm run product:migrations:run
 # optionally
 npm run product:seed
 ```
@@ -254,6 +254,120 @@ npm run dev
 ```
 
 Then, open in your browser the URL `http://localhost:3000/api/products`. If you seeded your database with demo products, or you’re using a Medusa database schema, you’ll receive the products in your database. Otherwise, the request will return an empty array.
+
+---
+
+## Example Usages
+
+This section includes some examples of the different functionalities or ways you can use the product module. The code snippets are shown in the context of endpoints.
+
+### List Products
+
+```ts title=app/api/products/route.ts
+import { NextResponse } from "next/server"
+
+import { 
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+export async function GET(request: Request) {
+  const productService = await initializeProductModule()
+
+  const data = await productService.list({})
+
+  return NextResponse.json({ products: data })
+}
+```
+
+### Retrieve Product by Id
+
+```ts title=app/api/product/[id]/route.ts
+import { NextResponse } from "next/server"
+
+import { 
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+export async function GET(
+  request: Request, 
+  { params }: { params: Record<string, any> }) {
+  
+  const { id } = params
+  const productService = await initializeProductModule()
+
+  const data = await productService.list({
+    id
+  })
+
+  return NextResponse.json({ product: data })
+}
+```
+
+### Retrieve Product by Handle
+
+```ts title=app/api/product/[handle]/route.ts
+import { NextResponse } from "next/server"
+
+import { 
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+export async function GET(
+  request: Request, 
+  { params }: { params: Record<string, any> }) {
+  
+  const { handle } = params
+  const productService = await initializeProductModule()
+
+  const data = await productService.list({
+    handle
+  })
+
+  return NextResponse.json({ product: data })
+}
+```
+
+### Retrieve Categories
+
+```ts title=app/api/categories/route.ts
+import { NextResponse } from "next/server"
+
+import { 
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+export async function GET(request: Request) {
+  const productService = await initializeProductModule()
+
+  const data = await productService.listCategories({})
+
+  return NextResponse.json({ categories: data })
+}
+```
+
+### Retrieve Category by Handle
+
+```ts title=app/api/category/[handle]/route.ts
+import { NextResponse } from "next/server"
+
+import { 
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+export async function GET(
+  request: Request, 
+  { params }: { params: Record<string, any> }) {
+  
+  const { handle } = params
+  const productService = await initializeProductModule()
+
+  const data = await productService.listCategories({
+    handle
+  })
+
+  return NextResponse.json({ product: data })
+}
+```
 
 ---
 
