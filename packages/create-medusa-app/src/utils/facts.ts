@@ -38,7 +38,6 @@ export const showFact = (spinner: Ora, title: string) => {
     textAlignment: "center",
     padding: 1,
     margin: 1,
-    float: "center",
   })}`
 }
 
