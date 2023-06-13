@@ -884,6 +884,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "modules/multiwarehouse/admin/manage-reservations",
+          label: "Admin: Manage Custom Reservations",
+        },
+        {
+          type: "doc",
           id: "modules/multiwarehouse/admin/manage-item-allocations-in-orders",
           label: "Admin: Manage Allocations in Orders",
         },
