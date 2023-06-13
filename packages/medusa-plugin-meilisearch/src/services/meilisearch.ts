@@ -102,7 +102,7 @@ class MeiliSearchService extends SearchUtils.AbstractSearchService {
     }
   }
 
-  getTransformedDocuments(type: string, documents: any[]) {
+  async getTransformedDocuments(type: string, documents: any[]) {
     if (!documents?.length) {
       return []
     }
@@ -113,7 +113,17 @@ class MeiliSearchService extends SearchUtils.AbstractSearchService {
           this.config_.settings?.[SearchTypes.indexTypes.PRODUCTS]
             ?.transformer ?? transformProduct
 
-        return Promise.all(documents.map(doc => productsTransformer(doc, this.container_)))
+        const transformed = await Promise.allSettled(documents.map(doc => productsTransformer(doc, this.container_)));
+        const rejected = <T,>(p: PromiseSettledResult<T>): p is PromiseRejectedResult => p.status === 'rejected';
+
+        const errors = transformed.filter(rejected);
+        if (errors.length) {
+          console.error('An error occurred while transforming some documents:', errors, `for index ${type}`);
+        }
+
+        const fulfilled = <T,>(p:PromiseSettledResult<T>): p is PromiseFulfilledResult<T> => p.status === 'fulfilled';
+
+        return transformed.filter(fulfilled).map((r) => r.value);
       default:
         return documents
     }
