@@ -67,6 +67,17 @@ POSTGRES_URL=<DATABASE_URL>
 
 Where `<DATABASE_URL>` is your database connection URL of the format `postgres://[user][:password]@[host][:port]/[dbname]`. You can learn more about the connection URL format in [this guide](../../development/backend/configurations.md#postgresql-configurations).
 
+You can also set the following optional environment variables:
+
+- `POSTGRES_SCHEMA`: a string indicating the PostgreSQL schema to use. By default, it's `public`.
+- `POSTGRES_DRIVER_OPTIONS`: a stringified JSON object indicating the PostgreSQL options to use. The JSON object is then parsed to be used as a JavaScript object. By default, it's `{"connection":{"ssl":false}}` for local PostgreSQL databases, and `{"connection":{"ssl":{"rejectUnauthorized":false}}}` for remote databases.
+
+:::note
+
+If `POSTGRES_DRIVER_OPTIONS` is not specified, the PostgreSQL database is considered local if `POSTGRES_URL` includes `localhost`. Otherwise, it's considered remote.
+
+:::
+
 ### Step 3: Run Database Migrations
 
 :::note
