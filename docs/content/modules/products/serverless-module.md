@@ -15,6 +15,12 @@ The module only needs to connect to a PostgreSQL database. You can also connect 
 
 This guide explains how to use the Product Module in a Next.js application as an example.
 
+:::note
+
+You can find a full sample Next.js project using the Product module in [this GitHub repository](https://github.com/medusajs/products-module-store).
+
+:::
+
 ### Benefits of Serverless Modules
 
 - Keep packages small enough to be deployed to serverless Infrastructure easily
@@ -296,7 +302,7 @@ export async function GET(
   const productService = await initializeProductModule()
 
   const data = await productService.list({
-    id
+    id,
   })
 
   return NextResponse.json({ product: data })
@@ -320,7 +326,7 @@ export async function GET(
   const productService = await initializeProductModule()
 
   const data = await productService.list({
-    handle
+    handle,
   })
 
   return NextResponse.json({ product: data })
@@ -362,7 +368,7 @@ export async function GET(
   const productService = await initializeProductModule()
 
   const data = await productService.listCategories({
-    handle
+    handle,
   })
 
   return NextResponse.json({ product: data })
