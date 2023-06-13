@@ -1705,7 +1705,7 @@ class BrightpearlService extends BaseService {
       const { fulfillments: existingFulfillments, sales_channel } =
         await this.orderService_
           .withTransaction(transactionManager)
-          .retrieve(order.externalRef, {
+          .retrieve(order.externalRef.split(".")[0], {
             relations: ["fulfillments", "sales_channel"],
           })
 
