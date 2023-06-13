@@ -30,7 +30,7 @@ You can find a full sample Next.js project using the Product module in [this Git
 
 :::info
 
-The product module is currently a work-in-progress, and it provides only functionalities related to browsing products. In later versions, the product module would include more powerful ecommerce features.
+The product module is currently in beta, and it provides only functionalities related to browsing products. In later versions, the product module would include more powerful ecommerce features.
 
 :::
 
@@ -231,6 +231,12 @@ module.exports = nextConfig
 
 The product module is ready for use now! You can now use it to create API endpoints within your Next.js application.
 
+:::note
+
+This guide uses Next.js's App Router.
+
+:::
+
 For example, create the file `app/api/products/route.ts` with the following content:
 
 ```ts title=app/api/products/route.ts
@@ -249,7 +255,7 @@ export async function GET(request: Request) {
 }
 ```
 
-This creates a `GET` endpoint at the route `/api/products`. You import the `initialize` function, aliased as `initializeProductModule`, from `@medusajs/product`. Then, in the endpoint, you invoke the `initializeProductModule` function, which returns an instance of the `ProductService`. Using the product service’s `list` method, you retrieve all available products and return them in the response of the endpoint.
+This creates a `GET` endpoint at the route `/api/products`. You import the `initialize` function, aliased as `initializeProductModule`, from `@medusajs/product`. Then, in the endpoint, you invoke the `initializeProductModule` function, which returns an instance of the `ProductModuleService`. Using the product module service’s `list` method, you retrieve all available products and return them in the response of the endpoint.
 
 ### Step 6: Test Next.js Application
 
@@ -305,7 +311,7 @@ export async function GET(
     id,
   })
 
-  return NextResponse.json({ product: data })
+  return NextResponse.json({ product: data[0] })
 }
 ```
 
