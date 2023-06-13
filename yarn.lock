@@ -6316,7 +6316,7 @@ __metadata:
   resolution: "@medusajs/product@workspace:packages/product"
   dependencies:
     "@medusajs/modules-sdk": ^1.8.3
-    "@medusajs/types": "*"
+    "@medusajs/types": ^1.8.7
     "@medusajs/utils": ^1.8.2
     "@mikro-orm/cli": 5.7.4
     "@mikro-orm/core": 5.7.4
@@ -6357,7 +6357,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@*, @medusajs/types@1.8.7, @medusajs/types@workspace:packages/types":
+"@medusajs/types@1.8.7, @medusajs/types@^1.8.7, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
