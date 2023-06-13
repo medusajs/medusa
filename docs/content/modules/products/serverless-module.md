@@ -259,5 +259,4 @@ Then, open in your browser the URL `http://localhost:3000/api/products`. If you 
 
 ## See Also
 
-- [Product Service Reference](../../references/services/classes/ProductService.md#methods)
 - [Products Commerce Module Overview](overview.mdx)
