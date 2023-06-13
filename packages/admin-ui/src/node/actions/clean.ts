@@ -13,14 +13,6 @@ export async function clean({ appDir, outDir }: CleanArgs) {
   const cacheDir = path.resolve(appDir, ".cache", "admin")
   const buildDir = path.resolve(appDir, outDir)
 
-  console.log("Cleaning build directory", buildDir)
-  console.log("Cleaning build directory", buildDir)
-  console.log("Cleaning build directory", buildDir)
-
-  console.log("Cleaning cache directory", cacheDir)
-  console.log("Cleaning cache directory", cacheDir)
-  console.log("Cleaning cache directory", cacheDir)
-
   await fse.remove(buildDir)
   await fse.remove(cacheDir)
 }

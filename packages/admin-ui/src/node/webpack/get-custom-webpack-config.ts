@@ -32,8 +32,6 @@ export async function getCustomWebpackConfig(
 
       config = webpackAdminConfig(config, webpack)
 
-      console.log(JSON.stringify(config, null, 2))
-
       if (!config) {
         logger.panic(
           "Nothing was returned from your custom webpack configuration"

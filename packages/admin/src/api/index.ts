@@ -10,6 +10,18 @@ export default function (_rootDirectory: string, options: PluginOptions) {
 
   const { serve = true, path = "/app", outDir } = options
 
+  const isDevelop = process.env.COMMAND_INITIATED_BY === "develop"
+
+  if (isDevelop) {
+    app.get(`${path}`, (_req, res) => {
+      res.send(
+        "Admin is running in development mode. See the terminal for the URL."
+      )
+    })
+
+    return app
+  }
+
   if (serve) {
     const buildPath: string = resolve(process.cwd(), outDir || "build")
 

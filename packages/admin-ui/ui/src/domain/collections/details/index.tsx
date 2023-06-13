@@ -145,12 +145,12 @@ const CollectionDetails = () => {
           label="Back to Collections"
         />
         <div className="gap-y-xsmall flex flex-col">
-          {getWidgets("product_collection.details.after").map((w, i) => {
+          {getWidgets("product_collection.details.before").map((w, i) => {
             return (
               <WidgetContainer
                 key={i}
                 entity={collection}
-                injectionZone="product_collection.details.after"
+                injectionZone="product_collection.details.before"
                 widget={w}
               />
             )
