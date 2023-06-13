@@ -26,7 +26,7 @@ const router = createBrowserRouter(
     </>
   ),
   {
-    basename: __BASE__,
+    basename: process.env.ADMIN_PATH,
   }
 )
 

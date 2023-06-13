@@ -1,14 +1,10 @@
-import {
-  ExtensionsEntry,
-  isNestedRouteExtension,
-  isRouteExtension,
-  isWidgetExtension,
-  RouteRegistry,
-  WidgetRegistry,
-} from "@medusajs/admin-shared"
 import React from "react"
 import App from "./App"
 import { Providers } from "./providers/providers"
+import RouteRegistry from "./registries/route-registry"
+import WidgetRegistry from "./registries/widget-registry"
+import { ExtensionsEntry } from "./types/extensions"
+import { isRouteExtension, isWidgetExtension } from "./utils/extensions"
 
 type MedusaAppConfig = {
   entries?: ExtensionsEntry[]
@@ -24,15 +20,11 @@ class MedusaApp {
 
       entry.extensions.forEach((extension) => {
         if (isRouteExtension(extension)) {
-          this.routes.registerRoute(origin, extension)
-        }
-
-        if (isNestedRouteExtension(extension)) {
-          this.routes.registerNestedRoute(origin, extension)
+          this.routes.register(origin, extension)
         }
 
         if (isWidgetExtension(extension)) {
-          this.widgets.registerWidget(origin, extension)
+          this.widgets.register(origin, extension)
         }
       })
     })

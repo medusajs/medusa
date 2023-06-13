@@ -50,16 +50,27 @@ const PricingDetails = () => {
       />
       <PriceListFormProvider priceList={mapPriceListToFormValues(price_list)}>
         <div className="gap-y-xsmall flex flex-col">
-          <Header priceList={price_list} />
-
-          <PricesDetails id={price_list?.id} />
-
-          {getWidgets("price_list.details").map((w, i) => {
+          {getWidgets("price_list.details.before").map((w, i) => {
             return (
               <WidgetContainer
                 key={i}
                 entity={price_list}
-                injectionZone="price_list.details"
+                injectionZone="price_list.details.before"
+                widget={w}
+              />
+            )
+          })}
+
+          <Header priceList={price_list} />
+
+          <PricesDetails id={price_list?.id} />
+
+          {getWidgets("price_list.details.after").map((w, i) => {
+            return (
+              <WidgetContainer
+                key={i}
+                entity={price_list}
+                injectionZone="price_list.details.after"
                 widget={w}
               />
             )

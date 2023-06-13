@@ -5,7 +5,9 @@ import Spacer from "../../components/atoms/spacer"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../components/organisms/body-card"
 import TableViewHeader from "../../components/organisms/custom-table-header"
+import WidgetContainer from "../../components/organisms/widget-container"
 import DiscountTable from "../../components/templates/discount-table"
+import { useWidgets } from "../../providers/widget-provider"
 import Details from "./details"
 import New from "./new"
 import DiscountForm from "./new/discount-form"
@@ -22,9 +24,21 @@ const DiscountIndex = () => {
     },
   ]
 
+  const { getWidgets } = useWidgets()
+
   return (
     <div className="flex h-full flex-col">
-      <div className="flex w-full grow flex-col">
+      <div className="gap-y-xsmall flex w-full grow flex-col">
+        {getWidgets("discount.list.before").map((w, index) => {
+          return (
+            <WidgetContainer
+              key={index}
+              widget={w}
+              injectionZone="discount.list.before"
+              entity={null}
+            />
+          )
+        })}
         <BodyCard
           actionables={actionables}
           customHeader={<TableViewHeader views={["discounts"]} />}
@@ -32,6 +46,16 @@ const DiscountIndex = () => {
         >
           <DiscountTable />
         </BodyCard>
+        {getWidgets("discount.list.after").map((w, index) => {
+          return (
+            <WidgetContainer
+              key={index}
+              widget={w}
+              injectionZone="discount.list.after"
+              entity={null}
+            />
+          )
+        })}
         <Spacer />
       </div>
       <DiscountFormProvider>

@@ -7,6 +7,7 @@ import { EOL } from "os"
 import path from "path"
 
 import Logger from "../loaders/logger"
+import { resolveAdminCLI } from "./utils/resolve-admin-cli"
 
 const defaultConfig = {
   padding: 5,
@@ -49,7 +50,7 @@ export default async function ({ port, directory }) {
   const cliPath = path.join(directory, "node_modules", ".bin", "medusa")
   let child = spawn(cliPath, [`start`, ...args], {
     cwd: directory,
-    env: process.env,
+    env: { ...process.env, COMMAND_INITIATED_BY: "develop" },
     stdio: ["pipe", process.stdout, process.stderr],
   })
   child.on("error", function (err) {
@@ -57,31 +58,50 @@ export default async function ({ port, directory }) {
     process.exit(1)
   })
 
-  chokidar.watch(`${directory}/src`).on("change", (file) => {
-    const f = file.split("src")[1]
-    Logger.info(`${f} changed: restarting...`)
+  const { cli, binExists } = resolveAdminCLI(directory)
 
-    if (process.platform === "win32") {
-      execSync(`taskkill /PID ${child.pid} /F /T`)
-    }
-
-    child.kill("SIGINT")
-
-    execSync(`${babelPath} src -d dist --extensions ".ts,.js"`, {
-      cwd: directory,
-      stdio: ["pipe", process.stdout, process.stderr],
-    })
-
-    Logger.info("Rebuilt")
-
-    child = spawn(cliPath, [`start`, ...args], {
+  if (binExists) {
+    const adminChild = spawn(cli, [`develop`], {
       cwd: directory,
       env: process.env,
       stdio: ["pipe", process.stdout, process.stderr],
     })
-    child.on("error", function (err) {
+
+    adminChild.on("error", function (err) {
       console.log("Error ", err)
       process.exit(1)
     })
-  })
+  }
+
+  chokidar
+    .watch(`${directory}/src`, {
+      ignored: `${directory}/src/admin`,
+    })
+    .on("change", (file) => {
+      const f = file.split("src")[1]
+      Logger.info(`${f} changed: restarting...`)
+
+      if (process.platform === "win32") {
+        execSync(`taskkill /PID ${child.pid} /F /T`)
+      }
+
+      child.kill("SIGINT")
+
+      execSync(`${babelPath} src -d dist --extensions ".ts,.js"`, {
+        cwd: directory,
+        stdio: ["pipe", process.stdout, process.stderr],
+      })
+
+      Logger.info("Rebuilt")
+
+      child = spawn(cliPath, [`start`, ...args], {
+        cwd: directory,
+        env: process.env,
+        stdio: ["pipe", process.stdout, process.stderr],
+      })
+      child.on("error", function (err) {
+        console.log("Error ", err)
+        process.exit(1)
+      })
+    })
 }

@@ -86,16 +86,26 @@ const Edit = () => {
       />
       <div className="gap-y-xsmall flex flex-col">
         <DiscountFormProvider>
+          {getWidgets("discount.details.before").map((w, index) => {
+            return (
+              <WidgetContainer
+                key={index}
+                entity={discount}
+                widget={w}
+                injectionZone="discount.details.before"
+              />
+            )
+          })}
           <General discount={discount} />
           <Configurations discount={discount} />
           <DiscountDetailsConditions discount={discount} />
-          {getWidgets("discount.details").map((w) => {
+          {getWidgets("discount.details.after").map((w, index) => {
             return (
               <WidgetContainer
-                key={w.name}
+                key={index}
                 entity={discount}
                 widget={w}
-                injectionZone="discount.details"
+                injectionZone="discount.details.after"
               />
             )
           })}

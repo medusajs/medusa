@@ -1,5 +1,6 @@
-import { InjectionZone, Widget, WidgetRegistry } from "@medusajs/admin-shared"
 import React, { PropsWithChildren, useCallback, useMemo } from "react"
+import WidgetRegistry from "../registries/widget-registry"
+import { InjectionZone, Widget } from "../types/extensions"
 
 type WidgetContextType = {
   getWidgets: (injectionZone: InjectionZone) => Widget[]

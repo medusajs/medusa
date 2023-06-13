@@ -2,7 +2,7 @@ import { useAdminStore } from "medusa-react"
 import React, { useState } from "react"
 
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
-import { usePages } from "../../../providers/page-provider"
+import { useRoutes } from "../../../providers/route-provider"
 import BuildingsIcon from "../../fundamentals/icons/buildings-icon"
 import CartIcon from "../../fundamentals/icons/cart-icon"
 import CashIcon from "../../fundamentals/icons/cash-icon"
@@ -24,7 +24,7 @@ const Sidebar: React.FC = () => {
   const { isFeatureEnabled } = useFeatureFlag()
   const { store } = useAdminStore()
 
-  const { getLinks } = usePages()
+  const { getLinks } = useRoutes()
 
   const triggerHandler = () => {
     const id = triggerHandler.id++
@@ -110,7 +110,7 @@ const Sidebar: React.FC = () => {
             triggerHandler={triggerHandler}
             text={"Pricing"}
           />
-          {getLinks().map(({ path, title, icon }, index) => {
+          {getLinks().map(({ path, label, icon }, index) => {
             const cleanLink = path.replace("/a/", "")
 
             const Icon = icon ? icon : SquaresPlus
@@ -121,7 +121,7 @@ const Sidebar: React.FC = () => {
                 pageLink={`/a/${cleanLink}`}
                 icon={icon ? <Icon /> : <SquaresPlus size={ICON_SIZE} />}
                 triggerHandler={triggerHandler}
-                text={title}
+                text={label}
               />
             )
           })}

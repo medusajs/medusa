@@ -269,13 +269,25 @@ function CustomerGroupDetails() {
         className="mb-4"
       />
       <div className="gap-y-xsmall flex flex-col">
-        <CustomerGroupDetailsHeader customerGroup={customer_group} />
-        {getWidgets("customer_group.details").map((w, i) => {
+        {getWidgets("customer_group.details.before").map((w, i) => {
           return (
             <WidgetContainer
               key={i}
               entity={customer_group}
-              injectionZone="customer_group.details"
+              injectionZone="customer_group.details.before"
+              widget={w}
+            />
+          )
+        })}
+
+        <CustomerGroupDetailsHeader customerGroup={customer_group} />
+
+        {getWidgets("customer_group.details.after").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              entity={customer_group}
+              injectionZone="customer_group.details.after"
               widget={w}
             />
           )

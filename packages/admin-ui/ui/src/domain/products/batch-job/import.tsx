@@ -177,8 +177,8 @@ function ImportProducts(props: ImportProductsProps) {
     }
   }
 
-  const templateLink = __BASE__
-    ? `${__BASE__}/temp/product-import-template.csv`
+  const templateLink = process.env.ADMIN_PATH
+    ? `${process.env.ADMIN_PATH}/temp/product-import-template.csv`
     : "/temp/product-import-template.csv"
 
   return (

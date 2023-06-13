@@ -94,6 +94,7 @@ module.exports = {
           "./packages/stock-location/tsconfig.spec.json",
           "./packages/cache-redis/tsconfig.spec.json",
           "./packages/cache-inmemory/tsconfig.spec.json",
+          "./packages/admin-ui/tsconfig.json",
           "./packages/create-medusa-app/tsconfig.json",
         ],
       },
@@ -139,6 +140,9 @@ module.exports = {
         ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
         sourceType: "module", // Allows for the use of imports
         project: "./packages/admin-ui/ui/tsconfig.json",
+      },
+      globals: {
+        __BASE__: "readonly",
       },
       env: {
         browser: true,

@@ -3,6 +3,8 @@ import Spacer from "../../components/atoms/spacer"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../components/organisms/body-card"
 import TableViewHeader from "../../components/organisms/custom-table-header"
+import WidgetContainer from "../../components/organisms/widget-container"
+import { useWidgets } from "../../providers/widget-provider"
 import PricingDetails from "./details"
 import New from "./new"
 import PricingTable from "./pricing-table"
@@ -18,8 +20,20 @@ const PricingIndex = () => {
     },
   ]
 
+  const { getWidgets } = useWidgets()
+
   return (
-    <div className="flex h-full flex-col">
+    <div className="gap-y-xsmall flex h-full flex-col">
+      {getWidgets("price_list.list.before").map((w, index) => {
+        return (
+          <WidgetContainer
+            key={index}
+            widget={w}
+            entity={null}
+            injectionZone="price_list.list.before"
+          />
+        )
+      })}
       <div className="flex w-full grow flex-col">
         <BodyCard
           actionables={actionables}

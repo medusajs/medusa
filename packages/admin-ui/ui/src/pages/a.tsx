@@ -22,7 +22,7 @@ import PublishableApiKeys from "../domain/publishable-api-keys"
 import SalesChannels from "../domain/sales-channels"
 import Settings from "../domain/settings"
 import { AnalyticsProvider } from "../providers/analytics-provider"
-import { usePages } from "../providers/page-provider"
+import { useRoutes } from "../providers/route-provider"
 
 const IndexPage = () => {
   const navigate = useNavigate()
@@ -37,9 +37,9 @@ const IndexPage = () => {
 }
 
 const DashboardRoutes = () => {
-  const { getRoutes, getNestedRoutes } = usePages()
+  const { getTopLevelRoutes } = useRoutes()
 
-  const injectedRoutes = getRoutes() || []
+  const injectedRoutes = getTopLevelRoutes() || []
 
   return (
     <AnalyticsProvider writeKey={WRITE_KEY}>
@@ -68,16 +68,10 @@ const DashboardRoutes = () => {
             />
             <Route path="inventory/*" element={<Inventory />} />
             {injectedRoutes.map((route, index) => {
-              const nestedRoutes = getNestedRoutes(route.path)
-
-              const topLevelPath = nestedRoutes.length
-                ? `${route.path}/*`
-                : route.path
-
               return (
                 <Route
                   key={index}
-                  path={topLevelPath}
+                  path={`/${route.path}/*`}
                   element={<RouteContainer route={route} />}
                 />
               )
