@@ -343,4 +343,4 @@ This request returns the same notification object as the List Notifications endp
 
 ## See Also
 
-- [Create a Plugin](../plugins/create.md)
+- [Create a Plugin](../plugins/create.mdx)

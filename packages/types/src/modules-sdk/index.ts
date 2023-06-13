@@ -1,5 +1,6 @@
 import { Logger as _Logger } from "winston"
 import { MedusaContainer } from "../common/medusa-container"
+
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
 
@@ -39,7 +40,7 @@ export type InternalModuleDeclaration = {
 
 export type ExternalModuleDeclaration = {
   scope: MODULE_SCOPE.EXTERNAL
-  server: {
+  server?: {
     type: "http"
     url: string
     keepAlive: boolean
@@ -52,6 +53,7 @@ export type ModuleResolution = {
   options?: Record<string, unknown>
   dependencies?: string[]
   moduleDeclaration?: InternalModuleDeclaration | ExternalModuleDeclaration
+  moduleExports?: ModuleExports
 }
 
 export type ModuleDefinition = {

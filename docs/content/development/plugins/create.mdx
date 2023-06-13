@@ -3,6 +3,9 @@ description: 'Learn how to create a plugin in Medusa. This guide explains how to
 addHowToData: true
 ---
 
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+
 # How to Create a Plugin
 
 In this document, you’ll learn how to create a plugin and some tips for develoment. If you’re interested to learn more about what plugins are and where to find available official and community plugins, check out the [overview document](./overview.mdx).
@@ -90,6 +93,16 @@ Once you’re done making these changes, re-run the install command to update yo
 npm install
 ```
 
+Then, make sure to remove the plugins and modules you removed from `medusa-config.js`:
+
+```js title=medusa-config.js
+// previously had plugins
+const plugins = []
+
+// previously had modules
+const modules = {}
+```
+
 ### Recommended: Change Scripts
 
 It's recommended to remove the `seed` and `start` scripts from your `package.json` as they aren't necessary for plugin development.
@@ -135,11 +148,97 @@ It was previously required to output your files into the root of the plugin's di
 
 This guide doesn't cover how to create different files and components. If you’re interested in learning how to do that, you can check out these guides:
 
-- How to [create endpoints](../endpoints/create.md)
-- How to [create a service](../services/create-service.mdx)
-- How to [create a subscriber](../events/create-subscriber.md)
-- How to [create an entity](../entities/create.md)
-- How to [create a migration](../entities/migrations/create.md)
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/development/entities/create',
+    label: 'Create an Entity',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create an entity.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/services/create-service',
+    label: 'Create a Service',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a service.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/endpoints/create',
+    label: 'Create an Endpoint',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create an endpoint.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/events/create-subscriber',
+    label: 'Create a Subscriber',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a subscriber.'
+    }
+  },
+]} />
+
+If you're developing something specific, such as a payment processor plugin, you can follow one of the following guides to learn how to create different services within your plugin.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/carts-and-checkout/backend/add-payment-provider',
+    label: 'Create a Payment Processor',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a payment processor.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/carts-and-checkout/backend/add-fulfillment-provider',
+    label: 'Create a Fulfillment Provider',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a fulfillment provider.'
+    }
+  },
+]} />
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/development/search/create',
+    label: 'Create a Search Service',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a search service.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/file-service/create-file-service',
+    label: 'Create a File Service',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a file service.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/file-service/create-file-service',
+    label: 'Create a Notification Service',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create a notification service.'
+    }
+  },
+]} />
 
 ---
 
@@ -149,7 +248,7 @@ Plugins often allow developers that will later use them to enter their own confi
 
 To pass a plugin its configurations on a Medusa backend, you have to add it to the `plugins` array in `medusa-config.js`:
 
-```jsx title=medusa-config.js
+```js title=medusa-config.js
 const plugins = [
   // ...
   {
@@ -163,7 +262,7 @@ const plugins = [
 
 Then, you can have access to your plugin configuration in the constructor of services in your plugin:
 
-```jsx title=src/service/test.ts
+```js title=src/service/test.ts
   // In a service in your plugin
 class MyService extends TransactionBaseService {
   constructor(container, options) {
@@ -177,7 +276,7 @@ class MyService extends TransactionBaseService {
 
 You can also have access to the configurations in endpoints in your plugin:
 
-```jsx title=src/api/index.ts
+```js title=src/api/index.ts
 // in an endpoint in your plugin
 export default (rootDirectory, options) => {
   // options contain the plugin configurations
