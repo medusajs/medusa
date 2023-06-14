@@ -8,7 +8,7 @@ program
   .option("--seed", "Seed the created database with demo data.")
   .option(
     "--no-boilerplate",
-    "Install a Medusa project without the demo files."
+    "Install a Medusa project without the boilerplate and demo files."
   )
   .parse()
 

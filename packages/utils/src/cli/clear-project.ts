@@ -2,7 +2,7 @@ import fs from "fs"
 import path from "path"
 import { globSync } from "glob"
 
-export default (directory: string) => {
+export function clearProject (directory: string) {
   const files = globSync([
     path.join(directory, `src`, `admin/**/*`),
     path.join(directory, `src`, `**/onboarding/`),
