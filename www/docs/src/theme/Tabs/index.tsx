@@ -14,7 +14,7 @@ type TabsCustomProps = {
   codeTitle?: string
 }
 
-type TabListProps = TabsCustomProps & OldProps & ReturnType<typeof useTabs>
+type TabListProps = OldProps & ReturnType<typeof useTabs> & TabsCustomProps
 
 function TabList({
   className,
