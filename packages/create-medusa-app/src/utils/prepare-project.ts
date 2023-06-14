@@ -115,7 +115,7 @@ export default async ({
       )
 
       // ensure that migrations actually ran in case of an uncaught error
-      if (!proc.stdout.includes("Migrations completed") || proc.stderr.length) {
+      if (!proc.stdout.includes("Migrations completed")) {
         throw new Error(
           `An error occurred while running migrations: ${
             proc.stderr || proc.stdout
