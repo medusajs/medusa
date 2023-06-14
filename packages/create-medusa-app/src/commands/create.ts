@@ -118,7 +118,7 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
       type: "input",
       name: "adminEmail",
       message: "Enter an email for your admin dashboard user",
-      default: !seed ? "admin@medusa-test.com" : undefined,
+      default: !seed && boilerplate ? "admin@medusa-test.com" : undefined,
       validate: (input) => {
         return typeof input === "string" && input.length > 0 && isEmail(input)
           ? true

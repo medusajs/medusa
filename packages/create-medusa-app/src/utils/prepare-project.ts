@@ -155,7 +155,7 @@ export default async ({
     )
   }
 
-  if (seed) {
+  if (seed || !boilerplate) {
     interval = createFactBox(spinner, "Seeding database...", processManager)
 
     // check if a seed file exists in the project
