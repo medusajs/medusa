@@ -264,7 +264,7 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
       console.log(
         boxen(
           chalk.green(
-            `Change to the \`${projectName}\` directory to explore your Medusa project.\n\nCheck out the Medusa documentation to start your development:\n\nhttps://docs.medusajs.com/\n\nStar us on GitHub if you like what we're building:\n\nhttps://github.com/medusajs/medusa/stargazers`
+            `Change to the \`${projectName}\` directory to explore your Medusa project.\n\nStart your Medusa app again with the following command:\n\nnpx @medusajs/medusa-cli develop\n\nCheck out the Medusa documentation to start your development:\n\nhttps://docs.medusajs.com/\n\nStar us on GitHub if you like what we're building:\n\nhttps://github.com/medusajs/medusa/stargazers`
           ),
           {
             titleAlignment: "center",
