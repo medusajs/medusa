@@ -67,15 +67,19 @@ const plugins = [
     resolve: `medusa-payment-paypal`,
     options: {
       sandbox: process.env.PAYPAL_SANDBOX,
-      client_id: process.env.PAYPAL_CLIENT_ID,
-      client_secret: process.env.PAYPAL_CLIENT_SECRET,
-      auth_webhook_id: process.env.PAYPAL_AUTH_WEBHOOK_ID,
+      clientId: process.env.PAYPAL_CLIENT_ID,
+      clientSecret: process.env.PAYPAL_CLIENT_SECRET,
+      authWebhookId: process.env.PAYPAL_AUTH_WEBHOOK_ID,
     },
   },
 ]
 ```
 
 That’s all you need to install PayPal on your Medusa backend!
+
+The PayPal plugin also accepts the following optional configurations:
+
+- `capture`: : a boolean value that indicates whether payment should be captured manually or automatically. By default, it will be false, leading admins to capture the payment manually.
 
 ---
 
