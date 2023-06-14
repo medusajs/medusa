@@ -1,5 +1,3 @@
-import Stripe from "stripe"
-import { EOL } from "os"
 import {
   AbstractPaymentProcessor,
   isPaymentProcessorError,
@@ -8,6 +6,8 @@ import {
   PaymentProcessorSessionResponse,
   PaymentSessionStatus,
 } from "@medusajs/medusa"
+import { EOL } from "os"
+import Stripe from "stripe"
 import {
   ErrorCodes,
   ErrorIntentStatus,
@@ -19,7 +19,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
   static identifier = ""
 
   protected readonly options_: StripeOptions
-  protected stripe_: Stripe
+  stripe_: Stripe
 
   protected constructor(_, options) {
     super(_, options)
