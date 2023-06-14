@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 import { useRoutes } from "../../../providers/route-provider"
 import { Route as AdminRoute } from "../../../types/extensions"
+import RouteErrorElement from "../../molecules/route-error-element"
 
 type RouteContainerProps = {
   route: AdminRoute
@@ -8,16 +9,13 @@ type RouteContainerProps = {
 }
 
 const RouteContainer = ({ route, previousPath = "" }: RouteContainerProps) => {
-  const { Page, path } = route
+  const { Page, path, origin } = route
 
-  const { getNestedRoutes, getOptimizedNestedRoutes } = useRoutes()
+  const { getNestedRoutes } = useRoutes()
 
   const fullPath = `${previousPath}${path}`
 
   const nestedRoutes = getNestedRoutes(fullPath)
-  const optimized = getOptimizedNestedRoutes(fullPath)
-
-  console.log(JSON.stringify(optimized, null, 2))
 
   const hasNestedRoutes = nestedRoutes.length > 0
 
@@ -28,7 +26,11 @@ const RouteContainer = ({ route, previousPath = "" }: RouteContainerProps) => {
   return (
     <>
       <Routes>
-        <Route path={"/"} element={<Page />} />
+        <Route
+          path={"/"}
+          element={<Page />}
+          errorElement={<RouteErrorElement origin={origin} />}
+        />
         {nestedRoutes.map((r, i) => (
           <Route
             path={r.path}

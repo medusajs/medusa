@@ -5,7 +5,6 @@ import { Link, Route } from "../types/extensions"
 type RouteContextType = {
   getTopLevelRoutes: () => Route[]
   getNestedRoutes: (parent: string) => Route[]
-  getOptimizedNestedRoutes: (parent: string) => Route[]
   getLinks: () => Link[]
 }
 
@@ -37,13 +36,6 @@ export const RouteProvider = ({ registry, children }: RouteProviderProps) => {
     [registry]
   )
 
-  const getOptimizedNestedRoutes = useCallback(
-    (parent: string) => {
-      return registry.optimizedRetrieveNestedRoutes(parent)
-    },
-    [registry]
-  )
-
   const getLinks = useCallback(() => {
     return registry.getLinks()
   }, [registry])
@@ -52,10 +44,9 @@ export const RouteProvider = ({ registry, children }: RouteProviderProps) => {
     () => ({
       getTopLevelRoutes,
       getNestedRoutes,
-      getOptimizedNestedRoutes,
       getLinks,
     }),
-    [getTopLevelRoutes, getNestedRoutes, getOptimizedNestedRoutes, getLinks]
+    [getTopLevelRoutes, getNestedRoutes, getLinks]
   )
 
   return (

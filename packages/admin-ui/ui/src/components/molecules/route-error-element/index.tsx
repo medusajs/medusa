@@ -10,7 +10,7 @@ type PageErrorElementProps = {
 
 const isProd = process.env.NODE_ENV === "production"
 
-const PageErrorElement = ({ origin }: PageErrorElementProps) => {
+const RouteErrorElement = ({ origin }: PageErrorElementProps) => {
   const error = useRouteError()
 
   useEffect(() => {
@@ -72,4 +72,4 @@ const PageErrorElement = ({ origin }: PageErrorElementProps) => {
   )
 }
 
-export default PageErrorElement
+export default RouteErrorElement

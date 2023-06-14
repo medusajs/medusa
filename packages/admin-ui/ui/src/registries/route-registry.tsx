@@ -49,23 +49,7 @@ class RouteRegistry {
       .map((node) => (node as RouteNode).__route as Route)
   }
 
-  getNestedRoutes(path: string): Route[] {
-    const pathSegments = path.split("/").filter(Boolean)
-    let currentNode = this.routes
-
-    for (const segment of pathSegments) {
-      if (!currentNode[segment]) {
-        return []
-      }
-      currentNode = currentNode[segment] as RouteNode
-    }
-
-    return Object.values(currentNode)
-      .filter((node) => "__route" in node)
-      .map((node) => (node as RouteNode).__route as Route)
-  }
-
-  optimizedRetrieveNestedRoutes(path: string) {
+  getNestedRoutes(path: string) {
     const segments = path.split("/").filter((s) => !!s)
     const routes = this.routes
 
