@@ -36,7 +36,6 @@ export default class ProcessManager {
       try {
         await process()
       } catch (error) {
-        console.log(error)
         if (
           typeof error === "object" &&
           error !== null &&
