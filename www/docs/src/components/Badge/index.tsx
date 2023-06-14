@@ -27,6 +27,7 @@ const Badge: React.FC<BadgeProps> = ({ className, variant, children }) => {
           "tw-bg-medusa-tag-blue-bg dark:tw-bg-medusa-tag-blue-bg-dark tw-text-medusa-tag-blue-text dark:tw-text-medusa-tag-blue-text-dark tw-border-medusa-tag-blue-border dark:tw-border-medusa-tag-blue-border-dark",
         variant === "blue-dark" &&
           "tw-bg-medusa-tag-blue-bg-dark tw-text-medusa-tag-blue-text-dark tw-border-medusa-tag-blue-border-dark",
+        "badge",
         className
       )}
     >
