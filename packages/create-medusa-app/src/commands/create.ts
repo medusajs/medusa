@@ -34,12 +34,7 @@ type CreateOptions = {
   boilerplate?: boolean
 }
 
-export default async ({
-  repoUrl = "",
-  seed,
-  boilerplate,
-  ...rest
-}: CreateOptions) => {
+export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
   track("CREATE_CLI")
   if (repoUrl) {
     track("STARTER_SELECTED", { starter: repoUrl })
