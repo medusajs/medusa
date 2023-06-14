@@ -72,7 +72,7 @@ export default async ({
     processManager
   )
 
-  if (boilerplate) {
+  if (!boilerplate) {
     interval = createFactBox(
       spinner,
       "Preparing Project Directory...",
