@@ -1,10 +1,11 @@
 import React, { PropsWithChildren, useCallback, useMemo } from "react"
-import { Link, Route } from "../../../src/client/types"
 import RouteRegistry from "../registries/route-registry"
+import { Link, Route } from "../types/extensions"
 
 type RouteContextType = {
   getTopLevelRoutes: () => Route[]
   getNestedRoutes: (parent: string) => Route[]
+  getOptimizedNestedRoutes: (parent: string) => Route[]
   getLinks: () => Link[]
 }
 
@@ -14,7 +15,7 @@ export const useRoutes = () => {
   const context = React.useContext(RouteContext)
 
   if (!context) {
-    throw new Error("usePages must be used within a RouteContext")
+    throw new Error("useRoutes must be used within a RouteContext")
   }
 
   return context
@@ -36,6 +37,13 @@ export const RouteProvider = ({ registry, children }: RouteProviderProps) => {
     [registry]
   )
 
+  const getOptimizedNestedRoutes = useCallback(
+    (parent: string) => {
+      return registry.optimizedRetrieveNestedRoutes(parent)
+    },
+    [registry]
+  )
+
   const getLinks = useCallback(() => {
     return registry.getLinks()
   }, [registry])
@@ -44,9 +52,10 @@ export const RouteProvider = ({ registry, children }: RouteProviderProps) => {
     () => ({
       getTopLevelRoutes,
       getNestedRoutes,
+      getOptimizedNestedRoutes,
       getLinks,
     }),
-    [getTopLevelRoutes, getNestedRoutes, getLinks]
+    [getTopLevelRoutes, getNestedRoutes, getOptimizedNestedRoutes, getLinks]
   )
 
   return (
