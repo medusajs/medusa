@@ -4,7 +4,6 @@ import path from "path"
 import { Ora } from "ora"
 import promiseExec from "./promise-exec.js"
 import { EOL } from "os"
-// import runProcess from "./run-process.js"
 import { createFactBox, resetFactBox } from "./facts.js"
 import clearProject from "./clear-project.js"
 import ProcessManager from "./process-manager.js"
@@ -110,10 +109,19 @@ export default async ({
   // run migrations
   await processManager.runProcess({
     process: async () => {
-      await promiseExec(
-        "npx -y @medusajs/medusa-cli@latest migrations run",
+      const proc = await promiseExec(
+        "npx -y @medusajs/medusa-cli@1.3.16-snapshot-20230613154819 migrations run",
         execOptions
       )
+
+      // ensure that migrations actually ran in case of an uncaught error
+      if (!proc.stdout.includes("Migrations completed") || proc.stderr.length) {
+        throw new Error(
+          `An error occurred while running migrations: ${
+            proc.stderr || proc.stdout
+          }`
+        )
+      }
     },
   })
 
@@ -130,7 +138,7 @@ export default async ({
     await processManager.runProcess({
       process: async () => {
         const proc = await promiseExec(
-          `npx -y @medusajs/medusa-cli@1.3.16-snapshot-20230605093446 user -e ${admin.email} --invite`,
+          `npx -y @medusajs/medusa-cli@1.3.16-snapshot-20230613154819 user -e ${admin.email} --invite`,
           execOptions
         )
         // get invite token from stdout
@@ -165,7 +173,7 @@ export default async ({
     await processManager.runProcess({
       process: async () => {
         await promiseExec(
-          `npx -y @medusajs/medusa-cli@latest seed --seed-file=${path.join(
+          `npx -y @medusajs/medusa-cli@1.3.16-snapshot-20230613154819 seed --seed-file=${path.join(
             "data",
             "seed.json"
           )}`,
@@ -188,7 +196,7 @@ export default async ({
     await processManager.runProcess({
       process: async () => {
         await promiseExec(
-          `npx -y @medusajs/medusa-cli@latest seed --seed-file=${path.join(
+          `npx -y @medusajs/medusa-cli@1.3.16-snapshot-20230613154819 seed --seed-file=${path.join(
             "data",
             "seed-onboarding.json"
           )}`,

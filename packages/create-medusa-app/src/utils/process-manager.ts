@@ -5,6 +5,7 @@ type ProcessOptions = {
 
 export default class ProcessManager {
   intervals: NodeJS.Timer[] = []
+  static MAX_RETRIES = 3
 
   constructor() {
     this.onTerminated(() => {
@@ -29,10 +30,13 @@ export default class ProcessManager {
   // EAGAIN occurs, or otherwise throw the error that occurs
   async runProcess({ process, ignoreERESOLVE }: ProcessOptions) {
     let processError = false
+    let retries = 0
     do {
+      retries++
       try {
         await process()
       } catch (error) {
+        console.log(error)
         if (
           typeof error === "object" &&
           error !== null &&
@@ -52,6 +56,6 @@ export default class ProcessManager {
           throw error
         }
       }
-    } while (processError)
+    } while (processError && retries <= ProcessManager.MAX_RETRIES)
   }
 }
