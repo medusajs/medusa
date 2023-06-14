@@ -6528,7 +6528,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@^1.8.2, @medusajs/utils@^1.9.0, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^1.8.2, @medusajs/utils@^1.9.0, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
@@ -17926,7 +17926,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "create-medusa-app@workspace:packages/create-medusa-app"
   dependencies:
-    "@medusajs/utils": "workspace:^"
+    "@medusajs/utils": ^1.9.0
     "@types/chalk": ^2.2.0
     "@types/commander": ^2.12.2
     "@types/configstore": ^6.0.0
