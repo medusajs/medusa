@@ -30,10 +30,10 @@ const isEmail = isEmailImported.default
 type CreateOptions = {
   repoUrl?: string
   seed?: boolean
-  boilerplate?: boolean
+  noBoilerplate?: boolean
 }
 
-export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
+export default async ({ repoUrl = "", seed, noBoilerplate }: CreateOptions) => {
   track("CREATE_CLI")
   if (repoUrl) {
     track("STARTER_SELECTED", { starter: repoUrl })
@@ -211,7 +211,7 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
         email: adminEmail,
       },
       seed,
-      boilerplate,
+      noBoilerplate,
       spinner,
       processManager,
       abortController,

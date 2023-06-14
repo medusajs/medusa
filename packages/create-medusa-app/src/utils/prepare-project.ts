@@ -15,7 +15,7 @@ type PrepareOptions = {
     email: string
   }
   seed?: boolean
-  boilerplate?: boolean
+  noBoilerplate?: boolean
   spinner: Ora
   processManager: ProcessManager
   abortController?: AbortController
@@ -26,7 +26,7 @@ export default async ({
   dbConnectionString,
   admin,
   seed,
-  boilerplate,
+  noBoilerplate,
   spinner,
   processManager,
   abortController,
@@ -72,7 +72,7 @@ export default async ({
     processManager
   )
 
-  if (boilerplate) {
+  if (noBoilerplate) {
     interval = createFactBox(
       spinner,
       "Preparing Project Directory...",
