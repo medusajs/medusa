@@ -33,8 +33,10 @@ export async function runMigrations({
 
   try {
     const migrator = orm.getMigrator()
+
     const pendingMigrations = await migrator.getPendingMigrations()
-    logger.info("pendingMigrations", pendingMigrations)
+    logger.info("Running pending migrations:", pendingMigrations)
+
     await migrator.up({
       migrations: pendingMigrations.map((m) => m.name),
     })
