@@ -146,7 +146,7 @@ async function writeTailwindContentFile(dest: string, plugins: string[]) {
 
             return `${tailwindContentPath}/**/*.{js,jsx,ts,tsx}`
           })
-          .join(",\n")},
+          .join(",\n")}
       ],
     }
   
