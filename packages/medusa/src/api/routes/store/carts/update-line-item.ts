@@ -3,18 +3,23 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/line-items/{line_id}
+ * @oas [post] /store/carts/{id}/line-items/{line_id}
  * operationId: PostCartsCartLineItemsItem
  * summary: Update a Line Item
  * description: "Updates a Line Item if the desired quantity can be fulfilled."
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) line_id=* {string} The id of the Line Item.
- *   - (body) quantity=* {integer} The quantity to set the Line Item to.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StorePostCartsCartLineItemsItemReq"
+ * x-codegen:
+ *   method: updateLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -36,16 +41,14 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *           "quantity": 1
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             cart:
- *               $ref: "#/components/schemas/cart"
+ *           $ref: "#/components/schemas/StoreCartsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -60,10 +63,7 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 export default async (req, res) => {
   const { id, line_id } = req.params
 
-  const validated = await validator(
-    StorePostCartsCartLineItemsItemReq,
-    req.body
-  )
+  const validated = req.validatedBody
 
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
@@ -73,7 +73,9 @@ export default async (req, res) => {
     if (validated.quantity === 0) {
       await cartService.withTransaction(m).removeLineItem(id, line_id)
     } else {
-      const cart = await cartService.withTransaction(m).retrieve(id, { relations: ["items"] })
+      const cart = await cartService
+        .withTransaction(m)
+        .retrieve(id, { relations: ["items", "items.variant"] })
 
       const existing = cart.items.find((i) => i.id === line_id)
       if (!existing) {
@@ -105,15 +107,24 @@ export default async (req, res) => {
     }
   })
 
-  const cart = await cartService.retrieve(id, {
+  const data = await cartService.retrieveWithTotals(id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
-  const data = await decorateLineItemsWithTotals(cart, req)
 
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }
 
+/**
+ * @schema StorePostCartsCartLineItemsItemReq
+ * type: object
+ * required:
+ *   - quantity
+ * properties:
+ *   quantity:
+ *     type: number
+ *     description: The quantity to set the Line Item to.
+ */
 export class StorePostCartsCartLineItemsItemReq {
   @IsInt()
   quantity: number

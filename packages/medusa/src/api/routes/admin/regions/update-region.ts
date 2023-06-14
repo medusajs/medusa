@@ -8,12 +8,14 @@ import {
 } from "class-validator"
 import { EntityManager } from "typeorm"
 
-import { validator } from "../../../../utils/validator"
+import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import RegionService from "../../../../services/region"
-import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /regions/{id}
+ * @oas [post] /admin/regions/{id}
  * operationId: "PostRegionsRegion"
  * summary: "Update a Region"
  * description: "Updates a Region"
@@ -24,46 +26,9 @@ import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           name:
- *             description: "The name of the Region"
- *             type: string
- *           currency_code:
- *             description: "The 3 character ISO currency code to use for the Region."
- *             type: string
- *             externalDocs:
- *               url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
- *               description: See a list of codes.
- *           automatic_taxes:
- *             description: "If true Medusa will automatically calculate taxes for carts in this region. If false you have to manually call POST /carts/:id/taxes."
- *             type: boolean
- *           gift_cards_taxable:
- *             description: "Whether gift cards in this region should be applied sales tax when purchasing a gift card"
- *             type: boolean
- *           tax_provider_id:
- *             description: "The ID of the tax provider to use; if null the system tax provider is used"
- *             type: string
- *           tax_code:
- *             description: "An optional tax code the Region."
- *             type: string
- *           tax_rate:
- *             description: "The tax rate to use on Orders in the Region."
- *             type: number
- *           payment_providers:
- *             description: "A list of Payment Provider IDs that should be enabled for the Region"
- *             type: array
- *             items:
- *               type: string
- *           fulfillment_providers:
- *             description: "A list of Fulfillment Provider IDs that should be enabled for the Region"
- *             type: array
- *             items:
- *               type: string
- *           countries:
- *             description: "A list of countries' 2 ISO Characters that should be included in the Region."
- *             type: array
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/AdminPostRegionsRegionReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -90,16 +55,14 @@ import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             region:
- *               $ref: "#/components/schemas/region"
+ *           $ref: "#/components/schemas/AdminRegionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -133,6 +96,53 @@ export default async (req, res) => {
   res.status(200).json({ region })
 }
 
+/**
+ * @schema AdminPostRegionsRegionReq
+ * type: object
+ * properties:
+ *   name:
+ *     description: "The name of the Region"
+ *     type: string
+ *   currency_code:
+ *     description: "The 3 character ISO currency code to use for the Region."
+ *     type: string
+ *     externalDocs:
+ *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *       description: See a list of codes.
+ *   automatic_taxes:
+ *     description: "If true Medusa will automatically calculate taxes for carts in this region. If false you have to manually call POST /carts/:id/taxes."
+ *     type: boolean
+ *   gift_cards_taxable:
+ *     description: "Whether gift cards in this region should be applied sales tax when purchasing a gift card"
+ *     type: boolean
+ *   tax_provider_id:
+ *     description: "The ID of the tax provider to use; if null the system tax provider is used"
+ *     type: string
+ *   tax_code:
+ *     description: "An optional tax code the Region."
+ *     type: string
+ *   tax_rate:
+ *     description: "The tax rate to use on Orders in the Region."
+ *     type: number
+ *   includes_tax:
+ *     description: "[EXPERIMENTAL] Tax included in prices of region"
+ *     type: boolean
+ *   payment_providers:
+ *     description: "A list of Payment Provider IDs that should be enabled for the Region"
+ *     type: array
+ *     items:
+ *       type: string
+ *   fulfillment_providers:
+ *     description: "A list of Fulfillment Provider IDs that should be enabled for the Region"
+ *     type: array
+ *     items:
+ *       type: string
+ *   countries:
+ *     description: "A list of countries' 2 ISO Characters that should be included in the Region."
+ *     type: array
+ *     items:
+ *       type: string
+ */
 export class AdminPostRegionsRegionReq {
   @IsString()
   @IsOptional()
@@ -177,6 +187,12 @@ export class AdminPostRegionsRegionReq {
   @IsString({ each: true })
   @IsOptional()
   countries?: string[]
+
+  @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
+    IsOptional(),
+    IsBoolean(),
+  ])
+  includes_tax?: boolean
 
   @IsObject()
   @IsOptional()

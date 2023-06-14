@@ -3,18 +3,9 @@ import { createConnection, SelectQueryBuilder } from "typeorm"
 import Logger from "../loaders/logger"
 import { LineItem } from "../models/line-item"
 import { LineItemAdjustment } from "../models/line-item-adjustment"
-dotenv.config()
+import { typeormConfig } from "./db-config"
 
-const typeormConfig = {
-  type: process.env.TYPEORM_CONNECTION,
-  url: process.env.TYPEORM_URL,
-  username: process.env.TYPEORM_USERNAME,
-  password: process.env.TYPEORM_PASSWORD,
-  database: process.env.TYPEORM_DATABASE,
-  migrations: [process.env.TYPEORM_MIGRATIONS as string],
-  entities: [process.env.TYPEORM_ENTITIES],
-  logging: true,
-}
+dotenv.config()
 
 const migrate = async function({ typeormConfig }) {
   const connection = await createConnection(typeormConfig)

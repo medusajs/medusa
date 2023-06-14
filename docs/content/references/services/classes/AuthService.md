@@ -26,7 +26,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:25](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/auth.ts#L25)
+[medusa/src/services/auth.ts:22](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/auth.ts#L22)
 
 ## Properties
 
@@ -40,7 +40,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -54,7 +54,21 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+
+___
+
+### \_\_moduleDeclaration\_\_
+
+• `Protected` `Optional` `Readonly` **\_\_moduleDeclaration\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_moduleDeclaration\_\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -64,7 +78,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:23](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/auth.ts#L23)
+[medusa/src/services/auth.ts:20](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/auth.ts#L20)
 
 ___
 
@@ -72,13 +86,13 @@ ___
 
 • `Protected` **manager\_**: `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:20](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/auth.ts#L20)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -86,13 +100,13 @@ ___
 
 • `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:21](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/auth.ts#L21)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -102,7 +116,25 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:22](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/auth.ts#L22)
+[medusa/src/services/auth.ts:19](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/auth.ts#L19)
+
+## Accessors
+
+### activeManager\_
+
+• `Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+#### Inherited from
+
+TransactionBaseService.activeManager\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -141,7 +173,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -169,7 +201,7 @@ success: whether authentication succeeded
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:98](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/auth.ts#L98)
+[medusa/src/services/auth.ts:95](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/auth.ts#L95)
 
 ___
 
@@ -195,7 +227,7 @@ success: whether authentication succeeded
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:55](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/auth.ts#L55)
+[medusa/src/services/auth.ts:52](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/auth.ts#L52)
 
 ___
 
@@ -223,7 +255,7 @@ success: whether authentication succeeded
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:147](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/auth.ts#L147)
+[medusa/src/services/auth.ts:144](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/auth.ts#L144)
 
 ___
 
@@ -248,7 +280,7 @@ the result of the comparison
 
 #### Defined in
 
-[packages/medusa/src/services/auth.ts:39](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/auth.ts#L39)
+[medusa/src/services/auth.ts:36](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/auth.ts#L36)
 
 ___
 
@@ -272,7 +304,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -296,4 +328,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

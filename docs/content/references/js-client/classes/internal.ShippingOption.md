@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/shipping-option.d.ts:25
+medusa/dist/models/shipping-option.d.ts:26
 
 ___
 
@@ -95,6 +95,16 @@ ___
 #### Defined in
 
 medusa/dist/interfaces/models/base-entity.d.ts:5
+
+___
+
+### includes\_tax
+
+• **includes\_tax**: `boolean`
+
+#### Defined in
+
+medusa/dist/models/shipping-option.d.ts:25
 
 ___
 

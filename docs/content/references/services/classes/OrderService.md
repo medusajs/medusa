@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:108](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L108)
+[medusa/src/services/order.ts:137](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L137)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,17 +52,31 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+
+___
+
+### \_\_moduleDeclaration\_\_
+
+• `Protected` `Optional` `Readonly` **\_\_moduleDeclaration\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_moduleDeclaration\_\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
 ### addressRepository\_
 
-• `Protected` `Readonly` **addressRepository\_**: typeof `AddressRepository`
+• `Protected` `Readonly` **addressRepository\_**: `Repository`<`Address`\>
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:102](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L102)
+[medusa/src/services/order.ts:128](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L128)
 
 ___
 
@@ -72,7 +86,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:101](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L101)
+[medusa/src/services/order.ts:127](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L127)
 
 ___
 
@@ -82,7 +96,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:91](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L91)
+[medusa/src/services/order.ts:115](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L115)
 
 ___
 
@@ -92,7 +106,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:95](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L95)
+[medusa/src/services/order.ts:119](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L119)
 
 ___
 
@@ -102,7 +116,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:104](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L104)
+[medusa/src/services/order.ts:130](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L130)
 
 ___
 
@@ -112,7 +126,17 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:106](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L106)
+[medusa/src/services/order.ts:132](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L132)
+
+___
+
+### featureFlagRouter\_
+
+• `Protected` `Readonly` **featureFlagRouter\_**: `FlagRouter`
+
+#### Defined in
+
+[medusa/src/services/order.ts:133](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L133)
 
 ___
 
@@ -122,7 +146,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:96](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L96)
+[medusa/src/services/order.ts:120](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L120)
 
 ___
 
@@ -132,7 +156,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:97](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L97)
+[medusa/src/services/order.ts:121](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L121)
 
 ___
 
@@ -142,17 +166,17 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:103](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L103)
+[medusa/src/services/order.ts:129](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L129)
 
 ___
 
 ### inventoryService\_
 
-• `Protected` `Readonly` **inventoryService\_**: [`InventoryService`](InventoryService.md)
+• `Protected` `Readonly` **inventoryService\_**: `IInventoryService`
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:105](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L105)
+[medusa/src/services/order.ts:131](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L131)
 
 ___
 
@@ -162,7 +186,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:98](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L98)
+[medusa/src/services/order.ts:122](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L122)
 
 ___
 
@@ -170,23 +194,33 @@ ___
 
 • `Protected` **manager\_**: `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:87](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L87)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+
+___
+
+### newTotalsService\_
+
+• `Protected` `Readonly` **newTotalsService\_**: [`NewTotalsService`](NewTotalsService.md)
+
+#### Defined in
+
+[medusa/src/services/order.ts:124](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L124)
 
 ___
 
 ### orderRepository\_
 
-• `Protected` `Readonly` **orderRepository\_**: typeof `OrderRepository`
+• `Protected` `Readonly` **orderRepository\_**: `Repository`<`Order`\> & { `findOneWithRelations`: (`relations`: `FindOptionsRelations`<`Order`\>, `optionsWithoutRelations`: `Omit`<`FindManyOptions`<`Order`\>, ``"relations"``\>) => `Promise`<`Order`\> ; `findWithRelations`: (`relations`: `FindOptionsRelations`<`Order`\>, `optionsWithoutRelations`: `Omit`<`FindManyOptions`<`Order`\>, ``"relations"``\>) => `Promise`<`Order`[]\>  }
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:90](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L90)
+[medusa/src/services/order.ts:114](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L114)
 
 ___
 
@@ -196,7 +230,17 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:92](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L92)
+[medusa/src/services/order.ts:116](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L116)
+
+___
+
+### productVariantInventoryService\_
+
+• `Protected` `Readonly` **productVariantInventoryService\_**: [`ProductVariantInventoryService`](ProductVariantInventoryService.md)
+
+#### Defined in
+
+[medusa/src/services/order.ts:135](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L135)
 
 ___
 
@@ -206,7 +250,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:100](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L100)
+[medusa/src/services/order.ts:126](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L126)
 
 ___
 
@@ -216,7 +260,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:93](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L93)
+[medusa/src/services/order.ts:117](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L117)
 
 ___
 
@@ -226,7 +270,17 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:94](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L94)
+[medusa/src/services/order.ts:118](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L118)
+
+___
+
+### taxProviderService\_
+
+• `Protected` `Readonly` **taxProviderService\_**: [`TaxProviderService`](TaxProviderService.md)
+
+#### Defined in
+
+[medusa/src/services/order.ts:125](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L125)
 
 ___
 
@@ -236,21 +290,21 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:99](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L99)
+[medusa/src/services/order.ts:123](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L123)
 
 ___
 
 ### transactionManager\_
 
-• `Protected` **transactionManager\_**: `EntityManager`
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:88](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L88)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -281,7 +335,25 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:68](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L68)
+[medusa/src/services/order.ts:95](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L95)
+
+## Accessors
+
+### activeManager\_
+
+• `Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+#### Inherited from
+
+TransactionBaseService.activeManager\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -304,7 +376,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:824](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L824)
+[medusa/src/services/order.ts:1026](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L1026)
 
 ___
 
@@ -329,7 +401,7 @@ the result of the update operation
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:1350](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1350)
+[medusa/src/services/order.ts:1562](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L1562)
 
 ___
 
@@ -368,7 +440,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -394,7 +466,7 @@ result of the update operation.
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:977](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L977)
+[medusa/src/services/order.ts:1178](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L1178)
 
 ___
 
@@ -418,7 +490,7 @@ updated order
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:1287](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1287)
+[medusa/src/services/order.ts:1499](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L1499)
 
 ___
 
@@ -442,7 +514,7 @@ result of the update operation.
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:1055](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1055)
+[medusa/src/services/order.ts:1267](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L1267)
 
 ___
 
@@ -464,21 +536,21 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:457](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L457)
+[medusa/src/services/order.ts:579](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L579)
 
 ___
 
 ### createFromCart
 
-▸ **createFromCart**(`cartId`): `Promise`<`Order`\>
+▸ **createFromCart**(`cartOrId`): `Promise`<`Order`\>
 
 Creates an order from a cart
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `cartId` | `string` | id of the cart to create an order from |
+| Name | Type |
+| :------ | :------ |
+| `cartOrId` | `string` \| `Cart` |
 
 #### Returns
 
@@ -488,7 +560,7 @@ resolves to the creation result.
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:485](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L485)
+[medusa/src/services/order.ts:609](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L609)
 
 ___
 
@@ -508,6 +580,7 @@ to their respective fulfillment provider.
 | `orderId` | `string` | id of order to cancel. |
 | `itemsToFulfill` | `FulFillmentItemType`[] | items to fulfil. |
 | `config` | `Object` | the config to cancel. |
+| `config.location_id?` | `string` | - |
 | `config.metadata?` | `Record`<`string`, `unknown`\> | - |
 | `config.no_notification?` | `boolean` | - |
 
@@ -519,7 +592,29 @@ result of the update operation.
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:1160](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1160)
+[medusa/src/services/order.ts:1372](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L1372)
+
+___
+
+### createGiftCardsFromLineItem\_
+
+▸ `Protected` **createGiftCardsFromLineItem_**(`order`, `lineItem`, `manager`): `Promise`<`GiftCard`\>[]
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `order` | `Order` |
+| `lineItem` | `LineItem` |
+| `manager` | `EntityManager` |
+
+#### Returns
+
+`Promise`<`GiftCard`\>[]
+
+#### Defined in
+
+[medusa/src/services/order.ts:806](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L806)
 
 ___
 
@@ -548,7 +643,7 @@ the result of the refund operation.
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:1376](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1376)
+[medusa/src/services/order.ts:1588](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L1588)
 
 ___
 
@@ -579,13 +674,55 @@ the resulting order following the update.
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:664](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L664)
+[medusa/src/services/order.ts:860](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L860)
 
 ___
 
 ### decorateTotals
 
-▸ `Protected` **decorateTotals**(`order`, `totalsFields?`): `Promise`<`Order`\>
+▸ **decorateTotals**(`order`, `totalsFields?`): `Promise`<`Order`\>
+
+Calculate and attach the different total fields on the object
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `order` | `Order` |
+| `totalsFields?` | `string`[] |
+
+#### Returns
+
+`Promise`<`Order`\>
+
+#### Defined in
+
+[medusa/src/services/order.ts:1785](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L1785)
+
+▸ **decorateTotals**(`order`, `context?`): `Promise`<`Order`\>
+
+Calculate and attach the different total fields on the object
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `order` | `Order` |
+| `context?` | `TotalsContext` |
+
+#### Returns
+
+`Promise`<`Order`\>
+
+#### Defined in
+
+[medusa/src/services/order.ts:1787](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L1787)
+
+___
+
+### decorateTotalsLegacy
+
+▸ `Protected` **decorateTotalsLegacy**(`order`, `totalsFields?`): `Promise`<`Order`\>
 
 #### Parameters
 
@@ -600,31 +737,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:1425](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1425)
-
-___
-
-### existsByCartId
-
-▸ **existsByCartId**(`cartId`): `Promise`<`boolean`\>
-
-Checks the existence of an order by cart id.
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `cartId` | `string` | cart id to find order |
-
-#### Returns
-
-`Promise`<`boolean`\>
-
-the order document
-
-#### Defined in
-
-[packages/medusa/src/services/order.ts:448](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L448)
+[medusa/src/services/order.ts:1656](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L1656)
 
 ___
 
@@ -650,7 +763,27 @@ the line items generated by the transformer.
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:1329](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1329)
+[medusa/src/services/order.ts:1541](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L1541)
+
+___
+
+### getTotalsRelations
+
+▸ `Private` **getTotalsRelations**(`config`): `string`[]
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `config` | `FindConfig`<`Order`\> |
+
+#### Returns
+
+`string`[]
+
+#### Defined in
+
+[medusa/src/services/order.ts:2050](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L2050)
 
 ___
 
@@ -673,7 +806,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:156](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L156)
+[medusa/src/services/order.ts:189](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L189)
 
 ___
 
@@ -696,7 +829,7 @@ the result of the find operation
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:190](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L190)
+[medusa/src/services/order.ts:206](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L206)
 
 ___
 
@@ -728,7 +861,7 @@ the result of the update operation
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:1528](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1528)
+[medusa/src/services/order.ts:1975](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L1975)
 
 ___
 
@@ -742,7 +875,7 @@ Gets an order by id.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `orderId` | `string` | id of order to retrieve |
+| `orderId` | `string` | id or selector of order to retrieve |
 | `config` | `FindConfig`<`Order`\> | config of order to retrieve |
 
 #### Returns
@@ -753,7 +886,7 @@ the order document
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:330](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L330)
+[medusa/src/services/order.ts:390](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L390)
 
 ___
 
@@ -778,7 +911,28 @@ the order document
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:370](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L370)
+[medusa/src/services/order.ts:486](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L486)
+
+___
+
+### retrieveByCartIdWithTotals
+
+▸ **retrieveByCartIdWithTotals**(`cartId`, `options?`): `Promise`<`Order`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `cartId` | `string` |
+| `options` | `FindConfig`<`Order`\> |
+
+#### Returns
+
+`Promise`<`Order`\>
+
+#### Defined in
+
+[medusa/src/services/order.ts:520](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L520)
 
 ___
 
@@ -803,7 +957,50 @@ the order document
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:409](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L409)
+[medusa/src/services/order.ts:535](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L535)
+
+___
+
+### retrieveLegacy
+
+▸ `Protected` **retrieveLegacy**(`orderIdOrSelector`, `config?`): `Promise`<`Order`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `orderIdOrSelector` | `string` \| `Selector`<`Order`\> |
+| `config` | `FindConfig`<`Order`\> |
+
+#### Returns
+
+`Promise`<`Order`\>
+
+#### Defined in
+
+[medusa/src/services/order.ts:430](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L430)
+
+___
+
+### retrieveWithTotals
+
+▸ **retrieveWithTotals**(`orderId`, `options?`, `context?`): `Promise`<`Order`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `orderId` | `string` |
+| `options` | `FindConfig`<`Order`\> |
+| `context` | `TotalsContext` |
+
+#### Returns
+
+`Promise`<`Order`\>
+
+#### Defined in
+
+[medusa/src/services/order.ts:469](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L469)
 
 ___
 
@@ -827,7 +1024,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -853,7 +1050,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:255](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L255)
+[medusa/src/services/order.ts:312](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L312)
 
 ___
 
@@ -880,7 +1077,7 @@ resolves to the update result.
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:888](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L888)
+[medusa/src/services/order.ts:1089](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L1089)
 
 ___
 
@@ -905,7 +1102,7 @@ the result of the update operation
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:752](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L752)
+[medusa/src/services/order.ts:948](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L948)
 
 ___
 
@@ -930,7 +1127,7 @@ the result of the update operation
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:792](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L792)
+[medusa/src/services/order.ts:995](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L995)
 
 ___
 
@@ -959,7 +1156,7 @@ a line item that has the requested fulfillment quantity
 
 #### Defined in
 
-[packages/medusa/src/services/order.ts:1127](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/order.ts#L1127)
+[medusa/src/services/order.ts:1339](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/order.ts#L1339)
 
 ___
 
@@ -983,4 +1180,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

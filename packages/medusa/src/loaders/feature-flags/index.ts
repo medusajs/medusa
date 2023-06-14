@@ -1,11 +1,11 @@
 import glob from "glob"
 import path from "path"
 
+import { isDefined } from "medusa-core-utils"
 import { trackFeatureFlag } from "medusa-telemetry"
 import { FlagSettings } from "../../types/feature-flags"
 import { Logger } from "../../types/global"
 import { FlagRouter } from "../../utils/flag-router"
-import { isDefined } from "../../utils"
 
 const isTruthy = (val: string | boolean | undefined): boolean => {
   if (typeof val === "string") {
@@ -13,6 +13,8 @@ const isTruthy = (val: string | boolean | undefined): boolean => {
   }
   return !!val
 }
+
+export const featureFlagRouter = new FlagRouter({})
 
 export default (
   configModule: { featureFlags?: Record<string, string | boolean> } = {},
@@ -28,7 +30,6 @@ export default (
 
   const flagConfig: Record<string, boolean> = {}
   for (const flag of supportedFlags) {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const flagSettings: FlagSettings = require(flag).default
     if (!flagSettings) {
       continue
@@ -60,5 +61,9 @@ export default (
     }
   }
 
-  return new FlagRouter(flagConfig)
+  for (const flag of Object.keys(flagConfig)) {
+    featureFlagRouter.setFlag(flag, flagConfig[flag])
+  }
+
+  return featureFlagRouter
 }

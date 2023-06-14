@@ -1,6 +1,7 @@
 import SendGrid from "@sendgrid/mail"
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import { NotificationService } from "medusa-interfaces"
+import { IsNull, Not } from "typeorm"
 
 class SendGridService extends NotificationService {
   static identifier = "sendgrid"
@@ -31,6 +32,7 @@ class SendGridService extends NotificationService {
       fulfillmentProviderService,
       totalsService,
       productVariantService,
+      giftCardService,
     },
     options
   ) {
@@ -49,6 +51,7 @@ class SendGridService extends NotificationService {
     this.fulfillmentService_ = fulfillmentService
     this.totalsService_ = totalsService
     this.productVariantService_ = productVariantService
+    this.giftCardService_ = giftCardService
 
     SendGrid.setApiKey(options.api_key)
   }
@@ -129,6 +132,8 @@ class SendGridService extends NotificationService {
           eventData,
           attachmentGenerator
         )
+      case "order.refund_created":
+        return this.orderRefundCreatedData(eventData, attachmentGenerator)
       default:
         return {}
     }
@@ -166,6 +171,8 @@ class SendGridService extends NotificationService {
           return map.customer_password_reset_template
         case "restock-notification.restocked":
           return map.medusa_restock_template
+        case "order.refund_created":
+          return map.order_refund_created_template
         default:
           return null
       }
@@ -203,6 +210,8 @@ class SendGridService extends NotificationService {
         return this.options_.customer_password_reset_template
       case "restock-notification.restocked":
         return this.options_.medusa_restock_template
+      case "order.refund_created":
+        return this.options_.order_refund_created_template
       default:
         return null
     }
@@ -573,20 +582,24 @@ class SendGridService extends NotificationService {
     const giftCard = await this.giftCardService_.retrieve(id, {
       relations: ["region", "order"],
     })
-
-    if (!giftCard.order) {
-      return
-    }
-
     const taxRate = giftCard.region.tax_rate / 100
-
-    const locale = await this.extractLocale(order)
+    const locale = giftCard.order
+      ? await this.extractLocale(giftCard.order)
+      : null
+    const email = giftCard.order
+      ? giftCard.order.email
+      : giftCard.metadata.email
 
     return {
       ...giftCard,
       locale,
-      email: giftCard.order.email,
-      display_value: giftCard.value * (1 + taxRate),
+      email,
+      display_value: `${this.humanPrice_(
+        giftCard.value * 1 + taxRate,
+        giftCard.region.currency_code
+      )} ${giftCard.region.currency_code}`,
+      message:
+        giftCard.metadata?.message || giftCard.metadata?.personal_message,
     }
   }
 
@@ -609,7 +622,7 @@ class SendGridService extends NotificationService {
       {
         id: returnRequest.items.map(({ item_id }) => item_id),
       },
-      { relations: ["tax_lines"] }
+      { relations: ["tax_lines", "variant", "variant.product"] }
     )
 
     // Fetch the order
@@ -617,6 +630,7 @@ class SendGridService extends NotificationService {
       select: ["total"],
       relations: [
         "items",
+        "items.variant",
         "items.tax_lines",
         "discounts",
         "discounts.rule",
@@ -700,20 +714,22 @@ class SendGridService extends NotificationService {
 
   async swapReceivedData({ id }) {
     const store = await this.storeService_.retrieve()
+
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "additional_items",
         "additional_items.tax_lines",
+        "additional_items.variant",
         "return_order",
         "return_order.items",
         "return_order.items.item",
+        "return_order.items.item.variant",
         "return_order.shipping_method",
         "return_order.shipping_method.shipping_option",
       ],
     })
 
     const returnRequest = swap.return_order
-
     const items = await this.lineItemService_.list(
       {
         id: returnRequest.items.map(({ item_id }) => item_id),
@@ -740,16 +756,19 @@ class SendGridService extends NotificationService {
       select: ["total"],
       relations: [
         "items",
+        "items.variant",
         "discounts",
         "discounts.rule",
         "shipping_address",
         "swaps",
         "swaps.additional_items",
         "swaps.additional_items.tax_lines",
+        "swaps.additional_items.variant",
       ],
     })
 
     const cart = await this.cartService_.retrieve(swap.cart_id, {
+      relations: ["items", "items.variant", "items.variant.product"],
       select: [
         "total",
         "tax_total",
@@ -758,8 +777,8 @@ class SendGridService extends NotificationService {
         "subtotal",
       ],
     })
-    const currencyCode = order.currency_code.toUpperCase()
 
+    const currencyCode = order.currency_code.toUpperCase()
     const decoratedItems = await Promise.all(
       cart.items.map(async (i) => {
         const totals = await this.totalsService_.getLineItemTotals(i, cart, {
@@ -825,10 +844,11 @@ class SendGridService extends NotificationService {
   }
 
   async swapCreatedData({ id }) {
-    const store = await this.storeService_.retrieve()
+    const store = await this.storeService_.retrieve({ where: { id: Not(IsNull()) } })
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "additional_items",
+        "additional_items.variant.product",
         "additional_items.tax_lines",
         "return_order",
         "return_order.items",
@@ -845,7 +865,7 @@ class SendGridService extends NotificationService {
         id: returnRequest.items.map(({ item_id }) => item_id),
       },
       {
-        relations: ["tax_lines"],
+        relations: ["tax_lines", "variant", "variant.product"],
       }
     )
 
@@ -866,6 +886,8 @@ class SendGridService extends NotificationService {
       select: ["total"],
       relations: [
         "items",
+        "items.variant",
+        "items.variant.product",
         "items.tax_lines",
         "discounts",
         "discounts.rule",
@@ -873,6 +895,7 @@ class SendGridService extends NotificationService {
         "swaps",
         "swaps.additional_items",
         "swaps.additional_items.tax_lines",
+        "swaps.additional_items.variant",
       ],
     })
 
@@ -884,6 +907,7 @@ class SendGridService extends NotificationService {
         "shipping_total",
         "subtotal",
       ],
+      relations: ["items", "items.variant", "items.variant.product"]
     })
     const currencyCode = order.currency_code.toUpperCase()
 
@@ -965,6 +989,8 @@ class SendGridService extends NotificationService {
         "shipping_methods",
         "shipping_methods.tax_lines",
         "additional_items",
+        "additional_items.variant",
+        "additional_items.variant.product",
         "additional_items.tax_lines",
         "return_order",
         "return_order.items",
@@ -976,10 +1002,14 @@ class SendGridService extends NotificationService {
         "region",
         "items",
         "items.tax_lines",
+        "items.variant",
+        "items.variant.product",
         "discounts",
         "discounts.rule",
         "swaps",
         "swaps.additional_items",
+        "swaps.additional_items.variant",
+        "swaps.additional_items.variant.product",
         "swaps.additional_items.tax_lines",
       ],
     })
@@ -992,6 +1022,11 @@ class SendGridService extends NotificationService {
         "shipping_total",
         "subtotal",
       ],
+      relations: [
+        "items",
+        "items.variant",
+        "items.variant.product",
+      ]
     })
 
     const returnRequest = swap.return_order
@@ -1000,7 +1035,7 @@ class SendGridService extends NotificationService {
         id: returnRequest.items.map(({ item_id }) => item_id),
       },
       {
-        relations: ["tax_lines"],
+        relations: ["tax_lines", "variant", "variant.product"],
       }
     )
 
@@ -1106,7 +1141,13 @@ class SendGridService extends NotificationService {
 
   async claimShipmentCreatedData({ id, fulfillment_id }) {
     const claim = await this.claimService_.retrieve(id, {
-      relations: ["order", "order.items", "order.shipping_address"],
+      relations: [
+        "order",
+        "order.items",
+        "order.items.variant",
+        "order.items.variant.product",
+        "order.shipping_address"
+      ],
     })
 
     const shipment = await this.fulfillmentService_.retrieve(fulfillment_id, {
@@ -1153,6 +1194,23 @@ class SendGridService extends NotificationService {
 
   customerPasswordResetData(data) {
     return data
+  }
+
+  async orderRefundCreatedData({ id, refund_id }) {
+    const order = await this.orderService_.retrieveWithTotals(id, {
+      relations: ["refunds", "items"],
+    })
+
+    const refund = order.refunds.find((refund) => refund.id === refund_id)
+
+    return {
+      order,
+      refund,
+      refund_amount: `${this.humanPrice_(refund.amount, order.currency_code)} ${
+        order.currency_code
+      }`,
+      email: order.email,
+    }
   }
 
   processItems_(items, taxRate, currencyCode) {

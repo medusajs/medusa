@@ -1,33 +1,21 @@
 # Namespace: internal
 
+## Classes
+
+- [StorePostOrderEditsOrderEditDecline](../classes/internal-40.StorePostOrderEditsOrderEditDecline.md)
+
 ## Type Aliases
 
-### StoreReturnReasonsListRes
+### StoreOrderEditsRes
 
-Ƭ **StoreReturnReasonsListRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `return_reasons` | [`ReturnReason`](../classes/internal.ReturnReason.md)[] |
-
-#### Defined in
-
-medusa/dist/api/routes/store/return-reasons/index.d.ts:6
-
-___
-
-### StoreReturnReasonsRes
-
-Ƭ **StoreReturnReasonsRes**: `Object`
+Ƭ **StoreOrderEditsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `return_reason` | [`ReturnReason`](../classes/internal.ReturnReason.md) |
+| `order_edit` | `Omit`<[`OrderEdit`](../classes/internal.OrderEdit.md), ``"internal_note"`` \| ``"created_by"`` \| ``"confirmed_by"`` \| ``"canceled_by"``\> |
 
 #### Defined in
 
-medusa/dist/api/routes/store/return-reasons/index.d.ts:9
+medusa/dist/api/routes/store/order-edits/index.d.ts:4

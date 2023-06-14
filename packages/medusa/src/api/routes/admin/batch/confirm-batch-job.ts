@@ -2,13 +2,15 @@ import { BatchJobService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /batch-jobs/{id}/confirm
+ * @oas [post] /admin/batch-jobs/{id}/confirm
  * operationId: "PostBatchJobsBatchJobConfirmProcessing"
- * summary: "Confirm a batch job"
+ * summary: "Confirm a Batch Job"
  * description: "Confirms that a previously requested batch job should be executed."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the batch job.
+ * x-codegen:
+ *   method: confirm
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -29,16 +31,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Batch Job
+ *   - Batch Jobs
  * responses:
  *  "200":
  *    description: OK
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            batch_job:
- *              $ref: "#/components/schemas/batch_job"
+ *          $ref: "#/components/schemas/AdminBatchJobRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

@@ -16,7 +16,7 @@ import { defaultAdminCustomersRelations } from "."
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customers/{id}
+ * @oas [post] /admin/customers/{id}
  * operationId: "PostCustomersCustomer"
  * summary: "Update a Customer"
  * description: "Updates a Customer."
@@ -29,37 +29,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           email:
- *             type: string
- *             description: The Customer's email.
- *             format: email
- *           first_name:
- *             type: string
- *             description:  The Customer's first name.
- *           last_name:
- *             type: string
- *             description:  The Customer's last name.
- *           phone:
- *             type: string
- *             description: The Customer's phone number.
- *           password:
- *             type: string
- *             description: The Customer's password.
- *             format: password
- *           groups:
- *             type: array
- *             items:
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   description: The ID of a customer group
- *                   type: string
- *             description: A list of customer groups to which the customer belongs.
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostCustomersCustomerReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -86,16 +58,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             customer:
- *               $ref: "#/components/schemas/customer"
+ *           $ref: "#/components/schemas/AdminCustomersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -154,6 +124,42 @@ class Group {
   id: string
 }
 
+/**
+ * @schema AdminPostCustomersCustomerReq
+ * type: object
+ * properties:
+ *   email:
+ *     type: string
+ *     description: The Customer's email.
+ *     format: email
+ *   first_name:
+ *     type: string
+ *     description:  The Customer's first name.
+ *   last_name:
+ *     type: string
+ *     description:  The Customer's last name.
+ *   phone:
+ *     type: string
+ *     description: The Customer's phone number.
+ *   password:
+ *     type: string
+ *     description: The Customer's password.
+ *     format: password
+ *   groups:
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: The ID of a customer group
+ *           type: string
+ *     description: A list of customer groups to which the customer belongs.
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminPostCustomersCustomerReq {
   @IsEmail()
   @IsOptional()

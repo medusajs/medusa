@@ -7,9 +7,9 @@ import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [delete] /tax-rates/{id}/products/batch
+ * @oas [delete] /admin/tax-rates/{id}/products/batch
  * operationId: "DeleteTaxRatesTaxRateProducts"
- * summary: "Removes Tax Rate from Products"
+ * summary: "Delete from Products"
  * description: "Removes a Tax Rate from a list of Products"
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
@@ -36,14 +36,10 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - products
- *         properties:
- *           products:
- *             type: array
- *             description: "The IDs of the products to remove association with this tax rate"
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/AdminDeleteTaxRatesTaxRateProductsReq"
+ * x-codegen:
+ *   method: removeProducts
+ *   queryParams: AdminDeleteTaxRatesTaxRateProductsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -74,16 +70,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             tax_rate:
- *               $ref: "#/components/schemas/tax_rate"
+ *           $ref: "#/components/schemas/AdminTaxRatesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -124,6 +118,18 @@ export default async (req, res) => {
   res.json({ tax_rate: data })
 }
 
+/**
+ * @schema AdminDeleteTaxRatesTaxRateProductsReq
+ * type: object
+ * required:
+ *   - products
+ * properties:
+ *   products:
+ *     type: array
+ *     description: "The IDs of the products to remove association with this tax rate"
+ *     items:
+ *       type: string
+ */
 export class AdminDeleteTaxRatesTaxRateProductsReq {
   @IsArray()
   products: string[]

@@ -1,6 +1,5 @@
-import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
-import { TransactionBaseService as BaseService } from "../interfaces"
+import { isDefined, MedusaError } from "medusa-core-utils"
+import { TransactionBaseService } from "../interfaces"
 import { ClaimImage, ClaimItem, ClaimTag } from "../models"
 import { ClaimImageRepository } from "../repositories/claim-image"
 import { ClaimItemRepository } from "../repositories/claim-item"
@@ -11,7 +10,7 @@ import { buildQuery, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 
-class ClaimItemService extends BaseService {
+class ClaimItemService extends TransactionBaseService {
   static Events = {
     CREATED: "claim_item.created",
     UPDATED: "claim_item.updated",
@@ -24,11 +23,7 @@ class ClaimItemService extends BaseService {
   protected readonly claimTagRepository_: typeof ClaimTagRepository
   protected readonly claimImageRepository_: typeof ClaimImageRepository
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   constructor({
-    manager,
     claimItemRepository,
     claimTagRepository,
     claimImageRepository,
@@ -38,7 +33,6 @@ class ClaimItemService extends BaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.claimItemRepository_ = claimItemRepository
     this.claimTagRepository_ = claimTagRepository
     this.claimImageRepository_ = claimImageRepository
@@ -48,9 +42,7 @@ class ClaimItemService extends BaseService {
 
   async create(data: CreateClaimItemInput): Promise<ClaimItem> {
     return await this.atomicPhase_(async (manager) => {
-      const ciRepo: ClaimItemRepository = manager.getCustomRepository(
-        this.claimItemRepository_
-      )
+      const ciRepo = manager.withRepository(this.claimItemRepository_)
 
       const { item_id, reason, quantity, tags, images, ...rest } = data
 
@@ -70,7 +62,14 @@ class ClaimItemService extends BaseService {
         .withTransaction(manager)
         .retrieve(item_id)
 
-      if (lineItem.fulfilled_quantity < quantity) {
+      if (!lineItem.variant_id) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot claim a custom line item"
+        )
+      }
+
+      if (lineItem.fulfilled_quantity! < quantity) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Cannot claim more of an item than has been fulfilled."
@@ -79,9 +78,7 @@ class ClaimItemService extends BaseService {
 
       let tagsToAdd: ClaimTag[] = []
       if (tags && tags.length) {
-        const claimTagRepo = manager.getCustomRepository(
-          this.claimTagRepository_
-        )
+        const claimTagRepo = manager.withRepository(this.claimTagRepository_)
         tagsToAdd = await Promise.all(
           tags.map(async (t) => {
             const normalized = t.trim().toLowerCase()
@@ -98,9 +95,7 @@ class ClaimItemService extends BaseService {
 
       let imagesToAdd: ClaimImage[] = []
       if (images && images.length) {
-        const claimImgRepo = manager.getCustomRepository(
-          this.claimImageRepository_
-        )
+        const claimImgRepo = manager.withRepository(this.claimImageRepository_)
         imagesToAdd = images.map((url) => {
           return claimImgRepo.create({ url })
         })
@@ -131,7 +126,7 @@ class ClaimItemService extends BaseService {
 
   async update(id, data): Promise<ClaimItem> {
     return this.atomicPhase_(async (manager) => {
-      const ciRepo = manager.getCustomRepository(this.claimItemRepository_)
+      const ciRepo = manager.withRepository(this.claimItemRepository_)
       const item = await this.retrieve(id, { relations: ["images", "tags"] })
 
       const { tags, images, reason, note, metadata } = data
@@ -150,9 +145,7 @@ class ClaimItemService extends BaseService {
 
       if (tags) {
         item.tags = []
-        const claimTagRepo = manager.getCustomRepository(
-          this.claimTagRepository_
-        )
+        const claimTagRepo = manager.withRepository(this.claimTagRepository_)
         for (const t of tags) {
           if (t.id) {
             item.tags.push(t)
@@ -173,9 +166,7 @@ class ClaimItemService extends BaseService {
       }
 
       if (images) {
-        const claimImgRepo = manager.getCustomRepository(
-          this.claimImageRepository_
-        )
+        const claimImgRepo = manager.withRepository(this.claimImageRepository_)
         const ids = images.map((i) => i.id)
         for (const i of item.images) {
           if (!ids.includes(i.id)) {
@@ -219,31 +210,38 @@ class ClaimItemService extends BaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<ClaimItem[]> {
-    const ciRepo = this.manager_.getCustomRepository(this.claimItemRepository_)
+    const ciRepo = this.activeManager_.withRepository(this.claimItemRepository_)
     const query = buildQuery(selector, config)
     return ciRepo.find(query)
   }
 
   /**
    * Gets a claim item by id.
-   * @param {string} id - id of ClaimItem to retrieve
+   * @param {string} claimItemId - id of ClaimItem to retrieve
    * @param {Object} config - configuration for the find operation
    * @return {Promise<Order>} the ClaimItem
    */
   async retrieve(
-    id: string,
+    claimItemId: string,
     config: FindConfig<ClaimItem> = {}
   ): Promise<ClaimItem> {
-    const claimItemRepo = this.manager_.getCustomRepository(
+    if (!isDefined(claimItemId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"claimItemId" must be defined`
+      )
+    }
+
+    const claimItemRepo = this.activeManager_.withRepository(
       this.claimItemRepository_
     )
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: claimItemId }, config)
     const item = await claimItemRepo.findOne(query)
 
     if (!item) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Claim item with id: ${id} was not found.`
+        `Claim item with id: ${claimItemId} was not found.`
       )
     }
 

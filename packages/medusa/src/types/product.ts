@@ -1,4 +1,4 @@
-import { Transform, Type } from "class-transformer"
+import { DateComparisonOperator, FindConfig, Selector } from "./common"
 import {
   IsArray,
   IsBoolean,
@@ -7,15 +7,22 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Product, ProductOptionValue, ProductStatus } from "../models"
-import { optionalBooleanMapper } from "../utils/validators/is-boolean"
-import { IsType } from "../utils/validators/is-type"
 import {
-  DateComparisonOperator,
-  FindConfig,
-  StringComparisonOperator,
-} from "./common"
+  PriceList,
+  Product,
+  ProductCategory,
+  ProductOptionValue,
+  ProductStatus,
+  SalesChannel,
+} from "../models"
+import { Transform, Type } from "class-transformer"
+
+import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
+import { FindOperator } from "typeorm"
+import { IsType } from "../utils/validators/is-type"
 import { PriceListLoadConfig } from "./price-list"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
+import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 
 /**
  * API Level DTOs + Validation rules
@@ -62,13 +69,25 @@ export class FilterableProductProps {
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
+  @IsArray()
+  @IsOptional()
+  type_id?: string[]
+
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
+  sales_channel_id?: string[]
+
   @IsString()
   @IsOptional()
-  type?: string
+  discount_condition_id?: string
 
   @IsArray()
   @IsOptional()
-  sales_channel_id?: string[]
+  category_id?: string[]
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
+  include_category_children?: boolean
 
   @IsOptional()
   @ValidateNested()
@@ -86,49 +105,15 @@ export class FilterableProductProps {
   deleted_at?: DateComparisonOperator
 }
 
-export class FilterableProductTagProps {
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  id?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  value?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  created_at?: DateComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  updated_at?: DateComparisonOperator
-
-  @IsString()
-  @IsOptional()
-  q?: string
-}
-
-export class FilterableProductTypeProps {
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  id?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([String, [String], StringComparisonOperator])
-  value?: string | string[] | StringComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  created_at?: DateComparisonOperator
-
-  @IsOptional()
-  @IsType([DateComparisonOperator])
-  updated_at?: DateComparisonOperator
-
-  @IsString()
-  @IsOptional()
-  q?: string
-}
+export type ProductSelector =
+  | FilterableProductProps
+  | (Selector<Product> & {
+      q?: string
+      discount_condition_id?: string
+      price_list_id?: string[] | FindOperator<PriceList>
+      sales_channel_id?: string[] | FindOperator<SalesChannel>
+      category_id?: string[] | FindOperator<ProductCategory>
+    })
 
 /**
  * Service Level DTOs
@@ -151,6 +136,7 @@ export type CreateProductInput = {
   options?: CreateProductProductOption[]
   variants?: CreateProductProductVariantInput[]
   sales_channels?: CreateProductProductSalesChannelInput[] | null
+  categories?: CreateProductProductCategoryInput[] | null
   weight?: number
   length?: number
   height?: number
@@ -160,6 +146,7 @@ export type CreateProductInput = {
   mid_code?: string
   material?: string
   metadata?: Record<string, unknown>
+  external_id?: string | null
 }
 
 export type CreateProductProductTagInput = {
@@ -168,6 +155,10 @@ export type CreateProductProductTagInput = {
 }
 
 export type CreateProductProductSalesChannelInput = {
+  id: string
+}
+
+export type CreateProductProductCategoryInput = {
   id: string
 }
 
@@ -193,7 +184,7 @@ export type CreateProductProductVariantInput = {
   origin_country?: string
   mid_code?: string
   material?: string
-  metadata?: object
+  metadata?: Record<string, unknown>
   prices?: CreateProductProductVariantPriceInput[]
   options?: { value: string }[]
 }
@@ -216,7 +207,7 @@ export type UpdateProductProductVariantDTO = {
   origin_country?: string
   mid_code?: string
   material?: string
-  metadata?: object
+  metadata?: Record<string, unknown>
   prices?: CreateProductProductVariantPriceInput[]
   options?: { value: string; option_id: string }[]
 }
@@ -252,6 +243,11 @@ export class ProductSalesChannelReq {
   id: string
 }
 
+export class ProductProductCategoryReq {
+  @IsString()
+  id: string
+}
+
 export class ProductTagReq {
   @IsString()
   @IsOptional()
@@ -268,4 +264,12 @@ export class ProductTypeReq {
 
   @IsString()
   value: string
+}
+
+export type ProductFilterOptions = {
+  price_list_id?: FindOperator<PriceList>
+  sales_channel_id?: FindOperator<SalesChannel>
+  category_id?: FindOperator<ProductCategory>
+  include_category_children?: boolean
+  discount_condition_id?: string
 }

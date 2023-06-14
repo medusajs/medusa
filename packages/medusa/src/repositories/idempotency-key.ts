@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from "typeorm"
-import { IdempotencyKey } from "../models/idempotency-key"
+import { IdempotencyKey } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(IdempotencyKey)
-export class IdempotencyKeyRepository extends Repository<IdempotencyKey> {}
+export const IdempotencyKeyRepository = dataSource.getRepository(IdempotencyKey)
+export default IdempotencyKeyRepository

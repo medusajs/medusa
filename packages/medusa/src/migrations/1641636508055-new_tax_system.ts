@@ -131,22 +131,22 @@ export class newTaxSystem1641636508055 implements MigrationInterface {
       `ALTER TABLE "tax_rate" DROP CONSTRAINT "FK_b95a1e03b051993d208366cb960"`
     )
     await queryRunner.query(
-      `DROP INDEX "public"."IDX_f672727ab020df6c50fb64c1a7"`
+      `DROP INDEX "IDX_f672727ab020df6c50fb64c1a7"`
     )
     await queryRunner.query(
-      `DROP INDEX "public"."IDX_346e0016cf045b998074774764"`
+      `DROP INDEX "IDX_346e0016cf045b998074774764"`
     )
     await queryRunner.query(
-      `DROP INDEX "public"."IDX_25a3138bb236f63d9bb6c8ff11"`
+      `DROP INDEX "IDX_25a3138bb236f63d9bb6c8ff11"`
     )
     await queryRunner.query(
-      `DROP INDEX "public"."IDX_ece65a774192b34253abc4cd67"`
+      `DROP INDEX "IDX_ece65a774192b34253abc4cd67"`
     )
     await queryRunner.query(
-      `DROP INDEX "public"."IDX_1d04aebeabb6a89f87e536a124"`
+      `DROP INDEX "IDX_1d04aebeabb6a89f87e536a124"`
     )
     await queryRunner.query(
-      `DROP INDEX "public"."IDX_2484cf14c437a04586b07e7ddd"`
+      `DROP INDEX "IDX_2484cf14c437a04586b07e7ddd"`
     )
     await queryRunner.query(
       `ALTER TABLE "order" ALTER COLUMN "tax_rate" SET NOT NULL`
@@ -165,11 +165,11 @@ export class newTaxSystem1641636508055 implements MigrationInterface {
     await queryRunner.query(`DROP TABLE "product_type_tax_rate"`)
     await queryRunner.query(`DROP TABLE "product_tax_rate"`)
     await queryRunner.query(
-      `DROP INDEX "public"."IDX_926ca9f29014af8091722dede0"`
+      `DROP INDEX "IDX_926ca9f29014af8091722dede0"`
     )
     await queryRunner.query(`DROP TABLE "shipping_method_tax_line"`)
     await queryRunner.query(
-      `DROP INDEX "public"."IDX_5077fa54b0d037e984385dfe8a"`
+      `DROP INDEX "IDX_5077fa54b0d037e984385dfe8a"`
     )
     await queryRunner.query(`DROP TABLE "line_item_tax_line"`)
     await queryRunner.query(`DROP TABLE "tax_provider"`)

@@ -7,9 +7,9 @@ import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /tax-rates/{id}/products/batch
+ * @oas [post] /admin/tax-rates/{id}/products/batch
  * operationId: "PostTaxRatesTaxRateProducts"
- * summary: "Add Tax Rate to Products"
+ * summary: "Add to Products"
  * description: "Associates a Tax Rate with a list of Products"
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
@@ -36,14 +36,10 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - products
- *         properties:
- *           products:
- *             type: array
- *             description: "The IDs of the products to associate with this tax rate"
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/AdminPostTaxRatesTaxRateProductsReq"
+ * x-codegen:
+ *   method: addProducts
+ *   queryParams: AdminPostTaxRatesTaxRateProductsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -74,16 +70,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             tax_rate:
- *               $ref: "#/components/schemas/tax_rate"
+ *           $ref: "#/components/schemas/AdminTaxRatesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -124,6 +118,18 @@ export default async (req, res) => {
   res.json({ tax_rate: data })
 }
 
+/**
+ * @schema AdminPostTaxRatesTaxRateProductsReq
+ * type: object
+ * required:
+ *   - products
+ * properties:
+ *   products:
+ *     type: array
+ *     description: "The IDs of the products to associate with this tax rate"
+ *     items:
+ *       type: string
+ */
 export class AdminPostTaxRatesTaxRateProductsReq {
   @IsArray()
   products: string[]

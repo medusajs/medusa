@@ -3,11 +3,12 @@ import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { PricingService } from "../../../../services"
 
 /**
- * @oas [post] /products/{id}/metadata
+ * @oas [post] /admin/products/{id}/metadata
  * operationId: "PostProductsProductMetadata"
- * summary: "Set Product metadata"
+ * summary: "Set Product Metadata"
  * description: "Set metadata key/value pair for Product"
  * x-authenticated: true
  * parameters:
@@ -16,16 +17,9 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - key
- *           - value
- *         properties:
- *           key:
- *             description: The metadata key
- *             type: string
- *           value:
- *             description: The metadata value
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostProductsProductMetadataReq"
+ * x-codegen:
+ *   method: setMetadata
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -54,16 +48,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             product:
- *               $ref: "#/components/schemas/product"
+ *           $ref: "#/components/schemas/AdminProductsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -86,6 +78,8 @@ export default async (req, res) => {
   )
 
   const productService = req.scope.resolve("productService")
+  const pricingService: PricingService = req.scope.resolve("pricingService")
+
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
     return await productService.withTransaction(transactionManager).update(id, {
@@ -93,14 +87,30 @@ export default async (req, res) => {
     })
   })
 
-  const product = await productService.retrieve(id, {
+  const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
   })
 
+  const [product] = await pricingService.setProductPrices([rawProduct])
+
   res.status(200).json({ product })
 }
 
+/**
+ * @schema AdminPostProductsProductMetadataReq
+ * type: object
+ * required:
+ *   - key
+ *   - value
+ * properties:
+ *   key:
+ *     description: The metadata key
+ *     type: string
+ *   value:
+ *     description: The metadata value
+ *     type: string
+ */
 export class AdminPostProductsProductMetadataReq {
   @IsString()
   key: string

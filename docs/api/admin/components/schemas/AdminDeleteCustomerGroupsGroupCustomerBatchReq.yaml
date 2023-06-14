@@ -1,0 +1,15 @@
+type: object
+required:
+  - customer_ids
+properties:
+  customer_ids:
+    description: The ids of the customers to remove
+    type: array
+    items:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          description: ID of the customer
+          type: string

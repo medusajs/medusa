@@ -1,14 +1,21 @@
 import { OrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/complete
+ * @oas [post] /admin/orders/{id}/complete
  * operationId: "PostOrdersOrderComplete"
  * summary: "Complete an Order"
  * description: "Completes an Order"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
+ * x-codegen:
+ *   method: complete
+ *   params: AdminPostOrdersOrderCompleteParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -29,16 +36,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -64,9 +69,11 @@ export default async (req, res) => {
       .completeOrder(id)
   })
 
-  const order = await orderService.retrieve(id, {
-    relations: ["region", "customer", "swaps"],
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
+
+export class AdminPostOrdersOrderCompleteParams extends FindParams {}

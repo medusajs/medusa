@@ -1,16 +1,21 @@
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
-
 import { OrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/cancel
+ * @oas [post] /admin/orders/{id}/cancel
  * operationId: "PostOrdersOrderCancel"
  * summary: "Cancel an Order"
  * description: "Registers an Order as canceled. This triggers a flow that will cancel any created Fulfillments and Payments, may fail if the Payment or Fulfillment Provider is unable to cancel the Payment/Fulfillment."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
+ * x-codegen:
+ *   method: cancel
+ *   params: AdminPostOrdersOrderCancel
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -31,16 +36,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -63,10 +66,11 @@ export default async (req, res) => {
     return await orderService.withTransaction(transactionManager).cancel(id)
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
+
+export class AdminPostOrdersOrderCancel extends FindParams {}

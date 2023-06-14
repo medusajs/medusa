@@ -2,12 +2,14 @@ import { CartService, PricingService } from "../../../../services"
 import ShippingProfileService from "../../../../services/shipping-profile"
 
 /**
- * @oas [get] /shipping-options/{cart_id}
+ * @oas [get] /store/shipping-options/{cart_id}
  * operationId: GetShippingOptionsCartId
- * summary: Retrieve Shipping Options for Cart
+ * summary: List for Cart
  * description: "Retrieves a list of Shipping Options available to a cart."
  * parameters:
  *   - (path) cart_id {string} The id of the Cart.
+ * x-codegen:
+ *   method: listCartOptions
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -23,18 +25,14 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/shipping-options/{cart_id}'
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             shipping_options:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/shipping_option"
+ *           $ref: "#/components/schemas/StoreCartShippingOptionsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -55,15 +53,8 @@ export default async (req, res) => {
     "shippingProfileService"
   )
 
-  const cart = await cartService.retrieve(cart_id, {
-    select: ["subtotal"],
-    relations: [
-      "region",
-      "items",
-      "items.adjustments",
-      "items.variant",
-      "items.variant.product",
-    ],
+  const cart = await cartService.retrieveWithTotals(cart_id, {
+    relations: ["items.variant", "items.variant.product"],
   })
 
   const options = await shippingProfileService.fetchCartOptions(cart)

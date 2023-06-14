@@ -14,13 +14,20 @@ const {
   Discount,
   DiscountRule,
   Payment,
+  ShippingProfileType,
 } = require("@medusajs/medusa")
+const { simpleSalesChannelFactory } = require("../factories")
 
-module.exports = async (connection, data = {}) => {
-  const manager = connection.manager
+module.exports = async (dataSource, data = {}) => {
+  const manager = dataSource.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: "default",
+    where: { type: ShippingProfileType.DEFAULT },
+  })
+
+  const salesChannel = await simpleSalesChannelFactory(dataSource, {
+    id: "sales-channel",
+    is_default: true,
   })
 
   await manager.insert(Product, {
@@ -29,6 +36,10 @@ module.exports = async (connection, data = {}) => {
     profile_id: defaultProfile.id,
     options: [{ id: "test-option", title: "Size" }],
   })
+
+  await manager.query(
+    `insert into product_sales_channel values ('test-product', '${salesChannel.id}');`
+  )
 
   await manager.insert(Address, {
     id: "oli-shipping",
@@ -42,6 +53,23 @@ module.exports = async (connection, data = {}) => {
     title: "test product 2",
     profile_id: defaultProfile.id,
     options: [{ id: "test-option-color", title: "Color" }],
+  })
+
+  await manager.query(
+    `insert into product_sales_channel values ('test-product-2', '${salesChannel.id}');`
+  )
+
+  await manager.insert(ProductVariant, {
+    id: "test-variant-without-prices",
+    title: "test variant without prices",
+    product_id: "test-product",
+    inventory_quantity: 1,
+    options: [
+      {
+        option_id: "test-option",
+        value: "no prices",
+      },
+    ],
   })
 
   await manager.insert(ProductVariant, {
@@ -137,7 +165,7 @@ module.exports = async (connection, data = {}) => {
 
   const freeShippingDiscount = manager.create(Discount, {
     id: "free-shipping-discount",
-    code: "free-shipping",
+    code: "FREE-SHIPPING",
     is_dynamic: false,
     is_disabled: false,
     rule_id: "free-shipping-rule",

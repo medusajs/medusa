@@ -11,6 +11,8 @@ module.exports = ({ cwd, redisUrl, uploadDir, verbose, env }) => {
   const workerId = parseInt(process.env.JEST_WORKER_ID || "1")
   const redisUrlWithDatabase = `${redisUrl}/${workerId - 1}`
 
+  verbose = verbose ?? false
+
   return new Promise((resolve, reject) => {
     const medusaProcess = spawn("node", [path.resolve(serverPath)], {
       cwd,
@@ -28,7 +30,13 @@ module.exports = ({ cwd, redisUrl, uploadDir, verbose, env }) => {
         : ["ignore", "ignore", "ignore", "ipc"],
     })
 
+    medusaProcess.on("error", (err) => {
+      console.log(err)
+      process.exit()
+    })
+
     medusaProcess.on("uncaughtException", (err) => {
+      console.log(err)
       medusaProcess.kill()
     })
 

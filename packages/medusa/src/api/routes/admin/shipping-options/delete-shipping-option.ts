@@ -1,13 +1,15 @@
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /shipping-options/{id}
+ * @oas [delete] /admin/shipping-options/{id}
  * operationId: "DeleteShippingOptionsOption"
  * summary: "Delete a Shipping Option"
  * description: "Deletes a Shipping Option."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Shipping Option.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -28,25 +30,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Shipping Option.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: shipping-option
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminShippingOptionsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

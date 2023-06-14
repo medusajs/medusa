@@ -1,16 +1,18 @@
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
-import { EntityManager } from "typeorm";
+import { EntityManager } from "typeorm"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [delete] /carts/{id}/payment-sessions/{provider_id}
+ * @oas [delete] /store/carts/{id}/payment-sessions/{provider_id}
  * operationId: DeleteCartsCartPaymentSessionsSession
  * summary: "Delete a Payment Session"
  * description: "Deletes a Payment Session on a Cart. May be useful if a payment has failed."
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) provider_id=* {string} The id of the Payment Provider used to create the Payment Session to be deleted.
+ * x-codegen:
+ *   method: deletePaymentSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -26,16 +28,14 @@ import { EntityManager } from "typeorm";
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             cart:
- *               $ref: "#/components/schemas/cart"
+ *           $ref: "#/components/schemas/StoreCartsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -54,14 +54,15 @@ export default async (req, res) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    return await cartService.withTransaction(transactionManager).deletePaymentSession(id, provider_id)
+    return await cartService
+      .withTransaction(transactionManager)
+      .deletePaymentSession(id, provider_id)
   })
 
-  const cart = await cartService.retrieve(id, {
+  const data = await cartService.retrieveWithTotals(id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
 
-  const data = await decorateLineItemsWithTotals(cart, req)
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }

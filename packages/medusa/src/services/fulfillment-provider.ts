@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import BaseFulfillmentService from "medusa-interfaces/dist/fulfillment-service"
+import BaseFulfillmentService from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import {
@@ -8,7 +8,6 @@ import {
   FulfillmentProvider,
   LineItem,
   Order,
-  Return,
   ShippingMethod,
   ShippingOption,
 } from "../models"
@@ -26,33 +25,34 @@ type FulfillmentProviderContainer = MedusaContainer & {
   fulfillmentProviderRepository: typeof FulfillmentProviderRepository
   manager: EntityManager
 } & {
-  [key in `${FulfillmentProviderKey}`]: BaseFulfillmentService
+  [key in `${FulfillmentProviderKey}`]: typeof BaseFulfillmentService
+}
+
+type CalculateOptionPriceInput = {
+  provider_id: string
+  data: Record<string, unknown>
 }
 
 /**
  * Helps retrive fulfillment providers
  */
 class FulfillmentProviderService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly container_: FulfillmentProviderContainer
-
+  // eslint-disable-next-line max-len
   protected readonly fulfillmentProviderRepository_: typeof FulfillmentProviderRepository
 
   constructor(container: FulfillmentProviderContainer) {
     super(container)
 
-    const { manager, fulfillmentProviderRepository } = container
+    const { fulfillmentProviderRepository } = container
 
     this.container_ = container
-    this.manager_ = manager
     this.fulfillmentProviderRepository_ = fulfillmentProviderRepository
   }
 
   async registerInstalledProviders(providers: string[]): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const fulfillmentProviderRepo = manager.getCustomRepository(
+      const fulfillmentProviderRepo = manager.withRepository(
         this.fulfillmentProviderRepository_
       )
       await fulfillmentProviderRepo.update({}, { is_installed: false })
@@ -65,7 +65,7 @@ class FulfillmentProviderService extends TransactionBaseService {
   }
 
   async list(): Promise<FulfillmentProvider[]> {
-    const fpRepo = this.manager_.getCustomRepository(
+    const fpRepo = this.activeManager_.withRepository(
       this.fulfillmentProviderRepository_
     )
 
@@ -77,14 +77,13 @@ class FulfillmentProviderService extends TransactionBaseService {
   ): Promise<FulfillmentOptions[]> {
     return await Promise.all(
       providerIds.map(async (p) => {
-        const provider = await this.retrieveProvider(p)
+        const provider = this.retrieveProvider(p)
         return {
           provider_id: p,
-          options:
-            (await provider.getFulfillmentOptions()) as unknown as Record<
-              string,
-              unknown
-            >[],
+          options: (await provider.getFulfillmentOptions()) as Record<
+            string,
+            unknown
+          >[],
         }
       })
     )
@@ -94,7 +93,7 @@ class FulfillmentProviderService extends TransactionBaseService {
    * @param providerId - the provider id
    * @return the payment fulfillment provider
    */
-  retrieveProvider(providerId: string): BaseFulfillmentService {
+  retrieveProvider(providerId: string): typeof BaseFulfillmentService {
     try {
       return this.container_[`fp_${providerId}`]
     } catch (err) {
@@ -120,7 +119,7 @@ class FulfillmentProviderService extends TransactionBaseService {
     ) as unknown as Record<string, unknown>
   }
 
-  async canCalculate(option: ShippingOption): Promise<boolean> {
+  async canCalculate(option: CalculateOptionPriceInput): Promise<boolean> {
     const provider = this.retrieveProvider(option.provider_id)
     return provider.canCalculate(option.data) as unknown as boolean
   }
@@ -151,7 +150,11 @@ class FulfillmentProviderService extends TransactionBaseService {
     cart?: Order | Cart
   ): Promise<number> {
     const provider = this.retrieveProvider(option.provider_id)
-    return provider.calculatePrice(option.data, data, cart) as unknown as number
+    return (await provider.calculatePrice(
+      option.data,
+      data,
+      cart
+    )) as unknown as number
   }
 
   async validateOption(option: ShippingOption): Promise<boolean> {

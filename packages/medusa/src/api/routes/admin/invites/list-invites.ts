@@ -1,11 +1,13 @@
 import InviteService from "../../../../services/invite"
 
 /**
- * @oas [get] /invites
+ * @oas [get] /admin/invites
  * operationId: "GetInvites"
- * summary: "Lists all Invites"
+ * summary: "Lists Invites"
  * description: "Lists all Invites"
  * x-authenticated: true
+ * x-codegen:
+ *   method: list
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -26,18 +28,14 @@ import InviteService from "../../../../services/invite"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Invite
+ *   - Invites
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             invites:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/invite"
+ *           $ref: "#/components/schemas/AdminListInvitesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

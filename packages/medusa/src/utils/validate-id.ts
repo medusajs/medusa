@@ -1,11 +1,11 @@
 /**
-* Confirms whether a given raw id is valid. Fails if the provided
-* id is null or undefined. The validate function takes an optional config
-* param, to support checking id prefix and length.
-* @param rawId - the id to validate.
-* @param config - optional config
-* @returns the rawId given that nothing failed
-*/
+ * Confirms whether a given raw id is valid. Fails if the provided
+ * id is null or undefined. The validate function takes an optional config
+ * param, to support checking id prefix and length.
+ * @param rawId - the id to validate.
+ * @param config - optional config
+ * @returns the rawId given that nothing failed
+ */
 import { MedusaError } from "medusa-core-utils/dist"
 
 export function validateId(

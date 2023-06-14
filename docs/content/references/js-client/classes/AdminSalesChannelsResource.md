@@ -10,7 +10,7 @@
 
 ### addProducts
 
-▸ **addProducts**(`salesChannelId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-20.md#adminsaleschannelsres)\>
+▸ **addProducts**(`salesChannelId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-25.md#adminsaleschannelsres)\>
 
 Add products to a sales channel
  This feature is under development and may change in the future.
@@ -25,39 +25,39 @@ Add products to a sales channel
 | Name | Type |
 | :------ | :------ |
 | `salesChannelId` | `string` |
-| `payload` | [`AdminPostSalesChannelsChannelProductsBatchReq`](internal-20.AdminPostSalesChannelsChannelProductsBatchReq.md) |
+| `payload` | [`AdminPostSalesChannelsChannelProductsBatchReq`](internal-25.AdminPostSalesChannelsChannelProductsBatchReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-20.md#adminsaleschannelsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-25.md#adminsaleschannelsres)\>
 
 a medusa sales channel
 
 #### Defined in
 
-[medusa-js/src/resources/admin/sales-channels.ts:116](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/sales-channels.ts#L116)
+[medusa-js/src/resources/admin/sales-channels.ts:116](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/sales-channels.ts#L116)
 
 ___
 
 ### create
 
-▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-20.md#adminsaleschannelsres)\>
+▸ **create**(`payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-25.md#adminsaleschannelsres)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `payload` | [`AdminPostSalesChannelsReq`](internal-20.AdminPostSalesChannelsReq.md) |
+| `payload` | [`AdminPostSalesChannelsReq`](internal-25.AdminPostSalesChannelsReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-20.md#adminsaleschannelsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-25.md#adminsaleschannelsres)\>
 
 #### Defined in
 
-[medusa-js/src/resources/admin/sales-channels.ts:34](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/sales-channels.ts#L34)
+[medusa-js/src/resources/admin/sales-channels.ts:34](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/sales-channels.ts#L34)
 
 ___
 
@@ -88,13 +88,13 @@ an deletion result
 
 #### Defined in
 
-[medusa-js/src/resources/admin/sales-channels.ts:85](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/sales-channels.ts#L85)
+[medusa-js/src/resources/admin/sales-channels.ts:85](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/sales-channels.ts#L85)
 
 ___
 
 ### list
 
-▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsListRes`](../modules/internal-20.md#adminsaleschannelslistres)\>
+▸ **list**(`query?`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsListRes`](../modules/internal-21.md#adminsaleschannelslistres)\>
 
 Retrieve a list of sales channels
  This feature is under development and may change in the future.
@@ -108,24 +108,24 @@ Retrieve a list of sales channels
 
 | Name | Type |
 | :------ | :------ |
-| `query?` | [`AdminGetSalesChannelsParams`](internal-20.AdminGetSalesChannelsParams.md) |
+| `query?` | [`AdminGetSalesChannelsParams`](internal-25.AdminGetSalesChannelsParams.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsListRes`](../modules/internal-20.md#adminsaleschannelslistres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsListRes`](../modules/internal-21.md#adminsaleschannelslistres)\>
 
 the list of sales channel as well as the pagination properties
 
 #### Defined in
 
-[medusa-js/src/resources/admin/sales-channels.ts:64](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/sales-channels.ts#L64)
+[medusa-js/src/resources/admin/sales-channels.ts:64](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/sales-channels.ts#L64)
 
 ___
 
 ### removeProducts
 
-▸ **removeProducts**(`salesChannelId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-20.md#adminsaleschannelsres)\>
+▸ **removeProducts**(`salesChannelId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-25.md#adminsaleschannelsres)\>
 
 Remove products from a sales channel
  This feature is under development and may change in the future.
@@ -140,24 +140,24 @@ Remove products from a sales channel
 | Name | Type |
 | :------ | :------ |
 | `salesChannelId` | `string` |
-| `payload` | [`AdminDeleteSalesChannelsChannelProductsBatchReq`](internal-20.AdminDeleteSalesChannelsChannelProductsBatchReq.md) |
+| `payload` | [`AdminDeleteSalesChannelsChannelProductsBatchReq`](internal-25.AdminDeleteSalesChannelsChannelProductsBatchReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-20.md#adminsaleschannelsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-25.md#adminsaleschannelsres)\>
 
 a medusa sales channel
 
 #### Defined in
 
-[medusa-js/src/resources/admin/sales-channels.ts:100](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/sales-channels.ts#L100)
+[medusa-js/src/resources/admin/sales-channels.ts:100](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/sales-channels.ts#L100)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`salesChannelId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-20.md#adminsaleschannelsres)\>
+▸ **retrieve**(`salesChannelId`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-25.md#adminsaleschannelsres)\>
 
 retrieve a sales channel
  This feature is under development and may change in the future.
@@ -176,19 +176,19 @@ gets a sales channel
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-20.md#adminsaleschannelsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-25.md#adminsaleschannelsres)\>
 
 a medusa sales channel
 
 #### Defined in
 
-[medusa-js/src/resources/admin/sales-channels.ts:22](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/sales-channels.ts#L22)
+[medusa-js/src/resources/admin/sales-channels.ts:22](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/sales-channels.ts#L22)
 
 ___
 
 ### update
 
-▸ **update**(`salesChannelId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-20.md#adminsaleschannelsres)\>
+▸ **update**(`salesChannelId`, `payload`, `customHeaders?`): [`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-25.md#adminsaleschannelsres)\>
 
 update a sales channel
  This feature is under development and may change in the future.
@@ -203,15 +203,15 @@ updates a sales channel
 | Name | Type |
 | :------ | :------ |
 | `salesChannelId` | `string` |
-| `payload` | [`AdminPostSalesChannelsSalesChannelReq`](internal-20.AdminPostSalesChannelsSalesChannelReq.md) |
+| `payload` | [`AdminPostSalesChannelsSalesChannelReq`](internal-25.AdminPostSalesChannelsSalesChannelReq.md) |
 | `customHeaders` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-20.md#adminsaleschannelsres)\>
+[`ResponsePromise`](../modules/internal.md#responsepromise)<[`AdminSalesChannelsRes`](../modules/internal-25.md#adminsaleschannelsres)\>
 
 the updated medusa sales channel
 
 #### Defined in
 
-[medusa-js/src/resources/admin/sales-channels.ts:48](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa-js/src/resources/admin/sales-channels.ts#L48)
+[medusa-js/src/resources/admin/sales-channels.ts:48](https://github.com/medusajs/medusa/blob/29135c051/packages/medusa-js/src/resources/admin/sales-channels.ts#L48)

@@ -2,13 +2,15 @@ import { BatchJobService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /batch-jobs/{id}/cancel
+ * @oas [post] /admin/batch-jobs/{id}/cancel
  * operationId: "PostBatchJobsBatchJobCancel"
- * summary: "Marks a batch job as canceled"
+ * summary: "Cancel a Batch Job"
  * description: "Marks a batch job as canceled"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the batch job.
+ * x-codegen:
+ *   method: cancel
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -29,16 +31,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Batch Job
+ *   - Batch Jobs
  * responses:
  *  "200":
  *    description: OK
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            batch_job:
- *              $ref: "#/components/schemas/batch_job"
+ *          $ref: "#/components/schemas/AdminBatchJobRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

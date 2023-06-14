@@ -14,7 +14,7 @@ displayed_sidebar: jsClientSidebar
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:35
+medusa/dist/models/order.d.ts:36
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:30
+medusa/dist/models/order.d.ts:31
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:28
+medusa/dist/models/order.d.ts:29
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:29
+medusa/dist/models/order.d.ts:30
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:33
+medusa/dist/models/order.d.ts:34
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:31
+medusa/dist/models/order.d.ts:32
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:36
+medusa/dist/models/order.d.ts:37
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:34
+medusa/dist/models/order.d.ts:35
 
 ___
 
@@ -94,4 +94,4 @@ ___
 
 #### Defined in
 
-medusa/dist/models/order.d.ts:32
+medusa/dist/models/order.d.ts:33

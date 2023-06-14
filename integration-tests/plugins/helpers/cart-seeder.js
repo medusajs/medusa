@@ -14,9 +14,12 @@ const {
   LineItem,
   Payment,
   PaymentSession,
+  ShippingProfileType,
 } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
+  const salesChannelId = data?.sales_channel_id
+
   const yesterday = ((today) => new Date(today.setDate(today.getDate() - 1)))(
     new Date()
   )
@@ -32,11 +35,15 @@ module.exports = async (connection, data = {}) => {
   const manager = connection.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: "default",
+    where: {
+      type: ShippingProfileType.DEFAULT,
+    },
   })
 
   const gcProfile = await manager.findOne(ShippingProfile, {
-    type: "gift_card",
+    where: {
+      type: ShippingProfileType.GIFT_CARD,
+    },
   })
 
   await manager.insert(Address, {
@@ -240,7 +247,7 @@ module.exports = async (connection, data = {}) => {
     is_disabled: false,
     starts_at: tenDaysAgo,
     ends_at: tenDaysFromToday,
-    valid_duration: "P1M", //one month
+    valid_duration: "P1M", // one month
   })
 
   DynamicDiscount.regions = [r]
@@ -381,6 +388,7 @@ module.exports = async (connection, data = {}) => {
   const cart = manager.create(Cart, {
     id: "test-cart",
     customer_id: "some-customer",
+    sales_channel_id: salesChannelId,
     email: "some-customer@email.com",
     shipping_address: {
       id: "test-shipping-address",
@@ -397,6 +405,7 @@ module.exports = async (connection, data = {}) => {
   const cart2 = manager.create(Cart, {
     id: "test-cart-2",
     customer_id: "some-customer",
+    sales_channel_id: salesChannelId,
     email: "some-customer@email.com",
     shipping_address: {
       id: "test-shipping-address",
@@ -413,6 +422,7 @@ module.exports = async (connection, data = {}) => {
     id: "swap-cart",
     type: "swap",
     customer_id: "some-customer",
+    sales_channel_id: salesChannelId,
     email: "some-customer@email.com",
     shipping_address: {
       id: "test-shipping-address",

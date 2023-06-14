@@ -1,13 +1,13 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, IsNull, Not } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import { Store } from "../models"
+import { Currency, Store } from "../models"
 import { CurrencyRepository } from "../repositories/currency"
 import { StoreRepository } from "../repositories/store"
 import { FindConfig } from "../types/common"
 import { UpdateStoreInput } from "../types/store"
 import { buildQuery, setMetadata } from "../utils"
-import { currencies, Currency } from "../utils/currencies"
+import { currencies } from "../utils/currencies"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
@@ -19,30 +19,20 @@ type InjectedDependencies = {
 
 /**
  * Provides layer to manipulate store settings.
- * @extends BaseService
  */
 class StoreService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager
-
   protected readonly storeRepository_: typeof StoreRepository
   protected readonly currencyRepository_: typeof CurrencyRepository
   protected readonly eventBus_: EventBusService
 
   constructor({
-    manager,
     storeRepository,
     currencyRepository,
     eventBusService,
   }: InjectedDependencies) {
-    super({
-      manager,
-      storeRepository,
-      currencyRepository,
-      eventBusService,
-    })
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    this.manager_ = manager
     this.storeRepository_ = storeRepository
     this.currencyRepository_ = currencyRepository
     this.eventBus_ = eventBusService
@@ -55,10 +45,10 @@ class StoreService extends TransactionBaseService {
   async create(): Promise<Store> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const storeRepository = transactionManager.getCustomRepository(
+        const storeRepository = transactionManager.withRepository(
           this.storeRepository_
         )
-        const currencyRepository = transactionManager.getCustomRepository(
+        const currencyRepository = transactionManager.withRepository(
           this.currencyRepository_
         )
 
@@ -67,10 +57,12 @@ class StoreService extends TransactionBaseService {
           return store
         }
 
-        const newStore = await storeRepository.create()
+        const newStore = storeRepository.create()
         // Add default currency (USD) to store currencies
         const usd = await currencyRepository.findOne({
-          code: "usd",
+          where: {
+            code: "usd",
+          },
         })
 
         if (usd) {
@@ -89,9 +81,13 @@ class StoreService extends TransactionBaseService {
    * @return the store
    */
   async retrieve(config: FindConfig<Store> = {}): Promise<Store> {
-    const manager = this.manager_
-    const storeRepo = manager.getCustomRepository(this.storeRepository_)
-    const query = buildQuery({}, config)
+    const storeRepo = this.activeManager_.withRepository(this.storeRepository_)
+    const query = buildQuery(
+      {
+        id: Not(IsNull()),
+      },
+      config
+    )
     const store = await storeRepo.findOne(query)
 
     if (!store) {
@@ -120,10 +116,10 @@ class StoreService extends TransactionBaseService {
   async update(data: UpdateStoreInput): Promise<Store> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const storeRepository = transactionManager.getCustomRepository(
+        const storeRepository = transactionManager.withRepository(
           this.storeRepository_
         )
-        const currencyRepository = transactionManager.getCustomRepository(
+        const currencyRepository = transactionManager.withRepository(
           this.currencyRepository_
         )
 
@@ -186,7 +182,9 @@ class StoreService extends TransactionBaseService {
           }
 
           const curr = (await currencyRepository.findOne({
-            code: default_currency_code.toLowerCase(),
+            where: {
+              code: default_currency_code.toLowerCase(),
+            },
           })) as Currency
 
           store.default_currency = curr
@@ -210,10 +208,10 @@ class StoreService extends TransactionBaseService {
   async addCurrency(code: string): Promise<Store | never> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const storeRepo = transactionManager.getCustomRepository(
+        const storeRepo = transactionManager.withRepository(
           this.storeRepository_
         )
-        const currencyRepository = transactionManager.getCustomRepository(
+        const currencyRepository = transactionManager.withRepository(
           this.currencyRepository_
         )
 
@@ -254,7 +252,7 @@ class StoreService extends TransactionBaseService {
   async removeCurrency(code: string): Promise<any> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const storeRepo = transactionManager.getCustomRepository(
+        const storeRepo = transactionManager.withRepository(
           this.storeRepository_
         )
         const store = await this.retrieve({ relations: ["currencies"] })

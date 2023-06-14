@@ -22,7 +22,7 @@ Base abstract entity for all entities
 
 #### Defined in
 
-medusa/dist/models/price-list.d.ts:14
+medusa/dist/models/price-list.d.ts:15
 
 ___
 
@@ -95,6 +95,16 @@ ___
 #### Defined in
 
 medusa/dist/interfaces/models/base-entity.d.ts:5
+
+___
+
+### includes\_tax
+
+• **includes\_tax**: `boolean`
+
+#### Defined in
+
+medusa/dist/models/price-list.d.ts:14
 
 ___
 

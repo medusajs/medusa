@@ -7,9 +7,9 @@ import { SalesChannelService } from "../../../../services"
 import { Type } from "class-transformer"
 
 /**
- * @oas [delete] /sales-channels/{id}/products/batch
+ * @oas [delete] /admin/sales-channels/{id}/products/batch
  * operationId: "DeleteSalesChannelsChannelProductsBatch"
- * summary: "Remove a list of products from a sales channel"
+ * summary: "Delete Products"
  * description: "Remove a list of products from a sales channel."
  * x-authenticated: true
  * parameters:
@@ -18,20 +18,9 @@ import { Type } from "class-transformer"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - product_ids
- *         properties:
- *           product_ids:
- *             description: The IDs of the products to delete from the Sales Channel.
- *             type: array
- *             items:
- *               type: object
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   description: The ID of a product
- *                   type: string
+ *         $ref: "#/components/schemas/AdminDeleteSalesChannelsChannelProductsBatchReq"
+ * x-codegen:
+ *   method: removeProducts
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -66,16 +55,14 @@ import { Type } from "class-transformer"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Sales Channel
+ *   - Sales Channels
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             sales_channel:
- *               $ref: "#/components/schemas/sales_channel"
+ *           $ref: "#/components/schemas/AdminSalesChannelsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -112,6 +99,24 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ sales_channel: salesChannel })
 }
 
+/**
+ * @schema AdminDeleteSalesChannelsChannelProductsBatchReq
+ * type: object
+ * required:
+ *   - product_ids
+ * properties:
+ *   product_ids:
+ *     description: The IDs of the products to delete from the Sales Channel.
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: The ID of a product
+ *           type: string
+ */
 export class AdminDeleteSalesChannelsChannelProductsBatchReq {
   @IsArray()
   @ValidateNested({ each: true })

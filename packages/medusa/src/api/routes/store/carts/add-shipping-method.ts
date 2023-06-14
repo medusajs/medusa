@@ -3,18 +3,22 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
 import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
-import { validator } from "../../../../utils/validator"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/shipping-methods
+ * @oas [post] /store/carts/{id}/shipping-methods
  * operationId: "PostCartsCartShippingMethod"
  * description: "Adds a Shipping Method to the Cart."
  * summary: "Add a Shipping Method"
  * parameters:
  *   - (path) id=* {string} The cart ID.
- *   - (body) option_id=* {string} ID of the shipping option to create the method from
- *   - (body) data {Object} Used to hold any data that the shipping method may need to process the fulfillment of the order. Look at the documentation for your installed fulfillment providers to find out what to send.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StorePostCartsCartShippingMethodReq"
+ * x-codegen:
+ *   method: addShippingMethod
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -36,16 +40,14 @@ import { validator } from "../../../../utils/validator"
  *           "option_id": "{option_id}",
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *  "200":
  *    description: OK
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            cart:
- *              $ref: "#/components/schemas/cart"
+ *          $ref: "#/components/schemas/StoreCartsRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "404":
@@ -60,10 +62,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(
-    StorePostCartsCartShippingMethodReq,
-    req.body
-  )
+  const validated = req.validatedBody
 
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
@@ -78,6 +77,7 @@ export default async (req, res) => {
     )
 
     const updated = await txCartService.retrieve(id, {
+      select: ["id"],
       relations: ["payment_sessions"],
     })
 
@@ -86,16 +86,27 @@ export default async (req, res) => {
     }
   })
 
-  const updatedCart = await cartService.retrieve(id, {
+  const data = await cartService.retrieveWithTotals(id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
 
-  const data = await decorateLineItemsWithTotals(updatedCart, req)
-
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }
 
+/**
+ * @schema StorePostCartsCartShippingMethodReq
+ * type: object
+ * required:
+ *   - option_id
+ * properties:
+ *   option_id:
+ *     type: string
+ *     description: ID of the shipping option to create the method from
+ *   data:
+ *     type: object
+ *     description: Used to hold any data that the shipping method may need to process the fulfillment of the order. Look at the documentation for your installed fulfillment providers to find out what to send.
+ */
 export class StorePostCartsCartShippingMethodReq {
   @IsString()
   option_id: string

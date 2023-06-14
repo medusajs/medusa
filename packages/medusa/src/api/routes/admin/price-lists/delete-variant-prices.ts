@@ -2,14 +2,16 @@ import { EntityManager } from "typeorm"
 import PriceListService from "../../../../services/price-list"
 
 /**
- * @oas [delete] /price-lists/{id}/variants/{variant_id}/prices
+ * @oas [delete] /admin/price-lists/{id}/variants/{variant_id}/prices
  * operationId: "DeletePriceListsPriceListVariantsVariantPrices"
- * summary: "Delete all the prices related to a specific variant in a price list"
+ * summary: "Delete Variant's Prices"
  * description: "Delete all the prices related to a specific variant in a price list"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Price List that the Money Amounts that will be deleted belongs to.
  *   - (path) variant_id=* {string} The ID of the variant from which the money amount will be deleted.
+ * x-codegen:
+ *   method: deleteVariantPrices
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -30,27 +32,14 @@ import PriceListService from "../../../../services/price-list"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Price List
+ *   - Price Lists
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *              ids:
- *               type: array
- *               description: The price ids that have been deleted.
- *               items:
- *                 type: string
- *              object:
- *                type: string
- *                description: The type of the object that was deleted.
- *                default: money-amount
- *              deleted:
- *                type: boolean
- *                description: Whether or not the items were deleted.
- *                default: true
+ *           $ref: "#/components/schemas/AdminPriceListDeleteVariantPricesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

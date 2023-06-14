@@ -7,7 +7,7 @@ import RegionService from "../../../../services/region"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /regions/{id}/payment-providers
+ * @oas [post] /admin/regions/{id}/payment-providers
  * operationId: "PostRegionsRegionPaymentProviders"
  * summary: "Add Payment Provider"
  * description: "Adds a Payment Provider to a Region"
@@ -18,12 +18,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - provider_id
- *         properties:
- *           provider_id:
- *             description: "The ID of the Payment Provider to add."
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostRegionsRegionPaymentProvidersReq"
+ * x-codegen:
+ *   method: addPaymentProvider
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -50,16 +47,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             region:
- *               $ref: "#/components/schemas/region"
+ *           $ref: "#/components/schemas/AdminRegionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -95,6 +90,16 @@ export default async (req, res) => {
   res.status(200).json({ region })
 }
 
+/**
+ * @schema AdminPostRegionsRegionPaymentProvidersReq
+ * type: object
+ * required:
+ *   - provider_id
+ * properties:
+ *   provider_id:
+ *     description: "The ID of the Payment Provider to add."
+ *     type: string
+ */
 export class AdminPostRegionsRegionPaymentProvidersReq {
   @IsString()
   provider_id: string

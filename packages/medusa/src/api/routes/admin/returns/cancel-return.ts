@@ -1,17 +1,16 @@
 import { OrderService, ReturnService } from "../../../../services"
-import {
-  defaultAdminOrdersFields,
-  defaultAdminOrdersRelations,
-} from "../orders"
 import { EntityManager } from "typeorm"
+import { defaultReturnCancelFields, defaultReturnCancelRelations } from "."
 
 /**
- * @oas [post] /returns/{id}/cancel
+ * @oas [post] /admin/returns/{id}/cancel
  * operationId: "PostReturnsReturnCancel"
  * summary: "Cancel a Return"
  * description: "Registers a Return as canceled."
  * parameters:
  *   - (path) id=* {string} The ID of the Return.
+ * x-codegen:
+ *   method: cancel
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -32,16 +31,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Return
+ *   - Returns
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/AdminReturnsCancelRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -74,9 +71,9 @@ export default async (req, res) => {
     result = await claimService.retrieve(result.claim_order_id)
   }
 
-  const order = await orderService.retrieve(result.order_id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieve(result.order_id!, {
+    select: defaultReturnCancelFields,
+    relations: defaultReturnCancelRelations,
   })
 
   res.status(200).json({ order })

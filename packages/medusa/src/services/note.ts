@@ -1,12 +1,12 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import { NoteRepository } from "../repositories/note"
-import EventBusService from "./event-bus"
-import { FindConfig, Selector } from "../types/common"
 import { Note } from "../models"
-import { buildQuery } from "../utils"
+import { NoteRepository } from "../repositories/note"
+import { FindConfig, Selector } from "../types/common"
 import { CreateNoteInput } from "../types/note"
+import { buildQuery } from "../utils"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -21,43 +21,44 @@ class NoteService extends TransactionBaseService {
     DELETED: "note.deleted",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   protected readonly noteRepository_: typeof NoteRepository
   protected readonly eventBus_: EventBusService
 
-  constructor({
-    manager,
-    noteRepository,
-    eventBusService,
-  }: InjectedDependencies) {
-    super({ manager, noteRepository, eventBusService })
+  constructor({ noteRepository, eventBusService }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    this.manager_ = manager
     this.noteRepository_ = noteRepository
     this.eventBus_ = eventBusService
   }
 
   /**
    * Retrieves a specific note.
-   * @param id - the id of the note to retrieve.
+   * @param noteId - the id of the note to retrieve.
    * @param config - any options needed to query for the result.
    * @return which resolves to the requested note.
    */
   async retrieve(
-    id: string,
+    noteId: string,
     config: FindConfig<Note> = {}
   ): Promise<Note | never> {
-    const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
+    if (!isDefined(noteId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"noteId" must be defined`
+      )
+    }
 
-    const query = buildQuery({ id }, config)
+    const noteRepo = this.activeManager_.withRepository(this.noteRepository_)
+
+    const query = buildQuery({ id: noteId }, config)
 
     const note = await noteRepo.findOne(query)
 
     if (!note) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Note with id: ${id} was not found.`
+        `Note with id: ${noteId} was not found.`
       )
     }
 
@@ -80,7 +81,7 @@ class NoteService extends TransactionBaseService {
       relations: [],
     }
   ): Promise<Note[]> {
-    const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
+    const noteRepo = this.activeManager_.withRepository(this.noteRepository_)
 
     const query = buildQuery(selector, config)
 
@@ -102,7 +103,7 @@ class NoteService extends TransactionBaseService {
     const { resource_id, resource_type, value, author_id } = data
 
     return await this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(this.noteRepository_)
+      const noteRepo = manager.withRepository(this.noteRepository_)
 
       const toCreate = {
         resource_id,
@@ -112,7 +113,7 @@ class NoteService extends TransactionBaseService {
         metadata,
       }
 
-      const note = await noteRepo.create(toCreate)
+      const note = noteRepo.create(toCreate)
       const result = await noteRepo.save(note)
 
       await this.eventBus_
@@ -131,7 +132,7 @@ class NoteService extends TransactionBaseService {
    */
   async update(noteId: string, value: string): Promise<Note> {
     return await this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(this.noteRepository_)
+      const noteRepo = manager.withRepository(this.noteRepository_)
 
       const note = await this.retrieve(noteId, { relations: ["author"] })
 
@@ -153,7 +154,7 @@ class NoteService extends TransactionBaseService {
    */
   async delete(noteId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(this.noteRepository_)
+      const noteRepo = manager.withRepository(this.noteRepository_)
 
       const note = await this.retrieve(noteId)
 

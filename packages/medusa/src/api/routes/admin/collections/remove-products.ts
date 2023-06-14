@@ -1,13 +1,13 @@
 import { ArrayNotEmpty, IsString } from "class-validator"
 import { Request, Response } from "express"
-import { EntityManager } from "typeorm";
+import { EntityManager } from "typeorm"
 
 import ProductCollectionService from "../../../../services/product-collection"
 
 /**
- * @oas [delete] /collections/{id}/products/batch
+ * @oas [delete] /admin/collections/{id}/products/batch
  * operationId: "DeleteProductsFromCollection"
- * summary: "Removes products associated with a Product Collection"
+ * summary: "Remove Product"
  * description: "Removes products associated with a Product Collection"
  * x-authenticated: true
  * parameters:
@@ -16,15 +16,9 @@ import ProductCollectionService from "../../../../services/product-collection"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - product_ids
- *         properties:
- *           product_ids:
- *             description: "An array of Product IDs to remove from the Product Collection."
- *             type: array
- *             items:
- *               description: "The ID of a Product to add to the Product Collection."
- *               type: string
+ *         $ref: "#/components/schemas/AdminDeleteProductsFromCollectionReq"
+ * x-codegen:
+ *   method: removeProducts
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -41,27 +35,14 @@ import ProductCollectionService from "../../../../services/product-collection"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Collection
+ *   - Collections
  * responses:
  *  "200":
  *    description: OK
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            id:
- *              type: string
- *              description: "The ID of the collection"
- *            object:
- *              type: string
- *              description: "The type of object the removal was executed on"
- *              default: product-collection
- *            removed_products:
- *              description: "The IDs of the products removed from the collection"
- *              type: array
- *              items:
- *                description: "The ID of a Product to add to the Product Collection."
- *                type: string
+ *          $ref: "#/components/schemas/AdminDeleteProductsFromCollectionRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -77,7 +58,9 @@ import ProductCollectionService from "../../../../services/product-collection"
  */
 export default async (req: Request, res: Response) => {
   const { id } = req.params
-  const { validatedBody } = req as { validatedBody: AdminDeleteProductsFromCollectionReq }
+  const { validatedBody } = req as {
+    validatedBody: AdminDeleteProductsFromCollectionReq
+  }
 
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
@@ -85,7 +68,9 @@ export default async (req: Request, res: Response) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    return await productCollectionService.withTransaction(transactionManager).removeProducts(id, validatedBody.product_ids)
+    return await productCollectionService
+      .withTransaction(transactionManager)
+      .removeProducts(id, validatedBody.product_ids)
   })
 
   res.json({
@@ -95,6 +80,19 @@ export default async (req: Request, res: Response) => {
   })
 }
 
+/**
+ * @schema AdminDeleteProductsFromCollectionReq
+ * type: object
+ * required:
+ *   - product_ids
+ * properties:
+ *   product_ids:
+ *     description: "An array of Product IDs to remove from the Product Collection."
+ *     type: array
+ *     items:
+ *       description: "The ID of a Product to add to the Product Collection."
+ *       type: string
+ */
 export class AdminDeleteProductsFromCollectionReq {
   @ArrayNotEmpty()
   @IsString({ each: true })

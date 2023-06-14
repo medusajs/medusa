@@ -2,13 +2,15 @@ import { EntityManager } from "typeorm"
 import { TaxRateService } from "../../../../services"
 
 /**
- * @oas [delete] /tax-rates/{id}
+ * @oas [delete] /admin/tax-rates/{id}
  * operationId: "DeleteTaxRatesTaxRate"
  * summary: "Delete a Tax Rate"
  * description: "Deletes a Tax Rate"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Shipping Option.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -29,25 +31,14 @@ import { TaxRateService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Shipping Option.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: tax-rate
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminTaxRatesDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

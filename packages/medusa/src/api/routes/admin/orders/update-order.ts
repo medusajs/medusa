@@ -8,88 +8,31 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
-import { AddressPayload } from "../../../../types/common"
+import { AddressPayload, FindParams } from "../../../../types/common"
 import { EntityManager } from "typeorm"
 import { OrderService } from "../../../../services"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}
+ * @oas [post] /admin/orders/{id}
  * operationId: "PostOrdersOrder"
- * summary: "Update an order"
+ * summary: "Update an Order"
  * description: "Updates and order"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           email:
- *             description: the email for the order
- *             type: string
- *           billing_address:
- *             description: Billing address
- *             anyOf:
- *               - $ref: "#/components/schemas/address"
- *           shipping_address:
- *             description: Shipping address
- *             anyOf:
- *               - $ref: "#/components/schemas/address"
- *           items:
- *             description: The Line Items for the order
- *             type: array
- *             items:
- *               $ref: "#/components/schemas/line_item"
- *           region:
- *             description: ID of the region where the order belongs
- *             type: string
- *           discounts:
- *             description: Discounts applied to the order
- *             type: array
- *             items:
- *               $ref: "#/components/schemas/discount"
- *           customer_id:
- *             description: ID of the customer
- *             type: string
- *           payment_method:
- *             description: payment method chosen for the order
- *             type: object
- *             properties:
- *               provider_id:
- *                 type: string
- *                 description: ID of the payment provider
- *               data:
- *                 description: Data relevant for the given payment method
- *                 type: object
- *           shipping_method:
- *             description: The Shipping Method used for shipping the order.
- *             type: object
- *             properties:
- *               provider_id:
- *                 type: string
- *                 description: The ID of the shipping provider.
- *               profile_id:
- *                 type: string
- *                 description: The ID of the shipping profile.
- *               price:
- *                 type: integer
- *                 description: The price of the shipping.
- *               data:
- *                 type: object
- *                 description: Data relevant to the specific shipping method.
- *               items:
- *                 type: array
- *                 items:
- *                   $ref: "#/components/schemas/line_item"
- *                 description: Items to ship
- *           no_notification:
- *             description: A flag to indicate if no notifications should be emitted related to the updated order.
- *             type: boolean
+ *         $ref: "#/components/schemas/AdminPostOrdersOrderReq"
+ * x-codegen:
+ *   method: update
+ *   params: AdminPostOrdersOrderParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -116,16 +59,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -143,25 +84,86 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const value = await validator(AdminPostOrdersOrderReq, req.body)
-
   const orderService: OrderService = req.scope.resolve("orderService")
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
     return await orderService
       .withTransaction(transactionManager)
-      .update(id, value)
+      .update(id, req.validatedBody)
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.status(200).json({ order })
+  res.status(200).json({ order: cleanResponseData(order, []) })
 }
 
+/**
+ * @schema AdminPostOrdersOrderReq
+ * type: object
+ * properties:
+ *   email:
+ *     description: the email for the order
+ *     type: string
+ *   billing_address:
+ *     description: Billing address
+ *     $ref: "#/components/schemas/AddressPayload"
+ *   shipping_address:
+ *     description: Shipping address
+ *     $ref: "#/components/schemas/AddressPayload"
+ *   items:
+ *     description: The Line Items for the order
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/LineItem"
+ *   region:
+ *     description: ID of the region where the order belongs
+ *     type: string
+ *   discounts:
+ *     description: Discounts applied to the order
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/Discount"
+ *   customer_id:
+ *     description: ID of the customer
+ *     type: string
+ *   payment_method:
+ *     description: payment method chosen for the order
+ *     type: object
+ *     properties:
+ *       provider_id:
+ *         type: string
+ *         description: ID of the payment provider
+ *       data:
+ *         description: Data relevant for the given payment method
+ *         type: object
+ *   shipping_method:
+ *     description: The Shipping Method used for shipping the order.
+ *     type: object
+ *     properties:
+ *       provider_id:
+ *         type: string
+ *         description: The ID of the shipping provider.
+ *       profile_id:
+ *         type: string
+ *         description: The ID of the shipping profile.
+ *       price:
+ *         type: integer
+ *         description: The price of the shipping.
+ *       data:
+ *         type: object
+ *         description: Data relevant to the specific shipping method.
+ *       items:
+ *         type: array
+ *         items:
+ *           $ref: "#/components/schemas/LineItem"
+ *         description: Items to ship
+ *   no_notification:
+ *     description: A flag to indicate if no notifications should be emitted related to the updated order.
+ *     type: boolean
+ */
 export class AdminPostOrdersOrderReq {
   @IsEmail()
   @IsOptional()
@@ -239,3 +241,5 @@ class ShippingMethod {
   @IsOptional()
   items?: Record<string, unknown>[]
 }
+
+export class AdminPostOrdersOrderParams extends FindParams {}

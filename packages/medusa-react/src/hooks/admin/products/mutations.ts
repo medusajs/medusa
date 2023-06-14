@@ -1,19 +1,24 @@
-import { adminProductKeys } from "./queries"
 import {
-  AdminProductsDeleteRes,
-  AdminProductsRes,
-  AdminPostProductsProductReq,
-  AdminPostProductsReq,
-  AdminPostProductsProductVariantsReq,
-  AdminProductsDeleteVariantRes,
-  AdminPostProductsProductOptionsReq,
   AdminPostProductsProductOptionsOption,
+  AdminPostProductsProductOptionsReq,
+  AdminPostProductsProductReq,
+  AdminPostProductsProductVariantsReq,
+  AdminPostProductsProductVariantsVariantReq,
+  AdminPostProductsReq,
   AdminProductsDeleteOptionRes,
+  AdminProductsDeleteRes,
+  AdminProductsDeleteVariantRes,
+  AdminProductsRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { useMedusa } from "../../../contexts/medusa"
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query"
+import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminProductKeys } from "./queries"
 
 export const useAdminCreateProduct = (
   options?: UseMutationOptions<
@@ -96,7 +101,7 @@ export const useAdminUpdateVariant = (
   options?: UseMutationOptions<
     Response<AdminProductsRes>,
     Error,
-    AdminPostProductsProductVariantsReq & { variant_id: string }
+    AdminPostProductsProductVariantsVariantReq & { variant_id: string }
   >
 ) => {
   const { client } = useMedusa()
@@ -106,7 +111,7 @@ export const useAdminUpdateVariant = (
     ({
       variant_id,
       ...payload
-    }: AdminPostProductsProductVariantsReq & { variant_id: string }) =>
+    }: AdminPostProductsProductVariantsVariantReq & { variant_id: string }) =>
       client.admin.products.updateVariant(productId, variant_id, payload),
     buildOptions(
       queryClient,

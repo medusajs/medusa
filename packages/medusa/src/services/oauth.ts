@@ -1,4 +1,4 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { Oauth as OAuthModel } from "../models"
@@ -16,32 +16,29 @@ type InjectedDependencies = MedusaContainer & {
 }
 
 class Oauth extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
   static Events = {
     TOKEN_GENERATED: "oauth.token_generated",
     TOKEN_REFRESHED: "oauth.token_refreshed",
   }
 
-  protected manager: EntityManager
   protected container_: InjectedDependencies
   protected oauthRepository_: typeof OauthRepository
   protected eventBus_: EventBusService
 
   constructor(cradle: InjectedDependencies) {
     super(cradle)
-    const manager = cradle.manager
 
-    this.manager = manager
     this.container_ = cradle
     this.oauthRepository_ = cradle.oauthRepository
     this.eventBus_ = cradle.eventBusService
   }
 
   async retrieveByName(appName: string): Promise<OAuthModel> {
-    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+    const repo = this.activeManager_.withRepository(this.oauthRepository_)
     const oauth = await repo.findOne({
-      application_name: appName,
+      where: {
+        application_name: appName,
+      },
     })
 
     if (!oauth) {
@@ -55,9 +52,18 @@ class Oauth extends TransactionBaseService {
   }
 
   async retrieve(oauthId: string): Promise<OAuthModel> {
-    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+    if (!isDefined(oauthId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"oauthId" must be defined`
+      )
+    }
+
+    const repo = this.activeManager_.withRepository(this.oauthRepository_)
     const oauth = await repo.findOne({
-      id: oauthId,
+      where: {
+        id: oauthId,
+      },
     })
 
     if (!oauth) {
@@ -71,7 +77,7 @@ class Oauth extends TransactionBaseService {
   }
 
   async list(selector: Selector<OAuthModel>): Promise<OAuthModel[]> {
-    const repo = this.manager.getCustomRepository(this.oauthRepository_)
+    const repo = this.activeManager_.withRepository(this.oauthRepository_)
 
     const query = buildQuery(selector, {})
 
@@ -79,31 +85,27 @@ class Oauth extends TransactionBaseService {
   }
 
   async create(data: CreateOauthInput): Promise<OAuthModel> {
-    return await this.atomicPhase_(async (manager) => {
-      const repo = manager.getCustomRepository(this.oauthRepository_)
+    const repo = this.activeManager_.withRepository(this.oauthRepository_)
 
-      const application = repo.create({
-        display_name: data.display_name,
-        application_name: data.application_name,
-        install_url: data.install_url,
-        uninstall_url: data.uninstall_url,
-      })
-
-      return await repo.save(application)
+    const application = repo.create({
+      display_name: data.display_name,
+      application_name: data.application_name,
+      install_url: data.install_url,
+      uninstall_url: data.uninstall_url,
     })
+
+    return await repo.save(application)
   }
 
   async update(id: string, update: UpdateOauthInput): Promise<OAuthModel> {
-    return await this.atomicPhase_(async (manager) => {
-      const repo = manager.getCustomRepository(this.oauthRepository_)
-      const oauth = await this.retrieve(id)
+    const repo = this.activeManager_.withRepository(this.oauthRepository_)
+    const oauth = await this.retrieve(id)
 
-      if ("data" in update) {
-        oauth.data = update.data
-      }
+    if ("data" in update) {
+      oauth.data = update.data
+    }
 
-      return await repo.save(oauth)
-    })
+    return await repo.save(oauth)
   }
 
   async registerOauthApp(appDetails: CreateOauthInput): Promise<OAuthModel> {

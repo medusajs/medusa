@@ -1,11 +1,13 @@
 import UserService from "../../../../services/user"
 
 /**
- * @oas [get] /users
+ * @oas [get] /admin/users
  * operationId: "GetUsers"
- * summary: "Retrieve all users"
+ * summary: "List Users"
  * description: "Retrieves all users."
  * x-authenticated: true
+ * x-codegen:
+ *   method: list
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -26,18 +28,14 @@ import UserService from "../../../../services/user"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - User
+ *   - Users
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             users:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/user"
+ *           $ref: "#/components/schemas/AdminUsersListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

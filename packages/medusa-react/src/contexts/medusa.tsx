@@ -1,6 +1,9 @@
-import React from "react"
-import { QueryClientProvider, QueryClientProviderProps } from "react-query"
 import Medusa from "@medusajs/medusa-js"
+import {
+  QueryClientProvider,
+  QueryClientProviderProps,
+} from "@tanstack/react-query"
+import React from "react"
 
 interface MedusaContextState {
   client: Medusa
@@ -20,16 +23,30 @@ interface MedusaProviderProps {
   baseUrl: string
   queryClientProviderProps: QueryClientProviderProps
   children: React.ReactNode
+  /**
+   * Authentication token
+   */
   apiKey?: string
+  /**
+   * PublishableApiKey identifier that defines the scope of resources
+   * available within the request
+   */
+  publishableApiKey?: string
 }
 
 export const MedusaProvider = ({
   queryClientProviderProps,
   baseUrl,
   apiKey,
+  publishableApiKey,
   children,
 }: MedusaProviderProps) => {
-  const medusaClient = new Medusa({ baseUrl, maxRetries: 0, apiKey })
+  const medusaClient = new Medusa({
+    baseUrl,
+    maxRetries: 0,
+    apiKey,
+    publishableApiKey,
+  })
   return (
     <QueryClientProvider {...queryClientProviderProps}>
       <MedusaContext.Provider

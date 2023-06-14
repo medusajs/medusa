@@ -96,12 +96,64 @@ export const defaultAdminTaxRatesFields: (keyof TaxRate)[] = [
   "updated_at",
 ]
 
+/**
+ * @schema AdminTaxRatesDeleteRes
+ * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Shipping Option.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: tax-rate
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the items were deleted.
+ *     default: true
+ */
 export type AdminTaxRatesDeleteRes = DeleteResponse
 
+/**
+ * @schema AdminTaxRatesListRes
+ * type: object
+ * required:
+ *   - tax_rates
+ *   - count
+ *   - offset
+ *   - limit
+ * properties:
+ *   tax_rates:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/TaxRate"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminTaxRatesListRes = PaginatedResponse & {
   tax_rates: TaxRate[]
 }
 
+/**
+ * @schema AdminTaxRatesRes
+ * type: object
+ * required:
+ *   - tax_rate
+ * properties:
+ *   tax_rate:
+ *     $ref: "#/components/schemas/TaxRate"
+ */
 export type AdminTaxRatesRes = {
   tax_rate: TaxRate
 }

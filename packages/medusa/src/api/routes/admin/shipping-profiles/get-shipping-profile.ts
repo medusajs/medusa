@@ -6,13 +6,15 @@ import {
 import { ShippingProfileService } from "../../../../services"
 
 /**
- * @oas [get] /shipping-profiles/{id}
+ * @oas [get] /admin/shipping-profiles/{id}
  * operationId: "GetShippingProfilesProfile"
- * summary: "Retrieve a Shipping Profile"
+ * summary: "Get a Shipping Profile"
  * description: "Retrieves a Shipping Profile."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Shipping Profile.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,16 +35,14 @@ import { ShippingProfileService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Shipping Profile
+ *   - Shipping Profiles
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             shipping_profile:
- *               $ref: "#/components/schemas/shipping_profile"
+ *           $ref: "#/components/schemas/AdminShippingProfilesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

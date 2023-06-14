@@ -4,29 +4,18 @@ import { OauthService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /apps/authorizations
+ * @oas [post] /admin/apps/authorizations
  * operationId: "PostApps"
- * summary: "Generates a token for an application."
+ * summary: "Generate Token for App"
  * description: "Generates a token for an application."
  * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - application_name
- *           - state
- *           - code
- *         properties:
- *           application_name:
- *             type: string
- *             description:  Name of the application for the token to be generated for.
- *           state:
- *             type: string
- *             description: State of the application.
- *           code:
- *             type: string
- *             description: The code for the generated token.
+ *         $ref: "#/components/schemas/AdminPostAppsReq"
+ * x-codegen:
+ *   method: authorize
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -43,16 +32,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - App
+ *   - Apps
  * responses:
  *  "200":
  *    description: OK
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            apps:
- *              $ref: "#/components/schemas/OAuth"
+ *          $ref: "#/components/schemas/AdminAppsRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -77,6 +64,24 @@ export default async (req, res) => {
   res.status(200).json({ apps: data })
 }
 
+/**
+ * @schema AdminPostAppsReq
+ * type: object
+ * required:
+ *   - application_name
+ *   - state
+ *   - code
+ * properties:
+ *   application_name:
+ *     type: string
+ *     description:  Name of the application for the token to be generated for.
+ *   state:
+ *     type: string
+ *     description: State of the application.
+ *   code:
+ *     type: string
+ *     description: The code for the generated token.
+ */
 export class AdminPostAppsReq {
   @IsString()
   @IsNotEmpty()

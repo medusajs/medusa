@@ -4,13 +4,15 @@ import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
 
 /**
- * @oas [get] /price-lists/{id}
+ * @oas [get] /admin/price-lists/{id}
  * operationId: "GetPriceListsPriceList"
- * summary: "Retrieve a Price List"
+ * summary: "Get a Price List"
  * description: "Retrieves a Price List."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Price List.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -31,16 +33,14 @@ import PriceListService from "../../../../services/price-list"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Price List
+ *   - Price Lists
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             price_list:
- *               $ref: "#/components/schemas/price_list"
+ *           $ref: "#/components/schemas/AdminPriceListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

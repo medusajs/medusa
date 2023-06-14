@@ -5,9 +5,9 @@ import PriceListService from "../../../../services/price-list"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [delete] /price-lists/{id}/prices/batch
+ * @oas [delete] /admin/price-lists/{id}/prices/batch
  * operationId: "DeletePriceListsPriceListPricesBatch"
- * summary: "Batch delete prices that belong to a Price List"
+ * summary: "Delete Prices"
  * description: "Batch delete prices that belong to a Price List"
  * x-authenticated: true
  * parameters:
@@ -16,12 +16,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           price_ids:
- *             description: The price id's of the Money Amounts to delete.
- *             type: array
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/AdminDeletePriceListPricesPricesReq"
+ * x-codegen:
+ *   method: deletePrices
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -52,27 +49,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Price List
+ *   - Price Lists
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             ids:
- *               type: array
- *               items:
- *                 type: string
- *                 description: The IDs of the deleted Money Amounts (Prices).
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: money-amount
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminPriceListDeleteBatchRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -107,6 +91,16 @@ export default async (req, res) => {
   res.json({ ids: validated.price_ids, object: "money-amount", deleted: true })
 }
 
+/**
+ * @schema AdminDeletePriceListPricesPricesReq
+ * type: object
+ * properties:
+ *   price_ids:
+ *     description: The price id's of the Money Amounts to delete.
+ *     type: array
+ *     items:
+ *       type: string
+ */
 export class AdminDeletePriceListPricesPricesReq {
   @ArrayNotEmpty()
   @IsString({ each: true })

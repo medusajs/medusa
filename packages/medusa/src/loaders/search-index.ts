@@ -1,14 +1,15 @@
-import { MedusaContainer } from "../types/global"
-import { Logger } from "../types/global"
+import { AbstractSearchService } from "@medusajs/utils"
 import { EventBusService } from "../services"
-import { AbstractSearchService } from "../interfaces"
+import { Logger, MedusaContainer } from "../types/global"
 
 export const SEARCH_INDEX_EVENT = "SEARCH_INDEX_EVENT"
 
-function loadProductsIntoSearchEngine(container: MedusaContainer): void {
+async function loadProductsIntoSearchEngine(
+  container: MedusaContainer
+): Promise<void> {
   const logger: Logger = container.resolve<Logger>("logger")
   const eventBusService: EventBusService = container.resolve("eventBusService")
-  eventBusService.emit(SEARCH_INDEX_EVENT, {}).catch((err) => {
+  void eventBusService.emit(SEARCH_INDEX_EVENT, {}).catch((err) => {
     logger.error(err)
     logger.error(
       "Something went wrong while emitting the search indexing event."

@@ -1,16 +1,16 @@
 import { IsEmail, IsNotEmpty, IsString } from "class-validator"
 
-import AuthService from "../../../../services/auth"
-import { EntityManager } from "typeorm";
-import { MedusaError } from "medusa-core-utils"
-import _ from "lodash"
 import jwt from "jsonwebtoken"
+import _ from "lodash"
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import AuthService from "../../../../services/auth"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /auth
+ * @oas [post] /admin/auth
  * operationId: "PostAuth"
- * summary: "Authenticate a User"
+ * summary: "User Login"
  * x-authenticated: false
  * description: "Logs a User in and authorizes them to manage Store settings."
  * parameters:
@@ -20,18 +20,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - email
- *           - password
- *         properties:
- *           email:
- *             type: string
- *             description: The User's email.
- *             format: email
- *           password:
- *             type: string
- *             description: The User's password.
- *             format: password
+ *         $ref: "#/components/schemas/AdminPostAuthReq"
+ * x-codegen:
+ *   method: createSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -41,7 +32,8 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.auth.createSession({
  *         email: 'user@example.com',
  *         password: 'supersecret'
- *       }).then((({ user }) => {
+ *       })
+ *       .then(({ user }) => {
  *         console.log(user.id);
  *       });
  *   - lang: Shell
@@ -61,9 +53,7 @@ import { validator } from "../../../../utils/validator"
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            user:
- *              $ref: "#/components/schemas/user"
+ *          $ref: "#/components/schemas/AdminAuthRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -78,7 +68,9 @@ import { validator } from "../../../../utils/validator"
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const { projectConfig: { jwt_secret } } = req.scope.resolve('configModule')
+  const {
+    projectConfig: { jwt_secret },
+  } = req.scope.resolve("configModule")
   if (!jwt_secret) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
@@ -90,10 +82,9 @@ export default async (req, res) => {
   const authService: AuthService = req.scope.resolve("authService")
   const manager: EntityManager = req.scope.resolve("manager")
   const result = await manager.transaction(async (transactionManager) => {
-     return await authService.withTransaction(transactionManager).authenticate(
-      validated.email,
-      validated.password
-    )
+    return await authService
+      .withTransaction(transactionManager)
+      .authenticate(validated.email, validated.password)
   })
 
   if (result.success && result.user) {
@@ -110,6 +101,22 @@ export default async (req, res) => {
   }
 }
 
+/**
+ * @schema AdminPostAuthReq
+ * type: object
+ * required:
+ *   - email
+ *   - password
+ * properties:
+ *   email:
+ *     type: string
+ *     description: The User's email.
+ *     format: email
+ *   password:
+ *     type: string
+ *     description: The User's password.
+ *     format: password
+ */
 export class AdminPostAuthReq {
   @IsEmail()
   @IsNotEmpty()

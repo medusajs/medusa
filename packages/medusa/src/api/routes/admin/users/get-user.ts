@@ -1,13 +1,15 @@
 import UserService from "../../../../services/user"
 
 /**
- * @oas [get] /users/{id}
+ * @oas [get] /admin/users/{id}
  * operationId: "GetUsersUser"
- * summary: "Retrieve a User"
+ * summary: "Get a User"
  * description: "Retrieves a User."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the User.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -28,16 +30,14 @@ import UserService from "../../../../services/user"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - User
+ *   - Users
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             user:
- *               $ref: "#/components/schemas/user"
+ *           $ref: "#/components/schemas/AdminUserRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

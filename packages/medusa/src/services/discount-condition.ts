@@ -1,6 +1,6 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { EventBusService } from "."
+import { TransactionBaseService } from "../interfaces"
 import {
   DiscountCondition,
   DiscountConditionCustomerGroup,
@@ -12,10 +12,9 @@ import {
 } from "../models"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { FindConfig } from "../types/common"
-import { UpsertDiscountConditionInput } from "../types/discount"
-import { PostgresError } from "../utils/exception-formatter"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
+import { DiscountConditionInput } from "../types/discount"
+import { buildQuery, PostgresError } from "../utils"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -28,20 +27,17 @@ type InjectedDependencies = {
  * @implements {BaseService}
  */
 class DiscountConditionService extends TransactionBaseService {
+  // eslint-disable-next-line max-len
   protected readonly discountConditionRepository_: typeof DiscountConditionRepository
   protected readonly eventBus_: EventBusService
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   constructor({
-    manager,
     discountConditionRepository,
     eventBusService,
   }: InjectedDependencies) {
-    super({ manager, discountConditionRepository, eventBusService })
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    this.manager_ = manager
     this.discountConditionRepository_ = discountConditionRepository
     this.eventBus_ = eventBusService
   }
@@ -50,8 +46,14 @@ class DiscountConditionService extends TransactionBaseService {
     conditionId: string,
     config?: FindConfig<DiscountCondition>
   ): Promise<DiscountCondition | never> {
-    const manager = this.manager_
-    const conditionRepo = manager.getCustomRepository(
+    if (!isDefined(conditionId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"conditionId" must be defined`
+      )
+    }
+
+    const conditionRepo = this.activeManager_.withRepository(
       this.discountConditionRepository_
     )
 
@@ -69,10 +71,10 @@ class DiscountConditionService extends TransactionBaseService {
     return condition
   }
 
-  protected static resolveConditionType_(data: UpsertDiscountConditionInput):
+  protected static resolveConditionType_(data: DiscountConditionInput):
     | {
         type: DiscountConditionType
-        resource_ids: string[]
+        resource_ids: (string | { id: string })[]
       }
     | undefined {
     switch (true) {
@@ -107,7 +109,8 @@ class DiscountConditionService extends TransactionBaseService {
   }
 
   async upsertCondition(
-    data: UpsertDiscountConditionInput
+    data: DiscountConditionInput,
+    overrideExisting = true
   ): Promise<
     (
       | DiscountConditionProduct
@@ -131,8 +134,9 @@ class DiscountConditionService extends TransactionBaseService {
           )
         }
 
-        const discountConditionRepo: DiscountConditionRepository =
-          manager.getCustomRepository(this.discountConditionRepository_)
+        const discountConditionRepo = manager.withRepository(
+          this.discountConditionRepository_
+        )
 
         if (data.id) {
           const resolvedCondition = await this.retrieve(data.id)
@@ -146,7 +150,7 @@ class DiscountConditionService extends TransactionBaseService {
             data.id,
             resolvedConditionType.resource_ids,
             resolvedConditionType.type,
-            true
+            overrideExisting
           )
         }
 
@@ -177,9 +181,42 @@ class DiscountConditionService extends TransactionBaseService {
     )
   }
 
+  async removeResources(
+    data: Omit<DiscountConditionInput, "id"> & { id: string }
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const resolvedConditionType =
+        DiscountConditionService.resolveConditionType_(data)
+
+      if (!resolvedConditionType) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Missing one of products, collections, tags, types or customer groups in data`
+        )
+      }
+
+      const discountConditionRepo = manager.withRepository(
+        this.discountConditionRepository_
+      )
+
+      const resolvedCondition = await this.retrieve(data.id)
+
+      if (data.operator && data.operator !== resolvedCondition.operator) {
+        resolvedCondition.operator = data.operator
+        await discountConditionRepo.save(resolvedCondition)
+      }
+
+      await discountConditionRepo.removeConditionResources(
+        data.id,
+        resolvedConditionType.type,
+        resolvedConditionType.resource_ids
+      )
+    })
+  }
+
   async delete(discountConditionId: string): Promise<DiscountCondition | void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const conditionRepo = manager.getCustomRepository(
+      const conditionRepo = manager.withRepository(
         this.discountConditionRepository_
       )
 

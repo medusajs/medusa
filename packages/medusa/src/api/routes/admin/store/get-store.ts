@@ -1,18 +1,21 @@
-import { FulfillmentProvider, PaymentProvider, Store } from "../../../../models"
+import { ModulesHelper } from "@medusajs/modules-sdk"
+import { defaultRelationsExtended } from "."
 import {
   FulfillmentProviderService,
   PaymentProviderService,
   StoreService,
 } from "../../../../services"
-import { FeatureFlagsResponse } from "../../../../types/feature-flags"
+import { ExtendedStoreDTO } from "../../../../types/store"
 import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
- * @oas [get] /store
+ * @oas [get] /admin/store
  * operationId: "GetStore"
- * summary: "Retrieve Store details."
+ * summary: "Get Store details"
  * description: "Retrieves the Store details"
  * x-authenticated: true
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -40,9 +43,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             store:
- *               $ref: "#/components/schemas/store"
+ *           $ref: "#/components/schemas/AdminExtendedStoresRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -60,6 +61,7 @@ export default async (req, res) => {
   const storeService: StoreService = req.scope.resolve("storeService")
 
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+  const modulesHelper: ModulesHelper = req.scope.resolve("modulesHelper")
 
   const paymentProviderService: PaymentProviderService = req.scope.resolve(
     "paymentProviderService"
@@ -67,20 +69,17 @@ export default async (req, res) => {
   const fulfillmentProviderService: FulfillmentProviderService =
     req.scope.resolve("fulfillmentProviderService")
 
-  const relations = ["currencies", "default_currency"]
+  const relations = [...defaultRelationsExtended]
   if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
     relations.push("default_sales_channel")
   }
 
   const data = (await storeService.retrieve({
     relations,
-  })) as Store & {
-    payment_providers: PaymentProvider[]
-    fulfillment_providers: FulfillmentProvider[]
-    feature_flags: FeatureFlagsResponse
-  }
+  })) as ExtendedStoreDTO
 
   data.feature_flags = featureFlagRouter.listFlags()
+  data.modules = modulesHelper.modules
 
   const paymentProviders = await paymentProviderService.list()
   const fulfillmentProviders = await fulfillmentProviderService.list()

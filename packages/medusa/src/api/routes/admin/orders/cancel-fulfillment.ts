@@ -1,18 +1,30 @@
-import { FulfillmentService, OrderService } from "../../../../services"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import {
+  FulfillmentService,
+  OrderService,
+  ProductVariantInventoryService,
+} from "../../../../services"
 
-import { EntityManager } from "typeorm"
+import { IInventoryService } from "@medusajs/types"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { Fulfillment } from "../../../../models"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/fulfillments/{fulfillment_id}/cancel
+ * @oas [post] /admin/orders/{id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersOrderFulfillmentsCancel"
- * summary: "Cancels a fulfilmment"
+ * summary: "Cancels a Fulfilmment"
  * description: "Registers a Fulfillment as canceled."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order which the Fulfillment relates to.
  *   - (path) fulfillment_id=* {string} The ID of the Fulfillment
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
+ * x-codegen:
+ *   method: cancelFulfillment
+ *   params: AdminPostOrdersOrderFulfillementsCancelParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,16 +45,14 @@ import { MedusaError } from "medusa-core-utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Fulfillment
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -60,6 +70,11 @@ export default async (req, res) => {
   const { id, fulfillment_id } = req.params
 
   const orderService: OrderService = req.scope.resolve("orderService")
+  const inventoryService: IInventoryService =
+    req.scope.resolve("inventoryService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
   const fulfillmentService: FulfillmentService =
     req.scope.resolve("fulfillmentService")
 
@@ -74,15 +89,47 @@ export default async (req, res) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    return await orderService
+    await orderService
       .withTransaction(transactionManager)
       .cancelFulfillment(fulfillment_id)
+
+    const fulfillment = await fulfillmentService
+      .withTransaction(transactionManager)
+      .retrieve(fulfillment_id, { relations: ["items", "items.item"] })
+
+    if (fulfillment.location_id && inventoryService) {
+      await adjustInventoryForCancelledFulfillment(fulfillment, {
+        productVariantInventoryService:
+          productVariantInventoryService.withTransaction(transactionManager),
+      })
+    }
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
+
+export const adjustInventoryForCancelledFulfillment = async (
+  fulfillment: Fulfillment,
+  context: {
+    productVariantInventoryService: ProductVariantInventoryService
+  }
+) => {
+  const { productVariantInventoryService } = context
+  await Promise.all(
+    fulfillment.items.map(async ({ item, quantity }) => {
+      if (item.variant_id) {
+        await productVariantInventoryService.adjustInventory(
+          item.variant_id,
+          fulfillment.location_id!,
+          quantity
+        )
+      }
+    })
+  )
+}
+
+export class AdminPostOrdersOrderFulfillementsCancelParams extends FindParams {}

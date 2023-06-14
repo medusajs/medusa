@@ -1,12 +1,12 @@
-import { queryKeysFactory } from "../../utils/index"
-import { UseQueryOptionsWrapper } from "../../../types"
-import { useQuery } from "react-query"
-import { useMedusa } from "../../../contexts"
 import {
-  StoreShippingOptionsListRes,
   StoreGetShippingOptionsParams,
+  StoreShippingOptionsListRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
+import { useQuery } from "@tanstack/react-query"
+import { useMedusa } from "../../../contexts"
+import { UseQueryOptionsWrapper } from "../../../types"
+import { queryKeysFactory } from "../../utils/index"
 
 const SHIPPING_OPTION_QUERY_KEY = `shipping_options` as const
 

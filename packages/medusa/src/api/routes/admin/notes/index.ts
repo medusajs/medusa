@@ -22,12 +22,64 @@ export default (app) => {
   return app
 }
 
+/**
+ * @schema AdminNotesRes
+ * type: object
+ * required:
+ *   - note
+ * properties:
+ *   note:
+ *     $ref: "#/components/schemas/Note"
+ */
 export type AdminNotesRes = {
   note: Note
 }
 
+/**
+ * @schema AdminNotesDeleteRes
+ * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Note.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: note
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the Note was deleted.
+ *     default: true
+ */
 export type AdminNotesDeleteRes = DeleteResponse
 
+/**
+ * @schema AdminNotesListRes
+ * type: object
+ * required:
+ *   - notes
+ *   - count
+ *   - offset
+ *   - limit
+ * properties:
+ *   notes:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/Note"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminNotesListRes = PaginatedResponse & {
   notes: Note[]
 }

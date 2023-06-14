@@ -1,10 +1,13 @@
+import set from "lodash/set"
+
+import { TParsedProductImportRowData } from "./types"
+import { csvRevertCellContentFormatter } from "../../../utils"
+
 /**
  * Pick keys for a new object by regex.
  * @param data - Initial data object
  * @param regex - A regex used to pick which keys are going to be copied in the new object
  */
-import { TParsedProductImportRowData } from "./types"
-
 export function pickObjectPropsByRegex(
   data: TParsedProductImportRowData,
   regex: RegExp
@@ -14,7 +17,10 @@ export function pickObjectPropsByRegex(
 
   for (const k in data) {
     if (variantKeyPredicate(k)) {
-      ret[k] = data[k]
+      ret[k] =
+        typeof data[k] === "string"
+          ? csvRevertCellContentFormatter(data[k] as string)
+          : data[k]
     }
   }
 
@@ -32,7 +38,7 @@ export function transformProductData(
 
   Object.keys(productData).forEach((k) => {
     const key = k.split("product.")[1]
-    ret[key] = productData[k]
+    set(ret, key, productData[k])
   })
 
   return ret
@@ -49,12 +55,12 @@ export function transformVariantData(
 
   Object.keys(productData).forEach((k) => {
     const key = k.split("variant.")[1]
-    ret[key] = productData[k]
+    set(ret, key, productData[k])
   })
 
   // include product handle to keep track of associated product
   ret["product.handle"] = data["product.handle"]
-  ret["product.options"] = data["product.options"]
+  set(ret, "product.options", data["product.options"])
 
   return ret
 }

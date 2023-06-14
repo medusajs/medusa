@@ -1,4 +1,3 @@
-import _ from "lodash"
 import { PaymentService } from "medusa-interfaces"
 
 class MobilePayAdyenService extends PaymentService {

@@ -1,17 +1,23 @@
 import { OrderService, SwapService } from "../../../../services"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/process-payment
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/process-payment
  * operationId: "PostOrdersOrderSwapsSwapProcessPayment"
- * summary: "Process a Swap difference"
+ * summary: "Process Swap Payment"
  * description: "When there are differences between the returned and shipped Products in a Swap, the difference must be processed. Either a Refund will be issued or a Payment will be captured."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (path) swap_id=* {string} The ID of the Swap.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
+ * x-codegen:
+ *   method: processSwapPayment
+ *   params: AdminPostOrdersOrderSwapsSwapProcessPaymentParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -32,16 +38,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -64,12 +68,14 @@ export default async (req, res) => {
 
   await entityManager.transaction(async (manager) => {
     await swapService.withTransaction(manager).processDifference(swap_id)
-
-    const order = await orderService.withTransaction(manager).retrieve(id, {
-      select: defaultAdminOrdersFields,
-      relations: defaultAdminOrdersRelations,
-    })
-
-    res.json({ order })
   })
+
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
+  })
+
+  res.json({ order: cleanResponseData(order, []) })
 }
+
+// eslint-disable-next-line max-len
+export class AdminPostOrdersOrderSwapsSwapProcessPaymentParams extends FindParams {}

@@ -10,6 +10,7 @@ describe("POST /admin/shipping-profiles", () => {
       subject = await request("POST", "/admin/shipping-profiles", {
         payload: {
           name: "Test Profile",
+          type: "default",
         },
         adminSession: {
           jwt: {
@@ -27,6 +28,7 @@ describe("POST /admin/shipping-profiles", () => {
       expect(ShippingProfileServiceMock.create).toHaveBeenCalledTimes(1)
       expect(ShippingProfileServiceMock.create).toHaveBeenCalledWith({
         name: "Test Profile",
+        type: "default",
       })
     })
   })

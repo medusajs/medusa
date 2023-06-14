@@ -24,7 +24,6 @@ export default (app) => {
 }
 
 export const defaultAdminNotificationsRelations = ["resends"]
-export const allowedAdminNotificationsRelations = ["resends"]
 
 export const defaultAdminNotificationsFields = [
   "id",
@@ -37,21 +36,38 @@ export const defaultAdminNotificationsFields = [
   "updated_at",
 ]
 
-export const allowedAdminNotificationsFields = [
-  "id",
-  "resource_type",
-  "resource_id",
-  "provider_id",
-  "event_name",
-  "to",
-  "created_at",
-  "updated_at",
-]
-
+/**
+ * @schema AdminNotificationsListRes
+ * type: object
+ * x-expanded-relations:
+ *   field: notifications
+ *   relations:
+ *     - resends
+ * required:
+ *   - notifications
+ * properties:
+ *   notifications:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/Notification"
+ */
 export type AdminNotificationsListRes = {
   notifications: Notification[]
 }
 
+/**
+ * @schema AdminNotificationsRes
+ * type: object
+ * x-expanded-relations:
+ *   field: notification
+ *   relations:
+ *     - resends
+ * required:
+ *   - notification
+ * properties:
+ *   notification:
+ *     $ref: "#/components/schemas/Notification"
+ */
 export type AdminNotificationsRes = {
   notification: Notification
 }

@@ -6,7 +6,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /invites
+ * @oas [post] /admin/invites
  * operationId: "PostInvites"
  * summary: "Create an Invite"
  * description: "Creates an Invite and triggers an 'invite' created event"
@@ -15,18 +15,9 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - user
- *           - role
- *         properties:
- *           user:
- *             description: "The email for the user to be created."
- *             type: string
- *             format: email
- *           role:
- *             description: "The role of the user to be created."
- *             type: string
- *             enum: [admin, member, developer]
+ *         $ref: "#/components/schemas/AdminPostInvitesReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -58,7 +49,7 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Invite
+ *   - Invites
  * responses:
  *   200:
  *     description: OK
@@ -89,6 +80,23 @@ export default async (req, res) => {
 
   res.sendStatus(200)
 }
+
+/**
+ * @schema AdminPostInvitesReq
+ * type: object
+ * required:
+ *   - user
+ *   - role
+ * properties:
+ *   user:
+ *     description: "The email for the user to be created."
+ *     type: string
+ *     format: email
+ *   role:
+ *     description: "The role of the user to be created."
+ *     type: string
+ *     enum: [admin, member, developer]
+ */
 export class AdminPostInvitesReq {
   @IsEmail()
   user: string

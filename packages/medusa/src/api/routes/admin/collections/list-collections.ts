@@ -1,15 +1,14 @@
 import { IsNumber, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Request, Response } from "express"
-import _, { identity } from "lodash"
 
 import { DateComparisonOperator } from "../../../../types/common"
 import ProductCollectionService from "../../../../services/product-collection"
 import { Type } from "class-transformer"
 
 /**
- * @oas [get] /collections
+ * @oas [get] /admin/collections
  * operationId: "GetCollections"
- * summary: "List Product Collections"
+ * summary: "List Collections"
  * description: "Retrieve a list of Product Collection."
  * x-authenticated: true
  * parameters:
@@ -18,6 +17,7 @@ import { Type } from "class-transformer"
  *   - (query) title {string} The title of collections to return.
  *   - (query) handle {string} The handle of collections to return.
  *   - (query) q {string} a search term to search titles and handles.
+ *   - (query) discount_condition_id {string} The discount condition id on which to filter the product collections.
  *   - in: query
  *     name: created_at
  *     description: Date comparison for when resulting collections were created.
@@ -84,6 +84,9 @@ import { Type } from "class-transformer"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetCollectionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -104,27 +107,14 @@ import { Type } from "class-transformer"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Collection
+ *   - Collections
  * responses:
  *  "200":
  *    description: OK
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            collections:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/product_collection"
- *            count:
- *               type: integer
- *               description: The total number of items available
- *            offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *            limit:
- *               type: integer
- *               description: The number of items per page
+ *          $ref: "#/components/schemas/AdminCollectionsListRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -143,22 +133,19 @@ export default async (req: Request, res: Response) => {
     "productCollectionService"
   )
 
-  const {
-    validatedQuery: { limit, offset },
-    filterableFields,
-    listConfig
-  } = req
+  const { filterableFields, listConfig } = req
+  const { skip, take } = listConfig
 
   const [collections, count] = await productCollectionService.listAndCount(
-    _.pickBy(filterableFields, identity),
+    filterableFields,
     listConfig
   )
 
   res.status(200).json({
     collections,
     count,
-    offset,
-    limit,
+    offset: skip,
+    limit: take,
   })
 }
 
@@ -174,6 +161,7 @@ export class AdminGetCollectionsPaginationParams {
   offset = 0
 }
 
+// eslint-disable-next-line max-len
 export class AdminGetCollectionsParams extends AdminGetCollectionsPaginationParams {
   @IsOptional()
   @IsString()
@@ -201,4 +189,8 @@ export class AdminGetCollectionsParams extends AdminGetCollectionsPaginationPara
   @IsString()
   @IsOptional()
   q?: string
+
+  @IsString()
+  @IsOptional()
+  discount_condition_id?: string
 }

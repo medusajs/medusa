@@ -10,11 +10,15 @@ import {
 import { defaultFields, defaultRelations } from "."
 
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { validator } from "../../../../utils/validator"
+import { ShippingOptionService } from "../../../../services"
+import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
 
 /**
- * @oas [post] /shipping-options/{id}
+ * @oas [post] /admin/shipping-options/{id}
  * operationId: "PostShippingOptionsOption"
  * summary: "Update Shipping Option"
  * description: "Updates a Shipping Option"
@@ -25,41 +29,9 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - requirements
- *         properties:
- *           name:
- *             description: "The name of the Shipping Option"
- *             type: string
- *           amount:
- *             description: "The amount to charge for the Shipping Option."
- *             type: integer
- *           admin_only:
- *             description: "If true, the option can be used for draft orders"
- *             type: boolean
- *           metadata:
- *             description: "An optional set of key-value pairs with additional information."
- *             type: object
- *           requirements:
- *             description: "The requirements that must be satisfied for the Shipping Option to be available."
- *             type: array
- *             items:
- *               required:
- *                 - type
- *                 - amount
- *               properties:
- *                 id:
- *                   description: The ID of the requirement
- *                   type: string
- *                 type:
- *                   description: The type of the requirement
- *                   type: string
- *                   enum:
- *                     - max_subtotal
- *                     - min_subtotal
- *                 amount:
- *                   description: The amount to compare with.
- *                   type: integer
+ *         $ref: "#/components/schemas/AdminPostShippingOptionsOptionReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -98,16 +70,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             shipping_option:
- *               $ref: "#/components/schemas/shipping_option"
+ *           $ref: "#/components/schemas/AdminShippingOptionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -124,9 +94,14 @@ import { EntityManager } from "typeorm"
 export default async (req, res) => {
   const { option_id } = req.params
 
-  const validated = await validator(AdminPostShippingOptionsOptionReq, req.body)
+  const validated = (await validator(
+    AdminPostShippingOptionsOptionReq,
+    req.body
+  )) as UpdateShippingOptionInput
 
-  const optionService = req.scope.resolve("shippingOptionService")
+  const optionService: ShippingOptionService = req.scope.resolve(
+    "shippingOptionService"
+  )
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
@@ -153,6 +128,49 @@ class OptionRequirement {
   amount: number
 }
 
+/**
+ * @schema AdminPostShippingOptionsOptionReq
+ * type: object
+ * required:
+ *   - requirements
+ * properties:
+ *   name:
+ *     description: "The name of the Shipping Option"
+ *     type: string
+ *   amount:
+ *     description: "The amount to charge for the Shipping Option."
+ *     type: integer
+ *   admin_only:
+ *     description: "If true, the option can be used for draft orders"
+ *     type: boolean
+ *   metadata:
+ *     description: "An optional set of key-value pairs with additional information."
+ *     type: object
+ *   requirements:
+ *     description: "The requirements that must be satisfied for the Shipping Option to be available."
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - type
+ *         - amount
+ *       properties:
+ *         id:
+ *           description: The ID of the requirement
+ *           type: string
+ *         type:
+ *           description: The type of the requirement
+ *           type: string
+ *           enum:
+ *             - max_subtotal
+ *             - min_subtotal
+ *         amount:
+ *           description: The amount to compare with.
+ *           type: integer
+ *   includes_tax:
+ *     description: "[EXPERIMENTAL] Tax included in prices of shipping option"
+ *     type: boolean
+ */
 export class AdminPostShippingOptionsOptionReq {
   @IsString()
   @IsOptional()
@@ -173,5 +191,11 @@ export class AdminPostShippingOptionsOptionReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
+
+  @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
+    IsOptional(),
+    IsBoolean(),
+  ])
+  includes_tax?: boolean
 }

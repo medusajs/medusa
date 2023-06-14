@@ -1,3 +1,6 @@
+import { IInventoryService } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -11,24 +14,39 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
-import { PricingService, ProductService } from "../../../../services"
+import { EntityManager } from "typeorm"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { ProductStatus, ProductVariant } from "../../../../models"
+import { ProductVariantRepository } from "../../../../repositories/product-variant"
 import {
+  PricingService,
+  ProductService,
+  ProductVariantInventoryService,
+  ProductVariantService,
+} from "../../../../services"
+import { Logger } from "../../../../types/global"
+import {
+  ProductProductCategoryReq,
   ProductSalesChannelReq,
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-
-import { EntityManager } from "typeorm"
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesUpdateReq,
+  UpdateProductVariantInput,
+} from "../../../../types/product-variant"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { ProductStatus } from "../../../../models"
-import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { Type } from "class-transformer"
+import { DistributedTransaction } from "../../../../utils/transaction"
 import { validator } from "../../../../utils/validator"
+import {
+  createVariantsTransaction,
+  revertVariantTransaction,
+} from "./transaction/create-product-variant"
 
 /**
- * @oas [post] /products/{id}
+ * @oas [post] /admin/products/{id}
  * operationId: "PostProductsProduct"
  * summary: "Update a Product"
  * description: "Updates a Product"
@@ -39,195 +57,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           title:
- *             description: "The title of the Product"
- *             type: string
- *           subtitle:
- *             description: "The subtitle of the Product"
- *             type: string
- *           description:
- *             description: "A description of the Product."
- *             type: string
- *           discountable:
- *             description: A flag to indicate if discounts can be applied to the LineItems generated from this Product
- *             type: boolean
- *           images:
- *             description: Images of the Product.
- *             type: array
- *             items:
- *               type: string
- *           thumbnail:
- *             description: The thumbnail to use for the Product.
- *             type: string
- *           handle:
- *             description: A unique handle to identify the Product by.
- *             type: string
- *           status:
- *             description: The status of the product.
- *             type: string
- *             enum: [draft, proposed, published, rejected]
- *           type:
- *             description: The Product Type to associate the Product with.
- *             type: object
- *             required:
- *               - value
- *             properties:
- *               id:
- *                 description: The ID of the Product Type.
- *                 type: string
- *               value:
- *                 description: The value of the Product Type.
- *                 type: string
- *           collection_id:
- *             description: The ID of the Collection the Product should belong to.
- *             type: string
- *           tags:
- *             description: Tags to associate the Product with.
- *             type: array
- *             items:
- *               required:
- *                 - value
- *               properties:
- *                 id:
- *                   description: The ID of an existing Tag.
- *                   type: string
- *                 value:
- *                   description: The value of the Tag, these will be upserted.
- *                   type: string
- *           sales_channels:
- *             description: "[EXPERIMENTAL] Sales channels to associate the Product with."
- *             type: array
- *             items:
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   description: The ID of an existing Sales channel.
- *                   type: string
- *           variants:
- *             description: A list of Product Variants to create with the Product.
- *             type: array
- *             items:
- *               properties:
- *                 id:
- *                   description: The ID of the Product Variant.
- *                   type: string
- *                 title:
- *                   description: The title to identify the Product Variant by.
- *                   type: string
- *                 sku:
- *                   description: The unique SKU for the Product Variant.
- *                   type: string
- *                 ean:
- *                   description: The EAN number of the item.
- *                   type: string
- *                 upc:
- *                   description: The UPC number of the item.
- *                   type: string
- *                 barcode:
- *                   description: A generic GTIN field for the Product Variant.
- *                   type: string
- *                 hs_code:
- *                   description: The Harmonized System code for the Product Variant.
- *                   type: string
- *                 inventory_quantity:
- *                   description: The amount of stock kept for the Product Variant.
- *                   type: integer
- *                 allow_backorder:
- *                   description: Whether the Product Variant can be purchased when out of stock.
- *                   type: boolean
- *                 manage_inventory:
- *                   description: Whether Medusa should keep track of the inventory for this Product Variant.
- *                   type: boolean
- *                 weight:
- *                   description: The wieght of the Product Variant.
- *                   type: number
- *                 length:
- *                   description: The length of the Product Variant.
- *                   type: number
- *                 height:
- *                   description: The height of the Product Variant.
- *                   type: number
- *                 width:
- *                   description: The width of the Product Variant.
- *                   type: number
- *                 origin_country:
- *                   description: The country of origin of the Product Variant.
- *                   type: string
- *                 mid_code:
- *                   description: The Manufacturer Identification code for the Product Variant.
- *                   type: string
- *                 material:
- *                   description: The material composition of the Product Variant.
- *                   type: string
- *                 metadata:
- *                   description: An optional set of key-value pairs with additional information.
- *                   type: object
- *                 prices:
- *                   type: array
- *                   items:
- *                     required:
- *                       - amount
- *                     properties:
- *                       id:
- *                         description: The ID of the Price.
- *                         type: string
- *                       region_id:
- *                         description: The ID of the Region for which the price is used. Only required if currency_code is not provided.
- *                         type: string
- *                       currency_code:
- *                         description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
- *                         type: string
- *                         externalDocs:
- *                           url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
- *                           description: See a list of codes.
- *                       amount:
- *                         description: The amount to charge for the Product Variant.
- *                         type: integer
- *                       min_quantity:
- *                         description: The minimum quantity for which the price will be used.
- *                         type: integer
- *                       max_quantity:
- *                         description: The maximum quantity for which the price will be used.
- *                         type: integer
- *                 options:
- *                   type: array
- *                   items:
- *                     required:
- *                       - option_id
- *                       - value
- *                     properties:
- *                       option_id:
- *                         description: The ID of the Option.
- *                         type: string
- *                       value:
- *                         description: The value to give for the Product Option at the same index in the Product's `options` field.
- *                         type: string
- *           weight:
- *             description: The wieght of the Product.
- *             type: number
- *           length:
- *             description: The length of the Product.
- *             type: number
- *           height:
- *             description: The height of the Product.
- *             type: number
- *           width:
- *             description: The width of the Product.
- *             type: number
- *           origin_country:
- *             description: The country of origin of the Product.
- *             type: string
- *           mid_code:
- *             description: The Manufacturer Identification code for the Product.
- *             type: string
- *           material:
- *             description: The material composition of the Product.
- *             type: string
- *           metadata:
- *             description: An optional set of key-value pairs with additional information.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostProductsProductReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -255,16 +87,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             product:
- *               $ref: "#/components/schemas/product"
+ *           $ref: "#/components/schemas/AdminProductsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -283,14 +113,137 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostProductsProductReq, req.body)
 
+  const logger: Logger = req.scope.resolve("logger")
+  const productVariantRepo: typeof ProductVariantRepository = req.scope.resolve(
+    "productVariantRepository"
+  )
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
+  const productVariantService: ProductVariantService = req.scope.resolve(
+    "productVariantService"
+  )
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+  const inventoryService: IInventoryService | undefined =
+    req.scope.resolve("inventoryService")
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    await productService
+    const productServiceTx = productService.withTransaction(transactionManager)
+
+    const { variants } = validated
+    delete validated.variants
+
+    const product = await productServiceTx.update(id, validated)
+
+    if (!variants) {
+      return
+    }
+
+    const variantRepo = manager.withRepository(productVariantRepo)
+    const productVariants = await productVariantService
       .withTransaction(transactionManager)
-      .update(id, validated)
+      .list(
+        { product_id: id },
+        {
+          select: variantRepo.metadata.columns.map(
+            (c) => c.propertyName
+          ) as (keyof ProductVariant)[],
+        }
+      )
+
+    const productVariantMap = new Map(productVariants.map((v) => [v.id, v]))
+    const variantWithIdSet = new Set()
+
+    const variantIdsNotBelongingToProduct: string[] = []
+    const variantsToUpdate: {
+      variant: ProductVariant
+      updateData: UpdateProductVariantInput
+    }[] = []
+    const variantsToCreate: ProductVariantReq[] = []
+
+    // Preparing the data step
+    for (const [variantRank, variant] of variants.entries()) {
+      if (!variant.id) {
+        Object.assign(variant, {
+          variant_rank: variantRank,
+          options: variant.options || [],
+          prices: variant.prices || [],
+        })
+        variantsToCreate.push(variant)
+        continue
+      }
+
+      // Will be used to find the variants that should be removed during the next steps
+      variantWithIdSet.add(variant.id)
+
+      if (!productVariantMap.has(variant.id)) {
+        variantIdsNotBelongingToProduct.push(variant.id)
+        continue
+      }
+
+      const productVariant = productVariantMap.get(variant.id)!
+      Object.assign(variant, {
+        variant_rank: variantRank,
+        product_id: productVariant.product_id,
+      })
+      variantsToUpdate.push({ variant: productVariant, updateData: variant })
+    }
+
+    if (variantIdsNotBelongingToProduct.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Variants with id: ${variantIdsNotBelongingToProduct.join(
+          ", "
+        )} are not associated with this product`
+      )
+    }
+
+    const allVariantTransactions: DistributedTransaction[] = []
+    const transactionDependencies = {
+      manager: transactionManager,
+      inventoryService,
+      productVariantInventoryService,
+      productVariantService,
+    }
+
+    const productVariantServiceTx =
+      productVariantService.withTransaction(transactionManager)
+
+    // Delete the variant that does not exist anymore from the provided variants
+    const variantIdsToDelete = [...productVariantMap.keys()].filter(
+      (variantId) => !variantWithIdSet.has(variantId)
+    )
+
+    if (variantIdsToDelete) {
+      await productVariantServiceTx.delete(variantIdsToDelete)
+    }
+
+    if (variantsToUpdate.length) {
+      await productVariantServiceTx.update(variantsToUpdate)
+    }
+
+    if (variantsToCreate.length) {
+      try {
+        const varTransaction = await createVariantsTransaction(
+          transactionDependencies,
+          product.id,
+          variantsToCreate as CreateProductVariantInput[]
+        )
+        allVariantTransactions.push(varTransaction)
+      } catch (e) {
+        await Promise.all(
+          allVariantTransactions.map(async (transaction) => {
+            await revertVariantTransaction(
+              transactionDependencies,
+              transaction
+            ).catch(() => logger.warn("Transaction couldn't be reverted."))
+          })
+        )
+
+        throw e
+      }
+    }
   })
 
   const rawProduct = await productService.retrieve(id, {
@@ -388,7 +341,7 @@ class ProductVariantReq {
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => ProductVariantPricesUpdateReq)
-  prices: ProductVariantPricesUpdateReq[]
+  prices?: ProductVariantPricesUpdateReq[]
 
   @IsOptional()
   @Type(() => ProductVariantOptionReq)
@@ -397,6 +350,214 @@ class ProductVariantReq {
   options?: ProductVariantOptionReq[] = []
 }
 
+/**
+ * @schema AdminPostProductsProductReq
+ * type: object
+ * properties:
+ *   title:
+ *     description: "The title of the Product"
+ *     type: string
+ *   subtitle:
+ *     description: "The subtitle of the Product"
+ *     type: string
+ *   description:
+ *     description: "A description of the Product."
+ *     type: string
+ *   discountable:
+ *     description: A flag to indicate if discounts can be applied to the LineItems generated from this Product
+ *     type: boolean
+ *   images:
+ *     description: Images of the Product.
+ *     type: array
+ *     items:
+ *       type: string
+ *   thumbnail:
+ *     description: The thumbnail to use for the Product.
+ *     type: string
+ *   handle:
+ *     description: A unique handle to identify the Product by.
+ *     type: string
+ *   status:
+ *     description: The status of the product.
+ *     type: string
+ *     enum: [draft, proposed, published, rejected]
+ *   type:
+ *     description: The Product Type to associate the Product with.
+ *     type: object
+ *     required:
+ *       - value
+ *     properties:
+ *       id:
+ *         description: The ID of the Product Type.
+ *         type: string
+ *       value:
+ *         description: The value of the Product Type.
+ *         type: string
+ *   collection_id:
+ *     description: The ID of the Collection the Product should belong to.
+ *     type: string
+ *   tags:
+ *     description: Tags to associate the Product with.
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - value
+ *       properties:
+ *         id:
+ *           description: The ID of an existing Tag.
+ *           type: string
+ *         value:
+ *           description: The value of the Tag, these will be upserted.
+ *           type: string
+ *   sales_channels:
+ *     description: "[EXPERIMENTAL] Sales channels to associate the Product with."
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: The ID of an existing Sales channel.
+ *           type: string
+ *   categories:
+ *     description: "Categories to add the Product to."
+ *     type: array
+ *     items:
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: The ID of a Product Category.
+ *           type: string
+ *   variants:
+ *     description: A list of Product Variants to create with the Product.
+ *     type: array
+ *     items:
+ *       type: object
+ *       properties:
+ *         id:
+ *           description: The ID of the Product Variant.
+ *           type: string
+ *         title:
+ *           description: The title to identify the Product Variant by.
+ *           type: string
+ *         sku:
+ *           description: The unique SKU for the Product Variant.
+ *           type: string
+ *         ean:
+ *           description: The EAN number of the item.
+ *           type: string
+ *         upc:
+ *           description: The UPC number of the item.
+ *           type: string
+ *         barcode:
+ *           description: A generic GTIN field for the Product Variant.
+ *           type: string
+ *         hs_code:
+ *           description: The Harmonized System code for the Product Variant.
+ *           type: string
+ *         inventory_quantity:
+ *           description: The amount of stock kept for the Product Variant.
+ *           type: integer
+ *         allow_backorder:
+ *           description: Whether the Product Variant can be purchased when out of stock.
+ *           type: boolean
+ *         manage_inventory:
+ *           description: Whether Medusa should keep track of the inventory for this Product Variant.
+ *           type: boolean
+ *         weight:
+ *           description: The wieght of the Product Variant.
+ *           type: number
+ *         length:
+ *           description: The length of the Product Variant.
+ *           type: number
+ *         height:
+ *           description: The height of the Product Variant.
+ *           type: number
+ *         width:
+ *           description: The width of the Product Variant.
+ *           type: number
+ *         origin_country:
+ *           description: The country of origin of the Product Variant.
+ *           type: string
+ *         mid_code:
+ *           description: The Manufacturer Identification code for the Product Variant.
+ *           type: string
+ *         material:
+ *           description: The material composition of the Product Variant.
+ *           type: string
+ *         metadata:
+ *           description: An optional set of key-value pairs with additional information.
+ *           type: object
+ *         prices:
+ *           type: array
+ *           items:
+ *             type: object
+ *             required:
+ *               - amount
+ *             properties:
+ *               id:
+ *                 description: The ID of the Price.
+ *                 type: string
+ *               region_id:
+ *                 description: The ID of the Region for which the price is used. Only required if currency_code is not provided.
+ *                 type: string
+ *               currency_code:
+ *                 description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+ *                 type: string
+ *                 externalDocs:
+ *                   url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *                   description: See a list of codes.
+ *               amount:
+ *                 description: The amount to charge for the Product Variant.
+ *                 type: integer
+ *               min_quantity:
+ *                 description: The minimum quantity for which the price will be used.
+ *                 type: integer
+ *               max_quantity:
+ *                 description: The maximum quantity for which the price will be used.
+ *                 type: integer
+ *         options:
+ *           type: array
+ *           items:
+ *             type: object
+ *             required:
+ *               - option_id
+ *               - value
+ *             properties:
+ *               option_id:
+ *                 description: The ID of the Option.
+ *                 type: string
+ *               value:
+ *                 description: The value to give for the Product Option at the same index in the Product's `options` field.
+ *                 type: string
+ *   weight:
+ *     description: The wieght of the Product.
+ *     type: number
+ *   length:
+ *     description: The length of the Product.
+ *     type: number
+ *   height:
+ *     description: The height of the Product.
+ *     type: number
+ *   width:
+ *     description: The width of the Product.
+ *     type: number
+ *   origin_country:
+ *     description: The country of origin of the Product.
+ *     type: string
+ *   mid_code:
+ *     description: The Manufacturer Identification code for the Product.
+ *     type: string
+ *   material:
+ *     description: The material composition of the Product.
+ *     type: string
+ *   metadata:
+ *     description: An optional set of key-value pairs with additional information.
+ *     type: object
+ */
 export class AdminPostProductsProductReq {
   @IsString()
   @IsOptional()
@@ -416,7 +577,7 @@ export class AdminPostProductsProductReq {
 
   @IsArray()
   @IsOptional()
-  images: string[]
+  images?: string[]
 
   @IsString()
   @IsOptional()
@@ -452,7 +613,13 @@ export class AdminPostProductsProductReq {
     ValidateNested({ each: true }),
     IsArray(),
   ])
-  sales_channels: ProductSalesChannelReq[] | null
+  sales_channels?: ProductSalesChannelReq[] | null
+
+  @IsOptional()
+  @Type(() => ProductProductCategoryReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  categories?: ProductProductCategoryReq[]
 
   @IsOptional()
   @Type(() => ProductVariantReq)

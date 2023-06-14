@@ -1,6 +1,8 @@
 import { IsOptional, IsString } from "class-validator"
 
-export class PriceSelectionParams {
+import { FindParams } from "./common"
+
+export class PriceSelectionParams extends FindParams {
   @IsOptional()
   @IsString()
   cart_id?: string
@@ -12,4 +14,10 @@ export class PriceSelectionParams {
   @IsOptional()
   @IsString()
   currency_code?: string
+}
+
+export class AdminPriceSelectionParams extends PriceSelectionParams {
+  @IsOptional()
+  @IsString()
+  customer_id?: string
 }

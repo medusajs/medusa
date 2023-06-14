@@ -1,6 +1,14 @@
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query"
 
-import { AdminCustomersRes, AdminPostCustomersReq } from "@medusajs/medusa"
+import {
+  AdminCustomersRes,
+  AdminPostCustomersCustomerReq,
+  AdminPostCustomersReq,
+} from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 
 import { useMedusa } from "../../../contexts"
@@ -28,13 +36,13 @@ export const useAdminUpdateCustomer = (
   options?: UseMutationOptions<
     Response<AdminCustomersRes>,
     Error,
-    AdminPostCustomersReq
+    AdminPostCustomersCustomerReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
   return useMutation(
-    (payload: AdminPostCustomersReq) =>
+    (payload: AdminPostCustomersCustomerReq) =>
       client.admin.customers.update(id, payload),
     buildOptions(
       queryClient,

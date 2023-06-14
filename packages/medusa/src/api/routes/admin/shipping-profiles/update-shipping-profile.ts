@@ -1,13 +1,24 @@
-import { IsOptional, IsString } from "class-validator"
+import {
+  IsArray,
+  IsEnum,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 
+import { EntityManager } from "typeorm"
+import { ShippingProfileType } from "../../../../models"
 import { ShippingProfileService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
+import {
+  defaultAdminShippingProfilesFields,
+  defaultAdminShippingProfilesRelations,
+} from "."
 
 /**
- * @oas [post] /shipping-profiles/{id}
+ * @oas [post] /admin/shipping-profiles/{id}
  * operationId: "PostShippingProfilesProfile"
- * summary: "Update a Shipping Profiles"
+ * summary: "Update a Shipping Profile"
  * description: "Updates a Shipping Profile"
  * parameters:
  *   - (path) id=* {string} The ID of the Shipping Profile.
@@ -15,10 +26,9 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           name:
- *             description: "The name of the Shipping Profile"
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostShippingProfilesProfileReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -45,16 +55,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Shipping Profile
+ *   - Shipping Profiles
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             shipping_profile:
- *               $ref: "#/components/schemas/shipping_profile"
+ *           $ref: "#/components/schemas/AdminShippingProfilesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -87,12 +95,57 @@ export default async (req, res) => {
       .update(profile_id, validated)
   })
 
-  const data = await profileService.retrieve(profile_id)
+  const data = await profileService.retrieve(profile_id, {
+    select: defaultAdminShippingProfilesFields,
+    relations: defaultAdminShippingProfilesRelations,
+  })
+
   res.status(200).json({ shipping_profile: data })
 }
 
+/**
+ * @schema AdminPostShippingProfilesProfileReq
+ * type: object
+ * properties:
+ *   name:
+ *     description: The name of the Shipping Profile
+ *     type: string
+ *   metadata:
+ *     description: An optional set of key-value pairs with additional information.
+ *     type: object
+ *   type:
+ *     description: The type of the Shipping Profile
+ *     type: string
+ *     enum: [default, gift_card, custom]
+ *   products:
+ *     description: An optional array of product ids to associate with the Shipping Profile
+ *     type: array
+ *   shipping_options:
+ *     description: An optional array of shipping option ids to associate with the Shipping Profile
+ *     type: array
+ */
 export class AdminPostShippingProfilesProfileReq {
   @IsString()
   @IsOptional()
   name?: string
+
+  @IsOptional()
+  @IsObject()
+  metadata?: Record<string, unknown>
+
+  @IsOptional()
+  @IsEnum(ShippingProfileType, {
+    message: "type must be one of 'default', 'custom', 'gift_card'",
+  })
+  type?: ShippingProfileType
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  products?: string[]
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  shipping_options?: string[]
 }

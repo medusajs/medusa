@@ -1,14 +1,14 @@
 import { IsEmail, IsOptional, IsString } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 
+import jwt from "jsonwebtoken"
+import { EntityManager } from "typeorm"
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
-import jwt from "jsonwebtoken"
 import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /customers
+ * @oas [post] /store/customers
  * operationId: PostCustomers
  * summary: Create a Customer
  * description: "Creates a Customer account."
@@ -16,29 +16,9 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - first_name
- *           - last_name
- *           - email
- *           - password
- *         properties:
- *           first_name:
- *             description: "The Customer's first name."
- *             type: string
- *           last_name:
- *             description: "The Customer's last name."
- *             type: string
- *           email:
- *             description: "The email of the customer."
- *             type: string
- *             format: email
- *           password:
- *             description: "The Customer's password."
- *             type: string
- *             format: password
- *           phone:
- *             description: "The Customer's phone number."
- *             type: string
+ *         $ref: "#/components/schemas/StorePostCustomersReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -66,21 +46,20 @@ import { EntityManager } from "typeorm"
  *           "password": "supersecret"
  *       }'
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             customer:
- *               $ref: "#/components/schemas/customer"
+ *           $ref: "#/components/schemas/StoreCustomersRes"
  *   422:
  *     description: A customer with the same email exists
  *     content:
  *       application/json:
  *         schema:
+ *           type: object
  *           properties:
  *             code:
  *               type: string
@@ -117,27 +96,56 @@ export default async (req, res) => {
     }
   )
 
-  // Add JWT to cookie
-  const {
-    projectConfig: { jwt_secret },
-  } = req.scope.resolve("configModule")
-  req.session.jwt = jwt.sign({ customer_id: customer.id }, jwt_secret!, {
-    expiresIn: "30d",
-  })
-
   customer = await customerService.retrieve(customer.id, {
     relations: defaultStoreCustomersRelations,
     select: defaultStoreCustomersFields,
   })
 
+  // Add JWT to cookie
+  const {
+    projectConfig: { jwt_secret },
+  } = req.scope.resolve("configModule")
+  req.session.jwt_store = jwt.sign({ customer_id: customer.id }, jwt_secret!, {
+    expiresIn: "30d",
+  })
+
   res.status(200).json({ customer })
 }
 
+/**
+ * @schema StorePostCustomersReq
+ * type: object
+ * required:
+ *   - first_name
+ *   - last_name
+ *   - email
+ *   - password
+ * properties:
+ *   first_name:
+ *     description: "The Customer's first name."
+ *     type: string
+ *   last_name:
+ *     description: "The Customer's last name."
+ *     type: string
+ *   email:
+ *     description: "The email of the customer."
+ *     type: string
+ *     format: email
+ *   password:
+ *     description: "The Customer's password."
+ *     type: string
+ *     format: password
+ *   phone:
+ *     description: "The Customer's phone number."
+ *     type: string
+ */
 export class StorePostCustomersReq {
   @IsString()
+  @IsOptional()
   first_name: string
 
   @IsString()
+  @IsOptional()
   last_name: string
 
   @IsEmail()

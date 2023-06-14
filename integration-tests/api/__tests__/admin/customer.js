@@ -70,6 +70,27 @@ describe("/admin/customers", () => {
       )
     })
 
+    it("lists only registered customers", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/customers?has_account=true", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customers).toEqual(
+        expect.not.arrayContaining([
+          expect.objectContaining({ has_account: false }),
+        ])
+      )
+    })
+
     it("lists customers in group and count", async () => {
       const api = useApi()
 

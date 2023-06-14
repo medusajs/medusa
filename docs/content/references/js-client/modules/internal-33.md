@@ -1,17 +1,17 @@
 # Namespace: internal
 
+## Classes
+
+- [AdminGetVariantsParams](../classes/internal-33.AdminGetVariantsParams.md)
+- [AdminPriceSelectionParams](../classes/internal-33.AdminPriceSelectionParams.md)
+- [PriceSelectionParams](../classes/internal-33.PriceSelectionParams.md)
+
 ## Type Aliases
 
-### StoreGiftCardsRes
+### AdminVariantsListRes
 
-Ƭ **StoreGiftCardsRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `gift_card` | [`GiftCard`](../classes/internal.GiftCard.md) |
+Ƭ **AdminVariantsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `variants`: [`PricedVariant`](internal-20.md#pricedvariant)[]  }
 
 #### Defined in
 
-medusa/dist/api/routes/store/gift-cards/index.d.ts:8
+medusa/dist/api/routes/admin/variants/index.d.ts:10

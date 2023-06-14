@@ -5,9 +5,9 @@ import {
   DiscountRuleType,
 } from "@medusajs/medusa"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import {
-  DiscuntConditionFactoryData,
+  DiscountConditionFactoryData,
   simpleDiscountConditionFactory,
 } from "./simple-discount-condition-factory"
 
@@ -15,7 +15,7 @@ export type DiscountRuleFactoryData = {
   type?: DiscountRuleType
   value?: number
   allocation?: AllocationType
-  conditions: DiscuntConditionFactoryData[]
+  conditions: DiscountConditionFactoryData[]
 }
 
 export type DiscountFactoryData = {
@@ -24,10 +24,12 @@ export type DiscountFactoryData = {
   is_dynamic?: boolean
   rule?: DiscountRuleFactoryData
   regions?: string[]
+  starts_at?: Date
+  ends_at?: Date
 }
 
 export const simpleDiscountFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: DiscountFactoryData = {},
   seed?: number
 ): Promise<Discount> => {
@@ -35,9 +37,9 @@ export const simpleDiscountFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
-  const ruleData = data.rule ?? {}
+  const ruleData = data.rule ?? ({} as DiscountRuleFactoryData)
   const ruleToSave = manager.create(DiscountRule, {
     type: ruleData.type ?? DiscountRuleType.PERCENTAGE,
     value: ruleData.value ?? 10,
@@ -49,7 +51,7 @@ export const simpleDiscountFactory = async (
   if (data?.rule?.conditions) {
     for (const condition of data.rule.conditions) {
       await simpleDiscountConditionFactory(
-        connection,
+        dataSource,
         { ...condition, rule_id: dRule.id },
         1
       )
@@ -63,8 +65,9 @@ export const simpleDiscountFactory = async (
     rule_id: dRule.id,
     code: data.code ?? "TESTCODE",
     regions: data.regions?.map((r) => ({ id: r })) || [],
+    starts_at: data.starts_at,
+    ends_at: data.ends_at,
   })
 
-  const discount = await manager.save(toSave)
-  return discount
+  return await manager.save(toSave)
 }

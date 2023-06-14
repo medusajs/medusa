@@ -7,7 +7,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /shipping-options
+ * @oas [get] /admin/shipping-options
  * operationId: "GetShippingOptions"
  * summary: "List Shipping Options"
  * description: "Retrieves a list of Shipping Options."
@@ -28,6 +28,9 @@ import { validator } from "../../../../utils/validator"
  *    schema:
  *      type: boolean
  *    description: Flag for fetching admin specific options
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetShippingOptionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -48,21 +51,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             shipping_options:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/shipping_option"
- *             count:
- *               type: integer
- *               description: The total number of items available
+ *           $ref: "#/components/schemas/AdminShippingOptionsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

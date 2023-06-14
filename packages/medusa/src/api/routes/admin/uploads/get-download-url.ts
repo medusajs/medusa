@@ -2,21 +2,16 @@ import { AbstractFileService } from "../../../../interfaces"
 import { IsString } from "class-validator"
 
 /**
- * [post] /uploads/download-url
+ * @oas [post] /admin/uploads/download-url
  * operationId: "PostUploadsDownloadUrl"
- * summary: "Creates a presigned download url for a file"
+ * summary: "Get a File's Download URL"
  * description: "Creates a presigned download url for a file"
  * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - file_key
- *         properties:
- *           file_key:
- *             description: "key of the file to obtain the download link for"
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostUploadsDownloadUrlReq"
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -43,17 +38,14 @@ import { IsString } from "class-validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Upload
+ *   - Uploads
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             download_url:
- *               type: string
- *               description: The Download URL of the file
+ *           $ref: "#/components/schemas/AdminUploadsDownloadUrlRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -77,6 +69,16 @@ export default async (req, res) => {
   res.status(200).send({ download_url: url })
 }
 
+/**
+ * @schema AdminPostUploadsDownloadUrlReq
+ * type: object
+ * required:
+ *   - file_key
+ * properties:
+ *   file_key:
+ *     description: "key of the file to obtain the download link for"
+ *     type: string
+ */
 export class AdminPostUploadsDownloadUrlReq {
   @IsString()
   file_key: string

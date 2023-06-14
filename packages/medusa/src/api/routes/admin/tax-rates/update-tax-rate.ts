@@ -1,16 +1,15 @@
-import { IsArray, IsOptional, IsString } from "class-validator"
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
 
+import { omit } from "lodash"
+import { isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { IsType } from "../../../../utils/validators/is-type"
 import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
-import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
-import { isDefined } from "../../../../utils"
 
 /**
- * @oas [post] /tax-rates/{id}
+ * @oas [post] /admin/tax-rates/{id}
  * operationId: "PostTaxRatesTaxRate"
  * summary: "Update a Tax Rate"
  * description: "Updates a Tax Rate"
@@ -39,34 +38,10 @@ import { isDefined } from "../../../../utils"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           code:
- *             type: string
- *             description: "A code to identify the tax type by"
- *           name:
- *             type: string
- *             description: "A human friendly name for the tax"
- *           region_id:
- *             type: string
- *             description: "The ID of the Region that the rate belongs to"
- *           rate:
- *             type: number
- *             description: "The numeric rate to charge"
- *           products:
- *             type: array
- *             description: "The IDs of the products associated with this tax rate"
- *             items:
- *               type: string
- *           shipping_options:
- *             type: array
- *             description: "The IDs of the shipping options associated with this tax rate"
- *             items:
- *               type: string
- *           product_types:
- *             type: array
- *             description: "The IDs of the types of products associated with this tax rate"
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/AdminPostTaxRatesTaxRateReq"
+ * x-codegen:
+ *   method: update
+ *   queryParams: AdminPostTaxRatesTaxRateParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -93,16 +68,14 @@ import { isDefined } from "../../../../utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             tax_rate:
- *               $ref: "#/components/schemas/tax_rate"
+ *           $ref: "#/components/schemas/AdminTaxRatesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -163,6 +136,38 @@ export default async (req, res) => {
   res.json({ tax_rate: data })
 }
 
+/**
+ * @schema AdminPostTaxRatesTaxRateReq
+ * type: object
+ * properties:
+ *   code:
+ *     type: string
+ *     description: "A code to identify the tax type by"
+ *   name:
+ *     type: string
+ *     description: "A human friendly name for the tax"
+ *   region_id:
+ *     type: string
+ *     description: "The ID of the Region that the rate belongs to"
+ *   rate:
+ *     type: number
+ *     description: "The numeric rate to charge"
+ *   products:
+ *     type: array
+ *     description: "The IDs of the products associated with this tax rate"
+ *     items:
+ *       type: string
+ *   shipping_options:
+ *     type: array
+ *     description: "The IDs of the shipping options associated with this tax rate"
+ *     items:
+ *       type: string
+ *   product_types:
+ *     type: array
+ *     description: "The IDs of the types of products associated with this tax rate"
+ *     items:
+ *       type: string
+ */
 export class AdminPostTaxRatesTaxRateReq {
   @IsOptional()
   @IsString()
@@ -177,7 +182,7 @@ export class AdminPostTaxRatesTaxRateReq {
   region_id?: string
 
   @IsOptional()
-  @IsType([Number, null])
+  @IsNumber()
   rate?: number | null
 
   @IsOptional()

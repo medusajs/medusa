@@ -1,4 +1,4 @@
-import { CartService, LineItemService, RegionService } from "../../../../services"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsInt,
@@ -7,21 +7,25 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultStoreCartFields, defaultStoreCartRelations, } from "."
-
-import { Cart } from "../../../../models";
-import { EntityManager } from "typeorm"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators";
-import { FlagRouter } from "../../../../utils/flag-router"
-import { MedusaError } from "medusa-core-utils"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
-import { Type } from "class-transformer"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import reqIp from "request-ip"
-import { isDefined } from "../../../../utils";
+import { EntityManager } from "typeorm"
+
+import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { Cart, LineItem } from "../../../../models"
+import {
+  CartService,
+  LineItemService,
+  RegionService,
+} from "../../../../services"
+import { CartCreateProps } from "../../../../types/cart"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
- * @oas [post] /carts
+ * @oas [post] /store/carts
  * summary: "Create a Cart"
  * operationId: "PostCart"
  * description: "Creates a Cart within the given region and with the initial items. If no
@@ -32,39 +36,9 @@ import { isDefined } from "../../../../utils";
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           region_id:
- *             type: string
- *             description: The ID of the Region to create the Cart in.
- *           sales_channel_id:
- *             type: string
- *             description: "[EXPERIMENTAL] The ID of the Sales channel to create the Cart in."
- *           country_code:
- *             type: string
- *             description: "The 2 character ISO country code to create the Cart in."
- *             externalDocs:
- *              url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
- *              description: See a list of codes.
- *           items:
- *             description: "An optional array of `variant_id`, `quantity` pairs to generate Line Items from."
- *             type: array
- *             items:
- *               required:
- *                 - variant_id
- *                 - quantity
- *               properties:
- *                 variant_id:
- *                   description: The id of the Product Variant to generate a Line Item from.
- *                   type: string
- *                 quantity:
- *                   description: The quantity of the Product Variant to add
- *                   type: integer
- *           context:
- *             description: "An optional object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`"
- *             type: object
- *             example:
- *               ip: "::1"
- *               user_agent: "Chrome"
+ *         $ref: "#/components/schemas/StorePostCartReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -80,16 +54,14 @@ import { isDefined } from "../../../../utils";
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: "Successfully created a new Cart"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             cart:
- *               $ref: "#/components/schemas/cart"
+ *           $ref: "#/components/schemas/StoreCartsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -131,44 +103,77 @@ export default async (req, res) => {
     regionId = regions[0].id
   }
 
+  const toCreate: Partial<CartCreateProps> = {
+    region_id: regionId,
+    sales_channel_id: validated.sales_channel_id,
+    context: {
+      ...reqContext,
+      ...validated.context,
+    },
+  }
+
+  if (req.user && req.user.customer_id) {
+    const customerService = req.scope.resolve("customerService")
+    const customer = await customerService.retrieve(req.user.customer_id)
+    toCreate["customer_id"] = customer.id
+    toCreate["email"] = customer.email
+  }
+
+  if (validated.country_code) {
+    toCreate["shipping_address"] = {
+      country_code: validated.country_code.toLowerCase(),
+    }
+  }
+
+  if (
+    !toCreate.sales_channel_id &&
+    req.publishableApiKeyScopes?.sales_channel_ids.length
+  ) {
+    if (req.publishableApiKeyScopes.sales_channel_ids.length > 1) {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "The PublishableApiKey provided in the request header has multiple associated sales channels."
+      )
+    }
+
+    toCreate.sales_channel_id = req.publishableApiKeyScopes.sales_channel_ids[0]
+  }
+
   let cart: Cart
   await entityManager.transaction(async (manager) => {
-    cart = await cartService.withTransaction(manager).create({
-      ...validated,
-      context: {
-        ...reqContext,
-        ...validated.context,
-      },
-      region_id: regionId,
-     })
+    const cartServiceTx = cartService.withTransaction(manager)
+    const lineItemServiceTx = lineItemService.withTransaction(manager)
 
-    if (validated.items) {
-      await Promise.all(
-        validated.items.map(async (i) => {
-          const lineItem = await lineItemService
-            .withTransaction(manager)
-            .generate(i.variant_id, regionId, i.quantity, {
-              customer_id: req.user?.customer_id,
-            })
-          return await cartService
-            .withTransaction(manager)
-            .addLineItem(cart.id, lineItem, {
-              validateSalesChannels:
-                featureFlagRouter.isFeatureEnabled("sales_channels"),
-            })
-        })
+    cart = await cartServiceTx.create(toCreate)
+
+    if (validated.items?.length) {
+      const generateInputData = validated.items.map((item) => {
+        return {
+          variantId: item.variant_id,
+          quantity: item.quantity,
+        }
+      })
+      const generatedLineItems: LineItem[] = await lineItemServiceTx.generate(
+        generateInputData,
+        {
+          region_id: regionId,
+          customer_id: req.user?.customer_id,
+        }
       )
+
+      await cartServiceTx.addOrUpdateLineItems(cart.id, generatedLineItems, {
+        validateSalesChannels:
+          featureFlagRouter.isFeatureEnabled("sales_channels"),
+      })
     }
   })
 
-  cart = await cartService.retrieve(cart!.id, {
+  cart = await cartService.retrieveWithTotals(cart!.id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
 
-  const data = await decorateLineItemsWithTotals(cart, req)
-
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart: cleanResponseData(cart, []) })
 }
 
 export class Item {
@@ -181,6 +186,44 @@ export class Item {
   quantity: number
 }
 
+/**
+ * @schema StorePostCartReq
+ * type: object
+ * properties:
+ *   region_id:
+ *     type: string
+ *     description: The ID of the Region to create the Cart in.
+ *   sales_channel_id:
+ *     type: string
+ *     description: "[EXPERIMENTAL] The ID of the Sales channel to create the Cart in."
+ *   country_code:
+ *     type: string
+ *     description: "The 2 character ISO country code to create the Cart in."
+ *     externalDocs:
+ *      url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+ *      description: See a list of codes.
+ *   items:
+ *     description: "An optional array of `variant_id`, `quantity` pairs to generate Line Items from."
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - variant_id
+ *         - quantity
+ *       properties:
+ *         variant_id:
+ *           description: The id of the Product Variant to generate a Line Item from.
+ *           type: string
+ *         quantity:
+ *           description: The quantity of the Product Variant to add
+ *           type: integer
+ *   context:
+ *     description: "An optional object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`"
+ *     type: object
+ *     example:
+ *       ip: "::1"
+ *       user_agent: "Chrome"
+ */
 export class StorePostCartReq {
   @IsOptional()
   @IsString()

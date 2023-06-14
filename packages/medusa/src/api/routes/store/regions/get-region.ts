@@ -1,11 +1,15 @@
 import RegionService from "../../../../services/region"
+import { defaultRelations } from "."
+
 /**
- * @oas [get] /regions/{id}
+ * @oas [get] /store/regions/{id}
  * operationId: GetRegionsRegion
- * summary: Retrieves a Region
+ * summary: Get a Region
  * description: "Retrieves a Region."
  * parameters:
  *   - (path) id=* {string} The id of the Region.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -21,16 +25,14 @@ import RegionService from "../../../../services/region"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/regions/{id}'
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             region:
- *               $ref: "#/components/schemas/region"
+ *           $ref: "#/components/schemas/StoreRegionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -48,7 +50,7 @@ export default async (req, res) => {
   const regionService: RegionService = req.scope.resolve("regionService")
 
   const region = await regionService.retrieve(region_id, {
-    relations: ["countries", "payment_providers", "fulfillment_providers"],
+    relations: defaultRelations,
   })
 
   res.json({ region })

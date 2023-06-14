@@ -1,16 +1,18 @@
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
-import { EntityManager } from "typeorm";
-import IdempotencyKeyService from "../../../../services/idempotency-key";
+import { EntityManager } from "typeorm"
+import IdempotencyKeyService from "../../../../services/idempotency-key"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/payment-sessions
+ * @oas [post] /store/carts/{id}/payment-sessions
  * operationId: "PostCartsCartPaymentSessions"
- * summary: "Initialize Payment Sessions"
+ * summary: "Create Payment Sessions"
  * description: "Creates Payment Sessions for each of the available Payment Providers in the Cart's Region."
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
+ * x-codegen:
+ *   method: createPaymentSessions
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -26,16 +28,14 @@ import IdempotencyKeyService from "../../../../services/idempotency-key";
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             cart:
- *               $ref: "#/components/schemas/cart"
+ *           $ref: "#/components/schemas/StoreCartsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -61,12 +61,9 @@ export default async (req, res) => {
   let idempotencyKey
   try {
     await manager.transaction(async (transactionManager) => {
-      idempotencyKey = await idempotencyKeyService.withTransaction(transactionManager).initializeRequest(
-        headerKey,
-        req.method,
-        req.params,
-        req.path
-      )
+      idempotencyKey = await idempotencyKeyService
+        .withTransaction(transactionManager)
+        .initializeRequest(headerKey, req.method, req.params, req.path)
     })
   } catch (error) {
     res.status(409).send("Failed to create idempotency key")
@@ -76,72 +73,72 @@ export default async (req, res) => {
   res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
-  try {
-    let inProgress = true
-    let err: unknown = false
+  let inProgress = true
+  let err: unknown = false
 
-    while (inProgress) {
-      switch (idempotencyKey.recovery_point) {
-        case "started": {
-          await manager.transaction(async (transactionManager) => {
-            const { key, error } = await idempotencyKeyService
+  while (inProgress) {
+    switch (idempotencyKey.recovery_point) {
+      case "started": {
+        await manager
+          .transaction("SERIALIZABLE", async (transactionManager) => {
+            idempotencyKey = await idempotencyKeyService
               .withTransaction(transactionManager)
               .workStage(
                 idempotencyKey.idempotency_key,
                 async (stageManager) => {
-                  await cartService.withTransaction(stageManager).setPaymentSessions(id)
+                  await cartService
+                    .withTransaction(stageManager)
+                    .setPaymentSessions(id)
 
-                  const cart = await cartService.withTransaction(stageManager).retrieve(id, {
-                    select: defaultStoreCartFields,
-                    relations: defaultStoreCartRelations,
-                  })
-
-                  const data = await decorateLineItemsWithTotals(cart, req, {
-                    force_taxes: false,
-                    transactionManager: stageManager
-                  })
+                  const cart = await cartService
+                    .withTransaction(stageManager)
+                    .retrieveWithTotals(id, {
+                      select: defaultStoreCartFields,
+                      relations: defaultStoreCartRelations,
+                    })
 
                   return {
                     response_code: 200,
-                    response_body: { cart: data },
+                    response_body: { cart },
                   }
-                })
-
-            if (error) {
-              inProgress = false
-              err = error
-            } else {
-              idempotencyKey = key
-            }
-          })
-          break
-        }
-
-        case "finished": {
-          inProgress = false
-          break
-        }
-
-        default:
-          await manager.transaction(async (transactionManager) => {
-            idempotencyKey = await idempotencyKeyService
-              .withTransaction(transactionManager)
-              .update(
-                idempotencyKey.idempotency_key,
-                {
-                  recovery_point: "finished",
-                  response_code: 500,
-                  response_body: { message: "Unknown recovery point" },
                 }
               )
           })
-          break
+          .catch((e) => {
+            inProgress = false
+            err = e
+          })
+        break
       }
-    }
 
-    res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
-  } catch (e) {
-    console.log(e)
-    throw e
+      case "finished": {
+        inProgress = false
+        break
+      }
+
+      default:
+        await manager.transaction(async (transactionManager) => {
+          idempotencyKey = await idempotencyKeyService
+            .withTransaction(transactionManager)
+            .update(idempotencyKey.idempotency_key, {
+              recovery_point: "finished",
+              response_code: 500,
+              response_body: { message: "Unknown recovery point" },
+            })
+        })
+        break
+    }
   }
+
+  if (err) {
+    throw err
+  }
+
+  if (idempotencyKey.response_body.cart) {
+    idempotencyKey.response_body.data = cleanResponseData(
+      idempotencyKey.response_body.cart,
+      []
+    )
+  }
+  res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }

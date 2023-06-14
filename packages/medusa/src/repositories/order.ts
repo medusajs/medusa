@@ -1,18 +1,22 @@
+import { objectToStringPath } from "@medusajs/utils"
 import { flatten, groupBy, map, merge } from "lodash"
-import { EntityRepository, FindManyOptions, Repository } from "typeorm"
+import { FindManyOptions, FindOptionsRelations, In } from "typeorm"
+import { dataSource } from "../loaders/database"
 import { Order } from "../models"
 
-@EntityRepository(Order)
-export class OrderRepository extends Repository<Order> {
-  public async findWithRelations(
-    relations: string[] = [],
+const ITEMS_REL_NAME = "items"
+const REGION_REL_NAME = "region"
+
+export const OrderRepository = dataSource.getRepository(Order).extend({
+  async findWithRelations(
+    relations: FindOptionsRelations<Order> = {},
     optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
   ): Promise<Order[]> {
     const entities = await this.find(optionsWithoutRelations)
     const entitiesIds = entities.map(({ id }) => id)
 
-    const groupedRelations = {}
-    for (const rel of relations) {
+    const groupedRelations: { [topLevel: string]: string[] } = {}
+    for (const rel of objectToStringPath(relations)) {
       const [topLevel] = rel.split(".")
       if (groupedRelations[topLevel]) {
         groupedRelations[topLevel].push(rel)
@@ -22,10 +26,15 @@ export class OrderRepository extends Repository<Order> {
     }
 
     const entitiesIdsWithRelations = await Promise.all(
-      Object.entries(groupedRelations).map(([_, rels]) => {
-        return this.findByIds(entitiesIds, {
+      Object.entries(groupedRelations).map(async ([topLevel, rels]) => {
+        // If top level is region or items then get deleted region as well
+        return this.find({
+          where: { id: In(entitiesIds) },
           select: ["id"],
-          relations: rels as string[],
+          relations: rels,
+          withDeleted:
+            topLevel === ITEMS_REL_NAME || topLevel === REGION_REL_NAME,
+          relationLoadStrategy: "join",
         })
       })
     ).then(flatten)
@@ -35,10 +44,10 @@ export class OrderRepository extends Repository<Order> {
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
 
     return map(entities, (e) => merge({}, ...entitiesAndRelationsById[e.id]))
-  }
+  },
 
-  public async findOneWithRelations(
-    relations: string[] = [],
+  async findOneWithRelations(
+    relations: FindOptionsRelations<Order> = {},
     optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
   ): Promise<Order> {
     // Limit 1
@@ -49,5 +58,7 @@ export class OrderRepository extends Repository<Order> {
       optionsWithoutRelations
     )
     return result[0]
-  }
-}
+  },
+})
+
+export default OrderRepository

@@ -1,13 +1,21 @@
+import { Order } from "../../../../models"
 import { OrderService } from "../../../../services"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [get] /orders/{id}
+ * @oas [get] /admin/orders/{id}
  * operationId: "GetOrdersOrder"
- * summary: "Retrieve an Order"
+ * summary: "Get an Order"
  * description: "Retrieves an Order"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma separated list of relations to include in the results.
+ *   - (query) fields {string} Comma separated list of fields to include in the results.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: AdminGetOrdersOrderParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -28,16 +36,14 @@ import { OrderService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -56,7 +62,17 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const order = await orderService.retrieve(id, req.retrieveConfig)
+  let order: Partial<Order> = await orderService.retrieveWithTotals(
+    id,
+    req.retrieveConfig,
+    {
+      includes: req.includes,
+    }
+  )
 
-  res.json({ order })
+  order = cleanResponseData(order, req.allowedProperties)
+
+  res.json({ order: cleanResponseData(order, []) })
 }
+
+export class AdminGetOrdersOrderParams extends FindParams {}

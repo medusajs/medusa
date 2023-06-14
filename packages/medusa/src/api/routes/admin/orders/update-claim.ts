@@ -1,4 +1,3 @@
-import { ClaimService, OrderService } from "../../../../services"
 import {
   IsArray,
   IsBoolean,
@@ -9,14 +8,16 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { ClaimService, OrderService } from "../../../../services"
 
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /order/{id}/claims/{claim_id}
+ * @oas [post] /admin/orders/{id}/claims/{claim_id}
  * operationId: "PostOrdersOrderClaimsClaim"
  * summary: "Update a Claim"
  * description: "Updates a Claim."
@@ -24,87 +25,16 @@ import { EntityManager } from "typeorm"
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (path) claim_id=* {string} The ID of the Claim.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           claim_items:
- *             description: The Claim Items that the Claim will consist of.
- *             type: array
- *             items:
- *               required:
- *                 - id
- *                 - images
- *                 - tags
- *               properties:
- *                 id:
- *                   description: The ID of the Claim Item.
- *                   type: string
- *                 item_id:
- *                   description: The ID of the Line Item that will be claimed.
- *                   type: string
- *                 quantity:
- *                   description: The number of items that will be returned
- *                   type: integer
- *                 note:
- *                   description: Short text describing the Claim Item in further detail.
- *                   type: string
- *                 reason:
- *                   description: The reason for the Claim
- *                   type: string
- *                   enum:
- *                     - missing_item
- *                     - wrong_item
- *                     - production_failure
- *                     - other
- *                 tags:
- *                   description: A list o tags to add to the Claim Item
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                         description: Tag ID
- *                       value:
- *                         type: string
- *                         description: Tag value
- *                 images:
- *                   description: A list of image URL's that will be associated with the Claim
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                         description: Image ID
- *                       url:
- *                         type: string
- *                         description: Image URL
- *                 metadata:
- *                   description: An optional set of key-value pairs to hold additional information.
- *                   type: object
- *           shipping_methods:
- *             description: The Shipping Methods to send the additional Line Items with.
- *             type: array
- *             items:
- *                properties:
- *                  id:
- *                    description: The ID of an existing Shipping Method
- *                    type: string
- *                  option_id:
- *                    description: The ID of the Shipping Option to create a Shipping Method from
- *                    type: string
- *                  price:
- *                    description: The price to charge for the Shipping Method
- *                    type: integer
- *           no_notification:
- *             description: If set to true no notification will be send related to this Swap.
- *             type: boolean
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostOrdersOrderClaimsClaimReq"
+ * x-codegen:
+ *   method: updateClaim
+ *   params: AdminPostOrdersOrderClaimsClaimParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -131,16 +61,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Claim
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -172,14 +100,99 @@ export default async (req, res) => {
       .update(claim_id, validated)
   })
 
-  const data = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const data = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.json({ order: data })
+  res.json({ order: cleanResponseData(data, []) })
 }
 
+/**
+ * @schema AdminPostOrdersOrderClaimsClaimReq
+ * type: object
+ * properties:
+ *   claim_items:
+ *     description: The Claim Items that the Claim will consist of.
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - id
+ *         - images
+ *         - tags
+ *       properties:
+ *         id:
+ *           description: The ID of the Claim Item.
+ *           type: string
+ *         item_id:
+ *           description: The ID of the Line Item that will be claimed.
+ *           type: string
+ *         quantity:
+ *           description: The number of items that will be returned
+ *           type: integer
+ *         note:
+ *           description: Short text describing the Claim Item in further detail.
+ *           type: string
+ *         reason:
+ *           description: The reason for the Claim
+ *           type: string
+ *           enum:
+ *             - missing_item
+ *             - wrong_item
+ *             - production_failure
+ *             - other
+ *         tags:
+ *           description: A list o tags to add to the Claim Item
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 description: Tag ID
+ *               value:
+ *                 type: string
+ *                 description: Tag value
+ *         images:
+ *           description: A list of image URL's that will be associated with the Claim
+ *           type: array
+ *           items:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: string
+ *                 description: Image ID
+ *               url:
+ *                 type: string
+ *                 description: Image URL
+ *         metadata:
+ *           description: An optional set of key-value pairs to hold additional information.
+ *           type: object
+ *   shipping_methods:
+ *     description: The Shipping Methods to send the additional Line Items with.
+ *     type: array
+ *     items:
+ *        type: object
+ *        properties:
+ *          id:
+ *            description: The ID of an existing Shipping Method
+ *            type: string
+ *          option_id:
+ *            description: The ID of the Shipping Option to create a Shipping Method from
+ *            type: string
+ *          price:
+ *            description: The price to charge for the Shipping Method
+ *            type: integer
+ *          data:
+ *            description: An optional set of key-value pairs to hold additional information.
+ *            type: object
+ *   no_notification:
+ *     description: If set to true no notification will be send related to this Swap.
+ *     type: boolean
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminPostOrdersOrderClaimsClaimReq {
   @IsArray()
   @IsOptional()
@@ -214,6 +227,10 @@ class ShippingMethod {
   @IsInt()
   @IsOptional()
   price?: number
+
+  @IsObject()
+  @IsOptional()
+  data?: Record<string, unknown>
 }
 
 class Item {
@@ -241,7 +258,7 @@ class Item {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }
 
 class Image {
@@ -263,3 +280,5 @@ class Tag {
   @IsOptional()
   value?: string
 }
+
+export class AdminPostOrdersOrderClaimsClaimParams extends FindParams {}

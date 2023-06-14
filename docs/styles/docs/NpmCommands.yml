@@ -1,0 +1,11 @@
+extends: substitution
+message: Use '%s' instead of '%s'
+link: https://docs.medusajs.com/contribution-guidelines#expand-commands
+level: error
+scope: code
+ignorecase: false
+# swap maps tokens in form of bad: good
+swap:
+  npm i: npm install
+  npm start: npm run start
+  npm build: npm run build

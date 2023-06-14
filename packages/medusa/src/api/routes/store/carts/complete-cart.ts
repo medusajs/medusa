@@ -1,10 +1,11 @@
-import { EntityManager } from "typeorm";
+import { EntityManager } from "typeorm"
 import { AbstractCartCompletionStrategy } from "../../../../interfaces"
-import { IdempotencyKey } from "../../../../models/idempotency-key"
+import { IdempotencyKey } from "../../../../models"
 import { IdempotencyKeyService } from "../../../../services"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/complete
+ * @oas [post] /store/carts/{id}/complete
  * summary: "Complete a Cart"
  * operationId: "PostCartsCartComplete"
  * description: "Completes a cart. The following steps will be performed. Payment
@@ -15,6 +16,8 @@ import { IdempotencyKeyService } from "../../../../services"
  *   will generate one for the request."
  * parameters:
  *   - (path) id=* {String} The Cart id.
+ * x-codegen:
+ *   method: complete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -30,7 +33,7 @@ import { IdempotencyKeyService } from "../../../../services"
  *     source: |
  *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/complete'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: "If a cart was successfully authorized, but requires further
@@ -40,30 +43,7 @@ import { IdempotencyKeyService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             type:
- *               type: string
- *               description: The type of the data property.
- *               enum: [order, cart, swap]
- *             data:
- *               type: object
- *               description: The data of the result object. Its type depends on the type field.
- *               oneOf:
- *                 - type: object
- *                   description: Cart was successfully authorized and order was placed successfully.
- *                   properties:
- *                     order:
- *                       $ref: "#/components/schemas/order"
- *                 - type: object
- *                   description: Cart was successfully authorized but requires further actions.
- *                   properties:
- *                     cart:
- *                       $ref: "#/components/schemas/cart"
- *                 - type: object
- *                   description: When cart is used for a swap and it has been completed successfully.
- *                   properties:
- *                     cart:
- *                       $ref: "#/components/schemas/swap"
+ *           $ref: "#/components/schemas/StoreCompleteCartRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -88,12 +68,9 @@ export default async (req, res) => {
   let idempotencyKey: IdempotencyKey
   try {
     idempotencyKey = await manager.transaction(async (transactionManager) => {
-      return await idempotencyKeyService.withTransaction(transactionManager).initializeRequest(
-        headerKey,
-        req.method,
-        req.params,
-        req.path
-      )
+      return await idempotencyKeyService
+        .withTransaction(transactionManager)
+        .initializeRequest(headerKey, req.method, req.params, req.path)
     })
   } catch (error) {
     console.log(error)
@@ -113,6 +90,10 @@ export default async (req, res) => {
     idempotencyKey,
     req.request_context
   )
+
+  if (response_body.data) {
+    response_body.data = cleanResponseData(response_body.data, [])
+  }
 
   res.status(response_code).json(response_body)
 }

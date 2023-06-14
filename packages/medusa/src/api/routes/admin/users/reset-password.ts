@@ -9,30 +9,18 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /users/reset-password
+ * @oas [post] /admin/users/reset-password
  * operationId: "PostUsersUserPassword"
- * summary: "Set the password for a User."
+ * summary: "Reset Password"
  * description: "Sets the password for a User given the correct token."
  * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - token
- *           - password
- *         properties:
- *           email:
- *             description: "The Users email."
- *             type: string
- *             format: email
- *           token:
- *             description: "The token generated from the 'password-token' endpoint."
- *             type: string
- *           password:
- *             description: "The Users new password."
- *             type: string
- *             format: password
+ *         $ref: "#/components/schemas/AdminResetPasswordRequest"
+ * x-codegen:
+ *   method: resetPassword
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -61,16 +49,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - User
+ *   - Users
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             user:
- *               $ref: "#/components/schemas/user"
+ *           $ref: "#/components/schemas/AdminUserRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -90,7 +76,7 @@ export default async (req, res) => {
   try {
     const userService: UserService = req.scope.resolve("userService")
 
-    const decoded = (await jwt.decode(validated.token)) as payload
+    const decoded = jwt.decode(validated.token) as payload
 
     let user: User
     try {
@@ -104,10 +90,10 @@ export default async (req, res) => {
       throw new MedusaError(MedusaError.Types.INVALID_DATA, "invalid token")
     }
 
-    const verifiedToken = (await jwt.verify(
+    const verifiedToken = jwt.verify(
       validated.token,
       user.password_hash
-    )) as payload
+    ) as payload
     if (!verifiedToken || verifiedToken.user_id !== user.id) {
       res.status(401).send("Invalid or expired password reset token")
       return
@@ -134,6 +120,26 @@ export type payload = {
   user_id: string
   password: string
 }
+
+/**
+ * @schema AdminResetPasswordRequest
+ * type: object
+ * required:
+ *   - token
+ *   - password
+ * properties:
+ *   email:
+ *     description: "The Users email."
+ *     type: string
+ *     format: email
+ *   token:
+ *     description: "The token generated from the 'password-token' endpoint."
+ *     type: string
+ *   password:
+ *     description: "The Users new password."
+ *     type: string
+ *     format: password
+ */
 export class AdminResetPasswordRequest {
   @IsEmail()
   @IsOptional()

@@ -1,6 +1,6 @@
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import faker from "faker"
-import { ShippingMethodTaxLine, ShippingMethod } from "@medusajs/medusa"
+import { ShippingMethod, ShippingMethodTaxLine } from "@medusajs/medusa"
 
 import {
   ShippingOptionFactoryData,
@@ -15,10 +15,11 @@ export type ShippingMethodFactoryData = {
   price?: number
   shipping_option: string | ShippingOptionFactoryData
   tax_lines?: ShippingMethodTaxLine[]
+  includes_tax?: boolean
 }
 
 export const simpleShippingMethodFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: ShippingMethodFactoryData,
   seed?: number
 ): Promise<ShippingMethod> => {
@@ -26,14 +27,14 @@ export const simpleShippingMethodFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   let shippingOptionId: string
   if (typeof data.shipping_option === "string") {
     shippingOptionId = data.shipping_option
   } else {
     const option = await simpleShippingOptionFactory(
-      connection,
+      dataSource,
       data.shipping_option
     )
     shippingOptionId = option.id
@@ -47,6 +48,7 @@ export const simpleShippingMethodFactory = async (
     shipping_option_id: shippingOptionId,
     data: data.data || {},
     price: typeof data.price !== "undefined" ? data.price : 500,
+    includes_tax: data.includes_tax,
   })
 
   const shippingMethod = await manager.save(toSave)

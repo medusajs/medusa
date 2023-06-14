@@ -1,10 +1,11 @@
-import { Connection } from "typeorm"
-import faker from "faker"
 import {
+  MoneyAmount,
   ProductOptionValue,
   ProductVariant,
-  MoneyAmount,
 } from "@medusajs/medusa"
+
+import { Connection } from "typeorm"
+import faker from "faker"
 
 export type ProductVariantFactoryData = {
   product_id: string
@@ -12,6 +13,8 @@ export type ProductVariantFactoryData = {
   is_giftcard?: boolean
   inventory_quantity?: number
   title?: string
+  allow_backorder?: boolean
+  manage_inventory?: boolean
   options?: { option_id: string; value: string }[]
   prices?: { currency: string; amount: number }[]
 }
@@ -31,6 +34,8 @@ export const simpleProductVariantFactory = async (
   const toSave = manager.create(ProductVariant, {
     id,
     product_id: data.product_id,
+    allow_backorder: data.allow_backorder || false,
+    manage_inventory: typeof data.manage_inventory !== 'undefined' ? data.manage_inventory : true,
     inventory_quantity:
       typeof data.inventory_quantity !== "undefined"
         ? data.inventory_quantity

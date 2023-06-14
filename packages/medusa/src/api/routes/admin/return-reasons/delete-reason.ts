@@ -2,13 +2,15 @@ import { EntityManager } from "typeorm"
 import { ReturnReasonService } from "../../../../services"
 
 /**
- * @oas [delete] /return-reasons/{id}
+ * @oas [delete] /admin/return-reasons/{id}
  * operationId: "DeleteReturnReason"
- * summary: "Delete a return reason"
+ * summary: "Delete a Return Reason"
  * description: "Deletes a return reason."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the return reason
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -29,25 +31,14 @@ import { ReturnReasonService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Return Reason
+ *   - Return Reasons
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted return reason
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: return_reason
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminReturnReasonsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

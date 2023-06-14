@@ -56,13 +56,64 @@ export default (app) => {
 /* ************************************** */
 /* ******** EXPORT API CLIENT TYPES ***** */
 /* ************************************** */
-
+/**
+ * @schema AdminCustomerGroupsRes
+ * type: object
+ * required:
+ *   - customer_group
+ * properties:
+ *   customer_group:
+ *     $ref: "#/components/schemas/CustomerGroup"
+ */
 export type AdminCustomerGroupsRes = {
   customer_group: CustomerGroup
 }
 
+/**
+ * @schema AdminCustomerGroupsDeleteRes
+ * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted customer group.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: customer_group
+ *   deleted:
+ *     type: boolean
+ *     description: Whether the customer group was deleted successfully or not.
+ *     default: true
+ */
 export type AdminCustomerGroupsDeleteRes = DeleteResponse
 
+/**
+ * @schema AdminCustomerGroupsListRes
+ * type: object
+ * required:
+ *   - customer_groups
+ *   - count
+ *   - offset
+ *   - limit
+ * properties:
+ *   customer_groups:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/CustomerGroup"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminCustomerGroupsListRes = PaginatedResponse & {
   customer_groups: CustomerGroup[]
 }

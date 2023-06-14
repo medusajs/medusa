@@ -1,16 +1,18 @@
 import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [delete] /carts/{id}/discounts/{code}
+ * @oas [delete] /store/carts/{id}/discounts/{code}
  * operationId: DeleteCartsCartDiscountsDiscount
  * description: "Removes a Discount from a Cart."
- * summary: "Remove Discount from Cart"
+ * summary: "Remove Discount"
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) code=* {string} The unique Discount code.
+ * x-codegen:
+ *   method: deleteDiscount
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -26,16 +28,14 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/discounts/{code}'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             cart:
- *               $ref: "#/components/schemas/cart"
+ *           $ref: "#/components/schemas/StoreCartsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -67,11 +67,10 @@ export default async (req, res) => {
     }
   })
 
-  const cart = await cartService.retrieve(id, {
+  const data = await cartService.retrieveWithTotals(id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
-  const data = await decorateLineItemsWithTotals(cart, req)
 
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }

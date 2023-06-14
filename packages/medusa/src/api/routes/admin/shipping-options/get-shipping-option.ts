@@ -1,11 +1,15 @@
+import { defaultFields, defaultRelations } from "."
+
 /**
- * @oas [get] /shipping-options/{id}
+ * @oas [get] /admin/shipping-options/{id}
  * operationId: "GetShippingOptionsOption"
- * summary: "Retrieve a Shipping Option"
+ * summary: "Get a Shipping Option"
  * description: "Retrieves a Shipping Option."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Shipping Option.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -26,16 +30,14 @@
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             shipping_option:
- *               $ref: "#/components/schemas/shipping_option"
+ *           $ref: "#/components/schemas/AdminShippingOptionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -52,7 +54,11 @@
 export default async (req, res) => {
   const { option_id } = req.params
   const optionService = req.scope.resolve("shippingOptionService")
-  const data = await optionService.retrieve(option_id)
+
+  const data = await optionService.retrieve(option_id, {
+    select: defaultFields,
+    relations: defaultRelations,
+  })
 
   res.status(200).json({ shipping_option: data })
 }

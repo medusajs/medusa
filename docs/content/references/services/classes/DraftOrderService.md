@@ -28,7 +28,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:51](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L51)
+[medusa/src/services/draft-order.ts:67](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L67)
 
 ## Properties
 
@@ -42,7 +42,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -56,7 +56,21 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+
+___
+
+### \_\_moduleDeclaration\_\_
+
+• `Protected` `Optional` `Readonly` **\_\_moduleDeclaration\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_moduleDeclaration\_\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -66,17 +80,27 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:46](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L46)
+[medusa/src/services/draft-order.ts:61](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L61)
+
+___
+
+### customShippingOptionService\_
+
+• `Protected` `Readonly` **customShippingOptionService\_**: [`CustomShippingOptionService`](CustomShippingOptionService.md)
+
+#### Defined in
+
+[medusa/src/services/draft-order.ts:65](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L65)
 
 ___
 
 ### draftOrderRepository\_
 
-• `Protected` `Readonly` **draftOrderRepository\_**: typeof `DraftOrderRepository`
+• `Protected` `Readonly` **draftOrderRepository\_**: `Repository`<`DraftOrder`\>
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:42](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L42)
+[medusa/src/services/draft-order.ts:57](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L57)
 
 ___
 
@@ -86,7 +110,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:45](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L45)
+[medusa/src/services/draft-order.ts:60](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L60)
 
 ___
 
@@ -96,7 +120,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:47](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L47)
+[medusa/src/services/draft-order.ts:62](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L62)
 
 ___
 
@@ -104,33 +128,33 @@ ___
 
 • `Protected` **manager\_**: `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:39](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L39)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
 ### orderRepository\_
 
-• `Protected` `Readonly` **orderRepository\_**: typeof `OrderRepository`
+• `Protected` `Readonly` **orderRepository\_**: `Repository`<`Order`\> & { `findOneWithRelations`: (`relations`: `FindOptionsRelations`<`Order`\>, `optionsWithoutRelations`: `Omit`<`FindManyOptions`<`Order`\>, ``"relations"``\>) => `Promise`<`Order`\> ; `findWithRelations`: (`relations`: `FindOptionsRelations`<`Order`\>, `optionsWithoutRelations`: `Omit`<`FindManyOptions`<`Order`\>, ``"relations"``\>) => `Promise`<`Order`[]\>  }
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:44](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L44)
+[medusa/src/services/draft-order.ts:59](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L59)
 
 ___
 
 ### paymentRepository\_
 
-• `Protected` `Readonly` **paymentRepository\_**: typeof `PaymentRepository`
+• `Protected` `Readonly` **paymentRepository\_**: `Repository`<`Payment`\>
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:43](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L43)
+[medusa/src/services/draft-order.ts:58](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L58)
 
 ___
 
@@ -140,7 +164,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:48](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L48)
+[medusa/src/services/draft-order.ts:63](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L63)
 
 ___
 
@@ -150,7 +174,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:49](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L49)
+[medusa/src/services/draft-order.ts:64](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L64)
 
 ___
 
@@ -158,13 +182,13 @@ ___
 
 • `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:40](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L40)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -181,7 +205,25 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:34](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L34)
+[medusa/src/services/draft-order.ts:52](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L52)
+
+## Accessors
+
+### activeManager\_
+
+• `Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+#### Inherited from
+
+TransactionBaseService.activeManager\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -220,7 +262,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -234,7 +276,7 @@ Creates a draft order.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `data` | `AdminPostDraftOrdersReq` | data to create draft order from |
+| `data` | `DraftOrderCreateProps` | data to create draft order from |
 
 #### Returns
 
@@ -244,7 +286,7 @@ the created draft order
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:245](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L245)
+[medusa/src/services/draft-order.ts:260](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L260)
 
 ___
 
@@ -268,7 +310,7 @@ empty promise
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:144](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L144)
+[medusa/src/services/draft-order.ts:156](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L156)
 
 ___
 
@@ -293,7 +335,7 @@ list of draft orders
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:222](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L222)
+[medusa/src/services/draft-order.ts:238](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L238)
 
 ___
 
@@ -318,7 +360,7 @@ draft orders
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:168](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L168)
+[medusa/src/services/draft-order.ts:180](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L180)
 
 ___
 
@@ -343,13 +385,13 @@ the created order
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:357](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L357)
+[medusa/src/services/draft-order.ts:421](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L421)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `config?`): `Promise`<`DraftOrder`\>
+▸ **retrieve**(`draftOrderId`, `config?`): `Promise`<`DraftOrder`\>
 
 Retrieves a draft order with the given id.
 
@@ -357,7 +399,7 @@ Retrieves a draft order with the given id.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | id of the draft order to retrieve |
+| `draftOrderId` | `string` | id of the draft order to retrieve |
 | `config` | `FindConfig`<`DraftOrder`\> | query object for findOne |
 
 #### Returns
@@ -368,7 +410,7 @@ the draft order
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:91](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L91)
+[medusa/src/services/draft-order.ts:98](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L98)
 
 ___
 
@@ -393,7 +435,7 @@ the draft order
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:118](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L118)
+[medusa/src/services/draft-order.ts:131](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L131)
 
 ___
 
@@ -417,7 +459,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -443,7 +485,7 @@ the updated draft order
 
 #### Defined in
 
-[packages/medusa/src/services/draft-order.ts:386](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/draft-order.ts#L386)
+[medusa/src/services/draft-order.ts:450](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/draft-order.ts#L450)
 
 ___
 
@@ -467,4 +509,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

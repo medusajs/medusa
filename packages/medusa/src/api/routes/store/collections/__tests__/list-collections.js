@@ -36,6 +36,11 @@ describe("GET /store/collections", () => {
       expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
+          order: {
+            created_at: "DESC",
+          },
+          relations: [],
+          select: undefined,
           skip: 0,
           take: 5,
         }
@@ -60,6 +65,11 @@ describe("GET /store/collections", () => {
       expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
+          order: {
+            created_at: "DESC",
+          },
+          relations: [],
+          select: undefined,
           skip: 10,
           take: 10,
         }
@@ -84,6 +94,11 @@ describe("GET /store/collections", () => {
       expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
+          order: {
+            created_at: "DESC",
+          },
+          relations: [],
+          select: undefined,
           skip: 10,
           take: 20,
         }

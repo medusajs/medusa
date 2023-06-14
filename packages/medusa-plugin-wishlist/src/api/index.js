@@ -1,15 +1,14 @@
-import { Router } from "express"
+import express, { Router } from "express"
 import jwt from "jsonwebtoken"
 import cors from "cors"
-import express from "express"
-import { getConfigFile, MedusaError } from "medusa-core-utils"
+import { getConfigFile, MedusaError, parseCorsOrigins } from "medusa-core-utils"
 
 const app = Router()
 export default (rootDirectory) => {
   const { configModule } = getConfigFile(rootDirectory, "medusa-config")
   const { projectConfig } = configModule
   const corsOptions = {
-    origin: projectConfig.store_cors.split(","),
+    origin: parseCorsOrigins(projectConfig.store_cors),
     credentials: true,
   }
   const JWT_SECRET = process.env.JWT_SECRET || ""

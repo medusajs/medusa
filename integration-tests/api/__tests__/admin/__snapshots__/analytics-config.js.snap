@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[MEDUSA_FF_ANALYTICS] /admin/analytics-config GET /admin/analytics-config should retrieve config for logged in user if it exists 1`] = `
+Object {
+  "analytics_config": Object {
+    "anonymize": false,
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "id": Any<String>,
+    "opt_out": false,
+    "updated_at": Any<String>,
+    "user_id": "admin_user",
+  },
+}
+`;
+
+exports[`[MEDUSA_FF_ANALYTICS] /admin/analytics-config POST /admin/analytics-config should create a new config for logged in user 1`] = `
+Object {
+  "analytics_config": Object {
+    "anonymize": true,
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "id": Any<String>,
+    "opt_out": true,
+    "updated_at": Any<String>,
+    "user_id": "admin_user",
+  },
+}
+`;
+
+exports[`[MEDUSA_FF_ANALYTICS] /admin/analytics-config POST /admin/analytics-config/update should create a config for the user is no config exists 1`] = `
+Object {
+  "analytics_config": Object {
+    "anonymize": false,
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "id": Any<String>,
+    "opt_out": true,
+    "updated_at": Any<String>,
+    "user_id": "admin_user",
+  },
+}
+`;
+
+exports[`[MEDUSA_FF_ANALYTICS] /admin/analytics-config POST /admin/analytics-config/update should update the config of the logged in user 1`] = `
+Object {
+  "analytics_config": Object {
+    "anonymize": false,
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "id": Any<String>,
+    "opt_out": true,
+    "updated_at": Any<String>,
+    "user_id": "admin_user",
+  },
+}
+`;

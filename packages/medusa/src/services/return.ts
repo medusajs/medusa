@@ -1,5 +1,4 @@
-import { isDefined } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import {
@@ -17,14 +16,17 @@ import { FindConfig, Selector } from "../types/common"
 import { OrdersReturnItem } from "../types/orders"
 import { CreateReturnInput, UpdateReturnInput } from "../types/return"
 import { buildQuery, setMetadata } from "../utils"
-import FulfillmentProviderService from "./fulfillment-provider"
-import InventoryService from "./inventory"
-import LineItemService from "./line-item"
-import OrderService from "./order"
-import ReturnReasonService from "./return-reason"
-import ShippingOptionService from "./shipping-option"
-import TaxProviderService from "./tax-provider"
-import TotalsService from "./totals"
+
+import {
+  FulfillmentProviderService,
+  LineItemService,
+  OrderService,
+  ProductVariantInventoryService,
+  ReturnReasonService,
+  ShippingOptionService,
+  TaxProviderService,
+  TotalsService,
+} from "."
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -36,8 +38,8 @@ type InjectedDependencies = {
   returnReasonService: ReturnReasonService
   taxProviderService: TaxProviderService
   fulfillmentProviderService: FulfillmentProviderService
-  inventoryService: InventoryService
   orderService: OrderService
+  productVariantInventoryService: ProductVariantInventoryService
 }
 
 type Transformer = (
@@ -47,9 +49,6 @@ type Transformer = (
 ) => Promise<DeepPartial<LineItem>> | DeepPartial<LineItem>
 
 class ReturnService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly totalsService_: TotalsService
   protected readonly returnRepository_: typeof ReturnRepository
   protected readonly returnItemRepository_: typeof ReturnItemRepository
@@ -58,11 +57,11 @@ class ReturnService extends TransactionBaseService {
   protected readonly shippingOptionService_: ShippingOptionService
   protected readonly fulfillmentProviderService_: FulfillmentProviderService
   protected readonly returnReasonService_: ReturnReasonService
-  protected readonly inventoryService_: InventoryService
   protected readonly orderService_: OrderService
+  // eslint-disable-next-line
+  protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
-    manager,
     totalsService,
     lineItemService,
     returnRepository,
@@ -71,24 +70,12 @@ class ReturnService extends TransactionBaseService {
     returnReasonService,
     taxProviderService,
     fulfillmentProviderService,
-    inventoryService,
     orderService,
+    productVariantInventoryService,
   }: InjectedDependencies) {
-    super({
-      manager,
-      totalsService,
-      lineItemService,
-      returnRepository,
-      returnItemRepository,
-      shippingOptionService,
-      returnReasonService,
-      taxProviderService,
-      fulfillmentProviderService,
-      inventoryService,
-      orderService,
-    })
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    this.manager_ = manager
     this.totalsService_ = totalsService
     this.returnRepository_ = returnRepository
     this.returnItemRepository_ = returnItemRepository
@@ -97,8 +84,8 @@ class ReturnService extends TransactionBaseService {
     this.shippingOptionService_ = shippingOptionService
     this.fulfillmentProviderService_ = fulfillmentProviderService
     this.returnReasonService_ = returnReasonService
-    this.inventoryService_ = inventoryService
     this.orderService_ = orderService
+    this.productVariantInventoryService_ = productVariantInventoryService
   }
 
   /**
@@ -151,7 +138,7 @@ class ReturnService extends TransactionBaseService {
    * @param config - the config object for find
    * @return the result of the find operation
    */
-  list(
+  async list(
     selector: Selector<Return>,
     config: FindConfig<Return> = {
       skip: 0,
@@ -159,7 +146,9 @@ class ReturnService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Return[]> {
-    const returnRepo = this.manager_.getCustomRepository(this.returnRepository_)
+    const returnRepo = this.activeManager_.withRepository(
+      this.returnRepository_
+    )
     const query = buildQuery(selector, config)
     return returnRepo.find(query)
   }
@@ -180,7 +169,7 @@ class ReturnService extends TransactionBaseService {
         )
       }
 
-      const retRepo = manager.getCustomRepository(this.returnRepository_)
+      const retRepo = manager.withRepository(this.returnRepository_)
 
       ret.status = ReturnStatus.CANCELED
 
@@ -237,7 +226,7 @@ class ReturnService extends TransactionBaseService {
       )
     }
 
-    const returnable = item.quantity - item.returned_quantity
+    const returnable = item.quantity - item.returned_quantity!
     if (quantity > returnable) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
@@ -263,26 +252,33 @@ class ReturnService extends TransactionBaseService {
 
   /**
    * Retrieves a return by its id.
-   * @param id - the id of the return to retrieve
+   * @param returnId - the id of the return to retrieve
    * @param config - the config object
    * @return the return
    */
   async retrieve(
-    id: string,
+    returnId: string,
     config: FindConfig<Return> = {}
   ): Promise<Return | never> {
-    const returnRepository = this.manager_.getCustomRepository(
+    if (!isDefined(returnId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"returnId" must be defined`
+      )
+    }
+
+    const returnRepository = this.activeManager_.withRepository(
       this.returnRepository_
     )
 
-    const query = buildQuery({ id }, config)
+    const query = buildQuery({ id: returnId }, config)
 
     const returnObj = await returnRepository.findOne(query)
 
     if (!returnObj) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Return with id: ${id} was not found`
+        `Return with id: ${returnId} was not found`
       )
     }
     return returnObj
@@ -292,7 +288,7 @@ class ReturnService extends TransactionBaseService {
     swapId: string,
     relations: string[] = []
   ): Promise<Return | never> {
-    const returnRepository = this.manager_.getCustomRepository(
+    const returnRepository = this.activeManager_.withRepository(
       this.returnRepository_
     )
 
@@ -334,7 +330,7 @@ class ReturnService extends TransactionBaseService {
         ret[key] = value
       }
 
-      const retRepo = manager.getCustomRepository(this.returnRepository_)
+      const retRepo = manager.withRepository(this.returnRepository_)
       return await retRepo.save(ret)
     })
   }
@@ -349,9 +345,7 @@ class ReturnService extends TransactionBaseService {
    */
   async create(data: CreateReturnInput): Promise<Return | never> {
     return await this.atomicPhase_(async (manager) => {
-      const returnRepository = manager.getCustomRepository(
-        this.returnRepository_
-      )
+      const returnRepository = manager.withRepository(this.returnRepository_)
 
       const orderId = data.order_id
       if (data.swap_id) {
@@ -415,7 +409,7 @@ class ReturnService extends TransactionBaseService {
         }
       } else {
         // Merchant hasn't specified refund amount so we calculate it
-        toRefund = this.totalsService_.getRefundTotal(order, returnLines)
+        toRefund = await this.totalsService_.getRefundTotal(order, returnLines)
       }
 
       const method = data.shipping_method
@@ -441,7 +435,7 @@ class ReturnService extends TransactionBaseService {
         )
       }
 
-      const rItemRepo = manager.getCustomRepository(this.returnItemRepository_)
+      const rItemRepo = manager.withRepository(this.returnItemRepository_)
       returnObject.items = returnLines.map((i) =>
         rItemRepo.create({
           item_id: i.id,
@@ -453,7 +447,7 @@ class ReturnService extends TransactionBaseService {
         })
       )
 
-      const created = (await returnRepository.create(returnObject)) as Return
+      const created = returnRepository.create(returnObject)
       const result = await returnRepository.save(created)
 
       if (method && method.option_id) {
@@ -469,7 +463,7 @@ class ReturnService extends TransactionBaseService {
           )
 
         const calculationContext =
-          this.totalsService_.getCalculationContext(order)
+          await this.totalsService_.getCalculationContext(order)
 
         const taxLines = await this.taxProviderService_
           .withTransaction(manager)
@@ -519,7 +513,7 @@ class ReturnService extends TransactionBaseService {
         {
           id: returnOrder.items.map(({ item_id }) => item_id),
         },
-        { relations: ["tax_lines"] }
+        { relations: ["tax_lines", "variant", "variant.product"] }
       )
 
       returnData.items = returnOrder.items.map((item) => {
@@ -544,7 +538,7 @@ class ReturnService extends TransactionBaseService {
       returnOrder.shipping_data =
         await this.fulfillmentProviderService_.createReturn(returnData)
 
-      const returnRepo = manager.getCustomRepository(this.returnRepository_)
+      const returnRepo = manager.withRepository(this.returnRepository_)
       return await returnRepo.save(returnOrder)
     })
   }
@@ -568,12 +562,11 @@ class ReturnService extends TransactionBaseService {
     returnId: string,
     receivedItems: OrdersReturnItem[],
     refundAmount?: number,
-    allowMismatch = false
+    allowMismatch = false,
+    context: { locationId?: string } = {}
   ): Promise<Return | never> {
     return await this.atomicPhase_(async (manager) => {
-      const returnRepository = manager.getCustomRepository(
-        this.returnRepository_
-      )
+      const returnRepository = manager.withRepository(this.returnRepository_)
 
       const returnObj = await this.retrieve(returnId, {
         relations: ["items", "swap", "swap.additional_items"],
@@ -594,7 +587,7 @@ class ReturnService extends TransactionBaseService {
 
       const order = await this.orderService_
         .withTransaction(manager)
-        .retrieve(orderId, {
+        .retrieve(orderId!, {
           relations: [
             "items",
             "returns",
@@ -653,11 +646,12 @@ class ReturnService extends TransactionBaseService {
         returnStatus = ReturnStatus.REQUIRES_ACTION
       }
 
-      const totalRefundableAmount = refundAmount || returnObj.refund_amount
+      const totalRefundableAmount = refundAmount ?? returnObj.refund_amount
 
       const now = new Date()
       const updateObj = {
         ...returnObj,
+        location_id: context.locationId || returnObj.location_id,
         status: returnStatus,
         items: newLines,
         refund_amount: totalRefundableAmount,
@@ -675,12 +669,15 @@ class ReturnService extends TransactionBaseService {
         })
       }
 
-      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
+      const productVarInventoryTx =
+        this.productVariantInventoryService_.withTransaction(manager)
+
       for (const line of newLines) {
         const orderItem = order.items.find((i) => i.id === line.item_id)
-        if (orderItem) {
-          await inventoryServiceTx.adjustInventory(
+        if (orderItem && orderItem.variant_id) {
+          await productVarInventoryTx.adjustInventory(
             orderItem.variant_id,
+            result.location_id!,
             line.received_quantity
           )
         }

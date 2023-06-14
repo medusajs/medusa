@@ -1,17 +1,71 @@
 import {
+  AdminDeleteDiscountsDiscountConditionsConditionBatchReq,
   AdminDiscountsDeleteRes,
   AdminDiscountsRes,
   AdminPostDiscountsDiscountConditions,
   AdminPostDiscountsDiscountConditionsCondition,
+  AdminPostDiscountsDiscountConditionsConditionBatchParams,
+  AdminPostDiscountsDiscountConditionsConditionBatchReq,
   AdminPostDiscountsDiscountDynamicCodesReq,
   AdminPostDiscountsDiscountReq,
-  AdminPostDiscountsReq
+  AdminPostDiscountsReq,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { useMedusa } from "../../../contexts/medusa"
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query"
+import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminDiscountKeys } from "./queries"
+
+export const useAdminAddDiscountConditionResourceBatch = (
+  discountId: string,
+  conditionId: string,
+  query?: AdminPostDiscountsDiscountConditionsConditionBatchParams,
+  options?: UseMutationOptions<
+    Response<AdminDiscountsRes>,
+    Error,
+    AdminPostDiscountsDiscountConditionsConditionBatchReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (payload: AdminPostDiscountsDiscountConditionsConditionBatchReq) =>
+      client.admin.discounts.addConditionResourceBatch(
+        discountId,
+        conditionId,
+        payload,
+        query
+      ),
+    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
+  )
+}
+
+export const useAdminDeleteDiscountConditionResourceBatch = (
+  discountId: string,
+  conditionId: string,
+  options?: UseMutationOptions<
+    Response<AdminDiscountsRes>,
+    Error,
+    AdminDeleteDiscountsDiscountConditionsConditionBatchReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    (payload: AdminDeleteDiscountsDiscountConditionsConditionBatchReq) =>
+      client.admin.discounts.deleteConditionResourceBatch(
+        discountId,
+        conditionId,
+        payload
+      ),
+    buildOptions(queryClient, [adminDiscountKeys.detail(discountId)], options)
+  )
+}
 
 export const useAdminCreateDiscount = (
   options?: UseMutationOptions<

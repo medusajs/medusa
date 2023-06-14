@@ -2,14 +2,17 @@ import { Request, Response } from "express"
 
 import ProductCollectionService from "../../../../services/product-collection"
 import { defaultAdminCollectionsRelations } from "."
+
 /**
- * @oas [get] /collections/{id}
+ * @oas [get] /admin/collections/{id}
  * operationId: "GetCollectionsCollection"
- * summary: "Retrieve a Product Collection"
+ * summary: "Get a Collection"
  * description: "Retrieves a Product Collection."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product Collection
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -30,16 +33,14 @@ import { defaultAdminCollectionsRelations } from "."
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Collection
+ *   - Collections
  * responses:
  *  "200":
  *    description: OK
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            collection:
- *              $ref: "#/components/schemas/product_collection"
+ *          $ref: "#/components/schemas/AdminCollectionsRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

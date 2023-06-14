@@ -16,9 +16,10 @@ const {
   PaymentSession,
   CustomerGroup,
   PriceList,
+  ShippingProfileType,
 } = require("@medusajs/medusa")
 
-module.exports = async (connection, data = {}) => {
+module.exports = async (dataSource, data = {}) => {
   const yesterday = ((today) => new Date(today.setDate(today.getDate() - 1)))(
     new Date()
   )
@@ -31,14 +32,14 @@ module.exports = async (connection, data = {}) => {
   const tenDaysFromToday = ((today) =>
     new Date(today.setDate(today.getDate() + 10)))(new Date())
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: "default",
+    where: { type: ShippingProfileType.DEFAULT },
   })
 
   const gcProfile = await manager.findOne(ShippingProfile, {
-    type: "gift_card",
+    where: { type: ShippingProfileType.GIFT_CARD },
   })
 
   await manager.insert(Address, {
@@ -327,7 +328,7 @@ module.exports = async (connection, data = {}) => {
     is_dynamic: true,
     is_disabled: false,
     starts_at: tenDaysAgo,
-    ends_at: tenDaysFromToday,
+    ends_at: yesterday,
     valid_duration: "P1D", // one day
   })
 

@@ -1,8 +1,8 @@
-import { TransactionBaseService } from "./transaction-base-service"
-import { BatchJobResultError, CreateBatchJobInput } from "../types/batch-job"
-import { ProductExportBatchJob } from "../strategies/batch-jobs/product"
-import { BatchJobService } from "../services"
 import { BatchJob } from "../models"
+import { BatchJobService } from "../services"
+import { ProductExportBatchJob } from "../strategies/batch-jobs/product/types"
+import { BatchJobResultError, CreateBatchJobInput } from "../types/batch-job"
+import { TransactionBaseService } from "./transaction-base-service"
 
 export interface IBatchJobStrategy extends TransactionBaseService {
   /**
@@ -69,6 +69,7 @@ export abstract class AbstractBatchJobStrategy
     err: unknown,
     result: T
   ): Promise<void> {
+    // TODO just throw to be handled by the subscriber
     return await this.atomicPhase_(async (transactionManager) => {
       const batchJob = (await this.batchJobService_
         .withTransaction(transactionManager)
@@ -95,7 +96,7 @@ export abstract class AbstractBatchJobStrategy
             },
             result: {
               ...result,
-              errors: [...existingErrors, resultError],
+              errors: [...existingErrors, resultError.message],
             },
           })
       } else {

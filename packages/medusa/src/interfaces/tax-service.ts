@@ -67,10 +67,10 @@ export abstract class AbstractTaxService
   protected static identifier: string
 
   public getIdentifier(): string {
-    if (!(<typeof AbstractTaxService>this.constructor).identifier) {
-      throw new Error('Missing static property "identifier".')
+    if (!(this.constructor as typeof AbstractTaxService).identifier) {
+      throw new Error(`Missing static property "identifier".`)
     }
-    return (<typeof AbstractTaxService>this.constructor).identifier
+    return (this.constructor as typeof AbstractTaxService).identifier
   }
 
   public abstract getTaxLines(

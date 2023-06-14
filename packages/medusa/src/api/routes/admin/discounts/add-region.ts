@@ -5,14 +5,16 @@ import DiscountService from "../../../../services/discount"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /discounts/{id}/regions/{region_id}
+ * @oas [post] /admin/discounts/{id}/regions/{region_id}
  * operationId: "PostDiscountsDiscountRegionsRegion"
- * summary: "Adds Region availability"
+ * summary: "Add Region"
  * description: "Adds a Region to the list of Regions that a Discount can be used in."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Discount.
  *   - (path) region_id=* {string} The ID of the Region.
+ * x-codegen:
+ *   method: addRegion
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,16 +35,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Discount
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             discount:
- *               $ref: "#/components/schemas/discount"
+ *           $ref: "#/components/schemas/AdminDiscountsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

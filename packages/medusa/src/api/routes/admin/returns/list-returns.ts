@@ -5,15 +5,19 @@ import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 import { FindConfig } from "../../../../types/common"
 import { Return } from "../../../../models"
+import { defaultRelationsList } from "."
 
 /**
- * @oas [get] /returns
+ * @oas [get] /admin/returns
  * operationId: "GetReturns"
  * summary: "List Returns"
  * description: "Retrieves a list of Returns"
  * parameters:
  *   - (query) limit=50 {number} The upper limit for the amount of responses returned.
  *   - (query) offset=0 {number} The offset of the list returned.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetReturnsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -34,27 +38,14 @@ import { Return } from "../../../../models"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Return
+ *   - Returns
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             returns:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/return"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminReturnsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -76,7 +67,7 @@ export default async (req, res) => {
   const selector = {}
 
   const listConfig = {
-    relations: ["swap", "order"],
+    relations: defaultRelationsList,
     skip: validated.offset,
     take: validated.limit,
     order: { created_at: "DESC" },

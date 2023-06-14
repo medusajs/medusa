@@ -2,37 +2,23 @@
 
 ## Classes
 
-- [AdminPostShippingProfilesProfileReq](../classes/internal-22.AdminPostShippingProfilesProfileReq.md)
-- [AdminPostShippingProfilesReq](../classes/internal-22.AdminPostShippingProfilesReq.md)
+- [AdminGetRegionsPaginationParams](../classes/internal-22.AdminGetRegionsPaginationParams.md)
+- [AdminGetRegionsParams](../classes/internal-22.AdminGetRegionsParams.md)
+- [AdminGetRegionsRegionFulfillmentOptionsRes](../classes/internal-22.AdminGetRegionsRegionFulfillmentOptionsRes.md)
+- [AdminPostRegionsRegionCountriesReq](../classes/internal-22.AdminPostRegionsRegionCountriesReq.md)
+- [AdminPostRegionsRegionFulfillmentProvidersReq](../classes/internal-22.AdminPostRegionsRegionFulfillmentProvidersReq.md)
+- [AdminPostRegionsRegionPaymentProvidersReq](../classes/internal-22.AdminPostRegionsRegionPaymentProvidersReq.md)
+- [AdminPostRegionsRegionReq](../classes/internal-22.AdminPostRegionsRegionReq.md)
+- [AdminPostRegionsReq](../classes/internal-22.AdminPostRegionsReq.md)
+- [AdminRegionsRes](../classes/internal-22.AdminRegionsRes.md)
+- [FulfillmentOption](../classes/internal-22.FulfillmentOption.md)
 
 ## Type Aliases
 
-### AdminShippingProfilesListRes
+### AdminRegionsListRes
 
-Ƭ **AdminShippingProfilesListRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `shipping_profiles` | [`ShippingProfile`](../classes/internal.ShippingProfile.md)[] |
+Ƭ **AdminRegionsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `regions`: [`Region`](../classes/internal.Region.md)[]  }
 
 #### Defined in
 
-medusa/dist/api/routes/admin/shipping-profiles/index.d.ts:12
-
-___
-
-### AdminShippingProfilesRes
-
-Ƭ **AdminShippingProfilesRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `shipping_profile` | [`ShippingProfile`](../classes/internal.ShippingProfile.md) |
-
-#### Defined in
-
-medusa/dist/api/routes/admin/shipping-profiles/index.d.ts:9
+medusa/dist/api/routes/admin/regions/index.d.ts:12

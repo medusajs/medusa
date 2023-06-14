@@ -1,34 +1,67 @@
-import { Connection, createConnection, LoggerOptions } from "typeorm"
-import { ShortenedNamingStrategy } from "../utils/naming-strategy"
 import { AwilixContainer } from "awilix"
-import { ConnectionOptions } from "typeorm/connection/ConnectionOptions"
+import {
+  DataSource,
+  DataSourceOptions,
+  Repository,
+  TreeRepository,
+} from "typeorm"
 import { ConfigModule } from "../types/global"
+import "../utils/naming-strategy"
+import { handlePostgresDatabaseError } from "@medusajs/utils"
 
 type Options = {
   configModule: ConfigModule
   container: AwilixContainer
+  customOptions?: {
+    migrations: DataSourceOptions["migrations"]
+    logging: DataSourceOptions["logging"]
+  }
 }
 
-export default async ({ container, configModule }: Options): Promise<Connection> => {
+export let dataSource: DataSource
+
+// TODO: With the latest version of typeorm, the datasource is expected to be
+// available globally. During the integration test, the medusa
+// files are imported from @medusajs/medusa, therefore, the repositories are
+// evaluated at the same time, unfortunately, the integration tests have their
+// own way to load and at the moment, the datasource does not exists. This is
+// why we are mocking them here
+if (process.env.NODE_ENV === "test") {
+  dataSource = {
+    getRepository: (target) => new Repository(target, {} as any) as any,
+    getTreeRepository: (target) => new TreeRepository(target, {} as any) as any,
+  } as unknown as DataSource
+}
+
+export default async ({
+  container,
+  configModule,
+  customOptions,
+}: Options): Promise<DataSource> => {
   const entities = container.resolve("db_entities")
 
-  const isSqlite = configModule.projectConfig.database_type === "sqlite"
-
-  const connection = await createConnection({
-    type: configModule.projectConfig.database_type,
+  dataSource = new DataSource({
+    type: "postgres",
     url: configModule.projectConfig.database_url,
     database: configModule.projectConfig.database_database,
     extra: configModule.projectConfig.database_extra || {},
+    schema: configModule.projectConfig.database_schema,
     entities,
-    namingStrategy: new ShortenedNamingStrategy(),
-    logging: configModule.projectConfig.database_logging || false,
-  } as ConnectionOptions)
+    migrations: customOptions?.migrations,
+    logging:
+      customOptions?.logging ??
+      (configModule.projectConfig.database_logging || false),
+  } as DataSourceOptions)
 
-  if (isSqlite) {
-    await connection.query(`PRAGMA foreign_keys = OFF`)
-    await connection.synchronize()
-    await connection.query(`PRAGMA foreign_keys = ON`)
+  await dataSource.initialize().catch(handlePostgresDatabaseError)
+
+  // If migrations are not included in the config, we assume you are attempting to start the server
+  // Therefore, throw if the database is not migrated
+  if (!dataSource.migrations?.length) {
+    await dataSource
+      .query(`select * from migrations`)
+      .catch(handlePostgresDatabaseError)
   }
 
-  return connection
+  return dataSource
 }

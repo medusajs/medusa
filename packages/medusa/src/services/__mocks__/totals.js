@@ -34,6 +34,12 @@ export const TotalsServiceMock = {
   getRefundedTotal: jest.fn().mockImplementation((order, lineItems) => {
     return Promise.resolve()
   }),
+  getCalculationContext: jest.fn().mockImplementation((order, lineItems) => {
+    return Promise.resolve({})
+  }),
+  getLineItemTotals: jest.fn().mockImplementation(() => {
+    return Promise.resolve({})
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {

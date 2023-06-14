@@ -1,12 +1,12 @@
 import {
-  PriceList,
-  MoneyAmount,
-  PriceListType,
-  PriceListStatus,
   CustomerGroup,
+  MoneyAmount,
+  PriceList,
+  PriceListStatus,
+  PriceListType,
 } from "@medusajs/medusa"
 import faker from "faker"
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import { simpleCustomerGroupFactory } from "./simple-customer-group-factory"
 
 type ProductListPrice = {
@@ -26,10 +26,11 @@ export type PriceListFactoryData = {
   ends_at?: Date
   customer_groups?: string[]
   prices?: ProductListPrice[]
+  includes_tax?: boolean
 }
 
 export const simplePriceListFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: PriceListFactoryData = {},
   seed?: number
 ): Promise<PriceList> => {
@@ -37,15 +38,15 @@ export const simplePriceListFactory = async (
     faker.seed(seed)
   }
 
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const listId = data.id || `simple-price-list-${Math.random() * 1000}`
 
-  let customerGroups = []
+  let customerGroups: CustomerGroup[] = []
   if (typeof data.customer_groups !== "undefined") {
     customerGroups = await Promise.all(
       data.customer_groups.map((group) =>
-        simpleCustomerGroupFactory(connection, { id: group })
+        simpleCustomerGroupFactory(dataSource, { id: group })
       )
     )
   }
@@ -59,6 +60,7 @@ export const simplePriceListFactory = async (
     starts_at: data.starts_at || null,
     ends_at: data.ends_at || null,
     customer_groups: customerGroups,
+    includes_tax: data.includes_tax,
   }
 
   const toSave = manager.create(PriceList, toCreate)

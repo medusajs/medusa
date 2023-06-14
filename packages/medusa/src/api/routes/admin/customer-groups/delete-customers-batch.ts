@@ -8,9 +8,9 @@ import { ValidateNested } from "class-validator"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [delete] /customer-groups/{id}/customers/batch
+ * @oas [delete] /admin/customer-groups/{id}/customers/batch
  * operationId: "DeleteCustomerGroupsGroupCustomerBatch"
- * summary: "Remove a list of customers from a customer group "
+ * summary: "Remove Customers"
  * description: "Removes a list of customers, represented by id's, from a customer group."
  * x-authenticated: true
  * parameters:
@@ -19,19 +19,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - customer_ids
- *         properties:
- *           customer_ids:
- *             description: "The ids of the customers to remove"
- *             type: array
- *             items:
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   description: ID of the customer
- *                   type: string
+ *         $ref: "#/components/schemas/AdminDeleteCustomerGroupsGroupCustomerBatchReq"
+ * x-codegen:
+ *   method: removeCustomers
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -66,16 +56,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Customer Group
+ *   - Customer Groups
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             customer_group:
- *               $ref: "#/components/schemas/customer_group"
+ *           $ref: "#/components/schemas/AdminCustomerGroupsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -116,6 +104,24 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ customer_group })
 }
 
+/**
+ * @schema AdminDeleteCustomerGroupsGroupCustomerBatchReq
+ * type: object
+ * required:
+ *   - customer_ids
+ * properties:
+ *   customer_ids:
+ *     description: "The ids of the customers to remove"
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: ID of the customer
+ *           type: string
+ */
 export class AdminDeleteCustomerGroupsGroupCustomerBatchReq {
   @ValidateNested({ each: true })
   @Type(() => CustomerGroupsBatchCustomer)

@@ -1,19 +1,26 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import { PricingService, ProductService } from "../../../../services"
+import {
+  PricingService,
+  ProductService,
+  ProductVariantInventoryService,
+  SalesChannelService,
+} from "../../../../services"
 
-import { FilterableProductProps } from "../../../../types/product"
-import { PricedProduct } from "../../../../types/pricing"
-import { Product } from "../../../../models"
+import { IInventoryService } from "@medusajs/types"
 import { Type } from "class-transformer"
+import { Product } from "../../../../models"
+import { PricedProduct } from "../../../../types/pricing"
+import { FilterableProductProps } from "../../../../types/product"
 
 /**
- * @oas [get] /products
+ * @oas [get] /admin/products
  * operationId: "GetProducts"
- * summary: "List Product"
+ * summary: "List Products"
  * description: "Retrieves a list of Product"
  * x-authenticated: true
  * parameters:
  *   - (query) q {string} Query used for searching product title and description, variant title and sku, and collection title.
+ *   - (query) discount_condition_id {string} The discount condition id on which to filter the product.
  *   - in: query
  *     name: id
  *     style: form
@@ -73,11 +80,29 @@ import { Type } from "class-transformer"
  *       type: array
  *       items:
  *         type: string
+ *   - in: query
+ *     name: type_id
+ *     style: form
+ *     explode: false
+ *     description: Type IDs to filter products by
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: category_id
+ *     style: form
+ *     explode: false
+ *     description: Category IDs to filter products by
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - (query) include_category_children {boolean} Include category children when filtering by category_id
  *   - (query) title {string} title to search for.
  *   - (query) description {string} description to search for.
  *   - (query) handle {string} handle to search for.
  *   - (query) is_giftcard {boolean} Search for giftcards using is_giftcard=true.
- *   - (query) type {string} type ID to search for.
  *   - in: query
  *     name: created_at
  *     description: Date comparison for when resulting products were created.
@@ -148,6 +173,10 @@ import { Type } from "class-transformer"
  *   - (query) limit=50 {integer} Limit the number of products returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
+ *   - (query) order {string} the field used to order the products.
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetProductsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -168,27 +197,14 @@ import { Type } from "class-transformer"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             products:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/product"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminProductsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -204,9 +220,18 @@ import { Type } from "class-transformer"
  */
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
+  const inventoryService: IInventoryService | undefined =
+    req.scope.resolve("inventoryService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+  const salesChannelService: SalesChannelService = req.scope.resolve(
+    "salesChannelService"
+  )
   const pricingService: PricingService = req.scope.resolve("pricingService")
 
   const { skip, take, relations } = req.listConfig
+
+  const manager = req.scope.resolve("manager")
 
   const [rawProducts, count] = await productService.listAndCount(
     req.filterableFields,
@@ -215,11 +240,28 @@ export default async (req, res) => {
 
   let products: (Product | PricedProduct)[] = rawProducts
 
-  const includesPricing = ["variants", "variants.prices"].every((relation) =>
+  // We only set prices if variants.prices are requested
+  const shouldSetPricing = ["variants", "variants.prices"].every((relation) =>
     relations?.includes(relation)
   )
-  if (includesPricing) {
+
+  if (shouldSetPricing) {
     products = await pricingService.setProductPrices(rawProducts)
+  }
+
+  // We only set availability if variants are requested
+  const shouldSetAvailability = relations?.includes("variants")
+
+  if (inventoryService && shouldSetAvailability) {
+    const [salesChannelsIds] = await salesChannelService.listAndCount(
+      {},
+      { select: ["id"] }
+    )
+
+    products = await productVariantInventoryService.setProductAvailability(
+      products,
+      salesChannelsIds.map((salesChannel) => salesChannel.id)
+    )
   }
 
   res.json({
@@ -248,4 +290,8 @@ export class AdminGetProductsParams extends FilterableProductProps {
   @IsString()
   @IsOptional()
   fields?: string
+
+  @IsString()
+  @IsOptional()
+  order?: string
 }

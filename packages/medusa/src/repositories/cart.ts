@@ -1,18 +1,19 @@
+import { objectToStringPath } from "@medusajs/utils"
 import { flatten, groupBy, map, merge } from "lodash"
-import { EntityRepository, FindManyOptions, Repository } from "typeorm"
-import { Cart } from "../models/cart"
+import { FindManyOptions, FindOptionsRelations, In } from "typeorm"
+import { dataSource } from "../loaders/database"
+import { Cart } from "../models"
 
-@EntityRepository(Cart)
-export class CartRepository extends Repository<Cart> {
-  public async findWithRelations(
-    relations: string[] = [],
+export const CartRepository = dataSource.getRepository(Cart).extend({
+  async findWithRelations(
+    relations: FindOptionsRelations<Cart> = {},
     optionsWithoutRelations: Omit<FindManyOptions<Cart>, "relations"> = {}
   ): Promise<Cart[]> {
     const entities = await this.find(optionsWithoutRelations)
     const entitiesIds = entities.map(({ id }) => id)
 
     const groupedRelations = {}
-    for (const rel of relations) {
+    for (const rel of objectToStringPath(relations)) {
       const [topLevel] = rel.split(".")
       if (groupedRelations[topLevel]) {
         groupedRelations[topLevel].push(rel)
@@ -22,8 +23,9 @@ export class CartRepository extends Repository<Cart> {
     }
 
     const entitiesIdsWithRelations = await Promise.all(
-      Object.entries(groupedRelations).map(([_, rels]) => {
-        return this.findByIds(entitiesIds, {
+      Object.entries(groupedRelations).map(async ([_, rels]) => {
+        return this.find({
+          where: { id: In(entitiesIds) },
           select: ["id"],
           relations: rels as string[],
         })
@@ -35,10 +37,10 @@ export class CartRepository extends Repository<Cart> {
     return map(entitiesAndRelationsById, (entityAndRelations) =>
       merge({}, ...entityAndRelations)
     )
-  }
+  },
 
-  public async findOneWithRelations(
-    relations: string[] = [],
+  async findOneWithRelations(
+    relations: FindOptionsRelations<Cart> = {},
     optionsWithoutRelations: Omit<FindManyOptions<Cart>, "relations"> = {}
   ): Promise<Cart> {
     // Limit 1
@@ -49,5 +51,6 @@ export class CartRepository extends Repository<Cart> {
       optionsWithoutRelations
     )
     return result[0]
-  }
-}
+  },
+})
+export default CartRepository

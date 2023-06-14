@@ -1,6 +1,6 @@
 const path = require("path")
 const fs = require("fs/promises")
-import { sep, resolve } from "path"
+import { resolve, sep } from "path"
 
 const setupServer = require("../../../../helpers/setup-server")
 const { useApi } = require("../../../../helpers/use-api")
@@ -29,9 +29,7 @@ describe("Batchjob with type order-export", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
-      redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
-      verbose: false,
     })
   })
 

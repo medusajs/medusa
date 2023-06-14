@@ -3,13 +3,7 @@ import {
   DraftOrderService,
   LineItemService,
 } from "../../../../services"
-import {
-  IsBoolean,
-  IsInt,
-  IsObject,
-  IsOptional,
-  IsString,
-} from "class-validator"
+import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
 import {
   defaultAdminDraftOrdersCartFields,
   defaultAdminDraftOrdersCartRelations,
@@ -17,14 +11,14 @@ import {
 } from "."
 
 import { EntityManager } from "typeorm"
-import { FlagRouter } from "../../../../utils/flag-router"
 import { MedusaError } from "medusa-core-utils"
 import { validator } from "../../../../utils/validator"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /draft-orders/{id}/line-items
+ * @oas [post] /admin/draft-orders/{id}/line-items
  * operationId: "PostDraftOrdersDraftOrderLineItems"
- * summary: "Create a Line Item for Draft Order"
+ * summary: "Create a Line Item"
  * description: "Creates a Line Item for the Draft Order"
  * x-authenticated: true
  * parameters:
@@ -33,25 +27,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - quantity
- *         properties:
- *           variant_id:
- *             description: The ID of the Product Variant to generate the Line Item from.
- *             type: string
- *           unit_price:
- *             description: The potential custom price of the item.
- *             type: integer
- *           title:
- *             description: The potential custom title of the item.
- *             type: string
- *             default: "Custom item"
- *           quantity:
- *             description: The quantity of the Line Item.
- *             type: integer
- *           metadata:
- *             description: The optional key-value map with additional details about the Line Item.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostDraftOrdersDraftOrderLineItemsReq"
+ * x-codegen:
+ *   method: addLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -78,16 +56,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             draft_order:
- *               $ref: "#/components/schemas/draft-order"
+ *           $ref: "#/components/schemas/AdminDraftOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -158,15 +134,40 @@ export default async (req, res) => {
 
     draftOrder.cart = await cartService
       .withTransaction(manager)
-      .retrieve(draftOrder.cart_id, {
+      .retrieveWithTotals(draftOrder.cart_id, {
         relations: defaultAdminDraftOrdersCartRelations,
         select: defaultAdminDraftOrdersCartFields,
       })
 
-    res.status(200).json({ draft_order: draftOrder })
+    res.status(200).json({
+      draft_order: cleanResponseData(draftOrder, []),
+    })
   })
 }
 
+/**
+ * @schema AdminPostDraftOrdersDraftOrderLineItemsReq
+ * type: object
+ * required:
+ *   - quantity
+ * properties:
+ *   variant_id:
+ *     description: The ID of the Product Variant to generate the Line Item from.
+ *     type: string
+ *   unit_price:
+ *     description: The potential custom price of the item.
+ *     type: integer
+ *   title:
+ *     description: The potential custom title of the item.
+ *     type: string
+ *     default: "Custom item"
+ *   quantity:
+ *     description: The quantity of the Line Item.
+ *     type: integer
+ *   metadata:
+ *     description: The optional key-value map with additional details about the Line Item.
+ *     type: object
+ */
 export class AdminPostDraftOrdersDraftOrderLineItemsReq {
   @IsString()
   @IsOptional()

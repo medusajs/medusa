@@ -1,23 +1,17 @@
 # Namespace: internal
 
-## Classes
-
-- [AdditionalItem](../classes/internal-43.AdditionalItem.md)
-- [Item](../classes/internal-43.Item.md)
-- [StorePostSwapsReq](../classes/internal-43.StorePostSwapsReq.md)
-
 ## Type Aliases
 
-### StoreSwapsRes
+### StoreCustomersListPaymentMethodsRes
 
-Ƭ **StoreSwapsRes**: `Object`
+Ƭ **StoreCustomersListPaymentMethodsRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `swap` | [`Swap`](../classes/internal.Swap.md) |
+| `payment_methods` | { `data`: `object` ; `provider_id`: `string`  }[] |
 
 #### Defined in
 
-medusa/dist/api/routes/store/swaps/index.d.ts:6
+medusa/dist/api/routes/store/customers/index.d.ts:15

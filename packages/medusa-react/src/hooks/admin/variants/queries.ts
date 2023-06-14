@@ -1,6 +1,12 @@
-import { AdminVariantsListRes, AdminGetVariantsParams } from "@medusajs/medusa"
+import {
+  AdminGetVariantParams,
+  AdminGetVariantsParams,
+  AdminGetVariantsVariantInventoryRes,
+  AdminVariantsListRes,
+  AdminVariantsRes,
+} from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
-import { useQuery } from "react-query"
+import { useQuery } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
 import { queryKeysFactory } from "../../utils/index"
@@ -23,6 +29,41 @@ export const useAdminVariants = (
   const { data, ...rest } = useQuery(
     adminVariantKeys.list(query),
     () => client.admin.variants.list(query),
+    options
+  )
+  return { ...data, ...rest } as const
+}
+
+export const useAdminVariant = (
+  id: string,
+  query?: AdminGetVariantParams,
+  options?: UseQueryOptionsWrapper<
+    Response<AdminVariantsRes>,
+    Error,
+    ReturnType<VariantQueryKeys["detail"]>
+  >
+) => {
+  const { client } = useMedusa()
+  const { data, ...rest } = useQuery(
+    adminVariantKeys.detail(id),
+    () => client.admin.variants.retrieve(id, query),
+    options
+  )
+  return { ...data, ...rest } as const
+}
+
+export const useAdminVariantsInventory = (
+  id: string,
+  options?: UseQueryOptionsWrapper<
+    Response<AdminGetVariantsVariantInventoryRes>,
+    Error,
+    ReturnType<VariantQueryKeys["detail"]>
+  >
+) => {
+  const { client } = useMedusa()
+  const { data, ...rest } = useQuery(
+    adminVariantKeys.detail(id),
+    () => client.admin.variants.getInventory(id),
     options
   )
   return { ...data, ...rest } as const

@@ -5,7 +5,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /customers
+ * @oas [post] /admin/customers
  * operationId: "PostCustomers"
  * summary: "Create a Customer"
  * description: "Creates a Customer."
@@ -14,34 +14,9 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - email
- *           - first_name
- *           - last_name
- *           - password
- *         properties:
- *           email:
- *             type: string
- *             description: The customer's email.
- *             format: email
- *           first_name:
- *             type: string
- *             description: The customer's first name.
- *           last_name:
- *             type: string
- *             description: The customer's last name.
- *           password:
- *             type: string
- *             description: The customer's password.
- *             format: password
- *           phone:
- *             type: string
- *             description: The customer's phone number.
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
- * tags:
- *   - Customer
+ *         $ref: "#/components/schemas/AdminPostCustomersReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -73,15 +48,15 @@ import { EntityManager } from "typeorm"
  * security:
  *   - api_token: []
  *   - cookie_auth: []
+ * tags:
+ *   - Customers
  * responses:
  *   201:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             customer:
- *               $ref: "#/components/schemas/customer"
+ *           $ref: "#/components/schemas/AdminCustomersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -108,6 +83,36 @@ export default async (req, res) => {
   res.status(201).json({ customer })
 }
 
+/**
+ * @schema AdminPostCustomersReq
+ * type: object
+ * required:
+ *   - email
+ *   - first_name
+ *   - last_name
+ *   - password
+ * properties:
+ *   email:
+ *     type: string
+ *     description: The customer's email.
+ *     format: email
+ *   first_name:
+ *     type: string
+ *     description: The customer's first name.
+ *   last_name:
+ *     type: string
+ *     description: The customer's last name.
+ *   password:
+ *     type: string
+ *     description: The customer's password.
+ *     format: password
+ *   phone:
+ *     type: string
+ *     description: The customer's phone number.
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminPostCustomersReq {
   @IsEmail()
   email: string

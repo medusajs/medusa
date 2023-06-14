@@ -1,13 +1,16 @@
 import { DraftOrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
+
 /**
- * @oas [delete] /draft-orders/{id}
+ * @oas [delete] /admin/draft-orders/{id}
  * operationId: DeleteDraftOrdersDraftOrder
  * summary: Delete a Draft Order
  * description: "Deletes a Draft Order"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Draft Order.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -28,25 +31,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Draft Order.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: draft-order
- *             deleted:
- *               type: boolean
- *               description: Whether the draft order was deleted successfully or not.
- *               default: true
+ *           $ref: "#/components/schemas/AdminDraftOrdersDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -1,19 +1,24 @@
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
 import { CartService } from "../../../../services"
-import { EntityManager } from "typeorm";
+import { EntityManager } from "typeorm"
 import { IsString } from "class-validator"
-import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
-import { validator } from "../../../../utils/validator"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/payment-session
+ * @oas [post] /store/carts/{id}/payment-session
  * operationId: PostCartsCartPaymentSession
  * summary: Select a Payment Session
  * description: "Selects a Payment Session as the session intended to be used towards the completion of the Cart."
  * parameters:
  *   - (path) id=* {string} The ID of the Cart.
- *   - (body) provider_id=* {string} The ID of the Payment Provider.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StorePostCartsCartPaymentSessionReq"
+ * x-codegen:
+ *   method: setPaymentSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -35,16 +40,14 @@ import { validator } from "../../../../utils/validator"
  *           "provider_id": "manual"
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             cart:
- *               $ref: "#/components/schemas/cart"
+ *           $ref: "#/components/schemas/StoreCartsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -59,27 +62,35 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(
-    StorePostCartsCartPaymentSessionReq,
-    req.body
-  )
+  const validated = req.validatedBody
 
   const cartService: CartService = req.scope.resolve("cartService")
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    return await cartService.withTransaction(transactionManager).setPaymentSession(id, validated.provider_id)
+    return await cartService
+      .withTransaction(transactionManager)
+      .setPaymentSession(id, validated.provider_id)
   })
 
-  const cart = await cartService.retrieve(id, {
+  const data = await cartService.retrieveWithTotals(id, {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
 
-  const data = await decorateLineItemsWithTotals(cart, req)
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }
 
+/**
+ * @schema StorePostCartsCartPaymentSessionReq
+ * type: object
+ * required:
+ *   - provider_id
+ * properties:
+ *   provider_id:
+ *     type: string
+ *     description: The ID of the Payment Provider.
+ */
 export class StorePostCartsCartPaymentSessionReq {
   @IsString()
   provider_id: string

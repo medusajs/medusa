@@ -6,7 +6,7 @@ import { Request } from "express"
 import { Type } from "class-transformer"
 
 /**
- * @oas [get] /price-lists
+ * @oas [get] /admin/price-lists
  * operationId: "GetPriceLists"
  * summary: "List Price Lists"
  * description: "Retrieves a list of Price Lists."
@@ -114,6 +114,9 @@ import { Type } from "class-transformer"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetPriceListPaginationParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -134,27 +137,14 @@ import { Type } from "class-transformer"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Price List
+ *   - Price Lists
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             price_lists:
- *              type: array
- *              items:
- *                $ref: "#/components/schemas/price_list"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/AdminPriceListsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -187,6 +177,7 @@ export default async (req: Request, res) => {
   })
 }
 
+// eslint-disable-next-line max-len
 export class AdminGetPriceListPaginationParams extends FilterablePriceListProps {
   @IsNumber()
   @IsOptional()

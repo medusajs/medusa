@@ -1,150 +1,11 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import idMap from "medusa-test-utils/dist/id-map"
 import ReturnService from "../return"
-import { InventoryServiceMock } from "../__mocks__/inventory"
-
+import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 describe("ReturnService", () => {
-  // describe("requestReturn", () => {
-  //   const returnRepository = MockRepository({})
-
-  //   const fulfillmentProviderService = {
-  //     createReturn: jest.fn().mockImplementation(data => {
-  //       return Promise.resolve(data)
-  //     }),
-  //   }
-
-  //   const shippingOptionService = {
-  //     retrieve: jest.fn().mockImplementation(data => {
-  //       return Promise.resolve({
-  //         id: IdMap.getId("default"),
-  //         name: "default_profile",
-  //         provider_id: "default",
-  //       })
-  //     }),
-  //   }
-
-  //   const totalsService = {
-  //     getTotal: jest.fn().mockImplementation(cart => {
-  //       return 1000
-  //     }),
-  //     getSubtotal: jest.fn().mockImplementation(cart => {
-  //       return 75
-  //     }),
-  //     getRefundTotal: jest.fn().mockImplementation((order, lineItems) => {
-  //       return 1000
-  //     }),
-  //     getRefundedTotal: jest.fn().mockImplementation((order, lineItems) => {
-  //       return 0
-  //     }),
-  //   }
-
-  //   const returnService = new ReturnService({
-  //     manager: MockManager,
-  //     totalsService,
-  //     shippingOptionService,
-  //     fulfillmentProviderService,
-  //     returnRepository,
-  //   })
-
-  //   beforeEach(async () => {
-  //     jest.clearAllMocks()
-  //   })
-
-  //   it("successfully requests a return", async () => {
-  //     await returnService.requestReturn(
-  //       {
-  //         id: IdMap.getId("test-order"),
-  //         items: [{ id: IdMap.getId("existingLine"), quantity: 10 }],
-  //         tax_rate: 0.25,
-  //         payment_status: "captured",
-  //       },
-  //       [
-  //         {
-  //           item_id: IdMap.getId("existingLine"),
-  //           quantity: 10,
-  //         },
-  //       ],
-  //       { id: "some-shipping-method", price: 150 }
-  //     )
-
-  //     expect(returnRepository.create).toHaveBeenCalledTimes(1)
-  //     expect(returnRepository.create).toHaveBeenCalledWith({
-  //       status: "requested",
-  //       items: [],
-  //       order_id: IdMap.getId("test-order"),
-  //       shipping_method: {
-  //         id: "some-shipping-method",
-  //         price: 150,
-  //       },
-  //       shipping_data: {
-  //         id: "some-shipping-method",
-  //         price: 150,
-  //       },
-  //       refund_amount: 1000 - 150 * (1 + 0.25),
-  //     })
-  //   })
-
-  //   it("successfully requests a return with custom refund amount", async () => {
-  //     await returnService.requestReturn(
-  //       {
-  //         id: IdMap.getId("test-order"),
-  //         items: [{ id: IdMap.getId("existingLine"), quantity: 10 }],
-  //         tax_rate: 0.25,
-  //         payment_status: "captured",
-  //       },
-  //       [
-  //         {
-  //           item_id: IdMap.getId("existingLine"),
-  //           quantity: 10,
-  //         },
-  //       ],
-  //       { id: "some-shipping-method", price: 150 },
-  //       500
-  //     )
-
-  //     expect(returnRepository.create).toHaveBeenCalledTimes(1)
-  //     expect(returnRepository.create).toHaveBeenCalledWith({
-  //       status: "requested",
-  //       items: [],
-  //       order_id: IdMap.getId("test-order"),
-  //       shipping_method: {
-  //         id: "some-shipping-method",
-  //         price: 150,
-  //       },
-  //       shipping_data: expect.anything(),
-  //       refund_amount: 500 - 150 * (1 + 0.25),
-  //     })
-  //   })
-
-  //   it("throws if refund amount is above captured amount", async () => {
-  //     try {
-  //       await returnService.requestReturn(
-  //         {
-  //           id: IdMap.getId("test-order"),
-  //           items: [{ id: IdMap.getId("existingLine"), quantity: 10 }],
-  //           tax_rate: 0.25,
-  //           payment_status: "captured",
-  //         },
-  //         [
-  //           {
-  //             item_id: IdMap.getId("existingLine"),
-  //             quantity: 10,
-  //           },
-  //         ],
-  //         { id: "some-shipping-method", price: 150 },
-  //         2000
-  //       )
-  //     } catch (error) {
-  //       expect(error.message).toBe(
-  //         "Cannot refund more than the original payment"
-  //       )
-  //     }
-  //   })
-  // })
-
   describe("receive", () => {
     const returnRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         switch (query.where.id) {
           case IdMap.getId("test-return-2"):
             return Promise.resolve({
@@ -188,7 +49,7 @@ describe("ReturnService", () => {
     })
 
     const totalsService = {
-      getTotal: jest.fn().mockImplementation(cart => {
+      getTotal: jest.fn().mockImplementation((cart) => {
         return 1000
       }),
       getRefundedTotal: jest.fn().mockImplementation((order, lineItems) => {
@@ -216,36 +77,36 @@ describe("ReturnService", () => {
           payments: [{ id: "payment_test" }],
         })
       }),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
 
     const lineItemService = {
-      retrieve: jest.fn().mockImplementation(data => {
+      retrieve: jest.fn().mockImplementation((data) => {
         return Promise.resolve({ ...data, returned_quantity: 0 })
       }),
       update: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
 
-    const inventoryService = {
-      adjustInventory: jest.fn((variantId, quantity) => {
-        return Promise.resolve({})
-      }),
-      confirmInventory: jest.fn((variantId, quantity) => {
-        if (quantity < 10) {
-          return true
-        } else {
-          return false
-        }
-      }),
-      withTransaction: function() {
-        return this
-      },
-    }
+    // const inventoryService = {
+    //   adjustInventory: jest.fn((variantId, quantity) => {
+    //     return Promise.resolve({})
+    //   }),
+    //   confirmInventory: jest.fn((variantId, quantity) => {
+    //     if (quantity < 10) {
+    //       return true
+    //     } else {
+    //       return false
+    //     }
+    //   }),
+    //   withTransaction: function () {
+    //     return this
+    //   },
+    // }
 
     const returnService = new ReturnService({
       manager: MockManager,
@@ -253,7 +114,7 @@ describe("ReturnService", () => {
       lineItemService,
       orderService,
       returnRepository,
-      inventoryService,
+      productVariantInventoryService: ProductVariantInventoryServiceMock,
     })
 
     beforeEach(async () => {
@@ -296,11 +157,12 @@ describe("ReturnService", () => {
         }
       )
 
-      expect(inventoryService.adjustInventory).toHaveBeenCalledTimes(1)
-      expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
-        "test-variant",
-        10
-      )
+      expect(
+        ProductVariantInventoryServiceMock.adjustInventory
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        ProductVariantInventoryServiceMock.adjustInventory
+      ).toHaveBeenCalledWith("test-variant", undefined, 10)
     })
 
     it("successfully receives a return with requires_action status", async () => {
@@ -313,15 +175,15 @@ describe("ReturnService", () => {
         1000
       )
 
-      expect(inventoryService.adjustInventory).toHaveBeenCalledTimes(2)
-      expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
-        "test-variant",
-        10
-      )
-      expect(inventoryService.adjustInventory).toHaveBeenCalledWith(
-        "test-variant-2",
-        10
-      )
+      expect(
+        ProductVariantInventoryServiceMock.adjustInventory
+      ).toHaveBeenCalledTimes(2)
+      expect(
+        ProductVariantInventoryServiceMock.adjustInventory
+      ).toHaveBeenCalledWith("test-variant", undefined, 10)
+      expect(
+        ProductVariantInventoryServiceMock.adjustInventory
+      ).toHaveBeenCalledWith("test-variant-2", undefined, 10)
 
       expect(returnRepository.save).toHaveBeenCalledTimes(1)
       expect(returnRepository.save).toHaveBeenCalledWith({
@@ -368,7 +230,7 @@ describe("ReturnService", () => {
 
   describe("canceled", () => {
     const returnRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         switch (query.where.id) {
           case IdMap.getId("test-return"):
             return Promise.resolve({
@@ -384,7 +246,7 @@ describe("ReturnService", () => {
             return Promise.resolve({})
         }
       },
-      save: f => f,
+      save: (f) => f,
     })
 
     const returnService = new ReturnService({
@@ -415,7 +277,7 @@ describe("ReturnService", () => {
 
   describe("fulfilled", () => {
     const returnRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         switch (query.where.id) {
           case IdMap.getId("test-return"):
             return Promise.resolve({
@@ -445,7 +307,7 @@ describe("ReturnService", () => {
 
   describe("update", () => {
     const returnRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         switch (query.where.id) {
           case IdMap.getId("test-return"):
             return Promise.resolve({

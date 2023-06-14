@@ -6,10 +6,10 @@ import { DateComparisonOperator } from "../../../../types/common"
 import { IsType } from "../../../../utils/validators/is-type"
 import { Request } from "express"
 import { pickBy } from "lodash"
-import { isDefined } from "../../../../utils"
+import { isDefined } from "medusa-core-utils"
 
 /**
- * @oas [get] /batch-jobs
+ * @oas [get] /admin/batch-jobs
  * operationId: "GetBatchJobs"
  * summary: "List Batch Jobs"
  * description: "Retrieve a list of Batch Jobs."
@@ -210,6 +210,9 @@ import { isDefined } from "../../../../utils"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetBatchParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -230,27 +233,14 @@ import { isDefined } from "../../../../utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Batch Job
+ *   - Batch Jobs
  * responses:
  *  "200":
  *    description: OK
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            batch_jobs:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/batch_job"
- *            count:
- *               type: integer
- *               description: The total number of items available
- *            offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *            limit:
- *               type: integer
- *               description: The number of items per page
+ *          $ref: "#/components/schemas/AdminBatchJobListRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":
@@ -320,27 +310,37 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   type?: string[]
 
   @IsOptional()
-  @Transform(({ value }) => (value === "null" ? null : value))
+  @Transform(({ value }) => {
+    return value === "null" ? null : value
+  })
   @Type(() => DateComparisonOperator)
   confirmed_at?: DateComparisonOperator | null
 
   @IsOptional()
-  @Transform(({ value }) => (value === "null" ? null : value))
+  @Transform(({ value }) => {
+    return value === "null" ? null : value
+  })
   @Type(() => DateComparisonOperator)
   pre_processed_at?: DateComparisonOperator | null
 
   @IsOptional()
-  @Transform(({ value }) => (value === "null" ? null : value))
+  @Transform(({ value }) => {
+    return value === "null" ? null : value
+  })
   @Type(() => DateComparisonOperator)
   completed_at?: DateComparisonOperator | null
 
   @IsOptional()
-  @Transform(({ value }) => (value === "null" ? null : value))
+  @Transform(({ value }) => {
+    return value === "null" ? null : value
+  })
   @Type(() => DateComparisonOperator)
   failed_at?: DateComparisonOperator | null
 
   @IsOptional()
-  @Transform(({ value }) => (value === "null" ? null : value))
+  @Transform(({ value }) => {
+    return value === "null" ? null : value
+  })
   @Type(() => DateComparisonOperator)
   canceled_at?: DateComparisonOperator | null
 

@@ -5,9 +5,10 @@ import RegionService from "../../../../services/region"
 import { Type } from "class-transformer"
 import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
+import { defaultRelations } from "."
 
 /**
- * @oas [get] /regions
+ * @oas [get] /store/regions
  * operationId: GetRegions
  * summary: List Regions
  * description: "Retrieves a list of Regions."
@@ -58,6 +59,9 @@ import { validator } from "../../../../utils/validator"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ * x-codegen:
+ *   method: list
+ *   queryParams: StoreGetRegionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -73,18 +77,14 @@ import { validator } from "../../../../utils/validator"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/regions'
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             regions:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/region"
+ *           $ref: "#/components/schemas/StoreRegionsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -105,7 +105,7 @@ export default async (req, res) => {
   const filterableFields = omit(validated, ["limit", "offset"])
 
   const listConfig = {
-    relations: ["countries", "payment_providers", "fulfillment_providers"],
+    relations: defaultRelations,
     skip: offset,
     take: limit,
   }

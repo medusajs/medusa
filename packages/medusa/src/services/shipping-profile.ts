@@ -1,8 +1,9 @@
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import {
   Cart,
+  CustomShippingOption,
   ShippingOption,
   ShippingProfile,
   ShippingProfileType,
@@ -14,7 +15,7 @@ import {
   CreateShippingProfile,
   UpdateShippingProfile,
 } from "../types/shipping-profile"
-import { buildQuery, setMetadata } from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import CustomShippingOptionService from "./custom-shipping-option"
 import ProductService from "./product"
 import ShippingOptionService from "./shipping-option"
@@ -27,6 +28,7 @@ type InjectedDependencies = {
   shippingProfileRepository: typeof ShippingProfileRepository
   productRepository: typeof ProductRepository
 }
+
 /**
  * Provides layer to manipulate profiles.
  * @constructor
@@ -36,30 +38,20 @@ class ShippingProfileService extends TransactionBaseService {
   protected readonly productService_: ProductService
   protected readonly shippingOptionService_: ShippingOptionService
   protected readonly customShippingOptionService_: CustomShippingOptionService
+  // eslint-disable-next-line max-len
   protected readonly shippingProfileRepository_: typeof ShippingProfileRepository
   protected readonly productRepository_: typeof ProductRepository
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   constructor({
-    manager,
     shippingProfileRepository,
     productService,
     productRepository,
     shippingOptionService,
     customShippingOptionService,
   }: InjectedDependencies) {
-    super({
-      manager,
-      shippingProfileRepository,
-      productService,
-      productRepository,
-      shippingOptionService,
-      customShippingOptionService,
-    })
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    this.manager_ = manager
     this.shippingProfileRepository_ = shippingProfileRepository
     this.productService_ = productService
     this.productRepository_ = productRepository
@@ -76,11 +68,14 @@ class ShippingProfileService extends TransactionBaseService {
     selector: Selector<ShippingProfile> = {},
     config: FindConfig<ShippingProfile> = { relations: [], skip: 0, take: 10 }
   ): Promise<ShippingProfile[]> {
-    const shippingProfileRepo = this.manager_.getCustomRepository(
+    const shippingProfileRepo = this.activeManager_.withRepository(
       this.shippingProfileRepository_
     )
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery<Selector<ShippingProfile>, ShippingProfile>(
+      selector,
+      config
+    )
     return shippingProfileRepo.find(query)
   }
 
@@ -140,7 +135,14 @@ class ShippingProfileService extends TransactionBaseService {
     profileId: string,
     options: FindConfig<ShippingProfile> = {}
   ): Promise<ShippingProfile> {
-    const profileRepository = this.manager_.getCustomRepository(
+    if (!isDefined(profileId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"profileId" must be defined`
+      )
+    }
+
+    const profileRepository = this.activeManager_.withRepository(
       this.shippingProfileRepository_
     )
 
@@ -158,13 +160,13 @@ class ShippingProfileService extends TransactionBaseService {
     return profile
   }
 
-  async retrieveDefault(): Promise<ShippingProfile | undefined> {
-    const profileRepository = this.manager_.getCustomRepository(
+  async retrieveDefault(): Promise<ShippingProfile | null> {
+    const profileRepository = this.activeManager_.withRepository(
       this.shippingProfileRepository_
     )
 
     const profile = await profileRepository.findOne({
-      where: { type: "default" },
+      where: { type: ShippingProfileType.DEFAULT },
     })
 
     return profile
@@ -179,7 +181,7 @@ class ShippingProfileService extends TransactionBaseService {
       let profile = await this.retrieveDefault()
 
       if (!profile) {
-        const profileRepository = manager.getCustomRepository(
+        const profileRepository = manager.withRepository(
           this.shippingProfileRepository_
         )
 
@@ -188,7 +190,7 @@ class ShippingProfileService extends TransactionBaseService {
           name: "Default Shipping Profile",
         }
 
-        const created = await profileRepository.create(toCreate)
+        const created = profileRepository.create(toCreate)
 
         profile = await profileRepository.save(created)
       }
@@ -201,13 +203,13 @@ class ShippingProfileService extends TransactionBaseService {
    * Retrieves the default gift card profile
    * @return the shipping profile for gift cards
    */
-  async retrieveGiftCardDefault(): Promise<ShippingProfile | undefined> {
-    const profileRepository = this.manager_.getCustomRepository(
+  async retrieveGiftCardDefault(): Promise<ShippingProfile | null> {
+    const profileRepository = this.activeManager_.withRepository(
       this.shippingProfileRepository_
     )
 
     const giftCardProfile = await profileRepository.findOne({
-      where: { type: "gift_card" },
+      where: { type: ShippingProfileType.GIFT_CARD },
     })
 
     return giftCardProfile
@@ -223,11 +225,11 @@ class ShippingProfileService extends TransactionBaseService {
       let profile = await this.retrieveGiftCardDefault()
 
       if (!profile) {
-        const profileRepository = manager.getCustomRepository(
+        const profileRepository = manager.withRepository(
           this.shippingProfileRepository_
         )
 
-        const created = await profileRepository.create({
+        const created = profileRepository.create({
           type: ShippingProfileType.GIFT_CARD,
           name: "Gift Card Profile",
         })
@@ -246,7 +248,7 @@ class ShippingProfileService extends TransactionBaseService {
    */
   async create(profile: CreateShippingProfile): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      const profileRepository = manager.getCustomRepository(
+      const profileRepository = manager.withRepository(
         this.shippingProfileRepository_
       )
 
@@ -257,7 +259,14 @@ class ShippingProfileService extends TransactionBaseService {
         )
       }
 
-      const created = profileRepository.create(profile)
+      const { metadata, ...rest } = profile
+
+      const created = profileRepository.create(rest)
+
+      if (metadata) {
+        created.metadata = setMetadata(created, metadata)
+      }
+
       const result = await profileRepository.save(created)
       return result
     })
@@ -277,11 +286,11 @@ class ShippingProfileService extends TransactionBaseService {
     update: UpdateShippingProfile
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      const profileRepository = manager.getCustomRepository(
+      const profileRepository = manager.withRepository(
         this.shippingProfileRepository_
       )
 
-      const profile = await this.retrieve(profileId, {
+      let profile = await this.retrieve(profileId, {
         relations: [
           "products",
           "products.profile",
@@ -292,27 +301,16 @@ class ShippingProfileService extends TransactionBaseService {
 
       const { metadata, products, shipping_options, ...rest } = update
 
-      if (metadata) {
-        profile.metadata = setMetadata(profile, metadata)
-      }
-
       if (products) {
-        const productServiceTx = this.productService_.withTransaction(manager)
-        for (const pId of products) {
-          await productServiceTx.update(pId, {
-            profile_id: profile.id,
-          })
-        }
+        profile = await this.addProduct(profile.id, products)
       }
 
       if (shipping_options) {
-        const shippingOptionServiceTx =
-          this.shippingOptionService_.withTransaction(manager)
-        for (const oId of shipping_options) {
-          await shippingOptionServiceTx.update(oId, {
-            profile_id: profile.id,
-          })
-        }
+        profile = await this.addShippingOption(profile.id, shipping_options)
+      }
+
+      if (metadata) {
+        profile.metadata = setMetadata(profile, metadata)
       }
 
       for (const [key, value] of Object.entries(rest)) {
@@ -331,7 +329,7 @@ class ShippingProfileService extends TransactionBaseService {
    */
   async delete(profileId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const profileRepo = manager.getCustomRepository(
+      const profileRepo = manager.withRepository(
         this.shippingProfileRepository_
       )
 
@@ -349,22 +347,31 @@ class ShippingProfileService extends TransactionBaseService {
   }
 
   /**
-   * Adds a product to a profile. The method is idempotent, so multiple calls
-   * with the same product variant will have the same result.
-   * @param profileId - the profile to add the product to.
-   * @param productId - the product to add.
+   * Adds a product of an array of products to the profile.
+   * @param profileId - the profile to add the products to.
+   * @param productId - the ID of the product or multiple products to add.
    * @return the result of update
    */
   async addProduct(
     profileId: string,
-    productId: string
+    productId: string | string[]
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      await this.productService_
-        .withTransaction(manager)
-        .update(productId, { profile_id: profileId })
+      const productServiceTx = this.productService_.withTransaction(manager)
 
-      return await this.retrieve(profileId)
+      await productServiceTx.updateShippingProfile(
+        isString(productId) ? [productId] : productId,
+        profileId
+      )
+
+      return await this.retrieve(profileId, {
+        relations: [
+          "products",
+          "products.profile",
+          "shipping_options",
+          "shipping_options.profile",
+        ],
+      })
     })
   }
 
@@ -372,20 +379,30 @@ class ShippingProfileService extends TransactionBaseService {
    * Adds a shipping option to the profile. The shipping option can be used to
    * fulfill the products in the products field.
    * @param profileId - the profile to apply the shipping option to
-   * @param optionId - the option to add to the profile
+   * @param optionId - the ID of the option or multiple options to add to the profile
    * @return the result of the model update operation
    */
   async addShippingOption(
     profileId: string,
-    optionId: string
+    optionId: string | string[]
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      await this.shippingOptionService_
-        .withTransaction(manager)
-        .update(optionId, { profile_id: profileId })
+      const shippingOptionServiceTx =
+        this.shippingOptionService_.withTransaction(manager)
 
-      const updated = await this.retrieve(profileId)
-      return updated
+      await shippingOptionServiceTx.updateShippingProfile(
+        isString(optionId) ? [optionId] : optionId,
+        profileId
+      )
+
+      return await this.retrieve(profileId, {
+        relations: [
+          "products",
+          "products.profile",
+          "shipping_options",
+          "shipping_options.profile",
+        ],
+      })
     })
   }
 
@@ -427,10 +444,14 @@ class ShippingProfileService extends TransactionBaseService {
 
       // if there are custom shipping options associated with the cart, return cart shipping options with custom price
       if (hasCustomShippingOptions) {
+        const customShippingOptionsMap = new Map<string, CustomShippingOption>()
+
+        customShippingOptions.forEach((option) => {
+          customShippingOptionsMap.set(option.shipping_option_id, option)
+        })
+
         return rawOpts.map((so) => {
-          const customOption = customShippingOptions.find(
-            (cso) => cso.shipping_option_id === so.id
-          )
+          const customOption = customShippingOptionsMap.get(so.id)
 
           return {
             ...so,
@@ -439,24 +460,16 @@ class ShippingProfileService extends TransactionBaseService {
         }) as ShippingOption[]
       }
 
-      const options = await Promise.all(
-        rawOpts.map(async (so) => {
-          try {
-            const option = await this.shippingOptionService_
+      return (
+        await Promise.all(
+          rawOpts.map(async (so) => {
+            return await this.shippingOptionService_
               .withTransaction(manager)
               .validateCartOption(so, cart)
-            if (option) {
-              return option
-            }
-            return null
-          } catch (err) {
-            // if validateCartOption fails it means the option is not valid
-            return null
-          }
-        })
-      )
-
-      return options.filter(Boolean) as ShippingOption[]
+              .catch(() => null) // if validateCartOption fails it means the option is not valid
+          })
+        )
+      ).filter((option): option is ShippingOption => !!option)
     })
   }
 
@@ -466,16 +479,15 @@ class ShippingProfileService extends TransactionBaseService {
    * @return a list of product ids
    */
   protected getProfilesInCart(cart: Cart): string[] {
-    return cart.items.reduce((acc, next) => {
-      // We may have line items that are not associated with a product
-      if (next.variant && next.variant.product) {
-        if (!acc.includes(next.variant.product.profile_id)) {
-          acc.push(next.variant.product.profile_id)
-        }
-      }
+    const profileIds = new Set<string>()
 
-      return acc
-    }, [] as string[])
+    cart.items.forEach((item) => {
+      if (item.variant?.product) {
+        profileIds.add(item.variant.product.profile_id)
+      }
+    })
+
+    return [...profileIds]
   }
 }
 

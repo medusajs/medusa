@@ -3,18 +3,21 @@ import { IdMap, MockManager } from "medusa-test-utils"
 import { User } from "../../../../models"
 import { BatchJobStatus } from "../../../../types/batch-job"
 import { productsToExport } from "../../../__fixtures__/product-export-data"
-import { AdminPostBatchesReq, defaultAdminProductRelations } from "../../../../api"
-import { ProductExportBatchJob } from "../../../batch-jobs/product"
+import { AdminPostBatchesReq, defaultAdminProductRelations, } from "../../../../api"
+import { ProductExportBatchJob } from "../../../batch-jobs/product/types"
 import { Request } from "express"
-import { FlagRouter } from "../../../../utils/flag-router";
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
+import { FlagRouter } from "../../../../utils/flag-router"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 
 const productServiceMock = {
   withTransaction: function () {
     return this
   },
   list: jest.fn().mockImplementation(() => Promise.resolve(productsToExport)),
-  count: jest.fn().mockImplementation(() => Promise.resolve(productsToExport.length)),
+
+  count: jest
+    .fn()
+    .mockImplementation(() => Promise.resolve(productsToExport.length)),
   listAndCount: jest.fn().mockImplementation(() => {
     return Promise.resolve([productsToExport, productsToExport.length])
   }),
@@ -39,31 +42,31 @@ describe("Product export strategy", () => {
           write: (data: string) => {
             outputDataStorage.push(data)
           },
-          end: () => void 0
+          end: () => void 0,
         },
         promise: Promise.resolve(),
-        fileKey: 'product-export.csv'
+        fileKey: "product-export.csv",
       })
     }),
     withTransaction: function () {
       return this
-    }
+    },
   }
   let fakeJob = {
     id: IdMap.getId("product-export-job"),
-    type: 'product-export',
+    type: "product-export",
     created_by: IdMap.getId("product-export-job-creator"),
     created_by_user: {} as User,
     context: {},
     result: {},
     dry_run: false,
-    status: BatchJobStatus.PROCESSING as BatchJobStatus
+    status: BatchJobStatus.PROCESSING as BatchJobStatus,
   } as ProductExportBatchJob
 
   let canceledFakeJob = {
     ...fakeJob,
     id: "bj_failed",
-    status: BatchJobStatus.CANCELED
+    status: BatchJobStatus.CANCELED,
   } as ProductExportBatchJob
 
   const batchJobServiceMock = {
@@ -76,7 +79,7 @@ describe("Product export strategy", () => {
           ...canceledFakeJob,
           ...data,
           context: { ...canceledFakeJob?.context, ...data?.context },
-          result: { ...canceledFakeJob?.result, ...data?.result }
+          result: { ...canceledFakeJob?.result, ...data?.result },
         }
 
         return Promise.resolve(canceledFakeJob)
@@ -86,7 +89,7 @@ describe("Product export strategy", () => {
         ...fakeJob,
         ...data,
         context: { ...fakeJob?.context, ...data?.context },
-        result: { ...fakeJob?.result, ...data?.result }
+        result: { ...fakeJob?.result, ...data?.result },
       }
 
       return Promise.resolve(fakeJob)
@@ -100,14 +103,12 @@ describe("Product export strategy", () => {
       return Promise.resolve(fakeJob)
     }),
     retrieve: jest.fn().mockImplementation((id) => {
-      const targetFakeJob = id === "bj_failed"
-        ? canceledFakeJob
-        : fakeJob
+      const targetFakeJob = id === "bj_failed" ? canceledFakeJob : fakeJob
       return Promise.resolve(targetFakeJob)
     }),
     setFailed: jest.fn().mockImplementation((...args) => {
       console.error(...args)
-    })
+    }),
   }
 
   const productExportStrategy = new ProductExportStrategy({
@@ -118,11 +119,14 @@ describe("Product export strategy", () => {
     featureFlagRouter: new FlagRouter({}),
   })
 
-  it('should generate the appropriate template', async () => {
-    await productExportStrategy.prepareBatchJobForProcessing(fakeJob, {} as Request)
+  it("should generate the appropriate template", async () => {
+    await productExportStrategy.prepareBatchJobForProcessing(
+      fakeJob,
+      {} as Request
+    )
     await productExportStrategy.preProcessBatchJob(fakeJob.id)
     const template = await productExportStrategy.buildHeader(fakeJob)
-    expect(template).toMatch(/.*Product ID.*/)
+    expect(template).toMatch(/.*Product Id.*/)
     expect(template).toMatch(/.*Product Handle.*/)
     expect(template).toMatch(/.*Product Title.*/)
     expect(template).toMatch(/.*Product Subtitle.*/)
@@ -142,17 +146,17 @@ describe("Product export strategy", () => {
     expect(template).toMatch(/.*Product Type.*/)
     expect(template).toMatch(/.*Product Tags.*/)
     expect(template).toMatch(/.*Product Discountable.*/)
-    expect(template).toMatch(/.*Product External ID.*/)
+    expect(template).toMatch(/.*Product External Id.*/)
     expect(template).toMatch(/.*Product Profile Name.*/)
     expect(template).toMatch(/.*Product Profile Type.*/)
     expect(template).toMatch(/.*Product Profile Type.*/)
 
-    expect(template).toMatch(/.*Variant ID.*/)
+    expect(template).toMatch(/.*Variant Id.*/)
     expect(template).toMatch(/.*Variant Title.*/)
     expect(template).toMatch(/.*Variant SKU.*/)
     expect(template).toMatch(/.*Variant Barcode.*/)
-    expect(template).toMatch(/.*Variant Allow backorder.*/)
-    expect(template).toMatch(/.*Variant Manage inventory.*/)
+    expect(template).toMatch(/.*Variant Allow Backorder.*/)
+    expect(template).toMatch(/.*Variant Manage Inventory.*/)
     expect(template).toMatch(/.*Variant Weight.*/)
     expect(template).toMatch(/.*Variant Length.*/)
     expect(template).toMatch(/.*Variant Width.*/)
@@ -167,10 +171,12 @@ describe("Product export strategy", () => {
     expect(template).toMatch(/.*Option 2 Name.*/)
     expect(template).toMatch(/.*Option 2 Value.*/)
 
-    expect(template).not.toMatch(/.*Sales channel 1 Name.*/)
-    expect(template).not.toMatch(/.*Sales channel 1 Description.*/)
-    expect(template).not.toMatch(/.*Sales channel 2 Name.*/)
-    expect(template).not.toMatch(/.*Sales channel 2 Description.*/)
+    expect(template).not.toMatch(/.*Sales Channel 1 Id.*/)
+    expect(template).not.toMatch(/.*Sales Channel 1 Name.*/)
+    expect(template).not.toMatch(/.*Sales Channel 1 Description.*/)
+    expect(template).not.toMatch(/.*Sales Channel 2 Id.*/)
+    expect(template).not.toMatch(/.*Sales Channel 2 Name.*/)
+    expect(template).not.toMatch(/.*Sales Channel 2 Description.*/)
 
     expect(template).toMatch(/.*Price USD.*/)
     expect(template).toMatch(/.*Price france \[USD\].*/)
@@ -180,26 +186,29 @@ describe("Product export strategy", () => {
     expect(template).toMatch(/.*Image 1 Url.*/)
   })
 
-  it('should process the batch job and generate the appropriate output', async () => {
-    await productExportStrategy.prepareBatchJobForProcessing(fakeJob, {} as Request)
+  it("should process the batch job and generate the appropriate output", async () => {
+    await productExportStrategy.prepareBatchJobForProcessing(
+      fakeJob,
+      {} as Request
+    )
     await productExportStrategy.preProcessBatchJob(fakeJob.id)
     await productExportStrategy.processJob(fakeJob.id)
     expect(outputDataStorage).toMatchSnapshot()
     expect((fakeJob.result as any).file_key).toBeDefined()
   })
 
-  it('should prepare the job to be pre proccessed', async () => {
+  it("should prepare the job to be pre processed", async () => {
     const fakeJob1: AdminPostBatchesReq = {
-      type: 'product-export',
+      type: "product-export",
       context: {
         limit: 10,
         offset: 10,
         expand: "variants",
         fields: "title",
         order: "-title",
-        filterable_fields: { title: "test" }
+        filterable_fields: { title: "test" },
       },
-      dry_run: false
+      dry_run: false,
     }
 
     const output1 = await productExportStrategy.prepareBatchJobForProcessing(
@@ -207,21 +216,23 @@ describe("Product export strategy", () => {
       {} as Express.Request
     )
 
-    expect(output1.context).toEqual(expect.objectContaining({
-      list_config: {
-        select: ["title", "created_at", "id"],
-        order: { title: "DESC" },
-        relations: ["variants"],
-        skip: 10,
-        take: 10,
-      },
-      filterable_fields: { title: "test" }
-    }))
+    expect(output1.context).toEqual(
+      expect.objectContaining({
+        list_config: {
+          select: ["title", "created_at", "id"],
+          order: { title: "DESC" },
+          relations: ["variants"],
+          skip: 10,
+          take: 10,
+        },
+        filterable_fields: { title: "test" },
+      })
+    )
 
     const fakeJob2: AdminPostBatchesReq = {
-      type: 'product-export',
+      type: "product-export",
       context: {},
-      dry_run: false
+      dry_run: false,
     }
 
     const output2 = await productExportStrategy.prepareBatchJobForProcessing(
@@ -229,19 +240,21 @@ describe("Product export strategy", () => {
       {} as Express.Request
     )
 
-    expect(output2.context).toEqual(expect.objectContaining({
-      list_config: {
-        select: undefined,
-        order: { created_at: "DESC" },
-        relations: [
-          ...defaultAdminProductRelations,
-          "variants.prices.region"
-        ],
-        skip: 0,
-        take: 50,
-      },
-      filterable_fields: undefined
-    }))
+    expect(output2.context).toEqual(
+      expect.objectContaining({
+        list_config: {
+          select: undefined,
+          order: { created_at: "DESC" },
+          relations: [
+            ...defaultAdminProductRelations,
+            "variants.prices.region",
+          ],
+          skip: 0,
+          take: 50,
+        },
+        filterable_fields: undefined,
+      })
+    )
   })
 
   it("should always provide a file_key even with no data", async () => {
@@ -253,7 +266,10 @@ describe("Product export strategy", () => {
       featureFlagRouter: new FlagRouter({}),
     })
 
-    await productExportStrategy.prepareBatchJobForProcessing(fakeJob, {} as Request)
+    await productExportStrategy.prepareBatchJobForProcessing(
+      fakeJob,
+      {} as Request
+    )
     await productExportStrategy.preProcessBatchJob(fakeJob.id)
     await productExportStrategy.processJob(fakeJob.id)
 
@@ -269,7 +285,10 @@ describe("Product export strategy", () => {
       featureFlagRouter: new FlagRouter({}),
     })
 
-    await productExportStrategy.prepareBatchJobForProcessing(canceledFakeJob, {} as Request)
+    await productExportStrategy.prepareBatchJobForProcessing(
+      canceledFakeJob,
+      {} as Request
+    )
     await productExportStrategy.preProcessBatchJob(canceledFakeJob.id)
     await productExportStrategy.processJob(canceledFakeJob.id)
 
@@ -278,7 +297,7 @@ describe("Product export strategy", () => {
   })
 })
 
-describe("Product export strategy with sales channels", () => {
+describe("Product export strategy with sales Channels", () => {
   const outputDataStorage: string[] = []
   const fileServiceMock = {
     delete: jest.fn(),
@@ -288,31 +307,31 @@ describe("Product export strategy with sales channels", () => {
           write: (data: string) => {
             outputDataStorage.push(data)
           },
-          end: () => void 0
+          end: () => void 0,
         },
         promise: Promise.resolve(),
-        fileKey: 'product-export.csv'
+        fileKey: "product-export.csv",
       })
     }),
     withTransaction: function () {
       return this
-    }
+    },
   }
   let fakeJob = {
     id: IdMap.getId("product-export-job"),
-    type: 'product-export',
+    type: "product-export",
     created_by: IdMap.getId("product-export-job-creator"),
     created_by_user: {} as User,
     context: {},
     result: {},
     dry_run: false,
-    status: BatchJobStatus.PROCESSING as BatchJobStatus
+    status: BatchJobStatus.PROCESSING as BatchJobStatus,
   } as ProductExportBatchJob
 
   let canceledFakeJob = {
     ...fakeJob,
     id: "bj_failed",
-    status: BatchJobStatus.CANCELED
+    status: BatchJobStatus.CANCELED,
   } as ProductExportBatchJob
 
   const batchJobServiceMock = {
@@ -325,7 +344,7 @@ describe("Product export strategy with sales channels", () => {
           ...canceledFakeJob,
           ...data,
           context: { ...canceledFakeJob?.context, ...data?.context },
-          result: { ...canceledFakeJob?.result, ...data?.result }
+          result: { ...canceledFakeJob?.result, ...data?.result },
         }
 
         return Promise.resolve(canceledFakeJob)
@@ -335,7 +354,7 @@ describe("Product export strategy with sales channels", () => {
         ...fakeJob,
         ...data,
         context: { ...fakeJob?.context, ...data?.context },
-        result: { ...fakeJob?.result, ...data?.result }
+        result: { ...fakeJob?.result, ...data?.result },
       }
 
       return Promise.resolve(fakeJob)
@@ -349,14 +368,12 @@ describe("Product export strategy with sales channels", () => {
       return Promise.resolve(fakeJob)
     }),
     retrieve: jest.fn().mockImplementation((id) => {
-      const targetFakeJob = id === "bj_failed"
-        ? canceledFakeJob
-        : fakeJob
+      const targetFakeJob = id === "bj_failed" ? canceledFakeJob : fakeJob
       return Promise.resolve(targetFakeJob)
     }),
     setFailed: jest.fn().mockImplementation((...args) => {
       console.error(...args)
-    })
+    }),
   }
 
   const productExportStrategy = new ProductExportStrategy({
@@ -369,11 +386,14 @@ describe("Product export strategy with sales channels", () => {
     }),
   })
 
-  it('should generate the appropriate template', async () => {
-    await productExportStrategy.prepareBatchJobForProcessing(fakeJob, {} as Request)
+  it("should generate the appropriate template", async () => {
+    await productExportStrategy.prepareBatchJobForProcessing(
+      fakeJob,
+      {} as Request
+    )
     await productExportStrategy.preProcessBatchJob(fakeJob.id)
     const template = await productExportStrategy.buildHeader(fakeJob)
-    expect(template).toMatch(/.*Product ID.*/)
+    expect(template).toMatch(/.*Product Id.*/)
     expect(template).toMatch(/.*Product Handle.*/)
     expect(template).toMatch(/.*Product Title.*/)
     expect(template).toMatch(/.*Product Subtitle.*/)
@@ -393,17 +413,17 @@ describe("Product export strategy with sales channels", () => {
     expect(template).toMatch(/.*Product Type.*/)
     expect(template).toMatch(/.*Product Tags.*/)
     expect(template).toMatch(/.*Product Discountable.*/)
-    expect(template).toMatch(/.*Product External ID.*/)
+    expect(template).toMatch(/.*Product External Id.*/)
     expect(template).toMatch(/.*Product Profile Name.*/)
     expect(template).toMatch(/.*Product Profile Type.*/)
     expect(template).toMatch(/.*Product Profile Type.*/)
 
-    expect(template).toMatch(/.*Variant ID.*/)
+    expect(template).toMatch(/.*Variant Id.*/)
     expect(template).toMatch(/.*Variant Title.*/)
     expect(template).toMatch(/.*Variant SKU.*/)
     expect(template).toMatch(/.*Variant Barcode.*/)
-    expect(template).toMatch(/.*Variant Allow backorder.*/)
-    expect(template).toMatch(/.*Variant Manage inventory.*/)
+    expect(template).toMatch(/.*Variant Allow Backorder.*/)
+    expect(template).toMatch(/.*Variant Manage Inventory.*/)
     expect(template).toMatch(/.*Variant Weight.*/)
     expect(template).toMatch(/.*Variant Length.*/)
     expect(template).toMatch(/.*Variant Width.*/)
@@ -423,16 +443,21 @@ describe("Product export strategy with sales channels", () => {
     expect(template).toMatch(/.*Price denmark \[DKK\].*/)
     expect(template).toMatch(/.*Price Denmark \[DKK\].*/)
 
-    expect(template).toMatch(/.*Sales channel 1 Name.*/)
-    expect(template).toMatch(/.*Sales channel 1 Description.*/)
-    expect(template).toMatch(/.*Sales channel 2 Name.*/)
-    expect(template).toMatch(/.*Sales channel 2 Description.*/)
+    expect(template).toMatch(/.*Sales Channel 1 Id.*/)
+    expect(template).toMatch(/.*Sales Channel 1 Name.*/)
+    expect(template).toMatch(/.*Sales Channel 1 Description.*/)
+    expect(template).toMatch(/.*Sales Channel 2 Id.*/)
+    expect(template).toMatch(/.*Sales Channel 2 Name.*/)
+    expect(template).toMatch(/.*Sales Channel 2 Description.*/)
 
     expect(template).toMatch(/.*Image 1 Url.*/)
   })
 
-  it('should process the batch job and generate the appropriate output', async () => {
-    await productExportStrategy.prepareBatchJobForProcessing(fakeJob, {} as Request)
+  it("should process the batch job and generate the appropriate output", async () => {
+    await productExportStrategy.prepareBatchJobForProcessing(
+      fakeJob,
+      {} as Request
+    )
     await productExportStrategy.preProcessBatchJob(fakeJob.id)
     await productExportStrategy.processJob(fakeJob.id)
     expect(outputDataStorage).toMatchSnapshot()

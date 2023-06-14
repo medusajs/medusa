@@ -22,7 +22,7 @@ Base abstract entity for all entities
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:33
+medusa/dist/models/swap.d.ts:34
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:46
+medusa/dist/models/swap.d.ts:47
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:49
+medusa/dist/models/swap.d.ts:50
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:44
+medusa/dist/models/swap.d.ts:45
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:42
+medusa/dist/models/swap.d.ts:43
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:41
+medusa/dist/models/swap.d.ts:42
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:43
+medusa/dist/models/swap.d.ts:44
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:37
+medusa/dist/models/swap.d.ts:38
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:29
+medusa/dist/models/swap.d.ts:30
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:35
+medusa/dist/models/swap.d.ts:36
 
 ___
 
@@ -164,7 +164,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:47
+medusa/dist/models/swap.d.ts:48
 
 ___
 
@@ -174,7 +174,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:48
+medusa/dist/models/swap.d.ts:49
 
 ___
 
@@ -184,7 +184,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:45
+medusa/dist/models/swap.d.ts:46
 
 ___
 
@@ -194,7 +194,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:32
+medusa/dist/models/swap.d.ts:33
 
 ___
 
@@ -204,7 +204,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:31
+medusa/dist/models/swap.d.ts:32
 
 ___
 
@@ -214,7 +214,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:36
+medusa/dist/models/swap.d.ts:37
 
 ___
 
@@ -224,7 +224,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:30
+medusa/dist/models/swap.d.ts:31
 
 ___
 
@@ -234,7 +234,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:34
+medusa/dist/models/swap.d.ts:35
 
 ___
 
@@ -244,7 +244,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:39
+medusa/dist/models/swap.d.ts:40
 
 ___
 
@@ -254,7 +254,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:38
+medusa/dist/models/swap.d.ts:39
 
 ___
 
@@ -264,7 +264,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/swap.d.ts:40
+medusa/dist/models/swap.d.ts:41
 
 ___
 

@@ -4,14 +4,13 @@ import {
 } from "."
 
 import { EntityManager } from "typeorm"
-import { IsOptional } from "class-validator"
-import { IsString } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 import { Notification } from "../../../../models"
 import { NotificationService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /notifications/{id}/resend
+ * @oas [post] /admin/notifications/{id}/resend
  * operationId: "PostNotificationsNotificationResend"
  * summary: "Resend Notification"
  * description: "Resends a previously sent notifications, with the same data but optionally to a different address"
@@ -22,10 +21,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           to:
- *             description: "A new address or user identifier that the Notification should be sent to"
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostNotificationsNotificationResendReq"
+ * x-codegen:
+ *   method: resend
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -46,16 +44,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Notification
+ *   - Notifications
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             notification:
- *               $ref: "#/components/schemas/notification"
+ *           $ref: "#/components/schemas/AdminNotificationsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -102,6 +98,14 @@ export default async (req, res) => {
   res.json({ notification })
 }
 
+/**
+ * @schema AdminPostNotificationsNotificationResendReq
+ * type: object
+ * properties:
+ *   to:
+ *     description: "A new address or user identifier that the Notification should be sent to"
+ *     type: string
+ */
 export class AdminPostNotificationsNotificationResendReq {
   @IsOptional()
   @IsString()

@@ -1,10 +1,10 @@
 import fs from "fs"
 
 /**
- * @oas [post] /uploads
+ * @oas [post] /admin/uploads
  * operationId: "PostUploads"
- * summary: "Uploads a file"
- * description: "Uploads a file to the specific fileservice that is installed in Medusa."
+ * summary: "Upload files"
+ * description: "Uploads at least one file to the specific fileservice that is installed in Medusa."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -32,28 +32,20 @@ import fs from "fs"
  *       curl --location --request POST 'https://medusa-url.com/admin/uploads' \
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: image/jpeg' \
- *       --data-binary '{file_path}'
+ *       --form 'files=@"<FILE_PATH_1>"' \
+ *       --form 'files=@"<FILE_PATH_1>"'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Upload
+ *   - Uploads
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             uploads:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   url:
- *                     type: string
- *                     description: The URL of the uploaded file.
- *                     format: uri
+ *           $ref: "#/components/schemas/AdminUploadsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -68,23 +60,18 @@ import fs from "fs"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  try {
-    const fileService = req.scope.resolve("fileService")
+  const fileService = req.scope.resolve("fileService")
 
-    const result = await Promise.all(
-      req.files.map(async (f) => {
-        return fileService.upload(f).then((result) => {
-          fs.unlinkSync(f.path)
-          return result
-        })
+  const result = await Promise.all(
+    req.files.map(async (f) => {
+      return fileService.upload(f).then((result) => {
+        fs.unlinkSync(f.path)
+        return result
       })
-    )
+    })
+  )
 
-    res.status(200).json({ uploads: result })
-  } catch (err) {
-    console.log(err)
-    throw err
-  }
+  res.status(200).json({ uploads: result })
 }
 
 export class IAdminPostUploadsFileReq {

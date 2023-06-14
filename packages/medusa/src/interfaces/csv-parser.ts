@@ -40,21 +40,30 @@ export abstract class AbstractCsvValidator<TCsvLine, TBuiltLine>
   ): Promise<boolean | never>
 }
 
-export type CsvSchemaColumn<TCsvLine, TBuiltLine> = {
-  name: string
+export type CsvSchemaColumn<
+  TCsvLine,
+  TBuiltLine,
+  NameAsOptional = false
+> = (NameAsOptional extends false
+  ? {
+      name: string
+    }
+  : {
+      name?: string
+    }) & {
   required?: boolean
   validator?: AbstractCsvValidator<TCsvLine, TBuiltLine>
 } & (
-  | {
-      mapTo?: string
-      transform?: ColumnTransformer<TCsvLine>
-    }
-  | {
-      match?: RegExp
-      reducer?: ColumnReducer<TCsvLine, TBuiltLine>
-      transform?: ColumnTransformer<TCsvLine>
-    }
-)
+    | {
+        mapTo?: string
+        transform?: ColumnTransformer<TCsvLine>
+      }
+    | {
+        match?: RegExp
+        reducer?: ColumnReducer<TCsvLine, TBuiltLine>
+        transform?: ColumnTransformer<TCsvLine>
+      }
+  )
 
 export type ColumnTransformer<TCsvLine> = (
   value: string,

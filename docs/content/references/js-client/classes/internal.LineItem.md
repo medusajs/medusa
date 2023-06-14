@@ -22,7 +22,7 @@ Base abstract entity for all entities
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:19
+medusa/dist/models/line-item.d.ts:20
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:26
+medusa/dist/models/line-item.d.ts:30
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:44
+medusa/dist/models/line-item.d.ts:49
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:11
+medusa/dist/models/line-item.d.ts:12
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:10
+medusa/dist/models/line-item.d.ts:11
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:17
+medusa/dist/models/line-item.d.ts:18
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:16
+medusa/dist/models/line-item.d.ts:17
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:21
+medusa/dist/models/line-item.d.ts:25
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:42
+medusa/dist/models/line-item.d.ts:47
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:32
+medusa/dist/models/line-item.d.ts:36
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:43
+medusa/dist/models/line-item.d.ts:48
 
 ___
 
@@ -146,7 +146,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:27
+medusa/dist/models/line-item.d.ts:31
 
 ___
 
@@ -164,13 +164,23 @@ medusa/dist/interfaces/models/base-entity.d.ts:5
 
 ___
 
+### includes\_tax
+
+• **includes\_tax**: `boolean`
+
+#### Defined in
+
+medusa/dist/models/line-item.d.ts:40
+
+___
+
 ### is\_giftcard
 
 • **is\_giftcard**: `boolean`
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:24
+medusa/dist/models/line-item.d.ts:28
 
 ___
 
@@ -180,7 +190,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:23
+medusa/dist/models/line-item.d.ts:27
 
 ___
 
@@ -190,7 +200,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:35
+medusa/dist/models/line-item.d.ts:39
 
 ___
 
@@ -200,17 +210,47 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:13
+medusa/dist/models/line-item.d.ts:14
+
+___
+
+### order\_edit
+
+• `Optional` **order\_edit**: ``null`` \| [`OrderEdit`](internal.OrderEdit.md)
+
+#### Defined in
+
+medusa/dist/models/line-item.d.ts:23
+
+___
+
+### order\_edit\_id
+
+• `Optional` **order\_edit\_id**: ``null`` \| `string`
+
+#### Defined in
+
+medusa/dist/models/line-item.d.ts:22
 
 ___
 
 ### order\_id
 
-• **order\_id**: `string`
+• **order\_id**: ``null`` \| `string`
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:12
+medusa/dist/models/line-item.d.ts:13
+
+___
+
+### original\_item\_id
+
+• `Optional` **original\_item\_id**: ``null`` \| `string`
+
+#### Defined in
+
+medusa/dist/models/line-item.d.ts:21
 
 ___
 
@@ -220,7 +260,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:41
+medusa/dist/models/line-item.d.ts:46
 
 ___
 
@@ -230,7 +270,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:40
+medusa/dist/models/line-item.d.ts:45
 
 ___
 
@@ -240,7 +280,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:31
+medusa/dist/models/line-item.d.ts:35
 
 ___
 
@@ -250,7 +290,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:36
+medusa/dist/models/line-item.d.ts:41
 
 ___
 
@@ -260,7 +300,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:33
+medusa/dist/models/line-item.d.ts:37
 
 ___
 
@@ -270,7 +310,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:34
+medusa/dist/models/line-item.d.ts:38
 
 ___
 
@@ -280,7 +320,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:25
+medusa/dist/models/line-item.d.ts:29
 
 ___
 
@@ -290,7 +330,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:37
+medusa/dist/models/line-item.d.ts:42
 
 ___
 
@@ -300,7 +340,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:15
+medusa/dist/models/line-item.d.ts:16
 
 ___
 
@@ -310,7 +350,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:14
+medusa/dist/models/line-item.d.ts:15
 
 ___
 
@@ -320,7 +360,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:18
+medusa/dist/models/line-item.d.ts:19
 
 ___
 
@@ -330,7 +370,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:38
+medusa/dist/models/line-item.d.ts:43
 
 ___
 
@@ -340,7 +380,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:22
+medusa/dist/models/line-item.d.ts:26
 
 ___
 
@@ -350,7 +390,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:20
+medusa/dist/models/line-item.d.ts:24
 
 ___
 
@@ -360,7 +400,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:39
+medusa/dist/models/line-item.d.ts:44
 
 ___
 
@@ -370,7 +410,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:28
+medusa/dist/models/line-item.d.ts:32
 
 ___
 
@@ -394,7 +434,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:30
+medusa/dist/models/line-item.d.ts:34
 
 ___
 
@@ -404,4 +444,4 @@ ___
 
 #### Defined in
 
-medusa/dist/models/line-item.d.ts:29
+medusa/dist/models/line-item.d.ts:33

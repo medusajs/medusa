@@ -3,21 +3,27 @@ import {
   FulfillmentService,
   OrderService,
 } from "../../../../services"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
+ * @oas [post] /admin/orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersClaimFulfillmentsCancel"
- * summary: "Cancels a fulfilmment related to a Claim"
- * description: "Registers a Fulfillment as canceled."
+ * summary: "Cancel Claim Fulfillment"
+ * description: "Registers a claim's fulfillment as canceled."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order which the Claim relates to.
  *   - (path) claim_id=* {string} The ID of the Claim which the Fulfillment relates to.
  *   - (path) fulfillment_id=* {string} The ID of the Fulfillment.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
+ * x-codegen:
+ *   method: cancelClaimFulfillment
+ *   params: AdminPostOrdersClaimFulfillmentsCancelParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -38,16 +44,14 @@ import { MedusaError } from "medusa-core-utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Fulfillment
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -94,9 +98,11 @@ export default async (req, res) => {
       .cancelFulfillment(fulfillment_id)
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
-  res.json({ order })
+
+  res.json({ order: cleanResponseData(order, []) })
 }
+
+export class AdminPostOrdersClaimFulfillmentsCancelParams extends FindParams {}

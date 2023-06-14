@@ -4,15 +4,18 @@ import { CustomerGroupService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /customer-groups/{id}
+ * @oas [get] /admin/customer-groups/{id}
  * operationId: "GetCustomerGroupsGroup"
- * summary: "Retrieve a CustomerGroup"
+ * summary: "Get a Customer Group"
  * description: "Retrieves a Customer Group."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Customer Group.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in the customer group.
  *   - (query) fields {string} (Comma separated) Which fields should be included in the customer group.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: AdminGetCustomerGroupsGroupParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,16 +36,14 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Customer Group
+ *   - Customer Groups
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             customer_group:
- *               $ref: "#/components/schemas/customer_group"
+ *           $ref: "#/components/schemas/AdminCustomerGroupsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

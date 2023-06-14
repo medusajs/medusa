@@ -1,4 +1,9 @@
-import { StoreGetOrdersParams, StoreOrdersRes } from "@medusajs/medusa"
+import {
+  StoreGetOrdersParams,
+  StoreOrdersRes,
+  StorePostCustomersCustomerAcceptClaimReq,
+  StorePostCustomersCustomerOrderClaimReq,
+} from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
@@ -48,6 +53,34 @@ class OrdersResource extends BaseResource {
     path = `/store/orders?${queryString}`
 
     return this.client.request("GET", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * @description Request access to a list of orders
+   * @param {string[]} payload display ids of orders to request
+   * @param customHeaders
+   * @return {ResponsePromise}
+   */
+  requestCustomerOrders(
+    payload: StorePostCustomersCustomerOrderClaimReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise {
+    const path = `/store/orders/batch/customer/token`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * @description Grant access to a list of orders
+   * @param {string} payload signed token to grant access
+   * @param customHeaders
+   * @return {ResponsePromise}
+   */
+  confirmRequest(
+    payload: StorePostCustomersCustomerAcceptClaimReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise {
+    const path = `/store/orders/customer/confirm`
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 }
 

@@ -2,13 +2,15 @@ import { EntityManager } from "typeorm"
 import RegionService from "../../../../services/region"
 
 /**
- * @oas [delete] /regions/{id}
+ * @oas [delete] /admin/regions/{id}
  * operationId: "DeleteRegionsRegion"
  * summary: "Delete a Region"
  * description: "Deletes a Region."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -29,25 +31,14 @@ import RegionService from "../../../../services/region"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Region.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: region
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminRegionsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

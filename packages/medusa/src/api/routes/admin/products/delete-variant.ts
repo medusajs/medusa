@@ -8,7 +8,7 @@ import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /products/{id}/variants/{variant_id}
+ * @oas [delete] /admin/products/{id}/variants/{variant_id}
  * operationId: "DeleteProductsProductVariantsVariant"
  * summary: "Delete a Product Variant"
  * description: "Deletes a Product Variant."
@@ -16,6 +16,8 @@ import { EntityManager } from "typeorm"
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
  *   - (path) variant_id=* {string} The ID of the Product Variant.
+ * x-codegen:
+ *   method: deleteVariant
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -36,27 +38,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             variant_id:
- *               type: string
- *               description: The ID of the deleted Product Variant.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: variant
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
- *             product:
- *               $ref: "#/components/schemas/product"
+ *           $ref: "#/components/schemas/AdminProductsDeleteVariantRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

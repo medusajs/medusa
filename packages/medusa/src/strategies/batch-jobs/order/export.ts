@@ -6,16 +6,15 @@ import {
   orderExportPropertiesDescriptors,
 } from "."
 import { AdminPostBatchesReq } from "../../../api"
-import { IFileService } from "../../../interfaces"
-import { AbstractBatchJobStrategy } from "../../../interfaces"
+import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
+import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 import { Order } from "../../../models"
 import { OrderService } from "../../../services"
 import BatchJobService from "../../../services/batch-job"
 import { BatchJobStatus } from "../../../types/batch-job"
-import { prepareListQuery } from "../../../utils/get-query-config"
-import { FlagRouter } from "../../../utils/flag-router"
-import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 import { FindConfig } from "../../../types/common"
+import { FlagRouter } from "../../../utils/flag-router"
+import { prepareListQuery } from "../../../utils/get-query-config"
 
 type InjectedDependencies = {
   fileService: IFileService
@@ -319,7 +318,10 @@ class OrderExportStrategy extends AbstractBatchJobStrategy {
       fieldName: "sales_channel",
       title: ["Sales channel name", "Sales channel description"].join(";"),
       accessor: (order: Order): string =>
-        [order.sales_channel.name, order.sales_channel.description].join(";"),
+        [
+          order.sales_channel?.name || "",
+          order.sales_channel?.description || "",
+        ].join(";"),
     })
   }
 }

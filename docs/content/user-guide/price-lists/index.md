@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+description: 'Medusa admin allows merchants to manage their price lists. Merchants can override prices or create sales using price lists.'
 ---
 
 # Price Lists Overview
@@ -26,6 +27,5 @@ In the list, you can see price list details such as the name, description, and s
 
 ## Learn More About Price Lists
 
-- [Create a Price List](./create.md)
-- [Edit a Price List](./edit.md)
-- [Delete a Price List](./delete.md)
+- [Manage a Price List](./manage.mdx)
+- [Import Prices](./import.mdx)

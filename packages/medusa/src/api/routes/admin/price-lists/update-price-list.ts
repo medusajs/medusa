@@ -1,25 +1,28 @@
 import {
-  AdminPriceListPricesUpdateReq,
-  PriceListStatus,
-  PriceListType,
-} from "../../../../types/price-list"
-import {
   IsArray,
+  IsBoolean,
   IsEnum,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
+import {
+  AdminPriceListPricesUpdateReq,
+  PriceListStatus,
+  PriceListType,
+} from "../../../../types/price-list"
 
-import { PriceList } from "../../../.."
-import PriceListService from "../../../../services/price-list"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { PriceList } from "../../../.."
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
+import PriceListService from "../../../../services/price-list"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /price-lists/{id}
+ * @oas [post] /admin/price-lists/{id}
  * operationId: "PostPriceListsPriceListPriceList"
  * summary: "Update a Price List"
  * description: "Updates a Price List"
@@ -30,75 +33,9 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           name:
- *             description: "The name of the Price List"
- *             type: string
- *           description:
- *             description: "A description of the Price List."
- *             type: string
- *           starts_at:
- *             description: "The date with timezone that the Price List starts being valid."
- *             type: string
- *             format: date
- *           ends_at:
- *             description: "The date with timezone that the Price List ends being valid."
- *             type: string
- *             format: date
- *           type:
- *             description: The type of the Price List.
- *             type: string
- *             enum:
- *              - sale
- *              - override
- *           status:
- *             description: The status of the Price List.
- *             type: string
- *             enum:
- *              - active
- *              - draft
- *           prices:
- *             description: The prices of the Price List.
- *             type: array
- *             items:
- *               required:
- *                 - amount
- *                 - variant_id
- *               properties:
- *                 id:
- *                   description: The ID of the price.
- *                   type: string
- *                 region_id:
- *                   description: The ID of the Region for which the price is used. Only required if currecny_code is not provided.
- *                   type: string
- *                 currency_code:
- *                   description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
- *                   type: string
- *                   externalDocs:
- *                      url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
- *                      description: See a list of codes.
- *                 variant_id:
- *                   description: The ID of the Variant for which the price is used.
- *                   type: string
- *                 amount:
- *                   description: The amount to charge for the Product Variant.
- *                   type: integer
- *                 min_quantity:
- *                   description: The minimum quantity for which the price will be used.
- *                   type: integer
- *                 max_quantity:
- *                   description: The maximum quantity for which the price will be used.
- *                   type: integer
- *           customer_groups:
- *             type: array
- *             description: A list of customer groups that the Price List applies to.
- *             items:
- *               required:
- *                 - id
- *               properties:
- *                 id:
- *                   description: The ID of a customer group
- *                   type: string
+ *         $ref: "#/components/schemas/AdminPostPriceListsPriceListPriceListReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -125,16 +62,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Price List
+ *   - Price Lists
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             price_list:
- *               $ref: "#/components/schemas/price_list"
+ *           $ref: "#/components/schemas/AdminPriceListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -179,6 +114,84 @@ class CustomerGroup {
   id: string
 }
 
+/**
+ * @schema AdminPostPriceListsPriceListPriceListReq
+ * type: object
+ * properties:
+ *   name:
+ *     description: "The name of the Price List"
+ *     type: string
+ *   description:
+ *     description: "A description of the Price List."
+ *     type: string
+ *   starts_at:
+ *     description: "The date with timezone that the Price List starts being valid."
+ *     type: string
+ *     format: date
+ *   ends_at:
+ *     description: "The date with timezone that the Price List ends being valid."
+ *     type: string
+ *     format: date
+ *   type:
+ *     description: The type of the Price List.
+ *     type: string
+ *     enum:
+ *      - sale
+ *      - override
+ *   status:
+ *     description: The status of the Price List.
+ *     type: string
+ *     enum:
+ *      - active
+ *      - draft
+ *   prices:
+ *     description: The prices of the Price List.
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - amount
+ *         - variant_id
+ *       properties:
+ *         id:
+ *           description: The ID of the price.
+ *           type: string
+ *         region_id:
+ *           description: The ID of the Region for which the price is used. Only required if currecny_code is not provided.
+ *           type: string
+ *         currency_code:
+ *           description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+ *           type: string
+ *           externalDocs:
+ *              url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *              description: See a list of codes.
+ *         variant_id:
+ *           description: The ID of the Variant for which the price is used.
+ *           type: string
+ *         amount:
+ *           description: The amount to charge for the Product Variant.
+ *           type: integer
+ *         min_quantity:
+ *           description: The minimum quantity for which the price will be used.
+ *           type: integer
+ *         max_quantity:
+ *           description: The maximum quantity for which the price will be used.
+ *           type: integer
+ *   customer_groups:
+ *     type: array
+ *     description: A list of customer groups that the Price List applies to.
+ *     items:
+ *       type: object
+ *       required:
+ *         - id
+ *       properties:
+ *         id:
+ *           description: The ID of a customer group
+ *           type: string
+ *   includes_tax:
+ *     description: "[EXPERIMENTAL] Tax included in prices of price list"
+ *     type: boolean
+ */
 export class AdminPostPriceListsPriceListPriceListReq {
   @IsString()
   @IsOptional()
@@ -213,4 +226,10 @@ export class AdminPostPriceListsPriceListPriceListReq {
   @Type(() => CustomerGroup)
   @ValidateNested({ each: true })
   customer_groups?: CustomerGroup[]
+
+  @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [
+    IsOptional(),
+    IsBoolean(),
+  ])
+  includes_tax?: boolean
 }

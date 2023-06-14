@@ -2,13 +2,15 @@ import { EntityManager } from "typeorm"
 import { ShippingProfileService } from "../../../../services"
 
 /**
- * @oas [delete] /shipping-profiles/{id}
+ * @oas [delete] /admin/shipping-profiles/{id}
  * operationId: "DeleteShippingProfilesProfile"
  * summary: "Delete a Shipping Profile"
  * description: "Deletes a Shipping Profile."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Shipping Profile.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -29,25 +31,14 @@ import { ShippingProfileService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Shipping Profile
+ *   - Shipping Profiles
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Shipping Profile.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: shipping_profile
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminDeleteShippingProfileRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

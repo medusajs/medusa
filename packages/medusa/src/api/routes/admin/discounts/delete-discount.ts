@@ -2,13 +2,15 @@ import DiscountService from "../../../../services/discount"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /discounts/{id}
+ * @oas [delete] /admin/discounts/{id}
  * operationId: "DeleteDiscountsDiscount"
  * summary: "Delete a Discount"
  * description: "Deletes a Discount."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Discount
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -29,25 +31,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Discount
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted Discount
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: discount
- *             deleted:
- *               type: boolean
- *               description: Whether the discount was deleted successfully or not.
- *               default: true
+ *           $ref: "#/components/schemas/AdminDiscountsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

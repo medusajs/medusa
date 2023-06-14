@@ -1,18 +1,24 @@
 import { ClaimService, OrderService } from "../../../../services"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/claims/{claim_id}/cancel
+ * @oas [post] /admin/orders/{id}/claims/{claim_id}/cancel
  * operationId: "PostOrdersClaimCancel"
- * summary: "Cancels a Claim"
+ * summary: "Cancel a Claim"
  * description: "Cancels a Claim"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (path) claim_id=* {string} The ID of the Claim.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
+ * x-codegen:
+ *   method: cancelClaim
+ *   params: AdminPostOrdersClaimCancel
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,16 +39,14 @@ import { MedusaError } from "medusa-core-utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Claim
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -78,10 +82,11 @@ export default async (req, res) => {
       .cancel(claim_id)
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
+
+export class AdminPostOrdersClaimCancel extends FindParams {}

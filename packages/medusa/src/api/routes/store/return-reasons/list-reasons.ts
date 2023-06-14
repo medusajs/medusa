@@ -5,10 +5,12 @@ import {
 import ReturnReasonService from "../../../../services/return-reason"
 
 /**
- * @oas [get] /return-reasons
+ * @oas [get] /store/return-reasons
  * operationId: "GetReturnReasons"
  * summary: "List Return Reasons"
  * description: "Retrieves a list of Return Reasons."
+ * x-codegen:
+ *   method: list
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -24,18 +26,14 @@ import ReturnReasonService from "../../../../services/return-reason"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/return-reasons'
  * tags:
- *   - Return Reason
+ *   - Return Reasons
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             return_reasons:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/return_reason"
+ *           $ref: "#/components/schemas/StoreReturnReasonsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":

@@ -1,11 +1,13 @@
 import { OauthService } from "../../../../services"
 
 /**
- * @oas [get] /apps
+ * @oas [get] /admin/apps
  * operationId: "GetApps"
- * summary: "List applications"
+ * summary: "List Applications"
  * description: "Retrieve a list of applications."
  * x-authenticated: true
+ * x-codegen:
+ *   method: list
  * x-codeSamples:
  *   - lang: Shell
  *     label: cURL
@@ -16,18 +18,14 @@ import { OauthService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - App
+ *   - Apps
  * responses:
  *  "200":
  *    description: OK
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            apps:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/OAuth"
+ *          $ref: "#/components/schemas/AdminAppsListRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

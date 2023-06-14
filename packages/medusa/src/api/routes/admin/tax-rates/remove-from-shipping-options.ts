@@ -7,10 +7,10 @@ import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [delete] /tax-rates/{id}/shipping-options/batch
+ * @oas [delete] /admin/tax-rates/{id}/shipping-options/batch
  * operationId: "DeleteTaxRatesTaxRateShippingOptions"
- * summary: "Removes a Tax Rate from Product Types"
- * description: "Removes a Tax Rate from a list of Product Types"
+ * summary: "Del. for Shipping Options"
+ * description: "Removes a Tax Rate from a list of Shipping Options"
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
@@ -36,14 +36,10 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - shipping_options
- *         properties:
- *           shipping_options:
- *             type: array
- *             description: "The IDs of the shipping options to remove association with this tax rate"
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/AdminDeleteTaxRatesTaxRateShippingOptionsReq"
+ * x-codegen:
+ *   method: removeShippingOptions
+ *   queryParams: AdminDeleteTaxRatesTaxRateShippingOptionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -74,16 +70,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             tax_rate:
- *               $ref: "#/components/schemas/tax_rate"
+ *           $ref: "#/components/schemas/AdminTaxRatesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -127,6 +121,18 @@ export default async (req, res) => {
   res.json({ tax_rate: data })
 }
 
+/**
+ * @schema AdminDeleteTaxRatesTaxRateShippingOptionsReq
+ * type: object
+ * required:
+ *   - shipping_options
+ * properties:
+ *   shipping_options:
+ *     type: array
+ *     description: "The IDs of the shipping options to remove association with this tax rate"
+ *     items:
+ *       type: string
+ */
 export class AdminDeleteTaxRatesTaxRateShippingOptionsReq {
   @IsArray()
   shipping_options: string[]

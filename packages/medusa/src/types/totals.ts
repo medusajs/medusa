@@ -1,4 +1,24 @@
-import { LineItem } from "../models/line-item"
+import {
+  Address,
+  ClaimOrder,
+  Customer,
+  Discount,
+  LineItem,
+  Region,
+  ShippingMethod,
+  Swap,
+} from "../models"
+
+export type CalculationContextData = {
+  discounts: Discount[]
+  items: LineItem[]
+  customer: Customer
+  region: Region
+  shipping_address: Address | null
+  swaps?: Swap[]
+  claims?: ClaimOrder[]
+  shipping_methods?: ShippingMethod[]
+}
 
 /** The amount of a gift card allocated to a line item */
 export type GiftCardAllocation = {
@@ -42,4 +62,5 @@ export type LineDiscount = {
 export type LineDiscountAmount = {
   item: LineItem
   amount: number
+  customAdjustmentsAmount: number
 }

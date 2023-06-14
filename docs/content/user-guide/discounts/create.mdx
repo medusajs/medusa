@@ -1,0 +1,97 @@
+---
+sidebar_position: 2
+description: 'This user guide explains how to create a discount on the Medusa admin.'
+addHowToData: true
+---
+
+import UiIcon from '@site/src/components/UiIcon';
+
+# Create a Discount
+
+In this document, you’ll learn how to create a discount.
+
+## How to Create a Discount
+
+To create a discount:
+
+1. Go to Discounts.
+2. Click on the Add Discount button.
+
+This opens a form with collapsible sections to fill in different information about the discount.
+
+### Discount Type
+
+In this section, you have to select the discount type. There are three types:
+
+1. **Percentage:** discount a specific percentage of the price of each item that complies with the discount conditions.
+2. **Fixed amount:** discount a specific amount either from the cart total or from the price each item that complies with the discount conditions. After choosing this type, a new field Allocation will show where you can choose how the discount should be applied.
+3. **Free shipping:** Remove any shipping amount available during checkout.
+
+Choose the type of the discount and fill in any additional fields if necessary.
+
+### General
+
+In this section, you have to enter general but required information related to the discount:
+
+1. In the “Choose valid regions” field, choose the regions this discount should be applied in. You must select at least one region. For the Fixed Discount type, you can only pick one region. For other types you can select more than one region.
+2. In the Code field, enter the code that the customers have to enter during checkout for the discount to be applied. Only uppercase letters and numbers are allowed.
+3. If you chose Percentage for Discount Type earlier, enter the percentage that should be discounted in the Percentage field.
+4. If you chose Fixed Amount for Discount Type earlier, enter the amount that should be discounted in the Amount field.
+5. In the Description field, enter a description for the discount.
+6. You can check the “This is a template discount” checkbox to create a template discount. You can use template discounts to reuse discount rules and configurations across a group of discounts.
+
+### Configuration
+
+In this section, you can set configurations that limit the application of the discount:
+
+1. Toggle the Start date field if you want to set the date and time the customers can start using this discount. If you don’t set a start date, the discount can be used once it’s published.
+2. Toggle the “Discount has an expiry date?” field if you want to set the date and time the discount ends. If you don’t set an expiry date, the discount can be used forever while it’s published.
+3. Toggle the “Limit the number of redemptions?” field if you want to limit how many times the discount can be used. This number is used across customers, and not per customer. If you don’t set a limit, the discount can be used unlimitedly.
+4. If you chose to make the discount a template discount earlier, you can toggle the “Availability duration?” field to set the duration of the discount in years, months, days, hours, and minutes.
+
+### Conditions
+
+In this section, you can set the conditions that define when the discount can be applied. When the discount is used on a cart, it will only be applied if the items in the cart and the customer fit the discount’s conditions.
+
+The following condition types can be used:
+
+1. **Product:** specify products that this discount can/can’t be used with.
+2. **Customer groups:** specify customer groups that this discount can/can’t be used with.
+3. **Tag:** specify tags that this discount can/can’t be used with.
+4. **Collection:** specify the collection that this discount can/can’t be used with.
+5. **Type:** specify the product type that this discount can/can’t be used with.
+
+To add a condition to the discount:
+
+1. Click on the Add Condition button.
+2. Click on the condition type.
+3. In the new list that opens:
+    1. Choose at the top either “In” or “Not In,” where “In” indicates that the discount can be applied to the items selected in this list, and “Not In” indicates that the discount can be applied to all items except those selected in this list.
+    2. Select the items from the list.
+4. Once done, click “Save and add more” to add more conditions, or click “Save and close” to close the conditions window.
+
+:::info
+
+You can use a condition type for only one condition. After using a condition type, you will not be able to use it again for another condition. You’ll need to edit the condition you added if you need to make any changes.
+
+:::
+
+To edit a condition you already added to the discount:
+
+1. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to the condition.
+2. Click on Edit from the dropdown.
+3. Make changes to the condition in the new window that opens.
+4. Once done, click on the Save button.
+
+To delete a condition you already added to the discount:
+
+1. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon next to the condition.
+2. Click on “Delete condition” from the dropdown.
+
+### Save Discount
+
+After filling out previous sections, you can save the discount by either clicking the “Save as draft” or “Publish discount” buttons.
+
+If you save the discount as a draft, customers will not be able to use it but all of the information, configurations, and conditions will be saved. You can publish it at a later point.
+
+If you publish the discount, customers will be able to use it within the configurations and conditions you’ve set. You can change the status of the discount back to draft later on as well.

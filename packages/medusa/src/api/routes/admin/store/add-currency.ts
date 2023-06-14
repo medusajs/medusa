@@ -1,7 +1,8 @@
 import { StoreService } from "../../../../services"
 import { EntityManager } from "typeorm"
+
 /**
- * @oas [post] /store/currencies/{code}
+ * @oas [post] /admin/store/currencies/{code}
  * operationId: "PostStoreCurrenciesCode"
  * summary: "Add a Currency Code"
  * description: "Adds a Currency Code to the available currencies."
@@ -16,6 +17,8 @@ import { EntityManager } from "typeorm"
  *       externalDocs:
  *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *         description: See a list of codes.
+ * x-codegen:
+ *   method: addCurrency
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -25,7 +28,7 @@ import { EntityManager } from "typeorm"
  *       // must be previously logged in or use api token
  *       medusa.admin.store.addCurrency('eur')
  *       .then(({ store }) => {
- *         console.log(store.id);
+ *         console.log(store.currencies);
  *       });
  *   - lang: Shell
  *     label: cURL
@@ -43,9 +46,7 @@ import { EntityManager } from "typeorm"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             store:
- *               $ref: "#/components/schemas/store"
+ *           $ref: "#/components/schemas/AdminStoresRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

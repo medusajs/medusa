@@ -1,16 +1,17 @@
-import { MockManager, MockRepository } from "medusa-test-utils"
-import TaxProviderService from "../tax-provider"
+import { asValue, createContainer } from "awilix"
+import {
+  defaultContainer,
+  getCacheKey,
+  getTaxLineFactory,
+} from "../__fixtures__/tax-provider"
 
 describe("TaxProviderService", () => {
-  describe("retrieveProvider", () => {
-    const container = {
-      manager: MockManager,
-      taxRateService: {},
-      systemTaxService: "system",
-      tp_test: "good",
-    }
+  afterEach(() => {
+    jest.clearAllMocks()
+  })
 
-    const providerService = new TaxProviderService(container)
+  describe("retrieveProvider", () => {
+    const providerService = defaultContainer.resolve("taxProviderService")
 
     it("successfully retrieves system provider", () => {
       const provider = providerService.retrieveProvider({
@@ -48,17 +49,17 @@ describe("TaxProviderService", () => {
         item_id: "item_1",
       },
     ])
-    const container = {
-      manager: MockManager,
-      lineItemTaxLineRepository: MockRepository({ create: (d) => d }),
-      systemTaxService: {
+    const container = createContainer({}, defaultContainer)
+    container.register(
+      "systemTaxService",
+      asValue({
         getTaxLines: mockCalculateLineItemTaxes,
-      },
-    }
+      })
+    )
 
     test("success", async () => {
-      const providerService = new TaxProviderService(container)
-      providerService.getRegionRatesForProduct = jest.fn(() => [])
+      const providerService = container.resolve("taxProviderService")
+      providerService.getRegionRatesForProduct = jest.fn(() => new Map())
 
       const region = { id: "test", tax_provider_id: null }
       const { cart, calculationContext: calcContext } = getTaxLineFactory({
@@ -80,16 +81,15 @@ describe("TaxProviderService", () => {
 
       expect(rates).toEqual(expected)
 
-      expect(container.lineItemTaxLineRepository.create).toHaveBeenCalledTimes(
-        1
+      const lineItemTaxLineRepository = container.resolve(
+        "lineItemTaxLineRepository"
       )
-      expect(container.lineItemTaxLineRepository.create).toHaveBeenCalledWith(
-        expected[0]
-      )
+      expect(lineItemTaxLineRepository.create).toHaveBeenCalledTimes(1)
+      expect(lineItemTaxLineRepository.create).toHaveBeenCalledWith(expected[0])
 
       expect(providerService.getRegionRatesForProduct).toHaveBeenCalledTimes(1)
       expect(providerService.getRegionRatesForProduct).toHaveBeenCalledWith(
-        "prod_1",
+        ["prod_1"],
         region
       )
 
@@ -108,26 +108,23 @@ describe("TaxProviderService", () => {
   })
 
   describe("getRegionRatesForProduct", () => {
-    const container = {
-      manager: MockManager,
-      taxRateService: {
-        listByProduct: jest.fn(),
-      },
-    }
-
-    test("success", async () => {
-      container.taxRateService = {
+    const container = createContainer({}, defaultContainer)
+    container.register(
+      "taxRateService",
+      asValue({
         withTransaction: function () {
           return this
         },
         listByProduct: jest.fn(() => Promise.resolve([])),
-      }
+      })
+    )
 
-      const providerService = new TaxProviderService(container)
-      providerService.getCacheEntry = jest.fn(() => null)
-      providerService.setCache = jest.fn()
+    test("success", async () => {
+      const providerService = container.resolve("taxProviderService")
 
-      const rates = await providerService.getRegionRatesForProduct("prod_id", {
+      const productId = "prod_id"
+
+      const rates = await providerService.getRegionRatesForProduct(productId, {
         id: "reg_id",
         tax_rates: [],
         tax_rate: 12.5,
@@ -140,35 +137,24 @@ describe("TaxProviderService", () => {
           code: "default",
         },
       ]
-      expect(rates).toEqual(expected)
+      expect(rates.get(productId)).toEqual(expected)
 
-      expect(providerService.getCacheEntry).toHaveBeenCalledTimes(1)
-      expect(providerService.getCacheEntry).toHaveBeenCalledWith(
-        "prod_id",
-        "reg_id"
-      )
+      const cacheService = container.resolve("cacheService")
+      const cacheKey = getCacheKey(productId, "reg_id")
 
-      expect(providerService.setCache).toHaveBeenCalledTimes(1)
-      expect(providerService.setCache).toHaveBeenCalledWith(
-        "prod_id",
-        "reg_id",
-        expected
-      )
+      expect(cacheService.get).toHaveBeenCalledTimes(1)
+      expect(cacheService.get).toHaveBeenCalledWith(cacheKey)
+
+      expect(cacheService.set).toHaveBeenCalledTimes(1)
+      expect(cacheService.set).toHaveBeenCalledWith(cacheKey, expected)
     })
 
     test("success - without product rates", async () => {
-      container.taxRateService = {
-        withTransaction: function () {
-          return this
-        },
-        listByProduct: jest.fn(() => Promise.resolve([])),
-      }
+      const providerService = container.resolve("taxProviderService")
 
-      const providerService = new TaxProviderService(container)
-      providerService.getCacheEntry = jest.fn(() => null)
-      providerService.setCache = jest.fn()
+      const productId = "prod_id"
 
-      const rates = await providerService.getRegionRatesForProduct("prod_id", {
+      const rates = await providerService.getRegionRatesForProduct(productId, {
         id: "reg_id",
         tax_rates: [{ id: "reg_rate", rate: 20, name: "PTR", code: "ptr" }],
         tax_rate: 12.5,
@@ -181,43 +167,51 @@ describe("TaxProviderService", () => {
           code: "default",
         },
       ]
-      expect(container.taxRateService.listByProduct).toHaveBeenCalledTimes(1)
-      expect(container.taxRateService.listByProduct).toHaveBeenCalledWith(
-        "prod_id",
-        { region_id: "reg_id" }
-      )
 
-      expect(providerService.setCache).toHaveBeenCalledTimes(1)
-      expect(providerService.setCache).toHaveBeenCalledWith(
-        "prod_id",
-        "reg_id",
-        expected
-      )
+      const taxRateService = container.resolve("taxRateService")
 
-      expect(rates).toEqual(expected)
+      expect(taxRateService.listByProduct).toHaveBeenCalledTimes(1)
+      expect(taxRateService.listByProduct).toHaveBeenCalledWith(productId, {
+        region_id: "reg_id",
+      })
+
+      const cacheService = container.resolve("cacheService")
+      const cacheKey = getCacheKey(productId, "reg_id")
+
+      expect(cacheService.get).toHaveBeenCalledTimes(1)
+      expect(cacheService.get).toHaveBeenCalledWith(cacheKey)
+
+      expect(cacheService.set).toHaveBeenCalledTimes(1)
+      expect(cacheService.set).toHaveBeenCalledWith(cacheKey, expected)
+
+      expect(rates.get(productId)).toEqual(expected)
     })
 
     test("success - with product rates", async () => {
-      container.taxRateService = {
-        withTransaction: function () {
-          return this
-        },
-        listByProduct: jest.fn(() =>
-          Promise.resolve([
-            {
-              rate: 20,
-              name: "PTR",
-              code: "ptr",
-            },
-          ])
-        ),
-      }
+      const container = createContainer({}, defaultContainer)
+      container.register(
+        "taxRateService",
+        asValue({
+          withTransaction: function () {
+            return this
+          },
+          listByProduct: jest.fn(() =>
+            Promise.resolve([
+              {
+                rate: 20,
+                name: "PTR",
+                code: "ptr",
+              },
+            ])
+          ),
+        })
+      )
 
-      const providerService = new TaxProviderService(container)
-      providerService.getCacheEntry = jest.fn(() => null)
-      providerService.setCache = jest.fn()
+      const providerService = container.resolve("taxProviderService")
 
-      const rates = await providerService.getRegionRatesForProduct("prod_id", {
+      const productId = "prod_id"
+
+      const rates = await providerService.getRegionRatesForProduct(productId, {
         id: "reg_id",
         tax_rates: [{ id: "reg_rate", rate: 20, name: "PTR", code: "ptr" }],
         tax_rate: 12.5,
@@ -230,32 +224,29 @@ describe("TaxProviderService", () => {
           code: "ptr",
         },
       ]
-      expect(container.taxRateService.listByProduct).toHaveBeenCalledTimes(1)
-      expect(container.taxRateService.listByProduct).toHaveBeenCalledWith(
-        "prod_id",
-        { region_id: "reg_id" }
-      )
 
-      expect(providerService.setCache).toHaveBeenCalledTimes(1)
-      expect(providerService.setCache).toHaveBeenCalledWith(
-        "prod_id",
-        "reg_id",
-        expected
-      )
+      const taxRateService = container.resolve("taxRateService")
 
-      expect(rates).toEqual(expected)
+      expect(taxRateService.listByProduct).toHaveBeenCalledTimes(1)
+      expect(taxRateService.listByProduct).toHaveBeenCalledWith(productId, {
+        region_id: "reg_id",
+      })
+
+      const cacheService = container.resolve("cacheService")
+      const cacheKey = getCacheKey(productId, "reg_id")
+
+      expect(cacheService.get).toHaveBeenCalledTimes(1)
+      expect(cacheService.get).toHaveBeenCalledWith(cacheKey)
+
+      expect(cacheService.set).toHaveBeenCalledTimes(1)
+      expect(cacheService.set).toHaveBeenCalledWith(cacheKey, expected)
+
+      expect(rates.get(productId)).toEqual(expected)
     })
   })
 
   describe("getCacheKey", () => {
-    const container = {
-      manager: MockManager,
-      productTaxRateService: {},
-      systemTaxService: "system",
-      tp_test: "good",
-    }
-
-    const providerService = new TaxProviderService(container)
+    const providerService = defaultContainer.resolve("taxProviderService")
 
     test("formats correctly", () => {
       expect(providerService.getCacheKey("product", "region")).toEqual(
@@ -264,27 +255,3 @@ describe("TaxProviderService", () => {
     })
   })
 })
-
-const getTaxLineFactory = ({ items, region }) => {
-  const cart = {
-    shipping_methods: [],
-    items: items.map((i) => {
-      return {
-        id: i.id,
-        variant: {
-          product_id: i.product_id,
-        },
-      }
-    }),
-  }
-
-  const calculationContext = {
-    region,
-    customer: {},
-    allocation_map: {},
-    shipping_address: {},
-    shipping_methods: [],
-  }
-
-  return { cart, calculationContext }
-}

@@ -2,30 +2,38 @@
 
 ## Classes
 
-- [StoreGetCollectionsParams](../classes/internal-31.StoreGetCollectionsParams.md)
+- [AdminDeleteUploadsReq](../classes/internal-31.AdminDeleteUploadsReq.md)
+- [AdminPostUploadsDownloadUrlReq](../classes/internal-31.AdminPostUploadsDownloadUrlReq.md)
+- [IAdminPostUploadsFileReq](../classes/internal-31.IAdminPostUploadsFileReq.md)
 
 ## Type Aliases
 
-### StoreCollectionsListRes
+### AdminUploadsDownloadUrlRes
 
-Ƭ **StoreCollectionsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `collections`: [`ProductCollection`](../classes/internal.ProductCollection.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/store/collections/index.d.ts:7
-
-___
-
-### StoreCollectionsRes
-
-Ƭ **StoreCollectionsRes**: `Object`
+Ƭ **AdminUploadsDownloadUrlRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `collection` | [`ProductCollection`](../classes/internal.ProductCollection.md) |
+| `download_url` | `string` |
 
 #### Defined in
 
-medusa/dist/api/routes/store/collections/index.d.ts:10
+medusa/dist/api/routes/admin/uploads/index.d.ts:10
+
+___
+
+### AdminUploadsRes
+
+Ƭ **AdminUploadsRes**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `uploads` | { `url`: `string`  }[] |
+
+#### Defined in
+
+medusa/dist/api/routes/admin/uploads/index.d.ts:4

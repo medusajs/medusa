@@ -7,9 +7,9 @@ import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /tax-rates/{id}/shipping-options/batch
+ * @oas [post] /admin/tax-rates/{id}/shipping-options/batch
  * operationId: "PostTaxRatesTaxRateShippingOptions"
- * summary: "Add Tax Rate to Product Types"
+ * summary: "Add to Shipping Options"
  * description: "Associates a Tax Rate with a list of Shipping Options"
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
@@ -36,14 +36,10 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - shipping_options
- *         properties:
- *           shipping_options:
- *             type: array
- *             description: "The IDs of the shipping options to associate with this tax rate"
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/AdminPostTaxRatesTaxRateShippingOptionsReq"
+ * x-codegen:
+ *   method: addShippingOptions
+ *   queryParams: AdminPostTaxRatesTaxRateShippingOptionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -74,16 +70,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             tax_rate:
- *               $ref: "#/components/schemas/tax_rate"
+ *           $ref: "#/components/schemas/AdminTaxRatesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -126,6 +120,18 @@ export default async (req, res) => {
   res.json({ tax_rate: data })
 }
 
+/**
+ * @schema AdminPostTaxRatesTaxRateShippingOptionsReq
+ * type: object
+ * required:
+ *   - shipping_options
+ * properties:
+ *   shipping_options:
+ *     type: array
+ *     description: "The IDs of the shipping options to associate with this tax rate"
+ *     items:
+ *       type: string
+ */
 export class AdminPostTaxRatesTaxRateShippingOptionsReq {
   @IsArray()
   shipping_options: string[]

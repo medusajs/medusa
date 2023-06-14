@@ -38,38 +38,44 @@ export class ShippingTaxRate {
 }
 
 /**
- * @schema shipping_tax_rate
+ * @schema ShippingTaxRate
  * title: "Shipping Tax Rate"
  * description: "Associates a tax rate with a shipping option to indicate that the shipping option is taxed in a certain way"
- * x-resourceId: shipping_tax_rate
+ * type: object
  * required:
- *   - shipping_option_id
+ *   - created_at
+ *   - metadata
  *   - rate_id
+ *   - shipping_option_id
+ *   - updated_at
  * properties:
  *   shipping_option_id:
- *     description: "The ID of the Shipping Option"
+ *     description: The ID of the Shipping Option
  *     type: string
  *     example: so_01G1G5V27GYX4QXNARRQCW1N8T
  *   shipping_option:
  *     description: Available if the relation `shipping_option` is expanded.
- *     $ref: "#/components/schemas/shipping_option"
+ *     nullable: true
+ *     $ref: "#/components/schemas/ShippingOption"
  *   rate_id:
- *     description: "The ID of the Tax Rate"
+ *     description: The ID of the Tax Rate
  *     type: string
  *     example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
  *   tax_rate:
  *     description: Available if the relation `tax_rate` is expanded.
- *     $ref: "#/components/schemas/tax_rate"
+ *     nullable: true
+ *     $ref: "#/components/schemas/TaxRate"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
  */

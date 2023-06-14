@@ -8,9 +8,10 @@ import {
 import { DraftOrder } from "../../../.."
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [delete] /draft-orders/{id}/line-items/{line_id}
+ * @oas [delete] /admin/draft-orders/{id}/line-items/{line_id}
  * operationId: DeleteDraftOrdersDraftOrderLineItemsItem
  * summary: Delete a Line Item
  * description: "Removes a Line Item from a Draft Order."
@@ -18,6 +19,8 @@ import { MedusaError } from "medusa-core-utils"
  * parameters:
  *   - (path) id=* {string} The ID of the Draft Order.
  *   - (path) line_id=* {string} The ID of the Draft Order.
+ * x-codegen:
+ *   method: removeLineItem
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -38,16 +41,14 @@ import { MedusaError } from "medusa-core-utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             draft_order:
- *               $ref: "#/components/schemas/draft-order"
+ *           $ref: "#/components/schemas/AdminDraftOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -88,11 +89,13 @@ export default async (req, res) => {
 
     draftOrder.cart = await cartService
       .withTransaction(manager)
-      .retrieve(draftOrder.cart_id, {
+      .retrieveWithTotals(draftOrder.cart_id, {
         relations: defaultAdminDraftOrdersCartRelations,
         select: defaultAdminDraftOrdersCartFields,
       })
 
-    res.status(200).json({ draft_order: draftOrder })
+    res.status(200).json({
+      draft_order: cleanResponseData(draftOrder, []),
+    })
   })
 }

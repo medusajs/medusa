@@ -4,7 +4,11 @@ import {
   AdminReturnsRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminReturnKeys } from "./queries"
@@ -21,7 +25,7 @@ export const useAdminReceiveReturn = (
   const queryClient = useQueryClient()
 
   return useMutation(
-    payload => client.admin.returns.receive(id, payload),
+    (payload) => client.admin.returns.receive(id, payload),
     buildOptions(
       queryClient,
       [adminReturnKeys.detail(id), adminReturnKeys.list()],

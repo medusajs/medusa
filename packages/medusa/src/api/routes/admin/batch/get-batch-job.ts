@@ -1,11 +1,13 @@
 /**
- * @oas [get] /batch-jobs/{id}
+ * @oas [get] /admin/batch-jobs/{id}
  * operationId: "GetBatchJobsBatchJob"
- * summary: "Retrieve a Batch Job"
+ * summary: "Get a Batch Job"
  * description: "Retrieves a Batch Job."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Batch Job
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -26,16 +28,14 @@
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Batch Job
+ *   - Batch Jobs
  * responses:
  *  "200":
  *    description: OK
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            batch_job:
- *              $ref: "#/components/schemas/batch_job"
+ *          $ref: "#/components/schemas/AdminBatchJobRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

@@ -1,7 +1,7 @@
 import {
   CartService,
   ProductService,
-  RegionService,
+  ProductVariantInventoryService,
 } from "../../../../services"
 import {
   IsArray,
@@ -12,20 +12,19 @@ import {
   ValidateNested,
 } from "class-validator"
 import { Transform, Type } from "class-transformer"
-import { omit, pickBy } from "lodash"
 
 import { DateComparisonOperator } from "../../../../types/common"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { IsType } from "../../../../utils/validators/is-type"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import PricingService from "../../../../services/pricing"
-import { Product } from "../../../../models"
-import { defaultStoreProductsRelations } from "."
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { defaultStoreCategoryScope } from "../product-categories"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
-import { validator } from "../../../../utils/validator"
-import { isDefined } from "../../../../utils"
 
 /**
- * @oas [get] /products
+ * @oas [get] /store/products
  * operationId: GetProducts
  * summary: List Products
  * description: "Retrieves a list of Products."
@@ -43,10 +42,28 @@ import { isDefined } from "../../../../utils"
  *           items:
  *             type: string
  *   - in: query
+ *     name: sales_channel_id
+ *     style: form
+ *     explode: false
+ *     description: an array of sales channel IDs to filter the retrieved products by.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
  *     name: collection_id
  *     style: form
  *     explode: false
  *     description: Collection IDs to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - in: query
+ *     name: type_id
+ *     style: form
+ *     explode: false
+ *     description: Type IDs to search for
  *     schema:
  *       type: array
  *       items:
@@ -64,7 +81,6 @@ import { isDefined } from "../../../../utils"
  *   - (query) description {string} description to search for.
  *   - (query) handle {string} handle to search for.
  *   - (query) is_giftcard {boolean} Search for giftcards using is_giftcard=true.
- *   - (query) type {string} type to search for.
  *   - in: query
  *     name: created_at
  *     description: Date comparison for when resulting products were created.
@@ -109,10 +125,27 @@ import { isDefined } from "../../../../utils"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ *   - in: query
+ *     name: category_id
+ *     style: form
+ *     explode: false
+ *     description: Category ids to filter by.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - (query) include_category_children {boolean} Include category children when filtering by category_id.
  *   - (query) offset=0 {integer} How many products to skip in the result.
  *   - (query) limit=100 {integer} Limit the number of products returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
+ *   - (query) order {string} the field used to order the products.
+ *   - (query) cart_id {string} The id of the Cart to set prices based on.
+ *   - (query) region_id {string} The id of the Region to set prices based on.
+ *   - (query) currency_code {string} The currency code to use for price selection.
+ * x-codegen:
+ *   method: list
+ *   queryParams: StoreGetProductsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -128,27 +161,14 @@ import { isDefined } from "../../../../utils"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/products'
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             products:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/product"
- *             count:
- *               type: integer
- *               description: The total number of items available
- *             offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *             limit:
- *               type: integer
- *               description: The number of items per page
+ *           $ref: "#/components/schemas/StoreProductsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -162,74 +182,101 @@ import { isDefined } from "../../../../utils"
  */
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
   const cartService: CartService = req.scope.resolve("cartService")
-  const regionService: RegionService = req.scope.resolve("regionService")
 
-  const validated = await validator(StoreGetProductsParams, req.query)
+  const validated = req.validatedQuery as StoreGetProductsParams
 
-  const filterableFields: StoreGetProductsParams = omit(validated, [
-    "fields",
-    "expand",
-    "limit",
-    "offset",
-    "cart_id",
-    "region_id",
-    "currency_code",
-  ])
+  let {
+    cart_id,
+    region_id: regionId,
+    currency_code: currencyCode,
+    ...filterableFields
+  } = req.filterableFields
+
+  const listConfig = req.listConfig
 
   // get only published products for store endpoint
   filterableFields["status"] = ["published"]
-
-  let includeFields: (keyof Product)[] = []
-  if (validated.fields) {
-    const set = new Set(validated.fields.split(",")) as Set<keyof Product>
-    set.add("id")
-    includeFields = [...set]
+  // store APIs only receive active and public categories to query from
+  filterableFields["categories"] = {
+    ...(filterableFields.categories || {}),
+    // Store APIs are only allowed to query active and public categories
+    ...defaultStoreCategoryScope,
   }
 
-  let expandFields: string[] = []
-  if (validated.expand) {
-    expandFields = validated.expand.split(",")
+  if (req.publishableApiKeyScopes?.sales_channel_ids.length) {
+    filterableFields.sales_channel_id =
+      filterableFields.sales_channel_id ||
+      req.publishableApiKeyScopes.sales_channel_ids
+
+    if (!listConfig.relations.includes("listConfig.relations")) {
+      listConfig.relations.push("sales_channels")
+    }
   }
 
-  const listConfig = {
-    select: includeFields.length ? includeFields : undefined,
-    relations: expandFields.length
-      ? expandFields
-      : defaultStoreProductsRelations,
-    skip: validated.offset,
-    take: validated.limit,
+  const promises: Promise<any>[] = []
+
+  promises.push(productService.listAndCount(filterableFields, listConfig))
+
+  if (validated.cart_id) {
+    promises.push(
+      cartService.retrieve(validated.cart_id, {
+        select: ["id", "region_id"] as any,
+        relations: ["region"],
+      })
+    )
   }
 
-  const [rawProducts, count] = await productService.listAndCount(
-    pickBy(filterableFields, (val) => isDefined(val)),
-    listConfig
+  const [[rawProducts, count], cart] = await Promise.all(promises)
+
+  if (validated.cart_id) {
+    regionId = cart.region_id
+    currencyCode = cart.region.currency_code
+  }
+
+  // Create a new reference just for naming purpose
+  const computedProducts = rawProducts
+
+  // We only set prices if variants.prices are requested
+  const shouldSetPricing = ["variants", "variants.prices"].every((relation) =>
+    listConfig.relations?.includes(relation)
   )
 
-  let regionId = validated.region_id
-  let currencyCode = validated.currency_code
-  if (validated.cart_id) {
-    const cart = await cartService.retrieve(validated.cart_id, {
-      select: ["id", "region_id"],
-    })
-    const region = await regionService.retrieve(cart.region_id, {
-      select: ["id", "currency_code"],
-    })
-    regionId = region.id
-    currencyCode = region.currency_code
+  // We only set availability if variants are requested
+  const shouldSetAvailability = listConfig.relations?.includes("variants")
+
+  const decoratePromises: Promise<any>[] = []
+
+  if (shouldSetPricing) {
+    decoratePromises.push(
+      pricingService.setProductPrices(computedProducts, {
+        cart_id: cart_id,
+        region_id: regionId,
+        currency_code: currencyCode,
+        customer_id: req.user?.customer_id,
+        include_discount_prices: true,
+      })
+    )
   }
 
-  const products = await pricingService.setProductPrices(rawProducts, {
-    cart_id: validated.cart_id,
-    region_id: regionId,
-    currency_code: currencyCode,
-    customer_id: req.user?.customer_id,
-    include_discount_prices: true,
-  })
+  if (shouldSetAvailability) {
+    decoratePromises.push(
+      productVariantInventoryService.setProductAvailability(
+        computedProducts,
+        filterableFields.sales_channel_id
+      )
+    )
+  }
+
+  // We can run them concurrently as the new properties are assigned to the references
+  // of the appropriate entity
+  await Promise.all(decoratePromises)
 
   res.json({
-    products,
+    products: cleanResponseData(computedProducts, req.allowedProperties || []),
     count,
     offset: validated.offset,
     limit: validated.limit,
@@ -237,14 +284,6 @@ export default async (req, res) => {
 }
 
 export class StoreGetProductsPaginationParams extends PriceSelectionParams {
-  @IsString()
-  @IsOptional()
-  fields?: string
-
-  @IsString()
-  @IsOptional()
-  expand?: string
-
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
@@ -254,6 +293,10 @@ export class StoreGetProductsPaginationParams extends PriceSelectionParams {
   @IsOptional()
   @Type(() => Number)
   limit?: number = 100
+
+  @IsString()
+  @IsOptional()
+  order?: string
 }
 
 export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
@@ -290,9 +333,21 @@ export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
-  @IsString()
+  @IsArray()
   @IsOptional()
-  type?: string
+  type_id?: string[]
+
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [IsOptional(), IsArray()])
+  sales_channel_id?: string[]
+
+  @IsArray()
+  @IsOptional()
+  category_id?: string[]
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
+  include_category_children?: boolean
 
   @IsOptional()
   @ValidateNested()

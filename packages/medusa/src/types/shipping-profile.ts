@@ -1,7 +1,9 @@
-import { Product, ShippingOption, ShippingProfileType } from "../models"
+import { ShippingProfileType } from "../models"
 
 export type CreateShippingProfile = {
   name: string
+  type: ShippingProfileType
+  metadata?: Record<string, unknown>
 }
 
 export type UpdateShippingProfile = {

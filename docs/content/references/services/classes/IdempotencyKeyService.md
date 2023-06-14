@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:22](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/idempotency-key.ts#L22)
+[medusa/src/services/idempotency-key.ts:25](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/idempotency-key.ts#L25)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,17 +52,31 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+
+___
+
+### \_\_moduleDeclaration\_\_
+
+• `Protected` `Optional` `Readonly` **\_\_moduleDeclaration\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_moduleDeclaration\_\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
 ### idempotencyKeyRepository\_
 
-• `Protected` `Readonly` **idempotencyKeyRepository\_**: typeof `IdempotencyKeyRepository`
+• `Protected` `Readonly` **idempotencyKeyRepository\_**: `Repository`<`IdempotencyKey`\>
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:20](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/idempotency-key.ts#L20)
+[medusa/src/services/idempotency-key.ts:23](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/idempotency-key.ts#L23)
 
 ___
 
@@ -70,13 +84,13 @@ ___
 
 • `Protected` **manager\_**: `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:17](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/idempotency-key.ts#L17)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -84,13 +98,31 @@ ___
 
 • `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:18](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/idempotency-key.ts#L18)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+
+## Accessors
+
+### activeManager\_
+
+• `Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+#### Inherited from
+
+TransactionBaseService.activeManager\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -129,7 +161,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:50](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L50)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -155,7 +187,7 @@ the created idempotency key
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:63](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/idempotency-key.ts#L63)
+[medusa/src/services/idempotency-key.ts:68](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/idempotency-key.ts#L68)
 
 ___
 
@@ -182,7 +214,7 @@ the existing or created idempotency key
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:37](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/idempotency-key.ts#L37)
+[medusa/src/services/idempotency-key.ts:40](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/idempotency-key.ts#L40)
 
 ___
 
@@ -206,13 +238,13 @@ result of the update operation
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:105](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/idempotency-key.ts#L105)
+[medusa/src/services/idempotency-key.ts:138](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/idempotency-key.ts#L138)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`idempotencyKey`): `Promise`<`IdempotencyKey`\>
+▸ **retrieve**(`idempotencyKeyOrSelector`): `Promise`<`IdempotencyKey`\>
 
 Retrieves an idempotency key
 
@@ -220,7 +252,7 @@ Retrieves an idempotency key
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `idempotencyKey` | `string` | key to retrieve |
+| `idempotencyKeyOrSelector` | `string` \| `Selector`<`IdempotencyKey`\> | key or selector to retrieve |
 
 #### Returns
 
@@ -230,7 +262,7 @@ idempotency key
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:81](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/idempotency-key.ts#L81)
+[medusa/src/services/idempotency-key.ts:86](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/idempotency-key.ts#L86)
 
 ___
 
@@ -254,7 +286,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:31](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L31)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -269,17 +301,7 @@ Locks an idempotency.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `idempotencyKey` | `string` | key to update |
-| `update` | `Object` | update object |
-| `update.created_at?` | { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } | - |
-| `update.id?` | `string` | - |
-| `update.idempotency_key?` | `string` | - |
-| `update.locked_at?` | { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } | - |
-| `update.recovery_point?` | `string` | - |
-| `update.request_method?` | `string` | - |
-| `update.request_params?` | { [x: string]: unknown; } | - |
-| `update.request_path?` | `string` | - |
-| `update.response_body?` | { [x: string]: unknown; } | - |
-| `update.response_code?` | `number` | - |
+| `update` | `DeepPartial`<`IdempotencyKey`\> | update object |
 
 #### Returns
 
@@ -289,7 +311,7 @@ result of the update operation
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:134](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/idempotency-key.ts#L134)
+[medusa/src/services/idempotency-key.ts:167](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/idempotency-key.ts#L167)
 
 ___
 
@@ -313,13 +335,13 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
 
 ___
 
 ### workStage
 
-▸ **workStage**(`idempotencyKey`, `callback`): `Promise`<{ `error?`: `unknown` ; `key?`: `IdempotencyKey`  }\>
+▸ **workStage**(`idempotencyKey`, `callback`): `Promise`<`IdempotencyKey`\>
 
 Performs an atomic work stage.
 An atomic work stage contains some related functionality, that needs to be
@@ -332,14 +354,14 @@ always consist of 2 or more of these phases. The required phases are
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `idempotencyKey` | `string` | current idempotency key |
-| `callback` | (`transactionManager`: `EntityManager`) => `Promise`<{ `recovery_point?`: `string` ; `response_body?`: `Record`<`string`, `unknown`\> ; `response_code?`: `number`  }\> | functionality to execute within the phase |
+| `callback` | (`transactionManager`: `EntityManager`) => `Promise`<`IdempotencyCallbackResult`\> | functionality to execute within the phase |
 
 #### Returns
 
-`Promise`<{ `error?`: `unknown` ; `key?`: `IdempotencyKey`  }\>
+`Promise`<`IdempotencyKey`\>
 
 new updated idempotency key
 
 #### Defined in
 
-[packages/medusa/src/services/idempotency-key.ts:163](https://github.com/medusajs/medusa/blob/f7a63f178/packages/medusa/src/services/idempotency-key.ts#L163)
+[medusa/src/services/idempotency-key.ts:196](https://github.com/medusajs/medusa/blob/d61d0d4cb/packages/medusa/src/services/idempotency-key.ts#L196)

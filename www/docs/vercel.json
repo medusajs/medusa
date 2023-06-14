@@ -1,0 +1,473 @@
+{
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/api",
+      "destination": "/api/store"
+    },
+    {
+      "source": "/api/store/auth/(.*)",
+      "destination": "/api/store/#tag/Auth"
+    },
+    {
+      "source": "/api/store/cart/(.*)",
+      "destination": "/api/store/#tag/Cart"
+    },
+    {
+      "source": "/api/store/collection/(.*)",
+      "destination": "/api/store/#tag/Collection"
+    },
+    {
+      "source": "/api/store/product/(.*)",
+      "destination": "/api/store/#tag/Product"
+    },
+    {
+      "source": "/api/admin/auth/(.*)",
+      "destination": "/api/admin/#tag/Auth"
+    },
+    {
+      "source": "/api/admin/users/(.*)",
+      "destination": "/api/admin/#tag/User"
+    },
+    {
+      "source": "/how-to/headless-ecommerce-store-with-gatsby-contentful-medusa",
+      "destination": "/add-plugins/contentful"
+    },
+    {
+      "source": "/how-to/deploying-on-heroku",
+      "destination": "/deployments/server/deploying-on-heroku"
+    },
+    {
+      "source": "/admin/introduction",
+      "destination": "/admin/quickstart"
+    },
+    {
+      "source": "/admin/quickstart/quick-start",
+      "destination": "/admin/quickstart"
+    },
+    {
+      "source": "/quickstart/starters/nextjs-medusa-starter",
+      "destination": "/starters/nextjs-medusa-starter"
+    },
+    {
+      "source": "/quickstart/starters/gatsby-medusa-starter",
+      "destination": "/starters/gatsby-medusa-starter"
+    },
+    {
+      "source": "/how-to/create-medusa-app",
+      "destination": "/create-medusa-app"
+    },
+    {
+      "source": "/guides/plugins",
+      "destination": "/advanced/backend/plugins/overview"
+    },
+    {
+      "source": "/how-to/deploying-admin-on-netlify",
+      "destination": "/deployments/admin/deploying-on-netlify"
+    },
+    {
+      "source": "/how-to/deploying-on-digital-ocean/",
+      "destination": "/deployments/server/deploying-on-digital-ocean"
+    },
+    {
+      "source": "/how-to/deploying-on-qovery/",
+      "destination": "/deployments/server/deploying-on-qovery"
+    },
+    {
+      "source": "/guides/fulfillment-api",
+      "destination": "/advanced/backend/shipping/add-fulfillment-provider"
+    },
+    {
+      "source": "/guides/checkouts",
+      "destination": "/advanced/storefront/how-to-implement-checkout-flow"
+    },
+    {
+      "source": "/guides/checkouts",
+      "destination": "/advanced/storefront/how-to-implement-checkout-flow"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/1-7-3",
+      "destination": "/advanced/backend/upgrade-guides/medusa-core/1-7-3"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/1-7-1",
+      "destination": "/advanced/backend/upgrade-guides/medusa-core/1-7-1"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/1-7-0",
+      "destination": "/advanced/backend/upgrade-guides/medusa-core/1-7-0"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/1-6-1",
+      "destination": "/advanced/backend/upgrade-guides/medusa-core/1-6-1"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/1-3-8",
+      "destination": "/advanced/backend/upgrade-guides/medusa-core/1-3-8"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/1-3-6",
+      "destination": "/advanced/backend/upgrade-guides/medusa-core/1-3-6"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/1-3-0",
+      "destination": "/advanced/backend/upgrade-guides/medusa-core/1-3-0"
+    },
+    {
+      "source": "/advanced/backend/regions/overview",
+      "destination": "/modules/regions-and-currencies/regions"
+    },
+    {
+      "source": "/advanced/admin/manage-regions",
+      "destination": "/modules/regions-and-currencies/admin/manage-regions"
+    },
+    {
+      "source": "/advanced/storefront/use-regions",
+      "destination": "/modules/regions-and-currencies/storefront/use-regions"
+    },
+    {
+      "source": "/advanced/backend/customers",
+      "destination": "/modules/customers/customers"
+    },
+    {
+      "source": "/advanced/backend/customer-groups",
+      "destination": "/modules/customers/customer-groups"
+    },
+    {
+      "source": "/advanced/admin/manage-customers",
+      "destination": "/modules/customers/admin/manage-customers"
+    },
+    {
+      "source": "/advanced/admin/use-customergroups-api",
+      "destination": "/modules/customers/admin/manage-customer-groups"
+    },
+    {
+      "source": "/advanced/storefront/customer-profiles",
+      "destination": "/modules/customers/storefront/implement-customer-profiles"
+    },
+    {
+      "source": "/quickstart/quick-start(.*)",
+      "destination": "/development/backend/install"
+    },
+    {
+      "source": "/quickstart/quick-start-docker",
+      "destination": "/development/backend/install"
+    },
+    {
+      "source": "/advanced/admin/import-products",
+      "destination": "/modules/products/admin/import-products"
+    },
+    {
+      "source": "/advanced/backend/shipping/overview",
+      "destination": "/modules/carts-and-checkout/shipping"
+    },
+    {
+      "source": "/advanced/backend/shipping/add-fulfillment-provider",
+      "destination": "/modules/carts-and-checkout/backend/add-fulfillment-provider"
+    },
+    {
+      "source": "/advanced/backend/payment/overview",
+      "destination": "/modules/carts-and-checkout/payment"
+    },
+    {
+      "source": "/advanced/backend/payment/how-to-create-payment-provider",
+      "destination": "/modules/carts-and-checkout/backend/add-payment-provider"
+    },
+    {
+      "source": "/guides/carts-in-medusa",
+      "destination": "/modules/carts-and-checkout/storefront/implement-cart"
+    },
+    {
+      "source": "/advanced/storefront/how-to-implement-checkout-flow",
+      "destination": "/modules/carts-and-checkout/storefront/implement-checkout-flow"
+    },
+    {
+      "source": "/advanced/ecommerce/handle-order-claim-event",
+      "destination": "/modules/orders/backend/handle-order-claim-event"
+    },
+    {
+      "source": "/advanced/admin/order-edit",
+      "destination": "/modules/orders/admin/edit-order"
+    },
+    {
+      "source": "/advanced/storefront/handle-order-edits",
+      "destination": "/modules/orders/storefront/handle-order-edits"
+    },
+    {
+      "source": "/advanced/storefront/implement-claim-order",
+      "destination": "/modules/orders/storefront/implement-claim-order"
+    },
+    {
+      "source": "/advanced/backend/taxes/inclusive-pricing",
+      "destination": "/modules/taxes/inclusive-pricing"
+    },
+    {
+      "source": "/advanced/backend/taxes/manual-calculation",
+      "destination": "/modules/taxes/storefront/manual-calculation"
+    },
+    {
+      "source": "/advanced/backend/discounts",
+      "destination": "/modules/discounts"
+    },
+    {
+      "source": "/advanced/admin/manage-discounts",
+      "destination": "/modules/discounts/admin/manage-discounts"
+    },
+    {
+      "source": "/advanced/storefront/use-discounts-in-checkout",
+      "destination": "/modules/discounts/storefront/use-discounts-in-checkout"
+    },
+    {
+      "source": "/advanced/backend/gift-cards",
+      "destination": "/modules/gift-cards"
+    },
+    {
+      "source": "/advanced/admin/manage-gift-cards",
+      "destination": "/modules/gift-cards/admin/manage-gift-cards"
+    },
+    {
+      "source": "/advanced/storefront/use-gift-cards",
+      "destination": "/modules/gift-cards/storefront/use-gift-cards"
+    },
+    {
+      "source": "/advanced/ecommerce/send-gift-card-to-customer",
+      "destination": "/modules/gift-cards/backend/send-gift-card-to-customer"
+    },
+    {
+      "source": "/advanced/backend/price-lists",
+      "destination": "/modules/price-lists"
+    },
+    {
+      "source": "/advanced/backend/price-lists/use-api",
+      "destination": "/modules/price-lists/admin/manage-price-lists"
+    },
+    {
+      "source": "/advanced/backend/price-selection-strategy/index",
+      "destination": "/modules/price-lists/price-selection-strategy"
+    },
+    {
+      "source": "/advanced/backend/price-selection-strategy/override",
+      "destination": "/modules/price-lists/backend/override-price-selection-strategy"
+    },
+    {
+      "source": "/advanced/admin/import-prices",
+      "destination": "/modules/price-lists/admin/import-prices"
+    },
+    {
+      "source": "/advanced/backend/sales-channels",
+      "destination": "/modules/sales-channels"
+    },
+    {
+      "source": "/advanced/backend/sales-channels/manage-admin",
+      "destination": "/modules/sales-channels/admin/manage"
+    },
+    {
+      "source": "/advanced/storefront/use-sales-channels",
+      "destination": "/modules/sales-channels/storefront/use-sales-channels"
+    },
+    {
+      "source": "/advanced/backend/endpoints/add",
+      "destination": "/development/endpoints/create"
+    },
+    {
+      "source": "/advanced/backend/endpoints/add-middleware",
+      "destination": "/development/endpoints/add-middleware"
+    },
+    {
+      "source": "/advanced/backend/scheduled-jobs/create",
+      "destination": "/development/scheduled-jobs/create"
+    },
+    {
+      "source": "/tutorial/set-up-your-development-environment",
+      "destination": "/development/backend/prepare-environment"
+    },
+    {
+      "source": "/usage/configurations",
+      "destination": "/development/backend/configurations"
+    },
+    {
+      "source": "/add-plugins/segment",
+      "destination": "/plugins/analytics/segment"
+    },
+    {
+      "source": "/add-plugins/contentful",
+      "destination": "/plugins/cms/contentful"
+    },
+    {
+      "source": "/add-plugins/contentful/customize-contentful",
+      "destination": "/plugins/cms/contentful/customize-contentful"
+    },
+    {
+      "source": "/add-plugins/strapi",
+      "destination": "/plugins/cms/strapi"
+    },
+    {
+      "source": "/add-plugins/sendgrid",
+      "destination": "/plugins/notifications/sendgrid"
+    },
+    {
+      "source": "/add-plugins/mailchimp",
+      "destination": "/plugins/notifications/mailchimp"
+    },
+    {
+      "source": "/add-plugins/twilio-sms",
+      "destination": "/plugins/notifications/twilio-sms"
+    },
+    {
+      "source": "/add-plugins/slack",
+      "destination": "/plugins/notifications/slack"
+    },
+    {
+      "source": "/add-plugins/klarna",
+      "destination": "/plugins/payment/klarna"
+    },
+    {
+      "source": "/add-plugins/paypal",
+      "destination": "/plugins/payment/paypal"
+    },
+    {
+      "source": "/add-plugins/stripe",
+      "destination": "/plugins/payment/stripe"
+    },
+    {
+      "source": "/add-plugins/algolia",
+      "destination": "/plugins/search/algolia"
+    },
+    {
+      "source": "/add-plugins/meilisearch",
+      "destination": "/plugins/search/meilisearch"
+    },
+    {
+      "source": "/add-plugins/minio",
+      "destination": "/plugins/file-service/minio"
+    },
+    {
+      "source": "/add-plugins/s3",
+      "destination": "/plugins/file-service/s3"
+    },
+    {
+      "source": "/add-plugins/spaces",
+      "destination": "/plugins/file-service/spaces"
+    },
+    {
+      "source": "/advanced/backend/feature-flags/toggle",
+      "destination": "/development/feature-flags/toggle"
+    },
+    {
+      "source": "/advanced/backend/publishable-api-keys",
+      "destination": "/development/publishable-api-keys"
+    },
+    {
+      "source": "/advanced/admin/manage-publishable-api-keys",
+      "destination": "/development/publishable-api-keys/admin/manage-publishable-api-keys"
+    },
+    {
+      "source": "/advanced/backend/upgrade-guides/:package/:version",
+      "destination": "/upgrade-guides/:package/:version"
+    },
+    {
+      "source": "/advanced/backend/batch-jobs/create",
+      "destination": "/development/batch-jobs/create"
+    },
+    {
+      "source": "/advanced/backend/batch-jobs/customize-import",
+      "destination": "/development/batch-jobs/customize-import"
+    },
+    {
+      "source": "/advanced/backend/batch-jobs",
+      "destination": "/development/batch-jobs"
+    },
+    {
+      "source": "/advanced/backend/dependency-container",
+      "destination": "/development/fundamentals/dependency-injection"
+    },
+    {
+      "source": "/advanced/backend/entities",
+      "destination": "/development/entities/create"
+    },
+    {
+      "source": "/advanced/backend/entities/overview",
+      "destination": "/development/entities/overview"
+    },
+    {
+      "source": "/advanced/backend/migrations/overview",
+      "destination": "/development/entities/migrations/overview"
+    },
+    {
+      "source": "/advanced/backend/migrations",
+      "destination": "/development/entities/migrations/create"
+    },
+    {
+      "source": "/advanced/backend/events/architecture",
+      "destination": "/development/events"
+    },
+    {
+      "source": "/advanced/backend/subscribers/overview",
+      "destination": "/development/events/subscribers"
+    },
+    {
+      "source": "/advanced/backend/subscribers/create-subscriber",
+      "destination": "/development/events/create-subscriber"
+    },
+    {
+      "source": "/advanced/backend/subscribers/events-list",
+      "destination": "/development/events/events-list"
+    },
+    {
+      "source": "/advanced/backend/subscribers/events-list",
+      "destination": "/development/events/events-list"
+    },
+    {
+      "source": "/advanced/backend/notification/overview",
+      "destination": "/development/notification/overview"
+    },
+    {
+      "source": "/advanced/backend/notification/how-to-create-notification-provider",
+      "destination": "/development/notification/create-notification-provider"
+    },
+    {
+      "source": "/advanced/backend/plugins/overview",
+      "destination": "/development/plugins/overview"
+    },
+    {
+      "source": "/advanced/backend/plugins/create",
+      "destination": "/development/plugins/create"
+    },
+    {
+      "source": "/advanced/backend/plugins/publish",
+      "destination": "/development/plugins/publish"
+    },
+    {
+      "source": "/advanced/backend/services/overview",
+      "destination": "/development/services/overview"
+    },
+    {
+      "source": "/advanced/backend/services/create-service",
+      "destination": "/development/services/create-service"
+    },
+    {
+      "source": "/usage/create-medusa-app",
+      "destination": "/create-medusa-app"
+    },
+    {
+      "source": "/usage/local-development",
+      "destination": "/development/fundamentals/local-development"
+    },
+    {
+      "source": "/introduction",
+      "destination": "/development/fundamentals/architecture-overview"
+    },
+    {
+      "source": "/introduction",
+      "destination": "/development/fundamentals/architecture-overview"
+    },
+    {
+      "source": "/starters/gatsby-medusa-starter",
+      "destination": "/starters/nextjs-medusa-starter?ref=gatsby-medusa-starter"
+    },
+    {
+      "source": "/deployments/admin/deploying-on-netlify",
+      "destination": "/deployments/admin/deploying-on-vercel"
+    }
+  ]
+}

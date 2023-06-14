@@ -3,13 +3,15 @@ import { Request, Response } from "express"
 import { SalesChannelService } from "../../../../services"
 
 /**
- * @oas [get] /sales-channels/{id}
+ * @oas [get] /admin/sales-channels/{id}
  * operationId: "GetSalesChannelsSalesChannel"
- * summary: "Retrieve a sales channel"
+ * summary: "Get a Sales Channel"
  * description: "Retrieves the sales channel."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Sales channel.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -30,16 +32,14 @@ import { SalesChannelService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Sales Channel
+ *   - Sales Channels
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             sales_channel:
- *               $ref: "#/components/schemas/sales_channel"
+ *           $ref: "#/components/schemas/AdminSalesChannelsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

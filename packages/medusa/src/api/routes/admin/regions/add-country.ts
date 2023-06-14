@@ -7,7 +7,7 @@ import RegionService from "../../../../services/region"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /regions/{id}/countries
+ * @oas [post] /admin/regions/{id}/countries
  * operationId: "PostRegionsRegionCountries"
  * summary: "Add Country"
  * description: "Adds a Country to the list of Countries in a Region"
@@ -18,15 +18,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - country_code
- *         properties:
- *           country_code:
- *             description: "The 2 character ISO code for the Country."
- *             type: string
- *             externalDocs:
- *               url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
- *               description: See a list of codes.
+ *         $ref: "#/components/schemas/AdminPostRegionsRegionCountriesReq"
+ * x-codegen:
+ *   method: addCountry
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -53,16 +47,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             region:
- *               $ref: "#/components/schemas/region"
+ *           $ref: "#/components/schemas/AdminRegionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -99,6 +91,19 @@ export default async (req, res) => {
   res.status(200).json({ region })
 }
 
+/**
+ * @schema AdminPostRegionsRegionCountriesReq
+ * type: object
+ * required:
+ *   - country_code
+ * properties:
+ *   country_code:
+ *     description: "The 2 character ISO code for the Country."
+ *     type: string
+ *     externalDocs:
+ *       url: https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements
+ *       description: See a list of codes.
+ */
 export class AdminPostRegionsRegionCountriesReq {
   @IsString()
   country_code: string

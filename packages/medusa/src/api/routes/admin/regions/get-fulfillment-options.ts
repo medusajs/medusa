@@ -3,13 +3,15 @@ import FulfillmentProviderService from "../../../../services/fulfillment-provide
 import RegionService from "../../../../services/region"
 
 /**
- * @oas [get] /regions/{id}/fulfillment-options
+ * @oas [get] /admin/regions/{id}/fulfillment-options
  * operationId: "GetRegionsRegionFulfillmentOptions"
- * summary: "List Fulfillment Options available in the Region"
+ * summary: "List Fulfillment Options"
  * description: "Gathers all the fulfillment options available to in the Region."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
+ * x-codegen:
+ *   method: retrieveFulfillmentOptions
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -30,28 +32,14 @@ import RegionService from "../../../../services/region"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             fulfillment_options:
- *               type: array
- *               items:
- *                 properties:
- *                   provider_id:
- *                     type: string
- *                     description: ID of the fulfillment provider
- *                   options:
- *                     type: array
- *                     description: fulfillment provider options
- *                     example:
- *                       - id: "manual-fulfillment"
- *                       - id: "manual-fulfillment-return"
- *                         is_return: true
+ *           $ref: "#/components/schemas/AdminGetRegionsRegionFulfillmentOptionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

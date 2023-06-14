@@ -3,13 +3,15 @@ import { defaultAdminSwapFields, defaultAdminSwapRelations } from "."
 import { SwapService } from "../../../../services"
 
 /**
- * @oas [get] /swaps/{id}
+ * @oas [get] /admin/swaps/{id}
  * operationId: "GetSwapsSwap"
- * summary: "Retrieve a Swap"
+ * summary: "Get a Swap"
  * description: "Retrieves a Swap."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Swap.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -30,16 +32,14 @@ import { SwapService } from "../../../../services"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Swaps
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             swap:
- *               $ref: "#/components/schemas/swap"
+ *           $ref: "#/components/schemas/AdminSwapsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

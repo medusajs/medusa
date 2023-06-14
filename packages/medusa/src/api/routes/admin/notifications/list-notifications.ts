@@ -12,7 +12,7 @@ import { pick } from "lodash"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /notifications
+ * @oas [get] /admin/notifications
  * operationId: "GetNotifications"
  * summary: "List Notifications"
  * description: "Retrieves a list of Notifications."
@@ -27,6 +27,9 @@ import { validator } from "../../../../utils/validator"
  *   - (query) resource_id {string} The ID of the resource that the Notification refers to.
  *   - (query) to {string} The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id
  *   - (query) include_resends {string} A boolean indicating whether the result set should include resent notifications or not
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetNotificationsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -47,18 +50,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Notification
+ *   - Notifications
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             notifications:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/notification"
+ *           $ref: "#/components/schemas/AdminNotificationsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

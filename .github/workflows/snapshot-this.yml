@@ -63,7 +63,7 @@ jobs:
               core.setFailed(`Request failed with error ${err}`)
             }
       - name: Checkout pull request branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ format('refs/pull/{0}/merge', github.event.issue.number) }}
 
@@ -77,7 +77,7 @@ jobs:
             git checkout origin/main -- .changeset
           fi
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 16.x
           cache: "yarn"
@@ -86,6 +86,10 @@ jobs:
         uses: ./.github/actions/cache-deps
         with:
           extension: snapshot-this
+
+      - name: Build Packages
+        shell: "bash"
+        run: yarn build
 
       - name: Create an .npmrc
         env:

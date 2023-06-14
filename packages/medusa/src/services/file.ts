@@ -9,19 +9,29 @@ import {
 } from "../interfaces"
 
 class DefaultFileService extends AbstractFileService {
-  upload(fileData: Express.Multer.File): Promise<FileServiceUploadResult> {
+  async upload(
+    fileData: Express.Multer.File
+  ): Promise<FileServiceUploadResult> {
     throw new MedusaError(
       MedusaError.Types.UNEXPECTED_STATE,
       "Please add a file service plugin in order to manipulate files in Medusa"
     )
   }
-  delete(fileData: Record<string, any>): Promise<void> {
+  async uploadProtected(
+    fileData: Express.Multer.File
+  ): Promise<FileServiceUploadResult> {
     throw new MedusaError(
       MedusaError.Types.UNEXPECTED_STATE,
       "Please add a file service plugin in order to manipulate files in Medusa"
     )
   }
-  getUploadStreamDescriptor(
+  async delete(fileData: Record<string, any>): Promise<void> {
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Please add a file service plugin in order to manipulate files in Medusa"
+    )
+  }
+  async getUploadStreamDescriptor(
     fileData: UploadStreamDescriptorType
   ): Promise<FileServiceGetUploadStreamResult> {
     throw new MedusaError(
@@ -29,7 +39,7 @@ class DefaultFileService extends AbstractFileService {
       "Please add a file service plugin in order to manipulate files in Medusa"
     )
   }
-  getDownloadStream(
+  async getDownloadStream(
     fileData: GetUploadedFileType
   ): Promise<NodeJS.ReadableStream> {
     throw new MedusaError(
@@ -37,7 +47,9 @@ class DefaultFileService extends AbstractFileService {
       "Please add a file service plugin in order to manipulate files in Medusa"
     )
   }
-  getPresignedDownloadUrl(fileData: GetUploadedFileType): Promise<string> {
+  async getPresignedDownloadUrl(
+    fileData: GetUploadedFileType
+  ): Promise<string> {
     throw new MedusaError(
       MedusaError.Types.UNEXPECTED_STATE,
       "Please add a file service plugin in order to manipulate files in Medusa"

@@ -5,8 +5,12 @@ import {
   AdminPostOrdersOrderSwapsSwapShipmentsReq,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
-import { adminOrderKeys } from ".."
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query"
+import { adminOrderKeys, adminProductKeys, adminVariantKeys } from ".."
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminSwapKeys } from "./queries"
@@ -68,7 +72,12 @@ export const useAdminFulfillSwap = (
       client.admin.orders.fulfillSwap(orderId, swap_id, payload),
     buildOptions(
       queryClient,
-      [adminOrderKeys.detail(orderId), adminSwapKeys.lists()],
+      [
+        adminOrderKeys.detail(orderId),
+        adminSwapKeys.lists(),
+        adminVariantKeys.all,
+        adminProductKeys.lists(),
+      ],
       options
     )
   )

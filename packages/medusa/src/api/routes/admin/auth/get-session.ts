@@ -2,11 +2,13 @@ import UserService from "../../../../services/user"
 import _ from "lodash"
 
 /**
- * @oas [get] /auth
+ * @oas [get] /admin/auth
  * operationId: "GetAuth"
- * summary: "Get Session"
+ * summary: "Get Current User"
  * x-authenticated: true
  * description: "Gets the currently logged in User."
+ * x-codegen:
+ *   method: getSession
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -34,9 +36,7 @@ import _ from "lodash"
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            user:
- *              $ref: "#/components/schemas/user"
+ *          $ref: "#/components/schemas/AdminAuthRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "401":

@@ -1,18 +1,26 @@
-import { IsInt, IsOptional, ValidateNested } from "class-validator"
+import { IsArray, IsInt, IsOptional, ValidateNested } from "class-validator"
 
 import { DateComparisonOperator } from "../../../../types/common"
 import ProductCollectionService from "../../../../services/product-collection"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /collections
+ * @oas [get] /store/collections
  * operationId: "GetCollections"
- * summary: "List Product Collections"
+ * summary: "List Collections"
  * description: "Retrieve a list of Product Collection."
  * parameters:
  *   - (query) offset=0 {integer} The number of collections to skip before starting to collect the collections set
  *   - (query) limit=10 {integer} The number of collections to return
+ *   - in: query
+ *     name: handle
+ *     style: form
+ *     explode: false
+ *     description: Filter by the collection handle
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
  *   - in: query
  *     name: created_at
  *     description: Date comparison for when resulting collections were created.
@@ -57,6 +65,9 @@ import { validator } from "../../../../utils/validator"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
+ * x-codegen:
+ *   method: list
+ *   queryParams: StoreGetCollectionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -72,27 +83,14 @@ import { validator } from "../../../../utils/validator"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/collections'
  * tags:
- *   - Collection
+ *   - Collections
  * responses:
  *  "200":
  *    description: OK
  *    content:
  *      application/json:
  *        schema:
- *          properties:
- *            collections:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/product_collection"
- *            count:
- *               type: integer
- *               description: The total number of items available
- *            offset:
- *               type: integer
- *               description: The number of items skipped before these items
- *            limit:
- *               type: integer
- *               description: The number of items per page
+ *          $ref: "#/components/schemas/StoreCollectionsListRes"
  *  "400":
  *    $ref: "#/components/responses/400_error"
  *  "404":
@@ -105,27 +103,26 @@ import { validator } from "../../../../utils/validator"
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(StoreGetCollectionsParams, req.query)
-  const { limit, offset, ...filterableFields } = validated
-
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
   )
 
-  const listConfig = {
-    skip: offset,
-    take: limit,
-  }
+  const { listConfig, filterableFields } = req
+  const { skip, take } = req.listConfig
 
   const [collections, count] = await productCollectionService.listAndCount(
     filterableFields,
     listConfig
   )
 
-  res.status(200).json({ collections, count, limit, offset })
+  res.status(200).json({ collections, count, limit: take, offset: skip })
 }
 
 export class StoreGetCollectionsParams {
+  @IsOptional()
+  @IsArray()
+  handle?: string[]
+
   @IsOptional()
   @IsInt()
   @Type(() => Number)

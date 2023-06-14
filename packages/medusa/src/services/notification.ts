@@ -20,9 +20,6 @@ type InjectedDependencies = {
 type NotificationProviderKey = `noti_${string}`
 
 class NotificationService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected subscribers_ = {}
   protected attachmentGenerator_: unknown = null
   protected readonly container_: InjectedDependencies & {
@@ -30,25 +27,18 @@ class NotificationService extends TransactionBaseService {
   }
   protected readonly logger_: Logger
   protected readonly notificationRepository_: typeof NotificationRepository
+  // eslint-disable-next-line max-len
   protected readonly notificationProviderRepository_: typeof NotificationProviderRepository
 
   constructor(container: InjectedDependencies) {
     super(container)
 
-    const {
-      manager,
-      notificationProviderRepository,
-      notificationRepository,
-      logger,
-    } = container
+    const { notificationProviderRepository, notificationRepository, logger } =
+      container
 
     this.container_ = container
 
-    /** @private @const {EntityManager} */
-    this.manager_ = manager
     this.logger_ = logger
-
-    /** @private @const {NotificationRepository} */
     this.notificationRepository_ = notificationRepository
     this.notificationProviderRepository_ = notificationProviderRepository
   }
@@ -67,8 +57,10 @@ class NotificationService extends TransactionBaseService {
    * @param providerIds - a list of provider ids
    */
   async registerInstalledProviders(providerIds: string[]): Promise<void> {
-    const { manager, notificationProviderRepository } = this.container_
-    const model = manager.getCustomRepository(notificationProviderRepository)
+    const { notificationProviderRepository } = this.container_
+    const model = this.activeManager_.withRepository(
+      notificationProviderRepository
+    )
     await model.update({}, { is_installed: false })
     for (const id of providerIds) {
       const n = model.create({ id, is_installed: true })
@@ -90,7 +82,7 @@ class NotificationService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Notification[]> {
-    const notiRepo = this.manager_.getCustomRepository(
+    const notiRepo = this.activeManager_.withRepository(
       this.notificationRepository_
     )
     const query = buildQuery(selector, config)
@@ -107,7 +99,7 @@ class NotificationService extends TransactionBaseService {
     id: string,
     config: FindConfig<Notification> = {}
   ): Promise<Notification | never> {
-    const notiRepository = this.manager_.getCustomRepository(
+    const notiRepository = this.activeManager_.withRepository(
       this.notificationRepository_
     )
 
@@ -170,7 +162,7 @@ class NotificationService extends TransactionBaseService {
    * @param data - the data the event was sent with
    * @return the result of notification subscribed
    */
-  handleEvent(
+  async handleEvent(
     eventName: string,
     data: Record<string, unknown>
   ): Promise<void | undefined | Notification[]> {
@@ -220,7 +212,7 @@ class NotificationService extends TransactionBaseService {
       }
 
       const { to, data } = result
-      const notiRepo = transactionManager.getCustomRepository(
+      const notiRepo = transactionManager.withRepository(
         this.notificationRepository_
       )
 
@@ -264,11 +256,12 @@ class NotificationService extends TransactionBaseService {
         this.attachmentGenerator_
       )
 
-      const notiRepo = transactionManager.getCustomRepository(
+      const notiRepo = transactionManager.withRepository(
         this.notificationRepository_
       )
+      const resendNoti: Record<string, unknown> = { ...notification, id: null }
       const created = notiRepo.create({
-        ...notification,
+        ...resendNoti,
         to,
         data,
         parent_id: id,

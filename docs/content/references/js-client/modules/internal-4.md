@@ -2,51 +2,32 @@
 
 ## Classes
 
-- [AdminDeleteCustomerGroupsGroupCustomerBatchReq](../classes/internal-4.AdminDeleteCustomerGroupsGroupCustomerBatchReq.md)
-- [AdminGetCustomerGroupsGroupParams](../classes/internal-4.AdminGetCustomerGroupsGroupParams.md)
-- [AdminGetCustomerGroupsParams](../classes/internal-4.AdminGetCustomerGroupsParams.md)
-- [AdminGetCustomersParams](../classes/internal-4.AdminGetCustomersParams.md)
-- [AdminListCustomerSelector](../classes/internal-4.AdminListCustomerSelector.md)
-- [AdminPostCustomerGroupsGroupCustomersBatchReq](../classes/internal-4.AdminPostCustomerGroupsGroupCustomersBatchReq.md)
-- [AdminPostCustomerGroupsGroupReq](../classes/internal-4.AdminPostCustomerGroupsGroupReq.md)
-- [AdminPostCustomerGroupsReq](../classes/internal-4.AdminPostCustomerGroupsReq.md)
-- [CustomerGroupsBatchCustomer](../classes/internal-4.CustomerGroupsBatchCustomer.md)
-- [FilterableCustomerGroupProps](../classes/internal-4.FilterableCustomerGroupProps.md)
-- [FindParams](../classes/internal-4.FindParams.md)
-- [StringComparisonOperator](../classes/internal-4.StringComparisonOperator.md)
+- [AdminGetCurrenciesParams](../classes/internal-4.AdminGetCurrenciesParams.md)
+- [AdminPostCurrenciesCurrencyReq](../classes/internal-4.AdminPostCurrenciesCurrencyReq.md)
+- [FindPaginationParams](../classes/internal-4.FindPaginationParams.md)
 
 ## Type Aliases
 
-### AdminCustomerGroupsListRes
+### AdminCurrenciesListRes
 
-Ƭ **AdminCustomerGroupsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `customer_groups`: [`CustomerGroup`](../classes/internal.CustomerGroup.md)[]  }
+Ƭ **AdminCurrenciesListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `currencies`: [`Currency`](../classes/internal.Currency.md)[]  }
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customer-groups/index.d.ts:9
+medusa/dist/api/routes/admin/currencies/index.d.ts:5
 
 ___
 
-### AdminCustomerGroupsRes
+### AdminCurrenciesRes
 
-Ƭ **AdminCustomerGroupsRes**: `Object`
+Ƭ **AdminCurrenciesRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `customer_group` | [`CustomerGroup`](../classes/internal.CustomerGroup.md) |
+| `currency` | [`Currency`](../classes/internal.Currency.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/customer-groups/index.d.ts:5
-
-___
-
-### AdminCustomersListRes
-
-Ƭ **AdminCustomersListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `customers`: [`Customer`](../classes/internal.Customer.md)[]  }
-
-#### Defined in
-
-medusa/dist/api/routes/admin/customers/index.d.ts:9
+medusa/dist/api/routes/admin/currencies/index.d.ts:8

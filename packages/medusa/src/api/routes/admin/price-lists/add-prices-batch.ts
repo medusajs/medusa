@@ -9,9 +9,9 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /price-lists/{id}/prices/batch
+ * @oas [post] /admin/price-lists/{id}/prices/batch
  * operationId: "PostPriceListsPriceListPricesBatch"
- * summary: "Batch update prices for a Price List"
+ * summary: "Update Prices"
  * description: "Batch update prices for a Price List"
  * x-authenticated: true
  * parameters:
@@ -20,42 +20,9 @@ import { EntityManager } from "typeorm"
  *  content:
  *    application/json:
  *      schema:
- *        properties:
- *          prices:
- *            description: The prices to update or add.
- *            type: array
- *            items:
- *              required:
- *                - amount
- *                - variant_id
- *              properties:
- *                id:
- *                  description: The ID of the price.
- *                  type: string
- *                region_id:
- *                  description: The ID of the Region for which the price is used. Only required if currecny_code is not provided.
- *                  type: string
- *                currency_code:
- *                  description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
- *                  type: string
- *                  externalDocs:
- *                    url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
- *                    description: See a list of codes.
- *                variant_id:
- *                  description: The ID of the Variant for which the price is used.
- *                  type: string
- *                amount:
- *                  description: The amount to charge for the Product Variant.
- *                  type: integer
- *                min_quantity:
- *                  description: The minimum quantity for which the price will be used.
- *                  type: integer
- *                max_quantity:
- *                  description: The maximum quantity for which the price will be used.
- *                  type: integer
- *          override:
- *            description: "If true the prices will replace all existing prices associated with the Price List."
- *            type: boolean
+ *        $ref: "#/components/schemas/AdminPostPriceListPricesPricesReq"
+ * x-codegen:
+ *   method: addPrices
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -94,16 +61,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Price List
+ *   - Price Lists
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             price_list:
- *               $ref: "#/components/schemas/price_list"
+ *           $ref: "#/components/schemas/AdminPriceListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -140,6 +105,47 @@ export default async (req, res) => {
   res.json({ price_list: priceList })
 }
 
+/**
+ * @schema AdminPostPriceListPricesPricesReq
+ * type: object
+ * properties:
+ *   prices:
+ *     description: The prices to update or add.
+ *     type: array
+ *     items:
+ *       type: object
+ *       required:
+ *         - amount
+ *         - variant_id
+ *       properties:
+ *         id:
+ *           description: The ID of the price.
+ *           type: string
+ *         region_id:
+ *           description: The ID of the Region for which the price is used. Only required if currecny_code is not provided.
+ *           type: string
+ *         currency_code:
+ *           description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+ *           type: string
+ *           externalDocs:
+ *             url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *             description: See a list of codes.
+ *         variant_id:
+ *           description: The ID of the Variant for which the price is used.
+ *           type: string
+ *         amount:
+ *           description: The amount to charge for the Product Variant.
+ *           type: integer
+ *         min_quantity:
+ *           description: The minimum quantity for which the price will be used.
+ *           type: integer
+ *         max_quantity:
+ *           description: The maximum quantity for which the price will be used.
+ *           type: integer
+ *   override:
+ *     description: "If true the prices will replace all existing prices associated with the Price List."
+ *     type: boolean
+ */
 export class AdminPostPriceListPricesPricesReq {
   @IsArray()
   @Type(() => AdminPriceListPricesUpdateReq)

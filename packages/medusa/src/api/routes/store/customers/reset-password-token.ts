@@ -4,21 +4,17 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /customers/password-token
+ * @oas [post] /store/customers/password-token
  * operationId: PostCustomersCustomerPasswordToken
- * summary: Creates a reset password token
+ * summary: Request Password Reset
  * description: "Creates a reset password token to be used in a subsequent /reset-password request. The password token should be sent out of band e.g. via email and will not be returned."
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - email
- *         properties:
- *           email:
- *             description: "The email of the customer."
- *             type: string
- *             format: email
+ *         $ref: "#/components/schemas/StorePostCustomersCustomerPasswordTokenReq"
+ * x-codegen:
+ *   method: generatePasswordToken
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -43,7 +39,7 @@ import { EntityManager } from "typeorm"
  *           "email": "user@example.com"
  *       }'
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   204:
  *     description: OK
@@ -61,28 +57,43 @@ import { EntityManager } from "typeorm"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
-  const validated = await validator(
+  const validated = (await validator(
     StorePostCustomersCustomerPasswordTokenReq,
     req.body
-  )
+  )) as StorePostCustomersCustomerPasswordTokenReq
 
   const customerService: CustomerService = req.scope.resolve(
     "customerService"
   ) as CustomerService
 
-  const customer = await customerService.retrieveByEmail(validated.email)
+  const customer = await customerService
+    .retrieveRegisteredByEmail(validated.email)
+    .catch(() => undefined)
 
-  // Will generate a token and send it to the customer via an email provider
-  const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    return await customerService
-      .withTransaction(transactionManager)
-      .generateResetPasswordToken(customer.id)
-  })
+  if (customer) {
+    // Will generate a token and send it to the customer via an email provider
+    const manager: EntityManager = req.scope.resolve("manager")
+    await manager.transaction(async (transactionManager) => {
+      return await customerService
+        .withTransaction(transactionManager)
+        .generateResetPasswordToken(customer.id)
+    })
+  }
 
   res.sendStatus(204)
 }
 
+/**
+ * @schema StorePostCustomersCustomerPasswordTokenReq
+ * type: object
+ * required:
+ *   - email
+ * properties:
+ *   email:
+ *     description: "The email of the customer."
+ *     type: string
+ *     format: email
+ */
 export class StorePostCustomersCustomerPasswordTokenReq {
   @IsEmail()
   email: string

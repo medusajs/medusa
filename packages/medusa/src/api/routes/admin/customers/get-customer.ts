@@ -4,15 +4,17 @@ import { defaultAdminCustomersRelations } from "."
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /customers/{id}
+ * @oas [get] /admin/customers/{id}
  * operationId: "GetCustomersCustomer"
- * summary: "Retrieve a Customer"
+ * summary: "Get a Customer"
  * description: "Retrieves a Customer."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Customer.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in the customer.
  *   - (query) fields {string} (Comma separated) Which fields should be included in the customer.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,16 +35,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             customer:
- *               $ref: "#/components/schemas/customer"
+ *           $ref: "#/components/schemas/AdminCustomersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

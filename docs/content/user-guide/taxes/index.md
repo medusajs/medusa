@@ -1,5 +1,6 @@
 ---
 sidebar_position: 1
+description: 'Medusa admin allows merchants to manage their taxes. Merchants can specify and configure taxes per region.'
 ---
 
 # Taxes Overview
@@ -14,7 +15,7 @@ Taxes are calculated for products and shipping methods on checkout. Medusa provi
 
 ---
 
-## How are Taxes Created?
+## How are Taxes Created
 
 Once a region is created, a default tax rate is created for that region. You can specify the rate and code of the tax rate during the creation of the region.
 
@@ -35,4 +36,4 @@ Adding tax rates alongside the default one allows you to override the prices of 
 - [Manage Taxes](./manage.md)
 - [Manage Tax Rates](./tax-rates.mdx)
 - [Manage Tax Overrides](./tax-overrides.mdx)
-- [Tax Inclusive Pricing Overview](./tax-inclusive.md)
+- [Tax Inclusive Pricing Overview](./tax-inclusive.mdx)

@@ -1,22 +1,56 @@
-import { MedusaError } from "medusa-core-utils"
-import { Brackets, EntityManager } from "typeorm"
-import { TransactionBaseService } from "../interfaces"
+import { IInventoryService } from "@medusajs/types"
+import {
+  buildRelations,
+  buildSelects,
+  isDefined,
+  MedusaError,
+} from "@medusajs/utils"
+import {
+  EntityManager,
+  FindManyOptions,
+  FindOptionsWhere,
+  ILike,
+  IsNull,
+  Not,
+  Raw,
+} from "typeorm"
+import {
+  CartService,
+  CustomerService,
+  DiscountService,
+  DraftOrderService,
+  FulfillmentProviderService,
+  FulfillmentService,
+  GiftCardService,
+  LineItemService,
+  NewTotalsService,
+  PaymentProviderService,
+  ProductVariantInventoryService,
+  RegionService,
+  ShippingOptionService,
+  ShippingProfileService,
+  TaxProviderService,
+  TotalsService,
+} from "."
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
+  Cart,
   ClaimOrder,
   Fulfillment,
   FulfillmentItem,
   FulfillmentStatus,
+  GiftCard,
   LineItem,
   Order,
   OrderStatus,
   Payment,
-  PaymentSession,
   PaymentStatus,
   Return,
   Swap,
   TrackingLink,
 } from "../models"
+import { TransactionBaseService } from "../interfaces"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
@@ -24,24 +58,13 @@ import {
   CreateFulfillmentOrder,
   FulFillmentItemType,
 } from "../types/fulfillment"
-import { UpdateOrderInput } from "../types/orders"
+import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
-import { buildQuery, setMetadata } from "../utils"
-import CartService from "./cart"
-import CustomerService from "./customer"
-import DiscountService from "./discount"
-import DraftOrderService from "./draft-order"
+import { buildQuery, isString, setMetadata } from "../utils"
+import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
-import FulfillmentService from "./fulfillment"
-import FulfillmentProviderService from "./fulfillment-provider"
-import GiftCardService from "./gift-card"
-import InventoryService from "./inventory"
-import LineItemService from "./line-item"
-import PaymentProviderService from "./payment-provider"
-import RegionService from "./region"
-import ShippingOptionService from "./shipping-option"
-import ShippingProfileService from "./shipping-profile"
-import TotalsService from "./totals"
+
+export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -55,13 +78,17 @@ type InjectedDependencies = {
   fulfillmentService: FulfillmentService
   lineItemService: LineItemService
   totalsService: TotalsService
+  newTotalsService: NewTotalsService
+  taxProviderService: TaxProviderService
   regionService: RegionService
   cartService: CartService
   addressRepository: typeof AddressRepository
   giftCardService: GiftCardService
   draftOrderService: DraftOrderService
-  inventoryService: InventoryService
+  inventoryService: IInventoryService
   eventBusService: EventBusService
+  featureFlagRouter: FlagRouter
+  productVariantInventoryService: ProductVariantInventoryService
 }
 
 class OrderService extends TransactionBaseService {
@@ -84,9 +111,6 @@ class OrderService extends TransactionBaseService {
     COMPLETED: "order.completed",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager
-
   protected readonly orderRepository_: typeof OrderRepository
   protected readonly customerService_: CustomerService
   protected readonly paymentProviderService_: PaymentProviderService
@@ -97,16 +121,20 @@ class OrderService extends TransactionBaseService {
   protected readonly fulfillmentService_: FulfillmentService
   protected readonly lineItemService_: LineItemService
   protected readonly totalsService_: TotalsService
+  protected readonly newTotalsService_: NewTotalsService
+  protected readonly taxProviderService_: TaxProviderService
   protected readonly regionService_: RegionService
   protected readonly cartService_: CartService
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly giftCardService_: GiftCardService
   protected readonly draftOrderService_: DraftOrderService
-  protected readonly inventoryService_: InventoryService
+  protected readonly inventoryService_: IInventoryService
   protected readonly eventBus_: EventBusService
+  protected readonly featureFlagRouter_: FlagRouter
+  // eslint-disable-next-line max-len
+  protected readonly productVariantInventoryService_: ProductVariantInventoryService
 
   constructor({
-    manager,
     orderRepository,
     customerService,
     paymentProviderService,
@@ -117,18 +145,20 @@ class OrderService extends TransactionBaseService {
     fulfillmentService,
     lineItemService,
     totalsService,
+    newTotalsService,
+    taxProviderService,
     regionService,
     cartService,
     addressRepository,
     giftCardService,
     draftOrderService,
-    inventoryService,
     eventBusService,
+    featureFlagRouter,
+    productVariantInventoryService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.orderRepository_ = orderRepository
     this.customerService_ = customerService
     this.paymentProviderService_ = paymentProviderService
@@ -136,6 +166,8 @@ class OrderService extends TransactionBaseService {
     this.fulfillmentProviderService_ = fulfillmentProviderService
     this.lineItemService_ = lineItemService
     this.totalsService_ = totalsService
+    this.newTotalsService_ = newTotalsService
+    this.taxProviderService_ = taxProviderService
     this.regionService_ = regionService
     this.fulfillmentService_ = fulfillmentService
     this.discountService_ = discountService
@@ -145,7 +177,8 @@ class OrderService extends TransactionBaseService {
     this.cartService_ = cartService
     this.addressRepository_ = addressRepository
     this.draftOrderService_ = draftOrderService
-    this.inventoryService_ = inventoryService
+    this.featureFlagRouter_ = featureFlagRouter
+    this.productVariantInventoryService_ = productVariantInventoryService
   }
 
   /**
@@ -161,25 +194,8 @@ class OrderService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Order[]> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
-    const query = buildQuery(selector, config)
-
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals(config)
-
-    if (select && select.length) {
-      query.select = select
-    }
-
-    if (relations && relations.length) {
-      query.relations = relations
-    }
-
-    const raw = await orderRepo.find(query)
-
-    return await Promise.all(
-      raw.map(async (r) => await this.decorateTotals(r, totalsToSelect))
-    )
+    const [orders] = await this.listAndCount(selector, config)
+    return orders
   }
 
   /**
@@ -195,52 +211,93 @@ class OrderService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<[Order[], number]> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
 
     let q
     if (selector.q) {
       q = selector.q
       delete selector.q
+
+      config.relations = config.relations
+        ? Array.from(
+            new Set([...config.relations, "shipping_address", "customer"])
+          )
+        : ["shipping_address", "customer"]
     }
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config) as FindManyOptions<Order>
 
     if (q) {
-      const where = query.where
+      const where = query.where as FindOptionsWhere<Order>
 
       delete where.display_id
       delete where.email
 
-      query.join = {
-        alias: "order",
-        innerJoin: {
-          shipping_address: "order.shipping_address",
+      // Inner join like constraints
+      const innerJoinLikeConstraints = {
+        customer: {
+          id: Not(IsNull()),
+        },
+        shipping_address: {
+          id: Not(IsNull()),
         },
       }
 
-      query.where = (qb): void => {
-        qb.where(where)
-
-        qb.andWhere(
-          new Brackets((qb) => {
-            qb.where(`shipping_address.first_name ILIKE :qfn`, {
-              qfn: `%${q}%`,
-            })
-              .orWhere(`order.email ILIKE :q`, { q: `%${q}%` })
-              .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
-          })
-        )
-      }
+      query.where = [
+        {
+          ...query.where,
+          ...innerJoinLikeConstraints,
+          shipping_address: {
+            ...innerJoinLikeConstraints.shipping_address,
+            id: Not(IsNull()),
+            first_name: ILike(`%${q}%`),
+          },
+        },
+        {
+          ...query.where,
+          ...innerJoinLikeConstraints,
+          email: ILike(`%${q}%`),
+        },
+        {
+          ...query.where,
+          ...innerJoinLikeConstraints,
+          display_id: Raw((alias) => `CAST(${alias} as varchar) ILike :q`, {
+            q: `%${q}%`,
+          }),
+        },
+        {
+          ...query.where,
+          ...innerJoinLikeConstraints,
+          customer: {
+            ...innerJoinLikeConstraints.customer,
+            first_name: ILike(`%${q}%`),
+          },
+        },
+        {
+          ...query.where,
+          ...innerJoinLikeConstraints,
+          customer: {
+            ...innerJoinLikeConstraints.customer,
+            last_name: ILike(`%${q}%`),
+          },
+        },
+        {
+          ...query.where,
+          ...innerJoinLikeConstraints,
+          customer: {
+            ...innerJoinLikeConstraints.customer,
+            phone: ILike(`%${q}%`),
+          },
+        },
+      ]
     }
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
 
-    if (select && select.length) {
-      query.select = select
-    }
+    query.select = buildSelects(select || [])
+    const rels = buildRelations(this.getTotalsRelations({ relations }))
 
-    const rels = relations
     delete query.relations
 
     const raw = await orderRepo.findWithRelations(rels, query)
@@ -288,6 +345,8 @@ class OrderService extends TransactionBaseService {
       relationSet.add("items")
       relationSet.add("items.tax_lines")
       relationSet.add("items.adjustments")
+      relationSet.add("items.variant")
+      relationSet.add("items.variant.product")
       relationSet.add("swaps")
       relationSet.add("swaps.additional_items")
       relationSet.add("swaps.additional_items.tax_lines")
@@ -300,6 +359,7 @@ class OrderService extends TransactionBaseService {
       relationSet.add("discounts.rule")
       relationSet.add("gift_cards")
       relationSet.add("gift_card_transactions")
+      relationSet.add("gift_card_transactions.gift_card")
       relationSet.add("refunds")
       relationSet.add("shipping_methods")
       relationSet.add("shipping_methods.tax_lines")
@@ -316,14 +376,14 @@ class OrderService extends TransactionBaseService {
 
     return {
       relations,
-      select: toSelect,
+      select: toSelect.length ? toSelect : undefined,
       totalsToSelect,
     }
   }
 
   /**
    * Gets an order by id.
-   * @param orderId - id of order to retrieve
+   * @param orderId - id or selector of order to retrieve
    * @param config - config of order to retrieve
    * @return the order document
    */
@@ -331,34 +391,90 @@ class OrderService extends TransactionBaseService {
     orderId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    if (!isDefined(orderId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"orderId" must be defined`
+      )
+    }
+
+    const { totalsToSelect } = this.transformQueryForTotals(config)
+
+    if (totalsToSelect?.length) {
+      return await this.retrieveLegacy(orderId, config)
+    }
+
+    const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
+
+    const query = buildQuery({ id: orderId }, config)
+
+    if (!(config.select || []).length) {
+      query.select = undefined
+    }
+
+    const queryRelations = { ...query.relations }
+    delete query.relations
+
+    const raw = await orderRepo.findOneWithRelations(queryRelations, query)
+
+    if (!raw) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Order with id ${orderId} was not found`
+      )
+    }
+
+    return raw
+  }
+
+  protected async retrieveLegacy(
+    orderIdOrSelector: string | Selector<Order>,
+    config: FindConfig<Order> = {}
+  ): Promise<Order> {
+    const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
 
-    const query = {
-      where: { id: orderId },
-    } as FindConfig<Order>
+    const selector = isString(orderIdOrSelector)
+      ? { id: orderIdOrSelector }
+      : orderIdOrSelector
+
+    const query = buildQuery(selector, config)
 
     if (relations && relations.length > 0) {
-      query.relations = relations
+      query.relations = buildRelations(relations)
     }
 
-    if (select && select.length > 0) {
-      query.select = select
-    }
+    query.select = select?.length ? buildSelects(select) : undefined
 
     const rels = query.relations
     delete query.relations
+
     const raw = await orderRepo.findOneWithRelations(rels, query)
+
     if (!raw) {
+      const selectorConstraints = Object.entries(selector)
+        .map((key, value) => `${key}: ${value}`)
+        .join(", ")
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Order with ${orderId} was not found`
+        `Order with ${selectorConstraints} was not found`
       )
     }
 
     return await this.decorateTotals(raw, totalsToSelect)
+  }
+
+  async retrieveWithTotals(
+    orderId: string,
+    options: FindConfig<Order> = {},
+    context: TotalsContext = {}
+  ): Promise<Order> {
+    const relations = this.getTotalsRelations(options)
+    const order = await this.retrieve(orderId, { ...options, relations })
+
+    return await this.decorateTotals(order, context)
   }
 
   /**
@@ -371,33 +487,43 @@ class OrderService extends TransactionBaseService {
     cartId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
-
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals(config)
-
-    const query = {
-      where: { cart_id: cartId },
-    } as FindConfig<Order>
-
-    if (relations && relations.length > 0) {
-      query.relations = relations
+    if (!isDefined(cartId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"cartId" must be defined`
+      )
     }
 
-    if (select && select.length > 0) {
-      query.select = select
+    const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
+
+    const query = buildQuery({ cart_id: cartId }, config)
+
+    if (!(config.select || []).length) {
+      query.select = undefined
     }
 
-    const raw = await orderRepo.findOne(query)
+    const queryRelations = { ...query.relations }
+    delete query.relations
+
+    const raw = await orderRepo.findOneWithRelations(queryRelations, query)
 
     if (!raw) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Order with cart id: ${cartId} was not found`
+        `Order with cart id ${cartId} was not found`
       )
     }
 
-    return await this.decorateTotals(raw, totalsToSelect)
+    return raw
+  }
+
+  async retrieveByCartIdWithTotals(
+    cartId: string,
+    options: FindConfig<Order> = {}
+  ): Promise<Order> {
+    const relations = this.getTotalsRelations(options)
+    const order = await this.retrieveByCartId(cartId, { ...options, relations })
+    return await this.decorateTotals(order, {})
   }
 
   /**
@@ -410,25 +536,31 @@ class OrderService extends TransactionBaseService {
     externalId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+    const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
 
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals(config)
 
-    const query = {
+    const selector = {
       where: { external_id: externalId },
-    } as FindConfig<Order>
+    }
 
+    let queryRelations
     if (relations && relations.length > 0) {
-      query.relations = relations
+      queryRelations = relations
     }
+    queryRelations = this.getTotalsRelations({ relations: queryRelations })
 
-    if (select && select.length > 0) {
-      query.select = select
-    }
+    const querySelect = select?.length ? select : undefined
 
-    const rels = query.relations
+    const query = buildQuery(selector, {
+      select: querySelect,
+      relations: queryRelations,
+    } as FindConfig<Order>)
+
+    const rels = { ...query.relations }
     delete query.relations
+
     const raw = await orderRepo.findOneWithRelations(rels, query)
     if (!raw) {
       throw new MedusaError(
@@ -438,16 +570,6 @@ class OrderService extends TransactionBaseService {
     }
 
     return await this.decorateTotals(raw, totalsToSelect)
-  }
-
-  /**
-   * Checks the existence of an order by cart id.
-   * @param cartId - cart id to find order
-   * @return the order document
-   */
-  async existsByCartId(cartId: string): Promise<boolean> {
-    const order = await this.retrieveByCartId(cartId).catch(() => undefined)
-    return !!order
   }
 
   /**
@@ -465,42 +587,48 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      await this.eventBus_.emit(OrderService.Events.COMPLETED, {
-        id: orderId,
-        no_notification: order.no_notification,
-      })
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.COMPLETED, {
+          id: orderId,
+          no_notification: order.no_notification,
+        })
 
       order.status = OrderStatus.COMPLETED
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       return orderRepo.save(order)
     })
   }
 
   /**
    * Creates an order from a cart
-   * @param cartId - id of the cart to create an order from
    * @return resolves to the creation result.
+   * @param cartOrId
    */
-  async createFromCart(cartId: string): Promise<Order | never> {
+  async createFromCart(cartOrId: string | Cart): Promise<Order | never> {
     return await this.atomicPhase_(async (manager) => {
       const cartServiceTx = this.cartService_.withTransaction(manager)
-      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
 
-      const cart = await cartServiceTx.retrieve(cartId, {
-        select: ["subtotal", "total"],
-        relations: [
-          "region",
-          "payment",
-          "items",
-          "discounts",
-          "discounts.rule",
-          "gift_cards",
-          "shipping_methods",
-          "items",
-          "items.adjustments",
-        ],
-      })
+      const exists = !!(await this.retrieveByCartId(
+        isString(cartOrId) ? cartOrId : cartOrId?.id,
+        {
+          select: ["id"],
+        }
+      ).catch(() => void 0))
+
+      if (exists) {
+        throw new MedusaError(
+          MedusaError.Types.DUPLICATE_ERROR,
+          ORDER_CART_ALREADY_EXISTS_ERROR
+        )
+      }
+
+      const cart = isString(cartOrId)
+        ? await cartServiceTx.retrieveWithTotals(cartOrId, {
+            relations: ["region", "payment", "items"],
+          })
+        : cartOrId
 
       if (cart.items.length === 0) {
         throw new MedusaError(
@@ -509,32 +637,14 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      const { payment, region, total } = cart
-
-      for (const item of cart.items) {
-        try {
-          await inventoryServiceTx.confirmInventory(
-            item.variant_id,
-            item.quantity
-          )
-        } catch (err) {
-          if (payment) {
-            await this.paymentProviderService_
-              .withTransaction(manager)
-              .cancelPayment(payment)
-          }
-          await cartServiceTx.update(cart.id, { payment_authorized_at: null })
-          throw err
-        }
-      }
-
-      const exists = await this.existsByCartId(cart.id)
-      if (exists) {
+      if (!cart.customer_id) {
         throw new MedusaError(
-          MedusaError.Types.DUPLICATE_ERROR,
-          "Order from cart already exists"
+          MedusaError.Types.INVALID_DATA,
+          "Cannot create an order from the cart without a customer"
         )
       }
+
+      const { payment, region, total } = cart
 
       // Would be the case if a discount code is applied that covers the item
       // total
@@ -558,13 +668,21 @@ class OrderService extends TransactionBaseService {
         }
       }
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
+
+      // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
+      // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
+      // We normally should only pass what is needed?
+      const shippingMethods = cart.shipping_methods.map((method) => {
+        ;(method.tax_lines as any) = undefined
+        return method
+      })
 
       const toCreate = {
         payment_status: "awaiting",
         discounts: cart.discounts,
         gift_cards: cart.gift_cards,
-        shipping_methods: cart.shipping_methods,
+        shipping_methods: shippingMethods,
         shipping_address_id: cart.shipping_address_id,
         billing_address_id: cart.billing_address_id,
         region_id: cart.region_id,
@@ -575,6 +693,13 @@ class OrderService extends TransactionBaseService {
         metadata: cart.metadata || {},
       } as Partial<Order>
 
+      if (
+        cart.sales_channel_id &&
+        this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+      ) {
+        toCreate.sales_channel_id = cart.sales_channel_id
+      }
+
       if (cart.type === "draft_order") {
         const draft = await this.draftOrderService_
           .withTransaction(manager)
@@ -584,70 +709,141 @@ class OrderService extends TransactionBaseService {
         toCreate.no_notification = draft.no_notification_order
       }
 
-      const o = orderRepo.create(toCreate)
-      const result = await orderRepo.save(o)
+      const rawOrder = orderRepo.create(toCreate)
+      const order = await orderRepo.save(rawOrder)
 
       if (total !== 0 && payment) {
         await this.paymentProviderService_
           .withTransaction(manager)
           .updatePayment(payment.id, {
-            order_id: result.id,
+            order_id: order.id,
           })
       }
 
-      let gcBalance = await this.totalsService_.getGiftCardableAmount(cart)
-      const gcService = this.giftCardService_.withTransaction(manager)
-
-      for (const g of cart.gift_cards) {
-        const newBalance = Math.max(0, g.balance - gcBalance)
-        const usage = g.balance - newBalance
-        await gcService.update(g.id, {
-          balance: newBalance,
-          is_disabled: newBalance === 0,
-        })
-
-        await gcService.createTransaction({
-          gift_card_id: g.id,
-          order_id: result.id,
-          amount: usage,
-          is_taxable: cart.region.gift_cards_taxable,
-          tax_rate: cart.region.gift_cards_taxable
-            ? cart.region.tax_rate
-            : null,
-        })
-
-        gcBalance = gcBalance - usage
-      }
-
-      for (const method of cart.shipping_methods) {
-        await this.shippingOptionService_
-          .withTransaction(manager)
-          .updateShippingMethod(method.id, { order_id: result.id })
-      }
-
-      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
-      for (const item of cart.items) {
-        await lineItemServiceTx.update(item.id, { order_id: result.id })
-      }
-
-      for (const item of cart.items) {
-        await inventoryServiceTx.adjustInventory(
-          item.variant_id,
-          -item.quantity
+      if (!isDefined(cart.subtotal) || !isDefined(cart.discount_total)) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Unable to compute gift cardable amount during order creation from cart. The cart is missing the subtotal and/or discount_total"
         )
       }
+
+      const giftCardableAmount =
+        (cart.region?.gift_cards_taxable
+          ? cart.subtotal! - cart.discount_total!
+          : cart.total! + cart.gift_card_total!) || 0 // we re add the gift card total to compensate the fact that the decorate total already removed this amount from the total
+
+      let giftCardableAmountBalance = giftCardableAmount
+      const giftCardService = this.giftCardService_.withTransaction(manager)
+
+      for (const giftCard of cart.gift_cards) {
+        const newGiftCardBalance = Math.max(
+          0,
+          giftCard.balance - giftCardableAmountBalance
+        )
+        const giftCardBalanceUsed = giftCard.balance - newGiftCardBalance
+
+        await giftCardService.update(giftCard.id, {
+          balance: newGiftCardBalance,
+          is_disabled: newGiftCardBalance === 0,
+        })
+
+        await giftCardService.createTransaction({
+          gift_card_id: giftCard.id,
+          order_id: order.id,
+          amount: giftCardBalanceUsed,
+          is_taxable: !!giftCard.tax_rate,
+          tax_rate: giftCard.tax_rate,
+        })
+
+        giftCardableAmountBalance =
+          giftCardableAmountBalance - giftCardBalanceUsed
+      }
+
+      const shippingOptionServiceTx =
+        this.shippingOptionService_.withTransaction(manager)
+      const lineItemServiceTx = this.lineItemService_.withTransaction(manager)
+
+      await Promise.all(
+        [
+          cart.items.map((lineItem): unknown[] => {
+            const toReturn: unknown[] = [
+              lineItemServiceTx.update(lineItem.id, { order_id: order.id }),
+            ]
+
+            if (lineItem.is_giftcard) {
+              toReturn.push(
+                this.createGiftCardsFromLineItem_(order, lineItem, manager)
+              )
+            }
+
+            return toReturn
+          }),
+          cart.shipping_methods.map(async (method) => {
+            // TODO: Due to cascade insert we have to remove the tax_lines that have been added by the cart decorate totals.
+            // Is the cascade insert really used? Also, is it really necessary to pass the entire entities when creating or updating?
+            // We normally should only pass what is needed?
+            ;(method.tax_lines as any) = undefined
+            return shippingOptionServiceTx.updateShippingMethod(method.id, {
+              order_id: order.id,
+            })
+          }),
+        ].flat(Infinity)
+      )
 
       await this.eventBus_
         .withTransaction(manager)
         .emit(OrderService.Events.PLACED, {
-          id: result.id,
-          no_notification: result.no_notification,
+          id: order.id,
+          no_notification: order.no_notification,
         })
 
       await cartServiceTx.update(cart.id, { completed_at: new Date() })
 
-      return result
+      return order
     })
+  }
+
+  protected createGiftCardsFromLineItem_(
+    order: Order,
+    lineItem: LineItem,
+    manager: EntityManager
+  ): Promise<GiftCard>[] {
+    const createGiftCardPromises: Promise<GiftCard>[] = []
+
+    // LineItem type doesn't promise either the subtotal or quantity. Adding a check here provides
+    // additional type safety/strictness
+    if (!lineItem.subtotal || !lineItem.quantity) {
+      return createGiftCardPromises
+    }
+
+    // Subtotal is the pure value of the product/variant excluding tax, discounts, etc.
+    // We divide here by quantity to get the value of the product/variant as a lineItem
+    // contains quantity. The subtotal is multiplicative of pure price per product and quantity
+    const taxExclusivePrice = lineItem.subtotal / lineItem.quantity
+    // The tax_lines contains all the taxes that is applicable on the purchase of the gift card
+    // On utilizing the gift card, the same set of taxRate will apply to gift card
+    // We calculate the summation of all taxes and add that as a snapshot in the giftcard.tax_rate column
+    const giftCardTaxRate = lineItem.tax_lines.reduce(
+      (sum, taxLine) => sum + taxLine.rate,
+      0
+    )
+
+    const giftCardTxnService = this.giftCardService_.withTransaction(manager)
+
+    for (let qty = 0; qty < lineItem.quantity; qty++) {
+      const createGiftCardPromise = giftCardTxnService.create({
+        region_id: order.region_id,
+        order_id: order.id,
+        value: taxExclusivePrice,
+        balance: taxExclusivePrice,
+        metadata: lineItem.metadata,
+        tax_rate: giftCardTaxRate || null,
+      })
+
+      createGiftCardPromises.push(createGiftCardPromise)
+    }
+
+    return createGiftCardPromises
   }
 
   /**
@@ -728,7 +924,7 @@ class OrderService extends TransactionBaseService {
         }
       }
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const result = await orderRepo.save(order)
 
       await this.eventBus_
@@ -753,11 +949,11 @@ class OrderService extends TransactionBaseService {
     order: Order,
     address: Address
   ): Promise<void> {
-    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+    const addrRepo = this.activeManager_.withRepository(this.addressRepository_)
     address.country_code = address.country_code?.toLowerCase() ?? null
 
     const region = await this.regionService_
-      .withTransaction(this.manager_)
+      .withTransaction(this.activeManager_)
       .retrieve(order.region_id, {
         relations: ["countries"],
       })
@@ -776,10 +972,17 @@ class OrderService extends TransactionBaseService {
         where: { id: order.billing_address_id },
       })
 
+      if (address.metadata) {
+        address.metadata = setMetadata(addr, address.metadata)
+      }
+
       await addrRepo.save({ ...addr, ...address })
     } else {
-      const created = await addrRepo.create({ ...address })
-      await addrRepo.save(created)
+      if (address.metadata) {
+        address.metadata = setMetadata(null, address.metadata)
+      }
+
+      order.billing_address = addrRepo.create({ ...address })
     }
   }
 
@@ -793,11 +996,11 @@ class OrderService extends TransactionBaseService {
     order: Order,
     address: Address
   ): Promise<void> {
-    const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
+    const addrRepo = this.activeManager_.withRepository(this.addressRepository_)
     address.country_code = address.country_code?.toLowerCase() ?? null
 
     const region = await this.regionService_
-      .withTransaction(this.manager_)
+      .withTransaction(this.activeManager_)
       .retrieve(order.region_id, {
         relations: ["countries"],
       })
@@ -816,8 +1019,7 @@ class OrderService extends TransactionBaseService {
 
       await addrRepo.save({ ...addr, ...address })
     } else {
-      const created = addrRepo.create({ ...address })
-      await addrRepo.save(created)
+      order.shipping_address = addrRepo.create({ ...address })
     }
   }
 
@@ -828,8 +1030,7 @@ class OrderService extends TransactionBaseService {
     config: CreateShippingMethodDto = {}
   ): Promise<Order> {
     return await this.atomicPhase_(async (manager) => {
-      const order = await this.retrieve(orderId, {
-        select: ["subtotal"],
+      const order = await this.retrieveWithTotals(orderId, {
         relations: [
           "shipping_methods",
           "shipping_methods.shipping_option",
@@ -954,7 +1155,7 @@ class OrderService extends TransactionBaseService {
         order[key] = value
       }
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const result = await orderRepo.save(order)
 
       await this.eventBus_
@@ -978,6 +1179,7 @@ class OrderService extends TransactionBaseService {
     return await this.atomicPhase_(async (manager) => {
       const order = await this.retrieve(orderId, {
         relations: [
+          "refunds",
           "fulfillments",
           "payments",
           "returns",
@@ -1018,10 +1220,20 @@ class OrderService extends TransactionBaseService {
       throwErrorIf(order.swaps, notCanceled, "swaps")
       throwErrorIf(order.claims, notCanceled, "claims")
 
-      const inventoryServiceTx = this.inventoryService_.withTransaction(manager)
-      for (const item of order.items) {
-        await inventoryServiceTx.adjustInventory(item.variant_id, item.quantity)
-      }
+      const inventoryServiceTx =
+        this.productVariantInventoryService_.withTransaction(manager)
+
+      await Promise.all(
+        order.items.map(async (item) => {
+          if (item.variant_id) {
+            return await inventoryServiceTx.deleteReservationsByLineItem(
+              item.id,
+              item.variant_id,
+              item.quantity
+            )
+          }
+        })
+      )
 
       const paymentProviderServiceTx =
         this.paymentProviderService_.withTransaction(manager)
@@ -1034,7 +1246,7 @@ class OrderService extends TransactionBaseService {
       order.payment_status = PaymentStatus.CANCELED
       order.canceled_at = new Date()
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const result = await orderRepo.save(order)
 
       await this.eventBus_
@@ -1054,7 +1266,7 @@ class OrderService extends TransactionBaseService {
    */
   async capturePayment(orderId: string): Promise<Order> {
     return await this.atomicPhase_(async (manager) => {
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const order = await this.retrieve(orderId, { relations: ["payments"] })
 
       if (order.status === "canceled") {
@@ -1072,8 +1284,8 @@ class OrderService extends TransactionBaseService {
         if (p.captured_at === null) {
           const result = await paymentProviderServiceTx
             .capturePayment(p)
-            .catch((err) => {
-              this.eventBus_
+            .catch(async (err) => {
+              await this.eventBus_
                 .withTransaction(manager)
                 .emit(OrderService.Events.PAYMENT_CAPTURE_FAILED, {
                   id: orderId,
@@ -1101,7 +1313,7 @@ class OrderService extends TransactionBaseService {
       const result = await orderRepo.save(order)
 
       if (order.payment_status === PaymentStatus.CAPTURED) {
-        this.eventBus_
+        await this.eventBus_
           .withTransaction(manager)
           .emit(OrderService.Events.PAYMENT_CAPTURED, {
             id: result.id,
@@ -1135,7 +1347,7 @@ class OrderService extends TransactionBaseService {
       return null
     }
 
-    if (quantity > item.quantity - item.fulfilled_quantity) {
+    if (quantity > item.quantity - item.fulfilled_quantity!) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Cannot fulfill more items than have been purchased"
@@ -1162,13 +1374,11 @@ class OrderService extends TransactionBaseService {
     itemsToFulfill: FulFillmentItemType[],
     config: {
       no_notification?: boolean
+      location_id?: string
       metadata?: Record<string, unknown>
-    } = {
-      no_notification: undefined,
-      metadata: {},
-    }
+    } = {}
   ): Promise<Order> {
-    const { metadata, no_notification } = config
+    const { metadata, no_notification, location_id } = config
 
     return await this.atomicPhase_(async (manager) => {
       // NOTE: we are telling the service to calculate all totals for us which
@@ -1221,9 +1431,10 @@ class OrderService extends TransactionBaseService {
           order as unknown as CreateFulfillmentOrder,
           itemsToFulfill,
           {
-            metadata,
+            metadata: metadata ?? {},
             no_notification: no_notification,
             order_id: orderId,
+            location_id: location_id,
           }
         )
       let successfullyFulfilled: FulfillmentItem[] = []
@@ -1257,7 +1468,7 @@ class OrderService extends TransactionBaseService {
           }
         }
       }
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
 
       order.fulfillments = [...order.fulfillments, ...fulfillments]
 
@@ -1266,14 +1477,15 @@ class OrderService extends TransactionBaseService {
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
-      const eventBusTx = this.eventBus_.withTransaction(manager)
-      for (const fulfillment of fulfillments) {
-        await eventBusTx.emit(OrderService.Events.FULFILLMENT_CREATED, {
+      const eventsToEmit = fulfillments.map((fulfillment) => ({
+        eventName: OrderService.Events.FULFILLMENT_CREATED,
+        data: {
           id: orderId,
           fulfillment_id: fulfillment.id,
           no_notification: evaluatedNoNotification,
-        })
-      }
+        },
+      }))
+      await this.eventBus_.withTransaction(manager).emit(eventsToEmit)
 
       return result
     })
@@ -1301,7 +1513,7 @@ class OrderService extends TransactionBaseService {
 
       order.fulfillment_status = FulfillmentStatus.CANCELED
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       const updated = await orderRepo.save(order)
 
       await this.eventBus_
@@ -1359,7 +1571,7 @@ class OrderService extends TransactionBaseService {
       }
 
       order.status = OrderStatus.ARCHIVED
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
       return await orderRepo.save(order)
     })
   }
@@ -1385,6 +1597,8 @@ class OrderService extends TransactionBaseService {
     const { no_notification } = config
 
     return await this.atomicPhase_(async (manager) => {
+      const orderRepo = manager.withRepository(this.orderRepository_)
+
       const order = await this.retrieve(orderId, {
         select: ["refundable_amount", "total", "refunded_total"],
         relations: ["payments"],
@@ -1408,38 +1622,82 @@ class OrderService extends TransactionBaseService {
         .withTransaction(manager)
         .refundPayment(order.payments, refundAmount, reason, note)
 
-      const result = await this.retrieve(orderId)
+      let result = await this.retrieveWithTotals(orderId, {
+        relations: ["payments"],
+      })
+
+      if (result.refunded_total > 0 && result.refundable_amount > 0) {
+        result.payment_status = PaymentStatus.PARTIALLY_REFUNDED
+        result = await orderRepo.save(result)
+      }
+
+      if (
+        result.paid_total > 0 &&
+        result.refunded_total === result.paid_total
+      ) {
+        result.payment_status = PaymentStatus.REFUNDED
+        result = await orderRepo.save(result)
+      }
 
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
-      this.eventBus_.emit(OrderService.Events.REFUND_CREATED, {
-        id: result.id,
-        refund_id: refund.id,
-        no_notification: evaluatedNoNotification,
-      })
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(OrderService.Events.REFUND_CREATED, {
+          id: result.id,
+          refund_id: refund.id,
+          no_notification: evaluatedNoNotification,
+        })
       return result
     })
   }
 
-  protected async decorateTotals(
+  protected async decorateTotalsLegacy(
     order: Order,
     totalsFields: string[] = []
   ): Promise<Order> {
+    if (totalsFields.some((field) => ["subtotal", "total"].includes(field))) {
+      const calculationContext =
+        await this.totalsService_.getCalculationContext(order, {
+          exclude_shipping: true,
+        })
+      order.items = await Promise.all(
+        (order.items || []).map(async (item) => {
+          const itemTotals = await this.totalsService_.getLineItemTotals(
+            item,
+            order,
+            {
+              include_tax: true,
+              calculation_context: calculationContext,
+            }
+          )
+
+          return Object.assign(item, itemTotals)
+        })
+      )
+    }
+
     for (const totalField of totalsFields) {
       switch (totalField) {
         case "shipping_total": {
-          order.shipping_total = this.totalsService_.getShippingTotal(order)
+          order.shipping_total = await this.totalsService_.getShippingTotal(
+            order
+          )
           break
         }
         case "gift_card_total": {
-          const giftCardBreakdown = this.totalsService_.getGiftCardTotal(order)
+          const giftCardBreakdown = await this.totalsService_.getGiftCardTotal(
+            order
+          )
           order.gift_card_total = giftCardBreakdown.total
           order.gift_card_tax_total = giftCardBreakdown.tax_total
           break
         }
         case "discount_total": {
-          order.discount_total = this.totalsService_.getDiscountTotal(order)
+          order.discount_total = await this.totalsService_.getDiscountTotal(
+            order
+          )
           break
         }
         case "tax_total": {
@@ -1447,12 +1705,12 @@ class OrderService extends TransactionBaseService {
           break
         }
         case "subtotal": {
-          order.subtotal = this.totalsService_.getSubtotal(order)
+          order.subtotal = await this.totalsService_.getSubtotal(order)
           break
         }
         case "total": {
           order.total = await this.totalsService_
-            .withTransaction(this.manager_)
+            .withTransaction(this.activeManager_)
             .getTotal(order)
           break
         }
@@ -1471,36 +1729,48 @@ class OrderService extends TransactionBaseService {
           break
         }
         case "items.refundable": {
-          order.items = order.items.map((i) => ({
-            ...i,
-            refundable: this.totalsService_.getLineItemRefund(order, {
-              ...i,
-              quantity: i.quantity - (i.returned_quantity || 0),
-            } as LineItem),
-          })) as LineItem[]
+          const items: LineItem[] = []
+          for (const item of order.items) {
+            items.push({
+              ...item,
+              refundable: await this.totalsService_.getLineItemRefund(order, {
+                ...item,
+                quantity: item.quantity - (item.returned_quantity || 0),
+              } as LineItem),
+            } as LineItem)
+          }
+          order.items = items
           break
         }
         case "swaps.additional_items.refundable": {
           for (const s of order.swaps) {
-            s.additional_items = s.additional_items.map((i) => ({
-              ...i,
-              refundable: this.totalsService_.getLineItemRefund(order, {
-                ...i,
-                quantity: i.quantity - (i.returned_quantity || 0),
-              } as LineItem),
-            })) as LineItem[]
+            const items: LineItem[] = []
+            for (const item of s.additional_items) {
+              items.push({
+                ...item,
+                refundable: await this.totalsService_.getLineItemRefund(order, {
+                  ...item,
+                  quantity: item.quantity - (item.returned_quantity || 0),
+                } as LineItem),
+              } as LineItem)
+            }
+            s.additional_items = items
           }
           break
         }
         case "claims.additional_items.refundable": {
           for (const c of order.claims) {
-            c.additional_items = c.additional_items.map((i) => ({
-              ...i,
-              refundable: this.totalsService_.getLineItemRefund(order, {
-                ...i,
-                quantity: i.quantity - (i.returned_quantity || 0),
-              } as LineItem),
-            })) as LineItem[]
+            const items: LineItem[] = []
+            for (const item of c.additional_items) {
+              items.push({
+                ...item,
+                refundable: await this.totalsService_.getLineItemRefund(order, {
+                  ...item,
+                  quantity: item.quantity - (item.returned_quantity || 0),
+                } as LineItem),
+              } as LineItem)
+            }
+            c.additional_items = items
           }
           break
         }
@@ -1509,6 +1779,183 @@ class OrderService extends TransactionBaseService {
         }
       }
     }
+    return order
+  }
+
+  async decorateTotals(order: Order, totalsFields?: string[]): Promise<Order>
+
+  async decorateTotals(order: Order, context?: TotalsContext): Promise<Order>
+
+  /**
+   * Calculate and attach the different total fields on the object
+   * @param order
+   * @param totalsFieldsOrContext
+   */
+  async decorateTotals(
+    order: Order,
+    totalsFieldsOrContext?: string[] | TotalsContext
+  ): Promise<Order> {
+    if (Array.isArray(totalsFieldsOrContext)) {
+      if (totalsFieldsOrContext.length) {
+        return await this.decorateTotalsLegacy(order, totalsFieldsOrContext)
+      }
+      totalsFieldsOrContext = {}
+    }
+
+    const newTotalsServiceTx = this.newTotalsService_.withTransaction(
+      this.activeManager_
+    )
+
+    const calculationContext = await this.totalsService_.getCalculationContext(
+      order
+    )
+
+    const { returnable_items } = totalsFieldsOrContext?.includes ?? {}
+
+    const returnableItems: LineItem[] | undefined = isDefined(returnable_items)
+      ? []
+      : undefined
+
+    const isReturnableItem = (item) =>
+      returnable_items &&
+      (item.returned_quantity ?? 0) < (item.shipped_quantity ?? 0)
+
+    const allItems: LineItem[] = [...(order.items ?? [])]
+
+    if (returnable_items) {
+      // All items must receive their totals and if some of them are returnable
+      // They will be pushed to `returnable_items` at a later point
+      allItems.push(
+        ...(order.swaps?.map((s) => s.additional_items ?? []).flat() ?? []),
+        ...(order.claims?.map((c) => c.additional_items ?? []).flat() ?? [])
+      )
+    }
+
+    const orderShippingMethods = [...(order.shipping_methods ?? [])]
+
+    const itemsTotals = await newTotalsServiceTx.getLineItemTotals(allItems, {
+      taxRate: order.tax_rate,
+      includeTax: true,
+      calculationContext,
+    })
+    const shippingTotals = await newTotalsServiceTx.getShippingMethodTotals(
+      orderShippingMethods,
+      {
+        taxRate: order.tax_rate,
+        discounts: order.discounts,
+        includeTax: true,
+        calculationContext,
+      }
+    )
+
+    order.subtotal = 0
+    order.discount_total = 0
+    order.shipping_total = 0
+    order.refunded_total =
+      Math.round(order.refunds?.reduce((acc, next) => acc + next.amount, 0)) ||
+      0
+    order.paid_total =
+      order.payments?.reduce((acc, next) => (acc += next.amount), 0) || 0
+    order.refundable_amount = order.paid_total - order.refunded_total || 0
+
+    let item_tax_total = 0
+    let shipping_tax_total = 0
+
+    order.items = (order.items || []).map((item) => {
+      item.quantity = item.quantity - (item.returned_quantity || 0)
+      const refundable = newTotalsServiceTx.getLineItemRefund(item, {
+        calculationContext,
+        taxRate: order.tax_rate,
+      })
+
+      Object.assign(item, itemsTotals[item.id] ?? {}, { refundable })
+
+      order.subtotal += item.subtotal ?? 0
+      order.discount_total += item.raw_discount_total ?? 0
+      item_tax_total += item.tax_total ?? 0
+
+      if (isReturnableItem(item)) {
+        returnableItems?.push(item)
+      }
+
+      return item
+    })
+
+    order.shipping_methods = (order.shipping_methods || []).map(
+      (shippingMethod) => {
+        const methodWithTotals = Object.assign(
+          shippingMethod,
+          shippingTotals[shippingMethod.id] ?? {}
+        )
+
+        order.shipping_total += methodWithTotals.subtotal ?? 0
+        shipping_tax_total += methodWithTotals.tax_total ?? 0
+
+        return methodWithTotals
+      }
+    )
+
+    const giftCardTotal = await this.newTotalsService_.getGiftCardTotals(
+      order.subtotal - order.discount_total,
+      {
+        region: order.region,
+        giftCards: order.gift_cards,
+        giftCardTransactions: order.gift_card_transactions ?? [],
+      }
+    )
+    order.gift_card_total = giftCardTotal.total || 0
+    order.gift_card_tax_total = giftCardTotal.tax_total || 0
+
+    order.tax_total =
+      item_tax_total + shipping_tax_total - order.gift_card_tax_total
+
+    for (const swap of order.swaps ?? []) {
+      swap.additional_items = swap.additional_items.map((item) => {
+        item.quantity = item.quantity - (item.returned_quantity || 0)
+        const refundable = newTotalsServiceTx.getLineItemRefund(item, {
+          calculationContext,
+          taxRate: order.tax_rate,
+        })
+
+        Object.assign(item, itemsTotals[item.id] ?? {}, { refundable })
+
+        if (isReturnableItem(item)) {
+          returnableItems?.push(item)
+        }
+
+        return item
+      })
+    }
+
+    for (const claim of order.claims ?? []) {
+      claim.additional_items = claim.additional_items.map((item) => {
+        item.quantity = item.quantity - (item.returned_quantity || 0)
+        const refundable = newTotalsServiceTx.getLineItemRefund(item, {
+          calculationContext,
+          taxRate: order.tax_rate,
+        })
+
+        Object.assign(item, itemsTotals[item.id] ?? {}, { refundable })
+
+        if (isReturnableItem(item)) {
+          returnableItems?.push(item)
+        }
+
+        return item
+      })
+    }
+
+    order.raw_discount_total = order.discount_total
+    order.discount_total = Math.round(order.discount_total)
+
+    order.total =
+      order.subtotal +
+      order.shipping_total +
+      order.tax_total -
+      (order.gift_card_total + order.discount_total)
+
+    order.returnable_items = returnableItems
+
     return order
   }
 
@@ -1550,14 +1997,14 @@ class OrderService extends TransactionBaseService {
         )
       }
 
-      const refundAmount = customRefundAmount || receivedReturn.refund_amount
+      const refundAmount = customRefundAmount ?? receivedReturn.refund_amount
 
-      const orderRepo = manager.getCustomRepository(this.orderRepository_)
+      const orderRepo = manager.withRepository(this.orderRepository_)
 
       if (refundAmount > order.refundable_amount) {
         order.fulfillment_status = FulfillmentStatus.REQUIRES_ACTION
         const result = await orderRepo.save(order)
-        this.eventBus_
+        await this.eventBus_
           .withTransaction(manager)
           .emit(OrderService.Events.RETURN_ACTION_REQUIRED, {
             id: result.id,
@@ -1574,10 +2021,10 @@ class OrderService extends TransactionBaseService {
         }
       }
 
-      if (receivedReturn.refund_amount > 0) {
+      if (refundAmount > 0) {
         const refund = await this.paymentProviderService_
           .withTransaction(manager)
-          .refundPayment(order.payments, receivedReturn.refund_amount, "return")
+          .refundPayment(order.payments, refundAmount, "return")
 
         order.refunds = [...(order.refunds || []), refund]
       }
@@ -1598,6 +2045,33 @@ class OrderService extends TransactionBaseService {
         })
       return result
     })
+  }
+
+  private getTotalsRelations(config: FindConfig<Order>): string[] {
+    const relationSet = new Set(config.relations)
+
+    relationSet.add("items")
+    relationSet.add("items.tax_lines")
+    relationSet.add("items.adjustments")
+    relationSet.add("items.variant")
+    relationSet.add("swaps")
+    relationSet.add("swaps.additional_items")
+    relationSet.add("swaps.additional_items.tax_lines")
+    relationSet.add("swaps.additional_items.adjustments")
+    relationSet.add("claims")
+    relationSet.add("claims.additional_items")
+    relationSet.add("claims.additional_items.tax_lines")
+    relationSet.add("claims.additional_items.adjustments")
+    relationSet.add("discounts")
+    relationSet.add("discounts.rule")
+    relationSet.add("gift_cards")
+    relationSet.add("gift_card_transactions")
+    relationSet.add("refunds")
+    relationSet.add("shipping_methods")
+    relationSet.add("shipping_methods.tax_lines")
+    relationSet.add("region")
+
+    return Array.from(relationSet.values())
   }
 }
 

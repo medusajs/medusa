@@ -22,7 +22,7 @@ Base abstract entity for all entities
 
 #### Defined in
 
-medusa/dist/models/refund.d.ts:13
+medusa/dist/models/refund.d.ts:16
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/refund.d.ts:18
+medusa/dist/models/refund.d.ts:21
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/refund.d.ts:17
+medusa/dist/models/refund.d.ts:20
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/refund.d.ts:16
+medusa/dist/models/refund.d.ts:19
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/refund.d.ts:14
+medusa/dist/models/refund.d.ts:17
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/refund.d.ts:12
+medusa/dist/models/refund.d.ts:14
 
 ___
 
@@ -110,7 +110,27 @@ ___
 
 #### Defined in
 
-medusa/dist/models/refund.d.ts:11
+medusa/dist/models/refund.d.ts:12
+
+___
+
+### payment
+
+• **payment**: [`Payment`](internal.Payment.md)
+
+#### Defined in
+
+medusa/dist/models/refund.d.ts:15
+
+___
+
+### payment\_id
+
+• **payment\_id**: `string`
+
+#### Defined in
+
+medusa/dist/models/refund.d.ts:13
 
 ___
 
@@ -120,7 +140,7 @@ ___
 
 #### Defined in
 
-medusa/dist/models/refund.d.ts:15
+medusa/dist/models/refund.d.ts:18
 
 ___
 

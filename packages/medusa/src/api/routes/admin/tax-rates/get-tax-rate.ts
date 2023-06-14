@@ -6,9 +6,9 @@ import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /tax-rates/{id}
+ * @oas [get] /admin/tax-rates/{id}
  * operationId: "GetTaxRatesTaxRate"
- * summary: "Get Tax Rate"
+ * summary: "Get a Tax Rate"
  * description: "Retrieves a TaxRate"
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
@@ -31,6 +31,9 @@ import { validator } from "../../../../utils/validator"
  *       items:
  *         type: string
  * x-authenticated: true
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: AdminGetTaxRatesTaxRateParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -51,16 +54,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             tax_rate:
- *               $ref: "#/components/schemas/tax_rate"
+ *           $ref: "#/components/schemas/AdminTaxRatesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

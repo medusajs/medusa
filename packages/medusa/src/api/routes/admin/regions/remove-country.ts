@@ -4,9 +4,9 @@ import { EntityManager } from "typeorm"
 import RegionService from "../../../../services/region"
 
 /**
- * @oas [delete] /regions/{id}/countries/{country_code}
+ * @oas [delete] /admin/regions/{id}/countries/{country_code}
  * operationId: "PostRegionsRegionCountriesCountry"
- * summary: "Remove Country"
+ * summary: "Delete Country"
  * x-authenticated: true
  * description: "Removes a Country from the list of Countries in a Region"
  * parameters:
@@ -20,6 +20,8 @@ import RegionService from "../../../../services/region"
  *       externalDocs:
  *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *         description: See a list of codes.
+ * x-codegen:
+ *   method: deleteCountry
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -40,16 +42,14 @@ import RegionService from "../../../../services/region"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             region:
- *               $ref: "#/components/schemas/region"
+ *           $ref: "#/components/schemas/AdminRegionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -4,13 +4,15 @@ import { CustomerGroupService } from "../../../../services"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /customer-groups/{id}
+ * @oas [delete] /admin/customer-groups/{id}
  * operationId: "DeleteCustomerGroupsCustomerGroup"
- * summary: "Delete a CustomerGroup"
+ * summary: "Delete a Customer Group"
  * description: "Deletes a CustomerGroup."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Customer Group
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -31,25 +33,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Customer Group
+ *   - Customer Groups
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted customer group.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: customer_group
- *             deleted:
- *               type: boolean
- *               description: Whether the customer group was deleted successfully or not.
- *               default: true
+ *           $ref: "#/components/schemas/AdminCustomerGroupsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

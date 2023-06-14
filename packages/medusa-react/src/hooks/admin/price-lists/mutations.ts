@@ -1,21 +1,25 @@
 import {
-  AdminPriceListRes,
+  AdminDeletePriceListPricesPricesReq,
+  AdminPostPriceListPricesPricesReq,
   AdminPostPriceListsPriceListPriceListReq,
   AdminPostPriceListsPriceListReq,
-  AdminPostPriceListPricesPricesReq,
-  AdminDeletePriceListPricesPricesReq,
-  AdminPriceListDeleteRes,
   AdminPriceListDeleteBatchRes,
   AdminPriceListDeleteProductPricesRes,
+  AdminPriceListDeleteRes,
   AdminPriceListDeleteVariantPricesRes,
+  AdminPriceListRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
-import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
+import {
+  useMutation,
+  UseMutationOptions,
+  useQueryClient,
+} from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
-import { adminPriceListKeys } from "./queries"
 import { adminProductKeys } from "../products"
 import { adminVariantKeys } from "../variants"
+import { adminPriceListKeys } from "./queries"
 
 export const useAdminCreatePriceList = (
   options?: UseMutationOptions<
@@ -141,7 +145,7 @@ export const useAdminDeletePriceListProductPrices = (
       [
         adminPriceListKeys.detail(id),
         adminPriceListKeys.lists(),
-        adminProductKeys.detail(productId)
+        adminProductKeys.detail(productId),
       ],
       options
     )
@@ -166,7 +170,7 @@ export const useAdminDeletePriceListVariantPrices = (
       [
         adminPriceListKeys.detail(id),
         adminPriceListKeys.lists(),
-        adminVariantKeys.detail(variantId)
+        adminVariantKeys.detail(variantId),
       ],
       options
     )

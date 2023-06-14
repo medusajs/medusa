@@ -5,7 +5,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /notes
+ * @oas [post] /admin/notes
  * operationId: "PostNotes"
  * summary: "Creates a Note"
  * description: "Creates a Note which can be associated with any resource as required."
@@ -14,20 +14,9 @@ import { EntityManager } from "typeorm"
  *  content:
  *    application/json:
  *      schema:
- *        required:
- *          - resource_id
- *          - resource_type
- *          - value
- *        properties:
- *          resource_id:
- *            type: string
- *            description: The ID of the resource which the Note relates to.
- *          resource_type:
- *            type: string
- *            description: The type of resource which the Note relates to.
- *          value:
- *            type: string
- *            description: The content of the Note to create.
+ *        $ref: "#/components/schemas/AdminPostNotesReq"
+ * x-codegen:
+ *   method: create
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -58,16 +47,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Note
+ *   - Notes
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             note:
- *               $ref: "#/components/schemas/note"
+ *           $ref: "#/components/schemas/AdminNotesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -102,6 +89,24 @@ export default async (req, res) => {
   res.status(200).json({ note: result })
 }
 
+/**
+ * @schema AdminPostNotesReq
+ * type: object
+ * required:
+ *   - resource_id
+ *   - resource_type
+ *   - value
+ * properties:
+ *   resource_id:
+ *     type: string
+ *     description: The ID of the resource which the Note relates to.
+ *   resource_type:
+ *     type: string
+ *     description: The type of resource which the Note relates to.
+ *   value:
+ *     type: string
+ *     description: The content of the Note to create.
+ */
 export class AdminPostNotesReq {
   @IsString()
   @IsNotEmpty()

@@ -2,27 +2,33 @@ import { EntityManager } from "typeorm"
 import { IsolationLevel } from "typeorm/driver/types/IsolationLevel"
 
 export abstract class TransactionBaseService {
-  protected abstract manager_: EntityManager
-  protected abstract transactionManager_: EntityManager | undefined
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  protected get activeManager_(): EntityManager {
+    return this.transactionManager_ ?? this.manager_
+  }
 
   protected constructor(
     protected readonly __container__: any,
-    protected readonly __configModule__?: Record<string, unknown>
-  ) {}
+    protected readonly __configModule__?: Record<string, unknown>,
+    protected readonly __moduleDeclaration__?: Record<string, unknown>
+  ) {
+    this.manager_ = __container__.manager
+  }
 
   withTransaction(transactionManager?: EntityManager): this {
     if (!transactionManager) {
       return this
     }
 
-    const cloned = new (<any>this.constructor)(
-      {
-        ...this.__container__,
-        manager: transactionManager,
-      },
-      this.__configModule__
+    const cloned = new (this.constructor as any)(
+      this.__container__,
+      this.__configModule__,
+      this.__moduleDeclaration__
     )
 
+    cloned.manager_ = transactionManager
     cloned.transactionManager_ = transactionManager
 
     return cloned
@@ -111,14 +117,14 @@ export abstract class TransactionBaseService {
         try {
           result = await this.manager_.transaction(
             isolation as IsolationLevel,
-            (m) => doWork(m)
+            async (m) => doWork(m)
           )
           return result
         } catch (error) {
           if (this.shouldRetryTransaction_(error)) {
             return this.manager_.transaction(
               isolation as IsolationLevel,
-              (m): Promise<never | TResult> => doWork(m)
+              async (m): Promise<never | TResult> => doWork(m)
             )
           } else {
             if (errorHandler) {
@@ -130,7 +136,7 @@ export abstract class TransactionBaseService {
       }
 
       try {
-        return await this.manager_.transaction((m) => doWork(m))
+        return await this.manager_.transaction(async (m) => doWork(m))
       } catch (error) {
         if (errorHandler) {
           const result = await errorHandler(error)

@@ -1,11 +1,13 @@
 import { TaxProviderService } from "../../../../services"
 
 /**
- * @oas [get] /store/tax-providers
+ * @oas [get] /admin/store/tax-providers
  * operationId: "GetStoreTaxProviders"
- * summary: "Retrieve configured Tax Providers"
+ * summary: "List Tax Providers"
  * description: "Retrieves the configured Tax Providers"
  * x-authenticated: true
+ * x-codegen:
+ *   method: listTaxProviders
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -33,11 +35,7 @@ import { TaxProviderService } from "../../../../services"
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             tax_providers:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/tax_provider"
+ *           $ref: "#/components/schemas/AdminTaxProvidersList"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

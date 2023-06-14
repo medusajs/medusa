@@ -1,0 +1,12 @@
+{
+  "position": 13,
+  "collapsed": false,
+  "link": null,
+  "label": "Settings",
+  "customProps": {
+    "sidebar_is_group_headline": true,
+    "customProps": {
+      "sidebar_is_group_headline": true
+    }
+  }
+}

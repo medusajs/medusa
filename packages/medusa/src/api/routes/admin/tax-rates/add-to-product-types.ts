@@ -7,9 +7,9 @@ import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /tax-rates/{id}/product-types/batch
+ * @oas [post] /admin/tax-rates/{id}/product-types/batch
  * operationId: "PostTaxRatesTaxRateProductTypes"
- * summary: "Add Tax Rate to Product Types"
+ * summary: "Add to Product Types"
  * description: "Associates a Tax Rate with a list of Product Types"
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
@@ -36,14 +36,10 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - product_types
- *         properties:
- *           product_types:
- *             type: array
- *             description: "The IDs of the types of products to associate with this tax rate"
- *             items:
- *               type: string
+ *         $ref: "#/components/schemas/AdminPostTaxRatesTaxRateProductTypesReq"
+ * x-codegen:
+ *   method: addProductTypes
+ *   queryParams: AdminPostTaxRatesTaxRateProductTypesParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -74,16 +70,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Tax Rate
+ *   - Tax Rates
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             tax_rate:
- *               $ref: "#/components/schemas/tax_rate"
+ *           $ref: "#/components/schemas/AdminTaxRatesRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -127,6 +121,18 @@ export default async (req, res) => {
   res.json({ tax_rate: data })
 }
 
+/**
+ * @schema AdminPostTaxRatesTaxRateProductTypesReq
+ * type: object
+ * required:
+ *   - product_types
+ * properties:
+ *   product_types:
+ *     type: array
+ *     description: "The IDs of the types of products to associate with this tax rate"
+ *     items:
+ *       type: string
+ */
 export class AdminPostTaxRatesTaxRateProductTypesReq {
   @IsArray()
   product_types: string[]

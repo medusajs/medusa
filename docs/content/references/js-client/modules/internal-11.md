@@ -2,39 +2,33 @@
 
 ## Classes
 
-- [AdminGetNotificationsParams](../classes/internal-11.AdminGetNotificationsParams.md)
-- [AdminPostNotificationsNotificationResendReq](../classes/internal-11.AdminPostNotificationsNotificationResendReq.md)
-- [Notification](../classes/internal-11.Notification.md)
-- [NotificationProvider](../classes/internal-11.NotificationProvider.md)
+- [AdminGetNotesParams](../classes/internal-11.AdminGetNotesParams.md)
+- [AdminPostNotesNoteReq](../classes/internal-11.AdminPostNotesNoteReq.md)
+- [AdminPostNotesReq](../classes/internal-11.AdminPostNotesReq.md)
+- [Note](../classes/internal-11.Note.md)
 
 ## Type Aliases
 
-### AdminNotificationsListRes
+### AdminNotesListRes
 
-Ƭ **AdminNotificationsListRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `notifications` | [`Notification`](../classes/internal-11.Notification.md)[] |
+Ƭ **AdminNotesListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `notes`: [`Note`](../classes/internal-11.Note.md)[]  }
 
 #### Defined in
 
-medusa/dist/api/routes/admin/notifications/index.d.ts:8
+medusa/dist/api/routes/admin/notes/index.d.ts:10
 
 ___
 
-### AdminNotificationsRes
+### AdminNotesRes
 
-Ƭ **AdminNotificationsRes**: `Object`
+Ƭ **AdminNotesRes**: `Object`
 
 #### Type declaration
 
 | Name | Type |
 | :------ | :------ |
-| `notification` | [`Notification`](../classes/internal-11.Notification.md) |
+| `note` | [`Note`](../classes/internal-11.Note.md) |
 
 #### Defined in
 
-medusa/dist/api/routes/admin/notifications/index.d.ts:11
+medusa/dist/api/routes/admin/notes/index.d.ts:6

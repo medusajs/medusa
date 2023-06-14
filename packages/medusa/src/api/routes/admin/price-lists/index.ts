@@ -1,24 +1,29 @@
 import { Router } from "express"
 import "reflect-metadata"
-import { PriceList } from "../../../.."
+import { PriceList, Product } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, {
-  transformQuery,
   transformBody,
+  transformQuery,
 } from "../../../middlewares"
 import { AdminGetPriceListPaginationParams } from "./list-price-lists"
 import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
 import {
-  allowedAdminProductFields,
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "../products"
 import { AdminPostPriceListsPriceListReq } from "./create-price-list"
+import { FlagRouter } from "../../../../utils/flag-router"
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 const route = Router()
 
-export default (app) => {
+export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/price-lists", route)
+
+  if (featureFlagRouter.isFeatureEnabled(TaxInclusivePricingFeatureFlag.key)) {
+    defaultAdminPriceListFields.push("includes_tax")
+  }
 
   route.get("/:id", middlewares.wrap(require("./get-price-list").default))
 
@@ -31,7 +36,6 @@ export default (app) => {
   route.get(
     "/:id/products",
     transformQuery(AdminGetPriceListsPriceListProductsParams, {
-      allowedFields: allowedAdminProductFields,
       defaultFields: defaultAdminProductFields,
       defaultRelations: defaultAdminProductRelations.filter(
         (r) => r !== "variants.prices"
@@ -89,25 +93,185 @@ export const defaultAdminPriceListFields = [
 
 export const defaultAdminPriceListRelations = ["prices", "customer_groups"]
 
-export const allowedAdminPriceListFields = ["prices", "customer_groups"]
-
+/**
+ * @schema AdminPriceListRes
+ * type: object
+ * x-expanded-relations:
+ *   field: price_list
+ *   relations:
+ *     - customer_groups
+ *     - prices
+ * required:
+ *   - price_list
+ * properties:
+ *   price_list:
+ *     $ref: "#/components/schemas/PriceList"
+ */
 export type AdminPriceListRes = {
   price_list: PriceList
 }
 
+/**
+ * @schema AdminPriceListDeleteBatchRes
+ * type: object
+ * required:
+ *   - ids
+ *   - object
+ *   - deleted
+ * properties:
+ *   ids:
+ *     type: array
+ *     items:
+ *       type: string
+ *       description: The IDs of the deleted Money Amounts (Prices).
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: money-amount
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the items were deleted.
+ *     default: true
+ */
 export type AdminPriceListDeleteBatchRes = {
   ids: string[]
   deleted: boolean
   object: string
 }
 
+/**
+ * @schema AdminPriceListDeleteProductPricesRes
+ * type: object
+ * required:
+ *   - ids
+ *   - object
+ *   - deleted
+ * properties:
+ *    ids:
+ *     type: array
+ *     description: The price ids that have been deleted.
+ *     items:
+ *       type: string
+ *    object:
+ *      type: string
+ *      description: The type of the object that was deleted.
+ *      default: money-amount
+ *    deleted:
+ *      type: boolean
+ *      description: Whether or not the items were deleted.
+ *      default: true
+ */
 export type AdminPriceListDeleteProductPricesRes = AdminPriceListDeleteBatchRes
+
+/**
+ * @schema AdminPriceListDeleteVariantPricesRes
+ * type: object
+ * required:
+ *   - ids
+ *   - object
+ *   - deleted
+ * properties:
+ *    ids:
+ *     type: array
+ *     description: The price ids that have been deleted.
+ *     items:
+ *       type: string
+ *    object:
+ *      type: string
+ *      description: The type of the object that was deleted.
+ *      default: money-amount
+ *    deleted:
+ *      type: boolean
+ *      description: Whether or not the items were deleted.
+ *      default: true
+ */
 export type AdminPriceListDeleteVariantPricesRes = AdminPriceListDeleteBatchRes
 
+/**
+ * @schema AdminPriceListDeleteRes
+ * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted Price List.
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: price-list
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the items were deleted.
+ *     default: true
+ */
 export type AdminPriceListDeleteRes = DeleteResponse
 
+/**
+ * @schema AdminPriceListsListRes
+ * type: object
+ * required:
+ *   - price_lists
+ *   - count
+ *   - offset
+ *   - limit
+ * properties:
+ *   price_lists:
+ *    type: array
+ *    items:
+ *      $ref: "#/components/schemas/PriceList"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminPriceListsListRes = PaginatedResponse & {
   price_lists: PriceList[]
+}
+
+/**
+ * @schema AdminPriceListsProductsListRes
+ * type: object
+ * x-expanded-relations:
+ *   field: products
+ *   relations:
+ *     - categories
+ *     - collection
+ *     - images
+ *     - options
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
+ * required:
+ *   - products
+ *   - count
+ *   - offset
+ *   - limit
+ * properties:
+ *   products:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/Product"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
+export type AdminPriceListsProductsListRes = PaginatedResponse & {
+  products: Product[]
 }
 
 export * from "./add-prices-batch"

@@ -1,8 +1,9 @@
 import jwt from "jsonwebtoken"
-import { MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
+import AnalyticsFeatureFlag from "../loaders/feature-flags/analytics"
 import { User } from "../models"
 import { UserRepository } from "../repositories/user"
 import { FindConfig } from "../types/common"
@@ -12,18 +13,21 @@ import {
   UpdateUserInput,
 } from "../types/user"
 import { buildQuery, setMetadata } from "../utils"
+import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
+import AnalyticsConfigService from "./analytics-config"
 import EventBusService from "./event-bus"
 
 type UserServiceProps = {
   userRepository: typeof UserRepository
+  analyticsConfigService: AnalyticsConfigService
   eventBusService: EventBusService
   manager: EntityManager
+  featureFlagRouter: FlagRouter
 }
 
 /**
  * Provides layer to manipulate users.
- * @extends BaseService
  */
 class UserService extends TransactionBaseService {
   static Events = {
@@ -33,17 +37,24 @@ class UserService extends TransactionBaseService {
     DELETED: "user.deleted",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager
+  protected readonly analyticsConfigService_: AnalyticsConfigService
   protected readonly userRepository_: typeof UserRepository
   protected readonly eventBus_: EventBusService
+  protected readonly featureFlagRouter_: FlagRouter
 
-  constructor({ userRepository, eventBusService, manager }: UserServiceProps) {
-    super({ userRepository, eventBusService, manager })
+  constructor({
+    userRepository,
+    eventBusService,
+    analyticsConfigService,
+    featureFlagRouter,
+  }: UserServiceProps) {
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
     this.userRepository_ = userRepository
+    this.analyticsConfigService_ = analyticsConfigService
+    this.featureFlagRouter_ = featureFlagRouter
     this.eventBus_ = eventBusService
-    this.manager_ = manager
   }
 
   /**
@@ -52,8 +63,7 @@ class UserService extends TransactionBaseService {
    * @return {Promise} the result of the find operation
    */
   async list(selector: FilterableUserProps, config = {}): Promise<User[]> {
-    const manager = this.manager_
-    const userRepo = manager.getCustomRepository(this.userRepository_)
+    const userRepo = this.activeManager_.withRepository(this.userRepository_)
     return await userRepo.find(buildQuery(selector, config))
   }
 
@@ -65,8 +75,14 @@ class UserService extends TransactionBaseService {
    * @return {Promise<User>} the user document.
    */
   async retrieve(userId: string, config: FindConfig<User> = {}): Promise<User> {
-    const manager = this.manager_
-    const userRepo = manager.getCustomRepository(this.userRepository_)
+    if (!isDefined(userId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"userId" must be defined`
+      )
+    }
+
+    const userRepo = this.activeManager_.withRepository(this.userRepository_)
     const query = buildQuery({ id: userId }, config)
 
     const user = await userRepo.findOne(query)
@@ -85,15 +101,14 @@ class UserService extends TransactionBaseService {
    * Gets a user by api token.
    * Throws in case of DB Error and if user was not found.
    * @param {string} apiToken - the token of the user to get.
-   * @param {string[]} relations - relations to include with the user
+   * @param {string[]} relations - relations to include with the user.
    * @return {Promise<User>} the user document.
    */
   async retrieveByApiToken(
     apiToken: string,
     relations: string[] = []
   ): Promise<User> {
-    const manager = this.manager_
-    const userRepo = manager.getCustomRepository(this.userRepository_)
+    const userRepo = this.activeManager_.withRepository(this.userRepository_)
 
     const user = await userRepo.findOne({
       where: { api_token: apiToken },
@@ -121,8 +136,7 @@ class UserService extends TransactionBaseService {
     email: string,
     config: FindConfig<User> = {}
   ): Promise<User> {
-    const manager = this.manager_
-    const userRepo = manager.getCustomRepository(this.userRepository_)
+    const userRepo = this.activeManager_.withRepository(this.userRepository_)
 
     const query = buildQuery({ email: email.toLowerCase() }, config)
     const user = await userRepo.findOne(query)
@@ -156,13 +170,25 @@ class UserService extends TransactionBaseService {
    */
   async create(user: CreateUserInput, password: string): Promise<User> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const userRepo = manager.getCustomRepository(this.userRepository_)
+      const userRepo = manager.withRepository(this.userRepository_)
 
       const createData = { ...user } as CreateUserInput & {
         password_hash: string
       }
 
       const validatedEmail = validateEmail(user.email)
+
+      const userEntity = await userRepo.findOne({
+        where: { email: validatedEmail },
+      })
+
+      if (userEntity) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "A user with the same email already exists."
+        )
+      }
+
       if (password) {
         const hashedPassword = await this.hashPassword_(password)
         createData.password_hash = hashedPassword
@@ -190,7 +216,7 @@ class UserService extends TransactionBaseService {
    */
   async update(userId: string, update: UpdateUserInput): Promise<User> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const userRepo = manager.getCustomRepository(this.userRepository_)
+      const userRepo = manager.withRepository(this.userRepository_)
 
       const user = await this.retrieve(userId)
 
@@ -215,7 +241,7 @@ class UserService extends TransactionBaseService {
       }
 
       for (const [key, value] of Object.entries(rest)) {
-        user[key as keyof User] = value
+        user[key] = value
       }
 
       const updatedUser = await userRepo.save(user)
@@ -236,7 +262,9 @@ class UserService extends TransactionBaseService {
    */
   async delete(userId: string): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const userRepo = manager.getCustomRepository(this.userRepository_)
+      const userRepo = manager.withRepository(this.userRepository_)
+      const analyticsServiceTx =
+        this.analyticsConfigService_.withTransaction(manager)
 
       // Should not fail, if user does not exist, since delete is idempotent
       const user = await userRepo.findOne({ where: { id: userId } })
@@ -245,9 +273,15 @@ class UserService extends TransactionBaseService {
         return Promise.resolve()
       }
 
+      if (this.featureFlagRouter_.isFeatureEnabled(AnalyticsFeatureFlag.key)) {
+        await analyticsServiceTx.delete(userId)
+      }
+
       await userRepo.softRemove(user)
 
-      await this.eventBus_.emit(UserService.Events.DELETED, { id: user.id })
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(UserService.Events.DELETED, { id: user.id })
 
       return Promise.resolve()
     })
@@ -263,7 +297,7 @@ class UserService extends TransactionBaseService {
    */
   async setPassword_(userId: string, password: string): Promise<User> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const userRepo = manager.getCustomRepository(this.userRepository_)
+      const userRepo = manager.withRepository(this.userRepository_)
 
       const user = await this.retrieve(userId)
 

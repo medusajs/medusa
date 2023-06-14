@@ -13,6 +13,9 @@ import { AdminPostSalesChannelsReq } from "./create-sales-channel"
 import { AdminDeleteSalesChannelsChannelProductsBatchReq } from "./delete-products-batch"
 import { AdminGetSalesChannelsParams } from "./list-sales-channels"
 import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
+import { AdminPostSalesChannelsChannelStockLocationsReq } from "./associate-stock-location"
+import { AdminDeleteSalesChannelsChannelStockLocationsReq } from "./remove-stock-location"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 
 const route = Router()
 
@@ -34,11 +37,6 @@ export default (app) => {
     "/",
     middlewares.wrap(require("./get-sales-channel").default)
   )
-  salesChannelRouter.post(
-    "/",
-    transformBody(AdminPostSalesChannelsSalesChannelReq),
-    middlewares.wrap(require("./update-sales-channel").default)
-  )
   salesChannelRouter.delete(
     "/",
     middlewares.wrap(require("./delete-sales-channel").default)
@@ -47,6 +45,24 @@ export default (app) => {
     "/",
     transformBody(AdminPostSalesChannelsSalesChannelReq),
     middlewares.wrap(require("./update-sales-channel").default)
+  )
+  salesChannelRouter.post(
+    "/stock-locations",
+    checkRegisteredModules({
+      stockLocationService:
+        "Stock Locations are not enabled. Please add a Stock Location module to enable this functionality.",
+    }),
+    transformBody(AdminPostSalesChannelsChannelStockLocationsReq),
+    middlewares.wrap(require("./associate-stock-location").default)
+  )
+  salesChannelRouter.delete(
+    "/stock-locations",
+    checkRegisteredModules({
+      stockLocationService:
+        "Stock Locations are not enabled. Please add a Stock Location module to enable this functionality.",
+    }),
+    transformBody(AdminDeleteSalesChannelsChannelStockLocationsReq),
+    middlewares.wrap(require("./remove-stock-location").default)
   )
   salesChannelRouter.delete(
     "/products/batch",
@@ -69,12 +85,86 @@ export default (app) => {
   return app
 }
 
+/**
+ * @schema AdminSalesChannelsRes
+ * type: object
+ * required:
+ *   - sales_channel
+ * properties:
+ *   sales_channel:
+ *     $ref: "#/components/schemas/SalesChannel"
+ */
 export type AdminSalesChannelsRes = {
   sales_channel: SalesChannel
 }
 
+/**
+ * @schema AdminSalesChannelsDeleteRes
+ * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the deleted sales channel
+ *   object:
+ *     type: string
+ *     description: The type of the object that was deleted.
+ *     default: sales-channel
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the items were deleted.
+ *     default: true
+ */
 export type AdminSalesChannelsDeleteRes = DeleteResponse
 
+/**
+ * @schema AdminSalesChannelsDeleteLocationRes
+ * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
+ * properties:
+ *   id:
+ *     type: string
+ *     description: The ID of the removed stock location from a sales channel
+ *   object:
+ *     type: string
+ *     description: The type of the object that was removed.
+ *     default: stock-location
+ *   deleted:
+ *     type: boolean
+ *     description: Whether or not the items were deleted.
+ *     default: true
+ */
+export type AdminSalesChannelsDeleteLocationRes = DeleteResponse
+
+/**
+ * @schema AdminSalesChannelsListRes
+ * type: object
+ * required:
+ *   - sales_channels
+ *   - count
+ *   - offset
+ *   - limit
+ * properties:
+ *   sales_channels:
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/SalesChannel"
+ *   count:
+ *     type: integer
+ *     description: The total number of items available
+ *   offset:
+ *     type: integer
+ *     description: The number of items skipped before these items
+ *   limit:
+ *     type: integer
+ *     description: The number of items per page
+ */
 export type AdminSalesChannelsListRes = PaginatedResponse & {
   sales_channels: SalesChannel[]
 }
@@ -86,3 +176,5 @@ export * from "./delete-sales-channel"
 export * from "./get-sales-channel"
 export * from "./list-sales-channels"
 export * from "./update-sales-channel"
+export * from "./associate-stock-location"
+export * from "./remove-stock-location"

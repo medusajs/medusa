@@ -4,14 +4,16 @@ import DiscountService from "../../../../services/discount"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [delete] /discounts/{id}/dynamic-codes/{code}
+ * @oas [delete] /admin/discounts/{id}/dynamic-codes/{code}
  * operationId: "DeleteDiscountsDiscountDynamicCodesCode"
- * summary: "Delete a dynamic code"
+ * summary: "Delete a Dynamic Code"
  * description: "Deletes a dynamic code from a Discount."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Discount
  *   - (path) code=* {string} The ID of the Discount
+ * x-codegen:
+ *   method: deleteDynamicCode
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -32,16 +34,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Discount
+ *   - Discounts
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             discount:
- *               $ref: "#/components/schemas/discount"
+ *           $ref: "#/components/schemas/AdminDiscountsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

@@ -4,13 +4,15 @@ import { EntityManager } from "typeorm"
 import { SalesChannelService } from "../../../../services/"
 
 /**
- * @oas [delete] /sales-channels/{id}
+ * @oas [delete] /admin/sales-channels/{id}
  * operationId: "DeleteSalesChannelsSalesChannel"
- * summary: "Delete a sales channel"
+ * summary: "Delete a Sales Channel"
  * description: "Deletes the sales channel."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Sales channel.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -31,25 +33,14 @@ import { SalesChannelService } from "../../../../services/"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Sales Channel
+ *   - Sales Channels
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             id:
- *               type: string
- *               description: The ID of the deleted sales channel
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *               default: sales-channel
- *             deleted:
- *               type: boolean
- *               description: Whether or not the items were deleted.
- *               default: true
+ *           $ref: "#/components/schemas/AdminSalesChannelsDeleteRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

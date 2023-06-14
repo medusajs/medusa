@@ -18,6 +18,16 @@ medusa/dist/models/currency.d.ts:2
 
 ___
 
+### includes\_tax
+
+• `Optional` **includes\_tax**: `boolean`
+
+#### Defined in
+
+medusa/dist/models/currency.d.ts:6
+
+___
+
 ### name
 
 • **name**: `string`

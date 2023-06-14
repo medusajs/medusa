@@ -4,14 +4,16 @@ import { EntityManager } from "typeorm"
 import RegionService from "../../../../services/region"
 
 /**
- * @oas [delete] /regions/{id}/fulfillment-providers/{provider_id}
+ * @oas [delete] /admin/regions/{id}/fulfillment-providers/{provider_id}
  * operationId: "PostRegionsRegionFulfillmentProvidersProvider"
- * summary: "Remove Fulfillment Provider"
+ * summary: "Del. Fulfillment Provider"
  * description: "Removes a Fulfillment Provider."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
  *   - (path) provider_id=* {string} The ID of the Fulfillment Provider.
+ * x-codegen:
+ *   method: deleteFulfillmentProvider
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -32,16 +34,14 @@ import RegionService from "../../../../services/region"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             region:
- *               $ref: "#/components/schemas/region"
+ *           $ref: "#/components/schemas/AdminRegionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

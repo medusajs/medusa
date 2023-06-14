@@ -2,16 +2,20 @@ import { IsBooleanString, IsOptional, IsString } from "class-validator"
 import { PricingService, ProductService } from "../../../../services"
 import ShippingOptionService from "../../../../services/shipping-option"
 import { validator } from "../../../../utils/validator"
+import { defaultRelations } from "."
 
 /**
- * @oas [get] /shipping-options
+ * @oas [get] /store/shipping-options
  * operationId: GetShippingOptions
- * summary: Retrieve Shipping Options
+ * summary: Get Shipping Options
  * description: "Retrieves a list of Shipping Options."
  * parameters:
  *   - (query) is_return {boolean} Whether return Shipping Options should be included. By default all Shipping Options are returned.
  *   - (query) product_ids {string} A comma separated list of Product ids to filter Shipping Options by.
  *   - (query) region_id {string} the Region to retrieve Shipping Options from.
+ * x-codegen:
+ *   method: list
+ *   queryParams: StoreGetShippingOptionsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -27,18 +31,14 @@ import { validator } from "../../../../utils/validator"
  *     source: |
  *       curl --location --request GET 'https://medusa-url.com/store/shipping-options'
  * tags:
- *   - Shipping Option
+ *   - Shipping Options
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             shipping_options:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/shipping_option"
+ *           $ref: "#/components/schemas/StoreShippingOptionsListRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "404":
@@ -81,7 +81,7 @@ export default async (req, res) => {
   }
 
   const options = await shippingOptionService.list(query, {
-    relations: ["requirements"],
+    relations: defaultRelations,
   })
 
   const data = await pricingService.setShippingOptionPrices(options)

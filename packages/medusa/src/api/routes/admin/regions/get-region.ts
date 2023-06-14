@@ -3,13 +3,15 @@ import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 import RegionService from "../../../../services/region"
 
 /**
- * @oas [get] /regions/{id}
+ * @oas [get] /admin/regions/{id}
  * operationId: "GetRegionsRegion"
- * summary: "Retrieve a Region"
+ * summary: "Get a Region"
  * description: "Retrieves a Region."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -30,16 +32,14 @@ import RegionService from "../../../../services/region"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             region:
- *               $ref: "#/components/schemas/region"
+ *           $ref: "#/components/schemas/AdminRegionsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

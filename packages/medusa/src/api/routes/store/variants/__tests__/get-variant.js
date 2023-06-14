@@ -15,7 +15,7 @@ describe("Get variant by id", () => {
     it("calls get variant from variantSerice", () => {
       expect(ProductVariantServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(ProductVariantServiceMock.retrieve).toHaveBeenCalledWith("1", {
-        relations: ["prices", "options"],
+        relations: ["prices", "options", "product"],
       })
     })
 

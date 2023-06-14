@@ -38,6 +38,12 @@ export interface IFileService extends TransactionBaseService {
   upload(file: Express.Multer.File): Promise<FileServiceUploadResult>
 
   /**
+   * upload private file to fileservice
+   * @param file Multer file from express multipart/form-data
+   * */
+  uploadProtected(file: Express.Multer.File): Promise<FileServiceUploadResult>
+
+  /**
    * remove file from fileservice
    * @param fileData Remove file described by record
    * */
@@ -73,6 +79,10 @@ export abstract class AbstractFileService
   implements IFileService
 {
   abstract upload(
+    fileData: Express.Multer.File
+  ): Promise<FileServiceUploadResult>
+
+  abstract uploadProtected(
     fileData: Express.Multer.File
   ): Promise<FileServiceUploadResult>
 

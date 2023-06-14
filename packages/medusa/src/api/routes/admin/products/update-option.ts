@@ -1,14 +1,14 @@
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
 import { IsString } from "class-validator"
-import { ProductService } from "../../../../services"
+import { PricingService, ProductService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /products/{id}/options/{option_id}
+ * @oas [post] /admin/products/{id}/options/{option_id}
  * operationId: "PostProductsProductOptionsOption"
- * summary: "Update a Product Option."
+ * summary: "Update a Product Option"
  * description: "Updates a Product Option"
  * x-authenticated: true
  * parameters:
@@ -18,12 +18,9 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - title
- *         properties:
- *           title:
- *             description: "The title of the Product Option"
- *             type: string
+ *         $ref: "#/components/schemas/AdminPostProductsProductOptionsOption"
+ * x-codegen:
+ *   method: updateOption
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -50,16 +47,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             product:
- *               $ref: "#/components/schemas/product"
+ *           $ref: "#/components/schemas/AdminProductsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -82,6 +77,7 @@ export default async (req, res) => {
   )
 
   const productService: ProductService = req.scope.resolve("productService")
+  const pricingService: PricingService = req.scope.resolve("pricingService")
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
@@ -90,14 +86,26 @@ export default async (req, res) => {
       .updateOption(id, option_id, validated)
   })
 
-  const product = await productService.retrieve(id, {
+  const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
   })
 
+  const [product] = await pricingService.setProductPrices([rawProduct])
+
   res.json({ product })
 }
 
+/**
+ * @schema AdminPostProductsProductOptionsOption
+ * type: object
+ * required:
+ *   - title
+ * properties:
+ *   title:
+ *     description: "The title of the Product Option"
+ *     type: string
+ */
 export class AdminPostProductsProductOptionsOption {
   @IsString()
   title: string

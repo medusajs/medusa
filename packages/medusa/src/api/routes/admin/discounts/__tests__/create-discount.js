@@ -2,7 +2,16 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { DiscountServiceMock } from "../../../../../services/__mocks__/discount"
 
+const validRegionId = IdMap.getId("region-france")
+
+jest.setTimeout(30000)
 describe("POST /admin/discounts", () => {
+  const adminSession = {
+    jwt: {
+      userId: IdMap.getId("admin_user"),
+    },
+  }
+
   describe("successful creation", () => {
     let subject
 
@@ -16,14 +25,11 @@ describe("POST /admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           starts_at: "02/02/2021 13:45",
           ends_at: "03/14/2021 04:30",
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession,
       })
     })
 
@@ -41,6 +47,7 @@ describe("POST /admin/discounts", () => {
           value: 10,
           allocation: "total",
         },
+        regions: [validRegionId],
         starts_at: new Date("02/02/2021 13:45"),
         ends_at: new Date("03/14/2021 04:30"),
         is_disabled: false,
@@ -54,6 +61,7 @@ describe("POST /admin/discounts", () => {
 
     beforeAll(async () => {
       jest.clearAllMocks()
+
       subject = await request("POST", "/admin/discounts", {
         payload: {
           code: "TEST",
@@ -63,15 +71,12 @@ describe("POST /admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           starts_at: "02/02/2021 13:45",
           is_dynamic: true,
           valid_duration: "PaMT2D",
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession,
       })
     })
 
@@ -100,15 +105,12 @@ describe("POST /admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           starts_at: "02/02/2021 13:45",
           is_dynamic: true,
           valid_duration: "P1Y2M03DT04H05M",
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession,
       })
     })
 
@@ -126,6 +128,7 @@ describe("POST /admin/discounts", () => {
           value: 10,
           allocation: "total",
         },
+        regions: [validRegionId],
         starts_at: new Date("02/02/2021 13:45"),
         is_disabled: false,
         is_dynamic: true,
@@ -146,12 +149,9 @@ describe("POST /admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession,
       })
     })
 
@@ -186,15 +186,12 @@ describe("POST /admin/discounts", () => {
               },
             ],
           },
+          regions: [validRegionId],
           starts_at: "02/02/2021 13:45",
           is_dynamic: true,
           valid_duration: "P1Y2M03DT04H05M",
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession,
       })
     })
 
@@ -222,14 +219,11 @@ describe("POST /admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           ends_at: "02/02/2021",
           starts_at: "03/14/2021",
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession,
       })
     })
 
@@ -259,13 +253,10 @@ describe("POST /admin/discounts", () => {
             value: 10,
             allocation: "total",
           },
+          regions: [validRegionId],
           starts_at: "03/14/2021 14:30",
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
+        adminSession,
       })
     })
 
@@ -284,8 +275,44 @@ describe("POST /admin/discounts", () => {
           value: 10,
           allocation: "total",
         },
+        regions: [validRegionId],
         starts_at: new Date("03/14/2021 14:30"),
       })
+    })
+  })
+
+  describe("unsuccessful creation with invalid regions", () => {
+    let subject
+
+    beforeAll(async () => {
+      jest.clearAllMocks()
+
+      subject = await request("POST", "/admin/discounts", {
+        payload: {
+          code: "TEST",
+          rule: {
+            description: "Test",
+            type: "fixed",
+            value: 10,
+            allocation: "total",
+          },
+        },
+        adminSession,
+      })
+    })
+
+    it("returns 400", () => {
+      expect(subject.status).toEqual(400)
+    })
+
+    it("returns error", () => {
+      expect(subject.body.message).toEqual(
+        `each value in regions must be a string, regions must be an array`
+      )
+    })
+
+    it("does not call service create", () => {
+      expect(DiscountServiceMock.create).toHaveBeenCalledTimes(0)
     })
   })
 })

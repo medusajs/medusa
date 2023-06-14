@@ -19,10 +19,10 @@ export const ShippingProfileServiceMock = {
   withTransaction: function () {
     return this
   },
-  update: jest.fn().mockImplementation(data => {
+  update: jest.fn().mockImplementation((data) => {
     return Promise.resolve()
   }),
-  create: jest.fn().mockImplementation(data => {
+  create: jest.fn().mockImplementation((data) => {
     return Promise.resolve(data)
   }),
   createDefault: jest.fn().mockImplementation(() => {
@@ -31,7 +31,7 @@ export const ShippingProfileServiceMock = {
   createGiftCardDefault: jest.fn().mockImplementation(() => {
     return Promise.resolve()
   }),
-  retrieve: jest.fn().mockImplementation(data => {
+  retrieve: jest.fn().mockImplementation((data) => {
     if (data === IdMap.getId("default")) {
       return Promise.resolve(profiles.default)
     }
@@ -40,13 +40,13 @@ export const ShippingProfileServiceMock = {
     }
     return Promise.resolve(profiles.default)
   }),
-  retrieveGiftCardDefault: jest.fn().mockImplementation(data => {
+  retrieveGiftCardDefault: jest.fn().mockImplementation((data) => {
     return Promise.resolve({ id: IdMap.getId("giftCardProfile") })
   }),
-  retrieveDefault: jest.fn().mockImplementation(data => {
+  retrieveDefault: jest.fn().mockImplementation((data) => {
     return Promise.resolve({ id: IdMap.getId("default_shipping_profile") })
   }),
-  list: jest.fn().mockImplementation(selector => {
+  list: jest.fn().mockImplementation((selector) => {
     if (!selector) {
       return Promise.resolve([])
     }
@@ -135,7 +135,7 @@ export const ShippingProfileServiceMock = {
       ])
     }
   }),
-  decorate: jest.fn().mockImplementation(d => Promise.resolve(d)),
+  decorate: jest.fn().mockImplementation((d) => Promise.resolve(d)),
   addShippingOption: jest.fn().mockImplementation(() => Promise.resolve()),
   removeShippingOption: jest.fn().mockImplementation(() => Promise.resolve()),
   addProduct: jest.fn().mockImplementation(() => Promise.resolve()),

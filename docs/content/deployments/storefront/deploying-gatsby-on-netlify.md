@@ -1,18 +1,33 @@
+---
+description: 'Learn step-by-step.'
+addHowToData: true
+---
+
 # Deploy Gatsby Storefront on Netlify
+
+:::note
+
+The Gatsby storefront has been deprecated and it's not recommended to use it moving forward. You can use the [Next.js storefront](../../starters/nextjs-medusa-starter.mdx) instead or build your own.
+
+:::
 
 In this document, you’ll learn how to deploy the Gatsby Storefront on [Netlify](https://www.netlify.com/).
 
 Alternatively, you can use this button to deploy the Gatsby Storefront to Netlify directly:
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/gatsby-starter-medusa)
+<a href="https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/gatsby-starter-medusa" class="img-url no-zoom-img">
+  <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" class="no-zoom-img" />
+</a>
+
+---
 
 ## Prerequisites
 
 ### Medusa Components
 
-Before proceeding with this documentation, it is assumed you already have the Gatsby storefront installed locally. If not, please go through the [quickstart guide](../../starters/gatsby-medusa-starter.md) first.
+Before proceeding with this documentation, it is assumed you already have the Gatsby storefront installed locally.
 
-Additionally, this documentation does not cover how to deploy the Medusa server. If you want to deploy the Medusa server, [check out one of the deployment documentation related to the Medusa server](../server/index.mdx).
+Additionally, this documentation does not cover how to deploy the Medusa backend. If you want to deploy the Medusa backend, [check out one of the deployment documentation related to the Medusa backend](../server/index.mdx).
 
 ### Needed Accounts
 
@@ -27,7 +42,9 @@ If you want to use another Git Provider, it’s possible to follow along with th
 
 ### Required Tools
 
-- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
+- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../development/backend/prepare-environment.mdx#git).
+
+---
 
 ## Create GitHub Repository
 
@@ -35,11 +52,11 @@ Before you can deploy your Gatsby storefront you need to create a GitHub reposit
 
 On GitHub, click the plus icon at the top right, then click New Repository.
 
-![Create Repository](https://i.imgur.com/0YlxBRi.png)
+![Create Repository](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001782/Medusa%20Docs/Netlify/0YlxBRi_aiywpo.png)
 
 You’ll then be redirected to a new page with a form. In the form, enter the Repository Name then scroll down and click Create repository.
 
-![Repository Form](https://i.imgur.com/YPYXAF2.png)
+![Repository Form](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001800/Medusa%20Docs/Netlify/YPYXAF2_lypjne.png)
 
 ### Push Code to GitHub Repository
 
@@ -47,7 +64,7 @@ The next step is to push the code to the GitHub repository you just created.
 
 After creating the repository, you’ll be redirected to the repository’s page. On that page, you should see a URL that you can copy to connect your repository to a local directory.
 
-![GitHub Repository URL](https://i.imgur.com/pHfSTuT.png)
+![GitHub Repository URL](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001818/Medusa%20Docs/Netlify/pHfSTuT_w544lr.png)
 
 Copy the link. Then, open your terminal in the directory that holds your Gatsby storefront codebase and run the following commands:
 
@@ -68,6 +85,8 @@ git push origin master
 
 After pushing the changes, you can find the files in your GitHub repository.
 
+---
+
 ## Deploy to Netlify
 
 This section covers how to deploy Netlify either through the Netlify website or using Netlify’s CLI tool.
@@ -82,33 +101,33 @@ Alternatively, if you don’t have any other websites, you’ll see a big button
 
 :::
 
-![Create a new website](https://i.imgur.com/IUUOzoW.png)
+![Create a new website](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001840/Medusa%20Docs/Netlify/IUUOzoW_mw9u5w.png)
 
 You’ll then be asked to connect to a Git provider.
 
-![Connect Git Provider](https://i.imgur.com/T6lZPDi.png)
+![Connect Git Provider](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001855/Medusa%20Docs/Netlify/T6lZPDi_rvcuyf.png)
 
 Choose GitHub. You’ll then be redirected to GitHub’s website to give Netlify permissions if you haven’t done that before.
 
 After you authorize Netlify to use GitHub, you’ll be asked to pick the repository you want to deploy. Pick the repository you just created.
 
-![Choose Repository](https://i.imgur.com/SRI3r1Y.png)
+![Choose Repository](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003038/Medusa%20Docs/Netlify/SRI3r1Y_hqwy8r.png)
 
 In the form that shows, keep all fields the same and click on the “Show advanced” button before the “Deploy site” button.
 
-![Show advanced Button](https://i.imgur.com/nUdwRbq.png)
+![Show advanced Button](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001884/Medusa%20Docs/Netlify/nUdwRbq_d2kmo6.png)
 
-Under the “Advanced build settings” section click on the “New variable” button. This will show 2 inputs for the key and value of the environment variable.
+Under the “Advanced build settings” section click on the “New variable” button. This will show two inputs for the key and value of the environment variable.
 
-For the first field enter the key `GATSBY_MEDUSA_BACKEND_URL` and for the value enter the URL of your Medusa server.
+For the first field enter the key `GATSBY_MEDUSA_BACKEND_URL` and for the value enter the URL of your Medusa backend.
 
 :::caution
 
-If you haven’t deployed your Medusa server yet, you can leave the value blank for now and add it later. However, the build process for the Gatsby storefront will fail.
+If you haven’t deployed your Medusa backend yet, you can leave the value blank for now and add it later. However, the build process for the Gatsby storefront will fail.
 
 :::
 
-![Environment Variable](https://i.imgur.com/DnutZfT.png)
+![Environment Variable](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001898/Medusa%20Docs/Netlify/DnutZfT_rv8iel.png)
 
 :::note
 
@@ -120,7 +139,7 @@ Once you’re done, scroll down and click on Deploy site.
 
 You’ll be then redirected to the dashboard of the new website. Netlify will build your website in the background. You should see “Site deploy in progress” on the top card.
 
-![Site Deployment Progress](https://i.imgur.com/PUDjjnL.png)
+![Site Deployment Progress](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003051/Medusa%20Docs/Netlify/PUDjjnL_hwuywi.png)
 
 The deployment can take a few minutes.
 
@@ -128,25 +147,25 @@ Once the deployment is done, you’ll find the URL in the place of the “Site d
 
 :::tip
 
-If you haven’t added any products to your Medusa server, the build process might fail. It’s recommended to add some products to the server first in that case.
+If you haven’t added any products to your Medusa backend, the build process might fail. It’s recommended to add some products to the backend first in that case.
 
-Alternatively, you can seed the server with demo data by running this command in the root directory of the server:
+Alternatively, you can seed the backend with demo data by running this command in the root directory of the backend:
 
-```bash
-medusa seed -f data/seed.json
+```bash noReport
+npx @medusajs/medusa-cli seed -f data/seed.json
 ```
 
 :::
 
-![Deployment Complete](https://i.imgur.com/dPF9HvF.png)
+![Deployment Complete](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003068/Medusa%20Docs/Netlify/dPF9HvF_ibnoo1.png)
 
 If you click on it, you’ll be redirected to the deployed storefront website.
 
-![Gatsby Storefront](https://i.imgur.com/l08cBSA.png)
+![Gatsby Storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003076/Medusa%20Docs/Netlify/l08cBSA_eanbne.png)
 
 :::caution
 
-At this point, you will face errors related to CORS while using the storefront. Before you start using the storefront, follow along the [Configure CORS on the Medusa Server section](#configure-cors-variable-on-the-medusa-server).
+At this point, you will face errors related to Cross-Origin Resource Sharing (CORS) while using the storefront. Before you start using the storefront, follow along the [Configure CORS on the Medusa Backend section](#configure-cors-variable-on-the-medusa-backend).
 
 :::
 
@@ -172,11 +191,11 @@ netlify login
 
 This opens a page to log in on your browser. You’ll be asked to authorize the Netlify CLI tool.
 
-![Authorize Application](https://i.imgur.com/JDUdqSE.png)
+![Authorize Application](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001985/Medusa%20Docs/Netlify/JDUdqSE_dzveww.png)
 
 Click on Authorize. Then, you can go back to your terminal and see that you’ve successfully logged in.
 
-![Authorized Message](https://i.imgur.com/L13Yqhp.png)
+![Authorized Message](https://res.cloudinary.com/dza7lstvk/image/upload/v1668001998/Medusa%20Docs/Netlify/L13Yqhp_e2ejpx.png)
 
 #### Initialize Netlify Website
 
@@ -186,13 +205,13 @@ In your terminal, run the following command:
 netlify init
 ```
 
-You’ll have to follow 5 steps for the initialization:
+You’ll have to follow five steps for the initialization:
 
 ##### Step 1: Create Netlify Website
 
 You’ll be asked to either connect to an existing Netlify website or create a new one. Choose the second option to create a new site:
 
-```bash
+```bash noReport
 ? What would you like to do? 
   ⇄  Connect this directory to an existing Netlify site 
 ❯ +  Create & configure a new site
@@ -210,7 +229,7 @@ You’ll be asked to optionally enter a site name.
 
 At this point, the website is created on Netlify. However, Netlify needs to configure Webhooks and deployment keys. You’ll be asked to either authorize GitHub through Netlify’s website or through a personal access token. You’re free to choose either:
 
-```bash
+```bash noReport
 ? Netlify CLI needs access to your GitHub account to configure Webhooks and Depl
 oy Keys. What would you like to do? (Use arrow keys)
 ❯ Authorize with GitHub through app.netlify.com 
@@ -227,21 +246,21 @@ For the rest of the steps, you can keep the default values provided by Netlify a
 
 #### Set Environment Variables
 
-After the previous command has finished running, your Netlify website will be created. The next step is to add an environment variable that points to your Medusa server.
+After the previous command has finished running, your Netlify website will be created. The next step is to add an environment variable that points to your Medusa backend.
 
 :::caution
 
-If you haven’t deployed your Medusa server yet, you can leave the value blank for now and add it later. However, the build process for the Gatsby storefront will fail.
+If you haven’t deployed your Medusa backend yet, you can leave the value blank for now and add it later. However, the build process for the Gatsby storefront will fail.
 
 :::
 
 Run the following command to add the environment variable:
 
 ```bash
-netlify env:set GATSBY_MEDUSA_BACKEND_URL "<YOUR_SERVER_URL>"
+netlify env:set GATSBY_MEDUSA_BACKEND_URL "<YOUR_BACKKEND_URL>"
 ```
 
-Where `<YOUR_SERVER_URL>` is the URL of your Medusa server.
+Where `<YOUR_BACKKEND_URL>` is the URL of your Medusa backend.
 
 :::note
 
@@ -261,12 +280,12 @@ After the deployment has been completed, you should see a message saying “Depl
 
 :::tip
 
-If you haven’t added any products to your Medusa server, the build process might fail. It’s recommended to add some products to the server first in that case.
+If you haven’t added any products to your Medusa backend, the build process might fail. It’s recommended to add some products to the backend first in that case.
 
-Alternatively, you can seed the server with demo data by running this command in the root directory of the server:
+Alternatively, you can seed the backend with demo data by running this command in the root directory of the backend:
 
-```bash
-medusa seed -f data/seed.json
+```bash noReport
+npx @medusajs/medusa-cli seed -f data/seed.json
 ```
 
 :::
@@ -281,13 +300,15 @@ netlify open:site
 
 The Gatsby storefront will then open in your browser.
 
-![Gatsby Storefront](https://i.imgur.com/l08cBSA.png)
+![Gatsby Storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003089/Medusa%20Docs/Netlify/l08cBSA_yfj2rz.png)
 
-Before you can use the Gatsby storefront, you must add the URL as an environment variable on your deployed Medusa server.
+Before you can use the Gatsby storefront, you must add the URL as an environment variable on your deployed Medusa backend.
 
-## Configure CORS Variable on the Medusa Server
+---
 
-To send requests to the Medusa server from the Gatsby storefront, you must set the `STORE_CORS` environment variable on your server to the Gatsby storefront’s URL.
+## Configure CORS Variable on the Medusa Backend
+
+To send requests to the Medusa backend from the Gatsby storefront, you must set the `STORE_CORS` environment variable on your backend to the Gatsby storefront’s URL.
 
 :::caution
 
@@ -295,7 +316,7 @@ If you want to set a custom domain to your Gatsby storefront website on Netlify,
 
 :::
 
-On your Medusa server, add the following environment variable:
+On your Medusa backend, add the following environment variable:
 
 ```bash
 STORE_CORS=<STOREFRONT_URL>
@@ -303,9 +324,11 @@ STORE_CORS=<STOREFRONT_URL>
 
 Where `<STOREFRONT_URL>` is the URL of your Gatsby storefront that you just deployed.
 
-Then, restart your Medusa server. Once the server is running again, you can use your Gatsby storefront.
+Then, restart your Medusa backend. Once the backend is running again, you can use your Gatsby storefront.
 
-## What’s Next 🚀
+---
 
-- Learn how to [deploy the Medusa Admin](../admin/index.mdx).
-- Learn more about [Medusa’s configurations](../../usage/configurations.md).
+## See Also
+
+- [Deploy the Medusa Admin](../admin/index.mdx)
+- [Configure your Medusa backend](../../development/backend/configurations.md)

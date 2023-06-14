@@ -1,6 +1,3 @@
-import { IdMap } from "medusa-test-utils"
-import { MedusaError } from "medusa-core-utils"
-
 export const LineItemAdjustmentServiceMock = {
   withTransaction: function () {
     return this

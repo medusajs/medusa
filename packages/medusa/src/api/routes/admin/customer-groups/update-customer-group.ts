@@ -8,9 +8,9 @@ import { defaultAdminCustomerGroupsRelations } from "."
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customer-groups/{id}
+ * @oas [post] /admin/customer-groups/{id}
  * operationId: "PostCustomerGroupsGroup"
- * summary: "Update a CustomerGroup"
+ * summary: "Update a Customer Group"
  * description: "Update a CustomerGroup."
  * x-authenticated: true
  * parameters:
@@ -19,13 +19,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           name:
- *             description: "Name of the customer group"
- *             type: string
- *           metadata:
- *             description: "Metadata for the customer."
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostCustomerGroupsGroupReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -52,16 +48,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Customer Group
+ *   - Customer Groups
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             customer_group:
- *               $ref: "#/components/schemas/customer_group"
+ *           $ref: "#/components/schemas/AdminCustomerGroupsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -112,6 +106,17 @@ export default async (req: Request, res: Response) => {
   res.json({ customer_group: customerGroup })
 }
 
+/**
+ * @schema AdminPostCustomerGroupsGroupReq
+ * type: object
+ * properties:
+ *   name:
+ *     description: "Name of the customer group"
+ *     type: string
+ *   metadata:
+ *     description: "Metadata for the customer."
+ *     type: object
+ */
 export class AdminPostCustomerGroupsGroupReq {
   @IsString()
   @IsOptional()
@@ -119,5 +124,5 @@ export class AdminPostCustomerGroupsGroupReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

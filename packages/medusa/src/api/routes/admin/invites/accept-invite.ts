@@ -6,7 +6,7 @@ import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /invites/accept
+ * @oas [post] /admin/invites/accept
  * operationId: "PostInvitesInviteAccept"
  * summary: "Accept an Invite"
  * description: "Accepts an Invite and creates a corresponding user"
@@ -14,31 +14,9 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - token
- *           - user
- *         properties:
- *           token:
- *             description: "The invite token provided by the admin."
- *             type: string
- *           user:
- *             description: "The User to create."
- *             type: object
- *             required:
- *               - first_name
- *               - last_name
- *               - password
- *             properties:
- *               first_name:
- *                 type: string
- *                 description: the first name of the User
- *               last_name:
- *                 type: string
- *                 description: the last name of the User
- *               password:
- *                 description: The desired password for the User
- *                 type: string
- *                 format: password
+ *         $ref: "#/components/schemas/AdminPostInvitesInviteAcceptReq"
+ * x-codegen:
+ *   method: accept
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -78,7 +56,7 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Invite
+ *   - Invites
  * responses:
  *   200:
  *     description: OK
@@ -121,6 +99,35 @@ export class AdminPostInvitesInviteAcceptUserReq {
   password: string
 }
 
+/**
+ * @schema AdminPostInvitesInviteAcceptReq
+ * type: object
+ * required:
+ *   - token
+ *   - user
+ * properties:
+ *   token:
+ *     description: "The invite token provided by the admin."
+ *     type: string
+ *   user:
+ *     description: "The User to create."
+ *     type: object
+ *     required:
+ *       - first_name
+ *       - last_name
+ *       - password
+ *     properties:
+ *       first_name:
+ *         type: string
+ *         description: the first name of the User
+ *       last_name:
+ *         type: string
+ *         description: the last name of the User
+ *       password:
+ *         description: The desired password for the User
+ *         type: string
+ *         format: password
+ */
 export class AdminPostInvitesInviteAcceptReq {
   @IsString()
   @IsNotEmpty()

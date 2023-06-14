@@ -7,7 +7,7 @@ import {
   StorePostCartsCartReq,
   StorePostCartsCartShippingMethodReq,
 } from "@medusajs/medusa"
-import { useMutation, UseMutationOptions } from "react-query"
+import { useMutation, UseMutationOptions } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
 
 export const useCreateCart = (

@@ -6,13 +6,14 @@ import {
   IsString,
 } from "class-validator"
 import { OrderService, SwapService } from "../../../../services"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/shipments
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/shipments
  * operationId: "PostOrdersOrderSwapsSwapShipments"
  * summary: "Create Swap Shipment"
  * description: "Registers a Swap Fulfillment as shipped."
@@ -20,24 +21,16 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (path) swap_id=* {string} The ID of the Swap.
+ *   - (query) expand {string} Comma separated list of relations to include in the result.
+ *   - (query) fields {string} Comma separated list of fields to include in the result.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - fulfillment_id
- *         properties:
- *           fulfillment_id:
- *             description: The ID of the Fulfillment.
- *             type: string
- *           tracking_numbers:
- *             description: The tracking numbers for the shipment.
- *             type: array
- *             items:
- *               type: string
- *           no_notification:
- *             description: If set to true no notification will be sent related to this Claim.
- *             type: boolean
+ *         $ref: "#/components/schemas/AdminPostOrdersOrderSwapsSwapShipmentsReq"
+ * x-codegen:
+ *   method: createSwapShipment
+ *   params: AdminPostOrdersOrderSwapsSwapShipmentsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -64,16 +57,14 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             order:
- *               $ref: "#/components/schemas/order"
+ *           $ref: "#/components/schemas/AdminOrdersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -108,14 +99,31 @@ export default async (req, res) => {
     )
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
+/**
+ * @schema AdminPostOrdersOrderSwapsSwapShipmentsReq
+ * type: object
+ * required:
+ *   - fulfillment_id
+ * properties:
+ *   fulfillment_id:
+ *     description: The ID of the Fulfillment.
+ *     type: string
+ *   tracking_numbers:
+ *     description: The tracking numbers for the shipment.
+ *     type: array
+ *     items:
+ *       type: string
+ *   no_notification:
+ *     description: If set to true no notification will be sent related to this Claim.
+ *     type: boolean
+ */
 export class AdminPostOrdersOrderSwapsSwapShipmentsReq {
   @IsString()
   @IsNotEmpty()
@@ -130,3 +138,5 @@ export class AdminPostOrdersOrderSwapsSwapShipmentsReq {
   @IsOptional()
   no_notification?: boolean
 }
+
+export class AdminPostOrdersOrderSwapsSwapShipmentsParams extends FindParams {}

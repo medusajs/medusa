@@ -2,37 +2,15 @@
 
 ## Classes
 
-- [AdminPostReturnReasonsReasonReq](../classes/internal-18.AdminPostReturnReasonsReasonReq.md)
-- [AdminPostReturnReasonsReq](../classes/internal-18.AdminPostReturnReasonsReq.md)
+- [AdminGetProductTagsPaginationParams](../classes/internal-18.AdminGetProductTagsPaginationParams.md)
+- [AdminGetProductTagsParams](../classes/internal-18.AdminGetProductTagsParams.md)
 
 ## Type Aliases
 
-### AdminReturnReasonsListRes
+### AdminProductTagsListRes
 
-Ƭ **AdminReturnReasonsListRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `return_reasons` | [`ReturnReason`](../classes/internal.ReturnReason.md)[] |
+Ƭ **AdminProductTagsListRes**: [`PaginatedResponse`](internal-2.md#paginatedresponse) & { `product_tags`: [`ProductTag`](../classes/internal.ProductTag.md)[]  }
 
 #### Defined in
 
-medusa/dist/api/routes/admin/return-reasons/index.d.ts:10
-
-___
-
-### AdminReturnReasonsRes
-
-Ƭ **AdminReturnReasonsRes**: `Object`
-
-#### Type declaration
-
-| Name | Type |
-| :------ | :------ |
-| `return_reason` | [`ReturnReason`](../classes/internal.ReturnReason.md) |
-
-#### Defined in
-
-medusa/dist/api/routes/admin/return-reasons/index.d.ts:7
+medusa/dist/api/routes/admin/product-tags/index.d.ts:9

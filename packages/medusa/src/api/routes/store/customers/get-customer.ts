@@ -2,11 +2,13 @@ import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
 
 /**
- * @oas [get] /customers/me
+ * @oas [get] /store/customers/me
  * operationId: GetCustomersCustomer
- * summary: Retrieves a Customer
+ * summary: Get a Customer
  * description: "Retrieves a Customer - the Customer must be logged in to retrieve their details."
  * x-authenticated: true
+ * x-codegen:
+ *   method: retrieve
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -26,16 +28,14 @@ import CustomerService from "../../../../services/customer"
  * security:
  *   - cookie_auth: []
  * tags:
- *   - Customer
+ *   - Customers
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             customer:
- *               $ref: "#/components/schemas/customer"
+ *           $ref: "#/components/schemas/StoreCustomersRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

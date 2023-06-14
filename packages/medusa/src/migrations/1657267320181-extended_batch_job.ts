@@ -17,7 +17,7 @@ export class extendedBatchJob1657267320181 implements MigrationInterface {
     if (batchJobColumnStatusExists[0].exists) {
       await queryRunner.query(`
         ALTER TABLE "batch_job" DROP COLUMN "status";
-        DROP TYPE "public"."batch_job_status_enum";
+        DROP TYPE "batch_job_status_enum";
         ALTER TABLE "batch_job" ADD "dry_run" boolean NOT NULL DEFAULT false;
         ALTER TABLE "batch_job" ADD "pre_processed_at" TIMESTAMP WITH TIME ZONE;
         ALTER TABLE "batch_job" ADD "processing_at" TIMESTAMP WITH TIME ZONE;

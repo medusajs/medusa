@@ -1,13 +1,13 @@
 import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
 
-import { GiftCardService } from "../../../../services"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { GiftCardService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /gift-cards/{id}
+ * @oas [post] /admin/gift-cards/{id}
  * operationId: "PostGiftCardsGiftCard"
  * summary: "Update a Gift Card"
  * description: "Update a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region."
@@ -18,23 +18,9 @@ import { EntityManager } from "typeorm"
  *   content:
  *     application/json:
  *       schema:
- *         properties:
- *           balance:
- *             type: integer
- *             description: The value (excluding VAT) that the Gift Card should represent.
- *           is_disabled:
- *             type: boolean
- *             description: Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers.
- *           ends_at:
- *             type: string
- *             format: date-time
- *             description: The time at which the Gift Card should no longer be available.
- *           region_id:
- *             description: The ID of the Region in which the Gift Card can be used.
- *             type: string
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *         $ref: "#/components/schemas/AdminPostGiftCardsGiftCardReq"
+ * x-codegen:
+ *   method: update
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -61,16 +47,14 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Gift Card
+ *   - Gift Cards
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           properties:
- *             gift_card:
- *               $ref: "#/components/schemas/gift_card"
+ *           $ref: "#/components/schemas/AdminGiftCardsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -106,6 +90,27 @@ export default async (req, res) => {
   res.status(200).json({ gift_card: giftCard })
 }
 
+/**
+ * @schema AdminPostGiftCardsGiftCardReq
+ * type: object
+ * properties:
+ *   balance:
+ *     type: integer
+ *     description: The value (excluding VAT) that the Gift Card should represent.
+ *   is_disabled:
+ *     type: boolean
+ *     description: Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers.
+ *   ends_at:
+ *     type: string
+ *     format: date-time
+ *     description: The time at which the Gift Card should no longer be available.
+ *   region_id:
+ *     description: The ID of the Region in which the Gift Card can be used.
+ *     type: string
+ *   metadata:
+ *     description: An optional set of key-value pairs to hold additional information.
+ *     type: object
+ */
 export class AdminPostGiftCardsGiftCardReq {
   @IsOptional()
   @IsInt()
@@ -118,7 +123,7 @@ export class AdminPostGiftCardsGiftCardReq {
   @IsOptional()
   @IsDate()
   @Type(() => Date)
-  ends_at?: Date
+  ends_at?: Date | null
 
   @IsOptional()
   @IsString()

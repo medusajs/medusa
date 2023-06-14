@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6"],
-    "target": "es5",
+    "rootDir": "src",
+    "module": "esnext",
+    "target": "ES2015",
     "outDir": "./dist",
+    "declarationDir": "./dist",
     "esModuleInterop": true,
     "declaration": true,
-    "module": "commonjs",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -17,6 +18,6 @@
     "allowJs": true,
     "skipLibCheck": true
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", " **/tests/*"]
 }

@@ -1,4 +1,4 @@
-import { Connection } from "typeorm"
+import { DataSource } from "typeorm"
 import { BatchJob, BatchJobStatus } from "@medusajs/medusa"
 
 export type BatchJobFactoryData = {
@@ -12,10 +12,10 @@ export type BatchJobFactoryData = {
 }
 
 export const simpleBatchJobFactory = async (
-  connection: Connection,
+  dataSource: DataSource,
   data: BatchJobFactoryData = {}
 ): Promise<BatchJob> => {
-  const manager = connection.manager
+  const manager = dataSource.manager
 
   const job = manager.create<BatchJob>(BatchJob, {
     id: data.id,
