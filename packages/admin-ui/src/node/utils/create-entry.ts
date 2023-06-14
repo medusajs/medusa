@@ -130,16 +130,23 @@ function findPluginsWithExtensions(plugins: string[]) {
 
 async function writeTailwindContentFile(dest: string, plugins: string[]) {
   const tailwindContent = dedent`
+    const path = require("path")
+
+    const devPath = path.join(__dirname, "..", "..", "src/**/*.{js,jsx,ts,tsx}")
+
     module.exports = {
       content: [
-        ${plugins.map((plugin) => {
-          const tailwindContentPath = path.relative(
-            path.resolve(dest, "admin"),
-            path.dirname(path.join(plugin, "..", ".."))
-          )
+        devPath,
+        ${plugins
+          .map((plugin) => {
+            const tailwindContentPath = path.relative(
+              path.resolve(dest, "admin"),
+              path.dirname(path.join(plugin, "..", ".."))
+            )
 
-          return `${tailwindContentPath}/**/*.{js,jsx,ts,tsx}`
-        })}
+            return `${tailwindContentPath}/**/*.{js,jsx,ts,tsx}`
+          })
+          .join(",\n")},
       ],
     }
   
