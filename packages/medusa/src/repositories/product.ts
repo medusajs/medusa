@@ -13,15 +13,15 @@ import {
   SalesChannel,
 } from "../models"
 import { dataSource } from "../loaders/database"
-import { cloneDeep, groupBy, map, merge } from "lodash"
-import { ExtendedFindConfig } from "../types/common"
+import { objectToStringPath } from "@medusajs/utils"
+import { ExtendedFindConfig } from "@medusajs/types"
 import {
   applyOrdering,
   getGroupedRelations,
   queryEntityWithIds,
   queryEntityWithoutRelations,
 } from "../utils/repository"
-import { objectToStringPath } from "@medusajs/utils"
+import { cloneDeep, groupBy, map, merge } from "lodash"
 
 export type DefaultWithoutRelations = Omit<
   ExtendedFindConfig<Product>,

@@ -53,9 +53,9 @@ const Feedback: React.FC<FeedbackProps> = ({
 
   function handleFeedback(e) {
     const feedback = e.target.classList.contains("positive")
-    submitFeedback(e, feedback)
     setPositiveFeedback(feedback)
     setShowForm(true)
+    submitFeedback(e, feedback)
   }
 
   function submitFeedback(e, feedback = null) {
@@ -117,8 +117,8 @@ const Feedback: React.FC<FeedbackProps> = ({
             nodeRef.current.addEventListener("transitionend", done, false)
           }}
           classNames={{
-            enter: "animate__animated animate__fadeIn",
-            exit: "animate__animated animate__fadeOut",
+            enter: "animate__animated animate__fadeIn animate__fastest",
+            exit: "animate__animated animate__fadeOut animate__fastest",
           }}
         >
           <>
@@ -132,7 +132,7 @@ const Feedback: React.FC<FeedbackProps> = ({
                 </span>
                 <Button
                   onClick={handleFeedback}
-                  className="tw-w-fit tw-mr-0.5 last:tw-mr-0"
+                  className="tw-w-fit tw-mr-0.5 last:tw-mr-0 positive"
                 >
                   {positiveBtn}
                 </Button>
