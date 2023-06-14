@@ -47,10 +47,18 @@ export default async function ({ port, directory }) {
     stdio: ["ignore", process.stdout, process.stderr],
   })
 
+  /**
+   * Environment variable to indicate that the `start` command was initiated by the `develop`.
+   * Used to determine if Admin should build if it is installed and has `autoBuild` enabled.
+   */
+  const COMMAND_INITIATED_BY = {
+    COMMAND_INITIATED_BY: "develop",
+  }
+
   const cliPath = path.join(directory, "node_modules", ".bin", "medusa")
   let child = spawn(cliPath, [`start`, ...args], {
     cwd: directory,
-    env: { ...process.env, COMMAND_INITIATED_BY: "develop" },
+    env: { ...process.env, ...COMMAND_INITIATED_BY },
     stdio: ["pipe", process.stdout, process.stderr],
   })
   child.on("error", function (err) {
@@ -96,7 +104,7 @@ export default async function ({ port, directory }) {
 
       child = spawn(cliPath, [`start`, ...args], {
         cwd: directory,
-        env: process.env,
+        env: { ...process.env, ...COMMAND_INITIATED_BY },
         stdio: ["pipe", process.stdout, process.stderr],
       })
       child.on("error", function (err) {
