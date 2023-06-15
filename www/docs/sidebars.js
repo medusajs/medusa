@@ -577,11 +577,6 @@ module.exports = {
           label: "Overview",
         },
         {
-          type: "doc",
-          id: "modules/products/serverless-module",
-          label: "Serverless Product Module",
-        },
-        {
           type: "html",
           value: "Architecture",
           customProps: {
@@ -619,6 +614,11 @@ module.exports = {
           type: "doc",
           id: "modules/products/admin/import-products",
           label: "Admin: Import Products",
+        },
+        {
+          type: "doc",
+          id: "modules/products/serverless-module",
+          label: "Storefront: Serverless Module",
         },
         {
           type: "doc",

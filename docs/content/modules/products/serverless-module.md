@@ -3,7 +3,7 @@ description: 'Learn how to use the product module in a serverless setup by insta
 addHowToData: true
 ---
 
-# Serverless Products Module
+# How to Use Serverless Products Module
 
 In this document, you’ll learn how to use the Products module in a serverless setup.
 
@@ -13,7 +13,7 @@ Medusa’s modules increase extensibility and customization capabilities. Instea
 
 The module only needs to connect to a PostgreSQL database. You can also connect it to an existing Medusa database. Then, you can use the Product module to connect directly to the PostgreSQL database and retrieve or manipulate data.
 
-This guide explains how to use the Product Module in a Next.js application as an example.
+This guide explains how to use the Product Module in a Next.js application as an example. You can use it with other frameworks, such as Remix, as well.
 
 :::note
 
@@ -385,4 +385,6 @@ export async function GET(
 
 ## See Also
 
-- [Products Commerce Module Overview](overview.mdx)
+- [Products Commerce Module Overview](./overview.mdx)
+- [How to show products in a storefront](./storefront/show-products.mdx)
+- [How to show categories in a storefront](./storefront/use-categories.mdx)
