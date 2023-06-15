@@ -577,6 +577,11 @@ module.exports = {
           label: "Overview",
         },
         {
+          type: "doc",
+          id: "modules/products/serverless-module",
+          label: "Serverless Product Module",
+        },
+        {
           type: "html",
           value: "Architecture",
           customProps: {
@@ -881,6 +886,11 @@ module.exports = {
           type: "doc",
           id: "modules/multiwarehouse/admin/manage-inventory-items",
           label: "Admin: Manage Inventory Items",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/admin/manage-reservations",
+          label: "Admin: Manage Custom Reservations",
         },
         {
           type: "doc",

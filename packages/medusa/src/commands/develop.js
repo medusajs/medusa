@@ -1,7 +1,7 @@
+import path from "path"
+import { fork, execSync } from "child_process"
 import boxen from "boxen"
-import { execSync } from "child_process"
 import chokidar from "chokidar"
-import spawn from "cross-spawn"
 import Store from "medusa-telemetry/dist/store"
 import { EOL } from "os"
 import path from "path"
@@ -46,12 +46,17 @@ export default async function ({ port, directory }) {
     stdio: ["ignore", process.stdout, process.stderr],
   })
 
-  const cliPath = path.join(directory, "node_modules", ".bin", "medusa")
-  let child = spawn(cliPath, [`start`, ...args], {
-    cwd: directory,
-    env: process.env,
-    stdio: ["pipe", process.stdout, process.stderr],
-  })
+  const cliPath = path.join(
+    directory,
+    "node_modules",
+    "@medusajs",
+    "medusa",
+    "dist",
+    "bin",
+    "medusa.js"
+  )
+  let child = fork(cliPath, [`start`, ...args], { cwd: directory })
+
   child.on("error", function (err) {
     console.log("Error ", err)
     process.exit(1)
@@ -74,11 +79,8 @@ export default async function ({ port, directory }) {
 
     Logger.info("Rebuilt")
 
-    child = spawn(cliPath, [`start`, ...args], {
-      cwd: directory,
-      env: process.env,
-      stdio: ["pipe", process.stdout, process.stderr],
-    })
+    child = fork(cliPath, [`start`, ...args], { cwd: directory })
+
     child.on("error", function (err) {
       console.log("Error ", err)
       process.exit(1)
