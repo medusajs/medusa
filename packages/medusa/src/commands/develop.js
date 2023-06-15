@@ -102,7 +102,7 @@ export default async function ({ port, directory }) {
 
       Logger.info("Rebuilt")
 
-      child = fork(cliPath, [`start`, ...args], { cwd: directory })
+      child = fork(cliPath, [`start`, ...args], { cwd: directory, stdio: ["pipe", process.stdout, process.stderr] })
 
       child.on("error", function (err) {
         console.log("Error ", err)
