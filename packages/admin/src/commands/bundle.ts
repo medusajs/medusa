@@ -182,6 +182,7 @@ export async function bundle() {
 
     logger.info("Successfully built extension bundle.")
   } catch (error) {
+    // Some errors are not caught by rollup and are thrown instead
     logger.panic(`Failed to build extension bundle: ${error}`, error)
   }
 }
