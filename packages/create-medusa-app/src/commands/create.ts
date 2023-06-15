@@ -118,19 +118,20 @@ export default async ({
     }
   }
 
-  const { adminEmail } = await inquirer.prompt([
-    {
-      type: "input",
-      name: "adminEmail",
-      message: "Enter an email for your admin dashboard user",
-      default: !seed && boilerplate ? "admin@medusa-test.com" : undefined,
-      validate: (input) => {
-        return typeof input === "string" && input.length > 0 && isEmail(input)
-          ? true
-          : "Please enter a valid email"
-      },
-    },
-  ])
+  // TODO enable this later
+  // const { adminEmail } = await inquirer.prompt([
+  //   {
+  //     type: "input",
+  //     name: "adminEmail",
+  //     message: "Enter an email for your admin dashboard user",
+  //     default: !seed && boilerplate ? "admin@medusa-test.com" : undefined,
+  //     validate: (input) => {
+  //       return typeof input === "string" && input.length > 0 && isEmail(input)
+  //         ? true
+  //         : "Please enter a valid email"
+  //     },
+  //   },
+  // ])
 
   logMessage({
     message: `${emojify(
@@ -213,9 +214,9 @@ export default async ({
     inviteToken = await prepareProject({
       directory: projectName,
       dbConnectionString,
-      admin: {
-        email: adminEmail,
-      },
+      // admin: {
+      //   email: adminEmail,
+      // },
       seed,
       boilerplate,
       spinner,
