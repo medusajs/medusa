@@ -62,13 +62,23 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
-      type: "doc",
-      id: "admin/quickstart",
+      type: "category",
       label: "Admin Dashboard",
+      link: {
+        type: "doc",
+        id: "admin/quickstart",
+      },
       customProps: {
         sidebar_icon: "computer-desktop",
       },
       className: "homepage-sidebar-item",
+      items: [
+        {
+          type: "doc",
+          label: "Admin Widgets",
+          id: "admin/widgets",
+        },
+      ],
     },
     {
       type: "ref",
