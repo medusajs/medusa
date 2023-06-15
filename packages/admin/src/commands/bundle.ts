@@ -9,7 +9,6 @@ import commonjs from "@rollup/plugin-commonjs"
 import json from "@rollup/plugin-json"
 import { nodeResolve } from "@rollup/plugin-node-resolve"
 import replace from "@rollup/plugin-replace"
-import terser from "@rollup/plugin-terser"
 import virtual from "@rollup/plugin-virtual"
 import fse from "fs-extra"
 import path from "node:path"
@@ -62,7 +61,7 @@ export async function bundle() {
       .map((route, i) => {
         return `import Route${i}${
           route.hasConfig ? `, { config as routeConfig${i} }` : ""
-        } from "${route}"`
+        } from "${route.file}"`
       })
       .join("\n")}
     `
@@ -75,7 +74,7 @@ export async function bundle() {
           .map(
             (r, i) => `{
             Component: Route${i},
-            config: { path: ${r.path}${
+            config: { path: "${r.path}"${
               r.hasConfig ? `, ...routeConfig${i}` : ""
             } }
         }`
@@ -103,8 +102,6 @@ export async function bundle() {
     export default entry
   `
 
-  const paths = [...routes.map((r) => r.path), ...widgets]
-
   const dependencies = Object.keys(pkg.dependencies || {})
 
   const peerDependencies = Object.keys(pkg.peerDependencies || {})
@@ -127,13 +124,23 @@ export async function bundle() {
 
   try {
     const bundle = await rollup({
-      input: [...paths, "entry"],
+      input: ["entry"],
+      external,
       plugins: [
-        esbuild({ include: /\.tsx?$/, sourceMap: true }),
-        nodeResolve({ preferBuiltins: true, browser: true }),
-        commonjs({
-          extensions: [".mjs", ".js", ".json", ".node", ".jsx", ".ts", ".tsx"],
+        virtual({
+          entry: virtualEntry,
         }),
+        esbuild({
+          include: /\.[jt]sx?$/,
+          exclude: /node_modules/,
+          sourceMap: true,
+          minify: process.env.NODE_ENV === "production",
+          jsx: "transform",
+          jsxFactory: "React.createElement",
+          jsxFragment: "React.Fragment",
+        }),
+        nodeResolve({ preferBuiltins: true, browser: true }),
+        commonjs(),
         json(),
         replace({
           values: {
@@ -148,12 +155,7 @@ export async function bundle() {
             return acc
           }, {} as { [key: string]: string }),
         }),
-        virtual({
-          entry: virtualEntry,
-        }),
-        terser(),
       ],
-      external,
       onwarn: (warning, warn) => {
         if (
           warning.code === "CIRCULAR_DEPENDENCY" &&
@@ -164,6 +166,8 @@ export async function bundle() {
 
         warn(warning)
       },
+    }).catch((error) => {
+      throw error
     })
 
     await bundle.write({
@@ -178,6 +182,6 @@ export async function bundle() {
 
     logger.info("Successfully built extension bundle.")
   } catch (error) {
-    logger.panic("Failed to build extension bundle.", error)
+    logger.panic(`Failed to build extension bundle: ${error}`, error)
   }
 }
