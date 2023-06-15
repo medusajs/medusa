@@ -284,8 +284,8 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
   }).then(async () =>
     open(
       inviteToken
-        ? `http://localhost:9000/app/invite?token=${inviteToken}&first_run=true`
-        : "http://localhost:9000/app"
+        ? `http://localhost:7001/invite?token=${inviteToken}&first_run=true`
+        : "http://localhost:7001"
     )
   )
 }
