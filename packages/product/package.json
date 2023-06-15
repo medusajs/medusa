@@ -36,8 +36,8 @@
     "orm:cache:clear": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm cache:clear"
   },
   "devDependencies": {
-    "@mikro-orm/cli": "5.7.4",
-    "@mikro-orm/migrations": "5.7.4",
+    "@mikro-orm/cli": "5.7.12",
+    "@mikro-orm/migrations": "5.7.12",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "medusa-test-utils": "^1.1.40",
@@ -50,11 +50,11 @@
   },
   "dependencies": {
     "@medusajs/modules-sdk": "^1.8.3",
-    "@medusajs/types": "*",
+    "@medusajs/types": "^1.8.7",
     "@medusajs/utils": "^1.8.2",
-    "@mikro-orm/core": "5.7.4",
-    "@mikro-orm/migrations": "5.7.4",
-    "@mikro-orm/postgresql": "5.7.4",
+    "@mikro-orm/core": "5.7.12",
+    "@mikro-orm/migrations": "5.7.12",
+    "@mikro-orm/postgresql": "5.7.12",
     "awilix": "^8.0.0",
     "dotenv": "^16.1.4",
     "lodash": "^4.17.21"

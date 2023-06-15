@@ -1,35 +1,26 @@
-import { resolve } from "path"
 import { MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql"
 import { ProductServiceInitializeOptions } from "../types"
-import { TSMigrationGenerator } from "@mikro-orm/migrations"
+import { Utils } from "@mikro-orm/core"
 
 export async function createConnection(
   database: ProductServiceInitializeOptions["database"],
   entities: any[]
 ) {
+  const schema = database.schema || "public"
   const orm = await MikroORM.init<PostgreSqlDriver>({
     discovery: { disableDynamicFileAccess: true },
     entities,
     debug: process.env.NODE_ENV === "development",
     baseDir: process.cwd(),
     clientUrl: database.clientUrl,
-    schema: database.schema ?? "public",
+    schema,
     driverOptions: database.driverOptions ?? {
       connection: { ssl: true },
     },
     tsNode: process.env.APP_ENV === "development",
     type: "postgresql",
     migrations: {
-      path: resolve(__dirname, "../../dist/migrations"),
-      pathTs: resolve(__dirname, "../../src/migrations"),
-      glob: "!(*.d).{js,ts}",
-      disableForeignKeys: false,
-      silent: false,
-      dropTables: false,
-      transactional: true,
-      allOrNothing: true,
-      safe: true,
-      generator: TSMigrationGenerator,
+      path: Utils.detectTsNode() ? "src/migrations" : "dist/migrations",
     },
   })
 

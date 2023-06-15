@@ -10,6 +10,7 @@
   "dependencies": {
     "@medusajs/medusa": "workspace:*",
     "medusa-interfaces": "workspace:*",
+    "pg": "^8.11.0",
     "typeorm": "^0.3.16"
   },
   "devDependencies": {

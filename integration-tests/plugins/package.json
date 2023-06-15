@@ -16,6 +16,7 @@
     "medusa-fulfillment-webshipper": "workspace:*",
     "medusa-interfaces": "workspace:*",
     "medusa-plugin-sendgrid": "workspace:*",
+    "pg": "^8.11.0",
     "typeorm": "^0.3.16"
   },
   "devDependencies": {
