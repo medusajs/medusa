@@ -610,7 +610,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
       description: item.title,
       quantity: quantity,
       unit_price: humanizeAmount(totals.unit_price, order.currency_code),
-      vat_percent: totals.tax_lines.reduce((acc, next) => acc + next.rate, 0),
+      vat_percent: totals.tax_lines.reduce((acc, next) => acc + next.rate, 0).toFixed(2),
     }
 
     const coo =
