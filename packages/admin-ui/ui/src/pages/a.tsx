@@ -37,10 +37,6 @@ const IndexPage = () => {
   )
 }
 
-const CoreRoute = () => {
-  return <Routes></Routes>
-}
-
 const DashboardRoutes = () => {
   const { getTopLevelRoutes } = useRoutes()
 
