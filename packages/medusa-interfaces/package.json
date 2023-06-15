@@ -35,8 +35,5 @@
     "medusa-test-utils": "^1.1.40",
     "typescript": "^4.4.4"
   },
-  "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e",
-  "dependencies": {
-    "@medusajs/medusa": "workspace:^"
-  }
+  "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e"
 }
