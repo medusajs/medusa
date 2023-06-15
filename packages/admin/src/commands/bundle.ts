@@ -130,17 +130,29 @@ export async function bundle() {
         virtual({
           entry: virtualEntry,
         }),
-        esbuild({
-          include: /\.[jt]sx?$/,
-          sourceMap: true,
-          minify: process.env.NODE_ENV === "production",
-          jsx: "transform",
-          jsxFactory: "React.createElement",
-          jsxFragment: "React.Fragment",
-          jsxImportSource: "react",
+        // esbuild({
+        //   include: /\.[jt]sx?$/,
+        //   sourceMap: true,
+        //   minify: process.env.NODE_ENV === "production",
+        //   // jsx: "transform",
+        //   // jsxFactory: "React.createElement",
+        //   // jsxFragment: "React.Fragment",
+        //   // jsxImportSource: "react",
+        // }),
+        nodeResolve({
+          preferBuiltins: true,
+          browser: true,
+          extensions: [".mjs", ".js", ".json", ".node", "jsx", "ts", "tsx"],
         }),
-        nodeResolve({ preferBuiltins: true, browser: true }),
         commonjs(),
+        esbuild({
+          include: /\.[jt]sx?$/, // Transpile .js, .jsx, .ts, and .tsx files
+          exclude: /node_modules/, // Exclude node_modules from transpilation
+          minify: process.env.NODE_ENV === "production", // Minify in production mode
+          target: "es2017", // Specify target environment
+          jsxFactory: "React.createElement", // Specify JSX factory function
+          jsxFragment: "React.Fragment", // Specify JSX fragment component
+        }),
         json(),
         replace({
           values: {
