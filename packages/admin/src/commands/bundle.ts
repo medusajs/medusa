@@ -106,7 +106,12 @@ export async function bundle() {
 
   const peerDependencies = Object.keys(pkg.peerDependencies || {})
 
-  const external = [...ALIASED_PACKAGES, ...dependencies, ...peerDependencies]
+  const external = [
+    ...ALIASED_PACKAGES,
+    ...dependencies,
+    ...peerDependencies,
+    "react/jsx-runtime",
+  ]
 
   const dist = path.resolve(process.cwd(), "dist", "admin")
 
@@ -152,6 +157,7 @@ export async function bundle() {
           target: "es2017", // Specify target environment
           jsxFactory: "React.createElement", // Specify JSX factory function
           jsxFragment: "React.Fragment", // Specify JSX fragment component
+          jsx: "automatic", // Specify JSX mode: 'preserve', 'transform' or 'automatic'
         }),
         json(),
         replace({
