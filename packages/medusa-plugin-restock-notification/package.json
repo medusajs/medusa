@@ -21,6 +21,7 @@
     "medusa-interfaces": "^1.3.7",
     "medusa-test-utils": "^1.1.40",
     "pg": "^8.5.1",
+    "typeorm": "*",
     "ulid": "^2.3.0"
   },
   "scripts": {
@@ -31,7 +32,8 @@
   },
   "peerDependencies": {
     "@medusajs/medusa": "^1.12.0",
-    "medusa-interfaces": "^1.3.7"
+    "medusa-interfaces": "^1.3.7",
+    "typeorm": "*"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

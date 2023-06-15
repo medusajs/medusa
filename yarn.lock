@@ -6043,6 +6043,7 @@ __metadata:
     jest: ^25.5.2
     ts-jest: ^25.5.1
     typescript: ^4.4.4
+    ulid: ^2.3.0
   languageName: unknown
   linkType: soft
 
@@ -6121,6 +6122,7 @@ __metadata:
     medusa-telemetry: ^0.0.16
     open: ^8.0.6
     ora: ^5.4.1
+    pg: ^8.11.0
     pg-god: ^1.0.12
     prompts: ^2.4.2
     regenerator-runtime: ^0.13.11
@@ -6143,7 +6145,7 @@ __metadata:
     "@medusajs/medusa": ^1.12.0
     "@types/uuid": ^9.0.0
     axios: ^0.24.0
-    cross-env: ^7.0.3
+    cross-env: ^5.2.1
     jest: ^27.4.7
     qs: ^6.10.3
     retry-axios: ^2.6.0
@@ -6162,11 +6164,14 @@ __metadata:
   dependencies:
     "@medusajs/medusa": ^1.12.0
     "@medusajs/openapi-typescript-codegen": ^0.2.1
+    "@medusajs/types": "workspace:^"
+    "@medusajs/utils": "workspace:^"
     "@readme/json-schema-ref-parser": ^1.2.0
     "@readme/openapi-parser": ^2.4.0
     "@redocly/cli": 1.0.0-beta.123
     "@types/lodash": ^4.14.191
     commander: ^10.0.0
+    execa: 1.0.0
     jest: ^29.1.0
     js-yaml: ^4.1.0
     lodash: ^4.17.21
@@ -6241,6 +6246,7 @@ __metadata:
     scrypt-kdf: ^2.0.1
     supertest: ^4.0.2
     ts-jest: ^25.5.1
+    typeorm: ^0.3.16
     typescript: ^4.4.4
     ulid: ^2.3.0
     uuid: ^9.0.0
@@ -6248,7 +6254,7 @@ __metadata:
   peerDependencies:
     "@medusajs/types": ^1.8.7
     medusa-interfaces: ^1.3.7
-    typeorm: "*"
+    typeorm: ^0.3.16
   bin:
     medusa: ./cli.js
   languageName: unknown
@@ -6361,26 +6367,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@*, @medusajs/types@^1.8.7, @medusajs/types@workspace:packages/types":
+"@medusajs/types@*, @medusajs/types@^1.8.7, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
     awilix: ^8.0.0
     cross-env: ^5.2.1
+    ioredis: ^5.2.5
     typeorm: ^0.3.16
     typescript: ^4.4.4
     winston: ^3.8.2
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@^1.8.2, @medusajs/utils@^1.9.0, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^1.8.2, @medusajs/utils@^1.9.0, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
     "@medusajs/types": ^1.8.7
     "@types/express": ^4.17.17
-    awilix: ^8.0.0
+    awilix: ^8.0.1
     cross-env: ^5.2.1
+    express: ^4.18.2
     jest: ^25.5.4
     ts-jest: ^25.5.1
     typescript: ^4.4.4
@@ -14522,6 +14530,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"awilix@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "awilix@npm:8.0.1"
+  dependencies:
+    camel-case: ^4.1.2
+    fast-glob: ^3.2.12
+  checksum: 088da738d5cc380a1637e5757d63fc70a7954ca6c168bad15a65caab96922cad34f8a461f6071cd213f81109c281d83a70a4df04b8668f5230a19c5b903fca37
+  languageName: node
+  linkType: hard
+
 "aws-sdk@npm:^2.710.0, aws-sdk@npm:^2.983.0":
   version: 2.1172.0
   resolution: "aws-sdk@npm:2.1172.0"
@@ -20933,7 +20951,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:^1.0.0":
+"execa@npm:1.0.0, execa@npm:^1.0.0":
   version: 1.0.0
   resolution: "execa@npm:1.0.0"
   dependencies:
@@ -30230,6 +30248,7 @@ __metadata:
     "@babel/preset-env": ^7.7.5
     "@babel/register": ^7.7.4
     "@babel/runtime": ^7.9.6
+    "@medusajs/medusa": ^1.12.0
     aws-sdk: ^2.710.0
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
@@ -30241,6 +30260,7 @@ __metadata:
     medusa-test-utils: ^1.1.40
     stripe: ^8.50.0
   peerDependencies:
+    "@medusajs/medusa": ^1.12.0
     medusa-interfaces: ^1.3.7
   languageName: unknown
   linkType: soft
@@ -30338,6 +30358,7 @@ __metadata:
     cross-env: ^7.0.3
     express: ^4.17.1
     jest: ^25.5.4
+    lodash: ^4.17.21
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
     medusa-test-utils: ^1.1.40
@@ -30367,6 +30388,7 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
+    lodash: ^4.17.21
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
     medusa-test-utils: ^1.1.40
@@ -30404,6 +30426,7 @@ __metadata:
   resolution: "medusa-payment-paypal@workspace:packages/medusa-payment-paypal"
   dependencies:
     "@medusajs/medusa": ^1.12.0
+    "@medusajs/types": ^1.8.7
     "@paypal/checkout-server-sdk": ^1.0.3
     "@types/stripe": ^8.0.417
     axios: ^1.3.4
@@ -30424,6 +30447,7 @@ __metadata:
   dependencies:
     "@medusajs/medusa": ^1.12.0
     "@types/stripe": ^8.0.417
+    awilix: ^8.0.1
     body-parser: ^1.19.0
     cross-env: ^5.2.1
     express: ^4.17.1
@@ -30465,6 +30489,7 @@ __metadata:
     "@babel/preset-env": ^7.7.5
     "@babel/register": ^7.7.4
     "@babel/runtime": ^7.9.6
+    "@medusajs/medusa": ^1.12.0
     axios: ^0.19.2
     axios-mock-adapter: ^1.18.2
     axios-mock-server: ^0.19.1
@@ -30478,6 +30503,7 @@ __metadata:
     medusa-test-utils: ^1.1.40
     randomatic: ^3.1.1
   peerDependencies:
+    "@medusajs/medusa": ^1.12.0
     medusa-interfaces: ^1.3.7
   languageName: unknown
   linkType: soft
@@ -30502,6 +30528,7 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
+    lodash: ^4.17.21
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
     medusa-test-utils: ^1.1.40
@@ -30647,10 +30674,12 @@ __metadata:
     medusa-interfaces: ^1.3.7
     medusa-test-utils: ^1.1.40
     pg: ^8.5.1
+    typeorm: "*"
     ulid: ^2.3.0
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
     medusa-interfaces: ^1.3.7
+    typeorm: "*"
   languageName: unknown
   linkType: soft
 
@@ -30706,8 +30735,10 @@ __metadata:
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
     medusa-test-utils: ^1.1.40
+    typeorm: "*"
   peerDependencies:
     medusa-interfaces: ^1.3.7
+    typeorm: "*"
   languageName: unknown
   linkType: soft
 
@@ -30812,7 +30843,7 @@ __metadata:
     "@types/react-dom": ^17.0.18
     axios: ^0.24.0
     babel-loader: ^8.2.3
-    cross-env: ^7.0.3
+    cross-env: ^5.2.1
     jest: ^29.4.1
     jest-environment-jsdom: ^29.4.1
     msw: ^0.35.0
@@ -33856,24 +33887,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-cloudflare@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "pg-cloudflare@npm:1.1.0"
-  checksum: 8196cd02224365ba9bf5a616c95212d829d9d12abb75ed7a35e8d9bc8dabacd461c227a1a387d98009ad72b2fbf435721bb91db7d8086b47633475724cebb1cf
-  languageName: node
-  linkType: hard
-
 "pg-connection-string@npm:2.5.0, pg-connection-string@npm:^2.5.0":
   version: 2.5.0
   resolution: "pg-connection-string@npm:2.5.0"
   checksum: 4b1650132d8000d68864db774c4a99d98acf1cb90525045402b93d3b5a5f36500e5934c653598256cd86b3a310ba4639fbf1e8e1e04cefa46840838541b7626c
-  languageName: node
-  linkType: hard
-
-"pg-connection-string@npm:^2.6.0":
-  version: 2.6.0
-  resolution: "pg-connection-string@npm:2.6.0"
-  checksum: 04824a3f32897d58075f70c16e99ca578ba46b3a1343884bba63ae1740cd69f12f2f4777f91da8ff4c18d6b4dcafce61f1ebf0d58624fc33e0ff66e7f6db082a
   languageName: node
   linkType: hard
 
@@ -33907,15 +33924,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg-pool@npm:^3.5.1":
-  version: 3.5.1
-  resolution: "pg-pool@npm:3.5.1"
-  peerDependencies:
-    pg: ">=8.0"
-  checksum: 92ebf4d4c7d5e518a17da5af59642c9b40fce8596f37c7681314cd1a6de4747704cea2de600d9c1d7f6203d7003ebbb94804ffaf596a437f284664cb0812337d
-  languageName: node
-  linkType: hard
-
 "pg-pool@npm:^3.6.0":
   version: 3.6.0
   resolution: "pg-pool@npm:3.6.0"
@@ -33929,13 +33937,6 @@ __metadata:
   version: 1.6.0
   resolution: "pg-protocol@npm:1.6.0"
   checksum: 318a4d1e9cebd3927b10a8bc412f5017117a1f9a5fafb628d75847da7d1ab81c33250de58596bd0990029e14e92a995a851286d60fc236692299faf509572213
-  languageName: node
-  linkType: hard
-
-"pg-protocol@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "pg-protocol@npm:1.5.0"
-  checksum: add456c3f0412f2fa45319c582ad2106d211889806007aaaa66038e13c42fda02197bfefb8ad6f79a8bca9846875fda081540eb14e231eb53cd40da9bdc29b9c
   languageName: node
   linkType: hard
 
@@ -33984,50 +33985,6 @@ __metadata:
     pg-native:
       optional: true
   checksum: 9c8e5b4af598d44b31caa55a2e5f1e841a2018e852d1e237a42c85a17ae6b68b8f3fc2ea270d5e02532be88c550124047ed28da5e0d55701b87dc4383b2dc846
-  languageName: node
-  linkType: hard
-
-"pg@npm:^8.10.0":
-  version: 8.11.0
-  resolution: "pg@npm:8.11.0"
-  dependencies:
-    buffer-writer: 2.0.0
-    packet-reader: 1.0.0
-    pg-cloudflare: ^1.1.0
-    pg-connection-string: ^2.6.0
-    pg-pool: ^3.6.0
-    pg-protocol: ^1.6.0
-    pg-types: ^2.1.0
-    pgpass: 1.x
-  peerDependencies:
-    pg-native: ">=3.0.1"
-  dependenciesMeta:
-    pg-cloudflare:
-      optional: true
-  peerDependenciesMeta:
-    pg-native:
-      optional: true
-  checksum: 81cc13bce32eeafc6365472750503698a4c853c7438ec8f6e3e88cccb39590cbed35f1df22991d9c460a4e11ac237babfa434445e4a92ff89c24ca3066969771
-  languageName: node
-  linkType: hard
-
-"pg@npm:^8.3.0, pg@npm:^8.5.1":
-  version: 8.7.3
-  resolution: "pg@npm:8.7.3"
-  dependencies:
-    buffer-writer: 2.0.0
-    packet-reader: 1.0.0
-    pg-connection-string: ^2.5.0
-    pg-pool: ^3.5.1
-    pg-protocol: ^1.5.0
-    pg-types: ^2.1.0
-    pgpass: 1.x
-  peerDependencies:
-    pg-native: ">=2.0.0"
-  peerDependenciesMeta:
-    pg-native:
-      optional: true
-  checksum: 9b509d15a0bbba9653bd8af8739cf5c0b3399d1989b4e6b9a5f06615b22169cb5b415011efa4f945a01d5b3735d9fd572b533b99d641d55cbfc2f948d931da5b
   languageName: node
   linkType: hard
 
@@ -41267,7 +41224,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.3.16":
+"typeorm@npm:*, typeorm@npm:^0.3.16":
   version: 0.3.16
   resolution: "typeorm@npm:0.3.16"
   dependencies:
