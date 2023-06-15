@@ -24651,6 +24651,7 @@ __metadata:
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-interfaces: "workspace:*"
+    pg: ^8.11.0
     typeorm: ^0.3.16
   languageName: unknown
   linkType: soft
@@ -24672,6 +24673,7 @@ __metadata:
     medusa-fulfillment-webshipper: "workspace:*"
     medusa-interfaces: "workspace:*"
     medusa-plugin-sendgrid: "workspace:*"
+    pg: ^8.11.0
     typeorm: ^0.3.16
   languageName: unknown
   linkType: soft
@@ -24688,6 +24690,7 @@ __metadata:
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-interfaces: "workspace:*"
+    pg: ^8.11.0
     typeorm: ^0.3.16
   languageName: unknown
   linkType: soft
@@ -33913,7 +33916,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pg@npm:8.11.0, pg@npm:^8.10.0":
+"pg@npm:8.11.0, pg@npm:^8.10.0, pg@npm:^8.11.0":
   version: 8.11.0
   resolution: "pg@npm:8.11.0"
   dependencies:

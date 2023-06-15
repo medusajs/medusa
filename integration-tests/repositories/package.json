@@ -10,8 +10,8 @@
   "dependencies": {
     "@medusajs/medusa": "workspace:*",
     "medusa-interfaces": "workspace:*",
-    "typeorm": "^0.3.16",
-    "pg": "^8.11.0"
+    "pg": "^8.11.0",
+    "typeorm": "^0.3.16"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
