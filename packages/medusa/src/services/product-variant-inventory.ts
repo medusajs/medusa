@@ -820,6 +820,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
     products: (Product | PricedProduct)[],
     salesChannelId: string | string[] | undefined
   ): Promise<(Product | PricedProduct)[]> {
+    if (!this.inventoryService_) {
+      return products
+    }
+
     const variantIds: string[] = products
       .flatMap((p) => p.variants.map((v: { id?: string }) => v.id) ?? [])
       .filter((v): v is string => !!v)
