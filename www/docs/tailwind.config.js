@@ -349,6 +349,12 @@ module.exports = {
             },
           },
           code: {
+            text: {
+              base: "#ECEDEE",
+              subtle: "#787F85",
+              muted: "#697177",
+            },
+            icon: "#697177",
             block: {
               bg: "#1C1C1F",
               transparent: "transparent",

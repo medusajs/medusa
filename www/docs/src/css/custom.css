@@ -98,7 +98,7 @@
   }
 
   .code-header {
-    @apply tw-py-[12px] tw-px-1 tw-bg-medusa-code-tabs-bg;
+    @apply tw-py-[12px] tw-px-1 tw-bg-medusa-code-tabs-bg tw-text-medusa-code-text-subtle;
     @apply tw-flex tw-justify-between tw-items-center;
     @apply tw-rounded-tl tw-rounded-tr tw-rounded-br-none tw-rounded-bl-none tw-border-b-0;
     @apply tw-border tw-border-solid tw-border-medusa-code-block-border tw-border-b-0;

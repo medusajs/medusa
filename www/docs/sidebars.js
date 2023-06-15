@@ -615,6 +615,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "modules/products/serverless-module",
+          label: "Storefront: Serverless Module",
+        },
+        {
+          type: "doc",
           id: "modules/products/storefront/show-products",
           label: "Storefront: Show Products",
         },
