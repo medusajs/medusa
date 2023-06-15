@@ -30674,12 +30674,12 @@ __metadata:
     medusa-interfaces: ^1.3.7
     medusa-test-utils: ^1.1.40
     pg: ^8.5.1
-    typeorm: "*"
+    typeorm: ^0.3.16
     ulid: ^2.3.0
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
     medusa-interfaces: ^1.3.7
-    typeorm: "*"
+    typeorm: ^0.3.16
   languageName: unknown
   linkType: soft
 
@@ -30735,10 +30735,10 @@ __metadata:
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
     medusa-test-utils: ^1.1.40
-    typeorm: "*"
+    typeorm: ^0.3.16
   peerDependencies:
     medusa-interfaces: ^1.3.7
-    typeorm: "*"
+    typeorm: ^0.3.16
   languageName: unknown
   linkType: soft
 
@@ -41224,7 +41224,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:*, typeorm@npm:^0.3.16":
+"typeorm@npm:^0.3.16":
   version: 0.3.16
   resolution: "typeorm@npm:0.3.16"
   dependencies:
