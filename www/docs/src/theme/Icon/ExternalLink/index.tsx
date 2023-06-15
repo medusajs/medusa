@@ -1,5 +1,4 @@
 import React from "react"
-import styles from "./styles.module.css"
 import { IconProps } from ".."
 
 const IconExternalLink: React.FC<IconProps> = ({
@@ -12,7 +11,7 @@ const IconExternalLink: React.FC<IconProps> = ({
       height={props.height || 20}
       viewBox="0 0 16 16"
       fill="none"
-      className={styles.iconExternalLink}
+      {...props}
     >
       <path
         d="M12.0099 3.99023L3.94995 12.0502"

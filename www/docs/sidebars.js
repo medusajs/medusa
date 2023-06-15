@@ -36,6 +36,30 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
+      type: "category",
+      label: "Recipes",
+      link: {
+        type: "doc",
+        id: "recipes/index",
+      },
+      customProps: {
+        sidebar_icon: "map",
+      },
+      className: "homepage-sidebar-item",
+      items: [
+        {
+          type: "doc",
+          id: "recipes/marketplace",
+          label: "Marketplace",
+        },
+        {
+          type: "doc",
+          id: "recipes/subscriptions",
+          label: "Subscriptions",
+        },
+      ],
+    },
+    {
       type: "html",
       value: "Browse Docs",
       customProps: {
@@ -232,19 +256,6 @@ module.exports = {
                 },
               },
             },
-            {
-              type: "doc",
-              id: "deployments/server/deploying-on-qovery",
-              label: "Deploy on Qovery",
-              customProps: {
-                image:
-                  "https://res.cloudinary.com/dza7lstvk/image/upload/v1669739955/Medusa%20Docs/Other/qOvY2dN_vogsxy.png",
-                badge: {
-                  variant: "orange",
-                  children: "Deprecated",
-                },
-              },
-            },
           ],
         },
         {
@@ -286,19 +297,6 @@ module.exports = {
                   light:
                     "https://res.cloudinary.com/dza7lstvk/image/upload/v1679574115/Medusa%20Docs/Other/vercel-icon-dark_llkb7l.png",
                   dark: "https://res.cloudinary.com/dza7lstvk/image/upload/v1679574132/Medusa%20Docs/Other/vercel-icon-light_obvtno.png",
-                },
-              },
-            },
-            {
-              type: "doc",
-              id: "deployments/storefront/deploying-gatsby-on-netlify",
-              label: "Deploy Gatsby on Netlify",
-              customProps: {
-                image:
-                  "https://res.cloudinary.com/dza7lstvk/image/upload/v1679574027/Medusa%20Docs/Other/gCbsCvX_h7nijn.png",
-                badge: {
-                  variant: "orange",
-                  children: "Deprecated",
                 },
               },
             },
@@ -587,11 +585,6 @@ module.exports = {
           label: "Overview",
         },
         {
-          type: "doc",
-          id: "modules/products/serverless-module",
-          label: "Serverless Product Module",
-        },
-        {
           type: "html",
           value: "Architecture",
           customProps: {
@@ -629,6 +622,11 @@ module.exports = {
           type: "doc",
           id: "modules/products/admin/import-products",
           label: "Admin: Import Products",
+        },
+        {
+          type: "doc",
+          id: "modules/products/serverless-module",
+          label: "Storefront: Serverless Module",
         },
         {
           type: "doc",
