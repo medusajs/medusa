@@ -30,7 +30,7 @@
     "medusa-interfaces": "^1.3.7"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.3.7"
+    "medusa-interfaces": "^1.3.7"
   },
   "dependencies": {
     "axios": "^0.20.0"

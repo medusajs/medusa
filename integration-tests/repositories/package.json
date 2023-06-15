@@ -8,8 +8,8 @@
     "test:integration": "jest --silent=false --runInBand --bail --detectOpenHandles --forceExit"
   },
   "dependencies": {
-    "@medusajs/medusa": "1.12.0",
-    "medusa-interfaces": "1.3.7",
+    "@medusajs/medusa": "workspace:*",
+    "medusa-interfaces": "workspace:*",
     "typeorm": "^0.3.16"
   },
   "devDependencies": {

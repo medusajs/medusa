@@ -14,7 +14,7 @@
   "author": "Edin Skeja",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/medusa": "1.12.0",
+    "@medusajs/medusa": "^1.12.0",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "typescript": "^4.9.5"
@@ -26,7 +26,7 @@
     "watch": "tsc --watch"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.3.7"
+    "@medusajs/medusa": "^1.12.0"
   },
   "dependencies": {
     "aws-sdk": "^2.983.0",
