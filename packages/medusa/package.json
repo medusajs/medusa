@@ -31,7 +31,8 @@
     "medusa-interfaces": "^1.3.7",
     "supertest": "^4.0.2",
     "ts-jest": "^25.5.1",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "typeorm": "*"
   },
   "scripts": {
     "watch": "tsc --build --watch",
