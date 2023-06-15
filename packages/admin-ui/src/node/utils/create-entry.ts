@@ -113,7 +113,6 @@ function findPluginsWithExtensions(plugins: string[]) {
         pluginDir,
         "dist",
         "admin",
-        "_virtual",
         "_virtual_entry.js"
       )
 
@@ -121,6 +120,7 @@ function findPluginsWithExtensions(plugins: string[]) {
         pluginsWithExtensions.push(plugin)
       }
     } catch (_err) {
+      console.log(_err)
       // no plugin found - noop
     }
   }

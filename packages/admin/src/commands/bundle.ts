@@ -106,7 +106,12 @@ export async function bundle() {
 
   const peerDependencies = Object.keys(pkg.peerDependencies || {})
 
-  const external = [...ALIASED_PACKAGES, ...dependencies, ...peerDependencies]
+  const external = [
+    ...ALIASED_PACKAGES,
+    ...dependencies,
+    ...peerDependencies,
+    "axios",
+  ]
 
   const dist = path.resolve(process.cwd(), "dist", "admin")
 
@@ -121,6 +126,8 @@ export async function bundle() {
       )
     }
   }
+
+  console.log(external)
 
   try {
     const bundle = await rollup({
@@ -175,7 +182,6 @@ export async function bundle() {
       chunkFileNames: "[name].js",
       format: "esm",
       exports: "named",
-      preserveModules: true,
     })
 
     await bundle.close()

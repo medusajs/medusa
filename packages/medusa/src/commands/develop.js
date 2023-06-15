@@ -1,5 +1,5 @@
 import boxen from "boxen"
-import { execSync, fork, spawn } from "child_process"
+import { execSync, fork } from "child_process"
 import chokidar from "chokidar"
 import Store from "medusa-telemetry/dist/store"
 import { EOL } from "os"
@@ -66,7 +66,7 @@ export default async function ({ port, directory }) {
   let child = fork(cliPath, [`start`, ...args], {
     cwd: directory,
     env: { ...process.env, ...COMMAND_INITIATED_BY },
-    stdio: ["pipe", process.stdout, process.stderr],
+    stdio: ["pipe", process.stdout, process.stderr, "ipc"],
   })
 
   child.on("error", function (err) {
@@ -77,32 +77,15 @@ export default async function ({ port, directory }) {
   const { cli, binExists } = resolveAdminCLI(directory)
 
   if (binExists) {
-    const adminChild = spawn(cli, [`develop`], {
+    const adminChild = fork(cli, [`develop`], {
       cwd: directory,
       env: process.env,
-      stdio: ["pipe", process.stdout, process.stderr],
+      stdio: ["pipe", process.stdout, process.stderr, "ipc"],
     })
 
     adminChild.on("error", function (err) {
-      if (process.platform === "win32") {
-        execSync(`taskkill /PID ${child.pid} /F /T`)
-      }
-
-      child.kill("SIGINT")
-
-      execSync(`${babelPath} src -d dist --extensions ".ts,.js"`, {
-        cwd: directory,
-        stdio: ["pipe", process.stdout, process.stderr],
-      })
-
-      Logger.info("Rebuilt")
-
-      child = fork(cliPath, [`start`, ...args], { cwd: directory })
-
-      child.on("error", function (err) {
-        console.log("Error ", err)
-        process.exit(1)
-      })
+      console.log("Error ", err)
+      adminChild.kill("SIGINT") // Only kill admin in case of error
     })
 
     chokidar
@@ -126,10 +109,10 @@ export default async function ({ port, directory }) {
 
         Logger.info("Rebuilt")
 
-        child = spawn(cliPath, [`start`, ...args], {
+        child = fork(cliPath, [`start`, ...args], {
           cwd: directory,
           env: { ...process.env, ...COMMAND_INITIATED_BY },
-          stdio: ["pipe", process.stdout, process.stderr],
+          stdio: ["pipe", process.stdout, process.stderr, "ipc"],
         })
         child.on("error", function (err) {
           console.log("Error ", err)
