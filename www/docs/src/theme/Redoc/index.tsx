@@ -3,6 +3,7 @@ import Redoc from "@theme-original/Redoc"
 import type RedocType from "@theme-original/Redoc"
 import type { WrapperProps } from "@docusaurus/types"
 import useIsBrowser from "@docusaurus/useIsBrowser"
+import UserProvider from "@site/src/providers/User"
 
 type Props = WrapperProps<typeof RedocType>
 
@@ -64,7 +65,9 @@ export default function RedocWrapper(props: Props): JSX.Element {
         transition: "opacity 0.2s",
       }}
     >
-      <Redoc {...props} />
+      <UserProvider>
+        <Redoc {...props} />
+      </UserProvider>
     </div>
   )
 }
