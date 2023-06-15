@@ -2409,3 +2409,4 @@ If you open the admin at `localhost:7001` and log in, you’ll see the onboardin
 ## Next Steps: Continue Development
 
 - [Learn more about Admin Widgets](./widgets.md)
+- [Learn how you can start custom development in your backend](../recipes/index.mdx)
