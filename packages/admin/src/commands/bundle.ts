@@ -138,7 +138,6 @@ export async function bundle() {
           jsxFactory: "React.createElement",
           jsxFragment: "React.Fragment",
           jsxImportSource: "react",
-          banner: "import React from 'react'\n",
         }),
         nodeResolve({ preferBuiltins: true, browser: true }),
         commonjs(),
