@@ -104,10 +104,16 @@
     "webpack-dev-server": "4.15.0",
     "webpackbar": "^5.0.2"
   },
+  "peerDependencies": {
+    "@medusajs/medusa": "^1.12.0"
+  },
   "devDependencies": {
     "@babel/types": "7.22.5",
     "@medusajs/medusa": "*",
     "@medusajs/types": "*",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
     "@types/pluralize": "^0.0.29",
     "@types/react": "^18.0.27",
     "@types/react-datepicker": "^4.10.0",
