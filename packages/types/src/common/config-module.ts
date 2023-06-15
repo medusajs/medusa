@@ -23,6 +23,7 @@ export type HttpCompressionOptions = {
 
 export type ProjectConfigOptions = {
   redis_url?: string
+  redis_prefix?: string
   redis_options?: RedisOptions
 
   session_options?: SessionOptions
@@ -35,7 +36,7 @@ export type ProjectConfigOptions = {
   database_schema?: string
   database_logging: LoggerOptions
 
-  // @deprecated - only postgres is supported, so this config has no effect 
+  // @deprecated - only postgres is supported, so this config has no effect
   database_type?: string
 
   http_compression?: HttpCompressionOptions
