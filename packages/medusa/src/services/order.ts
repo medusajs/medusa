@@ -233,59 +233,42 @@ class OrderService extends TransactionBaseService {
       delete where.display_id
       delete where.email
 
-      // Inner join like constraints
-      const innerJoinLikeConstraints = {
-        customer: {
-          id: Not(IsNull()),
-        },
-        shipping_address: {
-          id: Not(IsNull()),
-        },
-      }
-
       query.where = [
         {
           ...query.where,
-          ...innerJoinLikeConstraints,
           shipping_address: {
-            ...innerJoinLikeConstraints.shipping_address,
             id: Not(IsNull()),
             first_name: ILike(`%${q}%`),
           },
         },
         {
           ...query.where,
-          ...innerJoinLikeConstraints,
           email: ILike(`%${q}%`),
         },
         {
           ...query.where,
-          ...innerJoinLikeConstraints,
           display_id: Raw((alias) => `CAST(${alias} as varchar) ILike :q`, {
             q: `%${q}%`,
           }),
         },
         {
           ...query.where,
-          ...innerJoinLikeConstraints,
           customer: {
-            ...innerJoinLikeConstraints.customer,
+            id: Not(IsNull()),
             first_name: ILike(`%${q}%`),
           },
         },
         {
           ...query.where,
-          ...innerJoinLikeConstraints,
           customer: {
-            ...innerJoinLikeConstraints.customer,
+            id: Not(IsNull()),
             last_name: ILike(`%${q}%`),
           },
         },
         {
           ...query.where,
-          ...innerJoinLikeConstraints,
           customer: {
-            ...innerJoinLikeConstraints.customer,
+            id: Not(IsNull()),
             phone: ILike(`%${q}%`),
           },
         },
