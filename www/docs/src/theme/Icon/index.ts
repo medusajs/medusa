@@ -20,6 +20,8 @@ import IconChannels from "./Channels"
 import IconChannelsSolid from "./ChannelsSolid"
 import IconCheckCircleSolid from "./CheckCircleSolid"
 import IconChevronDoubleLeftMiniSolid from "./ChevronDoubleLeftMiniSolid"
+import IconCircleDottedLine from "./CircleDottedLine"
+import IconCircleMiniSolid from "./CircleMiniSolid"
 import IconCircleStack from "./CircleStack"
 import IconCircleStackSolid from "./CircleStackSolid"
 import IconClockSolidMini from "./ClockSolidMini"
@@ -119,6 +121,8 @@ export default {
   channels: IconChannels,
   "check-circle-solid": IconCheckCircleSolid,
   "chevron-double-left-mini-solid": IconChevronDoubleLeftMiniSolid,
+  "circle-dotted-line": IconCircleDottedLine,
+  "circle-mini-solid": IconCircleMiniSolid,
   "circle-stack": IconCircleStack,
   "circle-stack-solid": IconCircleStackSolid,
   "clock-solid-mini": IconClockSolidMini,

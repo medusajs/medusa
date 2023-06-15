@@ -4,20 +4,14 @@ import React from "react"
 
 type LearningPathStepActionsType = {
   onFinish?: () => void
+  onClose?: () => void
 } & React.AllHTMLAttributes<HTMLDivElement>
 
 const LearningPathStepActions: React.FC<LearningPathStepActionsType> = ({
   onFinish,
+  onClose,
 }) => {
-  const {
-    hasNextStep,
-    nextStep,
-    hasPreviousStep,
-    previousStep,
-    endPath,
-    isCurrentPath,
-    goToCurrentPath,
-  } = useLearningPath()
+  const { hasNextStep, nextStep, endPath } = useLearningPath()
 
   const handleFinish = () => {
     if (onFinish) {
@@ -28,13 +22,18 @@ const LearningPathStepActions: React.FC<LearningPathStepActionsType> = ({
   }
 
   return (
-    <div className="tw-flex tw-gap-[4px]">
-      {hasPreviousStep() && <Button onClick={previousStep}>Back</Button>}
-      {!isCurrentPath() && (
-        <Button onClick={goToCurrentPath}>Go to Current Step</Button>
+    <div className="tw-flex tw-gap-0.5 tw-p-1 tw-justify-end tw-items-center">
+      <Button onClick={onClose}>Close</Button>
+      {hasNextStep() && (
+        <Button onClick={nextStep} btnTypeClassName="btn-inverted">
+          Next
+        </Button>
       )}
-      {hasNextStep() && <Button onClick={nextStep}>Next</Button>}
-      {!hasNextStep() && <Button onClick={handleFinish}>Finish</Button>}
+      {!hasNextStep() && (
+        <Button onClick={handleFinish} btnTypeClassName="btn-inverted">
+          Finish
+        </Button>
+      )}
     </div>
   )
 }

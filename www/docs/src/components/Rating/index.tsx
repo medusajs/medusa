@@ -40,7 +40,7 @@ const Rating: React.FC<RatingProps> = ({
   }
 
   return (
-    <div className={clsx("md:tw-flex tw-gap-0.5 tw-hidden", className)}>
+    <div className={clsx("tw-flex tw-gap-0.5", className)}>
       {starArr.map((i) => {
         const isSelected =
           (rating !== 0 && rating - 1 >= i) ||

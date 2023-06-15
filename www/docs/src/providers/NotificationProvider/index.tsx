@@ -73,7 +73,6 @@ const NotificationContext = createContext<NotificationContextType | null>(null)
 const NotificationProvider: React.FC<NotificationProviderProps> = ({
   children,
 }) => {
-  // const [notifications, setNotifications] = useState<NotificationItem[]>([])
   const [notifications, dispatch] = useReducer(notificationReducer, [])
 
   const generateId = () => uuid4()

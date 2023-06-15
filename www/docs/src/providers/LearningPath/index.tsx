@@ -8,6 +8,7 @@ import { useUser } from "../User"
 export type LearningPathType = {
   name: string
   label: string
+  description?: string
   steps: LearningPathStepType[]
   finish?: LearningPathFinishType
   notificationId?: string
@@ -32,6 +33,7 @@ export type LearningPathContextType = {
   hasNextStep: () => boolean
   previousStep: () => void
   hasPreviousStep: () => boolean
+  goToStep: (stepIndex: number) => void
   isCurrentPath: () => boolean
   goToCurrentPath: () => void
 }
@@ -142,6 +144,27 @@ const LearningPathProvider: React.FC<LearningPathProviderProps> = ({
     }
   }
 
+  const goToStep = (stepIndex: number) => {
+    if (!path || stepIndex >= path.steps.length) {
+      return
+    }
+
+    setCurrentStep(stepIndex)
+    const newPath = path.steps[stepIndex].path
+    if (isBrowser) {
+      localStorage.setItem(
+        "learning-path",
+        JSON.stringify({
+          pathName: path.name,
+          currentStep: stepIndex,
+        })
+      )
+    }
+    if (history.location.pathname !== newPath) {
+      history.push(newPath)
+    }
+  }
+
   const isCurrentPath = () => {
     if (!path || currentStep === -1) {
       return false
@@ -208,6 +231,7 @@ const LearningPathProvider: React.FC<LearningPathProviderProps> = ({
         hasNextStep,
         previousStep,
         hasPreviousStep,
+        goToStep,
         isCurrentPath,
         goToCurrentPath,
       }}

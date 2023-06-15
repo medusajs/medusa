@@ -117,12 +117,24 @@
     @apply tw-py-[6px] tw-px-[12px] tw-rounded tw-cursor-pointer;
     @apply tw-bg-button-neutral dark:tw-bg-button-neutral-dark;
     @apply hover:!tw-bg-no-image hover:tw-bg-medusa-button-neutral-hover dark:hover:tw-bg-medusa-button-neutral-hover-dark hover:tw-no-underline;
-    @apply active:!tw-bg-no-image active:tw-bg-medusa-button-neutral-pressed dark:active:tw-bg-medusa-button-neutral-pressed;
+    @apply active:!tw-bg-no-image active:tw-bg-medusa-button-neutral-pressed dark:active:tw-bg-medusa-button-neutral-pressed-dark;
     @apply focus:tw-shadow-neutral-button-focused dark:focus:tw-shadow-neutral-button-focused-dark;
     @apply disabled:!tw-bg-no-image disabled:tw-bg-medusa-button-disabled dark:disabled:tw-bg-medusa-button-disabled-dark;
     @apply tw-border tw-border-solid tw-border-medusa-border-neutral-buttons dark:tw-border-medusa-border-neutral-buttons-dark;
     @apply tw-text-label-small-plus tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark;
     @apply hover:tw-text-medusa-text-base dark:hover:tw-text-medusa-text-base-dark;
+  }
+
+  .btn-inverted {
+    @apply tw-inline-flex tw-flex-row tw-justify-center tw-items-center;
+    @apply tw-py-[6px] tw-px-[12px] tw-rounded tw-cursor-pointer;
+    @apply tw-bg-button-inverted dark:tw-bg-button-inverted-dark;
+    @apply hover:!tw-bg-no-image hover:tw-bg-medusa-button-inverted-hover dark:hover:tw-bg-medusa-button-inverted-hover-dark hover:tw-no-underline;
+    @apply active:!tw-bg-no-image active:tw-bg-medusa-button-inverted-pressed dark:active:tw-bg-medusa-button-inverted-pressed-dark;
+    @apply focus:tw-shadow-inverted-button-focused dark:focus:tw-shadow-inverted-button-focused-dark;
+    @apply disabled:!tw-bg-no-image disabled:tw-bg-medusa-button-disabled dark:disabled:tw-bg-medusa-button-disabled-dark;
+    @apply tw-text-label-small-plus tw-text-medusa-text-on-color dark:tw-text-medusa-text-on-inverted-dark;
+    @apply tw-border-transparent tw-border;
   }
 
   .navbar-action-icon-item {

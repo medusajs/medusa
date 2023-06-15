@@ -6,13 +6,16 @@ const paths: LearningPathType[] = [
   {
     name: "simple-quickstart",
     label: "Start Selling in 3 Steps",
+    description: "Create and deploy a full-fledged ecommerce store.",
     steps: [
       {
+        title: "Create a Next.js storefront",
         description:
           "Create a Next.js storefront and connect it to your Medusa backend.",
         path: "/starters/nextjs-medusa-starter",
       },
       {
+        title: "Deploy the backend",
         path: "/deployments/server/deploying-on-railway",
         descriptionJSX: (
           <>
@@ -22,6 +25,7 @@ const paths: LearningPathType[] = [
         ),
       },
       {
+        title: "Deploy the storefront",
         description: "Deploy your storefront to your preferred hosting.",
         path: "/deployments/storefront",
       },
@@ -38,29 +42,52 @@ const paths: LearningPathType[] = [
   {
     name: "marketplace",
     label: "Build a marketplace",
+    description:
+      "Customize the backend and handle events to build a marketplace.",
     steps: [
       {
-        description: "Extend entities to associate them with the Store",
+        title: "Extend entities",
+        descriptionJSX: (
+          <>
+            Extend entities, such as <code>User</code> or <code>Product</code>{" "}
+            entites, to associate them with the <code>Store</code> entity.
+          </>
+        ),
         path: "/development/entities/extend-entity",
       },
       {
-        description: "Access logged-in user using a middleware",
+        title: "Access logged-in user",
+        description:
+          "Create a middleware that registers the logged-in user in the dependency container.",
         path: "/development/endpoints/example-logged-in-user",
       },
       {
-        description:
-          "Extend services to customize data management functionalities",
+        title: "Extend services",
+        descriptionJSX: (
+          <>
+            Extend services, such as <code>ProductService</code> to customize
+            data management functionalities
+          </>
+        ),
         path: "/development/services/extend-service",
       },
       {
-        description: "Listen and handle events with subscribers",
+        title: "Handle events",
+        descriptionJSX: (
+          <>
+            Listen to events like <code>order.placed</code> and handle them with
+            subscribers
+          </>
+        ),
         path: "/development/events/create-subscriber",
       },
       {
+        title: "Add Payment Provider",
         path: "/plugins/payment",
         descriptionJSX: (
           <>
-            Add a payment provider. You can choose to install a plugin or{" "}
+            Add a payment provider to your Medusa backend. You can choose to
+            install a plugin or{" "}
             <Link href="/modules/carts-and-checkout/backend/add-payment-provider">
               create your own provider
             </Link>
@@ -69,6 +96,7 @@ const paths: LearningPathType[] = [
         ),
       },
       {
+        title: "Create a storefront",
         path: "/starters/nextjs-medusa-starter",
         descriptionJSX: (
           <>
@@ -78,6 +106,7 @@ const paths: LearningPathType[] = [
         ),
       },
       {
+        title: "Deploy the backend",
         path: "/deployments/server/deploying-on-railway",
         descriptionJSX: (
           <>
@@ -99,12 +128,16 @@ const paths: LearningPathType[] = [
   {
     name: "subscriptions",
     label: "Build Subscription-based Purchases",
+    description:
+      "Customize the backend and handle events to implement subscriptions",
     steps: [
       {
+        title: "Extend entities",
         path: "/development/entities/extend-entity",
         descriptionJSX: (
           <>
-            Extend entities to associate them with the Store. You can also{" "}
+            Extend entities, such as the <code>Order</code> entity, to associate
+            them with the <code>Store</code> entity. You can also{" "}
             <Link href="/development/entities/create">
               Create a custom entity
             </Link>
@@ -113,16 +146,25 @@ const paths: LearningPathType[] = [
         ),
       },
       {
-        description:
-          "Create a subscriber that listens to the order.placed event and handles creating the subscription in Medusa.",
+        title: "Handle events",
+        descriptionJSX: (
+          <>
+            Create a subscriber that listens to the <code>order.placed</code>{" "}
+            event, or other{" "}
+            <Link href="/development/events/events-list">events</Link>, and
+            handles creating the subscription in Medusa.
+          </>
+        ),
         path: "/development/events/create-subscriber",
       },
       {
+        title: "Create a Scheduled Job",
         description:
           "Create a scheduled job that checks daily for subscriptions that needs renewal.",
         path: "/development/scheduled-jobs/create",
       },
       {
+        title: "Create a storefront",
         path: "/starters/nextjs-medusa-starter",
         descriptionJSX: (
           <>
@@ -132,6 +174,7 @@ const paths: LearningPathType[] = [
         ),
       },
       {
+        title: "Deploy the backend",
         path: "/deployments/server/deploying-on-railway",
         descriptionJSX: (
           <>

@@ -1,8 +1,9 @@
 import React, { useEffect } from "react"
 import { useLearningPath } from "../providers/LearningPath"
 import { useNotifications } from "../providers/NotificationProvider"
-import LearningPathStep from "../components/LearningPath/Step"
+import LearningPathSteps from "../components/LearningPath/Steps"
 import LearningPathFinish from "../components/LearningPath/Finish"
+import LearningPathIcon from "../components/LearningPath/Icon"
 
 const useCurrentLearningPath = () => {
   const { path, currentStep, updatePath, endPath } = useLearningPath()
@@ -17,7 +18,9 @@ const useCurrentLearningPath = () => {
   // used when a notification closed (finished or not)
   const handleClose = (notificationId: string, shouldEndPath = true) => {
     if (shouldEndPath) {
-      endPath()
+      setTimeout(() => {
+        endPath()
+      }, 500)
     }
     removeNotification(notificationId)
   }
@@ -29,7 +32,14 @@ const useCurrentLearningPath = () => {
       updateNotification(notificationId, {
         title: path.finish.step.title,
         text: path.finish.step.description,
-        type: "success",
+        type: "custom",
+        layout: "default",
+        CustomIcon: (
+          <LearningPathIcon
+            className="!tw-w-2 !tw-h-2"
+            imgClassName="!tw-w-1.5 !tw-h-1.5"
+          />
+        ),
         children: (
           <LearningPathFinish
             {...path.finish}
@@ -48,12 +58,7 @@ const useCurrentLearningPath = () => {
   }
 
   const LearningStep = (notificationId: string) => {
-    return (
-      <LearningPathStep
-        step={step}
-        onFinish={() => handleFinish(notificationId)}
-      />
-    )
+    return <LearningPathSteps onFinish={() => handleFinish(notificationId)} />
   }
 
   // create a notification when a path is initialized
@@ -65,8 +70,7 @@ const useCurrentLearningPath = () => {
         title: path.label,
         text: step?.description,
         onClose: () => handleClose(id),
-        type: "numbered",
-        stepNumber: currentStep + 1,
+        layout: "empty",
         id,
         children: LearningStep(id),
       })
@@ -81,7 +85,6 @@ const useCurrentLearningPath = () => {
     if (path && path.notificationId && step) {
       updateNotification(path.notificationId, {
         text: step?.description,
-        stepNumber: currentStep + 1,
         children: LearningStep(path.notificationId),
       })
     }
