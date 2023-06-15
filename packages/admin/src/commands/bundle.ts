@@ -127,8 +127,6 @@ export async function bundle() {
     }
   }
 
-  console.log(external)
-
   try {
     const bundle = await rollup({
       input: ["entry"],
@@ -139,12 +137,13 @@ export async function bundle() {
         }),
         esbuild({
           include: /\.[jt]sx?$/,
-          exclude: /node_modules/,
           sourceMap: true,
           minify: process.env.NODE_ENV === "production",
           jsx: "transform",
           jsxFactory: "React.createElement",
           jsxFragment: "React.Fragment",
+          jsxImportSource: "react",
+          banner: "import React from 'react'\n",
         }),
         nodeResolve({ preferBuiltins: true, browser: true }),
         commonjs(),

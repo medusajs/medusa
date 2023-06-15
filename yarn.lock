@@ -5131,6 +5131,7 @@ __metadata:
     lodash: ^4.17.21
     medusa-core-utils: 1.2.0
     rollup: 3.20.7
+    rollup-plugin-auto-external: ^2.0.0
     rollup-plugin-esbuild: 5.0.0
     ts-dedent: ^2.2.0
     typescript: ^4.9.3
@@ -15139,6 +15140,15 @@ __metadata:
   version: 3.0.0
   resolution: "builtin-status-codes@npm:3.0.0"
   checksum: c37bbba11a34c4431e56bd681b175512e99147defbe2358318d8152b3a01df7bf25e0305873947e5b350073d5ef41a364a22b37e48f1fb6d2fe6d5286a0f348c
+  languageName: node
+  linkType: hard
+
+"builtins@npm:^2.0.0":
+  version: 2.0.1
+  resolution: "builtins@npm:2.0.1"
+  dependencies:
+    semver: ^6.0.0
+  checksum: 7bcdeecea95ca2e8472f7f5d85ef2c602a67e7fde6efc6e879cf3b87d000e4cc02775dc640a38a1215d5d72bce56d7e4128810355c68481bd9b1ea1ac580c1e3
   languageName: node
   linkType: hard
 
@@ -26761,7 +26771,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-parse-better-errors@npm:^1.0.2":
+"json-parse-better-errors@npm:^1.0.1, json-parse-better-errors@npm:^1.0.2":
   version: 1.0.2
   resolution: "json-parse-better-errors@npm:1.0.2"
   checksum: 2f1287a7c833e397c9ddd361a78638e828fc523038bb3441fd4fc144cfd2c6cd4963ffb9e207e648cf7b692600f1e1e524e965c32df5152120910e4903a47dcb
@@ -27462,6 +27472,18 @@ __metadata:
     pinkie-promise: ^2.0.0
     strip-bom: ^2.0.0
   checksum: 2a5344c2d88643735a938fdca8582c0504e1c290577faa74f56b9cc187fa443832709a15f36e5771f779ec0878215a03abc8faf97ec57bb86092ceb7e0caef22
+  languageName: node
+  linkType: hard
+
+"load-json-file@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "load-json-file@npm:4.0.0"
+  dependencies:
+    graceful-fs: ^4.1.2
+    parse-json: ^4.0.0
+    pify: ^3.0.0
+    strip-bom: ^3.0.0
+  checksum: 6b48f6a0256bdfcc8970be2c57f68f10acb2ee7e63709b386b2febb6ad3c86198f840889cdbe71d28f741cbaa2f23a7771206b138cd1bdd159564511ca37c1d5
   languageName: node
   linkType: hard
 
@@ -31456,6 +31478,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"parse-json@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "parse-json@npm:4.0.0"
+  dependencies:
+    error-ex: ^1.3.1
+    json-parse-better-errors: ^1.0.1
+  checksum: 8d80790b772ccb1bcea4e09e2697555e519d83d04a77c2b4237389b813f82898943a93ffff7d0d2406203bdd0c30dcf95b1661e3a53f83d0e417f053957bef32
+  languageName: node
+  linkType: hard
+
 "parse-json@npm:^5.0.0, parse-json@npm:^5.2.0":
   version: 5.2.0
   resolution: "parse-json@npm:5.2.0"
@@ -34606,6 +34638,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"read-pkg@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "read-pkg@npm:3.0.0"
+  dependencies:
+    load-json-file: ^4.0.0
+    normalize-package-data: ^2.3.2
+    path-type: ^3.0.0
+  checksum: 65acf2df89fbcd506b48b7ced56a255ba00adf7ecaa2db759c86cc58212f6fd80f1f0b7a85c848551a5d0685232e9b64f45c1fd5b48d85df2761a160767eeb93
+  languageName: node
+  linkType: hard
+
 "read-pkg@npm:^5.2.0":
   version: 5.2.0
   resolution: "read-pkg@npm:5.2.0"
@@ -35544,6 +35587,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"rollup-plugin-auto-external@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "rollup-plugin-auto-external@npm:2.0.0"
+  dependencies:
+    builtins: ^2.0.0
+    read-pkg: ^3.0.0
+    safe-resolve: ^1.0.0
+    semver: ^5.5.0
+  peerDependencies:
+    rollup: ">=0.45.2"
+  checksum: 76df6c51c2cca40c164f55a3a3bc4b7cfa79bd22ea284e1657bd0867510af2998993b582b40c6d66479e8b070d905155d08a26d588f2647ec29cad5e1a4bdaa0
+  languageName: node
+  linkType: hard
+
 "rollup-plugin-bundle-size@npm:^1.0.3":
   version: 1.0.3
   resolution: "rollup-plugin-bundle-size@npm:1.0.3"
@@ -35893,6 +35950,13 @@ __metadata:
   dependencies:
     ret: ~0.1.10
   checksum: 547d58aa5184cbef368fd5ed5f28d20f911614748c5da6b35f53fd6626396707587251e6e3d1e3010fd3ff1212e413841b8825eaa5f317017ca62a30899af31a
+  languageName: node
+  linkType: hard
+
+"safe-resolve@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "safe-resolve@npm:1.0.0"
+  checksum: a336b092c08044d4eb4006ca15bc19b1eec7bea63189b37ec4ebf3ec1a23df2b19cee38d11825a5901d94a25e9f3a26e01eb469ee225788e24b551af47e08ca2
   languageName: node
   linkType: hard
 

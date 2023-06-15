@@ -42,6 +42,7 @@
     "lodash": "^4.17.21",
     "medusa-core-utils": "1.2.0",
     "rollup": "3.20.7",
+    "rollup-plugin-auto-external": "^2.0.0",
     "rollup-plugin-esbuild": "5.0.0",
     "ts-dedent": "^2.2.0"
   },

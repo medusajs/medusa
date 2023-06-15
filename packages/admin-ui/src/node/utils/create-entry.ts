@@ -108,7 +108,11 @@ function findPluginsWithExtensions(plugins: string[]) {
 
   for (const plugin of plugins) {
     try {
-      const pluginDir = require.resolve(plugin)
+      const pluginDir = path.dirname(
+        require.resolve(plugin, {
+          paths: [process.cwd()],
+        })
+      )
       const entrypoint = path.resolve(
         pluginDir,
         "dist",
@@ -117,10 +121,12 @@ function findPluginsWithExtensions(plugins: string[]) {
       )
 
       if (fse.existsSync(entrypoint)) {
-        pluginsWithExtensions.push(plugin)
+        pluginsWithExtensions.push(entrypoint)
       }
     } catch (_err) {
-      console.log(_err)
+      logger.warn(
+        "There was an error while attempting to load extensions from a plugin."
+      )
       // no plugin found - noop
     }
   }
@@ -144,7 +150,7 @@ async function writeTailwindContentFile(dest: string, plugins: string[]) {
               path.dirname(path.join(plugin, "..", ".."))
             )
 
-            return `${tailwindContentPath}/**/*.{js,jsx,ts,tsx}`
+            return `"${tailwindContentPath}/**/*.{js,jsx,ts,tsx}"`
           })
           .join(",\n")}
       ],

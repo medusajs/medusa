@@ -8,8 +8,6 @@ type DevelopArgs = AdminOptions & {
 export default async function develop({ backend, path, port }: DevelopArgs) {
   const plugins = await getPluginPaths()
 
-  console.log(plugins)
-
   const { outDir } = loadConfig()
 
   await adminDevelop({
