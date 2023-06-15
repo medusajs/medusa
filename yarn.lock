@@ -6043,6 +6043,7 @@ __metadata:
     jest: ^25.5.2
     ts-jest: ^25.5.1
     typescript: ^4.4.4
+    ulid: ^2.3.0
   languageName: unknown
   linkType: soft
 
@@ -6163,11 +6164,14 @@ __metadata:
   dependencies:
     "@medusajs/medusa": ^1.12.0
     "@medusajs/openapi-typescript-codegen": ^0.2.1
+    "@medusajs/types": "workspace:^"
+    "@medusajs/utils": "workspace:^"
     "@readme/json-schema-ref-parser": ^1.2.0
     "@readme/openapi-parser": ^2.4.0
     "@redocly/cli": 1.0.0-beta.123
     "@types/lodash": ^4.14.191
     commander: ^10.0.0
+    execa: ^7.1.1
     jest: ^29.1.0
     js-yaml: ^4.1.0
     lodash: ^4.17.21
@@ -6182,7 +6186,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@^1.12.0, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@^1.12.0, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:^, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
@@ -6220,6 +6224,7 @@ __metadata:
     iso8601-duration: ^1.3.0
     jest: ^25.5.4
     jsonwebtoken: ^9.0.0
+    jwt: ^0.2.0
     lodash: ^4.17.21
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
@@ -6250,7 +6255,7 @@ __metadata:
   peerDependencies:
     "@medusajs/types": ^1.8.7
     medusa-interfaces: ^1.3.7
-    typeorm: "*"
+    typeorm: ^0.3.16
   bin:
     medusa: ./cli.js
   languageName: unknown
@@ -6363,26 +6368,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@*, @medusajs/types@^1.8.7, @medusajs/types@workspace:packages/types":
+"@medusajs/types@*, @medusajs/types@^1.8.7, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
     awilix: ^8.0.0
     cross-env: ^5.2.1
+    ioredis: ^5.3.2
     typeorm: ^0.3.16
     typescript: ^4.4.4
     winston: ^3.8.2
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@^1.8.2, @medusajs/utils@^1.9.0, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^1.8.2, @medusajs/utils@^1.9.0, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
     "@medusajs/types": ^1.8.7
     "@types/express": ^4.17.17
-    awilix: ^8.0.0
+    awilix: ^8.0.1
     cross-env: ^5.2.1
+    express: ^4.18.2
     jest: ^25.5.4
     ts-jest: ^25.5.1
     typescript: ^4.4.4
@@ -14521,6 +14528,16 @@ __metadata:
     camel-case: ^4.1.2
     fast-glob: ^3.2.12
   checksum: 29a6b05d651635c240d5a22ea7d463330e5aab262e25a4043c39ca5a52d5e7ff691fcd6e1f0d6565b5bbd095c1fbc3240f6686e4db657bcb3155fe84d16c7f1a
+  languageName: node
+  linkType: hard
+
+"awilix@npm:^8.0.1":
+  version: 8.0.1
+  resolution: "awilix@npm:8.0.1"
+  dependencies:
+    camel-case: ^4.1.2
+    fast-glob: ^3.2.12
+  checksum: 088da738d5cc380a1637e5757d63fc70a7954ca6c168bad15a65caab96922cad34f8a461f6071cd213f81109c281d83a70a4df04b8668f5230a19c5b903fca37
   languageName: node
   linkType: hard
 
@@ -24827,6 +24844,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ioredis@npm:^5.3.2":
+  version: 5.3.2
+  resolution: "ioredis@npm:5.3.2"
+  dependencies:
+    "@ioredis/commands": ^1.1.1
+    cluster-key-slot: ^1.1.0
+    debug: ^4.3.4
+    denque: ^2.1.0
+    lodash.defaults: ^4.2.0
+    lodash.isarguments: ^3.1.0
+    redis-errors: ^1.2.0
+    redis-parser: ^3.0.0
+    standard-as-callback: ^2.1.0
+  checksum: 0dd2b5b8004e891f5b62edf18ac223194f1f5204698ec827c903e789ea05b0b36f73395491749ec63c66470485bdfb228ccdf1714fbf631a0f78f33211f2c883
+  languageName: node
+  linkType: hard
+
 "ip-regex@npm:^2.1.0":
   version: 2.1.0
   resolution: "ip-regex@npm:2.1.0"
@@ -28708,6 +28742,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jwt@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "jwt@npm:0.2.0"
+  dependencies:
+    node-base64: 0.0.1
+  checksum: 19ea6dab1e99f26c33e60b47b0e0ab9249059d47eb0c7ced54ed4454e3063de108be6a286828782a03b7f3e5b43c88e58a4cb0aced40c066bd50c7b8357fd3a5
+  languageName: node
+  linkType: hard
+
 "keygrip@npm:~1.0.3":
   version: 1.0.3
   resolution: "keygrip@npm:1.0.3"
@@ -30232,6 +30275,7 @@ __metadata:
     "@babel/preset-env": ^7.7.5
     "@babel/register": ^7.7.4
     "@babel/runtime": ^7.9.6
+    "@medusajs/medusa": ^1.12.0
     aws-sdk: ^2.710.0
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
@@ -30243,6 +30287,7 @@ __metadata:
     medusa-test-utils: ^1.1.40
     stripe: ^8.50.0
   peerDependencies:
+    "@medusajs/medusa": ^1.12.0
     medusa-interfaces: ^1.3.7
   languageName: unknown
   linkType: soft
@@ -30310,6 +30355,7 @@ __metadata:
     "@babel/preset-env": ^7.7.5
     "@babel/preset-typescript": ^7.13.0
     "@babel/runtime": ^7.9.6
+    "@medusajs/medusa": "workspace:^"
     cross-env: ^5.2.1
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
@@ -30340,6 +30386,7 @@ __metadata:
     cross-env: ^7.0.3
     express: ^4.17.1
     jest: ^25.5.4
+    lodash: ^4.17.21
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
     medusa-test-utils: ^1.1.40
@@ -30369,6 +30416,7 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
+    lodash: ^4.17.21
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
     medusa-test-utils: ^1.1.40
@@ -30406,6 +30454,7 @@ __metadata:
   resolution: "medusa-payment-paypal@workspace:packages/medusa-payment-paypal"
   dependencies:
     "@medusajs/medusa": ^1.12.0
+    "@medusajs/types": ^1.8.7
     "@paypal/checkout-server-sdk": ^1.0.3
     "@types/stripe": ^8.0.417
     axios: ^1.3.4
@@ -30426,6 +30475,7 @@ __metadata:
   dependencies:
     "@medusajs/medusa": ^1.12.0
     "@types/stripe": ^8.0.417
+    awilix: ^8.0.1
     body-parser: ^1.19.0
     cross-env: ^5.2.1
     express: ^4.17.1
@@ -30467,6 +30517,7 @@ __metadata:
     "@babel/preset-env": ^7.7.5
     "@babel/register": ^7.7.4
     "@babel/runtime": ^7.9.6
+    "@medusajs/medusa": ^1.12.0
     axios: ^0.19.2
     axios-mock-adapter: ^1.18.2
     axios-mock-server: ^0.19.1
@@ -30480,6 +30531,7 @@ __metadata:
     medusa-test-utils: ^1.1.40
     randomatic: ^3.1.1
   peerDependencies:
+    "@medusajs/medusa": ^1.12.0
     medusa-interfaces: ^1.3.7
   languageName: unknown
   linkType: soft
@@ -30504,6 +30556,7 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
+    lodash: ^4.17.21
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
     medusa-test-utils: ^1.1.40
@@ -30649,10 +30702,12 @@ __metadata:
     medusa-interfaces: ^1.3.7
     medusa-test-utils: ^1.1.40
     pg: ^8.5.1
+    typeorm: "*"
     ulid: ^2.3.0
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
     medusa-interfaces: ^1.3.7
+    typeorm: "*"
   languageName: unknown
   linkType: soft
 
@@ -30708,8 +30763,10 @@ __metadata:
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
     medusa-test-utils: ^1.1.40
+    typeorm: "*"
   peerDependencies:
     medusa-interfaces: ^1.3.7
+    typeorm: "*"
   languageName: unknown
   linkType: soft
 
@@ -32090,6 +32147,13 @@ __metadata:
   dependencies:
     node-gyp: latest
   checksum: d8e1e3aefd0b153273e44b38dc8ceebdd444211cf71f03e036b822e973a5c7ac784b8fb61748bbf3f4341fdff41654bf6f3f052e8f45939c153b47efd3970238
+  languageName: node
+  linkType: hard
+
+"node-base64@npm:0.0.1":
+  version: 0.0.1
+  resolution: "node-base64@npm:0.0.1"
+  checksum: 68bc1f6a33b5a4b9feb9bdd82cf66a0fe0e035fe9ebfe7874dc2d9cfb9a00a436b2081fc3b39dbad4c1648c335b9b0b23807c6a0aa6598ec912b7b5dbb5c5690
   languageName: node
   linkType: hard
 
@@ -41269,7 +41333,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.3.16":
+"typeorm@npm:*, typeorm@npm:^0.3.16":
   version: 0.3.16
   resolution: "typeorm@npm:0.3.16"
   dependencies:
