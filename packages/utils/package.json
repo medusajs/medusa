@@ -26,8 +26,8 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "glob": "^10.2.7",
     "awilix": "^8.0.1",
+    "glob": "^10.2.7",
     "ulid": "^2.3.0"
   },
   "scripts": {
