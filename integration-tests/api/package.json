@@ -14,7 +14,8 @@
     "@medusajs/medusa": "workspace:*",
     "faker": "^5.5.3",
     "medusa-interfaces": "workspace:*",
-    "typeorm": "^0.3.16"
+    "typeorm": "^0.3.16",
+    "pg": "^8.11.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
