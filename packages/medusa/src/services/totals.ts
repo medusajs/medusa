@@ -1,4 +1,4 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { isDefined, MedusaError } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import {
   ITaxCalculationStrategy,
