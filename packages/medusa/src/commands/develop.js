@@ -1,6 +1,5 @@
-import path from "path"
-import { fork, execSync } from "child_process"
 import boxen from "boxen"
+import { execSync, fork, spawn } from "child_process"
 import chokidar from "chokidar"
 import Store from "medusa-telemetry/dist/store"
 import { EOL } from "os"
@@ -64,15 +63,11 @@ export default async function ({ port, directory }) {
     "bin",
     "medusa.js"
   )
-  let child = fork(
-    cliPath, 
-    [`start`, ...args], 
-    { 
-      cwd: directory, 
-      env: { ...process.env, ...COMMAND_INITIATED_BY },
-      stdio: ["pipe", process.stdout, process.stderr], 
-    }
-  )
+  let child = fork(cliPath, [`start`, ...args], {
+    cwd: directory,
+    env: { ...process.env, ...COMMAND_INITIATED_BY },
+    stdio: ["pipe", process.stdout, process.stderr],
+  })
 
   child.on("error", function (err) {
     console.log("Error ", err)
@@ -102,43 +97,47 @@ export default async function ({ port, directory }) {
 
       Logger.info("Rebuilt")
 
-      child = fork(cliPath, [`start`, ...args], { cwd: directory, stdio: ["pipe", process.stdout, process.stderr] })
+      child = fork(cliPath, [`start`, ...args], {
+        cwd: directory,
+        stdio: ["pipe", process.stdout, process.stderr],
+      })
 
       child.on("error", function (err) {
         console.log("Error ", err)
         process.exit(1)
+      })
+    })
+
+    chokidar
+      .watch(`${directory}/src`, {
+        ignored: `${directory}/src/admin`,
+      })
+      .on("change", (file) => {
+        const f = file.split("src")[1]
+        Logger.info(`${f} changed: restarting...`)
+
+        if (process.platform === "win32") {
+          execSync(`taskkill /PID ${child.pid} /F /T`)
+        }
+
+        child.kill("SIGINT")
+
+        execSync(`${babelPath} src -d dist --extensions ".ts,.js"`, {
+          cwd: directory,
+          stdio: ["pipe", process.stdout, process.stderr],
+        })
+
+        Logger.info("Rebuilt")
+
+        child = spawn(cliPath, [`start`, ...args], {
+          cwd: directory,
+          env: { ...process.env, ...COMMAND_INITIATED_BY },
+          stdio: ["pipe", process.stdout, process.stderr],
+        })
+        child.on("error", function (err) {
+          console.log("Error ", err)
+          process.exit(1)
+        })
       })
   }
-
-  chokidar
-    .watch(`${directory}/src`, {
-      ignored: `${directory}/src/admin`,
-    })
-    .on("change", (file) => {
-      const f = file.split("src")[1]
-      Logger.info(`${f} changed: restarting...`)
-
-      if (process.platform === "win32") {
-        execSync(`taskkill /PID ${child.pid} /F /T`)
-      }
-
-      child.kill("SIGINT")
-
-      execSync(`${babelPath} src -d dist --extensions ".ts,.js"`, {
-        cwd: directory,
-        stdio: ["pipe", process.stdout, process.stderr],
-      })
-
-      Logger.info("Rebuilt")
-
-      child = spawn(cliPath, [`start`, ...args], {
-        cwd: directory,
-        env: { ...process.env, ...COMMAND_INITIATED_BY },
-        stdio: ["pipe", process.stdout, process.stderr],
-      })
-      child.on("error", function (err) {
-        console.log("Error ", err)
-        process.exit(1)
-      })
-    })
 }

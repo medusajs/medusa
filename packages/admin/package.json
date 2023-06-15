@@ -42,8 +42,6 @@
     "fs-extra": "11.1.0",
     "lodash": "^4.17.21",
     "medusa-core-utils": "1.2.0",
-    "ora": "5.4.0",
-    "picocolors": "^1.0.0",
     "rollup": "3.20.7",
     "rollup-plugin-esbuild": "5.0.0",
     "ts-dedent": "^2.2.0"
