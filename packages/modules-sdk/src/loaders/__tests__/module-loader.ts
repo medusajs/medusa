@@ -3,7 +3,7 @@ import {
   MODULE_SCOPE,
   ModuleResolution,
 } from "@medusajs/types"
-import { createMedusaContainer } from "medusa-core-utils"
+import { createMedusaContainer } from "@medusajs/utils"
 import { EOL } from "os"
 import { moduleLoader } from "../module-loader"
 
