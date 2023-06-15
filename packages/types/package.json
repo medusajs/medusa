@@ -19,6 +19,7 @@
   "devDependencies": {
     "awilix": "^8.0.0",
     "cross-env": "^5.2.1",
+    "ioredis": "^5.2.5",
     "typeorm": "^0.3.16",
     "typescript": "^4.4.4",
     "winston": "^3.8.2"

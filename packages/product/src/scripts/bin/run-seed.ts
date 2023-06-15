@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { run } from "../seed"
 import { EOL } from "os"
 
@@ -9,7 +11,7 @@ export default (async () => {
   config()
   if (!path) {
     throw new Error(
-      `filePath is required.${EOL}Example: node_modules/@medusajs/product/dist/scripts/bin/run-seed.js <filePath>`
+      `filePath is required.${EOL}Example: medusa-product-seed <filePath>`
     )
   }
 

@@ -40,6 +40,7 @@
     "body-parser": "^1.19.0",
     "contentful-management": "^5.27.1",
     "express": "^4.17.1",
+    "lodash": "^4.17.21",
     "medusa-core-utils": "^1.2.0",
     "redis": "^3.0.2"
   },
