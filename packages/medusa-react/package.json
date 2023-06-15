@@ -47,7 +47,6 @@
     "@types/react-dom": "^17.0.18",
     "axios": "^0.24.0",
     "babel-loader": "^8.2.3",
-    "cross-env": "^7.0.3",
     "jest": "^29.4.1",
     "jest-environment-jsdom": "^29.4.1",
     "msw": "^0.35.0",
@@ -61,7 +60,8 @@
     "tsup": "^6.5.0"
   },
   "dependencies": {
-    "@medusajs/medusa-js": "^6.0.0"
+    "@medusajs/medusa-js": "^6.0.0",
+    "cross-env": "^7.0.3"
   },
   "msw": {
     "workerDirectory": "public"
