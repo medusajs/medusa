@@ -13,12 +13,15 @@
     "prepare": "cross-env NODE_ENV=production yarn run build"
   },
   "dependencies": {
+    "@medusajs/utils": "^1.9.0",
     "boxen": "^7.1.0",
     "chalk": "^5.2.0",
     "commander": "^10.0.1",
+    "glob": "^10.2.7",
     "inquirer": "^9.2.2",
     "medusa-telemetry": "^0.0.16",
     "nanoid": "^4.0.2",
+    "node-emoji": "^2.0.2",
     "node-fetch": "^3.3.1",
     "open": "^9.1.0",
     "ora": "^6.3.0",
@@ -33,6 +36,7 @@
     "@types/commander": "^2.12.2",
     "@types/configstore": "^6.0.0",
     "@types/inquirer": "^9.0.3",
+    "@types/node-emoji": "^1.8.2",
     "@types/pg": "^8.6.6",
     "@types/uuid": "^9.0.1",
     "@types/validator": "^13.7.17",

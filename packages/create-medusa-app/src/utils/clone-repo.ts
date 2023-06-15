@@ -6,7 +6,6 @@ type CloneRepoOptions = {
   abortController?: AbortController
 }
 
-// TODO change default repo URL
 const DEFAULT_REPO = "https://github.com/medusajs/medusa-starter-default"
 
 export default async ({
