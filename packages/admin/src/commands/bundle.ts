@@ -13,7 +13,6 @@ import virtual from "@rollup/plugin-virtual"
 import fse from "fs-extra"
 import path from "node:path"
 import { rollup } from "rollup"
-import autoExternal from "rollup-plugin-auto-external"
 import esbuild from "rollup-plugin-esbuild"
 import dedent from "ts-dedent"
 
@@ -103,7 +102,11 @@ export async function bundle() {
     export default entry
   `
 
-  const external = [...ALIASED_PACKAGES]
+  const dependencies = Object.keys(pkg.dependencies || {})
+
+  const peerDependencies = Object.keys(pkg.peerDependencies || {})
+
+  const external = [...ALIASED_PACKAGES, ...dependencies, ...peerDependencies]
 
   const dist = path.resolve(process.cwd(), "dist", "admin")
 
@@ -146,7 +149,6 @@ export async function bundle() {
           },
           preventAssignment: true,
         }),
-        autoExternal(),
         alias({
           entries: ALIASED_PACKAGES.reduce((acc, dep) => {
             acc[dep] = require.resolve(dep)
