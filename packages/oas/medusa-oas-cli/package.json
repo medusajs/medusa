@@ -35,8 +35,8 @@
     "test": "NODE_OPTIONS='--unhandled-rejections=strict' jest src"
   },
   "dependencies": {
-    "@medusajs/medusa": "1.12.0",
-    "@medusajs/openapi-typescript-codegen": "0.2.1",
+    "@medusajs/medusa": "^1.12.0",
+    "@medusajs/openapi-typescript-codegen": "^0.2.1",
     "@readme/json-schema-ref-parser": "^1.2.0",
     "@readme/openapi-parser": "^2.4.0",
     "@redocly/cli": "1.0.0-beta.123",
