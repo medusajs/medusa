@@ -5289,7 +5289,6 @@ __metadata:
     "@rollup/plugin-json": 6.0.0
     "@rollup/plugin-node-resolve": 15.0.2
     "@rollup/plugin-replace": 5.0.2
-    "@rollup/plugin-terser": 0.4.1
     "@rollup/plugin-virtual": ^3.0.1
     "@types/express": ^4.17.13
     commander: ^10.0.0
@@ -7920,22 +7919,6 @@ __metadata:
     rollup:
       optional: true
   checksum: bd3d6c192464c07d3d0661ea7c17b1b13ab2f87f0265a396edc8ab99055aba03f2b5ee192cad7b1299ea4af59732865b5be28420efbe13cfcc1db231963dd53b
-  languageName: node
-  linkType: hard
-
-"@rollup/plugin-terser@npm:0.4.1":
-  version: 0.4.1
-  resolution: "@rollup/plugin-terser@npm:0.4.1"
-  dependencies:
-    serialize-javascript: ^6.0.0
-    smob: ^0.0.6
-    terser: ^5.15.1
-  peerDependencies:
-    rollup: ^2.x || ^3.x
-  peerDependenciesMeta:
-    rollup:
-      optional: true
-  checksum: 018519d87b7d463f0780142ebefd65d1581b8047075e3c678c885f13a6c4719338723ccf01bed462600f488232862942ab213e830419c894fd93c25dd6f6a73f
   languageName: node
   linkType: hard
 
@@ -36485,7 +36468,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"serialize-javascript@npm:^6.0.0, serialize-javascript@npm:^6.0.1":
+"serialize-javascript@npm:^6.0.1":
   version: 6.0.1
   resolution: "serialize-javascript@npm:6.0.1"
   dependencies:
@@ -36952,13 +36935,6 @@ __metadata:
   bin:
     smartwrap: src/terminal-adapter.js
   checksum: ea104632a832967a04cb739253dbd7d2e194c62bae1c3366d03bb5827870b83842a3e25a7f80287a4b04484ea4f64b51a0657389fc6a6fe701db3b25319ed56f
-  languageName: node
-  linkType: hard
-
-"smob@npm:^0.0.6":
-  version: 0.0.6
-  resolution: "smob@npm:0.0.6"
-  checksum: 518d2787ba11235271776c9aff831a320cf4392ed6b510bf83e944d3cf0565c42a2c64fb9e8c622f9f03e2ddf58b037089833d11fffcb55d482a03afa4596c1f
   languageName: node
   linkType: hard
 
@@ -38550,7 +38526,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"terser@npm:^5.0.0, terser@npm:^5.10.0, terser@npm:^5.15.1, terser@npm:^5.16.8, terser@npm:^5.2.0, terser@npm:^5.3.4, terser@npm:^5.7.0":
+"terser@npm:^5.0.0, terser@npm:^5.10.0, terser@npm:^5.16.8, terser@npm:^5.2.0, terser@npm:^5.3.4, terser@npm:^5.7.0":
   version: 5.17.7
   resolution: "terser@npm:5.17.7"
   dependencies:
