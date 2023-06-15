@@ -8,11 +8,13 @@ import ExportIcon from "../../components/fundamentals/icons/export-icon"
 import BodyCard from "../../components/organisms/body-card"
 import TableViewHeader from "../../components/organisms/custom-table-header"
 import ExportModal from "../../components/organisms/export-modal"
+import RouteContainer from "../../components/organisms/route-container"
 import WidgetContainer from "../../components/organisms/widget-container"
 import OrderTable from "../../components/templates/order-table"
 import useNotification from "../../hooks/use-notification"
 import useToggleState from "../../hooks/use-toggle-state"
 import { usePolling } from "../../providers/polling-provider"
+import { useRoutes } from "../../providers/route-provider"
 import { useWidgets } from "../../providers/widget-provider"
 import { getErrorMessage } from "../../utils/error-messages"
 import Details from "./details"
@@ -132,10 +134,23 @@ const OrderIndex = () => {
 }
 
 const Orders = () => {
+  const { getNestedRoutes } = useRoutes()
+
+  const nestedRoutes = getNestedRoutes("/products")
+
   return (
     <Routes>
       <Route index element={<OrderIndex />} />
       <Route path="/:id" element={<Details />} />
+      {nestedRoutes.map((r, i) => {
+        return (
+          <Route
+            path={r.path}
+            key={i}
+            element={<RouteContainer route={r} previousPath={"/orders"} />}
+          />
+        )
+      })}
     </Routes>
   )
 }

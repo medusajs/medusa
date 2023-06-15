@@ -1,8 +1,10 @@
 import { Route, Routes } from "react-router-dom"
 import Spacer from "../../components/atoms/spacer"
 import BodyCard from "../../components/organisms/body-card"
+import RouteContainer from "../../components/organisms/route-container"
 import WidgetContainer from "../../components/organisms/widget-container"
 import CustomerTable from "../../components/templates/customer-table"
+import { useRoutes } from "../../providers/route-provider"
 import { useWidgets } from "../../providers/widget-provider"
 import Details from "./details"
 import CustomerGroups from "./groups"
@@ -47,11 +49,24 @@ const CustomerIndex = () => {
 }
 
 const Customers = () => {
+  const { getNestedRoutes } = useRoutes()
+
+  const nestedRoutes = getNestedRoutes("/customers")
+
   return (
     <Routes>
       <Route index element={<CustomerIndex />} />
       <Route path="/groups/*" element={<CustomerGroups />} />
       <Route path="/:id" element={<Details />} />
+      {nestedRoutes.map((r, i) => {
+        return (
+          <Route
+            path={r.path}
+            key={i}
+            element={<RouteContainer route={r} previousPath={"/customers"} />}
+          />
+        )
+      })}
     </Routes>
   )
 }
