@@ -6145,7 +6145,7 @@ __metadata:
     "@medusajs/medusa": ^1.12.0
     "@types/uuid": ^9.0.0
     axios: ^0.24.0
-    cross-env: ^7.0.3
+    cross-env: ^5.2.1
     jest: ^27.4.7
     qs: ^6.10.3
     retry-axios: ^2.6.0
@@ -30843,7 +30843,7 @@ __metadata:
     "@types/react-dom": ^17.0.18
     axios: ^0.24.0
     babel-loader: ^8.2.3
-    cross-env: ^7.0.3
+    cross-env: ^5.2.1
     jest: ^29.4.1
     jest-environment-jsdom: ^29.4.1
     msw: ^0.35.0

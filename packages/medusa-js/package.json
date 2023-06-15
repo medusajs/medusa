@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "axios": "^0.24.0",
-    "cross-env": "^7.0.3",
+    "cross-env": "^5.2.1",
     "qs": "^6.10.3",
     "retry-axios": "^2.6.0",
     "uuid": "^9.0.0"
