@@ -95,6 +95,8 @@ Added at the top of the order details page
 </td>
 <td>
 
+Type `OrderDetailsWidgetProps` imported from `@medusajs/admin`
+
 <!-- eslint-skip -->
 
 ```ts noCopy noReport
@@ -118,6 +120,8 @@ Added at the end of the order details page
 
 </td>
 <td>
+
+Type `OrderDetailsWidgetProps` imported from `@medusajs/admin`
 
 <!-- eslint-skip -->
 
@@ -179,6 +183,8 @@ Added at the top of the draft order details page
 </td>
 <td>
 
+Type `DraftOrderDetailsWidgetProps` imported from `@medusajs/admin`
+
 <!-- eslint-skip -->
 
 ```ts noCopy noReport
@@ -202,6 +208,8 @@ Added at the bottom of the draft order details page
 
 </td>
 <td>
+
+Type `DraftOrderDetailsWidgetProps` imported from `@medusajs/admin`
 
 <!-- eslint-skip -->
 
@@ -263,6 +271,8 @@ Added at the top of the customer details page
 </td>
 <td>
 
+Type `CustomerDetailsWidgetProps` imported from `@medusajs/admin`
+
 <!-- eslint-skip -->
 
 ```ts noCopy noReport
@@ -286,6 +296,8 @@ Added at the bottom of the customer details page
 
 </td>
 <td>
+
+Type `CustomerDetailsWidgetProps` imported from `@medusajs/admin`
 
 <!-- eslint-skip -->
 
@@ -347,6 +359,8 @@ Added at the top of the customer group details page
 </td>
 <td>
 
+Type `CustomerGroupDetailsWidgetProps` imported from `@medusajs/admin`
+
 <!-- eslint-skip -->
 
 ```ts noCopy noReport
@@ -370,6 +384,8 @@ Added at the bottom of the customer group details page
 
 </td>
 <td>
+
+Type `CustomerGroupDetailsWidgetProps` imported from `@medusajs/admin`
 
 <!-- eslint-skip -->
 
@@ -431,6 +447,8 @@ Added at the top of the product details page
 </td>
 <td>
 
+Type `ProductDetailsWidgetProps` imported from `@medusajs/admin`
+
 <!-- eslint-skip -->
 
 ```ts noCopy noReport
@@ -454,6 +472,8 @@ Added at the bottom of the product details page
 
 </td>
 <td>
+
+Type `ProductDetailsWidgetProps` imported from `@medusajs/admin`
 
 <!-- eslint-skip -->
 
@@ -587,11 +607,13 @@ Added at the top of the “price list” details page
 </td>
 <td>
 
+Type `PriceListDetailsWidgetProps` imported from `@medusajs/admin`
+
 <!-- eslint-skip -->
 
 ```ts noCopy noReport
 {
-  productList, // ProductList object
+  priceList, // PriceList object
 }
 ```
 
@@ -611,11 +633,13 @@ Added at the bottom of the “price list” details page
 </td>
 <td>
 
+Type `PriceListDetailsWidgetProps` imported from `@medusajs/admin`
+
 <!-- eslint-skip -->
 
 ```ts noCopy noReport
 {
-  productList, // ProductList object
+  priceList, // PriceList object
 }
 ```
 
@@ -671,6 +695,8 @@ Added at the top of the discounts details page
 </td>
 <td>
 
+Type `DiscountDetailsWidgetProps` imported from `@medusajs/admin`
+
 <!-- eslint-skip -->
 
 ```ts noCopy noReport
@@ -694,6 +720,8 @@ Added at the bottom of the discount details page
 
 </td>
 <td>
+
+Type `DiscountDetailsWidgetProps` imported from `@medusajs/admin`
 
 <!-- eslint-skip -->
 
@@ -755,6 +783,8 @@ Added at the top of the gift card details page
 </td>
 <td>
 
+Type `GiftCardDetailsWidgetProps` imported from `@medusajs/admin`
+
 <!-- eslint-skip -->
 
 ```ts noCopy noReport
@@ -778,6 +808,8 @@ Added at the bottom of the gift card details page
 
 </td>
 <td>
+
+Type `GiftCardDetailsWidgetProps` imported from `@medusajs/admin`
 
 <!-- eslint-skip -->
 
@@ -803,6 +835,8 @@ Added at the top of the custom gift card page
 </td>
 <td>
 
+Type `GiftCardCustomWidgetProps` imported from `@medusajs/admin`
+
 <!-- eslint-skip -->
 
 ```ts noCopy noReport
@@ -826,6 +860,8 @@ Added at the bottom of the custom gift card page
 
 </td>
 <td>
+
+Type `GiftCardCustomWidgetProps` imported from `@medusajs/admin`
 
 <!-- eslint-skip -->
 

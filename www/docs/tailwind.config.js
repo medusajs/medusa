@@ -205,6 +205,10 @@ module.exports = {
               DEFAULT: "#FFFFFF",
               dark: "#FFFFFF",
             },
+            "on-inverted": {
+              DEFAULT: "#FFFFFF",
+              dark: "#1A1523",
+            },
             interactive: {
               DEFAULT: "#6E56CF",
               dark: "#7C66DC",
@@ -273,6 +277,16 @@ module.exports = {
               DEFAULT: "#ECEEF0",
               dark: "#28282C",
             },
+            inverted: {
+              hover: {
+                DEFAULT: "#202425",
+                dark: "#F4F2F4",
+              },
+              pressed: {
+                DEFAULT: "#26292B",
+                dark: "#EEEDEF",
+              },
+            },
           },
           icon: {
             primary: {
@@ -296,7 +310,7 @@ module.exports = {
               dark: "#FFFFFF",
             },
             interactive: {
-              DEFAULT: "#6E56CF",
+              DEFAULT: "#0081F1",
               dark: "#7C66DC",
               hover: {
                 DEFAULT: "#644FC1",
@@ -310,6 +324,10 @@ module.exports = {
             subtle: {
               DEFAULT: "#687076",
               dark: "#7E7D86",
+            },
+            muted: {
+              DEFAULT: "#889096",
+              dark: "#706F78",
             },
           },
           support: {
@@ -469,6 +487,28 @@ module.exports = {
                 dark: "#3E3E44",
               },
             },
+            red: {
+              bg: {
+                DEFAULT: "#FFE5E5",
+                dark: "#481A1D",
+                hover: {
+                  DEFAULT: "#FDD8D8",
+                  dark: "#541B1F",
+                },
+              },
+              text: {
+                DEFAULT: "#CD2B31",
+                dark: "#FF6369",
+              },
+              icon: {
+                DEFAULT: "#E5484D",
+                dark: "#E5484D",
+              },
+              border: {
+                DEFAULT: "#F9C6C6",
+                dark: "#671E22",
+              },
+            },
           },
         },
         /* docs defaults */
@@ -486,6 +526,8 @@ module.exports = {
       boxShadow: {
         overlay: "0px 2px 16px rgba(0, 0, 0, 0.08)",
         "overlay-dark": "0px 2px 16px rgba(0, 0, 0, 0.32)",
+        active: "0px 0px 0px 3px #E1F0FF",
+        "active-dark": "0px 0px 0px 3px #2C2250",
         "field-focused": "0px 0px 0px 4px #EDE9FE",
         "field-focused-dark": "0px 0px 0px 4px #2C2250",
         "button-focused": "0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #6E56CF",
@@ -498,8 +540,12 @@ module.exports = {
         "flyout-dark":
           "0px 0px 0px 1px rgba(255, 255, 255, 0.1), 0px 8px 16px rgba(0, 0, 0, 0.32)",
         "neutral-button-focused":
-          "0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #6E56CF",
+          "0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #0081F1",
         "neutral-button-focused-dark":
+          "0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF",
+        "inverted-button-focused":
+          "0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #0081F1",
+        "inverted-button-focused-dark":
           "0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF",
         "card-rest":
           "0px 0px 0px 1px rgba(17, 24, 28, 0.08), 0px 1px 2px -1px rgba(17, 24, 28, 0.08), 0px 2px 4px rgba(17, 24, 28, 0.04)",
@@ -526,6 +572,9 @@ module.exports = {
         "button-neutral-dark":
           "linear-gradient(180deg, #2E2E32 0%, #28282C 32.67%)",
         "no-image": "none",
+        "button-inverted": "linear-gradient(180deg, #26292B 0%, #151718 30.5%)",
+        "button-inverted-dark":
+          "linear-gradient(180deg, #FFFFFF 31.33%, #F4F2F4 100%)",
       },
       screens: {
         xs: "576px",
