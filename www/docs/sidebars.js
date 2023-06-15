@@ -78,6 +78,11 @@ module.exports = {
           label: "Admin Widgets",
           id: "admin/widgets",
         },
+        {
+          type: "doc",
+          label: "Example: Create Onboarding",
+          id: "admin/onboarding",
+        },
       ],
     },
     {
