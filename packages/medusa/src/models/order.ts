@@ -120,7 +120,7 @@ export class Order extends BaseEntity {
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
-  @Index("uidx_order_id")
+  @Index("idx_order_shipping_address_id")
   @Column({ nullable: true })
   shipping_address_id: string
 
