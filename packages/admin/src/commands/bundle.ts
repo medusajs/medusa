@@ -3,6 +3,7 @@ import {
   findAllValidRoutes,
   findAllValidWidgets,
   logger,
+  normalizePath,
 } from "@medusajs/admin-ui"
 import commonjs from "@rollup/plugin-commonjs"
 import json from "@rollup/plugin-json"
@@ -22,7 +23,7 @@ export async function bundle() {
 
   if (!pathExists) {
     logger.panic(
-      "The src/admin directory could not be found. It appears that your project does not include any admin extensions."
+      "The `src/admin` directory could not be found. It appears that your project does not include any admin extensions."
     )
   }
 
@@ -50,7 +51,9 @@ export async function bundle() {
   const widgetImports = dedent`
     ${widgets
       .map((widget, i) => {
-        return `import Widget${i}, { config as widgetConfig${i} } from "${widget}"`
+        return `import Widget${i}, { config as widgetConfig${i} } from "${normalizePath(
+          widget
+        )}"`
       })
       .join("\n")}
   `
@@ -60,7 +63,7 @@ export async function bundle() {
       .map((route, i) => {
         return `import Route${i}${
           route.hasConfig ? `, { config as routeConfig${i} }` : ""
-        } from "${route.file}"`
+        } from "${normalizePath(route.file)}"`
       })
       .join("\n")}
     `

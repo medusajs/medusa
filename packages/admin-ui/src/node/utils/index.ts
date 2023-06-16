@@ -1,6 +1,7 @@
 import { createCacheDir } from "./create-cache-dir"
 import { getClientEnv } from "./get-client-env"
 import { logger } from "./logger"
+import { normalizePath } from "./normalize-path"
 import {
   findAllValidRoutes,
   findAllValidWidgets,
@@ -11,6 +12,7 @@ import { watchLocalAdminFolder } from "./watch-local-admin-folder"
 
 export {
   logger,
+  normalizePath,
   getClientEnv,
   createCacheDir,
   validateWidget,

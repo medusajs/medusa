@@ -3,6 +3,7 @@ import path from "node:path"
 import dedent from "ts-dedent"
 import { copyFilter } from "./copy-filter"
 import { logger } from "./logger"
+import { normalizePath } from "./normalize-path"
 import { findAllValidRoutes, findAllValidWidgets } from "./validate-extensions"
 
 const FILE_EXT_REGEX = /\.[^/.]+$/
@@ -45,9 +46,11 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
   )
 
   const widgetsArray = localWidgets.map((file, index) => {
-    const relativePath = path
-      .relative(path.resolve(dest, "admin", "src", "extensions"), file)
-      .replace(FILE_EXT_REGEX, "")
+    const relativePath = normalizePath(
+      path
+        .relative(path.resolve(dest, "admin", "src", "extensions"), file)
+        .replace(FILE_EXT_REGEX, "")
+    )
 
     return {
       importStatement: `import Widget${index}, { config as widgetConfig${index} } from "./${relativePath}"`,
@@ -56,9 +59,11 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
   })
 
   const routesArray = localRoutes.map((route, index) => {
-    const relativePath = path
-      .relative(path.resolve(dest, "admin", "src", "extensions"), route.file)
-      .replace(FILE_EXT_REGEX, "")
+    const relativePath = normalizePath(
+      path
+        .relative(path.resolve(dest, "admin", "src", "extensions"), route.file)
+        .replace(FILE_EXT_REGEX, "")
+    )
 
     const importStatement = route.hasConfig
       ? `import Page${index}, { config as routeConfig${index} } from "./${relativePath}"`
@@ -96,7 +101,7 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
     )
   } catch (err) {
     logger.panic(
-      `Could not write entry file for the local extensions. ${err.message}`
+      `Failed to write the entry file for the local extensions. Error: ${err.message}`
     )
   }
 
@@ -180,9 +185,11 @@ async function createMainExtensionsEntry(
   }
 
   const pluginsArray = plugins.map((plugin) => {
-    const relativePath = path
-      .relative(path.resolve(dest, "admin", "src", "extensions"), plugin)
-      .replace(FILE_EXT_REGEX, "")
+    const relativePath = normalizePath(
+      path
+        .relative(path.resolve(dest, "admin", "src", "extensions"), plugin)
+        .replace(FILE_EXT_REGEX, "")
+    )
 
     return relativePath
   })
