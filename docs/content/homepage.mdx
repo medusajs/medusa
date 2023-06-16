@@ -162,11 +162,24 @@ Learn about all the new features and enhancements in Medusa.
 <DocCardList colSize={4} items={[
   {
     type: 'link',
-    href: '/modules/multiwarehouse/overview',
-    label: 'Multi-Warehouse',
+    href: '/modules/products/serverless-module',
+    label: 'Product Module',
     customProps: {
-      icon: Icons['building-solid'],
-      description: 'Allows merchants to store a product in multiple locations with accurate and consistent inventory data.',
+      icon: Icons['tag-solid'],
+      description: 'Learn about the new product module and how to use it in a serverless setup.',
+      badge: {
+        variant: 'orange',
+        children: 'Beta'
+      }
+    }
+  },
+  {
+    type: 'link',
+    href: '/admin/widgets',
+    label: 'Admin Widgets',
+    customProps: {
+      icon: Icons['computer-desktop-solid'],
+      description: 'Learn how you can customize the admin dashboard with admin widgets.',
       badge: {
         variant: 'blue',
         children: 'New'
@@ -175,24 +188,11 @@ Learn about all the new features and enhancements in Medusa.
   },
   {
     type: 'link',
-    href: '/modules/products/categories',
-    label: 'Product Categories',
+    href: '/medusa-react/overview#custom-hooks',
+    label: 'Medusa React: Custom Hooks',
     customProps: {
-      icon: Icons['swatch-solid'],
-      description: 'Clearer organization of your products under categories that can be nested and ranked.',
-      badge: {
-        variant: 'blue',
-        children: 'New'
-      }
-    }
-  },
-  {
-    type: 'link',
-    href: '/development/modules/overview',
-    label: 'Modules',
-    customProps: {
-      icon: Icons['puzzle-solid'],
-      description: 'Modules are self-contained packaged functionalities that are isolated from the Medusa core.',
+      icon: Icons['tools-solid'],
+      description: 'Learn about the new utility function that allows you to create hooks for custom endpoints.',
       badge: {
         variant: 'blue',
         children: 'New'

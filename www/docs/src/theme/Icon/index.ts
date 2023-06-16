@@ -61,6 +61,7 @@ import IconLightBulbSolid from "./LightBulbSolid"
 import IconLightMode from "./LightMode"
 import IconLinkedIn from "./LinkedIn"
 import IconMap from "./Map"
+import IconNewspaper from "./Newspaper"
 import IconNextjs from "./Nextjs"
 import IconPencilSquareSolid from "./PencilSquareSolid"
 import IconPuzzle from "./Puzzle"
@@ -162,6 +163,7 @@ export default {
   "light-mode": IconLightMode,
   linkedin: IconLinkedIn,
   map: IconMap,
+  newspaper: IconNewspaper,
   nextjs: IconNextjs,
   "pencil-square-solid": IconPencilSquareSolid,
   puzzle: IconPuzzle,

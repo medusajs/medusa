@@ -43,7 +43,7 @@ module.exports = {
         id: "recipes/index",
       },
       customProps: {
-        sidebar_icon: "map",
+        sidebar_icon: "newspaper",
       },
       className: "homepage-sidebar-item",
       items: [
