@@ -535,7 +535,7 @@ module.exports = {
             },
             tab: {
               bg: "#151718",
-              hover: "#151718",
+              hover: "rgba(141, 141, 141, 0.16)",
               border: "#3A3F42",
               text: {
                 DEFAULT: "#787F85",
