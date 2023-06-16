@@ -78,14 +78,14 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <details>
   <summary>
-  src/admin/components/onboarding-flow/shared/icons/check-circle-fill-icon.tsx
+  src/admin/components/shared/icons/check-circle-fill-icon.tsx
   </summary>
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/shared/icons/check-circle-fill-icon.tsx
-  import React from "react"
-  import IconProps from "../../../../types/icon-type"
+  ```tsx title=src/admin/components/shared/icons/check-circle-fill-icon.tsx
+  import React from "react";
+  import IconProps from "../../../types/icon-type";
   
   const CheckCircleFillIcon: React.FC<IconProps> = ({
     size = "24",
@@ -118,12 +118,12 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <details>
   <summary>  
-  src/admin/components/onboarding-flow/shared/icons/cross-icon.tsx
+  src/admin/components/shared/icons/cross-icon.tsx
   </summary>
 
-  ```tsx title=src/admin/components/onboarding-flow/shared/icons/cross-icon.tsx
-  import React from "react"
-  import IconProps from "../../../../types/icon-type"
+  ```tsx title=src/admin/components/shared/icons/cross-icon.tsx
+  import React from "react";
+  import IconProps from "../../../types/icon-type";
   
   const CrossIcon: React.FC<IconProps> = ({
     size = "20",
@@ -164,14 +164,14 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <details>
   <summary>  
-  src/admin/components/onboarding-flow/shared/icons/get-started-icon.tsx
+  src/admin/components/shared/icons/get-started-icon.tsx
   </summary>
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/shared/icons/get-started-icon.tsx
-  import React from "react"
-  import IconProps from "../../../../types/icon-type"
+  ```tsx title=src/admin/components/shared/icons/get-started-icon.tsx
+  import React from "react";
+  import IconProps from "../../../types/icon-type";
   
   const GetStartedIcon: React.FC<IconProps> = () => (
     <svg
@@ -447,14 +447,14 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <details>
   <summary>  
-  src/admin/components/onboarding-flow/shared/icons/clipboard-copy-icon.tsx
+  src/admin/components/shared/icons/clipboard-copy-icon.tsx
   </summary>
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/shared/icons/clipboard-copy-icon.tsx
-  import React from "react"
-  import IconProps from "../../../../types/icon-type"
+  ```tsx title=src/admin/components/shared/icons/clipboard-copy-icon.tsx
+  import React from "react";
+  import IconProps from "../../../types/icon-type";
   
   const ClipboardCopyIcon: React.FC<IconProps> = ({
     size = "20",
@@ -509,14 +509,14 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <details>
   <summary>  
-  src/admin/components/onboarding-flow/shared/icons/computer-desktop-icon.tsx
+  src/admin/components/shared/icons/computer-desktop-icon.tsx
   </summary>
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/shared/icons/computer-desktop-icon.tsx
-  import React from "react"
-  import IconProps from "../../../../types/icon-type"
+  ```tsx title=src/admin/components/shared/icons/computer-desktop-icon.tsx
+  import React from "react";
+  import IconProps from "../../../types/icon-type";
   
   const ComputerDesktopIcon: React.FC<IconProps> = ({
     size = "24",
@@ -549,14 +549,14 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <details>
   <summary>  
-  src/admin/components/onboarding-flow/shared/icons/dollar-sign-icon.tsx
+  src/admin/components/shared/icons/dollar-sign-icon.tsx
   </summary>
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/shared/icons/dollar-sign-icon.tsx
-  import React from "react"
-  import IconProps from "../../../../types/icon-type"
+  ```tsx title=src/admin/components/shared/icons/dollar-sign-icon.tsx
+  import React from "react";
+  import IconProps from "../../../types/icon-type";
   
   const DollarSignIcon: React.FC<IconProps> = ({
     size = "24",
@@ -597,16 +597,16 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <details>
   <summary>  
-  src/admin/components/onboarding-flow/shared/accordion.tsx
+  src/admin/components/shared/accordion.tsx
   </summary>
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/shared/accordion.tsx
-  import * as AccordionPrimitive from "@radix-ui/react-accordion"
-  import clsx from "clsx"
-  import React from "react"
-  import CheckCircleFillIcon from "./icons/check-circle-fill-icon"
+  ```tsx title=src/admin/components/shared/accordion.tsx
+  import * as AccordionPrimitive from "@radix-ui/react-accordion";
+  import clsx from "clsx";
+  import React from "react";
+  import CheckCircleFillIcon from "./icons/check-circle-fill-icon";
   
   type AccordionItemProps = AccordionPrimitive.AccordionItemProps & {
     title: string;
@@ -745,12 +745,12 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <details>
   <summary>  
-  src/admin/components/onboarding-flow/shared/spinner.tsx
+  src/admin/components/shared/spinner.tsx
   </summary>
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/shared/spinner.tsx
+  ```tsx title=src/admin/components/shared/spinner.tsx
   import clsx from "clsx"
   import React from "react"
   
@@ -792,13 +792,13 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <details>
   <summary>  
-  src/admin/components/onboarding-flow/shared/button.tsx
+  src/admin/components/shared/button.tsx
   </summary>
 
 <!-- eslint-disable max-len -->
 <!-- eslint-disable react/display-name -->
 
-  ```tsx title=src/admin/components/onboarding-flow/shared/button.tsx
+  ```tsx title=src/admin/components/shared/button.tsx
   import clsx from "clsx"
   import React, { Children } from "react"
   import Spinner from "./spinner"
@@ -876,12 +876,12 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <details>
   <summary>  
-  src/admin/components/onboarding-flow/shared/code-snippets.tsx
+  src/admin/components/shared/code-snippets.tsx
   </summary>
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/shared/code-snippets.tsx
+  ```tsx title=src/admin/components/shared/code-snippets.tsx
   import React, { useState } from "react"
   import clsx from "clsx"
   import copy from "copy-to-clipboard"
@@ -979,12 +979,12 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <details>
   <summary>  
-  src/admin/components/onboarding-flow/shared/container.tsx
+  src/admin/components/shared/container.tsx
   </summary>
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/shared/container.tsx
+  ```tsx title=src/admin/components/shared/container.tsx
   import React, { PropsWithChildren } from "react"
   
   type Props = PropsWithChildren<{
@@ -1015,12 +1015,12 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <details>
   <summary>  
-  src/admin/components/onboarding-flow/shared/badge.tsx
+  src/admin/components/shared/badge.tsx
   </summary>
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/shared/badge.tsx
+  ```tsx title=src/admin/components/shared/badge.tsx
   import clsx from "clsx"
   import React from "react"
   
@@ -1073,12 +1073,12 @@ Each of the collapsible elements below hold the path to the file that you should
 
 <details>
   <summary>  
-  src/admin/components/onboarding-flow/shared/icon-badge.tsx
+  src/admin/components/shared/icon-badge.tsx
   </summary>
 
 <!-- eslint-disable max-len -->
 
-  ```tsx title=src/admin/components/onboarding-flow/shared/icon-badge.tsx
+  ```tsx title=src/admin/components/shared/icon-badge.tsx
   import clsx from "clsx"
   import React from "react"
   import Badge from "./badge"
@@ -1517,13 +1517,13 @@ import React, {
 } from "react"
 import { 
   Container,
-} from "../../components/onboarding-flow/shared/container"
-import Button from "../../components/onboarding-flow/shared/button"
+} from "../../components/shared/container"
+import Button from "../../components/shared/button"
 import {
   WidgetConfig,
 } from "@medusajs/admin"
-import Accordion from "../../components/onboarding-flow/shared/accordion"
-import GetStartedIcon from "../../components/onboarding-flow/shared/icons/get-started-icon"
+import Accordion from "../../components/shared/accordion"
+import GetStartedIcon from "../../components/shared/icons/get-started-icon"
 import { 
   OnboardingState,
 } from "../../../models/onboarding"
@@ -1810,7 +1810,7 @@ In this section, you’ll create the components for each step in the onboarding 
 
   ```tsx title=src/admin/components/onboarding-flow/products/products-list.tsx
   import React from "react"
-  import Button from "../shared/button"
+  import Button from "../../shared/button"
   import { 
     useAdminCreateProduct,
   } from "medusa-react"
@@ -1948,8 +1948,8 @@ In this section, you’ll create the components for each step in the onboarding 
   import { 
     useAdminPublishableApiKeys,
   } from "medusa-react"
-  import Button from "../shared/button"
-  import CodeSnippets from "../shared/code-snippets"
+  import Button from "../../shared/button"
+  import CodeSnippets from "../../shared/code-snippets"
   import { 
     StepContentProps,
   } from "../../../widgets/onboarding-flow/onboarding-flow"
@@ -2031,7 +2031,7 @@ In this section, you’ll create the components for each step in the onboarding 
   
   ```tsx title=src/admin/components/onboarding-flow/orders/orders-list.tsx
   import React from "react"
-  import Button from "../shared/button"
+  import Button from "../../shared/button"
   import { 
     useAdminProduct,
   } from "medusa-react"
@@ -2135,9 +2135,9 @@ In this section, you’ll create the components for each step in the onboarding 
   
   ```tsx title=src/admin/components/onboarding-flow/orders/order-detail.tsx
   import React from "react"
-  import IconBadge from "../shared/icon-badge"
-  import ComputerDesktopIcon from "../shared/icons/computer-desktop-icon"
-  import DollarSignIcon from "../shared/icons/dollar-sign-icon"
+  import IconBadge from "../../shared/icon-badge"
+  import ComputerDesktopIcon from "../../shared/icons/computer-desktop-icon"
+  import DollarSignIcon from "../../shared/icons/dollar-sign-icon"
   
   const OrderDetail = () => {
     return (
@@ -2281,9 +2281,9 @@ In this section, you’ll implement the `TODO`s in the `OnboardingFlow` that req
 
 There are different ways you can consume custom backend endpoints. The Medusa React library provides a utility method `createCustomAdminHooks` that allows you to create a hook similar to those available by default in the library. You can then utilize these hooks to send requests to custom backend endpoints.
 
-Create the file `src/admin/components/onboarding-flow/shared/hooks.tsx` that exports custom hooks for the custom endpoints you created in the previous step:
+Create the file `src/admin/components/shared/hooks.tsx` that exports custom hooks for the custom endpoints you created in the previous step:
 
-```tsx title=src/admin/components/onboarding-flow/shared/hooks.tsx
+```tsx title=src/admin/components/shared/hooks.tsx
 import { createCustomAdminHooks } from "medusa-react"
 
 const {
@@ -2307,7 +2307,7 @@ Then, add the following imports at the top of `src/admin/widgets/onboarding-flow
 import {
   useAdminOnboardingState,
   useAdminUpdateOnboardingStateMutation,
-} from "../../components/onboarding-flow/shared/hooks"
+} from "../../components/shared/hooks"
 ```
 
 Next, add the following at the top of the `OnboardingFlow` component:
