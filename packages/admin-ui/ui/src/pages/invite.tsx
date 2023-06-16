@@ -67,13 +67,13 @@ const InvitePage = () => {
     setError,
   } = form
 
-  const { mutate: acceptInvite, isLoading: acceptInviteIsLoading } =
+  const { mutateAsync: acceptInvite, isLoading: acceptInviteIsLoading } =
     useAdminAcceptInvite()
   const {
-    mutate: createAnalyticsConfig,
+    mutateAsync: createAnalyticsConfig,
     isLoading: createAnalyticsConfigIsLoading,
   } = useAdminCreateAnalyticsConfig()
-  const { mutate: doLogin, isLoading: loginIsLoading } = useAdminLogin()
+  const { mutateAsync: doLogin, isLoading: loginIsLoading } = useAdminLogin()
 
   const isLoading =
     acceptInviteIsLoading || createAnalyticsConfigIsLoading || loginIsLoading
@@ -81,7 +81,7 @@ const InvitePage = () => {
   const navigate = useNavigate()
   const notification = useNotification()
 
-  const handleAcceptInvite = handleSubmit((data: FormValues) => {
+  const handleAcceptInvite = handleSubmit(async (data: FormValues) => {
     if (data.password !== data.repeat_password) {
       setError(
         "repeat_password",
@@ -97,54 +97,35 @@ const InvitePage = () => {
       return
     }
 
-    acceptInvite(
-      {
+    try {
+      await acceptInvite({
         token: parsed.token as string,
         user: {
           first_name: data.first_name,
           last_name: data.last_name,
           password: data.password,
         },
-      },
-      {
-        onSuccess: async () => {
-          if (token?.user_email) {
-            doLogin(
-              { email: token.user_email, password: data.password },
-              {
-                onSuccess: async () => {
-                  const shouldTrackEmail =
-                    !data.analytics.anonymize &&
-                    !data.analytics.opt_out &&
-                    token?.user_email
+      })
 
-                  await createAnalyticsConfig(data.analytics, {
-                    onSuccess: () => {
-                      navigate("/a/orders")
+      await doLogin({ email: token!.user_email, password: data.password })
 
-                      if (shouldTrackEmail) {
-                        analytics.track("userEmail", {
-                          email: token?.user_email,
-                        })
-                      }
-                    },
-                    onError: (err) => {
-                      notification("Error", getErrorMessage(err), "error")
-                    },
-                  })
-                },
-                onError: (err) => {
-                  notification("Error", getErrorMessage(err), "error")
-                },
-              }
-            )
-          }
-        },
-        onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
-        },
+      const shouldTrackEmail =
+        !data.analytics.anonymize &&
+        !data.analytics.opt_out &&
+        token?.user_email
+
+      await createAnalyticsConfig(data.analytics)
+
+      if (shouldTrackEmail) {
+        await analytics.track("userEmail", {
+          email: token?.user_email,
+        })
       }
-    )
+
+      navigate("/a/orders")
+    } catch (err) {
+      notification("Error", getErrorMessage(err), "error")
+    }
   })
 
   if (!token) {
