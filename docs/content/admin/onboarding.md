@@ -1809,33 +1809,39 @@ In this section, you’ll create the components for each step in the onboarding 
 <!-- eslint-disable max-len -->
 
   ```tsx title=src/admin/components/onboarding-flow/products/products-list.tsx
-  import React from "react"
-  import Button from "../../shared/button"
+  import React from "react";
+  import Button from "../../shared/button";
   import { 
     useAdminCreateProduct,
-  } from "medusa-react"
+    useAdminCreateCollection
+  } from "medusa-react";
   import { 
-    useAdminRegions,
-  } from "medusa-react"
+    useAdminRegions
+  } from "medusa-react";
   import { 
-    StepContentProps,
-  } from "../../../widgets/onboarding-flow/onboarding-flow"
-  
-  // Needed for sample product creation — not exported by anything importable here
+    StepContentProps
+  } from "../../../widgets/onboarding-flow/onboarding-flow";
+
   enum ProductStatus {
     PUBLISHED = "published",
   }
-  
+
   const ProductsList = ({ onNext, isComplete }: StepContentProps) => {
-    const { 
-      mutate: createProduct,
-      isLoading,
-    } = useAdminCreateProduct()
-    const { regions } = useAdminRegions()
-  
-    const createSampleProduct = () => {
-      createProduct(
-        {
+    const { mutateAsync: createCollection, isLoading: collectionLoading } =
+      useAdminCreateCollection();
+    const { mutateAsync: createProduct, isLoading: productLoading } =
+      useAdminCreateProduct();
+    const { regions } = useAdminRegions();
+
+    const isLoading = collectionLoading || productLoading;
+
+    const createSample = async () => {
+      try {
+        const { collection } = await createCollection({
+          title: "Merch",
+          handle: "merch",
+        });
+        const { product } = await createProduct({
           title: "Medusa T-Shirt",
           description: "Comfy t-shirt with Medusa logo",
           subtitle: "Black",
@@ -1846,12 +1852,13 @@ In this section, you’ll create the components for each step in the onboarding 
             "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-black-front.png",
             "https://medusa-public-images.s3.eu-west-1.amazonaws.com/tee-black-back.png",
           ],
+          collection_id: collection.id,
           variants: [
             {
               title: "Small",
               inventory_quantity: 25,
               manage_inventory: true,
-              prices: regions.map((region) => ({
+              prices: regions.map(region => ({
                 amount: 5000,
                 currency_code: region.currency_code,
               })),
@@ -1861,7 +1868,7 @@ In this section, you’ll create the components for each step in the onboarding 
               title: "Medium",
               inventory_quantity: 10,
               manage_inventory: true,
-              prices: regions.map((region) => ({
+              prices: regions.map(region => ({
                 amount: 5000,
                 currency_code: region.currency_code,
               })),
@@ -1871,7 +1878,7 @@ In this section, you’ll create the components for each step in the onboarding 
               title: "Large",
               inventory_quantity: 17,
               manage_inventory: true,
-              prices: regions.map((region) => ({
+              prices: regions.map(region => ({
                 amount: 5000,
                 currency_code: region.currency_code,
               })),
@@ -1881,7 +1888,7 @@ In this section, you’ll create the components for each step in the onboarding 
               title: "Extra Large",
               inventory_quantity: 22,
               manage_inventory: true,
-              prices: regions.map((region) => ({
+              prices: regions.map(region => ({
                 amount: 5000,
                 currency_code: region.currency_code,
               })),
@@ -1889,25 +1896,22 @@ In this section, you’ll create the components for each step in the onboarding 
             },
           ],
           status: ProductStatus.PUBLISHED,
-        },
-        {
-          onSuccess: ({ product }) => {
-            onNext(product)
-          },
-          onError: (err) => console.log(err),
-        }
-      )
-    }
-  
+        });
+        onNext(product);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
     return (
       <div>
         <p>
           Create a product and set its general details such as title and
-          description, its price, options, variants, images, and more. You&apos;ll then
+          description, its price, options, variants, images, and more. You'll then
           use the product to create a sample order.
         </p>
         <p>
-          If you&apos;re not ready to create a product, we can create a sample product
+          If you're not ready to create a product, we can create a sample product
           for you.
         </p>
         {!isComplete && (
@@ -1915,7 +1919,7 @@ In this section, you’ll create the components for each step in the onboarding 
             <Button
               variant="secondary"
               size="small"
-              onClick={() => createSampleProduct()}
+              onClick={() => createSample()}
               loading={isLoading}
             >
               Create sample product
@@ -1923,10 +1927,10 @@ In this section, you’ll create the components for each step in the onboarding 
           </div>
         )}
       </div>
-    )
-  }
-  
-  export default ProductsList
+    );
+  };
+
+  export default ProductsList;
   ```
 
 </details>

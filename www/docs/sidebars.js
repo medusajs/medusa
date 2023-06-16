@@ -104,6 +104,11 @@ module.exports = {
         },
         {
           type: "doc",
+          label: "Admin UI Routes",
+          id: "admin/routes",
+        },
+        {
+          type: "doc",
           label: "Example: Create Onboarding",
           id: "admin/onboarding",
         },

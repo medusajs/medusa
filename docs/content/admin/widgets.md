@@ -1,9 +1,11 @@
 ---
+title: 'How to Create an Admin Widget'
 description: 'Learn about what Admin widgets are and how you can create your own.'
 addHowToData: true
+badge:
+  variant: orange
+  text: beta
 ---
-
-# How to Create Admin Widgets
 
 In this document, you will learn about what Admin widgets are and how you can create your own.
 
@@ -941,25 +943,31 @@ In this section, you’ll learn how to create an admin widget.
 
 ### Prerequisites
 
-Before starting this guide, make sure you have a Medusa backend installed with the latest versions of `@medusajs/medusa` and `@medusajs/admin`. You can update them with the following command:
+It’s assumed you already have a Medusa backend with the admin plugin installed before you move forward with this guide. If not, you can follow [this documentation page](../create-medusa-app.mdx) to install a Medusa project.
+
+Furthermore, Admin Widgets are currently available as a beta feature. So, you must install the `beta` version of the `@medusajs/admin` package along with the latest version of `@medusajs/medusa`:
 
 ```bash npm2yarn
-npm install @medusajs/admin@latest @medusajs/medusa@latest
+npm install @medusajs/admin@beta @medusajs/medusa@latest
 ```
 
 :::note
 
-It’s highly recommended to check out the [upgrade guide section](../upgrade-guides/index.mdx) for any required actions after updating.
+It’s highly recommended to check [the upgrade guides](../upgrade-guides/index.mdx) for any required changes to the updated packages you’re installing.
 
 :::
-
-If your project has any other Medusa dependencies, you should also update those to ensure compatibility.
 
 ### (Optional) TypeScript Preparations
 
 Since Widgets are React components, they should be written in `.tsx` or `.jsx` files. If you’re using Typescript, you need to make some adjustments to avoid Typescript errors in your Admin files.
 
 This section provides recommended configurations to avoid any TypeScript errors.
+
+:::note
+
+These changes may already be available in your Medusa project. They're included here for reference purposes.
+
+:::
 
 First, update your `tsconfig.json` with the following configurations:
 
@@ -1178,6 +1186,48 @@ export const config: WidgetConfig = {
 export default ProductWidget
 ```
 
+### Routing Functionalities
+
+If you want to navigate to other pages, link to other pages, or use other routing functionalities, you can use [react-router-dom](https://reactrouter.com/en/main) package.
+
+:::note
+
+`react-router-dom` is available as one of the `@medusajs/admin` dependencies. You can also install it within your project using the following command:
+
+```bash npm2yarn
+npm install react-router-dom
+```
+
+If you're installing it in a plugin with admin customizations, make sure to include it in `peerDependencies`.
+
+:::
+
+For example:
+
+```tsx title=src/admin/widgets/product-widget.tsx
+import type { WidgetConfig } from "@medusajs/admin"
+import { Link } from "react-router-dom"
+
+const ProductWidget = () => {
+  return (
+    <div>
+      <h1>Product Widget</h1>
+      <Link to={'/a/orders'}>
+        View Orders
+      </Link>
+    </div>
+  )
+}
+
+export const config: WidgetConfig = {
+  zone: "product.details.after",
+}
+
+export default ProductWidget
+```
+
+View [react-router-dom’s documentation](https://reactrouter.com/en/main) for other available components and hooks.
+
 ### Querying and Mutating Data
 
 You will most likely need to interact with the Medusa backend  from your Widgets. To do so, you can utilize the Medusa React package. It contains a collection of queries and mutation built on `@tanstack/react-query` that lets you interact with the Medusa backend.
@@ -1227,4 +1277,11 @@ export const config: WidgetConfig = {
 export default ProductWidget
 ```
 
-You can also use `medusa-react` to interact with custom endpoints using the createCustomAdminHooks utility function.
+You can also use `medusa-react` to interact with custom endpoints using the [createCustomAdminHooks utility function](../medusa-react/overview.md#custom-hooks).
+
+---
+
+## See Also
+
+- [How to create admin UI routes](./routes.md)
+- [Create a plugin for your admin customizations](../development/plugins/create.mdx)

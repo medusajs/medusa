@@ -1,9 +1,11 @@
 ---
+title: 'How to Use Serverless Product Module'
 description: 'Learn how to use the product module in a serverless setup by installing it in a Next.js application.'
 addHowToData: true
+badge:
+  variant: orange
+  text: beta
 ---
-
-# How to Use Serverless Product Module
 
 In this document, you’ll learn how to use the Product module in a serverless setup.
 
