@@ -141,7 +141,7 @@ async function runLoaders(
   container: MedusaContainer
 ): Promise<void> {
   const loaderFiles = glob.sync(
-    `${pluginDetails.resolve}/loaders/[!__]*.js`,
+    path.normalize(`${pluginDetails.resolve}/loaders/[!__]*.js`),
     {}
   )
   await Promise.all(
@@ -172,9 +172,12 @@ export function registerStrategies(
   pluginDetails: PluginDetails,
   container: MedusaContainer
 ): void {
-  const files = glob.sync(`${pluginDetails.resolve}/strategies/[!__]*.js`, {
-    ignore: ["**/__fixtures__/**", "**/index.js", "**/index.ts"],
-  })
+  const files = glob.sync(
+    path.normalize(`${pluginDetails.resolve}/strategies/[!__]*.js`),
+    {
+      ignore: ["**/__fixtures__/**", "**/index.js", "**/index.ts"],
+    }
+  )
   const registeredServices = {}
 
   files.map((file) => {
@@ -261,7 +264,10 @@ function registerMedusaMiddleware(
 ): void {
   let module
   try {
-    module = require(`${pluginDetails.resolve}/api/medusa-middleware`).default
+    const middlewarePath = path.normalize(
+      `${pluginDetails.resolve}/api/medusa-middleware`
+    )
+    module = require(middlewarePath).default
   } catch (err) {
     return
   }
@@ -294,8 +300,14 @@ function registerCoreRouters(
   const middlewareService =
     container.resolve<MiddlewareService>("middlewareService")
   const { resolve } = pluginDetails
-  const adminFiles = glob.sync(`${resolve}/api/admin/[!__]*.js`, {})
-  const storeFiles = glob.sync(`${resolve}/api/store/[!__]*.js`, {})
+  const adminFiles = glob.sync(
+    path.normalize(`${resolve}/api/admin/[!__]*.js`),
+    {}
+  )
+  const storeFiles = glob.sync(
+    path.normalize(`${resolve}/api/store/[!__]*.js`),
+    {}
+  )
 
   adminFiles.forEach((fn) => {
     const descriptor = fn.split(".")[0]
@@ -330,7 +342,9 @@ function registerApi(
     `Registering custom endpoints for ${pluginDetails.name}`
   )
   try {
-    const routes = require(`${pluginDetails.resolve}/api`).default
+    const routes = require(path.normalize(
+      `${pluginDetails.resolve}/api`
+    )).default
     if (routes) {
       app.use("/", routes(rootDirectory, pluginDetails.options))
     }
@@ -362,7 +376,10 @@ export async function registerServices(
   pluginDetails: PluginDetails,
   container: MedusaContainer
 ): Promise<void> {
-  const files = glob.sync(`${pluginDetails.resolve}/services/[!__]*.js`, {})
+  const files = glob.sync(
+    path.normalize(`${pluginDetails.resolve}/services/[!__]*.js`),
+    {}
+  )
   await Promise.all(
     files.map(async (fn) => {
       const loaded = require(fn).default
@@ -501,7 +518,10 @@ function registerSubscribers(
   pluginDetails: PluginDetails,
   container: MedusaContainer
 ): void {
-  const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
+  const files = glob.sync(
+    path.normalize(`${pluginDetails.resolve}/subscribers/*.js`),
+    {}
+  )
   files.forEach((fn) => {
     const loaded = require(fn).default
 
@@ -526,7 +546,10 @@ function registerRepositories(
   pluginDetails: PluginDetails,
   container: MedusaContainer
 ): void {
-  const files = glob.sync(`${pluginDetails.resolve}/repositories/*.js`, {})
+  const files = glob.sync(
+    path.normalize(`${pluginDetails.resolve}/repositories/*.js`),
+    {}
+  )
   files.forEach((fn) => {
     const loaded = require(fn)
 
@@ -556,7 +579,10 @@ function registerModels(
   pluginDetails: PluginDetails,
   container: MedusaContainer
 ): void {
-  const files = glob.sync(`${pluginDetails.resolve}/models/*.js`, {})
+  const files = glob.sync(
+    path.normalize(`${pluginDetails.resolve}/models/*.js`),
+    {}
+  )
   files.forEach((fn) => {
     const loaded = require(fn) as ClassConstructor<unknown> | EntitySchema
 
@@ -582,7 +608,10 @@ function registerModels(
  * @param pluginDetails The plugin details including plugin options, version, id, resolved path, etc.
  */
 async function runSetupFunctions(pluginDetails: PluginDetails): Promise<void> {
-  const files = glob.sync(`${pluginDetails.resolve}/setup/*.js`, {})
+  const files = glob.sync(
+    path.normalize(`${pluginDetails.resolve}/setup/*.js`),
+    {}
+  )
   await Promise.all(
     files.map(async (fn) => {
       const loaded = require(fn).default
@@ -620,12 +649,13 @@ function resolvePlugin(pluginName: string): {
   // Only find plugins when we're not given an absolute path
   if (!existsSync(pluginName)) {
     // Find the plugin in the local plugins folder
-    const resolvedPath = path.resolve(`./plugins/${pluginName}`)
+    const resolvedPath = path.normalize(path.resolve(`./plugins/${pluginName}`))
+    const packageJSONPath = path.normalize(`${resolvedPath}/package.json`)
 
     if (existsSync(resolvedPath)) {
-      if (existsSync(`${resolvedPath}/package.json`)) {
+      if (existsSync(packageJSONPath)) {
         const packageJSON = JSON.parse(
-          fs.readFileSync(`${resolvedPath}/package.json`, `utf-8`)
+          fs.readFileSync(packageJSONPath, `utf-8`)
         )
         const name = packageJSON.name || pluginName
         // warnOnIncompatiblePeerDependency(name, packageJSON)
@@ -645,7 +675,8 @@ function resolvePlugin(pluginName: string): {
     }
   }
 
-  const rootDir = path.resolve(".")
+  const rootDir = path.normalize(path.resolve("."))
+  const packageJSONPath = path.normalize(`${pluginName}/package.json`)
 
   /**
    *  Here we have an absolute path to an internal plugin, or a name of a module
@@ -659,13 +690,9 @@ function resolvePlugin(pluginName: string): {
 
     // If the path is absolute, resolve the directory of the internal plugin,
     // otherwise resolve the directory containing the package.json
-    const resolvedPath = path.dirname(
-      requireSource.resolve(`${pluginName}/package.json`)
-    )
+    const resolvedPath = path.dirname(packageJSONPath)
 
-    const packageJSON = JSON.parse(
-      fs.readFileSync(`${resolvedPath}/package.json`, `utf-8`)
-    )
+    const packageJSON = JSON.parse(fs.readFileSync(packageJSONPath, `utf-8`))
     // warnOnIncompatiblePeerDependency(packageJSON.name, packageJSON)
 
     const computedResolvedPath =
