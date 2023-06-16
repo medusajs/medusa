@@ -326,4 +326,4 @@ You can also use `medusa-react` to interact with custom endpoints using the [c
 ## See Also
 
 - [Admin widgets](./widgets.md)
-- [Create a plugin](../development/plugins/create.mdx)
+- [Create a plugin for your admin customizations](../development/plugins/create.mdx)

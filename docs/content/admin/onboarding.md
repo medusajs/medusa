@@ -1,9 +1,11 @@
 ---
+title: 'Example: How to Create Onboarding Widget'
 description: 'Learn how to build the onboarding widget available in the admin dashboard the first time you install a Medusa project.'
 addHowToData: true
+badge:
+  variant: orange
+  text: beta
 ---
-
-# Example: How to Create Onboarding Widget
 
 In this guide, you’ll learn how to build the onboarding widget available in the admin dashboard the first time you install a Medusa project.
 
