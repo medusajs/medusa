@@ -4,7 +4,6 @@ import {
   findAllValidWidgets,
   logger,
 } from "@medusajs/admin-ui"
-import alias from "@rollup/plugin-alias"
 import commonjs from "@rollup/plugin-commonjs"
 import json from "@rollup/plugin-json"
 import { nodeResolve } from "@rollup/plugin-node-resolve"
@@ -135,15 +134,6 @@ export async function bundle() {
         virtual({
           entry: virtualEntry,
         }),
-        // esbuild({
-        //   include: /\.[jt]sx?$/,
-        //   sourceMap: true,
-        //   minify: process.env.NODE_ENV === "production",
-        //   // jsx: "transform",
-        //   // jsxFactory: "React.createElement",
-        //   // jsxFragment: "React.Fragment",
-        //   // jsxImportSource: "react",
-        // }),
         nodeResolve({
           preferBuiltins: true,
           browser: true,
@@ -166,13 +156,13 @@ export async function bundle() {
           },
           preventAssignment: true,
         }),
-        alias({
-          entries: ALIASED_PACKAGES.reduce((acc, dep) => {
-            acc[dep] = require.resolve(dep)
+        // alias({
+        //   entries: ALIASED_PACKAGES.reduce((acc, dep) => {
+        //     acc[dep] = require.resolve(dep)
 
-            return acc
-          }, {} as { [key: string]: string }),
-        }),
+        //     return acc
+        //   }, {} as { [key: string]: string }),
+        // }),
       ],
       onwarn: (warning, warn) => {
         if (
