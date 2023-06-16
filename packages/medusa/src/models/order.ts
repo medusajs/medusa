@@ -12,7 +12,10 @@ import {
   OneToOne,
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-import { FeatureFlagColumn, FeatureFlagDecorators, } from "../utils/feature-flag-decorators"
+import {
+  FeatureFlagColumn,
+  FeatureFlagDecorators,
+} from "../utils/feature-flag-decorators"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
@@ -68,6 +71,7 @@ export enum PaymentStatus {
 }
 
 @Entity()
+@Index("uidx_order_id", ["id"], { unique: true })
 export class Order extends BaseEntity {
   readonly object = "order"
 
@@ -84,7 +88,7 @@ export class Order extends BaseEntity {
   @DbAwareColumn({ type: "enum", enum: PaymentStatus, default: "not_paid" })
   payment_status: PaymentStatus
 
-  @Index()
+  @Index("idx_order_display_id")
   @Column()
   @Generated("increment")
   display_id: number
@@ -97,7 +101,7 @@ export class Order extends BaseEntity {
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 
-  @Index()
+  @Index("idx_order_customer_id")
   @Column()
   customer_id: string
 
@@ -116,7 +120,7 @@ export class Order extends BaseEntity {
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
-  @Index()
+  @Index("uidx_order_id")
   @Column({ nullable: true })
   shipping_address_id: string
 

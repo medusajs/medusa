@@ -37,16 +37,14 @@ export class addDescriptionToProductCategory1680857773272
       idx_order_shipping_address_id,
       idx_order_display_id,
       idx_order_customer_id,
-      idx_order_created_at,
       idx_customer_first_last_phone;
 
-      CREATE INDEX IF NOT EXISTS idx_address_id ON address ((id::varchar)) WHERE deleted_at IS NULL;
-      CREATE INDEX IF NOT EXISTS idx_customer_id ON customer ((id::varchar)) WHERE deleted_at IS NULL;
-      CREATE INDEX IF NOT EXISTS idx_order_id ON "order" ((id::varchar));
+      CREATE UNIQUE INDEX IF NOT EXISTS uidx_address_id ON address ((id::varchar)) WHERE deleted_at IS NULL;
+      CREATE UNIQUE INDEX IF NOT EXISTS uidx_customer_id ON customer ((id::varchar)) WHERE deleted_at IS NULL;
+      CREATE UNIQUE INDEX IF NOT EXISTS uidx_order_id ON "order" ((id::varchar));
       CREATE INDEX IF NOT EXISTS idx_order_shipping_address_id ON "order" ((shipping_address_id::varchar));
       CREATE INDEX IF NOT EXISTS idx_order_display_id ON "order" ((display_id::varchar));
       CREATE INDEX IF NOT EXISTS idx_order_customer_id ON "order" ((customer_id::varchar));
-      CREATE INDEX IF NOT EXISTS idx_order_created_at ON "order" (created_at);
       CREATE INDEX IF NOT EXISTS idx_customer_first_last_phone ON "customer" (first_name, last_name, phone);
     `)
   }
@@ -62,13 +60,12 @@ export class addDescriptionToProductCategory1680857773272
                     idx_gin_customer_first_name,
                     idx_gin_customer_last_name;
 
-          drop index if exists idx_address_id,
-                  idx_customer_id,
-                  idx_order_id,
+          drop index if exists uidx_address_id,
+                  uidx_customer_id,
+                  uidx_order_id,
                   idx_order_shipping_address_id,
                   idx_order_display_id,
                   idx_order_customer_id,
-                  idx_order_created_at,
                   idx_customer_first_last_phone;
       `
     )

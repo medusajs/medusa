@@ -14,6 +14,7 @@ import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
+@Index("uidx_address_id", ["id"], { unique: true })
 export class Address extends SoftDeletableEntity {
   @Index()
   @Column({ type: "varchar", nullable: true })
