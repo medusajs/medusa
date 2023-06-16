@@ -35,7 +35,7 @@ export interface GiftCardDetailsWidgetProps extends WidgetProps {
   giftCard: Product
 }
 
-export interface GiftCardCustomWidgetProps extends WidgetProps {
+export interface CustomGiftCardWidgetProps extends WidgetProps {
   giftCard: GiftCard
 }
 
@@ -43,7 +43,7 @@ export interface CustomerDetailsWidgetProps extends WidgetProps {
   customer: Customer
 }
 
-export interface CustomerCustomWidgetProps extends WidgetProps {
+export interface CustomerGroupDetailsWidgetProps extends WidgetProps {
   customerGroup: CustomerGroup
 }
 
