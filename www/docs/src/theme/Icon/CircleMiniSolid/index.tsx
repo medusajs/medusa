@@ -21,7 +21,7 @@ const IconCircleMiniSolid: React.FC<IconProps> = ({
         strokeWidth="1.5"
         className={
           iconColorClassName ||
-          "tw-stroke-medusa-icon-secondary dark:tw-stroke-medusa-icon-secondary"
+          "tw-stroke-medusa-icon-subtle dark:tw-stroke-medusa-icon-subtle"
         }
       />
     </svg>
