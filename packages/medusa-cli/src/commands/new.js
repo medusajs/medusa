@@ -15,7 +15,6 @@ import url from "url"
 import { createDatabase } from "pg-god"
 import { track } from "medusa-telemetry"
 import inquirer from "inquirer"
-import { globSync } from "glob"
 
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"

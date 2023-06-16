@@ -6267,7 +6267,6 @@ __metadata:
     execa: ^5.1.1
     fs-exists-cached: ^1.0.0
     fs-extra: ^10.0.0
-    glob: ^10.2.7
     hosted-git-info: ^4.0.2
     inquirer: ^8.0.0
     is-valid-path: ^0.1.1
@@ -6544,7 +6543,7 @@ __metadata:
     awilix: ^8.0.1
     cross-env: ^5.2.1
     express: ^4.18.2
-    glob: ^10.2.7
+    glob: ^7.1.6
     jest: ^25.5.4
     ts-jest: ^25.5.1
     typescript: ^4.4.4
@@ -17887,7 +17886,6 @@ __metadata:
     eslint-config-google: ^0.14.0
     eslint-config-prettier: ^8.8.0
     eslint-plugin-prettier: ^4.2.1
-    glob: ^10.2.7
     inquirer: ^9.2.2
     medusa-telemetry: ^0.0.16
     nanoid: ^4.0.2
@@ -23454,7 +23452,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^10.2.5, glob@npm:^10.2.7":
+"glob@npm:^10.2.5":
   version: 10.2.7
   resolution: "glob@npm:10.2.7"
   dependencies:
