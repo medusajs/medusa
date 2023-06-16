@@ -1212,7 +1212,7 @@ const ProductWidget = () => {
   return (
     <div>
       <h1>Product Widget</h1>
-      <Link to={'/a/orders'}>
+      <Link to={"/a/orders"}>
         View Orders
       </Link>
     </div>

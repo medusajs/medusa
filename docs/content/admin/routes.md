@@ -186,8 +186,8 @@ The object has one property `link`, which is an object having the following prop
 For example, you can change the content of the previous route you created to export a config object:
 
 ```tsx title=src/admin/routes/custom/page.tsx
-import { RouteConfig } from "@medusajs/admin";
-import { CustomIcon } from "../../icons/custom";
+import { RouteConfig } from "@medusajs/admin"
+import { CustomIcon } from "../../icons/custom"
 
 const CustomPage = () => {
   return (
@@ -199,9 +199,9 @@ const CustomPage = () => {
 
 export const config: RouteConfig = {
   link: {
-    label: 'Custom Route',
-    icon: CustomIcon
-  }
+    label: "Custom Route",
+    icon: CustomIcon,
+  },
 }
 
 export default CustomPage
@@ -258,7 +258,7 @@ const CustomPage = () => {
 
   return (
     <div>
-      <Link to={'/a/products'}>
+      <Link to={"/a/products"}>
         View Products
       </Link>
     </div>
@@ -305,7 +305,7 @@ Make sure to also install the Medusa React package first if you’re intending t
 For example, you can retrieve available products and display them in your route:
 
 ```tsx title=src/admin/routes/custom/page.tsx
-import { useAdminProducts } from "medusa-react";
+import { useAdminProducts } from "medusa-react"
 
 const CustomPage = () => {
   const { products } = useAdminProducts()
