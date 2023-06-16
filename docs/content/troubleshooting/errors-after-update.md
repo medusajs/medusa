@@ -1,4 +1,6 @@
-# Errors After Update
+---
+title: 'Errors After Update'
+---
 
 If you run into errors after updating Medusa and its dependencies, it's highly recommended to check the [Upgrade Guides](../upgrade-guides/index.mdx) if there is a specific guide for your version. These guides include steps required to perform after upgrading Medusa.
 

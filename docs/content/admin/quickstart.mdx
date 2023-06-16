@@ -4,6 +4,8 @@ addHowToData: true
 ---
 
 import Feedback from '@site/src/components/Feedback';
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import AdminLoginSection from '../troubleshooting/signing-in-to-admin.md'
 
 # Admin Dashboard Quickstart
 
@@ -187,7 +189,7 @@ This runs the admin dashboard on `localhost:7001`.
 
 ## Demo Credentials
 
-If you installed the demo data when you installed the Medusa backend by using the `--seed` option or running:
+If you installed the demo data when you installed the Medusa backend by running:
 
 ```bash npm2yarn
 npm run seed
@@ -263,3 +265,16 @@ You can add the following options to the `medusa-admin dev` command:
 The admin dashboard provides a lot of ecommerce features including managing Return Merchandise Authorization (RMA) flows, store settings, products, orders, and much more.
 
 You can learn more about the admin dashboard and its features in the [User Guide](../user-guide.mdx).
+
+---
+
+## Troubleshooting Installation
+
+<Troubleshooting
+  sections={[
+    {
+      title: 'Signing into Admin',
+      content: <AdminLoginSection />
+    },
+  ]}
+/>

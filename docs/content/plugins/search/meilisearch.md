@@ -141,7 +141,7 @@ const plugins = [
             ],
           },
           primaryKey: "id",
-          transform: (product) => ({ 
+          transformer: (product) => ({
             id: product.id, 
             // other attributes...
           }),

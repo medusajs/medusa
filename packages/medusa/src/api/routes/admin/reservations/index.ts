@@ -1,14 +1,16 @@
-import { ReservationItemDTO } from "@medusajs/types"
-import { Router } from "express"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import { InventoryItemDTO, ReservationItemDTO } from "@medusajs/types"
 import middlewares, {
   transformBody,
   transformQuery,
 } from "../../../middlewares"
-import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
-import { AdminPostReservationsReq } from "./create-reservation"
+
 import { AdminGetReservationsParams } from "./list-reservations"
+import { AdminPostReservationsReq } from "./create-reservation"
 import { AdminPostReservationsReservationReq } from "./update-reservation"
+import { LineItem } from "../../../../models"
+import { Router } from "express"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 
 const route = Router()
 
@@ -68,6 +70,25 @@ export type AdminReservationsRes = {
 }
 
 /**
+ * @schema ExtendedReservationItem
+ * type: object
+ * allOf:
+ *   - $ref: "#/components/schemas/ReservationItemDTO"
+ *   - type: object
+ *     properties:
+ *       line_item:
+ *         description: optional line item
+ *         $ref: "#/components/schemas/LineItem"
+ *       inventory_item:
+ *         description: inventory item from inventory module
+ *         $ref: "#/components/schemas/InventoryItemDTO"
+ */
+export type ExtendedReservationItem = ReservationItemDTO & {
+  line_item?: LineItem
+  inventory_item?: InventoryItemDTO
+}
+
+/**
  * @schema AdminReservationsListRes
  * type: object
  * required:
@@ -79,7 +100,7 @@ export type AdminReservationsRes = {
  *   reservations:
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/ReservationItemDTO"
+ *       $ref: "#/components/schemas/ExtendedReservationItem"
  *   count:
  *     type: integer
  *     description: The total number of items available
@@ -102,6 +123,7 @@ export const defaultReservationFields = [
   "inventory_item_id",
   "quantity",
   "line_item_id",
+  "description",
   "metadata",
   "created_at",
   "updated_at",

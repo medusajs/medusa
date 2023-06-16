@@ -31,15 +31,14 @@ import {
   ProductSelector,
   UpdateProductInput,
 } from "../types/product"
-import {
-  buildQuery,
-  buildRelationsOrSelect,
-  isString,
-  setMetadata,
-} from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
-import { objectToStringPath } from "@medusajs/utils"
+import {
+  buildRelations,
+  buildSelects,
+  objectToStringPath,
+} from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -967,11 +966,11 @@ class ProductService extends TransactionBaseService {
     query.order = config.order
 
     if (config.relations && config.relations.length > 0) {
-      query.relations = buildRelationsOrSelect(config.relations)
+      query.relations = buildRelations(config.relations)
     }
 
     if (config.select && config.select.length > 0) {
-      query.select = buildRelationsOrSelect(config.select)
+      query.select = buildSelects(config.select)
     }
 
     const rels = objectToStringPath(query.relations)

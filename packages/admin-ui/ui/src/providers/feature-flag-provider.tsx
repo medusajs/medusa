@@ -8,6 +8,7 @@ import { useAdminGetSession, useAdminStore } from "medusa-react"
 
 export enum FeatureFlag {
   PRODUCT_CATEGORIES = "product_categories",
+  INVENTORY = "inventoryService",
 }
 
 const defaultFeatureFlagContext: {
