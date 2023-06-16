@@ -189,3 +189,11 @@ html[data-theme="dark"] {
     --docusaurus-announcement-bar-height: 30px;
   }
 }
+
+.alert {
+  --ifm-code-background: theme(colors.medusa.bg.subtle.DEFAULT) !important;
+}
+
+html[data-theme="dark"] .alert {
+  --ifm-code-background: theme(colors.medusa.bg.base.dark) !important;
+}
