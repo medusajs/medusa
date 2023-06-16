@@ -33,11 +33,17 @@ export async function runMigrations({
 
   try {
     const migrator = orm.getMigrator()
-    await migrator.up()
 
-    logger?.info("Product module migration executed")
+    const pendingMigrations = await migrator.getPendingMigrations()
+    logger.info("Running pending migrations:", pendingMigrations)
+
+    await migrator.up({
+      migrations: pendingMigrations.map((m) => m.name),
+    })
+
+    logger.info("Product module migration executed")
   } catch (error) {
-    logger?.error(`Product module migration failed to run - Error: ${error}`)
+    logger.error(`Product module migration failed to run - Error: ${error}`)
   }
 
   await orm.close()

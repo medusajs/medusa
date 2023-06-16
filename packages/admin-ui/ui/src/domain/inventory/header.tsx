@@ -1,9 +1,5 @@
 import TableViewHeader from "../../components/organisms/custom-table-header"
 import { useNavigate } from "react-router-dom"
-import {
-  FeatureFlag,
-  useFeatureFlag,
-} from "../../providers/feature-flag-provider"
 
 type P = {
   activeView: "inventory" | "locations" | "reservations"
@@ -15,16 +11,8 @@ type P = {
 
 function InventoryPageTableHeader(props: P) {
   const navigate = useNavigate()
-  const { isFeatureEnabled } = useFeatureFlag()
-  const isReservationsEnabled =
-    isFeatureEnabled(FeatureFlag.RESERVATIONS) &&
-    isFeatureEnabled(FeatureFlag.INVENTORY)
 
-  const views = ["inventory", "locations"]
-
-  if (isReservationsEnabled) {
-    views.push("reservations")
-  }
+  const views = ["inventory", "locations", "reservations"]
 
   return (
     <TableViewHeader
