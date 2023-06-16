@@ -92,8 +92,8 @@
 }
 
 .redocusaurus ul > li.react-tabs__tab--selected[aria-selected="true"]:not(.tab-error):not(.tab-success) {
-  @apply !tw-bg-medusa-button-primary dark:!tw-bg-medusa-button-primary-dark;
-  @apply !tw-border-medusa-button-primary dark:!tw-border-medusa-button-primary-dark;
+  @apply !tw-bg-medusa-button-brand dark:!tw-bg-medusa-button-brand-dark;
+  @apply !tw-border-medusa-button-brand dark:!tw-border-medusa-button-brand-dark;
   @apply !tw-text-medusa-text-on-color dark:!tw-text-medusa-text-on-color-dark;
 }
 
