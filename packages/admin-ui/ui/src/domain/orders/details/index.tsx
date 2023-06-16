@@ -197,6 +197,12 @@ const OrderDetails = () => {
   useHotkeys("command+i", handleCopy)
 
   const handleDeleteOrder = async () => {
+
+    if(order.status === "canceled"){
+      notification("Error", "You cannot cancel an order that has already been canceled.", "error")
+      return
+    }
+
     const shouldDelete = await dialog({
       heading: "Cancel order",
       text: "Are you sure you want to cancel the order?",
