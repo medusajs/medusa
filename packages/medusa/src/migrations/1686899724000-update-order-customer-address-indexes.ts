@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 
-export class addDescriptionToProductCategory1680857773272
+export class updateOrderCustomerAddressIndexes1686899724000
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
