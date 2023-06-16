@@ -1,9 +1,11 @@
 import { Route, Routes } from "react-router-dom"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../../components/organisms/body-card"
+import RouteContainer from "../../../components/organisms/route-container"
 import WidgetContainer from "../../../components/organisms/widget-container"
 import CustomerGroupsTable from "../../../components/templates/customer-group-table/customer-groups-table"
 import useToggleState from "../../../hooks/use-toggle-state"
+import { useRoutes } from "../../../providers/route-provider"
 import { useWidgets } from "../../../providers/widget-provider"
 import CustomersPageTableHeader from "../header"
 import CustomerGroupModal from "./customer-group-modal"
@@ -70,10 +72,25 @@ function Index() {
  * Customer groups routes
  */
 function CustomerGroups() {
+  const { getNestedRoutes } = useRoutes()
+
+  const nestedRoutes = getNestedRoutes("/customers/groups")
+
   return (
     <Routes>
       <Route index element={<Index />} />
       <Route path="/:id" element={<Details />} />
+      {nestedRoutes.map((r, i) => {
+        return (
+          <Route
+            path={r.path}
+            key={i}
+            element={
+              <RouteContainer route={r} previousPath={"/customers/groups"} />
+            }
+          />
+        )
+      })}
     </Routes>
   )
 }

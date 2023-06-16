@@ -9,4 +9,5 @@ export const ALIASED_PACKAGES = [
   "@tanstack/react-query",
   "@tanstack/react-table",
   "@emotion/react",
+  "medusa-react",
 ] as const

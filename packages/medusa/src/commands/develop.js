@@ -41,7 +41,7 @@ export default async function ({ port, directory }) {
 
   const babelPath = path.join(directory, "node_modules", ".bin", "babel")
 
-  execSync(`"${babelPath}" src -d dist`, {
+  execSync(`"${babelPath}" src -d dist --ignore "src/admin/**"`, {
     cwd: directory,
     stdio: ["ignore", process.stdout, process.stderr],
   })
@@ -102,10 +102,13 @@ export default async function ({ port, directory }) {
 
         child.kill("SIGINT")
 
-        execSync(`${babelPath} src -d dist --extensions ".ts,.js"`, {
-          cwd: directory,
-          stdio: ["pipe", process.stdout, process.stderr],
-        })
+        execSync(
+          `${babelPath} src -d dist --extensions ".ts,.js" --ignore "src/admin/**"`,
+          {
+            cwd: directory,
+            stdio: ["pipe", process.stdout, process.stderr],
+          }
+        )
 
         Logger.info("Rebuilt")
 

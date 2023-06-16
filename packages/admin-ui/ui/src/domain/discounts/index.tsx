@@ -5,8 +5,10 @@ import Spacer from "../../components/atoms/spacer"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../components/organisms/body-card"
 import TableViewHeader from "../../components/organisms/custom-table-header"
+import RouteContainer from "../../components/organisms/route-container"
 import WidgetContainer from "../../components/organisms/widget-container"
 import DiscountTable from "../../components/templates/discount-table"
+import { useRoutes } from "../../providers/route-provider"
 import { useWidgets } from "../../providers/widget-provider"
 import Details from "./details"
 import New from "./new"
@@ -68,11 +70,24 @@ const DiscountIndex = () => {
 }
 
 const Discounts = () => {
+  const { getNestedRoutes } = useRoutes()
+
+  const nestedRoutes = getNestedRoutes("/discounts")
+
   return (
     <Routes>
       <Route index element={<DiscountIndex />} />
       <Route path="/new" element={<New />} />
       <Route path="/:id" element={<Details />} />
+      {nestedRoutes.map((r, i) => {
+        return (
+          <Route
+            path={r.path}
+            key={i}
+            element={<RouteContainer route={r} previousPath={"/discounts"} />}
+          />
+        )
+      })}
     </Routes>
   )
 }

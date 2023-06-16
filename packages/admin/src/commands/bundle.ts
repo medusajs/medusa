@@ -3,13 +3,12 @@ import {
   findAllValidRoutes,
   findAllValidWidgets,
   logger,
+  normalizePath,
 } from "@medusajs/admin-ui"
-import alias from "@rollup/plugin-alias"
 import commonjs from "@rollup/plugin-commonjs"
 import json from "@rollup/plugin-json"
 import { nodeResolve } from "@rollup/plugin-node-resolve"
 import replace from "@rollup/plugin-replace"
-import terser from "@rollup/plugin-terser"
 import virtual from "@rollup/plugin-virtual"
 import fse from "fs-extra"
 import path from "node:path"
@@ -24,7 +23,7 @@ export async function bundle() {
 
   if (!pathExists) {
     logger.panic(
-      "We could not find a `src/admin` directory. Your project does not seem to contain any admin extension."
+      "The `src/admin` directory could not be found. It appears that your project does not include any admin extensions."
     )
   }
 
@@ -32,13 +31,13 @@ export async function bundle() {
 
   if (!pkg) {
     logger.panic(
-      "We could not find a `package.json` file. Your project is not a valid Medusa project or plugin."
+      "The `package.json` file could not be found. Your project does not meet the requirements of a valid Medusa plugin."
     )
   }
 
   if (!pkg.name) {
     logger.panic(
-      "Your `package.json` file does not have a `name` property. Add one and try again."
+      "The `package.json` does not contain a `name` field. Your project does not meet the requirements of a valid Medusa plugin."
     )
   }
 
@@ -52,7 +51,9 @@ export async function bundle() {
   const widgetImports = dedent`
     ${widgets
       .map((widget, i) => {
-        return `import Widget${i}, { config as widgetConfig${i} } from "${widget}"`
+        return `import Widget${i}, { config as widgetConfig${i} } from "${normalizePath(
+          widget
+        )}"`
       })
       .join("\n")}
   `
@@ -62,7 +63,7 @@ export async function bundle() {
       .map((route, i) => {
         return `import Route${i}${
           route.hasConfig ? `, { config as routeConfig${i} }` : ""
-        } from "${route}"`
+        } from "${normalizePath(route.file)}"`
       })
       .join("\n")}
     `
@@ -75,7 +76,7 @@ export async function bundle() {
           .map(
             (r, i) => `{
             Component: Route${i},
-            config: { path: ${r.path}${
+            config: { path: "${r.path}"${
               r.hasConfig ? `, ...routeConfig${i}` : ""
             } }
         }`
@@ -103,13 +104,16 @@ export async function bundle() {
     export default entry
   `
 
-  const paths = [...routes.map((r) => r.path), ...widgets]
-
   const dependencies = Object.keys(pkg.dependencies || {})
 
   const peerDependencies = Object.keys(pkg.peerDependencies || {})
 
-  const external = [...ALIASED_PACKAGES, ...dependencies, ...peerDependencies]
+  const external = [
+    ...ALIASED_PACKAGES,
+    ...dependencies,
+    ...peerDependencies,
+    "react/jsx-runtime",
+  ]
 
   const dist = path.resolve(process.cwd(), "dist", "admin")
 
@@ -120,19 +124,33 @@ export async function bundle() {
       await fse.remove(dist)
     } catch (error) {
       logger.panic(
-        "Failed to clean dist folder. Make sure that you have write access to the folder."
+        `Failed to clean ${dist}. Make sure that you have write access to the folder.`
       )
     }
   }
 
   try {
     const bundle = await rollup({
-      input: [...paths, "entry"],
+      input: ["entry"],
+      external,
       plugins: [
-        esbuild({ include: /\.tsx?$/, sourceMap: true }),
-        nodeResolve({ preferBuiltins: true, browser: true }),
-        commonjs({
-          extensions: [".mjs", ".js", ".json", ".node", ".jsx", ".ts", ".tsx"],
+        virtual({
+          entry: virtualEntry,
+        }),
+        nodeResolve({
+          preferBuiltins: true,
+          browser: true,
+          extensions: [".mjs", ".js", ".json", ".node", "jsx", "ts", "tsx"],
+        }),
+        commonjs(),
+        esbuild({
+          include: /\.[jt]sx?$/, // Transpile .js, .jsx, .ts, and .tsx files
+          exclude: /node_modules/,
+          minify: process.env.NODE_ENV === "production",
+          target: "es2017",
+          jsxFactory: "React.createElement",
+          jsxFragment: "React.Fragment",
+          jsx: "automatic",
         }),
         json(),
         replace({
@@ -141,19 +159,7 @@ export async function bundle() {
           },
           preventAssignment: true,
         }),
-        alias({
-          entries: ALIASED_PACKAGES.reduce((acc, dep) => {
-            acc[dep] = require.resolve(dep)
-
-            return acc
-          }, {} as { [key: string]: string }),
-        }),
-        virtual({
-          entry: virtualEntry,
-        }),
-        terser(),
       ],
-      external,
       onwarn: (warning, warn) => {
         if (
           warning.code === "CIRCULAR_DEPENDENCY" &&
@@ -164,6 +170,8 @@ export async function bundle() {
 
         warn(warning)
       },
+    }).catch((error) => {
+      throw error
     })
 
     await bundle.write({
@@ -171,13 +179,15 @@ export async function bundle() {
       chunkFileNames: "[name].js",
       format: "esm",
       exports: "named",
-      preserveModules: true,
     })
 
     await bundle.close()
 
-    logger.info("Successfully built extension bundle.")
+    logger.info("The extension bundle has been built successfully")
   } catch (error) {
-    logger.panic("Failed to build extension bundle.", error)
+    logger.panic(
+      `Error encountered while building the extension bundle: ${error}`,
+      error
+    )
   }
 }

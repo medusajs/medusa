@@ -3,6 +3,7 @@ import path from "node:path"
 import dedent from "ts-dedent"
 import { copyFilter } from "./copy-filter"
 import { logger } from "./logger"
+import { normalizePath } from "./normalize-path"
 import { findAllValidRoutes, findAllValidWidgets } from "./validate-extensions"
 
 const FILE_EXT_REGEX = /\.[^/.]+$/
@@ -45,9 +46,11 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
   )
 
   const widgetsArray = localWidgets.map((file, index) => {
-    const relativePath = path
-      .relative(path.resolve(dest, "admin", "src", "extensions"), file)
-      .replace(FILE_EXT_REGEX, "")
+    const relativePath = normalizePath(
+      path
+        .relative(path.resolve(dest, "admin", "src", "extensions"), file)
+        .replace(FILE_EXT_REGEX, "")
+    )
 
     return {
       importStatement: `import Widget${index}, { config as widgetConfig${index} } from "./${relativePath}"`,
@@ -56,9 +59,11 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
   })
 
   const routesArray = localRoutes.map((route, index) => {
-    const relativePath = path
-      .relative(path.resolve(dest, "admin", "src", "extensions"), route.file)
-      .replace(FILE_EXT_REGEX, "")
+    const relativePath = normalizePath(
+      path
+        .relative(path.resolve(dest, "admin", "src", "extensions"), route.file)
+        .replace(FILE_EXT_REGEX, "")
+    )
 
     const importStatement = route.hasConfig
       ? `import Page${index}, { config as routeConfig${index} } from "./${relativePath}"`
@@ -96,7 +101,7 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
     )
   } catch (err) {
     logger.panic(
-      `Could not write entry file for the local extensions. ${err.message}`
+      `Failed to write the entry file for the local extensions. Error: ${err.message}`
     )
   }
 
@@ -108,19 +113,25 @@ function findPluginsWithExtensions(plugins: string[]) {
 
   for (const plugin of plugins) {
     try {
-      const pluginDir = require.resolve(plugin)
+      const pluginDir = path.dirname(
+        require.resolve(`${plugin}/package.json`, {
+          paths: [process.cwd()],
+        })
+      )
       const entrypoint = path.resolve(
         pluginDir,
         "dist",
         "admin",
-        "_virtual",
         "_virtual_entry.js"
       )
 
       if (fse.existsSync(entrypoint)) {
-        pluginsWithExtensions.push(plugin)
+        pluginsWithExtensions.push(entrypoint)
       }
     } catch (_err) {
+      logger.warn(
+        `There was an error while attempting to load extensions from the plugin: ${plugin}. Are you sure it is installed?`
+      )
       // no plugin found - noop
     }
   }
@@ -144,9 +155,9 @@ async function writeTailwindContentFile(dest: string, plugins: string[]) {
               path.dirname(path.join(plugin, "..", ".."))
             )
 
-            return `${tailwindContentPath}/**/*.{js,jsx,ts,tsx}`
+            return `"${tailwindContentPath}/**/*.{js,jsx,ts,tsx}"`
           })
-          .join(",\n")},
+          .join(",\n")}
       ],
     }
   
@@ -159,7 +170,7 @@ async function writeTailwindContentFile(dest: string, plugins: string[]) {
     )
   } catch (err) {
     logger.warn(
-      `Unable to write the Tailwind content file to ${dest}. The admin UI will continue to function, but CSS classes applied to extensions from plugins may not be available.`
+      `Failed to write the Tailwind content file to ${dest}. The admin UI will remain functional, but CSS classes applied to extensions from plugins might not have the correct styles`
     )
   }
 }
@@ -170,13 +181,34 @@ async function createMainExtensionsEntry(
   hasLocalExtensions: boolean
 ) {
   if (!plugins.length && !hasLocalExtensions) {
+    // We still want to generate the entry file, even if there are no extensions
+    // to load, so that the admin UI can be built without errors
+    const emptyEntry = dedent`
+      const extensions = []
+
+      export default extensions
+    `
+
+    try {
+      await fse.writeFile(
+        path.resolve(dest, "admin", "src", "extensions", "_main-entry.ts"),
+        emptyEntry
+      )
+    } catch (err) {
+      logger.panic(
+        `Failed to write the entry file for the main extensions. Error: ${err.message}`
+      )
+    }
+
     return
   }
 
   const pluginsArray = plugins.map((plugin) => {
-    const relativePath = path
-      .relative(path.resolve(dest, "admin", "src", "extensions"), plugin)
-      .replace(FILE_EXT_REGEX, "")
+    const relativePath = normalizePath(
+      path
+        .relative(path.resolve(dest, "admin", "src", "extensions"), plugin)
+        .replace(FILE_EXT_REGEX, "")
+    )
 
     return relativePath
   })
@@ -218,7 +250,9 @@ async function createMainExtensionsEntry(
       extensionsEntry
     )
   } catch (err) {
-    logger.panic(`Could not write extensions entry file. ${err.message}`)
+    logger.panic(
+      `Failed to write the extensions entry file. Error: ${err.message}`
+    )
   }
 }
 
