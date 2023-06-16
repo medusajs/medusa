@@ -34,12 +34,7 @@ type CreateOptions = {
   boilerplate?: boolean
 }
 
-export default async ({
-  repoUrl = "",
-  // TODO remove default value later
-  seed = true,
-  boilerplate,
-}: CreateOptions) => {
+export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
   track("CREATE_CLI")
   if (repoUrl) {
     track("STARTER_SELECTED", { starter: repoUrl })
@@ -118,20 +113,19 @@ export default async ({
     }
   }
 
-  // TODO enable this later
-  // const { adminEmail } = await inquirer.prompt([
-  //   {
-  //     type: "input",
-  //     name: "adminEmail",
-  //     message: "Enter an email for your admin dashboard user",
-  //     default: !seed && boilerplate ? "admin@medusa-test.com" : undefined,
-  //     validate: (input) => {
-  //       return typeof input === "string" && input.length > 0 && isEmail(input)
-  //         ? true
-  //         : "Please enter a valid email"
-  //     },
-  //   },
-  // ])
+  const { adminEmail } = await inquirer.prompt([
+    {
+      type: "input",
+      name: "adminEmail",
+      message: "Enter an email for your admin dashboard user",
+      default: !seed && boilerplate ? "admin@medusa-test.com" : undefined,
+      validate: (input) => {
+        return typeof input === "string" && input.length > 0 && isEmail(input)
+          ? true
+          : "Please enter a valid email"
+      },
+    },
+  ])
 
   logMessage({
     message: `${emojify(
@@ -214,9 +208,9 @@ export default async ({
     inviteToken = await prepareProject({
       directory: projectName,
       dbConnectionString,
-      // admin: {
-      //   email: adminEmail,
-      // },
+      admin: {
+        email: adminEmail,
+      },
       seed,
       boilerplate,
       spinner,
@@ -285,13 +279,13 @@ export default async ({
     }
   })
 
-  // await waitOn({
-  //   resources: ["http://localhost:9000/health"],
-  // }).then(async () =>
-  //   open(
-  //     inviteToken
-  //       ? `http://localhost:7001/invite?token=${inviteToken}&first_run=true`
-  //       : "http://localhost:7001"
-  //   )
-  // )
+  await waitOn({
+    resources: ["http://localhost:9000/health"],
+  }).then(async () =>
+    open(
+      inviteToken
+        ? `http://localhost:7001/invite?token=${inviteToken}&first_run=true`
+        : "http://localhost:7001"
+    )
+  )
 }
