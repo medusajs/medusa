@@ -3,9 +3,9 @@ description: 'Learn how to use the product module in a serverless setup by insta
 addHowToData: true
 ---
 
-# How to Use Serverless Products Module
+# How to Use Serverless Product Module
 
-In this document, you’ll learn how to use the Products module in a serverless setup.
+In this document, you’ll learn how to use the Product module in a serverless setup.
 
 ## Overview
 
