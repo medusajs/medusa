@@ -468,6 +468,10 @@
     {
       "source": "/deployments/admin/deploying-on-netlify",
       "destination": "/deployments/admin/deploying-on-vercel"
+    },
+    {
+      "source": "/admin/development",
+      "destination": "/admin/widgets"
     }
   ]
 }
