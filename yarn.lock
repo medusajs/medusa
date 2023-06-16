@@ -13880,7 +13880,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ansi-align@npm:^3.0.0, ansi-align@npm:^3.0.1":
+"ansi-align@npm:^3.0.0":
   version: 3.0.1
   resolution: "ansi-align@npm:3.0.1"
   dependencies:
@@ -15712,7 +15712,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"boxen@npm:^5.0.0, boxen@npm:^5.0.1, boxen@npm:^5.1.2":
+"boxen@npm:^5, boxen@npm:^5.0.0, boxen@npm:^5.0.1, boxen@npm:^5.1.2":
   version: 5.1.2
   resolution: "boxen@npm:5.1.2"
   dependencies:
@@ -15725,22 +15725,6 @@ __metadata:
     widest-line: ^3.1.0
     wrap-ansi: ^7.0.0
   checksum: 71f31c2eb3dcacd5fce524ae509e0cc90421752e0bfbd0281fd3352871d106c462a0f810c85f2fdb02f3a9fab2d7a84e9718b4999384d651b76104ebe5d2c024
-  languageName: node
-  linkType: hard
-
-"boxen@npm:^7.1.0":
-  version: 7.1.0
-  resolution: "boxen@npm:7.1.0"
-  dependencies:
-    ansi-align: ^3.0.1
-    camelcase: ^7.0.1
-    chalk: ^5.2.0
-    cli-boxes: ^3.0.0
-    string-width: ^5.1.2
-    type-fest: ^2.13.0
-    widest-line: ^4.0.1
-    wrap-ansi: ^8.1.0
-  checksum: e37b79f2156dc17e6f9994fedd175ff33a674d651bda0fcd99ba36d1be0fd1954ef8e25a940fc2229fb9978673bc7b78bc31a7ded42b443c32ba2fbccdbfcfa0
   languageName: node
   linkType: hard
 
@@ -16410,13 +16394,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"camelcase@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "camelcase@npm:7.0.1"
-  checksum: 3adfc9a0e96d51b3a2f4efe90a84dad3e206aaa81dfc664f1bd568270e1bf3b010aad31f01db16345b4ffe1910e16ab411c7273a19a859addd1b98ef7cf4cfbd
-  languageName: node
-  linkType: hard
-
 "camelize@npm:^1.0.0":
   version: 1.0.1
   resolution: "camelize@npm:1.0.1"
@@ -16844,13 +16821,6 @@ __metadata:
   version: 2.2.1
   resolution: "cli-boxes@npm:2.2.1"
   checksum: 6111352edbb2f62dbc7bfd58f2d534de507afed7f189f13fa894ce5a48badd94b2aa502fda28f1d7dd5f1eb456e7d4033d09a76660013ef50c7f66e7a034f050
-  languageName: node
-  linkType: hard
-
-"cli-boxes@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "cli-boxes@npm:3.0.0"
-  checksum: 4db3e8fbfaf1aac4fb3a6cbe5a2d3fa048bee741a45371b906439b9ffc821c6e626b0f108bdcd3ddf126a4a319409aedcf39a0730573ff050fdd7b6731e99fb9
   languageName: node
   linkType: hard
 
@@ -17909,7 +17879,7 @@ __metadata:
     "@types/wait-on": ^5.3.1
     "@typescript-eslint/eslint-plugin": ^5.59.5
     "@typescript-eslint/parser": ^5.59.5
-    boxen: ^7.1.0
+    boxen: ^5
     chalk: ^5.2.0
     commander: ^10.0.1
     configstore: ^6.0.0
@@ -41393,7 +41363,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^2.13.0, type-fest@npm:^2.18.0":
+"type-fest@npm:^2.18.0":
   version: 2.19.0
   resolution: "type-fest@npm:2.19.0"
   checksum: a5a7ecf2e654251613218c215c7493574594951c08e52ab9881c9df6a6da0aeca7528c213c622bc374b4e0cb5c443aa3ab758da4e3c959783ce884c3194e12cb
@@ -43251,15 +43221,6 @@ __metadata:
   dependencies:
     string-width: ^4.0.0
   checksum: b1e623adcfb9df35350dd7fc61295d6d4a1eaa65a406ba39c4b8360045b614af95ad10e05abf704936ed022569be438c4bfa02d6d031863c4166a238c301119f
-  languageName: node
-  linkType: hard
-
-"widest-line@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "widest-line@npm:4.0.1"
-  dependencies:
-    string-width: ^5.0.1
-  checksum: 7da9525ba45eaf3e4ed1a20f3dcb9b85bd9443962450694dae950f4bdd752839747bbc14713522b0b93080007de8e8af677a61a8c2114aa553ad52bde72d0f9c
   languageName: node
   linkType: hard
 
