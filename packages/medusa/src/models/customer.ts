@@ -20,7 +20,7 @@ import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 @Unique(["email", "has_account"])
-@Index(["first_name", "last_name", "phone"])
+@Index("idx_customer_first_last_phone", ["first_name", "last_name", "phone"])
 @Index("uidx_customer_id", ["id"], { unique: true })
 export class Customer extends SoftDeletableEntity {
   @Index()
