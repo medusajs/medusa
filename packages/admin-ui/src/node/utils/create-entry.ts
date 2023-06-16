@@ -109,7 +109,7 @@ function findPluginsWithExtensions(plugins: string[]) {
   for (const plugin of plugins) {
     try {
       const pluginDir = path.dirname(
-        require.resolve(plugin, {
+        require.resolve(`${plugin}/package.json`, {
           paths: [process.cwd()],
         })
       )
@@ -125,7 +125,7 @@ function findPluginsWithExtensions(plugins: string[]) {
       }
     } catch (_err) {
       logger.warn(
-        "There was an error while attempting to load extensions from a plugin."
+        `There was an error while attempting to load extensions from the plugin: ${plugin}. Are you sure it is installed?`
       )
       // no plugin found - noop
     }
@@ -165,7 +165,7 @@ async function writeTailwindContentFile(dest: string, plugins: string[]) {
     )
   } catch (err) {
     logger.warn(
-      `Unable to write the Tailwind content file to ${dest}. The admin UI will continue to function, but CSS classes applied to extensions from plugins may not be available.`
+      `Failed to write the Tailwind content file to ${dest}. The admin UI will remain functional, but CSS classes applied to extensions from plugins might not have the correct styles`
     )
   }
 }
@@ -224,7 +224,9 @@ async function createMainExtensionsEntry(
       extensionsEntry
     )
   } catch (err) {
-    logger.panic(`Could not write extensions entry file. ${err.message}`)
+    logger.panic(
+      `Failed to write the extensions entry file. Error: ${err.message}`
+    )
   }
 }
 

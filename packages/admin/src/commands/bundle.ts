@@ -22,7 +22,7 @@ export async function bundle() {
 
   if (!pathExists) {
     logger.panic(
-      "We could not find a `src/admin` directory. Your project does not seem to contain any admin extension."
+      "The src/admin directory could not be found. It appears that your project does not include any admin extensions."
     )
   }
 
@@ -30,13 +30,13 @@ export async function bundle() {
 
   if (!pkg) {
     logger.panic(
-      "We could not find a `package.json` file. Your project is not a valid Medusa project or plugin."
+      "The `package.json` file could not be found. Your project does not meet the requirements of a valid Medusa plugin."
     )
   }
 
   if (!pkg.name) {
     logger.panic(
-      "Your `package.json` file does not have a `name` property. Add one and try again."
+      "The `package.json` does not contain a `name` field. Your project does not meet the requirements of a valid Medusa plugin."
     )
   }
 
@@ -121,7 +121,7 @@ export async function bundle() {
       await fse.remove(dist)
     } catch (error) {
       logger.panic(
-        "Failed to clean dist folder. Make sure that you have write access to the folder."
+        `Failed to clean ${dist}. Make sure that you have write access to the folder.`
       )
     }
   }
@@ -142,12 +142,12 @@ export async function bundle() {
         commonjs(),
         esbuild({
           include: /\.[jt]sx?$/, // Transpile .js, .jsx, .ts, and .tsx files
-          exclude: /node_modules/, // Exclude node_modules from transpilation
-          minify: process.env.NODE_ENV === "production", // Minify in production mode
-          target: "es2017", // Specify target environment
-          jsxFactory: "React.createElement", // Specify JSX factory function
-          jsxFragment: "React.Fragment", // Specify JSX fragment component
-          jsx: "automatic", // Specify JSX mode: 'preserve', 'transform' or 'automatic'
+          exclude: /node_modules/,
+          minify: process.env.NODE_ENV === "production",
+          target: "es2017",
+          jsxFactory: "React.createElement",
+          jsxFragment: "React.Fragment",
+          jsx: "automatic",
         }),
         json(),
         replace({
@@ -156,13 +156,6 @@ export async function bundle() {
           },
           preventAssignment: true,
         }),
-        // alias({
-        //   entries: ALIASED_PACKAGES.reduce((acc, dep) => {
-        //     acc[dep] = require.resolve(dep)
-
-        //     return acc
-        //   }, {} as { [key: string]: string }),
-        // }),
       ],
       onwarn: (warning, warn) => {
         if (
@@ -187,9 +180,11 @@ export async function bundle() {
 
     await bundle.close()
 
-    logger.info("Successfully built extension bundle.")
+    logger.info("The extension bundle has been built successfully")
   } catch (error) {
-    // Some errors are not caught by rollup and are thrown instead
-    logger.panic(`Failed to build extension bundle: ${error}`, error)
+    logger.panic(
+      `Error encountered while building the extension bundle: ${error}`,
+      error
+    )
   }
 }
