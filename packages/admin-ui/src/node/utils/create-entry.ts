@@ -181,6 +181,25 @@ async function createMainExtensionsEntry(
   hasLocalExtensions: boolean
 ) {
   if (!plugins.length && !hasLocalExtensions) {
+    // We still want to generate the entry file, even if there are no extensions
+    // to load, so that the admin UI can be built without errors
+    const emptyEntry = dedent`
+      const extensions = []
+
+      export default extensions
+    `
+
+    try {
+      await fse.writeFile(
+        path.resolve(dest, "admin", "src", "extensions", "_main-entry.ts"),
+        emptyEntry
+      )
+    } catch (err) {
+      logger.panic(
+        `Failed to write the entry file for the main extensions. Error: ${err.message}`
+      )
+    }
+
     return
   }
 
