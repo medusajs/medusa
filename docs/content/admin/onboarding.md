@@ -84,8 +84,8 @@ Each of the collapsible elements below hold the path to the file that you should
 <!-- eslint-disable max-len -->
 
   ```tsx title=src/admin/components/shared/icons/check-circle-fill-icon.tsx
-  import React from "react";
-  import IconProps from "../../../types/icon-type";
+  import React from "react"
+  import IconProps from "../../../types/icon-type"
   
   const CheckCircleFillIcon: React.FC<IconProps> = ({
     size = "24",
@@ -122,8 +122,8 @@ Each of the collapsible elements below hold the path to the file that you should
   </summary>
 
   ```tsx title=src/admin/components/shared/icons/cross-icon.tsx
-  import React from "react";
-  import IconProps from "../../../types/icon-type";
+  import React from "react"
+  import IconProps from "../../../types/icon-type"
   
   const CrossIcon: React.FC<IconProps> = ({
     size = "20",
@@ -170,8 +170,8 @@ Each of the collapsible elements below hold the path to the file that you should
 <!-- eslint-disable max-len -->
 
   ```tsx title=src/admin/components/shared/icons/get-started-icon.tsx
-  import React from "react";
-  import IconProps from "../../../types/icon-type";
+  import React from "react"
+  import IconProps from "../../../types/icon-type"
   
   const GetStartedIcon: React.FC<IconProps> = () => (
     <svg
@@ -453,8 +453,8 @@ Each of the collapsible elements below hold the path to the file that you should
 <!-- eslint-disable max-len -->
 
   ```tsx title=src/admin/components/shared/icons/clipboard-copy-icon.tsx
-  import React from "react";
-  import IconProps from "../../../types/icon-type";
+  import React from "react"
+  import IconProps from "../../../types/icon-type"
   
   const ClipboardCopyIcon: React.FC<IconProps> = ({
     size = "20",
@@ -515,8 +515,8 @@ Each of the collapsible elements below hold the path to the file that you should
 <!-- eslint-disable max-len -->
 
   ```tsx title=src/admin/components/shared/icons/computer-desktop-icon.tsx
-  import React from "react";
-  import IconProps from "../../../types/icon-type";
+  import React from "react"
+  import IconProps from "../../../types/icon-type"
   
   const ComputerDesktopIcon: React.FC<IconProps> = ({
     size = "24",
@@ -555,8 +555,8 @@ Each of the collapsible elements below hold the path to the file that you should
 <!-- eslint-disable max-len -->
 
   ```tsx title=src/admin/components/shared/icons/dollar-sign-icon.tsx
-  import React from "react";
-  import IconProps from "../../../types/icon-type";
+  import React from "react"
+  import IconProps from "../../../types/icon-type"
   
   const DollarSignIcon: React.FC<IconProps> = ({
     size = "24",
@@ -603,10 +603,10 @@ Each of the collapsible elements below hold the path to the file that you should
 <!-- eslint-disable max-len -->
 
   ```tsx title=src/admin/components/shared/accordion.tsx
-  import * as AccordionPrimitive from "@radix-ui/react-accordion";
-  import clsx from "clsx";
-  import React from "react";
-  import CheckCircleFillIcon from "./icons/check-circle-fill-icon";
+  import * as AccordionPrimitive from "@radix-ui/react-accordion"
+  import clsx from "clsx"
+  import React from "react"
+  import CheckCircleFillIcon from "./icons/check-circle-fill-icon"
   
   type AccordionItemProps = AccordionPrimitive.AccordionItemProps & {
     title: string;
