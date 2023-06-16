@@ -1,6 +1,10 @@
+import { normalize } from "node:path"
+
 export function normalizePath(path: string): string {
-  const isWindows = process.platform === "win32"
-  const separator = isWindows ? "\\" : "/"
-  const regex = new RegExp(`\\${separator}`, "g")
-  return path.replace(regex, "/")
+  // const isWindows = process.platform === "win32"
+  // const separator = isWindows ? "\\" : "/"
+  // const regex = new RegExp(`\\${separator}`, "g")
+  // return path.replace(regex, "/")
+
+  return normalize(path)
 }
