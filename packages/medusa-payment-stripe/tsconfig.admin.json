@@ -1,8 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "esnext",
-    "jsx": "react-jsx"
+    "module": "esnext"
   },
   "include": ["src/admin"],
   "exclude": ["**/*.spec.js"]

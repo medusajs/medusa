@@ -17,6 +17,10 @@ export type LinkConfig = {
 
 export type RouteConfig = {
   link?: LinkConfig
+}
+
+export type GeneratedRouteConfig = {
+  link?: LinkConfig
   path: string
 }
 
@@ -27,7 +31,7 @@ export type WidgetExtension = {
 
 export type RouteExtension = {
   Component: ComponentType
-  config: RouteConfig
+  config: GeneratedRouteConfig
 }
 
 export type Extension = WidgetExtension | RouteExtension

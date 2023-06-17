@@ -82,6 +82,31 @@ export function getWebpackConfig({
             loader: "swc-loader",
             options: {
               jsc: {
+                parser: {
+                  syntax: "typescript", // Use TypeScript syntax for parsing
+                  jsx: true, // Enable JSX parsing
+                },
+                transform: {
+                  react: {
+                    runtime: "automatic",
+                  },
+                },
+              },
+            },
+          },
+        },
+        {
+          test: /\.jsx?$/,
+          exclude: /node_modules/,
+          include: [cacheDir],
+          use: {
+            loader: "swc-loader",
+            options: {
+              jsc: {
+                parser: {
+                  syntax: "ecmascript", // Use Ecmascript syntax for parsing
+                  jsx: true, // Enable JSX parsing
+                },
                 transform: {
                   react: {
                     runtime: "automatic",

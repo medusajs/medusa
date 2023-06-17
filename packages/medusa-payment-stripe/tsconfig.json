@@ -14,7 +14,6 @@
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
     "noImplicitReturns": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,

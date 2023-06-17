@@ -2,6 +2,7 @@ import { DndProvider } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { useHotkeys } from "react-hotkeys-hook"
 import { Route, Routes, useNavigate } from "react-router-dom"
+import RouteErrorElement from "../components/molecules/route-error-element"
 import RouteContainer from "../components/organisms/route-container"
 import PrivateRoute from "../components/private-route"
 import SEO from "../components/seo"
@@ -72,6 +73,7 @@ const DashboardRoutes = () => {
                 <Route
                   key={index}
                   path={`/${route.path}/*`}
+                  errorElement={<RouteErrorElement origin={route.origin} />}
                   element={<RouteContainer route={route} />}
                 />
               )

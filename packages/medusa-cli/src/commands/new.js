@@ -18,6 +18,7 @@ import inquirer from "inquirer"
 
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
+import { clearProject } from "@medusajs/utils"
 
 const removeUndefined = (obj) => {
   return Object.fromEntries(
@@ -630,6 +631,12 @@ medusa new ${rootPath} [url-to-starter]
       track("CLI_NEW_SEED_DB")
       await attemptSeed(rootPath)
     }
+  }
+
+  if (!selectedOtherStarter) {
+    reporter.info("Final project preparations...")
+    // remove demo files
+    clearProject(rootPath)
   }
 
   successMessage(rootPath)

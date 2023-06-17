@@ -118,7 +118,7 @@ const Sidebar: React.FC = () => {
             return (
               <SidebarMenuItem
                 key={index}
-                pageLink={`/a/${cleanLink}`}
+                pageLink={`/a${cleanLink}`}
                 icon={icon ? <Icon /> : <SquaresPlus size={ICON_SIZE} />}
                 triggerHandler={triggerHandler}
                 text={label}

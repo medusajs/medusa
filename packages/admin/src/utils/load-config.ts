@@ -2,7 +2,7 @@ import type { ConfigModule } from "@medusajs/medusa"
 import { getConfigFile } from "medusa-core-utils"
 import { PluginOptions } from "../types"
 
-export const loadConfig = () => {
+export const loadConfig = (): PluginOptions | null => {
   const { configModule } = getConfigFile<ConfigModule>(
     process.cwd(),
     "medusa-config"
@@ -13,6 +13,10 @@ export const loadConfig = () => {
       (typeof p === "string" && p === "@medusajs/admin") ||
       (typeof p === "object" && p.resolve === "@medusajs/admin")
   )
+
+  if (!plugin) {
+    return null
+  }
 
   let config: PluginOptions = {
     serve: true,

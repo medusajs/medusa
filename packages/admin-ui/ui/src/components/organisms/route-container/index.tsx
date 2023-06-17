@@ -1,14 +1,15 @@
-import type { Route as InjectedRoute } from "@medusajs/admin-shared"
 import { Route, Routes } from "react-router-dom"
 import { useRoutes } from "../../../providers/route-provider"
+import { Route as AdminRoute } from "../../../types/extensions"
+import RouteErrorElement from "../../molecules/route-error-element"
 
 type RouteContainerProps = {
-  route: InjectedRoute
+  route: AdminRoute
   previousPath?: string
 }
 
 const RouteContainer = ({ route, previousPath = "" }: RouteContainerProps) => {
-  const { Page, path } = route
+  const { Page, path, origin } = route
 
   const { getNestedRoutes } = useRoutes()
 
@@ -25,7 +26,11 @@ const RouteContainer = ({ route, previousPath = "" }: RouteContainerProps) => {
   return (
     <>
       <Routes>
-        <Route path={"/"} element={<Page />} />
+        <Route
+          path={"/"}
+          element={<Page />}
+          errorElement={<RouteErrorElement origin={origin} />}
+        />
         {nestedRoutes.map((r, i) => (
           <Route
             path={r.path}

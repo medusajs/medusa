@@ -3,7 +3,9 @@ import Spacer from "../../components/atoms/spacer"
 import PlusIcon from "../../components/fundamentals/icons/plus-icon"
 import BodyCard from "../../components/organisms/body-card"
 import TableViewHeader from "../../components/organisms/custom-table-header"
+import RouteContainer from "../../components/organisms/route-container"
 import WidgetContainer from "../../components/organisms/widget-container"
+import { useRoutes } from "../../providers/route-provider"
 import { useWidgets } from "../../providers/widget-provider"
 import PricingDetails from "./details"
 import New from "./new"
@@ -49,11 +51,24 @@ const PricingIndex = () => {
 }
 
 const Pricing = () => {
+  const { getNestedRoutes } = useRoutes()
+
+  const nestedRoutes = getNestedRoutes("/pricing")
+
   return (
     <Routes>
       <Route index element={<PricingIndex />} />
       <Route path="/new" element={<New />} />
       <Route path="/:id" element={<PricingDetails />} />
+      {nestedRoutes.map((r, i) => {
+        return (
+          <Route
+            path={r.path}
+            key={i}
+            element={<RouteContainer route={r} previousPath={"/pricing"} />}
+          />
+        )
+      })}
     </Routes>
   )
 }

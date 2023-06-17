@@ -1,13 +1,12 @@
 import React from "react"
-import { WidgetConfig } from "@medusajs/admin"
+import { WidgetConfig, OrderDetailsWidgetProps } from "@medusajs/admin"
 import { Container } from "../shared/components/container"
 import { useAdminEntity } from "../shared/hooks"
 import { ListStripeIntentRes } from "../../types"
 import Table from "../shared/components/table"
 import StripeLogo from "../shared/icons/stripe-logo"
-import { Order } from "@medusajs/medusa"
 
-const MyWidget = (props: { order: Order }) => {
+const MyWidget = (props: OrderDetailsWidgetProps) => {
   const { order } = props
   const { data } = useAdminEntity<ListStripeIntentRes>(props.order.id)
 

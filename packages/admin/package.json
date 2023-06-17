@@ -33,7 +33,6 @@
     "@rollup/plugin-json": "6.0.0",
     "@rollup/plugin-node-resolve": "15.0.2",
     "@rollup/plugin-replace": "5.0.2",
-    "@rollup/plugin-terser": "0.4.1",
     "@rollup/plugin-virtual": "^3.0.1",
     "commander": "^10.0.0",
     "dotenv": "16.0.3",

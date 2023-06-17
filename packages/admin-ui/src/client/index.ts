@@ -4,6 +4,7 @@ export type {
   Extension,
   ForbiddenRoute,
   InjectionZone,
+  RouteConfig,
   RouteExtension,
   WidgetConfig,
   WidgetExtension,
