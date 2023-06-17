@@ -1,10 +1,9 @@
 import path from "path"
-import { fork, execSync } from "child_process"
+import { execSync, fork } from "child_process"
 import boxen from "boxen"
 import chokidar from "chokidar"
 import Store from "medusa-telemetry/dist/store"
 import { EOL } from "os"
-import path from "path"
 
 import Logger from "../loaders/logger"
 
@@ -16,6 +15,10 @@ const defaultConfig = {
 
 export default async function ({ port, directory }) {
   const args = process.argv
+  const argv =
+    process.argv.indexOf("--") !== -1
+      ? process.argv.slice(process.argv.indexOf("--") + 1)
+      : []
   args.shift()
   args.shift()
   args.shift()
@@ -55,7 +58,10 @@ export default async function ({ port, directory }) {
     "bin",
     "medusa.js"
   )
-  let child = fork(cliPath, [`start`, ...args], { cwd: directory })
+  let child = fork(cliPath, [`start`, ...args], {
+    execArgv: argv,
+    cwd: directory,
+  })
 
   child.on("error", function (err) {
     console.log("Error ", err)
@@ -79,7 +85,10 @@ export default async function ({ port, directory }) {
 
     Logger.info("Rebuilt")
 
-    child = fork(cliPath, [`start`, ...args], { cwd: directory })
+    child = fork(cliPath, [`start`, ...args], {
+      execArgv: argv,
+      cwd: directory,
+    })
 
     child.on("error", function (err) {
       console.log("Error ", err)
