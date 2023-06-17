@@ -42,7 +42,7 @@
     "jest": "^25.5.4",
     "medusa-test-utils": "^1.1.40",
     "pg-god": "^1.0.12",
-    "rimraf": "^5.0.0",
+    "rimraf": "^3.0.2",
     "ts-jest": "^25.5.1",
     "ts-node": "^10.9.1",
     "tsc-alias": "^1.8.6",

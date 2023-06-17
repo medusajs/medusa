@@ -139,7 +139,7 @@ const EditReservationDrawer = ({
       {
         quantity: data.item.quantity,
         location_id: data.location.value,
-        description: data.item.description || undefined,
+        description: data.item.description,
         metadata: hasMetadata
           ? getSubmittableMetadata(data.metadata)
           : undefined,
