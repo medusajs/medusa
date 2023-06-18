@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-restock-notification",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -14,7 +14,7 @@
     "@babel/core": "^7.7.5",
     "@babel/plugin-transform-typescript": "^7.13.0",
     "@babel/preset-typescript": "^7.12.7",
-    "@medusajs/medusa": "^1.12.0",
+    "@medusajs/medusa": "^1.12.1",
     "babel-preset-medusa-package": "^1.1.19",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
