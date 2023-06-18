@@ -4,6 +4,7 @@ node_modules
 .env*
 /*.js
 !index.js
+!jest.config.js
 yarn.lock
 
 /dist
