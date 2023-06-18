@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-stripe",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "description": "Stripe Payment provider for Meduas Commerce",
   "main": "dist/index.js",
   "repository": {
@@ -20,7 +20,7 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/medusa": "^1.12.0",
+    "@medusajs/medusa": "^1.12.1",
     "@types/stripe": "^8.0.417",
     "awilix": "^8.0.1",
     "cross-env": "^5.2.1",

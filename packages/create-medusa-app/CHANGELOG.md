@@ -1,5 +1,28 @@
 # Change Log
 
+## 1.0.0
+
+### Major Changes
+
+- [`b779040ac`](https://github.com/medusajs/medusa/commit/b779040acbaded8596db697a9f8dbe7451cfb9ca) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Bump create-medusa-app to major
+
+### Minor Changes
+
+- [#4215](https://github.com/medusajs/medusa/pull/4215) [`c04d93cd0`](https://github.com/medusajs/medusa/commit/c04d93cd041a0080af46c6068d6cf4724600af02) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): update command for a better onboarding experience
+
+### Patch Changes
+
+- [#4273](https://github.com/medusajs/medusa/pull/4273) [`f98ba5bde`](https://github.com/medusajs/medusa/commit/f98ba5bde83ba785eead31b0c9eb9f135d664178) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app,medusa-cli): Allow clearing project
+
+- [#4321](https://github.com/medusajs/medusa/pull/4321) [`5ad734740`](https://github.com/medusajs/medusa/commit/5ad7347408746fd717354c99a530aaab5e86ffa2) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): disable opening browser
+
+- [#4328](https://github.com/medusajs/medusa/pull/4328) [`e1f43fd20`](https://github.com/medusajs/medusa/commit/e1f43fd207621deec885c06f704c2e4c5d7c559b) Thanks [@shahednasser](https://github.com/shahednasser)! - chore(create-medusa-app): change boxen version
+
+- [#4247](https://github.com/medusajs/medusa/pull/4247) [`4b5b7b514`](https://github.com/medusajs/medusa/commit/4b5b7b51483bae8996235a37e75c0671f9e2994f) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): remove seed command from create-medusa-app and improve success message
+
+- Updated dependencies [[`f98ba5bde`](https://github.com/medusajs/medusa/commit/f98ba5bde83ba785eead31b0c9eb9f135d664178), [`14c0f62f8`](https://github.com/medusajs/medusa/commit/14c0f62f84704a4c87beff3daaff60a52f5c88b8)]:
+  - @medusajs/utils@1.9.1
+
 ## 0.0.10
 
 ### Patch Changes
