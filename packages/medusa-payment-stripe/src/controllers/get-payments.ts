@@ -19,21 +19,19 @@ export async function getStripePayments(req): Promise<WidgetPayment[]> {
 
   if (order.swaps.length) {
     const swapPayments = order.swaps
-      .map((s) => s.payment)
-      .filter((p) => p.provider_id === "stripe")
-      .map((p) => ({ id: p.data.id as string, type: "swap" }))
+      .filter((p) => p.payment.provider_id === "stripe")
+      .map((p) => ({ id: p.payment.data.id as string, type: "swap" }))
 
     paymentIds.push(...swapPayments)
   }
 
   const payments = await Promise.all(
     paymentIds.map(async (payment) => {
-      const intent = await stripeBase.stripe_.paymentIntents.retrieve(
-        payment.id,
-        {
+      const intent = await stripeBase
+        .getStripe()
+        .paymentIntents.retrieve(payment.id, {
           expand: ["latest_charge"],
-        }
-      )
+        })
 
       const charge = intent.latest_charge as Stripe.Charge
 

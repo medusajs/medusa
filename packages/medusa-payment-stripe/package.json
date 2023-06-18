@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@medusajs/admin": "^6.0.0",
+    "@medusajs/eslint-config": "*",
     "@medusajs/medusa": "^1.12.0",
     "@types/stripe": "^8.0.417",
     "awilix": "^8.0.1",
@@ -29,8 +30,12 @@
     "medusa-react": "^9.0.0",
     "typescript": "^4.9.5"
   },
+  "peerDependenciesMeta": {
+    "medusa-react": {
+      "optional": true
+    }
+  },
   "peerDependencies": {
-    "@medusajs/admin": "^6.0.0",
     "@medusajs/medusa": "^1.12.0",
     "medusa-react": "^9.0.0"
   },

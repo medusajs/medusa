@@ -19,7 +19,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
   static identifier = ""
 
   protected readonly options_: StripeOptions
-  stripe_: Stripe
+  protected stripe_: Stripe
 
   protected constructor(_, options) {
     super(_, options)
@@ -38,6 +38,10 @@ abstract class StripeBase extends AbstractPaymentProcessor {
   }
 
   abstract get paymentIntentOptions(): PaymentIntentOptions
+
+  getStripe() {
+    return this.stripe_
+  }
 
   getPaymentIntentOptions(): PaymentIntentOptions {
     const options: PaymentIntentOptions = {}
