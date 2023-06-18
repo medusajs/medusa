@@ -1,5 +1,11 @@
 # @medusajs/product
 
+## 0.1.0
+
+### Minor Changes
+
+- [`12782778f`](https://github.com/medusajs/medusa/commit/12782778f93e6bb5b2b7e1b96f40af18af038095) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: @medusajs/product beta release
+
 ## 0.0.2
 
 ### Patch Changes
