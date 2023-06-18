@@ -275,7 +275,7 @@ h1, h2, h3, h4, h5, h6 {
   @apply tw-mb-0;
 }
 
-::selection {
+*::selection {
   @apply tw-bg-medusa-bg-highlight dark:tw-bg-medusa-bg-highlight-dark;
 }
 
