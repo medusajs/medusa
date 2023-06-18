@@ -24,7 +24,7 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "devDependencies": {
-    "@medusajs/medusa-oas-cli": "0.2.7",
+    "@medusajs/medusa-oas-cli": "0.2.8",
     "cross-env": "^7.0.3",
     "execa": "^5.1.1",
     "jest": "^27.4.7",

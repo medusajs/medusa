@@ -1,5 +1,15 @@
 # Change Log
 
+## 1.3.9
+
+### Patch Changes
+
+- [#4160](https://github.com/medusajs/medusa/pull/4160) [`572280e1d`](https://github.com/medusajs/medusa/commit/572280e1d1deb1d01660168b453ad397fa382a79) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa-plugin-bright-pearl): update order creation to include sales channel brightpearl id where possible
+
+- [#4295](https://github.com/medusajs/medusa/pull/4295) [`1d91fa4e0`](https://github.com/medusajs/medusa/commit/1d91fa4e08fa3d9ecb6f0aa403655fe75e2b5e6f) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(brightpearl): split externalRef to get product id
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
 ## 1.3.8
 
 ### Patch Changes
