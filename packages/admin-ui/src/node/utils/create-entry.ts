@@ -150,12 +150,14 @@ async function writeTailwindContentFile(dest: string, plugins: string[]) {
         devPath,
         ${plugins
           .map((plugin) => {
-            const tailwindContentPath = path.relative(
-              path.resolve(dest, "admin"),
-              path.dirname(path.join(plugin, "..", ".."))
+            const tailwindContentPath = normalizePath(
+              path.relative(
+                path.resolve(dest, "admin"),
+                path.dirname(path.join(plugin, "..", ".."))
+              )
             )
 
-            return `"${tailwindContentPath}/**/*.{js,jsx,ts,tsx}"`
+            return `"${tailwindContentPath}/dist/admin/**/*.{js,jsx,ts,tsx}"`
           })
           .join(",\n")}
       ],
