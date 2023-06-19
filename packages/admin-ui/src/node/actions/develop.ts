@@ -15,11 +15,13 @@ export async function develop({
   appDir,
   buildDir,
   plugins,
-  open = true,
-  port = 7001,
   options = {
     path: "/",
     backend: "http://localhost:9000",
+    develop: {
+      open: true,
+      port: 7001,
+    },
   },
 }: DevelopArgs) {
   const { cacheDir } = await createCacheDir({
@@ -42,7 +44,7 @@ export async function develop({
   const compiler = webpack(config)
 
   const devServerArgs: DevServerConfiguration = {
-    port,
+    port: options.develop.port,
     client: {
       logging: "none",
       overlay: {
@@ -50,9 +52,11 @@ export async function develop({
         warnings: false,
       },
     },
-    open: open
+    open: options.develop.open
       ? {
-          target: `http://localhost:${port}${options.path ? options.path : ""}`,
+          target: `http://localhost:${options.develop.port}${
+            options.path ? options.path : ""
+          }`,
         }
       : false,
     devMiddleware: {
@@ -70,7 +74,7 @@ export async function develop({
     logger.info("Starting development server...")
     console.log()
     logger.info(
-      `Started development server on http://localhost:${port}${
+      `Started development server on http://localhost:${options.develop.port}${
         options.path ? options.path : ""
       }`
     )
