@@ -26,7 +26,13 @@ npx @medusajs/medusa-cli migrations run
 npx @medusajs/medusa-cli user -e user@test.com -p supersecret
 ```
 
-5\. Start project:
+5\. Optionally seed the database:
+
+```bash
+npx @medusajs/medusa-cli seed -f ./data/seed.json
+```
+
+6\. Start project:
 
 ```bash
 npx @medusajs/medusa-cli develop
