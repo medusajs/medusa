@@ -945,17 +945,11 @@ In this section, you’ll learn how to create an admin widget.
 
 It’s assumed you already have a Medusa backend with the admin plugin installed before you move forward with this guide. If not, you can follow [this documentation page](../create-medusa-app.mdx) to install a Medusa project.
 
-Furthermore, Admin Widgets are currently available as a beta feature. So, you must install the `beta` version of the `@medusajs/admin` package along with the latest version of `@medusajs/medusa`:
+Furthermore, Admin Widgets are currently available as a beta feature. So, you must install the `beta` version of the `@medusajs/admin` and `@medusajs/medusa` packages:
 
 ```bash npm2yarn
-npm install @medusajs/admin@beta @medusajs/medusa@latest
+npm install @medusajs/admin@beta @medusajs/medusa@beta
 ```
-
-:::note
-
-It’s highly recommended to check [the upgrade guides](../upgrade-guides/index.mdx) for any required changes to the updated packages you’re installing.
-
-:::
 
 ### (Optional) TypeScript Preparations
 

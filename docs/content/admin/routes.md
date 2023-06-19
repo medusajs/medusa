@@ -23,17 +23,11 @@ This guide explains how to create a new route in the admin dashboard with some e
 
 It’s assumed you already have a Medusa backend with the admin plugin installed before you move forward with this guide. If not, you can follow [this documentation page](../create-medusa-app.mdx) to install a Medusa project.
 
-Furthermore, Admin UI Routes are currently available as a beta feature. So, you must install the `beta` version of the `@medusajs/admin` package along with the latest version of `@medusajs/medusa`:
+Furthermore, Admin UI Routes are currently available as a beta feature. So, you must install the `beta` version of the `@medusajs/admin` and `@medusajs/medusa` packages:
 
 ```bash npm2yarn
-npm install @medusajs/admin@beta @medusajs/medusa@latest
+npm install @medusajs/admin@beta @medusajs/medusa@beta
 ```
-
-:::note
-
-It’s highly recommended to check the [the upgrade guides](../upgrade-guides/index.mdx) for any required changes to the updated packages you’re installing.
-
-:::
 
 ### (Optional) TypeScript Preparations
 
