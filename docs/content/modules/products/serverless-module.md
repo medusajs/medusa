@@ -17,12 +17,6 @@ The module only needs to connect to a PostgreSQL database. You can also connect 
 
 This guide explains how to use the Product Module in a Next.js application as an example. You can use it with other frameworks, such as Remix, as well.
 
-:::note
-
-You can find a full sample Next.js project using the Product module in [this GitHub repository](https://github.com/medusajs/products-module-store).
-
-:::
-
 ### Benefits of Serverless Modules
 
 - Keep packages small enough to be deployed to serverless Infrastructure easily
