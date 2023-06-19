@@ -1,5 +1,14 @@
 # @medusajs/product
 
+## 0.1.1
+
+### Patch Changes
+
+- [#4348](https://github.com/medusajs/medusa/pull/4348) [`dc120121c`](https://github.com/medusajs/medusa/commit/dc120121c12bd2722d97c65e242888bb552ef78a) Thanks [@riqwan](https://github.com/riqwan)! - fix(product, types): correct path for migration files + fix types on product module service interface
+
+- Updated dependencies [[`dc120121c`](https://github.com/medusajs/medusa/commit/dc120121c12bd2722d97c65e242888bb552ef78a)]:
+  - @medusajs/types@1.8.9
+
 ## 0.1.0
 
 ### Minor Changes
