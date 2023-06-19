@@ -110,7 +110,7 @@ export default async ({
   await processManager.runProcess({
     process: async () => {
       const proc = await promiseExec(
-        "npx -y @medusajs/medusa-cli@latest migrations run",
+        "npm_config_yes=true npx @medusajs/medusa-cli@latest migrations run",
         execOptions
       )
 
@@ -138,7 +138,7 @@ export default async ({
     await processManager.runProcess({
       process: async () => {
         const proc = await promiseExec(
-          `npx -y @medusajs/medusa-cli@latest user -e ${admin.email} --invite`,
+          `npm_config_yes=true npx @medusajs/medusa-cli@latest user -e ${admin.email} --invite`,
           execOptions
         )
         // get invite token from stdout
@@ -173,7 +173,7 @@ export default async ({
     await processManager.runProcess({
       process: async () => {
         await promiseExec(
-          `npx -y @medusajs/medusa-cli@latest seed --seed-file=${path.join(
+          `npm_config_yes=true npx @medusajs/medusa-cli@latest seed --seed-file=${path.join(
             "data",
             "seed.json"
           )}`,
@@ -196,7 +196,7 @@ export default async ({
     await processManager.runProcess({
       process: async () => {
         await promiseExec(
-          `npx -y @medusajs/medusa-cli@latest seed --seed-file=${path.join(
+          `npm_config_yes=true npx @medusajs/medusa-cli@latest seed --seed-file=${path.join(
             "data",
             "seed-onboarding.json"
           )}`,
