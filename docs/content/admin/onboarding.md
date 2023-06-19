@@ -28,7 +28,7 @@ By following this tutorial, you’ll:
 
 ## Prerequisites
 
-Before you follow along this tutorial, you must have a Medusa backend installed. If not, you can use the following command to get started:
+Before you follow along this tutorial, you must have a Medusa backend installed with the `beta` version of the `@medusajs/admin` package. If not, you can use the following command to get started:
 
 ```bash
 npx create-medusa-app@latest
@@ -36,13 +36,15 @@ npx create-medusa-app@latest
 
 Please refer to the [create-medusa-app documentation](../create-medusa-app) for more details on this command, including prerequisites and troubleshooting.
 
-Furthermore, the Medusa backend must have the [admin dashboard installed and configured](./quickstart.mdx).
-
 ---
 
 ## Preparation Steps
 
 The steps in this section are used to prepare for the custom functionalities you’ll be creating in this tutorial.
+
+### (Optional) TypeScript Configurations and package.json
+
+If you're using TypeScript in your project, it's highly recommended to setup your TypeScript configurations and package.json as mentioned in [this guide](./widgets.md#optional-typescript-preparations).
 
 ### Install Medusa React
 
