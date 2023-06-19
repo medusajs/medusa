@@ -24,10 +24,14 @@ export const loadConfig = (): PluginOptions | null => {
     path: "/app",
     outDir: "build",
     backend: "/",
+    develop: {
+      open: true,
+      port: 7001,
+    },
   }
 
   if (typeof plugin !== "string") {
-    const { options } = plugin as { options: PluginOptions }
+    const options = (plugin as { options: PluginOptions }).options ?? {}
 
     const serve = options.serve !== undefined ? options.serve : config.serve
 
@@ -43,6 +47,10 @@ export const loadConfig = (): PluginOptions | null => {
       path: options.path ?? config.path,
       outDir: options.outDir ?? config.outDir,
       backend: serverUrl,
+      develop: {
+        open: options.develop?.open ?? config.develop.open,
+        port: options.develop?.port ?? config.develop.port,
+      },
     }
   }
 

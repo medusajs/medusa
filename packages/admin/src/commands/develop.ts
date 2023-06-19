@@ -20,11 +20,13 @@ export default async function develop({ backend, path, port }: DevelopArgs) {
     appDir: process.cwd(),
     buildDir: config.outDir,
     plugins,
-    open: true,
-    port: port,
     options: {
       backend: backend,
       path: path,
+      develop: {
+        port: port || config.develop.port,
+        open: config.develop.open,
+      },
     },
   })
 }
