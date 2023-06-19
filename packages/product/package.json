@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/product",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Medusa Product module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@medusajs/modules-sdk": "^1.8.8",
-    "@medusajs/types": "^1.8.8",
+    "@medusajs/types": "^1.8.9",
     "@medusajs/utils": "^1.9.1",
     "@mikro-orm/core": "5.7.12",
     "@mikro-orm/migrations": "5.7.12",
