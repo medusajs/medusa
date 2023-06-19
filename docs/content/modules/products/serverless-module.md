@@ -373,7 +373,7 @@ export async function GET(
     handle,
   })
 
-  return NextResponse.json({ product: data })
+  return NextResponse.json({ category: data[0] })
 }
 ```
 
