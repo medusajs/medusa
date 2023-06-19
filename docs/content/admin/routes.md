@@ -278,10 +278,13 @@ Admin UI routes support [Tailwind CSS](https://tailwindcss.com/) by default.
 
 For example, to customize your custom route:
 
+<!-- eslint-disable max-len -->
+
 ```tsx title=src/admin/routes/custom/page.tsx
 const CustomPage = () => {
   return (
-    <div className="bg-white p-8 border border-gray-200 rounded-lg">
+    <div 
+      className="bg-white p-8 border border-gray-200 rounded-lg">
       This is my custom route
     </div>
   )
