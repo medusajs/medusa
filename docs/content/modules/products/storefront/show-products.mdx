@@ -115,7 +115,7 @@ import {
 async () => {
   // ...
   const productService = await initializeProductModule()
-  const products = await productService.list({})
+  const products = await productService.list()
 
   console.log(products.length)
 }

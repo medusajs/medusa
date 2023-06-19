@@ -251,7 +251,7 @@ import {
 export async function GET(request: Request) {
   const productService = await initializeProductModule()
 
-  const data = await productService.list({})
+  const data = await productService.list()
 
   return NextResponse.json({ products: data })
 }
@@ -287,7 +287,7 @@ import {
 export async function GET(request: Request) {
   const productService = await initializeProductModule()
 
-  const data = await productService.list({})
+  const data = await productService.list()
 
   return NextResponse.json({ products: data })
 }
@@ -353,7 +353,7 @@ import {
 export async function GET(request: Request) {
   const productService = await initializeProductModule()
 
-  const data = await productService.listCategories({})
+  const data = await productService.listCategories()
 
   return NextResponse.json({ categories: data })
 }
