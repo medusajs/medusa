@@ -279,6 +279,6 @@ h1, h2, h3, h4, h5, h6 {
   @apply tw-bg-medusa-bg-highlight dark:tw-bg-medusa-bg-highlight-dark;
 }
 
-.prism-code *::selection {
+.prism-code *::selection, .code-header::selection {
   @apply tw-bg-medusa-code-text-highlight;
 }
