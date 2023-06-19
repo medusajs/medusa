@@ -20,7 +20,7 @@ export async function createConnection(
     tsNode: process.env.APP_ENV === "development",
     type: "postgresql",
     migrations: {
-      path: Utils.detectTsNode() ? "../../src/migrations" : "../../dist/migrations",
+      path: __dirname + "/../migrations",
     },
   })
 
