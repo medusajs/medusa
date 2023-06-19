@@ -1,6 +1,5 @@
 import { MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql"
 import { ProductServiceInitializeOptions } from "../types"
-import { Utils } from "@mikro-orm/core"
 
 export async function createConnection(
   database: ProductServiceInitializeOptions["database"],
@@ -20,7 +19,7 @@ export async function createConnection(
     tsNode: process.env.APP_ENV === "development",
     type: "postgresql",
     migrations: {
-      path: Utils.detectTsNode() ? "src/migrations" : "dist/migrations",
+      path: __dirname + "/../migrations",
     },
   })
 
