@@ -1,32 +1,29 @@
 ---
-description: 'Learn how to create a composable commerce platform using Medusa. This quickstart guide will help you set up your Medusa backend and the storefront all at once.'
+description: 'Learn how to create a composable commerce platform using Medusa. This quickstart guide will help you set up your Medusa backend and the admin dashboard.'
 addHowToData: true
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import Feedback from '@site/src/components/Feedback'
+import Feedback from '@site/src/components/Feedback';
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
 import Troubleshooting from '@site/src/components/Troubleshooting'
 import TypeErrorSection from "./troubleshooting/create-medusa-app-errors/_typeerror.md"
 import OtherErrorsSection from "./troubleshooting/create-medusa-app-errors/_other-errors.md"
+import EagainError from "./troubleshooting/create-medusa-app-errors/_eagain-error.md"
 import ConnectionErrorSection from './troubleshooting/database-errors/_connection-error.md'
 import FreshInstallationSection from './troubleshooting/awilix-resolution-error/_fresh-installation.md'
 
 # Install Medusa with create-medusa-app
 
-In this document, you’ll learn how to use create-medusa-app to set up a Medusa backend and an optional storefront.
+In this document, you’ll learn how to use create-medusa-app to set up a Medusa backend.
 
 ## Overview
 
 Medusa is a toolkit for developers to create digital commerce applications. In its simplest form, Medusa is a Node.js backend with the core API, plugins, and modules installed through npm.
 
-`create-medusa-app` is a command that facilitates creating a Medusa ecosystem. It installs the Medusa backend and allows you to optionally install a Medusa storefront.
-
-:::note
-
-If you only want to set up a Medusa backend, follow [this quickstart guide](./development/backend/install.mdx) instead.
-
-:::
+`create-medusa-app` is a command that facilitates creating a Medusa ecosystem. It installs the Medusa backend, along with the necessary configurations to run the backend.
 
 ---
 
@@ -42,7 +39,11 @@ Before you can install and use Medusa, you need the following tools installed on
 
 ## How to Create a Medusa Project
 
-A Medusa project is composed of the backend and the storefront.
+:::note
+
+Make sure your PostgreSQL server is running before you run the command.
+
+:::
 
 In your terminal, run the following command:
 
@@ -50,173 +51,63 @@ In your terminal, run the following command:
   <TabItem value="npx" label="NPX" default>
 
   ```bash
-  npx create-medusa-app
+  npx create-medusa-app@latest
   ```
 
   </TabItem>
   <TabItem value="yarn" label="Yarn">
 
   ```bash
-  yarn create medusa-app
+  yarn create medusa-app@latest
   ```
 
   </TabItem>
   <TabItem value="pnpm" label="pnpm">
 
   ```bash
-  pnpm dlx create-medusa-app
+  pnpm dlx create-medusa-app@latest
   ```
 
   </TabItem>
 </Tabs>
 
-### Step 1: Specify Project Directory Name
+<details>
+  <summary>Available Options</summary>
 
-You’ll then be asked to enter the name of the directory you want the project to be installed in. You can either leave the default value `my-medusa-store` or enter a new name.
+  - `--repo-url <url>`: The repository URL to create the project from. By default it will be `https://github.com/medusajs/medusa-starter-default`.
+  - `--no-boilerplate`: A flag that removes all files added for an enhanced onboarding experience (files under `src/api`, etc...). This is helpful if you want to create a clean project, and is only recommended if you're familiar with Medusa.
 
-### Step 2: Choose Medusa Backend Starter
+</details>
 
-Next, you’ll be asked to choose the Medusa backend starter. The Medusa Backend is created from a starter template. By default, it is created from the `medusa-starter-default` template.
+### Step 1: Specify Project Name
 
-You can either pick the default Medusa backend starter, the Contentful starter or enter a starter URL by choosing `Other`:
+You’ll first be asked to enter the name of your project, which is used to create the directory holding your Medusa backend. You can use the default `my-medusa-store` or enter another project name.
 
-```bash noReport
-? Which Medusa starter would you like to install? …
-❯ medusa-starter-default
-  medusa-starter-contentful
-  Other
-```
+### (Optional) Step 2: Specify PostgreSQL credentials
 
-The backend will be installed under the `backend` directory under the project directory.
+By default, this command will try to use the default PostgreSQL credentials to connect to your PostgreSQL server. If they don't work, you'll be prompted to enter your PostgreSQL database and passowrd. If they work, you can move ahead to the next step.
 
-### Step 3: Choose Storefront Starter
+These credentials will be used to create a database during this setup and configure your Medusa backend to connect to that database.
 
-After choosing the Medusa starter, you’ll be asked to choose the storefront starter. You can choose one of the starters in the list included or choose `None` to skip installing a storefront:
+### Step 3: Wait for Project Setup
 
-```bash noReport
-? Which storefront starter would you like to install?
-❯ Next.js Starter
-medusa.express (Next.js)
-None
-```
+After the above steps, the project setup will start which includes:
 
-If you choose an option other than `None`, a storefront will be installed under the `storefront` directory.
+1. Creating the project directory. The directory name will be the project name you entered in step 1.
+2. Creating the project database.
+3. Installing dependencies in your project directory.
+4. Building project and running migrations to migrate the Medusa schema into your project database.
+5. Seed the database
 
-:::tip
+### Step 4: Test it Out
 
-Learn more about the [Next.js starter storefront](./starters/nextjs-medusa-starter.mdx).
-
-:::
-
-### Step 4: Wait for Dependency Installation
-
-After choosing the above starters, the installation of each component will begin along with its dependencies. Once the installation is done, you’ll see instructions related to how to start each component.
-
-```bash noReport
-Your project is ready. The available commands are:
-
-Medusa API
-cd my-medusa-store/backend
-yarn start
-
-Storefront
-cd my-medusa-store/storefront
-yarn dev
-```
-
-The commands will differ based on your choices in previous prompts.
-
-### Step 5: Configuring your Backend Database
-
-Before you can start your backend, you must configure your PostgreSQL database and run migrations.
-
-:::note
-
-Make sure your PostgreSQL service is running.
-
-:::
-
-To configure your backend database, change to the `backend` directory under your project directory and edit the `.env` file to include the following:
+Once the installation is finished, the Medusa backend will be started automatically. You can test it out by either opening the URL `localhost:9000/store/products` in your browser or using cURL:
 
 ```bash
-DATABASE_TYPE=postgres
-DATABASE_URL=<YOUR_DATABASE_URL>
+cURL localhost:9000/store/products
 ```
 
-Where `<YOUR_DATABASE_URL>` is the connection URL to your PostgreSQL database. For example, `postgres://localhost/medusa-store`. You can learn about its format and other configurations [here](./development/backend/configurations.md).
-
-:::note
-
-Make sure to create your PostgreSQL database that you refer to in the connection URL before proceeding further. For example, if you use `postgres://localhost/medusa-store` make sure to create a `medusa-store` database.
-
-:::
-
-Then, run the following command to migrate the Medusa schema to your database:
-
-<Tabs groupId="npxyarn" isCodeTabs={true}>
-  <TabItem value="npx" label="NPX" default>
-
-  ```bash
-  npx @medusajs/medusa-cli@latest migrations run
-  ```
-
-  </TabItem>
-  <TabItem value="pnpm" label="pnpm">
-
-  ```bash
-  pnpm dlx @medusajs/medusa-cli@latest migrations run
-  ```
-
-  </TabItem>
-</Tabs>
-
-You can optionally seed your database with demo data by running the following command:
-
-<Tabs groupId="npxyarn" isCodeTabs={true}>
-  <TabItem value="npx" label="NPX" default>
-
-  ```bash
-  npx @medusajs/medusa-cli@latest seed -f ./data/seed.json
-  ```
-
-  </TabItem>
-  <TabItem value="pnpm" label="pnpm">
-
-  ```bash
-  pnpm dlx @medusajs/medusa-cli@latest seed -f ./data/seed.json
-  ```
-
-  </TabItem>
-</Tabs>
-
-### Step 6: Run the Medusa backend
-
-While in your `backend` directory, run the following command to start your Medusa backend:
-
-<Tabs groupId="npxyarn" isCodeTabs={true}>
-  <TabItem value="npx" label="NPX" default>
-
-  ```bash
-  npx @medusajs/medusa-cli@latest develop
-  ```
-
-  </TabItem>
-  <TabItem value="pnpm" label="pnpm">
-
-  ```bash
-  pnpm dlx @medusajs/medusa-cli@latest develop
-  ```
-
-  </TabItem>
-</Tabs>
-
-This will start your backend on `localhost:9000`. While your backend is running, you can also go to the `storefront` directory of your project and start the storefront. If you're using the Medusa Next.js storefront the following command starts it:
-
-```bash npm2yarn
-npm run dev
-```
-
-If you open your storefront now in your browser on `localhost:8000`, everything should be working as expected. If you're not seeing any products, you can run the `seed` command as instructed earlier or install the [Medusa admin plugin](./admin/quickstart.mdx) to start adding products.
+This endpoint returns an array of available products in your Medusa backend.
 
 <Feedback 
    event="survey_create-medusa-app"
@@ -227,10 +118,41 @@ If you open your storefront now in your browser on `localhost:8000`, everything 
 
 ---
 
+## Next Steps: Start your Development
+
+Based on what you're building, you can find a development path for you in the Recipes page.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/overview',
+    label: 'Commerce Modules',
+    customProps: {
+      icon: Icons['puzzle-solid'],
+      description: "Learn about available commerce modules and features in Medusa."
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/overview',
+    label: 'Medusa Development',
+    customProps: {
+      icon: Icons['server-stack-solid'],
+      description: "Learn how to develop customized digital commerce applications with Medusa."
+    }
+  }
+]} />
+
+---
+
 ## Troubleshooting
 
 <Troubleshooting
   sections={[
+    {
+      title: "EAGAIN error",
+      content: <EagainError />
+    },
     {
       title: "TypeError: cmd is not a function",
       content: <TypeErrorSection />
@@ -249,23 +171,3 @@ If you open your storefront now in your browser on `localhost:8000`, everything 
     },
   ]}
 />
-
----
-
-## Project Directory Structure
-
-Inside the root project directory which was specified at the beginning of the installation process you’ll find the following directory structure:
-
-```bash noReport
-/my-medusa-store
-  /backend // Medusa backend
-  /storefront // Medusa storefront starter
-```
-
----
-
-## What’s Next
-
-- [Check out Medusa's features](./modules/overview.mdx)
-- [Learn about backend configurations](./development/backend/configurations.md)
-- [Prepare environment for advanced development](./development/backend/prepare-environment.mdx)
