@@ -1,6 +1,5 @@
 import { MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql"
 import { ProductServiceInitializeOptions } from "../types"
-import { Utils } from "@mikro-orm/core"
 
 export async function createConnection(
   database: ProductServiceInitializeOptions["database"],
