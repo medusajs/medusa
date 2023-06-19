@@ -1189,6 +1189,13 @@ class OrderService extends TransactionBaseService {
         ],
       })
 
+      if(order.status === OrderStatus.CANCELED) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Order is already canceled"
+        )
+      }
+
       if (order.refunds?.length > 0) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
