@@ -61,7 +61,7 @@ npm install @medusajs/product
 
 ### Step 2: Add Database Configurations
 
-In `.env`, add the following environment variable:
+Create a `.env` file and add the following environment variable:
 
 ```bash
 POSTGRES_URL=<DATABASE_URL>

@@ -181,7 +181,7 @@ You can add your routes into the admin dashboard sidebar by exporting an object 
 The object has one property `link`, which is an object having the following properties:
 
 - `label`: a string indicating the sidebar item’s label of your custom route.
-- `icon`: an optional React component that acts as an icon in the sidebar.
+- `icon`: an optional React component that acts as an icon in the sidebar. If none provided, a default icon is used.
 
 For example, you can change the content of the previous route you created to export a config object:
 
@@ -229,7 +229,7 @@ If you're installing it in a plugin with admin customizations, make sure to incl
 
 For example:
 
-```tsx title=src/admin/routes/custom/page.tsx
+```tsx title=src/admin/routes/custom/[id]/page.tsx
 import { useParams } from "react-router-dom"
 
 const CustomPage = () => {
@@ -281,7 +281,7 @@ For example, to customize your custom route:
 ```tsx title=src/admin/routes/custom/page.tsx
 const CustomPage = () => {
   return (
-    <div className="bg-white">
+    <div className="bg-white p-8 border border-gray-200 rounded-lg">
       This is my custom route
     </div>
   )

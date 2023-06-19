@@ -1046,7 +1046,6 @@ You can optionally update the following scripts in `package.json` to make your d
 
 ```json title=package.json
 {
-  "name": "medusa-starter-default",
   // ...
   "scripts": {
     "clean": "cross-env ./node_modules/.bin/rimraf dist",
@@ -1204,13 +1203,16 @@ If you're installing it in a plugin with admin customizations, make sure to incl
 
 For example:
 
+<!-- eslint-disable max-len -->
+
 ```tsx title=src/admin/widgets/product-widget.tsx
 import type { WidgetConfig } from "@medusajs/admin"
 import { Link } from "react-router-dom"
 
 const ProductWidget = () => {
   return (
-    <div>
+    <div
+      className="bg-white p-8 border border-gray-200 rounded-lg">
       <h1>Product Widget</h1>
       <Link to={"/a/orders"}>
         View Orders
