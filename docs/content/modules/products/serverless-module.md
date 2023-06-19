@@ -331,7 +331,7 @@ export async function GET(
     handle,
   })
 
-  return NextResponse.json({ product: data })
+  return NextResponse.json({ product: data[0] })
 }
 ```
 
