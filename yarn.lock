@@ -6162,7 +6162,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/client-types@workspace:packages/generated/client-types"
   dependencies:
-    "@medusajs/medusa-oas-cli": 0.2.8
+    "@medusajs/medusa-oas-cli": 0.2.9
     cross-env: ^7.0.3
     execa: ^5.1.1
     jest: ^27.4.7
@@ -6298,7 +6298,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-oas-cli@0.2.8, @medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli":
+"@medusajs/medusa-oas-cli@0.2.9, @medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli"
   dependencies:
@@ -6419,7 +6419,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/oas-github-ci@workspace:packages/oas/oas-github-ci"
   dependencies:
-    "@medusajs/medusa-oas-cli": 0.2.8
+    "@medusajs/medusa-oas-cli": 0.2.9
     execa: ^5.1.1
   languageName: unknown
   linkType: soft
@@ -6466,7 +6466,7 @@ __metadata:
   resolution: "@medusajs/product@workspace:packages/product"
   dependencies:
     "@medusajs/modules-sdk": ^1.8.8
-    "@medusajs/types": ^1.8.8
+    "@medusajs/types": ^1.8.9
     "@medusajs/utils": ^1.9.1
     "@mikro-orm/cli": 5.7.12
     "@mikro-orm/core": 5.7.12
@@ -6507,7 +6507,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^1.8.8, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^1.8.8, @medusajs/types@^1.8.9, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:

@@ -1,0 +1,99 @@
+import DocCardList from '@theme/DocCardList';
+import DocCard from '@theme/DocCard';
+import Icons from '@theme/Icon';
+import Feedback from '@site/src/components/Feedback';
+import LearningPath from '@site/src/components/LearningPath';
+import LargeCard from '@site/src/components/LargeCard';
+import Button from '@site/src/components/Button';
+
+# Medusa Recipes
+
+This document provides you resources for different paths based on what you're building with Medusa.
+
+:::note
+
+These recipes assume you already have a Medusa backend setup. If not, you can create a Medusa project with the following command:
+
+```bash
+npx create-medusa-app
+```
+
+[Learn more in this guide](../create-medusa-app.mdx).
+
+:::
+
+## Recipe: Setup Ecommerce Store
+
+Follow this recipe if you want to use Medusa for an ecommerce store. This recipe includes three steps that will get you a storefront deployed to Vercel and a backend deployed to Railway.
+
+<LearningPath pathName="simple-quickstart" />
+
+---
+
+## Recipe: Build a Marketplace
+
+Follow this guide if you want to build a Marketplace with Medusa.
+
+<DocCard item={{
+  type: 'link',
+  href: '/recipes/marketplace',
+  label: 'Build a Marketplace',
+  customProps: {
+    icon: Icons['building-storefront'],
+    description: 'Learn how you can build a marketplace with Medusa.'
+  }
+}} />
+
+---
+
+## Recipe: Build Subscription Purchases
+
+Follow this guide if you want to implement subscription-based purhcases with Medusa.
+
+<DocCard item={{
+  type: 'link',
+  href: '/recipes/subscriptions',
+  label: 'Build Subscription Purchases',
+  customProps: {
+    icon: Icons['credit-card-solid'],
+    description: 'Learn how you can implement subscription-based purchase in Medusa.'
+  }
+}} />
+
+<Feedback 
+   event="survey_use_cases"
+   question="Did your find your use case?"
+   positiveQuestion="Is there anything that should improved?"
+   negativeQuestion="What was your use case?"
+/>
+
+---
+
+<!-- vale docs.HeadingPunctuation = NO -->
+
+## Can't find your path?
+
+<!-- vale docs.HeadingPunctuation = YES -->
+
+Medusa is a customizable commerce solution that can be used to build any custom use case. If you can't find your use case mentioned above, the following guides give you a general understanding of how Medusa can be used and how you can customize it.
+
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/modules/overview',
+    label: 'Commerce Modules',
+    customProps: {
+      icon: Icons['puzzle-solid'],
+      description: "Learn about Medusa's commerce features and how to customize them."
+    }
+  },
+  {
+    type: 'link',
+    href: '#',
+    label: 'Medusa Development',
+    customProps: {
+      icon: Icons['server-stack-solid'],
+      description: "Learn how about Medusa's architecture and how to customize it."
+    }
+  },
+]} />
