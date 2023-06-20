@@ -21,7 +21,6 @@
   },
   "devDependencies": {
     "@medusajs/admin": "^6.0.0",
-    "@medusajs/eslint-config": "*",
     "@medusajs/medusa": "^1.12.0",
     "@types/stripe": "^8.0.417",
     "awilix": "^8.0.1",

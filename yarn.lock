@@ -5368,26 +5368,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/eslint-config@*, @medusajs/eslint-config@workspace:packages/eslint-config":
-  version: 0.0.0-use.local
-  resolution: "@medusajs/eslint-config@workspace:packages/eslint-config"
-  dependencies:
-    "@babel/eslint-parser": ^7.15.8
-    "@typescript-eslint/eslint-plugin": ^5.53.0
-    "@typescript-eslint/parser": ^5.53.0
-    eslint: ^8.23.0
-    eslint-config-google: ^0.14.0
-    eslint-config-prettier: ^8.5.0
-    eslint-plugin-markdown: ^3.0.0
-    eslint-plugin-prettier: ^4.2.1
-    eslint-plugin-react: ^7.31.11
-    eslint-plugin-react-hooks: ^4.6.0
-    eslint-plugin-unused-imports: ^2.0.0
-    prettier: ^2.7.1
-    prettier-plugin-tailwindcss: ^0.2.3
-  languageName: unknown
-  linkType: soft
-
 "@medusajs/event-bus-local@workspace:*, @medusajs/event-bus-local@workspace:packages/event-bus-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-local@workspace:packages/event-bus-local"
@@ -28953,7 +28933,6 @@ __metadata:
   resolution: "medusa-payment-stripe@workspace:packages/medusa-payment-stripe"
   dependencies:
     "@medusajs/admin": ^6.0.0
-    "@medusajs/eslint-config": "*"
     "@medusajs/medusa": ^1.12.0
     "@types/stripe": ^8.0.417
     awilix: ^8.0.1
