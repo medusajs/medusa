@@ -15,13 +15,14 @@ import fs from "fs"
 import { nanoid } from "nanoid"
 import isEmailImported from "validator/lib/isEmail.js"
 import logMessage from "../utils/log-message.js"
-import onProcessTerminated from "../utils/on-process-terminated.js"
 import createAbortController, {
   isAbortError,
 } from "../utils/create-abort-controller.js"
 import { track } from "medusa-telemetry"
 import { createFactBox, resetFactBox } from "../utils/facts.js"
 import boxen from "boxen"
+import { emojify } from "node-emoji"
+import ProcessManager from "../utils/process-manager.js"
 
 const slugify = slugifyType.default
 const isEmail = isEmailImported.default
@@ -29,9 +30,11 @@ const isEmail = isEmailImported.default
 type CreateOptions = {
   repoUrl?: string
   seed?: boolean
+  // commander passed --no-boilerplate as boilerplate
+  boilerplate?: boolean
 }
 
-export default async ({ repoUrl = "", seed }: CreateOptions) => {
+export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
   track("CREATE_CLI")
   if (repoUrl) {
     track("STARTER_SELECTED", { starter: repoUrl })
@@ -39,7 +42,8 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
   if (seed) {
     track("SEED_SELECTED", { seed })
   }
-  const abortController = createAbortController()
+  const processManager = new ProcessManager()
+  const abortController = createAbortController(processManager)
 
   const { projectName } = await inquirer.prompt([
     {
@@ -114,7 +118,7 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
       type: "input",
       name: "adminEmail",
       message: "Enter an email for your admin dashboard user",
-      default: !seed ? "admin@medusa-test.com" : undefined,
+      default: !seed && boilerplate ? "admin@medusa-test.com" : undefined,
       validate: (input) => {
         return typeof input === "string" && input.length > 0 && isEmail(input)
           ? true
@@ -123,13 +127,20 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
     },
   ])
 
+  logMessage({
+    message: `${emojify(
+      ":rocket:"
+    )} Starting project setup, this may take a few minutes.`,
+  })
+
   const spinner = ora().start()
 
-  onProcessTerminated(() => spinner.stop())
+  processManager.onTerminated(() => spinner.stop())
 
   let interval: NodeJS.Timer | null = createFactBox(
     spinner,
-    "Setting up project..."
+    "Setting up project...",
+    processManager
   )
 
   // clone repository
@@ -155,6 +166,7 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
     interval,
     spinner,
     "Created project directory",
+    processManager,
     "Creating database..."
   )
 
@@ -182,7 +194,12 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
       db: dbName,
     })
 
-    resetFactBox(interval, spinner, `Database ${dbName} created`)
+    resetFactBox(
+      interval,
+      spinner,
+      `Database ${dbName} created`,
+      processManager
+    )
   }
 
   // prepare project
@@ -195,7 +212,9 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
         email: adminEmail,
       },
       seed,
+      boilerplate,
       spinner,
+      processManager,
       abortController,
     })
   } catch (e: any) {
@@ -240,19 +259,13 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
   // this ensures that the message isn't printed twice to the user
   let printedMessage = false
 
-  onProcessTerminated(() => {
+  processManager.onTerminated(() => {
     if (!printedMessage) {
       printedMessage = true
       console.log(
         boxen(
           chalk.green(
-            `Change to the \`${projectName}\` directory to explore your Medusa project.
-            
-            Check out the Medusa documentation to start your development:
-            https://docs.medusajs.com/
-            
-            Star us on GitHub if you like what we're building:
-            https://github.com/medusajs/medusa/stargazers`
+            `Change to the \`${projectName}\` directory to explore your Medusa project.\n\nStart your Medusa app again with the following command:\n\nnpx @medusajs/medusa-cli develop\n\nCheck out the Medusa documentation to start your development:\n\nhttps://docs.medusajs.com/\n\nStar us on GitHub if you like what we're building:\n\nhttps://github.com/medusajs/medusa/stargazers`
           ),
           {
             titleAlignment: "center",
@@ -271,8 +284,8 @@ export default async ({ repoUrl = "", seed }: CreateOptions) => {
   }).then(async () =>
     open(
       inviteToken
-        ? `http://localhost:9000/app/invite?token=${inviteToken}&first_run=true`
-        : "http://localhost:9000/app"
+        ? `http://localhost:7001/invite?token=${inviteToken}&first_run=true`
+        : "http://localhost:7001"
     )
   )
 }

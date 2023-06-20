@@ -1,17 +1,17 @@
+import { previewDocs } from "@redocly/cli/lib/commands/preview-docs"
 import { Command, Option, OptionValues } from "commander"
-import fs, { mkdir } from "fs/promises"
-import * as path from "path"
 import execa from "execa"
-import { jsonFileToYamlFile, readYaml, writeYaml } from "./utils/yaml-utils"
+import fs, { mkdir } from "fs/promises"
 import { isArray, mergeWith } from "lodash"
-import { readJson } from "./utils/json-utils"
-import { getTmpDirectory, isFile } from "./utils/fs-utils"
+import * as path from "path"
 import {
   formatHintRecommendation,
   getCircularPatchRecommendation,
   getCircularReferences,
 } from "./utils/circular-patch-utils"
-import { previewDocs } from "@redocly/cli/lib/commands/preview-docs"
+import { getTmpDirectory, isFile } from "./utils/fs-utils"
+import { readJson } from "./utils/json-utils"
+import { jsonFileToYamlFile, readYaml, writeYaml } from "./utils/yaml-utils"
 
 /**
  * Constants

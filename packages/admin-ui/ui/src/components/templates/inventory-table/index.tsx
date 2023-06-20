@@ -146,7 +146,9 @@ const InventoryTable: React.FC<InventoryTableProps> = () => {
     refreshWithFilters()
   }, [representationObject])
 
-  const [columns] = useInventoryTableColumn()
+  const [columns] = useInventoryTableColumn({
+    location_id: queryObject.location_id,
+  })
 
   const {
     getTableProps,

@@ -3,7 +3,7 @@ import { NextFunction, Request, RequestHandler, Response } from "express"
 type handler = (req: Request, res: Response) => Promise<void>
 
 export const wrapHandler = (fn: handler): RequestHandler => {
-  return (
+return (
     req: Request & { errors?: Error[] },
     res: Response,
     next: NextFunction
