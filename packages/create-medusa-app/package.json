@@ -28,7 +28,8 @@
     "slugify": "^1.6.6",
     "uuid": "^9.0.0",
     "validator": "^13.9.0",
-    "wait-on": "^7.0.1"
+    "wait-on": "^7.0.1",
+    "winston": "^3.9.0"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",

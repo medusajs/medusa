@@ -15,9 +15,9 @@ export default class ProcessManager {
     })
   }
 
-  onTerminated(fn: Function) {
-    process.on("SIGTERM", () => fn())
-    process.on("SIGINT", () => fn())
+  onTerminated(fn: () => Promise<void> | void) {
+    process.on("SIGTERM", async () => fn())
+    process.on("SIGINT", async () => fn())
   }
 
   addInterval(interval: NodeJS.Timer) {
@@ -32,7 +32,7 @@ export default class ProcessManager {
     let processError = false
     let retries = 0
     do {
-      retries++
+      ++retries
       try {
         await process()
       } catch (error) {

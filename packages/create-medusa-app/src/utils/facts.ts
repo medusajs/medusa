@@ -4,6 +4,14 @@ import { Ora } from "ora"
 import { emojify } from "node-emoji"
 import ProcessManager from "./process-manager.js"
 
+export type FactBoxOptions = {
+  interval: NodeJS.Timer | null
+  spinner: Ora
+  processManager: ProcessManager
+  message?: string
+  title?: string
+}
+
 const facts = [
   "Plugins allow you to integrate third-party services for payment, fulfillment, notifications, and more.",
   "You can specify a product's availability in one or more sales channels.",
@@ -78,4 +86,18 @@ export const resetFactBox = (
   }
 
   return newInterval
+}
+
+export function displayFactBox({
+  interval,
+  spinner,
+  processManager,
+  title = "",
+  message = "",
+}: FactBoxOptions): NodeJS.Timer | null {
+  if (!message) {
+    return createFactBox(spinner, title, processManager)
+  }
+
+  return resetFactBox(interval, spinner, message, processManager, title)
 }

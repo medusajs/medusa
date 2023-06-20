@@ -1,5 +1,6 @@
 import chalk from "chalk"
 import { program } from "commander"
+import { logger } from "./logger.js"
 
 type LogOptions = {
   message: string
@@ -9,13 +10,13 @@ type LogOptions = {
 export default ({ message, type = "info" }: LogOptions) => {
   switch (type) {
     case "info":
-      console.log(chalk.white(message))
+      logger.info(chalk.white(message))
       break
     case "success":
-      console.log(chalk.green(message))
+      logger.info(chalk.green(message))
       break
     case "warning":
-      console.log(chalk.yellow(message))
+      logger.warning(chalk.yellow(message))
       break
     case "error":
       program.error(chalk.bold.red(message))
