@@ -283,10 +283,9 @@ class OrderService extends TransactionBaseService {
 
     delete query.relations
 
-    const raw = await orderRepo.findWithRelations(rels, query)
-    const count = await orderRepo.count(query)
-    const orders = await Promise.all(
-      raw.map(async (r) => await this.decorateTotals(r, totalsToSelect))
+    let [orders, count] = await orderRepo.findWithRelationsAndCount(rels, query)
+    orders = await Promise.all(
+      orders.map(async (r) => await this.decorateTotals(r, totalsToSelect))
     )
 
     return [orders, count]

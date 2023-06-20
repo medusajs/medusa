@@ -31,13 +31,17 @@ export class updateOrderCustomerAddressIndexes1686899724000
      * update existing indexes to use varchar instead of text. If there is a type difference between the index and the column it might not be used.
      */
     await queryRunner.query(`
-      drop index if exists idx_address_id,
-      idx_customer_id,
-      idx_order_id,
-      idx_order_shipping_address_id,
-      idx_order_display_id,
-      idx_order_customer_id,
-      idx_customer_first_last_phone;
+      drop index if exists 
+          IDX_579e01fb94f4f58db480857e05, /* display_id on order */
+          IDX_cd7812c96209c5bdd48a6b858b, /* customer_id on order */
+          IDX_19b0c6293443d1b464f604c331, /* shipping_address_id on order */
+          uidx_address_id,
+          uidx_customer_id,
+          uidx_order_id,
+          idx_order_shipping_address_id,
+          idx_order_display_id,
+          idx_order_customer_id,
+          idx_customer_first_last_phone;
 
       CREATE UNIQUE INDEX IF NOT EXISTS uidx_address_id ON address ((id::varchar)) WHERE deleted_at IS NULL;
       CREATE UNIQUE INDEX IF NOT EXISTS uidx_customer_id ON customer ((id::varchar)) WHERE deleted_at IS NULL;
@@ -67,6 +71,10 @@ export class updateOrderCustomerAddressIndexes1686899724000
                   idx_order_display_id,
                   idx_order_customer_id,
                   idx_customer_first_last_phone;
+
+          CREATE INDEX "IDX_19b0c6293443d1b464f604c331" ON "order" ("shipping_address_id");
+          CREATE INDEX "IDX_579e01fb94f4f58db480857e05" ON "order" ("display_id");
+          CREATE INDEX "IDX_cd7812c96209c5bdd48a6b858b" ON "order" ("customer_id");
       `
     )
   }

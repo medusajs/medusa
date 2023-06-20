@@ -8,11 +8,25 @@ const ITEMS_REL_NAME = "items"
 const REGION_REL_NAME = "region"
 
 export const OrderRepository = dataSource.getRepository(Order).extend({
-  async findWithRelations(
+  async findWithRelationsAndCount(
     relations: FindOptionsRelations<Order> = {},
-    optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
-  ): Promise<Order[]> {
-    const entities = await this.find(optionsWithoutRelations)
+    optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {},
+    { shouldCount }: { shouldCount?: boolean } = { shouldCount: true }
+  ): Promise<[Order[], number]> {
+    let entities: Order[] = []
+    let count = 0
+
+    if (shouldCount) {
+      const result = await Promise.all([
+        this.find(optionsWithoutRelations),
+        this.count(optionsWithoutRelations),
+      ])
+      entities = result[0]
+      count = result[1]
+    } else {
+      entities = await this.find(optionsWithoutRelations)
+    }
+
     const entitiesIds = entities.map(({ id }) => id)
 
     const groupedRelations: { [topLevel: string]: string[] } = {}
@@ -43,7 +57,23 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
 
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
 
-    return map(entities, (e) => merge({}, ...entitiesAndRelationsById[e.id]))
+    const orders = map(entities, (e) =>
+      merge({}, ...entitiesAndRelationsById[e.id])
+    )
+    return [orders, count]
+  },
+
+  async findWithRelations(
+    relations: FindOptionsRelations<Order> = {},
+    optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
+  ): Promise<Order[]> {
+    const [orders] = await this.findWithRelationsAndCount(
+      relations,
+      optionsWithoutRelations,
+      { shouldCount: false }
+    )
+
+    return orders
   },
 
   async findOneWithRelations(
