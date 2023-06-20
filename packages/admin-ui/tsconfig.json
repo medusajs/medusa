@@ -20,5 +20,5 @@
     "webpack.config.dev.ts",
     "src/node/webpack/get-webpack-config.ts"
   ],
-  "exclude": ["node_modules", "ui"]
+  "exclude": ["node_modules", "ui", "./src/**/__tests__"]
 }
