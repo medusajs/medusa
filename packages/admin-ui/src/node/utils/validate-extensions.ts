@@ -311,8 +311,6 @@ async function validateRoute(
 } | null> {
   const cleanPath = createPath(file.replace(basePath, ""))
 
-  console.log("CLEAN PATH", cleanPath)
-
   const { valid, error } = validatePath(cleanPath, file)
 
   if (!valid) {
