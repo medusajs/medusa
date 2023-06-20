@@ -20,13 +20,13 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/admin": "^6.0.0",
-    "@medusajs/medusa": "^1.12.1",
+    "@medusajs/admin": "beta",
+    "@medusajs/medusa": "beta",
     "@types/stripe": "^8.0.417",
     "awilix": "^8.0.1",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
-    "medusa-react": "^9.0.0",
+    "medusa-react": "beta",
     "typescript": "^4.9.5"
   },
   "peerDependenciesMeta": {
@@ -35,8 +35,8 @@
     }
   },
   "peerDependencies": {
-    "@medusajs/medusa": "^1.12.0",
-    "medusa-react": "^9.0.0"
+    "@medusajs/medusa": "*",
+    "medusa-react": "*"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
