@@ -2,7 +2,7 @@ import { logger } from "@medusajs/admin-ui"
 import express, { Request, Response, Router } from "express"
 import fse from "fs-extra"
 import { ServerResponse } from "http"
-import { resolve } from "node:path"
+import { resolve } from "path"
 import { PluginOptions } from "../lib"
 
 export default function (_rootDirectory: string, options: PluginOptions) {

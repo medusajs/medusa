@@ -5059,6 +5059,7 @@ __metadata:
     emoji-picker-react: ^4.4.3
     framer-motion: ^9.1.6
     html-webpack-plugin: ^5.5.1
+    jest: 25.5.4
     md5: ^2.3.0
     medusa-react: "*"
     mini-css-extract-plugin: ^2.7.6
@@ -5098,6 +5099,7 @@ __metadata:
     tailwindcss: 3.2.2
     tailwindcss-radix: ^2.7.0
     ts-dedent: ^2.2.0
+    ts-jest: 25.5.1
     ts-node: ^10.9.1
     tsup: 6.7.0
     type-fest: ^3.6.0
@@ -26445,7 +26447,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest@npm:^25.5.2, jest@npm:^25.5.4":
+"jest@npm:25.5.4, jest@npm:^25.5.2, jest@npm:^25.5.4":
   version: 25.5.4
   resolution: "jest@npm:25.5.4"
   dependencies:
@@ -38736,7 +38738,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^25.5.1":
+"ts-jest@npm:25.5.1, ts-jest@npm:^25.5.1":
   version: 25.5.1
   resolution: "ts-jest@npm:25.5.1"
   dependencies:

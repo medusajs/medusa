@@ -3,7 +3,7 @@ import {
   clean,
   type AdminOptions,
 } from "@medusajs/admin-ui"
-import { resolve } from "node:path"
+import { resolve } from "path"
 import { getPluginPaths, loadConfig } from "../utils"
 import { createBuildManifest } from "../utils/build-manifest"
 
