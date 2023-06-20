@@ -6,7 +6,7 @@ addHowToData: true
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Feedback from '@site/src/components/Feedback';
-import DocCardList from '@theme/DocCardList';
+import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
 import Troubleshooting from '@site/src/components/Troubleshooting'
 import TypeErrorSection from "./troubleshooting/create-medusa-app-errors/_typeerror.md"
@@ -17,13 +17,22 @@ import FreshInstallationSection from './troubleshooting/awilix-resolution-error/
 
 # Install Medusa with create-medusa-app
 
-In this document, you’ll learn how to use create-medusa-app to set up a Medusa backend.
+In this document, you’ll learn how to use create-medusa-app to set up a Medusa backend and an admin dashboard.
 
 ## Overview
 
 Medusa is a toolkit for developers to create digital commerce applications. In its simplest form, Medusa is a Node.js backend with the core API, plugins, and modules installed through npm.
 
-`create-medusa-app` is a command that facilitates creating a Medusa ecosystem. It installs the Medusa backend, along with the necessary configurations to run the backend.
+`create-medusa-app` is a command that facilitates creating a Medusa ecosystem. It installs the Medusa backend and admin dashboard, along with the necessary configurations to run the backend.
+
+:::note
+
+`create-medusa-app` uses a beta version of the admin dashboard. If you want to use a stable Medusa setup, you can install the stable backend and the admin using the following guides:
+
+1. [Install Medusa backend](./development/backend/install.mdx)
+2. [Install admin package](./admin/quickstart.mdx)
+
+:::
 
 ---
 
@@ -75,7 +84,8 @@ In your terminal, run the following command:
   <summary>Available Options</summary>
 
   - `--repo-url <url>`: The repository URL to create the project from. By default it will be `https://github.com/medusajs/medusa-starter-default`.
-  - `--no-boilerplate`: A flag that removes all files added for an enhanced onboarding experience (files under `src/api`, etc...). This is helpful if you want to create a clean project, and is only recommended if you're familiar with Medusa.
+  - `--seed`: A flag indicating whether the database should be seeded with demo data. By default, seeding is disabled.
+  - `--no-boilerplate`: A flag that removes all files added for an enhanced onboarding experience (files under `src/admin`, `src/api`, etc...). This is helpful if you want to create a clean project, and is only recommended if you're familiar with Medusa.
 
 </details>
 
@@ -89,7 +99,11 @@ By default, this command will try to use the default PostgreSQL credentials to c
 
 These credentials will be used to create a database during this setup and configure your Medusa backend to connect to that database.
 
-### Step 3: Wait for Project Setup
+### Step 3: Enter an admin email
+
+You'll then be prompted to enter an admin email for your admin user. You'll be using this admin email later to login to your admin dashboard. You can use the default `admin@medusa-test.com` or enter any other email.
+
+### Step 4: Wait for Project Setup
 
 After the above steps, the project setup will start which includes:
 
@@ -97,17 +111,14 @@ After the above steps, the project setup will start which includes:
 2. Creating the project database.
 3. Installing dependencies in your project directory.
 4. Building project and running migrations to migrate the Medusa schema into your project database.
-5. Seed the database
+5. Create the admin user.
+6. Seeding the database with demo data.
 
-### Step 4: Test it Out
+### Step 5: Log into admin dashboard
 
-Once the installation is finished, the Medusa backend will be started automatically. You can test it out by either opening the URL `localhost:9000/store/products` in your browser or using cURL:
+Once the project is prepared, the Medusa backend will start and the admin dashboard will be opened in your default browser. You'll then be asked to enter a password for the admin email you entered earlier, as well as other account information.
 
-```bash
-cURL localhost:9000/store/products
-```
-
-This endpoint returns an array of available products in your Medusa backend.
+Once you're logged in, you can start using Medusa! Try following the setup guide to create your first product and order.
 
 <Feedback 
    event="survey_create-medusa-app"
@@ -122,26 +133,15 @@ This endpoint returns an array of available products in your Medusa backend.
 
 Based on what you're building, you can find a development path for you in the Recipes page.
 
-<DocCardList colSize={6} items={[
-  {
-    type: 'link',
-    href: '/modules/overview',
-    label: 'Commerce Modules',
-    customProps: {
-      icon: Icons['puzzle-solid'],
-      description: "Learn about available commerce modules and features in Medusa."
-    }
-  },
-  {
-    type: 'link',
-    href: '/development/overview',
-    label: 'Medusa Development',
-    customProps: {
-      icon: Icons['server-stack-solid'],
-      description: "Learn how to develop customized digital commerce applications with Medusa."
-    }
+<DocCard item={{
+  type: 'link',
+  href: '/recipes',
+  label: 'Recipes',
+  customProps: {
+    icon: Icons['map'],
+    description: "Find learning paths based on what you're building"
   }
-]} />
+}} />
 
 ---
 

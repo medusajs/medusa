@@ -44,7 +44,8 @@
     "react-uuid": "^2.0.0",
     "redocusaurus": "^1.4.0",
     "tailwindcss": "^3.3.2",
-    "url-loader": "^4.1.1"
+    "url-loader": "^4.1.1",
+    "uuid": "^9.0.0"
   },
   "browserslist": {
     "production": [
@@ -63,6 +64,8 @@
     "@docusaurus/eslint-plugin": "latest",
     "@docusaurus/module-type-aliases": "latest",
     "@tsconfig/docusaurus": "^1.0.7",
+    "@types/react-transition-group": "^4.4.6",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
     "eslint": "^8.36.0",
