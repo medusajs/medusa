@@ -48,7 +48,7 @@ export type WidgetPayment = {
   risk_score: number | null
   risk_level: string | null
   region: Region
-  type: string // order or swap
+  type: "order" | "swap"
 }
 
 export type ListStripeIntentRes = {

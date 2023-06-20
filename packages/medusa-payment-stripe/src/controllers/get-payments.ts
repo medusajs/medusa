@@ -41,7 +41,7 @@ export async function getStripePayments(req): Promise<WidgetPayment[]> {
         created: intent.created,
         risk_score: charge?.outcome?.risk_score ?? null,
         risk_level: charge?.outcome?.risk_level ?? null,
-        type: payment.type,
+        type: payment.type as "order" | "swap",
         region: order.region,
       }
     })
