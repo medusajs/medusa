@@ -41,6 +41,10 @@ export type Widget = {
   Widget: ComponentType<any>
 }
 
+export type RouteSegment = {
+  path: string
+}
+
 export type Route = {
   origin: string
   path: string

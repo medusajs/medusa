@@ -1,9 +1,9 @@
 import React, { PropsWithChildren, useCallback, useMemo } from "react"
 import RouteRegistry from "../registries/route-registry"
-import { Link, Route } from "../types/extensions"
+import { Link, Route, RouteSegment } from "../types/extensions"
 
 type RouteContextType = {
-  getTopLevelRoutes: () => Route[]
+  getTopLevelRoutes: () => (Route | RouteSegment)[]
   getNestedRoutes: (parent: string) => Route[]
   getLinks: () => Link[]
 }

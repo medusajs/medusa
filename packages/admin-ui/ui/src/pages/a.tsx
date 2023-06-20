@@ -24,6 +24,7 @@ import SalesChannels from "../domain/sales-channels"
 import Settings from "../domain/settings"
 import { AnalyticsProvider } from "../providers/analytics-provider"
 import { useRoutes } from "../providers/route-provider"
+import { isRoute } from "../utils/extensions"
 
 const IndexPage = () => {
   const navigate = useNavigate()
@@ -73,7 +74,11 @@ const DashboardRoutes = () => {
                 <Route
                   key={index}
                   path={`/${route.path}/*`}
-                  errorElement={<RouteErrorElement origin={route.origin} />}
+                  errorElement={
+                    <RouteErrorElement
+                      origin={isRoute(route) ? route.origin : ""}
+                    />
+                  }
                   element={<RouteContainer route={route} />}
                 />
               )

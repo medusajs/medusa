@@ -1,4 +1,5 @@
-import { Link, Route, RouteExtension } from "../types/extensions"
+import { forbiddenRoutes } from "../constants/forbidden-routes"
+import { Link, Route, RouteExtension, RouteSegment } from "../types/extensions"
 
 type RouteNode = {
   [pathSegment: string]: RouteNode | Route
@@ -43,10 +44,21 @@ class RouteRegistry {
     }
   }
 
-  getTopLevelRoutes(): Route[] {
-    return Object.values(this.routes)
-      .filter((node) => "__route" in node)
-      .map((node) => (node as RouteNode).__route as Route)
+  getTopLevelRoutes(): (Route | RouteSegment)[] {
+    const topLevelRoutes = Object.entries(this.routes)
+      .filter(
+        ([key, _]) =>
+          !forbiddenRoutes.includes(key as (typeof forbiddenRoutes)[number])
+      )
+      .map(([key, node]) => {
+        return "__route" in node
+          ? ((node as RouteNode).__route as Route)
+          : ({
+              path: `/${key}`,
+            } as RouteSegment)
+      })
+
+    return topLevelRoutes
   }
 
   getNestedRoutes(path: string) {
