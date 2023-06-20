@@ -1,12 +1,12 @@
 import clsx from "clsx"
-import React from "react"
+import { HTMLAttributes, FC } from "react"
 
 type StatusIndicatorProps = {
   title?: string
   variant: "primary" | "danger" | "warning" | "success" | "active" | "default"
-} & React.HTMLAttributes<HTMLDivElement>
+} & HTMLAttributes<HTMLDivElement>
 
-const StatusIndicator: React.FC<StatusIndicatorProps> = ({
+const StatusIndicator: FC<StatusIndicatorProps> = ({
   title,
   variant = "success",
   className,

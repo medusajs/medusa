@@ -1,9 +1,9 @@
-import React, { PropsWithChildren } from "react"
+import { PropsWithChildren, ReactNode } from "react"
 
 type Props = PropsWithChildren<{
   title: string
   description?: string
-  icon?: React.ReactNode
+  icon?: ReactNode
 }>
 
 export const Container = ({ title, description, icon, children }: Props) => {

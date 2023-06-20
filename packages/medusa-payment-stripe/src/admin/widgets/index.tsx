@@ -1,4 +1,3 @@
-import React from "react"
 import { WidgetConfig, OrderDetailsWidgetProps } from "@medusajs/admin"
 import { Container } from "../shared/components/container"
 import { useAdminEntity } from "../shared/hooks"

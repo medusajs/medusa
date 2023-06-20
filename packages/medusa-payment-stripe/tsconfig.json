@@ -6,7 +6,7 @@
       "es2019"
     ],
     "target": "es5",
-    "jsx": "react" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
+    "jsx": "react-jsx" /* Specify JSX code generation: 'preserve', 'react-native', or 'react'. */,
     "outDir": "./dist",
     "esModuleInterop": true,
     "declaration": true,

@@ -1,13 +1,8 @@
-import React from "react"
+import { HTMLAttributes, FC } from "react"
 
-type BadgeProps = React.HTMLAttributes<HTMLDivElement>
+type BadgeProps = HTMLAttributes<HTMLDivElement>
 
-const Badge: React.FC<BadgeProps> = ({
-  children,
-  onClick,
-  className,
-  ...props
-}) => {
+const Badge: FC<BadgeProps> = ({ children, onClick, ...props }) => {
   return (
     <div
       className="badge badge-ghost rounded-full py-1 px-3"
