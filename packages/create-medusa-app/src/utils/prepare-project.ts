@@ -37,6 +37,14 @@ export default async ({
     signal: abortController?.signal,
   }
 
+  const npxOptions = {
+    ...execOptions,
+    env: {
+      ...process.env,
+      npm_config_yes: "yes",
+    },
+  }
+
   // initialize the invite token to return
   let inviteToken: string | undefined = undefined
 
@@ -110,8 +118,8 @@ export default async ({
   await processManager.runProcess({
     process: async () => {
       const proc = await promiseExec(
-        "npx -y @medusajs/medusa-cli@latest migrations run",
-        execOptions
+        "npx @medusajs/medusa-cli@latest migrations run",
+        npxOptions
       )
 
       // ensure that migrations actually ran in case of an uncaught error
@@ -138,8 +146,8 @@ export default async ({
     await processManager.runProcess({
       process: async () => {
         const proc = await promiseExec(
-          `npx -y @medusajs/medusa-cli@latest user -e ${admin.email} --invite`,
-          execOptions
+          `npx @medusajs/medusa-cli@latest user -e ${admin.email} --invite`,
+          npxOptions
         )
         // get invite token from stdout
         const match = proc.stdout.match(/Invite token: (?<token>.+)/)
@@ -173,11 +181,11 @@ export default async ({
     await processManager.runProcess({
       process: async () => {
         await promiseExec(
-          `npx -y @medusajs/medusa-cli@latest seed --seed-file=${path.join(
+          `npx @medusajs/medusa-cli@latest seed --seed-file=${path.join(
             "data",
             "seed.json"
           )}`,
-          execOptions
+          npxOptions
         )
       },
     })
@@ -196,11 +204,11 @@ export default async ({
     await processManager.runProcess({
       process: async () => {
         await promiseExec(
-          `npx -y @medusajs/medusa-cli@latest seed --seed-file=${path.join(
+          `npx @medusajs/medusa-cli@latest seed --seed-file=${path.join(
             "data",
             "seed-onboarding.json"
           )}`,
-          execOptions
+          npxOptions
         )
       },
     })
