@@ -8,7 +8,7 @@ describe("normalize path", () => {
 
   describe("normalizePath", () => {
     it("should normalize a file path", async () => {
-      const testPath = "/custom/page.tsx"
+      const testPath = path.join("/", "custom", "page.tsx")
 
       const result = normalizePath(testPath)
 
@@ -16,7 +16,7 @@ describe("normalize path", () => {
     })
 
     it("should normalize a file path with brackets", async () => {
-      const testPath = "/custom/[id]/page.tsx"
+      const testPath = path.join("/", "custom", "[id]", "page.tsx")
 
       const result = normalizePath(testPath)
 

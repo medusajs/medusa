@@ -8,7 +8,7 @@ describe("validate extensions", () => {
 
   describe("createPath", () => {
     it("should return a URL path", async () => {
-      const testPath = "/custom/page.tsx"
+      const testPath = path.join("/", "custom", "page.tsx")
 
       const result = createPath(testPath)
 
@@ -16,7 +16,7 @@ describe("validate extensions", () => {
     })
 
     it("should return a URL path with a parameter", async () => {
-      const testPath = "/custom/[id]/page.tsx"
+      const testPath = path.join("/", "custom", "[id]", "page.tsx")
 
       const result = createPath(testPath)
 
