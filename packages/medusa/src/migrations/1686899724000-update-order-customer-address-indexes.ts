@@ -42,7 +42,7 @@ export class updateOrderCustomerAddressIndexes1686899724000
       CREATE UNIQUE INDEX IF NOT EXISTS uidx_address_id ON address ((id::varchar)) WHERE deleted_at IS NULL;
       CREATE UNIQUE INDEX IF NOT EXISTS uidx_customer_id ON customer ((id::varchar)) WHERE deleted_at IS NULL;
       CREATE UNIQUE INDEX IF NOT EXISTS uidx_order_id ON "order" ((id::varchar));
-      CREATE INDEX IF NOT EXISTS c ON "order" ((shipping_address_id::varchar));
+      CREATE INDEX IF NOT EXISTS idx_shipping_address_id ON "order" ((shipping_address_id::varchar));
       CREATE INDEX IF NOT EXISTS idx_order_display_id ON "order" ((display_id::varchar));
       CREATE INDEX IF NOT EXISTS idx_order_customer_id ON "order" ((customer_id::varchar));
       CREATE INDEX IF NOT EXISTS idx_customer_first_last_phone ON "customer" (first_name, last_name, phone);
