@@ -15,7 +15,7 @@ const IconBolt: React.FC<IconProps> = ({ iconColorClassName, ...props }) => {
         d="M3.125 11.25L11.875 1.875L10 8.75H16.875L8.125 18.125L10 11.25H3.125Z"
         className={
           iconColorClassName ||
-          "tw-stroke-medusa-icon-secondary dark:tw-stroke-medusa-icon-secondary"
+          "tw-stroke-medusa-icon-subtle dark:tw-stroke-medusa-icon-subtle"
         }
         strokeWidth="1.5"
         strokeLinecap="round"
