@@ -1,15 +1,11 @@
 import inquirer from "inquirer"
 import slugifyType from "slugify"
 import chalk from "chalk"
-import pg from "pg"
-import createDb from "../utils/create-db.js"
-import postgresClient from "../utils/postgres-client.js"
-import cloneRepo from "../utils/clone-repo.js"
+import { getDbClientAndCredentials, runCreateDb } from "../utils/create-db.js"
 import prepareProject from "../utils/prepare-project.js"
 import startMedusa from "../utils/start-medusa.js"
 import open from "open"
 import waitOn from "wait-on"
-import formatConnectionString from "../utils/format-connection-string.js"
 import ora, { Ora } from "ora"
 import fs from "fs"
 import isEmailImported from "validator/lib/isEmail.js"
@@ -24,9 +20,17 @@ import ProcessManager from "../utils/process-manager.js"
 import { nanoid } from "nanoid"
 import { displayFactBox, FactBoxOptions } from "../utils/facts.js"
 import { EOL } from "os"
+import { runCloneRepo } from "../utils/clone-repo.js"
 
 const slugify = slugifyType.default
 const isEmail = isEmailImported.default
+
+export type CreateOptions = {
+  repoUrl?: string
+  seed?: boolean
+  // commander passed --no-boilerplate as boilerplate
+  boilerplate?: boolean
+}
 
 export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
   track("CREATE_CLI")
@@ -76,6 +80,8 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
         ),
       })
     }
+
+    return
   })
 
   const projectName = await askForProjectName()
@@ -212,94 +218,6 @@ async function askForProjectName(): Promise<string> {
   return projectName
 }
 
-async function getDbClientAndCredentials(dbName: string): Promise<{
-  client: pg.Client
-  dbConnectionString: string
-}> {
-  let client!: pg.Client
-  let postgresUsername = "postgres"
-  let postgresPassword = ""
-
-  try {
-    client = await postgresClient({
-      user: postgresUsername,
-      password: postgresPassword,
-    })
-  } catch (e) {
-    // ask for the user's postgres credentials
-    const answers = await inquirer.prompt([
-      {
-        type: "input",
-        name: "postgresUsername",
-        message: "Enter your Postgres username",
-        default: "postgres",
-        validate: (input) => {
-          return typeof input === "string" && input.length > 0
-        },
-      },
-      {
-        type: "password",
-        name: "postgresPassword",
-        message: "Enter your Postgres password",
-      },
-    ])
-
-    postgresUsername = answers.postgresUsername
-    postgresPassword = answers.postgresPassword
-
-    try {
-      client = await postgresClient({
-        user: postgresUsername,
-        password: postgresPassword,
-      })
-    } catch (e) {
-      logMessage({
-        message:
-          "Couldn't connect to PostgreSQL. Make sure you have PostgreSQL installed and the credentials you provided are correct.${EOL}${EOL}" +
-          "You can learn how to install PostgreSQL here: https://docs.medusajs.com/development/backend/prepare-environment#postgresql",
-        type: "error",
-      })
-    }
-  }
-
-  // format connection string
-  const dbConnectionString = formatConnectionString({
-    user: postgresUsername,
-    password: postgresPassword,
-    host: client!.host,
-    db: dbName,
-  })
-
-  return {
-    client,
-    dbConnectionString,
-  }
-}
-
-async function runCreateDb({
-  client,
-  dbName,
-  spinner,
-}: {
-  client: pg.Client
-  dbName: string
-  spinner: Ora
-}) {
-  // create postgres database
-  try {
-    await createDb({
-      client,
-      db: dbName,
-    })
-  } catch (e) {
-    spinner.stop()
-    logMessage({
-      message: `An error occurred while trying to create your database: ${e}`,
-      type: "error",
-    })
-  }
-}
-
 async function askForAdminEmail(
   seed?: boolean,
   boilerplate?: boolean
@@ -319,34 +237,4 @@ async function askForAdminEmail(
   ])
 
   return adminEmail
-}
-
-async function runCloneRepo({
-  projectName,
-  repoUrl,
-  abortController,
-  spinner,
-}: {
-  projectName: string
-  repoUrl: string
-  abortController: AbortController
-  spinner: Ora
-}) {
-  try {
-    await cloneRepo({
-      directoryName: projectName,
-      repoUrl,
-      abortController,
-    })
-  } catch (e) {
-    if (isAbortError(e)) {
-      process.exit()
-    }
-
-    spinner.stop()
-    logMessage({
-      message: `An error occurred while setting up your project: ${e}`,
-      type: "error",
-    })
-  }
 }

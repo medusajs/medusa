@@ -16,8 +16,8 @@ export default class ProcessManager {
   }
 
   onTerminated(fn: () => Promise<void> | void) {
-    process.on("SIGTERM", async () => fn())
-    process.on("SIGINT", async () => fn())
+    process.on("SIGTERM", () => fn())
+    process.on("SIGINT", () => fn())
   }
 
   addInterval(interval: NodeJS.Timer) {
