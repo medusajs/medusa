@@ -7,6 +7,7 @@ import { spinner } from "../index.js"
 import { generateTsConfig } from "../templates/ts-config.js"
 import { generateJestConfig } from "../templates/jest-config.js"
 import { generateMikroOrmConfigDev } from "../templates/mikro-orm-coinfig-dev.js"
+import { generateGitIgnore } from "../templates/gitignore.js"
 
 export async function createNewModule(
   moduleName: string,
@@ -38,4 +39,5 @@ async function generateFileStructure(
   await generateTsConfig({ modulePath })
   await generateJestConfig({ modulePath })
   await generateMikroOrmConfigDev({ modulePath })
+  await generateGitIgnore({ modulePath })
 }
