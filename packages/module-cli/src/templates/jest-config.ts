@@ -14,7 +14,11 @@ export async function generateJestConfig({
   log(`Generating ${fileName}`)
 
   const template = dedent`module.exports = {
-    moduleNameMapper: {},
+    moduleNameMapper: {
+      "^@models": "<rootDir>/src/models",
+      "^@repositories": "<rootDir>/src/repositories",
+      "^@services": "<rootDir>/src/services",
+    },
     globals: {
       "ts-jest": {
         tsConfig: "tsconfig.spec.json",
