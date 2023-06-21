@@ -1,12 +1,12 @@
 import React, { useRef, useState, useEffect } from "react"
 import { CSSTransition, SwitchTransition } from "react-transition-group"
-// import "./index.css"
 
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
 import uuid from "react-uuid"
 import Solutions from "./Solutions/index"
 import Button from "../Button"
+import { useUser } from "@site/src/providers/User"
 
 type FeedbackProps = {
   event?: string
@@ -50,45 +50,39 @@ const Feedback: React.FC<FeedbackProps> = ({
 
   const isBrowser = useIsBrowser()
   const location = useLocation()
+  const { track } = useUser()
 
   function handleFeedback(e) {
     const feedback = e.target.classList.contains("positive")
-    submitFeedback(e, feedback)
     setPositiveFeedback(feedback)
     setShowForm(true)
+    submitFeedback(e, feedback)
   }
 
   function submitFeedback(e, feedback = null) {
     if (isBrowser) {
-      if (window.analytics) {
-        if (showForm) {
-          setLoading(true)
-        }
-        window.analytics.track(
-          event,
-          {
-            url: location.pathname,
-            label: document.title,
-            feedback:
-              (feedback !== null && feedback) ||
-              (feedback === null && positiveFeedback)
-                ? "yes"
-                : "no",
-            message: message?.length ? message : null,
-            uuid: id,
-          },
-          function () {
-            if (showForm) {
-              setLoading(false)
-              resetForm()
-            }
-          }
-        )
-      } else {
-        if (showForm) {
-          resetForm()
-        }
+      if (showForm) {
+        setLoading(true)
       }
+      track(
+        event,
+        {
+          url: location.pathname,
+          label: document.title,
+          feedback:
+            (feedback !== null && feedback) ||
+            (feedback === null && positiveFeedback)
+              ? "yes"
+              : "no",
+          message: message?.length ? message : null,
+        },
+        function () {
+          if (showForm) {
+            setLoading(false)
+            resetForm()
+          }
+        }
+      )
     }
   }
 
@@ -110,15 +104,21 @@ const Feedback: React.FC<FeedbackProps> = ({
     <div className={`tw-py-2 ${className}`}>
       <SwitchTransition mode="out-in">
         <CSSTransition
-          key={showForm}
+          key={
+            showForm
+              ? "show_form"
+              : !submittedFeedback
+              ? "feedback"
+              : "submitted_feedback"
+          }
           nodeRef={nodeRef}
           timeout={300}
           addEndListener={(done) => {
             nodeRef.current.addEventListener("transitionend", done, false)
           }}
           classNames={{
-            enter: "animate__animated animate__fadeIn",
-            exit: "animate__animated animate__fadeOut",
+            enter: "animate__animated animate__fadeIn animate__fastest",
+            exit: "animate__animated animate__fadeOut animate__fastest",
           }}
         >
           <>
@@ -132,7 +132,7 @@ const Feedback: React.FC<FeedbackProps> = ({
                 </span>
                 <Button
                   onClick={handleFeedback}
-                  className="tw-w-fit tw-mr-0.5 last:tw-mr-0"
+                  className="tw-w-fit tw-mr-0.5 last:tw-mr-0 positive"
                 >
                   {positiveBtn}
                 </Button>

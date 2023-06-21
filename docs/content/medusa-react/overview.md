@@ -188,6 +188,95 @@ Instead of using `mutate`, you can use `mutateAsync` to receive a Promise that r
 
 Learn more about how you can use mutations in [Tanstack Query’s documentation](https://tanstack.com/query/v4/docs/react/guides/mutations).
 
+### Custom Hooks
+
+Medusa React provides a utility function `createCustomAdminHooks` that allows developers to consume their admin custom endpoints using the same Medusa React methods and conventions. It returns custom mutation and query hooks that you can use to retrieve and manipulate data using your custom endpoints. This utility function is useful when customizing the admin with widgets.
+
+```ts
+import { createCustomAdminHooks } from "medusa-react"
+
+const {
+  useAdminEntity,
+  useAdminEntities,
+  useAdminCreateMutation,
+  useAdminUpdateMutation,
+  useAdminDeleteMutation,
+} = createCustomAdminHooks(
+  `/vendors`, 
+  "vendors",
+  { product: true }
+)
+```
+
+It accepts the following parameters:
+
+1. `path`: (required) the first parameter is a string that indicates the base path to the custom endpoint. For example, if you have custom endpoints that begin with `/admin/vendors`, the value of this parameter would be `vendors`. The `/admin` prefix will be added automatically.
+2. `queryKey`: (required) the second parameter is a string used to generate query keys for all `GET` hooks, which is used by Tanstack Query for caching. When a mutation related to this same key succeeds, the key will be automatically invalidated.
+3. `relatedDomains`: (optional) the third parameter is an object that can be used to specify domains related to this custom hook. This will ensure that Tanstack Query invalides the keys for those domains when your custom mutations succeed. For example, if your custom endpoint is related to products, you can pass `{ product: true }` as the value of this parameter. Then, when you use your custom mutation and it succeeds, the product's key `adminProductKeys.all` will be invalidated automatically, and all products will be re-fetched.
+
+:::note
+
+While the mechanism implemented using the `relatedDomains` parameter may seem a bit excessive, Tanstack Query is smart enough to only re-fetch the queries that are currently active. So, it won't result in all queries being re-fetched simultaneously.
+
+:::
+
+The function returns an object containing the following hooks:
+
+- `useAdminEntity`: is a query hook that allows retrieving a single entry using your custom endpoint. For example, if you have the `GET` endpoint `/admin/vendors/:id`, where `:id` is the ID of a vendor, you can use this hook to call that endpoint and retrieve a vendor by its ID.
+- `useAdminEntities`: is a query hook that allows retrieving a list of entries using your custom endpoint. For example, if you have the `GET` endpoint `/admin/vendors`, you can use this hook to call that endpoint and retrieve the list of vendors.
+- `useAdminCreateMutation`: is a mutation hook that allows creating an entry using your custom endpoint. For example, if you have the `POST` endpoint `/admin/vendors`, you can use this hook to call that endpoint and create a vendor.
+- `useAdminUpdateMutation`: is a mutation hook that allows updating an entry using your custom endpoint. For example, if you have the `POST` endpoint `/admin/vendors/:id`, you can use this hook to call that endpoint and update a vendor.
+- `useAdminDeleteMutation`: is a mutation hook that allows deleting an entry using your custom endpoint. For example, if you have the `DELETE` endpoint `/admin/vendors/:id`, you can use this hook to call that endpoint and delete a vendor.
+
+Each of these hooks are generic, allowing you to set the types for the functions and receive IntelliSense for the query parameters, the payload, and return data. The first generic type accepted would be the type of the request, and the second type accepted would be the type of the response.
+
+An example of using `createCustomAdminHooks`:
+
+```ts
+import { createCustomAdminHooks } from "medusa-react"
+
+type PostVendorsReq = {
+  name: string
+}
+
+type PostVendorRes = {
+  vendor: Vendor // assuming there's a type vendor
+}
+
+const MyWidget = () => {
+  const { 
+    useAdminCreateMutation: useCreateVendor,
+  } = createCustomAdminHooks(
+    `/vendors`, 
+    "vendors",
+    { product: true }
+  )
+
+  const { mutate } = useCreateVendor<
+    PostVendorsReq, 
+    PostVendorRes
+  >()
+
+  // ...
+
+  const handleCreate = () => {
+    mutate({
+      name: "Vendor 1",
+    }, {
+      onSuccess({ vendor }) {
+        console.log(vendor)
+      },
+    })
+  }
+
+  // ...
+}
+```
+
+In the example above, you use `createCustomAdminHooks` to create the custom hook `useAdminCreateMutation`, renamed to `useCreateVendor`. You then use `useCreateVendor` to initialize the `mutate` function. You set the generic types of useCreateVendor to the types `PostVendorsReq` and `PostVendorRes`, which are assumed to be  the types of the create endpoint's request and response respectively.
+
+Later in your code, you can use the `mutate` function to send a request to your endpoint and create a new vendor. The `mutate` function accepts the request's body parameters as an object. You can use the `onSuccess` function, which can be defined in the second parameter object of the `mutate` function, to get access to the response received.
+
 ---
 
 ## Utilities

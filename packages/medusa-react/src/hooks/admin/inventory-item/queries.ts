@@ -1,5 +1,6 @@
 import {
   AdminGetInventoryItemsItemLocationLevelsParams,
+  AdminGetInventoryItemsParams,
   AdminGetStockLocationsParams,
   AdminInventoryItemsListWithVariantsAndLocationLevelsRes,
   AdminInventoryItemsLocationLevelsRes,
@@ -21,7 +22,7 @@ export const adminInventoryItemsKeys = queryKeysFactory(
 type InventoryItemsQueryKeys = typeof adminInventoryItemsKeys
 
 export const useAdminInventoryItems = (
-  query?: AdminGetStockLocationsParams,
+  query?: AdminGetInventoryItemsParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminInventoryItemsListWithVariantsAndLocationLevelsRes>,
     Error,

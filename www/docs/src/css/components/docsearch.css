@@ -22,7 +22,7 @@
 
 .DocSearch-Input {
   @apply !tw-text-body-regular !tw-pl-1;
-  @apply placeholder:tw-text-medusa-text-placeholder dark:placeholder:tw-text-medusa-text-placeholder-dark;
+  @apply placeholder:tw-text-medusa-text-muted dark:placeholder:tw-text-medusa-text-muted-dark;
 }
 
 .DocSearch-Dropdown {
@@ -31,7 +31,7 @@
 }
 
 .DocSearch-Hit-source {
-  @apply !tw-m-0 !tw-text-label-small-plus tw-uppercase tw-text-medusa-text-placeholder dark:tw-text-medusa-text-placeholder-dark;
+  @apply !tw-m-0 !tw-text-label-small-plus tw-uppercase tw-text-medusa-text-muted dark:tw-text-medusa-text-muted-dark;
   @apply tw-border-0 tw-border-b tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark;
   @apply !tw-py-[10px] !tw-px-1.5;
 }
@@ -178,7 +178,7 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 }
 
 .DocSearch-Button-Placeholder {
-  @apply tw-text-medusa-text-placeholder dark:tw-text-medusa-text-placeholder-dark;
+  @apply tw-text-medusa-text-muted dark:tw-text-medusa-text-muted-dark;
   @apply !tw-pl-0.5 !tw-text-label-small lg:!tw-block !tw-hidden;
 }
 

@@ -25,7 +25,7 @@ By integrating Strapi to Medusa, you can benefit from powerful features in your 
 
 ### Medusa CLI
 
-[Medusa’s CLI tool](../../cli/reference.md#how-to-install-cli-tool) is required to set up a new Medusa backend.
+[Medusa’s CLI tool](../../cli/reference.mdx#how-to-install-cli-tool) is required to set up a new Medusa backend.
 
 ### Redis
 
@@ -86,7 +86,7 @@ You can use the Strapi plugin on an existing Medusa backend, however, existing d
 To create your Medusa backend, run the following command:
 
 ```bash
-medusa new medusa-backend
+npx @medusajs/medusa-cli@latest new medusa-backend
 ```
 
 ### Configure your Backend
@@ -107,13 +107,13 @@ You must then configure your backend to:
 After configuring the connection to the database, you must run migrations to add the necessary database schema definitions in your database. To do that, run the following command in the `medusa-backend` directory:
 
 ```bash
-medusa migrations run
+npx @medusajs/medusa-cli@latest migrations run
 ```
 
 You can optionally seed your database with demo data by running the `seed` command:
 
 ```bash
-medusa seed --seed-file=data/seed.json
+npx @medusajs/medusa-cli@latest seed --seed-file=data/seed.json
 ```
 
 ---
@@ -199,4 +199,4 @@ If you try to update products on Medusa either using the [REST APIs](/api/admin/
 ## See Also
 
 - [Deploy the Medusa backend](../../deployments/server/index.mdx)
-- [Create your own plugin](../../development/plugins/create.md)
+- [Create your own plugin](../../development/plugins/create.mdx)
