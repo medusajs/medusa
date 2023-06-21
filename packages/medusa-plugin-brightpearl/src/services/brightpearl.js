@@ -111,7 +111,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -120,7 +120,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -764,13 +764,16 @@ class BrightpearlService extends BaseService {
       )
     }
 
+    reservation[0].orderRows = order.rows.reduce((acc, next) => {
+      acc[next.id] = {
+        productId: next.productId,
+        quantity: next.quantity,
+      }
+      return acc
+    }, reservation[0].orderRows)
+
     const updatePayload = {
       products: [
-        ...order.rows.map((row) => ({
-          productId: row.productId,
-          salesOrderRowId: row.id,
-          quantity: row.quantity,
-        })),
         ...Object.entries(reservation[0].orderRows).map(([key, value]) => ({
           productId: value.productId,
           quantity: value.quantity,
