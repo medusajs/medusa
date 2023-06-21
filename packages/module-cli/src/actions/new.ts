@@ -4,6 +4,7 @@ import { resolve } from "path"
 import { generatePackageJson } from "../templates/package-json.js"
 import { mkdir } from "fs/promises"
 import { spinner } from "../index.js"
+import { generateTsConfig } from "../templates/ts-config.js"
 
 export async function createNewModule(
   moduleName: string,
@@ -32,4 +33,5 @@ async function generateFileStructure(
   await mkdir(modulePath, { recursive: true })
 
   await generatePackageJson({ moduleName, modulePath })
+  await generateTsConfig({ modulePath })
 }
