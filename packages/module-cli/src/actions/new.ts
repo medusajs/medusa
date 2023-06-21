@@ -1,8 +1,11 @@
-import log from "../utils/logger.js"
 import { existsSync } from "fs"
 import { resolve } from "path"
-import { generatePackageJson } from "../templates/package-json.js"
+import boxen from "boxen"
+import chalk from "chalk"
+import { EOL } from "os"
 import { mkdir } from "fs/promises"
+import log from "../utils/logger.js"
+import { generatePackageJson } from "../templates/package-json.js"
 import { spinner } from "../index.js"
 import { generateTsConfigs } from "../templates/ts-config.js"
 import { generateJestConfig } from "../templates/jest-config.js"
@@ -37,6 +40,25 @@ export async function createNewModule(
     moduleName,
     modulePath,
     upperFirstCamelCasedModuleName
+  )
+
+  log(
+    boxen(
+      chalk.green(
+        `You can change to the module directory with ${chalk.bold.green(
+          `cd ${moduleName}`
+        )}.${EOL}${EOL}
+        Please, look through the files that have been generated to validate that everything is correct.
+        `
+      ),
+      {
+        titleAlignment: "center",
+        textAlignment: "center",
+        padding: 1,
+        margin: 1,
+        float: "center",
+      }
+    )
   )
 }
 
