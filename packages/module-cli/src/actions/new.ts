@@ -11,6 +11,7 @@ import { generateGitIgnore } from "../templates/gitignore.js"
 import { generateLoaders } from "../templates/loaders.js"
 import { kebabToCamelCase } from "@medusajs/utils"
 import { upperCaseFirst } from "@medusajs/utils/dist/common/upper-case-first.js"
+import { generateInitialize } from "../templates/initialize.js"
 
 export async function createNewModule(
   moduleName: string,
@@ -52,4 +53,5 @@ async function generateFileStructure(
   await generateMikroOrmConfigDev({ modulePath })
   await generateGitIgnore({ modulePath })
   await generateLoaders({ modulePath, upperFirstCamelCasedModuleName })
+  await generateInitialize({ modulePath, upperFirstCamelCasedModuleName })
 }
