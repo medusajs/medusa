@@ -9,9 +9,10 @@ import type {
   SpreadElement,
 } from "@babel/types"
 import fse from "fs-extra"
-import path from "node:path"
+import path from "path"
 import { forbiddenRoutes, InjectionZone, injectionZones } from "../../client"
 import { logger } from "./logger"
+import { normalizePath } from "./normalize-path"
 
 function isValidInjectionZone(zone: any): zone is InjectionZone {
   return injectionZones.includes(zone)
@@ -236,8 +237,10 @@ async function validateWidget(file: string) {
  * square brackets with colons, and then removing the "page.[jt]s" suffix.
  */
 function createPath(filePath: string): string {
+  const normalizedPath = normalizePath(filePath)
+
   const regex = /\[(.*?)\]/g
-  const strippedPath = filePath.replace(regex, ":$1")
+  const strippedPath = normalizedPath.replace(regex, ":$1")
 
   const url = strippedPath.replace(/\/page\.[jt]sx?$/i, "")
 
@@ -438,6 +441,7 @@ async function findAllValidRoutes(dir: string) {
 }
 
 export {
+  createPath,
   validateWidget,
   validateRoute,
   findAllValidWidgets,

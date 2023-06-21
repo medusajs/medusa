@@ -1,7 +1,7 @@
 import { AdminOptions } from "@medusajs/admin-ui"
 import fse from "fs-extra"
 import isEqual from "lodash/isEqual"
-import path from "node:path"
+import path from "path"
 import { getPluginPaths } from "./get-plugin-paths"
 
 const MANIFEST_PATH = path.resolve(
