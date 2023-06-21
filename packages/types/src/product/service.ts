@@ -21,37 +21,37 @@ export interface IProductModuleService<
   TProductCategory = any
 > {
   list(
-    filter: FilterableProductProps,
+    filters?: FilterableProductProps,
     config?: FindConfig<ProductDTO>,
-    context?: SharedContext
+    sharedContext?: SharedContext
   ): Promise<ProductDTO[]>
 
   listAndCount(
-    filter: FilterableProductProps,
+    filters?: FilterableProductProps,
     config?: FindConfig<ProductDTO>,
-    context?: SharedContext
+    sharedContext?: SharedContext
   ): Promise<[ProductDTO[], number]>
 
   listTags(
-    filter: FilterableProductTagProps,
+    filters?: FilterableProductTagProps,
     config?: FindConfig<ProductTagDTO>,
-    context?: SharedContext
+    sharedContext?: SharedContext
   ): Promise<ProductTagDTO[]>
 
   listVariants(
-    filter: FilterableProductVariantProps,
+    filters?: FilterableProductVariantProps,
     config?: FindConfig<ProductVariantDTO>,
-    context?: SharedContext
+    sharedContext?: SharedContext
   ): Promise<ProductVariantDTO[]>
 
   listCollections(
-    filter: FilterableProductCollectionProps,
+    filters?: FilterableProductCollectionProps,
     config?: FindConfig<ProductCollectionDTO>,
-    context?: SharedContext
+    sharedContext?: SharedContext
   ): Promise<ProductCollectionDTO[]>
 
   listCategories(
-    filters: FilterableProductCategoryProps,
+    filters?: FilterableProductCategoryProps,
     config?: FindConfig<ProductCategoryDTO>,
     sharedContext?: SharedContext
   ): Promise<ProductCategoryDTO[]>

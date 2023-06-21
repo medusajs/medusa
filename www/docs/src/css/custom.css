@@ -49,7 +49,7 @@
   }
 
   .sidebar-group-divider {
-    @apply tw-pb-[6px] tw-uppercase tw-text-medusa-text-placeholder dark:tw-text-medusa-text-placeholder-dark tw-text-label-x-small-plus;
+    @apply tw-pb-[6px] tw-uppercase tw-text-medusa-text-muted dark:tw-text-medusa-text-muted-dark tw-text-label-x-small-plus;
     @apply first:tw-pt-[6px] [&:not(:first-child)]:!tw-pt-1;
   }
   
@@ -98,7 +98,7 @@
   }
 
   .code-header {
-    @apply tw-py-[12px] tw-px-1 tw-bg-medusa-code-tabs-bg;
+    @apply tw-py-[12px] tw-px-1 tw-bg-medusa-code-tabs-bg tw-text-medusa-code-text-subtle;
     @apply tw-flex tw-justify-between tw-items-center;
     @apply tw-rounded-tl tw-rounded-tr tw-rounded-br-none tw-rounded-bl-none tw-border-b-0;
     @apply tw-border tw-border-solid tw-border-medusa-code-block-border tw-border-b-0;
@@ -117,20 +117,36 @@
     @apply tw-py-[6px] tw-px-[12px] tw-rounded tw-cursor-pointer;
     @apply tw-bg-button-neutral dark:tw-bg-button-neutral-dark;
     @apply hover:!tw-bg-no-image hover:tw-bg-medusa-button-neutral-hover dark:hover:tw-bg-medusa-button-neutral-hover-dark hover:tw-no-underline;
-    @apply active:!tw-bg-no-image active:tw-bg-medusa-button-neutral-pressed dark:active:tw-bg-medusa-button-neutral-pressed;
-    @apply focus:tw-shadow-neutral-button-focused dark:focus:tw-shadow-neutral-button-focused-dark;
+    @apply active:!tw-bg-no-image active:tw-bg-medusa-button-neutral-pressed dark:active:tw-bg-medusa-button-neutral-pressed-dark;
+    @apply focus:tw-shadow-focus dark:focus:tw-shadow-focus-dark;
     @apply disabled:!tw-bg-no-image disabled:tw-bg-medusa-button-disabled dark:disabled:tw-bg-medusa-button-disabled-dark;
     @apply tw-border tw-border-solid tw-border-medusa-border-neutral-buttons dark:tw-border-medusa-border-neutral-buttons-dark;
     @apply tw-text-label-small-plus tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark;
     @apply hover:tw-text-medusa-text-base dark:hover:tw-text-medusa-text-base-dark;
   }
 
+  .btn-inverted {
+    @apply tw-inline-flex tw-flex-row tw-justify-center tw-items-center;
+    @apply tw-py-[6px] tw-px-[12px] tw-rounded tw-cursor-pointer;
+    @apply tw-bg-button-inverted dark:tw-bg-button-inverted-dark;
+    @apply hover:!tw-bg-no-image hover:tw-bg-medusa-button-inverted-hover dark:hover:tw-bg-medusa-button-inverted-hover-dark hover:tw-no-underline;
+    @apply active:!tw-bg-no-image active:tw-bg-medusa-button-inverted-pressed dark:active:tw-bg-medusa-button-inverted-pressed-dark;
+    @apply focus:tw-shadow-focus dark:focus:tw-shadow-focus-dark;
+    @apply disabled:!tw-bg-no-image disabled:tw-bg-medusa-button-disabled dark:disabled:tw-bg-medusa-button-disabled-dark;
+    @apply tw-text-label-small-plus tw-text-medusa-text-on-color dark:tw-text-medusa-text-on-inverted-dark;
+    @apply tw-border-transparent tw-border;
+  }
+
   .navbar-action-icon-item {
     @apply tw-bg-button-neutral dark:tw-bg-button-neutral-dark hover:!tw-bg-no-image active:!tw-bg-no-image hover:tw-bg-medusa-button-neutral-hover dark:hover:tw-bg-medusa-button-neutral-hover-dark;
     @apply active:tw-bg-medusa-button-neutral-pressed dark:active:tw-bg-medusa-button-neutral-pressed-dark;
-    @apply focus:tw-shadow-neutral-button-focused dark:focus:tw-shadow-neutral-button-focused-dark;
+    @apply focus:tw-shadow-focus dark:focus:tw-shadow-focus-dark;
     @apply tw-border tw-border-solid tw-border-medusa-border-neutral-buttons dark:tw-border-medusa-border-neutral-buttons-dark tw-rounded;
     @apply tw-w-2 tw-h-2 tw-flex tw-justify-center tw-items-center tw-cursor-pointer;
+  }
+
+  .transparent-button {
+    @apply tw-bg-transparent tw-border-0 tw-text-inherit tw-cursor-pointer tw-p-0;
   }
 }
 
