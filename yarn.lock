@@ -30541,6 +30541,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-module-cli@workspace:packages/module-cli"
   dependencies:
+    "@medusajs/utils": "workspace:^"
     "@types/dedent": ^0.7.0
     boxen: ^7.1.0
     chalk: ^5.2.0
