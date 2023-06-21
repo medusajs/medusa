@@ -1,0 +1,31 @@
+{
+  "name": "medusa-module-cli",
+  "version": "0.0.1",
+  "description": "Medusa module CLI",
+  "type": "module",
+  "bin": {
+    "medusa-module": "./dist/index.js"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js test"
+  },
+  "author": "Medusa",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.2.0",
+    "commander": "^11.0.0",
+    "dedent": "^0.7.0",
+    "inquirer": "^9.2.7",
+    "ora": "^6.3.1",
+    "winston": "^3.9.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.3"
+  }
+}
