@@ -11628,6 +11628,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/dedent@npm:^0.7.0":
+  version: 0.7.0
+  resolution: "@types/dedent@npm:0.7.0"
+  checksum: 84946a0b0791e31706860ef7efb83457549c25a66acf3d45a035a292d466b9f5a748b10c078ade917cc3661c4647282fe9400c5b685cadd664e6881f7ba9f268
+  languageName: node
+  linkType: hard
+
 "@types/eslint-scope@npm:^3.7.3":
   version: 3.7.4
   resolution: "@types/eslint-scope@npm:3.7.4"
@@ -30504,6 +30511,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-module-cli@workspace:packages/module-cli"
   dependencies:
+    "@types/dedent": ^0.7.0
     chalk: ^5.2.0
     commander: ^11.0.0
     dedent: ^0.7.0

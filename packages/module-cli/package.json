@@ -26,6 +26,7 @@
     "winston": "^3.9.0"
   },
   "devDependencies": {
+    "@types/dedent": "^0.7.0",
     "typescript": "^5.1.3"
   }
 }
