@@ -36,8 +36,6 @@ export async function build({
   return new Promise((resolve, reject) => {
     compiler.run((err: WebpackError, stats) => {
       if (err) {
-        console.error(err.stack || err)
-
         if (err.details) {
           logger.error(err.details)
         }
