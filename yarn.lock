@@ -6400,6 +6400,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/module-cli@workspace:packages/module-cli":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/module-cli@workspace:packages/module-cli"
+  dependencies:
+    chalk: ^5.2.0
+    commander: ^11.0.0
+    dedent: ^0.7.0
+    inquirer: ^9.2.7
+    ora: ^6.3.1
+    typescript: ^5.1.3
+    winston: ^3.9.0
+  bin:
+    medusa-module: ./dist/index.js
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@workspace:packages/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
@@ -17239,6 +17255,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^11.0.0":
+  version: 11.0.0
+  resolution: "commander@npm:11.0.0"
+  checksum: 471c44cd2d31dee556753df6ceb5ef52ccded0ba6308d3ba7a76251aa0edeedf5ac66ca86cb6096cc8fe20997064233c476983d346265f85180e86312724de0c
+  languageName: node
+  linkType: hard
+
 "commander@npm:^2.19.0, commander@npm:^2.20.0, commander@npm:^2.20.3":
   version: 2.20.3
   resolution: "commander@npm:2.20.3"
@@ -24849,6 +24872,29 @@ __metadata:
     through: ^2.3.6
     wrap-ansi: ^6.0.1
   checksum: f07fe6b0ce9587a306771c5d4c40e5f5bbb940c6a78648326e978ec7f26fb28a903cbf595fd23af3b35b633ec5eba1845e2c3d35888fe073c884f50046a738b8
+  languageName: node
+  linkType: hard
+
+"inquirer@npm:^9.2.7":
+  version: 9.2.7
+  resolution: "inquirer@npm:9.2.7"
+  dependencies:
+    ansi-escapes: ^4.3.2
+    chalk: ^5.2.0
+    cli-cursor: ^3.1.0
+    cli-width: ^4.0.0
+    external-editor: ^3.0.3
+    figures: ^5.0.0
+    lodash: ^4.17.21
+    mute-stream: 1.0.0
+    ora: ^5.4.1
+    run-async: ^3.0.0
+    rxjs: ^7.8.1
+    string-width: ^4.2.3
+    strip-ansi: ^6.0.1
+    through: ^2.3.6
+    wrap-ansi: ^6.0.1
+  checksum: bc94dbf514206bccd8e82a064d1f0cb03c99141c34b0cc60cd589b7d8129468c2b2479d5063c0c47076c67de24a4061e92f8ac496856cae276f35d5f3a08c0bd
   languageName: node
   linkType: hard
 
@@ -33200,7 +33246,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ora@npm:^6.3.0":
+"ora@npm:^6.3.0, ora@npm:^6.3.1":
   version: 6.3.1
   resolution: "ora@npm:6.3.1"
   dependencies:
@@ -41482,6 +41528,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^5.1.3":
+  version: 5.1.3
+  resolution: "typescript@npm:5.1.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 1faba8d5ffd4717864ddce767613c5ab77c1c8510c1ce21dc9b112a4c662357b9338dc0a6121615266d3a44ebec699f115ef2dabf18d9d7341ea1675692b9b24
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@4.9.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=7ad353"
@@ -41509,6 +41565,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: db16dd188048c172051825c7e6eea3e6bf577020625e5635fb8265d22683897d9ed7579b41a3a3e961fba5728c58e324d52041e9ca21d0dfc4bafa8bcf8e7a4b
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^5.1.3#~builtin<compat/typescript>":
+  version: 5.1.3
+  resolution: "typescript@patch:typescript@npm%3A5.1.3#~builtin<compat/typescript>::version=5.1.3&hash=7ad353"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 6219383250b585b201c9ea10576164c9d5760c7a167bc761b118692c9fb8e88610f37730c0a1169d96ac19b29ed80418048763d0c1ff00ce48e051abbc213a9b
   languageName: node
   linkType: hard
 
@@ -43146,6 +43212,25 @@ __metadata:
     triple-beam: ^1.3.0
     winston-transport: ^4.5.0
   checksum: 8d302d992e53e46c8f0355fae515356190d2dc9feaa8ae99afa5bba227f1fe2343ca9e367e5949a9b711f5f982e5b9280393d16be99fcd432660fd9597749954
+  languageName: node
+  linkType: hard
+
+"winston@npm:^3.9.0":
+  version: 3.9.0
+  resolution: "winston@npm:3.9.0"
+  dependencies:
+    "@colors/colors": 1.5.0
+    "@dabh/diagnostics": ^2.0.2
+    async: ^3.2.3
+    is-stream: ^2.0.0
+    logform: ^2.4.0
+    one-time: ^1.0.0
+    readable-stream: ^3.4.0
+    safe-stable-stringify: ^2.3.1
+    stack-trace: 0.0.x
+    triple-beam: ^1.3.0
+    winston-transport: ^4.5.0
+  checksum: e789b0c57bc3b0173c6fbd7caa4d60816a1a45cd796e5643e1bea65161d44c82a139b69f6ffc738a2919d80b5afc6df46c01947972173fc847ebcc668285fab3
   languageName: node
   linkType: hard
 
