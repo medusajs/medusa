@@ -111,7 +111,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -120,7 +120,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -667,7 +667,7 @@ class BrightpearlService extends BaseService {
       reservationItems
     )
 
-    if (!order?.metadata?.brightpearl_sales_order_id || !lineItems?.length) {
+    if (!order?.metadata?.brightpearl_sales_order_id) {
       return this.attemptRetryEvent(
         "reservation-items.bulk-created",
         eventData,
@@ -683,6 +683,24 @@ class BrightpearlService extends BaseService {
       { id: lineItems.map((item) => item.variant_id) },
       {}
     )
+
+    const [allReservationsForLineItems] =
+      await this.inventoryService_.listReservationItems({
+        line_item_id: lineItems.map((item) => item.id),
+      })
+
+    const lineItemReservationsMap = allReservationsForLineItems.reduce(
+      (acc, r) => {
+        if (acc.has(r.line_item_id)) {
+          acc.get(r.line_item_id).push(r)
+        } else {
+          acc.set(r.line_item_id, [r])
+        }
+        return acc
+      },
+      new Map()
+    )
+
     const lineItemMap = new Map(lineItems.map((item) => [item.id, item]))
     const variantMap = new Map(variants.map((v) => [v.id, v]))
 
@@ -691,24 +709,28 @@ class BrightpearlService extends BaseService {
     )
 
     const rows = await Promise.all(
-      reservationItems.map(async (item) => {
-        const lineItem = lineItemMap.get(item.line_item_id)
-        const variant = variantMap.get(lineItem.variant_id)
+      lineItems.map(async (item) => {
+        const reservations = lineItemReservationsMap.get(item.id)
+        const variant = variantMap.get(item.variant_id)
 
         const bpProduct = await this.retrieveProductBySKU(variant.sku)
 
-        if (!lineItem || !variant || !bpProduct) {
+        if (!reservations?.length || !variant || !bpProduct) {
           return null
         }
 
         const bpOrderRow = bpOrder.rows.find(
-          (row) => row.externalRef === lineItem.id
+          (row) => row.externalRef === item.id
         )
+
+        const reservedQuantity = reservations.reduce((acc, next) => {
+          return acc + next.quantity
+        }, 0)
 
         return {
           productId: bpProduct.productId,
           id: bpOrderRow.id,
-          quantity: item.quantity,
+          quantity: reservedQuantity,
         }
       })
     )
