@@ -3,6 +3,8 @@ import log from "../utils/logger.js"
 import { spinner } from "../index.js"
 import { resolve } from "path"
 
+const packageJsonFileName = "package.json"
+
 export async function generatePackageJson({
   moduleName,
   modulePath,
@@ -10,7 +12,7 @@ export async function generatePackageJson({
   moduleName: string
   modulePath: string
 }) {
-  log(`Generating package.json`)
+  log(`Generating ${packageJsonFileName}`)
 
   const template: any = {
     name: `medusa-module-${moduleName}`,
@@ -78,11 +80,11 @@ export async function generatePackageJson({
   }
 
   try {
-    const path = resolve(modulePath, "package.json")
+    const path = resolve(modulePath, packageJsonFileName)
     await writeFile(path, JSON.stringify(template, null, 4))
-    spinner.succeed(`package.json generated`)
+    spinner.succeed(`${packageJsonFileName} generated`)
   } catch (error) {
-    log(`Failed to generate package.json`, "error")
+    log(`Failed to generate ${packageJsonFileName}`, "error")
     throw error
   }
 }
