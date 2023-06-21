@@ -6,16 +6,16 @@ import { spinner } from "../index.js"
 const tsconfigFileName = "tsconfig.json"
 const tsconfigSpecFileName = "tsconfig.spec.json"
 
-export async function generateTsConfig({
+export async function generateTsConfigs({
   modulePath,
 }: {
   modulePath: string
 }): Promise<void> {
-  await generateTsConfig_({ modulePath })
-  await generateTsConfigSpec_({ modulePath })
+  await generateTsConfig({ modulePath })
+  await generateTsConfigSpec({ modulePath })
 }
 
-async function generateTsConfig_({ modulePath }: { modulePath: string }) {
+async function generateTsConfig({ modulePath }: { modulePath: string }) {
   log(`Generating ${tsconfigFileName}`)
 
   const template = {
@@ -39,7 +39,11 @@ async function generateTsConfig_({ modulePath }: { modulePath: string }) {
       downlevelIteration: true, // to use ES5 specific tooling
       baseUrl: ".",
       resolveJsonModule: true,
-      paths: {},
+      paths: {
+        "@models": ["./src/models"],
+        "@repositories": ["./src/repositories"],
+        "@services": ["./src/services"],
+      },
     },
     include: ["src"],
     exclude: [
@@ -61,7 +65,7 @@ async function generateTsConfig_({ modulePath }: { modulePath: string }) {
   }
 }
 
-async function generateTsConfigSpec_({ modulePath }: { modulePath: string }) {
+async function generateTsConfigSpec({ modulePath }: { modulePath: string }) {
   log(`Generating ${tsconfigSpecFileName}`)
 
   const template = {
