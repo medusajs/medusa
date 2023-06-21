@@ -18,6 +18,7 @@
   "author": "Medusa",
   "license": "MIT",
   "dependencies": {
+    "boxen": "^7.1.0",
     "chalk": "^5.2.0",
     "commander": "^11.0.0",
     "dedent": "^0.7.0",
