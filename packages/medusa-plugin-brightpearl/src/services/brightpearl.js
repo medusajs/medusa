@@ -120,7 +120,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -806,11 +806,20 @@ class BrightpearlService extends BaseService {
       (row) => row.externalRef === lineItems[0].id
     )
 
+    const { reservationItems } =
+      await this.inventoryService_.listReservationItems({
+        line_item_id: reservationItem.line_item_id,
+      })
+
+    const reservedQuantity = reservationItems.reduce((acc, next) => {
+      return acc + next.quantity
+    }, 0)
+
     order.rows = [
       {
         productId: bpProduct.productId,
         id: bpOrderRow.id,
-        quantity: reservationItem.quantity,
+        quantity: reservedQuantity,
       },
     ]
 
@@ -841,13 +850,18 @@ class BrightpearlService extends BaseService {
       )
     }
 
+    const existingRow = reservation[0].orderRows[bpOrderRow.id]
+    if (!existingRow) {
+      reservation[0].orderRows[bpOrderRow.id] = {
+        productId: bpProduct.productId,
+        quantity: reservedQuantity,
+      }
+    } else {
+      reservation[0].orderRows[bpOrderRow.id].quantity = reservedQuantity
+    }
+
     const updatePayload = {
       products: [
-        {
-          productId: bpProduct.productId,
-          salesOrderRowId: bpOrderRow.id,
-          quantity: reservationItem.quantity,
-        },
         ...Object.entries(reservation[0].orderRows).map(([key, value]) => ({
           productId: value.productId,
           quantity: value.quantity,
