@@ -16,6 +16,7 @@ import { kebabToCamelCase } from "@medusajs/utils"
 import { upperCaseFirst } from "@medusajs/utils/dist/common/upper-case-first.js"
 import { generateInitialize } from "../templates/initialize.js"
 import { generateModels } from "../templates/models.js"
+import { generateRepositories } from "../templates/repositories.js"
 
 export async function createNewModule(
   moduleName: string,
@@ -78,6 +79,11 @@ async function generateFileStructure(
   await generateLoaders({ modulePath, upperFirstCamelCasedModuleName })
   await generateInitialize({ modulePath, upperFirstCamelCasedModuleName })
   await generateModels({
+    modulePath,
+    moduleName,
+    upperFirstCamelCasedModuleName,
+  })
+  await generateRepositories({
     modulePath,
     moduleName,
     upperFirstCamelCasedModuleName,
