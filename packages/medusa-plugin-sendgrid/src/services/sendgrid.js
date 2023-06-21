@@ -18,6 +18,7 @@ class SendGridService extends NotificationService {
    *      order_canceled_template: 4242,
    *      user_password_reset_template: 0000,
    *      customer_password_reset_template: 1111,
+   *      enable_endpoint: false
    *    }
    */
   constructor(
@@ -310,6 +311,9 @@ class SendGridService extends NotificationService {
    * @return {Promise} result of the send operation
    */
   async sendEmail(options) {
+    if (!this.options_.enable_endpoint) { 
+      return false 
+    }
     try {
       return SendGrid.send(options)
     } catch (error) {
