@@ -124,11 +124,123 @@ The `watch` command outputs the files in the destination specified in the value 
 
 :::
 
+### Changes for Admin Plugins
+
+:::note
+
+Admin customizations are currently in beta and require you to use the `beta` version of `@medusajs/admin` and `@medusajs/medusa`. You can install it with the following command:
+
+```bash npm2yarn
+npm install @medusajs/admin@beta @medusajs/medusa@beta
+```
+
+:::
+
+If your plugin contains customizations to the admin dashboard, it's recommended to create different `tsconfig` files for backend and admin customizations, then modify the scripts in `package.json` to handle building backend and admin customizations separately.
+
+:::note
+
+These changes may already be available in your Medusa project. They're included here for reference purposes.
+
+:::
+
+Start by updating your `tsconfig.json` with the following configurations:
+
+```json title=tsconfig.json
+{
+  "compilerOptions": {
+    "target": "es2019",
+    "module": "commonjs",
+    "allowJs": true, 
+    "checkJs": false, 
+    "jsx": "react-jsx", 
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noEmit": false,
+    "strict": false,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/"],
+  "exclude": [
+    "dist",
+    "build",
+    ".cache",
+    "tests",
+    "**/*.spec.js",
+    "**/*.spec.ts",
+    "node_modules",
+    ".eslintrc.js"
+  ]
+}
+```
+
+The important changes to note here are the inclusion of the field `"jsx": "react-jsx"` and the addition of `"build"` and `“.cache”` to `exclude`.
+
+The addition of `"jsx": "react-jsx"` specified how should TypeScript transform JSX, and excluding `build` and `.cache` ensures that TypeScript ignores build and development files.
+
+Next, create the file `tsconfig.server.json` with the following content:
+
+```json title=tsconfig.server.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    /* Emit a single file with source maps instead of having a separate file. */
+    "inlineSourceMap": true
+  },
+  "exclude": ["src/admin", "**/*.spec.js"]
+}
+```
+
+This is the configuration that will be used to transpile your custom backend code, such as services or entities. The important part is that it excludes `src/admin` as that is where your Admin code will live.
+
+Then, create the file `tsconfig.admin.json` with the following content:
+
+```json title=tsconfig.admin.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext"
+  },
+  "include": ["src/admin"],
+  "exclude": ["**/*.spec.js"]
+}
+```
+
+This is the configuration that will be used when transpiling your admin code.
+
+Finally, update the `build` script in your project:
+
+```json title=package.json
+"scripts": {
+  // other scripts...
+  "build": "tsc -p ./tsconfig.server.json && medusa-admin bundle"
+}
+```
+
+This `build` script builds the backend customizations, then bundles the admin plugin using `medusa-admin bundle`.
+
+Furthermore, make sure to add `react` to `peerDependencies` along with `react-router-dom` if you're using it:
+
+```json title=package.json
+"peerDependencies": {
+  // other dependencies...
+  "react": "^18.2.0",
+  "react-router-dom": "^6.13.0"
+}
+```
+
 ---
 
 ## Develop your Plugin
 
-Now, You can start developing your plugin. This can include adding services, endpoints, entities, or anything that's relevant to your plugin.
+Now, You can start developing your plugin. This can include adding services, endpoints, entities, admin customizations, or anything that's relevant to your plugin.
 
 ### Plugin Structure
 
@@ -183,6 +295,32 @@ This guide doesn't cover how to create different files and components. If you’
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Learn how to create a subscriber.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/admin/widgets',
+    label: 'Create an Admin Widget',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create an admin widget.',
+      badge: {
+        variant: 'orange',
+        children: 'Beta'
+      }
+    }
+  },
+  {
+    type: 'link',
+    href: '/admin/routes',
+    label: 'Create an Admin UI Route',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to create an admin UI route.',
+      badge: {
+        variant: 'orange',
+        children: 'Beta'
+      }
     }
   },
 ]} />
@@ -296,6 +434,49 @@ export default (rootDirectory, options) => {
 :::tip
 
 Make sure to include in the README of your plugin the configurations that can be passed to a plugin.
+
+:::
+
+### enableUI Plugin Option
+
+All plugins accept an option named `enableUI`. This option is useful mainly if your plugin contains admin customizations. It allows users to enable or disable admin customizations in the admin dashboard.
+
+You can pass the `enableUI` option to plugins as follows:
+
+```js title=medusa-config.js
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-custom`,
+    options: {
+      // other options
+      enableUI: true,
+    },
+  },
+]
+```
+
+If you're passing your plugin options to third-party services, make sure to omit it from the plugin options you receive in your resources, such as services. The `enableUI` option will always be passed as part of your plugin options.
+
+For example:
+
+```js title=src/service/test.ts
+  // In a service in your plugin
+class MyService extends TransactionBaseService {
+  constructor(container, options) {
+    super(container)
+    // options contains plugin configurations
+    const { enableUI, ...otherOptions } = options
+    // pass otherOptions to a third-party service
+    const client = new Client(otherOptions)
+  }
+  // ...
+}
+```
+
+:::note
+
+Since admin customizations are still in `beta` mode, `enableUI`'s default value is `false` if not provided by the plugin users. This means that it must be enabled manually in a plugin's configuration for the customizations to appear in the admin dashboard. Once the admin customizations are out of beta, this behavior will be reversed.
 
 :::
 
@@ -413,4 +594,4 @@ It is safe to ignore any `cross-env: command not found` error you may receive.
 
 Once you're done with the development of the plugin, you can publish it to NPM so that other Medusa developers and users can use it.
 
-Please refer to [this guide on required steps to publish a plugin](./publish.md).
+Please refer to [this guide on required steps to publish a plugin](./publish.mdx).

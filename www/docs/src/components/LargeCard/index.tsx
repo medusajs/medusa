@@ -12,8 +12,8 @@ type LargeCardProps = {
     dark?: string
   }
   title: string
-  action: {
-    href: string
+  action?: {
+    href?: string
   }
   isSoon?: boolean
   className?: string
@@ -23,7 +23,9 @@ const LargeCard: React.FC<LargeCardProps> = ({
   Icon,
   image,
   title,
-  action: { href },
+  action: { href } = {
+    href: "",
+  },
   isSoon = false,
   className = "",
   children,
@@ -38,6 +40,9 @@ const LargeCard: React.FC<LargeCardProps> = ({
         "[&:nth-child(3n+1):before]:tw-bg-[2%_52%] [&:nth-child(3n+2):before]:tw-bg-[19%_16%] [&:nth-child(3n+3):before]:tw-bg-[17%_50%]",
         !isSoon &&
           "hover:tw-bg-medusa-bg-subtle-hover dark:hover:tw-bg-medusa-bg-base-hover-dark hover:tw-shadow-card-hover dark:hover:tw-shadow-card-hover-dark",
+        !isSoon &&
+          "group-hover:tw-bg-medusa-bg-subtle-hover dark:group-hover:tw-bg-medusa-bg-base-hover-dark group-hover:tw-shadow-card-hover dark:group-hover:tw-shadow-card-hover-dark",
+        "tw-transition-all tw-duration-200 tw-ease-ease",
         "large-card",
         className
       )}
@@ -79,13 +84,15 @@ const LargeCard: React.FC<LargeCardProps> = ({
           {children}
         </div>
       </div>
-      <Link
-        href={href}
-        className={clsx(
-          "tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-z-[4] tw-rounded",
-          isSoon && "group-hover:tw-pointer-events-none"
-        )}
-      ></Link>
+      {href && (
+        <Link
+          href={href}
+          className={clsx(
+            "tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-z-[4] tw-rounded",
+            isSoon && "group-hover:tw-pointer-events-none"
+          )}
+        ></Link>
+      )}
     </article>
   )
 }
