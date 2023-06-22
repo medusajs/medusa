@@ -1,6 +1,7 @@
 import boxen from "boxen"
 import chalk from "chalk"
-import * as fs from "fs"
+import { existsSync } from "fs"
+import { mkdir } from "fs/promises"
 import _ from "lodash"
 import { EOL } from "os"
 import { resolve } from "path"
@@ -13,6 +14,11 @@ export async function createNewModule(
   moduleName: string,
   { path }: { path: string }
 ): Promise<void> {
+  if (!moduleName.trim()) {
+    spinner.fail(`Module name can't be empty.`)
+    return
+  }
+
   const moduleTemplateVars: Record<string, string> = {
     moduleName: moduleName,
     moduleNameCamelCase: _.camelCase(moduleName),
@@ -41,20 +47,24 @@ export async function createNewModule(
 
   log(`The module will be created in ${modulePath}`)
 
-  if (fs.existsSync(modulePath)) {
+  if (existsSync(modulePath)) {
     log(`The directory ${folderName} already exists`, "error")
     log(`Please try again with another name`, "error")
     return
   }
 
-  spinner.succeed(`Created module directory ${folderName}`)
+  try {
+    await mkdir(modulePath)
 
-  await fs.promises.mkdir(modulePath)
-  await cloneTemplateDirectory(
-    "./src/templates/module_base",
-    modulePath,
-    moduleTemplateVars
-  )
+    await cloneTemplateDirectory(
+      "./src/templates/module_base",
+      modulePath,
+      moduleTemplateVars
+    )
+    spinner.succeed(`Created module directory ${folderName}`)
+  } catch (err) {
+    spinner.fail(`Failed to create module "${moduleName}"${EOL}${err}`)
+  }
 
   log(
     boxen(
@@ -70,7 +80,7 @@ export async function createNewModule(
         textAlignment: "center",
         padding: 1,
         margin: 1,
-        float: "center",
+        float: "left",
       }
     )
   )

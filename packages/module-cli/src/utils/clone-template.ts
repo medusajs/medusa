@@ -1,4 +1,4 @@
-import * as fs from "fs"
+import { mkdir, readFile, readdir, writeFile } from "fs/promises"
 import * as path from "path"
 
 function replaceContent(
@@ -15,7 +15,7 @@ export async function cloneTemplateDirectory(
   outputDir: string,
   variables: Record<string, string>
 ): Promise<void> {
-  const entries = await fs.promises.readdir(inputDir, { withFileTypes: true })
+  const entries = await readdir(inputDir, { withFileTypes: true })
 
   for (const entry of entries) {
     const inputPath = path.join(inputDir, entry.name)
@@ -23,12 +23,12 @@ export async function cloneTemplateDirectory(
 
     if (entry.isDirectory()) {
       try {
-        await fs.promises.mkdir(outputPath)
+        await mkdir(outputPath)
       } catch {}
 
       await cloneTemplateDirectory(inputPath, outputPath, variables)
     } else if (entry.isFile()) {
-      const content = await fs.promises.readFile(inputPath, "utf8")
+      const content = await readFile(inputPath, "utf8")
       const processed = replaceContent(content, variables)
 
       let fileName = entry.name.replace(/\.txt$/gi, "")
@@ -38,7 +38,7 @@ export async function cloneTemplateDirectory(
       })
 
       outputPath = path.join(outputDir, fileName)
-      await fs.promises.writeFile(outputPath, processed, "utf8")
+      await writeFile(outputPath, processed, "utf8")
     }
   }
 }

@@ -4252,6 +4252,56 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@inquirer/checkbox@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "@inquirer/checkbox@npm:1.3.1"
+  dependencies:
+    "@inquirer/core": ^2.1.0
+    "@inquirer/type": ^1.1.0
+    ansi-escapes: ^4.3.2
+    chalk: ^4.1.2
+    figures: ^3.2.0
+  checksum: 22c2622f6272f8853838dbec9dcc2c791e1ed279d5d16c21327114ccff23028c0ed3cfc4321add807dccb10619a3a61cc707afb03e014e59f198ffdd56aa5ca8
+  languageName: node
+  linkType: hard
+
+"@inquirer/confirm@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@inquirer/confirm@npm:2.0.2"
+  dependencies:
+    "@inquirer/core": ^2.1.0
+    "@inquirer/type": ^1.1.0
+    chalk: ^4.1.2
+  checksum: c694641cf76d4813bf7a6553702992982ae4e5a2209ee038460f683542215478980f80a6011805c4087328f09bc1f390aacf32be454cacca3c1c9a7080e17010
+  languageName: node
+  linkType: hard
+
+"@inquirer/core@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@inquirer/core@npm:2.1.0"
+  dependencies:
+    "@inquirer/type": ^1.1.0
+    ansi-escapes: ^4.3.2
+    chalk: ^4.1.2
+    cli-spinners: ^2.8.0
+    cli-width: ^4.0.0
+    figures: ^3.2.0
+    mute-stream: ^1.0.0
+    run-async: ^3.0.0
+    string-width: ^4.2.3
+    strip-ansi: ^6.0.1
+    wrap-ansi: ^6.0.1
+  checksum: 9b6614e6b0b6fa23f5173b3c771f9f6b7c818edfafb82c10b8a0faf692d0ec38d37dc81d801e2fb06927f142ecf3b160967c6826106a7a0b1b305f3d11824f19
+  languageName: node
+  linkType: hard
+
+"@inquirer/type@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@inquirer/type@npm:1.1.0"
+  checksum: 5c183cb3bb5c59a8bb497d7fc2768a25d53dfaa51cfaf8f3d15a97c60eccfa728810cc9d337d2fc2e164a92e8639b37aa61d52dd9748f7c2a879bb007124b097
+  languageName: node
+  linkType: hard
+
 "@ioredis/as-callback@npm:^3.0.0":
   version: 3.0.0
   resolution: "@ioredis/as-callback@npm:3.0.0"
@@ -11628,13 +11678,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/dedent@npm:^0.7.0":
-  version: 0.7.0
-  resolution: "@types/dedent@npm:0.7.0"
-  checksum: 84946a0b0791e31706860ef7efb83457549c25a66acf3d45a035a292d466b9f5a748b10c078ade917cc3661c4647282fe9400c5b685cadd664e6881f7ba9f268
-  languageName: node
-  linkType: hard
-
 "@types/eslint-scope@npm:^3.7.3":
   version: 3.7.4
   resolution: "@types/eslint-scope@npm:3.7.4"
@@ -16889,7 +16932,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cli-spinners@npm:^2.6.1":
+"cli-spinners@npm:^2.6.1, cli-spinners@npm:^2.8.0":
   version: 2.9.0
   resolution: "cli-spinners@npm:2.9.0"
   checksum: c0d5437acc1ace7361b1c58a4fda3c92c2d8691ff3169ac658ce30faee71280b7aa706c072bcb6d0e380c232f3495f7d5ad4668c1391fe02c4d3a39d37798f44
@@ -21877,7 +21920,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"figures@npm:^3.0.0":
+"figures@npm:^3.0.0, figures@npm:^3.2.0":
   version: 3.2.0
   resolution: "figures@npm:3.2.0"
   dependencies:
@@ -30541,14 +30584,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-module-cli@workspace:packages/module-cli"
   dependencies:
-    "@medusajs/utils": "workspace:^"
-    "@types/dedent": ^0.7.0
+    "@inquirer/checkbox": ^1.3.1
+    "@inquirer/confirm": ^2.0.2
     boxen: ^7.1.0
     chalk: ^5.2.0
     commander: ^11.0.0
-    dedent: ^0.7.0
     inquirer: ^9.2.7
+    lodash: ^4.17.21
     ora: ^6.3.1
+    pluralize: ^8.0.0
     typescript: ^5.1.3
     winston: ^3.9.0
   bin:
@@ -32101,7 +32145,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mute-stream@npm:1.0.0":
+"mute-stream@npm:1.0.0, mute-stream@npm:^1.0.0":
   version: 1.0.0
   resolution: "mute-stream@npm:1.0.0"
   checksum: dce2a9ccda171ec979a3b4f869a102b1343dee35e920146776780de182f16eae459644d187e38d59a3d37adf85685e1c17c38cf7bfda7e39a9880f7a1d10a74c
