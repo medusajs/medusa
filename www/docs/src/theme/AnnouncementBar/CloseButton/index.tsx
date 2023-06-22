@@ -26,7 +26,7 @@ export default function AnnouncementBarCloseButton(
         width={20}
         height={20}
         strokeWidth={1.5}
-        iconColorClassName="tw-stroke-medusa-icon-placeholder dark:tw-stroke-medusa-icon-placeholder-dark"
+        iconColorClassName="tw-stroke-medusa-icon-muted dark:tw-stroke-medusa-icon-muted-dark"
       />
     </button>
   )
