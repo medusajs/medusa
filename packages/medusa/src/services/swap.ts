@@ -579,6 +579,7 @@ class SwapService extends TransactionBaseService {
           "return_order",
           "return_order.items",
           "return_order.shipping_method",
+          "return_order.shipping_method.shipping_option",
           "return_order.shipping_method.tax_lines",
         ],
       })
