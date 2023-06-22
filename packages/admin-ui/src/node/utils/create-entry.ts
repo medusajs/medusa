@@ -95,7 +95,7 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
   `
 
   try {
-    await fse.writeFile(
+    await fse.outputFile(
       path.resolve(dest, "admin", "src", "extensions", "_local-entry.ts"),
       extensionsEntry
     )
@@ -166,7 +166,7 @@ async function writeTailwindContentFile(dest: string, plugins: string[]) {
   `
 
   try {
-    await fse.writeFile(
+    await fse.outputFile(
       path.resolve(dest, "admin", "tailwind.content.js"),
       tailwindContent
     )
@@ -192,7 +192,7 @@ async function createMainExtensionsEntry(
     `
 
     try {
-      await fse.writeFile(
+      await fse.outputFile(
         path.resolve(dest, "admin", "src", "extensions", "_main-entry.ts"),
         emptyEntry
       )
@@ -247,7 +247,7 @@ async function createMainExtensionsEntry(
     `
 
   try {
-    await fse.writeFile(
+    await fse.outputFile(
       path.resolve(dest, "admin", "src", "extensions", "_main-entry.ts"),
       extensionsEntry
     )

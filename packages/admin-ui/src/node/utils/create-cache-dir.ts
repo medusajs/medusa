@@ -27,8 +27,6 @@ type CreateCacheDirArgs = {
 async function createCacheDir({ appDir, plugins }: CreateCacheDirArgs) {
   const cacheDir = path.resolve(appDir, ".cache")
 
-  await fse.emptyDir(cacheDir)
-
   await copyAdmin(cacheDir)
 
   await createEntry({
