@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import { program } from "commander"
-import { createNewModule } from "./actions/new.js"
 import ora from "ora"
+import { migrateModules } from "./actions/migrate.js"
+import { createNewModule } from "./actions/new.js"
 
 export const spinner = ora().start()
 
@@ -20,6 +21,16 @@ try {
       process.cwd()
     )
     .action(createNewModule)
+
+  program
+    .description("Run database migration of installed modules")
+    .command("migrate")
+    .argument(
+      "[module-paths...]",
+      "Specify the modules to migrate. If not specified, all modules installed will be used."
+    )
+    .option("-r, --revert", "Revert the last migration", false)
+    .action(migrateModules)
 
   program.parse()
 } finally {
