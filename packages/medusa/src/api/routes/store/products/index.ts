@@ -99,14 +99,11 @@ export const allowedStoreProductsFields = [
   ...defaultStoreProductsFields,
   // TODO: order prop validation
   "variants.title",
-  "variants.prices.amount",
 ]
 
 export const allowedStoreProductsRelations = [
   ...defaultStoreProductsRelations,
-  "variants.title",
   "variants.inventory_items",
-  "variants.prices.amount",
   "sales_channels",
 ]
 
