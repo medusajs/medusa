@@ -1004,7 +1004,7 @@ class CartService extends TransactionBaseService {
    * shipping discount
    * If a free shipping is present, we set shipping methods price to 0
    * if a free shipping was present, we set shipping methods to original amount
-   * @param cart - the the cart to adjust free shipping for
+   * @param cart - the cart to adjust free shipping for
    * @param shouldAdd - flag to indicate, if we should add or remove
    * @return void
    */
@@ -1058,6 +1058,7 @@ class CartService extends TransactionBaseService {
           "items.variant",
           "items.variant.product",
           "shipping_methods",
+          "shipping_methods.shipping_option",
           "shipping_address",
           "billing_address",
           "gift_cards",
@@ -1530,6 +1531,7 @@ class CartService extends TransactionBaseService {
             "discounts.rule",
             "payment_sessions",
             "shipping_methods",
+            "shipping_methods.shipping_option",
           ],
         })
 
@@ -1829,6 +1831,7 @@ class CartService extends TransactionBaseService {
               "discounts.rule",
               "gift_cards",
               "shipping_methods",
+              "shipping_methods.shipping_option",
               "billing_address",
               "shipping_address",
               "region",
@@ -2170,7 +2173,12 @@ class CartService extends TransactionBaseService {
         }
 
         const updatedCart = await this.retrieve(cart.id, {
-          relations: ["discounts", "discounts.rule", "shipping_methods"],
+          relations: [
+            "discounts",
+            "discounts.rule",
+            "shipping_methods",
+            "shipping_methods.shipping_option",
+          ],
         })
 
         // if cart has freeshipping, adjust price
@@ -2537,6 +2545,7 @@ class CartService extends TransactionBaseService {
                 "region.tax_rates",
                 "shipping_address",
                 "shipping_methods",
+                "shipping_methods.shipping_option",
               ],
             })
 
@@ -2559,6 +2568,7 @@ class CartService extends TransactionBaseService {
             "items",
             "items.tax_lines",
             "shipping_methods",
+            "shipping_methods.shipping_option",
             "shipping_methods.tax_lines",
           ],
         })

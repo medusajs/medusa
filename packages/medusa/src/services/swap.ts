@@ -29,7 +29,7 @@ import {
 } from "./index"
 import { EntityManager, In } from "typeorm"
 import { FindConfig, Selector, WithRequiredProperty } from "../types/common"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { buildQuery, setMetadata, validateId } from "../utils"
 
 import { CreateShipmentConfig } from "../types/fulfillment"
@@ -918,6 +918,7 @@ class SwapService extends TransactionBaseService {
           "additional_items.variant",
           "additional_items.variant.product",
           "shipping_methods",
+          "shipping_methods.shipping_option",
           "shipping_methods.tax_lines",
           "order",
           "order.region",

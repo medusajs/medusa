@@ -11,7 +11,6 @@ const {
 const productSeeder = require("../../helpers/store-product-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
 const {
-  defaultStoreProductsFields,
   allowedStoreProductsFields,
   defaultStoreProductsRelations,
 } = require("@medusajs/medusa/dist")

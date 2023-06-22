@@ -28,6 +28,7 @@ export const defaultStoreSwapRelations = [
   "payment",
   "shipping_address",
   "shipping_methods",
+  "shipping_methods.shipping_option",
   "cart",
 ]
 export const defaultStoreSwapFields: FindConfig<Swap>["select"] = [
