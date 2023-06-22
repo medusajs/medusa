@@ -1,7 +1,7 @@
 import { createCustomAdminHooks } from "medusa-react"
 
 const { useAdminEntity } = createCustomAdminHooks(
-  "admin/orders/:order_id/stripe-payments",
+  "/admin/orders/stripe-payments",
   "admin_stripe"
 )
 

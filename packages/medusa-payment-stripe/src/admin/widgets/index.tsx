@@ -7,7 +7,7 @@ import StripeLogo from "../shared/icons/stripe-logo"
 
 const MyWidget = (props: OrderDetailsWidgetProps) => {
   const { order } = props
-  const { data } = useAdminEntity<ListStripeIntentRes>(props.order.id)
+  const { data } = useAdminEntity<ListStripeIntentRes>(order.id)
 
   if (!order.payments.some((p) => p.provider_id === "stripe")) {
     return null
