@@ -1,5 +1,5 @@
-import readline from "node:readline"
 import colors from "picocolors"
+import readline from "readline"
 
 const prefix = "[@medusajs/admin]"
 

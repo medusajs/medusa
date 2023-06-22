@@ -1,7 +1,8 @@
 import { AdminOptions } from "@medusajs/admin-ui"
 import fse from "fs-extra"
 import isEqual from "lodash/isEqual"
-import path from "node:path"
+import isNil from "lodash/isNil"
+import path from "path"
 import { getPluginPaths } from "./get-plugin-paths"
 
 const MANIFEST_PATH = path.resolve(
@@ -30,11 +31,17 @@ async function getLastTimeModifiedAt(appDir: string) {
   // Get the most recent time a file in the admin directory was modified and do it recursively for all subdirectories and files
   let mostRecentTimestamp = 0
 
-  async function processFolder(path) {
-    const files = await fse.readdir(path)
+  const pathExists = await fse.pathExists(adminPath)
+
+  if (!pathExists) {
+    return mostRecentTimestamp
+  }
+
+  async function processFolder(dir: string) {
+    const files = await fse.readdir(dir)
 
     for (const file of files) {
-      const filePath = `${path}/${file}`
+      const filePath = path.join(dir, file)
       const stats = await fse.stat(filePath)
 
       if (stats.isDirectory()) {
@@ -68,11 +75,7 @@ export async function createBuildManifest(
     options,
   }
 
-  await fse.ensureFile(MANIFEST_PATH)
-
-  await fse.writeJson(MANIFEST_PATH, buildManifest, {
-    spaces: 2,
-  })
+  await fse.outputFile(MANIFEST_PATH, JSON.stringify(buildManifest, null, 2))
 }
 
 export async function shouldBuild(appDir: string, options: AdminOptions) {
@@ -117,11 +120,11 @@ export async function shouldBuild(appDir: string, options: AdminOptions) {
 
     const modifiedAt = await getLastTimeModifiedAt(appDir)
 
-    if (!modifiedAt) {
+    if (isNil(modifiedAt)) {
       return true
     }
 
-    const lastModificationTimeChanged = modifiedAt > buildManifestModifiedAt
+    const lastModificationTimeChanged = modifiedAt !== buildManifestModifiedAt
 
     if (lastModificationTimeChanged) {
       return true
