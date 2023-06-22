@@ -35,7 +35,7 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
       })
     ).then(flatten)
 
-    const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
+    const entitiesAndRelations = entities.concat(entitiesIdsWithRelations)
     return mergeEntitiesWithRelations<Order>(entitiesAndRelations)
   },
 

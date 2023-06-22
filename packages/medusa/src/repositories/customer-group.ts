@@ -169,7 +169,7 @@ export const CustomerGroupRepository = dataSource
         withDeleted,
       })
 
-      const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
+      const entitiesAndRelations = entities.concat(entitiesIdsWithRelations)
       const entitiesToReturn =
         mergeEntitiesWithRelations<CustomerGroup>(entitiesAndRelations)
 

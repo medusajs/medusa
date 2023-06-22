@@ -18,10 +18,11 @@ import { ExtendedFindConfig } from "@medusajs/types"
 import {
   applyOrdering,
   getGroupedRelations,
+  mergeEntitiesWithRelations,
   queryEntityWithIds,
   queryEntityWithoutRelations,
 } from "../utils/repository"
-import { cloneDeep, groupBy, map, merge } from "lodash"
+import { cloneDeep } from "lodash"
 
 export type DefaultWithoutRelations = Omit<
   ExtendedFindConfig<Product>,
@@ -546,9 +547,9 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       withDeleted,
     })
 
-    const entitiesAndRelations = groupBy(entitiesIdsWithRelations, "id")
-    const entitiesToReturn = map(entitiesIds, (id) =>
-      merge({}, ...entitiesAndRelations[id])
+    const entitiesAndRelations = entities.concat(entitiesIdsWithRelations)
+    const entitiesToReturn = mergeEntitiesWithRelations<Product>(
+      entitiesAndRelations
     )
 
     return [entitiesToReturn, count]

@@ -40,7 +40,7 @@ describe("Database options", () => {
 
         // Idle time is 1000 ms so this should timeout
         await new Promise((resolve) =>
-          setTimeout(() => resolve(console.log("")), 2000)
+          setTimeout(() => resolve(undefined), 2000)
         )
 
         // This query should fail with a QueryRunnerAlreadyReleasedError

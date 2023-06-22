@@ -25,7 +25,7 @@ export const CartRepository = dataSource.getRepository(Cart).extend({
       select: ["id"],
     })
 
-    const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
+    const entitiesAndRelations = entities.concat(entitiesIdsWithRelations)
     return mergeEntitiesWithRelations<Cart>(entitiesAndRelations)
   },
 
