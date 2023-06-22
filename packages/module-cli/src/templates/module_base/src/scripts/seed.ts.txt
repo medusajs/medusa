@@ -1,0 +1,67 @@
+import { createConnection, loadDatabaseConfig } from "../utils"
+import * as Models from "@models"
+import { {{moduleNamePascalCase}} } from "@models"
+import { EntitySchema } from "@mikro-orm/core"
+import { LoaderOptions, Logger } from "@medusajs/types"
+import {
+  {{moduleNamePascalCase}}ServiceInitializeCustomDataLayerOptions,
+  {{moduleNamePascalCase}}ServiceInitializeOptions,
+} from "../types"
+import { EOL } from "os"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { resolve } from "path"
+
+export async function run({
+  options,
+  logger,
+  path,
+}: Partial<
+  Pick<
+    LoaderOptions<
+      | {{moduleNamePascalCase}}ServiceInitializeOptions
+      | {{moduleNamePascalCase}}ServiceInitializeCustomDataLayerOptions
+    >,
+    "options" | "logger"
+  >
+> & {
+  path: string
+}) {
+  logger?.info(\`Loading seed data from \${path}...\`)
+  const { {{moduleNamePluralCamelCase}}Data } = await import(
+    resolve(process.cwd(), path)
+  ).catch((e) => {
+    logger?.error(
+      \`Failed to load seed data from \${path}. Please, provide a relative path and check that you export the following "\{{moduleNamePluralCamelCase}}Data".\${EOL}\${e}\`
+    )
+    throw e
+  })
+
+  logger ??= console as unknown as Logger
+
+  const dbData = loadDatabaseConfig(options)
+  const entities = Object.values(Models) as unknown as EntitySchema[]
+
+  const orm = await createConnection(dbData, entities)
+  const manager = orm.em.fork()
+
+  try {
+    logger?.info("Inserting data...")
+    await create{{moduleNamePluralPascalCase}}(manager, {{moduleNamePluralCamelCase}}Data)
+  } catch (e) {
+    logger?.error(
+      \`Failed to insert the seed data in the PostgreSQL database \${dbData.clientUrl}.\${EOL}\${e}\`
+    )
+  }
+
+  await orm.close(true)
+}
+
+async function create{{moduleNamePluralPascalCase}}(manager: SqlEntityManager, data: any[]) {
+  const entries: any[] = data.map((entry) => {
+    return manager.create({{moduleNamePascalCase}}, entry)
+  })
+
+  await manager.persistAndFlush(entries)
+
+  return entries
+}

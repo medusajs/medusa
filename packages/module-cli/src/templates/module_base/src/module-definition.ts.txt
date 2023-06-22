@@ -1,0 +1,18 @@
+import { ModuleExports } from "@medusajs/types"
+import * as Models from "@models"
+import { {{moduleNamePascalCase}}ModuleService } from "@services"
+import loadConnection from "./loaders/connection"
+import loadContainer from "./loaders/container"
+import { revertMigration, runMigrations } from "./scripts"
+
+const service = {{moduleNamePascalCase}}ModuleService
+const loaders = [loadContainer, loadConnection] as any
+const models = Object.values(Models)
+
+export const moduleDefinition: ModuleExports = {
+  service,
+  loaders,
+  models,
+  runMigrations,
+  revertMigration,
+}

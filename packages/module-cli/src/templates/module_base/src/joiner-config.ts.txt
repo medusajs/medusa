@@ -1,0 +1,15 @@
+import { Modules } from "@medusajs/modules-sdk"
+import { JoinerServiceConfig } from "@medusajs/types"
+
+export const joinerConfig: JoinerServiceConfig = {
+  serviceName: Modules.{{moduleNameConstantCase}},
+  primaryKeys: ["id"],
+  alias: [
+    {
+      name: "{{moduleNameSnakeCase}}",
+    },
+    {
+      name: "{{moduleNamePluralSnakeCase}}",
+    },
+  ],
+}

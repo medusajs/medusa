@@ -1,0 +1,34 @@
+import {
+  ExternalModuleDeclaration,
+  InternalModuleDeclaration,
+  MedusaModule,
+  MODULE_PACKAGE_NAMES,
+  Modules,
+} from "@medusajs/modules-sdk"
+import { I{{moduleNamePascalCase}}ModuleService } from "@medusajs/types"
+import { moduleDefinition } from "../module-definition"
+import {
+  InitializeModuleInjectableDependencies,
+  {{moduleNamePascalCase}}ServiceInitializeCustomDataLayerOptions,
+  {{moduleNamePascalCase}}ServiceInitializeOptions,
+} from "../types"
+
+export const initialize = async (
+  options?:
+    | {{moduleNamePascalCase}}ServiceInitializeOptions
+    | {{moduleNamePascalCase}}ServiceInitializeCustomDataLayerOptions
+    | ExternalModuleDeclaration,
+  injectedDependencies?: InitializeModuleInjectableDependencies
+): Promise<I{{moduleNamePascalCase}}ModuleService> => {
+  const serviceKey = Modules.{{moduleNameConstantCase}}
+
+  const loaded = await MedusaModule.bootstrap(
+    serviceKey,
+    MODULE_PACKAGE_NAMES[Modules.{{moduleNameConstantCase}}],
+    options as InternalModuleDeclaration | ExternalModuleDeclaration,
+    moduleDefinition,
+    injectedDependencies
+  )
+
+  return loaded[serviceKey] as I{{moduleNamePascalCase}}ModuleService
+}

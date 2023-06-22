@@ -1,0 +1,82 @@
+import {
+  {{moduleNamePascalCase}}ServiceInitializeCustomDataLayerOptions,
+  {{moduleNamePascalCase}}ServiceInitializeOptions,
+} from "../types"
+import { MedusaError } from "@medusajs/utils"
+
+function getEnv(key: string): string {
+  const value = process.env[`{{moduleNameConstantCase}}_${key}`] ?? process.env[`${key}`]
+  return value ?? ""
+}
+
+function is{{moduleNamePascalCase}}ServiceInitializeOptions(
+  obj: unknown
+): obj is {{moduleNamePascalCase}}ServiceInitializeOptions {
+  return !!(obj as {{moduleNamePascalCase}}ServiceInitializeOptions)?.database
+}
+
+function getDefaultDriverOptions(
+  clientUrl: string
+): {{moduleNamePascalCase}}ServiceInitializeOptions["database"]["driverOptions"] {
+  const localOptions = {
+    connection: {
+      ssl: false,
+    },
+  }
+
+  const remoteOptions = {
+    connection: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
+  }
+
+  if (clientUrl) {
+    return clientUrl.match(/localhost/i) ? localOptions : remoteOptions
+  }
+
+  return process.env.NODE_ENV?.match(/prod/i)
+    ? remoteOptions
+    : process.env.NODE_ENV?.match(/dev/i)
+    ? localOptions
+    : {}
+}
+
+/**
+ * Load the config for the database connection. The options can be retrieved
+ * through {{moduleNameConstantCase}}_* (e.g {{moduleNameConstantCase}}_POSTGRES_URL) or * (e.g POSTGRES_URL) environment variables or the options object.
+ * @param options
+ */
+export function loadDatabaseConfig(
+  options?:
+    | {{moduleNamePascalCase}}ServiceInitializeOptions
+    | {{moduleNamePascalCase}}ServiceInitializeCustomDataLayerOptions
+): {{moduleNamePascalCase}}ServiceInitializeOptions["database"] {
+  const clientUrl = getEnv("POSTGRES_URL")
+
+  const database: {{moduleNamePascalCase}}ServiceInitializeOptions["database"] = {
+    clientUrl: getEnv("POSTGRES_URL"),
+    schema: getEnv("POSTGRES_SCHEMA") ?? "public",
+    driverOptions: JSON.parse(
+      getEnv("POSTGRES_DRIVER_OPTIONS") ||
+        JSON.stringify(getDefaultDriverOptions(clientUrl))
+    ),
+  }
+
+  if (is{{moduleNamePascalCase}}ServiceInitializeOptions(options)) {
+    database.clientUrl = options.database.clientUrl ?? database.clientUrl
+    database.schema = options.database.schema ?? database.schema
+    database.driverOptions =
+      options.database.driverOptions ??
+      getDefaultDriverOptions(database.clientUrl)
+  }
+
+  if (!database.clientUrl) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_ARGUMENT,
+      "No database clientUrl provided. Please provide the clientUrl through the {{moduleNameConstantCase}}_POSTGRES_URL or POSTGRES_URL environment variable or the options object in the initialize function."
+    )
+  }
+  return database
+}
