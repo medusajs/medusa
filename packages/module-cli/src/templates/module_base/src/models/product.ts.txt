@@ -1,0 +1,38 @@
+import {
+  BeforeCreate,
+  Entity,
+  PrimaryKey,
+  Property,
+} from "@mikro-orm/core"
+
+import { generateEntityId } from "@medusajs/utils"
+
+@Entity({ tableName: "{{moduleNameSnakeCase}}" })
+class {{moduleNamePascalCase}} {
+  @PrimaryKey({ columnType: "text" })
+  id!: string
+
+  @Property({ onCreate: () => new Date(), columnType: "timestamptz" })
+  created_at: Date
+
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+  })
+  updated_at: Date
+
+  @Property({ columnType: "timestamptz", nullable: true })
+  deleted_at: Date
+
+  @Property({ columnType: "jsonb", nullable: true })
+  metadata?: Record<string, unknown> | null
+
+  @BeforeCreate()
+  beforeCreate() {
+    const prefix = "{{moduleNameLowerCase}}".slice(0, 4)
+    this.id = generateEntityId(this.id, "prefix")
+  }
+}
+
+export default {{moduleNamePascalCase}}
