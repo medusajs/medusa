@@ -482,9 +482,9 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       : { ...idsOrOptionsWithoutRelations.order }
     const originalSelect = isOptionsArray
       ? undefined
-      : (objectToStringPath(
-          idsOrOptionsWithoutRelations.select
-        ) as (keyof Product)[])
+      : (objectToStringPath(idsOrOptionsWithoutRelations.select, {
+          includeTopLeaf: false,
+        }) as (keyof Product)[])
     const clonedOptions = isOptionsArray
       ? idsOrOptionsWithoutRelations
       : cloneDeep(idsOrOptionsWithoutRelations)

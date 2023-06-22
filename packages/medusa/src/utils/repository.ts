@@ -55,7 +55,7 @@ export async function queryEntityWithIds<T extends ObjectLiteral>({
                 return s.startsWith(toplevel) || !s.includes(".")
               })
               .map((column) => {
-                // In case the column is the toplevel relation, we need to replace the dot with a double underscore
+                // In case the column is the toplevel relation, we need to replace the dot with a double underscore if it also contains top level relations
                 if (column.includes(toplevel)) {
                   return topLevelRelations.some((rel) => column.includes(rel))
                     ? column.replace(positiveLookaheadDotReplacer, "__")
