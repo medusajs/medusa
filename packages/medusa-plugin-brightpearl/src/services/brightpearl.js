@@ -1,8 +1,5 @@
-import { MedusaError, humanizeAmount } from "medusa-core-utils"
-import {
-  ReservationType,
-  updateInventoryAndReservations,
-} from "@medusajs/medusa"
+import { humanizeAmount, MedusaError } from "medusa-core-utils"
+import { updateInventoryAndReservations } from "@medusajs/medusa"
 
 import { BaseService } from "medusa-interfaces"
 import Brightpearl from "../utils/brightpearl"
@@ -111,7 +108,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -1008,6 +1005,7 @@ class BrightpearlService extends BaseService {
         "shipping_address",
         "billing_address",
         "shipping_methods",
+        "shipping_methods.shipping_option",
         "payments",
         "sales_channel",
       ],

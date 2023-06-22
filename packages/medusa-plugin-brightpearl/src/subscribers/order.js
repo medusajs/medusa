@@ -102,6 +102,7 @@ class OrderSubscriber {
         "additional_items.tax_lines",
         "shipping_address",
         "shipping_methods",
+        "shipping_methods.shipping_option",
         "shipping_methods.tax_lines",
       ],
     })
@@ -148,6 +149,7 @@ class OrderSubscriber {
         "additional_items.variant.product",
         "additional_items.tax_lines",
         "shipping_address",
+        "shipping_methods.shipping_option",
         "shipping_methods",
       ],
     })

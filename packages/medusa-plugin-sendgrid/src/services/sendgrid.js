@@ -844,7 +844,9 @@ class SendGridService extends NotificationService {
   }
 
   async swapCreatedData({ id }) {
-    const store = await this.storeService_.retrieve({ where: { id: Not(IsNull()) } })
+    const store = await this.storeService_.retrieve({
+      where: { id: Not(IsNull()) },
+    })
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "additional_items",
@@ -907,7 +909,7 @@ class SendGridService extends NotificationService {
         "shipping_total",
         "subtotal",
       ],
-      relations: ["items", "items.variant", "items.variant.product"]
+      relations: ["items", "items.variant", "items.variant.product"],
     })
     const currencyCode = order.currency_code.toUpperCase()
 
@@ -987,6 +989,7 @@ class SendGridService extends NotificationService {
       relations: [
         "shipping_address",
         "shipping_methods",
+        "shipping_methods.shipping_option",
         "shipping_methods.tax_lines",
         "additional_items",
         "additional_items.variant",
@@ -1022,11 +1025,7 @@ class SendGridService extends NotificationService {
         "shipping_total",
         "subtotal",
       ],
-      relations: [
-        "items",
-        "items.variant",
-        "items.variant.product",
-      ]
+      relations: ["items", "items.variant", "items.variant.product"],
     })
 
     const returnRequest = swap.return_order
@@ -1146,7 +1145,7 @@ class SendGridService extends NotificationService {
         "order.items",
         "order.items.variant",
         "order.items.variant.product",
-        "order.shipping_address"
+        "order.shipping_address",
       ],
     })
 
