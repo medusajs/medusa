@@ -1,11 +1,11 @@
 import { objectToStringPath } from "@medusajs/utils"
-import { flatten } from "lodash"
-import { FindManyOptions, FindOptionsRelations, In } from "typeorm"
+import { FindManyOptions, FindOptionsRelations } from "typeorm"
 import { dataSource } from "../loaders/database"
 import { Cart } from "../models"
 import {
   getGroupedRelations,
   mergeEntitiesWithRelations,
+  queryEntityWithIds,
 } from "../utils/repository"
 
 export const CartRepository = dataSource.getRepository(Cart).extend({
@@ -18,15 +18,12 @@ export const CartRepository = dataSource.getRepository(Cart).extend({
 
     const groupedRelations = getGroupedRelations(objectToStringPath(relations))
 
-    const entitiesIdsWithRelations = await Promise.all(
-      Object.entries(groupedRelations).map(async ([_, rels]) => {
-        return this.find({
-          where: { id: In(entitiesIds) },
-          select: ["id"],
-          relations: rels as string[],
-        })
-      })
-    ).then(flatten)
+    const entitiesIdsWithRelations = await queryEntityWithIds({
+      repository: this,
+      entityIds: entitiesIds,
+      groupedRelations,
+      select: ["id"],
+    })
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
     return mergeEntitiesWithRelations<Cart>(entitiesAndRelations)
