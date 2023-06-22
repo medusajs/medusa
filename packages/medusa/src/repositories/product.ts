@@ -213,11 +213,13 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       customJoinBuilders: [
         (queryBuilder, alias, topLevel) => {
           if (topLevel === "variants") {
-            queryBuilder.leftJoinAndSelect(
-              `${alias}.${topLevel}`,
-              topLevel,
-              `${topLevel}.deleted_at IS NULL`
-            )
+            const joinMethod = select.filter(
+              (key) => !!key.match(/^variants\.\w+$/i)
+            ).length
+              ? "leftJoin"
+              : "leftJoinAndSelect"
+
+            queryBuilder[joinMethod](`${alias}.${topLevel}`, topLevel)
 
             if (
               !Object.keys(order!).some((key) => key.startsWith("variants"))
@@ -228,7 +230,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
             return false
           }
-          return true
+
+          return
         },
         (queryBuilder, alias, topLevel) => {
           if (topLevel === "categories") {
@@ -245,7 +248,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
             return false
           }
 
-          return true
+          return
         },
       ],
     })

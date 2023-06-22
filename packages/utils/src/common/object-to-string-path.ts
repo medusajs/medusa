@@ -22,7 +22,8 @@ export function objectToStringPath(input: object = {}): string[] {
     return []
   }
 
-  const output: Set<string> = new Set(Object.keys(input))
+  // const mainLeafToKeep = Object.keys(input).filter((key) => input[key] === true)
+  const output: Set<string> = new Set() // If we need to re add the top leaf then init the set with Object.keys(input)
 
   for (const key of Object.keys(input)) {
     if (input[key] != undefined && typeof input[key] === "object") {
