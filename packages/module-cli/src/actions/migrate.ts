@@ -107,6 +107,7 @@ export async function migrateModules(
   }
 
   try {
+    spinner.start(`Running database migrations...`)
     /*
     TODO: create function to load env variables and run the migrations in a forked process
 

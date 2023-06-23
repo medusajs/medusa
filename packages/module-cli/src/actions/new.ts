@@ -100,6 +100,14 @@ export async function createNewModule(
     spinner.fail(`Failed to install dependencies${EOL}${err.message}`)
   }
 
+  try {
+    spinner.start(`Generating initial migration`)
+    await generateMigrations(modulePath)
+    spinner.succeed(`Generated initial migration`)
+  } catch (err: any) {
+    spinner.fail(`Failed to install dependencies${EOL}${err.message}`)
+  }
+
   log(
     boxen(
       chalk.green(
@@ -131,5 +139,22 @@ async function runYarnInstall(modulePath: string) {
     })
 
     yarnProcess.stdout!.on("data", (data) => spinner.info(data))
+  })
+}
+
+async function generateMigrations(modulePath: string) {
+  await new Promise(async (resolve, reject) => {
+    const migrationProcess = exec(
+      `yarn --cwd ${modulePath} run migration:initial`,
+      (err) => {
+        if (err) {
+          return reject(err)
+        }
+
+        resolve(void 0)
+      }
+    )
+
+    migrationProcess.stdout!.on("data", (data) => spinner.info(data))
   })
 }
