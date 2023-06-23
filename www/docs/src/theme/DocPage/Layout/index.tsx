@@ -7,10 +7,15 @@ import DocPageLayoutMain from "@theme/DocPage/Layout/Main"
 import type { Props } from "@theme/DocPage/Layout"
 import clsx from "clsx"
 import { useSidebar } from "@site/src/providers/Sidebar"
+import useOnboarding from "@site/src/hooks/use-onboarding"
+import useCurrentLearningPath from "@site/src/hooks/use-current-learning-path"
 
 export default function DocPageLayout({ children }: Props): JSX.Element {
   const sidebar = useDocsSidebar()
   const sidebarContext = useSidebar()
+  useOnboarding()
+  useCurrentLearningPath()
+
   return (
     <Layout wrapperClassName={clsx("tw-flex tw-flex-[1_0_auto]")}>
       <BackToTopButton />

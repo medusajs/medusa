@@ -64,7 +64,7 @@ const ItemSearch = ({ onItemSelect, clearOnSelect, filters = {} }: Props) => {
         components={{ Option: ProductOption, Control: SearchControl }}
         onInputChange={setItemSearchTerm}
         options={options}
-        placeholder="Choose an item"
+        placeholder="Search by sku..."
         isSearchable={true}
         noOptionsMessage={() => "No items found"}
         openMenuOnClick={!!inventory_items?.length}

@@ -32,7 +32,7 @@ export default function NavbarMobileSidebarHeader(): JSX.Element {
       <NavbarLogo />
       <NavbarColorModeToggle
         className={clsx(
-          "[&>button]:hover:tw-bg-medusa-button-secondary-hover dark:[&>button]:hover:tw-bg-medusa-button-secondary-hover-dark",
+          "[&>button]:hover:tw-bg-medusa-button-neutral-hover dark:[&>button]:hover:tw-bg-medusa-button-neutral-hover-dark",
           "[&>button]:!tw-rounded"
         )}
       />
