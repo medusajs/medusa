@@ -1006,6 +1006,7 @@ describe("/store/products", () => {
         ...Object.keys(response.data.product.variants[0]).map(
           (key) => `variants.${key}`
         ),
+        "variants.prices.amount",
         "options.values",
       ]
 
