@@ -3,6 +3,7 @@ import confirm from "@inquirer/confirm"
 import boxen from "boxen"
 import chalk from "chalk"
 import { EOL } from "os"
+import pluralize from "pluralize"
 import { spinner } from "../index.js"
 import { loadPackageJson } from "../utils/load-package.js"
 import log from "../utils/logger.js"
@@ -20,7 +21,7 @@ async function getMedusaModules(
     )
   )
 
-  const medusaModules: Map<string, any> = new Map(
+  return new Map(
     modules.filter((loaded: [string, any | null]) => {
       const [, mod] = loaded
       if (mod === null) {
@@ -37,8 +38,6 @@ async function getMedusaModules(
       )
     })
   )
-
-  return medusaModules
 }
 export async function migrateModules(
   modulePaths?: string[],
@@ -49,14 +48,18 @@ export async function migrateModules(
   } = {}
 ): Promise<void> {
   if (!modulePaths?.length) {
-    log("Checking modules installed...")
+    log("Checking if the modules are installed...")
   }
 
-  let project
+  let project: Record<string, any> = {}
+
   try {
     project = loadPackageJson()
   } catch (err: any) {
-    log(err.message, "error")
+    log(
+      `Unable to load the package.json file from the project${EOL}${err.message}`,
+      "error"
+    )
     return
   }
 
@@ -72,12 +75,12 @@ export async function migrateModules(
   )
 
   if (!medusaModules.size) {
-    spinner.succeed(`None Medusa modules was found.`)
+    spinner.succeed(`No module found to run the migration.`)
     return
   }
 
   const selectedModules = await checkbox({
-    message: "Select the Modules you want to run the DB migration",
+    message: "Select the modules for which you want to run the migration",
     choices: [...medusaModules.keys()].map((name: any) => {
       return {
         value: name,
@@ -87,22 +90,24 @@ export async function migrateModules(
   })
 
   if (!selectedModules.length) {
-    spinner.info(`There isn't any migration to run.`)
+    spinner.info(`No module selected. Skipping migration.`)
     return
   }
 
   const confirmMigration = await confirm({
-    message: `Confirm the database migration of the module${
-      selectedModules.length > 1 ? "s" : ""
-    } below:${EOL}- ${selectedModules.join(EOL + "- ")}?`,
+    message: `Confirm the database migration of the ${pluralize(
+      "module",
+      selectedModules.length
+    )} below:${EOL}- ${selectedModules.join(EOL + "- ")}?`,
   })
 
   if (!confirmMigration) {
-    spinner.warn(`Migrations cancelled!!!`)
+    spinner.warn(`The migration has been cancelled!`)
     return
   }
 
   try {
+    spinner.start(`Running database migrations...`)
     /*
     TODO: create function to load env variables and run the migrations in a forked process
 

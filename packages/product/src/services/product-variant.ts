@@ -1,6 +1,6 @@
 import { ProductVariant } from "@models"
 import { DAL, FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
-import { buildQuery } from "../utils"
+import { DalUtils } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productVariantRepository: DAL.RepositoryService
@@ -18,7 +18,7 @@ export default class ProductVariantService<TEntity = ProductVariant> {
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: SharedContext
   ): Promise<TEntity[]> {
-    const queryOptions = buildQuery<TEntity>(filters, config)
+    const queryOptions = DalUtils.buildQuery<TEntity>(filters, config)
     return await this.productVariantRepository_.find(queryOptions)
   }
 }

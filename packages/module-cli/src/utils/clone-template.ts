@@ -1,5 +1,5 @@
-import { mkdir, readFile, readdir, writeFile } from "fs/promises"
-import * as path from "path"
+import { mkdir, readdir, readFile, writeFile } from "fs/promises"
+import { join } from "path"
 
 function replaceContent(
   content: string,
@@ -18,8 +18,8 @@ export async function cloneTemplateDirectory(
   const entries = await readdir(inputDir, { withFileTypes: true })
 
   for (const entry of entries) {
-    const inputPath = path.join(inputDir, entry.name)
-    let outputPath = path.join(outputDir, entry.name)
+    const inputPath = join(inputDir, entry.name)
+    let outputPath = join(outputDir, entry.name)
 
     if (entry.isDirectory()) {
       try {
@@ -37,7 +37,7 @@ export async function cloneTemplateDirectory(
         return variables[key] ?? ""
       })
 
-      outputPath = path.join(outputDir, fileName)
+      outputPath = join(outputDir, fileName)
       await writeFile(outputPath, processed, "utf8")
     }
   }

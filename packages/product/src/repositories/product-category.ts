@@ -4,10 +4,10 @@ import {
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import { deduplicateIfNecessary } from "../utils"
 import { ProductCategory } from "@models"
 import { DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
+import { DalUtils } from "@medusajs/utils"
 
 export class ProductCategoryRepository
   implements DAL.RepositoryService<ProductCategory>
@@ -40,7 +40,7 @@ export class ProductCategoryRepository
     }
 
     if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
+      DalUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transaction) {
@@ -120,7 +120,7 @@ export class ProductCategoryRepository
     findOptions_.options.limit ??= 15
 
     if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
+      DalUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transaction) {

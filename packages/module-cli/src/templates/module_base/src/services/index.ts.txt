@@ -1,0 +1,1 @@
+export { default as {{moduleNamePascalCase}}ModuleService } from "./{{moduleNameSnakeCase}}-module-service"

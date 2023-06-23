@@ -1,6 +1,6 @@
 import { ProductCategory } from "@models"
 import { DAL, FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
-import { buildQuery } from "../utils"
+import { buildQuery } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productCategoryRepository: DAL.RepositoryService
@@ -19,7 +19,7 @@ export default class ProductCategoryService<TEntity = ProductCategory> {
     sharedContext?: SharedContext
   ): Promise<TEntity[]> {
     const transformOptions = {
-      includeDescendantsTree: filters?.include_descendants_tree || false
+      includeDescendantsTree: filters?.include_descendants_tree || false,
     }
     delete filters.include_descendants_tree
 
@@ -28,7 +28,7 @@ export default class ProductCategoryService<TEntity = ProductCategory> {
 
     return await this.productCategoryRepository_.find(
       queryOptions,
-      transformOptions,
+      transformOptions
     )
   }
 }
