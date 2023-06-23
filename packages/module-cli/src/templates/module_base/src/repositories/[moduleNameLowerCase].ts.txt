@@ -35,8 +35,6 @@ export class {{moduleNamePascalCase}}Repository implements DAL.RepositoryService
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    await this.mutateNotInCategoriesConstraints(findOptions_)
-
     return await this.manager_.find(
       {{moduleNamePascalCase}},
       findOptions_.where as MikroFilterQuery<{{moduleNamePascalCase}}>,
@@ -64,8 +62,6 @@ export class {{moduleNamePascalCase}}Repository implements DAL.RepositoryService
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
-
-    await this.mutateNotInCategoriesConstraints(findOptions_)
 
     return await this.manager_.findAndCount(
       {{moduleNamePascalCase}},

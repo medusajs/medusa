@@ -23,13 +23,13 @@ try {
     .action(createNewModule)
 
   program
-    .description("Run database migration of installed modules")
+    .description("Run or revert the modules migrations")
     .command("migrate")
     .argument(
       "[module-paths...]",
-      "Specify the modules to migrate. If not specified, all modules installed will be used."
+      "Specify the modules for which to run the migrations for. If not specified, all modules installed will be listed and selectable."
     )
-    .option("-r, --revert", "Revert the last migration", false)
+    .option("-r, --revert", "Revert the last migrations", false)
     .action(migrateModules)
 
   program.parse()

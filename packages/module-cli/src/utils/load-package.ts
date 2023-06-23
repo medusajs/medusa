@@ -2,7 +2,9 @@ import { existsSync, readFileSync } from "fs"
 import { EOL } from "os"
 import { dirname, join, parse } from "path"
 
-export function loadPackageJson(startPath: string = process.cwd()) {
+export function loadPackageJson(
+  startPath: string = process.cwd()
+): Record<string, any> {
   const rootPath = parse(startPath).root
   if (startPath === rootPath) {
     throw new Error(
