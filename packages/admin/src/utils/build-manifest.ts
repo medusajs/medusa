@@ -3,6 +3,7 @@ import fse from "fs-extra"
 import isEqual from "lodash/isEqual"
 import isNil from "lodash/isNil"
 import path from "path"
+import { BuildOptions } from "../types"
 import { getPluginPaths } from "./get-plugin-paths"
 
 const MANIFEST_PATH = path.resolve(
@@ -60,7 +61,7 @@ async function getLastTimeModifiedAt(appDir: string) {
 
 export async function createBuildManifest(
   appDir: string,
-  options: AdminOptions
+  options: BuildOptions
 ) {
   const packageVersions = await getPackageVersions(appDir)
   const lastModificationTime = await getLastTimeModifiedAt(appDir)

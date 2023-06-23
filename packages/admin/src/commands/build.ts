@@ -1,15 +1,8 @@
-import {
-  build as adminBuild,
-  clean,
-  type AdminOptions,
-} from "@medusajs/admin-ui"
+import { build as adminBuild, clean } from "@medusajs/admin-ui"
 import { resolve } from "path"
+import { BuildOptions } from "../types"
 import { getPluginPaths, loadConfig } from "../utils"
 import { createBuildManifest } from "../utils/build-manifest"
-
-type BuildOptions = AdminOptions & {
-  deployment?: boolean
-}
 
 export default async function build({
   backend,
@@ -52,5 +45,6 @@ export default async function build({
     outDir: outDir || configOutDir,
     path: path || configPath,
     backend: backend || configBackend,
+    deployment,
   })
 }
