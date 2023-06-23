@@ -26,28 +26,21 @@ const executeMigration = async (moduleName: string, revert: boolean) => {
   const newScriptPath = resolve(`./${fileName}.js`)
   writeFileSync(newScriptPath, script)
 
-  let done: Function
-  let error: Function
-  const ret = new Promise((resolve, reject) => {
-    done = resolve
-    error = reject
-  })
-
-  try {
-    const child = fork(newScriptPath)
-    child.on("exit", (err, ok) => {
+  return await new Promise((resolve, reject) => {
+    try {
+      const child = fork(newScriptPath)
+      child.on("exit", (err, ok) => {
+        unlinkSync(newScriptPath)
+        if (err) {
+          return reject(err)
+        }
+        resolve(undefined)
+      })
+    } catch (err) {
       unlinkSync(newScriptPath)
-      if (err) {
-        return error()
-      }
-      done()
-    })
-  } catch (err) {
-    unlinkSync(newScriptPath)
-    throw err
-  }
-
-  return ret
+      reject(err)
+    }
+  })
 }
 
 async function getMedusaModules(
