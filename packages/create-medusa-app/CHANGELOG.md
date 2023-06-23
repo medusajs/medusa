@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.1
+
+### Patch Changes
+
+- [#4339](https://github.com/medusajs/medusa/pull/4339) [`6d5da9166`](https://github.com/medusajs/medusa/commit/6d5da9166f609017f92c8c4c34c8eeca53699e3d) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): support admin onboarding experience
+
 ## 1.0.0
 
 ### Major Changes

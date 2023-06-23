@@ -15,7 +15,7 @@ const IconClose: React.FC<IconProps> = ({ iconColorClassName, ...props }) => {
         d="M6 14L14 6M6 6L14 14"
         className={
           iconColorClassName ||
-          "tw-stroke-medusa-icon-secondary dark:tw-stroke-medusa-icon-secondary"
+          "tw-stroke-medusa-icon-subtle dark:tw-stroke-medusa-icon-subtle"
         }
         strokeWidth={props.strokeWidth}
         strokeLinecap="round"

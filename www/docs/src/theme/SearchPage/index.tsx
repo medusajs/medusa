@@ -20,6 +20,7 @@ import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
 import { useSearchResultUrlProcessor } from "@docusaurus/theme-search-algolia/client"
 import Layout from "@theme/Layout"
 import { ThemeConfig } from "@medusajs/docs"
+import UserProvider from "@site/src/providers/User"
 
 // Very simple pluralization: probably good enough for now
 function useDocumentsFoundPlural() {
@@ -515,7 +516,9 @@ function SearchPageContent(): JSX.Element {
 export default function SearchPage(): JSX.Element {
   return (
     <HtmlClassNameProvider className="">
-      <SearchPageContent />
+      <UserProvider>
+        <SearchPageContent />
+      </UserProvider>
     </HtmlClassNameProvider>
   )
 }
