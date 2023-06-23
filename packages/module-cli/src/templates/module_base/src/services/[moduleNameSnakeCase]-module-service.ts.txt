@@ -1,1 +1,3 @@
-export { default as {{moduleNamePascalCase}}ModuleService } from "./{{moduleNameSnakeCase}}-module-service"
+export default class {{moduleNamePascalCase}}ModuleService {
+
+}
