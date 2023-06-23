@@ -42,8 +42,9 @@ const executeMigration = async (moduleName: string, revert: boolean) => {
       }
       done()
     })
-  } catch {
+  } catch (err) {
     unlinkSync(newScriptPath)
+    throw err
   }
 
   return ret
