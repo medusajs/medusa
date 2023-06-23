@@ -1,5 +1,4 @@
-import { fork } from "child_process"
-import { createDatabase } from "pg-god"
+import { exec } from "child_process"
 import boxen from "boxen"
 import chalk from "chalk"
 import { existsSync } from "fs"
@@ -74,7 +73,7 @@ export async function createNewModule(
     spinner.fail(`Failed to create module "${moduleName}"${EOL}${err}`)
   }
 
-  try {
+  /*  try {
     spinner.start(`Creating database`)
 
     await createDatabase(
@@ -90,11 +89,10 @@ export async function createNewModule(
     )
   } catch (err: any) {
     spinner.fail(`Failed to create database${EOL}${err.message}`)
-  }
+  }*/
 
   try {
     spinner.start(`Installing dependencies`)
-    console.log(existsSync(modulePath))
     await runYarnInstall(modulePath)
     spinner.succeed(`Installed dependencies`)
   } catch (err: any) {
@@ -122,21 +120,15 @@ export async function createNewModule(
 }
 
 async function runYarnInstall(modulePath: string) {
-  const yarnInstallProcess = await fork(modulePath, ["yarn", "install"], {
-    cwd: modulePath,
-  })
-
-  await new Promise((resolve, reject) => {
-    yarnInstallProcess.on("error", (err) => {
-      reject(err)
-    })
-
-    yarnInstallProcess.on("close", (code) => {
-      if (code === 0) {
-        return resolve(void 0)
+  await new Promise(async (resolve, reject) => {
+    const yarnProcess = exec("yarn install --cwd " + modulePath, (err) => {
+      if (err) {
+        return reject(err)
       }
 
-      reject(new Error(`Yarn install failed with code ${code}`))
+      resolve(void 0)
     })
+
+    yarnProcess.stdout!.on("data", log)
   })
 }
