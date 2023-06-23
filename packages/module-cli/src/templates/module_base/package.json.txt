@@ -2,7 +2,6 @@
   "name": "@medusajs/{{moduleNameKebabCase}}",
   "version": "0.1.1",
   "description": "Medusa {{moduleNameTitleCase}} module",
-  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
