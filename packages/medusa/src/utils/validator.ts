@@ -10,6 +10,7 @@ const extendedValidators: Map<string, Constructor<any>> = new Map()
  * For example, the place where you are overriding the core validator, you can call this function
  * @example
  * ```ts
+ * // /src/api/routes/admin/products/create-product.ts
  * import { registerOverriddenValidators } from "@medusajs/medusa"
  * import { AdminPostProductsReq as MedusaAdminPostProductsReq } from "@medusajs/medusa/dist/api/routes/admin/products/create-product"
  * import { IsString } from "class-validator"
