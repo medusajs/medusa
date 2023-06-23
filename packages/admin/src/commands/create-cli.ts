@@ -24,6 +24,10 @@ export async function createCli(): Promise<Command> {
     .description("Build the admin dashboard for production")
     .option("--path <path>", "Public path to serve the admin dashboard on")
     .option("--backend <url>", "URL to the Medusa backend")
+    .option(
+      "--deployment",
+      "Build the admin dashboard for deployment to an exernal host"
+    )
     .action(build)
 
   return program
