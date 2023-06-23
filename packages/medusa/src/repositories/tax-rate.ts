@@ -67,7 +67,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
 
   async findAndCountWithResolution(findOptions: FindManyOptions<TaxRate>) {
     const qb = this.getFindQueryBuilder(findOptions)
-    return await qb.getManyAndCount()
+    return await Promise.all([qb.getMany(), qb.getCount()])
   },
 
   applyResolutionsToQueryBuilder(
