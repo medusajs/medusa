@@ -29,7 +29,7 @@ if (fse.existsSync(ENV_FILE_NAME)) {
 }
 
 type GetClientEnvArgs = {
-  path: string
+  path?: string
   env?: string
   backend?: string
 }
@@ -44,9 +44,9 @@ export const getClientEnv = (args: GetClientEnvArgs) => {
         return acc
       },
       {
-        ADMIN_PATH: args.path,
+        ADMIN_PATH: args.path || "/",
         NODE_ENV: args.env || "development",
-        MEDUSA_BACKEND_URL: args.backend,
+        MEDUSA_BACKEND_URL: args.backend || process.env.MEDUSA_BACKEND_URL,
       }
     )
 
