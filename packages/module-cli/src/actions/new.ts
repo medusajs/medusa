@@ -10,6 +10,7 @@ import pluralize from "pluralize"
 import { spinner } from "../index.js"
 import { cloneTemplateDirectory } from "../utils/clone-template.js"
 import log from "../utils/logger.js"
+import { createDatabase } from "pg-god"
 
 const pgGodCredentials = {
   user: "postgres",
@@ -73,7 +74,7 @@ export async function createNewModule(
     spinner.fail(`Failed to create module "${moduleName}"${EOL}${err}`)
   }
 
-  /*  try {
+  try {
     spinner.start(`Creating database`)
 
     await createDatabase(
@@ -89,7 +90,7 @@ export async function createNewModule(
     )
   } catch (err: any) {
     spinner.fail(`Failed to create database${EOL}${err.message}`)
-  }*/
+  }
 
   try {
     spinner.start(`Installing dependencies`)
