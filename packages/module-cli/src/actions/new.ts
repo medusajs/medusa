@@ -130,6 +130,6 @@ async function runYarnInstall(modulePath: string) {
       resolve(void 0)
     })
 
-    yarnProcess.stdout!.on("data", log)
+    yarnProcess.stdout!.on("data", (data) => spinner.info(data))
   })
 }
