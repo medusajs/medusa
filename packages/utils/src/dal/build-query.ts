@@ -1,11 +1,10 @@
-/**
- * Move to a new build query utils
- */
 import { DAL, FindConfig } from "@medusajs/types"
-import { isObject } from "@medusajs/utils"
+import { isObject } from "../common"
 
 export function deduplicateIfNecessary<T = any>(collection: T | T[]) {
-  return Array.isArray(collection) ? [...new Set(collection)] : collection
+  return Array.isArray(collection)
+    ? [...Array.from(new Set(collection))]
+    : collection
 }
 
 export function buildQuery<T = any, TDto = any>(

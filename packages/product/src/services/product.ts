@@ -1,7 +1,7 @@
 import { ProductTagService, ProductVariantService } from "@services"
 import { Product } from "@models"
 import { DAL, FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
-import { buildQuery } from "../utils"
+import { DalUtils } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
@@ -34,7 +34,7 @@ export default class ProductService<TEntity = Product> {
       delete filters.category_ids
     }
 
-    const queryOptions = buildQuery<TEntity>(filters, config)
+    const queryOptions = DalUtils.buildQuery<TEntity>(filters, config)
     return await this.productRepository_.find(queryOptions)
   }
 
@@ -56,7 +56,7 @@ export default class ProductService<TEntity = Product> {
       delete filters.category_ids
     }
 
-    const queryOptions = buildQuery<TEntity>(filters, config)
+    const queryOptions = DalUtils.buildQuery<TEntity>(filters, config)
     return await this.productRepository_.findAndCount(queryOptions)
   }
 }

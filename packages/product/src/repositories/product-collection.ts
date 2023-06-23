@@ -5,8 +5,8 @@ import {
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import { deduplicateIfNecessary } from "../utils"
 import { DAL } from "@medusajs/types"
+import { DalUtils } from "@medusajs/utils"
 
 export class ProductCollectionRepository implements DAL.RepositoryService {
   protected readonly manager_: SqlEntityManager
@@ -25,7 +25,7 @@ export class ProductCollectionRepository implements DAL.RepositoryService {
     findOptions_.options.limit ??= 15
 
     if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
+      DalUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transaction) {
@@ -54,7 +54,7 @@ export class ProductCollectionRepository implements DAL.RepositoryService {
     findOptions_.options.limit ??= 15
 
     if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
+      DalUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transaction) {

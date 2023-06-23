@@ -1,6 +1,6 @@
 import { ProductCollection } from "@models"
 import { DAL, FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
-import { buildQuery } from "../utils"
+import { DalUtils } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productCollectionRepository: DAL.RepositoryService
@@ -18,7 +18,7 @@ export default class ProductCollectionService<TEntity = ProductCollection> {
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
     sharedContext?: SharedContext
   ): Promise<TEntity[]> {
-    const queryOptions = buildQuery<TEntity>(filters, config)
+    const queryOptions = DalUtils.buildQuery<TEntity>(filters, config)
     queryOptions.where ??= {}
 
     if (filters.title) {
