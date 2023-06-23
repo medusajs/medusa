@@ -2,11 +2,52 @@ import checkbox from "@inquirer/checkbox"
 import confirm from "@inquirer/confirm"
 import boxen from "boxen"
 import chalk from "chalk"
+import { fork } from "child_process"
+import { unlinkSync, writeFileSync } from "fs"
 import { EOL } from "os"
+import { resolve } from "path"
 import pluralize from "pluralize"
 import { spinner } from "../index.js"
 import { loadPackageJson } from "../utils/load-package.js"
 import log from "../utils/logger.js"
+
+const executeMigration = async (moduleName: string, revert: boolean) => {
+  const migrationFunction = revert ? "revertMigration" : "runMigrations"
+  const script = `
+    (async function() {
+        const {${migrationFunction}} = await import("${moduleName}")
+        const { config } = await import("dotenv")
+
+        config()
+        await ${migrationFunction}()
+    })()`
+
+  const fileName = moduleName.replace(/\W/g, "-").toLowerCase()
+  const newScriptPath = resolve(`./${fileName}.js`)
+  writeFileSync(newScriptPath, script)
+
+  let done: Function
+  let error: Function
+  const ret = new Promise((resolve, reject) => {
+    done = resolve
+    error = reject
+  })
+
+  try {
+    const child = fork(newScriptPath)
+    child.on("exit", (err, ok) => {
+      unlinkSync(newScriptPath)
+      if (err) {
+        return error()
+      }
+      done()
+    })
+  } catch {
+    unlinkSync(newScriptPath)
+  }
+
+  return ret
+}
 
 async function getMedusaModules(
   dependencies: string[],
@@ -39,6 +80,7 @@ async function getMedusaModules(
     })
   )
 }
+
 export async function migrateModules(
   modulePaths?: string[],
   {
@@ -108,21 +150,14 @@ export async function migrateModules(
 
   try {
     spinner.start(`Running database migrations...`)
-    /*
-    TODO: create function to load env variables and run the migrations in a forked process
 
     await Promise.all(
-      selectedModules.map((mod) =>
-        revert
-          ? medusaModules.get(mod).revertMigration()
-          : medusaModules.get(mod).runMigrations()
-      )
+      selectedModules.map((mod) => executeMigration(mod, revert === true))
     )
-    */
 
     spinner.succeed(`Database migrations ran successfully.`)
   } catch (err) {
-    spinner.fail(`Failed to migrate modules${EOL}${err}`)
+    spinner.fail(`Failed to migrate modules.`)
     return
   }
 
