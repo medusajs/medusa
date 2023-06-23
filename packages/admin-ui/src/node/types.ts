@@ -13,6 +13,24 @@ export type DevelopOptions = {
    * @default 7001
    * */
   port?: number
+  /**
+   * Determines the log level of the development server.
+   * @default "error"
+   */
+  logLevel?: "error" | "none" | "warn" | "info" | "log" | "verbose"
+  /**
+   * Determines the verbosity of the development server.
+   * @default "minimal"
+   */
+  stats?:
+    | "none"
+    | "verbose"
+    | "minimal"
+    | "summary"
+    | "errors-only"
+    | "errors-warnings"
+    | "normal"
+    | "detailed"
 }
 
 export type AdminOptions = {
