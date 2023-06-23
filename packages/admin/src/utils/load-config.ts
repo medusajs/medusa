@@ -2,7 +2,7 @@ import type { ConfigModule } from "@medusajs/medusa"
 import { getConfigFile } from "medusa-core-utils"
 import { PluginOptions } from "../types"
 
-export const loadConfig = (): PluginOptions | null => {
+export const loadConfig = (isDev?: boolean): PluginOptions | null => {
   const { configModule } = getConfigFile<ConfigModule>(
     process.cwd(),
     "medusa-config"
@@ -21,9 +21,9 @@ export const loadConfig = (): PluginOptions | null => {
   let config: PluginOptions = {
     serve: true,
     autoRebuild: false,
-    path: "/app",
+    path: isDev ? "/" : "/app",
     outDir: "build",
-    backend: "/",
+    backend: isDev ? "http://localhost:9000" : "/",
     develop: {
       open: true,
       port: 7001,

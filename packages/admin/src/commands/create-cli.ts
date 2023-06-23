@@ -14,13 +14,9 @@ export async function createCli(): Promise<Command> {
   program
     .command("develop")
     .description("Start the admin dashboard in development mode")
-    .option("--port <port>", "Port to run the admin dashboard on", "7001")
-    .option("--path <path>", "Public path to serve the admin dashboard on", "/")
-    .option(
-      "--backend <url>",
-      "URL to the Medusa backend",
-      "http://localhost:9000"
-    )
+    .option("--port <port>", "Port to run the admin dashboard on")
+    .option("--path <path>", "Public path to serve the admin dashboard on")
+    .option("--backend <url>", "URL to the Medusa backend")
     .action(develop)
 
   program
