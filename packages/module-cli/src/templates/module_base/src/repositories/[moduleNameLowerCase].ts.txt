@@ -6,7 +6,7 @@ import {
 } from "@mikro-orm/core"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { {{moduleNamePascalCase}} } from "@models"
-import { deduplicateIfNecessary } from "../utils"
+import { DalUtils } from "@medusajs/utils"
 
 export class {{moduleNamePascalCase}}Repository implements DAL.RepositoryService<{{moduleNamePascalCase}}> {
   protected readonly manager_: SqlEntityManager
@@ -24,7 +24,7 @@ export class {{moduleNamePascalCase}}Repository implements DAL.RepositoryService
     findOptions_.options.limit ??= 15
 
     if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
+      DalUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transaction) {
@@ -52,7 +52,7 @@ export class {{moduleNamePascalCase}}Repository implements DAL.RepositoryService
     findOptions_.options.limit ??= 15
 
     if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
+      DalUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transaction) {
