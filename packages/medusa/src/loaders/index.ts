@@ -67,7 +67,7 @@ export default async ({
 
   const modelsActivity = Logger.activity(`Initializing models${EOL}`)
   track("MODELS_INIT_STARTED")
-  modelsLoader({ container })
+  modelsLoader({ container, rootDirectory })
   const mAct = Logger.success(modelsActivity, "Models initialized") || {}
   track("MODELS_INIT_COMPLETED", { duration: mAct.duration })
 
