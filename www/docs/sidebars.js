@@ -2245,15 +2245,6 @@ module.exports = {
       },
     },
     {
-      type: "doc",
-      id: "js-client/overview",
-      label: "Medusa JS Client",
-      customProps: {
-        sidebar_is_title: true,
-        sidebar_icon: "javascript",
-      },
-    },
-    {
       type: "category",
       collapsed: false,
       label: "Resources",
