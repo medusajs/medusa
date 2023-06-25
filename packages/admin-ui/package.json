@@ -10,7 +10,7 @@
   },
   "exports": {
     ".": "./dist/index.js",
-    "./ui": "./ui",
+    "./ui/*": "./ui/*",
     "./package.json": "./package.json"
   },
   "main": "dist/index.js",
