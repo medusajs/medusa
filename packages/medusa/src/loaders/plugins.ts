@@ -325,10 +325,12 @@ function registerApi(
   activityId: string
 ): Express {
   const logger = container.resolve<Logger>("logger")
-  logger.progress(
-    activityId,
-    `Registering custom endpoints for ${pluginDetails.name}`
-  )
+  const projectName =
+    pluginDetails.name === "project-plugin"
+      ? "your Medusa project"
+      : `${pluginDetails.name}`
+
+  logger.progress(activityId, `Registering custom endpoints for ${projectName}`)
   try {
     const routes = require(`${pluginDetails.resolve}/api`).default
     if (routes) {
@@ -337,11 +339,6 @@ function registerApi(
     return app
   } catch (err) {
     if (err.code !== "MODULE_NOT_FOUND") {
-      const projectName =
-        pluginDetails.name === "project-plugin"
-          ? "your Medusa project"
-          : `${pluginDetails.name}`
-
       logger.warn(
         `An error occured while registering endpoints in ${projectName}`
       )
