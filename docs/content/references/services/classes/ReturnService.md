@@ -381,8 +381,8 @@ ___
 Registers a previously requested return as received. This will create a
 refund to the customer. If the returned items don't match the requested
 items the return status will be updated to requires_action. This behaviour
-is useful in sitautions where a custom refund amount is requested, but the
-retuned items are not matching the requested items. Setting the
+is useful in situations where a custom refund amount is requested, but the
+returned items are not matching the requested items. Setting the
 allowMismatch argument to true, will process the return, ignoring any
 mismatches.
 

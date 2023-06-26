@@ -384,7 +384,7 @@ ___
 
 ▸ **archive**(`orderId`): `Promise`<`Order`\>
 
-Archives an order. It only alloved, if the order has been fulfilled
+Archives an order. It only allowed, if the order has been fulfilled
 and payment has been captured.
 
 #### Parameters
@@ -661,7 +661,7 @@ have been created in regards to the shipment.
 | :------ | :------ | :------ |
 | `orderId` | `string` | the id of the order that has been shipped |
 | `fulfillmentId` | `string` | the fulfillment that has now been shipped |
-| `trackingLinks?` | `TrackingLink`[] | array of tracking numebers   associated with the shipment |
+| `trackingLinks?` | `TrackingLink`[] | array of tracking numbers   associated with the shipment |
 | `config` | `Object` | the config of the order that has been shipped |
 | `config.metadata` | `Record`<`string`, `unknown`\> | - |
 | `config.no_notification?` | `boolean` | - |
@@ -840,8 +840,8 @@ ___
 Handles receiving a return. This will create a
 refund to the customer. If the returned items don't match the requested
 items the return status will be updated to requires_action. This behaviour
-is useful in sitautions where a custom refund amount is requested, but the
-retuned items are not matching the requested items. Setting the
+is useful in situations where a custom refund amount is requested, but the
+returned items are not matching the requested items. Setting the
 allowMismatch argument to true, will process the return, ignoring any
 mismatches.
 

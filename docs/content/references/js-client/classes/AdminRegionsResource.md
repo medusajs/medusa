@@ -152,7 +152,7 @@ ___
 
 **`Description`**
 
-remove a country from a region's list of coutnries
+remove a country from a region's list of countries
 
 #### Parameters
 

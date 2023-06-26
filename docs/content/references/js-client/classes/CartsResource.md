@@ -29,7 +29,7 @@ Adds a shipping method to cart
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `cart_id` | `string` | Id of cart |
-| `payload` | [`StorePostCartsCartShippingMethodReq`](internal-35.StorePostCartsCartShippingMethodReq.md) | Containg id of shipping option and optional data |
+| `payload` | [`StorePostCartsCartShippingMethodReq`](internal-35.StorePostCartsCartShippingMethodReq.md) | Containing id of shipping option and optional data |
 | `customHeaders` | `Record`<`string`, `any`\> |  |
 
 #### Returns
@@ -50,7 +50,7 @@ Completes a cart.
 Payment authorization is attempted and if more work is required, we simply return the cart for further updates.
 If payment is authorized and order is not yet created, we make sure to do so.
 The completion of a cart can be performed idempotently with a provided header Idempotency-Key.
-If not provuided, we will generate one for the request.
+If not provided, we will generate one for the request.
 
 #### Parameters
 
