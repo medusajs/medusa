@@ -1,5 +1,8 @@
 import path from "path"
-import { formatRegistrationName, formatRegistrationNameWithoutNamespace } from "../format-registration-name"
+import {
+  formatRegistrationName,
+  formatRegistrationNameWithoutNamespace,
+} from "../format-registration-name"
 
 describe("formatRegistrationName", () => {
   const tests = [
@@ -38,22 +41,13 @@ describe("formatRegistrationNameWithoutNamespace", () => {
     [["medusa-test-dir", "dist", "services", "my-test.js"], "myTest"],
     [["medusa-test-dir", "dist", "services", "my.js"], "my"],
     [["services", "my-quite-long-file.js"], "myQuiteLongFile"],
-    [
-      ["/", "Users", "seb", "com.medusa.js", "services", "dot.js"],
-      "dot",
-    ],
-    [
-      ["/", "Users", "seb.rin", "com.medusa.js", "services", "dot.js"],
-      "dot",
-    ],
+    [["/", "Users", "seb", "com.medusa.js", "services", "dot.js"], "dot"],
+    [["/", "Users", "seb.rin", "com.medusa.js", "services", "dot.js"], "dot"],
     [
       ["/", "Users", "seb.rin", "com.medusa.js", "repositories", "dot.js"],
       "dot",
     ],
-    [
-      ["/", "Users", "seb.rin", "com.medusa.js", "models", "dot.js"],
-      "dot",
-    ],
+    [["/", "Users", "seb.rin", "com.medusa.js", "models", "dot.js"], "dot"],
     [["C:", "server", "services", "dot.js"], "dot"],
   ]
 
