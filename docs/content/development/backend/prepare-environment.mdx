@@ -2,9 +2,9 @@
 description: 'Learn how to prepare your development environment while using Medusa. This guide includes how to install Node.js, Git, Medusa CLI tool, and PostgreSQL.'
 ---
 
-import styles from './development.module.css';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import MedusaCliTroubleshootingSection from '../../troubleshooting/cli-installation-errors/_reusable-section.mdx'
 
 # Prepare Development Environment
 
@@ -20,7 +20,7 @@ Node.js is the environment that makes it possible for Medusa to run, so you must
 
 :::caution
 
-Medusa supports versions 14 and 16 of Node.js. You can check your Node.js version using the following command:
+Medusa supports v16 or greater of Node.js. You can check your Node.js version using the following command:
 
 ```bash noReport
 node -v
@@ -28,7 +28,7 @@ node -v
 
 :::
 
-<Tabs groupId="operating-systems" wrapperClassName={styles.osTabs}>
+<Tabs groupId="operating-systems">
 <TabItem value="windows" label="Windows" default>
 
 You can install the executable directly from [the Node.js website](https://nodejs.org/en/#home-downloadhead).
@@ -53,7 +53,7 @@ For other Linux distributions, you can check out [Node.js’s guide](https://nod
 
 You can use the following commands to install Node.js on macOS:
 
-<Tabs groupId="homebrew" wrapperClassName='code-tabs'>
+<Tabs groupId="homebrew" isCodeTabs={true}>
 <TabItem value="homebrew" label="Homebrew">
 
 ```bash
@@ -89,7 +89,7 @@ Make sure that you have Xcode command line tools installed; if not,  run the fol
 
 Medusa uses Git behind the scenes when you create a new project so you'll have to install it on your computer to get started.
 
-<Tabs groupId="operating-systems" wrapperClassName={styles.osTabs}>
+<Tabs groupId="operating-systems">
 <TabItem value="windows" label="Windows" default>
 
 To install Git on Windows, you need to [download the installable package](https://git-scm.com/download/win).
@@ -137,27 +137,13 @@ You can check that Medusa was installed by running the following command:
 medusa -v
 ```
 
-:::note
+#### Troubleshooting Installation
 
-If you run into any errors while installing the CLI tool, check out the [troubleshooting guide](../../troubleshooting/cli-installation-errors.mdx).
-
-:::
-
----
-
-## Install Medusa Backend
-
-If you're not interested in installing the optional tools and want to get started with Medusa quickly, check out the [Medusa Backend Quickstart](./install.mdx).
-
----
-
-## Optional Tools
-
-These tools are not required to have to run a Medusa backend, but it's highly recommended that you have them installed.
+<MedusaCliTroubleshootingSection />
 
 ### PostgreSQL
 
-Although you can use an SQLite database with Medusa which would require no necessary database installations, it is recommended to use a PostgreSQL database for your backend.
+The Medusa backend uses PostgreSQL to store data of your commerce system.
 
 :::tip
 
@@ -165,7 +151,7 @@ After installing PostgreSQL, check out the [Configure your Backend documentation
 
 :::
 
-<Tabs groupId="operating-systems" wrapperClassName={styles.osTabs}>
+<Tabs groupId="operating-systems">
 <TabItem value="windows" label="Windows">
 
 You can [download the PostgreSQL Windows installer](https://www.postgresql.org/download/windows/) from their website.
@@ -192,28 +178,13 @@ For other distributions, you can check out [PostgreSQL’s website for more guid
 You can download PostgreSQL on your macOS using [the installer on their website](https://www.postgresql.org/download/macosx/).
 
 </TabItem>
-<TabItem value="docker" label="Docker">
-
-Make sure the Docker Desktop app is running, then run the following command to quickly spin up a PostgreSQL instance:
-
-```bash
-docker run --name postgres -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=postgres -e \
-  POSTGRES_DB=medusa-docker -p 5432:5432 -d postgres
-```
-
-Where:
-
-- `--name` creates a new container named `postgres`.
-- `-e` creates environment variables `POSTGRES_USER`, `POSTGRES_PASSWORD` and `POSTGRES_DB`. These will be used to set up a database named `medusa-docker` with the username and password being `postgres`.
-- `-p` maps the container port `5432` to the external host `5432`. This allows you to connect to the database backend from outside of the container.
-- `-d` enables Docker to run the container in the background.
-- The last section of the command, `postgres` grabs the latest postgres image from the Docker hub.
-
-</TabItem>
 </Tabs>
 
 ---
+
+## Install Medusa Backend
+
+If you're not interested in installing the optional tools and want to get started with Medusa quickly, check out the [Medusa Backend Quickstart](./install.mdx).
 
 ## See Also
 

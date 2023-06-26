@@ -7,7 +7,7 @@ import TrashIcon from "../../../../components/fundamentals/icons/trash-icon"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import moment from "moment"
 import { parse } from "iso8601-duration"
-import { removeNullish } from "../../../../utils/remove-nullish"
+import { removeFalsy } from "../../../../utils/remove-nullish"
 import { useAdminUpdateDiscount } from "medusa-react"
 import useNotification from "../../../../hooks/use-notification"
 
@@ -103,7 +103,7 @@ const useDiscountConfigurations = (discount: Discount) => {
       title: "Duration",
       description: (
         <CommonDescription
-          text={Object.entries(removeNullish(parse(discount.valid_duration)))
+          text={Object.entries(removeFalsy(parse(discount.valid_duration)))
             .map(([key, value]) => `${value} ${key}`)
             .join(", ")}
         />

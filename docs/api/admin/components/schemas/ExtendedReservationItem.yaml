@@ -1,0 +1,11 @@
+type: object
+allOf:
+  - $ref: ./ReservationItemDTO.yaml
+  - type: object
+    properties:
+      line_item:
+        description: optional line item
+        $ref: ./LineItem.yaml
+      inventory_item:
+        description: inventory item from inventory module
+        $ref: ./InventoryItemDTO.yaml

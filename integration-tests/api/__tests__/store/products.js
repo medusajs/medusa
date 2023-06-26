@@ -5,7 +5,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const {
   simpleProductFactory,
-  simpleProductCategoryFactory,
+  simpleSalesChannelFactory,
 } = require("../../factories")
 
 const productSeeder = require("../../helpers/store-product-seeder")
@@ -37,7 +37,14 @@ describe("/store/products", () => {
 
   describe("GET /store/products", () => {
     beforeEach(async () => {
-      await productSeeder(dbConnection)
+      const defaultSalesChannel = await simpleSalesChannelFactory(
+        dbConnection,
+        {
+          id: "sales-channel",
+          is_default: true,
+        }
+      )
+      await productSeeder(dbConnection, defaultSalesChannel)
       await adminSeeder(dbConnection)
     })
 

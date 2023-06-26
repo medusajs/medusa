@@ -25,7 +25,7 @@ It is assumed that you already have a Medusa backend installed and set up. If no
 
 ## 1. Create a File
 
-Each scheduled job should reside in a TypeScript or JavaScript file under the `src/loaders` directory.
+Each scheduled job should reside in a [loader](../loaders/overview.mdx), which is a TypeScript or JavaScript file located under the `src/loaders` directory.
 
 Start by creating the `src/loaders` directory. Then, inside that directory, create the JavaScript or TypeScript file that you’ll add the scheduled job in. You can use any name for the file.
 
@@ -33,12 +33,17 @@ For the example in this tutorial, you can create the file `src/loaders/publish.t
 
 ---
 
-## 2. Create Cron Job
+## 2. Create Scheduled Job
 
 To create a scheduled job, add the following code in the file you created, which is `src/loaders/publish.ts` in this example:
 
 ```ts title=src/loaders/publish.ts
-const publishJob = async (container, options) => {
+import { AwilixContainer } from "awilix"
+
+const publishJob = async (
+  container: AwilixContainer,
+  options: Record<string, any>
+) => {
   const jobSchedulerService = 
     container.resolve("jobSchedulerService")
   jobSchedulerService.create(
@@ -74,8 +79,8 @@ This file should export a function that accepts a `container` and `options` para
 
 You then resolve the `JobSchedulerService` and use the `jobSchedulerService.create` method to create the scheduled job. This method accepts four parameters:
 
-- The first parameter is a unique name to give to the scheduled job. In the example above, you use the name `publish-products`;
-- The second parameter is an object which can be used to [pass data to the job](#pass-data-to-the-scheduled-job);
+- The first parameter is a unique name to give to the scheduled job. In the example above, you use the name `publish-products`.
+- The second parameter is an object which can be used to [pass data to the job](#pass-data-to-the-scheduled-job).
 - The third parameter is the scheduled job expression pattern. In this example, it will execute the scheduled job once a day at 12 AM.
 - The fourth parameter is the function to execute. This is where you add the code to execute once the scheduled job runs. In this example, you retrieve the draft products using the [ProductService](../../references/services/classes/ProductService.md) and update the status of each of these products to `published`.
 
@@ -85,7 +90,27 @@ You can see examples of scheduled job expression patterns on [crontab guru](http
 
 :::
 
-### Pass Data to the Cron Job
+### Scheduled Job Name
+
+As mentioned earlier, the first parameter of the `create` method is the name of the scheduled job. By default, if another scheduled job has the same name, your custom scheduled job will replace it.
+
+If you want to ensure both scheduled jobs are registered and used, you can pass as a fifth parameter an options object with a `keepExisting` property set to `true`. For example:
+
+```ts
+jobSchedulerService.create(
+  "publish-products", 
+  {},
+  "0 0 * * *", 
+  async () => {
+    // ...
+  },
+  {
+    keepExisting: true,
+  }
+)
+```
+
+### Pass Data to the Scheduled Job
 
 To pass data to your scheduled job, you can add them to the object passed as a second parameter under the `data` property. This is helpful if you use one function to handle multiple scheduled jobs.
 
@@ -108,17 +133,21 @@ jobSchedulerService.create("publish-products", {
 
 :::info
 
-Cron Jobs only run while the Medusa backend is running.
+Scheduled Jobs only run while the Medusa backend is running.
 
 :::
 
-In your terminal run the following command to run your Medusa backend:
+Before you run the Medusa backend, make sure to build your code that's under the `src` directory into the `dist` directory with the following command:
 
 ```bash npm2yarn
-npm run start
+npm run build
 ```
 
-This builds your code under the `src` directory into the `dist` directory, then runs the Medusa backend.
+Then, run the following command to start your Medusa backend:
+
+```bash npm2yarn
+npx @medusajs/medusa-cli develop
+```
 
 If the scheduled job was registered successfully, you should see a message similar to this logged on your Medusa backend:
 
@@ -148,4 +177,4 @@ To test the previous example out instantly, you can change the scheduled job exp
 
 ## See Also
 
-- [Create a Plugin](../plugins/create.md)
+- [Create a Plugin](../plugins/create.mdx)

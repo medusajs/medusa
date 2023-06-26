@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.1.45
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
+## 1.1.44
+
+### Patch Changes
+
+- [#3763](https://github.com/medusajs/medusa/pull/3763) [`4104d9ccb`](https://github.com/medusajs/medusa/commit/4104d9ccb25276c85b5363f85e14b3093e64df85) Thanks [@StephixOne](https://github.com/StephixOne)! - fix(plugin-discount-generator,plugin-economic,plugin-mailchimp,plugin-restock-notification,plugin-sendgrid,plugin-wishlist): Temporarily remove payload validation in some plugins
+
 ## 1.1.43
 
 ### Patch Changes

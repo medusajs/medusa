@@ -143,7 +143,7 @@ class ShippingOptionService extends TransactionBaseService {
    * @return {Promise} the result of the find operation
    */
   async list(
-    selector: Selector<ShippingMethod>,
+    selector: Selector<ShippingOption>,
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<ShippingOption[]> {
     const optRepo = this.activeManager_.withRepository(this.optionRepository_)

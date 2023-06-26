@@ -1,5 +1,11 @@
 # @medusajs/openapi-typescript-codegen
 
+## 0.2.1
+
+### Patch Changes
+
+- [#3675](https://github.com/medusajs/medusa/pull/3675) [`0b3c6fde3`](https://github.com/medusajs/medusa/commit/0b3c6fde30c9bac052a8e1aa641ef925b6937c0e) Thanks [@patrick-medusajs](https://github.com/patrick-medusajs)! - feat(codegen:test): coverage x-expanded-relation + x-codegen.queryParams
+
 ## 0.2.0
 
 ### Minor Changes

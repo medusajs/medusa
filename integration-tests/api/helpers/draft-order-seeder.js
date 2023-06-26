@@ -60,6 +60,19 @@ module.exports = async (dataSource, data = {}) => {
   )
 
   await manager.insert(ProductVariant, {
+    id: "test-variant-without-prices",
+    title: "test variant without prices",
+    product_id: "test-product",
+    inventory_quantity: 1,
+    options: [
+      {
+        option_id: "test-option",
+        value: "no prices",
+      },
+    ],
+  })
+
+  await manager.insert(ProductVariant, {
     id: "test-variant",
     title: "test variant",
     product_id: "test-product",

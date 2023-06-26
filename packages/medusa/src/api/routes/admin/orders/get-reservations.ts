@@ -6,24 +6,14 @@ import { extendedFindParamsMixin } from "../../../../types/common"
 /**
  * @oas [get] /admin/orders/{id}/reservations
  * operationId: "GetOrdersOrderReservations"
- * summary: "Get reservations for an Order"
- * description: "Retrieves reservations for an Order"
+ * summary: "Get reservations of an Order"
+ * description: "Retrieves reservations of an Order"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (query) offset=0 {integer} How many reservations to skip before the results.
  *   - (query) limit=20 {integer} Limit the number of reservations returned.
  * x-codeSamples:
- *   - lang: JavaScript
- *     label: JS Client
- *     source: |
- *       import Medusa from "@medusajs/medusa-js"
- *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       // must be previously logged in or use api token
- *       medusa.admin.orders.retrieveReservations(order_id)
- *       .then(({ reservations }) => {
- *         console.log(reservations[0].id);
- *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |

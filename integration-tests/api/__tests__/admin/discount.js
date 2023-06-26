@@ -324,7 +324,7 @@ describe("/admin/discounts", () => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("invalid_data")
           expect(err.response.data.message).toEqual(
-            "type must be a valid enum value"
+            "type must be one of the following values: fixed, percentage, free_shipping"
           )
         })
     })

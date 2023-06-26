@@ -59,7 +59,7 @@ For example, if the value of the environment variable is set to `false`, but the
 As feature flags generally include adding new entities or making changes to entities in the database, you must run the migrations after enabling the feature flag:
 
 ```bash
-medusa migrations run
+npx @medusajs/medusa-cli migrations run
 ```
 
 :::info
@@ -80,4 +80,4 @@ Once you disable a feature flag, all endpoints, entities, services, or other rel
 
 If you had the feature flag previously enabled, and you want to disable this feature flag completely, you might need to revert the migrations you ran when you enabled it.
 
-You can follow [this documentation to learn how to revert the last migration you ran](../../cli/reference.md#migrations).
+You can follow [this documentation to learn how to revert the last migration you ran](../../cli/reference.mdx#migrations).

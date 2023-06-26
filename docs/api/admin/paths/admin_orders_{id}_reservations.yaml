@@ -1,7 +1,7 @@
 get:
   operationId: GetOrdersOrderReservations
-  summary: Get reservations for an Order
-  description: Retrieves reservations for an Order
+  summary: Get reservations of an Order
+  description: Retrieves reservations of an Order
   x-authenticated: true
   parameters:
     - in: path
@@ -23,10 +23,6 @@ get:
         type: integer
         default: 20
   x-codeSamples:
-    - lang: JavaScript
-      label: JS Client
-      source:
-        $ref: ../code_samples/JavaScript/admin_orders_{id}_reservations/get.js
     - lang: Shell
       label: cURL
       source:

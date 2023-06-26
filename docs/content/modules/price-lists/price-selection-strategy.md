@@ -22,15 +22,17 @@ Medusa uses the `PriceSelectionStrategy` class to retrieve the best price for a 
 
 ## PriceSelectionStrategy Overview
 
-The `PriceSelectionStrategy` class extends the `AbstractPriceSelectionStrategy` class. Its main method is the `calculateVariantPrice` which is used to retrieve a product variant’s price in a given context.
+The `PriceSelectionStrategy` class extends the `AbstractPriceSelectionStrategy` class. Its main method is the `calculateVariantPrice`.
 
 ### calculateVariantPrice Method
 
-Medusa uses this method to retrieve a product variant’s price when a product variant or line item is retrieved or manipulated. This includes when other entities that product variants and line items belong to are retrieved, such as products and carts respectively.
+Medusa uses this method to retrieve one or more product variants' prices. This method is used when retrieving product variants or their associated line items. It's also used when retrieving other entities that product variants and line items belong to, such as products and carts respectively.
 
 This method accepts two parameters:
 
-1. The ID of the variant.
+1. The first parameter is an array of objects, each object having the following properties:
+   1. `variantId`: a string indicating the ID of the variant to calculate the price for.
+   2. `quantity`: an optional number indicating the quantity of the variant.
 2. A [context](#context-object) object.
 
 The method retrieves all the available prices of the variant based on the conditions in the context object.
@@ -54,13 +56,14 @@ You can learn more about price lists and how they’re used in [this documentati
 
 The context that is passed to the `calculateVariantPrice` method is an object that has the following optional properties:
 
-- `cart_id`: The ID of the customer’s cart. This is used when the prices are being retrieved for the variant of a line item, as it is used to determine the current region and currency code of the context.
-- `customer_id`: The ID of the customer. This is used to filter out price lists for a customer group that this customer doesn’t belong to.
-- `quantity`: The quantity of the item in the cart. This is used to filter out price lists that have `min_quantity` or `max_quantity` conditions set.
-- `region_id`: The ID of the region the customer is using.
-- `currency_code`: The currency code the customer is using.
+- `cart_id`: A string indicating the ID of the customer’s cart. This is used when the prices are being retrieved for the variant of a line item, as it is used to determine the current region and currency code of the context.
+- `customer_id`: A string indicating the ID of the customer. This is used to filter out price lists for a customer group that this customer doesn’t belong to.
+- `quantity`: A number indicating the quantity of the item in the cart. This is used to filter out price lists that have `min_quantity` or `max_quantity` conditions set.
+- `region_id`: A string indicating the ID of the region the customer is using.
+- `currency_code`: A string indicating the currency code the customer is using.
 - `include_discount_prices`: A boolean value indicating whether price list prices should be retrieved or not.
-- `tax_rates`: The tax rates to be applied. This is only used for [Tax-Inclusive Pricing](../taxes/inclusive-pricing.md).
+- `tax_rates`: An array of objects indicating the tax rates to be applied. This is only used for [Tax-Inclusive Pricing](../taxes/inclusive-pricing.md).
+- `ignore_cache`: a boolean value indicating whether to calculate the prices even if the value of an earlier price calculation is available in the cache.
 
 ---
 

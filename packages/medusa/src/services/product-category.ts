@@ -92,9 +92,48 @@ class ProductCategoryService extends TransactionBaseService {
   }
 
   /**
+   * A generic retrieve for fining product categories by different attributes.
+   *
+   * @param config - the config of the product category to retrieve.
+   * @param selector
+   * @param treeSelector
+   * @return the product category.
+   */
+  protected async retrieve_(
+    config: FindConfig<ProductCategory> = {},
+    selector: Selector<ProductCategory> = {},
+    treeSelector: QuerySelector<ProductCategory> = {}
+  ) {
+    const productCategoryRepo = this.activeManager_.withRepository(
+      this.productCategoryRepo_
+    )
+
+    const query = buildQuery(selector, config)
+    const productCategory = await productCategoryRepo.findOneWithDescendants(
+      query,
+      treeSelector
+    )
+
+    if (!productCategory) {
+      const selectorConstraints = Object.entries(selector)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join(", ")
+
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `ProductCategory with ${selectorConstraints} was not found`
+      )
+    }
+
+    return productCategory
+  }
+
+  /**
    * Retrieves a product category by id.
    * @param productCategoryId - the id of the product category to retrieve.
    * @param config - the config of the product category to retrieve.
+   * @param selector
+   * @param treeSelector
    * @return the product category.
    */
   async retrieve(
@@ -111,24 +150,33 @@ class ProductCategoryService extends TransactionBaseService {
     }
 
     const selectors = Object.assign({ id: productCategoryId }, selector)
-    const query = buildQuery(selectors, config)
-    const productCategoryRepo = this.activeManager_.withRepository(
-      this.productCategoryRepo_
-    )
+    return this.retrieve_(config, selectors, treeSelector)
+  }
 
-    const productCategory = await productCategoryRepo.findOneWithDescendants(
-      query,
-      treeSelector
-    )
-
-    if (!productCategory) {
+  /**
+   * Retrieves a product category by handle.
+   *
+   * @param handle - the handle of the category
+   * @param config - the config of the product category to retrieve.
+   * @param selector
+   * @param treeSelector
+   * @return the product category.
+   */
+  async retrieveByHandle(
+    handle: string,
+    config: FindConfig<ProductCategory> = {},
+    selector: Selector<ProductCategory> = {},
+    treeSelector: QuerySelector<ProductCategory> = {}
+  ) {
+    if (!isDefined(handle)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `ProductCategory with id: ${productCategoryId} was not found`
+        `"handle" must be defined`
       )
     }
 
-    return productCategory
+    const selectors = Object.assign({ handle }, selector)
+    return this.retrieve_(config, selectors, treeSelector)
   }
 
   /**

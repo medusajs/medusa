@@ -1,4 +1,5 @@
 import { IEventBusService, ISearchService } from "@medusajs/types"
+import { defaultSearchIndexingProductRelations } from "@medusajs/utils"
 import { indexTypes } from "medusa-core-utils"
 import ProductCategoryFeatureFlag from "../loaders/feature-flags/product-categories"
 import { SEARCH_INDEX_EVENT } from "../loaders/search-index"
@@ -59,17 +60,7 @@ class SearchIndexingSubscriber {
     lastSeenId: string,
     take: number
   ): Promise<Product[]> {
-    const relations = [
-      "variants",
-      "tags",
-      "type",
-      "collection",
-      "variants.prices",
-      "images",
-      "variants.options",
-      "options",
-    ]
-
+    const relations = [...defaultSearchIndexingProductRelations]
     if (
       this.featureFlagRouter_.isFeatureEnabled(ProductCategoryFeatureFlag.key)
     ) {

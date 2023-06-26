@@ -6,7 +6,12 @@ get:
   parameters:
     - in: query
       name: q
-      description: Query used for searching product category names orhandles.
+      description: Query used for searching product category names or handles.
+      schema:
+        type: string
+    - in: query
+      name: handle
+      description: Query used for searching product category by handle.
       schema:
         type: string
     - in: query

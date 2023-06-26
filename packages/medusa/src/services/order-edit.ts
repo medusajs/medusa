@@ -26,7 +26,7 @@ import {
   TaxProviderService,
   TotalsService,
 } from "./index"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { buildQuery, isString } from "../utils"
 
 import EventBusService from "./event-bus"
@@ -767,13 +767,12 @@ export default class OrderEditService extends TransactionBaseService {
       orderEdit = await orderEditRepository.save(orderEdit)
 
       if (this.inventoryService_) {
-        await Promise.all(
-          lineItems.map(
-            async (lineItem) =>
-              await this.inventoryService_!.deleteReservationItemsByLineItem(
-                lineItem.id
-              )
-          )
+        const itemsIds = lineItems.map((i) => i.id)
+        await this.inventoryService_!.deleteReservationItemsByLineItem(
+          itemsIds,
+          {
+            transactionManager: manager,
+          }
         )
       }
 

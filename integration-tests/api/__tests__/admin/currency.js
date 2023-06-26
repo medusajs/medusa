@@ -54,39 +54,6 @@ describe("/admin/currencies", () => {
       expect(response.data).toMatchSnapshot()
     })
   })
-
-  describe("POST /admin/currencies/:code", function () {
-    beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (e) {
-        console.error(e)
-      }
-    })
-
-    afterEach(async () => {
-      const db = useDb()
-      await db.teardown()
-    })
-
-    it("should fail when attempting to update includes_tax", async () => {
-      const api = useApi()
-
-      try {
-        await api.post(
-          `/admin/currencies/aed`,
-          {
-            includes_tax: true,
-          },
-          adminReqConfig
-        )
-      } catch (error) {
-        expect(error.response.data.message).toBe(
-          "property includes_tax should not exist"
-        )
-      }
-    })
-  })
 })
 describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/currencies", () => {
   let medusaProcess

@@ -94,9 +94,9 @@ Based on the value of `type`, one of the following relations can be used to retr
 
 - `products` is an array of products that this condition applies to if the condition’s `type` is `products`. Each item of the array would be a [`DiscountConditionProduct`](../../references/entities/classes/DiscountConditionProduct.md).
 - `product_types` is an array of product types that this condition applies to if the condition’s `type` is `product_types`. Each item of the array would be a [`DiscountConditionProductType`](../../references/entities/classes/DiscountConditionProductType.md).
-- `product_collections` is an array of product types that this condition applies to if the condition’s `type` is `product_collections`. Each item of the array would be a [`DiscountConditionProductCollection`](../../references/entities/classes/DiscountConditionProductCollection.md).
-- `product_tags` is an array of product types that this condition applies to if the condition’s `type` is `product_tags`. Each item of the array would be a [`DiscountConditionProductTag`](../../references/entities/classes/DiscountConditionProductTag.md).
-- `customer_groups` is an array of product types that this condition applies to if the condition’s `type` is `customer_groups`. Each item of the array would be a [`DiscountConditionCustomerGroup`](../../references/entities/classes/DiscountConditionCustomerGroup.md).
+- `product_collections` is an array of product collections that this condition applies to if the condition’s `type` is `product_collections`. Each item of the array would be a [`DiscountConditionProductCollection`](../../references/entities/classes/DiscountConditionProductCollection.md).
+- `product_tags` is an array of product tags that this condition applies to if the condition’s `type` is `product_tags`. Each item of the array would be a [`DiscountConditionProductTag`](../../references/entities/classes/DiscountConditionProductTag.md).
+- `customer_groups` is an array of customer groups that this condition applies to if the condition’s `type` is `customer_groups`. Each item of the array would be a [`DiscountConditionCustomerGroup`](../../references/entities/classes/DiscountConditionCustomerGroup.md).
 
 ![Discounts Architecture](https://res.cloudinary.com/dza7lstvk/image/upload/v1678372360/Medusa%20Docs/Diagrams/discounts_ioivrl.png)
 

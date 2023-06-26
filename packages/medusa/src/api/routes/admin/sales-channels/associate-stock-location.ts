@@ -10,8 +10,8 @@ import {
 /**
  * @oas [post] /admin/sales-channels/{id}/stock-locations
  * operationId: "PostSalesChannelsSalesChannelStockLocation"
- * summary: "Associate a stock location to a Sales Channel"
- * description: "Associates a stock location to a Sales Channel."
+ * summary: "Associate a Stock Location"
+ * description: "Associates a stock location with a Sales Channel."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Sales Channel.
@@ -29,8 +29,8 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.salesChannels.addLocation(sales_channel_id, {
- *         location_id: 'App'
+ *       medusa.admin.salesChannels.addLocation(salesChannelId, {
+ *         location_id: 'loc_123'
  *       })
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
@@ -42,7 +42,7 @@ import {
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "locaton_id": "stock_location_id"
+ *           "locaton_id": "loc_123"
  *       }'
  * security:
  *   - api_token: []

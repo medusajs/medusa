@@ -1,19 +1,20 @@
-import { IInventoryService } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
-import { EntityManager } from "typeorm"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
+
+import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
+import { IInventoryService } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 import { createInventoryItemTransaction } from "./transaction/create-inventory-item"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/inventory-items
  * operationId: "PostInventoryItems"
- * summary: "Create an Inventory Item."
+ * summary: "Create an Inventory Item"
  * description: "Creates an Inventory Item."
  * x-authenticated: true
  * parameters:
@@ -34,9 +35,8 @@ import { createInventoryItemTransaction } from "./transaction/create-inventory-i
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.inventoryItems.create(inventoryItemId, {
+ *       medusa.admin.inventoryItems.create({
  *         variant_id: 'variant_123',
- *         sku: "sku-123",
  *       })
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
@@ -49,7 +49,6 @@ import { createInventoryItemTransaction } from "./transaction/create-inventory-i
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
  *           "variant_id": "variant_123",
- *           "sku": "sku-123",
  *       }'
  * security:
  *   - api_token: []
@@ -222,6 +221,18 @@ export class AdminPostInventoryItemsReq {
   @IsString()
   @IsOptional()
   material?: string
+
+  @IsString()
+  @IsOptional()
+  title?: string
+
+  @IsString()
+  @IsOptional()
+  description?: string
+
+  @IsString()
+  @IsOptional()
+  thumbnail?: string
 
   @IsObject()
   @IsOptional()

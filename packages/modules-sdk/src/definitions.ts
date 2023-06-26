@@ -1,7 +1,7 @@
 import {
-  ModuleDefinition,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  ModuleDefinition,
 } from "@medusajs/types"
 
 export enum Modules {
@@ -9,6 +9,7 @@ export enum Modules {
   STOCK_LOCATION = "stockLocationService",
   INVENTORY = "inventoryService",
   CACHE = "cacheService",
+  PRODUCT = "productModuleService",
 }
 
 export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
@@ -63,9 +64,25 @@ export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
       resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
+  [Modules.PRODUCT]: {
+    key: Modules.PRODUCT,
+    registrationName: Modules.PRODUCT,
+    defaultPackage: false,
+    label: "ProductModuleService",
+    isRequired: false,
+    canOverride: true,
+    dependencies: [],
+    defaultModuleDeclaration: {
+      scope: MODULE_SCOPE.EXTERNAL,
+    },
+  },
 }
 
 export const MODULE_DEFINITIONS: ModuleDefinition[] =
   Object.values(ModulesDefinition)
+
+export const MODULE_PACKAGE_NAMES = {
+  [Modules.PRODUCT]: "@medusajs/product",
+}
 
 export default MODULE_DEFINITIONS

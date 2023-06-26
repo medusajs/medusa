@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.38
+
+### Patch Changes
+
+- [#4221](https://github.com/medusajs/medusa/pull/4221) [`109096465`](https://github.com/medusajs/medusa/commit/109096465dacdc5879a816a56ef4f2d7a9927e1a) Thanks [@josipmatichr](https://github.com/josipmatichr)! - fix(medusa-fulfillment-manual): Missing retrieveDocuments override
+
 ## 1.1.37
 
 ### Patch Changes

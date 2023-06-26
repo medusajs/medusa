@@ -31,7 +31,7 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.productCategories.update(product_category_id, {
+ *       medusa.admin.productCategories.update(productCategoryId, {
  *         name: "Skinny Jeans"
  *       })
  *       .then(({ product_category }) => {
@@ -103,6 +103,9 @@ export default async (req: Request, res: Response) => {
  *   name:
  *     type: string
  *     description:  The name to identify the Product Category by.
+ *   description:
+ *     type: string
+ *     description: An optional text field to describe the Product Category by.
  *   handle:
  *     type: string
  *     description:  A handle to be used in slugs.

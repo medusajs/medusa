@@ -1,19 +1,20 @@
 import {
-  AdminGetInventoryItemsParams,
-  AdminInventoryItemsRes,
-  AdminPostInventoryItemsInventoryItemReq,
   AdminGetInventoryItemsItemLocationLevelsParams,
-  AdminPostInventoryItemsItemLocationLevelsLevelReq,
-  AdminInventoryItemsDeleteRes,
   AdminGetInventoryItemsItemParams,
+  AdminGetInventoryItemsParams,
+  AdminInventoryItemsDeleteRes,
   AdminInventoryItemsListWithVariantsAndLocationLevelsRes,
   AdminInventoryItemsLocationLevelsRes,
+  AdminInventoryItemsRes,
+  AdminPostInventoryItemsInventoryItemReq,
+  AdminPostInventoryItemsItemLocationLevelsLevelReq,
   AdminPostInventoryItemsItemLocationLevelsReq,
-  AdminPostInventoryItemsReq,
   AdminPostInventoryItemsParams,
+  AdminPostInventoryItemsReq,
 } from "@medusajs/medusa"
-import { ResponsePromise } from "../../typings"
+
 import BaseResource from "../base"
+import { ResponsePromise } from "../../typings"
 import qs from "qs"
 
 class AdminInventoryItemsResource extends BaseResource {
@@ -202,7 +203,7 @@ class AdminInventoryItemsResource extends BaseResource {
     query?: AdminGetInventoryItemsItemLocationLevelsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminInventoryItemsLocationLevelsRes> {
-    let path = `/admin/inventory-items/${inventoryItemId}`
+    let path = `/admin/inventory-items/${inventoryItemId}/location-levels`
 
     if (query) {
       const queryString = qs.stringify(query)

@@ -10,6 +10,11 @@ get:
       schema:
         type: string
     - in: query
+      name: handle
+      description: Query used for searching product category by handle.
+      schema:
+        type: string
+    - in: query
       name: parent_category_id
       description: Returns categories scoped by parent
       schema:

@@ -72,7 +72,7 @@ export interface AdminPostProductsProductVariantsVariantReq {
    * An optional set of key-value pairs with additional information.
    */
   metadata?: Record<string, any>
-  prices: Array<{
+  prices?: Array<{
     /**
      * The ID of the price.
      */

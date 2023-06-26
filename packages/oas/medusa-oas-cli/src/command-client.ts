@@ -111,7 +111,7 @@ export async function execute(cliParams: OptionValues) {
   await generateClientSDK(oas, outDir, apiName, exportComponent, packageNames)
 
   console.log(
-    `🟢 Client generated - ${apiName} - ${exportComponent} - ${outDir}`
+    `⚫️ Client generated - ${apiName} - ${exportComponent} - ${outDir}`
   )
 }
 

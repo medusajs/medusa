@@ -1,4 +1,4 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import {
   EntityManager,
   FindOptionsWhere,
@@ -29,6 +29,7 @@ import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
+import { isDefined } from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager

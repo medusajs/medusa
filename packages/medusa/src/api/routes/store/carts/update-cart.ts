@@ -168,7 +168,7 @@ class Discount {
  *         - code
  *       properties:
  *         code:
- *           description: "The code that a Discount is identifed by."
+ *           description: "The code that a Discount is identified by."
  *           type: string
  *   customer_id:
  *     description: "The ID of the Customer to associate the Cart with."

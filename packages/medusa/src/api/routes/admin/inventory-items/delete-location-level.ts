@@ -6,7 +6,7 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [delete] /admin/inventory-items/{id}/location-levels/{location_id}
  * operationId: "DeleteInventoryItemsInventoryIteLocationLevelsLocation"
- * summary: "Delete a location level of an Inventory Item."
+ * summary: "Delete a Location Level"
  * description: "Delete a location level of an Inventory Item."
  * x-authenticated: true
  * parameters:
@@ -29,8 +29,7 @@ import { EntityManager } from "typeorm"
  *     label: cURL
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/admin/inventory-items/{id}/location-levels/{location_id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json'
+ *       --header 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

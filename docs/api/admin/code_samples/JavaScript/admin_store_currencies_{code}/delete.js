@@ -3,5 +3,5 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 // must be previously logged in or use api token
 medusa.admin.store.deleteCurrency('eur')
 .then(({ store }) => {
-  console.log(store.id);
+  console.log(store.currencies);
 });

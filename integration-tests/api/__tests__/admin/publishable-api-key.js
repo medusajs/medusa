@@ -682,7 +682,7 @@ describe("Publishable API keys", () => {
       )
     })
 
-    it("returns all products if PK is not passed", async () => {
+    it("returns default product from default sales channel if PK is not passed", async () => {
       const api = useApi()
 
       await api.post(
@@ -703,15 +703,9 @@ describe("Publishable API keys", () => {
         },
       })
 
-      expect(response.data.products.length).toBe(3)
+      expect(response.data.products.length).toBe(1)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({
-            id: product1.id,
-          }),
-          expect.objectContaining({
-            id: product2.id,
-          }),
           expect.objectContaining({
             id: product3.id,
           }),

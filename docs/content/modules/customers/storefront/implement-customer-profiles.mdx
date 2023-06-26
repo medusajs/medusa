@@ -60,7 +60,7 @@ A customer can register with an email and a password to store and manage their d
 
 You can register a new customer by sending a request to the [Create a Customer](/api/store/#tag/Customer/operation/PostCustomers) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -152,7 +152,7 @@ A customer can log in to your store to manage their data and make purchases usin
 
 You can log in a customer into your store by sending a request to the [Customer Login](/api/store/#tag/Auth/operation/PostAuth) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -201,7 +201,7 @@ However, if you’re using the Fetch API, you must include the option `credentia
 
 You can log out a customer by sending a request to the [Customer Logout](/api/store/#tag/Auth/operation/DeleteAuth) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -241,7 +241,7 @@ The customer must first enter their account’s email. Then, if an account with 
 
 You can request to reset a customer’s password by sending a request to the [Request Password Reset](/api/store/#tag/Customer/operation/PostCustomersCustomerPasswordToken) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -297,7 +297,7 @@ After the first step, the customer should receive an email with a link to a page
 
 You can then reset the customer’s password to the new password they enter by sending a request to the [Reset Password](/api/store/#tag/Customer/operation/PostCustomersResetPassword) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -352,7 +352,7 @@ A logged-in customer can edit their info, such as their first name or email addr
 
 You can edit a customer’s info using the [Update Customer](/api/store/#tag/Customer/operation/PostCustomersCustomer) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -437,7 +437,7 @@ The customer object returned in the requests mentioned in this document include 
 
 You can add a shipping address to a customer’s account by sending a request to the [Add a Shipping Address](/api/store/#tag/Customer/operation/PostCustomersCustomerAddresses) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -513,7 +513,7 @@ This request returns the updated customer object in the response.
 
 You can edit a customer’s shipping address using the [Update a Shipping Address](/api/store/#tag/Customer/operation/PostCustomersCustomerAddressesAddress) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -558,7 +558,7 @@ This request returns the updated customer object in the response.
 
 You can delete a shipping address by sending a request to the [Delete an Address](/api/store/#tag/Customer/operation/DeleteCustomersCustomerAddressesAddress) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -597,7 +597,7 @@ Logged-in customers can see their orders along with the orders’ details.
 
 You can retrieve a customer’s orders by sending a request to the [List Orders](/api/store/#tag/Customer/operation/GetCustomersCustomerOrders) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts

@@ -81,7 +81,9 @@ describe("POST /admin/orders/:id/claims", () => {
 
     it("throws an error", () => {
       expect(subject.status).toEqual(400)
-      expect(subject.body.message).toEqual("type must be a valid enum value")
+      expect(subject.body.message).toEqual(
+        "type must be one of the following values: refund, replace"
+      )
     })
   })
 
@@ -166,7 +168,7 @@ describe("POST /admin/orders/:id/claims", () => {
       it("throws an error", () => {
         expect(subject.status).toEqual(400)
         expect(subject.body.message).toEqual(
-          "reason must be a valid enum value"
+          "reason must be one of the following values: missing_item, wrong_item, production_failure, other"
         )
       })
     })

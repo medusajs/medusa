@@ -80,7 +80,9 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
           ? data.organize.tags.map((t) => ({ value: t }))
           : null,
 
-        categories: data.organize.categories?.map((id) => ({ id })),
+        categories: data.organize?.categories?.length
+          ? data.organize.categories.map((id) => ({ id }))
+          : [],
         discountable: data.discountable.value,
         metadata: getSubmittableMetadata(data.metadata),
       },

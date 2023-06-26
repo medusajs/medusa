@@ -23,37 +23,38 @@ Store uploaded files to your Medusa backend on S3.
 
 1\. Run the following command in the directory of the Medusa backend:
 
-  ```bash
-  npm install medusa-file-s3
-  ```
+```bash
+npm install medusa-file-s3
+```
 
 2\. Set the following environment variables in `.env`:
 
-  ```bash
-  S3_URL=<YOUR_BUCKET_URL>
-  S3_BUCKET=<YOUR_BUCKET_NAME>
-  S3_REGION=<YOUR_BUCKET_REGION>
-  S3_ACCESS_KEY_ID=<YOUR_ACCESS_KEY_ID>
-  S3_SECRET_ACCESS_KEY=<YOUR_SECRET_ACCESS_KEY>
-  ```
+```bash
+S3_URL=<YOUR_BUCKET_URL>
+S3_BUCKET=<YOUR_BUCKET_NAME>
+S3_REGION=<YOUR_BUCKET_REGION>
+S3_ACCESS_KEY_ID=<YOUR_ACCESS_KEY_ID>
+S3_SECRET_ACCESS_KEY=<YOUR_SECRET_ACCESS_KEY>
+```
 
 3\. In `medusa-config.js` add the following at the end of the `plugins` array:
 
-  ```js
-  const plugins = [
-    // ...
-    {
-      resolve: `medusa-file-s3`,
-      options: {
-          s3_url: process.env.S3_URL,
-          bucket: process.env.S3_BUCKET,
-          region: process.env.S3_REGION,
-          access_key_id: process.env.S3_ACCESS_KEY_ID,
-          secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
-      },
+```js
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-file-s3`,
+    options: {
+      s3_url: process.env.S3_URL,
+      bucket: process.env.S3_BUCKET,
+      region: process.env.S3_REGION,
+      access_key_id: process.env.S3_ACCESS_KEY_ID,
+      secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
+      aws_config_option: {},
     },
-  ]
-  ```
+  },
+]
+```
 
 ---
 
@@ -61,9 +62,9 @@ Store uploaded files to your Medusa backend on S3.
 
 1\. Run the following command in the directory of the Medusa backend to run the backend:
 
-  ```bash
-  npm run start
-  ```
+```bash
+npm run start
+```
 
 2\. Upload an image for a product using the admin dashboard or using [the Admin APIs](https://docs.medusajs.com/api/admin#tag/Upload).
 

@@ -93,40 +93,127 @@ Will generate API client files from a given OAS file.
 
 Specify the path to the OAS JSON file.
 
-`yarm medusa-oas client --src-file ./store.oas.json`
+```bash
+yarn medusa-oas client --src-file ./store.oas.json`
+```
 
 #### `--name <name>`
 
 Namespace for the generated client. Usually `admin` or `store`.
 
-`yarm medusa-oas client --name admin`
+```bash
+yarn medusa-oas client --name admin`
+```
 
 #### `--out-dir <path>`
 
-Specify in which directory should the files be outputted. Accepts relative and absolute path. It the directory doesn't
-exist, it will be created. Defaults to `./`.
+Specify in which directory should the files be outputted. Accepts relative and absolute path.
+If the directory doesn't exist, it will be created. Defaults to `./`.
 
-`yarm medusa-oas client --out-dir ./client`
+```bash
+yarn medusa-oas client --out-dir ./client`
+```
 
 #### `--type <type>`
 
 Client component types to generate. Accepts `all`, `types`, `client`, `hooks`.
 Defaults to `all`.
 
-`yarn medusa-oas client --type types`
+```bash
+yarn medusa-oas client --type types`
+```
 
 #### `--types-packages <name>`
 
 Replace relative import statements by types package name. Mandatory when using `--type client` or `--type hooks`.
 
+```bash
+yarn medusa-oas client --types-packages @medusajs/client-types`
+```
+
 #### `--client-packages <name>`
 
 Replace relative import statements by client package name. Mandatory when using `--type hooks`.
 
-`yarn medusa-oas client --type types`
+```bash
+yarn medusa-oas client --client-packages @medusajs/medusa-js`
+```
 
 #### `--clean`
 
 Delete destination directory content before generating client.
 
-`yarn medusa-oas --clean`
+```bash
+yarn medusa-oas client --clean
+```
+
+---
+
+### Command - `docs`
+
+Will sanitize OAS for use with Redocly's API documentation viewer.
+
+#### `--src-file <path>`
+
+Specify the path to the OAS JSON file.
+
+```bash
+yarm medusa-oas docs --src-file ./store.oas.json
+```
+
+#### `--out-dir <path>`
+
+Specify in which directory should the files be outputted. Accepts relative and absolute path.
+If the directory doesn't exist, it will be created. Defaults to `./`.
+
+```bash
+yarn medusa-oas docs --out-dir ./docs`
+```
+
+#### `--config <path>`
+
+Specify the path to a Redocly config file.
+
+```bash
+yarn medusa-oas --config ./redocly-config.yaml
+```
+
+#### `--dry-run`
+
+Will sanitize the OAS but will not output file. Useful for troubleshooting circular reference issues.
+
+```bash
+yarn medusa-oas docs --dry-run
+```
+
+#### `--clean`
+
+Delete destination directory content before generating client.
+
+```bash
+yarn medusa-oas docs --clean
+```
+
+#### `--split`
+
+Creates a multi-file structure output. Uses `redocly split` internally.
+
+```bash
+yarn medusa-oas docs --split
+```
+
+#### `--preview`
+
+Generate a preview of the API documentation in a browser. Does not output files. Uses `redocly preview-docs` internally.
+
+```bash
+yarn medusa-oas docs --preview
+```
+
+#### `--html`
+
+Generate a zero-dependency static HTML file. Uses `redocly build-docs` internally.
+
+```bash
+yarn medusa-oas docs --html
+```

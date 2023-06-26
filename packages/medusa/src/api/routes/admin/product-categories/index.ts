@@ -141,6 +141,7 @@ export const allowedAdminProductCategoryRelations = [
 export const defaultProductCategoryFields = [
   "id",
   "name",
+  "description",
   "handle",
   "is_active",
   "is_internal",

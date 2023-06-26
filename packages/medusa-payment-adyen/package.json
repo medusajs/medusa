@@ -42,6 +42,7 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "lodash": "^4.17.21",
     "medusa-core-utils": "^1.2.0"
   },
   "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808",

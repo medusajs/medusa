@@ -39,7 +39,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: 'chore(docs): Generated JS Client Reference (automated)'
-          base: 'master'
+          base: 'develop'
           title: 'chore(docs): Generated JS Client Reference'
           labels: 'type: chore'
           add-paths: docs/content/references/js-client/**

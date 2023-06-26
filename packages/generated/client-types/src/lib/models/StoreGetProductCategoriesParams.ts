@@ -9,6 +9,10 @@ export interface StoreGetProductCategoriesParams {
    */
   q?: string
   /**
+   * Query used for searching product category by handle.
+   */
+  handle?: string
+  /**
    * Returns categories scoped by parent
    */
   parent_category_id?: string

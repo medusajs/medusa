@@ -28,7 +28,7 @@ import { EntityManager } from "typeorm"
  *       // must be previously logged in or use api token
  *       medusa.admin.store.addCurrency('eur')
  *       .then(({ store }) => {
- *         console.log(store.id);
+ *         console.log(store.currencies);
  *       });
  *   - lang: Shell
  *     label: cURL

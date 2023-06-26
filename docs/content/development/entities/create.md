@@ -136,18 +136,21 @@ You can access your custom entity data in the database in services or subscriber
 
 ```ts
 import { TransactionBaseService } from "@medusajs/medusa"
+import PostRepository from "../repositories/post"
 
 class PostService extends TransactionBaseService {
+  protected readonly postRepository_: typeof PostRepository
+  
   constructor({ postRepository, manager }) {
     super({ postRepository, manager })
 
-    this.postRepository = postRepository
+    this.postRepository_ = postRepository
     this.manager_ = manager
   }
 
   async list() {
     const postRepo = this.manager_
-      .withRepository(this.postRepository)
+      .withRepository(this.postRepository_)
     return await postRepo.find()
   }
 }
@@ -177,7 +180,13 @@ await postRepository.softDelete(post.id)
 
 ---
 
+## Advanced Entity Definitions
+
+With entities, you can create relationships, index keys, and more. As Medusa uses Typeorm, you can learn about using these functionalities through [Typeorm's documentation](https://typeorm.io/).
+
+---
+
 ## See Also
 
 - [Extend Entity](./extend-entity.md)
-- [Create a Plugin](../plugins/create.md)
+- [Create a Plugin](../plugins/create.mdx)

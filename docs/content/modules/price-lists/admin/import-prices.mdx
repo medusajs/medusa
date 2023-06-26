@@ -71,7 +71,7 @@ The first step is to upload the CSV file to import prices from.
 
 You can do that by sending the following request to the [Upload Files](/api/admin/#tag/Upload/operation/PostUploads) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -145,7 +145,7 @@ To start a new price import, you must create a batch job.
 
 You can do that by sending the following request to the [Create a Batch Job](/api/admin/#tag/Batch-Job/operation/PostBatchJobs) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -259,7 +259,7 @@ After creating the batch job, it will be pre-processed. At this point, the CSV f
 
 You can retrieve all the details of the batch job, including its status and the brief statistics related to the prices by sending the following request:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -349,7 +349,7 @@ A batch job can be confirmed only once the batch job has the status `pre_process
 
 To confirm a batch job send the following request:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts

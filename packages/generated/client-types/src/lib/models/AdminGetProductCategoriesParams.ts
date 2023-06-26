@@ -5,9 +5,13 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetProductCategoriesParams {
   /**
-   * Query used for searching product category names orhandles.
+   * Query used for searching product category names or handles.
    */
   q?: string
+  /**
+   * Query used for searching product category by handle.
+   */
+  handle?: string
   /**
    * Search for only internal categories.
    */

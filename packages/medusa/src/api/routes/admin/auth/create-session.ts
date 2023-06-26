@@ -32,7 +32,8 @@ import { validator } from "../../../../utils/validator"
  *       medusa.admin.auth.createSession({
  *         email: 'user@example.com',
  *         password: 'supersecret'
- *       }).then((({ user }) => {
+ *       })
+ *       .then(({ user }) => {
  *         console.log(user.id);
  *       });
  *   - lang: Shell

@@ -4,6 +4,9 @@ description: 'Learn how to install the Next.js starter storefront to use with Me
 
 import Feedback from '@site/src/components/Feedback';
 import QueryNote from '@site/src/components/QueryNote';
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import ModuleXErrorSection from '../troubleshooting/common-installation-errors/_module-x-error.mdx'
+import CorsErrorSection from '../troubleshooting/cors-issues.md'
 
 # Next.js Storefront Quickstart
 
@@ -27,12 +30,13 @@ This document guides you to install and set up the Next.js Starter Storefront.
 
 ![Next.js Storefront Demo](https://res.cloudinary.com/dza7lstvk/image/upload/v1668003177/Medusa%20Docs/Screenshots/koJl8uR_n3gvii.gif)
 
-## Instant Deployment to Netlify
+## Instant Deployment to Vercel
 
-Instead of manually following this guide to install then later deploy the Next.js Storefront, you can deploy the Next.js Storefront to Netlify with this button:
+Instead of manually following this guide to install then later deploy the Next.js Storefront, you can deploy the Next.js Storefront to Vercel with this button:
 
-<a href="https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/nextjs-starter-medusa" className="img-url">
-  <img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" className="no-zoom-img" />
+<a 
+  href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmedusajs%2Fnextjs-starter-medusa.git&env=NEXT_PUBLIC_MEDUSA_BACKEND_URL&envDescription=URL%20of%20your%20Medusa%20Backend" class="img-url no-zoom-img">
+  <img src="https://vercel.com/button" alt="Deploy with Vercel" class="no-zoom-img"/>
 </a>
 
 ---
@@ -41,15 +45,17 @@ Instead of manually following this guide to install then later deploy the Next.j
 
 This document assumes you already have a Medusa backend installed. If you don’t, please follow the [Quickstart guide for the Medusa backend](../development/backend/install.mdx) to learn how to do it.
 
+You should also have Node.js with v16 or greater installed. You can check your Node.js version with the following command:
+
+```bash noReport
+node -v
+```
+
+You can install Node from the [official website](https://nodejs.org/en/).
+
 ---
 
 ## Installation
-
-:::tip
-
-It is recommended to use [Yarn](https://yarnpkg.com/getting-started/install) for the installation process as it's much faster than using NPM.
-
-:::
 
 1\. Create a new Next.js project using the [Medusa starter template](https://github.com/medusajs/nextjs-starter-medusa):
 
@@ -66,11 +72,11 @@ mv .env.template .env.local
 
 3\. Make sure the Medusa backend is running, then run the local Next.js server:
 
-```bash
+```bash npm2yarn
 npm run dev
 ```
 
-Your Next.js storefront is now running at `localhost:8000`!
+Your Next.js storefront is now running at `localhost:8000`
 
 <Feedback 
    event="survey_nextjs_quickstart"
@@ -79,11 +85,22 @@ Your Next.js storefront is now running at `localhost:8000`!
    negativeQuestion="Please describe the issue you faced."
 />
 
-:::tip
+---
 
-If you run into errors during the installation, check out [this troubleshooting guide](../troubleshooting/common-installation-errors.mdx).
+## Troubleshooting Installation
 
-:::
+<Troubleshooting
+  sections={[
+    {
+      title: 'CORS Error',
+      content: <CorsErrorSection />
+    },
+    {
+      title: 'Resolve "Cannot find module X" Errors',
+      content: <ModuleXErrorSection />
+    },
+  ]}
+/>
 
 ---
 
@@ -185,7 +202,7 @@ Then, restart the Next.js backend. You’ll be able to search through available 
 
 ### Stripe Payment Integration
 
-Stripe integration is supported by default. Make sure you have Stripe installed and enabled on your Medusa backend first. You can [follow this guide to learn how to install it](../plugins/payment/stripe.md).
+Stripe integration is supported by default. Make sure you have Stripe installed and enabled on your Medusa backend first. You can [follow this guide to learn how to install it](../plugins/payment/stripe.mdx).
 
 Then, in your Next.js storefront, set the environment variable necessary for the Stripe integration:
 
@@ -270,4 +287,4 @@ You can learn more about development with Next.js through [their documentation](
 
 - [Storefront API reference](https://docs.medusajs.com/api/store)
 - [Install Medusa Admin](../admin/quickstart.mdx).
-- [Install Stripe as a payment processor](../plugins/payment/stripe.md#add-to-nextjs-storefront)
+- [Install Stripe as a payment processor](../plugins/payment/stripe.mdx#add-to-nextjs-storefront)

@@ -1,8 +1,8 @@
+import { objectToStringPath } from "@medusajs/utils"
 import { flatten, groupBy, map, merge } from "lodash"
 import { FindManyOptions, FindOptionsRelations, In } from "typeorm"
-import { Order } from "../models"
-import { buildLegacyFieldsListFrom } from "../utils"
 import { dataSource } from "../loaders/database"
+import { Order } from "../models"
 
 const ITEMS_REL_NAME = "items"
 const REGION_REL_NAME = "region"
@@ -16,7 +16,7 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
     const entitiesIds = entities.map(({ id }) => id)
 
     const groupedRelations: { [topLevel: string]: string[] } = {}
-    for (const rel of buildLegacyFieldsListFrom(relations)) {
+    for (const rel of objectToStringPath(relations)) {
       const [topLevel] = rel.split(".")
       if (groupedRelations[topLevel]) {
         groupedRelations[topLevel].push(rel)

@@ -130,7 +130,7 @@ const plugins = [
 Run your backend with the following command:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 Then, try triggering one of the [mentioned events earlier in this document](#events-that-the-segment-plugin-tracks). For example, you can place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the [Next.js starter storefront](../../starters/nextjs-medusa-starter.mdx).
@@ -185,7 +185,7 @@ You resolve the `SegmentService` using dependency injection. Then, when the `cus
 
 :::info
 
-Services can be resolved and used in Subscribers, endpoints, and other Services. Learn [how to resolve services in the Services documentation](../../development/services/create-service.md#using-your-custom-service).
+Services can be resolved and used in Subscribers, endpoints, and other Services. Learn [how to resolve services in the Services documentation](../../development/services/create-service.mdx#using-your-custom-service).
 
 :::
 
@@ -205,7 +205,7 @@ After adding the above subscriber, run your backend again if it isn’t running 
 
 ## See Also
 
-- [Services Overview](../../development/services/create-service.md)
+- [Services Overview](../../development/services/create-service.mdx)
 - [Subscribers Overview](../../development/events/create-subscriber.md)
 - [Events Reference](../../development/events/events-list.md)
 - [Deploy the Medusa backend](../../deployments/server/index.mdx)

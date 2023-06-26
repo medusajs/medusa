@@ -13,12 +13,10 @@ import Avatar from "../../../components/atoms/avatar"
 import BackButton from "../../../components/atoms/back-button"
 import CopyToClipboard from "../../../components/atoms/copy-to-clipboard"
 import Spinner from "../../../components/atoms/spinner"
-import Badge from "../../../components/fundamentals/badge"
 import Button from "../../../components/fundamentals/button"
 import DetailsIcon from "../../../components/fundamentals/details-icon"
 import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon"
 import TruckIcon from "../../../components/fundamentals/icons/truck-icon"
-import ImagePlaceholder from "../../../components/fundamentals/image-placeholder"
 import StatusDot from "../../../components/fundamentals/status-indicator"
 import JSONView from "../../../components/molecules/json-view"
 import BodyCard from "../../../components/organisms/body-card"
@@ -31,6 +29,7 @@ import { getErrorMessage } from "../../../utils/error-messages"
 import extractCustomerName from "../../../utils/extract-customer-name"
 import { formatAmountWithSymbol } from "../../../utils/prices"
 import AddressModal from "../details/address-modal"
+import DraftSummaryCard from "../details/detail-cards/draft-summary"
 import { DisplayTotal, FormattedAddress } from "../details/templates"
 
 type DeletePromptData = {
@@ -211,108 +210,7 @@ const DraftOrderDetails = () => {
                 </div>
               </div>
             </BodyCard>
-            <BodyCard className={"mb-4 h-auto min-h-0 w-full"} title="Summary">
-              <div className="mt-6">
-                {cart?.items?.map((item, i) => (
-                  <div
-                    key={i}
-                    className="hover:bg-grey-5 rounded-rounded mx-[-5px] mb-1 flex h-[64px] justify-between py-2 px-[5px]"
-                  >
-                    <div className="flex justify-center space-x-4">
-                      <div className="rounded-rounded flex h-[48px] w-[36px] items-center justify-center">
-                        {item?.thumbnail ? (
-                          <img
-                            src={item.thumbnail}
-                            className="rounded-rounded object-cover"
-                          />
-                        ) : (
-                          <ImagePlaceholder />
-                        )}
-                      </div>
-                      <div className="flex flex-col justify-center">
-                        <span className="inter-small-regular text-grey-90 max-w-[225px] truncate">
-                          {item.title}
-                        </span>
-                        {item?.variant && (
-                          <span className="inter-small-regular text-grey-50">
-                            {item.variant.sku}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex  items-center">
-                      <div className="small:space-x-2 medium:space-x-4 large:space-x-6 mr-3 flex">
-                        <div className="inter-small-regular text-grey-50">
-                          {formatAmountWithSymbol({
-                            amount: (item?.total ?? 0) / item.quantity,
-                            currency: region?.currency_code ?? "",
-                            digits: 2,
-                            tax: [],
-                          })}
-                        </div>
-                        <div className="inter-small-regular text-grey-50">
-                          x {item.quantity}
-                        </div>
-                        <div className="inter-small-regular text-grey-90">
-                          {formatAmountWithSymbol({
-                            amount: item.total ?? 0,
-                            currency: region?.currency_code ?? "",
-                            digits: 2,
-                            tax: [],
-                          })}
-                        </div>
-                      </div>
-                      <div className="inter-small-regular text-grey-50">
-                        {region?.currency_code.toUpperCase()}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                <DisplayTotal
-                  currency={region?.currency_code}
-                  totalAmount={draft_order?.cart?.subtotal}
-                  totalTitle={"Subtotal"}
-                />
-                {cart?.discounts?.map((discount, index) => (
-                  <div
-                    key={index}
-                    className="mt-4 flex items-center justify-between"
-                  >
-                    <div className="inter-small-regular text-grey-90 flex items-center">
-                      Discount:{" "}
-                      <Badge className="ml-3" variant="default">
-                        {discount.code}
-                      </Badge>
-                    </div>
-                    <div className="inter-small-regular text-grey-90">
-                      -
-                      {formatAmountWithSymbol({
-                        amount: cart?.discount_total,
-                        currency: region?.currency_code || "",
-                        digits: 2,
-                        tax: region?.tax_rate,
-                      })}
-                    </div>
-                  </div>
-                ))}
-                <DisplayTotal
-                  currency={region?.currency_code}
-                  totalAmount={cart?.shipping_total}
-                  totalTitle={"Shipping"}
-                />
-                <DisplayTotal
-                  currency={region?.currency_code}
-                  totalAmount={cart?.tax_total}
-                  totalTitle={`Tax`}
-                />
-                <DisplayTotal
-                  currency={region?.currency_code}
-                  variant="large"
-                  totalAmount={cart?.total}
-                  totalTitle={`Total`}
-                />
-              </div>
-            </BodyCard>
+            <DraftSummaryCard order={draft_order} />
             <BodyCard
               className={"mb-4 h-auto min-h-0 w-full"}
               title="Payment"

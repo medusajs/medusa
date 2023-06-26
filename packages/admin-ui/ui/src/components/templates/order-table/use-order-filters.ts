@@ -25,6 +25,10 @@ interface OrderFilterState {
     open: boolean
     filter: null | string[] | string
   }
+  salesChannel: {
+    open: boolean
+    filter: null | string[] | string
+  }
   status: {
     open: boolean
     filter: null | string[] | string
@@ -94,6 +98,7 @@ const reducer = (
       return {
         ...state,
         region: action.payload.region,
+        salesChannel: action.payload.salesChannel,
         fulfillment: action.payload.fulfillment,
         payment: action.payload.payment,
         status: action.payload.status,
@@ -233,6 +238,10 @@ export const useOrderFilters = (
           filter: null,
         },
         status: {
+          open: false,
+          filter: null,
+        },
+        salesChannel: {
           open: false,
           filter: null,
         },
@@ -414,6 +423,7 @@ export const useOrderFilters = (
     const clean = omit(repObj, ["limit", "offset"])
     const repString = qs.stringify(clean, { skipNulls: true })
 
+
     const storedString = localStorage.getItem("orders::filters")
 
     let existing: null | object = null
@@ -499,10 +509,12 @@ const filterStateMap = {
   payment_status: "payment",
   created_at: "date",
   region_id: "region",
+  sales_channel_id: "salesChannel",
 }
 
 const stateFilterMap = {
   region: "region_id",
+  salesChannel: "sales_channel_id",
   status: "status",
   fulfillment: "fulfillment_status",
   payment: "payment_status",
@@ -523,6 +535,10 @@ const parseQueryString = (
       filter: null,
     },
     region: {
+      open: false,
+      filter: null,
+    },
+    salesChannel: {
       open: false,
       filter: null,
     },
@@ -583,6 +599,15 @@ const parseQueryString = (
           case "region_id": {
             if (typeof value === "string" || Array.isArray(value)) {
               defaultVal.region = {
+                open: true,
+                filter: value,
+              }
+            }
+            break
+          }
+          case "sales_channel_id": {
+            if (typeof value === "string" || Array.isArray(value)) {
+              defaultVal.salesChannel = {
                 open: true,
                 filter: value,
               }

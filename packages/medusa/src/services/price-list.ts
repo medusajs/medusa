@@ -1,18 +1,10 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import {
-  DeepPartial,
-  EntityManager,
-  FindManyOptions,
-  FindOperator,
-  FindOptionsWhere,
-  ILike,
-  In,
-} from "typeorm"
+import { DeepPartial, EntityManager } from "typeorm"
 import { CustomerGroupService } from "."
 import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { PriceListRepository } from "../repositories/price-list"
-import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
+import { FindConfig, Selector } from "../types/common"
 import {
   CreatePriceListInput,
   FilterablePriceListProps,
@@ -293,25 +285,9 @@ class PriceListService extends TransactionBaseService {
    */
   async list(
     selector: FilterablePriceListProps = {},
-    config: FindConfig<FilterablePriceListProps> = { skip: 0, take: 20 }
+    config: FindConfig<PriceList> = { skip: 0, take: 20 }
   ): Promise<PriceList[]> {
-    const priceListRepo = this.activeManager_.withRepository(
-      this.priceListRepo_
-    )
-
-    const { q, ...priceListSelector } = selector
-    const query = buildQuery(
-      priceListSelector,
-      config
-    ) as FindManyOptions<FilterablePriceListProps> & {
-      where: { customer_groups?: FindOperator<string[]> }
-    } & ExtendedFindConfig<FilterablePriceListProps>
-
-    const groups = query.where.customer_groups
-    query.where.customer_groups = undefined
-
-    const [priceLists] = await priceListRepo.listAndCount(query as any)
-
+    const [priceLists] = await this.listAndCount(selector, config)
     return priceLists
   }
 
@@ -333,55 +309,8 @@ class PriceListService extends TransactionBaseService {
     )
     const { q, ...priceListSelector } = selector
     const query = buildQuery(priceListSelector, config)
-    query.where = query.where as FindOptionsWhere<PriceList>
 
-    const groups = query.where.customer_groups as unknown as FindOperator<
-      string[]
-    >
-    delete query.where.customer_groups
-
-    if (groups) {
-      query.relations = query.relations ?? {}
-      query.relations.customer_groups = query.relations.customer_groups ?? true
-
-      query.where.customer_groups = {
-        ...(query.where.customer_groups ?? {}),
-        id: In(groups.value),
-      }
-    }
-
-    if (q) {
-      if (!groups) {
-        query.relations = query.relations ?? {}
-        query.relations.customer_groups =
-          query.relations.customer_groups ?? true
-      }
-
-      const where = [
-        {
-          ...query.where,
-          name: ILike(`%${q}%`),
-        },
-        {
-          ...query.where,
-          description: ILike(`%${q}%`),
-        },
-        {
-          ...query.where,
-          customer_groups: {
-            ...query.where.customer_groups,
-            name: ILike(`%${q}%`),
-          },
-        },
-      ]
-
-      return await priceListRepo.findAndCount({
-        ...query,
-        where,
-      })
-    }
-
-    return await priceListRepo.listAndCount(query)
+    return await priceListRepo.listAndCount(query, q)
   }
 
   protected async upsertCustomerGroups_(

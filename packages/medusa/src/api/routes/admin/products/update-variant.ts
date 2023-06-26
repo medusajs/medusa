@@ -150,8 +150,6 @@ class ProductVariantOptionReq {
 /**
  * @schema AdminPostProductsProductVariantsVariantReq
  * type: object
- * required:
- *   - prices
  * properties:
  *   title:
  *     description: The title to identify the Product Variant by.

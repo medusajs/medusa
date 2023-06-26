@@ -1,8 +1,29 @@
-import { generateEntityId, SoftDeletableEntity } from "@medusajs/utils"
-import { BeforeInsert, Column, Entity, Index } from "typeorm"
+import { generateEntityId } from "@medusajs/utils"
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm"
 
 @Entity()
-export class InventoryItem extends SoftDeletableEntity {
+export class InventoryItem {
+  @PrimaryColumn()
+  id: string
+
+  @CreateDateColumn({ type: "timestamptz" })
+  created_at: Date
+
+  @UpdateDateColumn({ type: "timestamptz" })
+  updated_at: Date
+
+  @DeleteDateColumn({ type: "timestamptz" })
+  deleted_at: Date | null
+
   @Index({ unique: true })
   @Column({ type: "text", nullable: true })
   sku: string | null
@@ -33,6 +54,15 @@ export class InventoryItem extends SoftDeletableEntity {
 
   @Column({ default: true })
   requires_shipping: boolean
+
+  @Column({ type: "text", nullable: true })
+  description: string | null
+
+  @Column({ type: "text", nullable: true })
+  title: string | null
+
+  @Column({ type: "text", nullable: true })
+  thumbnail: string | null
 
   @Column({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null

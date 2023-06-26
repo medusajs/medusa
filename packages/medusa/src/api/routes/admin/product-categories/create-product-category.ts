@@ -43,7 +43,7 @@ import { FindParams } from "../../../../types/common"
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "name": "Skinny Jeans",
+ *           "name": "Skinny Jeans"
  *       }'
  * security:
  *   - api_token: []
@@ -103,6 +103,9 @@ export default async (req: Request, res: Response) => {
  *   name:
  *     type: string
  *     description: The name to identify the Product Category by.
+ *   description:
+ *     type: string
+ *     description: An optional text field to describe the Product Category by.
  *   handle:
  *     type: string
  *     description: An optional handle to be used in slugs, if none is provided we will kebab-case the title.

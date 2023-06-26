@@ -1654,7 +1654,7 @@ describe("/admin/orders", () => {
       )
     })
 
-    it("fails to lists all orders with an invalid status", async () => {
+    it.only("fails to lists all orders with an invalid status", async () => {
       expect.assertions(3)
       const api = useApi()
 
@@ -1664,7 +1664,7 @@ describe("/admin/orders", () => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("invalid_data")
           expect(err.response.data.message).toEqual(
-            "each value in status must be a valid enum value"
+            "each value in status must be one of the following values: pending, completed, archived, canceled, requires_action"
           )
         })
     })

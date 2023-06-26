@@ -1,5 +1,3 @@
-import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
-
 import { OrderService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
@@ -50,10 +48,11 @@ export default async (req, res) => {
   const { cart_id } = req.params
 
   const orderService: OrderService = req.scope.resolve("orderService")
-  const order = await orderService.retrieveByCartId(cart_id, {
-    select: defaultStoreOrdersFields,
-    relations: defaultStoreOrdersRelations,
-  })
+
+  const order = await orderService.retrieveByCartIdWithTotals(
+    cart_id,
+    req.retrieveConfig
+  )
 
   res.json({ order: cleanResponseData(order, []) })
 }

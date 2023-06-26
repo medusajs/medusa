@@ -5,13 +5,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetInventoryItemsItemLocationLevelsParams {
   /**
-   * How many stock locations levels to skip in the result.
+   * Locations ids to search for.
    */
-  offset?: number
-  /**
-   * Limit the number of stock locations levels returned.
-   */
-  limit?: number
+  location_id?: Array<string>
   /**
    * Comma separated list of relations to include in the results.
    */

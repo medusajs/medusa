@@ -15,7 +15,9 @@ export interface StoreProductsRes {
     >,
     {
       options: Array<SetRelation<ProductOption, "values">>
-      variants: Array<SetRelation<ProductVariant, "options" | "prices">>
+      variants: Array<
+        SetRelation<ProductVariant, "options" | "prices" | "purchasable">
+      >
     }
   >
 }

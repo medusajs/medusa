@@ -1,13 +1,16 @@
 import clsx from "clsx"
-import { useAdminRegions } from "medusa-react"
+import { useAdminRegions, useAdminSalesChannels } from "medusa-react"
 import { useEffect, useState } from "react"
 import FilterDropdownContainer from "../../../components/molecules/filter-dropdown/container"
 import FilterDropdownItem from "../../../components/molecules/filter-dropdown/item"
 import SaveFilterItem from "../../../components/molecules/filter-dropdown/save-field"
 import TabFilter from "../../../components/molecules/filter-tab"
 import PlusIcon from "../../fundamentals/icons/plus-icon"
+import FeatureToggle from "../../fundamentals/feature-toggle"
+import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 
 const REGION_PAGE_SIZE = 10
+const CHANNEL_PAGE_SIZE = 10
 
 const statusFilters = [
   "completed",
@@ -57,6 +60,9 @@ const OrderFilters = ({
 }) => {
   const [tempState, setTempState] = useState(filters)
   const [name, setName] = useState("")
+
+  const { isFeatureEnabled } = useFeatureFlag()
+  const isSalesChannelsEnabled = isFeatureEnabled("sales_channels")
 
   const handleRemoveTab = (val) => {
     if (onRemoveTab) {
@@ -115,6 +121,12 @@ const OrderFilters = ({
     count,
     isLoading: isLoadingRegions,
   } = useAdminRegions(regionsPagination)
+
+  const { sales_channels, isLoading: isLoadingSalesChannels } =
+    useAdminSalesChannels(
+      { limit: CHANNEL_PAGE_SIZE },
+      { enabled: isSalesChannelsEnabled }
+    )
 
   const handlePaginateRegions = (direction) => {
     if (direction > 0) {
@@ -195,6 +207,21 @@ const OrderFilters = ({
           open={tempState.region.open}
           setFilter={(v) => setSingleFilter("region", v)}
         />
+        {isSalesChannelsEnabled && (
+          <FilterDropdownItem
+            filterTitle="Sales Channel"
+            options={
+              sales_channels?.map((salesChannel) => ({
+                value: salesChannel.id,
+                label: salesChannel.name,
+              })) || []
+            }
+            isLoading={isLoadingSalesChannels}
+            filters={tempState.salesChannel.filter}
+            open={tempState.salesChannel.open}
+            setFilter={(v) => setSingleFilter("salesChannel", v)}
+          />
+        )}
         <FilterDropdownItem
           filterTitle="Date"
           options={dateFilters}

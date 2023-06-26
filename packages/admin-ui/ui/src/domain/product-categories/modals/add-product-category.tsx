@@ -10,6 +10,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import Button from "../../../components/fundamentals/button"
 import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
 import InputField from "../../../components/molecules/input"
+import TextArea from "../../../components/molecules/textarea"
 import FocusModal from "../../../components/molecules/modal/focus-modal"
 import { NextSelect } from "../../../components/molecules/select/next-select"
 import useNotification from "../../../hooks/use-notification"
@@ -44,6 +45,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
 
   const [name, setName] = useState("")
   const [handle, setHandle] = useState("")
+  const [description, setDescription] = useState("")
   const [isActive, setIsActive] = useState(true)
   const [isPublic, setIsPublic] = useState(true)
 
@@ -54,6 +56,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
       await createProductCategory({
         name,
         handle,
+        description,
         is_active: isActive,
         is_internal: !isPublic,
         parent_category_id: parentCategory?.id ?? null,
@@ -129,6 +132,16 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
               className="w-[338px]"
               placeholder="Custom handle"
               onChange={(ev) => setHandle(ev.target.value)}
+            />
+          </div>
+
+          <div className="mb-8">
+            <TextArea
+              label="Description"
+              name="description"
+              value={description}
+              placeholder="Give this category a description"
+              onChange={(ev) => setDescription(ev.target.value)}
             />
           </div>
 

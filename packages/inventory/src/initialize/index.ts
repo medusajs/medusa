@@ -5,6 +5,7 @@ import {
   Modules,
 } from "@medusajs/modules-sdk"
 import { IEventBusService, IInventoryService } from "@medusajs/types"
+import { moduleDefinition } from "../module-definition"
 import { InventoryServiceInitializeOptions } from "../types"
 
 export const initialize = async (
@@ -18,6 +19,7 @@ export const initialize = async (
     serviceKey,
     "@medusajs/inventory",
     options as InternalModuleDeclaration | ExternalModuleDeclaration,
+    moduleDefinition,
     injectedDependencies
   )
 

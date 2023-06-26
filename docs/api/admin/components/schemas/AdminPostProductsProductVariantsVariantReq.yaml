@@ -1,6 +1,4 @@
 type: object
-required:
-  - prices
 properties:
   title:
     description: The title to identify the Product Variant by.

@@ -2,7 +2,8 @@ curl --location --request POST 'https://medusa-url.com/admin/reservations' \
 --header 'Authorization: Bearer {api_token}' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "resource_id": "{resource_id}",
-    "resource_type": "order",
-    "value": "We delivered this order"
+    "line_item_id": "item_123",
+    "location_id": "loc_123",
+    "inventory_item_id": "iitem_123",
+    "quantity": 1
 }'

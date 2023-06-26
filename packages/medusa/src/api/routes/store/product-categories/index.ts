@@ -54,6 +54,7 @@ export const defaultStoreCategoryScope = {
 export const defaultStoreProductCategoryFields = [
   "id",
   "name",
+  "description",
   "handle",
   "parent_category_id",
   "created_at",
@@ -64,6 +65,7 @@ export const defaultStoreProductCategoryFields = [
 export const allowedStoreProductCategoryFields = [
   "id",
   "name",
+  "description",
   "handle",
   "parent_category_id",
   "created_at",

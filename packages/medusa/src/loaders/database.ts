@@ -1,12 +1,13 @@
+import { AwilixContainer } from "awilix"
 import {
   DataSource,
   DataSourceOptions,
   Repository,
   TreeRepository,
 } from "typeorm"
-import { AwilixContainer } from "awilix"
 import { ConfigModule } from "../types/global"
 import "../utils/naming-strategy"
+import { handlePostgresDatabaseError } from "@medusajs/utils"
 
 type Options = {
   configModule: ConfigModule
@@ -39,10 +40,8 @@ export default async ({
 }: Options): Promise<DataSource> => {
   const entities = container.resolve("db_entities")
 
-  const isSqlite = configModule.projectConfig.database_type === "sqlite"
-
   dataSource = new DataSource({
-    type: configModule.projectConfig.database_type,
+    type: "postgres",
     url: configModule.projectConfig.database_url,
     database: configModule.projectConfig.database_database,
     extra: configModule.projectConfig.database_extra || {},
@@ -54,12 +53,14 @@ export default async ({
       (configModule.projectConfig.database_logging || false),
   } as DataSourceOptions)
 
-  await dataSource.initialize()
+  await dataSource.initialize().catch(handlePostgresDatabaseError)
 
-  if (isSqlite) {
-    await dataSource.query(`PRAGMA foreign_keys = OFF`)
-    await dataSource.synchronize()
-    await dataSource.query(`PRAGMA foreign_keys = ON`)
+  // If migrations are not included in the config, we assume you are attempting to start the server
+  // Therefore, throw if the database is not migrated
+  if (!dataSource.migrations?.length) {
+    await dataSource
+      .query(`select * from migrations`)
+      .catch(handlePostgresDatabaseError)
   }
 
   return dataSource

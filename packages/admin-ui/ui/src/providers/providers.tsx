@@ -1,4 +1,5 @@
 import { PropsWithChildren } from "react"
+import { HelmetProvider } from "react-helmet-async"
 import { LayeredModalProvider } from "../components/molecules/modal/layered-modal"
 import { SteppedProvider } from "../components/molecules/modal/stepped-modal"
 import { FeatureFlagProvider } from "./feature-flag-provider"
@@ -10,14 +11,16 @@ import { PollingProvider } from "./polling-provider"
  */
 export const Providers = ({ children }: PropsWithChildren) => {
   return (
-    <MedusaProvider>
-      <FeatureFlagProvider>
-        <PollingProvider>
-          <SteppedProvider>
-            <LayeredModalProvider>{children}</LayeredModalProvider>
-          </SteppedProvider>
-        </PollingProvider>
-      </FeatureFlagProvider>
-    </MedusaProvider>
+    <HelmetProvider>
+      <MedusaProvider>
+        <FeatureFlagProvider>
+          <PollingProvider>
+            <SteppedProvider>
+              <LayeredModalProvider>{children}</LayeredModalProvider>
+            </SteppedProvider>
+          </PollingProvider>
+        </FeatureFlagProvider>
+      </MedusaProvider>
+    </HelmetProvider>
   )
 }

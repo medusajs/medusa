@@ -3,6 +3,7 @@ description: "Users are admins that can manage the ecommerce store’s data and 
 ---
 
 import DocCardList from '@theme/DocCardList';
+import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
 
 # Users
@@ -26,12 +27,11 @@ Admins can also manage their profile details.
 <DocCardList colSize={6} items={[
   {
     type: 'link',
-    href: '#',
+    href: '/modules/users/admin/manage-users',
     label: 'Admin: Manage Users',
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Learn how to manage users using Admin APIs.',
-      isSoon: true
     }
   },
   {
@@ -45,12 +45,11 @@ Admins can also manage their profile details.
   },
   {
     type: 'link',
-    href: '#',
-    label: 'Admin: Manage Profile',
+    href: '/modules/users/admin/manage-profile',
+    label: 'Admin: Implement Profiles',
     customProps: {
       icon: Icons['academic-cap-solid'],
-      description: 'Learn how to manage a user profile using Admin APIs.',
-      isSoon: true
+      description: 'Learn how to implement user profiles using Admin APIs.',
     }
   },
   {
@@ -75,12 +74,11 @@ Admins can invite users to join their team. Invites can be resent, accepted, or 
 <DocCardList colSize={4} items={[
   {
     type: 'link',
-    href: '#',
+    href: '/modules/users/admin/manage-invites',
     label: 'Admin: Manage Invites',
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Learn how to manage invites using Admin APIs.',
-      isSoon: true
     }
   },
   {
@@ -94,12 +92,11 @@ Admins can invite users to join their team. Invites can be resent, accepted, or 
   },
   {
     type: 'link',
-    href: '#',
+    href: '/modules/users/backend/send-invite',
     label: 'Backend: Send Invite',
     customProps: {
       icon: Icons['users-solid'],
       description: 'Learn how to send invites in the backend.',
-      isSoon: true
     }
   },
 ]} />
@@ -110,25 +107,12 @@ Admins can invite users to join their team. Invites can be resent, accepted, or 
 
 Learn how user-related entities and concepts are built, their relation to other modules, and more.
 
-<DocCardList colSize={6} items={[
-  {
-    type: 'link',
-    href: '#',
-    label: 'Architecture: User',
-    customProps: {
-      icon: Icons['circle-stack-solid'],
-      description: 'Learn about the User Architecture.',
-      isSoon: true,
-    }
-  },
-  {
-    type: 'link',
-    href: '#',
-    label: 'Architecture: Invites',
-    customProps: {
-      icon: Icons['circle-stack-solid'],
-      description: 'Learn about the Invite Architecture.',
-      isSoon: true,
-    }
-  },
-]} />
+<DocCard item={{
+  type: 'link',
+  href: '/modules/users',
+  label: 'Architecture: User',
+  customProps: {
+    icon: Icons['circle-stack-solid'],
+    description: 'Learn about the User Architecture.',
+  }
+}} />

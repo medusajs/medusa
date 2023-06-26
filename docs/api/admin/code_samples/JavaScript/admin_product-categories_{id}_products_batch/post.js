@@ -1,10 +1,10 @@
 import Medusa from "@medusajs/medusa-js"
 const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 // must be previously logged in or use api token
-medusa.admin.productCategories.addProducts(product_category_id, {
+medusa.admin.productCategories.addProducts(productCategoryId, {
   product_ids: [
     {
-      id: product_id
+      id: productId
     }
   ]
 })

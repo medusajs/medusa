@@ -1,13 +1,14 @@
+import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
+
 import { IInventoryService } from "@medusajs/types"
 import { isDefined } from "@medusajs/utils"
-import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
 import { validateUpdateReservationQuantity } from "./utils/validate-reservation-quantity"
 
 /**
  * @oas [post] /admin/reservations
  * operationId: "PostReservations"
- * summary: "Creates a Reservation"
- * description: "Creates a Reservation which can be associated with any resource as required."
+ * summary: "Create a Reservation"
+ * description: "Create a Reservation which can be associated with any resource as required."
  * x-authenticated: true
  * requestBody:
  *  content:
@@ -22,9 +23,13 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.reservations.create({
+ *         line_item_id: 'item_123',
+ *         location_id: 'loc_123',
+ *         inventory_item_id: 'iitem_123',
+ *         quantity: 1
  *       })
- *       .then(({ reservations }) => {
- *         console.log(reservations.id);
+ *       .then(({ reservation }) => {
+ *         console.log(reservation.id);
  *       });
  *   - lang: Shell
  *     label: cURL
@@ -33,9 +38,10 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       --header 'Authorization: Bearer {api_token}' \
  *       --header 'Content-Type: application/json' \
  *       --data-raw '{
- *           "resource_id": "{resource_id}",
- *           "resource_type": "order",
- *           "value": "We delivered this order"
+ *           "line_item_id": "item_123",
+ *           "location_id": "loc_123",
+ *           "inventory_item_id": "iitem_123",
+ *           "quantity": 1
  *       }'
  * security:
  *   - api_token: []
@@ -68,6 +74,8 @@ export default async (req, res) => {
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
+  const userId: string = req.user.id || req.user.userId
+
   if (isDefined(validatedBody.line_item_id)) {
     await validateUpdateReservationQuantity(
       validatedBody.line_item_id,
@@ -79,9 +87,10 @@ export default async (req, res) => {
     )
   }
 
-  const reservation = await inventoryService.createReservationItem(
-    validatedBody
-  )
+  const reservation = await inventoryService.createReservationItem({
+    ...validatedBody,
+    created_by: userId,
+  })
 
   res.status(200).json({ reservation })
 }
@@ -112,6 +121,7 @@ export default async (req, res) => {
  */
 export class AdminPostReservationsReq {
   @IsString()
+  @IsOptional()
   line_item_id?: string
 
   @IsString()
@@ -122,6 +132,10 @@ export class AdminPostReservationsReq {
 
   @IsNumber()
   quantity: number
+
+  @IsString()
+  @IsOptional()
+  description?: string
 
   @IsObject()
   @IsOptional()

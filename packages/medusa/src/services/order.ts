@@ -1,5 +1,10 @@
 import { IInventoryService } from "@medusajs/types"
-import { isDefined, MedusaError, TransactionBaseService } from "@medusajs/utils"
+import {
+  buildRelations,
+  buildSelects,
+  isDefined,
+  MedusaError,
+} from "@medusajs/utils"
 import {
   EntityManager,
   FindManyOptions,
@@ -45,6 +50,7 @@ import {
   Swap,
   TrackingLink,
 } from "../models"
+import { TransactionBaseService } from "../interfaces"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
@@ -54,13 +60,7 @@ import {
 } from "../types/fulfillment"
 import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
-import {
-  buildQuery,
-  buildRelations,
-  buildSelects,
-  isString,
-  setMetadata,
-} from "../utils"
+import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
 
@@ -487,35 +487,43 @@ class OrderService extends TransactionBaseService {
     cartId: string,
     config: FindConfig<Order> = {}
   ): Promise<Order> {
-    const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
-
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals(config)
-
-    const query = {
-      where: { cart_id: cartId },
-    } as FindConfig<Order>
-
-    if (relations && relations.length > 0) {
-      query.relations = relations
+    if (!isDefined(cartId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"cartId" must be defined`
+      )
     }
 
-    query.select = select?.length ? select : undefined
+    const orderRepo = this.activeManager_.withRepository(this.orderRepository_)
 
-    const raw = await orderRepo.findOne(query)
+    const query = buildQuery({ cart_id: cartId }, config)
+
+    if (!(config.select || []).length) {
+      query.select = undefined
+    }
+
+    const queryRelations = { ...query.relations }
+    delete query.relations
+
+    const raw = await orderRepo.findOneWithRelations(queryRelations, query)
 
     if (!raw) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Order with cart id: ${cartId} was not found`
+        `Order with cart id ${cartId} was not found`
       )
     }
 
-    if (!totalsToSelect?.length) {
-      return raw
-    }
+    return raw
+  }
 
-    return await this.decorateTotals(raw, totalsToSelect)
+  async retrieveByCartIdWithTotals(
+    cartId: string,
+    options: FindConfig<Order> = {}
+  ): Promise<Order> {
+    const relations = this.getTotalsRelations(options)
+    const order = await this.retrieveByCartId(cartId, { ...options, relations })
+    return await this.decorateTotals(order, {})
   }
 
   /**
@@ -626,6 +634,13 @@ class OrderService extends TransactionBaseService {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           "Cannot create order from empty cart"
+        )
+      }
+
+      if (!cart.customer_id) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Cannot create an order from the cart without a customer"
         )
       }
 

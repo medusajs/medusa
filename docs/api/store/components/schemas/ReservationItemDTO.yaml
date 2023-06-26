@@ -16,6 +16,12 @@ properties:
   inventory_item_id:
     description: The id of the inventory item the reservation relates to
     type: string
+  description:
+    description: Description of the reservation item
+    type: string
+  created_by:
+    description: UserId of user who created the reservation item
+    type: string
   quantity:
     description: The id of the reservation item
     type: number

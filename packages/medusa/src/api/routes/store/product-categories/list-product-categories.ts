@@ -15,6 +15,7 @@ import { defaultStoreCategoryScope } from "."
  * x-authenticated: false
  * parameters:
  *   - (query) q {string} Query used for searching product category names or handles.
+ *   - (query) handle {string} Query used for searching product category by handle.
  *   - (query) parent_category_id {string} Returns categories scoped by parent
  *   - (query) include_descendants_tree {boolean} Include all nested descendants of category
  *   - (query) offset=0 {integer} How many product categories to skip in the result.
@@ -95,6 +96,10 @@ export class StoreGetProductCategoriesParams extends extendedFindParamsMixin({
   @IsString()
   @IsOptional()
   q?: string
+
+  @IsString()
+  @IsOptional()
+  handle?: string
 
   @IsString()
   @IsOptional()

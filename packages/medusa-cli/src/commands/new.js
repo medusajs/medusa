@@ -18,8 +18,9 @@ import inquirer from "inquirer"
 
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
+import { clearProject } from "@medusajs/utils"
 
-const removeUndefined = obj => {
+const removeUndefined = (obj) => {
   return Object.fromEntries(
     Object.entries(obj)
       .filter(([_, v]) => v != null)
@@ -50,21 +51,21 @@ const isAlreadyGitRepository = async () => {
   try {
     return await spawn(`git rev-parse --is-inside-work-tree`, {
       stdio: `pipe`,
-    }).then(output => output.stdout === `true`)
+    }).then((output) => output.stdout === `true`)
   } catch (err) {
     return false
   }
 }
 
 // Initialize newly cloned directory as a git repo
-const gitInit = async rootPath => {
+const gitInit = async (rootPath) => {
   reporter.info(`Initialising git in ${rootPath}`)
 
   return await spawn(`git init`, { cwd: rootPath })
 }
 
 // Create a .gitignore file if it is missing in the new directory
-const maybeCreateGitIgnore = async rootPath => {
+const maybeCreateGitIgnore = async (rootPath) => {
   if (existsSync(sysPath.join(rootPath, `.gitignore`))) {
     return
   }
@@ -98,7 +99,7 @@ const createInitialGitCommit = async (rootPath, starterUrl) => {
 }
 
 // Executes `npm install` or `yarn install` in rootPath.
-const install = async rootPath => {
+const install = async (rootPath) => {
   const prevDir = process.cwd()
 
   reporter.info(`Installing packages...`)
@@ -128,7 +129,7 @@ const install = async rootPath => {
   }
 }
 
-const ignored = path => !/^\.(git|hg)$/.test(sysPath.basename(path))
+const ignored = (path) => !/^\.(git|hg)$/.test(sysPath.basename(path))
 
 // Copy starter from file system.
 const copy = async (starterPath, rootPath) => {
@@ -187,13 +188,13 @@ const clone = async (hostInfo, rootPath) => {
     rootPath,
     `--recursive`,
     `--depth=1`,
-  ].filter(arg => Boolean(arg))
+  ].filter((arg) => Boolean(arg))
 
   await execa(`git`, args, {})
     .then(() => {
       reporter.success(createAct, `Created starter directory layout`)
     })
-    .catch(err => {
+    .catch((err) => {
       reporter.failure(createAct, `Failed to clone repository`)
       throw err
     })
@@ -207,7 +208,7 @@ const clone = async (hostInfo, rootPath) => {
   if (!isGit) await createInitialGitCommit(rootPath, url)
 }
 
-const getMedusaConfig = rootPath => {
+const getMedusaConfig = (rootPath) => {
   try {
     const configPath = sysPath.join(rootPath, "medusa-config.js")
     if (existsSync(configPath)) {
@@ -268,7 +269,7 @@ const getPaths = async (starterPath, rootPath) => {
   return { starterPath, rootPath, selectedOtherStarter }
 }
 
-const successMessage = path => {
+const successMessage = (path) => {
   reporter.info(`Your new Medusa project is ready for you! To start developing run:
 
   cd ${path}
@@ -284,7 +285,7 @@ const defaultDBCreds = {
   host: "localhost",
 }
 
-const verifyPgCreds = async creds => {
+const verifyPgCreds = async (creds) => {
   const pool = new Pool(creds)
   return new Promise((resolve, reject) => {
     pool.query("SELECT NOW()", (err, res) => {
@@ -300,7 +301,9 @@ const verifyPgCreds = async creds => {
 
 const interactiveDbCreds = async (dbName, dbCreds = {}) => {
   const credentials = Object.assign({}, defaultDBCreds, dbCreds)
-  let collecting = true
+
+  const collecting = true
+
   while (collecting) {
     const result = await inquirer
       .prompt([
@@ -309,10 +312,9 @@ const interactiveDbCreds = async (dbName, dbCreds = {}) => {
           name: "continueWithDefault",
           message: `
 
-Will attempt to setup database "${dbName}" with credentials:
+Will attempt to setup Postgres database "${dbName}" with credentials:
   user: ${credentials.user}
   password: ***
-  database: ${credentials.database}
   port: ${credentials.port}
   host: ${credentials.host}
 Do you wish to continue with these credentials?
@@ -352,34 +354,25 @@ Do you wish to continue with these credentials?
           default: credentials.host,
           message: `DB host`,
         },
-        {
-          type: "input",
-          when: ({ continueWithDefault }) =>
-            continueWithDefault === `Change credentials`,
-          name: "database",
-          default: credentials.database,
-          message: `DB database`,
-        },
       ])
-      .then(async answers => {
+      .then(async (answers) => {
         const collectedCreds = Object.assign({}, credentials, {
           user: answers.user,
           password: answers.password,
           host: answers.host,
           port: answers.port,
-          database: answers.database,
         })
 
         switch (answers.continueWithDefault) {
           case "Continue": {
-            const done = await verifyPgCreds(credentials).catch(_ => false)
+            const done = await verifyPgCreds(credentials).catch((_) => false)
             if (done) {
               return credentials
             }
             return false
           }
           case "Change credentials": {
-            const done = await verifyPgCreds(collectedCreds).catch(_ => false)
+            const done = await verifyPgCreds(collectedCreds).catch((_) => false)
             if (done) {
               return collectedCreds
             }
@@ -412,7 +405,7 @@ const setupDB = async (dbName, dbCreds = {}) => {
     .then(() => {
       reporter.success(dbActivity, `Created database "${dbName}"`)
     })
-    .catch(err => {
+    .catch((err) => {
       if (err.name === "PDG_ERR::DuplicateDatabase") {
         reporter.success(
           dbActivity,
@@ -428,35 +421,28 @@ const setupDB = async (dbName, dbCreds = {}) => {
     })
 }
 
-const setupEnvVars = async (
-  rootPath,
-  dbName,
-  dbCreds = {},
-  isPostgres = true
-) => {
+const setupEnvVars = async (rootPath, dbName, dbCreds = {}) => {
   const templatePath = sysPath.join(rootPath, ".env.template")
   const destination = sysPath.join(rootPath, ".env")
   if (existsSync(templatePath)) {
     fs.renameSync(templatePath, destination)
   }
 
-  if (isPostgres) {
-    const credentials = Object.assign({}, defaultDBCreds, dbCreds)
-    let dbUrl = ""
-    if (
-      credentials.user !== defaultDBCreds.user ||
-      credentials.password !== defaultDBCreds.password
-    ) {
-      dbUrl = `postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}`
-    } else {
-      dbUrl = `postgres://${credentials.host}:${credentials.port}/${dbName}`
-    }
-
-    fs.appendFileSync(destination, `DATABASE_URL=${dbUrl}\n`)
+  const credentials = Object.assign({}, defaultDBCreds, dbCreds)
+  let dbUrl = ""
+  if (
+    credentials.user !== defaultDBCreds.user ||
+    credentials.password !== defaultDBCreds.password
+  ) {
+    dbUrl = `postgres://${credentials.user}:${credentials.password}@${credentials.host}:${credentials.port}/${dbName}`
+  } else {
+    dbUrl = `postgres://${credentials.host}:${credentials.port}/${dbName}`
   }
+
+  fs.appendFileSync(destination, `DATABASE_URL=${dbUrl}\n`)
 }
 
-const runMigrations = async rootPath => {
+const runMigrations = async (rootPath) => {
   const migrationActivity = reporter.activity("Applying database migrations...")
 
   const cliPath = sysPath.join(
@@ -472,7 +458,7 @@ const runMigrations = async rootPath => {
     .then(() => {
       reporter.success(migrationActivity, "Database migrations completed.")
     })
-    .catch(err => {
+    .catch((err) => {
       reporter.failure(
         migrationActivity,
         "Failed to migrate database you must complete migration manually before starting your server."
@@ -481,7 +467,7 @@ const runMigrations = async rootPath => {
     })
 }
 
-const attemptSeed = async rootPath => {
+const attemptSeed = async (rootPath) => {
   const seedActivity = reporter.activity("Seeding database")
 
   const pkgPath = sysPath.resolve(rootPath, "package.json")
@@ -499,7 +485,7 @@ const attemptSeed = async rootPath => {
         .then(() => {
           reporter.success(seedActivity, "Seed completed")
         })
-        .catch(err => {
+        .catch((err) => {
           reporter.failure(seedActivity, "Failed to complete seed; skipping")
           console.error(err)
         })
@@ -517,7 +503,7 @@ const attemptSeed = async rootPath => {
 /**
  * Main function that clones or copies the starter.
  */
-export const newStarter = async args => {
+export const newStarter = async (args) => {
   track("CLI_NEW")
 
   const {
@@ -611,36 +597,32 @@ medusa new ${rootPath} [url-to-starter]
     await copy(starterPath, rootPath)
   }
 
-  const medusaConfig = getMedusaConfig(rootPath)
-
-  let isPostgres = false
-  if (medusaConfig && medusaConfig.projectConfig) {
-    const databaseType = medusaConfig.projectConfig.database_type
-    isPostgres = databaseType === "postgres"
-  }
-
   track("CLI_NEW_LAYOUT_COMPLETED")
 
   let creds = dbCredentials
 
-  if (isPostgres && !useDefaults && !skipDb && !skipEnv) {
-    creds = await interactiveDbCreds(rootPath, dbCredentials)
+  const dbName = `medusa-db-${Math.random().toString(36).substring(2, 7)}` // generate random 5 character string
+
+  if (!useDefaults && !skipDb && !skipEnv) {
+    creds = await interactiveDbCreds(dbName, dbCredentials)
   }
 
   if (creds === null) {
-    reporter.info("Skipping automatic database setup")
+    reporter.info(
+      "Skipping automatic database setup. Please note that you need to create a database and run migrations before you can run your Medusa backend"
+    )
   } else {
-    if (!skipDb && isPostgres) {
+    if (!skipDb) {
       track("CLI_NEW_SETUP_DB")
-      await setupDB(rootPath, creds)
+      await setupDB(dbName, creds)
     }
 
     if (!skipEnv) {
       track("CLI_NEW_SETUP_ENV")
-      await setupEnvVars(rootPath, rootPath, creds, isPostgres)
+      await setupEnvVars(rootPath, dbName, creds)
     }
 
-    if (!skipMigrations && isPostgres) {
+    if (!skipMigrations) {
       track("CLI_NEW_RUN_MIGRATIONS")
       await runMigrations(rootPath)
     }
@@ -649,6 +631,12 @@ medusa new ${rootPath} [url-to-starter]
       track("CLI_NEW_SEED_DB")
       await attemptSeed(rootPath)
     }
+  }
+
+  if (!selectedOtherStarter) {
+    reporter.info("Final project preparations...")
+    // remove demo files
+    clearProject(rootPath)
   }
 
   successMessage(rootPath)

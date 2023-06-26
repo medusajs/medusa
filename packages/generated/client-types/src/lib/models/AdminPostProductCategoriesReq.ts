@@ -9,6 +9,10 @@ export interface AdminPostProductCategoriesReq {
    */
   name: string
   /**
+   * An optional text field to describe the Product Category by.
+   */
+  description?: string
+  /**
    * An optional handle to be used in slugs, if none is provided we will kebab-case the title.
    */
   handle?: string

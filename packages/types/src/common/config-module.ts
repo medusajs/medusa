@@ -1,3 +1,4 @@
+import { RedisOptions } from "ioredis"
 import { LoggerOptions } from "typeorm"
 import {
   ExternalModuleDeclaration,
@@ -13,27 +14,42 @@ type SessionOptions = {
   ttl?: number
 }
 
-export type ConfigModule = {
-  projectConfig: {
-    redis_url?: string
+export type HttpCompressionOptions = {
+  enabled?: boolean
+  level?: number
+  memLevel?: number
+  threshold?: number | string
+}
 
-    session_options?: SessionOptions
+export type ProjectConfigOptions = {
+  redis_url?: string
+  redis_prefix?: string
+  redis_options?: RedisOptions
 
-    jwt_secret?: string
-    cookie_secret?: string
+  session_options?: SessionOptions
 
-    database_url?: string
-    database_type: string
-    database_database?: string
-    database_schema?: string
-    database_logging: LoggerOptions
+  jwt_secret?: string
+  cookie_secret?: string
 
-    database_extra?: Record<string, unknown> & {
-      ssl: { rejectUnauthorized: false }
-    }
-    store_cors?: string
-    admin_cors?: string
+  database_url?: string
+  database_database?: string
+  database_schema?: string
+  database_logging: LoggerOptions
+
+  // @deprecated - only postgres is supported, so this config has no effect
+  database_type?: string
+
+  http_compression?: HttpCompressionOptions
+
+  database_extra?: Record<string, unknown> & {
+    ssl: { rejectUnauthorized: false }
   }
+  store_cors?: string
+  admin_cors?: string
+}
+
+export type ConfigModule = {
+  projectConfig: ProjectConfigOptions
   featureFlags: Record<string, boolean | string>
   modules?: Record<
     string,
