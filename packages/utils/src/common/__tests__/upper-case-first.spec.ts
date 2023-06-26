@@ -11,6 +11,15 @@ describe("upperCaseFirst", function () {
     }, {
       input: 'Testing',
       output: 'Testing'
+    }, {
+      input: 'TESTING',
+      output: 'Testing'
+    }, {
+      input: 't',
+      output: 'T'
+    }, {
+      input: '',
+      output: ''
     }]
 
     expectations.forEach(expectation => {
