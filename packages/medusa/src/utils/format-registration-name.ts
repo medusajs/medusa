@@ -1,5 +1,5 @@
 import { parse } from "path"
-import { upperCaseFirst, toCamelCase } from "@medusajs/utils"
+import { upperCaseFirst, kebabToCamelCase } from "@medusajs/utils"
 
 /**
  * Formats a filename into the correct container resolution name.
@@ -40,7 +40,7 @@ export function formatRegistrationName(path: string): string {
 export function formatRegistrationNameWithoutNamespace(path: string): string {
   const parsed = parse(path)
 
-  return toCamelCase(parsed.name)
+  return kebabToCamelCase(parsed.name)
 }
 
 export default formatRegistrationName

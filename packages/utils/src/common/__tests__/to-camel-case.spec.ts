@@ -1,6 +1,6 @@
-import { toCamelCase } from "../to-camel-case"
+import { kebabToCamelCase } from "../kebab-to-camel-case"
 
-describe("toCamelCase", function () {
+describe("kebabToCamelCase", function () {
   it("should convert kebab case to camel case", function () {
     const expectations = [{
       input: 'testing-camelize',
@@ -11,22 +11,10 @@ describe("toCamelCase", function () {
     }, {
       input: 'TESTING-CAMELIZE',
       output: 'testingCamelize'
-    }, {
-      input: 'Testing',
-      output: 'testing'
-    }, {
-      input: 'TESTING',
-      output: 'testing'
-    }, {
-      input: 't',
-      output: 't'
-    }, {
-      input: '',
-      output: ''
     }]
 
     expectations.forEach(expectation => {
-      expect(toCamelCase(expectation.input)).toEqual(expectation.output)
+      expect(kebabToCamelCase(expectation.input)).toEqual(expectation.output)
     })
   })
 })

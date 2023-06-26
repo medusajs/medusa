@@ -13,7 +13,7 @@ describe("upperCaseFirst", function () {
       output: 'Testing'
     }, {
       input: 'TESTING',
-      output: 'Testing'
+      output: 'TESTING'
     }, {
       input: 't',
       output: 'T'
