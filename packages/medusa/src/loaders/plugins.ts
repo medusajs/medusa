@@ -578,8 +578,9 @@ function registerModels(
 
   const coreOrPluginModelsPath = glob.sync(
     `${pluginDetails.resolve}/models/*.js`,
-    {}
+    { ignore: ["index.js"] }
   )
+
   coreOrPluginModelsPath.forEach((coreOrPluginModelPath) => {
     const loaded = require(coreOrPluginModelPath) as
       | ClassConstructor<unknown>
