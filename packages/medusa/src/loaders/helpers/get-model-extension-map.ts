@@ -7,12 +7,12 @@ import { ClassConstructor } from "../../types/global"
 
 export function getModelExtensionsMap({
   directory,
-  glob,
+  pathGlob,
   config,
 }) {
   const modelExtensionsMap = new Map()
-  const globPath = directory ? path.join(directory, glob) : null
-  const modelExtensions = globPath ? glob.sync(globPath, {
+  const fullPathGlob = directory ? path.join(directory, pathGlob) : null
+  const modelExtensions = fullPathGlob ? glob.sync(fullPathGlob, {
     ignore: ["index.js"],
   }) : []
 

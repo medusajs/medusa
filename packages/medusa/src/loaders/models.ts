@@ -24,7 +24,7 @@ export default (
 
   const modelExtensionsMap = getModelExtensionsMap({
     directory: rootDirectory,
-    glob: "dist/models/*.js",
+    pathGlob: "dist/models/*.js",
     config,
   })
 

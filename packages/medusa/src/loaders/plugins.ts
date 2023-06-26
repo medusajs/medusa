@@ -560,7 +560,7 @@ function registerModels(
 ): void {
   const modelExtensionsMap = getModelExtensionsMap({
     directory: rootDirectory,
-    glob: `${pluginDetails.resolve}/models/*.js`,
+    pathGlob: `${pluginDetails.resolve}/models/*.js`,
     config: { register: true }
   })
 
