@@ -1,19 +1,9 @@
-import formatRegistrationName from "../utils/format-registration-name"
+import { formatRegistrationName, formatRegistrationNameWithoutNamespace } from "../utils/format-registration-name"
 import glob from "glob"
 import path from "path"
 import { ClassConstructor, MedusaContainer } from "../types/global"
 import { EntitySchema } from "typeorm"
 import { asClass, asValue } from "awilix"
-
-function formatModelName(modelName) {
-  // Remove "Model" from the end of the string
-  let formattedName = modelName.replace('Model', '');
-
-  // Capitalize the first letter of the string
-  formattedName = formattedName.charAt(0).toUpperCase() + formattedName.slice(1);
-
-  return formattedName;
-}
 
 /**
  * Registers all models in the model directory
@@ -36,7 +26,7 @@ export default (
   const modelExtensions = modelExtensionsFullGlob ? glob.sync(modelExtensionsFullGlob, {
     ignore: ["index.js"],
   }) : []
-  const modelExtensionsMap = {}
+  const modelExtensionsMap = new Map()
 
   modelExtensions.forEach((modelExtensionPath) => {
     const extendedModel = require(modelExtensionPath) as ClassConstructor<unknown> | EntitySchema
@@ -48,7 +38,7 @@ export default (
             if (config.register) {
               const name = formatRegistrationName(modelExtensionPath)
 
-              modelExtensionsMap[name] = val
+              modelExtensionsMap.set(name, val)
             }
           }
         }
@@ -67,12 +57,12 @@ export default (
               const name = formatRegistrationName(fn)
 
               // If an extension file is found, override it with that instead
-              if (modelExtensionsMap[name]) {
+              if (modelExtensionsMap.get(name)) {
                 const coreModel = require(fn)
-                const modelName = formatModelName(name)
+                const modelName = formatRegistrationNameWithoutNamespace(fn)
 
-                coreModel[modelName] = modelExtensionsMap[name]
-                val = modelExtensionsMap[name]
+                coreModel[modelName] = modelExtensionsMap.get(name)
+                val = modelExtensionsMap.get(name)
               }
 
               container.register({

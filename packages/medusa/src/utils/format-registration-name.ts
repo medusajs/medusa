@@ -7,32 +7,39 @@ import { parse } from "path"
  * @param path - the full path of the file
  * @return the formatted name
  */
-function formatRegistrationName(path: string): string {
+export function formatRegistrationName(path: string): string {
   const parsed = parse(path)
   const parsedDir = parse(parsed.dir)
-
   const rawname = parsed.name
-  let namespace = parsedDir.name
-  if (namespace.startsWith("__")) {
+  let directoryNamespace = parsedDir.name
+
+  if (directoryNamespace.startsWith("__")) {
     const parsedCoreDir = parse(parsedDir.dir)
-    namespace = parsedCoreDir.name
+    directoryNamespace = parsedCoreDir.name
   }
 
-  switch (namespace) {
+  switch (directoryNamespace) {
     // We strip the last character when adding the type of registration
     // this is a trick for plural "ies"
     case "repositories":
-      namespace = "repositorys"
+      directoryNamespace = "repositorys"
       break
     case "strategies":
-      namespace = "strategys"
+      directoryNamespace = "strategys"
       break
     default:
       break
   }
 
   const upperNamespace =
-    namespace.charAt(0).toUpperCase() + namespace.slice(1, -1)
+    directoryNamespace.charAt(0).toUpperCase() + directoryNamespace.slice(1, -1)
+
+  return formatRegistrationNameWithoutNamespace(path) + upperNamespace
+}
+
+export function formatRegistrationNameWithoutNamespace(path: string): string {
+  const parsed = parse(path)
+  const rawname = parsed.name
 
   const parts = rawname.split("-").map((n, index) => {
     if (index !== 0) {
@@ -41,7 +48,7 @@ function formatRegistrationName(path: string): string {
     return n
   })
 
-  return parts.join("") + upperNamespace
+  return parts.join("")
 }
 
 export default formatRegistrationName
