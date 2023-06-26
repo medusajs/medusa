@@ -201,7 +201,7 @@ class Client {
     customHeaders: Record<string, any> = {}
   ): Promise<any> {
    
-    customHeaders = { ...customHeaders, ...this.config.customHeaders }
+   customHeaders = { ...this.config.customHeaders, ...customHeaders }
 
     const reqOpts = {
       method,
