@@ -1,4 +1,5 @@
 import { parse } from "path"
+import { upperCaseFirst } from '@medusajs/utils'
 
 /**
  * Formats a filename into the correct container resolution name.
@@ -43,7 +44,7 @@ export function formatRegistrationNameWithoutNamespace(path: string): string {
 
   const parts = rawname.split("-").map((n, index) => {
     if (index !== 0) {
-      return n.charAt(0).toUpperCase() + n.slice(1)
+      return upperCaseFirst(n)
     }
     return n
   })
