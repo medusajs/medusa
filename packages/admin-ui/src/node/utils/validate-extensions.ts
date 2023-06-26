@@ -265,7 +265,7 @@ function validatePath(
     }
   }
 
-  const specialChars = ["/", ":"]
+  const specialChars = ["/", ":", "-"]
 
   for (let i = 0; i < path.length; i++) {
     const currentChar = path[i]
@@ -275,14 +275,14 @@ function validatePath(
       !/^[a-z0-9]$/i.test(currentChar)
     ) {
       return {
-        error: `A route from ${origin} is using an invalid path: ${path}. All paths must only contain alphanumeric characters, "/" and ":".`,
+        error: `A route from ${origin} is using an invalid path: ${path}. Only alphanumeric characters, "/", ":", and "-" are allowed.`,
         valid: false,
       }
     }
 
     if (currentChar === ":" && (i === 0 || path[i - 1] !== "/")) {
       return {
-        error: `A route from ${origin} is using an invalid path: ${path}. All paths must only contain alphanumeric characters, "/" and ":".`,
+        error: `A route from ${origin} is using an invalid path: ${path}. All dynamic segments must be preceded by a "/".`,
         valid: false,
       }
     }
