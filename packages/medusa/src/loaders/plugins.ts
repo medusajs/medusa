@@ -336,12 +336,21 @@ function registerApi(
     }
     return app
   } catch (err) {
-    if (err.message !== `Cannot find module '${pluginDetails.resolve}/api'`) {
-      logger.progress(
-        activityId,
-        `No customer endpoints registered for ${pluginDetails.name}`
+    if (err.code !== "MODULE_NOT_FOUND") {
+      const projectName =
+        pluginDetails.name === "project-plugin"
+          ? "your Medusa project"
+          : `${pluginDetails.name}`
+
+      logger.warn(
+        `An error occured while registering endpoints in ${projectName}`
       )
+
+      if (err.stack) {
+        logger.warn(`${err.stack}`)
+      }
     }
+
     return app
   }
 }
