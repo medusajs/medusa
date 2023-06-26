@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.2.1
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
+## 1.2.0
+
+### Minor Changes
+
+- [#3740](https://github.com/medusajs/medusa/pull/3740) [`8b6464180`](https://github.com/medusajs/medusa/commit/8b6464180a82bcc41197f2a97e58b9555a7072cd) Thanks [@dwene](https://github.com/dwene)! - Migrate medusa-file-minio and medusa-file-s3 to typescript.
+
 ## 1.1.12
 
 ### Patch Changes

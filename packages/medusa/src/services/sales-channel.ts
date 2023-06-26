@@ -68,7 +68,7 @@ class SalesChannelService extends TransactionBaseService {
 
     if (!salesChannel) {
       const selectorConstraints = Object.entries(selector)
-        .map((key, value) => `${key}: ${value}`)
+        .map(([key, value]) => `${key}: ${value}`)
         .join(", ")
 
       throw new MedusaError(

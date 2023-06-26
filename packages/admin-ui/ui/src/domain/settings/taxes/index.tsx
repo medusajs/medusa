@@ -1,6 +1,6 @@
 import { useAdminRegions } from "medusa-react"
-import { useEffect } from "react"
-import { useNavigate, useSearchParams } from "react-router-dom"
+import { useCallback, useEffect, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 import BackButton from "../../../components/atoms/back-button"
 import Spinner from "../../../components/atoms/spinner"
 import GearIcon from "../../../components/fundamentals/icons/gear-icon"
@@ -9,19 +9,39 @@ import RadioGroup from "../../../components/organisms/radio-group"
 import TwoSplitPane from "../../../components/templates/two-split-pane"
 import TaxDetails from "./details"
 
-const SEARCH_PARAM = "reg_id"
-
 const Taxes = () => {
+  const params = useParams()
+  const regId: string | undefined = params["*"]
+
   const navigate = useNavigate()
-  const [searchParams, setSearchParams] = useSearchParams()
 
   const { regions, isLoading } = useAdminRegions()
 
+  const [selectedRegion, setSelectedRegion] = useState<string | undefined>(
+    regId
+  )
+
+  const handleChange = useCallback(
+    (id: string) => {
+      if (id !== selectedRegion) {
+        setSelectedRegion(id)
+        navigate(`/a/settings/taxes/${id}`, {
+          replace: true,
+        })
+      }
+    },
+    [navigate, selectedRegion]
+  )
+
   useEffect(() => {
-    if (!isLoading && regions?.length && !searchParams.get(SEARCH_PARAM)) {
-      setSearchParams({ [SEARCH_PARAM]: regions[0].id })
+    if (regId) {
+      handleChange(regId)
     }
-  }, [regions, isLoading, searchParams, setSearchParams])
+
+    if (!regId && regions && regions.length > 0) {
+      handleChange(regions[0].id)
+    }
+  }, [handleChange, regId, regions])
 
   return (
     <>
@@ -50,10 +70,8 @@ const Taxes = () => {
               </div>
             ) : (
               <RadioGroup.Root
-                value={searchParams.get(SEARCH_PARAM) || undefined}
-                onValueChange={(value) =>
-                  setSearchParams({ [SEARCH_PARAM]: value })
-                }
+                value={selectedRegion}
+                onValueChange={handleChange}
               >
                 {regions.map((r) => {
                   return (
@@ -75,7 +93,7 @@ const Taxes = () => {
               </RadioGroup.Root>
             )}
           </BodyCard>
-          <TaxDetails id={searchParams.get(SEARCH_PARAM)} />
+          <TaxDetails id={selectedRegion} />
         </TwoSplitPane>
       </div>
     </>

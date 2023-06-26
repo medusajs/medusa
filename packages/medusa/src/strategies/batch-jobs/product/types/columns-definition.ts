@@ -714,6 +714,65 @@ export const productSalesChannelColumnsDefinition: ProductColumnDefinition = {
   },
 }
 
+export const productCategoriesColumnsDefinition: ProductColumnDefinition = {
+  "Product Category Handle": {
+    name: "Product Category Handle",
+    importDescriptor: {
+      match: /Product Category \d+ Handle/,
+      reducer: (builtLine, key, value): TBuiltProductImportLine => {
+        builtLine["product.categories"] = builtLine["product.categories"] || []
+
+        if (typeof value === "undefined" || value === null) {
+          return builtLine
+        }
+
+        const categories = builtLine["product.categories"] as Record<
+          string,
+          string | number
+        >[]
+
+        categories.push({
+          handle: value,
+        })
+
+        return builtLine
+      },
+    },
+    exportDescriptor: {
+      isDynamic: true,
+      buildDynamicColumnName: (index: number) => {
+        return `Product Category ${index + 1} Handle`
+      },
+    },
+  },
+  "Product Category Name": {
+    name: "Product Category Name",
+    importDescriptor: {
+      match: /Product Category \d+ Name/,
+      reducer: (builtLine) => builtLine,
+    },
+    exportDescriptor: {
+      isDynamic: true,
+      buildDynamicColumnName: (index: number) => {
+        return `Product Category ${index + 1} Name`
+      },
+    },
+  },
+  "Product Category Description": {
+    name: "Product Category Description",
+    importDescriptor: {
+      match: /Product Category \d+ Description/,
+      reducer: (builtLine) => builtLine,
+    },
+    exportDescriptor: {
+      isDynamic: true,
+      buildDynamicColumnName: (index: number) => {
+        return `Product Category ${index + 1} Description`
+      },
+    },
+  },
+}
+
 export const productImportColumnsDefinition: CsvSchema<
   TParsedProductImportRowData,
   TBuiltProductImportLine
@@ -739,6 +798,26 @@ export const productImportSalesChannelsColumnsDefinition: CsvSchema<
   TBuiltProductImportLine
 > = {
   columns: Object.entries(productSalesChannelColumnsDefinition)
+    .map(([name, def]) => {
+      return def.importDescriptor && { name, ...def.importDescriptor }
+    })
+    .filter(
+      (
+        v
+      ): v is CsvSchemaColumn<
+        TParsedProductImportRowData,
+        TBuiltProductImportLine
+      > => {
+        return !!v
+      }
+    ),
+}
+
+export const productImportProductCategoriesColumnsDefinition: CsvSchema<
+  TParsedProductImportRowData,
+  TBuiltProductImportLine
+> = {
+  columns: Object.entries(productCategoriesColumnsDefinition)
     .map(([name, def]) => {
       return def.importDescriptor && { name, ...def.importDescriptor }
     })

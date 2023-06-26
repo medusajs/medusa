@@ -1,12 +1,12 @@
-import { Router } from "express"
-
-import { ProductVariant } from "../../../../models/product-variant"
-import { PaginatedResponse } from "../../../../types/common"
-import { PricedVariant } from "../../../../types/pricing"
 import middlewares, { transformQuery } from "../../../middlewares"
-import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
+
 import { AdminGetVariantParams } from "./get-variant"
 import { AdminGetVariantsParams } from "./list-variants"
+import { PaginatedResponse } from "../../../../types/common"
+import { PricedVariant } from "../../../../types/pricing"
+import { ProductVariant } from "../../../../models/product-variant"
+import { Router } from "express"
+import { checkRegisteredModules } from "../../../middlewares/check-registered-modules"
 
 const route = Router()
 
@@ -81,6 +81,8 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
  *     - options
  *     - prices
  *     - product
+ *   totals:
+ *     - purchasable
  * required:
  *   - variants
  *   - count

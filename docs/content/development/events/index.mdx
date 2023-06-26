@@ -39,12 +39,6 @@ This rather complex logic is abstracted away from the consumers of the EventBusS
 
 To pull staged jobs from the database, a separate enqueuer polls the database every three seconds to discover new visible jobs. These jobs are then added to the queue and processed as described in the Processing section earlier.
 
-:::note
-
-This pattern is heavily inspired by the Transactionally-staged Job Drain described in this blog post.
-
-:::
-
 ---
 
 ## Emitting Events

@@ -3,6 +3,7 @@ import { Selector } from "../../../../types/common"
 import { CsvSchema, CsvSchemaColumn } from "../../../../interfaces/csv-parser"
 import {
   BatchJobService,
+  ProductCategoryService,
   ProductCollectionService,
   ProductService,
   ProductVariantService,
@@ -37,6 +38,7 @@ export type ProductExportBatchJobContext = {
     dynamicOptionColumnCount: number
     dynamicImageColumnCount: number
     dynamicSalesChannelsColumnCount: number
+    dynamicProductCategoriesColumnCount: number
   }
   list_config?: {
     select?: string[]
@@ -82,6 +84,7 @@ export type ProductImportInjectedProps = {
   salesChannelService: SalesChannelService
   regionService: RegionService
   productCollectionService: ProductCollectionService
+  productCategoryService: ProductCategoryService
   fileService: typeof FileService
 
   featureFlagRouter: FlagRouter

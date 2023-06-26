@@ -1,10 +1,9 @@
+import path from "path"
+import { execSync, fork } from "child_process"
 import boxen from "boxen"
-import { execSync } from "child_process"
 import chokidar from "chokidar"
-import spawn from "cross-spawn"
 import Store from "medusa-telemetry/dist/store"
 import { EOL } from "os"
-import path from "path"
 
 import Logger from "../loaders/logger"
 
@@ -16,6 +15,10 @@ const defaultConfig = {
 
 export default async function ({ port, directory }) {
   const args = process.argv
+  const argv =
+    process.argv.indexOf("--") !== -1
+      ? process.argv.slice(process.argv.indexOf("--") + 1)
+      : []
   args.shift()
   args.shift()
   args.shift()
@@ -46,12 +49,20 @@ export default async function ({ port, directory }) {
     stdio: ["ignore", process.stdout, process.stderr],
   })
 
-  const cliPath = path.join(directory, "node_modules", ".bin", "medusa")
-  let child = spawn(cliPath, [`start`, ...args], {
+  const cliPath = path.join(
+    directory,
+    "node_modules",
+    "@medusajs",
+    "medusa",
+    "dist",
+    "bin",
+    "medusa.js"
+  )
+  let child = fork(cliPath, [`start`, ...args], {
+    execArgv: argv,
     cwd: directory,
-    env: process.env,
-    stdio: ["pipe", process.stdout, process.stderr],
   })
+
   child.on("error", function (err) {
     console.log("Error ", err)
     process.exit(1)
@@ -74,11 +85,11 @@ export default async function ({ port, directory }) {
 
     Logger.info("Rebuilt")
 
-    child = spawn(cliPath, [`start`, ...args], {
+    child = fork(cliPath, [`start`, ...args], {
+      execArgv: argv,
       cwd: directory,
-      env: process.env,
-      stdio: ["pipe", process.stdout, process.stderr],
     })
+
     child.on("error", function (err) {
       console.log("Error ", err)
       process.exit(1)

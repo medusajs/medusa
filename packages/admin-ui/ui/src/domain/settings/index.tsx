@@ -108,7 +108,7 @@ const Settings = () => (
     <Route path="/return-reasons" element={<ReturnReasons />} />
     <Route path="/team" element={<Users />} />
     <Route path="/personal-information" element={<PersonalInformation />} />
-    <Route path="/taxes" element={<Taxes />} />
+    <Route path="/taxes/*" element={<Taxes />} />
   </Routes>
 )
 

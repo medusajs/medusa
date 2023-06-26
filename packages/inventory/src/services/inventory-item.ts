@@ -7,7 +7,6 @@ import {
   SharedContext,
 } from "@medusajs/types"
 import {
-  buildQuery,
   InjectEntityManager,
   isDefined,
   MedusaContext,
@@ -16,6 +15,7 @@ import {
 import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
 import { InventoryItem } from "../models"
 import { getListQuery } from "../utils/query"
+import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -40,16 +40,16 @@ export default class InventoryItemService {
   /**
    * @param selector - Filter options for inventory items.
    * @param config - Configuration for query.
+   * @param context
    * @return Resolves to the list of inventory items that match the filter.
    */
-  @InjectEntityManager()
   async list(
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<InventoryItemDTO[]> {
     const queryBuilder = getListQuery(
-      context.transactionManager!,
+      context.transactionManager ?? this.manager_,
       selector,
       config
     )
@@ -57,36 +57,17 @@ export default class InventoryItemService {
   }
 
   /**
-   * @param selector - Filter options for inventory items.
-   * @param config - Configuration for query.
-   * @return - Resolves to the list of inventory items that match the filter and the count of all matching items.
-   */
-  @InjectEntityManager()
-  async listAndCount(
-    selector: FilterableInventoryItemProps = {},
-    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext() context: SharedContext = {}
-  ): Promise<[InventoryItemDTO[], number]> {
-    const queryBuilder = getListQuery(
-      context.transactionManager!,
-      selector,
-      config
-    )
-    return await queryBuilder.getManyAndCount()
-  }
-
-  /**
    * Retrieves an inventory item by its id.
    * @param inventoryItemId - the id of the inventory item to retrieve.
    * @param config - the configuration options for the find operation.
+   * @param context
    * @return The retrieved inventory item.
    * @throws If the inventory item id is not defined or if the inventory item is not found.
    */
-  @InjectEntityManager()
   async retrieve(
     inventoryItemId: string,
     config: FindConfig<InventoryItem> = {},
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<InventoryItem> {
     if (!isDefined(inventoryItemId)) {
       throw new MedusaError(
@@ -95,7 +76,7 @@ export default class InventoryItemService {
       )
     }
 
-    const manager = context.transactionManager!
+    const manager = context.transactionManager ?? this.manager_
     const itemRepository = manager.getRepository(InventoryItem)
 
     const query = buildQuery({ id: inventoryItemId }, config) as FindManyOptions
@@ -112,8 +93,30 @@ export default class InventoryItemService {
   }
 
   /**
-   * @param input - Input for creating a new inventory item.
-   * @return The newly created inventory item.
+   * @param selector - Filter options for inventory items.
+   * @param config - Configuration for query.
+   * @param context
+   * @return - Resolves to the list of inventory items that match the filter and the count of all matching items.
+   */
+  async listAndCount(
+    selector: FilterableInventoryItemProps = {},
+    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
+    context: SharedContext = {}
+  ): Promise<[InventoryItemDTO[], number]> {
+    const queryBuilder = getListQuery(
+      context.transactionManager ?? this.manager_,
+      selector,
+      config
+    )
+
+    return await queryBuilder.getManyAndCount()
+  }
+
+  /**
+   * @param data
+   * @param context
+   * @param data
+   * @param context
    */
   @InjectEntityManager()
   async create(
@@ -135,6 +138,9 @@ export default class InventoryItemService {
       height: data.height,
       width: data.width,
       requires_shipping: data.requires_shipping,
+      description: data.description,
+      thumbnail: data.thumbnail,
+      title: data.title,
     })
 
     const result = await itemRepository.save(inventoryItem)
@@ -148,7 +154,9 @@ export default class InventoryItemService {
 
   /**
    * @param inventoryItemId - The id of the inventory item to update.
-   * @param update - The updates to apply to the inventory item.
+   * @param data
+   * @param context
+   * @param context
    * @return The updated inventory item.
    */
   @InjectEntityManager()
@@ -183,6 +191,7 @@ export default class InventoryItemService {
 
   /**
    * @param inventoryItemId - The id of the inventory item to delete.
+   * @param context
    */
   @InjectEntityManager()
   async delete(

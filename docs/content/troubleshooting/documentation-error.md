@@ -1,4 +1,6 @@
-# Troubleshooting Documentation Errors
+---
+title: 'Troubleshooting Documentation Errors'
+---
 
 ## React Hook Errors
 

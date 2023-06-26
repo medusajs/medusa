@@ -4,19 +4,26 @@ import {
   StockLocationAddressInput,
   StockLocationDTO,
 } from "@medusajs/medusa"
-import { useAdminUpdateStockLocation } from "medusa-react"
-import { useForm } from "react-hook-form"
+import GeneralForm, { GeneralFormType } from "../components/general-form"
+import MetadataForm, {
+  MetadataFormType,
+  getMetadataFormValues,
+  getSubmittableMetadata,
+} from "../../../../components/forms/general/metadata-form"
+
+import AddressForm from "../components/address-form"
 import Button from "../../../../components/fundamentals/button"
 import Modal from "../../../../components/molecules/modal"
-import useNotification from "../../../../hooks/use-notification"
 import { getErrorMessage } from "../../../../utils/error-messages"
 import { nestedForm } from "../../../../utils/nested-form"
-import AddressForm from "../components/address-form"
-import GeneralForm, { GeneralFormType } from "../components/general-form"
+import { useAdminUpdateStockLocation } from "medusa-react"
+import { useForm } from "react-hook-form"
+import useNotification from "../../../../hooks/use-notification"
 
 type EditLocationForm = {
   general: GeneralFormType
   address: StockLocationAddressDTO
+  metadata: MetadataFormType
 }
 
 export type LocationEditModalProps = {
@@ -31,6 +38,7 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
         name: location.name,
       }, // @ts-ignore
       address: location.address,
+      metadata: getMetadataFormValues(location.metadata),
     },
     reValidateMode: "onBlur",
     mode: "onBlur",
@@ -67,6 +75,10 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
             <div className="mt-xlarge gap-y-xlarge flex flex-col">
               <GeneralForm form={nestedForm(form, "general")} />
               <AddressForm form={nestedForm(form, "address")} />
+              <div>
+                <h2 className="inter-base-semibold mb-base">Metadata</h2>
+                <MetadataForm form={nestedForm(form, "metadata")} />
+              </div>
             </div>
           </form>
         </Modal.Content>
@@ -97,7 +109,7 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
 }
 
 const createPayload = (data): AdminPostStockLocationsReq => {
-  const { general, address } = data
+  const { general, address, metadata } = data
 
   let addressInput
   if (address.address_1) {
@@ -113,6 +125,7 @@ const createPayload = (data): AdminPostStockLocationsReq => {
   return {
     name: general.name,
     address: addressInput,
+    metadata: getSubmittableMetadata(metadata),
   }
 }
 

@@ -1,8 +1,9 @@
-import { IInventoryService } from "@medusajs/types"
 import { IsBoolean, IsNumber, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
+
 import { EntityManager } from "typeorm"
 import { FindParams } from "../../../../types/common"
+import { IInventoryService } from "@medusajs/types"
 
 /**
  * @oas [post] /admin/inventory-items/{id}
@@ -158,6 +159,18 @@ export class AdminPostInventoryItemsInventoryItemReq {
   @IsOptional()
   @IsNumber()
   width?: number
+
+  @IsString()
+  @IsOptional()
+  title?: string
+
+  @IsString()
+  @IsOptional()
+  description?: string
+
+  @IsString()
+  @IsOptional()
+  thumbnail?: string
 
   @IsBoolean()
   @IsOptional()

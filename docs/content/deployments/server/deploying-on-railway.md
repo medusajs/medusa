@@ -191,6 +191,10 @@ If you generated a random domain, you can find it by clicking on the GitHub repo
 
 :::
 
+### Health Route
+
+You can access `/health` to get health status of your deployed backend.
+
 ### Testing the Admin
 
 :::note
@@ -217,7 +221,7 @@ If you run into any issues or a problem with your deployed backend, you can chec
 
 To run commands on your backend, you can use [Railway’s CLI tool to run a local shell and execute commands](https://docs.railway.app/develop/cli#local-shell).
 
-For example, you can run commands on the backend to seed the database or create a new user using [Medusa’s CLI tool](../../cli/reference.md).
+For example, you can run commands on the backend to seed the database or create a new user using [Medusa’s CLI tool](../../cli/reference.mdx).
 
 ---
 

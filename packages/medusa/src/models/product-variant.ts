@@ -1,8 +1,3 @@
-import { DbAwareColumn, generateEntityId } from "../utils"
-import { MoneyAmount } from "./money-amount"
-import { Product } from "./product"
-import { ProductOptionValue } from "./product-option-value"
-import { SoftDeletableEntity } from "../interfaces"
 import {
   BeforeInsert,
   Column,
@@ -10,10 +5,15 @@ import {
   Index,
   JoinColumn,
   ManyToOne,
-  OneToMany
+  OneToMany,
 } from "typeorm"
+import { DbAwareColumn, generateEntityId } from "../utils"
 
+import { MoneyAmount } from "./money-amount"
+import { Product } from "./product"
+import { ProductOptionValue } from "./product-option-value"
 import { ProductVariantInventoryItem } from "./product-variant-inventory-item"
+import { SoftDeletableEntity } from "../interfaces"
 
 @Entity()
 export class ProductVariant extends SoftDeletableEntity {
@@ -102,6 +102,8 @@ export class ProductVariant extends SoftDeletableEntity {
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
+
+  purchasable?: boolean
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -264,4 +266,14 @@ export class ProductVariant extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *   purchasable:
+ *     description: |
+ *        Only used with the inventory modules.
+ *        A boolean value indicating whether the Product Variant is purchasable.
+ *        A variant is purchasable if:
+ *          - inventory is not managed
+ *          - it has no inventory items
+ *          - it is in stock
+ *          - it is backorderable.
+ *     type: boolean
  */

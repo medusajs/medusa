@@ -4,6 +4,12 @@ addHowToData: true
 ---
 
 import Feedback from '@site/src/components/Feedback';
+import DocCardList from '@theme/DocCardList';
+import Icons from '@theme/Icon';
+import Troubleshooting from '@site/src/components/Troubleshooting'
+import SaslSection from '../../troubleshooting/database-errors/_sasl.md'
+import ConnectionErrorSection from '../../troubleshooting/database-errors/_connection-error.md'
+import FreshInstallationSection from '../../troubleshooting/awilix-resolution-error/_fresh-installation.md'
 
 # Install Medusa Backend
 
@@ -11,19 +17,11 @@ This document will guide you through setting up your Medusa backend in a three s
 
 ## Prerequisites
 
-### Node.js
+Before you can install and use Medusa, you need the following tools installed on your machine:
 
-Medusa supports Node v16 or greater. You can check which version of Node you have by running the following command:
-
-```bash noReport
-node -v
-```
-
-You can install Node from the [official website](https://nodejs.org/en/).
-
-### Git
-
-Git is required for this setup. You can find instructions on how to install it from the [Set up your dev environment documentation](../../development/backend/prepare-environment.mdx#git).
+- [Node.js v16+](./prepare-environment.mdx#nodejs)
+- [Git](./prepare-environment.mdx#git)
+- [PostgreSQL](./prepare-environment.mdx#postgresql)
 
 ---
 
@@ -50,15 +48,35 @@ If you run into any errors while installing the CLI tool, check out the [trouble
 ### 2. Create a new Medusa project
 
    ```bash noReport
-   medusa new my-medusa-store --seed
+   medusa new my-medusa-store
    ```
+   
+   You'll then be asked to specify your PostgreSQL database credentials. You can choose "Continue" to use the default credentials shown in the terminal, choose "Change credentials" to specify your PostgreSQL credentails, or choose "Skip database setup" to create the database later.
+   
+:::warning
+
+If you choose "Skip database setup" you will need to [set the database configurations](./configurations.md#database-configuration) and [run migrations](../entities/migrations/overview.mdx#migrate-command) later.
+
+:::
 
 ### 3. Start your Medusa backend
+
+:::note
+
+Make sure your PostgreSQL server is running before you run the Medusa backend.
+
+:::
 
    ```bash noReport
    cd my-medusa-store
    medusa develop
    ```
+
+After these three steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
+
+```bash noReport
+curl localhost:9000/store/products
+```
 
 <Feedback 
    event="survey_server_quickstart"
@@ -67,38 +85,64 @@ If you run into any errors while installing the CLI tool, check out the [trouble
    negativeQuestion="Please describe the issue you faced."
 />
 
-### Test the Backend
+---
 
-After these three steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
+## Troubleshooting Installation
 
-```bash noReport
-curl localhost:9000/store/products
+<Troubleshooting
+  sections={[
+    {
+      title: 'Error: SASL: SCRAM-SERVER-FIRST-MESSAGE: Client password must be a string',
+      content: <SaslSection />
+    },
+    {
+      title: 'Error: connect ECONNREFUSED ::1:5432',
+      content: <ConnectionErrorSection />
+    },
+    {
+      title: 'AwilixResolutionError: Could Not Resolve X',
+      content: <FreshInstallationSection />
+    },
+  ]}
+/>
+
+---
+
+## Seed Data 
+
+For better testing, you can add demo data to your Medusa backend by running the seed command in your Medusa backend directory:
+
+```bash
+medusa seed --seed-file=data/seed.json
 ```
+
+---
+
+## Health Route
+
+You can access `/health` to get health status of your backend.
 
 ---
 
 ## Next Steps
 
-### Learn about the Architecture
-
-Medusa backend is made up of different resources that make it a powerful server. Get an overview of them in the [Medusa Architecture Overview](../fundamentals/architecture-overview.md) documentation.
-
-### Set Up Development Environment
-
-For an optimal experience developing with Medusa and to make sure you can use its advanced functionalities, you'll need to install more tools such as PostgreSQL.
-
-Follow [this documentation to learn how to set up your development environment](../../development/backend/prepare-environment.mdx).
-
-### Backend Configurations
-
-It's important to configure your Medusa backend properly and learn how environment variables are loaded.
-
-You can learn more about configuring your backend and loading environment variables in the [Configure your Backend documentation](../../development/backend/configurations.md).
-
-### File Service Plugin
-
-To upload product images to your Medusa backend, you must install and configure one of the following file service plugins:
-
-- [MinIO](../../plugins/file-service/minio.md) (Recommended for local development)
-- [S3](../../plugins/file-service/s3.md)
-- [DigitalOcean Spaces](../../plugins/file-service/spaces.md)
+<DocCardList colSize={6} items={[
+  {
+    type: 'link',
+    href: '/development/fundamentals/architecture-overview',
+    label: 'Backend Architecture',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the different resources that your Medusa backend is made of.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/backend/install',
+    label: 'Backend Configurations',
+    customProps: {
+      icon: Icons['tools-solid'],
+      description: 'Learn about configuring your backend and loading environment variables.'
+    }
+  }
+]} />

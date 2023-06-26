@@ -27,8 +27,6 @@ const keepTables = [
   "currency",
 ]
 
-let dataSourceType = "postgresql"
-
 const DbTestUtil = {
   db_: null,
 
@@ -47,11 +45,7 @@ const DbTestUtil = {
 
     const manager = this.db_.manager
 
-    if (dataSourceType === "sqlite") {
-      await manager.query(`PRAGMA foreign_keys = OFF`)
-    } else {
-      await manager.query(`SET session_replication_role = 'replica';`)
-    }
+    await manager.query(`SET session_replication_role = 'replica';`)
 
     for (const entity of entities) {
       if (
@@ -64,11 +58,8 @@ const DbTestUtil = {
       await manager.query(`DELETE
                            FROM "${entity.tableName}";`)
     }
-    if (dataSourceType === "sqlite") {
-      await manager.query(`PRAGMA foreign_keys = ON`)
-    } else {
-      await manager.query(`SET session_replication_role = 'origin';`)
-    }
+
+    await manager.query(`SET session_replication_role = 'origin';`)
   },
 
   shutdown: async function () {
@@ -82,7 +73,7 @@ const instance = DbTestUtil
 module.exports = {
   initDb: async function ({ cwd, database_extra }) {
     const { configModule } = getConfigFile(cwd, `medusa-config`)
-    const { projectConfig, featureFlags } = configModule
+    const { featureFlags } = configModule
 
     const featureFlagsLoader =
       require("@medusajs/medusa/dist/loaders/feature-flags").default
@@ -91,69 +82,53 @@ module.exports = {
     const modelsLoader = require("@medusajs/medusa/dist/loaders/models").default
     const entities = modelsLoader({}, { register: false })
 
-    if (projectConfig.database_type === "sqlite") {
-      dataSourceType = "sqlite"
-      const dataSource = new DataSource({
-        type: "sqlite",
-        database: projectConfig.database_database,
-        synchronize: true,
-        entities,
-        extra: database_extra ?? {},
-      })
+    await dbFactory.createFromTemplate(DB_NAME)
 
-      const dbDataSource = await dataSource.initialize()
-
-      instance.setDb(dbDataSource)
-      return dbDataSource
-    } else {
-      await dbFactory.createFromTemplate(DB_NAME)
-
-      // get migrations with enabled featureflags
-      const migrationDir = path.resolve(
-        path.join(
-          __dirname,
-          `../../`,
-          `node_modules`,
-          `@medusajs`,
-          `medusa`,
-          `dist`,
-          `migrations`,
-          `*.js`
-        )
+    // get migrations with enabled featureflags
+    const migrationDir = path.resolve(
+      path.join(
+        __dirname,
+        `../../`,
+        `node_modules`,
+        `@medusajs`,
+        `medusa`,
+        `dist`,
+        `migrations`,
+        `*.js`
       )
+    )
 
-      const {
-        getEnabledMigrations,
-        getModuleSharedResources,
-      } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
+    const {
+      getEnabledMigrations,
+      getModuleSharedResources,
+    } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
 
-      const { migrations: moduleMigrations, models: moduleModels } =
-        getModuleSharedResources(configModule, featureFlagsRouter)
+    const { migrations: moduleMigrations, models: moduleModels } =
+      getModuleSharedResources(configModule, featureFlagsRouter)
 
-      const enabledMigrations = getEnabledMigrations([migrationDir], (flag) =>
-        featureFlagsRouter.isFeatureEnabled(flag)
-      )
+    const enabledMigrations = getEnabledMigrations([migrationDir], (flag) =>
+      featureFlagsRouter.isFeatureEnabled(flag)
+    )
 
-      const enabledEntities = entities.filter(
-        (e) => typeof e.isFeatureEnabled === "undefined" || e.isFeatureEnabled()
-      )
+    const enabledEntities = entities.filter(
+      (e) => typeof e.isFeatureEnabled === "undefined" || e.isFeatureEnabled()
+    )
 
-      const dbDataSource = new DataSource({
-        type: "postgres",
-        url: DB_URL,
-        entities: enabledEntities.concat(moduleModels),
-        migrations: enabledMigrations.concat(moduleMigrations),
-        extra: database_extra ?? {},
-        name: "integration-tests",
-      })
+    const dbDataSource = new DataSource({
+      type: "postgres",
+      url: DB_URL,
+      entities: enabledEntities.concat(moduleModels),
+      migrations: enabledMigrations.concat(moduleMigrations),
+      extra: database_extra ?? {},
+      name: "integration-tests",
+    })
 
-      await dbDataSource.initialize()
+    await dbDataSource.initialize()
 
-      await dbDataSource.runMigrations()
+    await dbDataSource.runMigrations()
 
-      instance.setDb(dbDataSource)
-      return dbDataSource
-    }
+    instance.setDb(dbDataSource)
+    return dbDataSource
   },
   useDb: function () {
     return instance

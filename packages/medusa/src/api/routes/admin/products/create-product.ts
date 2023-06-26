@@ -39,7 +39,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
 import { DistributedTransaction } from "../../../../utils/transaction"
 import { validator } from "../../../../utils/validator"
 import {
-  createVariantTransaction,
+  createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
 
@@ -130,7 +130,7 @@ export default async (req, res) => {
 
   const entityManager: EntityManager = req.scope.resolve("manager")
 
-  const newProduct = await entityManager.transaction(async (manager) => {
+  const product = await entityManager.transaction(async (manager) => {
     const { variants } = validated
     delete validated.variants
 
@@ -185,27 +185,25 @@ export default async (req, res) => {
       }
 
       try {
-        await Promise.all(
-          variants.map(async (variant) => {
-            const options =
-              variant?.options?.map((option, index) => ({
-                ...option,
-                option_id: optionIds[index],
-              })) || []
+        const variantsInputData = variants.map((variant) => {
+          const options =
+            variant?.options?.map((option, index) => ({
+              ...option,
+              option_id: optionIds[index],
+            })) || []
 
-            const input = {
-              ...variant,
-              options,
-            }
+          return {
+            ...variant,
+            options,
+          } as CreateProductVariantInput
+        })
 
-            const varTransation = await createVariantTransaction(
-              transactionDependencies,
-              newProduct.id,
-              input as CreateProductVariantInput
-            )
-            allVariantTransactions.push(varTransation)
-          })
+        const varTransaction = await createVariantsTransaction(
+          transactionDependencies,
+          newProduct.id,
+          variantsInputData
         )
+        allVariantTransactions.push(varTransaction)
       } catch (e) {
         await Promise.all(
           allVariantTransactions.map(async (transaction) => {
@@ -220,15 +218,19 @@ export default async (req, res) => {
       }
     }
 
-    return newProduct
-  })
+    const rawProduct = await productService
+      .withTransaction(manager)
+      .retrieve(newProduct.id, {
+        select: defaultAdminProductFields,
+        relations: defaultAdminProductRelations,
+      })
 
-  const rawProduct = await productService.retrieve(newProduct.id, {
-    select: defaultAdminProductFields,
-    relations: defaultAdminProductRelations,
-  })
+    const [product] = await pricingService
+      .withTransaction(manager)
+      .setProductPrices([rawProduct])
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+    return product
+  })
 
   res.json({ product })
 }

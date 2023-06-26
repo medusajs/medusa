@@ -43,7 +43,7 @@ export class MoneyAmount extends SoftDeletableEntity {
   @JoinColumn({ name: "price_list_id" })
   price_list: PriceList | null
 
-  @Index()
+  @Index('idx_money_amount_variant_id')
   @Column({ nullable: true })
   variant_id: string
 
@@ -53,7 +53,7 @@ export class MoneyAmount extends SoftDeletableEntity {
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
-  @Index()
+  @Index('idx_money_amount_region_id')
   @Column({ nullable: true })
   region_id: string
 

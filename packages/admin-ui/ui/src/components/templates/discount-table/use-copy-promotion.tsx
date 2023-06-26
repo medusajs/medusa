@@ -2,7 +2,7 @@ import { useAdminCreateDiscount } from "medusa-react"
 import { useNavigate } from "react-router-dom"
 import useNotification from "../../../hooks/use-notification"
 import { getErrorMessage } from "../../../utils/error-messages"
-import { removeNullish } from "../../../utils/remove-nullish"
+import { removeFalsy } from "../../../utils/remove-nullish"
 
 const useCopyPromotion = () => {
   const navigate = useNavigate()
@@ -47,7 +47,7 @@ const useCopyPromotion = () => {
     if (promotion.rule.conditions) {
       copy.rule.conditions = promotion.rule.conditions.map((cond) => ({
         operator: cond.operator,
-        ...removeNullish({
+        ...removeFalsy({
           products: cond.products,
           product_types: cond.product_types,
           product_tags: cond.product_tags,

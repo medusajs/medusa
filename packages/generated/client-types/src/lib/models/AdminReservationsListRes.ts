@@ -3,10 +3,10 @@
 /* eslint-disable */
 import { SetRelation, Merge } from "../core/ModelUtils"
 
-import type { ReservationItemDTO } from "./ReservationItemDTO"
+import type { ExtendedReservationItem } from "./ExtendedReservationItem"
 
 export interface AdminReservationsListRes {
-  reservations: Array<ReservationItemDTO>
+  reservations: Array<ExtendedReservationItem>
   /**
    * The total number of items available
    */

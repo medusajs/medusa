@@ -16,7 +16,7 @@ When a customer purchases a gift card, they should receive the code for the gift
 
 ## Gift Cards as Products
 
-Before a gift card is purchased, it’s essentially a `Product` entity. A store can have only one gift card with unlimited denominations.
+Before a gift card is purchased, it’s essentially a `Product` entity. Each gift card can have unlimited denominations.
 
 The gift card product has an attribute `is_giftcard` set to `true`. Its `options` property includes only one option, which is Denomination. The different denomination values are stored as `variants`.
 

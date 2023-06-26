@@ -2,7 +2,7 @@
 description: "Learn what a Strategy is in Medusa. A strategy is an isolated piece of business logic that can be overridden and customized."
 ---
 
-import DocCardList from '@theme/DocCardList';
+import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
 
 # Strategy
@@ -40,29 +40,18 @@ export default async (req, res) => {
 }
 ```
 
-Developers can override these strategies defined in the core to customize their functionality. Dependency injection then resolves the strategy (in the code example above, `CartCompletionStrategy`) to the custom strategy that the developer created. Then, the method (in the code example above, `complete`) of the custom strategy will be executed instead of the one defined in the core package.
+When a strategy is overriden, dependency injection then resolves the strategy (in the code example above, `CartCompletionStrategy`) to the custom strategy that the developer created. Then, the method (in the code example above, `complete`) of the custom strategy will be executed instead of the one defined in the core package.
 
 ## Custom Development
 
-<DocCardList colSize={6} items={[
-  {
-    type: 'link',
-    href: '#',
-    label: 'Backend: Create a Strategy',
-    customProps: {
-      icon: Icons['academic-cap-solid'],
-      description: 'Learn how to create a strategy.',
-      isSoon: true
-    }
-  },
-  {
-    type: 'link',
-    href: '#',
-    label: 'Backend: Override a Strategy',
-    customProps: {
-      icon: Icons['academic-cap-solid'],
-      description: 'Learn how to override a strategy.',
-      isSoon: true
-    }
-  },
-]} />
+Developers can override strategies defined in the core to customize their functionality within their Medusa backend codebase or within a plugin.
+
+<DocCard item={{
+  type: 'link',
+  href: '/development/strategies/override-strategy',
+  label: 'Backend: Override a Strategy',
+  customProps: {
+    icon: Icons['academic-cap-solid'],
+    description: 'Learn how to override a strategy.',
+  }
+}} />

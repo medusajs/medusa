@@ -1,12 +1,14 @@
-import { Router } from "express"
 import "reflect-metadata"
-import { Product, ProductTag, ProductType, ProductVariant } from "../../../.."
+
 import { FindParams, PaginatedResponse } from "../../../../types/common"
-import { PricedProduct } from "../../../../types/pricing"
-import { FlagRouter } from "../../../../utils/flag-router"
+import { Product, ProductTag, ProductType, ProductVariant } from "../../../.."
 import middlewares, { transformQuery } from "../../../middlewares"
-import { validateSalesChannelsExist } from "../../../middlewares/validators/sales-channel-existence"
+
 import { AdminGetProductsParams } from "./list-products"
+import { FlagRouter } from "../../../../utils/flag-router"
+import { Router } from "express"
+import { validateSalesChannelsExist } from "../../../middlewares/validators/sales-channel-existence"
+import { PricedProduct } from "../../../../types/pricing"
 
 const route = Router()
 
@@ -258,6 +260,8 @@ export type AdminProductsDeleteRes = {
  *     - variants
  *     - variants.options
  *     - variants.prices
+ *   totals:
+ *     - variants.purchasable
  * required:
  *   - products
  *   - count

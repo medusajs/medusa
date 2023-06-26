@@ -173,32 +173,14 @@ class WebshipperFulfillmentService extends FulfillmentService {
             },
             customs_lines: await Promise.all(
               returnOrder.items.map(async ({ item, quantity }) => {
-                const totals = await this.totalsService_.getLineItemTotals(
+                const customLine = await this.buildWebshipperItem(
                   item,
-                  fromOrder,
-                  {
-                    include_tax: true,
-                    use_tax_lines: true,
-                  }
+                  quantity,
+                  fromOrder
                 )
+
                 return {
-                  ext_ref: item.id,
-                  sku: item.variant.sku,
-                  description: item.title,
-                  quantity: quantity,
-                  country_of_origin:
-                    item.variant.origin_country ||
-                    item.variant.product.origin_country,
-                  tarif_number:
-                    item.variant.hs_code || item.variant.product.hs_code,
-                  unit_price: humanizeAmount(
-                    totals.unit_price,
-                    fromOrder.currency_code
-                  ),
-                  vat_percent: totals.tax_lines.reduce(
-                    (acc, next) => acc + next.rate,
-                    0
-                  ),
+                  ...customLine,
                   currency: fromOrder.currency_code.toUpperCase(),
                 }
               })
@@ -350,34 +332,13 @@ class WebshipperFulfillmentService extends FulfillmentService {
           visible_ref,
           order_lines: await Promise.all(
             fulfillmentItems.map(async (item) => {
-              const totals = await this.totalsService_.getLineItemTotals(
+              const orderLine = await this.buildWebshipperItem(
                 item,
-                fromOrder,
-                {
-                  include_tax: true,
-                  use_tax_lines: true,
-                }
+                item.quantity,
+                fromOrder
               )
 
-              return {
-                ext_ref: item.id,
-                sku: item.variant.sku,
-                description: item.title,
-                quantity: item.quantity,
-                country_of_origin:
-                  item.variant.origin_country ||
-                  item.variant.product.origin_country,
-                tarif_number:
-                  item.variant.hs_code || item.variant.product.hs_code,
-                unit_price: humanizeAmount(
-                  totals.unit_price,
-                  fromOrder.currency_code
-                ),
-                vat_percent: totals.tax_lines.reduce(
-                  (acc, next) => acc + next.rate,
-                  0
-                ),
-              }
+              return orderLine
             })
           ),
           delivery_address: {
@@ -636,6 +597,41 @@ class WebshipperFulfillmentService extends FulfillmentService {
         status: "cancelled",
       },
     })
+  }
+
+  async buildWebshipperItem(item, quantity, order) {
+    const totals = await this.totalsService_.getLineItemTotals(item, order, {
+      include_tax: true,
+      use_tax_lines: true,
+    })
+
+    const webShipperItem = {
+      ext_ref: item.id,
+      description: item.title,
+      quantity: quantity,
+      unit_price: humanizeAmount(totals.unit_price, order.currency_code),
+      vat_percent: totals.tax_lines.reduce((acc, next) => acc + next.rate, 0),
+    }
+
+    const coo =
+      item?.variant?.origin_country || item?.variant?.product?.origin_country
+    const sku = item?.variant?.sku
+    const tarifNumber =
+      item?.variant?.hs_code || item?.variant?.product?.hs_code
+
+    if (coo) {
+      webShipperItem.country_of_origin = coo
+    }
+
+    if (sku) {
+      webShipperItem.sku = sku
+    }
+
+    if (tarifNumber) {
+      webShipperItem.tarif_number = tarifNumber
+    }
+
+    return webShipperItem
   }
 }
 

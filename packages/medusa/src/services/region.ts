@@ -422,7 +422,7 @@ class RegionService extends TransactionBaseService {
       this.countryRepository_
     )
 
-    const query = buildQuery({ code }, {})
+    const query = buildQuery({ iso_2: code.toLowerCase() }, {})
     const country = await countryRepository.findOne(query)
 
     if (!country) {

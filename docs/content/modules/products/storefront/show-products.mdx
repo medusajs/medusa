@@ -5,6 +5,7 @@ addHowToData: true
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import Badge from '@site/src/components/Badge';
 
 # How to Show Products on the Storefront
 
@@ -45,13 +46,19 @@ This guide also includes code snippets to send requests to your Medusa backend u
 
 If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
 
+### @medusajs/product Module
+
+This guide also includes code snippets to utilize the `@medusajs/product` module in your storefront, among other methods.
+
+If you follow the `@medusajs/product` code blocks, it's assumed you already have the [@medusajs/product](../serverless-module.md) installed.
+
 ---
 
 ## List Products
 
 You can list available products using the [List Products endpoint](/api/store#tag/Products/operation/GetProducts):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -90,6 +97,31 @@ export default Products
 ```
 
 </TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)} attributes={{
+  badge: true
+}}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const products = await productService.list()
+
+  console.log(products.length)
+}
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -122,7 +154,7 @@ The List Products endpoint accepts different query parameters that allow you to 
 
 For example, you can filter products by a category ID:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -165,6 +197,33 @@ export default Products
 ```
 
 </TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)} attributes={{
+  badge: true
+}}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const products = await productService.list({
+    category_ids: ["cat_123"],
+  })
+
+  console.log(products)
+}
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -189,6 +248,104 @@ curl -L -X GET '<BACKEND_URL>/store/products?category_id[]=cat_123'
 
 This will retrieve only products that belong to that category.
 
+### Expand Categories
+
+To expand the categories of each product, you can pass `categories` to the `expand` query parameter:
+
+<Tabs groupId="request-type" isCodeTabs={true}>
+<TabItem value="client" label="Medusa JS Client" default>
+
+```ts
+medusa.products.list({
+  expand: "categories",
+})
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length)
+})
+```
+
+</TabItem>
+<TabItem value="medusa-react" label="Medusa React">
+
+```tsx
+import { useProducts } from "medusa-react"
+import { Product } from "@medusajs/medusa"
+
+const Products = () => {
+  const { products, isLoading } = useProducts({
+    expand: "categories",
+  })
+
+  return (
+    <div>
+      {isLoading && <span>Loading...</span>}
+      {products && !products.length && <span>No Products</span>}
+      {products && products.length > 0 && (
+        <ul>
+          {products.map((product: Product) => (
+            <li key={product.id}>{product.title}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
+}
+
+export default Products
+```
+
+</TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)} attributes={{
+  badge: true
+}}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const products = await productService.list({}, {
+    relations: ["categories"],
+  })
+
+  console.log(products)
+}
+```
+
+</TabItem>
+<TabItem value="fetch" label="Fetch API">
+
+```ts
+fetch(`<BACKEND_URL>/store/products?expand=categories`, {
+  credentials: "include",
+})
+.then((response) => response.json())
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length)
+})
+```
+
+</TabItem>
+<TabItem value="curl" label="cURL">
+
+```bash
+curl -L -X GET '<BACKEND_URL>/store/products?expand=categories'
+```
+
+</TabItem>
+</Tabs>
+
+You can learn more about the [expand parameter in the API reference](/api/store#section/Expanding-Fields)
+
 ### Product Pricing Parameters
 
 By default, the prices are retrieved based on the default currency associated with a store. You can use the following query parameters to ensure you are retrieving correct pricing based on the customer’s context:
@@ -201,7 +358,7 @@ It’s recommended to always include the cart and region’s IDs when you’re l
 
 For example:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -291,13 +448,7 @@ You must pass one of the [pricing parameters](#product-pricing-parameters) to th
 
 :::
 
-By default, prices in Medusa are stored as the price entered by the admin multiplied by a 100.
-
-:::note
-
-This is the behaviour if you're using the admin dashboard to create products. If you're using a different logic to create products and store prices, you can skip the instructions in this section.
-
-:::
+Prices in Medusa are stored as the currency's smallest unit. So, for currencies that are not zero-decimal, the amount is stored multiplied by a `100`. You can learn more about this in the [Product conceptual guide](../products.md#storing-the-product-variants-price).
 
 So, to show the correct price, you would need to convert it to its actual price with a method like this:
 
@@ -326,7 +477,7 @@ Medusa React provides utility methods such as `formatVariantPrice` that handles 
 
 Here’s an example of how you can calculate the price with and without Medusa React:
 
-<Tabs groupId="client-preference" wrapperClassName="code-tabs">
+<Tabs groupId="client-preference" isCodeTabs={true}>
 <TabItem value="client" label="Without Medusa Client" default>
 
 ```tsx
@@ -440,7 +591,7 @@ The Search functionality requires either installing a [search plugin](../../../p
 
 You can search products using the [Search Products endpoint](/api/store#tag/Products/operation/PostProductsSearch):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -486,7 +637,7 @@ The request returns a `hits` array holding the result items. The structure of th
 
 You can retrieve the details of a single product by its ID using the [Get a Product endpoint](/api/store#tag/Products/operation/GetProductsProduct):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -517,6 +668,33 @@ export default Products
 ```
 
 </TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)} attributes={{
+  badge: true
+}}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const products = await productService.list({
+    id: productId,
+  })
+
+  console.log(products[0])
+}
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -543,6 +721,8 @@ This endpoint requires the product’s ID to be passed as a path parameter. You 
 
 The request returns a product object. You can display its price as explained in the [Display Product Price](#display-product-price) section.
 
+You can also retrieve the product's categories by passing the `expand` query parameter similar to the explanation in [this section](#expand-categories).
+
 ---
 
 ## Retrieve Product by Handle
@@ -551,7 +731,7 @@ On the storefront, you may use the handle of a product as its page’s path. For
 
 You can retrieve the details of a product by its handle by sending a request to the List Products endpoint, passing the `handle` as a filter:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -592,6 +772,33 @@ export default Products
 ```
 
 </TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)} attributes={{
+  badge: true
+}}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const products = await productService.list({
+    handle,
+  })
+
+  console.log(products[0])
+}
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -622,7 +829,9 @@ As the `handle` of each product is unique, when you pass the handle as a filter 
 - receive an empty `products` array, meaning the product doesn’t exist;
 - or you’ll receive a `products` array with one item being the product you’re looking for. In this case, you can access the product at index `0`.
 
-As explained earlier, make sure to pass the [product pricing parameters](#product-pricing-parameters) to [display the product's price](#display-product-price)
+As explained earlier, make sure to pass the [product pricing parameters](#product-pricing-parameters) to [display the product's price](#display-product-price).
+
+You can also retrieve the product's categories by passing the `expand` query parameter as explained in [the Expand Categories section](#expand-categories).
 
 ---
 

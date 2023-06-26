@@ -1,14 +1,17 @@
 import {
+  AdminGetInventoryItemsItemLocationLevelsParams,
+  AdminGetInventoryItemsParams,
   AdminGetStockLocationsParams,
   AdminInventoryItemsListWithVariantsAndLocationLevelsRes,
   AdminInventoryItemsLocationLevelsRes,
   AdminInventoryItemsRes,
 } from "@medusajs/medusa"
+
 import { Response } from "@medusajs/medusa-js"
-import { useQuery } from "@tanstack/react-query"
-import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
 import { queryKeysFactory } from "../../utils"
+import { useMedusa } from "../../../contexts"
+import { useQuery } from "@tanstack/react-query"
 
 const ADMIN_INVENTORY_ITEMS_QUERY_KEY = `admin_inventory_items` as const
 
@@ -19,7 +22,7 @@ export const adminInventoryItemsKeys = queryKeysFactory(
 type InventoryItemsQueryKeys = typeof adminInventoryItemsKeys
 
 export const useAdminInventoryItems = (
-  query?: AdminGetStockLocationsParams,
+  query?: AdminGetInventoryItemsParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminInventoryItemsListWithVariantsAndLocationLevelsRes>,
     Error,
@@ -59,7 +62,7 @@ export const useAdminInventoryItem = (
 
 export const useAdminInventoryItemLocationLevels = (
   inventoryItemId: string,
-  query?: AdminGetStockLocationsParams,
+  query?: AdminGetInventoryItemsItemLocationLevelsParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminInventoryItemsLocationLevelsRes>,
     Error,

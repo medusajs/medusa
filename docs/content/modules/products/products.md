@@ -105,7 +105,37 @@ The `MoneyAmount` entity has the following attributes that are useful for a prod
 
 ### Storing the Product Variant’s Price
 
-Although this is no requirement, it’s recommended to store the `amount` as the price multiplied by a hundred. The Medusa admin dashboard and the Next.js storefront expect the price to be of that format, so when prices are displayed they’re divided by a hundred. Also, when you add or update a product variant, its price is sent to the Medusa backend as the price multiplied by a hundred.
+You must store the `amount` in a currency's smallest unit as an integer.
+
+For example, if a variant's price is 10 USD, it's stored is `1000`, as in 1,000 cents.
+
+For zero-decimal currencies, the amount is still stored as an integer without multiplying by a 100. For example, if a variant's price is ¥500, it's stored as `500`.
+
+<details>
+  <summary>Zero-decimal Currencies</summary>
+
+  - BIF
+  - CLP
+  - DJF
+  - GNF
+  - JPY
+  - KMF
+  - KRW
+  - MGA
+  - PYG
+  - RWF
+  - UGX
+  - VND
+  - VUV
+  - XAF
+  - XOF
+  - XPF
+
+</details>
+
+This logic of formatting the price is not handled in the backend. So, when you add a product variant using the Admin APIs, you must format the price as explained earlier. The backend stores the price as received from API requests.
+
+In addition, the Medusa admin dashboard and the Next.js storefront expect the price to be of that format, so when prices are displayed for currencies that are stored multiplied by a `100`, such as USD, they’re divided by a hundred. Also, when you add or update a product variant, its price is sent to the Medusa backend as the price multiplied by a hundred.
 
 ### Displaying the Product Variant’s Price
 

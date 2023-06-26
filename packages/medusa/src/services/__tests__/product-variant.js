@@ -25,18 +25,9 @@ describe("ProductVariantService", () => {
       },
     })
 
-    const priceSelectionStrat = {
-      calculateVariantPrice: (variantId, context) => {
-        return {
-          originalPrice: null,
-          calculatedPrice: null,
-          prices: [],
-        }
-      },
-    }
     const priceSelectionStrategy = {
-      withTransaction: (manager) => {
-        return priceSelectionStrat
+      withTransaction: function (manager) {
+        return this
       },
     }
 
@@ -257,20 +248,9 @@ describe("ProductVariantService", () => {
       },
     })
 
-    const priceSelectionStrat = {
-      calculateVariantPrice: (variantId, context) => {
-        return {
-          originalPrice: null,
-          calculatedPrice: null,
-          calculatedPriceType: undefined,
-          prices: [],
-        }
-      },
-    }
-
     const priceSelectionStrategy = {
-      withTransaction: (manager) => {
-        return priceSelectionStrat
+      withTransaction: function (manager) {
+        return this
       },
     }
 
@@ -593,12 +573,17 @@ describe("ProductVariantService", () => {
     })
 
     const priceSelectionStrat = {
-      calculateVariantPrice: (variantId, context) => {
-        return Promise.resolve({
-          originalPrice: null,
-          calculatedPrice: 1000,
-          prices: [],
-        })
+      calculateVariantPrice: async ([{ variantId }], context) => {
+        return new Map([
+          [
+            variantId,
+            {
+              originalPrice: null,
+              calculatedPrice: 1000,
+              prices: [],
+            },
+          ],
+        ])
       },
     }
 

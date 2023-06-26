@@ -1,5 +1,9 @@
 import { AdminPostStockLocationsReq, SalesChannel } from "@medusajs/medusa"
 import GeneralForm, { GeneralFormType } from "../components/general-form"
+import MetadataForm, {
+  MetadataFormType,
+  getSubmittableMetadata,
+} from "../../../../components/forms/general/metadata-form"
 import {
   StockLocationAddressDTO,
   StockLocationAddressInput,
@@ -27,6 +31,7 @@ import useToggleState from "../../../../hooks/use-toggle-state"
 type NewLocationForm = {
   general: GeneralFormType
   address: StockLocationAddressDTO
+  metadata: MetadataFormType
   salesChannels: {
     channels: Omit<SalesChannel, "locations">[]
   }
@@ -179,6 +184,10 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 <div className="mt-xlarge gap-y-xlarge flex flex-col pb-0.5">
                   <GeneralForm form={nestedForm(form, "general")} />
                   <AddressForm form={nestedForm(form, "address")} />
+                  <div>
+                    <h2 className="inter-base-semibold mb-base">Metadata</h2>
+                    <MetadataForm form={nestedForm(form, "metadata")} />
+                  </div>
                 </div>
               </Accordion.Item>
               {isFeatureEnabled("sales_channels") && (
@@ -212,7 +221,7 @@ const createPayload = (
   locationPayload: AdminPostStockLocationsReq
   salesChannelsPayload: SalesChannel[]
 } => {
-  const { general, address } = data
+  const { general, address, metadata } = data
 
   let addressInput
   if (address.address_1) {
@@ -220,7 +229,11 @@ const createPayload = (
     addressInput.country_code = address.country_code.value
   }
   return {
-    locationPayload: { name: general.name, address: addressInput },
+    locationPayload: {
+      name: general.name,
+      address: addressInput,
+      metadata: getSubmittableMetadata(metadata),
+    },
     salesChannelsPayload: data.salesChannels.channels,
   }
 }

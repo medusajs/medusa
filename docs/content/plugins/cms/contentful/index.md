@@ -27,7 +27,7 @@ By integrating Contentful to Medusa, you can benefit from powerful features in y
 - Redis. You can follow [their documentation to learn how to install it](https://redis.io/docs/getting-started/installation/).
 - Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../../development/backend/prepare-environment.mdx#git).
 - Gatsby’s CLI tool. You can follow [this documentation to install it](https://www.gatsbyjs.com/docs/reference/gatsby-cli/#how-to-use-gatsby-cli).
-- Medusa’s CLI tool. You can follow [this documentation to install it](../../../cli/reference.md#how-to-install-cli-tool).
+- Medusa’s CLI tool. You can follow [this documentation to install it](../../../cli/reference.mdx#how-to-install-cli-tool).
 
 ---
 
@@ -38,7 +38,7 @@ Instead of using the default Medusa backend starter, you must use the [Contentfu
 In your terminal, run the following command to install the backend:
 
 ```bash
-medusa new medusa-contentful https://github.com/medusajs/medusa-starter-contentful
+npx @medusajs/medusa-cli@latest new medusa-contentful https://github.com/medusajs/medusa-starter-contentful
 ```
 
 This installs a new Medusa backend in the directory `medusa-contentful`.
@@ -113,7 +113,7 @@ You can find the format of the PostgreSQL database URL in [PostgreSQL’s docume
 
 :::
 
-Then, in `medusa-config.js` in the exported object, comment out or remove the SQLite database configurations and add the PostgreSQL database configurations:
+Then, in `medusa-config.js` in the exported object, add the PostgreSQL database configurations:
 
 ```jsx title=medusa-config.js
 module.exports = {
@@ -121,9 +121,6 @@ module.exports = {
     // ...
     database_url: DATABASE_URL,
     database_type: "postgres",
-    // REMOVE OR COMMENT OUT THE BELOW:
-    // database_database: "./medusa-db.sql",
-    // database_type: "sqlite",
   },
 }
 ```
@@ -167,7 +164,7 @@ npm run seed
 To start the backend run the following command:
 
 ```bash
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 If you seeded the database with demo data, you should see that events related to the products are triggered.
@@ -227,6 +224,12 @@ To do that:
 ---
 
 ## Setup Gatsby Storefront
+
+:::warning
+
+This Gatsby storefront is deprecated. It's recommended to integrate Contentful into either the Next.js storefront or your custom storefront.
+
+:::
 
 In this section, you’ll set up the Gatsby storefront of your Medusa backend.
 
@@ -291,5 +294,4 @@ Learn [How to customize your Contentful backend and storefront](./customize-cont
 
 ## See Also
 
-- How to deploy your Medusa backend to [Heroku](../../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../../deployments/server/deploying-on-digital-ocean.md).
-- [How to deploy your Gatsby storefront to Netlify](../../../deployments/storefront/deploying-gatsby-on-netlify.md).
+- How to deploy your Medusa backend to [Heroku](../../../deployments/server/deploying-on-heroku.mdx), or [DigitalOcean](../../../deployments/server/deploying-on-digital-ocean.md), or [other providers](../../../deployments/server/index.mdx)

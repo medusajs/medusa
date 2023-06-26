@@ -1,0 +1,23 @@
+{
+  "extends": "@tsconfig/docusaurus/tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "baseUrl": ".",
+    "lib": [
+      "es2022",
+    ],
+    "paths": {
+      "@site/*": ["./*"],
+      "@medusajs/docs-ui/*": ["./src/components/*"]
+    },
+    "allowJs": true
+  },
+  "typeRoots": ["./node_modules/@types", "./src/types"],
+  "include": [
+    "src/**/*",
+    "docusaurus.config.js",
+    "sidebars.js",
+    "tailwind.config.js",
+    "postcss.config.js"
+  ]
+}

@@ -1,3 +1,4 @@
+import { RedisOptions } from "ioredis"
 import { LoggerOptions } from "typeorm"
 import {
   ExternalModuleDeclaration,
@@ -22,6 +23,8 @@ export type HttpCompressionOptions = {
 
 export type ProjectConfigOptions = {
   redis_url?: string
+  redis_prefix?: string
+  redis_options?: RedisOptions
 
   session_options?: SessionOptions
 
@@ -29,10 +32,12 @@ export type ProjectConfigOptions = {
   cookie_secret?: string
 
   database_url?: string
-  database_type: string
   database_database?: string
   database_schema?: string
   database_logging: LoggerOptions
+
+  // @deprecated - only postgres is supported, so this config has no effect
+  database_type?: string
 
   http_compression?: HttpCompressionOptions
 

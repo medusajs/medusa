@@ -1,19 +1,23 @@
-import { IInventoryService } from "@medusajs/types"
-import { Transform } from "class-transformer"
 import { IsBoolean, IsOptional, IsString } from "class-validator"
-import { Request, Response } from "express"
+import {
+  NumericalComparisonOperator,
+  StringComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
+import { Request, Response } from "express"
+import { getLevelsByInventoryItemId, joinLevels } from "./utils/join-levels"
 import {
-  extendedFindParamsMixin,
-  NumericalComparisonOperator,
-  StringComparisonOperator,
-} from "../../../../types/common"
+  getVariantsByInventoryItemId,
+  joinVariants,
+} from "./utils/join-variants"
+
+import { IInventoryService } from "@medusajs/types"
 import { IsType } from "../../../../utils/validators/is-type"
-import { getLevelsByInventoryItemId } from "./utils/join-levels"
-import { getVariantsByInventoryItemId } from "./utils/join-variants"
+import { Transform } from "class-transformer"
 
 /**
  * @oas [get] /admin/inventory-items
@@ -117,30 +121,16 @@ export default async (req: Request, res: Response) => {
     listConfig
   )
 
-  const levelsByItemId = await getLevelsByInventoryItemId(
-    inventoryItems,
-    locationIds,
-    inventoryService
-  )
-
-  const variantsByInventoryItemId = await getVariantsByInventoryItemId(
+  const inventory_items = await joinVariants(
     inventoryItems,
     productVariantInventoryService,
     productVariantService
-  )
-
-  const inventoryItemsWithVariantsAndLocationLevels = inventoryItems.map(
-    (inventoryItem) => {
-      return {
-        ...inventoryItem,
-        variants: variantsByInventoryItemId[inventoryItem.id] ?? [],
-        location_levels: levelsByItemId[inventoryItem.id] ?? [],
-      }
-    }
-  )
+  ).then(async (res) => {
+    return await joinLevels(res, locationIds, inventoryService)
+  })
 
   res.status(200).json({
-    inventory_items: inventoryItemsWithVariantsAndLocationLevels,
+    inventory_items,
     count,
     offset: skip,
     limit: take,

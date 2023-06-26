@@ -1,12 +1,5 @@
-import { Transform, Type } from "class-transformer"
-import {
-  IsDate,
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsString,
-} from "class-validator"
 import "reflect-metadata"
+
 import {
   FindManyOptions,
   FindOneOptions,
@@ -15,11 +8,22 @@ import {
   FindOptionsWhere,
   OrderByCondition,
 } from "typeorm"
+import {
+  IsDate,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  Validate,
+} from "class-validator"
+import { Transform, Type } from "class-transformer"
+
+import { BaseEntity } from "../interfaces"
+import { ClassConstructor } from "./global"
+import { ExactlyOne } from "./validators/exactly-one"
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
-import { BaseEntity } from "../interfaces"
 import { transformDate } from "../utils/validators/date-transform"
-import { ClassConstructor } from "./global"
 
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
@@ -162,6 +166,18 @@ export class StringComparisonOperator {
   @IsString()
   @IsOptional()
   lte?: string
+
+  @IsString()
+  @IsOptional()
+  contains?: string
+
+  @IsString()
+  @IsOptional()
+  starts_with?: string
+
+  @IsString()
+  @IsOptional()
+  ends_with?: string
 }
 
 export class NumericalComparisonOperator {

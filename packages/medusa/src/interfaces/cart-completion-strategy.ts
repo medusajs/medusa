@@ -1,4 +1,4 @@
-import { TransactionBaseService } from "@medusajs/utils"
+import { TransactionBaseService } from "./transaction-base-service"
 import { IdempotencyKey } from "../models"
 import { RequestContext } from "../types/request"
 

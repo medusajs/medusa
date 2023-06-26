@@ -96,4 +96,4 @@ When using attributes defined in the subscriber, such as the `productService` in
 
 ## See Also
 
-- [Create a Plugin](../plugins/create.md)
+- [Create a Plugin](../plugins/create.mdx)

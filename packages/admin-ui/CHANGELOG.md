@@ -1,5 +1,103 @@
 # @medusajs/admin-ui
 
+## 1.9.0
+
+### Minor Changes
+
+- [#4115](https://github.com/medusajs/medusa/pull/4115) [`79cca2ab8`](https://github.com/medusajs/medusa/commit/79cca2ab809b77606e65706c19f9fce37b174365) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): Add filtering capabilities for reservations view
+
+### Patch Changes
+
+- [#4231](https://github.com/medusajs/medusa/pull/4231) [`1bd2e7a5b`](https://github.com/medusajs/medusa/commit/1bd2e7a5be4aeb15ac15f5f0e70dc37a6dfaa86f) Thanks [@fPolic](https://github.com/fPolic)! - fix(admin-ui): prevent Timeline flickering while loading
+
+- [#4316](https://github.com/medusajs/medusa/pull/4316) [`0bfdc33a0`](https://github.com/medusajs/medusa/commit/0bfdc33a0ba7f9518b68db762ede5960db878b6d) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): minor fixes for reservation management
+
+- [#4133](https://github.com/medusajs/medusa/pull/4133) [`869628bf4`](https://github.com/medusajs/medusa/commit/869628bf4c50f93375bd32946cd0605de3d981cd) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): rename allocation to reservation
+
+- [#4267](https://github.com/medusajs/medusa/pull/4267) [`f8643361c`](https://github.com/medusajs/medusa/commit/f8643361cdcb549c61e645d4ee275f20883e00d9) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa, admin-ui): remove reservations feature flag
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
+- Updated dependencies [[`79cca2ab8`](https://github.com/medusajs/medusa/commit/79cca2ab809b77606e65706c19f9fce37b174365)]:
+  - medusa-react@9.0.1
+
+## 1.8.7
+
+### Patch Changes
+
+- [#4071](https://github.com/medusajs/medusa/pull/4071) [`0476f5251`](https://github.com/medusajs/medusa/commit/0476f52519237c622b37d29de0718f9774b6add7) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): update edit allocation modal design
+
+- [#4184](https://github.com/medusajs/medusa/pull/4184) [`0f87d3d64`](https://github.com/medusajs/medusa/commit/0f87d3d642b56bf19de8136e1f5bfedf364c5193) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(medusa,admin-ui): Add reservations FF
+
+- [#4173](https://github.com/medusajs/medusa/pull/4173) [`9a46c11f2`](https://github.com/medusajs/medusa/commit/9a46c11f2acab1eba10c2cad6854c0a7f4a0ee13) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Ensures that the default invite link uses the **BASE** in constructing the link if it exists
+
+- [#4163](https://github.com/medusajs/medusa/pull/4163) [`f47b11293`](https://github.com/medusajs/medusa/commit/f47b11293e273d9a5a5238e5114c9a3a530ecf1b) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Delete variant
+
+- [#4051](https://github.com/medusajs/medusa/pull/4051) [`294576949`](https://github.com/medusajs/medusa/commit/294576949792f8c4dc2a8c1a03fdc9db73a8a00e) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): fix allow_backorder updates
+
+- [#4180](https://github.com/medusajs/medusa/pull/4180) [`5988fa8f4`](https://github.com/medusajs/medusa/commit/5988fa8f4ca1c5538e4b48cfe9b600bf43037998) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Omit purchasable variant prop on duplicate
+
+- [#4081](https://github.com/medusajs/medusa/pull/4081) [`4f3c8f5d7`](https://github.com/medusajs/medusa/commit/4f3c8f5d70b5ae4a11e9d4a2fea4a8410b2daf47) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa,client-types,medusa-js,admin-ui,medusa-react): add reservation table and creation
+
+- [#4178](https://github.com/medusajs/medusa/pull/4178) [`063d9b6d5`](https://github.com/medusajs/medusa/commit/063d9b6d5535e548356e8b47656371a8fbc54936) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): On duplicate product ensure order of variant options matches product options
+
+- Updated dependencies [[`4f3c8f5d7`](https://github.com/medusajs/medusa/commit/4f3c8f5d70b5ae4a11e9d4a2fea4a8410b2daf47)]:
+  - medusa-react@9.0.0
+
+## 1.8.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - medusa-react@8.0.0
+
+## 1.8.5
+
+### Patch Changes
+
+- [#4049](https://github.com/medusajs/medusa/pull/4049) [`aa74ebb18`](https://github.com/medusajs/medusa/commit/aa74ebb181617f7373e61f3e18cf0f614912985a) Thanks [@riqwan](https://github.com/riqwan)! - fix(admin-ui): ensure that sales channel names are always an array
+
+- [#4041](https://github.com/medusajs/medusa/pull/4041) [`353fc94e4`](https://github.com/medusajs/medusa/commit/353fc94e4f4da45262214446281e8951f23709e7) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): toggle manage inventory
+
+- [#4050](https://github.com/medusajs/medusa/pull/4050) [`282953759`](https://github.com/medusajs/medusa/commit/282953759280eeed27615df0342ab00e43b79793) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Make download path respect **BASE** in UploadModal.
+
+- Updated dependencies []:
+  - medusa-react@7.0.1
+
+## 1.8.4
+
+### Patch Changes
+
+- [#3955](https://github.com/medusajs/medusa/pull/3955) [`4c5c4fd9b`](https://github.com/medusajs/medusa/commit/4c5c4fd9b3941ee27e6c8166377fd8e8f1b7ad51) Thanks [@pKorsholm](https://github.com/pKorsholm)! - Feat(admin-ui): add metadata controls for stock locations
+
+- [#3950](https://github.com/medusajs/medusa/pull/3950) [`0c30d05cf`](https://github.com/medusajs/medusa/commit/0c30d05cf3805515086dc589a0332b59b6df045f) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): allocation status for cancelled and archived orders
+
+- [#3999](https://github.com/medusajs/medusa/pull/3999) [`a7adb8fbf`](https://github.com/medusajs/medusa/commit/a7adb8fbf4f6a0708e590848ec6c315ff7eb05cf) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): Pins version of `react-router-dom` as upgrade to 6.11.0 broke navigation in nested routes
+
+- [#3989](https://github.com/medusajs/medusa/pull/3989) [`596566a51`](https://github.com/medusajs/medusa/commit/596566a51061ba868ffd2306658f01030e52316f) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - fix(admin-ui): fixes an issue where navigating to tax settings would append the basename multiple times. Removes `react-helmet` for `react-helmet-async` to get rid off error caused by unsafe sideeffects"
+
+- Updated dependencies []:
+  - medusa-react@7.0.0
+
+## 1.8.3
+
+### Patch Changes
+
+- [#3753](https://github.com/medusajs/medusa/pull/3753) [`ba45a316a`](https://github.com/medusajs/medusa/commit/ba45a316a7638cc003599900d0088e5a5aeb51c8) Thanks [@StephixOne](https://github.com/StephixOne)! - feat(admin): Implement allocations on draft orders
+
+- [#3895](https://github.com/medusajs/medusa/pull/3895) [`88a224e42`](https://github.com/medusajs/medusa/commit/88a224e42a490fd7fae29677c463740b89ad9b27) Thanks [@fPolic](https://github.com/fPolic)! - fix(admin): display correct items in the timeline after OE
+
+- [`d302db239`](https://github.com/medusajs/medusa/commit/d302db23975227527e5632110d67c2ac299317b3) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin): add guard for null variant in inventory overview
+
+- [#3886](https://github.com/medusajs/medusa/pull/3886) [`5fdccf5e3`](https://github.com/medusajs/medusa/commit/5fdccf5e3256b5e515c3d9a8ba9eaf60b2ce7ad3) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Check for undefined categories
+
+- [#3897](https://github.com/medusajs/medusa/pull/3897) [`0be681657`](https://github.com/medusajs/medusa/commit/0be6816578f5cac6f22ddea267fc4c066727b0ae) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(admin-ui): Add Sales Channel filter
+
+- [#3883](https://github.com/medusajs/medusa/pull/3883) [`966ddd2f1`](https://github.com/medusajs/medusa/commit/966ddd2f1648d5d3c1c68094f488f307e3186d92) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(inventory): Minor fixes to upserting inventory items
+
+- Updated dependencies []:
+  - medusa-react@6.0.0
+
 ## 1.8.2
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 import { parse, toSeconds } from "iso8601-duration"
 import { isEmpty, omit } from "lodash"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import {
   DeepPartial,
   EntityManager,

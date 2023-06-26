@@ -114,13 +114,6 @@ export default async (req, res) => {
         select: defaultOrderFields,
       })
 
-    // TODO: Re-enable when we have a way to handle inventory for draft orders on creation
-    if (!inventoryService) {
-      await reserveQuantityForDraftOrder(order, {
-        productVariantInventoryService,
-      })
-    }
-
     return order
   })
 

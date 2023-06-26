@@ -72,7 +72,7 @@ The second step provides customization posibilities by configuring environment v
 
 Add an application name and the admin credentials that will be used to create an initial admin user with which you can later sign in to your Medusa Admin. 
 
-Then, choose whether you want a production Medusa Backend environment or a development one. The production template will provision your managed Relational Database Service (RDS) PostgreSQL and Redis instances. On the other hand, the development template will use a local SQLite and a fake Redis instance.
+Then, choose whether you want a production Medusa Backend environment or a development one. The production template will provision your managed Relational Database Service (RDS) PostgreSQL and Redis instances.
 
 ### Step 3: Connect an AWS account 
 
@@ -95,6 +95,10 @@ Once the build process is complete, a new deployment with the infrastructure res
 ## Test the Backend
 
 After the deployment is finished, navigate to Resources → [AppName] (Medusa in this example) → Overview. Then, under the Resource Outputs section you should see the "AccessUrl". This is the backend's URL that you can use to access API endpoints and test them. You can try getting the list of products using the endpoint `<AccessUrl>/store/products`.
+
+### Health Route
+
+You can access `/health` to get health status of your deployed backend.
 
 ### Testing the Admin
 

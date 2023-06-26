@@ -10,6 +10,8 @@ x-expanded-relations:
     - variants
     - variants.options
     - variants.prices
+  totals:
+    - variants.purchasable
 required:
   - products
   - count

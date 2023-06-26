@@ -1,4 +1,3 @@
-import { IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -6,6 +5,8 @@ import {
   ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
+import { IsOptional, IsString } from "class-validator"
+
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
@@ -101,24 +102,46 @@ export default async (req, res) => {
     currencyCode = region.currency_code
   }
 
-  const pricedProductArray = await pricingService.setProductPrices(
-    [rawProduct],
-    {
-      cart_id: validated.cart_id,
-      customer_id: customer_id,
-      region_id: regionId,
-      currency_code: currencyCode,
-      include_discount_prices: true,
-    }
+  const decoratedProduct = rawProduct
+
+  // We only set prices if variants.prices are requested
+  const shouldSetPricing = ["variants", "variants.prices"].every((relation) =>
+    req.retrieveConfig.relations?.includes(relation)
   )
 
-  const [product] = await productVariantInventoryService.setProductAvailability(
-    pricedProductArray,
-    sales_channel_id
-  )
+  // We only set availability if variants are requested
+  const shouldSetAvailability =
+    req.retrieveConfig.relations?.includes("variants")
+
+  const decoratePromises: Promise<any>[] = []
+
+  if (shouldSetPricing) {
+    decoratePromises.push(
+      pricingService.setProductPrices([decoratedProduct], {
+        cart_id: validated.cart_id,
+        customer_id: customer_id,
+        region_id: regionId,
+        currency_code: currencyCode,
+        include_discount_prices: true,
+      })
+    )
+  }
+
+  if (shouldSetAvailability) {
+    decoratePromises.push(
+      productVariantInventoryService.setProductAvailability(
+        [decoratedProduct],
+        sales_channel_id
+      )
+    )
+  }
+
+  // We can run them concurrently as the new properties are assigned to the references
+  // of the appropriate entity
+  await Promise.all(decoratePromises)
 
   res.json({
-    product: cleanResponseData(product, req.allowedProperties || []),
+    product: cleanResponseData(decoratedProduct, req.allowedProperties || []),
   })
 }
 
@@ -126,12 +149,4 @@ export class StoreGetProductsProductParams extends PriceSelectionParams {
   @IsString()
   @IsOptional()
   sales_channel_id?: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
-
-  @IsString()
-  @IsOptional()
-  expand?: string
 }

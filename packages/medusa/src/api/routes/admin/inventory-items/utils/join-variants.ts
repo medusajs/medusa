@@ -1,9 +1,10 @@
-import { InventoryItemDTO } from "@medusajs/types"
-import { ProductVariant } from "../../../../../models"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../../services"
+
+import { InventoryItemDTO } from "@medusajs/types"
+import { ProductVariant } from "../../../../../models"
 
 export type InventoryItemsWithVariants = Partial<InventoryItemDTO> & {
   variants?: ProductVariant[]
@@ -33,4 +34,23 @@ export const getVariantsByInventoryItemId = async (
     acc[cur.inventory_item_id].push(variantMap.get(cur.variant_id))
     return acc
   }, {})
+}
+
+export const joinVariants = async (
+  inventoryItems: InventoryItemDTO[],
+  productVariantInventoryService: ProductVariantInventoryService,
+  productVariantService: ProductVariantService
+) => {
+  const variantsByInventoryItemId = await getVariantsByInventoryItemId(
+    inventoryItems,
+    productVariantInventoryService,
+    productVariantService
+  )
+
+  return inventoryItems.map((inventoryItem) => {
+    return {
+      ...inventoryItem,
+      variants: variantsByInventoryItemId[inventoryItem.id] ?? [],
+    }
+  })
 }

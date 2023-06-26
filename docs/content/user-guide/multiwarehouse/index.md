@@ -30,3 +30,4 @@ It should be noted that the following are not explained within this section of t
 
 - [Manage Inventory](./inventory.mdx)
 - [Manage Locations](./locations.mdx)
+- [Manage Reservations](./reservations.mdx)

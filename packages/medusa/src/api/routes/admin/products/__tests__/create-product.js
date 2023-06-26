@@ -55,23 +55,25 @@ describe("POST /admin/products", () => {
       expect(ProductVariantServiceMock.create).toHaveBeenCalledTimes(1)
       expect(ProductVariantServiceMock.create).toHaveBeenCalledWith(
         IdMap.getId("productWithOptions"),
-        {
-          title: "Test",
-          variant_rank: 0,
-          prices: [
-            {
-              currency_code: "USD",
-              amount: 100,
-            },
-          ],
-          options: [
-            {
-              option_id: IdMap.getId("option1"),
-              value: "100",
-            },
-          ],
-          inventory_quantity: 0,
-        }
+        [
+          {
+            title: "Test",
+            variant_rank: 0,
+            prices: [
+              {
+                currency_code: "USD",
+                amount: 100,
+              },
+            ],
+            options: [
+              {
+                option_id: IdMap.getId("option1"),
+                value: "100",
+              },
+            ],
+            inventory_quantity: 0,
+          },
+        ]
       )
     })
   })

@@ -1,14 +1,15 @@
+import { Product, ProductOption, ProductStatus, ProductType, ShippingProfile, ShippingProfileType, } from "@medusajs/medusa"
+import { ProductVariantFactoryData, simpleProductVariantFactory, } from "./simple-product-variant-factory"
+
 import { Connection } from "typeorm"
 import faker from "faker"
-import { Product, ProductOption, ProductType, ShippingProfile, ShippingProfileType, } from "@medusajs/medusa"
-
-import { ProductVariantFactoryData, simpleProductVariantFactory, } from "./simple-product-variant-factory"
 
 export type ProductFactoryData = {
   id?: string
   is_giftcard?: boolean
   title?: string
   type?: string
+  status?: ProductStatus
   options?: { id: string; title: string }[]
   variants?: ProductVariantFactoryData[]
 }
@@ -45,6 +46,7 @@ export const simpleProductFactory = async (
   const toSave = manager.create(Product, {
     id: prodId,
     type_id: typeId,
+    status: data.status || ProductStatus.DRAFT,
     title: data.title || faker.commerce.productName(),
     is_giftcard: data.is_giftcard || false,
     discountable: !data.is_giftcard,
