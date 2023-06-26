@@ -30,8 +30,11 @@ import {
   Logger,
   MedusaContainer,
 } from "../types/global"
-import { formatRegistrationName, formatRegistrationNameWithoutNamespace } from "../utils/format-registration-name"
-import { getModelExtensionsMap } from './helpers/get-model-extension-map'
+import {
+  formatRegistrationName,
+  formatRegistrationNameWithoutNamespace,
+} from "../utils/format-registration-name"
+import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import {
   registerPaymentProcessorFromClass,
   registerPaymentServiceFromClass,
@@ -556,30 +559,38 @@ function registerRepositories(
 function registerModels(
   pluginDetails: PluginDetails,
   container: MedusaContainer,
-  rootDirectory: string,
+  rootDirectory: string
 ): void {
   const modelExtensionsMap = getModelExtensionsMap({
     directory: rootDirectory,
     pathGlob: `${pluginDetails.resolve}/models/*.js`,
-    config: { register: true }
+    config: { register: true },
   })
 
-  const coreOrPluginModelsPath = glob.sync(`${pluginDetails.resolve}/models/*.js`, {})
+  const coreOrPluginModelsPath = glob.sync(
+    `${pluginDetails.resolve}/models/*.js`,
+    {}
+  )
   coreOrPluginModelsPath.forEach((coreOrPluginModelPath) => {
-    const loaded = require(coreOrPluginModelPath) as ClassConstructor<unknown> | EntitySchema
+    const loaded = require(coreOrPluginModelPath) as
+      | ClassConstructor<unknown>
+      | EntitySchema
 
     Object.entries(loaded).map(
       ([, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
         if (typeof val === "function" || val instanceof EntitySchema) {
           const name = formatRegistrationName(coreOrPluginModelPath)
+          const mappedExtensionModel = modelExtensionsMap.get(name)
 
           // If an extension file is found, override it with that instead
-          if (modelExtensionsMap.get(name)) {
+          if (mappedExtensionModel) {
             const coreOrPluginModel = require(coreOrPluginModelPath)
-            const modelName = formatRegistrationNameWithoutNamespace(coreOrPluginModelPath)
+            const modelName = formatRegistrationNameWithoutNamespace(
+              coreOrPluginModelPath
+            )
 
-            coreOrPluginModel[modelName] = modelExtensionsMap.get(name)
-            val = modelExtensionsMap.get(name)
+            coreOrPluginModel[modelName] = mappedExtensionModel
+            val = mappedExtensionModel
           }
 
           container.register({

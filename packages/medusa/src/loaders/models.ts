@@ -1,16 +1,24 @@
-import { formatRegistrationName, formatRegistrationNameWithoutNamespace } from "../utils/format-registration-name"
-import { getModelExtensionsMap } from './helpers/get-model-extension-map'
+import {
+  formatRegistrationName,
+  formatRegistrationNameWithoutNamespace,
+} from "../utils/format-registration-name"
+import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import glob from "glob"
 import path from "path"
 import { ClassConstructor, MedusaContainer } from "../types/global"
 import { EntitySchema } from "typeorm"
 import { asClass, asValue } from "awilix"
 
+type ModelLoaderParams = {
+  container: MedusaContainer
+  isTest?: boolean
+  rootDirectory?: string
+}
 /**
  * Registers all models in the model directory
  */
 export default (
-  { container, isTest, rootDirectory }: { container: MedusaContainer; isTest?: boolean, rootDirectory?: string },
+  { container, isTest, rootDirectory }: ModelLoaderParams,
   config = { register: true }
 ) => {
   const coreModelsGlob = isTest ? "../models/*.ts" : "../models/*.js"
@@ -29,7 +37,9 @@ export default (
   })
 
   coreModels.forEach((modelPath) => {
-    const loaded = require(modelPath) as ClassConstructor<unknown> | EntitySchema
+    const loaded = require(modelPath) as
+      | ClassConstructor<unknown>
+      | EntitySchema
 
     if (loaded) {
       Object.entries(loaded).map(
@@ -37,14 +47,16 @@ export default (
           if (typeof val === "function" || val instanceof EntitySchema) {
             if (config.register) {
               const name = formatRegistrationName(modelPath)
+              const mappedExtensionModel = modelExtensionsMap.get(name)
 
               // If an extension file is found, override it with that instead
-              if (modelExtensionsMap.get(name)) {
+              if (mappedExtensionModel) {
                 const coreModel = require(modelPath)
-                const modelName = formatRegistrationNameWithoutNamespace(modelPath)
+                const modelName =
+                  formatRegistrationNameWithoutNamespace(modelPath)
 
-                coreModel[modelName] = modelExtensionsMap.get(name)
-                val = modelExtensionsMap.get(name)
+                coreModel[modelName] = mappedExtensionModel
+                val = mappedExtensionModel
               }
 
               container.register({
