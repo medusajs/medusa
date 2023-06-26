@@ -55,6 +55,8 @@ type PluginDetails = {
 
 export const isSearchEngineInstalledResolutionKey = "isSearchEngineInstalled"
 
+export const MEDUSA_PROJECT_NAME = "project-plugin"
+
 /**
  * Registers all services in the services directory
  */
@@ -108,10 +110,11 @@ function getResolvedPlugins(
     return details
   })
 
+  // Resolve user's project as a plugin for loading purposes
   resolved.push({
     resolve: `${rootDirectory}/dist`,
-    name: `project-plugin`,
-    id: createPluginId(`project-plugin`),
+    name: MEDUSA_PROJECT_NAME,
+    id: createPluginId(MEDUSA_PROJECT_NAME),
     options: configModule,
     version: createFileContentHash(process.cwd(), `**`),
   })
@@ -325,10 +328,12 @@ function registerApi(
   activityId: string
 ): Express {
   const logger = container.resolve<Logger>("logger")
-  logger.progress(
-    activityId,
-    `Registering custom endpoints for ${pluginDetails.name}`
-  )
+  const projectName =
+    pluginDetails.name === MEDUSA_PROJECT_NAME
+      ? "your Medusa project"
+      : `${pluginDetails.name}`
+
+  logger.progress(activityId, `Registering custom endpoints for ${projectName}`)
   try {
     const routes = require(`${pluginDetails.resolve}/api`).default
     if (routes) {
@@ -336,12 +341,16 @@ function registerApi(
     }
     return app
   } catch (err) {
-    if (err.message !== `Cannot find module '${pluginDetails.resolve}/api'`) {
-      logger.progress(
-        activityId,
-        `No customer endpoints registered for ${pluginDetails.name}`
+    if (err.code !== "MODULE_NOT_FOUND") {
+      logger.warn(
+        `An error occured while registering endpoints in ${projectName}`
       )
+
+      if (err.stack) {
+        logger.warn(`${err.stack}`)
+      }
     }
+
     return app
   }
 }
