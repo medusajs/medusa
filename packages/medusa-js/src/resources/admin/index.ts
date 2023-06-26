@@ -81,6 +81,7 @@ class Admin extends BaseResource {
 
 export {
   Admin,
+  AdminCustomResource,
   AdminAuthResource,
   AdminBatchJobsResource,
   AdminCollectionsResource,

@@ -1,4 +1,4 @@
-import { Response } from "@medusajs/medusa-js"
+import Medusa, { AdminCustomResource, Response } from "@medusajs/medusa-js"
 import { QueryKey, useQuery, UseQueryResult } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
@@ -36,4 +36,19 @@ export const useAdminCustomEntities = <
     () => client.admin.custom.list<TQuery, TRes>(path, query),
     options
   )
+}
+
+interface CustomResponse extends Record<string, any> {}
+interface CustomQuery extends Record<string, any> {}
+
+type CustomGetProps = Parameters<AdminCustomResource["get"]>
+
+export const useAdminCustomGet = <TResponse extends CustomResponse>(
+  queryFn: (client: Medusa) => Promise<Response<TResponse>>,
+  queryKey: QueryKey,
+  options?: UseQueryOptionsWrapper<Response<TResponse>, Error, QueryKey>
+) => {
+  const { client } = useMedusa()
+
+  client.admin.custom.get
 }
