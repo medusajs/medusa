@@ -55,6 +55,8 @@ type PluginDetails = {
 
 export const isSearchEngineInstalledResolutionKey = "isSearchEngineInstalled"
 
+export const MEDUSA_PROJECT_NAME = "project-plugin"
+
 /**
  * Registers all services in the services directory
  */
@@ -108,10 +110,11 @@ function getResolvedPlugins(
     return details
   })
 
+  // Resolve user's project as a plugin for loading purposes
   resolved.push({
     resolve: `${rootDirectory}/dist`,
-    name: `project-plugin`,
-    id: createPluginId(`project-plugin`),
+    name: MEDUSA_PROJECT_NAME,
+    id: createPluginId(MEDUSA_PROJECT_NAME),
     options: configModule,
     version: createFileContentHash(process.cwd(), `**`),
   })
@@ -326,7 +329,7 @@ function registerApi(
 ): Express {
   const logger = container.resolve<Logger>("logger")
   const projectName =
-    pluginDetails.name === "project-plugin"
+    pluginDetails.name === MEDUSA_PROJECT_NAME
       ? "your Medusa project"
       : `${pluginDetails.name}`
 
