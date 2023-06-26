@@ -1,4 +1,5 @@
 import { formatRegistrationName, formatRegistrationNameWithoutNamespace } from "../utils/format-registration-name"
+import { getModelExtensionsMap } from './helpers/get-model-extension-map'
 import glob from "glob"
 import path from "path"
 import { ClassConstructor, MedusaContainer } from "../types/global"
@@ -12,54 +13,35 @@ export default (
   { container, isTest, rootDirectory }: { container: MedusaContainer; isTest?: boolean, rootDirectory?: string },
   config = { register: true }
 ) => {
-  const corePath = isTest ? "../models/*.ts" : "../models/*.js"
-  const modelExtensionsGlob = "dist/models/*.js"
-  const coreFull = path.join(__dirname, corePath)
-  const modelExtensionsFullGlob = rootDirectory ? path.join(rootDirectory, modelExtensionsGlob) : null
+  const coreModelsGlob = isTest ? "../models/*.ts" : "../models/*.js"
+  const coreModelsFullGlob = path.join(__dirname, coreModelsGlob)
   const models: (ClassConstructor<unknown> | EntitySchema)[] = []
 
-  const core = glob.sync(coreFull, {
+  const coreModels = glob.sync(coreModelsFullGlob, {
     cwd: __dirname,
     ignore: ["index.js", "index.ts"],
   })
 
-  const modelExtensions = modelExtensionsFullGlob ? glob.sync(modelExtensionsFullGlob, {
-    ignore: ["index.js"],
-  }) : []
-  const modelExtensionsMap = new Map()
-
-  modelExtensions.forEach((modelExtensionPath) => {
-    const extendedModel = require(modelExtensionPath) as ClassConstructor<unknown> | EntitySchema
-
-    if (extendedModel) {
-      Object.entries(extendedModel).map(
-        ([, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
-          if (typeof val === "function" || val instanceof EntitySchema) {
-            if (config.register) {
-              const name = formatRegistrationName(modelExtensionPath)
-
-              modelExtensionsMap.set(name, val)
-            }
-          }
-        }
-      )
-    }
+  const modelExtensionsMap = getModelExtensionsMap({
+    directory: rootDirectory,
+    glob: "dist/models/*.js",
+    config,
   })
 
-  core.forEach((fn) => {
-    const loaded = require(fn) as ClassConstructor<unknown> | EntitySchema
+  coreModels.forEach((modelPath) => {
+    const loaded = require(modelPath) as ClassConstructor<unknown> | EntitySchema
 
     if (loaded) {
       Object.entries(loaded).map(
         ([, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
           if (typeof val === "function" || val instanceof EntitySchema) {
             if (config.register) {
-              const name = formatRegistrationName(fn)
+              const name = formatRegistrationName(modelPath)
 
               // If an extension file is found, override it with that instead
               if (modelExtensionsMap.get(name)) {
-                const coreModel = require(fn)
-                const modelName = formatRegistrationNameWithoutNamespace(fn)
+                const coreModel = require(modelPath)
+                const modelName = formatRegistrationNameWithoutNamespace(modelPath)
 
                 coreModel[modelName] = modelExtensionsMap.get(name)
                 val = modelExtensionsMap.get(name)

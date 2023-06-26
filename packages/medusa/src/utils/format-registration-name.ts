@@ -32,8 +32,7 @@ export function formatRegistrationName(path: string): string {
       break
   }
 
-  const upperNamespace =
-    directoryNamespace.charAt(0).toUpperCase() + directoryNamespace.slice(1, -1)
+  const upperNamespace = upperCaseFirst(directoryNamespace.slice(0, -1))
 
   return formatRegistrationNameWithoutNamespace(path) + upperNamespace
 }
@@ -46,6 +45,7 @@ export function formatRegistrationNameWithoutNamespace(path: string): string {
     if (index !== 0) {
       return upperCaseFirst(n)
     }
+
     return n
   })
 
