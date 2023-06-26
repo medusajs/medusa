@@ -1,6 +1,6 @@
 ---
 "@medusajs/medusa": patch
-"@medusajs/types": patch
+"@medusajs/utils": patch
 ---
 
-feat(medusa, types): improve devx for core entity customizations
+feat(medusa, utils): improve devx for core entity customizations
