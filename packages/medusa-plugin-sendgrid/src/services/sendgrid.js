@@ -222,7 +222,7 @@ class SendGridService extends NotificationService {
     let templateId = this.getTemplateId(event)
 
     if (!templateId) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, "Sendgrid service: No template was set for this event")
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, `Sendgrid service: No template was set for event: ${event}`)
     }
 
     const data = await this.fetchData(event, eventData, attachmentGenerator)
