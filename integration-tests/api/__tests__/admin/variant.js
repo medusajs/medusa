@@ -8,7 +8,12 @@ const { simpleProductFactory } = require("../../factories")
 const adminSeeder = require("../../helpers/admin-seeder")
 const adminVariantsSeeder = require("../../helpers/admin-variants-seeder")
 const productSeeder = require("../../helpers/product-seeder")
-const storeProductSeeder = require("../../helpers/store-product-seeder")
+
+const adminHeaders = {
+  headers: {
+    Authorization: "Bearer test_token",
+  },
+}
 
 jest.setTimeout(30000)
 
@@ -44,11 +49,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/variants/", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/variants/", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -74,11 +75,7 @@ describe("/admin/products", () => {
     it("lists all product variants matching a specific sku", async () => {
       const api = useApi()
       const response = await api
-        .get("/admin/variants?q=sku2", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/variants?q=sku2", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -97,11 +94,7 @@ describe("/admin/products", () => {
     it("lists all product variants matching a specific variant title", async () => {
       const api = useApi()
       const response = await api
-        .get("/admin/variants?q=rank (1)", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/variants?q=rank (1)", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -122,11 +115,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/variants?q=Test product1", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .get("/admin/variants?q=Test product1", adminHeaders)
         .catch((err) => {
           console.log(err)
         })
@@ -170,11 +159,7 @@ describe("/admin/products", () => {
 
       const response = await api.get(
         "/admin/variants?id=test-variant&currency_code=usd",
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminHeaders
       )
 
       expect(response.data).toMatchSnapshot({
@@ -203,11 +188,7 @@ describe("/admin/products", () => {
 
       const response = await api.get(
         "/admin/variants?id=test-variant&region_id=reg-europe",
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminHeaders
       )
 
       expect(response.data).toMatchSnapshot({
@@ -236,11 +217,7 @@ describe("/admin/products", () => {
 
       const response = await api.get(
         "/admin/variants?id=test-variant&region_id=reg-europe&customer_id=test-customer",
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
+        adminHeaders
       )
 
       expect(response.data).toMatchSnapshot({
@@ -262,6 +239,49 @@ describe("/admin/products", () => {
           },
         ],
       })
+    })
+
+    it("returns a list of variants matching the given ids", async () => {
+      const api = useApi()
+
+      const productData = {
+        id: "test-product_filtering_by_variant_id",
+        title: "Test product filtering by variant id",
+        handle: "test-product_filtering_by_variant_id",
+        options: [
+          {
+            id: "test-product_filtering_by_variant_id-option",
+            title: "Size",
+          },
+        ],
+        variants: [],
+      }
+
+      for (let i = 0; i < 25; i++) {
+        productData.variants.push({
+          product_id: productData.id,
+          sku: `test-product_filtering_by_variant_id-${i}`,
+          title: `test-product_filtering_by_variant_id-${i}`,
+        })
+      }
+
+      const product = await simpleProductFactory(dbConnection, productData)
+
+      const variantIds = product.variants.map((v) => v.id)
+      const qs = "id[]=" + variantIds.join("&id[]=")
+
+      const response = await api
+        .get("/admin/variants?limit=30&" + qs, adminHeaders)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.variants.length).toEqual(variantIds.length)
+
+      for (const variant of response.data.variants) {
+        expect(variantIds).toContain(variant.id)
+      }
     })
   })
 })

@@ -199,6 +199,27 @@ describe("Create Variant", () => {
         )
       })
 
+      it("includes inventory items when property is expanded", async () => {
+        const api = useApi()
+
+        const result = await api.get(
+          `/store/products?expand=variants,variants.inventory_items`
+        )
+
+        expect(result.status).toEqual(200)
+        expect(result.data.products).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              variants: expect.arrayContaining([
+                expect.objectContaining({
+                  inventory_items: [expect.any(Object)],
+                }),
+              ]),
+            }),
+          ])
+        )
+      })
+
       it("lists location availability correctly for store", async () => {
         const api = useApi()
 

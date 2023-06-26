@@ -121,6 +121,7 @@ export default async (req, res) => {
  */
 export class AdminPostReservationsReq {
   @IsString()
+  @IsOptional()
   line_item_id?: string
 
   @IsString()

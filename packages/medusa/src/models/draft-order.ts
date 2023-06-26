@@ -9,15 +9,14 @@ import {
 } from "typeorm"
 import {
   DbAwareColumn,
-  resolveDbGenerationStrategy,
-  resolveDbType,
+  resolveDbType
 } from "../utils/db-aware-column"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
-import { Cart } from "./cart"
-import { Order } from "./order"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { manualAutoIncrement } from "../utils/manual-auto-increment"
+import { Cart } from "./cart"
+import { Order } from "./order"
 
 export enum DraftOrderStatus {
   OPEN = "open",
@@ -31,7 +30,7 @@ export class DraftOrder extends BaseEntity {
 
   @Index()
   @Column()
-  @Generated(resolveDbGenerationStrategy("increment"))
+  @Generated("increment")
   display_id: number
 
   @Index()
@@ -151,7 +150,7 @@ export class DraftOrder extends BaseEntity {
  *     nullable: true
  *     type: string
  *     externalDocs:
- *       url: https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key
+ *       url: https://docs.medusajs.com/development/idempotency-key/overview.md
  *       description: Learn more how to use the idempotency key.
  *   created_at:
  *     description: The date with timezone at which the resource was created.

@@ -136,11 +136,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     row: TParsedProductImportRowData,
     errorDescription?: string
   ): never {
-    const message = `Error while processing row with:
-      product id: ${row["product.id"]},
-      product handle: ${row["product.handle"]},
-      variant id: ${row["variant.id"]}
-      variant sku: ${row["variant.sku"]}
+    const message = `Error while processing row with
+      [(product id: ${row["product.id"]}),
+      (product handle: ${row["product.handle"]}),
+      (variant id: ${row["variant.id"]}),
+      (variant sku: ${row["variant.sku"]})]: 
       ${errorDescription}`
 
     throw new MedusaError(MedusaError.Types.INVALID_DATA, message)

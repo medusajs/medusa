@@ -65,7 +65,7 @@ As gift cards are, before purchase, essentially products, you’ll be using prod
 
 You can retrieve the gift card products by sending a request to the [List Products](/api/admin/#tag/Product/operation/GetProducts) endpoint, but filtering the products with the `is_giftcard` flag:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -154,7 +154,7 @@ The request returns the `products` array in the response which holds the gift ca
 
 You can create a gift card product by sending a request to the [Create a Product](/api/admin/#tag/Product/operation/PostProducts) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -355,7 +355,7 @@ After creating a gift card, merchants can update it or its denomination.
 
 You can update a gift card product’s details by sending a request to the [Update a Product](/api/admin/#tag/Product/operation/PostProductsProduct) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -434,7 +434,7 @@ This request returns the updated gift card product in the response.
 
 You can delete a gift card product by sending a request to the [Delete a Product](/api/admin/#tag/Product/operation/DeleteProductsProduct) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -507,7 +507,7 @@ This section covers how to manage custom gift cards. You can create an unlimited
 
 You can retrieve all custom gift cards by sending a request to the [List Gift Cards](/api/admin/#tag/Gift-Card/operation/GetGiftCards) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -581,7 +581,7 @@ Merchants can create custom gift cards to send a reward or gift to the customer.
 
 You can create a custom gift card by sending a request to the [Create a Gift Card](/api/admin/#tag/Gift-Card/operation/PostGiftCards) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -666,7 +666,7 @@ Merchants can update any of the gift card’s properties, except for the value o
 
 You can update a gift card by sending a request to the [Update a Gift Card](/api/admin/#tag/Gift-Card/operation/PostGiftCardsGiftCard) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -747,7 +747,7 @@ This request returns the updated gift card object in the response.
 
 You can delete a custom gift card by sending a request to the [Delete a Gift Card](/api/admin/#tag/Gift-Card/operation/DeleteGiftCardsGiftCard) endpoint:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts

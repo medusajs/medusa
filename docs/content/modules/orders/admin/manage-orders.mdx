@@ -62,7 +62,7 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 You can list orders by sending a request to the [List Orders endpoint](/api/admin#tag/Orders/operation/GetOrders):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -133,7 +133,7 @@ This endpoint accepts a variety of query parameters that allow you to filter ord
 
 For example, you can filter the orders by one or more status:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -214,7 +214,7 @@ You can check available order statuses [here](../../../references/entities/enums
 
 Another example is filtering the orders by a sales channel:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -295,7 +295,7 @@ curl -L -X GET '<BACKEND_URL>/admin/orders?sales_channel_id[]=<CHANNEL_ID>' \
 
 You can also combine filters together:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -382,7 +382,7 @@ curl -L -X GET '<BACKEND_URL>/admin/orders?status[]=completed&sales_channel_id[]
 
 You can retrieve an order by sending a request to the [Get an Order endpoint](/api/admin#tag/Orders/operation/GetOrdersOrder):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -463,7 +463,7 @@ Updating an order’s details can include updating its:
 
 You can update any of the above details of an order by sending a request to the [Update an Order endpoint](/api/admin#tag/Orders/operation/PostOrdersOrder):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -548,7 +548,7 @@ The request returns the updated order as an object.
 
 You can capture an order’s payment by sending a request to the [Capture Order’s Payment endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderCapture):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -616,7 +616,7 @@ You can refund an amount that is less than `order.refundable_amount`.
 
 To refund payment, send a request to the [Refund Payment endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderRefunds):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -710,7 +710,7 @@ The request returns the updated order as an object.
 
 You can create a fulfillment by sending a request to the [Create a Fulfillment endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderFulfillments):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -818,7 +818,7 @@ The request returns the updated order as an object.
 
 You can create a shipment for a fulfillment by sending a request to the [Create Shipment endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderShipment):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -899,7 +899,7 @@ The request returns the updated order as an object.
 
 You can cancel a fulfillment by sending a request to the [Cancel Fulfillment endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderFulfillmentsCancel):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -968,7 +968,7 @@ The request returns the updated order as an object.
 
 You can mark an order completed, changing its status, by sending a request to the [Complete an Order endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderComplete):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -1035,7 +1035,7 @@ The request returns the updated order as an object.
 
 You can cancel an order by sending a request to the [Cancel Order endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderCancel):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -1102,7 +1102,7 @@ The request returns the updated order as an object.
 
 You can archive an order by sending a request to the [Archive Order endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderArchive):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts

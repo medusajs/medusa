@@ -27,11 +27,11 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
   const { store } = useAdminStore()
 
   const getProductSalesChannels = (salesChannels) => {
-    ;(salesChannels || []).sort(
-      defaultChannelsSorter(store?.default_sales_channel_id || "")
-    )
+    const salesChannelsNames = (salesChannels || [])
+      .sort(defaultChannelsSorter(store?.default_sales_channel_id || ""))
+      .map((sc) => sc.name)
 
-    return <DelimitedList list={salesChannels.map((sc) => sc.name)} />
+    return <DelimitedList list={salesChannelsNames} />
   }
 
   const columns = useMemo(

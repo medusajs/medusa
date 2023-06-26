@@ -3,15 +3,16 @@ import {
   ICacheService,
   IEventBusService,
   IInventoryService,
-  IStockLocationService,
   InventoryItemDTO,
   InventoryLevelDTO,
+  IStockLocationService,
   ReservationItemDTO,
   ReserveQuantityContext,
 } from "@medusajs/types"
 import { LineItem, Product, ProductVariant } from "../models"
-import { MedusaError, TransactionBaseService, isDefined } from "@medusajs/utils"
+import { isDefined, MedusaError } from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
+import { TransactionBaseService } from "../interfaces"
 
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import ProductVariantService from "./product-variant"
@@ -374,6 +375,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     let locationId = context.locationId
+    const moduleContext = {
+      transactionManager: this.activeManager_,
+    }
+
     if (!isDefined(locationId) && context.salesChannelId) {
       const locationIds = await this.salesChannelLocationService_
         .withTransaction(this.activeManager_)
@@ -387,10 +392,14 @@ class ProductVariantInventoryService extends TransactionBaseService {
       }
 
       const [locations, count] =
-        await this.inventoryService_.listInventoryLevels({
-          location_id: locationIds,
-          inventory_item_id: variantInventory[0].inventory_item_id,
-        })
+        await this.inventoryService_.listInventoryLevels(
+          {
+            location_id: locationIds,
+            inventory_item_id: variantInventory[0].inventory_item_id,
+          },
+          undefined,
+          moduleContext
+        )
 
       if (count === 0) {
         throw new MedusaError(
@@ -405,12 +414,15 @@ class ProductVariantInventoryService extends TransactionBaseService {
     const reservationItems = await Promise.all(
       variantInventory.map(async (inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
-        return await this.inventoryService_.createReservationItem({
-          ...toReserve,
-          location_id: locationId as string,
-          inventory_item_id: inventoryPart.inventory_item_id,
-          quantity: itemQuantity,
-        })
+        return await this.inventoryService_.createReservationItem(
+          {
+            ...toReserve,
+            location_id: locationId as string,
+            inventory_item_id: inventoryPart.inventory_item_id,
+            quantity: itemQuantity,
+          },
+          moduleContext
+        )
       })
     )
 
@@ -455,6 +467,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
       )
     }
 
+    const context = {
+      transactionManager: this.activeManager_,
+    }
     const [reservations, reservationCount] =
       await this.inventoryService_.listReservationItems(
         {
@@ -462,7 +477,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
         },
         {
           order: { created_at: "DESC" },
-        }
+        },
+        context
       )
 
     reservations.sort((a, _) => {
@@ -484,7 +500,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
         (r) => r.quantity === deltaUpdate && r.location_id === locationId
       )
       if (exactReservation) {
-        await this.inventoryService_.deleteReservationItem(exactReservation.id)
+        await this.inventoryService_.deleteReservationItem(
+          exactReservation.id,
+          context
+        )
         return
       }
 
@@ -504,7 +523,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
       if (reservationsToDelete.length) {
         await this.inventoryService_.deleteReservationItem(
-          reservationsToDelete.map((r) => r.id)
+          reservationsToDelete.map((r) => r.id),
+          context
         )
       }
 
@@ -513,7 +533,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
           reservationToUpdate.id,
           {
             quantity: reservationToUpdate.quantity - remainingQuantity,
-          }
+          },
+          context
         )
       }
     }
@@ -542,11 +563,19 @@ class ProductVariantInventoryService extends TransactionBaseService {
         continue
       }
 
+      const context = {
+        transactionManager: this.activeManager_,
+      }
+
       const [inventoryLevels, inventoryLevelCount] =
-        await this.inventoryService_.listInventoryLevels({
-          inventory_item_id: pvInventoryItems.map((i) => i.inventory_item_id),
-          location_id: locationId,
-        })
+        await this.inventoryService_.listInventoryLevels(
+          {
+            inventory_item_id: pvInventoryItems.map((i) => i.inventory_item_id),
+            location_id: locationId,
+          },
+          undefined,
+          context
+        )
 
       if (!inventoryLevelCount) {
         throw new MedusaError(
@@ -583,7 +612,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * @param quantity quantity to release
    */
   async deleteReservationsByLineItem(
-    lineItemId: string,
+    lineItemId: string | string[],
     variantId: string,
     quantity: number
   ): Promise<void> {
@@ -605,7 +634,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
       })
     }
 
-    await this.inventoryService_.deleteReservationItemsByLineItem(lineItemId)
+    const itemIds = Array.isArray(lineItemId) ? lineItemId : [lineItemId]
+    await this.inventoryService_.deleteReservationItemsByLineItem(itemIds, {
+      transactionManager: this.activeManager_,
+    })
   }
 
   /**
@@ -649,7 +681,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
         return await this.inventoryService_.adjustInventory(
           inventoryPart.inventory_item_id,
           locationId,
-          itemQuantity
+          itemQuantity,
+          {
+            transactionManager: this.activeManager_,
+          }
         )
       })
     )
@@ -785,6 +820,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
     products: (Product | PricedProduct)[],
     salesChannelId: string | string[] | undefined
   ): Promise<(Product | PricedProduct)[]> {
+    if (!this.inventoryService_) {
+      return products
+    }
+
     const variantIds: string[] = products
       .flatMap((p) => p.variants.map((v: { id?: string }) => v.id) ?? [])
       .filter((v): v is string => !!v)

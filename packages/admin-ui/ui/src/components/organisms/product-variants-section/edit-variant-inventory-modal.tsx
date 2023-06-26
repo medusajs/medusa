@@ -14,13 +14,13 @@ import {
 import Button from "../../fundamentals/button"
 import { InventoryLevelDTO } from "@medusajs/types"
 import Modal from "../../molecules/modal"
+import { Option } from "../../../types/shared"
+import { countries } from "../../../utils/countries"
 import { queryClient } from "../../../constants/query-client"
-import { removeNullish } from "../../../utils/remove-nullish"
+import { removeFalsy, removeNullish } from "../../../utils/remove-nullish"
 import { useContext } from "react"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import { useForm } from "react-hook-form"
-import { countries } from "../../../utils/countries"
-import { Option } from "../../../types/shared"
 
 type Props = {
   onClose: () => void
@@ -59,7 +59,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     delete data.upc
     delete data.allow_backorder
 
-    return removeNullish({
+    return removeFalsy({
       ...updateDimensions,
       ...updateCustoms,
       ...data,
@@ -120,6 +120,9 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
         await client.admin.inventoryItems.update(itemId!, upsertPayload)
       }
     } else if (manageInventory) {
+      await client.admin.products.updateVariant(product.id, variant.id, {
+        manage_inventory: true,
+      })
       // does not have an inventory item but wants to manage inventory
       const { inventory_item } = await client.admin.inventoryItems.create({
         variant_id: variant.id,
@@ -164,15 +167,17 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
     // @ts-ignore
     onUpdateVariant(
       variant.id,
-      removeNullish({
-        ...dimensions,
-        ...customs,
-        ...stock,
-        ean,
-        barcode,
-        upc,
-        allow_backorder,
-      }),
+      {
+        ...removeNullish({
+          ...dimensions,
+          ...customs,
+          ...stock,
+          ean,
+          barcode,
+          upc,
+          allow_backorder,
+        }),
+      },
       () => {
         refetch()
         if (shouldInvalidateCache) {
@@ -284,7 +289,7 @@ export const getEditVariantDefaultValues = (
       upc: variant?.upc || null,
       inventory_quantity: null,
       manage_inventory: false,
-      allow_backorder: false,
+      allow_backorder: variant?.allow_backorder ?? false,
       location_levels: null,
       dimensions: {
         height: null,
@@ -322,7 +327,7 @@ export const getEditVariantDefaultValues = (
     upc: variant?.upc || null,
     inventory_quantity: inventoryItem.inventory_quantity,
     manage_inventory: !!inventoryItem,
-    allow_backorder: inventoryItem.allow_backorder,
+    allow_backorder: !!variant?.allow_backorder,
     location_levels: inventoryItem.location_levels,
     dimensions: {
       height: inventoryItem.height,

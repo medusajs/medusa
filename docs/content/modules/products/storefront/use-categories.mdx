@@ -43,13 +43,19 @@ This guide also includes code snippets to send requests to your Medusa backend u
 
 If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
 
+### @medusajs/product Module
+
+This guide also includes code snippets to utilize the `@medusajs/product` module in your storefront, among other methods.
+
+If you follow the `@medusajs/product` code blocks, it's assumed you already have the [@medusajs/product](../serverless-module.md) installed.
+
 ---
 
 ## List Categories
 
 You can list product categories by sending a request to the [List Product Categories endpoint](/api/store#tag/Product-Category/operation/GetProductCategories):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -95,6 +101,29 @@ export default Categories
 ```
 
 </TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const categories = await productService.listCategories()
+
+  console.log(categories)
+}
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -132,7 +161,7 @@ By default, the categories are not retrieved along with their nested children. T
 
 You can retrieve a single product category by its ID using the [Get a Product Category endpoint](/api/store#tag/Product-Category/operation/GetProductCategoriesCategory):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -160,6 +189,31 @@ function Category() {
 }
 
 export default Category
+```
+
+</TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const categories = await productService.listCategories({
+    id: productCategoryId,
+  })
+
+  console.log(categories[0])
+}
 ```
 
 </TabItem>
@@ -200,7 +254,7 @@ On the storefront, you may use the handle of a category as its page’s path. Fo
 
 You can retrieve the details of a category by its handle by sending a request to the List Categories endpoint, passing the `handle` as a filter:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -250,6 +304,31 @@ function Categories() {
 }
 
 export default Categories
+```
+
+</TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const categories = await productService.listCategories({
+    handle,
+  })
+
+  console.log(categories[0])
+}
 ```
 
 </TabItem>

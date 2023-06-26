@@ -45,21 +45,6 @@ Manage the content of your storefront with rich Content Management System (CMS) 
   DATABASE_URL=<YOUR_DB_URL>
   ```
 
-3\. In `medusa-config.js`, enable PostgreSQL and remove the SQLite configurations:
-
-  ```js
-  module.exports = {
-    projectConfig: {
-      // ...
-      database_url: DATABASE_URL,
-      database_type: "postgres",
-      // REMOVE OR COMMENT OUT THE BELOW:
-      // database_database: "./medusa-db.sql",
-      // database_type: "sqlite",
-    },
-  }
-  ```
-
 4\. Migrate the content types into Contentful with the following command:
 
   ```bash

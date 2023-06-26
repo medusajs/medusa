@@ -1,8 +1,29 @@
-import { BeforeInsert, Column, Entity, Index } from "typeorm"
-import { SoftDeletableEntity, generateEntityId } from "@medusajs/utils"
+import { generateEntityId } from "@medusajs/utils"
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm"
 
 @Entity()
-export class ReservationItem extends SoftDeletableEntity {
+export class ReservationItem {
+  @PrimaryColumn()
+  id: string
+
+  @CreateDateColumn({ type: "timestamptz" })
+  created_at: Date
+
+  @UpdateDateColumn({ type: "timestamptz" })
+  updated_at: Date
+
+  @DeleteDateColumn({ type: "timestamptz" })
+  deleted_at: Date | null
+
   @Index()
   @Column({ type: "text", nullable: true })
   line_item_id: string | null

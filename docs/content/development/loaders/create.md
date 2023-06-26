@@ -73,14 +73,14 @@ npm run build
 
 :::note
 
-This section explains how to test out the loader if it’s created in the Medusa backend codebase. If you’re creating your loader in a plugin, you can learn how to test it in the [plugins documentation](../plugins/create.md#test-your-plugin). Alternatively, if you’re creating your loader in a module, you can learn how to test it in the [modules documentation](../modules/create.mdx#step-4-test-your-module).
+This section explains how to test out the loader if it’s created in the Medusa backend codebase. If you’re creating your loader in a plugin, you can learn how to test it in the [plugins documentation](../plugins/create.mdx#test-your-plugin). Alternatively, if you’re creating your loader in a module, you can learn how to test it in the [modules documentation](../modules/create.mdx#step-4-test-your-module).
 
 :::
 
 Run the following command to start the Medusa backend:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 Your loader script should run on the Medusa backend startup. If you logged a message in the console, similar to the example above, you should see it in the console.

@@ -36,6 +36,30 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
+      type: "category",
+      label: "Recipes",
+      link: {
+        type: "doc",
+        id: "recipes/index",
+      },
+      customProps: {
+        sidebar_icon: "newspaper",
+      },
+      className: "homepage-sidebar-item",
+      items: [
+        {
+          type: "doc",
+          id: "recipes/marketplace",
+          label: "Marketplace",
+        },
+        {
+          type: "doc",
+          id: "recipes/subscriptions",
+          label: "Subscriptions",
+        },
+      ],
+    },
+    {
       type: "html",
       value: "Browse Docs",
       customProps: {
@@ -62,13 +86,33 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
-      type: "doc",
-      id: "admin/quickstart",
+      type: "category",
       label: "Admin Dashboard",
+      link: {
+        type: "doc",
+        id: "admin/quickstart",
+      },
       customProps: {
         sidebar_icon: "computer-desktop",
       },
       className: "homepage-sidebar-item",
+      items: [
+        {
+          type: "doc",
+          label: "Admin Widgets",
+          id: "admin/widgets",
+        },
+        {
+          type: "doc",
+          label: "Admin UI Routes",
+          id: "admin/routes",
+        },
+        {
+          type: "doc",
+          label: "Example: Create Onboarding",
+          id: "admin/onboarding",
+        },
+      ],
     },
     {
       type: "ref",
@@ -222,19 +266,6 @@ module.exports = {
                 },
               },
             },
-            {
-              type: "doc",
-              id: "deployments/server/deploying-on-qovery",
-              label: "Deploy on Qovery",
-              customProps: {
-                image:
-                  "https://res.cloudinary.com/dza7lstvk/image/upload/v1669739955/Medusa%20Docs/Other/qOvY2dN_vogsxy.png",
-                badge: {
-                  variant: "orange",
-                  children: "Deprecated",
-                },
-              },
-            },
           ],
         },
         {
@@ -276,19 +307,6 @@ module.exports = {
                   light:
                     "https://res.cloudinary.com/dza7lstvk/image/upload/v1679574115/Medusa%20Docs/Other/vercel-icon-dark_llkb7l.png",
                   dark: "https://res.cloudinary.com/dza7lstvk/image/upload/v1679574132/Medusa%20Docs/Other/vercel-icon-light_obvtno.png",
-                },
-              },
-            },
-            {
-              type: "doc",
-              id: "deployments/storefront/deploying-gatsby-on-netlify",
-              label: "Deploy Gatsby on Netlify",
-              customProps: {
-                image:
-                  "https://res.cloudinary.com/dza7lstvk/image/upload/v1679574027/Medusa%20Docs/Other/gCbsCvX_h7nijn.png",
-                badge: {
-                  variant: "orange",
-                  children: "Deprecated",
                 },
               },
             },
@@ -357,11 +375,6 @@ module.exports = {
               type: "doc",
               id: "troubleshooting/awilix-resolution-error",
               label: "Handling AwilixResolutionError",
-            },
-            {
-              type: "doc",
-              id: "troubleshooting/transaction-error-in-checkout",
-              label: "Error 409 in checkout",
             },
             {
               type: "doc",
@@ -619,6 +632,11 @@ module.exports = {
           type: "doc",
           id: "modules/products/admin/import-products",
           label: "Admin: Import Products",
+        },
+        {
+          type: "doc",
+          id: "modules/products/serverless-module",
+          label: "Storefront: Serverless Module",
         },
         {
           type: "doc",
@@ -886,6 +904,11 @@ module.exports = {
           type: "doc",
           id: "modules/multiwarehouse/admin/manage-inventory-items",
           label: "Admin: Manage Inventory Items",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/admin/manage-reservations",
+          label: "Admin: Manage Custom Reservations",
         },
         {
           type: "doc",
@@ -1283,7 +1306,7 @@ module.exports = {
       items: [
         {
           type: "category",
-          label: "Entities",
+          label: "Entity",
           items: [
             {
               type: "doc",
@@ -1293,7 +1316,7 @@ module.exports = {
             {
               type: "doc",
               id: "development/entities/migrations/overview",
-              label: "Migrations",
+              label: "Migration",
             },
             {
               type: "ref",
@@ -1331,7 +1354,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Endpoints",
+          label: "Endpoint",
           items: [
             {
               type: "doc",
@@ -1353,7 +1376,7 @@ module.exports = {
             {
               type: "doc",
               id: "development/endpoints/add-middleware",
-              label: "Middlewares",
+              label: "Middleware",
             },
             {
               type: "doc",
@@ -1364,7 +1387,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Services",
+          label: "Service",
           items: [
             {
               type: "doc",
@@ -1397,7 +1420,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Events",
+          label: "Event",
           items: [
             {
               type: "doc",
@@ -1407,7 +1430,7 @@ module.exports = {
             {
               type: "doc",
               id: "development/events/subscribers",
-              label: "Subscribers",
+              label: "Subscriber",
             },
             {
               type: "doc",
@@ -1452,7 +1475,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Loaders",
+          label: "Loader",
           items: [
             {
               type: "doc",
@@ -1475,7 +1498,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Scheduled Jobs",
+          label: "Scheduled Job",
           items: [
             {
               type: "doc",
@@ -1498,7 +1521,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Modules",
+          label: "Module",
           items: [
             {
               type: "doc",
@@ -1526,7 +1549,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Plugins",
+          label: "Plugin",
           items: [
             {
               type: "doc",
@@ -1604,7 +1627,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Publishable API Keys",
+          label: "Publishable API Key",
           items: [
             {
               type: "doc",
@@ -1632,7 +1655,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Notifications",
+          label: "Notification",
           items: [
             {
               type: "doc",
@@ -1701,7 +1724,30 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Batch Jobs",
+          label: "Idempotency Key",
+          items: [
+            {
+              type: "doc",
+              id: "development/idempotency-key/overview",
+              label: "Overview",
+            },
+            {
+              type: "html",
+              value: "How-to",
+              customProps: {
+                sidebar_is_group_divider: true,
+              },
+            },
+            {
+              type: "doc",
+              id: "development/idempotency-key/use-service",
+              label: "Use IdempotencyKeyService",
+            },
+          ],
+        },
+        {
+          type: "category",
+          label: "Batch Job",
           items: [
             {
               type: "doc",
@@ -1729,7 +1775,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Strategies",
+          label: "Strategy",
           items: [
             {
               type: "doc",
@@ -1752,7 +1798,7 @@ module.exports = {
         },
         {
           type: "category",
-          label: "Feature Flags",
+          label: "Feature Flag",
           items: [
             {
               type: "doc",
@@ -2125,6 +2171,16 @@ module.exports = {
               iconName: "bolt-solid",
               description:
                 "Learn how to integrate Spaces with the Medusa backend.",
+            },
+          },
+          {
+            type: "doc",
+            id: "plugins/file-service/local",
+            label: "Local File Storage",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to use local file storage in your Medusa backend",
             },
           },
         ],

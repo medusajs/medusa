@@ -53,7 +53,7 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 You can list the tax rates by sending a request to the [List Tax Rates endpoint](/api/admin#tag/Tax-Rates/operation/GetTaxRates):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -124,7 +124,7 @@ The endpoint returns an array of tax rate objects along with [pagination paramet
 
 You can retrieve the tax rate of a region by passing the `region_id` query parameter:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -195,7 +195,7 @@ In the example above, you pass the region’s ID as the value of the `region_id`
 
 This query parameter also accepts an array of strings, allowing you to filter the tax rates by more than one region:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -270,7 +270,7 @@ curl -L -X GET '<BACKEND_URL>/admin/tax-rates?region_id[]=reg_123&region_id[]=re
 
 You can create a tax rate by sending a request to the [Create Tax Rate endpoint](/api/admin#tag/Tax-Rates/operation/PostTaxRates):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -373,7 +373,7 @@ The request returns the created tax rate as an object.
 
 You can update a tax rate by sending a request to the [Update Tax Rate endpoint](/api/admin#tag/Tax-Rates/operation/PostTaxRatesTaxRate):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -458,7 +458,7 @@ This section explains how you can add and remove products from a tax rate.
 
 You can add a product to a tax rate by sending a request to the [Add Products endpoint](/api/admin#tag/Tax-Rates/operation/PostTaxRatesTaxRateProducts):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -547,7 +547,7 @@ The request returns the updated tax rate as an object. You can access the tax ra
 
 You can remove a product from a tax rate by sending a request to the [Delete Products endpoint](/api/admin#tag/Tax-Rates/operation/DeleteTaxRatesTaxRateProducts):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -642,7 +642,7 @@ This section explains how you can add and remove product types from a tax rate.
 
 You can add a product type to a tax rate by sending a request to the [Add Product Types endpoint](/api/admin#tag/Tax-Rates/operation/PostTaxRatesTaxRateProductTypes):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -735,7 +735,7 @@ The request returns the updated tax rate as an object. You can access the tax ra
 
 You can remove a product type from a tax rate by sending a request to the [Delete Product Types endpoint](/api/admin#tag/Tax-Rates/operation/DeleteTaxRatesTaxRateProductTypes):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -834,7 +834,7 @@ This section explains how you can add and remove shipping options from a tax rat
 
 You can add a shipping option to a tax rate by sending a request to the [Add Shipping Option endpoint](/api/admin#tag/Tax-Rates/operation/PostTaxRatesTaxRateShippingOptions):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -925,7 +925,7 @@ The request returns the updated tax rate as an object. You can access the tax ra
 
 You can remove a shipping option from a tax rate by sending a request to the [Delete Shipping Options endpoint](/api/admin#tag/Tax-Rates/operation/DeleteTaxRatesTaxRateShippingOptions):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -1018,7 +1018,7 @@ The request returns the updated tax rate as an object. You can access the tax ra
 
 You can delete a tax rate by sending a request to the [Delete Tax Rate endpoint](/api/admin#tag/Tax-Rates/operation/DeleteTaxRatesTaxRate):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts

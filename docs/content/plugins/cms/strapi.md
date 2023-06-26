@@ -25,7 +25,7 @@ By integrating Strapi to Medusa, you can benefit from powerful features in your 
 
 ### Medusa CLI
 
-[Medusa’s CLI tool](../../cli/reference.md#how-to-install-cli-tool) is required to set up a new Medusa backend.
+[Medusa’s CLI tool](../../cli/reference.mdx#how-to-install-cli-tool) is required to set up a new Medusa backend.
 
 ### Redis
 
@@ -86,32 +86,35 @@ You can use the Strapi plugin on an existing Medusa backend, however, existing d
 To create your Medusa backend, run the following command:
 
 ```bash
-medusa new medusa-backend --seed
+npx @medusajs/medusa-cli@latest new medusa-backend
 ```
-
-The `--seed` flag creates an SQLite database and seeds it with some demo data.
 
 ### Configure your Backend
 
-Once the command is done executing, change to the newly created `medusa-backend` directory. Then, in `medusa-config.js`, change the exported object at the end of the file to enable Redis:
+Once the command is done executing, change to the newly created `medusa-backend` directory:
 
-```jsx title=medusa-config.js
-module.exports = {
-  projectConfig: {
-    redis_url: REDIS_URL,
-    // ...
-  },
-  // ...
-}
+```bash
+cd medusa-backend
 ```
 
-This uses the default Redis configurations. If you want to learn more about configuring Redis, [check out this documentation](../../development/backend/configurations.md#redis).
+You must then configure your backend to:
 
-:::tip
+- Connect to a PostgreSQL database, as explained [here](../../development/backend/configurations.md#database-configuration)
+- Install and configure an event-bus module, as explained [here](../../development/backend/configurations.md#recommended-event-bus-modules)
 
-It is also recommended to use PostgreSQL for an optimal experience, however, it is not required. Learn how to [install](../../development/backend/prepare-environment.mdx#postgres) and [configure](../../development/backend/configurations.md#postgresql-configurations) it on your Medusa backend.
+### Run Migrations
 
-:::
+After configuring the connection to the database, you must run migrations to add the necessary database schema definitions in your database. To do that, run the following command in the `medusa-backend` directory:
+
+```bash
+npx @medusajs/medusa-cli@latest migrations run
+```
+
+You can optionally seed your database with demo data by running the `seed` command:
+
+```bash
+npx @medusajs/medusa-cli@latest seed --seed-file=data/seed.json
+```
 
 ---
 
@@ -172,7 +175,7 @@ npm run develop
 Then, in the directory of your Medusa backend, run the following command to start the Medusa backend:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 Once you start your Medusa backend, if you ran the `--seed` command when you created your Medusa backend, you’ll see that `product.created` events have been triggered along with similar events. This will update Strapi with the products you seeded.
@@ -196,4 +199,4 @@ If you try to update products on Medusa either using the [REST APIs](/api/admin/
 ## See Also
 
 - [Deploy the Medusa backend](../../deployments/server/index.mdx)
-- [Create your own plugin](../../development/plugins/create.md)
+- [Create your own plugin](../../development/plugins/create.mdx)

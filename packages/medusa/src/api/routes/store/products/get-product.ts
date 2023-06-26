@@ -1,4 +1,3 @@
-import { IsOptional, IsString } from "class-validator"
 import {
   CartService,
   PricingService,
@@ -6,6 +5,8 @@ import {
   ProductVariantInventoryService,
   RegionService,
 } from "../../../../services"
+import { IsOptional, IsString } from "class-validator"
+
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
@@ -148,12 +149,4 @@ export class StoreGetProductsProductParams extends PriceSelectionParams {
   @IsString()
   @IsOptional()
   sales_channel_id?: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
-
-  @IsString()
-  @IsOptional()
-  expand?: string
 }

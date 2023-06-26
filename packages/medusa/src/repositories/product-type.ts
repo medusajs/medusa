@@ -45,7 +45,7 @@ export const ProductTypeRepository = dataSource
       conditionId: string,
       query: ExtendedFindConfig<ProductType>
     ): Promise<[ProductType[], number]> {
-      return await this.createQueryBuilder("pt")
+      const qb = this.createQueryBuilder("pt")
         .where(query.where)
         .setFindOptions(query)
         .innerJoin(
@@ -54,7 +54,8 @@ export const ProductTypeRepository = dataSource
           `dc_pt.product_type_id = pt.id AND dc_pt.condition_id = :dcId`,
           { dcId: conditionId }
         )
-        .getManyAndCount()
+
+      return await Promise.all([qb.getMany(), qb.getCount()])
     },
   })
 export default ProductTypeRepository

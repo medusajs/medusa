@@ -112,7 +112,7 @@ function getResolvedPlugins(
     resolve: `${rootDirectory}/dist`,
     name: `project-plugin`,
     id: createPluginId(`project-plugin`),
-    options: {},
+    options: configModule,
     version: createFileContentHash(process.cwd(), `**`),
   })
 

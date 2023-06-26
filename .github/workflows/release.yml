@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-        
+
       - name: Creating .npmrc
         run: |
           cat << EOF > "$HOME/.npmrc"
@@ -36,11 +36,5 @@ jobs:
 
       - name: Create Release Pull Request
         uses: changesets/action@v1
-#         with: 
-#           version: yarn version
-#           publish: yarn release
-#           commit: "chore: Release"
-#           title: "chore: Release"
-#           createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

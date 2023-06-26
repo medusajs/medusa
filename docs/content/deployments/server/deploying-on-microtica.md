@@ -72,7 +72,7 @@ The second step provides customization posibilities by configuring environment v
 
 Add an application name and the admin credentials that will be used to create an initial admin user with which you can later sign in to your Medusa Admin. 
 
-Then, choose whether you want a production Medusa Backend environment or a development one. The production template will provision your managed Relational Database Service (RDS) PostgreSQL and Redis instances. On the other hand, the development template will use a local SQLite and a fake Redis instance.
+Then, choose whether you want a production Medusa Backend environment or a development one. The production template will provision your managed Relational Database Service (RDS) PostgreSQL and Redis instances.
 
 ### Step 3: Connect an AWS account 
 

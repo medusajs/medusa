@@ -59,7 +59,7 @@ Return reasons allow you to specify why an item is returned. They are especially
 
 You can list available return reasons using the [List Return Reasons endpoint](/api/admin#tag/Return-Reasons/operation/GetReturnReasons):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -132,7 +132,7 @@ The request returns an array of return reason objects.
 
 You can create a return reason using the [Create Return Reason endpoint](/api/admin#tag/Return-Reasons/operation/PostReturnReasons):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -218,7 +218,7 @@ This request returns the created return reason as an object.
 
 You can update a return reason by sending a request to the [Update Return Reason endpoint](/api/admin#tag/Return-Reasons/operation/PostReturnReasonsReason):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -299,7 +299,7 @@ The request returns the updated return reason as an object.
 
 You can delete a return reason by sending a request to the [Delete Return Reason endpoint](/api/admin#tag/Return-Reasons/operation/DeleteReturnReason):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -376,7 +376,7 @@ You can view all returns in your commerce system, regardless of which order they
 
 When you retrieve an order using the [Get Order endpoint](/api/admin#tag/Orders/operation/GetOrdersOrder), you can access the returns within the order object:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -469,7 +469,7 @@ You can retrieve a claim using the Get Order endpoint as explained [here](./mana
 
 You can mark a return as received by sending a request to the [Receive a Return endpoint](/api/admin#tag/Returns/operation/PostReturnsReturnReceive):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -578,7 +578,7 @@ A received return can’t be canceled.
 
 You can cancel a return by sending a request to the [Cancel Return endpoint](/api/admin#tag/Returns/operation/PostReturnsReturnCancel):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts

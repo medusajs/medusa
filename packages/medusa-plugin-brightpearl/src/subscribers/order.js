@@ -8,6 +8,7 @@ class OrderSubscriber {
     brightpearlService,
     claimService,
     fulfillmentService,
+    featureFlagRouter,
   }) {
     this.orderService_ = orderService
     this.brightpearlService_ = brightpearlService
@@ -16,6 +17,7 @@ class OrderSubscriber {
     this.paymentProviderService_ = paymentProviderService
     this.fulfillmentService_ = fulfillmentService
     this.claimService_ = claimService
+    this.featureFlagRouter = featureFlagRouter
 
     eventBusService.subscribe("order.placed", this.sendToBrightpearl)
 
@@ -95,14 +97,28 @@ class OrderSubscriber {
         "return_order.shipping_method",
         "return_order.shipping_method.tax_lines",
         "additional_items",
+        "additional_items.variant",
+        "additional_items.variant.product",
         "additional_items.tax_lines",
         "shipping_address",
         "shipping_methods",
         "shipping_methods.tax_lines",
       ],
     })
+
+    const relations = [
+      "payments",
+      "region",
+      "swaps",
+      "discounts",
+      "discounts.rule",
+    ]
+    if (this.featureFlagRouter.isFeatureEnabled("sales_channels")) {
+      relations.push("sales_channel")
+    }
+
     const fromOrder = await this.orderService_.retrieve(fromSwap.order_id, {
-      relations: ["payments", "region", "swaps", "discounts", "discounts.rule"],
+      relations,
     })
 
     if (
@@ -128,20 +144,27 @@ class OrderSubscriber {
         "return_order.shipping_method",
         "return_order.shipping_method.tax_lines",
         "additional_items",
+        "additional_items.variant",
+        "additional_items.variant.product",
         "additional_items.tax_lines",
         "shipping_address",
         "shipping_methods",
       ],
     })
 
+    const relations = [
+      "payments",
+      "region",
+      "claims",
+      "discounts",
+      "discounts.rule",
+    ]
+    if (this.featureFlagRouter.isFeatureEnabled("sales_channels")) {
+      relations.push("sales_channel")
+    }
+
     const fromOrder = await this.orderService_.retrieve(fromClaim.order_id, {
-      relations: [
-        "payments",
-        "region",
-        "claims",
-        "discounts",
-        "discounts.rule",
-      ],
+      relations,
     })
 
     if (fromClaim.type === "replace") {
@@ -167,8 +190,13 @@ class OrderSubscriber {
   registerReturn = async (data) => {
     const { id, return_id } = data
 
+    const relations = ["discounts", "region", "swaps", "payments"]
+    if (this.featureFlagRouter.isFeatureEnabled("sales_channels")) {
+      relations.push("sales_channel")
+    }
+
     const order = await this.orderService_.retrieve(id, {
-      relations: ["discounts", "region", "swaps", "payments"],
+      relations,
     })
 
     const fromReturn = await this.returnService_.retrieve(return_id, {
@@ -182,8 +210,15 @@ class OrderSubscriber {
 
   registerRefund = async (data) => {
     const { id, refund_id } = data
+
+    const relations = ["region", "payments"]
+
+    if (this.featureFlagRouter.isFeatureEnabled("sales_channels")) {
+      relations.push("sales_channel")
+    }
+
     const order = await this.orderService_.retrieve(id, {
-      relations: ["region", "payments"],
+      relations,
     })
     const refund = await this.paymentProviderService_.retrieveRefund(refund_id)
     return this.brightpearlService_

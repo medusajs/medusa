@@ -98,7 +98,7 @@ describe("/store/products", () => {
       internalCategoryWithProduct = await simpleProductCategoryFactory(
         dbConnection,
         {
-          id: inactiveCategoryWithProductId,
+          id: internalCategoryWithProductId,
           name: "inactive category with Product",
           products: [{ id: testProductFilteringId2 }],
           parent_category: nestedCategoryWithProduct,
@@ -214,6 +214,51 @@ describe("/store/products", () => {
           }),
           expect.objectContaining({
             id: testProductId1,
+          }),
+        ])
+      )
+    })
+
+    it("returns only active and public products with include_category_children when categories are expanded", async () => {
+      const api = useApi()
+
+      const params = `id[]=${testProductFilteringId2}&expand=categories`
+      let response = await api.get(`/store/products?${params}`)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(1)
+
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: testProductFilteringId2,
+            categories: [],
+          }),
+        ])
+      )
+
+      const category = await simpleProductCategoryFactory(dbConnection, {
+        id: categoryWithProductId,
+        name: "category with Product 2",
+        products: [{ id: response.data.products[0].id }],
+        is_active: true,
+        is_internal: false,
+      })
+
+      response = await api.get(`/store/products?${params}`)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(1)
+
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: testProductFilteringId2,
+            categories: expect.arrayContaining([
+              expect.objectContaining({
+                id: category.id,
+              }),
+            ]),
           }),
         ])
       )

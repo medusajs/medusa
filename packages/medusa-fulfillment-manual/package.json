@@ -1,6 +1,6 @@
 {
   "name": "medusa-fulfillment-manual",
-  "version": "1.1.37",
+  "version": "1.1.38",
   "description": "A manual fulfillment provider for Medusa",
   "main": "index.js",
   "repository": {

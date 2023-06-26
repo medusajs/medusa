@@ -74,7 +74,7 @@ export class TrackingLink extends SoftDeletableEntity {
  *     nullable: true
  *     type: string
  *     externalDocs:
- *       url: https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key
+ *       url: https://docs.medusajs.com/development/idempotency-key/overview.md
  *       description: Learn more how to use the idempotency key.
  *   created_at:
  *     description: The date with timezone at which the resource was created.

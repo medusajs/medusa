@@ -60,7 +60,7 @@ You can learn more about [authenticating as an admin user in the API reference](
 
 To view an order’s claims, you can retrieve the order using the [Get Order endpoint](/api/admin#tag/Orders/operation/GetOrdersOrder) and access the order’s claims:
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -139,7 +139,7 @@ The request returns the order as an object. In that object, you can access an ar
 
 You can create a claim by sending a request to the [Create Claim endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderClaims):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -257,7 +257,7 @@ The request returns the updated order as an object. You can access the order’s
 
 You can update a claim by sending a request to the [Update Claim endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderClaimsClaim):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -348,7 +348,7 @@ Fulfillments are available on a claim object under the `fulfillments` property, 
 
 You can create a fulfillment for a claim by sending a request to the [Create Claim Fulfillment endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderClaimsClaimFulfillments):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -418,7 +418,7 @@ The request returns the updated order as an object. You can access the order’s
 
 You can create a shipment for a claim by sending a request to the [Create Claim Shipment endpoint](/api/admin#tag/Orders/operation/PostOrdersOrderClaimsClaimShipments):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -510,7 +510,7 @@ You can’t cancel a fulfillment that has a shipment
 
 You can cancel a fulfillment by sending a request to the [Cancel Fulfillment endpoint](/api/admin#tag/Orders/operation/PostOrdersClaimFulfillmentsCancel):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts
@@ -594,7 +594,7 @@ You can’t cancel a claim that has been refunded. You must also cancel the clai
 
 You can cancel a claim by sending a request to the [Cancel Claim endpoint](/api/admin#tag/Orders/operation/PostOrdersClaimCancel):
 
-<Tabs groupId="request-type" wrapperClassName="code-tabs">
+<Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
 
 ```ts

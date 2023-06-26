@@ -48,6 +48,7 @@ describe("List Variants", () => {
 
   describe("Inventory Items", () => {
     const variantId = "test-variant"
+    let invItem
 
     beforeEach(async () => {
       await adminSeeder(dbConnection)
@@ -78,7 +79,7 @@ describe("List Variants", () => {
         location.id
       )
 
-      const invItem = await inventoryService.createInventoryItem({
+      invItem = await inventoryService.createInventoryItem({
         sku: "test-sku",
       })
       const invItemId = invItem.id
@@ -101,6 +102,29 @@ describe("List Variants", () => {
       expect(listVariantsRes.data.variants.length).toEqual(1)
       expect(listVariantsRes.data.variants[0]).toEqual(
         expect.objectContaining({ id: variantId, inventory_quantity: 10 })
+      )
+    })
+
+    it("expands inventory_items when querying with expand parameter", async () => {
+      const api = useApi()
+
+      const listVariantsRes = await api.get(
+        `/admin/variants?expand=inventory_items`,
+        adminHeaders
+      )
+
+      expect(listVariantsRes.status).toEqual(200)
+      expect(listVariantsRes.data.variants.length).toEqual(1)
+      expect(listVariantsRes.data.variants[0]).toEqual(
+        expect.objectContaining({
+          id: variantId,
+          inventory_items: [
+            expect.objectContaining({
+              inventory_item_id: invItem.id,
+              variant_id: variantId,
+            }),
+          ],
+        })
       )
     })
   })

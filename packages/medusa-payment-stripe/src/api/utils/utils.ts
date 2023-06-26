@@ -194,6 +194,7 @@ async function capturePaymentIfNecessary({
 }) {
   const orderService = container.resolve("orderService")
   const order = await orderService
+    .withTransaction(transactionManager)
     .retrieveByCartId(cartId)
     .catch(() => undefined)
 

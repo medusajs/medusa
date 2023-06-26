@@ -120,7 +120,7 @@ npm run build
 Run your backend to test it out:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 To test it out, you can simulate a checkout flow and check the calculated taxes to see if it matches the logic you implemented in the `calculate` method.

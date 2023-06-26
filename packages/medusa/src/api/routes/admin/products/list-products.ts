@@ -233,44 +233,36 @@ export default async (req, res) => {
 
   const manager = req.scope.resolve("manager")
 
-  const [products, count] = await manager.transaction(
-    async (transactionManager) => {
-      const [rawProducts, count] = await productService
-        .withTransaction(transactionManager)
-        .listAndCount(req.filterableFields, req.listConfig)
-
-      let products: (Product | PricedProduct)[] = rawProducts
-
-      // We only set prices if variants.prices are requested
-      const shouldSetPricing = ["variants", "variants.prices"].every(
-        (relation) => relations?.includes(relation)
-      )
-
-      if (shouldSetPricing) {
-        products = await pricingService
-          .withTransaction(transactionManager)
-          .setProductPrices(rawProducts)
-      }
-
-      // We only set availability if variants are requested
-      const shouldSetAvailability = relations?.includes("variants")
-
-      if (inventoryService && shouldSetAvailability) {
-        const [salesChannelsIds] = await salesChannelService
-          .withTransaction(transactionManager)
-          .listAndCount({}, { select: ["id"] })
-
-        products = await productVariantInventoryService
-          .withTransaction(transactionManager)
-          .setProductAvailability(
-            products,
-            salesChannelsIds.map((salesChannel) => salesChannel.id)
-          )
-      }
-
-      return [products, count]
-    }
+  const [rawProducts, count] = await productService.listAndCount(
+    req.filterableFields,
+    req.listConfig
   )
+
+  let products: (Product | PricedProduct)[] = rawProducts
+
+  // We only set prices if variants.prices are requested
+  const shouldSetPricing = ["variants", "variants.prices"].every((relation) =>
+    relations?.includes(relation)
+  )
+
+  if (shouldSetPricing) {
+    products = await pricingService.setProductPrices(rawProducts)
+  }
+
+  // We only set availability if variants are requested
+  const shouldSetAvailability = relations?.includes("variants")
+
+  if (inventoryService && shouldSetAvailability) {
+    const [salesChannelsIds] = await salesChannelService.listAndCount(
+      {},
+      { select: ["id"] }
+    )
+
+    products = await productVariantInventoryService.setProductAvailability(
+      products,
+      salesChannelsIds.map((salesChannel) => salesChannel.id)
+    )
+  }
 
   res.json({
     products,

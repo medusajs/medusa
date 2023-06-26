@@ -1,11 +1,12 @@
-# Payment Processor (Stripe) not showing in checkout
+---
+title: 'Payment Processor not showing in checkout'
+---
 
 You add payment processors to your Medusa instance by adding them as plugins in `medusa-config.js`:
 
 ```js title=medusa-config.js
 const plugins = [
   // ...
-  // You can create a Stripe account via: https://stripe.com
   {
     resolve: `medusa-payment-stripe`,
     options: {
@@ -30,5 +31,5 @@ Then, refer to [this user guide](../user-guide/regions/providers.mdx) to learn h
 
 ## See Also
 
-- [Install Stripe](../plugins/payment/stripe.md)
+- [Install Stripe](../plugins/payment/stripe.mdx)
 - [Payment Architecture Overview](../modules/carts-and-checkout/payment.md)

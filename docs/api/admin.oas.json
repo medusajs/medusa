@@ -6355,6 +6355,19 @@
           },
           {
             "in": "query",
+            "name": "location_id",
+            "style": "form",
+            "explode": false,
+            "description": "Locations ids to search for.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
             "name": "expand",
             "description": "Comma separated list of relations to include in the results.",
             "schema": {
@@ -17750,6 +17763,65 @@
           },
           {
             "in": "query",
+            "name": "description",
+            "description": "A param for search reservation descriptions",
+            "schema": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "contains": {
+                      "type": "string",
+                      "description": "filter by reservation description containing search string."
+                    },
+                    "starts_with": {
+                      "type": "string",
+                      "description": "filter by reservation description starting with search string."
+                    },
+                    "ends_with": {
+                      "type": "string",
+                      "description": "filter by reservation description ending with search string."
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting reservations were created.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lt": {
+                  "type": "string",
+                  "description": "filter by dates less than this date",
+                  "format": "date"
+                },
+                "gt": {
+                  "type": "string",
+                  "description": "filter by dates greater than this date",
+                  "format": "date"
+                },
+                "lte": {
+                  "type": "string",
+                  "description": "filter by dates less than or equal to this date",
+                  "format": "date"
+                },
+                "gte": {
+                  "type": "string",
+                  "description": "filter by dates greater than or equal to this date",
+                  "format": "date"
+                }
+              }
+            }
+          },
+          {
+            "in": "query",
             "name": "offset",
             "description": "How many Reservations to skip in the result.",
             "schema": {
@@ -25509,36 +25581,7 @@
           "inventory_items": {
             "type": "array",
             "items": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/InventoryItemDTO"
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "location_levels": {
-                      "type": "array",
-                      "items": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/InventoryLevelDTO"
-                          }
-                        ]
-                      }
-                    },
-                    "variants": {
-                      "type": "array",
-                      "items": {
-                        "allOf": [
-                          {
-                            "$ref": "#/components/schemas/ProductVariant"
-                          }
-                        ]
-                      }
-                    }
-                  }
-                }
-              ]
+              "$ref": "#/components/schemas/DecoratedInventoryItemDTO"
             }
           },
           "count": {
@@ -31178,7 +31221,7 @@
           "reservations": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/ReservationItemDTO"
+              "$ref": "#/components/schemas/ExtendedReservationItem"
             }
           },
           "count": {
@@ -32392,7 +32435,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -32835,7 +32878,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           }
@@ -33280,6 +33323,43 @@
             }
           }
         }
+      },
+      "DecoratedInventoryItemDTO": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/InventoryItemDTO"
+          },
+          {
+            "type": "object",
+            "required": [
+              "stocked_quantity",
+              "reserved_quantity"
+            ],
+            "properties": {
+              "location_levels": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/InventoryLevelDTO"
+                }
+              },
+              "variants": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ProductVariant"
+                }
+              },
+              "stocked_quantity": {
+                "type": "number",
+                "description": "The total quantity of the item in stock across levels"
+              },
+              "reserved_quantity": {
+                "type": "number",
+                "description": "The total quantity of the item available across levels"
+              }
+            }
+          }
+        ]
       },
       "Discount": {
         "title": "Discount",
@@ -33945,7 +34025,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -33986,6 +34066,27 @@
             "description": "A slug indicating the type of the error."
           }
         }
+      },
+      "ExtendedReservationItem": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ReservationItemDTO"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "line_item": {
+                "description": "optional line item",
+                "$ref": "#/components/schemas/LineItem"
+              },
+              "inventory_item": {
+                "description": "inventory item from inventory module",
+                "$ref": "#/components/schemas/InventoryItemDTO"
+              }
+            }
+          }
+        ]
       },
       "ExtendedStoreDTO": {
         "allOf": [
@@ -34163,7 +34264,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -34438,7 +34539,7 @@
             "description": "The unique randomly generated key used to determine the state of a process.",
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -34563,6 +34664,18 @@
           },
           "mid_code": {
             "description": "The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.",
+            "type": "string"
+          },
+          "title": {
+            "description": "Title of the inventory item",
+            "type": "string"
+          },
+          "description": {
+            "description": "Description of the inventory item",
+            "type": "string"
+          },
+          "thumbnail": {
+            "description": "Thumbnail for the inventory item",
             "type": "string"
           },
           "material": {
@@ -35784,7 +35897,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -36263,7 +36376,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -36507,7 +36620,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -37884,7 +37997,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -38065,6 +38178,14 @@
             "description": "The id of the inventory item the reservation relates to",
             "type": "string"
           },
+          "description": {
+            "description": "Description of the reservation item",
+            "type": "string"
+          },
+          "created_by": {
+            "description": "UserId of user who created the reservation item",
+            "type": "string"
+          },
           "quantity": {
             "description": "The id of the reservation item",
             "type": "number"
@@ -38221,7 +38342,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -39519,7 +39640,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },
@@ -39775,7 +39896,7 @@
             "nullable": true,
             "type": "string",
             "externalDocs": {
-              "url": "https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key",
+              "url": "https://docs.medusajs.com/development/idempotency-key/overview.md",
               "description": "Learn more how to use the idempotency key."
             }
           },

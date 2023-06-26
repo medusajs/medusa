@@ -146,7 +146,7 @@ npm run build
 Then, run the following command to start your Medusa backend:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 If the scheduled job was registered successfully, you should see a message similar to this logged on your Medusa backend:
@@ -177,4 +177,4 @@ To test the previous example out instantly, you can change the scheduled job exp
 
 ## See Also
 
-- [Create a Plugin](../plugins/create.md)
+- [Create a Plugin](../plugins/create.mdx)

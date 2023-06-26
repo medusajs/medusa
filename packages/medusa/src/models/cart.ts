@@ -129,7 +129,7 @@
  *     nullable: true
  *     type: string
  *     externalDocs:
- *       url: https://docs.medusajs.com/modules/carts-and-checkout/cart.md#idempotency-key
+ *       url: https://docs.medusajs.com/development/idempotency-key/overview.md
  *       description: Learn more how to use the idempotency key.
  *   context:
  *     description: "The context of the cart which can include info like IP or user agent."
@@ -216,6 +216,7 @@
  */
 
 import {
+  AfterLoad,
   BeforeInsert,
   Column,
   Entity,
@@ -389,6 +390,13 @@ export class Cart extends SoftDeletableEntity {
   refundable_amount?: number
   gift_card_total?: number
   gift_card_tax_total?: number
+
+  @AfterLoad()
+  private afterLoad(): void {
+    if (this.payment_sessions) {
+      this.payment_session = this.payment_sessions.find((p) => p.is_selected)!
+    }
+  }
 
   @BeforeInsert()
   private beforeInsert(): void {

@@ -8,7 +8,7 @@ properties:
   reservations:
     type: array
     items:
-      $ref: ./ReservationItemDTO.yaml
+      $ref: ./ExtendedReservationItem.yaml
   count:
     type: integer
     description: The total number of items available

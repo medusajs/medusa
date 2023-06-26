@@ -6,6 +6,7 @@ import {
   FindOptionsWhere,
   OrderByCondition,
 } from "typeorm"
+
 import { FindOptionsOrder } from "typeorm/find-options/FindOptionsOrder"
 import { FindOptionsRelations } from "typeorm/find-options/FindOptionsRelations"
 
@@ -125,6 +126,8 @@ export type DeleteResponse = {
 }
 
 export interface EmptyQueryParams {}
+// TODO: Build a tree repository options from this
+export interface RepositoryTransformOptions {}
 
 export interface DateComparisonOperator {
   lt?: Date
@@ -138,6 +141,9 @@ export interface StringComparisonOperator {
   gt?: string
   gte?: string
   lte?: string
+  contains?: string
+  starts_with?: string
+  ends_with?: string
 }
 
 export interface NumericalComparisonOperator {

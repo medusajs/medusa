@@ -21,10 +21,6 @@ Although this documentation specifically targets import strategies, you can use 
 
 It's assumed that you already have a Medusa backend installed and set up. If not, you can follow our [quickstart guide](../backend/install.mdx) to get started. The Medusa backend must also have an event bus module installed, which is available when using the default Medusa backend starter.
 
-### PostgreSQL
-
-If you use SQLite during your development, it’s highly recommended that you use PostgreSQL when working with batch jobs. Learn how to [install PostgreSQL](../backend/prepare-environment.mdx#postgresql) and [configure it with your Medusa backend](../backend/configurations.md#postgresql-configurations).
-
 ---
 
 ## Override Batch Job Strategy

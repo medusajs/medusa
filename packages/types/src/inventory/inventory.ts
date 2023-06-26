@@ -86,7 +86,7 @@ export interface IInventoryService {
   ): Promise<ReservationItemDTO>
 
   deleteReservationItemsByLineItem(
-    lineItemId: string,
+    lineItemId: string | string[],
     context?: SharedContext
   ): Promise<void>
 

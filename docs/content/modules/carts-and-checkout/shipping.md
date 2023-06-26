@@ -18,7 +18,7 @@ It’s also constructed to support multiple regions, provide different shipment 
 
 ## Summary
 
-- **Fulfillment Provider:** Fulfillment providers are plugins or [Services](../../development/services/create-service.md) used to ship the products to your customers, whether physically or virtually. An example of a fulfillment provider would be FedEx.
+- **Fulfillment Provider:** Fulfillment providers are plugins or [Services](../../development/services/create-service.mdx) used to ship the products to your customers, whether physically or virtually. An example of a fulfillment provider would be FedEx.
 - **Shipping Profiles:** created by the admin. They are used to group products that should be shipped in a different manner than the default. Shipping profiles can have multiple shipping options.
 - **Shipping Options:** created by the admin and belong to a shipping profile. They are specific to certain regions and can have cart conditions. They use an underlying fulfillment provider. Once a customer checks out, they can choose the shipping option that’s available and most relevant to them.
 - **Shipping Method:** created when the customer chooses a shipping option on checkout. The shipping method is basically a copy of the shipping option, but with values specific to the customer and the cart it’s associated with. When the order is placed, the shipping method will then be associated with the order and fulfilled based on the integration with the fulfillment provider.
@@ -39,7 +39,7 @@ Fulfillment Providers can also be related to a custom way of handling fulfillmen
 
 ### How Fulfillment Provider is Created
 
-A Fulfillment Provider is essentially a Medusa [Service](../../development/services/create-service.md) with a unique identifier, and it extends the `FulfillmentService` provided by the `medusa-interfaces` package. It can be created as part of a [plugin](../../development/plugins/overview.mdx), or it can be created just as a Service file in your Medusa backend.
+A Fulfillment Provider is essentially a Medusa [Service](../../development/services/create-service.mdx) with a unique identifier, and it extends the `FulfillmentService` provided by the `medusa-interfaces` package. It can be created as part of a [plugin](../../development/plugins/overview.mdx), or it can be created just as a Service file in your Medusa backend.
 
 As a developer, you will mainly work with the Fulfillment Provider when integrating a fulfillment method in Medusa.
 

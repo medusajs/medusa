@@ -390,21 +390,45 @@ npm run build
 
 :::note
 
-This section explains how to test out your implementation if the file service was created in the Medusa backend codebase. You can refer to the [plugin documentation](../plugins/create.md#test-your-plugin) on how to test a plugin.
+This section explains how to test out your implementation if the file service was created in the Medusa backend codebase. You can refer to the [plugin documentation](../plugins/create.mdx#test-your-plugin) on how to test a plugin.
 
 :::
 
 Run your backend to test it out:
 
 ```bash npm2yarn
-npm run start
+npx @medusajs/medusa-cli develop
 ```
 
 Then, try uploading a file, for example, using the [Upload File endpoint](/api/admin#tag/Uploads/operation/PostUploads). The file should be uploaded based on the logic you’ve implemented.
+
+### (Optional) Accessing the File
+
+:::note
+
+This step is only useful if you're implementing a local file service.
+
+:::
+
+Since the file is uploaded to a local directory `uploads`, you need to configure a static route in express that allows accessing the files within the `uploads` directory.
+
+To do that, create the file `src/api/index.ts` with the following content:
+
+```ts
+import express from "express"
+
+export default () => {
+  const app = express.Router()
+
+  app.use(`/uploads`, express.static(uploadDir))
+
+  return app
+}
+```
 
 ---
 
 ## See Also
 
-- [How to create a plugin](../plugins/create.md)
-- [How to publish a plugin](../plugins/publish.md)
+- [How to create a plugin](../plugins/create.mdx)
+- [How to publish a plugin](../plugins/publish.mdx)

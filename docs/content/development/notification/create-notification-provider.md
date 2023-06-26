@@ -67,7 +67,7 @@ Notification Providers must extend `NotificationService` from `medusa-interfa
 
 :::info
 
-Following the naming convention of Services, the name of the file should be the slug name of the Notification Provider, and the name of the class should be the camel case name of the Notification Provider suffixed with “Service”. In the example above, the name of the file should be `email-sender.js`. You can learn more in the [service documentation](../services/create-service.md).
+Following the naming convention of Services, the name of the file should be the slug name of the Notification Provider, and the name of the class should be the camel case name of the Notification Provider suffixed with “Service”. In the example above, the name of the file should be `email-sender.js`. You can learn more in the [service documentation](../services/create-service.mdx).
 
 :::
 
@@ -297,13 +297,19 @@ Notice that the value of the `identifier` static property defined in the `EmailS
 
 Make sure you have an event bus module configured in your Medusa backend. You can learn more on how to do that in the [Configurations guide](../backend/configurations.md).
 
-Then, start by running your Medusa backend:
+Then, run the build command in the root directory of your Medusa backend:
 
 ```bash npm2yarn
-npm run start
+npm run build
 ```
 
-Then, place an order either using the [REST APIs](/api/store) or using the storefront.
+Next, start your Medusa backend:
+
+```bash npm2yarn
+npx @medusajs/medusa-cli develop
+```
+
+Try now to place an order either using the [REST APIs](/api/store) or using the storefront.
 
 :::tip
 
@@ -337,4 +343,4 @@ This request returns the same notification object as the List Notifications endp
 
 ## See Also
 
-- [Create a Plugin](../plugins/create.md)
+- [Create a Plugin](../plugins/create.mdx)
