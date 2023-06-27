@@ -1,19 +1,29 @@
 {
-  "include": ["src/**/*.ts", "types"],
-  "exclude": ["node_modules"],
   "compilerOptions": {
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "module": "commonjs",
-    "removeComments": false,
-    "preserveConstEnums": true,
-    "skipLibCheck": true,
+    "lib": ["es2020"],
+    "target": "es2020",
+    "outDir": "./dist",
     "esModuleInterop": true,
-    "sourceMap": true,
-    "target": "es2017",
     "declaration": true,
-    "lib": ["es2017", "dom", "esnext.asynciterable"]
-  }
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "noImplicitReturns": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "downlevelIteration": true // to use ES5 specific tooling
+  },
+  "include": ["src"],
+  "exclude": [
+    "dist",
+    "./src/**/__tests__",
+    "./src/**/__mocks__",
+    "./src/**/__fixtures__",
+    "node_modules"
+  ]
 }
