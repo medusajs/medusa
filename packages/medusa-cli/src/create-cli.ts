@@ -46,7 +46,7 @@ function buildLocalCommands(cli, isLocalProject) {
       )!
       return require(cmdPath).default
     } catch (err) {
-      if (process.env.NODE_ENV !== "production") {
+      if (!process.env.NODE_ENV.startsWith("prod")) {
         console.log("--------------- ERROR ---------------------")
         console.log(err)
         console.log("-------------------------------------------")
@@ -360,7 +360,7 @@ export default (argv) => {
       const arg = argv.slice(2)[0]
       const suggestion = arg ? didYouMean(arg, availableCommands) : ``
 
-      if (process.env.NODE_ENV !== "production") {
+      if (!process.env.NODE_ENV.startsWith("prod")) {
         console.log("--------------- ERROR ---------------------")
         console.log(err)
         console.log("-------------------------------------------")
