@@ -19,6 +19,7 @@ import inquirer from "inquirer"
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
 import { clearProject } from "@medusajs/utils"
+import { PanicId } from "../reporter/panic-handler"
 
 const removeUndefined = (obj) => {
   return Object.fromEntries(
@@ -555,7 +556,7 @@ medusa new ${rootPath} [url-to-starter]
 
     if (/medusa-starter/gi.test(rootPath) && isStarterAUrl) {
       reporter.panic({
-        id: `10000`,
+        id: PanicId.InvalidProjectName,
         context: {
           starter,
           rootPath,
@@ -563,8 +564,9 @@ medusa new ${rootPath} [url-to-starter]
       })
       return
     }
+
     reporter.panic({
-      id: `10001`,
+      id: PanicId.InvalidProjectName,
       context: {
         rootPath,
       },
@@ -574,7 +576,7 @@ medusa new ${rootPath} [url-to-starter]
 
   if (!isValid(rootPath)) {
     reporter.panic({
-      id: `10002`,
+      id: PanicId.InvalidPath,
       context: {
         path: sysPath.resolve(rootPath),
       },
@@ -584,7 +586,7 @@ medusa new ${rootPath} [url-to-starter]
 
   if (existsSync(sysPath.join(rootPath, `package.json`))) {
     reporter.panic({
-      id: `10003`,
+      id: PanicId.AlreadyNodeProject,
       context: {
         rootPath,
       },

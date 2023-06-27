@@ -8,9 +8,6 @@ import { didYouMean } from "./did-you-mean"
 
 import reporter from "./reporter"
 import { newStarter } from "./commands/new"
-import whoami from "./commands/whoami"
-import login from "./commands/login"
-import link from "./commands/link"
 
 const yargs = require(`yargs`)
 
@@ -181,41 +178,6 @@ function buildLocalCommands(cli, isLocalProject) {
       ),
     })
     .command({
-      command: `whoami`,
-      desc: `View the details of the currently logged in user.`,
-      handler: handlerP(whoami.whoami),
-    })
-    .command({
-      command: `link`,
-      desc: `Creates your Medusa Cloud user in your local database for local testing.`,
-      builder: (_) =>
-        _.option(`su`, {
-          alias: `skip-local-user`,
-          type: `boolean`,
-          default: false,
-          describe: `If set a user will not be created in the database.`,
-        }).option(`develop`, {
-          type: `boolean`,
-          default: false,
-          describe: `If set medusa develop will be run after successful linking.`,
-        }),
-      handler: handlerP((argv) => {
-        if (!isLocalProject) {
-          console.log("must be a local project")
-          cli.showHelp()
-        }
-
-        const args = { ...argv, ...projectInfo, useYarn }
-
-        return link.link(args)
-      }),
-    })
-    .command({
-      command: `login`,
-      desc: `Logs you into Medusa Cloud.`,
-      handler: handlerP(login.login),
-    })
-    .command({
       command: `develop`,
       desc: `Start development server. Watches file and rebuilds when something changes`,
       builder: (_) =>
@@ -309,17 +271,20 @@ function buildLocalCommands(cli, isLocalProject) {
 
 function isLocalMedusaProject() {
   let inMedusaProject = false
+
   try {
     const { dependencies, devDependencies } = require(path.resolve(
       `./package.json`
     ))
-    inMedusaProject =
+    inMedusaProject = !!(
       (dependencies && dependencies["@medusajs/medusa"]) ||
       (devDependencies && devDependencies["@medusajs/medusa"])
+    )
   } catch (err) {
-    /* ignore */
+    // ignore
   }
-  return !!inMedusaProject
+
+  return inMedusaProject
 }
 
 function getVersionInfo() {
