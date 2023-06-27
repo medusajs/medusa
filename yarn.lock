@@ -30308,7 +30308,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-dev-cli@workspace:packages/medusa-dev-cli"
   dependencies:
-    "@babel/runtime": ^7.12.5
     chokidar: ^3.5.3
     configstore: ^5.0.1
     cross-env: ^7.0.3
