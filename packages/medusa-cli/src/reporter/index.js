@@ -40,7 +40,7 @@ const loggerInstance = winston.createLogger({
 
 export class Reporter {
   constructor({ logger, activityLogger }) {
-    this.activities_ = []
+    this.activities_ = {}
     this.loggerInstance_ = logger
     this.ora_ = activityLogger
   }
@@ -156,7 +156,7 @@ export class Reporter {
    *   message to log the error under; or an error object.
    * @param {Error?} error - an error object to log message with
    */
-  error = (messageOrError, error) => {
+  error = (messageOrError, error = null) => {
     let message = messageOrError
     if (typeof messageOrError === "object") {
       message = messageOrError.message
@@ -225,7 +225,7 @@ export class Reporter {
    * at the info level.
    * @param {string} activityId - the id of the activity as returned by activity
    * @param {string} message - the message to log
-   * @returns {object} data about the activity
+   * @returns {Record<string, any>} data about the activity
    */
   success = (activityId, message) => {
     const time = Date.now()
