@@ -1,5 +1,3 @@
-import { upperCaseFirst } from "@medusajs/utils/dist/common/upper-case-first"
-
 export const processNode = (
   node: any,
   fieldName: string,
@@ -34,12 +32,14 @@ export const processNode = (
     delete node.images
   }
 
+  // TODO: use upperFirstCase from medusajs/utils when it's available
+  const type = `Medusa${fieldName[0].toUpperCase() + fieldName.slice(1)}`
   const nodeData = Object.assign({}, node, {
     id: nodeId,
     parent: null,
     children: [],
     internal: {
-      type: `Medusa${upperCaseFirst(fieldName)}`,
+      type,
       content: nodeContent,
       contentDigest: nodeContentDigest,
     },
