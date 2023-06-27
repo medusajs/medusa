@@ -52,7 +52,7 @@ export const PriceListRepository = dataSource.getRepository(PriceList).extend({
       ]
     }
 
-    return await this.findAndCount(query_)
+    return await Promise.all([this.find(query_), this.count(query_)])
   },
 })
 
