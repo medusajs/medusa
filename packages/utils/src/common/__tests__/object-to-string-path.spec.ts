@@ -13,7 +13,7 @@ describe("objectToStringPath", function () {
         },
       },
       {
-        includeTruePropertiesOnly: false,
+        includeTruePropertiesOnly: true,
       }
     )
 

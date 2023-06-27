@@ -1,7 +1,5 @@
 import { isObject } from "./is-object"
 
-type InputObject = { [key: string]: true | InputObject }
-
 /**
  * Converts a structure of find options to an
  * array of string paths
@@ -43,7 +41,7 @@ type InputObject = { [key: string]: true | InputObject }
  * the properties that are object and contains properties set to true
  */
 export function objectToStringPath(
-  input: InputObject = {},
+  input: object = {},
   { includeTruePropertiesOnly }: { includeTruePropertiesOnly: boolean } = {
     includeTruePropertiesOnly: false,
   }
@@ -52,13 +50,13 @@ export function objectToStringPath(
     return []
   }
 
-  const output: Set<string> = includeTruePropertiesOnly
+  const output: Set<string> = !includeTruePropertiesOnly
     ? new Set(Object.keys(input))
     : new Set()
 
   for (const key of Object.keys(input)) {
     if (isObject(input[key])) {
-      const deepRes = objectToStringPath(input[key] as InputObject, {
+      const deepRes = objectToStringPath(input[key], {
         includeTruePropertiesOnly,
       })
 
@@ -71,7 +69,9 @@ export function objectToStringPath(
       continue
     }
 
-    output.add(key)
+    if (isObject(key) || input[key] === true) {
+      output.add(key)
+    }
   }
 
   return Array.from(output)
