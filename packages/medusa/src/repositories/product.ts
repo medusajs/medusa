@@ -484,7 +484,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     const originalSelect = isOptionsArray
       ? undefined
       : (objectToStringPath(idsOrOptionsWithoutRelations.select, {
-          includeTopLeaf: false,
+          includeTruePropertiesOnly: true,
         }) as (keyof Product)[])
     const clonedOptions = isOptionsArray
       ? idsOrOptionsWithoutRelations
@@ -548,9 +548,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     })
 
     const entitiesAndRelations = entities.concat(entitiesIdsWithRelations)
-    const entitiesToReturn = mergeEntitiesWithRelations<Product>(
-      entitiesAndRelations
-    )
+    const entitiesToReturn =
+      mergeEntitiesWithRelations<Product>(entitiesAndRelations)
 
     return [entitiesToReturn, count]
   },

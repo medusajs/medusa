@@ -44,9 +44,11 @@ export const ProductCategoryRepository = dataSource
       options_.where = options_.where as FindOptionsWhere<ProductCategory>
 
       const columnsSelected = objectToStringPath(options_.select, {
-        includeTopLeaf: false,
+        includeTruePropertiesOnly: true,
       })
-      const relationsSelected = objectToStringPath(options_.relations)
+      const relationsSelected = objectToStringPath(options_.relations, {
+        includeTruePropertiesOnly: true,
+      })
 
       const fetchSelectColumns = (relationName: string): string[] => {
         const modelColumns = this.metadata.ownColumns.map(

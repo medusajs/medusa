@@ -1,7 +1,7 @@
 import { objectToStringPath } from "../object-to-string-path"
 
 describe("objectToStringPath", function () {
-  it("should return a string path from an object without the top leaf", function () {
+  it("should return only the properties path of the properties that are set to true", function () {
     const res = objectToStringPath(
       {
         product: true,
@@ -13,14 +13,14 @@ describe("objectToStringPath", function () {
         },
       },
       {
-        includeTopLeaf: false,
+        includeTruePropertiesOnly: false,
       }
     )
 
     expect(res).toEqual(["product", "variants.title", "variants.prices.amount"])
   })
 
-  it("should return a string path from an object with the top leaf", function () {
+  it("should return a string path from an object including properties that are object an contains other properties set to true", function () {
     const res = objectToStringPath({
       product: true,
       variants: {

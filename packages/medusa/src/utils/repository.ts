@@ -109,19 +109,12 @@ export async function queryEntityWithIds<T extends ObjectLiteral>({
           )
         }
 
+        querybuilder = querybuilder.where(`${alias}.id IN (:...entitiesIds)`, {
+          entitiesIds: entityIds,
+        })
+
         if (withDeleted) {
-          querybuilder = querybuilder
-            .where(`${alias}.id IN (:...entitiesIds)`, {
-              entitiesIds: entityIds,
-            })
-            .withDeleted()
-        } else {
-          querybuilder = querybuilder.where(
-            `${alias}.id IN (:...entitiesIds)`,
-            {
-              entitiesIds: entityIds,
-            }
-          )
+          querybuilder.withDeleted()
         }
 
         return querybuilder.getMany()

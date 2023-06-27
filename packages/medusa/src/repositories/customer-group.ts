@@ -83,7 +83,7 @@ export const CustomerGroupRepository = dataSource
       const originalSelect = isOptionsArray
         ? undefined
         : (objectToStringPath(idsOrOptionsWithoutRelations.select, {
-            includeTopLeaf: false,
+            includeTruePropertiesOnly: true,
           }) as (keyof CustomerGroup)[])
       const clonedOptions = isOptionsArray
         ? idsOrOptionsWithoutRelations

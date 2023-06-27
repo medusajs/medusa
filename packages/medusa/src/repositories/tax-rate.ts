@@ -35,7 +35,7 @@ export const TaxRateRepository = dataSource.getRepository(TaxRate).extend({
       const selectableCols: (keyof TaxRate)[] = []
       const legacySelect = objectToStringPath(
         findOptions.select as FindOptionsSelect<TaxRate>,
-        { includeTopLeaf: false }
+        { includeTruePropertiesOnly: true }
       ) as (keyof TaxRate)[]
       for (const k of legacySelect) {
         if (!resolveableFields.includes(k)) {

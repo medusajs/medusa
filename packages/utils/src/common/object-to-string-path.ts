@@ -1,10 +1,13 @@
 import { isObject } from "./is-object"
 
+type InputObject = { [key: string]: true | InputObject }
+
 /**
  * Converts a structure of find options to an
  * array of string paths
  * @example
- * input: {
+ * // With `includeTruePropertiesOnly` default value set to false
+ * const result = objectToStringPath({
  *   test: {
  *     test1: true,
  *     test2: true,
@@ -13,27 +16,51 @@ import { isObject } from "./is-object"
  *     },
  *   },
  *   test2: true
- * }
- * output: ['test.test1', 'test.test2', 'test.test3.test4', 'test2']
+ * })
+ * console.log(result)
+ * // output: ['test', 'test.test1', 'test.test2', 'test.test3', 'test.test3.test4', 'test2']
  *
- * @param input
- * @param includeTopLeaf
+ * @example
+ * // With `includeTruePropertiesOnly` set to true
+ * const result = objectToStringPath({
+ *   test: {
+ *     test1: true,
+ *     test2: true,
+ *     test3: {
+ *       test4: true
+ *     },
+ *   },
+ *   test2: true
+ * }, {
+ *   includeTruePropertiesOnly: true
+ * })
+ * console.log(result)
+ * // output: ['test.test1', 'test.test2', 'test.test3.test4', 'test2']
+ *
+ * @param {InputObject} input
+ * @param {boolean} includeTruePropertiesOnly If set to true (example 2), only the properties set to true will be included,
+ * otherwise (example 1) all properties will be included in the output which includes
+ * the properties that are object and contains properties set to true
  */
 export function objectToStringPath(
-  input: object = {},
-  { includeTopLeaf }: { includeTopLeaf: boolean } = { includeTopLeaf: true }
+  input: InputObject = {},
+  { includeTruePropertiesOnly }: { includeTruePropertiesOnly: boolean } = {
+    includeTruePropertiesOnly: false,
+  }
 ): string[] {
   if (!isObject(input) || !Object.keys(input).length) {
     return []
   }
 
-  const output: Set<string> = includeTopLeaf
+  const output: Set<string> = includeTruePropertiesOnly
     ? new Set(Object.keys(input))
     : new Set()
 
   for (const key of Object.keys(input)) {
-    if (input[key] != undefined && typeof input[key] === "object") {
-      const deepRes = objectToStringPath(input[key], { includeTopLeaf })
+    if (isObject(input[key])) {
+      const deepRes = objectToStringPath(input[key] as InputObject, {
+        includeTruePropertiesOnly,
+      })
 
       const items = deepRes.reduce((acc, val) => {
         acc.push(`${key}.${val}`)
