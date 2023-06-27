@@ -1,16 +1,16 @@
-const axios = require("axios").default
-const { getToken } = require("../util/token-store")
-const logger = require("../reporter").default
+import axios from "axios"
+import tokenStore from "../util/token-store"
+import logger from "../reporter"
 
 /**
  * Fetches the locally logged in user.
  */
-module.exports = {
-  whoami: async argv => {
+export default {
+  whoami: async (argv) => {
     const apiHost =
       process.env.MEDUSA_API_HOST || "https://api.medusa-commerce.com"
 
-    const tok = getToken()
+    const tok = tokenStore.getToken()
 
     if (!tok) {
       console.log(
@@ -27,7 +27,7 @@ module.exports = {
           authorization: `Bearer ${tok}`,
         },
       })
-      .catch(err => {
+      .catch((err) => {
         logger.failure(activity, "Couldn't gather login details")
         logger.error(err)
         process.exit(1)

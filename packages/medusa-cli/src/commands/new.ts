@@ -24,7 +24,7 @@ const removeUndefined = (obj) => {
   return Object.fromEntries(
     Object.entries(obj)
       .filter(([_, v]) => v != null)
-      .map(([k, v]) => [k, v === Object(v) ? removeEmpty(v) : v])
+      .map(([k, v]) => [k, v === Object(v) ? removeUndefined(v) : v])
   )
 }
 
@@ -119,10 +119,10 @@ const install = async (rootPath) => {
     }
     if (getPackageManager() === `yarn` && checkForYarn()) {
       await fs.remove(`package-lock.json`)
-      await spawn(`yarnpkg`)
+      await spawn(`yarnpkg`, {})
     } else {
       await fs.remove(`yarn.lock`)
-      await spawn(`npm install`)
+      await spawn(`npm install`, {})
     }
   } finally {
     process.chdir(prevDir)
@@ -389,6 +389,8 @@ Do you wish to continue with these credentials?
 
     console.log("\n\nCould not verify DB credentials - please try again\n\n")
   }
+
+  return
 }
 
 const setupDB = async (dbName, dbCreds = {}) => {

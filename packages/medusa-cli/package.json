@@ -27,6 +27,7 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
+    "@types/yargs": "^15.0.15",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "ts-jest": "^25.5.1",

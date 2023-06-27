@@ -1,17 +1,16 @@
-const axios = require("axios").default
-const inquirer = require("inquirer")
-const open = require("open")
-const execa = require("execa")
-const resolveCwd = require(`resolve-cwd`)
-const { track } = require("medusa-telemetry")
+import axios from "axios"
+import inquirer from "inquirer"
+import open from "open"
+import execa from "execa"
+import { track } from "medusa-telemetry"
 
-const { getToken } = require("../util/token-store")
-const logger = require("../reporter").default
+import tokenStore from "../util/token-store"
+import logger from "../reporter"
 
 const MEDUSA_CLI_DEBUG = process.env.MEDUSA_CLI_DEBUG || false
 
-module.exports = {
-  link: async argv => {
+export default {
+  link: async (argv) => {
     track("CLI_LINK", { args: argv })
     const port = process.env.PORT || 9000
     const appHost =
@@ -23,7 +22,7 @@ module.exports = {
     // Checks if there is already a token from a previous log in; this is
     // necessary to redirect the customer to the page where local linking is
     // done
-    const tok = getToken()
+    const tok = tokenStore.getToken()
     if (!tok) {
       console.log(
         "You must login to Medusa Cloud first. Please run medusa login."
@@ -40,7 +39,7 @@ module.exports = {
           authorization: `Bearer ${tok}`,
         },
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         process.exit(1)
       })
@@ -70,7 +69,7 @@ module.exports = {
         const res = await proc
         if (res.stderr) {
           const err = new Error("stderr error")
-          err.stderr = res.stderr
+          err["stderr"] = res.stderr
           throw err
         }
       } catch (error) {
@@ -103,7 +102,7 @@ module.exports = {
       },
     ]
 
-    await inquirer.prompt(prompts).then(async a => {
+    await inquirer.prompt(prompts).then(async (a) => {
       if (a.open === "n") {
         process.exit(0)
       }
@@ -116,10 +115,10 @@ module.exports = {
         {
           app: "browser",
           wait: false,
-        }
+        } as any
       )
 
-      browserOpen.on("error", err => {
+      browserOpen.on("error", (err) => {
         console.warn(err)
         console.log(
           `Could not open browser go to: ${appHost}/local-link?lurl=http://localhost:9000&ltoken=${auth.user.id}`
@@ -131,8 +130,8 @@ module.exports = {
 
     if (argv.develop) {
       const proc = execa(`./node_modules/@medusajs/medusa/cli.js`, [`develop`])
-      proc.stdout.pipe(process.stdout)
-      proc.stderr.pipe(process.stderr)
+      proc.stdout?.pipe(process.stdout)
+      proc.stderr?.pipe(process.stderr)
       await proc
     }
   },

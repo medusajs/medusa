@@ -1,18 +1,18 @@
-const axios = require("axios").default
-const open = require("open")
-const inquirer = require("inquirer")
-const { track } = require("medusa-telemetry")
+import axios from "axios"
+import open from "open"
+import inquirer from "inquirer"
+import { track } from "medusa-telemetry"
 
-const logger = require("../reporter").default
-const { setToken } = require("../util/token-store")
+import logger from "../reporter"
+import tokenStore from "../util/token-store"
 
 /**
  * The login command allows the CLI to keep track of Cloud users; the command
  * makes a cli-login request to the cloud server and keeps an open connection
  * until the user has authenticated via the Medusa Cloud website.
  */
-module.exports = {
-  login: async _ => {
+export default {
+  login: async (_) => {
     track("CLI_LOGIN")
     const apiHost =
       process.env.MEDUSA_API_HOST || "https://api.medusa-commerce.com"
@@ -38,7 +38,7 @@ module.exports = {
     console.log("Login to Medusa Cloud")
     console.log()
 
-    await inquirer.prompt(prompts).then(async a => {
+    await inquirer.prompt(prompts).then(async (a) => {
       if (a.open === "n") {
         process.exit(0)
       }
@@ -46,8 +46,8 @@ module.exports = {
       const browserOpen = await open(loginUri, {
         app: "browser",
         wait: false,
-      })
-      browserOpen.on("error", err => {
+      } as any)
+      browserOpen.on("error", (err) => {
         console.warn(err)
         console.log(`Could not open browser go to: ${loginUri}`)
       })
@@ -76,7 +76,7 @@ module.exports = {
           authorization: `Bearer ${auth.password}`,
         },
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err)
         process.exit(1)
       })
@@ -84,7 +84,7 @@ module.exports = {
     if (user) {
       track("CLI_LOGIN_SUCCEEDED")
       logger.success(spinner, "Log in succeeded.")
-      setToken(auth.password)
+      tokenStore.setToken(auth.password)
     } else {
       track("CLI_LOGIN_FAILED")
       logger.failure(spinner, "Log in failed.")

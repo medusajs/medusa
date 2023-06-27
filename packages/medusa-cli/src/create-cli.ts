@@ -1,17 +1,18 @@
-const path = require(`path`)
-const resolveCwd = require(`resolve-cwd`)
+import path from "path"
+import resolveCwd from "resolve-cwd"
+import { sync as existsSync } from "fs-exists-cached"
+import { setTelemetryEnabled } from "medusa-telemetry"
+
+import { getLocalMedusaVersion } from "./util/version"
+import { didYouMean } from "./did-you-mean"
+
+import reporter from "./reporter"
+import { newStarter } from "./commands/new"
+import whoami from "./commands/whoami"
+import login from "./commands/login"
+import link from "./commands/link"
+
 const yargs = require(`yargs`)
-const existsSync = require(`fs-exists-cached`).sync
-const { setTelemetryEnabled } = require("medusa-telemetry")
-
-const { getLocalMedusaVersion } = require(`./util/version`)
-const { didYouMean } = require(`./did-you-mean`)
-
-const reporter = require("./reporter").default
-const { newStarter } = require("./commands/new")
-const { whoami } = require("./commands/whoami")
-const { login } = require("./commands/login")
-const { link } = require("./commands/link")
 
 const handlerP =
   (fn) =>
@@ -31,18 +32,10 @@ function buildLocalCommands(cli, isLocalProject) {
   const useYarn = existsSync(path.join(directory, `yarn.lock`))
 
   if (isLocalProject) {
-    const json = require(path.join(directory, `package.json`))
-    projectInfo.sitePackageJson = json
-  }
-
-  function getLocalMedusaMajorVersion() {
-    let version = getLocalMedusaVersion()
-
-    if (version) {
-      version = Number(version.split(`.`)[0])
-    }
-
-    return version
+    projectInfo["sitePackageJson"] = require(path.join(
+      directory,
+      `package.json`
+    ))
   }
 
   function resolveLocalCommand(command) {
@@ -53,7 +46,7 @@ function buildLocalCommands(cli, isLocalProject) {
     try {
       const cmdPath = resolveCwd.silent(
         `@medusajs/medusa/dist/commands/${command}`
-      )
+      )!
       return require(cmdPath).default
     } catch (err) {
       if (process.env.NODE_ENV !== "production") {
@@ -190,7 +183,7 @@ function buildLocalCommands(cli, isLocalProject) {
     .command({
       command: `whoami`,
       desc: `View the details of the currently logged in user.`,
-      handler: handlerP(whoami),
+      handler: handlerP(whoami.whoami),
     })
     .command({
       command: `link`,
@@ -214,13 +207,13 @@ function buildLocalCommands(cli, isLocalProject) {
 
         const args = { ...argv, ...projectInfo, useYarn }
 
-        return link(args)
+        return link.link(args)
       }),
     })
     .command({
       command: `login`,
       desc: `Logs you into Medusa Cloud.`,
-      handler: handlerP(login),
+      handler: handlerP(login.login),
     })
     .command({
       command: `develop`,
@@ -347,7 +340,7 @@ Medusa version: ${medusaVersion}
   }
 }
 
-module.exports = (argv) => {
+export default (argv) => {
   const cli = yargs()
   const isLocalProject = isLocalMedusaProject()
 

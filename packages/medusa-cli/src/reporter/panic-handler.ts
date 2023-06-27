@@ -1,4 +1,12 @@
-export const panicHandler = (panicData = {}) => {
+export type PanicData = {
+  id: string
+  context: {
+    rootPath: string
+    path: string
+  }
+}
+
+export const panicHandler = (panicData: PanicData = {} as PanicData) => {
   const { id, context } = panicData
   switch (id) {
     case "10000":
