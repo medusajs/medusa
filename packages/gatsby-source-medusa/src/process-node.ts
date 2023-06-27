@@ -1,4 +1,4 @@
-import { capitalize } from "./utils/capitalize"
+import { upperCaseFirst } from "@medusajs/utils/dist/common/upper-case-first"
 
 export const processNode = (
   node: any,
@@ -39,7 +39,7 @@ export const processNode = (
     parent: null,
     children: [],
     internal: {
-      type: `Medusa${capitalize(fieldName)}`,
+      type: `Medusa${upperCaseFirst(fieldName)}`,
       content: nodeContent,
       contentDigest: nodeContentDigest,
     },
