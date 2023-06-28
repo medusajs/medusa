@@ -231,6 +231,7 @@ async function retrieveFilesConfig({
           }
 
           // Assign default verb to GET
+          imp.config ??= {}
           imp.config.routes = imp.config?.routes?.map(
             (route: RouteConfig | GlobalMiddlewareRouteConfig) => {
               route.method = route.method ?? "get"

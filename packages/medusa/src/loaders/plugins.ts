@@ -345,7 +345,7 @@ async function registerApi(
     // file base routing mechanism
     await loadRoutes(app, {
       rootDir: `${pluginDetails.resolve}/api`,
-      strict: true,
+      strict: false,
     })
 
     // below is the backwards compatible routing mechanism

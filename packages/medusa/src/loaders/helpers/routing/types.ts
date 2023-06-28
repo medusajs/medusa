@@ -1,44 +1,44 @@
-export const excludeExtensions = ['.map.js', '.d.ts'];
+export const excludeExtensions = [".js.map", ".d.ts", ".d.ts.map"]
 
 /* eslint-disable no-unused-vars */
 export enum RouteVerbs {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  DELETE = 'DELETE',
-  PATCH = 'PATCH',
-  OPTIONS = 'OPTIONS',
-  HEAD = 'HEAD',
-  ALL = 'ALL',
+  GET = "GET",
+  POST = "POST",
+  PUT = "PUT",
+  DELETE = "DELETE",
+  PATCH = "PATCH",
+  OPTIONS = "OPTIONS",
+  HEAD = "HEAD",
+  ALL = "ALL",
 }
 /* eslint-enable no-unused-vars */
 
 export type RouteConfig = {
-  method?: RouteVerbs | 'get' | 'GET';
-  handlers: ((...args: unknown[]) => Promise<unknown>)[];
+  method?: RouteVerbs | "get" | "GET"
+  handlers: ((...args: unknown[]) => Promise<unknown>)[]
 }
 
 export type GlobalMiddlewareRouteConfig = {
-  method?: RouteVerbs | 'get' | 'GET'; // default 'get'
-  path: string;
-  middlewares: ((...args: unknown[]) => Promise<unknown>)[];
+  method?: RouteVerbs | "get" | "GET" // default 'get'
+  path: string
+  middlewares: ((...args: unknown[]) => Promise<unknown>)[]
 }
 
 export type Config = {
-  ignore?: boolean;
-  routes?: RouteConfig[];
+  ignore?: boolean
+  routes?: RouteConfig[]
 }
 
 export type GlobalMiddlewareConfig = {
-  ignore?: boolean;
-  routes?: GlobalMiddlewareRouteConfig[];
+  ignore?: boolean
+  routes?: GlobalMiddlewareRouteConfig[]
 }
 
 export type RouteDescriptor<TConfig = Record<string, unknown>> = {
-  absolutePath: string;
-  relativePath: string;
-  route: string;
-  priority: number;
+  absolutePath: string
+  relativePath: string
+  route: string
+  priority: number
   config?: TConfig & Config
 }
 
@@ -49,4 +49,4 @@ export type GlobalMiddlewareDescriptor<TConfig = Record<string, unknown>> =
 
 export type OnRouteLoadingHook<TConfig> = (
   descriptor: RouteDescriptor<TConfig>
-) => Promise<void>;
+) => Promise<void>
