@@ -25,31 +25,23 @@ export function getModelExtensionsMap({
   >()
   const fullPathGlob =
     directory && pathGlob ? path.join(directory, pathGlob) : null
-console.log("fullPathGlob - ", fullPathGlob)
-  const folder = glob.sync((directory || '') + '/**/*', {
-    cwd: directory,
-    ignore: ["index.js", "index.map.js"],
-  })
 
-  console.log("folder - ", folder)
   const modelExtensions = fullPathGlob
     ? glob.sync(fullPathGlob, {
         cwd: directory,
         ignore: ["index.js", "index.map.js"],
       })
     : []
-console.log("modelExtensions - ", modelExtensions)
+
   modelExtensions.forEach((modelExtensionPath) => {
     const extendedModel = require(modelExtensionPath) as
       | ClassConstructor<unknown>
       | EntitySchema
       | undefined
-console.log("extendedModel - ", extendedModel)
+
     if (extendedModel) {
       Object.entries(extendedModel).map(
         ([_key, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
-          console.log("typeof val - ", typeof val)
-          console.log("config.register - ", config.register)
           if (typeof val === "function" || val instanceof EntitySchema) {
             if (config.register) {
               const name = formatRegistrationName(modelExtensionPath)

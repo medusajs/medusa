@@ -32,24 +32,20 @@ export default (
   config = { register: true }
 ) => {
   const coreModelsGlob = isTest ? coreTestPathGlob : corePathGlob
-  console.log("coreModelsGlob - ", coreModelsGlob)
   const coreModelsFullGlob = path.join(__dirname, coreModelsGlob)
-  console.log("coreModelsFullGlob - ", coreModelsFullGlob)
   const models: (ClassConstructor<unknown> | EntitySchema)[] = []
 
   const coreModels = glob.sync(coreModelsFullGlob, {
     cwd: __dirname,
     ignore: ["index.js", "index.ts", "index.map.js"],
   })
-  console.log("__dirname - ", __dirname)
-  console.log("rootDirectory - ", rootDirectory)
-console.log("coreModels - ", coreModels)
+
   const modelExtensionsMap = getModelExtensionsMap({
     directory: rootDirectory,
     pathGlob: extensionPathGlob,
     config,
   })
-console.log("modelExtensionsMap - ", modelExtensionsMap)
+
   coreModels.forEach((modelPath) => {
     const loaded = require(modelPath) as
       | ClassConstructor<unknown>
