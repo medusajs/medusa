@@ -6,8 +6,6 @@ import {
 
 @Entity()
 export class Product extends MedusaProduct {
-  public static isExtendedModel = true
-
   @Column()
   custom_attribute: string = 'test'
 }

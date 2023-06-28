@@ -597,7 +597,7 @@ function registerModels(
 
   const coreOrPluginModelsPath = glob.sync(
     pluginFullPathGlob,
-    { ignore: ["index.js", "index.map.js"] }
+    { ignore: ["index.js", "index.js.map"] }
   )
 
   coreOrPluginModelsPath.forEach((coreOrPluginModelPath) => {

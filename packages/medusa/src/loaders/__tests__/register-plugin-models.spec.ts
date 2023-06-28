@@ -3,7 +3,7 @@ import path from "path"
 import { asValue } from "awilix"
 
 import { registerPluginModels } from "../plugins"
-import configModule from './customizations/medusa-config.js'
+import configModule from './__fixtures__/customizations/medusa-config'
 
 describe("plugin models loader", () => {
   const container = createMedusaContainer()
@@ -17,7 +17,7 @@ describe("plugin models loader", () => {
       await registerPluginModels({
         configModule: configModule,
         container,
-        rootDirectory: path.join(__dirname, 'customizations'),
+        rootDirectory: path.join(__dirname, '__fixtures__/customizations'),
         extensionDirectoryPath: './',
         pathGlob: "/models/*.ts",
       })
@@ -31,7 +31,6 @@ describe("plugin models loader", () => {
     const productModelResolver = entities.find(entity => entity.resolve().name === 'Product')
     const productModel = productModelResolver.resolve()
 
-    expect(productModel.isExtendedModel).toBe(true)
     expect((new productModel()).custom_attribute).toEqual("test")
   })
 })
