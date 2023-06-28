@@ -13,15 +13,25 @@ type ModelLoaderParams = {
   container: MedusaContainer
   isTest?: boolean
   rootDirectory?: string
+  corePathGlob?: string
+  coreTestPathGlob?: string
+  extensionPathGlob?: string
 }
 /**
  * Registers all models in the model directory
  */
 export default (
-  { container, isTest, rootDirectory }: ModelLoaderParams,
+  {
+    container,
+    isTest,
+    rootDirectory,
+    corePathGlob = "../models/*.js",
+    coreTestPathGlob = "../models/*.ts",
+    extensionPathGlob = "dist/models/*.js",
+  }: ModelLoaderParams,
   config = { register: true }
 ) => {
-  const coreModelsGlob = isTest ? "../models/*.ts" : "../models/*.js"
+  const coreModelsGlob = isTest ? coreTestPathGlob : corePathGlob
   const coreModelsFullGlob = path.join(__dirname, coreModelsGlob)
   const models: (ClassConstructor<unknown> | EntitySchema)[] = []
 
@@ -32,7 +42,7 @@ export default (
 
   const modelExtensionsMap = getModelExtensionsMap({
     directory: rootDirectory,
-    pathGlob: "dist/models/*.js",
+    pathGlob: extensionPathGlob,
     config,
   })
 

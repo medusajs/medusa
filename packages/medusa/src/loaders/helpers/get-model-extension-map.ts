@@ -25,6 +25,7 @@ export function getModelExtensionsMap({
   >()
   const fullPathGlob =
     directory && pathGlob ? path.join(directory, pathGlob) : null
+
   const modelExtensions = fullPathGlob
     ? glob.sync(fullPathGlob, {
         ignore: ["index.js"],
