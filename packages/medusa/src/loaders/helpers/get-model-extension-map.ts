@@ -37,10 +37,12 @@ console.log("fullPathGlob - ", fullPathGlob)
       | ClassConstructor<unknown>
       | EntitySchema
       | undefined
-
+console.log("extendedModel - ", extendedModel)
     if (extendedModel) {
       Object.entries(extendedModel).map(
         ([_key, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
+          console.log("typeof val - ", typeof val)
+          console.log("config.register - ", config.register)
           if (typeof val === "function" || val instanceof EntitySchema) {
             if (config.register) {
               const name = formatRegistrationName(modelExtensionPath)

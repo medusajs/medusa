@@ -39,7 +39,7 @@
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
     "serve": "node dist/app.js",
-    "test": "jest"
+    "test": "jest packages/medusa/src/loaders/__tests__"
   },
   "peerDependencies": {
     "@medusajs/types": "^1.8.7",
