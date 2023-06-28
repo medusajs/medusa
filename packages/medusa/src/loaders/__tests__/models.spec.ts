@@ -5,8 +5,6 @@ import modelsLoader from "../models"
 
 describe("models loader", () => {
   const container = createMedusaContainer()
-  const rootDirectory = path.join(__dirname, 'customizations')
-  const extensionPathGlob = 'models/{product,product-variant}.ts'
   let models
   let error
 
@@ -16,8 +14,8 @@ describe("models loader", () => {
         container,
         isTest: true,
         coreTestPathGlob: "../models/{product,product-variant}.ts",
-        rootDirectory,
-        extensionPathGlob,
+        rootDirectory: path.join(__dirname, 'customizations'),
+        extensionPathGlob: "models/{product,product-variant}.ts",
       })
     } catch (e) {
       error = e
