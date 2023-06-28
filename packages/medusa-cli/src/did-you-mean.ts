@@ -1,7 +1,7 @@
 import meant from "meant"
 
-export function didYouMean(scmd, commands) {
-  const bestSimilarity = meant(scmd, commands).map(str => {
+export function didYouMean(scmd, commands): string {
+  const bestSimilarity = meant(scmd, commands).map((str) => {
     return `    ${str}`
   })
 
