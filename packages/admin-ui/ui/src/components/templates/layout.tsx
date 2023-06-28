@@ -1,9 +1,10 @@
-import React from "react"
+import React, { useState } from "react"
 import { Toaster } from "react-hot-toast"
 import Sidebar from "../organisms/sidebar"
 import Topbar from "../organisms/topbar"
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
+  const [isSidebarOpen, toggleSidebar] = useState(true)
   return (
     <div className="inter-base-regular text-grey-90 flex h-screen w-full">
       <Toaster
@@ -14,9 +15,11 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
           right: 24,
         }}
       />
-      <Sidebar />
+      {isSidebarOpen && (
+        <Sidebar toggleSidebar={toggleSidebar} />
+      )}
       <div className="flex flex-1 flex-col">
-        <Topbar />
+      <Topbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar}/>
         <div className="large:px-xlarge py-xlarge bg-grey-5 min-h-content overflow-y-auto">
           <main className="xsmall:mx-base small:mx-xlarge medium:mx-4xlarge large:mx-auto large:max-w-7xl large:w-full h-full">
             {children}

@@ -11,12 +11,13 @@ import SaleIcon from "../../fundamentals/icons/sale-icon"
 import TagIcon from "../../fundamentals/icons/tag-icon"
 import SwatchIcon from "../../fundamentals/icons/swatch-icon"
 import UsersIcon from "../../fundamentals/icons/users-icon"
+import ArrowLeftIcon from "../../fundamentals/icons/arrow-left-icon"
 import SidebarMenuItem from "../../molecules/sidebar-menu-item"
 import UserMenu from "../../molecules/user-menu"
 
 const ICON_SIZE = 20
 
-const Sidebar: React.FC = () => {
+const Sidebar: any = ({toggleSidebar}) => {
   const [currentlyOpen, setCurrentlyOpen] = useState(-1)
 
   const { isFeatureEnabled } = useFeatureFlag()
@@ -44,6 +45,7 @@ const Sidebar: React.FC = () => {
           <div className="rounded-circle flex h-8 w-8 items-center justify-center border border-solid border-gray-300">
             <UserMenu />
           </div>
+          <div onClick={() => toggleSidebar((prev) => !prev)}><ArrowLeftIcon /></div>
         </div>
         <div className="my-base flex flex-col px-2">
           <span className="text-grey-50 text-small font-medium">Store</span>
