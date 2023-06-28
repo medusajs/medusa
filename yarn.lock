@@ -255,33 +255,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/cli@npm:^7.12.1, @babel/cli@npm:^7.14.3, @babel/cli@npm:^7.15.4, @babel/cli@npm:^7.7.5":
-  version: 7.18.6
-  resolution: "@babel/cli@npm:7.18.6"
-  dependencies:
-    "@jridgewell/trace-mapping": ^0.3.8
-    "@nicolo-ribaudo/chokidar-2": 2.1.8-no-fsevents.3
-    chokidar: ^3.4.0
-    commander: ^4.0.1
-    convert-source-map: ^1.1.0
-    fs-readdir-recursive: ^1.1.0
-    glob: ^7.0.0
-    make-dir: ^2.1.0
-    slash: ^2.0.0
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  dependenciesMeta:
-    "@nicolo-ribaudo/chokidar-2":
-      optional: true
-    chokidar:
-      optional: true
-  bin:
-    babel: ./bin/babel.js
-    babel-external-helpers: ./bin/babel-external-helpers.js
-  checksum: d9db59862c482a6013ecb89140d337a72b75d1221674cf7276c4a614dac24126f879c8561433c76f73c2683e03db5d5e83d6d0c042ad7a102985f96cc9b99bc3
-  languageName: node
-  linkType: hard
-
 "@babel/cli@npm:^7.12.10":
   version: 7.19.3
   resolution: "@babel/cli@npm:7.19.3"
@@ -306,6 +279,33 @@ __metadata:
     babel: ./bin/babel.js
     babel-external-helpers: ./bin/babel-external-helpers.js
   checksum: e996aa6a1cde07555ef83782d5809049e6ebecb16884e94acad6eea9a7f6323f6303ee74004a31b29b5ead257ad697f33650b6983e4e9fb14ef1f2908ea5c0a1
+  languageName: node
+  linkType: hard
+
+"@babel/cli@npm:^7.14.3, @babel/cli@npm:^7.15.4, @babel/cli@npm:^7.7.5":
+  version: 7.18.6
+  resolution: "@babel/cli@npm:7.18.6"
+  dependencies:
+    "@jridgewell/trace-mapping": ^0.3.8
+    "@nicolo-ribaudo/chokidar-2": 2.1.8-no-fsevents.3
+    chokidar: ^3.4.0
+    commander: ^4.0.1
+    convert-source-map: ^1.1.0
+    fs-readdir-recursive: ^1.1.0
+    glob: ^7.0.0
+    make-dir: ^2.1.0
+    slash: ^2.0.0
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  dependenciesMeta:
+    "@nicolo-ribaudo/chokidar-2":
+      optional: true
+    chokidar:
+      optional: true
+  bin:
+    babel: ./bin/babel.js
+    babel-external-helpers: ./bin/babel-external-helpers.js
+  checksum: d9db59862c482a6013ecb89140d337a72b75d1221674cf7276c4a614dac24126f879c8561433c76f73c2683e03db5d5e83d6d0c042ad7a102985f96cc9b99bc3
   languageName: node
   linkType: hard
 
@@ -30285,10 +30285,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-dev-cli@workspace:packages/medusa-dev-cli"
   dependencies:
-    "@babel/cli": ^7.12.1
-    "@babel/core": ^7.12.3
-    "@babel/runtime": ^7.12.5
-    babel-preset-medusa-package: ^1.1.19
     chokidar: ^3.5.3
     configstore: ^5.0.1
     cross-env: ^7.0.3
@@ -30302,6 +30298,8 @@ __metadata:
     jest: ^25.5.4
     lodash: ^4.17.21
     signal-exit: ^3.0.7
+    ts-jest: ^25.5.1
+    typescript: ^4.4.4
     verdaccio: ^4.10.0
     yargs: ^15.4.1
   bin:
