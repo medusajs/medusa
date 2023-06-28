@@ -18,6 +18,7 @@ module.exports = {
   transform: {
     "^.+\\.[jt]s?$": "ts-jest",
   },
+  testPathIgnorePatterns: ['customizations', 'flags'],
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
   setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
