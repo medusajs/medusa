@@ -36,6 +36,7 @@ import {
   registerPaymentServiceFromClass,
 } from "./helpers/plugins"
 import logger from "./logger"
+import loadRoutes from "./helpers/routing"
 
 type Options = {
   rootDirectory: string
@@ -80,7 +81,13 @@ export default async ({
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
       await registerMedusaApi(pluginDetails, container)
-      registerApi(pluginDetails, app, rootDirectory, container, activityId)
+      await registerApi(
+        pluginDetails,
+        app,
+        rootDirectory,
+        container,
+        activityId
+      )
       registerCoreRouters(pluginDetails, container)
       registerSubscribers(pluginDetails, container)
     })
@@ -320,13 +327,13 @@ function registerCoreRouters(
 /**
  * Registers the plugin's api routes.
  */
-function registerApi(
+async function registerApi(
   pluginDetails: PluginDetails,
   app: Express,
   rootDirectory = "",
   container: MedusaContainer,
   activityId: string
-): Express {
+): Promise<Express> {
   const logger = container.resolve<Logger>("logger")
   const projectName =
     pluginDetails.name === MEDUSA_PROJECT_NAME
@@ -335,6 +342,13 @@ function registerApi(
 
   logger.progress(activityId, `Registering custom endpoints for ${projectName}`)
   try {
+    // file base routing mechanism
+    await loadRoutes(app, {
+      rootDir: `${pluginDetails.resolve}/api`,
+      strict: true,
+    })
+
+    // below is the backwards compatible routing mechanism
     const routes = require(`${pluginDetails.resolve}/api`).default
     if (routes) {
       app.use("/", routes(rootDirectory, pluginDetails.options))
@@ -343,7 +357,7 @@ function registerApi(
   } catch (err) {
     if (err.code !== "MODULE_NOT_FOUND") {
       logger.warn(
-        `An error occured while registering endpoints in ${projectName}`
+        `An error occurred while registering endpoints in ${projectName}`
       )
 
       if (err.stack) {
