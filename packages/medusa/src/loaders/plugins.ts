@@ -99,7 +99,8 @@ export default async ({
 
 function getResolvedPlugins(
   rootDirectory: string,
-  configModule: ConfigModule
+  configModule: ConfigModule,
+  extensionDirectoryPath: string = 'dist'
 ): undefined | PluginDetails[] {
   const { plugins } = configModule
 
@@ -114,9 +115,10 @@ function getResolvedPlugins(
     return details
   })
 
+  const extensionDirectory = path.join(rootDirectory, extensionDirectoryPath)
   // Resolve user's project as a plugin for loading purposes
   resolved.push({
-    resolve: `${rootDirectory}/dist`,
+    resolve: extensionDirectory,
     name: MEDUSA_PROJECT_NAME,
     id: createPluginId(MEDUSA_PROJECT_NAME),
     options: configModule,
@@ -130,15 +132,29 @@ export async function registerPluginModels({
   rootDirectory,
   container,
   configModule,
+  extensionDirectoryPath = 'dist',
+  pathGlob = "/models/*.js"
 }: {
   rootDirectory: string
   container: MedusaContainer
   configModule: ConfigModule
+  extensionDirectoryPath?: string
+  pathGlob?: string
 }): Promise<void> {
-  const resolved = getResolvedPlugins(rootDirectory, configModule) || []
+  const resolved = getResolvedPlugins(
+    rootDirectory,
+    configModule,
+    extensionDirectoryPath
+  ) || []
+
   await Promise.all(
     resolved.map(async (pluginDetails) => {
-      registerModels(pluginDetails, container, rootDirectory)
+      registerModels(
+        pluginDetails,
+        container,
+        rootDirectory,
+        pathGlob,
+      )
     })
   )
 }
@@ -568,17 +584,20 @@ function registerRepositories(
 function registerModels(
   pluginDetails: PluginDetails,
   container: MedusaContainer,
-  rootDirectory: string
+  rootDirectory: string,
+  pathGlob: string = "/models/*.js"
 ): void {
+  const pluginFullPathGlob =  path.join(pluginDetails.resolve, pathGlob)
+
   const modelExtensionsMap = getModelExtensionsMap({
     directory: rootDirectory,
-    pathGlob: `${pluginDetails.resolve}/models/*.js`,
+    pathGlob: pathGlob,
     config: { register: true },
   })
 
   const coreOrPluginModelsPath = glob.sync(
-    `${pluginDetails.resolve}/models/*.js`,
-    { ignore: ["index.js"] }
+    pluginFullPathGlob,
+    { ignore: ["index.js", "index.map.js"] }
   )
 
   coreOrPluginModelsPath.forEach((coreOrPluginModelPath) => {

@@ -1,0 +1,37 @@
+import { createMedusaContainer } from "medusa-core-utils"
+import path from "path"
+import { asValue } from "awilix"
+
+import { registerPluginModels } from "../plugins"
+import configModule from './customizations/medusa-config.js'
+
+describe("plugin models loader", () => {
+  const container = createMedusaContainer()
+  container.register("db_entities", asValue([]))
+
+  let models
+  let error
+
+  beforeAll(async () => {
+    try {
+      await registerPluginModels({
+        configModule: configModule,
+        container,
+        rootDirectory: path.join(__dirname, 'customizations'),
+        extensionDirectoryPath: './',
+        pathGlob: "/models/*.ts",
+      })
+    } catch (e) {
+      error = e
+    }
+  })
+
+  it("ensure that the product model is registered from the user's respository", () => {
+    const entities = container.resolve("db_entities_STORE")
+    const productModelResolver = entities.find(entity => entity.resolve().name === 'Product')
+    const productModel = productModelResolver.resolve()
+
+    expect(productModel.isExtendedModel).toBe(true)
+    expect((new productModel()).custom_attribute).toEqual("test")
+  })
+})
