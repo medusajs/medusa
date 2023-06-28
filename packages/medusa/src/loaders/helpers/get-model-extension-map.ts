@@ -28,10 +28,11 @@ export function getModelExtensionsMap({
 console.log("fullPathGlob - ", fullPathGlob)
   const modelExtensions = fullPathGlob
     ? glob.sync(fullPathGlob, {
+        cwd: directory,
         ignore: ["index.js", "index.map.js"],
       })
     : []
-
+console.log("modelExtensions - ", modelExtensions)
   modelExtensions.forEach((modelExtensionPath) => {
     const extendedModel = require(modelExtensionPath) as
       | ClassConstructor<unknown>

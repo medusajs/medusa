@@ -41,7 +41,9 @@ export default (
     cwd: __dirname,
     ignore: ["index.js", "index.ts", "index.map.js"],
   })
-
+  console.log("__dirname - ", __dirname)
+  console.log("rootDirectory - ", rootDirectory)
+console.log("coreModels - ", coreModels)
   const modelExtensionsMap = getModelExtensionsMap({
     directory: rootDirectory,
     pathGlob: extensionPathGlob,
