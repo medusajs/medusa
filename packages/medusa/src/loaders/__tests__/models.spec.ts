@@ -22,19 +22,19 @@ describe("models loader", () => {
     }
   })
 
-  it("error should be falsy", () => {
+  it("error should be falsy & register 2 models", () => {
     expect(error).toBeFalsy()
+    expect(models).toHaveLength(2)
   })
 
   it("ensure that the product model is an extended model", () => {
-    expect(models).toHaveLength(2)
     const productModel = models.find(model => model.name === 'Product')
 
+    expect(productModel.isExtendedModel).not.toBeDefined()
     expect(new productModel().custom_attribute).toEqual("test")
   })
 
   it("ensure that the product variant model is a core model", () => {
-    expect(models).toHaveLength(2)
     const productVariantModel = models.find(model => model.name === 'ProductVariant')
 
     expect(productVariantModel.isExtendedModel).not.toBeDefined()

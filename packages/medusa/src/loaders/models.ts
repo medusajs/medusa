@@ -37,7 +37,7 @@ export default (
 
   const coreModels = glob.sync(coreModelsFullGlob, {
     cwd: __dirname,
-    ignore: ["index.js", "index.ts"],
+    ignore: ["index.js", "index.ts", "index.map.js"],
   })
 
   const modelExtensionsMap = getModelExtensionsMap({
