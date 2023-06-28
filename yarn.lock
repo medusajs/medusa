@@ -6238,12 +6238,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/medusa-cli"
   dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.7.5
     "@medusajs/utils": ^1.9.1
+    "@types/yargs": ^15.0.15
     axios: ^0.21.4
     chalk: ^4.0.0
     configstore: 5.0.1
@@ -6269,8 +6265,9 @@ __metadata:
     resolve-cwd: ^3.0.0
     semver: ^7.3.8
     stack-trace: ^0.0.10
+    ts-jest: ^25.5.1
+    typescript: ^4.9.5
     ulid: ^2.3.0
-    url: ^0.11.0
     winston: ^3.8.2
     yargs: ^15.3.1
   bin:
@@ -12620,6 +12617,15 @@ __metadata:
   dependencies:
     "@types/yargs-parser": "*"
   checksum: 49eb8ad456c218a6dc8abd90a6f635a3ef44bb59161fbee2e9208f86fcb931668bb3559cad8cfe9a84d9c32b98034e37fefc2d728c3a077784b51971f0766b2e
+  languageName: node
+  linkType: hard
+
+"@types/yargs@npm:^15.0.15":
+  version: 15.0.15
+  resolution: "@types/yargs@npm:15.0.15"
+  dependencies:
+    "@types/yargs-parser": "*"
+  checksum: b52519ba68a8d90996b54143ff74fcd8ac1722a1ef4a50ed8c3dbc1f7a76d14210f0262f8b91eabcdab202ff4babdd92ce7332ab1cdd6af4eae7c9fc81c83797
   languageName: node
   linkType: hard
 
