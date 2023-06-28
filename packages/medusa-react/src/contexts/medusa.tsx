@@ -32,6 +32,7 @@ interface MedusaProviderProps {
    * available within the request
    */
   publishableApiKey?: string
+  customHeaders?: Record<string, any>
 }
 
 export const MedusaProvider = ({
@@ -39,6 +40,7 @@ export const MedusaProvider = ({
   baseUrl,
   apiKey,
   publishableApiKey,
+  customHeaders,
   children,
 }: MedusaProviderProps) => {
   const medusaClient = new Medusa({
@@ -46,6 +48,7 @@ export const MedusaProvider = ({
     maxRetries: 0,
     apiKey,
     publishableApiKey,
+    customHeaders
   })
   return (
     <QueryClientProvider {...queryClientProviderProps}>
