@@ -91,7 +91,7 @@ export const ProductTagRepository = dataSource
       conditionId: string,
       query: ExtendedFindConfig<ProductTag>
     ) {
-      return await this.createQueryBuilder("pt")
+      const qb = this.createQueryBuilder("pt")
         .where(query.where)
         .setFindOptions(query)
         .innerJoin(
@@ -100,7 +100,8 @@ export const ProductTagRepository = dataSource
           `dc_pt.product_tag_id = pt.id AND dc_pt.condition_id = :dcId`,
           { dcId: conditionId }
         )
-        .getManyAndCount()
+
+      return await Promise.all([qb.getMany(), qb.getCount()])
     },
   })
 
