@@ -1,8 +1,12 @@
 import { objectToStringPath } from "@medusajs/utils"
-import { flatten, groupBy, map, merge } from "lodash"
+import { flatten } from "lodash"
 import { FindManyOptions, FindOptionsRelations, In } from "typeorm"
 import { dataSource } from "../loaders/database"
 import { Order } from "../models"
+import {
+  getGroupedRelations,
+  mergeEntitiesWithRelations,
+} from "../utils/repository"
 
 const ITEMS_REL_NAME = "items"
 const REGION_REL_NAME = "region"
@@ -15,15 +19,7 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
     const entities = await this.find(optionsWithoutRelations)
     const entitiesIds = entities.map(({ id }) => id)
 
-    const groupedRelations: { [topLevel: string]: string[] } = {}
-    for (const rel of objectToStringPath(relations)) {
-      const [topLevel] = rel.split(".")
-      if (groupedRelations[topLevel]) {
-        groupedRelations[topLevel].push(rel)
-      } else {
-        groupedRelations[topLevel] = [rel]
-      }
-    }
+    const groupedRelations = getGroupedRelations(objectToStringPath(relations))
 
     const entitiesIdsWithRelations = await Promise.all(
       Object.entries(groupedRelations).map(async ([topLevel, rels]) => {
@@ -39,11 +35,8 @@ export const OrderRepository = dataSource.getRepository(Order).extend({
       })
     ).then(flatten)
 
-    const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-
-    const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-
-    return map(entities, (e) => merge({}, ...entitiesAndRelationsById[e.id]))
+    const entitiesAndRelations = entities.concat(entitiesIdsWithRelations)
+    return mergeEntitiesWithRelations<Order>(entitiesAndRelations)
   },
 
   async findOneWithRelations(

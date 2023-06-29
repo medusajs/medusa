@@ -12,16 +12,12 @@ import {
   ProductVariantInventoryService,
   ReturnService,
   ShippingOptionService,
-  TotalsService
+  TotalsService,
 } from "../index"
 import LineItemAdjustmentService from "../line-item-adjustment"
 import SwapService from "../swap"
-import {
-  LineItemAdjustmentServiceMock
-} from "../__mocks__/line-item-adjustment"
-import {
-  ProductVariantInventoryServiceMock
-} from "../__mocks__/product-variant-inventory"
+import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 
 /* ******************** DEFAULT REPOSITORY MOCKS ******************** */
 
@@ -273,32 +269,33 @@ describe("SwapService", () => {
         expect(swapRepo.findOne).toHaveBeenCalledWith({
           relations: {
             additional_items: {
-              variant: true
+              variant: true,
             },
             order: {
               claims: {
-                additional_items: true
+                additional_items: true,
               },
               discounts: {
-                rule: true
+                rule: true,
               },
               items: {
                 variant: {
-                  product: true
-                }
+                  product: true,
+                },
               },
               swaps: {
-                additional_items: true
-              }
+                additional_items: true,
+              },
             },
             return_order: {
               items: true,
               shipping_method: {
-                tax_lines: true
-              }
-            }
+                shipping_option: true,
+                tax_lines: true,
+              },
+            },
           },
-          where: { id: IdMap.getId("swap-1") }
+          where: { id: IdMap.getId("swap-1") },
         })
 
         expect(lineItemService.createReturnLines).toHaveBeenCalledTimes(1)
@@ -413,15 +410,13 @@ describe("SwapService", () => {
 
     describe("success", () => {
       const lineItemService = {
-        generate: jest
-          .fn()
-          .mockImplementation(({ variantId, quantity }) => {
-            return {
-              unit_price: 100,
-              variant_id: variantId,
-              quantity,
-            }
-          }),
+        generate: jest.fn().mockImplementation(({ variantId, quantity }) => {
+          return {
+            unit_price: 100,
+            variant_id: variantId,
+            quantity,
+          }
+        }),
         retrieve: () => Promise.resolve({}),
         list: () => Promise.resolve([]),
         withTransaction: function () {
@@ -457,13 +452,16 @@ describe("SwapService", () => {
         )
 
         expect(lineItemService.generate).toHaveBeenCalledTimes(1)
-        expect(lineItemService.generate).toHaveBeenCalledWith({
-          quantity: 1,
-          variantId: IdMap.getId("new-variant")
-        }, {
-          "cart": undefined,
-          region_id: IdMap.getId("region")
-        })
+        expect(lineItemService.generate).toHaveBeenCalledWith(
+          {
+            quantity: 1,
+            variantId: IdMap.getId("new-variant"),
+          },
+          {
+            cart: undefined,
+            region_id: IdMap.getId("region"),
+          }
+        )
       })
 
       it("creates swap", async () => {
@@ -605,7 +603,7 @@ describe("SwapService", () => {
             shipping_methods: existing.shipping_methods,
           },
           [{ item_id: "1234", quantity: 2 }],
-          { swap_id: IdMap.getId("swap"), metadata: {} },
+          { swap_id: IdMap.getId("swap"), metadata: {} }
         )
       })
     })
@@ -798,8 +796,7 @@ describe("SwapService", () => {
 
     describe("failure", () => {
       const swapRepo = MockRepository({
-        findOne: () =>
-          Promise.resolve({ canceled_at: new Date() }),
+        findOne: () => Promise.resolve({ canceled_at: new Date() }),
       })
 
       const swapService = new SwapService({
