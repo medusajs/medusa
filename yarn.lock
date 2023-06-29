@@ -6458,6 +6458,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/orchestration@workspace:packages/orchestration":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/orchestration@workspace:packages/orchestration"
+  dependencies:
+    "@medusajs/types": ^1.8.7
+    "@medusajs/utils": ^1.9.1
+    cross-env: ^5.2.1
+    graphql: ^16.6.0
+    jest: ^25.5.4
+    ts-jest: ^25.5.1
+    typescript: ^4.4.4
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/product@workspace:packages/product":
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/product"
@@ -6504,7 +6518,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^1.8.8, @medusajs/types@^1.8.9, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^1.8.7, @medusajs/types@^1.8.8, @medusajs/types@^1.8.9, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -23778,6 +23792,13 @@ __metadata:
   version: 15.8.0
   resolution: "graphql@npm:15.8.0"
   checksum: 30cc09b77170a9d1ed68e4c017ec8c5265f69501c96e4f34f8f6613f39a886c96dd9853eac925f212566ed651736334c8fe24ceae6c44e8d7625c95c3009a801
+  languageName: node
+  linkType: hard
+
+"graphql@npm:^16.6.0":
+  version: 16.6.0
+  resolution: "graphql@npm:16.6.0"
+  checksum: 3a2c15ff58b69d017618d2b224fa6f3c4a7937e1f711c3a5e0948db536b4931e6e649560b53de7cc26735e027ceea6e2d0a6bb7c29fc4639b290313e3aa71618
   languageName: node
   linkType: hard
 
