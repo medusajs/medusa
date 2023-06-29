@@ -1,12 +1,14 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express"
 
 export function create(req: Request, res: Response) {
-    res.send('create customers');
+  res.send("create customers")
 }
 
 export const config = {
-    routes: [{
-        method: 'post',
-        handlers: [create],
-    }],
-};
+  routes: [
+    {
+      method: "post",
+      handlers: [create],
+    },
+  ],
+}
