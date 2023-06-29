@@ -3,16 +3,16 @@ import { resolve } from "path"
 import request from "supertest"
 import express from "express"
 import { RoutesLoader } from "../index"
-import { globalCustomersMiddlewareMock } from "./__fixtures__/routers/_middlewares"
+import { globalCustomersMiddlewareMock } from "../__fixtures__/routers/_middlewares"
 
 const hookMock = jest.fn()
 
-describe("loadRouter", function () {
+describe("RoutesLoader", function () {
   const app = express()
   const server = http.createServer(app)
 
   beforeAll(async function () {
-    const rootDir = resolve(__dirname, "__fixtures__/routers")
+    const rootDir = resolve(__dirname, "../__fixtures__/routers")
     await new RoutesLoader({
       app,
       rootDir,
@@ -74,7 +74,7 @@ describe("loadRouter", function () {
       // eslint-disable-next-line max-len
       const rootDir = resolve(
         __dirname,
-        "__fixtures__/routers-duplicate-parameter"
+        "../__fixtures__/routers-duplicate-parameter"
       )
       await new RoutesLoader({
         app,
