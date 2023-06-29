@@ -36,28 +36,27 @@ import { isObject } from "./is-object"
  * // output: ['test.test1', 'test.test2', 'test.test3.test4', 'test2']
  *
  * @param {InputObject} input
- * @param {boolean} includeTruePropertiesOnly If set to true (example 2), only the properties set to true will be included,
- * otherwise (example 1) all properties will be included in the output which includes
- * the properties that are object and contains properties set to true
+ * @param {boolean} includeParentPropertyFields If set to true (example 1), all properties will be included as well as the parents,
+ * otherwise (example 2) all properties path set to true will included, excluded the parents
  */
 export function objectToStringPath(
   input: object = {},
-  { includeTruePropertiesOnly }: { includeTruePropertiesOnly: boolean } = {
-    includeTruePropertiesOnly: false,
+  { includeParentPropertyFields }: { includeParentPropertyFields: boolean } = {
+    includeParentPropertyFields: true,
   }
 ): string[] {
   if (!isObject(input) || !Object.keys(input).length) {
     return []
   }
 
-  const output: Set<string> = !includeTruePropertiesOnly
+  const output: Set<string> = includeParentPropertyFields
     ? new Set(Object.keys(input))
     : new Set()
 
   for (const key of Object.keys(input)) {
     if (isObject(input[key])) {
       const deepRes = objectToStringPath(input[key], {
-        includeTruePropertiesOnly,
+        includeParentPropertyFields,
       })
 
       const items = deepRes.reduce((acc, val) => {

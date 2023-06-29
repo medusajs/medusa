@@ -484,7 +484,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     const originalSelect = isOptionsArray
       ? undefined
       : (objectToStringPath(idsOrOptionsWithoutRelations.select, {
-          includeTruePropertiesOnly: true,
+          includeParentPropertyFields: false,
         }) as (keyof Product)[])
     const clonedOptions = isOptionsArray
       ? idsOrOptionsWithoutRelations
