@@ -109,8 +109,6 @@ describe("Batchjob with type order-export", () => {
 
     expect(batchJob.status).toBe("completed")
 
-    expect(batchJob.status).toBe("completed")
-
     exportFilePath = path.resolve(__dirname, batchJob.result.file_key)
     const isFileExists = (await fs.stat(exportFilePath)).isFile()
 
