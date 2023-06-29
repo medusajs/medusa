@@ -4,7 +4,6 @@ import {
   QueryKey,
   useMutation,
   UseMutationOptions,
-  UseMutationResult,
   useQueryClient,
 } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts"
@@ -73,10 +72,6 @@ export const buildCustomOptions = <
   return {
     ...options,
     onSuccess: (...args) => {
-      if (options?.onSuccess) {
-        return options.onSuccess(...args)
-      }
-
       if (queryKey !== undefined) {
         queryKey.forEach((key) => {
           queryClient.invalidateQueries({ queryKey: key as QueryKey })
@@ -90,61 +85,44 @@ export const buildCustomOptions = <
           }
         })
       }
+
+      if (options?.onSuccess) {
+        return options.onSuccess(...args)
+      }
     },
   }
 }
 
-export const useAdminCreateCustomEntity = <
+export const useAdminCustomPost = <
   TPayload extends Record<string, any>,
   TResponse
 >(
   path: string,
   queryKey: QueryKey,
-  options?: UseMutationOptions<Response<TResponse>, Error, TPayload>,
-  relatedDomains?: RelatedDomains
-): UseMutationResult<Response<TResponse>, Error, TPayload> => {
+  relatedDomains?: RelatedDomains,
+  options?: UseMutationOptions<Response<TResponse>, Error, TPayload>
+) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
     (payload: TPayload) =>
-      client.admin.custom.create<TPayload, TResponse>(path, payload),
+      client.admin.custom.post<TPayload, TResponse>(path, payload),
     buildCustomOptions(queryClient, queryKey, options, relatedDomains)
   )
 }
 
-export const useAdminUpdateCustomEntity = <
-  TPayload extends Record<string, any>,
-  TResponse
->(
+export const useAdminCustomDelete = <TResponse>(
   path: string,
-  id: string,
   queryKey: QueryKey,
-  options?: UseMutationOptions<Response<TResponse>, Error, TPayload>,
-  relatedDomains?: RelatedDomains
-): UseMutationResult<Response<TResponse>, Error, TPayload> => {
+  relatedDomains?: RelatedDomains,
+  options?: UseMutationOptions<Response<TResponse>, Error, void>
+) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: TPayload) =>
-      client.admin.custom.update<TPayload, TResponse>(path, id, payload),
-    buildCustomOptions(queryClient, queryKey, options, relatedDomains)
-  )
-}
-
-export const useAdminDeleteCustomEntity = <TResponse>(
-  path: string,
-  id: string,
-  queryKey: QueryKey,
-  options?: UseMutationOptions<Response<TResponse>, Error, void>,
-  relatedDomains?: RelatedDomains
-): UseMutationResult<Response<TResponse>, Error, void> => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
-
-  return useMutation(
-    () => client.admin.custom.delete<TResponse>(path, id),
+    () => client.admin.custom.delete<TResponse>(path),
     buildCustomOptions(queryClient, queryKey, options, relatedDomains)
   )
 }
