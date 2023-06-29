@@ -473,7 +473,7 @@ export class RoutesLoader<TConfig = Record<string, unknown>> {
         "file-base-routing-start" + this.rootDir,
         "file-base-routing-end" + this.rootDir
       )
-      .duration.toFixed(2)
+      ?.duration?.toFixed(2)
 
     log({
       activityId: this.activityId,
