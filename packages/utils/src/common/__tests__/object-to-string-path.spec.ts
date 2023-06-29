@@ -13,14 +13,14 @@ describe("objectToStringPath", function () {
         },
       },
       {
-        includeTruePropertiesOnly: true,
+        includeParentPropertyFields: false,
       }
     )
 
     expect(res).toEqual(["product", "variants.title", "variants.prices.amount"])
   })
 
-  it("should return a string path from an object including properties that are object an contains other properties set to true", function () {
+  it("should return a string path from an object including properties that are object and contains other properties set to true", function () {
     const res = objectToStringPath({
       product: true,
       variants: {
