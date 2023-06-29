@@ -5,7 +5,7 @@ import { UseQueryOptionsWrapper } from "../../../types"
 
 export const useAdminCustomQuery = <
   TQuery extends Record<string, any>,
-  TResponse
+  TResponse = any
 >(
   path: string,
   queryKey: QueryKey,
@@ -18,9 +18,11 @@ export const useAdminCustomQuery = <
 ) => {
   const { client } = useMedusa()
 
-  return useQuery(
+  const { data, ...rest } = useQuery(
     [path, query, queryKey],
     () => client.admin.custom.get<TQuery, TResponse>(path, query),
     options
   )
+
+  return { data, ...rest } as const
 }
