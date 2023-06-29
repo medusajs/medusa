@@ -5,12 +5,14 @@ import ora from "ora"
 import { track } from "medusa-telemetry"
 
 import { panicHandler } from "./panic-handler"
+import * as Transport from "winston-transport"
 
 const LOG_LEVEL = process.env.LOG_LEVEL || "silly"
 const NODE_ENV = process.env.NODE_ENV || "development"
-const IS_DEV = NODE_ENV === "development"
+const IS_DEV = NODE_ENV.startsWith("dev")
 
-const transports = []
+let transports: Transport[] = []
+
 if (!IS_DEV) {
   transports.push(new winston.transports.Console())
 } else {
@@ -39,8 +41,12 @@ const loggerInstance = winston.createLogger({
 })
 
 export class Reporter {
+  protected activities_: Record<string, any>
+  protected loggerInstance_: winston.Logger
+  protected ora_: typeof ora
+
   constructor({ logger, activityLogger }) {
-    this.activities_ = []
+    this.activities_ = {}
     this.loggerInstance_ = logger
     this.ora_ = activityLogger
   }
@@ -92,6 +98,7 @@ export class Reporter {
    * Begin an activity. In development an activity is displayed as a spinner;
    * in other environments it will log the activity at the info level.
    * @param {string} message - the message to log the activity under
+   * @param {any} config
    * @returns {string} the id of the activity; this should be passed to do
    *   further operations on the activity such as success, failure, progress.
    */
@@ -141,7 +148,7 @@ export class Reporter {
       if (activity.activity) {
         activity.text = message
       } else {
-        toLog.activity_id = activityId
+        toLog["activity_id"] = activityId
         this.loggerInstance_.log(toLog)
       }
     } else {
@@ -156,7 +163,7 @@ export class Reporter {
    *   message to log the error under; or an error object.
    * @param {Error?} error - an error object to log message with
    */
-  error = (messageOrError, error) => {
+  error = (messageOrError, error = null) => {
     let message = messageOrError
     if (typeof messageOrError === "object") {
       message = messageOrError.message
@@ -169,7 +176,7 @@ export class Reporter {
     }
 
     if (error) {
-      toLog.stack = stackTrace.parse(error)
+      toLog["stack"] = stackTrace.parse(error)
     }
 
     this.loggerInstance_.log(toLog)
@@ -200,8 +207,8 @@ export class Reporter {
       if (activity.activity) {
         activity.activity.fail(`${message} – ${time - activity.start}`)
       } else {
-        toLog.duration = time - activity.start
-        toLog.activity_id = activityId
+        toLog["duration"] = time - activity.start
+        toLog["activity_id"] = activityId
         this.loggerInstance_.log(toLog)
       }
     } else {
@@ -225,7 +232,7 @@ export class Reporter {
    * at the info level.
    * @param {string} activityId - the id of the activity as returned by activity
    * @param {string} message - the message to log
-   * @returns {object} data about the activity
+   * @returns {Record<string, any>} data about the activity
    */
   success = (activityId, message) => {
     const time = Date.now()
@@ -239,8 +246,8 @@ export class Reporter {
       if (activity.activity) {
         activity.activity.succeed(`${message} – ${time - activity.start}ms`)
       } else {
-        toLog.duration = time - activity.start
-        toLog.activity_id = activityId
+        toLog["duration"] = time - activity.start
+        toLog["activity_id"] = activityId
         this.loggerInstance_.log(toLog)
       }
     } else {
@@ -295,6 +302,7 @@ export class Reporter {
    * A wrapper around winston's log method.
    */
   log = (...args) => {
+    // @ts-ignore
     this.loggerInstance_.log(...args)
   }
 }

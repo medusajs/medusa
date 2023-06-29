@@ -19,12 +19,13 @@ import inquirer from "inquirer"
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
 import { clearProject } from "@medusajs/utils"
+import { PanicId } from "../reporter/panic-handler"
 
 const removeUndefined = (obj) => {
   return Object.fromEntries(
     Object.entries(obj)
       .filter(([_, v]) => v != null)
-      .map(([k, v]) => [k, v === Object(v) ? removeEmpty(v) : v])
+      .map(([k, v]) => [k, v === Object(v) ? removeUndefined(v) : v])
   )
 }
 
@@ -119,10 +120,10 @@ const install = async (rootPath) => {
     }
     if (getPackageManager() === `yarn` && checkForYarn()) {
       await fs.remove(`package-lock.json`)
-      await spawn(`yarnpkg`)
+      await spawn(`yarnpkg`, {})
     } else {
       await fs.remove(`yarn.lock`)
-      await spawn(`npm install`)
+      await spawn(`npm install`, {})
     }
   } finally {
     process.chdir(prevDir)
@@ -389,6 +390,8 @@ Do you wish to continue with these credentials?
 
     console.log("\n\nCould not verify DB credentials - please try again\n\n")
   }
+
+  return
 }
 
 const setupDB = async (dbName, dbCreds = {}) => {
@@ -553,7 +556,7 @@ medusa new ${rootPath} [url-to-starter]
 
     if (/medusa-starter/gi.test(rootPath) && isStarterAUrl) {
       reporter.panic({
-        id: `10000`,
+        id: PanicId.InvalidProjectName,
         context: {
           starter,
           rootPath,
@@ -561,8 +564,9 @@ medusa new ${rootPath} [url-to-starter]
       })
       return
     }
+
     reporter.panic({
-      id: `10001`,
+      id: PanicId.InvalidProjectName,
       context: {
         rootPath,
       },
@@ -572,7 +576,7 @@ medusa new ${rootPath} [url-to-starter]
 
   if (!isValid(rootPath)) {
     reporter.panic({
-      id: `10002`,
+      id: PanicId.InvalidPath,
       context: {
         path: sysPath.resolve(rootPath),
       },
@@ -582,7 +586,7 @@ medusa new ${rootPath} [url-to-starter]
 
   if (existsSync(sysPath.join(rootPath, `package.json`))) {
     reporter.panic({
-      id: `10003`,
+      id: PanicId.AlreadyNodeProject,
       context: {
         rootPath,
       },

@@ -30,7 +30,11 @@ import {
   Logger,
   MedusaContainer,
 } from "../types/global"
-import formatRegistrationName from "../utils/format-registration-name"
+import {
+  formatRegistrationName,
+  formatRegistrationNameWithoutNamespace,
+} from "../utils/format-registration-name"
+import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import {
   registerPaymentProcessorFromClass,
   registerPaymentServiceFromClass,
@@ -95,7 +99,8 @@ export default async ({
 
 function getResolvedPlugins(
   rootDirectory: string,
-  configModule: ConfigModule
+  configModule: ConfigModule,
+  extensionDirectoryPath: string = 'dist'
 ): undefined | PluginDetails[] {
   const { plugins } = configModule
 
@@ -110,9 +115,10 @@ function getResolvedPlugins(
     return details
   })
 
+  const extensionDirectory = path.join(rootDirectory, extensionDirectoryPath)
   // Resolve user's project as a plugin for loading purposes
   resolved.push({
-    resolve: `${rootDirectory}/dist`,
+    resolve: extensionDirectory,
     name: MEDUSA_PROJECT_NAME,
     id: createPluginId(MEDUSA_PROJECT_NAME),
     options: configModule,
@@ -126,15 +132,29 @@ export async function registerPluginModels({
   rootDirectory,
   container,
   configModule,
+  extensionDirectoryPath = 'dist',
+  pathGlob = "/models/*.js"
 }: {
   rootDirectory: string
   container: MedusaContainer
   configModule: ConfigModule
+  extensionDirectoryPath?: string
+  pathGlob?: string
 }): Promise<void> {
-  const resolved = getResolvedPlugins(rootDirectory, configModule) || []
+  const resolved = getResolvedPlugins(
+    rootDirectory,
+    configModule,
+    extensionDirectoryPath
+  ) || []
+
   await Promise.all(
     resolved.map(async (pluginDetails) => {
-      registerModels(pluginDetails, container)
+      registerModels(
+        pluginDetails,
+        container,
+        rootDirectory,
+        pathGlob,
+      )
     })
   )
 }
@@ -563,16 +583,45 @@ function registerRepositories(
  */
 function registerModels(
   pluginDetails: PluginDetails,
-  container: MedusaContainer
+  container: MedusaContainer,
+  rootDirectory: string,
+  pathGlob: string = "/models/*.js"
 ): void {
-  const files = glob.sync(`${pluginDetails.resolve}/models/*.js`, {})
-  files.forEach((fn) => {
-    const loaded = require(fn) as ClassConstructor<unknown> | EntitySchema
+  const pluginFullPathGlob =  path.join(pluginDetails.resolve, pathGlob)
+
+  const modelExtensionsMap = getModelExtensionsMap({
+    directory: rootDirectory,
+    pathGlob: pathGlob,
+    config: { register: true },
+  })
+
+  const coreOrPluginModelsPath = glob.sync(
+    pluginFullPathGlob,
+    { ignore: ["index.js", "index.js.map"] }
+  )
+
+  coreOrPluginModelsPath.forEach((coreOrPluginModelPath) => {
+    const loaded = require(coreOrPluginModelPath) as
+      | ClassConstructor<unknown>
+      | EntitySchema
 
     Object.entries(loaded).map(
       ([, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
         if (typeof val === "function" || val instanceof EntitySchema) {
-          const name = formatRegistrationName(fn)
+          const name = formatRegistrationName(coreOrPluginModelPath)
+          const mappedExtensionModel = modelExtensionsMap.get(name)
+
+          // If an extension file is found, override it with that instead
+          if (mappedExtensionModel) {
+            const coreOrPluginModel = require(coreOrPluginModelPath)
+            const modelName = formatRegistrationNameWithoutNamespace(
+              coreOrPluginModelPath
+            )
+
+            coreOrPluginModel[modelName] = mappedExtensionModel
+            val = mappedExtensionModel
+          }
+
           container.register({
             [name]: asValue(val),
           })

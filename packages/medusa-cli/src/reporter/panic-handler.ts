@@ -1,11 +1,21 @@
-export const panicHandler = (panicData = {}) => {
+export type PanicData = {
+  id: string
+  context: {
+    rootPath: string
+    path: string
+  }
+}
+
+export enum PanicId {
+  InvalidProjectName = "10000",
+  InvalidPath = "10002",
+  AlreadyNodeProject = "10003",
+}
+
+export const panicHandler = (panicData: PanicData = {} as PanicData) => {
   const { id, context } = panicData
   switch (id) {
     case "10000":
-      return {
-        message: `Looks like you provided a URL as your project name. Try "medusa new my-medusa-store ${context.rootPath}" instead.`,
-      }
-    case "10001":
       return {
         message: `Looks like you provided a URL as your project name. Try "medusa new my-medusa-store ${context.rootPath}" instead.`,
       }

@@ -1,5 +1,5 @@
-import { InternalModuleDeclaration, Logger } from "@medusajs/modules-sdk"
-import { EmitData } from "@medusajs/types"
+import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
+import { EmitData, Logger } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
 import { BulkJobOptions, JobsOptions, Queue, Worker } from "bullmq"
 import { Redis } from "ioredis"

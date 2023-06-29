@@ -1,17 +1,15 @@
-const path = require(`path`)
-const resolveCwd = require(`resolve-cwd`)
+import path from "path"
+import resolveCwd from "resolve-cwd"
+import { sync as existsSync } from "fs-exists-cached"
+import { setTelemetryEnabled } from "medusa-telemetry"
+
+import { getLocalMedusaVersion } from "./util/version"
+import { didYouMean } from "./did-you-mean"
+
+import reporter from "./reporter"
+import { newStarter } from "./commands/new"
+
 const yargs = require(`yargs`)
-const existsSync = require(`fs-exists-cached`).sync
-const { setTelemetryEnabled } = require("medusa-telemetry")
-
-const { getLocalMedusaVersion } = require(`./util/version`)
-const { didYouMean } = require(`./did-you-mean`)
-
-const reporter = require("./reporter").default
-const { newStarter } = require("./commands/new")
-const { whoami } = require("./commands/whoami")
-const { login } = require("./commands/login")
-const { link } = require("./commands/link")
 
 const handlerP =
   (fn) =>
@@ -31,18 +29,10 @@ function buildLocalCommands(cli, isLocalProject) {
   const useYarn = existsSync(path.join(directory, `yarn.lock`))
 
   if (isLocalProject) {
-    const json = require(path.join(directory, `package.json`))
-    projectInfo.sitePackageJson = json
-  }
-
-  function getLocalMedusaMajorVersion() {
-    let version = getLocalMedusaVersion()
-
-    if (version) {
-      version = Number(version.split(`.`)[0])
-    }
-
-    return version
+    projectInfo["sitePackageJson"] = require(path.join(
+      directory,
+      `package.json`
+    ))
   }
 
   function resolveLocalCommand(command) {
@@ -53,10 +43,10 @@ function buildLocalCommands(cli, isLocalProject) {
     try {
       const cmdPath = resolveCwd.silent(
         `@medusajs/medusa/dist/commands/${command}`
-      )
+      )!
       return require(cmdPath).default
     } catch (err) {
-      if (process.env.NODE_ENV !== "production") {
+      if (!process.env.NODE_ENV?.startsWith("prod")) {
         console.log("--------------- ERROR ---------------------")
         console.log(err)
         console.log("-------------------------------------------")
@@ -166,7 +156,7 @@ function buildLocalCommands(cli, isLocalProject) {
         }),
       handler: handlerP(
         getCommandHandler(`seed`, (args, cmd) => {
-          process.env.NODE_ENV = process.env.NODE_ENV || `development`
+          process.env.NODE_ENV ??= `development`
           return cmd(args)
         })
       ),
@@ -186,41 +176,6 @@ function buildLocalCommands(cli, isLocalProject) {
           return cmd(args)
         })
       ),
-    })
-    .command({
-      command: `whoami`,
-      desc: `View the details of the currently logged in user.`,
-      handler: handlerP(whoami),
-    })
-    .command({
-      command: `link`,
-      desc: `Creates your Medusa Cloud user in your local database for local testing.`,
-      builder: (_) =>
-        _.option(`su`, {
-          alias: `skip-local-user`,
-          type: `boolean`,
-          default: false,
-          describe: `If set a user will not be created in the database.`,
-        }).option(`develop`, {
-          type: `boolean`,
-          default: false,
-          describe: `If set medusa develop will be run after successful linking.`,
-        }),
-      handler: handlerP((argv) => {
-        if (!isLocalProject) {
-          console.log("must be a local project")
-          cli.showHelp()
-        }
-
-        const args = { ...argv, ...projectInfo, useYarn }
-
-        return link(args)
-      }),
-    })
-    .command({
-      command: `login`,
-      desc: `Logs you into Medusa Cloud.`,
-      handler: handlerP(login),
     })
     .command({
       command: `develop`,
@@ -316,17 +271,20 @@ function buildLocalCommands(cli, isLocalProject) {
 
 function isLocalMedusaProject() {
   let inMedusaProject = false
+
   try {
     const { dependencies, devDependencies } = require(path.resolve(
       `./package.json`
     ))
-    inMedusaProject =
+    inMedusaProject = !!(
       (dependencies && dependencies["@medusajs/medusa"]) ||
       (devDependencies && devDependencies["@medusajs/medusa"])
+    )
   } catch (err) {
-    /* ignore */
+    // ignore
   }
-  return !!inMedusaProject
+
+  return inMedusaProject
 }
 
 function getVersionInfo() {
@@ -347,7 +305,7 @@ Medusa version: ${medusaVersion}
   }
 }
 
-module.exports = (argv) => {
+export default (argv) => {
   const cli = yargs()
   const isLocalProject = isLocalMedusaProject()
 
@@ -402,7 +360,7 @@ module.exports = (argv) => {
       const arg = argv.slice(2)[0]
       const suggestion = arg ? didYouMean(arg, availableCommands) : ``
 
-      if (process.env.NODE_ENV !== "production") {
+      if (!process.env.NODE_ENV?.startsWith("prod")) {
         console.log("--------------- ERROR ---------------------")
         console.log(err)
         console.log("-------------------------------------------")

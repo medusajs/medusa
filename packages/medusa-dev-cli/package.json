@@ -10,7 +10,6 @@
     "dist"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.12.5",
     "chokidar": "^3.5.3",
     "configstore": "^5.0.1",
     "del": "^6.0.0",
@@ -20,18 +19,16 @@
     "glob": "^8.1.0",
     "got": "^11.8.6",
     "is-absolute": "^1.0.0",
-    "jest": "^25.5.4",
     "lodash": "^4.17.21",
     "signal-exit": "^3.0.7",
     "verdaccio": "^4.10.0",
     "yargs": "^15.4.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.1",
-    "@babel/core": "^7.12.3",
-    "babel-preset-medusa-package": "^1.1.19",
     "cross-env": "^7.0.3",
-    "jest": "^25.5.4"
+    "jest": "^25.5.4",
+    "ts-jest": "^25.5.1",
+    "typescript": "^4.4.4"
   },
   "homepage": "https://github.com/medusajs/medusa/tree/master/packages/medusa-dev-cli#readme",
   "keywords": [
@@ -46,9 +43,9 @@
   },
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "test": "jest --passWithNoTests src",
-    "build": "babel src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'",
-    "watch": "babel -w src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'"
+    "test": "jest --passWithNoTests",
+    "build": "tsc",
+    "watch": "tsc --watch"
   },
   "engines": {
     "node": ">=12.13.0"
