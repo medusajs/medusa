@@ -12,7 +12,6 @@ describe("loadRouter", function () {
   const server = http.createServer(app)
 
   beforeAll(async function () {
-    await app.listen(3000)
     const rootDir = resolve(__dirname, "__fixtures__/routers")
     await new RoutesLoader({
       app,
@@ -20,12 +19,6 @@ describe("loadRouter", function () {
       onRouteLoading: hookMock,
       strict: true,
     }).load()
-  })
-
-  afterAll(function (done) {
-    server.close(() => {
-      done()
-    })
   })
 
   afterEach(function () {
