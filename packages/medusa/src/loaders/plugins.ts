@@ -36,7 +36,7 @@ import {
   registerPaymentServiceFromClass,
 } from "./helpers/plugins"
 import logger from "./logger"
-import loadRoutes from "./helpers/routing"
+import { RoutesLoader } from "./helpers/routing"
 
 type Options = {
   rootDirectory: string
@@ -341,18 +341,35 @@ async function registerApi(
       : `${pluginDetails.name}`
 
   logger.progress(activityId, `Registering custom endpoints for ${projectName}`)
-  try {
-    // file base routing mechanism
-    await loadRoutes(app, {
-      rootDir: `${pluginDetails.resolve}/api`,
-      strict: false,
-    })
 
-    // below is the backwards compatible routing mechanism
-    const routes = require(`${pluginDetails.resolve}/api`).default
-    if (routes) {
-      app.use("/", routes(rootDirectory, pluginDetails.options))
+  let isApiExisting = true
+  try {
+    try {
+      require.resolve(`${pluginDetails.resolve}/api`)
+    } catch (e) {
+      isApiExisting = false
     }
+
+    if (isApiExisting) {
+      // file base routing mechanism
+      return await new RoutesLoader({
+        app,
+        rootDir: `${pluginDetails.resolve}/api`,
+        excludes: [/api\/index/],
+        activityId: activityId,
+      })
+        .load()
+        .then(() => {
+          // below is the backwards compatible routing mechanism
+          const routes = require(`${pluginDetails.resolve}/api`).default
+          if (routes) {
+            app.use("/", routes(rootDirectory, pluginDetails.options))
+          }
+
+          return app
+        })
+    }
+
     return app
   } catch (err) {
     if (err.code !== "MODULE_NOT_FOUND") {
