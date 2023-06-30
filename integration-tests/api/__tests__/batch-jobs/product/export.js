@@ -60,6 +60,7 @@ describe("Batch job of product-export type", () => {
     const db = useDb()
     await db.teardown()
 
+    // @ts-ignore
     try {
       const isFileExists = (await fs.stat(exportFilePath))?.isFile()
 
@@ -74,8 +75,8 @@ describe("Batch job of product-export type", () => {
 
         await fs.unlink(exportFilePath)
       }
-    } catch (e) {
-      console.log(e)
+    } catch (err) {
+      // noop
     }
   })
 

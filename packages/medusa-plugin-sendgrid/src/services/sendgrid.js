@@ -2,6 +2,7 @@ import SendGrid from "@sendgrid/mail"
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import { NotificationService } from "medusa-interfaces"
 import { IsNull, Not } from "typeorm"
+import { MedusaError } from "@medusajs/utils"
 
 class SendGridService extends NotificationService {
   static identifier = "sendgrid"
@@ -221,10 +222,14 @@ class SendGridService extends NotificationService {
     let templateId = this.getTemplateId(event)
 
     if (!templateId) {
-      return false
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, `Sendgrid service: No template was set for event: ${event}`)
     }
 
     const data = await this.fetchData(event, eventData, attachmentGenerator)
+    if (!data) {
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, "Sendgrid service: Invalid event data was received")
+   }
+
     const attachments = await this.fetchAttachments(
       event,
       data,
@@ -256,9 +261,10 @@ class SendGridService extends NotificationService {
       })
     }
 
-    const status = await SendGrid.send(sendOptions)
-      .then(() => "sent")
-      .catch(() => "failed")
+   let status
+   await this.transporter_.sendMail(sendOptions)
+   .then(() => { status = "sent" })
+   .catch((error) => { status = "failed"; console.log(error) })
 
     // We don't want heavy docs stored in DB
     delete sendOptions.attachments
@@ -844,7 +850,9 @@ class SendGridService extends NotificationService {
   }
 
   async swapCreatedData({ id }) {
-    const store = await this.storeService_.retrieve({ where: { id: Not(IsNull()) } })
+    const store = await this.storeService_.retrieve({
+      where: { id: Not(IsNull()) },
+    })
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "additional_items",
@@ -907,7 +915,7 @@ class SendGridService extends NotificationService {
         "shipping_total",
         "subtotal",
       ],
-      relations: ["items", "items.variant", "items.variant.product"]
+      relations: ["items", "items.variant", "items.variant.product"],
     })
     const currencyCode = order.currency_code.toUpperCase()
 
@@ -987,6 +995,7 @@ class SendGridService extends NotificationService {
       relations: [
         "shipping_address",
         "shipping_methods",
+        "shipping_methods.shipping_option",
         "shipping_methods.tax_lines",
         "additional_items",
         "additional_items.variant",
@@ -1022,11 +1031,7 @@ class SendGridService extends NotificationService {
         "shipping_total",
         "subtotal",
       ],
-      relations: [
-        "items",
-        "items.variant",
-        "items.variant.product",
-      ]
+      relations: ["items", "items.variant", "items.variant.product"],
     })
 
     const returnRequest = swap.return_order
@@ -1146,7 +1151,7 @@ class SendGridService extends NotificationService {
         "order.items",
         "order.items.variant",
         "order.items.variant.product",
-        "order.shipping_address"
+        "order.shipping_address",
       ],
     })
 
