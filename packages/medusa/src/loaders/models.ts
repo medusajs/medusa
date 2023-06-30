@@ -8,6 +8,7 @@ import path from "path"
 import { ClassConstructor, MedusaContainer } from "../types/global"
 import { EntitySchema } from "typeorm"
 import { asClass, asValue } from "awilix"
+import { upperCaseFirst } from "@medusajs/utils"
 
 type ModelLoaderParams = {
   container: MedusaContainer
@@ -46,6 +47,29 @@ export default (
     config,
   })
 
+  // Override the core entities first before they are loading to be sure
+  // that the other related entities are consuming the correct extended model
+  modelExtensionsMap.forEach((val, key) => {
+    coreModels.find((modelPath) => {
+      const loaded = require(modelPath) as
+        | ClassConstructor<unknown>
+        | EntitySchema
+
+      if (loaded) {
+        const name = formatRegistrationName(modelPath)
+        const mappedExtensionModel = modelExtensionsMap.get(name)
+        if (mappedExtensionModel) {
+          const coreModel = require(modelPath)
+          const modelName = upperCaseFirst(
+            formatRegistrationNameWithoutNamespace(modelPath)
+          )
+
+          coreModel[modelName] = mappedExtensionModel
+        }
+      }
+    })
+  })
+
   coreModels.forEach((modelPath) => {
     const loaded = require(modelPath) as
       | ClassConstructor<unknown>
@@ -57,17 +81,6 @@ export default (
           if (typeof val === "function" || val instanceof EntitySchema) {
             if (config.register) {
               const name = formatRegistrationName(modelPath)
-              const mappedExtensionModel = modelExtensionsMap.get(name)
-
-              // If an extension file is found, override it with that instead
-              if (mappedExtensionModel) {
-                const coreModel = require(modelPath)
-                const modelName =
-                  formatRegistrationNameWithoutNamespace(modelPath)
-
-                coreModel[modelName] = mappedExtensionModel
-                val = mappedExtensionModel
-              }
 
               container.register({
                 [name]: asClass(val as ClassConstructor<unknown>),
