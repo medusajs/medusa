@@ -30,9 +30,9 @@ describe("models loader", () => {
   })
 
   it("ensure that the product model is an extended model", () => {
-    const productModel = container.resolve("product")
+    const productModel = container.resolve("productModel")
 
-    expect(new productModel().custom_attribute).toEqual("test")
+    expect(productModel.custom_attribute).toEqual("test")
   })
 
   it("ensure that the extended product model is registered in db_entities", () => {
@@ -40,7 +40,7 @@ describe("models loader", () => {
     const productModelResolver = entities.find(
       (entity) => entity.resolve().name === "Product"
     )
-    let productModel = productModelResolver.resolve()
+    const productModel = productModelResolver.resolve()
 
     expect(new productModel().custom_attribute).toEqual("test")
   })

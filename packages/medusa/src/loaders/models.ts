@@ -47,27 +47,25 @@ export default (
     config,
   })
 
-  // Override the core entities first before they are loading to be sure
-  // that the other related entities are consuming the correct extended model
-  modelExtensionsMap.forEach((val, key) => {
-    coreModels.find((modelPath) => {
-      const loaded = require(modelPath) as
-        | ClassConstructor<unknown>
-        | EntitySchema
+  // Apply the extended models to the core models first to ensure that
+  // when relationships are created, the extended models are used
+  coreModels.forEach((modelPath) => {
+    const loaded = require(modelPath) as
+      | ClassConstructor<unknown>
+      | EntitySchema
 
-      if (loaded) {
-        const name = formatRegistrationName(modelPath)
-        const mappedExtensionModel = modelExtensionsMap.get(name)
-        if (mappedExtensionModel) {
-          const coreModel = require(modelPath)
-          const modelName = upperCaseFirst(
-            formatRegistrationNameWithoutNamespace(modelPath)
-          )
+    if (loaded) {
+      const name = formatRegistrationName(modelPath)
+      const mappedExtensionModel = modelExtensionsMap.get(name)
+      if (mappedExtensionModel) {
+        const coreModel = require(modelPath)
+        const modelName = upperCaseFirst(
+          formatRegistrationNameWithoutNamespace(modelPath)
+        )
 
-          coreModel[modelName] = mappedExtensionModel
-        }
+        coreModel[modelName] = mappedExtensionModel
       }
-    })
+    }
   })
 
   coreModels.forEach((modelPath) => {
