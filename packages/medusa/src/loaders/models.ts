@@ -43,26 +43,6 @@ export default (
     config,
   })
 
-  /*  // Apply the extended models to the core models first to ensure that
-  // when relationships are created, the extended models are used
-  coreModels.forEach((modelPath) => {
-    const loaded = require(modelPath) as
-      | ClassConstructor<unknown>
-      | EntitySchema
-
-    if (loaded) {
-      const name = formatRegistrationName(modelPath)
-      const mappedExtensionModel = modelExtensionsMap.get(name)
-      if (mappedExtensionModel) {
-        const modelName = upperCaseFirst(
-          formatRegistrationNameWithoutNamespace(modelPath)
-        )
-
-        loaded[modelName] = mappedExtensionModel
-      }
-    }
-  })*/
-
   coreModels.forEach((modelPath) => {
     const loaded = require(modelPath) as
       | ClassConstructor<unknown>
