@@ -591,7 +591,7 @@ function registerModels(
     config: { register: true },
   })
 
-  const coreOrPluginModelsPath = glob.sync(pluginFullPathGlob, {
+  const pluginModels = glob.sync(pluginFullPathGlob, {
     ignore: ["index.js", "index.js.map"],
   })
 
@@ -621,7 +621,7 @@ function registerModels(
     }
   })
 
-  coreOrPluginModelsPath.forEach((coreOrPluginModelPath) => {
+  pluginModels.forEach((coreOrPluginModelPath) => {
     const loaded = require(coreOrPluginModelPath) as
       | ClassConstructor<unknown>
       | EntitySchema

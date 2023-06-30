@@ -1,14 +1,10 @@
-import {
-  formatRegistrationName,
-  formatRegistrationNameWithoutNamespace,
-} from "../utils/format-registration-name"
+import { formatRegistrationName } from "../utils/format-registration-name"
 import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import glob from "glob"
 import path from "path"
 import { ClassConstructor, MedusaContainer } from "../types/global"
 import { EntitySchema } from "typeorm"
 import { asClass, asValue } from "awilix"
-import { upperCaseFirst } from "@medusajs/utils"
 
 type ModelLoaderParams = {
   container: MedusaContainer
@@ -47,7 +43,7 @@ export default (
     config,
   })
 
-  // Apply the extended models to the core models first to ensure that
+  /*  // Apply the extended models to the core models first to ensure that
   // when relationships are created, the extended models are used
   coreModels.forEach((modelPath) => {
     const loaded = require(modelPath) as
@@ -65,7 +61,7 @@ export default (
         loaded[modelName] = mappedExtensionModel
       }
     }
-  })
+  })*/
 
   coreModels.forEach((modelPath) => {
     const loaded = require(modelPath) as
