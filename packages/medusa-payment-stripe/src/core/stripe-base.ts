@@ -281,6 +281,12 @@ abstract class StripeBase extends AbstractPaymentProcessor {
     }
   }
 
+  async updatePaymentData(sessionId: string, data: Record<string, unknown>) {
+    return await this.stripe_.paymentIntents.update(sessionId, {
+      ...data,
+    })
+  }
+
   /**
    * Constructs Stripe Webhook event
    * @param {object} data - the data of the webhook request: req.body
