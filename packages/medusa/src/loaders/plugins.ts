@@ -612,12 +612,11 @@ function registerModels(
       const name = formatRegistrationName(modelPath)
       const mappedExtensionModel = modelExtensionsMap.get(name)
       if (mappedExtensionModel) {
-        const coreModel = require(modelPath)
         const modelName = upperCaseFirst(
           formatRegistrationNameWithoutNamespace(modelPath)
         )
 
-        coreModel[modelName] = mappedExtensionModel
+        loaded[modelName] = mappedExtensionModel
       }
     }
   })
