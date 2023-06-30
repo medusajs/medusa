@@ -35,6 +35,12 @@ describe("models loader", () => {
     expect(productModel.custom_attribute).toEqual("test")
   })
 
+  it("ensure that the product variant model is referring to the product extended model", () => {
+    const productModel = container.resolve("productModel")
+
+    expect(productModel.custom_attribute).toEqual("test")
+  })
+
   it("ensure that the extended product model is registered in db_entities", () => {
     const entities = container.resolve("db_entities_STORE")
     const productModelResolver = entities.find(

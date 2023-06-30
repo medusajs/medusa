@@ -1,10 +1,14 @@
-import { formatRegistrationName } from "../utils/format-registration-name"
+import {
+  formatRegistrationName,
+  formatRegistrationNameWithoutNamespace,
+} from "../utils/format-registration-name"
 import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import glob from "glob"
 import path from "path"
 import { ClassConstructor, MedusaContainer } from "../types/global"
 import { EntitySchema } from "typeorm"
 import { asClass, asValue } from "awilix"
+import { upperCaseFirst } from "@medusajs/utils"
 
 type ModelLoaderParams = {
   container: MedusaContainer
@@ -54,6 +58,18 @@ export default (
           if (typeof val === "function" || val instanceof EntitySchema) {
             if (config.register) {
               const name = formatRegistrationName(modelPath)
+              const mappedExtensionModel = modelExtensionsMap.get(name)
+
+              // If an extension file is found, override it with that instead
+              if (mappedExtensionModel) {
+                const coreModel = require(modelPath)
+                const modelName = upperCaseFirst(
+                  formatRegistrationNameWithoutNamespace(modelPath)
+                )
+
+                coreModel[modelName] = mappedExtensionModel
+                val = mappedExtensionModel
+              }
 
               container.register({
                 [name]: asClass(val as ClassConstructor<unknown>),
