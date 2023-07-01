@@ -7,10 +7,8 @@ import CrosshairIcon from "../../components/fundamentals/icons/crosshair-icon"
 import DollarSignIcon from "../../components/fundamentals/icons/dollar-sign-icon"
 import HappyIcon from "../../components/fundamentals/icons/happy-icon"
 import KeyIcon from "../../components/fundamentals/icons/key-icon"
-import MailIcon from "../../components/fundamentals/icons/mail-icon"
 import MapPinIcon from "../../components/fundamentals/icons/map-pin-icon"
 import TaxesIcon from "../../components/fundamentals/icons/taxes-icon"
-import TruckIcon from "../../components/fundamentals/icons/truck-icon"
 import UsersIcon from "../../components/fundamentals/icons/users-icon"
 import SettingsOverview from "../../components/templates/settings-overview"
 import CurrencySettings from "./currencies"
@@ -26,13 +24,13 @@ const SettingsIndex = () => {
     <SettingsOverview>
       <SettingsCard
         heading={"Regions"}
-        description={"Manage the markets you will operate within"}
+        description={"Manage shipping, payment, and fulfillment across regions"}
         icon={<MapPinIcon />}
         to={`/a/settings/regions`}
       />
       <SettingsCard
         heading={"Currencies"}
-        description={"Manage the markets you will operate within"}
+        description={"Manage the currencies of your store"}
         icon={<CoinsIcon />}
         to={`/a/settings/currencies`}
       />
@@ -41,13 +39,6 @@ const SettingsIndex = () => {
         description={"Manage your business details"}
         icon={<CrosshairIcon />}
         to={`/a/settings/details`}
-      />
-      <SettingsCard
-        heading={"Shipping"}
-        description={"Manage shipping profiles"}
-        icon={<TruckIcon />}
-        to={`/a/settings/shipping-profiles`}
-        disabled={true}
       />
       <SettingsCard
         heading={"Return Reasons"}
@@ -66,12 +57,6 @@ const SettingsIndex = () => {
         description={"Manage your Medusa profile"}
         icon={<HappyIcon />}
         to={`/a/settings/personal-information`}
-      />
-      <SettingsCard
-        heading={"hello@medusajs.com"}
-        description={"Can’t find the answers you’re looking for?"}
-        icon={<MailIcon />}
-        externalLink={"mailto: hello@medusajs.com"}
       />
       <SettingsCard
         heading={"Tax Settings"}
