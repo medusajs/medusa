@@ -10,6 +10,7 @@ import {
 } from "medusa-core-utils"
 import path from "path"
 import { handleConfigError } from "../../loaders/config"
+import { MEDUSA_PROJECT_NAME } from "../../loaders/plugins"
 
 function createFileContentHash(path, files) {
   return path + files
@@ -143,10 +144,11 @@ export default (directory, featureFlagRouter) => {
     return details
   })
 
+  // Resolve user's project as a plugin for loading purposes
   resolved.push({
     resolve: `${directory}/dist`,
-    name: `project-plugin`,
-    id: createPluginId(`project-plugin`),
+    name: MEDUSA_PROJECT_NAME,
+    id: createPluginId(MEDUSA_PROJECT_NAME),
     options: {},
     version: createFileContentHash(process.cwd(), `**`),
   })
