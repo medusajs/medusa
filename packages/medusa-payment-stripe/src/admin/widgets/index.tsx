@@ -8,7 +8,7 @@ import StripeLogo from "../shared/icons/stripe-logo"
 const MyWidget = (props: OrderDetailsWidgetProps) => {
   const { order } = props
   const { data } = useAdminCustomQuery<{}, ListStripeIntentRes>(
-    `/admin/orders/stripe-payments/${order.id}`,
+    `/orders/stripe-payments/${order.id}`,
     ["admin_stripe"]
   )
 
