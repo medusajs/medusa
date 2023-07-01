@@ -35,8 +35,8 @@ export function getWebpackConfig({
 
   const envVars = getClientEnv({
     env,
-    backend: options?.backend || "/",
-    path: options?.path || "/app",
+    backend: options?.backend,
+    path: options?.path,
   })
 
   const publicPath = formatPublicPath(options?.path)

@@ -6,7 +6,8 @@ type CloneRepoOptions = {
   abortController?: AbortController
 }
 
-const DEFAULT_REPO = "https://github.com/medusajs/medusa-starter-default"
+const DEFAULT_REPO =
+  "https://github.com/medusajs/medusa-starter-default -b feat/onboarding"
 
 export default async ({
   directoryName = "",

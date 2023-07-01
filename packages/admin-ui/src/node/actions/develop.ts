@@ -21,6 +21,8 @@ export async function develop({
     develop: {
       open: true,
       port: 7001,
+      logLevel: "error",
+      stats: "minimal",
     },
   },
 }: DevelopArgs) {
@@ -41,7 +43,11 @@ export async function develop({
     options,
   })
 
-  const compiler = webpack(config)
+  const compiler = webpack({
+    ...config,
+    infrastructureLogging: { level: options.develop.logLevel },
+    stats: options.develop.stats,
+  })
 
   const devServerArgs: DevServerConfiguration = {
     port: options.develop.port,
@@ -71,8 +77,6 @@ export async function develop({
   const server = new WebpackDevDerver(devServerArgs, compiler)
 
   const runServer = async () => {
-    logger.info("Starting development server...")
-    console.log()
     logger.info(
       `Started development server on http://localhost:${options.develop.port}${
         options.path ? options.path : ""

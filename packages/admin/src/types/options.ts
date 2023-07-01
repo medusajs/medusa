@@ -16,3 +16,7 @@ export type PluginOptions = AdminOptions & {
    */
   autoRebuild?: boolean
 }
+
+export type BuildOptions = AdminOptions & {
+  deployment?: boolean
+}

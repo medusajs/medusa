@@ -1,15 +1,15 @@
-import {
-  build as adminBuild,
-  clean,
-  type AdminOptions,
-} from "@medusajs/admin-ui"
+import { build as adminBuild, clean } from "@medusajs/admin-ui"
 import { resolve } from "path"
+import { BuildOptions } from "../types"
 import { getPluginPaths, loadConfig } from "../utils"
 import { createBuildManifest } from "../utils/build-manifest"
 
-type BuildOptions = AdminOptions
-
-export default async function build({ backend, path, outDir }: BuildOptions) {
+export default async function build({
+  backend,
+  path,
+  outDir,
+  deployment,
+}: BuildOptions) {
   const {
     path: configPath,
     backend: configBackend,
@@ -19,21 +19,25 @@ export default async function build({ backend, path, outDir }: BuildOptions) {
   const plugins = await getPluginPaths()
   const appDir = process.cwd()
 
-  const buildDir = resolve(appDir, outDir || configOutDir)
+  const outDirOption = resolve(appDir, outDir || configOutDir)
+  const pathOption = deployment ? path || "/" : path || configPath
+  const backendOption = deployment
+    ? backend || process.env.MEDUSA_ADMIN_BACKEND_URL
+    : backend || configBackend
 
   await clean({
     appDir: appDir,
-    outDir: buildDir,
+    outDir: outDirOption,
   })
 
   await adminBuild({
     appDir: appDir,
-    buildDir: buildDir,
+    buildDir: outDirOption,
     plugins,
     options: {
-      path: path || configPath,
-      backend: backend || configBackend,
-      outDir: buildDir,
+      path: pathOption,
+      backend: backendOption,
+      outDir: outDirOption,
     },
   })
 
@@ -41,5 +45,6 @@ export default async function build({ backend, path, outDir }: BuildOptions) {
     outDir: outDir || configOutDir,
     path: path || configPath,
     backend: backend || configBackend,
+    deployment,
   })
 }

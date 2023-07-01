@@ -36,6 +36,30 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
+      type: "category",
+      label: "Recipes",
+      link: {
+        type: "doc",
+        id: "recipes/index",
+      },
+      customProps: {
+        sidebar_icon: "newspaper",
+      },
+      className: "homepage-sidebar-item",
+      items: [
+        {
+          type: "doc",
+          id: "recipes/marketplace",
+          label: "Marketplace",
+        },
+        {
+          type: "doc",
+          id: "recipes/subscriptions",
+          label: "Subscriptions",
+        },
+      ],
+    },
+    {
       type: "html",
       value: "Browse Docs",
       customProps: {
@@ -62,13 +86,33 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
-      type: "doc",
-      id: "admin/quickstart",
+      type: "category",
       label: "Admin Dashboard",
+      link: {
+        type: "doc",
+        id: "admin/quickstart",
+      },
       customProps: {
         sidebar_icon: "computer-desktop",
       },
       className: "homepage-sidebar-item",
+      items: [
+        {
+          type: "doc",
+          label: "Admin Widgets",
+          id: "admin/widgets",
+        },
+        {
+          type: "doc",
+          label: "Admin UI Routes",
+          id: "admin/routes",
+        },
+        {
+          type: "doc",
+          label: "Example: Create Onboarding",
+          id: "admin/onboarding",
+        },
+      ],
     },
     {
       type: "ref",
@@ -222,19 +266,6 @@ module.exports = {
                 },
               },
             },
-            {
-              type: "doc",
-              id: "deployments/server/deploying-on-qovery",
-              label: "Deploy on Qovery",
-              customProps: {
-                image:
-                  "https://res.cloudinary.com/dza7lstvk/image/upload/v1669739955/Medusa%20Docs/Other/qOvY2dN_vogsxy.png",
-                badge: {
-                  variant: "orange",
-                  children: "Deprecated",
-                },
-              },
-            },
           ],
         },
         {
@@ -276,19 +307,6 @@ module.exports = {
                   light:
                     "https://res.cloudinary.com/dza7lstvk/image/upload/v1679574115/Medusa%20Docs/Other/vercel-icon-dark_llkb7l.png",
                   dark: "https://res.cloudinary.com/dza7lstvk/image/upload/v1679574132/Medusa%20Docs/Other/vercel-icon-light_obvtno.png",
-                },
-              },
-            },
-            {
-              type: "doc",
-              id: "deployments/storefront/deploying-gatsby-on-netlify",
-              label: "Deploy Gatsby on Netlify",
-              customProps: {
-                image:
-                  "https://res.cloudinary.com/dza7lstvk/image/upload/v1679574027/Medusa%20Docs/Other/gCbsCvX_h7nijn.png",
-                badge: {
-                  variant: "orange",
-                  children: "Deprecated",
                 },
               },
             },
@@ -617,6 +635,11 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "modules/products/serverless-module",
+          label: "Storefront: Serverless Module",
+        },
+        {
+          type: "doc",
           id: "modules/products/storefront/show-products",
           label: "Storefront: Show Products",
         },
@@ -881,6 +904,11 @@ module.exports = {
           type: "doc",
           id: "modules/multiwarehouse/admin/manage-inventory-items",
           label: "Admin: Manage Inventory Items",
+        },
+        {
+          type: "doc",
+          id: "modules/multiwarehouse/admin/manage-reservations",
+          label: "Admin: Manage Custom Reservations",
         },
         {
           type: "doc",

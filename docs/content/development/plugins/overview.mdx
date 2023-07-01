@@ -21,6 +21,8 @@ An alternative approach is developing a custom way of handling payment on your e
 
 Plugins run within the same process as the core Medusa backend eliminating the need for extra backend capacity, infrastructure, and maintenance. As a result, plugins can use all other services as dependencies and access the database.
 
+Plugins can contain customizations to the Medusa backend or the admin dashboard.
+
 ---
 
 ## Using Existing Plugins
@@ -41,6 +43,8 @@ You can find community plugins by [searching NPM for the `medusa` or `medusa-plu
 
 You can also check the [Awesome Medusa repository](https://github.com/adrien2p/awesome-medusajs#plugins) for a list of community plugins among other resources.
 
+---
+
 ## How to Install a Plugin
 
 To install an existing plugin, in your Medusa backend run the following command:
@@ -56,6 +60,31 @@ Where `<plugin_name>` is the package name of the plugin. For example, if you’r
 If you’re installing an official plugin from the Medusa repository, you can find in its `README.md` file a list of configurations that are either required or optional. You can also refer to the documentation related to that plugin for more details on how to install, configure, and use it.
 
 For community plugins, please refer to the installation instructions of that plugin to learn about any required configurations.
+
+### enableUI Plugin Option
+
+All plugins accept an option named `enableUI`. This option allows you to disable admin customizations from appearing in the admin dashboard.
+
+:::note
+
+Since admin customizations are still in `beta` mode, `enableUI`'s default value is `false` if not provided by the plugin users. This means that it must be enabled manually in a plugin's configuration for the customizations to appear in the admin dashboard. Once the admin customizations are out of beta, this behavior will be reversed.
+
+:::
+
+You can set the `enableUI` value by passing it as part of the plugin's configurations:
+
+```js title=medusa-config.js
+const plugins = [
+  // ...
+  {
+    resolve: `medusa-plugin-custom`,
+    options: {
+      // other options
+      enableUI: true,
+    },
+  },
+]
+```
 
 ---
 

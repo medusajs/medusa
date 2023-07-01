@@ -81,7 +81,9 @@ export default async function ({ port, directory }) {
   const { cli, binExists } = resolveAdminCLI(directory)
 
   if (binExists) {
-    const adminChild = fork(cli, [`develop`], {
+    const backendUrl = `http://localhost:${port}`
+
+    const adminChild = fork(cli, [`develop`, "--backend", `${backendUrl}`], {
       cwd: directory,
       env: process.env,
       stdio: ["pipe", process.stdout, process.stderr, "ipc"],

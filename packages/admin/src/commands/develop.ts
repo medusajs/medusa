@@ -6,7 +6,7 @@ type DevelopArgs = AdminOptions & {
 }
 
 export default async function develop({ backend, path, port }: DevelopArgs) {
-  const config = loadConfig()
+  const config = loadConfig(true)
 
   if (!config) {
     // @medusajs/admin is not part of the projects plugins
@@ -21,8 +21,8 @@ export default async function develop({ backend, path, port }: DevelopArgs) {
     buildDir: config.outDir,
     plugins,
     options: {
-      backend: backend,
-      path: path,
+      backend: backend || config.backend,
+      path: path || config.path,
       develop: {
         port: port || config.develop.port,
         open: config.develop.open,

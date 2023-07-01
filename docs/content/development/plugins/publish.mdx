@@ -3,6 +3,9 @@ description: 'Learn how to publish a Medusa plugin to NPM. This guide lists some
 addHowToData: true
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # How to Publish a Plugin
 
 In this document, you'll learn how to publish a Medusa plugin to NPM and what are some requirements to keep in mind before publishing. Afterwards, your plugin will be published on the [Medusa Plugins page](https://medusajs.com/plugins/).
@@ -35,26 +38,63 @@ Before publishing your plugin, make sure you've set the following fields in your
   - `medusa-plugin-storage`: For plugins that add a file service or storage integration.
   - `medusa-plugin-source`: For plugins that help migrate or import data into Medusa from another platform.
   - `medusa-plugin-storefront`: For storefronts that can be integrated with a Medusa backend.
+  - `medusa-plugin-admin`: For plugins that include only admin customizations.
   - `medusa-plugin-other`: For any other type of plugin.
 
 ### Scripts in package.json
 
-Make sure you add the `publish` command to your `scripts` field and make the following change to the `build` command:
+<Tabs groupId="plugin-preference">
+  <TabItem value="without-admin" label="Without Admin Customizations" default>
 
-```json title=package.json
-"build": "babel src --out-dir . --ignore **/__tests__ --extensions \".ts,.js\"",
-"prepare": "cross-env NODE_ENV=production npm run build"
-```
+  Make sure you add the `publish` command to your `scripts` field and make the following change to the `build` command:
 
-The `build` command ensures that the plugin's built files are placed as explained in the [plugin structure](./create.mdx#plugin-structure) section of the Create Plugin documentation.
+  ```json title=package.json
+  "scripts": {
+    // other scripts...
+    "build": "cross-env npm run clean && tsc",
+    "prepare": "cross-env NODE_ENV=production npm run build"
+  }
+  ```
 
-The `prepare` command facilitates your publishing process. You would typically run this script before publishing your plugin.
+  The `build` command ensures that the plugin's built files are placed as explained in the [plugin structure](./create.mdx#plugin-structure) section of the Create Plugin documentation.
 
-This new script requires installing the package `cross-env` as a development dependency:
+  The `prepare` command facilitates your publishing process. You would typically run this script before publishing your plugin.
 
-```bash npm2yarn
-npm install --save-dev cross-env
-```
+  This new script requires installing the package `cross-env` as a development dependency:
+
+  ```bash npm2yarn
+  npm install --save-dev cross-env
+  ```
+
+  </TabItem>
+  <TabItem value="with-admin" label="With Admin Customizations">
+
+  First, make sure to change `tsconfig` files as recommended in the [create guide](./create.mdx#changes-for-admin-plugins).
+
+  Then, add the `publish` command to your `scripts` field and make the following change to the `build` command:
+
+  ```json title=package.json
+  "scripts": {
+    // other scripts...
+    "build": "tsc -p ./tsconfig.server.json && medusa-admin bundle",
+    "prepare": "cross-env NODE_ENV=production npm run build"
+  }
+  ```
+
+  The `build` command ensures that the plugin's built files are placed as explained in the [plugin structure](./create.mdx#plugin-structure) section of the Create Plugin documentation, and bundles the admin customizations.
+
+  The `prepare` command facilitates your publishing process. You would typically run this script before publishing your plugin.
+
+  This new script requires installing the package `cross-env` as a development dependency:
+
+  ```bash npm2yarn
+  npm install --save-dev cross-env
+  ```
+
+  </TabItem>
+</Tabs>
+
+### 
 
 ### Plugin Structure
 
@@ -83,6 +123,8 @@ src
 .eslintrc
 .babelrc
 .prettierrc
+build
+.cache
 
 # These are files that are included in a
 # Medusa project and can be removed from a

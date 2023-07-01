@@ -431,4 +431,4 @@ export default () => {
 ## See Also
 
 - [How to create a plugin](../plugins/create.mdx)
-- [How to publish a plugin](../plugins/publish.md)
+- [How to publish a plugin](../plugins/publish.mdx)

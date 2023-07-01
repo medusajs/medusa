@@ -79,7 +79,7 @@ video {
 }
 
 [class*=codeLineNumber] {
-  @apply tw-text-medusa-text-placeholder !tw-pl-0;
+  @apply tw-text-medusa-code-text-muted !tw-pl-0;
 }
 
 .prism-code {
@@ -279,6 +279,6 @@ h1, h2, h3, h4, h5, h6 {
   @apply tw-bg-medusa-bg-highlight dark:tw-bg-medusa-bg-highlight-dark;
 }
 
-.prism-code *::selection {
+.prism-code *::selection, .code-header::selection {
   @apply tw-bg-medusa-code-text-highlight;
 }

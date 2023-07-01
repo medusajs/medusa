@@ -123,22 +123,22 @@ export default CreateReservation
 
 ```ts
 fetch(`<BACKEND_URL>/admin/reservations`, {
-    credentials: "include",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      line_item_id,
-      location_id,
-      inventory_item_id,
-      quantity,
-    }),
-  })
-  .then((response) => response.json())
-  .then(({ reservation }) => {
-    console.log(reservation.id)
-  })
+  credentials: "include",
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    line_item_id,
+    location_id,
+    inventory_item_id,
+    quantity,
+  }),
+})
+.then((response) => response.json())
+.then(({ reservation }) => {
+  console.log(reservation.id)
+})
 ```
 
 </TabItem>

@@ -18,7 +18,7 @@ const IconBarsThree: React.FC<IconProps> = ({
         d="M3.125 5.00006H16.875M3.125 10H16.875M3.125 15.0001H16.875"
         className={
           iconColorClassName ||
-          "tw-stroke-medusa-icon-secondary dark:tw-stroke-medusa-icon-secondary"
+          "tw-stroke-medusa-icon-subtle dark:tw-stroke-medusa-icon-subtle"
         }
         strokeWidth="1.5"
         strokeLinecap="round"

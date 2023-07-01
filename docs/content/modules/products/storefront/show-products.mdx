@@ -5,6 +5,7 @@ addHowToData: true
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import Badge from '@site/src/components/Badge';
 
 # How to Show Products on the Storefront
 
@@ -44,6 +45,12 @@ If you follow the JS Client code blocks, it’s assumed you already have [Medusa
 This guide also includes code snippets to send requests to your Medusa backend using Medusa React, among other methods.
 
 If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
+
+### @medusajs/product Module
+
+This guide also includes code snippets to utilize the `@medusajs/product` module in your storefront, among other methods.
+
+If you follow the `@medusajs/product` code blocks, it's assumed you already have the [@medusajs/product](../serverless-module.md) installed.
 
 ---
 
@@ -87,6 +94,31 @@ const Products = () => {
 }
 
 export default Products
+```
+
+</TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)} attributes={{
+  badge: true
+}}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const products = await productService.list()
+
+  console.log(products.length)
+}
 ```
 
 </TabItem>
@@ -165,6 +197,33 @@ export default Products
 ```
 
 </TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)} attributes={{
+  badge: true
+}}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const products = await productService.list({
+    category_ids: ["cat_123"],
+  })
+
+  console.log(products)
+}
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -233,6 +292,33 @@ const Products = () => {
 }
 
 export default Products
+```
+
+</TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)} attributes={{
+  badge: true
+}}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const products = await productService.list({}, {
+    relations: ["categories"],
+  })
+
+  console.log(products)
+}
 ```
 
 </TabItem>
@@ -582,6 +668,33 @@ export default Products
 ```
 
 </TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)} attributes={{
+  badge: true
+}}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const products = await productService.list({
+    id: productId,
+  })
+
+  console.log(products[0])
+}
+```
+
+</TabItem>
 <TabItem value="fetch" label="Fetch API">
 
 ```ts
@@ -656,6 +769,33 @@ const Products = () => {
 }
 
 export default Products
+```
+
+</TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)} attributes={{
+  badge: true
+}}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const products = await productService.list({
+    handle,
+  })
+
+  console.log(products[0])
+}
 ```
 
 </TabItem>

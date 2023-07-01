@@ -14,7 +14,7 @@ type TabsCustomProps = {
   codeTitle?: string
 }
 
-type TabListProps = TabsCustomProps & OldProps & ReturnType<typeof useTabs>
+type TabListProps = OldProps & ReturnType<typeof useTabs> & TabsCustomProps
 
 function TabList({
   className,
@@ -137,10 +137,11 @@ function TabList({
               {...attributes}
               className={clsx(
                 isCodeTabs &&
-                  "tw-text-medusa-code-tab-text tw-text-label-small-plus tw-py-[4px] tw-px-[12px] tw-border tw-border-solid tw-border-transparent tw-whitespace-nowrap tw-rounded-full [&:not(:first-child)]:tw-ml-[4px]",
+                  "tw-text-medusa-code-tab-text tw-text-label-small-plus tw-py-[4px] tw-border tw-border-solid tw-border-transparent tw-whitespace-nowrap tw-rounded-full [&:not(:first-child)]:tw-ml-[4px]",
                 "!tw-mt-0 hover:!tw-bg-medusa-code-tab-hover tw-cursor-pointer",
                 attributes?.className,
-                isCodeTabs && "tw-z-[2]",
+                isCodeTabs &&
+                  "tw-z-[2] tw-flex tw-justify-center tw-items-center",
                 isCodeTabs &&
                   selectedValue === value &&
                   "tw-text-medusa-code-tab-text-active tw-border tw-border-solid tw-border-medusa-code-tab-border tw-bg-medusa-code-tab-bg xs:tw-border-none xs:tw-bg-transparent",
@@ -151,7 +152,11 @@ function TabList({
                   "tw-border-solid tw-border-medusa-text-base dark:tw-border-medusa-text-base-dark tw-rounded-b-none",
                 !isCodeTabs &&
                   selectedValue !== value &&
-                  "tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark"
+                  "tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark",
+                (!isCodeTabs || !attributes?.badge) && "tw-px-[12px]",
+                isCodeTabs &&
+                  attributes?.badge &&
+                  "[&_.badge]:tw-ml-0.5 [&_.badge]:tw-py-[2px] [&_.badge]:tw-px-[6px] [&_.badge]:tw-rounded-full tw-pl-[12px] tw-pr-[4px]"
               )}
             >
               {label ?? value}

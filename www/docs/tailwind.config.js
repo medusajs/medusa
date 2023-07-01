@@ -146,7 +146,7 @@ module.exports = {
               dark: "#102A4C",
             },
             "toggle-off": {
-              DEFAULT: "#C1C8CD",
+              DEFAULT: "#E6E8EB",
               dark: "#3E3E44",
             },
             overlay: {
@@ -154,7 +154,7 @@ module.exports = {
               dark: "rgba(22, 22, 24, 0.7)",
             },
             interactive: {
-              DEFAULT: "#6E56CF",
+              DEFAULT: "#0081F1",
               dark: "#6E56CF",
             },
           },
@@ -168,7 +168,7 @@ module.exports = {
               dark: "#3E3E44",
             },
             focus: {
-              DEFAULT: "#6E56CF",
+              DEFAULT: "#0081F1",
               dark: "#6E56CF",
               inset: {
                 DEFAULT: "#FFFFFF",
@@ -176,12 +176,20 @@ module.exports = {
               },
             },
             interactive: {
-              DEFAULT: "#6E56CF",
+              DEFAULT: "#0081F1",
               dark: "#6E56CF",
             },
+            error: {
+              DEFAULT: "#E5484D",
+              dark: "#E5484D",
+            },
             "neutral-buttons": {
-              DEFAULT: "#11181C1A",
-              dark: "#FFFFFF1F",
+              DEFAULT: "rgba(17, 24, 28, 0.16)",
+              dark: "rgba(255, 255, 255, 0.06)",
+            },
+            "colored-buttons": {
+              DEFAULT: "rgba(17, 24, 28, 0.35)",
+              dark: "rgba(0, 0, 0, 0.24)",
             },
           },
           text: {
@@ -193,7 +201,7 @@ module.exports = {
               DEFAULT: "#687076",
               dark: "#7E7D86",
             },
-            placeholder: {
+            muted: {
               DEFAULT: "#889096",
               dark: "#706F78",
             },
@@ -206,10 +214,10 @@ module.exports = {
               dark: "#FFFFFF",
             },
             interactive: {
-              DEFAULT: "#6E56CF",
+              DEFAULT: "#0081F1",
               dark: "#7C66DC",
               hover: {
-                DEFAULT: "#644FC1",
+                DEFAULT: "#006ADC",
                 dark: "#9E8CFC",
               },
             },
@@ -217,23 +225,89 @@ module.exports = {
               DEFAULT: "#E5484D",
               dark: "#E5484D",
             },
+            "on-inverted": {
+              DEFAULT: "#FFFFFF",
+              dark: "#1A1523",
+            },
           },
-          button: {
-            primary: {
-              DEFAULT: "#6E56CF",
-              dark: "#6E56CF",
+          icon: {
+            base: {
+              DEFAULT: "#11181C",
+              dark: "#EDEDEF",
+            },
+            subtle: {
+              DEFAULT: "#687076",
+              dark: "#7E7D86",
+            },
+            muted: {
+              DEFAULT: "#889096",
+              dark: "#706F78",
+            },
+            disabled: {
+              DEFAULT: "#C1C8CD",
+              dark: "#504F57",
+            },
+            "on-color": {
+              DEFAULT: "#FFFFFF",
+              dark: "#FFFFFF",
+            },
+            interactive: {
+              DEFAULT: "#0081F1",
+              dark: "#7C66DC",
               hover: {
-                DEFAULT: "#644FC1",
-                dark: "#7C66DC",
-              },
-              pressed: {
-                DEFAULT: "#5746AF",
+                DEFAULT: "#006ADC",
                 dark: "#9E8CFC",
               },
             },
-            secondary: {
+            error: {
+              DEFAULT: "#E5484D",
+              dark: "#E5484D",
+            },
+            "on-inverted": {
               DEFAULT: "#FFFFFF",
-              dark: "#232326",
+              dark: "#1A1523",
+            },
+          },
+          button: {
+            brand: {
+              DEFAULT: "#5746AF",
+              dark: "#5842C3",
+              hover: {
+                DEFAULT: "#644FC1",
+                dark: "#5842C3",
+              },
+              pressed: {
+                DEFAULT: "#5746AF",
+                dark: "#7C66DC",
+              },
+            },
+            neutral: {
+              DEFAULT: "#F8F9FA",
+              dark: "#28282C",
+              hover: {
+                DEFAULT: "#F8F9FA",
+                dark: "#2E2E32",
+              },
+              pressed: {
+                DEFAULT: "#F1F3F5",
+                dark: "#34343A",
+              },
+            },
+            inverted: {
+              DEFAULT: "#151718",
+              dark: "#F4F2F4",
+              hover: {
+                DEFAULT: "#202425",
+                dark: "#F4F2F4",
+              },
+              pressed: {
+                DEFAULT: "#26292B",
+                dark: "#EEEDEF",
+              },
+            },
+            transparent: {
+              DEFAULT: "rgba(255, 255, 255, 0)",
+              dark: "rgba(0, 0, 0, 0)",
               hover: {
                 DEFAULT: "#F8F9FA",
                 dark: "#2E2E32",
@@ -245,114 +319,70 @@ module.exports = {
             },
             danger: {
               DEFAULT: "#E5484D",
-              dark: "#E5484D",
+              dark: "#AA2429",
               hover: {
                 DEFAULT: "#DC3D43",
-                dark: "#DC3D43",
+                dark: "#AA2429",
               },
               pressed: {
                 DEFAULT: "#CD2B31",
-                dark: "#CD2B31",
-              },
-            },
-            success: {
-              DEFAULT: "#30A46C",
-              dark: "#30A46C",
-            },
-            neutral: {
-              hover: {
-                DEFAULT: "#F8F9FA",
-                dark: "#2E2E32",
-              },
-              pressed: {
-                DEFAULT: "#F1F3F5",
-                dark: "#34343A",
+                dark: "#E5484D",
               },
             },
             disabled: {
               DEFAULT: "#ECEEF0",
               dark: "#28282C",
             },
-          },
-          icon: {
-            primary: {
-              DEFAULT: "#11181C",
-              dark: "#EDEDEF",
-            },
-            secondary: {
-              DEFAULT: "#687076",
-              dark: "#7E7D86",
-            },
-            placeholder: {
-              DEFAULT: "#889096",
-              dark: "#706F78",
-            },
-            disabled: {
-              DEFAULT: "#C1C8CD",
-              dark: "#504F57",
-            },
-            "on-color": {
-              DEFAULT: "#FFFFFF",
-              dark: "#FFFFFF",
-            },
-            interactive: {
-              DEFAULT: "#6E56CF",
-              dark: "#7C66DC",
-              hover: {
-                DEFAULT: "#644FC1",
-                dark: "#9E8CFC",
-              },
-            },
-            error: {
-              DEFAULT: "#E5484D",
-              dark: "#E5484D",
-            },
-            subtle: {
-              DEFAULT: "#687076",
-              dark: "#7E7D86",
-            },
-          },
-          support: {
-            error: {
-              DEFAULT: "#E5484D",
-              dark: "#E5484D",
-            },
-            warning: {
-              DEFAULT: "#FFB224",
-              dark: "#FFB224",
-            },
             success: {
               DEFAULT: "#30A46C",
               dark: "#30A46C",
             },
-            info: {
-              DEFAULT: "#0091FF",
-              dark: "#0091FF",
-            },
-          },
-          code: {
-            block: {
-              bg: "#1C1C1F",
-              transparent: "transparent",
-              border: "#2E2E32",
-              action: "#706F78",
-            },
-            tabs: {
-              bg: "#161616",
-            },
-            tab: {
-              bg: "#1C1C1F",
-              hover: "rgba(141, 141, 141, 0.16)",
-              border: "#3E3E44",
-              text: {
-                DEFAULT: "#7E7D86",
-                active: "#EDEDEF",
-              },
-              title: "#7E7D86",
-            },
-            "text-highlight": "#102A4C",
           },
           tag: {
+            neutral: {
+              bg: {
+                DEFAULT: "#F1F3F5",
+                dark: "#28282C",
+                hover: {
+                  DEFAULT: "#ECEEF0",
+                  dark: "#2E2E32",
+                },
+              },
+              text: {
+                DEFAULT: "#687076",
+                dark: "#A09FA6",
+              },
+              icon: {
+                DEFAULT: "#889096",
+                dark: "#706F78",
+              },
+              border: {
+                DEFAULT: "#DFE3E6",
+                dark: "#3E3E44",
+              },
+            },
+            transparent: {
+              bg: {
+                DEFAULT: "rgba(255, 255, 255, 0)",
+                dark: "#1C1C1F",
+                hover: {
+                  DEFAULT: "#F8F9FA",
+                  dark: "#232326",
+                },
+              },
+              text: {
+                DEFAULT: "#687076",
+                dark: "#A09FA6",
+              },
+              icon: {
+                DEFAULT: "#889096",
+                dark: "#706F78",
+              },
+              border: {
+                DEFAULT: "#DFE3E6",
+                dark: "#3E3E44",
+              },
+            },
             purple: {
               bg: {
                 DEFAULT: "#EDE9FE",
@@ -373,50 +403,6 @@ module.exports = {
               border: {
                 DEFAULT: "#D7CFF9",
                 dark: "#392C72",
-              },
-            },
-            orange: {
-              bg: {
-                DEFAULT: "#FFECBC",
-                dark: "#3F2200",
-                hover: {
-                  DEFAULT: "#FFE3A2",
-                  dark: "#4A2900",
-                },
-              },
-              text: {
-                DEFAULT: "#AD5700",
-                dark: "#F1A10D",
-              },
-              icon: {
-                DEFAULT: "#FFB224",
-                dark: "#FFB224",
-              },
-              border: {
-                DEFAULT: "#FFD386",
-                dark: "#573300",
-              },
-            },
-            green: {
-              bg: {
-                DEFAULT: "#DDF3E4",
-                dark: "#113123",
-                hover: {
-                  DEFAULT: "#CCEBD7",
-                  dark: "#133929",
-                },
-              },
-              text: {
-                DEFAULT: "#18794E",
-                dark: "#4CC38A",
-              },
-              icon: {
-                DEFAULT: "#30A46C",
-                dark: "#30A46C",
-              },
-              border: {
-                DEFAULT: "#B4DFC4",
-                dark: "#164430",
               },
             },
             blue: {
@@ -441,27 +427,140 @@ module.exports = {
                 dark: "#0D3868",
               },
             },
-            neutral: {
+            green: {
               bg: {
-                DEFAULT: "#F1F3F5",
-                dark: "#28282C",
+                DEFAULT: "#DDF3E4",
+                dark: "#113123",
                 hover: {
-                  DEFAULT: "#ECEEF0",
-                  dark: "#2E2E32",
+                  DEFAULT: "#CCEBD7",
+                  dark: "#133929",
                 },
               },
               text: {
-                DEFAULT: "#687076",
-                dark: "#A09FA6",
+                DEFAULT: "#18794E",
+                dark: "#4CC38A",
               },
               icon: {
-                DEFAULT: "#889096",
-                dark: "#706F78",
+                DEFAULT: "#30A46C",
+                dark: "#30A46C",
               },
               border: {
-                DEFAULT: "#DFE3E6",
-                dark: "#3E3E44",
+                DEFAULT: "#B4DFC4",
+                dark: "#164430",
               },
+            },
+            orange: {
+              bg: {
+                DEFAULT: "#FFECBC",
+                dark: "#3F2200",
+                hover: {
+                  DEFAULT: "#FFE3A2",
+                  dark: "#4A2900",
+                },
+              },
+              text: {
+                DEFAULT: "#AD5700",
+                dark: "#F1A10D",
+              },
+              icon: {
+                DEFAULT: "#FFB224",
+                dark: "#FFB224",
+              },
+              border: {
+                DEFAULT: "#FFD386",
+                dark: "#573300",
+              },
+            },
+            red: {
+              bg: {
+                DEFAULT: "#FFE5E5",
+                dark: "#481A1D",
+                hover: {
+                  DEFAULT: "#FDD8D8",
+                  dark: "#541B1F",
+                },
+              },
+              text: {
+                DEFAULT: "#CD2B31",
+                dark: "#FF6369",
+              },
+              icon: {
+                DEFAULT: "#E5484D",
+                dark: "#E5484D",
+              },
+              border: {
+                DEFAULT: "#F9C6C6",
+                dark: "#671E22",
+              },
+            },
+            pink: {
+              bg: {
+                DEFAULT: "#FCE5F3",
+                dark: "#451A37",
+                hover: {
+                  DEFAULT: "#F9D8EC",
+                  dark: "#501B3F",
+                },
+              },
+              text: {
+                DEFAULT: "#CD1D8D",
+                dark: "#F65CB6",
+              },
+              icon: {
+                DEFAULT: "#D6409F",
+                dark: "#D6409F",
+              },
+              border: {
+                DEFAULT: "#F3C6E2",
+                dark: "#601D48",
+              },
+            },
+          },
+          code: {
+            text: {
+              base: "#ECEDEE",
+              subtle: "#787F85",
+              muted: "#697177",
+            },
+            icon: "#697177",
+            block: {
+              bg: "#151718",
+              transparent: "transparent",
+              header: "#1A1D1E",
+              border: "#2E2E32",
+              action: "#706F78",
+            },
+            tabs: {
+              bg: "#1A1D1E",
+            },
+            tab: {
+              bg: "#151718",
+              hover: "rgba(141, 141, 141, 0.16)",
+              border: "#3A3F42",
+              text: {
+                DEFAULT: "#787F85",
+                active: "#EDEDEF",
+              },
+              title: "#787F85",
+            },
+            "text-highlight": "#102A4C",
+          },
+          support: {
+            error: {
+              DEFAULT: "#E5484D",
+              dark: "#E5484D",
+            },
+            warning: {
+              DEFAULT: "#FFB224",
+              dark: "#FFB224",
+            },
+            success: {
+              DEFAULT: "#30A46C",
+              dark: "#30A46C",
+            },
+            info: {
+              DEFAULT: "#0091FF",
+              dark: "#0091FF",
             },
           },
         },
@@ -478,23 +577,6 @@ module.exports = {
         },
       },
       boxShadow: {
-        overlay: "0px 2px 16px rgba(0, 0, 0, 0.08)",
-        "overlay-dark": "0px 2px 16px rgba(0, 0, 0, 0.32)",
-        "field-focused": "0px 0px 0px 4px #EDE9FE",
-        "field-focused-dark": "0px 0px 0px 4px #2C2250",
-        "button-focused": "0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #6E56CF",
-        "button-focused-dark":
-          "0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF",
-        navbar: "0px 1px 0px 0px #E6E8EB",
-        "navbar-dark": "0px 1px 0px 0px #2E2E32",
-        flyout:
-          "0px 0px 0px 1px rgba(17, 24, 28, 0.08), 0px 8px 16px rgba(17, 24, 28, 0.08)",
-        "flyout-dark":
-          "0px 0px 0px 1px rgba(255, 255, 255, 0.1), 0px 8px 16px rgba(0, 0, 0, 0.32)",
-        "neutral-button-focused":
-          "0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #6E56CF",
-        "neutral-button-focused-dark":
-          "0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF",
         "card-rest":
           "0px 0px 0px 1px rgba(17, 24, 28, 0.08), 0px 1px 2px -1px rgba(17, 24, 28, 0.08), 0px 2px 4px rgba(17, 24, 28, 0.04)",
         "card-rest-dark":
@@ -503,6 +585,26 @@ module.exports = {
           "0px 0px 0px 1px rgba(17, 24, 28, 0.08), 0px 1px 2px -1px rgba(17, 24, 28, 0.08), 0px 2px 8px rgba(17, 24, 28, 0.1)",
         "card-hover-dark":
           "0px 0px 0px 1px rgba(255, 255, 255, 0.1), 0px 1px 2px -1px rgba(255, 255, 255, 0.16), 0px 2px 8px rgba(0, 0, 0, 0.32)",
+        tooltip:
+          "0px 0px 0px 1px rgba(17, 24, 28, 0.08), 0px 4px 8px rgba(17, 24, 28, 0.08)",
+        "tooltip-dark":
+          "0px 0px 0px 1px rgba(255, 255, 255, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.32)",
+        flyout:
+          "0px 0px 0px 1px rgba(17, 24, 28, 0.08), 0px 8px 16px rgba(17, 24, 28, 0.08)",
+        "flyout-dark":
+          "0px 0px 0px 1px rgba(255, 255, 255, 0.1), 0px 8px 16px rgba(0, 0, 0, 0.32)",
+        modal:
+          "0px 0px 0px 1px rgba(17, 24, 28, 0.08), 0px 16px 32px rgba(17, 24, 28, 0.08), 0px 2px 24px rgba(17, 24, 28, 0.08)",
+        "modal-dark":
+          "0px 0px 0px 1px rgba(255, 255, 255, 0.1), 0px 16px 32px rgba(0, 0, 0, 0.32), 0px 2px 24px rgba(0, 0, 0, 0.32)",
+        focus: "0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #0081F1",
+        "focus-dark": "0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF",
+        active: "0px 0px 0px 3px #E1F0FF",
+        "active-dark": "0px 0px 0px 3px #2C2250",
+        overlay: "0px 2px 16px rgba(0, 0, 0, 0.08)",
+        "overlay-dark": "0px 2px 16px rgba(0, 0, 0, 0.32)",
+        navbar: "0px 1px 0px 0px #E6E8EB",
+        "navbar-dark": "0px 1px 0px 0px #2E2E32",
       },
       borderRadius: {
         DEFAULT: "8px",
@@ -514,12 +616,15 @@ module.exports = {
       backgroundImage: {
         "primary-gradient":
           "linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%, #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%)",
-        "code-fade": "linear-gradient(90deg, #1C1C1F00, #1C1C1F 24px)",
+        "code-fade": "linear-gradient(90deg, #15171800, #151718 24px)",
         "button-neutral":
           "linear-gradient(180deg, #FFFFFF 30.1%, #F8F9FA 100%)",
         "button-neutral-dark":
           "linear-gradient(180deg, #2E2E32 0%, #28282C 32.67%)",
         "no-image": "none",
+        "button-inverted": "linear-gradient(180deg, #26292B 0%, #151718 30.5%)",
+        "button-inverted-dark":
+          "linear-gradient(180deg, #FFFFFF 31.33%, #F4F2F4 100%)",
       },
       screens: {
         xs: "576px",

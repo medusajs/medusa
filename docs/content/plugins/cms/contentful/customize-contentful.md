@@ -332,5 +332,4 @@ Restart the Gatsby storefront then open a product that you added Rich Text conte
 
 ## See Also
 
-- Deploy your Medusa backend to [Heroku](../../../deployments/server/deploying-on-heroku.mdx), [Qovery](../../../deployments/server/deploying-on-qovery.md), or [DigitalOcean](../../../deployments/server/deploying-on-digital-ocean.md).
-- [How to deploy your Gatsby storefront to Netlify](../../../deployments/storefront/deploying-gatsby-on-netlify.md).
+- How to deploy your Medusa backend to [Heroku](../../../deployments/server/deploying-on-heroku.mdx), or [DigitalOcean](../../../deployments/server/deploying-on-digital-ocean.md), or [other providers](../../../deployments/server/index.mdx)

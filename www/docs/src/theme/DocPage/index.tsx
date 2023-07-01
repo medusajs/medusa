@@ -15,7 +15,10 @@ import DocPageLayout from "@theme/DocPage/Layout"
 import NotFound from "@theme/NotFound"
 import SearchMetadata from "@theme/SearchMetadata"
 import type { Props } from "@theme/DocPage"
+import LearningPathProvider from "@site/src/providers/LearningPath"
 import SidebarProvider from "@site/src/providers/Sidebar"
+import NotificationProvider from "@site/src/providers/NotificationProvider"
+import UserProvider from "@site/src/providers/User"
 
 function DocPageMetadata(props: Props): JSX.Element {
   const { versionMetadata } = props
@@ -58,11 +61,17 @@ export default function DocPage(props: Props): JSX.Element {
         )}
       >
         <DocsVersionProvider version={versionMetadata}>
-          <DocsSidebarProvider name={sidebarName} items={sidebarItems}>
-            <SidebarProvider sidebarName={sidebarName}>
-              <DocPageLayout>{docElement}</DocPageLayout>
-            </SidebarProvider>
-          </DocsSidebarProvider>
+          <UserProvider>
+            <DocsSidebarProvider name={sidebarName} items={sidebarItems}>
+              <LearningPathProvider>
+                <SidebarProvider sidebarName={sidebarName}>
+                  <NotificationProvider>
+                    <DocPageLayout>{docElement}</DocPageLayout>
+                  </NotificationProvider>
+                </SidebarProvider>
+              </LearningPathProvider>
+            </DocsSidebarProvider>
+          </UserProvider>
         </DocsVersionProvider>
       </HtmlClassNameProvider>
     </>

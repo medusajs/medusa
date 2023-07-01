@@ -1,6 +1,6 @@
 .react-tooltip {
   @apply !tw-border !tw-border-solid !tw-border-medusa-border-base dark:!tw-border-medusa-border-base-dark;
-  @apply !tw-rounded !tw-text-label-x-small-plus !tw-shadow-overlay dark:!tw-shadow-overlay-dark;
+  @apply !tw-rounded !tw-text-label-x-small-plus !tw-shadow-tooltip dark:!tw-shadow-tooltip-dark;
   @apply !tw-py-0.4 !tw-px-1 lg:tw-block tw-hidden;
 }
 

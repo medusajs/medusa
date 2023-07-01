@@ -88,7 +88,7 @@
   --rt-color-white: var(--ifm-color-content) !important;
 
   /* Footer */
-  --ifm-footer-color: theme(colors.medusa.text.placeholder.DEFAULT);
+  --ifm-footer-color: theme(colors.medusa.text.muted.DEFAULT);
   --ifm-footer-background-color: transparent;
   --ifm-footer-padding-horizontal: 0;
   --ifm-footer-link-color: var(--ifm-color-content);
@@ -99,12 +99,12 @@
   --docsearch-searchbox-shadow: none !important;
   --docsearch-modal-height: 472px !important;
   --docsearch-modal-background: theme(colors.medusa.bg.base.DEFAULT) !important;
-  --docsearch-modal-shadow: theme(boxShadow.overlay) !important;
+  --docsearch-modal-shadow: theme(boxShadow.modal) !important;
   --docsearch-container-background: theme(colors.medusa.bg.overlay.DEFAULT) !important;
   --docsearch-key-gradient: theme(colors.medusa.bg.component.DEFAULT) !important;
   --docsearch-muted-color: theme(colors.medusa.text.subtle.DEFAULT) !important;
   --docsearch-spacing: 12px theme(spacing[1.5]) !important;
-  --docsearch-highlight-color: theme(colors.medusa.text.placeholder.DEFAULT) !important;
+  --docsearch-highlight-color: theme(colors.medusa.text.muted.DEFAULT) !important;
   --docsearch-text-color: var(--ifm-color-primary) !important;
   --docsearch-hit-background: var(--docsearch-modal-background) !important;
   --docsearch-hit-height: auto !important;
@@ -154,17 +154,17 @@ html[data-theme="dark"] {
   --rt-color-dark: theme(colors.medusa.bg.base.dark) !important;
 
   /* Footer */
-  --ifm-footer-color: theme(colors.medusa.text.placeholder.dark);
+  --ifm-footer-color: theme(colors.medusa.text.muted.dark);
 
   /* Search */
   --docsearch-searchbox-background: theme(colors.medusa.bg.field.dark) !important;
   --docsearch-searchbox-focus-background: theme(colors.medusa.bg.field.hover.dark) !important;
   --docsearch-modal-background: theme(colors.medusa.bg.base.dark) !important;
-  --docsearch-modal-shadow: theme(boxShadow.overlay-dark) !important;
+  --docsearch-modal-shadow: theme(boxShadow.modal-dark) !important;
   --docsearch-container-background: theme(colors.medusa.bg.overlay.dark) !important;
   --docsearch-key-gradient: theme(colors.medusa.bg.component.dark) !important;
   --docsearch-muted-color: theme(colors.medusa.text.subtle.dark) !important;
-  --docsearch-highlight-color: theme(colors.medusa.text.placeholder.dark) !important;
+  --docsearch-highlight-color: theme(colors.medusa.text.muted.dark) !important;
 
   /* Tables */
   --ifm-table-border-color: theme(colors.medusa.border.base.dark);
@@ -188,4 +188,12 @@ html[data-theme="dark"] {
   :root {
     --docusaurus-announcement-bar-height: 30px;
   }
+}
+
+.alert {
+  --ifm-code-background: theme(colors.medusa.bg.subtle.DEFAULT) !important;
+}
+
+html[data-theme="dark"] .alert {
+  --ifm-code-background: theme(colors.medusa.bg.base.dark) !important;
 }
