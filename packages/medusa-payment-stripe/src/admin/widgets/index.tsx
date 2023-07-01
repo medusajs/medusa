@@ -1,13 +1,16 @@
-import { WidgetConfig, OrderDetailsWidgetProps } from "@medusajs/admin"
-import { Container } from "../shared/components/container"
-import { useAdminEntity } from "../shared/hooks"
+import { OrderDetailsWidgetProps, WidgetConfig } from "@medusajs/admin"
+import { useAdminCustomQuery } from "medusa-react"
 import { ListStripeIntentRes } from "../../types"
+import { Container } from "../shared/components/container"
 import Table from "../shared/components/table"
 import StripeLogo from "../shared/icons/stripe-logo"
 
 const MyWidget = (props: OrderDetailsWidgetProps) => {
   const { order } = props
-  const { data } = useAdminEntity<ListStripeIntentRes>(order.id)
+  const { data } = useAdminCustomQuery<{}, ListStripeIntentRes>(
+    `/admin/orders/stripe-payments/${order.id}`,
+    ["admin_stripe"]
+  )
 
   if (!order.payments.some((p) => p.provider_id === "stripe")) {
     return null
