@@ -351,6 +351,20 @@ describe("DiscountService", () => {
       }
     })
 
+    it("fails to update a discount with 0 regions", async () => {
+      expect.assertions(3)
+      try {
+        await discountService.update(IdMap.getId("total10"), {
+          code: "test",
+          regions: [],
+        })
+      } catch (err) {
+        expect(err.type).toEqual("invalid_data")
+        expect(err.message).toEqual("Discount must have at least 1 region")
+        expect(discountRepository.create).toHaveBeenCalledTimes(0)
+      }
+    })
+
     it("successfully updates discount", async () => {
       await discountService.update(IdMap.getId("total10"), {
         code: "test",

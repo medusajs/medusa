@@ -372,6 +372,13 @@ class DiscountService extends TransactionBaseService {
         )
       }
 
+      if (regions && !regions?.length) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Discount must have at least 1 region"
+        )
+      }
+
       if (conditions?.length) {
         await Promise.all(
           conditions.map(async (cond) => {
