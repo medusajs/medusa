@@ -21,7 +21,7 @@ export const useAdminUpdateStore = (
 
   return useMutation(
     (payload: AdminPostStoreReq) => client.admin.store.update(payload),
-    buildOptions(queryClient, adminStoreKeys.details(), options)
+    buildOptions(queryClient, [adminStoreKeys.details()], options)
   )
 }
 
@@ -33,7 +33,7 @@ export const useAdminAddStoreCurrency = (
 
   return useMutation(
     (currency_code: string) => client.admin.store.deleteCurrency(currency_code),
-    buildOptions(queryClient, adminStoreKeys.details(), options)
+    buildOptions(queryClient, [adminStoreKeys.details()], options)
   )
 }
 
@@ -45,6 +45,6 @@ export const useAdminDeleteStoreCurrency = (
 
   return useMutation(
     (currency_code: string) => client.admin.store.deleteCurrency(currency_code),
-    buildOptions(queryClient, adminStoreKeys.details(), options)
+    buildOptions(queryClient, [adminStoreKeys.details()], options)
   )
 }

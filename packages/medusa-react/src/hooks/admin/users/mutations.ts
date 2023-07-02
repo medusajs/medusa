@@ -30,7 +30,7 @@ export const useAdminCreateUser = (
 
   return useMutation(
     (payload: AdminCreateUserPayload) => client.admin.users.create(payload),
-    buildOptions(queryClient, adminUserKeys.lists(), options)
+    buildOptions(queryClient, [adminUserKeys.lists()], options)
   )
 }
 

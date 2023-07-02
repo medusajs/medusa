@@ -17,7 +17,7 @@ export const useAdminLogin = (
 
   return useMutation(
     (payload: AdminPostAuthReq) => client.admin.auth.createSession(payload),
-    buildOptions(queryClient, adminAuthKeys.details(), options)
+    buildOptions(queryClient, [adminAuthKeys.details()], options)
   )
 }
 
@@ -29,6 +29,6 @@ export const useAdminDeleteSession = (
 
   return useMutation(
     () => client.admin.auth.deleteSession(),
-    buildOptions(queryClient, adminAuthKeys.details(), options)
+    buildOptions(queryClient, [adminAuthKeys.details()], options)
   )
 }

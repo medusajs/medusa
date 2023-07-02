@@ -26,7 +26,7 @@ export const useAdminCreateShippingOption = (
   return useMutation(
     (payload: AdminPostShippingOptionsReq) =>
       client.admin.shippingOptions.create(payload),
-    buildOptions(queryClient, adminShippingOptionKeys.lists(), options)
+    buildOptions(queryClient, [adminShippingOptionKeys.lists()], options)
   )
 }
 

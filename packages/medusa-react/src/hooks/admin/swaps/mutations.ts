@@ -100,7 +100,7 @@ export const useAdminCreateSwapShipment = (
       ...payload
     }: AdminPostOrdersOrderSwapsSwapShipmentsReq & { swap_id: string }) =>
       client.admin.orders.createSwapShipment(orderId, swap_id, payload),
-    buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
+    buildOptions(queryClient, [adminOrderKeys.detail(orderId)], options)
   )
 }
 

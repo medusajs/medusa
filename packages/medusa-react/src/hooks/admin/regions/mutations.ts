@@ -29,7 +29,7 @@ export const useAdminCreateRegion = (
 
   return useMutation(
     (payload: AdminPostRegionsReq) => client.admin.regions.create(payload),
-    buildOptions(queryClient, adminRegionKeys.lists(), options)
+    buildOptions(queryClient, [adminRegionKeys.lists()], options)
   )
 }
 
@@ -86,7 +86,7 @@ export const useAdminRegionAddCountry = (
   return useMutation(
     (payload: AdminPostRegionsRegionCountriesReq) =>
       client.admin.regions.addCountry(id, payload),
-    buildOptions(queryClient, adminRegionKeys.detail(id), options)
+    buildOptions(queryClient, [adminRegionKeys.detail(id)], options)
   )
 }
 
@@ -100,7 +100,7 @@ export const useAdminRegionRemoveCountry = (
   return useMutation(
     (country_code: string) =>
       client.admin.regions.deleteCountry(id, country_code),
-    buildOptions(queryClient, adminRegionKeys.detail(id), options)
+    buildOptions(queryClient, [adminRegionKeys.detail(id)], options)
   )
 }
 
@@ -118,7 +118,7 @@ export const useAdminRegionAddFulfillmentProvider = (
   return useMutation(
     (payload: AdminPostRegionsRegionFulfillmentProvidersReq) =>
       client.admin.regions.addFulfillmentProvider(id, payload),
-    buildOptions(queryClient, adminRegionKeys.detail(id), options)
+    buildOptions(queryClient, [adminRegionKeys.detail(id)], options)
   )
 }
 
@@ -132,7 +132,7 @@ export const useAdminRegionDeleteFulfillmentProvider = (
   return useMutation(
     (provider_id: string) =>
       client.admin.regions.deleteFulfillmentProvider(id, provider_id),
-    buildOptions(queryClient, adminRegionKeys.detail(id), options)
+    buildOptions(queryClient, [adminRegionKeys.detail(id)], options)
   )
 }
 
@@ -150,7 +150,7 @@ export const useAdminRegionAddPaymentProvider = (
   return useMutation(
     (payload: AdminPostRegionsRegionPaymentProvidersReq) =>
       client.admin.regions.addPaymentProvider(id, payload),
-    buildOptions(queryClient, adminRegionKeys.detail(id), options)
+    buildOptions(queryClient, [adminRegionKeys.detail(id)], options)
   )
 }
 
@@ -164,6 +164,6 @@ export const useAdminRegionDeletePaymentProvider = (
   return useMutation(
     (provider_id: string) =>
       client.admin.regions.deletePaymentProvider(id, provider_id),
-    buildOptions(queryClient, adminRegionKeys.detail(id), options)
+    buildOptions(queryClient, [adminRegionKeys.detail(id)], options)
   )
 }

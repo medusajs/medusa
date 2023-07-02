@@ -26,7 +26,7 @@ export const useAdminCreateReturnReason = (
   return useMutation(
     (payload: AdminPostReturnReasonsReq) =>
       client.admin.returnReasons.create(payload),
-    buildOptions(queryClient, adminReturnReasonKeys.lists(), options)
+    buildOptions(queryClient, [adminReturnReasonKeys.lists()], options)
   )
 }
 

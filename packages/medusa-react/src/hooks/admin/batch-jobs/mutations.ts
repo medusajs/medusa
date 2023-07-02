@@ -27,7 +27,7 @@ export const useAdminCreateBatchJob = (
 
   return useMutation(
     (payload: AdminPostBatchesReq) => client.admin.batchJobs.create(payload),
-    buildOptions(queryClient, adminBatchJobsKeys.lists(), options)
+    buildOptions(queryClient, [adminBatchJobsKeys.lists()], options)
   )
 }
 

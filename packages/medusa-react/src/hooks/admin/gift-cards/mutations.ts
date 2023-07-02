@@ -25,7 +25,7 @@ export const useAdminCreateGiftCard = (
   const queryClient = useQueryClient()
   return useMutation(
     (payload: AdminPostGiftCardsReq) => client.admin.giftCards.create(payload),
-    buildOptions(queryClient, adminGiftCardKeys.lists(), options)
+    buildOptions(queryClient, [adminGiftCardKeys.lists()], options)
   )
 }
 

@@ -31,7 +31,7 @@ export const useAdminCreateClaim = (
   return useMutation(
     (payload: AdminPostOrdersOrderClaimsReq) =>
       client.admin.orders.createClaim(orderId, payload),
-    buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
+    buildOptions(queryClient, [adminOrderKeys.detail(orderId)], options)
   )
 }
 
@@ -52,7 +52,7 @@ export const useAdminUpdateClaim = (
       ...payload
     }: AdminPostOrdersOrderClaimsClaimReq & { claim_id: string }) =>
       client.admin.orders.updateClaim(orderId, claim_id, payload),
-    buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
+    buildOptions(queryClient, [adminOrderKeys.detail(orderId)], options)
   )
 }
 
@@ -65,7 +65,7 @@ export const useAdminCancelClaim = (
 
   return useMutation(
     (claimId: string) => client.admin.orders.cancelClaim(orderId, claimId),
-    buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
+    buildOptions(queryClient, [adminOrderKeys.detail(orderId)], options)
   )
 }
 
@@ -122,7 +122,7 @@ export const useAdminCancelClaimFulfillment = (
         claim_id,
         fulfillment_id
       ),
-    buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
+    buildOptions(queryClient, [adminOrderKeys.detail(orderId)], options)
   )
 }
 
@@ -143,6 +143,6 @@ export const useAdminCreateClaimShipment = (
       ...payload
     }: AdminPostOrdersOrderClaimsClaimShipmentsReq & { claim_id: string }) =>
       client.admin.orders.createClaimShipment(orderId, claim_id, payload),
-    buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
+    buildOptions(queryClient, [adminOrderKeys.detail(orderId)], options)
   )
 }

@@ -173,7 +173,7 @@ export const useAdminCreateShipment = (
   return useMutation(
     (payload: AdminPostOrdersOrderShipmentReq) =>
       client.admin.orders.createShipment(orderId, payload),
-    buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
+    buildOptions(queryClient, [adminOrderKeys.detail(orderId)], options)
   )
 }
 
@@ -191,7 +191,7 @@ export const useAdminRequestReturn = (
   return useMutation(
     (payload: AdminPostOrdersOrderReturnsReq) =>
       client.admin.orders.requestReturn(orderId, payload),
-    buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
+    buildOptions(queryClient, [adminOrderKeys.detail(orderId)], options)
   )
 }
 
@@ -209,7 +209,7 @@ export const useAdminAddShippingMethod = (
   return useMutation(
     (payload: AdminPostOrdersOrderShippingMethodsReq) =>
       client.admin.orders.addShippingMethod(orderId, payload),
-    buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
+    buildOptions(queryClient, [adminOrderKeys.detail(orderId)], options)
   )
 }
 

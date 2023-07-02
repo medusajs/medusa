@@ -27,7 +27,7 @@ export const useAdminCreateCustomer = (
 
   return useMutation(
     (payload: AdminPostCustomersReq) => client.admin.customers.create(payload),
-    buildOptions(queryClient, adminCustomerKeys.lists(), options)
+    buildOptions(queryClient, [adminCustomerKeys.lists()], options)
   )
 }
 

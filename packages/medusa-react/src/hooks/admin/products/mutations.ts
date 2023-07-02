@@ -31,7 +31,7 @@ export const useAdminCreateProduct = (
   const queryClient = useQueryClient()
   return useMutation(
     (payload: AdminPostProductsReq) => client.admin.products.create(payload),
-    buildOptions(queryClient, adminProductKeys.lists(), options)
+    buildOptions(queryClient, [adminProductKeys.lists()], options)
   )
 }
 
@@ -157,7 +157,7 @@ export const useAdminCreateProductOption = (
   return useMutation(
     (payload: AdminPostProductsProductOptionsReq) =>
       client.admin.products.addOption(productId, payload),
-    buildOptions(queryClient, adminProductKeys.detail(productId), options)
+    buildOptions(queryClient, [adminProductKeys.detail(productId)], options)
   )
 }
 
@@ -178,7 +178,7 @@ export const useAdminUpdateProductOption = (
       ...payload
     }: AdminPostProductsProductOptionsOption & { option_id: string }) =>
       client.admin.products.updateOption(productId, option_id, payload),
-    buildOptions(queryClient, adminProductKeys.detail(productId), options)
+    buildOptions(queryClient, [adminProductKeys.detail(productId)], options)
   )
 }
 
@@ -196,6 +196,6 @@ export const useAdminDeleteProductOption = (
   return useMutation(
     (optionId: string) =>
       client.admin.products.deleteOption(productId, optionId),
-    buildOptions(queryClient, adminProductKeys.detail(productId), options)
+    buildOptions(queryClient, [adminProductKeys.detail(productId)], options)
   )
 }

@@ -25,7 +25,7 @@ export const useAdminCreateShippingProfile = (
   return useMutation(
     (payload: AdminPostShippingProfilesReq) =>
       client.admin.shippingProfiles.create(payload),
-    buildOptions(queryClient, adminShippingProfileKeys.lists(), options)
+    buildOptions(queryClient, [adminShippingProfileKeys.lists()], options)
   )
 }
 

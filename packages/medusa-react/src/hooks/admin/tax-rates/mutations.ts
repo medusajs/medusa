@@ -31,7 +31,7 @@ export const useAdminCreateTaxRate = (
   const queryClient = useQueryClient()
   return useMutation(
     (payload: AdminPostTaxRatesReq) => client.admin.taxRates.create(payload),
-    buildOptions(queryClient, adminTaxRateKeys.lists(), options)
+    buildOptions(queryClient, [adminTaxRateKeys.lists()], options)
   )
 }
 

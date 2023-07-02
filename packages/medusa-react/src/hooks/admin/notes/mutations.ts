@@ -25,7 +25,7 @@ export const useAdminCreateNote = (
   const queryClient = useQueryClient()
   return useMutation(
     (payload: AdminPostNotesReq) => client.admin.notes.create(payload),
-    buildOptions(queryClient, adminNoteKeys.lists(), options)
+    buildOptions(queryClient, [adminNoteKeys.lists()], options)
   )
 }
 

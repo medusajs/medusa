@@ -35,7 +35,7 @@ export const useAdminCreateCustomerGroup = (
   return useMutation(
     (payload: AdminPostCustomerGroupsReq) =>
       client.admin.customerGroups.create(payload),
-    buildOptions(queryClient, adminCustomerGroupKeys.lists(), options)
+    buildOptions(queryClient, [adminCustomerGroupKeys.lists()], options)
   )
 }
 

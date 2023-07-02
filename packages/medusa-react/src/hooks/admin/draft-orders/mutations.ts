@@ -29,7 +29,7 @@ export const useAdminCreateDraftOrder = (
   return useMutation(
     (payload: AdminPostDraftOrdersReq) =>
       client.admin.draftOrders.create(payload),
-    buildOptions(queryClient, adminDraftOrderKeys.lists(), options)
+    buildOptions(queryClient, [adminDraftOrderKeys.lists()], options)
   )
 }
 
@@ -82,7 +82,7 @@ export const useAdminDraftOrderRegisterPayment = (
   const queryClient = useQueryClient()
   return useMutation(
     () => client.admin.draftOrders.markPaid(id),
-    buildOptions(queryClient, adminDraftOrderKeys.detail(id), options)
+    buildOptions(queryClient, [adminDraftOrderKeys.detail(id)], options)
   )
 }
 
@@ -99,7 +99,7 @@ export const useAdminDraftOrderAddLineItem = (
   return useMutation(
     (payload: AdminPostDraftOrdersDraftOrderLineItemsReq) =>
       client.admin.draftOrders.addLineItem(id, payload),
-    buildOptions(queryClient, adminDraftOrderKeys.detail(id), options)
+    buildOptions(queryClient, [adminDraftOrderKeys.detail(id)], options)
   )
 }
 
@@ -111,7 +111,7 @@ export const useAdminDraftOrderRemoveLineItem = (
   const queryClient = useQueryClient()
   return useMutation(
     (itemId: string) => client.admin.draftOrders.removeLineItem(id, itemId),
-    buildOptions(queryClient, adminDraftOrderKeys.detail(id), options)
+    buildOptions(queryClient, [adminDraftOrderKeys.detail(id)], options)
   )
 }
 
@@ -131,6 +131,6 @@ export const useAdminDraftOrderUpdateLineItem = (
       ...payload
     }: AdminPostDraftOrdersDraftOrderLineItemsItemReq & { item_id: string }) =>
       client.admin.draftOrders.updateLineItem(id, item_id, payload),
-    buildOptions(queryClient, adminDraftOrderKeys.detail(id), options)
+    buildOptions(queryClient, [adminDraftOrderKeys.detail(id)], options)
   )
 }

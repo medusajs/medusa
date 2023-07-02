@@ -12,7 +12,7 @@ export const buildOptions = <
   TKey extends QueryKey
 >(
   queryClient: QueryClient,
-  queryKey?: TKey,
+  queryKey?: TKey[],
   options?: UseMutationOptions<TData, TError, TVariables, TContext>
 ): UseMutationOptions<TData, TError, TVariables, TContext> => {
   return {
@@ -24,7 +24,7 @@ export const buildOptions = <
 
       if (queryKey !== undefined) {
         queryKey.forEach((key) => {
-          queryClient.invalidateQueries({ queryKey: key as QueryKey })
+          queryClient.invalidateQueries({ queryKey: key })
         })
       }
     },

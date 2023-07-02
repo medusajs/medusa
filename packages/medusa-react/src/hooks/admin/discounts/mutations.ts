@@ -40,7 +40,7 @@ export const useAdminAddDiscountConditionResourceBatch = (
         payload,
         query
       ),
-    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
+    buildOptions(queryClient, [adminDiscountKeys.detail(discountId)], options)
   )
 }
 
@@ -78,7 +78,7 @@ export const useAdminCreateDiscount = (
   const queryClient = useQueryClient()
   return useMutation(
     (payload: AdminPostDiscountsReq) => client.admin.discounts.create(payload),
-    buildOptions(queryClient, adminDiscountKeys.lists(), options)
+    buildOptions(queryClient, [adminDiscountKeys.lists()], options)
   )
 }
 
@@ -95,7 +95,7 @@ export const useAdminUpdateDiscount = (
   return useMutation(
     (payload: AdminPostDiscountsDiscountReq) =>
       client.admin.discounts.update(id, payload),
-    buildOptions(queryClient, adminDiscountKeys.detail(id), options)
+    buildOptions(queryClient, [adminDiscountKeys.detail(id)], options)
   )
 }
 
@@ -107,7 +107,7 @@ export const useAdminDeleteDiscount = (
   const queryClient = useQueryClient()
   return useMutation(
     () => client.admin.discounts.delete(id),
-    buildOptions(queryClient, adminDiscountKeys.lists(), options)
+    buildOptions(queryClient, [adminDiscountKeys.lists()], options)
   )
 }
 
@@ -119,7 +119,7 @@ export const useAdminDiscountAddRegion = (
   const queryClient = useQueryClient()
   return useMutation(
     (regionId: string) => client.admin.discounts.addRegion(id, regionId),
-    buildOptions(queryClient, adminDiscountKeys.detail(id), options)
+    buildOptions(queryClient, [adminDiscountKeys.detail(id)], options)
   )
 }
 
@@ -131,7 +131,7 @@ export const useAdminDiscountRemoveRegion = (
   const queryClient = useQueryClient()
   return useMutation(
     (regionId: string) => client.admin.discounts.removeRegion(id, regionId),
-    buildOptions(queryClient, adminDiscountKeys.detail(id), options)
+    buildOptions(queryClient, [adminDiscountKeys.detail(id)], options)
   )
 }
 
@@ -185,7 +185,7 @@ export const useAdminDiscountCreateCondition = (
   return useMutation(
     (payload: AdminPostDiscountsDiscountConditions) =>
       client.admin.discounts.createCondition(discountId, payload),
-    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
+    buildOptions(queryClient, [adminDiscountKeys.detail(discountId)], options)
   )
 }
 
@@ -203,7 +203,7 @@ export const useAdminDiscountUpdateCondition = (
   return useMutation(
     (payload: AdminPostDiscountsDiscountConditionsCondition) =>
       client.admin.discounts.updateCondition(discountId, conditionId, payload),
-    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
+    buildOptions(queryClient, [adminDiscountKeys.detail(discountId)], options)
   )
 }
 
@@ -216,6 +216,6 @@ export const useAdminDiscountRemoveCondition = (
   return useMutation(
     (conditionId: string) =>
       client.admin.discounts.deleteCondition(discountId, conditionId),
-    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
+    buildOptions(queryClient, [adminDiscountKeys.detail(discountId)], options)
   )
 }

@@ -25,7 +25,7 @@ export const useAdminAcceptInvite = (
   return useMutation(
     (payload: AdminPostInvitesInviteAcceptReq) =>
       client.admin.invites.accept(payload),
-    buildOptions(queryClient, adminInviteKeys.lists(), options)
+    buildOptions(queryClient, [adminInviteKeys.lists()], options)
   )
 }
 
@@ -45,7 +45,7 @@ export const useAdminCreateInvite = (
 
   return useMutation(
     (payload: AdminPostInvitesPayload) => client.admin.invites.create(payload),
-    buildOptions(queryClient, adminInviteKeys.lists(), options)
+    buildOptions(queryClient, [adminInviteKeys.lists()], options)
   )
 }
 
