@@ -293,9 +293,9 @@ abstract class StripeBase extends AbstractPaymentProcessor {
         )
       }
 
-      return await this.stripe_.paymentIntents.update(sessionId, {
+      return (await this.stripe_.paymentIntents.update(sessionId, {
         ...data,
-      })
+      })) as unknown as PaymentProcessorSessionResponse["session_data"]
     } catch (e) {
       return this.buildError("An error occurred in updatePaymentData", e)
     }
