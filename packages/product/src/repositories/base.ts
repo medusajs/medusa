@@ -15,10 +15,31 @@ export abstract class AbstractRepositoryBase<T = any>
     {
       transaction,
       isolationLevel,
-    }: { isolationLevel?: string; transaction?: unknown }
+      enableNestedTransactions = false,
+    }: {
+      isolationLevel?: string
+      transaction?: unknown
+      enableNestedTransactions?: boolean
+    }
   ): Promise<T[]> {
+    // Reuse the same transaction if it is already provided and nested transactions are disabled
+    if (!enableNestedTransactions && transaction) {
+      return await task(transaction)
+    }
+
     const forkedManager = this.manager_.fork()
-    forkedManager.begin({ ctx: { transaction, isolationLevel } })
+
+    const options = {}
+    if (isolationLevel) {
+      Object.assign(options, { isolationLevel })
+    }
+
+    if (transaction) {
+      Object.assign(options, { ctx: transaction })
+      await forkedManager.begin(options)
+    } else {
+      await forkedManager.begin(options)
+    }
 
     try {
       const result = await task(forkedManager)
@@ -54,10 +75,25 @@ export abstract class AbstractTreeRepositoryBase<T = any>
     {
       transaction,
       isolationLevel,
-    }: { isolationLevel?: string; transaction?: unknown }
+      enableNestedTransactions = false,
+    }: {
+      isolationLevel?: string
+      transaction?: unknown
+      enableNestedTransactions?: boolean
+    }
   ): Promise<T[]> {
+    // Reuse the same transaction if it is already provided and nested transactions are disabled
+    if (!enableNestedTransactions && transaction) {
+      return await task(transaction)
+    }
+
     const forkedManager = this.manager_.fork()
-    forkedManager.begin({ ctx: { transaction, isolationLevel } })
+
+    if (transaction) {
+      await forkedManager.begin({ ctx: { transaction, isolationLevel } })
+    } else {
+      await forkedManager.begin({ ctx: { isolationLevel } })
+    }
 
     try {
       const result = await task(forkedManager)
@@ -68,6 +104,7 @@ export abstract class AbstractTreeRepositoryBase<T = any>
       throw e
     }
   }
+  a
 
   abstract find(
     options?: DAL.FindOptions<T>,

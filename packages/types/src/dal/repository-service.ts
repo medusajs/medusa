@@ -12,7 +12,11 @@ export interface RepositoryService<T = any> {
 
   transaction(
     task: (transactionManager: unknown) => Promise<T[]>,
-    context: { isolationLevel?: string; transaction?: unknown }
+    context: {
+      isolationLevel?: string
+      transaction?: unknown
+      enableNestedTransactions?: boolean
+    }
   ): Promise<T[]>
 
   find(options?: FindOptions<T>, context?: Context): Promise<T[]>

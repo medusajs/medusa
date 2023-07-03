@@ -200,7 +200,7 @@ export default class ProductModuleService<
             productOptionsMap.set(product.handle!, options ?? [])
 
             if (!product.thumbnail && product.images?.length) {
-              product.thumbnail = product.images[0]
+              product.thumbnail = product.images[0].url
             }
 
             if (product.is_giftcard) {
@@ -208,12 +208,10 @@ export default class ProductModuleService<
             }
 
             if (product.images?.length) {
-              product.images = (
-                await this.productImageService_.upsert(
-                  product.images,
-                  sharedContext
-                )
-              ).map((image) => (image as unknown as Image).url)
+              product.images = (await this.productImageService_.upsert(
+                product.images.map((image) => image.url),
+                sharedContext
+              )) as unknown as Image[]
             }
 
             if (product.tags?.length) {
@@ -242,7 +240,7 @@ export default class ProductModuleService<
 
         const products = (await this.productService_.create(productsData, {
           transactionManager: manager,
-        })) as Product[]
+        })) as unknown as Product[]
 
         const productByHandleMap = new Map<string, Product>(
           products.map((product) => [product.handle!, product])

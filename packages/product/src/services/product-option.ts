@@ -25,7 +25,7 @@ export default class ProductOptionService<TEntity = ProductOption> {
           options.push(manager_.create(ProductOption, option))
         })
 
-        await manager_.persistAndFlush(options)
+        await manager_.persist(options)
         return options as unknown as TEntity[]
       },
       { transaction: sharedContext?.transactionManager }

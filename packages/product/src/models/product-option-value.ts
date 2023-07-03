@@ -18,10 +18,16 @@ class ProductOptionValue {
   @Property({ columnType: "text" })
   value: string
 
+  @Property({ persist: false })
+  option_id: string
+
   @ManyToOne(() => ProductOption, {
     index: "IDX_product_option_value_product_option",
   })
   option: ProductOption
+
+  @Property({ persist: false })
+  variant_id: string
 
   @ManyToOne(() => ProductVariant, { onDelete: "cascade" })
   variant: ProductVariant

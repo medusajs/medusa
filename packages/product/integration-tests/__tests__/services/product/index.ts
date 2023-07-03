@@ -5,13 +5,14 @@ import {
   ProductVariantService,
 } from "@services"
 import { ProductRepository } from "@repositories"
-import { Product, ProductCategory, ProductVariant } from "@models"
+import { Image, Product, ProductCategory, ProductVariant } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductDTO } from "@medusajs/types"
 
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import {
   assignCategoriesToProduct,
+  createImages,
   createProductAndTags,
   createProductVariants,
 } from "../../../__fixtures__/product"
@@ -20,6 +21,8 @@ import {
   productsData,
   variantsData,
 } from "../../../__fixtures__/product/data"
+import { buildProductOnlyData } from "../../../__fixtures__/product/data/create-product"
+import { kebabCase } from "@medusajs/utils"
 
 const productVariantService = {
   list: jest.fn(),
@@ -58,11 +61,46 @@ describe("Product Service", () => {
   })
 
   describe("create", function () {
+    let images: Image[] = []
+
     beforeEach(async () => {
       testManager = await TestDatabase.forkManager()
+
+      images = await createImages(testManager, ["image-1"])
     })
 
-    it("should create a product", async () => {})
+    it("should create a product", async () => {
+      const data = buildProductOnlyData({
+        images,
+        thumbnail: images[0].url,
+      })
+
+      const products = await service.create([data])
+
+      expect(products.length).toBe(1)
+      expect(products[0]).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          title: data.title,
+          handle: kebabCase(data.title),
+          description: data.description,
+          subtitle: data.subtitle,
+          is_giftcard: data.is_giftcard,
+          discountable: data.discountable,
+          thumbnail: images[0].url,
+          status: data.status,
+        })
+      )
+
+      const productImages = products[0].images.toArray()
+      expect(productImages.length).toBe(1)
+      expect(productImages[0]).toEqual(
+        expect.objectContaining({
+          id: images[0].id,
+          url: images[0].url,
+        })
+      )
+    })
   })
 
   describe("list", () => {
@@ -73,7 +111,7 @@ describe("Product Service", () => {
         products = await createProductAndTags(testManager, productsData)
       })
 
-      it("filter by id and including relations", async () => {
+      it("should filter by id and including relations", async () => {
         const productsResult = await service.list(
           {
             id: products[0].id,
@@ -103,7 +141,7 @@ describe("Product Service", () => {
         })
       })
 
-      it("filter by id and without relations", async () => {
+      it("should filter by id and without relations", async () => {
         const productsResult = await service.list({
           id: products[0].id,
         })
@@ -145,7 +183,7 @@ describe("Product Service", () => {
         )
       })
 
-      it("filter by categories relation and scope fields", async () => {
+      it("should filter by categories relation and scope fields", async () => {
         const products = await service.list(
           {
             id: workingProduct.id,
@@ -195,7 +233,7 @@ describe("Product Service", () => {
         ])
       })
 
-      it("returns empty array when querying for a category that doesnt exist", async () => {
+      it("should returns empty array when querying for a category that doesnt exist", async () => {
         const products = await service.list(
           {
             id: workingProduct.id,
@@ -223,7 +261,7 @@ describe("Product Service", () => {
         variants = await createProductVariants(testManager, variantsData)
       })
 
-      it("filter by id and including relations", async () => {
+      it("should filter by id and including relations", async () => {
         const productsResult = await service.list(
           {
             id: products[0].id,

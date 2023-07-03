@@ -83,7 +83,7 @@ export default class ProductService<TEntity = Product> {
           products.push(manager_.create(Product, product as unknown as Product))
         })
 
-        await manager_.persistAndFlush(products)
+        manager_.persist(products)
         return products as unknown as TEntity[]
       },
       { transaction: sharedContext?.transactionManager }

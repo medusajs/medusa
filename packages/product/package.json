@@ -39,6 +39,7 @@
     "@mikro-orm/cli": "5.7.12",
     "@mikro-orm/migrations": "5.7.12",
     "cross-env": "^5.2.1",
+    "faker": "^6.6.6",
     "jest": "^25.5.4",
     "medusa-test-utils": "^1.1.40",
     "pg-god": "^1.0.12",

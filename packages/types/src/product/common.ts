@@ -212,7 +212,7 @@ export interface CreateProductDTO {
   description?: string
   is_giftcard?: boolean
   discountable?: boolean
-  images?: string[]
+  images?: { id?: string; url: string }[]
   thumbnail?: string
   handle?: string
   status?: ProductStatus
@@ -241,7 +241,7 @@ export interface CreateProductOnlyDTO {
   description?: string
   is_giftcard?: boolean
   discountable?: boolean
-  images?: string[]
+  images?: { id?: string; url: string }[]
   thumbnail?: string
   handle?: string
   status?: ProductStatus
@@ -255,7 +255,6 @@ export interface CreateProductOnlyDTO {
   material?: string
   mid_code?: string
   metadata?: Record<string, unknown>
-  options?: { id: string }[]
   tags?: { id: string }[]
   categories?: { id: string }[]
   type_id?: string

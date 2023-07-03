@@ -8,9 +8,10 @@ import { ProductCategory } from "@models"
 import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
 import { AbstractTreeRepositoryBase } from "./base"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class ProductCategoryRepository extends AbstractTreeRepositoryBase<ProductCategory> {
-  constructor() {
+  constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
     super(...arguments)
   }

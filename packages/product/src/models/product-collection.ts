@@ -1,6 +1,7 @@
 import {
   BeforeCreate,
   Entity,
+  OptionalProps,
   PrimaryKey,
   Property,
   Unique,
@@ -8,8 +9,12 @@ import {
 
 import { generateEntityId, kebabCase } from "@medusajs/utils"
 
+type OptionalFields = "deleted_at"
+
 @Entity({ tableName: "product_collection" })
 class ProductCollection {
+  [OptionalProps]?: OptionalFields
+
   @PrimaryKey({ columnType: "text" })
   id!: string
 
@@ -21,7 +26,7 @@ class ProductCollection {
     name: "IDX_product_collection_handle_unique",
     properties: ["handle"],
   })
-  handle: string
+  handle?: string
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null

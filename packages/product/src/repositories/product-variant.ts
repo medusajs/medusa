@@ -7,9 +7,10 @@ import { deduplicateIfNecessary } from "../utils"
 import { ProductVariant } from "@models"
 import { Context, DAL } from "@medusajs/types"
 import { BaseRepository } from "./base"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export class ProductVariantRepository extends BaseRepository<ProductVariant> {
-  constructor() {
+  constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
     super(...arguments)
   }
