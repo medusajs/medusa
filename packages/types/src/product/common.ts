@@ -34,6 +34,7 @@ export interface ProductDTO {
   tags: ProductTagDTO[]
   variants: ProductVariantDTO[]
   options: ProductOptionDTO[]
+  images: ProductImageDTO[]
   discountable?: boolean
   external_id?: string | null
   created_at?: string | Date
@@ -109,6 +110,13 @@ export interface ProductOptionDTO {
   title: string
   product: ProductDTO
   values: ProductOptionValueDTO[]
+  metadata?: Record<string, unknown> | null
+  deleted_at?: string | Date
+}
+
+export interface ProductImageDTO {
+  id: string
+  url: string
   metadata?: Record<string, unknown> | null
   deleted_at?: string | Date
 }
@@ -212,7 +220,7 @@ export interface CreateProductDTO {
   description?: string
   is_giftcard?: boolean
   discountable?: boolean
-  images?: { id?: string; url: string }[]
+  images?: string[] | { id?: string; url: string }[]
   thumbnail?: string
   handle?: string
   status?: ProductStatus

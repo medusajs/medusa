@@ -25,7 +25,7 @@ import {
   ProductTypes,
 } from "@medusajs/types"
 import ProductImageService from "./product-image"
-import { isDefined, kebabCase } from "@medusajs/utils"
+import { isDefined, isString, kebabCase } from "@medusajs/utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -200,7 +200,9 @@ export default class ProductModuleService<
             productOptionsMap.set(product.handle!, options ?? [])
 
             if (!product.thumbnail && product.images?.length) {
-              product.thumbnail = product.images[0].url
+              product.thumbnail = isString(product.images[0])
+                ? product.images[0]
+                : product.images[0].url
             }
 
             if (product.is_giftcard) {
@@ -209,7 +211,9 @@ export default class ProductModuleService<
 
             if (product.images?.length) {
               product.images = (await this.productImageService_.upsert(
-                product.images.map((image) => image.url),
+                product.images.map((image) =>
+                  isString(image) ? image : image.url
+                ),
                 sharedContext
               )) as unknown as Image[]
             }
@@ -223,7 +227,7 @@ export default class ProductModuleService<
 
             if (isDefined(product.type)) {
               product.type_id = (
-                (await this.productTagService_.upsert(
+                (await this.productTypeService_.upsert(
                   [product.type],
                   sharedContext
                 )) as unknown as ProductType[]
@@ -251,9 +255,7 @@ export default class ProductModuleService<
             return options.map((option) => {
               return {
                 ...option,
-                product: {
-                  id: productByHandleMap.get(handle)!.id,
-                },
+                product: productByHandleMap.get(handle)!,
               }
             })
           })
