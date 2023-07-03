@@ -123,7 +123,7 @@ export interface PaymentProcessor {
   /**
    * Update the session data for a payment session
    */
-  updatePaymentSession(
+  updatePaymentData(
     sessionId: string,
     data: Record<string, unknown>
   ): Promise<
@@ -206,7 +206,7 @@ export abstract class AbstractPaymentProcessor implements PaymentProcessor {
     context: PaymentProcessorContext
   ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse | void>
 
-  abstract updatePaymentSession(
+  abstract updatePaymentData(
     sessionId: string,
     data: Record<string, unknown>
   ): Promise<

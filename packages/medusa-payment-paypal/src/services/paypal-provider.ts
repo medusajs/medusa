@@ -280,6 +280,23 @@ class PayPalProviderService extends AbstractPaymentProcessor {
     }
   }
 
+  /**
+   * Paypal does not provide such feature, will only merge the data together and return
+   * them to be stored in the payment session data
+   * @param data
+   * @param update
+   */
+  async updatePaymentData(data, update) {
+    try {
+      return {
+        ...data,
+        ...update.data,
+      }
+    } catch (e) {
+      return this.buildError("An error occurred in updatePaymentData", e)
+    }
+  }
+
   async retrieveOrderFromAuth(authorization) {
     const link = authorization.links.find((l) => l.rel === "up")
     const parts = link.href.split("/")

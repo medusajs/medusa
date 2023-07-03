@@ -281,10 +281,19 @@ abstract class StripeBase extends AbstractPaymentProcessor {
     }
   }
 
+  /**
+   * Update the data of the payment/session remotely
+   * @param sessionId
+   * @param data
+   */
   async updatePaymentData(sessionId: string, data: Record<string, unknown>) {
-    return await this.stripe_.paymentIntents.update(sessionId, {
-      ...data,
-    })
+    try {
+      return await this.stripe_.paymentIntents.update(sessionId, {
+        ...data,
+      })
+    } catch (e) {
+      return this.buildError("An error occurred in updatePaymentData", e)
+    }
   }
 
   /**

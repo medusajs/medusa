@@ -576,7 +576,7 @@ export default class PaymentProviderService extends TransactionBaseService {
       const provider = this.retrieveProvider(paymentSession.provider_id)
 
       if (provider instanceof AbstractPaymentProcessor) {
-        const res = await provider.updatePaymentSession(paymentSession.id, data)
+        const res = await provider.updatePaymentData(paymentSession.id, data)
         if ("error" in res) {
           this.throwFromPaymentProcessorError(res as PaymentProcessorError)
         } else {
