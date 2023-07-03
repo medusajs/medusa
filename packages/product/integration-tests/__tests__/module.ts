@@ -127,6 +127,8 @@ describe("Product module", function () {
       })) as ProductModuleService
     })
 
+    afterEach(afterEach_)
+
     it("should create a product", async () => {
       const data = buildProductData({
         images,

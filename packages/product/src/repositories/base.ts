@@ -1,6 +1,48 @@
 import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
+async function transactionWrapper<T>(
+  this: any,
+  task: (transactionManager: unknown) => Promise<T[]>,
+  {
+    transaction,
+    isolationLevel,
+    enableNestedTransactions = false,
+  }: {
+    isolationLevel?: string
+    transaction?: unknown
+    enableNestedTransactions?: boolean
+  }
+): Promise<T[]> {
+  // Reuse the same transaction if it is already provided and nested transactions are disabled
+  if (!enableNestedTransactions && transaction) {
+    return await task(transaction)
+  }
+
+  const forkedManager = this.manager_.fork()
+
+  const options = {}
+  if (isolationLevel) {
+    Object.assign(options, { isolationLevel })
+  }
+
+  if (transaction) {
+    Object.assign(options, { ctx: transaction })
+    await forkedManager.begin(options)
+  } else {
+    await forkedManager.begin(options)
+  }
+
+  try {
+    const result = await task(forkedManager)
+    await forkedManager.commit()
+    return result
+  } catch (e) {
+    await forkedManager.rollback()
+    throw e
+  }
+}
+
 export abstract class AbstractRepositoryBase<T = any>
   implements DAL.RepositoryService<T>
 {
@@ -22,33 +64,8 @@ export abstract class AbstractRepositoryBase<T = any>
       enableNestedTransactions?: boolean
     }
   ): Promise<T[]> {
-    // Reuse the same transaction if it is already provided and nested transactions are disabled
-    if (!enableNestedTransactions && transaction) {
-      return await task(transaction)
-    }
-
-    const forkedManager = this.manager_.fork()
-
-    const options = {}
-    if (isolationLevel) {
-      Object.assign(options, { isolationLevel })
-    }
-
-    if (transaction) {
-      Object.assign(options, { ctx: transaction })
-      await forkedManager.begin(options)
-    } else {
-      await forkedManager.begin(options)
-    }
-
-    try {
-      const result = await task(forkedManager)
-      await forkedManager.commit()
-      return result
-    } catch (e) {
-      await forkedManager.rollback()
-      throw e
-    }
+    // @ts-ignore
+    return await transactionWrapper.apply<T>(this, arguments)
   }
 
   abstract find(options?: DAL.FindOptions<T>, context?: Context)
@@ -82,29 +99,9 @@ export abstract class AbstractTreeRepositoryBase<T = any>
       enableNestedTransactions?: boolean
     }
   ): Promise<T[]> {
-    // Reuse the same transaction if it is already provided and nested transactions are disabled
-    if (!enableNestedTransactions && transaction) {
-      return await task(transaction)
-    }
-
-    const forkedManager = this.manager_.fork()
-
-    if (transaction) {
-      await forkedManager.begin({ ctx: { transaction, isolationLevel } })
-    } else {
-      await forkedManager.begin({ ctx: { isolationLevel } })
-    }
-
-    try {
-      const result = await task(forkedManager)
-      await forkedManager.commit()
-      return result
-    } catch (e) {
-      await forkedManager.rollback()
-      throw e
-    }
+    // @ts-ignore
+    return await transactionWrapper.apply<T>(this, arguments)
   }
-  a
 
   abstract find(
     options?: DAL.FindOptions<T>,
