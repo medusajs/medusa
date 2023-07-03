@@ -15,7 +15,7 @@ type OptionalRelations = "collection" | "type"
 type OptionalFields = "deleted_at"
 
 @Entity({ tableName: "image" })
-class Image {
+class ProductImage {
   [OptionalProps]?: OptionalRelations | OptionalFields
 
   @PrimaryKey({ columnType: "text" })
@@ -39,4 +39,4 @@ class Image {
   }
 }
 
-export default Image
+export default ProductImage

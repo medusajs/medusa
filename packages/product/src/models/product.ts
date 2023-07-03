@@ -20,7 +20,7 @@ import ProductOption from "./product-option"
 import ProductTag from "./product-tag"
 import ProductType from "./product-type"
 import ProductVariant from "./product-variant"
-import Image from "./image"
+import ProductImage from "./product-image"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =
@@ -108,11 +108,12 @@ class Product {
   })
   tags = new Collection<ProductTag>(this)
 
-  @ManyToMany(() => Image, "products", {
+  @ManyToMany(() => ProductImage, "products", {
+    owner: true,
     pivotTable: "product_images",
     index: "IDX_product_image_id",
   })
-  images = new Collection<Image>(this)
+  images = new Collection<ProductImage>(this)
 
   @ManyToMany(() => ProductCategory, "products", {
     owner: true,
