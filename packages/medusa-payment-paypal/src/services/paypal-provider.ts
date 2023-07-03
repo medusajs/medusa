@@ -17,6 +17,7 @@ import { humanizeAmount } from "medusa-core-utils"
 import { roundToTwo } from "./utils/utils"
 import { CreateOrder, PaypalSdk } from "../core"
 import { Logger } from "@medusajs/types"
+import { MedusaError } from "@medusajs/utils"
 
 class PayPalProviderService extends AbstractPaymentProcessor {
   static identifier = "paypal"
@@ -280,14 +281,17 @@ class PayPalProviderService extends AbstractPaymentProcessor {
     }
   }
 
-  /**
-   * Paypal does not provide such feature, will only merge the data together and return
-   * them to be stored in the payment session data
-   * @param data
-   * @param update
-   */
   async updatePaymentData(data, update) {
     try {
+      // Prevent from updating the amount from here as it should go through
+      // the updatePayment method to perform the correct logic
+      if (data.amount) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Cannot update amount, use updatePayment instead"
+        )
+      }
+
       return {
         ...data,
         ...update.data,
