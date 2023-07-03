@@ -1,4 +1,5 @@
 import {
+  CreateProductDTO,
   FilterableProductCategoryProps,
   FilterableProductCollectionProps,
   FilterableProductProps,
@@ -55,4 +56,6 @@ export interface IProductModuleService<
     config?: FindConfig<ProductCategoryDTO>,
     sharedContext?: SharedContext
   ): Promise<ProductCategoryDTO[]>
+
+  create(data: CreateProductDTO[]): Promise<ProductDTO>
 }

@@ -6,7 +6,7 @@ import {
   LoadStrategy,
 } from "@mikro-orm/core"
 import { deduplicateIfNecessary } from "../utils"
-import { DAL } from "@medusajs/types"
+import { CreateProductOnlyDTO, DAL } from "@medusajs/types"
 
 export class ProductRepository implements DAL.RepositoryService<Product> {
   protected readonly manager_: SqlEntityManager
@@ -14,9 +14,26 @@ export class ProductRepository implements DAL.RepositoryService<Product> {
     this.manager_ = manager.fork()
   }
 
+  async getTransactionManager(
+    transaction?: unknown,
+    callback: (transactionManager: unknown) => Promise<unknown>
+  ): Promise<SqlEntityManager> {
+    const forkedManager = this.manager_.fork()
+    forkedManager.begin({ ctx: { transaction } })
+
+    try {
+      const result = await callback(forkedManager)
+      forkedManager.persist(result)
+      await forkedManager.commit()
+    } catch (e) {
+      await forkedManager.rollback()
+      throw e
+    }
+  }
+
   async find(
     findOptions: DAL.FindOptions<Product> = { where: {} },
-    context: { transaction?: any } = {}
+    context: { transaction?: unknown } = {}
   ): Promise<Product[]> {
     // Spread is used to cssopy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
@@ -47,7 +64,7 @@ export class ProductRepository implements DAL.RepositoryService<Product> {
 
   async findAndCount(
     findOptions: DAL.FindOptions<Product> = { where: {} },
-    context: { transaction?: any } = {}
+    context: { transaction?: unknown } = {}
   ): Promise<[Product[], number]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
@@ -108,5 +125,21 @@ export class ProductRepository implements DAL.RepositoryService<Product> {
         }
       }
     }
+  }
+
+  async create(
+    data: CreateProductOnlyDTO[],
+    context: { transaction?: unknown } = {}
+  ): Promise<Product[]> {
+    const manager = context.transaction ?? this.manager_
+    const forkedManager = manager.fork()
+
+    const products: Product[] = []
+    data.forEach((product) => {
+      products.push(forkedManager.create(Product, product))
+    })
+
+    await forkedManager.persistAndFlush(products)
+    return products
   }
 }

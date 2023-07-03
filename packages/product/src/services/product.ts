@@ -1,6 +1,13 @@
 import { ProductTagService, ProductVariantService } from "@services"
 import { Product } from "@models"
-import { DAL, FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
+import {
+  CreateProductDTO,
+  DAL,
+  FindConfig,
+  ProductDTO,
+  ProductTypes,
+  SharedContext,
+} from "@medusajs/types"
 import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
@@ -58,5 +65,20 @@ export default class ProductService<TEntity = Product> {
 
     const queryOptions = buildQuery<TEntity>(filters, config)
     return await this.productRepository_.findAndCount(queryOptions)
+  }
+
+  async create(
+    data: CreateProductDTO,
+    sharedContext?: SharedContext
+  ): Promise<ProductDTO> {
+    if (!data.thumbnail && data.images.length) {
+      data.thumbnail = data.images[0]
+    }
+
+    // TODO
+    // Shipping profile is not part of the module
+    // as well as sales channel
+
+    this.productRepository_.create
   }
 }

@@ -164,3 +164,96 @@ export interface FilterableProductCategoryProps
   is_internal?: boolean
   include_descendants_tree?: boolean
 }
+
+/**
+ * Write DTO (module API input)
+ */
+
+export interface CreateProductTypeDTO {
+  id?: string
+  value: string
+}
+
+export interface CreateProductTagsDTO {
+  id?: string
+  value: string
+}
+
+export interface CreateProductOptionDTO {
+  title: string
+}
+
+export interface CreateProductVariantOptionDTO {
+  value: string
+}
+
+export interface CreateProductVariantDTO {
+  title: string
+  sku?: string
+  barcode?: string
+  ean?: string
+  upc?: string
+  inventory_quantity?: number
+  allow_backorder?: boolean
+  manage_inventory?: boolean
+  hs_code?: string
+  origin_country?: string
+  mid_code?: string
+  material?: string
+  weight?: number
+  length?: number
+  height?: number
+  width?: number
+  options?: CreateProductVariantOptionDTO[]
+  metadata?: Record<string, unknown>
+}
+
+export interface CreateProductDTO {
+  title: string
+  subtitle?: string
+  description?: string
+  is_giftcard?: boolean
+  discountable?: boolean
+  images?: string[]
+  thumbnail?: string
+  handle?: string
+  status?: ProductStatus
+  type?: CreateProductTypeDTO
+  collection_id?: string
+  tags?: CreateProductTagsDTO[]
+  // sales_channel
+  categories?: { id: string }[]
+  options?: CreateProductOptionDTO[]
+  variants?: CreateProductVariantDTO[]
+  width?: number
+  height?: number
+  length?: number
+  weight?: number
+  origin_country?: string
+  hs_code?: string
+  material?: string
+  mid_code?: string
+  metadata?: Record<string, unknown>
+}
+
+export interface CreateProductOnlyDTO {
+  title: string
+  subtitle?: string
+  description?: string
+  is_giftcard?: boolean
+  discountable?: boolean
+  images?: string[]
+  thumbnail?: string
+  handle?: string
+  status?: ProductStatus
+  collection_id?: string
+  width?: number
+  height?: number
+  length?: number
+  weight?: number
+  origin_country?: string
+  hs_code?: string
+  material?: string
+  mid_code?: string
+  metadata?: Record<string, unknown>
+}
