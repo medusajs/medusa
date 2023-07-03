@@ -113,7 +113,7 @@ export class ProductTagRepository extends BaseRepository<ProductTag> {
         newTags.push(this.manager_.create(ProductTag, tag))
       })
 
-      await this.manager_.persistAndFlush(newTags)
+      await this.manager_.persist(newTags)
       upsertedTags.push(...newTags)
     }
 
