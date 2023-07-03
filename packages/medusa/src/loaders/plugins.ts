@@ -573,7 +573,6 @@ function registerRepositories(
  * @param {object} container - the container where the services will be
  *    registered
  * @param rootDirectory
- * @param rootDirectory
  * @param pathGlob
  * @return {void}
  */
