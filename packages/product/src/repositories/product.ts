@@ -1,4 +1,3 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Product } from "@models"
 import {
   FilterQuery as MikroFilterQuery,
@@ -6,34 +5,18 @@ import {
   LoadStrategy,
 } from "@mikro-orm/core"
 import { deduplicateIfNecessary } from "../utils"
-import { CreateProductOnlyDTO, DAL } from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
+import { DalRepositoryBase } from "./base"
 
-export class ProductRepository implements DAL.RepositoryService<Product> {
-  protected readonly manager_: SqlEntityManager
-  constructor({ manager }) {
-    this.manager_ = manager.fork()
-  }
-
-  async getTransactionManager(
-    transaction?: unknown,
-    callback: (transactionManager: unknown) => Promise<unknown>
-  ): Promise<SqlEntityManager> {
-    const forkedManager = this.manager_.fork()
-    forkedManager.begin({ ctx: { transaction } })
-
-    try {
-      const result = await callback(forkedManager)
-      forkedManager.persist(result)
-      await forkedManager.commit()
-    } catch (e) {
-      await forkedManager.rollback()
-      throw e
-    }
+export class ProductRepository extends DalRepositoryBase<Product> {
+  constructor() {
+    // @ts-ignore
+    super(...arguments)
   }
 
   async find(
     findOptions: DAL.FindOptions<Product> = { where: {} },
-    context: { transaction?: unknown } = {}
+    context: Context = {}
   ): Promise<Product[]> {
     // Spread is used to cssopy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
@@ -45,8 +28,8 @@ export class ProductRepository implements DAL.RepositoryService<Product> {
       deduplicateIfNecessary(findOptions_.options.populate)
     }
 
-    if (context.transaction) {
-      Object.assign(findOptions_.options, { ctx: context.transaction })
+    if (context.transactionManager) {
+      Object.assign(findOptions_.options, { ctx: context.transactionManager })
     }
 
     Object.assign(findOptions_.options, {
@@ -64,7 +47,7 @@ export class ProductRepository implements DAL.RepositoryService<Product> {
 
   async findAndCount(
     findOptions: DAL.FindOptions<Product> = { where: {} },
-    context: { transaction?: unknown } = {}
+    context: Context = {}
   ): Promise<[Product[], number]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
@@ -76,8 +59,8 @@ export class ProductRepository implements DAL.RepositoryService<Product> {
       deduplicateIfNecessary(findOptions_.options.populate)
     }
 
-    if (context.transaction) {
-      Object.assign(findOptions_.options, { ctx: context.transaction })
+    if (context.transactionManager) {
+      Object.assign(findOptions_.options, { ctx: context.transactionManager })
     }
 
     Object.assign(findOptions_.options, {
@@ -125,21 +108,5 @@ export class ProductRepository implements DAL.RepositoryService<Product> {
         }
       }
     }
-  }
-
-  async create(
-    data: CreateProductOnlyDTO[],
-    context: { transaction?: unknown } = {}
-  ): Promise<Product[]> {
-    const manager = context.transaction ?? this.manager_
-    const forkedManager = manager.fork()
-
-    const products: Product[] = []
-    data.forEach((product) => {
-      products.push(forkedManager.create(Product, product))
-    })
-
-    await forkedManager.persistAndFlush(products)
-    return products
   }
 }

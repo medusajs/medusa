@@ -57,6 +57,14 @@ describe("Product Service", () => {
     await TestDatabase.clearDatabase()
   })
 
+  describe("create", function () {
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+    })
+
+    it("should create a product", async () => {})
+  })
+
   describe("list", () => {
     describe("relation: tags", () => {
       beforeEach(async () => {

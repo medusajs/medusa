@@ -3,16 +3,17 @@ import { LoaderOptions } from "@medusajs/modules-sdk"
 import { asClass } from "awilix"
 import {
   ProductCategoryService,
+  ProductCollectionService,
   ProductModuleService,
   ProductService,
   ProductTagService,
   ProductVariantService,
-  ProductCollectionService,
 } from "@services"
 import * as DefaultRepositories from "@repositories"
 import {
   ProductCategoryRepository,
   ProductCollectionRepository,
+  ProductImageRepository,
   ProductRepository,
   ProductTagRepository,
   ProductVariantRepository,
@@ -23,6 +24,8 @@ import {
 } from "../types"
 import { Constructor, DAL } from "@medusajs/types"
 import { lowerCaseFirst } from "@medusajs/utils"
+import { BaseRepository } from "../repositories/base"
+import ProductImageService from "../services/product-image"
 
 export default async ({
   container,
@@ -42,6 +45,7 @@ export default async ({
     productVariantService: asClass(ProductVariantService).singleton(),
     productTagService: asClass(ProductTagService).singleton(),
     productCollectionService: asClass(ProductCollectionService).singleton(),
+    productImageService: asClass(ProductImageService).singleton(),
   })
 
   if (customRepositories) {
@@ -53,13 +57,15 @@ export default async ({
 
 function loadDefaultRepositories({ container }) {
   container.register({
-    productRepository: asClass(ProductRepository).singleton(),
-    productVariantRepository: asClass(ProductVariantRepository).singleton(),
-    productTagRepository: asClass(ProductTagRepository).singleton(),
+    baseRepository: asClass(BaseRepository).singleton(),
+    productImageRepository: asClass(ProductImageRepository).singleton(),
     productCategoryRepository: asClass(ProductCategoryRepository).singleton(),
     productCollectionRepository: asClass(
       ProductCollectionRepository
     ).singleton(),
+    productRepository: asClass(ProductRepository).singleton(),
+    productTagRepository: asClass(ProductTagRepository).singleton(),
+    productVariantRepository: asClass(ProductVariantRepository).singleton(),
   })
 }
 

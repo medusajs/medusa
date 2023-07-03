@@ -14,15 +14,15 @@ import Product from "./product"
 type OptionalRelations = "collection" | "type"
 type OptionalFields = "deleted_at"
 
-@Entity({ tableName: "product_tag" })
-class ProductTag {
+@Entity({ tableName: "image" })
+class Image {
   [OptionalProps]?: OptionalRelations | OptionalFields
 
   @PrimaryKey({ columnType: "text" })
   id!: string
 
   @Property({ columnType: "text" })
-  value: string
+  url: string
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
@@ -30,13 +30,13 @@ class ProductTag {
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date
 
-  @ManyToMany(() => Product, (product) => product.tags)
+  @ManyToMany(() => Product, (product) => product.images)
   products = new Collection<Product>(this)
 
   @BeforeCreate()
   onCreate() {
-    this.id = generateEntityId(this.id, "ptag")
+    this.id = generateEntityId(this.id, "img")
   }
 }
 
-export default ProductTag
+export default Image

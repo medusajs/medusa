@@ -1,23 +1,24 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
+  RequiredEntityData,
 } from "@mikro-orm/core"
 import { deduplicateIfNecessary } from "../utils"
 import { ProductTag } from "@models"
-import { DAL } from "@medusajs/types"
+import { Context, CreateProductTagDTO, DAL } from "@medusajs/types"
+import { DalRepositoryBase } from "./base"
 
-export class ProductTagRepository implements DAL.RepositoryService {
-  protected readonly manager_: SqlEntityManager
-  constructor({ manager }) {
-    this.manager_ = manager.fork()
+export class ProductTagRepository extends DalRepositoryBase<ProductTag> {
+  constructor() {
+    // @ts-ignore
+    super(...arguments)
   }
 
-  async find<T = ProductTag>(
-    findOptions: DAL.FindOptions<T> = { where: {} },
-    context: { transaction?: any } = {}
-  ): Promise<T[]> {
+  async find(
+    findOptions: DAL.FindOptions<ProductTag> = { where: {} },
+    context: Context = {}
+  ): Promise<ProductTag[]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
 
@@ -28,25 +29,25 @@ export class ProductTagRepository implements DAL.RepositoryService {
       deduplicateIfNecessary(findOptions_.options.populate)
     }
 
-    if (context.transaction) {
-      Object.assign(findOptions_.options, { ctx: context.transaction })
+    if (context.transactionManager) {
+      Object.assign(findOptions_.options, { ctx: context.transactionManager })
     }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return (await this.manager_.find(
+    return await this.manager_.find(
       ProductTag,
       findOptions_.where as MikroFilterQuery<ProductTag>,
       findOptions_.options as MikroOptions<ProductTag>
-    )) as unknown as T[]
+    )
   }
 
-  async findAndCount<T = ProductTag>(
-    findOptions: DAL.FindOptions<T> = { where: {} },
-    context: { transaction?: any } = {}
-  ): Promise<[T[], number]> {
+  async findAndCount(
+    findOptions: DAL.FindOptions<ProductTag> = { where: {} },
+    context: Context = {}
+  ): Promise<[ProductTag[], number]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
 
@@ -57,18 +58,64 @@ export class ProductTagRepository implements DAL.RepositoryService {
       deduplicateIfNecessary(findOptions_.options.populate)
     }
 
-    if (context.transaction) {
-      Object.assign(findOptions_.options, { ctx: context.transaction })
+    if (context.transactionManager) {
+      Object.assign(findOptions_.options, { ctx: context.transactionManager })
     }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return (await this.manager_.findAndCount(
+    return await this.manager_.findAndCount(
       ProductTag,
       findOptions_.where as MikroFilterQuery<ProductTag>,
       findOptions_.options as MikroOptions<ProductTag>
-    )) as unknown as [T[], number]
+    )
+  }
+
+  async upsert(
+    tags: CreateProductTagDTO[],
+    context: Context = {}
+  ): Promise<ProductTag[]> {
+    const tagsValues = tags.map((tag) => tag.value)
+    const existingTags = await this.find(
+      {
+        where: {
+          value: {
+            $in: tagsValues,
+          },
+        },
+      },
+      context
+    )
+
+    const existingTagsMap = new Map(
+      existingTags.map<[string, ProductTag]>((tag) => [tag.value, tag])
+    )
+
+    const upsertedTags: ProductTag[] = []
+    const tagsToCreate: RequiredEntityData<ProductTag>[] = []
+
+    tags.forEach((tag) => {
+      const aTag = existingTagsMap.get(tag.value)
+      if (aTag) {
+        upsertedTags.push(aTag)
+      } else {
+        const newTag = this.manager_.create(ProductTag, tag)
+        tagsToCreate.push(newTag)
+      }
+    })
+
+    if (tagsToCreate.length) {
+      const newTags: ProductTag[] = []
+      tagsToCreate.forEach((tag) => {
+        newTags.push(this.manager_.create(ProductTag, tag))
+      })
+
+      await this.manager_.persistAndFlush(newTags)
+      upsertedTags.push(...newTags)
+    }
+
+    return upsertedTags
   }
 }

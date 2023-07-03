@@ -1,4 +1,3 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
@@ -6,22 +5,20 @@ import {
 } from "@mikro-orm/core"
 import { deduplicateIfNecessary } from "../utils"
 import { ProductCategory } from "@models"
-import { DAL, ProductCategoryTransformOptions } from "@medusajs/types"
+import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
+import { DalTreeRepositoryBase } from "./base"
 
-export class ProductCategoryRepository
-  implements DAL.RepositoryService<ProductCategory>
-{
-  protected readonly manager_: SqlEntityManager
-
-  constructor({ manager }) {
-    this.manager_ = manager.fork()
+export class ProductCategoryRepository extends DalTreeRepositoryBase<ProductCategory> {
+  constructor() {
+    // @ts-ignore
+    super(...arguments)
   }
 
   async find(
     findOptions: DAL.FindOptions<ProductCategory> = { where: {} },
     transformOptions: ProductCategoryTransformOptions = {},
-    context: { transaction?: any } = {}
+    context: Context = {}
   ): Promise<ProductCategory[]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
@@ -43,8 +40,8 @@ export class ProductCategoryRepository
       deduplicateIfNecessary(findOptions_.options.populate)
     }
 
-    if (context.transaction) {
-      Object.assign(findOptions_.options, { ctx: context.transaction })
+    if (context.transactionManager) {
+      Object.assign(findOptions_.options, { ctx: context.transactionManager })
     }
 
     Object.assign(findOptions_.options, {
@@ -111,7 +108,7 @@ export class ProductCategoryRepository
   async findAndCount(
     findOptions: DAL.FindOptions<ProductCategory> = { where: {} },
     transformOptions: ProductCategoryTransformOptions = {},
-    context: { transaction?: any } = {}
+    context: Context = {}
   ): Promise<[ProductCategory[], number]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
@@ -123,8 +120,8 @@ export class ProductCategoryRepository
       deduplicateIfNecessary(findOptions_.options.populate)
     }
 
-    if (context.transaction) {
-      Object.assign(findOptions_.options, { ctx: context.transaction })
+    if (context.transactionManager) {
+      Object.assign(findOptions_.options, { ctx: context.transactionManager })
     }
 
     Object.assign(findOptions_.options, {

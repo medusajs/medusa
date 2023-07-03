@@ -20,6 +20,7 @@ import ProductOption from "./product-option"
 import ProductTag from "./product-tag"
 import ProductType from "./product-type"
 import ProductVariant from "./product-variant"
+import Image from "./image"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =
@@ -57,9 +58,6 @@ class Product {
 
   @Enum(() => ProductTypes.ProductStatus)
   status!: ProductTypes.ProductStatus
-
-  // TODO: add images model
-  // images: Image[]
 
   @Property({ columnType: "text", nullable: true })
   thumbnail?: string | null
@@ -109,6 +107,12 @@ class Product {
     index: "IDX_product_tag_id",
   })
   tags = new Collection<ProductTag>(this)
+
+  @ManyToMany(() => Image, "products", {
+    pivotTable: "product_images",
+    index: "IDX_product_image_id",
+  })
+  images = new Collection<Image>(this)
 
   @ManyToMany(() => ProductCategory, "products", {
     owner: true,

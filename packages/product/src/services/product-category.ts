@@ -1,13 +1,13 @@
 import { ProductCategory } from "@models"
-import { DAL, FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
+import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
-  productCategoryRepository: DAL.RepositoryService
+  productCategoryRepository: DAL.TreeRepositoryService
 }
 
 export default class ProductCategoryService<TEntity = ProductCategory> {
-  protected readonly productCategoryRepository_: DAL.RepositoryService
+  protected readonly productCategoryRepository_: DAL.TreeRepositoryService
 
   constructor({ productCategoryRepository }: InjectedDependencies) {
     this.productCategoryRepository_ = productCategoryRepository
@@ -16,10 +16,10 @@ export default class ProductCategoryService<TEntity = ProductCategory> {
   async list(
     filters: ProductTypes.FilterableProductCategoryProps = {},
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
-    sharedContext?: SharedContext
+    sharedContext?: Context
   ): Promise<TEntity[]> {
     const transformOptions = {
-      includeDescendantsTree: filters?.include_descendants_tree || false
+      includeDescendantsTree: filters?.include_descendants_tree || false,
     }
     delete filters.include_descendants_tree
 
@@ -28,7 +28,7 @@ export default class ProductCategoryService<TEntity = ProductCategory> {
 
     return await this.productCategoryRepository_.find(
       queryOptions,
-      transformOptions,
+      transformOptions
     )
   }
 }

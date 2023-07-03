@@ -1,5 +1,5 @@
 import { ProductVariant } from "@models"
-import { DAL, FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
+import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
@@ -16,9 +16,12 @@ export default class ProductVariantService<TEntity = ProductVariant> {
   async list(
     filters: ProductTypes.FilterableProductVariantProps = {},
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
-    sharedContext?: SharedContext
+    sharedContext?: Context
   ): Promise<TEntity[]> {
     const queryOptions = buildQuery<TEntity>(filters, config)
-    return await this.productVariantRepository_.find(queryOptions)
+    return await this.productVariantRepository_.find(
+      queryOptions,
+      sharedContext
+    )
   }
 }

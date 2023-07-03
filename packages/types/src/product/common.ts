@@ -174,7 +174,7 @@ export interface CreateProductTypeDTO {
   value: string
 }
 
-export interface CreateProductTagsDTO {
+export interface CreateProductTagDTO {
   id?: string
   value: string
 }
@@ -193,9 +193,7 @@ export interface CreateProductVariantDTO {
   barcode?: string
   ean?: string
   upc?: string
-  inventory_quantity?: number
   allow_backorder?: boolean
-  manage_inventory?: boolean
   hs_code?: string
   origin_country?: string
   mid_code?: string
@@ -220,7 +218,7 @@ export interface CreateProductDTO {
   status?: ProductStatus
   type?: CreateProductTypeDTO
   collection_id?: string
-  tags?: CreateProductTagsDTO[]
+  tags?: CreateProductTagDTO[]
   // sales_channel
   categories?: { id: string }[]
   options?: CreateProductOptionDTO[]
@@ -256,4 +254,8 @@ export interface CreateProductOnlyDTO {
   material?: string
   mid_code?: string
   metadata?: Record<string, unknown>
+  options?: { id: string }[]
+  tags?: { id: string }[]
+  categories?: { id: string }[]
+  type_id?: string
 }

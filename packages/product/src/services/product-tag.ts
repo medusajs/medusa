@@ -1,5 +1,11 @@
 import { ProductTag } from "@models"
-import { DAL, FindConfig, ProductTypes, SharedContext } from "@medusajs/types"
+import {
+  Context,
+  CreateProductTagDTO,
+  DAL,
+  FindConfig,
+  ProductTypes,
+} from "@medusajs/types"
 import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
@@ -16,7 +22,7 @@ export default class ProductTagService<TEntity = ProductTag> {
   async list(
     filters: ProductTypes.FilterableProductTagProps = {},
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
-    sharedContext?: SharedContext
+    sharedContext?: Context
   ): Promise<TEntity[]> {
     const queryOptions = buildQuery<TEntity>(filters, config)
 
@@ -24,6 +30,10 @@ export default class ProductTagService<TEntity = ProductTag> {
       queryOptions.where["value"] = { $ilike: filters.value }
     }
 
-    return await this.productTagRepository_.find(queryOptions)
+    return await this.productTagRepository_.find(queryOptions, sharedContext)
+  }
+
+  upsert(tags: CreateProductTagDTO[], sharedContext?: Context) {
+    return this.productTagRepository_.upsert(tags, sharedContext)
   }
 }

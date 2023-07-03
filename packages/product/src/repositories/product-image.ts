@@ -2,22 +2,23 @@ import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
+  RequiredEntityData,
 } from "@mikro-orm/core"
 import { deduplicateIfNecessary } from "../utils"
-import { ProductVariant } from "@models"
 import { Context, DAL } from "@medusajs/types"
+import { Image } from "@models"
 import { DalRepositoryBase } from "./base"
 
-export class ProductVariantRepository extends DalRepositoryBase<ProductVariant> {
+export class ProductImageRepository extends DalRepositoryBase<Image> {
   constructor() {
     // @ts-ignore
     super(...arguments)
   }
 
   async find(
-    findOptions: DAL.FindOptions<ProductVariant> = { where: {} },
+    findOptions: DAL.FindOptions<Image> = { where: {} },
     context: Context = {}
-  ): Promise<ProductVariant[]> {
+  ): Promise<Image[]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
 
@@ -37,16 +38,16 @@ export class ProductVariantRepository extends DalRepositoryBase<ProductVariant> 
     })
 
     return await this.manager_.find(
-      ProductVariant,
-      findOptions_.where as MikroFilterQuery<ProductVariant>,
-      findOptions_.options as MikroOptions<ProductVariant>
+      Image,
+      findOptions_.where as MikroFilterQuery<Image>,
+      findOptions_.options as MikroOptions<Image>
     )
   }
 
   async findAndCount(
-    findOptions: DAL.FindOptions<ProductVariant> = { where: {} },
+    findOptions: DAL.FindOptions<Image> = { where: {} },
     context: Context = {}
-  ): Promise<[ProductVariant[], number]> {
+  ): Promise<[Image[], number]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
 
@@ -66,9 +67,51 @@ export class ProductVariantRepository extends DalRepositoryBase<ProductVariant> 
     })
 
     return await this.manager_.findAndCount(
-      ProductVariant,
-      findOptions_.where as MikroFilterQuery<ProductVariant>,
-      findOptions_.options as MikroOptions<ProductVariant>
+      Image,
+      findOptions_.where as MikroFilterQuery<Image>,
+      findOptions_.options as MikroOptions<Image>
     )
+  }
+
+  async upsert(urls: string[], context: Context = {}): Promise<Image[]> {
+    const existingImages = await this.find(
+      {
+        where: {
+          url: {
+            $in: urls,
+          },
+        },
+      },
+      context
+    )
+
+    const existingImagesMap = new Map(
+      existingImages.map<[string, Image]>((img) => [img.url, img])
+    )
+
+    const upsertedImgs: Image[] = []
+    const imageToCreate: RequiredEntityData<Image>[] = []
+
+    urls.forEach((url) => {
+      const aImg = existingImagesMap.get(url)
+      if (aImg) {
+        upsertedImgs.push(aImg)
+      } else {
+        const newImg = this.manager_.create(Image, { url })
+        imageToCreate.push(newImg)
+      }
+    })
+
+    if (imageToCreate.length) {
+      const newImgs: Image[] = []
+      imageToCreate.forEach((img) => {
+        newImgs.push(this.manager_.create(Image, img))
+      })
+
+      await this.manager_.persistAndFlush(newImgs)
+      upsertedImgs.push(...newImgs)
+    }
+
+    return upsertedImgs
   }
 }

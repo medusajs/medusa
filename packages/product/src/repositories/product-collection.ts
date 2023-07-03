@@ -1,4 +1,3 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductCollection } from "@models"
 import {
   FilterQuery as MikroFilterQuery,
@@ -6,18 +5,19 @@ import {
   LoadStrategy,
 } from "@mikro-orm/core"
 import { deduplicateIfNecessary } from "../utils"
-import { DAL } from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
+import { DalRepositoryBase } from "./base"
 
-export class ProductCollectionRepository implements DAL.RepositoryService {
-  protected readonly manager_: SqlEntityManager
-  constructor({ manager }) {
-    this.manager_ = manager.fork()
+export class ProductCollectionRepository extends DalRepositoryBase<ProductCollection> {
+  constructor() {
+    // @ts-ignore
+    super(...arguments)
   }
 
-  async find<T = ProductCollection>(
-    findOptions: DAL.FindOptions<T> = { where: {} },
-    context: { transaction?: any } = {}
-  ): Promise<T[]> {
+  async find(
+    findOptions: DAL.FindOptions<ProductCollection> = { where: {} },
+    context: Context = {}
+  ): Promise<ProductCollection[]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
 
@@ -28,25 +28,25 @@ export class ProductCollectionRepository implements DAL.RepositoryService {
       deduplicateIfNecessary(findOptions_.options.populate)
     }
 
-    if (context.transaction) {
-      Object.assign(findOptions_.options, { ctx: context.transaction })
+    if (context.transactionManager) {
+      Object.assign(findOptions_.options, { ctx: context.transactionManager })
     }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return (await this.manager_.find(
+    return await this.manager_.find(
       ProductCollection,
       findOptions_.where as MikroFilterQuery<ProductCollection>,
       findOptions_.options as MikroOptions<ProductCollection>
-    )) as unknown as T[]
+    )
   }
 
-  async findAndCount<T = ProductCollection>(
-    findOptions: DAL.FindOptions<T> = { where: {} },
-    context: { transaction?: any } = {}
-  ): Promise<[T[], number]> {
+  async findAndCount(
+    findOptions: DAL.FindOptions<ProductCollection> = { where: {} },
+    context: Context = {}
+  ): Promise<[ProductCollection[], number]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
 
@@ -57,18 +57,18 @@ export class ProductCollectionRepository implements DAL.RepositoryService {
       deduplicateIfNecessary(findOptions_.options.populate)
     }
 
-    if (context.transaction) {
-      Object.assign(findOptions_.options, { ctx: context.transaction })
+    if (context.transactionManager) {
+      Object.assign(findOptions_.options, { ctx: context.transactionManager })
     }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return (await this.manager_.findAndCount(
+    return await this.manager_.findAndCount(
       ProductCollection,
       findOptions_.where as MikroFilterQuery<ProductCollection>,
       findOptions_.options as MikroOptions<ProductCollection>
-    )) as unknown as [T[], number]
+    )
   }
 }
