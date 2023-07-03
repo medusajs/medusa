@@ -7,6 +7,7 @@ import {
   ProductModuleService,
   ProductService,
   ProductTagService,
+  ProductTypeService,
   ProductVariantService,
 } from "@services"
 import * as DefaultRepositories from "@repositories"
@@ -26,6 +27,7 @@ import { Constructor, DAL } from "@medusajs/types"
 import { lowerCaseFirst } from "@medusajs/utils"
 import { BaseRepository } from "../repositories/base"
 import ProductImageService from "../services/product-image"
+import { ProductTypeRepository } from "../repositories/product-type"
 
 export default async ({
   container,
@@ -46,6 +48,7 @@ export default async ({
     productTagService: asClass(ProductTagService).singleton(),
     productCollectionService: asClass(ProductCollectionService).singleton(),
     productImageService: asClass(ProductImageService).singleton(),
+    productTypeService: asClass(ProductTypeService).singleton(),
   })
 
   if (customRepositories) {
@@ -65,6 +68,7 @@ function loadDefaultRepositories({ container }) {
     ).singleton(),
     productRepository: asClass(ProductRepository).singleton(),
     productTagRepository: asClass(ProductTagRepository).singleton(),
+    productTypeRepository: asClass(ProductTypeRepository).singleton(),
     productVariantRepository: asClass(ProductVariantRepository).singleton(),
   })
 }

@@ -3,6 +3,7 @@ import {
   ProductCollectionService,
   ProductService,
   ProductTagService,
+  ProductTypeService,
   ProductVariantService,
 } from "@services"
 import {
@@ -11,10 +12,18 @@ import {
   ProductCategory,
   ProductCollection,
   ProductTag,
+  ProductType,
   ProductVariant,
 } from "@models"
-import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
+import {
+  Context,
+  CreateProductOnlyDTO,
+  DAL,
+  FindConfig,
+  ProductTypes,
+} from "@medusajs/types"
 import ProductImageService from "./product-image"
+import { isDefined, kebabCase } from "@medusajs/utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -24,6 +33,7 @@ type InjectedDependencies = {
   productCategoryService: ProductCategoryService<any>
   productCollectionService: ProductCollectionService<any>
   productImageService: ProductImageService<any>
+  productTypeService: ProductTypeService<any>
 }
 
 export default class ProductModuleService<
@@ -32,7 +42,8 @@ export default class ProductModuleService<
   TProductTag = ProductTag,
   TProductCollection = ProductCollection,
   TProductCategory = ProductCategory,
-  TProductImage = Image
+  TProductImage = Image,
+  TProductType = ProductType
 > implements
     ProductTypes.IProductModuleService<
       TProduct,
@@ -40,16 +51,18 @@ export default class ProductModuleService<
       TProductTag,
       TProductCollection,
       TProductCategory,
-      TProductImage
+      TProductImage,
+      TProductType
     >
 {
   protected baseRepository_: DAL.RepositoryService
   protected readonly productService_: ProductService<TProduct>
-  protected readonly productVariantService: ProductVariantService<TProductVariant>
-  protected readonly productCategoryService: ProductCategoryService<TProductCategory>
-  protected readonly productTagService: ProductTagService<TProductTag>
-  protected readonly productCollectionService: ProductCollectionService<TProductCollection>
-  protected readonly productImageService: ProductImageService<TProductImage>
+  protected readonly productVariantService_: ProductVariantService<TProductVariant>
+  protected readonly productCategoryService_: ProductCategoryService<TProductCategory>
+  protected readonly productTagService_: ProductTagService<TProductTag>
+  protected readonly productCollectionService_: ProductCollectionService<TProductCollection>
+  protected readonly productImageService_: ProductImageService<TProductImage>
+  protected readonly productTypeService_: ProductTypeService<TProductImage>
 
   constructor({
     baseRepository,
@@ -59,14 +72,16 @@ export default class ProductModuleService<
     productCategoryService,
     productCollectionService,
     productImageService,
+    productTypeService,
   }: InjectedDependencies) {
     this.baseRepository_ = baseRepository
     this.productService_ = productService
-    this.productVariantService = productVariantService
-    this.productTagService = productTagService
-    this.productCategoryService = productCategoryService
-    this.productCollectionService = productCollectionService
-    this.productImageService = productImageService
+    this.productVariantService_ = productVariantService
+    this.productTagService_ = productTagService
+    this.productCategoryService_ = productCategoryService
+    this.productCollectionService_ = productCollectionService
+    this.productImageService_ = productImageService
+    this.productTypeService_ = productTypeService
   }
 
   async list(
@@ -102,7 +117,7 @@ export default class ProductModuleService<
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: Context
   ): Promise<ProductTypes.ProductVariantDTO[]> {
-    const variants = await this.productVariantService.list(
+    const variants = await this.productVariantService_.list(
       filters,
       config,
       sharedContext
@@ -116,7 +131,7 @@ export default class ProductModuleService<
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
     sharedContext?: Context
   ): Promise<ProductTypes.ProductTagDTO[]> {
-    const tags = await this.productTagService.list(
+    const tags = await this.productTagService_.list(
       filters,
       config,
       sharedContext
@@ -130,7 +145,7 @@ export default class ProductModuleService<
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
     sharedContext?: Context
   ): Promise<ProductTypes.ProductCollectionDTO[]> {
-    const collections = await this.productCollectionService.list(
+    const collections = await this.productCollectionService_.list(
       filters,
       config,
       sharedContext
@@ -144,7 +159,7 @@ export default class ProductModuleService<
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
     sharedContext?: Context
   ): Promise<ProductTypes.ProductCategoryDTO[]> {
-    const categories = await this.productCategoryService.list(
+    const categories = await this.productCategoryService_.list(
       filters,
       config,
       sharedContext
@@ -165,42 +180,56 @@ export default class ProductModuleService<
 
         const productVariantsMap = new Map<
           string,
-          ProductTypes.CreateProductVariantDTO
+          ProductTypes.CreateProductVariantDTO[]
         >()
 
-        const productsData: ProductTypes.CreateProductOnlyDTO[] =
-          await Promise.all(
-            data.map(async (product) => {
-              const variants = product.variants
-              delete product.variants
+        const productsData = await Promise.all(
+          data.map(async (product) => {
+            const variants = product.variants
+            delete product.variants
 
-              if (!product.thumbnail && product.images?.length) {
-                product.thumbnail = product.images[0]
-              }
+            if (!product.handle) {
+              product.handle = kebabCase(product.title)
+            }
 
-              if (product.is_giftcard) {
-                product.discountable = false
-              }
+            productVariantsMap.set(product.handle!, variants ?? [])
 
-              if (product.images?.length) {
-                product.images = (
-                  await this.productImageService.upsert(
-                    product.images,
-                    sharedContext
-                  )
-                ).map((image) => (image as Image).url)
-              }
+            if (!product.thumbnail && product.images?.length) {
+              product.thumbnail = product.images[0]
+            }
 
-              if (product.tags?.length) {
-                product.tags = (await this.productTagService.upsert(
-                  product.tags,
+            if (product.is_giftcard) {
+              product.discountable = false
+            }
+
+            if (product.images?.length) {
+              product.images = (
+                await this.productImageService_.upsert(
+                  product.images,
                   sharedContext
-                )) as ProductTag[]
-              }
+                )
+              ).map((image) => (image as unknown as Image).url)
+            }
 
-              return product
-            })
-          )
+            if (product.tags?.length) {
+              product.tags = (await this.productTagService_.upsert(
+                product.tags,
+                sharedContext
+              )) as unknown as ProductTag[]
+            }
+
+            if (isDefined(product.type)) {
+              product.type_id = (
+                (await this.productTagService_.upsert(
+                  [product.type],
+                  sharedContext
+                )) as unknown as ProductType[]
+              )?.[0]!.id
+            }
+
+            return product as CreateProductOnlyDTO
+          })
+        )
 
         // TODO
         // Shipping profile is not part of the module

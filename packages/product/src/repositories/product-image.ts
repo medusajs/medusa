@@ -7,9 +7,9 @@ import {
 import { deduplicateIfNecessary } from "../utils"
 import { Context, DAL } from "@medusajs/types"
 import { Image } from "@models"
-import { DalRepositoryBase } from "./base"
+import { BaseRepository } from "./base"
 
-export class ProductImageRepository extends DalRepositoryBase<Image> {
+export class ProductImageRepository extends BaseRepository<Image> {
   constructor() {
     // @ts-ignore
     super(...arguments)

@@ -7,9 +7,9 @@ import { deduplicateIfNecessary } from "../utils"
 import { ProductCategory } from "@models"
 import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
-import { DalTreeRepositoryBase } from "./base"
+import { AbstractTreeRepositoryBase } from "./base"
 
-export class ProductCategoryRepository extends DalTreeRepositoryBase<ProductCategory> {
+export class ProductCategoryRepository extends AbstractTreeRepositoryBase<ProductCategory> {
   constructor() {
     // @ts-ignore
     super(...arguments)

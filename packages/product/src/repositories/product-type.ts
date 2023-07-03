@@ -5,20 +5,20 @@ import {
   RequiredEntityData,
 } from "@mikro-orm/core"
 import { deduplicateIfNecessary } from "../utils"
-import { ProductTag } from "@models"
-import { Context, CreateProductTagDTO, DAL } from "@medusajs/types"
+import { ProductType } from "@models"
+import { Context, CreateProductTypeDTO, DAL } from "@medusajs/types"
 import { BaseRepository } from "./base"
 
-export class ProductTagRepository extends BaseRepository<ProductTag> {
+export class ProductTypeRepository extends BaseRepository<ProductType> {
   constructor() {
     // @ts-ignore
     super(...arguments)
   }
 
   async find(
-    findOptions: DAL.FindOptions<ProductTag> = { where: {} },
+    findOptions: DAL.FindOptions<ProductType> = { where: {} },
     context: Context = {}
-  ): Promise<ProductTag[]> {
+  ): Promise<ProductType[]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
 
@@ -38,16 +38,16 @@ export class ProductTagRepository extends BaseRepository<ProductTag> {
     })
 
     return await this.manager_.find(
-      ProductTag,
-      findOptions_.where as MikroFilterQuery<ProductTag>,
-      findOptions_.options as MikroOptions<ProductTag>
+      ProductType,
+      findOptions_.where as MikroFilterQuery<ProductType>,
+      findOptions_.options as MikroOptions<ProductType>
     )
   }
 
   async findAndCount(
-    findOptions: DAL.FindOptions<ProductTag> = { where: {} },
+    findOptions: DAL.FindOptions<ProductType> = { where: {} },
     context: Context = {}
-  ): Promise<[ProductTag[], number]> {
+  ): Promise<[ProductType[], number]> {
     // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
 
@@ -67,55 +67,55 @@ export class ProductTagRepository extends BaseRepository<ProductTag> {
     })
 
     return await this.manager_.findAndCount(
-      ProductTag,
-      findOptions_.where as MikroFilterQuery<ProductTag>,
-      findOptions_.options as MikroOptions<ProductTag>
+      ProductType,
+      findOptions_.where as MikroFilterQuery<ProductType>,
+      findOptions_.options as MikroOptions<ProductType>
     )
   }
 
   async upsert(
-    tags: CreateProductTagDTO[],
+    types: CreateProductTypeDTO[],
     context: Context = {}
-  ): Promise<ProductTag[]> {
-    const tagsValues = tags.map((tag) => tag.value)
-    const existingTags = await this.find(
+  ): Promise<ProductType[]> {
+    const typesValues = types.map((type) => type.value)
+    const existingTypes = await this.find(
       {
         where: {
           value: {
-            $in: tagsValues,
+            $in: typesValues,
           },
         },
       },
       context
     )
 
-    const existingTagsMap = new Map(
-      existingTags.map<[string, ProductTag]>((tag) => [tag.value, tag])
+    const existingTypesMap = new Map(
+      existingTypes.map<[string, ProductType]>((type) => [type.value, type])
     )
 
-    const upsertedTags: ProductTag[] = []
-    const tagsToCreate: RequiredEntityData<ProductTag>[] = []
+    const upsertedTypes: ProductType[] = []
+    const typesToCreate: RequiredEntityData<ProductType>[] = []
 
-    tags.forEach((tag) => {
-      const aTag = existingTagsMap.get(tag.value)
-      if (aTag) {
-        upsertedTags.push(aTag)
+    types.forEach((type) => {
+      const aType = existingTypesMap.get(type.value)
+      if (aType) {
+        upsertedTypes.push(aType)
       } else {
-        const newTag = this.manager_.create(ProductTag, tag)
-        tagsToCreate.push(newTag)
+        const newType = this.manager_.create(ProductType, type)
+        typesToCreate.push(newType)
       }
     })
 
-    if (tagsToCreate.length) {
-      const newTags: ProductTag[] = []
-      tagsToCreate.forEach((tag) => {
-        newTags.push(this.manager_.create(ProductTag, tag))
+    if (typesToCreate.length) {
+      const newTypes: ProductType[] = []
+      typesToCreate.forEach((type) => {
+        newTypes.push(this.manager_.create(ProductType, type))
       })
 
-      await this.manager_.persistAndFlush(newTags)
-      upsertedTags.push(...newTags)
+      await this.manager_.persistAndFlush(newTypes)
+      upsertedTypes.push(...newTypes)
     }
 
-    return upsertedTags
+    return upsertedTypes
   }
 }

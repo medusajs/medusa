@@ -20,7 +20,8 @@ export interface IProductModuleService<
   TProductTag = any,
   TProductCollection = any,
   TProductCategory = any,
-  TProductImage = any
+  TProductImage = any,
+  TProductType = any
 > {
   list(
     filters?: FilterableProductProps,

@@ -1,9 +1,19 @@
-import { BeforeCreate, Entity, PrimaryKey, Property } from "@mikro-orm/core"
+import {
+  BeforeCreate,
+  Entity,
+  OptionalProps,
+  PrimaryKey,
+  Property,
+} from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
 
+type OptionalFields = "deleted_at"
+
 @Entity({ tableName: "product_type" })
 class ProductType {
+  [OptionalProps]?: OptionalFields
+
   @PrimaryKey({ columnType: "text" })
   id!: string
 

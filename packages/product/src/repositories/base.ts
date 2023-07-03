@@ -1,7 +1,7 @@
 import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-export abstract class DalRepositoryBase<T = any>
+export abstract class AbstractRepositoryBase<T = any>
   implements DAL.RepositoryService<T>
 {
   protected readonly manager_: SqlEntityManager
@@ -36,9 +36,11 @@ export abstract class DalRepositoryBase<T = any>
     options?: DAL.FindOptions<T>,
     context?: Context
   ): Promise<[T[], number]>
+
+  abstract upsert(data: any, context?: Context): Promise<T[]>
 }
 
-export abstract class DalTreeRepositoryBase<T = any>
+export abstract class AbstractTreeRepositoryBase<T = any>
   implements DAL.TreeRepositoryService<T>
 {
   protected readonly manager_: SqlEntityManager
@@ -80,7 +82,7 @@ export abstract class DalTreeRepositoryBase<T = any>
   ): Promise<[T[], number]>
 }
 
-export class BaseRepository extends DalRepositoryBase {
+export class BaseRepository<T> extends AbstractRepositoryBase<T> {
   constructor() {
     // @ts-ignore
     super(...arguments)
@@ -89,14 +91,18 @@ export class BaseRepository extends DalRepositoryBase {
   find(
     options?: DAL.FindOptions,
     transformOptions?: RepositoryTransformOptions
-  ): Promise<unknown[]> {
+  ): Promise<T[]> {
     throw new Error("Method not implemented.")
   }
 
   findAndCount(
     options?: DAL.FindOptions,
     transformOptions?: RepositoryTransformOptions
-  ): Promise<[unknown[], number]> {
+  ): Promise<[T[], number]> {
+    throw new Error("Method not implemented.")
+  }
+
+  upsert(data: any, context?: Context): Promise<any[]> {
     throw new Error("Method not implemented.")
   }
 }

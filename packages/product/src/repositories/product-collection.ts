@@ -6,9 +6,9 @@ import {
 } from "@mikro-orm/core"
 import { deduplicateIfNecessary } from "../utils"
 import { Context, DAL } from "@medusajs/types"
-import { DalRepositoryBase } from "./base"
+import { BaseRepository } from "./base"
 
-export class ProductCollectionRepository extends DalRepositoryBase<ProductCollection> {
+export class ProductCollectionRepository extends BaseRepository<ProductCollection> {
   constructor() {
     // @ts-ignore
     super(...arguments)

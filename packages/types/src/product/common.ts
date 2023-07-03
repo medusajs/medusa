@@ -217,6 +217,7 @@ export interface CreateProductDTO {
   handle?: string
   status?: ProductStatus
   type?: CreateProductTypeDTO
+  type_id?: string
   collection_id?: string
   tags?: CreateProductTagDTO[]
   // sales_channel

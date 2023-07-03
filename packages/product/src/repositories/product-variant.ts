@@ -6,9 +6,9 @@ import {
 import { deduplicateIfNecessary } from "../utils"
 import { ProductVariant } from "@models"
 import { Context, DAL } from "@medusajs/types"
-import { DalRepositoryBase } from "./base"
+import { BaseRepository } from "./base"
 
-export class ProductVariantRepository extends DalRepositoryBase<ProductVariant> {
+export class ProductVariantRepository extends BaseRepository<ProductVariant> {
   constructor() {
     // @ts-ignore
     super(...arguments)
