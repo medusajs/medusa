@@ -1,4 +1,4 @@
-import { createConnection, loadDatabaseConfig } from "../utils"
+import { createConnection } from "../utils"
 import * as ProductModels from "@models"
 import { Product, ProductCategory, ProductVariant } from "@models"
 import { EntitySchema } from "@mikro-orm/core"
@@ -10,6 +10,7 @@ import {
 import { EOL } from "os"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { resolve } from "path"
+import { ModuleUtils } from "@medusajs/utils"
 
 export async function run({
   options,
@@ -38,7 +39,7 @@ export async function run({
 
   logger ??= console as unknown as Logger
 
-  const dbData = loadDatabaseConfig(options)
+  const dbData = ModuleUtils.loadDatabaseConfig("product", options)
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
   const orm = await createConnection(dbData, entities)

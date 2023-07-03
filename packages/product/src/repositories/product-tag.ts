@@ -4,11 +4,11 @@ import {
   LoadStrategy,
   RequiredEntityData,
 } from "@mikro-orm/core"
-import { deduplicateIfNecessary } from "../utils"
 import { ProductTag } from "@models"
 import { Context, CreateProductTagDTO, DAL } from "@medusajs/types"
 import { BaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { ModuleUtils } from "@medusajs/utils"
 
 export class ProductTagRepository extends BaseRepository<ProductTag> {
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -27,7 +27,7 @@ export class ProductTagRepository extends BaseRepository<ProductTag> {
     findOptions_.options.limit ??= 15
 
     if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
+      ModuleUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transactionManager) {
@@ -56,7 +56,7 @@ export class ProductTagRepository extends BaseRepository<ProductTag> {
     findOptions_.options.limit ??= 15
 
     if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
+      ModuleUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transactionManager) {

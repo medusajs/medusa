@@ -7,8 +7,8 @@ import {
   ProductStatus,
   ProductTypes,
 } from "@medusajs/types"
-import { buildQuery } from "../utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { ModuleUtils } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
@@ -41,7 +41,7 @@ export default class ProductService<TEntity = Product> {
       delete filters.category_ids
     }
 
-    const queryOptions = buildQuery<TEntity>(filters, config)
+    const queryOptions = ModuleUtils.buildQuery<TEntity>(filters, config)
     return await this.productRepository_.find(queryOptions, sharedContext)
   }
 
@@ -63,7 +63,7 @@ export default class ProductService<TEntity = Product> {
       delete filters.category_ids
     }
 
-    const queryOptions = buildQuery<TEntity>(filters, config)
+    const queryOptions = ModuleUtils.buildQuery<TEntity>(filters, config)
     return await this.productRepository_.findAndCount(
       queryOptions,
       sharedContext

@@ -4,10 +4,10 @@ import {
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import { deduplicateIfNecessary } from "../utils"
 import { Context, DAL } from "@medusajs/types"
 import { BaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { ModuleUtils } from "@medusajs/utils"
 
 export class ProductRepository extends BaseRepository<Product> {
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -26,7 +26,7 @@ export class ProductRepository extends BaseRepository<Product> {
     findOptions_.options.limit ??= 15
 
     if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
+      ModuleUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transactionManager) {
@@ -57,7 +57,7 @@ export class ProductRepository extends BaseRepository<Product> {
     findOptions_.options.limit ??= 15
 
     if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
+      ModuleUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transactionManager) {

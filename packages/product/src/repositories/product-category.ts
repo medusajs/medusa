@@ -3,12 +3,12 @@ import {
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import { deduplicateIfNecessary } from "../utils"
 import { ProductCategory } from "@models"
 import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
 import { AbstractTreeRepositoryBase } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { ModuleUtils } from "@medusajs/utils"
 
 export class ProductCategoryRepository extends AbstractTreeRepositoryBase<ProductCategory> {
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -38,7 +38,7 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
     }
 
     if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
+      ModuleUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transactionManager) {
@@ -118,7 +118,7 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
     findOptions_.options.limit ??= 15
 
     if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
+      ModuleUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transactionManager) {

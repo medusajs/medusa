@@ -1,4 +1,4 @@
-import { loadDatabaseConfig } from "../load-database-config"
+import { loadDatabaseConfig } from "../load-module-database-config"
 
 describe("loadDatabaseConfig", function () {
   afterEach(() => {
@@ -8,7 +8,7 @@ describe("loadDatabaseConfig", function () {
 
   it("should return the local configuration using the environment variable", function () {
     process.env.POSTGRES_URL = "postgres://localhost:5432/medusa"
-    let config = loadDatabaseConfig()
+    let config = loadDatabaseConfig("product")
 
     expect(config).toEqual({
       clientUrl: process.env.POSTGRES_URL,
@@ -22,7 +22,7 @@ describe("loadDatabaseConfig", function () {
 
     delete process.env.POSTGRES_URL
     process.env.PRODUCT_POSTGRES_URL = "postgres://localhost:5432/medusa"
-    config = loadDatabaseConfig()
+    config = loadDatabaseConfig("product")
 
     expect(config).toEqual({
       clientUrl: process.env.PRODUCT_POSTGRES_URL,
@@ -37,7 +37,7 @@ describe("loadDatabaseConfig", function () {
 
   it("should return the remote configuration using the environment variable", function () {
     process.env.POSTGRES_URL = "postgres://https://test.com:5432/medusa"
-    let config = loadDatabaseConfig()
+    let config = loadDatabaseConfig("product")
 
     expect(config).toEqual({
       clientUrl: process.env.POSTGRES_URL,
@@ -53,7 +53,7 @@ describe("loadDatabaseConfig", function () {
 
     delete process.env.POSTGRES_URL
     process.env.PRODUCT_POSTGRES_URL = "postgres://https://test.com:5432/medusa"
-    config = loadDatabaseConfig()
+    config = loadDatabaseConfig("product")
 
     expect(config).toEqual({
       clientUrl: process.env.PRODUCT_POSTGRES_URL,
@@ -76,7 +76,7 @@ describe("loadDatabaseConfig", function () {
       },
     }
 
-    const config = loadDatabaseConfig(options)
+    let config = loadDatabaseConfig("product", options)
 
     expect(config).toEqual({
       clientUrl: options.database.clientUrl,
@@ -97,7 +97,7 @@ describe("loadDatabaseConfig", function () {
       },
     }
 
-    const config = loadDatabaseConfig(options)
+    let config = loadDatabaseConfig("product", options)
 
     expect(config).toEqual({
       clientUrl: options.database.clientUrl,
@@ -115,7 +115,7 @@ describe("loadDatabaseConfig", function () {
   it("should throw if no clientUrl is provided", function () {
     let error
     try {
-      loadDatabaseConfig()
+      loadDatabaseConfig("product")
     } catch (e) {
       error = e
     }

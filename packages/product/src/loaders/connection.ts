@@ -6,7 +6,7 @@ import {
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
 } from "@medusajs/modules-sdk"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError, ModuleUtils } from "@medusajs/utils"
 
 import { EntitySchema } from "@mikro-orm/core"
 
@@ -15,7 +15,7 @@ import {
   ProductServiceInitializeCustomDataLayerOptions,
   ProductServiceInitializeOptions,
 } from "../types"
-import { createConnection, loadDatabaseConfig } from "../utils"
+import { createConnection } from "../utils"
 
 export default async (
   {
@@ -39,7 +39,7 @@ export default async (
   )?.manager
 
   if (!customManager) {
-    const dbData = loadDatabaseConfig(options)
+    const dbData = ModuleUtils.loadDatabaseConfig("product", options)
     await loadDefault({ database: dbData, container })
   } else {
     container.register({

@@ -3,9 +3,10 @@ import {
   ProductServiceInitializeCustomDataLayerOptions,
   ProductServiceInitializeOptions,
 } from "../types"
-import { createConnection, loadDatabaseConfig } from "../utils"
+import { createConnection } from "../utils"
 import * as ProductModels from "@models"
 import { EntitySchema } from "@mikro-orm/core"
+import { ModuleUtils } from "@medusajs/utils"
 
 /**
  * This script is only valid for mikro orm managers. If a user provide a custom manager
@@ -26,7 +27,7 @@ export async function runMigrations({
 > = {}) {
   logger ??= console as unknown as Logger
 
-  const dbData = loadDatabaseConfig(options)
+  const dbData = ModuleUtils.loadDatabaseConfig("product", options)
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
   const orm = await createConnection(dbData, entities)

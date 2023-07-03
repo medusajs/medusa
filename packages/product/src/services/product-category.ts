@@ -1,6 +1,6 @@
 import { ProductCategory } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import { buildQuery } from "../utils"
+import { ModuleUtils } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productCategoryRepository: DAL.TreeRepositoryService
@@ -23,7 +23,7 @@ export default class ProductCategoryService<TEntity = ProductCategory> {
     }
     delete filters.include_descendants_tree
 
-    const queryOptions = buildQuery<TEntity>(filters, config)
+    const queryOptions = ModuleUtils.buildQuery<TEntity>(filters, config)
     queryOptions.where ??= {}
 
     return await this.productCategoryRepository_.find(

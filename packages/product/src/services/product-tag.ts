@@ -6,7 +6,7 @@ import {
   FindConfig,
   ProductTypes,
 } from "@medusajs/types"
-import { buildQuery } from "../utils"
+import { ModuleUtils } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productTagRepository: DAL.RepositoryService
@@ -24,7 +24,7 @@ export default class ProductTagService<TEntity = ProductTag> {
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
     sharedContext?: Context
   ): Promise<TEntity[]> {
-    const queryOptions = buildQuery<TEntity>(filters, config)
+    const queryOptions = ModuleUtils.buildQuery<TEntity>(filters, config)
 
     if (filters.value) {
       queryOptions.where["value"] = { $ilike: filters.value }
