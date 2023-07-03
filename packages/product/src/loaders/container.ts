@@ -4,7 +4,9 @@ import { asClass } from "awilix"
 import {
   ProductCategoryService,
   ProductCollectionService,
+  ProductImageService,
   ProductModuleService,
+  ProductOptionService,
   ProductService,
   ProductTagService,
   ProductTypeService,
@@ -15,8 +17,10 @@ import {
   ProductCategoryRepository,
   ProductCollectionRepository,
   ProductImageRepository,
+  ProductOptionRepository,
   ProductRepository,
   ProductTagRepository,
+  ProductTypeRepository,
   ProductVariantRepository,
 } from "@repositories"
 import {
@@ -26,8 +30,6 @@ import {
 import { Constructor, DAL } from "@medusajs/types"
 import { lowerCaseFirst } from "@medusajs/utils"
 import { BaseRepository } from "../repositories/base"
-import ProductImageService from "../services/product-image"
-import { ProductTypeRepository } from "../repositories/product-type"
 
 export default async ({
   container,
@@ -49,6 +51,7 @@ export default async ({
     productCollectionService: asClass(ProductCollectionService).singleton(),
     productImageService: asClass(ProductImageService).singleton(),
     productTypeService: asClass(ProductTypeService).singleton(),
+    productOptionService: asClass(ProductOptionService).singleton(),
   })
 
   if (customRepositories) {
@@ -69,6 +72,7 @@ function loadDefaultRepositories({ container }) {
     productRepository: asClass(ProductRepository).singleton(),
     productTagRepository: asClass(ProductTagRepository).singleton(),
     productTypeRepository: asClass(ProductTypeRepository).singleton(),
+    productOptionRepository: asClass(ProductOptionRepository).singleton(),
     productVariantRepository: asClass(ProductVariantRepository).singleton(),
   })
 }

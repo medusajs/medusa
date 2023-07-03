@@ -14,15 +14,7 @@ import {
 import { FindConfig } from "../common"
 import { Context } from "../shared-context"
 
-export interface IProductModuleService<
-  TProduct = any,
-  TProductVariant = any,
-  TProductTag = any,
-  TProductCollection = any,
-  TProductCategory = any,
-  TProductImage = any,
-  TProductType = any
-> {
+export interface IProductModuleService {
   list(
     filters?: FilterableProductProps,
     config?: FindConfig<ProductDTO>,

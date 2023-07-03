@@ -5,6 +5,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
+  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -12,8 +13,13 @@ import { generateEntityId } from "@medusajs/utils"
 import { Product } from "./index"
 import ProductOptionValue from "./product-option-value"
 
+type OptionalRelations = "values" | "product"
+type OptionalFields = "deleted_at" | "product_id"
+
 @Entity({ tableName: "product_option" })
 class ProductOption {
+  [OptionalProps]?: OptionalRelations | OptionalFields
+
   @PrimaryKey({ columnType: "text" })
   id!: string
 
@@ -21,7 +27,7 @@ class ProductOption {
   title: string
 
   @Property({ persist: false })
-  product_id!: number
+  product_id!: string
 
   @ManyToOne(() => Product, {
     index: "IDX_product_option_product_id",

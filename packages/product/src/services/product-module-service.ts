@@ -1,6 +1,7 @@
 import {
   ProductCategoryService,
   ProductCollectionService,
+  ProductOptionService,
   ProductService,
   ProductTagService,
   ProductTypeService,
@@ -11,6 +12,7 @@ import {
   Product,
   ProductCategory,
   ProductCollection,
+  ProductOption,
   ProductTag,
   ProductType,
   ProductVariant,
@@ -34,6 +36,7 @@ type InjectedDependencies = {
   productCollectionService: ProductCollectionService<any>
   productImageService: ProductImageService<any>
   productTypeService: ProductTypeService<any>
+  productOptionService: ProductOptionService<any>
 }
 
 export default class ProductModuleService<
@@ -43,17 +46,9 @@ export default class ProductModuleService<
   TProductCollection = ProductCollection,
   TProductCategory = ProductCategory,
   TProductImage = Image,
-  TProductType = ProductType
-> implements
-    ProductTypes.IProductModuleService<
-      TProduct,
-      TProductVariant,
-      TProductTag,
-      TProductCollection,
-      TProductCategory,
-      TProductImage,
-      TProductType
-    >
+  TProductType = ProductType,
+  TProductOption = ProductOption
+> implements ProductTypes.IProductModuleService
 {
   protected baseRepository_: DAL.RepositoryService
   protected readonly productService_: ProductService<TProduct>
@@ -63,6 +58,7 @@ export default class ProductModuleService<
   protected readonly productCollectionService_: ProductCollectionService<TProductCollection>
   protected readonly productImageService_: ProductImageService<TProductImage>
   protected readonly productTypeService_: ProductTypeService<TProductImage>
+  protected readonly productOptionService_: ProductOptionService<TProductOption>
 
   constructor({
     baseRepository,
@@ -73,6 +69,7 @@ export default class ProductModuleService<
     productCollectionService,
     productImageService,
     productTypeService,
+    productOptionService,
   }: InjectedDependencies) {
     this.baseRepository_ = baseRepository
     this.productService_ = productService
@@ -82,6 +79,7 @@ export default class ProductModuleService<
     this.productCollectionService_ = productCollectionService
     this.productImageService_ = productImageService
     this.productTypeService_ = productTypeService
+    this.productOptionService_ = productOptionService
   }
 
   async list(
@@ -182,17 +180,24 @@ export default class ProductModuleService<
           string,
           ProductTypes.CreateProductVariantDTO[]
         >()
+        const productOptionsMap = new Map<
+          string,
+          ProductTypes.CreateProductOptionDTO[]
+        >()
 
         const productsData = await Promise.all(
           data.map(async (product) => {
-            const variants = product.variants
-            delete product.variants
-
             if (!product.handle) {
               product.handle = kebabCase(product.title)
             }
 
+            const variants = product.variants
+            const options = product.options
+            delete product.options
+            delete product.variants
+
             productVariantsMap.set(product.handle!, variants ?? [])
+            productOptionsMap.set(product.handle!, options ?? [])
 
             if (!product.thumbnail && product.images?.length) {
               product.thumbnail = product.images[0]
@@ -235,9 +240,33 @@ export default class ProductModuleService<
         // Shipping profile is not part of the module
         // as well as sales channel
 
-        const products = this.productService_.create(productsData, {
+        const products = (await this.productService_.create(productsData, {
           transactionManager: manager,
-        })
+        })) as Product[]
+
+        const productByHandleMap = new Map<string, Product>(
+          products.map((product) => [product.handle!, product])
+        )
+
+        const productOptionsData = [...productOptionsMap]
+          .map(([handle, options]) => {
+            return options.map((option) => {
+              return {
+                ...option,
+                product: {
+                  id: productByHandleMap.get(handle)!.id,
+                },
+              }
+            })
+          })
+          .flat()
+
+        const productOptions = await this.productOptionService_.create(
+          productOptionsData,
+          {
+            transactionManager: manager,
+          }
+        )
 
         return products
       },
