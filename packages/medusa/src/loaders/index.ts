@@ -7,6 +7,7 @@ import requestIp from "request-ip"
 import { Connection } from "typeorm"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
+import overridesLoader from "./overrides"
 import loadConfig from "./config"
 import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
@@ -122,6 +123,7 @@ export default async ({
 
   const expActivity = Logger.activity(`Initializing express${EOL}`)
   track("EXPRESS_INIT_STARTED")
+  await overridesLoader({})
   await expressLoader({ app: expressApp, configModule })
   await passportLoader({ app: expressApp, container, configModule })
   const exAct = Logger.success(expActivity, "Express intialized") || {}
