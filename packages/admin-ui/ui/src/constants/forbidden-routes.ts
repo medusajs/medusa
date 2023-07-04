@@ -24,18 +24,36 @@ export const forbiddenRoutes = [
   "/draft-orders",
   "/draft-orders/:id",
   "/login",
-  "/settings",
-  "/settings/regions",
-  "/settings/currencies",
-  "/settings/details",
-  "/settings/shipping-profiles",
-  "/settings/return-reasons",
-  "/settings/team",
-  "/settings/personal-information",
-  "/settings/taxes",
-  "/settings/taxes/:id",
   "/sales-channels",
   "/publishable-api-keys",
   "/oauth",
   "/oauth/:app_name",
 ] as const
+
+export const isSettingsRoute = (route: string) => {
+  return route.startsWith("/settings")
+}
+
+export const isForbiddenRoute = (route: any): boolean => {
+  if (isSettingsRoute(route)) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        `The route "${route}" is a settings route. Please register the extension in the "settings" directory instead.`
+      )
+    }
+
+    return true
+  }
+
+  if (forbiddenRoutes.includes(route)) {
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        `The route "${route}" is a forbidden route. We do not currently support overriding default routes.`
+      )
+    }
+
+    return true
+  }
+
+  return false
+}

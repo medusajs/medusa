@@ -3,6 +3,7 @@ export { ALIASED_PACKAGES } from "./constants"
 export type { AdminOptions, DevelopArgs } from "./types"
 export {
   findAllValidRoutes,
+  findAllValidSettings,
   findAllValidWidgets,
   logger,
   normalizePath,

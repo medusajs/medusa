@@ -1,4 +1,4 @@
-import { forbiddenRoutes } from "../constants/forbidden-routes"
+import { isForbiddenRoute } from "../constants/forbidden-routes"
 import { Link, Route, RouteExtension, RouteSegment } from "../types/extensions"
 
 type RouteNode = {
@@ -29,6 +29,16 @@ class RouteRegistry {
       finalSegment = segment
     }
 
+    if (currentNode.__route) {
+      if (process.env.NODE_ENV !== "production") {
+        console.warn(
+          `Route with path ${path} already registered by ${currentNode.__route.origin}.`
+        )
+      }
+
+      return
+    }
+
     currentNode.__route = {
       origin,
       path: `/${finalSegment}`,
@@ -46,10 +56,7 @@ class RouteRegistry {
 
   getTopLevelRoutes(): (Route | RouteSegment)[] {
     const topLevelRoutes = Object.entries(this.routes)
-      .filter(
-        ([key, _]) =>
-          !forbiddenRoutes.includes(key as (typeof forbiddenRoutes)[number])
-      )
+      .filter(([key, _]) => !isForbiddenRoute(key))
       .map(([key, node]) => {
         return "__route" in node
           ? ((node as RouteNode).__route as Route)
@@ -83,11 +90,6 @@ class RouteRegistry {
     const lastKnownNode = getNode(segments)
 
     if (!lastKnownNode) {
-      if (process.env.NODE_ENV === "development") {
-        console.error(
-          `[RouteRegistry]: The provided path ${path} does not exist in the registry.`
-        )
-      }
       return []
     }
 
