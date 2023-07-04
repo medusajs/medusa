@@ -214,8 +214,8 @@ export default class ProductModuleService<
 
             if (!productData.thumbnail && productData.images?.length) {
               productData.thumbnail = isString(productData.images[0])
-                ? productData.images[0]
-                : productData.images[0].url
+                ? (productData.images[0] as string)
+                : (productData.images[0] as { url: string }).url
             }
 
             if (productData.is_giftcard) {
@@ -241,7 +241,7 @@ export default class ProductModuleService<
             if (isDefined(productData.type)) {
               productData.type_id = (
                 (await this.productTypeService_.upsert(
-                  [productData.type],
+                  [productData.type as ProductTypes.CreateProductTypeDTO],
                   sharedContext
                 )) as unknown as ProductType[]
               )?.[0]!.id
