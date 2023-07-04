@@ -96,6 +96,18 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(products))
   }
 
+  async retrieve(
+    productId: string,
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductDTO> {
+    const product = await this.productService_.retrieve(
+      productId,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(product))
+  }
+
   async listAndCount(
     filters: ProductTypes.FilterableProductProps = {},
     config: FindConfig<ProductTypes.ProductDTO> = {},

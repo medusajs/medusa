@@ -15,6 +15,8 @@ import { FindConfig } from "../common"
 import { Context } from "../shared-context"
 
 export interface IProductModuleService {
+  retrieve(productId: string, sharedContext?: Context): Promise<ProductDTO>
+
   list(
     filters?: FilterableProductProps,
     config?: FindConfig<ProductDTO>,
