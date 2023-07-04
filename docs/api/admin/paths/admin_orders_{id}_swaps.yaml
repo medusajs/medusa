@@ -1,0 +1,69 @@
+post:
+  operationId: PostOrdersOrderSwaps
+  summary: Create a Swap
+  description: >-
+    Creates a Swap. Swaps are used to handle Return of previously purchased
+    goods and Fulfillment of replacements simultaneously.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: >-
+        (Comma separated) Which fields should be expanded the order of the
+        result.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        (Comma separated) Which fields should be included the order of the
+        result.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/AdminPostOrdersOrderSwapsReq.yaml
+  x-codegen:
+    method: createSwap
+    queryParams: AdminPostOrdersOrderSwapsParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_orders_{id}_swaps/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_orders_{id}_swaps/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Orders
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminOrdersRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

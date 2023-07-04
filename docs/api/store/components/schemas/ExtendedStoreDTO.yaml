@@ -1,0 +1,17 @@
+allOf:
+  - $ref: ./Store.yaml
+  - type: object
+    required:
+      - payment_providers
+      - fulfillment_providers
+      - feature_flags
+      - modules
+    properties:
+      payment_providers:
+        $ref: ./PaymentProvider.yaml
+      fulfillment_providers:
+        $ref: ./FulfillmentProvider.yaml
+      feature_flags:
+        $ref: ./FeatureFlagsResponse.yaml
+      modules:
+        $ref: ./ModulesResponse.yaml

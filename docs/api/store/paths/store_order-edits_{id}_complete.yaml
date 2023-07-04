@@ -1,0 +1,39 @@
+post:
+  operationId: PostOrderEditsOrderEditComplete
+  summary: Completes an OrderEdit
+  description: Completes an OrderEdit.
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Order Edit.
+      schema:
+        type: string
+  x-codegen:
+    method: complete
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store_order-edits_{id}_complete/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_order-edits_{id}_complete/post.sh
+  tags:
+    - Order Edits
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreOrderEditsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

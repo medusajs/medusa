@@ -1,0 +1,299 @@
+[[redirects]]
+  from = "/api"
+  to = "/api/store"
+
+[[redirects]]
+  from = "/api/store/auth/*"
+  to = "/api/store/#tag/Auth"
+
+[[redirects]]
+  from = "/api/store/cart/*"
+  to = "/api/store/#tag/Cart"
+
+[[redirects]]
+  from = "/api/store/collection/*"
+  to = "/api/store/#tag/Collection"
+
+[[redirects]]
+  from = "/api/store/product/*"
+  to = "/api/store/#tag/Product"
+
+[[redirects]]
+  from = "/api/admin/auth/*"
+  to = "/api/admin/#tag/Auth"
+
+[[redirects]]
+  from = "/api/admin/users/*"
+  to = "/api/admin/#tag/User"
+
+[[redirects]]
+  from = "/how-to/headless-ecommerce-store-with-gatsby-contentful-medusa"
+  to = "/add-plugins/contentful"
+
+[[redirects]]
+  from = "/how-to/deploying-on-heroku"
+  to = "/deployments/server/deploying-on-heroku"
+
+[[redirects]]
+  from = "/admin/introduction"
+  to = "/admin/quickstart"
+
+[[redirects]]
+  from = "/admin/quickstart/quick-start"
+  to = "/admin/quickstart"
+
+[[redirects]]
+  from = "/admin/quickstart"
+  to = "/admin/quickstart"
+
+[[redirects]]
+  from = "/quickstart/starters/nextjs-medusa-starter"
+  to = "/starters/nextjs-medusa-starter"
+
+[[redirects]]
+  from = "/quickstart/starters/gatsby-medusa-starter"
+  to = "/starters/gatsby-medusa-starter"
+
+[[redirects]]
+  from = "/how-to/create-medusa-app"
+  to = "/usage/create-medusa-app"
+
+[[redirects]]
+  from = "/guides/plugins"
+  to = "/advanced/backend/plugins/overview"
+
+[[redirects]]
+  from = "/how-to/deploying-admin-on-netlify"
+  to = "/deployments/admin/deploying-on-netlify"
+
+[[redirects]]
+  from = "/how-to/deploying-on-digital-ocean/"
+  to = "/deployments/server/deploying-on-digital-ocean"
+
+[[redirects]]
+  from = "/how-to/deploying-on-qovery/"
+  to = "/deployments/server/deploying-on-qovery"
+
+[[redirects]]
+  from = "/guides/fulfillment-api"
+  to = "/advanced/backend/shipping/add-fulfillment-provider"
+
+[[redirects]]
+  from = "/guides/checkouts"
+  to = "/advanced/storefront/how-to-implement-checkout-flow"
+
+[[redirects]]
+  from = "/guides/checkouts"
+  to = "/advanced/storefront/how-to-implement-checkout-flow"
+
+[[redirects]]
+  from="/advanced/backend/upgrade-guides/1-7-3"
+  to="/advanced/backend/upgrade-guides/medusa-core/1-7-3"
+
+[[redirects]]
+  from="/advanced/backend/upgrade-guides/1-7-1"
+  to="/advanced/backend/upgrade-guides/medusa-core/1-7-1"
+
+[[redirects]]
+  from="/advanced/backend/upgrade-guides/1-7-0"
+  to="/advanced/backend/upgrade-guides/medusa-core/1-7-0"
+
+[[redirects]]
+  from="/advanced/backend/upgrade-guides/1-6-1"
+  to="/advanced/backend/upgrade-guides/medusa-core/1-6-1"
+
+[[redirects]]
+  from="/advanced/backend/upgrade-guides/1-3-8"
+  to="/advanced/backend/upgrade-guides/medusa-core/1-3-8"
+
+[[redirects]]
+  from="/advanced/backend/upgrade-guides/1-3-6"
+  to="/advanced/backend/upgrade-guides/medusa-core/1-3-6"
+
+[[redirects]]
+  from="/advanced/backend/upgrade-guides/1-3-0"
+  to="/advanced/backend/upgrade-guides/medusa-core/1-3-0"
+
+[[redirects]]
+  from="/advanced/backend/regions/overview"
+  to="/modules/regions-and-currencies/regions"
+
+[[redirects]]
+  from="/advanced/admin/manage-regions"
+  to="/modules/regions-and-currencies/admin/manage-regions"
+
+[[redirects]]
+  from="/advanced/storefront/use-regions"
+  to="/modules/regions-and-currencies/storefront/use-regions"
+
+[[redirects]]
+  from="/advanced/backend/customers"
+  to="/modules/customers/customers"
+
+[[redirects]]
+  from="/advanced/backend/customer-groups"
+  to="/modules/customers/customer-groups"
+
+[[redirects]]
+  from="/advanced/admin/manage-customers"
+  to="/modules/customers/admin/manage-customers"
+
+[[redirects]]
+  from="/advanced/admin/use-customergroups-api"
+  to="/modules/customers/admin/manage-customer-groups"
+
+[[redirects]]
+  from="/advanced/storefront/customer-profiles"
+  to="/modules/customers/storefront/implement-customer-profiles"
+
+[[redirects]]
+  from="/quickstart/quick-start*"
+  to="/development/backend/install"
+
+[[redirects]]
+  from="/advanced/admin/import-products"
+  to="/modules/products/admin/import-products"
+
+[[redirects]]
+  from="/advanced/backend/shipping/overview"
+  to="/modules/carts-and-checkout/shipping"
+
+[[redirects]]
+  from="/advanced/backend/shipping/add-fulfillment-provider"
+  to="/modules/carts-and-checkout/backend/add-fulfillment-provider"
+
+[[redirects]]
+  from="/advanced/backend/payment/overview"
+  to="/modules/carts-and-checkout/payment"
+
+[[redirects]]
+  from="/advanced/backend/payment/how-to-create-payment-provider"
+  to="/modules/carts-and-checkout/backend/add-payment-provider"
+
+[[redirects]]
+  from="/guides/carts-in-medusa"
+  to="/modules/carts-and-checkout/storefront/implement-cart"
+
+[[redirects]]
+  from="/advanced/storefront/how-to-implement-checkout-flow"
+  to="/modules/carts-and-checkout/storefront/implement-checkout-flow"
+
+[[redirects]]
+  from="/advanced/ecommerce/handle-order-claim-event"
+  to="/modules/orders/backend/handle-order-claim-event"
+
+[[redirects]]
+  from="/advanced/admin/order-edit"
+  to="/modules/orders/admin/edit-order"
+
+[[redirects]]
+  from="/advanced/storefront/handle-order-edits"
+  to="/modules/orders/storefront/handle-order-edits"
+
+[[redirects]]
+  from="/advanced/storefront/implement-claim-order"
+  to="/modules/orders/storefront/implement-claim-order"
+
+[[redirects]]
+  from="/advanced/backend/taxes/inclusive-pricing"
+  to="/modules/taxes/inclusive-pricing"
+
+[[redirects]]
+  from="/advanced/backend/taxes/manual-calculation"
+  to="/modules/taxes/storefront/manual-calculation"
+
+[[redirects]]
+  from="/advanced/backend/discounts"
+  to="/modules/discounts/discounts"
+
+[[redirects]]
+  from="/advanced/admin/manage-discounts"
+  to="/modules/discounts/admin/manage-discounts"
+
+[[redirects]]
+  from="/advanced/storefront/use-discounts-in-checkout"
+  to="/modules/discounts/storefront/use-discounts-in-checkout"
+
+[[redirects]]
+  from="/advanced/backend/gift-cards"
+  to="/modules/gift-cards"
+
+[[redirects]]
+  from="/advanced/admin/manage-gift-cards"
+  to="/modules/gift-cards/admin/manage-gift-cards"
+
+[[redirects]]
+  from="/advanced/storefront/use-gift-cards"
+  to="/modules/gift-cards/storefront/use-gift-cards"
+
+[[redirects]]
+  from="/advanced/ecommerce/send-gift-card-to-customer"
+  to="/modules/gift-cards/backend/send-gift-card-to-customer"
+
+[[redirects]]
+  from="/advanced/backend/price-lists"
+  to="/modules/price-lists"
+
+[[redirects]]
+  from="/advanced/backend/price-lists/use-api"
+  to="/modules/price-lists/admin/manage-price-lists"
+
+[[redirects]]
+  from="/advanced/backend/price-selection-strategy"
+  to="/modules/price-lists/price-selection-strategy"
+
+[[redirects]]
+  from="/advanced/backend/price-selection-strategy/override"
+  to="/modules/price-lists/backend/override-price-selection-strategy"
+
+[[redirects]]
+  from="/advanced/admin/import-prices"
+  to="/modules/price-lists/admin/import-prices"
+
+[[redirects]]
+  from="/advanced/backend/sales-channels"
+  to="/modules/sales-channels"
+
+[[redirects]]
+  from="/advanced/backend/sales-channels/manage-admin"
+  to="/modules/sales-channels/admin/manage"
+
+[[redirects]]
+  from="/advanced/storefront/use-sales-channels"
+  to="/modules/sales-channels/storefront/use-sales-channels"
+
+[[redirects]]
+  from="/advanced/backend/endpoints/add"
+  to="/development/endpoints/create"
+
+[[redirects]]
+  from="/advanced/backend/endpoints/add-middleware"
+  to="/development/endpoints/add-middleware"
+
+[[redirects]]
+  from="/advanced/backend/scheduled-jobs/create"
+  to="/development/scheduled-jobs/create"
+
+[[redirects]]
+  from="/tutorial/set-up-your-development-environment"
+  to="/development/backend/prepare-environment"
+
+[[redirects]]
+  from="/usage/configurations"
+  to="/development/backend/configurations"
+
+[[redirects]]
+  from="/add-plugins/:path"
+  to="/plugins/:path"
+
+[[redirects]]
+  from="/advanced/backend/feature-flags/toggle"
+  to="/development/feature-flags/toggle"
+
+[[redirects]]
+  from="/advanced/backend/publishable-api-keys"
+  to="/development/publishable-api-keys"
+
+[[redirects]]
+  from="/advanced/admin/manage-publishable-api-keys"
+  to="/development/publishable-api-keys/admin/manage-publishable-api-keys"

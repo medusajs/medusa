@@ -1,0 +1,47 @@
+<svg width="488" height="188" viewBox="0 0 488 188" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_6341_3653)">
+<mask id="mask0_6341_3653" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="488" height="188">
+<rect width="488" height="188" fill="url(#paint0_radial_6341_3653)"/>
+</mask>
+<g mask="url(#mask0_6341_3653)">
+<g clip-path="url(#clip1_6341_3653)">
+<path d="M-200.5 894V-130M-136.5 894V-130M-72.5 894V-130M-8.5 894V-130M55.5 894V-130M119.5 894V-130M183.5 894V-130M247.5 894V-130M311.5 894V-130M375.5 894V-130M439.5 894V-130M503.5 894V-130M567.5 894V-130M631.5 894V-130M695.5 894V-130M759.5 894V-130M823.5 894V-130M887.5 894V-130M951.5 894V-130M1015.5 894V-130M1079.5 894V-130M1143.5 894V-130M1207.5 894V-130M-216 -98.5H1224M-216 -34.5H1224M-216 29.5H1224M-216 93.5H1224M-216 157.5H1224M-216 221.5H1224M-216 285.5H1224M-216 349.5H1224M-216 413.5H1224M-216 477.5H1224M-216 541.5H1224M-216 605.5H1224M-216 669.5H1224M-216 733.5H1224M-216 797.5H1224M-216 861.5H1224" stroke="black" stroke-opacity="0.04"/>
+<path d="M56 30H119V93H56V30Z" fill="black" fill-opacity="0.02"/>
+<path d="M952 670H1015V733H952V670Z" fill="black" fill-opacity="0.02"/>
+<path d="M312 -34H375V29H312V-34Z" fill="black" fill-opacity="0.02"/>
+<path d="M888 30H951V93H888V30Z" fill="black" fill-opacity="0.02"/>
+<path d="M1016 222H1079V285H1016V222Z" fill="black" fill-opacity="0.02"/>
+<path d="M824 542H887V605H824V542Z" fill="black" fill-opacity="0.02"/>
+<path d="M568 670H631V733H568V670Z" fill="black" fill-opacity="0.02"/>
+<path d="M120 350H183V413H120V350Z" fill="black" fill-opacity="0.02"/>
+<path d="M-8 670H55V733H-8V670Z" fill="black" fill-opacity="0.02"/>
+<path d="M248 606H311V669H248V606Z" fill="black" fill-opacity="0.02"/>
+<path d="M120 94H183V157H120V94Z" fill="black" fill-opacity="0.02"/>
+<path d="M760 157H823V220H760V157Z" fill="black" fill-opacity="0.02"/>
+<path d="M504 734H567V797H504V734Z" fill="black" fill-opacity="0.02"/>
+<path d="M1016 350H1079V413H1016V350Z" fill="black" fill-opacity="0.02"/>
+<path d="M952 414H1015V477H952V414Z" fill="black" fill-opacity="0.02"/>
+<path d="M568 94H631V157H568V94Z" fill="black" fill-opacity="0.02"/>
+<path d="M-8 222H55V285H-8V222Z" fill="black" fill-opacity="0.02"/>
+<path d="M56 478H119V541H56V478Z" fill="black" fill-opacity="0.02"/>
+<path d="M-72 350H-9V413H-72V350Z" fill="black" fill-opacity="0.02"/>
+<path d="M632 -98H695V-35H632V-98Z" fill="black" fill-opacity="0.02"/>
+<path d="M312 222H375V285H312V222Z" fill="black" fill-opacity="0.02"/>
+<path d="M696 350H759V413H696V350Z" fill="black" fill-opacity="0.02"/>
+</g>
+</g>
+</g>
+<defs>
+<radialGradient id="paint0_radial_6341_3653" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(177.5 74) rotate(79.0772) scale(116.103 322.488)">
+<stop/>
+<stop offset="0.0001"/>
+<stop offset="1" stop-opacity="0"/>
+</radialGradient>
+<clipPath id="clip0_6341_3653">
+<rect width="488" height="188" fill="white"/>
+</clipPath>
+<clipPath id="clip1_6341_3653">
+<rect width="1440" height="1024" fill="white" transform="translate(-216 -130)"/>
+</clipPath>
+</defs>
+</svg>

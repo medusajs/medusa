@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/store/product-types GET /store/product-types returns a list of product types 1`] = `
+Array [
+  Object {
+    "created_at": Any<String>,
+    "id": "test-type-new",
+    "updated_at": Any<String>,
+    "value": "test-type-new",
+  },
+  Object {
+    "created_at": Any<String>,
+    "id": "test-type",
+    "updated_at": Any<String>,
+    "value": "test-type",
+  },
+]
+`;
+
+exports[`/store/product-types GET /store/product-types returns a list of product types matching free text search param 1`] = `
+Array [
+  Object {
+    "created_at": Any<String>,
+    "id": "test-type-new",
+    "updated_at": Any<String>,
+    "value": "test-type-new",
+  },
+]
+`;

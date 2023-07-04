@@ -1,0 +1,5 @@
+(?i)Medusa
+(?i)Qovery
+(?i)Netlify
+(?i)s3
+(?i)vite

@@ -1,0 +1,8 @@
+type: object
+properties:
+  metadata:
+    description: An optional set of key-value pairs to hold additional information.
+    type: object
+  no_notification:
+    description: If set to true no notification will be send related to this Claim.
+    type: boolean

@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/admin/customers GET /admin/customers/:id fetches a customer 1`] = `
+Object {
+  "billing_address_id": "test-address",
+  "created_at": Any<String>,
+  "deleted_at": null,
+  "email": "test1@email.com",
+  "first_name": null,
+  "has_account": false,
+  "id": Any<String>,
+  "last_name": null,
+  "metadata": null,
+  "orders": Array [],
+  "phone": null,
+  "shipping_addresses": Array [
+    Object {
+      "address_1": null,
+      "address_2": null,
+      "city": null,
+      "company": null,
+      "country_code": null,
+      "created_at": Any<String>,
+      "customer_id": "test-customer-1",
+      "deleted_at": null,
+      "first_name": "Lebron",
+      "id": "test-address",
+      "last_name": "James",
+      "metadata": null,
+      "phone": null,
+      "postal_code": null,
+      "province": null,
+      "updated_at": Any<String>,
+    },
+  ],
+  "updated_at": Any<String>,
+}
+`;
+
+exports[`/admin/customers GET /admin/customers/:id fetches a customer with expand query 1`] = `
+Object {
+  "billing_address": Object {
+    "address_1": null,
+    "address_2": null,
+    "city": null,
+    "company": null,
+    "country_code": null,
+    "created_at": Any<String>,
+    "customer_id": "test-customer-1",
+    "deleted_at": null,
+    "first_name": "Lebron",
+    "id": "test-address",
+    "last_name": "James",
+    "metadata": null,
+    "phone": null,
+    "postal_code": null,
+    "province": null,
+    "updated_at": Any<String>,
+  },
+  "billing_address_id": "test-address",
+  "created_at": Any<String>,
+  "deleted_at": null,
+  "email": "test1@email.com",
+  "first_name": null,
+  "groups": Array [],
+  "has_account": false,
+  "id": "test-customer-1",
+  "last_name": null,
+  "metadata": null,
+  "phone": null,
+  "updated_at": Any<String>,
+}
+`;

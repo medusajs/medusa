@@ -1,0 +1,31 @@
+{
+  "name": "babel-preset-medusa-package",
+  "version": "1.1.19",
+  "author": "Sebastian Rindom <sebastian@mrbltech.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa.git",
+    "directory": "packages/babel-preset-medusa-package"
+  },
+  "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-decorators": "^7.12.1",
+    "@babel/plugin-proposal-optional-chaining": "^7.14.2",
+    "@babel/plugin-transform-classes": "^7.12.1",
+    "@babel/plugin-transform-instanceof": "^7.12.1",
+    "@babel/plugin-transform-runtime": "^7.12.1",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-typescript": "^7.16.0",
+    "babel-plugin-transform-typescript-metadata": "^0.3.1",
+    "core-js": "^3.7.0"
+  },
+  "peerDependencies": {
+    "@babel/core": "^7.11.6"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "engines": {
+    "node": ">=10.14.0"
+  },
+  "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
+}

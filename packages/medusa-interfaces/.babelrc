@@ -1,0 +1,13 @@
+{
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-instanceof",
+    ["@babel/plugin-transform-runtime", { "regenerator": true }]
+  ],
+  "presets": ["@babel/preset-env"],
+  "env": {
+    "test": {
+      "plugins": ["@babel/plugin-transform-runtime"]
+    }
+  }
+}

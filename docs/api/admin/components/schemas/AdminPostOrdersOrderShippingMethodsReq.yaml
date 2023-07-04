@@ -1,0 +1,16 @@
+type: object
+required:
+  - price
+  - option_id
+properties:
+  price:
+    type: number
+    description: The price (excluding VAT) that should be charged for the Shipping Method
+  option_id:
+    type: string
+    description: The ID of the Shipping Option to create the Shipping Method from.
+  date:
+    type: object
+    description: >-
+      The data required for the Shipping Option to create a Shipping Method.
+      This will depend on the Fulfillment Provider.

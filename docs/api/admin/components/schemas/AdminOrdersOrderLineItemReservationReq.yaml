@@ -1,0 +1,10 @@
+type: object
+required:
+  - location_id
+properties:
+  location_id:
+    description: The id of the location of the reservation
+    type: string
+  quantity:
+    description: The quantity to reserve
+    type: number

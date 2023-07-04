@@ -1,0 +1,10 @@
+extends: existence
+message: "Avoid using first-person plural like '%s'."
+link: https://medusajs.notion.site/Style-Guide-Docs-fad86dd1c5f84b48b145e959f36628e0#9f0dc7c440b841d3bfcb006df12c2652
+level: error
+ignorecase: true
+tokens:
+  - we
+  - we'(?:ve|re)
+  - us
+  - let's

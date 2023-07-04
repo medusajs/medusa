@@ -1,0 +1,12 @@
+type: object
+x-expanded-relations:
+  field: notifications
+  relations:
+    - resends
+required:
+  - notifications
+properties:
+  notifications:
+    type: array
+    items:
+      $ref: ./Notification.yaml

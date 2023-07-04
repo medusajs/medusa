@@ -1,0 +1,5 @@
+{
+  "cli": {
+    "migrationsDir": "src/migrations"
+  }
+}

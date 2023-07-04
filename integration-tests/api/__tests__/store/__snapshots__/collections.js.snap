@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/store/collections /store/collections lists collections 1`] = `
+Object {
+  "collections": Array [
+    Object {
+      "created_at": Any<String>,
+      "deleted_at": null,
+      "handle": "test-collection2",
+      "id": "test-collection2",
+      "metadata": null,
+      "title": "Test collection 2",
+      "updated_at": Any<String>,
+    },
+    Object {
+      "created_at": Any<String>,
+      "deleted_at": null,
+      "handle": "test-collection1",
+      "id": "test-collection1",
+      "metadata": null,
+      "title": "Test collection 1",
+      "updated_at": Any<String>,
+    },
+    Object {
+      "created_at": Any<String>,
+      "deleted_at": null,
+      "handle": "test-collection",
+      "id": "test-collection",
+      "metadata": null,
+      "title": "Test collection",
+      "updated_at": Any<String>,
+    },
+  ],
+  "count": 3,
+  "limit": 10,
+  "offset": 0,
+}
+`;
+
+exports[`/store/collections /store/collections/:id gets collection 1`] = `
+Object {
+  "collection": Object {
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "handle": "test-collection",
+    "id": "test-collection",
+    "metadata": null,
+    "title": "Test collection",
+    "updated_at": Any<String>,
+  },
+}
+`;

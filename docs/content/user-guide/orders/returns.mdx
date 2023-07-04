@@ -1,0 +1,92 @@
+---
+sidebar_position: 7
+sidebar_label: Manage Returns
+description: 'This user guide explains how to manage order returns on the Medusa Admin. Learn how to request a return for an order, mark a return as received, and cancel a return.'
+addHowToData: true
+---
+
+import UiIcon from '@site/src/components/UiIcon';
+
+# Manage Order’s Returns
+
+In this document, you’ll learn more about order returns, how to request a return, and more.
+
+## Overview
+
+Part of the order management system that Medusa provides is automating and managing order returns.
+
+There are two ways of returns for an order to be requested:
+
+1. The customer requests a return for an order through the storefront, which the store operator can view on the admin.
+2. The store operator requests to receive a return from the customer. The customer can be informed about this through an email.
+
+After a return is requested, the store operator can choose to either cancel the return or mark it as received. When a return is marked as received, a refund is issued to the customer.
+
+---
+
+## Find Return Requests of an Order
+
+To find return requests of an order:
+
+1. Open the order details page.
+2. On the Timeline section, you’ll find any returns requested, whether by store operators or by customers.
+
+---
+
+## Request a Return for an Order
+
+:::info
+
+The steps mentioned here regarding an item's location and quantity are only available if you have the Inventory and Stock Location modules installed. You can learn more in the [Multi-Warehouse documentation](../multiwarehouse/index.md).
+
+:::
+
+To request a return for an order:
+
+1. Open the order details page.
+2. In the Timeline section, click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon at the top right.
+3. Click on Request Return in the dropdown.
+4. In the new window that opens:
+    - Choose the items in the order that you want to request the return.
+    - For each item that you choose, click on the Select Reason below that item.
+        - Choose a [Return Reason](../settings/return-reasons.mdx#add-return-reason), optionally enter a Note, then click the Add button.
+    - For the Location field, you can optionally choose the location you want these items to be returned to.
+    - Select a shipping method you want to use for this return.
+        - If you want to change the default price of the shipping method, click on the “Add custom price” button and enter the price you want to use.
+        - If you want to remove the custom price, you can click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999273/Medusa%20Docs/UI%20Icons/7hztVhj_mj6mxu.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999290/Medusa%20Docs/UI%20Icons/1yp4PNt_vzwnhf.png" alt="trash" /> icon.
+    - If you don’t want the customer to receive an email that a return has been requested, uncheck the “Send notifications” checkbox.
+5. Once done, click on the Submit button.
+
+---
+
+## Receive Return
+
+:::caution
+
+Once the return is marked as received, a refund will be issued to the customer. A return can only be marked as “received” if the payment of the order or the items chosen in the return is captured.
+
+:::
+
+To mark a return as received:
+
+1. Open the order details page.
+2. In the Timeline section, find the return requested.
+3. Click on the Receive Return button.
+4. Check or uncheck the items that have been received.
+5. Click the Complete button.
+
+---
+
+## Cancel a Return
+
+:::danger
+
+If a return is canceled it can’t be undone. A return can only be canceled if it hasn’t been marked as received.
+
+:::
+
+To cancel a return:
+
+1. Open the order details page.
+2. In the Timeline section, find the return requested and click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon.
+3. Click on “Cancel return” in the dropdown.

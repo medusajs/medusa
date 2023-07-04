@@ -1,0 +1,48 @@
+name: 📚 Documentation
+description: Report errors you find in our documentation or ideas for enhancing our documentation
+labels: ["type: docs"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Hello 👋
+
+        Thanks for taking the time to fill out this issue.
+        Please fill out each section below. This info helps Medusa maintainers understand the issue better and fix it in a short time.
+
+        Useful links:
+
+        - Contribution Guidelines: https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md
+        - Documentation: https://docs.medusajs.com/
+  - type: checkboxes
+    attributes:
+      label: Preliminary Checks
+      description: Please make sure that you verify each checkbox and follow the instructions for them.
+      options:
+        - label: "This issue is not a duplicate. Before opening a new issue, please search existing issues: https://github.com/medusajs/medusa/issues"
+          required: true
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Issue Summary
+      description: |
+        What is the error you found in our documentation or what do you think should be enhanced?
+  - type: textarea
+    validations:
+      required: false
+    attributes:
+      label: How can this issue be resolved?
+      description: If you have an idea of how the issue can be resolved, please details the steps below.
+      value: |
+        1.
+        2.
+        3.
+        ...
+  - type: checkboxes
+    attributes:
+      label: Are you interested in working on this issue?
+      description: If you're interested in not only reporting this issue but also fix it, check the box below.
+      options:
+        - label: "I would like to fix this issue"
+          required: false

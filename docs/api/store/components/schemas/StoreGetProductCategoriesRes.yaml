@@ -1,0 +1,25 @@
+type: object
+x-expanded-relations:
+  field: product_categories
+  relations:
+    - category_children
+    - parent_category
+required:
+  - product_categories
+  - count
+  - offset
+  - limit
+properties:
+  product_categories:
+    type: array
+    items:
+      $ref: ./ProductCategory.yaml
+  count:
+    type: integer
+    description: The total number of items available
+  offset:
+    type: integer
+    description: The number of items skipped before these items
+  limit:
+    type: integer
+    description: The number of items per page

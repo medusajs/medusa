@@ -1,0 +1,8 @@
+type: object
+properties:
+  name:
+    description: Name of the customer group
+    type: string
+  metadata:
+    description: Metadata for the customer.
+    type: object

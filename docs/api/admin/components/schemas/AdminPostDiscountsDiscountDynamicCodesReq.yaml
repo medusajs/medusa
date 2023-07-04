@@ -1,0 +1,14 @@
+type: object
+required:
+  - code
+properties:
+  code:
+    type: string
+    description: A unique code that will be used to redeem the Discount
+  usage_limit:
+    type: number
+    description: Maximum times the discount can be used
+    default: 1
+  metadata:
+    type: object
+    description: An optional set of key-value pairs to hold additional information.

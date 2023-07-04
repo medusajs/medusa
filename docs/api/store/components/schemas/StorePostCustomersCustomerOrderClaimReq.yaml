@@ -1,0 +1,9 @@
+type: object
+required:
+  - order_ids
+properties:
+  order_ids:
+    description: The ids of the orders to claim
+    type: array
+    items:
+      type: string

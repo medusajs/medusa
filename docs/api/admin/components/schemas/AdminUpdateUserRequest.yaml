@@ -1,0 +1,21 @@
+type: object
+properties:
+  first_name:
+    description: The name of the User.
+    type: string
+  last_name:
+    description: The name of the User.
+    type: string
+  role:
+    description: Userrole assigned to the user.
+    type: string
+    enum:
+      - admin
+      - member
+      - developer
+  api_token:
+    description: The api token of the User.
+    type: string
+  metadata:
+    description: An optional set of key-value pairs with additional information.
+    type: object

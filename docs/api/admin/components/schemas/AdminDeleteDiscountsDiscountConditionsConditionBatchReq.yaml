@@ -1,0 +1,15 @@
+type: object
+required:
+  - resources
+properties:
+  resources:
+    description: The resources to be deleted from the discount condition
+    type: array
+    items:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          description: The id of the item
+          type: string

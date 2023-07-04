@@ -1,0 +1,49 @@
+{
+  "name": "medusa-telemetry",
+  "version": "0.0.16",
+  "description": "Telemetry for Medusa",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/medusa-telemetry"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Sebastian Rindom",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/preset-typescript": "^7.15.0",
+    "babel-preset-medusa-package": "^1.1.19",
+    "cross-env": "^5.2.1",
+    "jest": "^25.5.4",
+    "nodemon": "^2.0.20"
+  },
+  "scripts": {
+    "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "watch": "babel -w src --out-dir dist/ --extensions \".ts,.js\" --ignore '**/__tests__','**/__mocks__'",
+    "build": "babel src -d dist --extensions \".ts,.js\" --ignore '**/__tests__','**/__mocks__'",
+    "serve": "node dist/app.js",
+    "postinstall": "node dist/postinstall.js || true",
+    "test": "jest --passWithNoTests src"
+  },
+  "dependencies": {
+    "axios": "^0.21.4",
+    "axios-retry": "^3.1.9",
+    "boxen": "^5.0.1",
+    "ci-info": "^3.2.0",
+    "configstore": "5.0.1",
+    "global": "^4.4.0",
+    "is-docker": "^2.2.1",
+    "remove-trailing-slash": "^0.1.1",
+    "uuid": "^8.3.2"
+  },
+  "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
+}

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Feature Request
+    url: https://github.com/medusajs/medusa/discussions/categories/feature-requests
+    about: Use GitHub Discussions to open a feature request.
+  - name: Ask a question
+    url: https://discord.gg/medusajs
+    about: Join our community to ask questions and participate in discussions
+  - name: Want to work with us?
+    url: mailto:hello@medusajs.com?subject=[GitHub]%20Working%20with%20Medusa
+    about: Interested in working with Medusa? Get in touch!

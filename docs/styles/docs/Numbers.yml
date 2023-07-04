@@ -1,0 +1,14 @@
+extends: existence
+message: "Numbers must be spelled out"
+link: https://medusajs.notion.site/Style-Guide-Docs-fad86dd1c5f84b48b145e959f36628e0#24a7270d3eee4d8e97657b0e12cd979a
+level: error
+ignorecase: true
+scope: paragraph
+tokens:
+  - '.*[0-9]+\s(?!(AM|PM))+' #need to match words before to add exceptions
+  - '.*[0-9][.]'
+exceptions:
+  - '[pP]ort [0-9]+'
+  - 'WSL2'
+  - '[vV]ersions? [0-9]'
+  - '[v.]+[0-9]+'

@@ -1,0 +1,111 @@
+get:
+  operationId: GetVariants
+  summary: Get Product Variants
+  description: Retrieves a list of Product Variants
+  parameters:
+    - in: query
+      name: ids
+      description: A comma separated list of Product Variant ids to filter by.
+      schema:
+        type: string
+    - in: query
+      name: sales_channel_id
+      description: A sales channel id for result configuration.
+      schema:
+        type: string
+    - in: query
+      name: expand
+      description: A comma separated list of Product Variant relations to load.
+      schema:
+        type: string
+    - in: query
+      name: offset
+      description: How many product variants to skip in the result.
+      schema:
+        type: number
+        default: '0'
+    - in: query
+      name: limit
+      description: Maximum number of Product Variants to return.
+      schema:
+        type: number
+        default: '100'
+    - in: query
+      name: cart_id
+      description: The id of the Cart to set prices based on.
+      schema:
+        type: string
+    - in: query
+      name: region_id
+      description: The id of the Region to set prices based on.
+      schema:
+        type: string
+    - in: query
+      name: currency_code
+      description: The currency code to use for price selection.
+      schema:
+        type: string
+    - in: query
+      name: title
+      style: form
+      explode: false
+      description: product variant title to search for.
+      schema:
+        oneOf:
+          - type: string
+            description: a single title to search by
+          - type: array
+            description: multiple titles to search by
+            items:
+              type: string
+    - in: query
+      name: inventory_quantity
+      description: Filter by available inventory quantity
+      schema:
+        oneOf:
+          - type: number
+            description: a specific number to search by.
+          - type: object
+            description: search using less and greater than comparisons.
+            properties:
+              lt:
+                type: number
+                description: filter by inventory quantity less than this number
+              gt:
+                type: number
+                description: filter by inventory quantity greater than this number
+              lte:
+                type: number
+                description: filter by inventory quantity less than or equal to this number
+              gte:
+                type: number
+                description: >-
+                  filter by inventory quantity greater than or equal to this
+                  number
+  x-codegen:
+    method: list
+    queryParams: StoreGetVariantsParams
+  x-codeSamples:
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_variants/get.sh
+  tags:
+    - Variants
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreVariantsListRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

@@ -1,0 +1,7 @@
+type: object
+required:
+  - data
+properties:
+  data:
+    type: object
+    description: The data to update the payment session with.

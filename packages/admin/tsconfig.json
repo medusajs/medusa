@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "outDir": ".",
+    "rootDir": "src",
+    "jsx": "react",
+    "skipLibCheck": true
+  },
+  "include": ["src"],
+  "exclude": ["**/node_modules"]
+}

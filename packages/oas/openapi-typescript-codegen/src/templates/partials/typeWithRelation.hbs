@@ -1,0 +1,11 @@
+{{~#if isArray}}Array<{{/if~}}
+{{~#if hasDepth}}Merge<{{/if~}}
+SetRelation<{{>base}}, {{#each nestedRelations}}'{{{field}}}'{{#unless @last}} | {{/unless}}{{/each}}>{{#if hasDepth}}, {
+{{/if}}
+{{~#each nestedRelations~}}
+  {{#if nestedRelations~}}
+    {{{field}}}: {{>typeWithRelation}},
+  {{/if~}}
+{{~/each~}}
+{{~#if hasDepth~}} }>{{/if~}}
+{{~#if isArray}}>{{/if~}}

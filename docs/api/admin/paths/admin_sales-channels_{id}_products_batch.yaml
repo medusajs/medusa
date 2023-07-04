@@ -1,0 +1,109 @@
+post:
+  operationId: PostSalesChannelsChannelProductsBatch
+  summary: Add Products
+  description: Assign a batch of product to a sales channel.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Sales channel.
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/AdminPostSalesChannelsChannelProductsBatchReq.yaml
+  x-codegen:
+    method: addProducts
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/admin_sales-channels_{id}_products_batch/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_sales-channels_{id}_products_batch/post.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Sales Channels
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminSalesChannelsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml
+delete:
+  operationId: DeleteSalesChannelsChannelProductsBatch
+  summary: Delete Products
+  description: Remove a list of products from a sales channel.
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the Sales Channel
+      schema:
+        type: string
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/AdminDeleteSalesChannelsChannelProductsBatchReq.yaml
+  x-codegen:
+    method: removeProducts
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/admin_sales-channels_{id}_products_batch/delete.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: >-
+          ../code_samples/Shell/admin_sales-channels_{id}_products_batch/delete.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Sales Channels
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminSalesChannelsRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

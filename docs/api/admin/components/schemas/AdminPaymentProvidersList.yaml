@@ -1,0 +1,8 @@
+type: object
+required:
+  - payment_providers
+properties:
+  payment_providers:
+    type: array
+    items:
+      $ref: ./PaymentProvider.yaml

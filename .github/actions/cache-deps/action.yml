@@ -1,0 +1,19 @@
+name: cache-deps
+description: Creates a cache with the given extension for monorepo dependencies
+inputs:
+  extension:
+    description: Extension for cache name
+runs:
+  using: composite
+  steps:
+    - uses: actions/cache@v3
+      id: cache
+      with:
+        path: |
+          .yarn/cache
+        key: ${{ runner.os }}-yarn-${{inputs.extension}}-v8-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-${{inputs.extension}}-v8
+      # We want to only bootstrap and install if no cache is found.
+    - run: yarn install --immutable
+      shell: bash

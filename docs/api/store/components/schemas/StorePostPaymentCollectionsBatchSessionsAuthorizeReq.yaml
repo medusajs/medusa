@@ -1,0 +1,9 @@
+type: object
+required:
+  - session_ids
+properties:
+  session_ids:
+    description: List of Payment Session IDs to authorize.
+    type: array
+    items:
+      type: string

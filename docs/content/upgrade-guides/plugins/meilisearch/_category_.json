@@ -1,0 +1,6 @@
+{
+  "label": "MeiliSearch",
+  "customProps": {
+    "reverse": true
+  }
+}

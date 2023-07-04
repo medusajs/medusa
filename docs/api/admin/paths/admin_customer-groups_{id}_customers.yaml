@@ -1,0 +1,70 @@
+get:
+  operationId: GetCustomerGroupsGroupCustomers
+  summary: List Customers
+  description: Retrieves a list of customers in a customer group
+  x-authenticated: true
+  parameters:
+    - in: path
+      name: id
+      required: true
+      description: The ID of the customer group.
+      schema:
+        type: string
+    - in: query
+      name: limit
+      description: The number of items to return.
+      schema:
+        type: integer
+        default: 50
+    - in: query
+      name: offset
+      description: The items to skip before result.
+      schema:
+        type: integer
+        default: 0
+    - in: query
+      name: expand
+      description: (Comma separated) Which fields should be expanded in each customer.
+      schema:
+        type: string
+    - in: query
+      name: q
+      description: a search term to search email, first_name, and last_name.
+      schema:
+        type: string
+  x-codegen:
+    method: listCustomers
+    queryParams: AdminGetGroupsGroupCustomersParams
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/admin_customer-groups_{id}_customers/get.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/admin_customer-groups_{id}_customers/get.sh
+  security:
+    - api_token: []
+    - cookie_auth: []
+  tags:
+    - Customer Groups
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/AdminCustomersListRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '401':
+      $ref: ../components/responses/unauthorized.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      $ref: ../components/responses/invalid_request_error.yaml
+    '500':
+      $ref: ../components/responses/500_error.yaml

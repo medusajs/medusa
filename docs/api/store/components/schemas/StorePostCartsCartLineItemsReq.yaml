@@ -1,0 +1,14 @@
+type: object
+required:
+  - variant_id
+  - quantity
+properties:
+  variant_id:
+    type: string
+    description: The id of the Product Variant to generate the Line Item from.
+  quantity:
+    type: number
+    description: The quantity of the Product Variant to add to the Line Item.
+  metadata:
+    type: object
+    description: An optional key-value map with additional details about the Line Item.

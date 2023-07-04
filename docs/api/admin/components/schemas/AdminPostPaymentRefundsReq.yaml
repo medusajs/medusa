@@ -1,0 +1,14 @@
+type: object
+required:
+  - amount
+  - reason
+properties:
+  amount:
+    description: The amount to refund.
+    type: integer
+  reason:
+    description: The reason for the Refund.
+    type: string
+  note:
+    description: A note with additional details about the Refund.
+    type: string

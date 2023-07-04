@@ -1,0 +1,38 @@
+{
+  "name": "medusa-test-utils",
+  "version": "1.1.40",
+  "description": "Test utils for Medusa",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/medusa-test-utils"
+  },
+  "scripts": {
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "test": "jest --passWithNoTests src",
+    "build": "babel src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'",
+    "watch": "babel -w src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Sebastian Rindom",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-env": "^7.7.5",
+    "@babel/runtime": "^7.9.6",
+    "cross-env": "^5.2.1",
+    "jest": "^25.5.4"
+  },
+  "dependencies": {
+    "@babel/plugin-transform-classes": "^7.9.5",
+    "medusa-core-utils": "^1.2.0",
+    "randomatic": "^3.1.1"
+  },
+  "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: http://docs.medusajs.com/sitemap.xml

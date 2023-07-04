@@ -1,0 +1,8 @@
+extends: existence
+message: "Capitalize '%s'."
+link: https://medusajs.notion.site/Style-Guide-Docs-fad86dd1c5f84b48b145e959f36628e0#a5043fc5f8bc4b0b84f3ba494f817e42
+nonword: true
+level: warning
+scope: heading
+tokens:
+  - ':\s[a-z]'

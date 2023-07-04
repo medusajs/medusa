@@ -1,0 +1,7 @@
+extends: existence
+message: "Use a numeral plus the units."
+link: https://medusajs.notion.site/Style-Guide-Docs-fad86dd1c5f84b48b145e959f36628e0#24a7270d3eee4d8e97657b0e12cd979a
+nonword: true
+level: error
+tokens:
+  - '\b[a-zA-z]+\spercent\b'

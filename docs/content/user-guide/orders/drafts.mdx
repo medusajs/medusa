@@ -1,0 +1,129 @@
+---
+sidebar_position: 6
+description: 'This user guide explains how to manage draft orders on the Medusa Admin. Learn how to create a draft order, view its details, edit a draft order, cancel a draft order, and more.'
+addHowToData: true
+---
+
+import UiIcon from '@site/src/components/UiIcon';
+
+# Manage Draft Orders
+
+In this document, you’ll learn more about draft orders, how to create them, and more.
+
+## Overview
+
+Draft orders are orders created from the Medusa admin. Existing products or custom items can be added to the order as purchased items. You can also specify custom shipping amounts.
+
+After a draft order is created and is marked as paid, an order will be created based on that draft order and it will appear as part of the Orders list.
+
+---
+
+## Create a Draft Order
+
+To create a draft order:
+
+1. Go to Orders → Drafts.
+2. Click on “Create draft order” at the top right.
+3. A new window then opens with six steps to go through to create the draft order:
+    1. In the first step, choose the region this draft order belongs to, then click the Next button.
+    2. In the second step, add items to the order. You must add at least one item. Once you’re done, click the Next button.
+        1. To add existing products:
+            1. Click on the Add Existing button.
+            2. Choose the products you want to add into the draft order by clicking the checkbox at the left of the product. You can choose more than one product.
+            3. Once done, click on the Add button.
+        2. To add a custom item:
+            1. Click on the Add Custom button.
+            2. Enter the title, price, and quantity of the custom item.
+            3. Click on the Add button.
+        3. To remove an item you added, click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999273/Medusa%20Docs/UI%20Icons/7hztVhj_mj6mxu.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999290/Medusa%20Docs/UI%20Icons/1yp4PNt_vzwnhf.png" alt="trash" /> icon at the right of the item.
+        4. To change the quantity of any item, use the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999131/Medusa%20Docs/UI%20Icons/1hL8NiW_lqmjcq.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999150/Medusa%20Docs/UI%20Icons/8LtkPqW_jyqz5i.png" alt="plus" /> and <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999351/Medusa%20Docs/UI%20Icons/EGk9uYD_a7rwhs.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999366/Medusa%20Docs/UI%20Icons/XvkBK8p_dzhzfx.png" alt="minus" /> icons under the Quantity column.
+        5. Once you’re done, click the Next button.
+    3. In the third step, choose a shipping method then click the Next button.
+        1. If you want to change the default price of the shipping method, click on the “Set custom price” button and enter the price you want to use.
+        2. If you want to remove the custom price, you can click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999273/Medusa%20Docs/UI%20Icons/7hztVhj_mj6mxu.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999290/Medusa%20Docs/UI%20Icons/1yp4PNt_vzwnhf.png" alt="trash" /> icon.
+    4. In the fourth step, enter the customer’s details and shipping address.
+        1. If the customer already exists, you can choose it from the first input. You can search the list of customers by name or email. This fills out the fields under the General section as well.
+        2. If this is a new customer, in the first field, enter the email of the customer to add. Then, fill out the customer’s first name, last name, and phone number in the General section.
+        3. In the Shipping Address section, enter the customer’s address details such as the Address line, postal code, and more.
+        4. Once you’re done, click on the Next button.
+    5. In the fifth step, specify the billing address details.
+        1. If the billing address is the same as the shipping address, you can just check the “Use same as shipping” checkbox.
+        2. If the billing address is different than the shipping address, fill out the information under the General and Billing Address as instructed in the previous step.
+        3. Once done, click the Next button.
+    6. In the last step, confirm that all the information is correct.
+        1. If you want to add a discount, click on the Add Discount button and enter the discount code.
+        2. If you want to edit any of the draft order’s info, click on the Edit link next to any of the sections. This will take you back to the step associated with that section.
+4. Once you’re done following all the six steps, click on the Submit button.
+
+---
+
+## Open Draft Order’s Details
+
+To open a draft order’s details page:
+
+1. Go to Orders → Drafts.
+2. Select the draft order you want to view.
+
+---
+
+## Edit Draft Order Info
+
+### Edit Shipping Address
+
+To edit the shipping address of a draft order:
+
+1. Open the draft order details page.
+2. Scroll down to the customer section and click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon in that section.
+3. Click on Edit Shipping Address in the dropdown.
+4. This opens a new window to edit the shipping address’s info.
+5. Once you’re done click on the Save button.
+
+---
+
+## Cancel Draft Order
+
+:::warning
+
+Canceling a draft order cannot be undone and the draft order will be removed from the list of draft orders.
+
+:::
+
+To cancel a draft order:
+
+1. Open the draft order details page.
+2. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon at the top right.
+3. Click on Cancel Draft Order in the dropdown.
+4. Confirm canceling the draft order by clicking the “Yes, remove” button in the pop-up.
+
+---
+
+## Mark Draft Order as Paid
+
+:::caution
+
+When you mark a draft order as paid, a new order is created and associated with this draft order. This can’t be undone, but the new order created can be canceled.
+
+:::
+
+To mark a draft order as paid:
+
+1. Open the draft order details page.
+2. Scroll down to the Payment section.
+3. Click on the “Mark as paid” button.
+
+You should see a new order in the Orders list now.
+
+---
+
+## Go to Associated Order
+
+:::info
+
+This is only available after a draft order is marked as paid.
+
+:::
+
+To go to the order associated with the draft order.
+
+1. Open the draft order details page.
+2. Click on the “Go to Order” button at the top right.

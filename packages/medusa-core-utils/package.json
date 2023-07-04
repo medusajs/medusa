@@ -1,0 +1,29 @@
+{
+  "name": "medusa-core-utils",
+  "version": "1.2.0",
+  "description": "Core utils for Medusa",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/medusa-core-utils"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "tsc --build",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "watch": "tsc --watch"
+  },
+  "files": [
+    "dist"
+  ],
+  "author": "Sebastian Rindom",
+  "license": "MIT",
+  "devDependencies": {
+    "cross-env": "^5.2.1",
+    "jest": "^25.5.4",
+    "ts-jest": "^25.5.1",
+    "typescript": "^4.4.4"
+  },
+  "gitHead": "a69b1e85be1da3b1b5bc4c5446471252623c8808"
+}

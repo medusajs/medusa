@@ -1,0 +1,12 @@
+const getRequestBody = (options: ApiRequestOptions): any => {
+	if (options.body !== undefined) {
+		if (options.mediaType?.includes('/json')) {
+			return JSON.stringify(options.body)
+		} else if (isString(options.body) || isBlob(options.body) || isFormData(options.body)) {
+			return options.body;
+		} else {
+			return JSON.stringify(options.body);
+		}
+	}
+	return undefined;
+};

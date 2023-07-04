@@ -1,0 +1,19 @@
+{
+  "name": "integration-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "jest.config.js",
+  "private": true,
+  "scripts": {
+    "test:integration": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zakaria S. El Asri",
+  "license": "ISC",
+  "devDependencies": {
+    "dotenv": "^10.0.0"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^5.5.3",
+    "testcontainers": "^8.10.1"
+  }
+}

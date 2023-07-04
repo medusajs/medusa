@@ -1,0 +1,15 @@
+type: object
+required:
+  - fulfillment_id
+properties:
+  fulfillment_id:
+    description: The ID of the Fulfillment.
+    type: string
+  tracking_numbers:
+    description: The tracking numbers for the shipment.
+    type: array
+    items:
+      type: string
+  no_notification:
+    description: If set to true no notification will be send related to this Shipment.
+    type: boolean

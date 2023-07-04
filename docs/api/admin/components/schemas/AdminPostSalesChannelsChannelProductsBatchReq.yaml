@@ -1,0 +1,15 @@
+type: object
+required:
+  - product_ids
+properties:
+  product_ids:
+    description: The IDs of the products to add to the Sales Channel
+    type: array
+    items:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          description: The ID of the product

@@ -1,0 +1,6 @@
+type: object
+required:
+  - reservation
+properties:
+  reservation:
+    $ref: ./ReservationItemDTO.yaml

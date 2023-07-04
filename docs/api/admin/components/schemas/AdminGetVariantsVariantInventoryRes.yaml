@@ -1,0 +1,5 @@
+type: object
+properties:
+  variant:
+    type: object
+    $ref: ./VariantInventory.yaml

@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ShopifyCollectionService create normalizes a custom collection from Shopify 1`] = `
+Object {
+  "handle": "spring",
+  "metadata": Object {
+    "sh_body": "spring collection",
+    "sh_id": "spring",
+  },
+  "title": "Spring",
+}
+`;
+
+exports[`ShopifyCollectionService create normalizes a smart collection from Shopify 1`] = `
+Object {
+  "handle": "ipods-1",
+  "metadata": Object {
+    "sh_body": null,
+    "sh_id": 1063001322,
+  },
+  "title": "IPods",
+}
+`;

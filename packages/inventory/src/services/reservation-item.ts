@@ -1,0 +1,336 @@
+import {
+  CreateReservationItemInput,
+  FilterableReservationItemProps,
+  FindConfig,
+  IEventBusService,
+  SharedContext,
+  UpdateReservationItemInput,
+} from "@medusajs/types"
+import {
+  InjectEntityManager,
+  isDefined,
+  MedusaContext,
+  MedusaError,
+} from "@medusajs/utils"
+import { EntityManager, FindManyOptions, In } from "typeorm"
+import { InventoryLevelService } from "."
+import { ReservationItem } from "../models"
+import { buildQuery } from "../utils/build-query"
+
+type InjectedDependencies = {
+  eventBusService: IEventBusService
+  manager: EntityManager
+  inventoryLevelService: InventoryLevelService
+}
+
+export default class ReservationItemService {
+  static Events = {
+    CREATED: "reservation-item.created",
+    UPDATED: "reservation-item.updated",
+    DELETED: "reservation-item.deleted",
+  }
+
+  protected readonly manager_: EntityManager
+  protected readonly eventBusService_: IEventBusService | undefined
+  protected readonly inventoryLevelService_: InventoryLevelService
+
+  constructor({
+    eventBusService,
+    inventoryLevelService,
+    manager,
+  }: InjectedDependencies) {
+    this.manager_ = manager
+    this.eventBusService_ = eventBusService
+    this.inventoryLevelService_ = inventoryLevelService
+  }
+
+  /**
+   * Lists reservation items that match the provided filter.
+   * @param selector - Filters to apply to the reservation items.
+   * @param config - Configuration for the query.
+   * @param context
+   * @return Array of reservation items that match the selector.
+   */
+  async list(
+    selector: FilterableReservationItemProps = {},
+    config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 },
+    context: SharedContext = {}
+  ): Promise<ReservationItem[]> {
+    const manager = context.transactionManager ?? this.manager_
+    const itemRepository = manager.getRepository(ReservationItem)
+
+    const query = buildQuery(selector, config) as FindManyOptions
+
+    return await itemRepository.find(query)
+  }
+
+  /**
+   * Lists reservation items that match the provided filter and returns the total count.
+   * @param selector - Filters to apply to the reservation items.
+   * @param config - Configuration for the query.
+   * @param context
+   * @return Array of reservation items that match the selector and the total count.
+   */
+  async listAndCount(
+    selector: FilterableReservationItemProps = {},
+    config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 },
+    context: SharedContext = {}
+  ): Promise<[ReservationItem[], number]> {
+    const manager = context.transactionManager ?? this.manager_
+    const itemRepository = manager.getRepository(ReservationItem)
+
+    const query = buildQuery(selector, config) as FindManyOptions
+
+    return await itemRepository.findAndCount(query)
+  }
+
+  /**
+   * Retrieves a reservation item by its id.
+   * @param reservationItemId - The id of the reservation item to retrieve.
+   * @param config - Configuration for the query.
+   * @param context
+   * @return The reservation item with the provided id.
+   * @throws If reservationItemId is not defined or if the reservation item was not found.
+   */
+  async retrieve(
+    reservationItemId: string,
+    config: FindConfig<ReservationItem> = {},
+    context: SharedContext = {}
+  ): Promise<ReservationItem> {
+    if (!isDefined(reservationItemId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"reservationItemId" must be defined`
+      )
+    }
+
+    const manager = context.transactionManager ?? this.manager_
+    const reservationItemRepository = manager.getRepository(ReservationItem)
+
+    const query = buildQuery(
+      { id: reservationItemId },
+      config
+    ) as FindManyOptions
+    const [reservationItem] = await reservationItemRepository.find(query)
+
+    if (!reservationItem) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `ReservationItem with id ${reservationItemId} was not found`
+      )
+    }
+
+    return reservationItem
+  }
+
+  /**
+   * Create a new reservation item.
+   * @param data - The reservation item data.
+   * @param context
+   * @return The created reservation item.
+   */
+  @InjectEntityManager()
+  async create(
+    data: CreateReservationItemInput,
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<ReservationItem> {
+    const manager = context.transactionManager!
+    const reservationItemRepository = manager.getRepository(ReservationItem)
+
+    const reservationItem = reservationItemRepository.create({
+      inventory_item_id: data.inventory_item_id,
+      line_item_id: data.line_item_id,
+      location_id: data.location_id,
+      quantity: data.quantity,
+      metadata: data.metadata,
+      external_id: data.external_id,
+      description: data.description,
+      created_by: data.created_by,
+    })
+
+    const [newReservationItem] = await Promise.all([
+      reservationItemRepository.save(reservationItem),
+      this.inventoryLevelService_.adjustReservedQuantity(
+        data.inventory_item_id,
+        data.location_id,
+        data.quantity,
+        context
+      ),
+    ])
+
+    await this.eventBusService_?.emit?.(ReservationItemService.Events.CREATED, {
+      id: newReservationItem.id,
+    })
+
+    return newReservationItem
+  }
+
+  /**
+   * Update a reservation item.
+   * @param reservationItemId - The reservation item's id.
+   * @param data - The reservation item data to update.
+   * @param context
+   * @return The updated reservation item.
+   */
+  @InjectEntityManager()
+  async update(
+    reservationItemId: string,
+    data: UpdateReservationItemInput,
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<ReservationItem> {
+    const manager = context.transactionManager!
+    const itemRepository = manager.getRepository(ReservationItem)
+
+    const item = await this.retrieve(reservationItemId, undefined, context)
+
+    const shouldUpdateQuantity =
+      isDefined(data.quantity) && data.quantity !== item.quantity
+
+    const shouldUpdateLocation =
+      isDefined(data.location_id) && data.location_id !== item.location_id
+
+    const ops: Promise<unknown>[] = []
+
+    if (shouldUpdateLocation) {
+      ops.push(
+        this.inventoryLevelService_.adjustReservedQuantity(
+          item.inventory_item_id,
+          item.location_id,
+          item.quantity * -1,
+          context
+        ),
+        this.inventoryLevelService_.adjustReservedQuantity(
+          item.inventory_item_id,
+          data.location_id!,
+          data.quantity || item.quantity!,
+          context
+        )
+      )
+    } else if (shouldUpdateQuantity) {
+      const quantityDiff = data.quantity! - item.quantity
+      ops.push(
+        this.inventoryLevelService_.adjustReservedQuantity(
+          item.inventory_item_id,
+          item.location_id,
+          quantityDiff,
+          context
+        )
+      )
+    }
+
+    const mergedItem = itemRepository.merge(item, data)
+
+    ops.push(itemRepository.save(item))
+
+    await Promise.all(ops)
+
+    await this.eventBusService_?.emit?.(ReservationItemService.Events.UPDATED, {
+      id: mergedItem.id,
+    })
+
+    return mergedItem
+  }
+
+  /**
+   * Deletes a reservation item by line item id.
+   * @param lineItemId - the id of the line item to delete.
+   * @param context
+   */
+  @InjectEntityManager()
+  async deleteByLineItem(
+    lineItemId: string | string[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<void> {
+    const manager = context.transactionManager!
+    const itemRepository = manager.getRepository(ReservationItem)
+
+    const itemsIds = Array.isArray(lineItemId) ? lineItemId : [lineItemId]
+
+    const items = await this.list(
+      { line_item_id: itemsIds },
+      undefined,
+      context
+    )
+
+    const ops: Promise<unknown>[] = [
+      itemRepository.softDelete({ line_item_id: In(itemsIds) }),
+    ]
+
+    for (const item of items) {
+      ops.push(
+        this.inventoryLevelService_.adjustReservedQuantity(
+          item.inventory_item_id,
+          item.location_id,
+          item.quantity * -1,
+          context
+        )
+      )
+    }
+
+    await Promise.all(ops)
+
+    await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
+      line_item_id: lineItemId,
+    })
+  }
+
+  /**
+   * Deletes reservation items by location ID.
+   * @param locationId - The ID of the location to delete reservations for.
+   * @param context
+   */
+  @InjectEntityManager()
+  async deleteByLocationId(
+    locationId: string,
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<void> {
+    const manager = context.transactionManager!
+    const itemRepository = manager.getRepository(ReservationItem)
+
+    await itemRepository
+      .createQueryBuilder("reservation_item")
+      .softDelete()
+      .where("location_id = :locationId", { locationId })
+      .andWhere("deleted_at IS NULL")
+      .execute()
+
+    await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
+      location_id: locationId,
+    })
+  }
+
+  /**
+   * Deletes a reservation item by id.
+   * @param reservationItemId - the id of the reservation item to delete.
+   * @param context
+   */
+  @InjectEntityManager()
+  async delete(
+    reservationItemId: string | string[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<void> {
+    const ids = Array.isArray(reservationItemId)
+      ? reservationItemId
+      : [reservationItemId]
+    const manager = context.transactionManager!
+    const itemRepository = manager.getRepository(ReservationItem)
+    const items = await this.list({ id: ids }, undefined, context)
+
+    const promises: Promise<unknown>[] = items.map(async (item) => {
+      await this.inventoryLevelService_.adjustReservedQuantity(
+        item.inventory_item_id,
+        item.location_id,
+        item.quantity * -1,
+        context
+      )
+    })
+
+    promises.push(itemRepository.softRemove(items))
+
+    await Promise.all(promises)
+
+    await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
+      id: reservationItemId,
+    })
+  }
+}
