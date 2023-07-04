@@ -12,7 +12,7 @@ describe("models loader", () => {
 
   beforeAll(async () => {
     try {
-      models = await modelsLoader({
+      models = modelsLoader({
         container,
         isTest: true,
         coreTestPathGlob: "../models/{product,product-variant}.ts",
@@ -30,9 +30,9 @@ describe("models loader", () => {
   })
 
   it("ensure that the product model is an extended model", () => {
-    const productModel = models.find((model) => model.name === "Product")
+    const productModel = container.resolve("productModel")
 
-    expect(new productModel().custom_attribute).toEqual("test")
+    expect(productModel.custom_attribute).toEqual("test")
   })
 
   it("ensure that the extended product model is registered in db_entities", () => {
