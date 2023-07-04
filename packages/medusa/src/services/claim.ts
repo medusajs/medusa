@@ -530,6 +530,7 @@ export default class ClaimService extends TransactionBaseService {
             "additional_items.variant",
             "additional_items.variant.product",
             "shipping_methods",
+            "shipping_methods.shipping_option",
             "shipping_methods.tax_lines",
             "shipping_address",
             "order",

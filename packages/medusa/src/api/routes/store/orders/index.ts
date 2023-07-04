@@ -83,6 +83,7 @@ export const defaultStoreOrdersRelations = [
   "items",
   "items.variant",
   "shipping_methods",
+  "shipping_methods.shipping_option",
   "discounts",
   "discounts.rule",
   "customer",

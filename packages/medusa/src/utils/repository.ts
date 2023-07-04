@@ -7,6 +7,11 @@ import {
 } from "typeorm"
 import { ExtendedFindConfig } from "../types/common"
 
+// Regex matches all '.' except the rightmost
+export const positiveLookaheadDotReplacer = new RegExp(/\.(?=[^.]*\.)/, "g")
+// Replace all '.' with '__' to avoid typeorm's automatic aliasing
+export const dotReplacer = new RegExp(/\./, "g")
+
 /**
  * Custom query entity, it is part of the creation of a custom findWithRelationsAndCount needs.
  * Allow to query the relations for the specified entity ids
@@ -35,62 +40,86 @@ export async function queryEntityWithIds<T extends ObjectLiteral>({
     qb: SelectQueryBuilder<T>,
     alias: string,
     toplevel: string
-  ) => boolean)[]
+  ) => false | undefined)[]
 }): Promise<T[]> {
   const alias = repository.metadata.name.toLowerCase()
   return await Promise.all(
-    Object.entries(groupedRelations).map(async ([toplevel, rels]) => {
-      let querybuilder = repository.createQueryBuilder(alias)
+    Object.entries(groupedRelations).map(
+      async ([toplevel, topLevelRelations]) => {
+        let querybuilder = repository.createQueryBuilder(alias)
 
-      if (select && select.length) {
-        querybuilder.select(select.map((f) => `${alias}.${f as string}`))
-      }
-
-      let shouldAttachDefault = true
-      for (const customJoinBuilder of customJoinBuilders) {
-        const result = customJoinBuilder(querybuilder, alias, toplevel)
-        shouldAttachDefault = shouldAttachDefault && result
-      }
-
-      // If the toplevel relation has been attached with a customJoinBuilder and the function return false then
-      // do not attach the toplevel join bellow.
-      if (shouldAttachDefault) {
-        querybuilder = querybuilder.leftJoinAndSelect(
-          `${alias}.${toplevel}`,
-          toplevel
-        )
-      }
-
-      for (const rel of rels) {
-        const [_, rest] = rel.split(".")
-        if (!rest) {
-          continue
+        if (select?.length) {
+          querybuilder.select(
+            (select as string[])
+              .filter(function (s) {
+                return s.startsWith(toplevel) || !s.includes(".")
+              })
+              .map((column) => {
+                // In case the column is the toplevel relation, we need to replace the dot with a double underscore if it also contains top level relations
+                if (column.includes(toplevel)) {
+                  return topLevelRelations.some((rel) => column.includes(rel))
+                    ? column.replace(positiveLookaheadDotReplacer, "__")
+                    : column
+                }
+                return `${alias}.${column}`
+              })
+          )
         }
-        querybuilder = querybuilder.leftJoinAndSelect(
-          // Regex matches all '.' except the rightmost
-          rel.replace(/\.(?=[^.]*\.)/g, "__"),
-          // Replace all '.' with '__' to avoid typeorm's automatic aliasing
-          rel.replace(/\./g, "__")
-        )
-      }
 
-      if (withDeleted) {
-        querybuilder = querybuilder
-          .where(`${alias}.id IN (:...entitiesIds)`, {
-            entitiesIds: entityIds,
-          })
-          .withDeleted()
-      } else {
-        querybuilder = querybuilder.where(
-          `${alias}.deleted_at IS NULL AND ${alias}.id IN (:...entitiesIds)`,
-          {
-            entitiesIds: entityIds,
+        let shouldAttachDefault: boolean | undefined = true
+        for (const customJoinBuilder of customJoinBuilders) {
+          const result = customJoinBuilder(querybuilder, alias, toplevel)
+          if (result === undefined) {
+            continue
           }
-        )
-      }
 
-      return querybuilder.getMany()
-    })
+          shouldAttachDefault = shouldAttachDefault && result
+        }
+
+        if (shouldAttachDefault) {
+          const regexp = new RegExp(`^${toplevel}\\.\\w+$`)
+          const joinMethod = (select as string[]).filter(
+            (key) => !!key.match(regexp)
+          ).length
+            ? "leftJoin"
+            : "leftJoinAndSelect"
+
+          querybuilder = querybuilder[joinMethod](
+            `${alias}.${toplevel}`,
+            toplevel
+          )
+        }
+
+        for (const rel of topLevelRelations) {
+          const [_, rest] = rel.split(".")
+          if (!rest) {
+            continue
+          }
+
+          const regexp = new RegExp(`^${rel}\\.\\w+$`)
+          const joinMethod = (select as string[]).filter(
+            (key) => !!key.match(regexp)
+          ).length
+            ? "leftJoin"
+            : "leftJoinAndSelect"
+
+          querybuilder = querybuilder[joinMethod](
+            rel.replace(positiveLookaheadDotReplacer, "__"),
+            rel.replace(dotReplacer, "__")
+          )
+        }
+
+        querybuilder = querybuilder.where(`${alias}.id IN (:...entitiesIds)`, {
+          entitiesIds: entityIds,
+        })
+
+        if (withDeleted) {
+          querybuilder.withDeleted()
+        }
+
+        return querybuilder.getMany()
+      }
+    )
   ).then(flatten)
 }
 
