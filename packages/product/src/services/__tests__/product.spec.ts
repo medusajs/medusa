@@ -32,15 +32,18 @@ describe("Product service", function () {
 
     await productService.list(filters, config)
 
-    expect(productRepository.find).toHaveBeenCalledWith({
-      where: {},
-      options: {
-        fields: undefined,
-        limit: undefined,
-        offset: undefined,
-        populate: [],
+    expect(productRepository.find).toHaveBeenCalledWith(
+      {
+        where: {},
+        options: {
+          fields: undefined,
+          limit: undefined,
+          offset: undefined,
+          populate: [],
+        },
       },
-    })
+      undefined
+    )
   })
 
   it("should list products with filters", async function () {
@@ -51,8 +54,8 @@ describe("Product service", function () {
       tags: {
         value: {
           $in: ["test"],
-        }
-      }
+        },
+      },
     }
     const config = {
       relations: [],
@@ -60,21 +63,24 @@ describe("Product service", function () {
 
     await productService.list(filters, config)
 
-    expect(productRepository.find).toHaveBeenCalledWith({
-      where: {
-        tags: {
-          value: {
-            $in: ["test"]
-          }
+    expect(productRepository.find).toHaveBeenCalledWith(
+      {
+        where: {
+          tags: {
+            value: {
+              $in: ["test"],
+            },
+          },
+        },
+        options: {
+          fields: undefined,
+          limit: undefined,
+          offset: undefined,
+          populate: [],
         },
       },
-      options: {
-        fields: undefined,
-        limit: undefined,
-        offset: undefined,
-        populate: [],
-      },
-    })
+      undefined
+    )
   })
 
   it("should list products with filters and relations", async function () {
@@ -85,8 +91,8 @@ describe("Product service", function () {
       tags: {
         value: {
           $in: ["test"],
-        }
-      }
+        },
+      },
     }
     const config = {
       relations: ["tags"],
@@ -94,20 +100,23 @@ describe("Product service", function () {
 
     await productService.list(filters, config)
 
-    expect(productRepository.find).toHaveBeenCalledWith({
-      where: {
-        tags: {
-          value: {
-            $in: ["test"]
-          }
+    expect(productRepository.find).toHaveBeenCalledWith(
+      {
+        where: {
+          tags: {
+            value: {
+              $in: ["test"],
+            },
+          },
+        },
+        options: {
+          fields: undefined,
+          limit: undefined,
+          offset: undefined,
+          populate: ["tags"],
         },
       },
-      options: {
-        fields: undefined,
-        limit: undefined,
-        offset: undefined,
-        populate: ["tags"],
-      },
-    })
+      undefined
+    )
   })
 })
