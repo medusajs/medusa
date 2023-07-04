@@ -100,7 +100,7 @@ class ProductVariant {
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
 
-  @Property({ columnType: "numeric", nullable: true })
+  @Property({ columnType: "numeric", nullable: true, default: 0 })
   variant_rank?: number | null
 
   @Property({ persist: false })

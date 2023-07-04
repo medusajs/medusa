@@ -1,6 +1,8 @@
 import {
   BeforeCreate,
+  Collection,
   Entity,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -8,12 +10,14 @@ import {
 } from "@mikro-orm/core"
 
 import { generateEntityId, kebabCase } from "@medusajs/utils"
+import Product from "./product"
 
 type OptionalFields = "deleted_at"
+type OptionalRelations = "products"
 
 @Entity({ tableName: "product_collection" })
 class ProductCollection {
-  [OptionalProps]?: OptionalFields
+  [OptionalProps]?: OptionalFields | OptionalRelations
 
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -27,6 +31,9 @@ class ProductCollection {
     properties: ["handle"],
   })
   handle?: string
+
+  @OneToMany(() => Product, (product) => product.collection)
+  products = new Collection<Product>(this)
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null

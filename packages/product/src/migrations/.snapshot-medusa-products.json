@@ -1149,6 +1149,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "default": "0",
           "mappedType": "decimal"
         },
         "created_at": {
@@ -1332,7 +1333,7 @@
             "option_id"
           ],
           "composite": false,
-          "keyName": "IDX_product_option_value_product_option",
+          "keyName": "IDX_product_option_value_option_id",
           "primary": false,
           "unique": false
         },

@@ -3,6 +3,7 @@
   "version": "1.9.1",
   "description": "Medusa utilities functions shared by Medusa core and Modules",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",

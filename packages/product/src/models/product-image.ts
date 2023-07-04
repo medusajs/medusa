@@ -11,7 +11,7 @@ import {
 import { generateEntityId } from "@medusajs/utils"
 import Product from "./product"
 
-type OptionalRelations = "collection" | "type"
+type OptionalRelations = "products"
 type OptionalFields = "deleted_at"
 
 @Entity({ tableName: "image" })

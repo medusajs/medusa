@@ -35,7 +35,7 @@ class ProductOptionValue {
   option_id!: string
 
   @ManyToOne(() => ProductOption, {
-    index: "IDX_product_option_value_product_option",
+    index: "IDX_product_option_value_option_id",
     fieldName: "option_id",
   })
   option: ProductOption
