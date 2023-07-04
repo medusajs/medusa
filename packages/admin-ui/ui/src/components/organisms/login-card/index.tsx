@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { useWidgets } from "../../../providers/widget-provider"
 import InputError from "../../atoms/input-error"
+import WidgetContainer from "../../extensions/widget-container"
 import Button from "../../fundamentals/button"
 import SigninInput from "../../molecules/input-signin"
-import WidgetContainer from "../widget-container"
 
 type FormValues = {
   email: string

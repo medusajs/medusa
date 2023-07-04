@@ -4,7 +4,11 @@ import dedent from "ts-dedent"
 import { copyFilter } from "./copy-filter"
 import { logger } from "./logger"
 import { normalizePath } from "./normalize-path"
-import { findAllValidRoutes, findAllValidWidgets } from "./validate-extensions"
+import {
+  findAllValidRoutes,
+  findAllValidSettings,
+  findAllValidWidgets,
+} from "./validate-extensions"
 
 const FILE_EXT_REGEX = /\.[^/.]+$/
 
@@ -37,13 +41,17 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
     path.resolve(dest, "admin", "src", "extensions")
   )
 
-  const localWidgets = await findAllValidWidgets(
-    path.resolve(dest, "admin", "src", "extensions", "widgets")
-  )
-
-  const localRoutes = await findAllValidRoutes(
-    path.resolve(dest, "admin", "src", "extensions", "routes")
-  )
+  const [localWidgets, localRoutes, localSettings] = await Promise.all([
+    findAllValidWidgets(
+      path.resolve(dest, "admin", "src", "extensions", "widgets")
+    ),
+    findAllValidRoutes(
+      path.resolve(dest, "admin", "src", "extensions", "routes")
+    ),
+    findAllValidSettings(
+      path.resolve(dest, "admin", "src", "extensions", "settings")
+    ),
+  ])
 
   const widgetsArray = localWidgets.map((file, index) => {
     const relativePath = normalizePath(
@@ -54,7 +62,7 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
 
     return {
       importStatement: `import Widget${index}, { config as widgetConfig${index} } from "./${relativePath}"`,
-      extension: `{ Component: Widget${index}, config: widgetConfig${index} }`,
+      extension: `{ Component: Widget${index}, config: { ...widgetConfig${index}, type: "widget" } }`,
     }
   })
 
@@ -70,8 +78,8 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
       : `import Page${index} from "./${relativePath}"`
 
     const extension = route.hasConfig
-      ? `{ Component: Page${index}, config: { ...routeConfig${index}, path: "${route.path}" } }`
-      : `{ Component: Page${index}, config: { path: "${route.path}" } }`
+      ? `{ Component: Page${index}, config: { ...routeConfig${index}, type: "route",  path: "${route.path}" } }`
+      : `{ Component: Page${index}, config: { path: "${route.path}", type: "route" } }`
 
     return {
       importStatement,
@@ -79,7 +87,23 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
     }
   })
 
-  const extensionsArray = [...widgetsArray, ...routesArray]
+  const settingsArray = localSettings.map((setting, index) => {
+    const relativePath = normalizePath(
+      path
+        .relative(
+          path.resolve(dest, "admin", "src", "extensions"),
+          setting.file
+        )
+        .replace(FILE_EXT_REGEX, "")
+    )
+
+    return {
+      importStatement: `import Setting${index}, { config as settingConfig${index} } from "./${relativePath}"`,
+      extension: `{ Component: Setting${index}, config: { ...settingConfig${index}, path: "${setting.path}", type: "setting" } }`,
+    }
+  })
+
+  const extensionsArray = [...widgetsArray, ...routesArray, ...settingsArray]
 
   const extensionsEntry = dedent`
     ${extensionsArray.map((extension) => extension.importStatement).join("\n")}

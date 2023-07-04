@@ -1,6 +1,7 @@
 import {
   ALIASED_PACKAGES,
   findAllValidRoutes,
+  findAllValidSettings,
   findAllValidWidgets,
   logger,
   normalizePath,
@@ -43,9 +44,10 @@ export async function bundle() {
 
   const identifier = pkg.name as string
 
-  const [routes, widgets] = await Promise.all([
+  const [routes, widgets, settings] = await Promise.all([
     findAllValidRoutes(path.resolve(adminDir, "routes")),
     findAllValidWidgets(path.resolve(adminDir, "widgets")),
+    findAllValidSettings(path.resolve(adminDir, "settings")),
   ])
 
   const widgetImports = dedent`
@@ -68,36 +70,64 @@ export async function bundle() {
       .join("\n")}
     `
 
+  const settingImports = dedent`
+    ${settings
+      .map((setting, i) => {
+        return `import Setting${i}, { config as settingConfig${i} } from "${normalizePath(
+          setting.file
+        )}"`
+      })
+      .join("\n")}
+    `
+
   const body = dedent`
     const entry = {
-        identifier: "${identifier}",
-        extensions: [
-        ${routes
-          .map(
-            (r, i) => `{
-            Component: Route${i},
-            config: { path: "${r.path}"${
-              r.hasConfig ? `, ...routeConfig${i}` : ""
-            } }
-        }`
-          )
-          .join(",\n")}
-        ${routes.length > 0 && widgets.length > 0 ? "," : ""}
+      identifier: "${identifier}",
+      extensions: [
+        ${
+          routes.length > 0
+            ? routes
+                .map(
+                  (r, i) => `{
+                Component: Route${i},
+                config: { path: "${r.path}", type: "route"${
+                    r.hasConfig ? `, ...routeConfig${i}` : ""
+                  } }
+            }`
+                )
+                .join(",\n")
+            : ""
+        }
+        ${routes.length > 0 && settings.length > 0 ? "," : ""}
+        ${
+          settings.length > 0
+            ? settings
+                .map(
+                  (r, i) => `{
+                Component: Route${i},
+                config: { path: "${r.path}", type: "setting", ...settingConfig${i} }
+            }`
+                )
+                .join(",\n")
+            : ""
+        }
+        ${settings.length > 0 && widgets.length > 0 ? "," : ""}
         ${widgets
           .map(
             (_, i) => `{
             Component: Widget${i},
-            config: widgetConfig${i}
+            config: { type: "widget", ...widgetConfig${i} }
         }`
           )
           .join(",\n")}
-        ],
+      ],
     }
   `
 
   const virtualEntry = dedent`
     ${widgetImports}
     ${routeImports}
+    ${settingImports}
 
     ${body}
 

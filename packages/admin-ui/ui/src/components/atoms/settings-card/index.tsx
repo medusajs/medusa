@@ -35,7 +35,7 @@ const SettingsCard: React.FC<SettingsCardProps> = ({
         }}
       >
         <div className="h-2xlarge w-2xlarge bg-grey-0 rounded-rounded border-grey-20 text-grey-60 group-disabled:bg-grey-10 group-disabled:text-grey-40 flex items-center justify-center border">
-          <div className="bg-grey-10 h-xlarge w-xlarge flex items-center justify-center rounded-md">
+          <div className="bg-grey-10 h-xlarge w-xlarge flex items-center justify-center overflow-hidden rounded-md">
             {icon}
           </div>
         </div>

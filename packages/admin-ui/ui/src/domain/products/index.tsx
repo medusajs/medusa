@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom"
-import RouteContainer from "../../components/organisms/route-container"
+import RouteContainer from "../../components/extensions/route-container"
 import { useRoutes } from "../../providers/route-provider"
 import Edit from "./edit"
 import Overview from "./overview"

@@ -1,8 +1,10 @@
+import React from "react"
 import { Route, Routes } from "react-router-dom"
 import { useRoutes } from "../../../providers/route-provider"
 import { Route as AdminRoute, RouteSegment } from "../../../types/extensions"
 import { isRoute } from "../../../utils/extensions"
-import RouteErrorElement from "../../molecules/route-error-element"
+import RouteErrorElement from "./route-error-element"
+import { useRouteContainerProps } from "./use-route-container-props"
 
 type RouteContainerProps = {
   route: AdminRoute | RouteSegment
@@ -10,6 +12,8 @@ type RouteContainerProps = {
 }
 
 const RouteContainer = ({ route, previousPath = "" }: RouteContainerProps) => {
+  const routeContainerProps = useRouteContainerProps()
+
   const isFullRoute = isRoute(route)
 
   const { path } = route
@@ -47,8 +51,10 @@ const RouteContainer = ({ route, previousPath = "" }: RouteContainerProps) => {
 
   const { Page, origin } = route
 
+  const PageWithProps = React.createElement(Page, routeContainerProps)
+
   if (!hasNestedRoutes) {
-    return <Page />
+    return PageWithProps
   }
 
   return (
@@ -56,7 +62,7 @@ const RouteContainer = ({ route, previousPath = "" }: RouteContainerProps) => {
       <Routes>
         <Route
           path={"/"}
-          element={<Page />}
+          element={PageWithProps}
           errorElement={<RouteErrorElement origin={origin} />}
         />
         {nestedRoutes.map((r, i) => (

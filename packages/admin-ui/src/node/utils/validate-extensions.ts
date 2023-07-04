@@ -50,7 +50,7 @@ function validateWidgetConfigExport(
   return zoneIsValid
 }
 
-function validatePageConfigExport(
+function validateRouteConfigExport(
   properties: (ObjectMethod | ObjectProperty | SpreadElement)[]
 ): boolean {
   const linkProperty = properties.find(
@@ -85,9 +85,56 @@ function validatePageConfigExport(
   return labelIsValid
 }
 
+function validateSettingConfigExport(
+  properties: (ObjectMethod | ObjectProperty | SpreadElement)[]
+): boolean {
+  const cardProperty = properties.find(
+    (p) =>
+      p.type === "ObjectProperty" &&
+      p.key.type === "Identifier" &&
+      p.key.name === "card"
+  ) as ObjectProperty | undefined
+
+  // Link property is required for settings
+  if (!cardProperty) {
+    return false
+  }
+
+  const cardValue = cardProperty.value as ObjectExpression
+
+  let hasLabel = false
+  let hasDescription = false
+
+  if (
+    cardValue.properties.some(
+      (p) =>
+        p.type === "ObjectProperty" &&
+        p.key.type === "Identifier" &&
+        p.key.name === "label" &&
+        p.value.type === "StringLiteral"
+    )
+  ) {
+    hasLabel = true
+  }
+
+  if (
+    cardValue.properties.some(
+      (p) =>
+        p.type === "ObjectProperty" &&
+        p.key.type === "Identifier" &&
+        p.key.name === "description" &&
+        p.value.type === "StringLiteral"
+    )
+  ) {
+    hasDescription = true
+  }
+
+  return hasLabel && hasDescription
+}
+
 function validateConfigExport(
   path: NodePath<ExportNamedDeclaration>,
-  type: "widget" | "page"
+  type: "widget" | "route" | "setting"
 ) {
   let hasValidConfigExport = false
 
@@ -106,10 +153,17 @@ function validateConfigExport(
     ) {
       const properties = configDeclaration.init.properties
 
-      hasValidConfigExport =
-        type === "widget"
-          ? validateWidgetConfigExport(properties)
-          : validatePageConfigExport(properties)
+      if (type === "widget") {
+        hasValidConfigExport = validateWidgetConfigExport(properties)
+      }
+
+      if (type === "route") {
+        hasValidConfigExport = validateRouteConfigExport(properties)
+      }
+
+      if (type === "setting") {
+        hasValidConfigExport = validateSettingConfigExport(properties)
+      }
     } else {
       hasValidConfigExport = false
     }
@@ -341,7 +395,7 @@ async function validateRoute(
       hasComponentExport = validateDefaultExport(path, ast)
     },
     ExportNamedDeclaration: (path) => {
-      hasConfigExport = validateConfigExport(path, "page")
+      hasConfigExport = validateConfigExport(path, "route")
     },
   })
 
@@ -358,6 +412,103 @@ async function validateRoute(
     hasConfig: hasConfigExport,
     file,
   }
+}
+
+async function validateSetting(file: string, basePath: string) {
+  const cleanPath = createPath(file.replace(basePath, ""))
+
+  const { valid, error } = validatePath(cleanPath, file)
+
+  if (!valid) {
+    logger.error(
+      `The settings page ${file} is invalid and will not be injected. ${error}`
+    )
+    return null
+  }
+
+  const content = await fse.readFile(file, "utf-8")
+
+  let hasComponentExport = false
+  let hasConfigExport = false
+
+  const parserOptions: ParserOptions = {
+    sourceType: "module",
+    plugins: ["jsx"],
+  }
+
+  if (file.endsWith(".ts") || file.endsWith(".tsx")) {
+    parserOptions.plugins.push("typescript")
+  }
+
+  const ast = parse(content, parserOptions)
+
+  traverse(ast, {
+    ExportDefaultDeclaration: (path) => {
+      hasComponentExport = validateDefaultExport(path, ast)
+    },
+    ExportNamedDeclaration: (path) => {
+      hasConfigExport = validateConfigExport(path, "setting")
+    },
+  })
+
+  if (!hasComponentExport) {
+    logger.error(
+      `The default export in ${file} is invalid and the page will not be injected. Please make sure that the default export is a valid React component.`
+    )
+
+    return null
+  }
+
+  if (!hasConfigExport) {
+    logger.error(
+      `The named export "config" in ${file} is invalid or missing and the settings page will not be injected. Please make sure that the file exports a valid config.`
+    )
+
+    return null
+  }
+
+  return {
+    path: cleanPath,
+    file,
+  }
+}
+
+async function findAllValidSettings(dir: string) {
+  const settingsFiles: string[] = []
+
+  const dirExists = await fse.pathExists(dir)
+
+  if (!dirExists) {
+    return []
+  }
+
+  const paths = await fse.readdir(dir)
+
+  // We only check the first level of directories for settings files
+  for (const pa of paths) {
+    const filePath = path.join(dir, pa)
+    const fileStat = await fse.stat(filePath)
+
+    if (fileStat.isDirectory()) {
+      const files = await fse.readdir(filePath)
+
+      for (const file of files) {
+        const filePath = path.join(dir, pa, file)
+        const fileStat = await fse.stat(filePath)
+
+        if (fileStat.isFile() && /^(.*\/)?page\.[jt]sx?$/i.test(file)) {
+          settingsFiles.push(filePath)
+          break
+        }
+      }
+    }
+  }
+
+  const validSettingsFiles = await Promise.all(
+    settingsFiles.map(async (file) => validateSetting(file, dir))
+  )
+
+  return validSettingsFiles.filter((file) => file !== null)
 }
 
 /**
@@ -444,6 +595,8 @@ export {
   createPath,
   validateWidget,
   validateRoute,
+  validateSetting,
+  findAllValidSettings,
   findAllValidWidgets,
   findAllValidRoutes,
 }
