@@ -29,9 +29,18 @@ declare global {
   }
 }
 
+type ModuleAlias = {
+  key: string
+  hash: string
+  alias?: string
+  main?: boolean
+}
+
 export class MedusaModule {
   private static instances_: Map<string, any> = new Map()
+  private static keys_: Map<string, ModuleAlias[]> = new Map()
   private static loading_: Map<string, Promise<any>> = new Map()
+
   public static getLoadedModules(): Map<
     string,
     any & {
@@ -44,6 +53,54 @@ export class MedusaModule {
 
   public static clearInstances(): void {
     MedusaModule.instances_.clear()
+  }
+
+  public static isInstalled(moduleKey: string, alias?: string): boolean {
+    if (alias) {
+      return (
+        MedusaModule.keys_.has(moduleKey) &&
+        MedusaModule.keys_.get(moduleKey)!.some((m) => m.alias === alias)
+      )
+    }
+
+    return MedusaModule.keys_.has(moduleKey)
+  }
+
+  public static getModule(moduleKey: string, alias?: string): any | undefined {
+    if (!MedusaModule.keys_.has(moduleKey)) {
+      return
+    }
+
+    let mod
+    const modules = MedusaModule.keys_.get(moduleKey)!
+    if (alias) {
+      mod = modules.find((m) => m.alias === alias)
+
+      return MedusaModule.instances_.get(mod?.hash)
+    }
+
+    mod = modules.find((m) => m.main) ?? modules[0]
+
+    return MedusaModule.instances_.get(mod?.hash)
+  }
+
+  private static setModule(moduleKey: string, loadedModule: ModuleAlias): void {
+    if (!MedusaModule.keys_.has(moduleKey)) {
+      MedusaModule.keys_.set(moduleKey, [])
+    }
+
+    const modules = MedusaModule.keys_.get(moduleKey)!
+
+    const has = MedusaModule.getModule(moduleKey, loadedModule.alias)
+
+    if (has) {
+      throw new Error(
+        `Module ${moduleKey} already registed. Please choose a different alias.`
+      )
+    }
+
+    modules.push(loadedModule)
+    MedusaModule.keys_.set(moduleKey, modules!)
   }
 
   public static async bootstrap<T>(
@@ -77,13 +134,18 @@ export class MedusaModule {
       })
     )
 
-    let modDeclaration = declaration
+    let modDeclaration =
+      declaration ??
+      ({} as InternalModuleDeclaration | ExternalModuleDeclaration)
+
     if (declaration?.scope !== MODULE_SCOPE.EXTERNAL) {
       modDeclaration = {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: defaultPath,
         options: declaration,
+        alias: declaration?.alias,
+        main: declaration?.main,
       }
     }
 
@@ -126,6 +188,13 @@ export class MedusaModule {
           keyName
         ].__joinerConfig()
       }
+
+      MedusaModule.setModule(keyName, {
+        key: keyName,
+        hash: hashKey,
+        alias: resolution.definition.alias,
+        main: resolution.definition.main,
+      })
     }
 
     MedusaModule.instances_.set(hashKey, services)
