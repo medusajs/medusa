@@ -45,9 +45,12 @@ export const buildProductData = ({
   thumbnail,
   images,
   status,
+  manage_inventory,
+  inventory_quantity,
   type,
   tags,
   options,
+  variants,
 }: {
   title?: string
   description?: string
@@ -57,10 +60,14 @@ export const buildProductData = ({
   thumbnail?: string
   images?: string[] | { id?: string; url: string }[]
   status?: ProductTypes.ProductStatus
+  manage_inventory?: boolean
+  inventory_quantity?: number
   type?: string
   tags?: { value: string }[]
   options?: { title: string }[]
+  variants?: ProductTypes.CreateProductVariantDTO[]
 }) => {
+  const defaultOptionTitle = faker.commerce.productName()
   return {
     title: title ?? faker.commerce.productName(),
     description: description ?? faker.commerce.productName(),
@@ -72,9 +79,22 @@ export const buildProductData = ({
     images: (images ?? []) as Image[],
     type: type ? { value: type } : { value: faker.commerce.productName() },
     tags: tags ?? [{ value: "tag-1" }],
+    inventory_quantity,
+    manage_inventory,
     options: options ?? [
       {
-        title: "option-1",
+        title: defaultOptionTitle,
+      },
+    ],
+    variants: variants ?? [
+      {
+        title: faker.commerce.productName(),
+        sku: faker.commerce.productName(),
+        options: [
+          {
+            value: defaultOptionTitle + faker.commerce.productName(),
+          },
+        ],
       },
     ],
     // TODO: add categories, must be created first

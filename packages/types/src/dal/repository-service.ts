@@ -12,7 +12,7 @@ export interface RepositoryService<T = any> {
 
   transaction(
     task: (transactionManager: unknown) => Promise<T[]>,
-    context: {
+    context?: {
       isolationLevel?: string
       transaction?: unknown
       enableNestedTransactions?: boolean
@@ -34,7 +34,11 @@ export interface TreeRepositoryService<T = any> {
 
   transaction(
     task: (transactionManager: unknown) => Promise<T[]>,
-    context: { isolationLevel?: string; transaction?: unknown }
+    context?: {
+      isolationLevel?: string
+      transaction?: unknown
+      enableNestedTransactions?: boolean
+    }
   ): Promise<T[]>
 
   find(

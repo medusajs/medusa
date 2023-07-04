@@ -138,6 +138,13 @@ describe("Product module", function () {
       const products = await module.create([data])
 
       expect(products.length).toBe(1)
+
+      expect(products[0].images.length).toBe(1)
+      expect(products[0].options.length).toBe(1)
+      expect(products[0].tags.length).toBe(1)
+      expect(products[0].categories?.length).toBe(0)
+      expect(products[0].variants.length).toBe(1)
+
       expect(products[0]).toEqual(
         expect.objectContaining({
           id: expect.any(String),
@@ -149,15 +156,51 @@ describe("Product module", function () {
           discountable: data.discountable,
           thumbnail: images[0],
           status: data.status,
-        })
-      )
-
-      const productImages = products[0].images
-      expect(productImages.length).toBe(1)
-      expect(productImages[0]).toEqual(
-        expect.objectContaining({
-          id: expect.any(String),
-          url: images[0],
+          images: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              url: images[0],
+            }),
+          ]),
+          options: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              title: data.options[0].title,
+              values: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  value: data.variants[0].options?.[0].value,
+                }),
+              ]),
+            }),
+          ]),
+          tags: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              value: data.tags[0].value,
+            }),
+          ]),
+          type: expect.objectContaining({
+            id: expect.any(String),
+            value: data.type.value,
+          }),
+          variants: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              title: data.variants[0].title,
+              sku: data.variants[0].sku,
+              allow_backorder: false,
+              manage_inventory: true,
+              inventory_quantity: 100,
+              variant_rank: 0,
+              options: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  value: data.variants[0].options?.[0].value,
+                }),
+              ]),
+            }),
+          ]),
         })
       )
     })

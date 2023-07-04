@@ -92,12 +92,22 @@ class Product {
   @Property({ columnType: "text", nullable: true })
   material?: string | null
 
-  @ManyToOne(() => ProductCollection, { nullable: true })
+  @Property({ persist: false })
+  collection_id!: string
+
+  @ManyToOne(() => ProductCollection, {
+    nullable: true,
+    fieldName: "collection_id",
+  })
   collection!: ProductCollection
+
+  @Property({ persist: false })
+  type_id!: string
 
   @ManyToOne(() => ProductType, {
     nullable: true,
     index: "IDX_product_type_id",
+    fieldName: "type_id",
   })
   type!: ProductType
 

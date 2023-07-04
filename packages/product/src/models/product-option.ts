@@ -31,6 +31,7 @@ class ProductOption {
 
   @ManyToOne(() => Product, {
     index: "IDX_product_option_product_id",
+    fieldName: "product_id",
   })
   product: Product
 

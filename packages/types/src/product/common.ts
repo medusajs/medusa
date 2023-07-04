@@ -177,6 +177,13 @@ export interface FilterableProductCategoryProps
  * Write DTO (module API input)
  */
 
+export interface CreateOptionDTO {
+  title: string
+  values?: string[]
+  product_id?: string
+  product?: any
+}
+
 export interface CreateProductTypeDTO {
   id?: string
   value: string
@@ -202,6 +209,8 @@ export interface CreateProductVariantDTO {
   ean?: string
   upc?: string
   allow_backorder?: boolean
+  inventory_quantity?: number
+  manage_inventory?: boolean
   hs_code?: string
   origin_country?: string
   mid_code?: string

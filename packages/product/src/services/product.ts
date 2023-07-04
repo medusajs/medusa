@@ -8,7 +8,7 @@ import {
   ProductTypes,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ModuleUtils } from "@medusajs/utils"
+import { MedusaError, ModuleUtils } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
@@ -21,6 +21,27 @@ export default class ProductService<TEntity = Product> {
 
   constructor({ productRepository }: InjectedDependencies) {
     this.productRepository_ = productRepository
+  }
+
+  async retrieve(productId: string, sharedContext?: Context): Promise<TEntity> {
+    const queryOptions = ModuleUtils.buildQuery<TEntity>({
+      where: {
+        id: productId,
+      },
+    })
+    const product = await this.productRepository_.find(
+      queryOptions,
+      sharedContext
+    )
+
+    if (!product?.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Product with id: ${productId} was not found`
+      )
+    }
+
+    return product[0]
   }
 
   async list(

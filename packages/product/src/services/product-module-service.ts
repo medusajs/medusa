@@ -187,54 +187,55 @@ export default class ProductModuleService<
 
         const productsData = await Promise.all(
           data.map(async (product) => {
-            if (!product.handle) {
-              product.handle = kebabCase(product.title)
+            const productData = { ...product }
+            if (!productData.handle) {
+              productData.handle = kebabCase(product.title)
             }
 
-            const variants = product.variants
-            const options = product.options
-            delete product.options
-            delete product.variants
+            const variants = productData.variants
+            const options = productData.options
+            delete productData.options
+            delete productData.variants
 
-            productVariantsMap.set(product.handle!, variants ?? [])
-            productOptionsMap.set(product.handle!, options ?? [])
+            productVariantsMap.set(productData.handle!, variants ?? [])
+            productOptionsMap.set(productData.handle!, options ?? [])
 
-            if (!product.thumbnail && product.images?.length) {
-              product.thumbnail = isString(product.images[0])
-                ? product.images[0]
-                : product.images[0].url
+            if (!productData.thumbnail && productData.images?.length) {
+              productData.thumbnail = isString(productData.images[0])
+                ? productData.images[0]
+                : productData.images[0].url
             }
 
-            if (product.is_giftcard) {
-              product.discountable = false
+            if (productData.is_giftcard) {
+              productData.discountable = false
             }
 
-            if (product.images?.length) {
-              product.images = (await this.productImageService_.upsert(
-                product.images.map((image) =>
+            if (productData.images?.length) {
+              productData.images = (await this.productImageService_.upsert(
+                productData.images.map((image) =>
                   isString(image) ? image : image.url
                 ),
                 sharedContext
               )) as unknown as Image[]
             }
 
-            if (product.tags?.length) {
-              product.tags = (await this.productTagService_.upsert(
-                product.tags,
+            if (productData.tags?.length) {
+              productData.tags = (await this.productTagService_.upsert(
+                productData.tags,
                 sharedContext
               )) as unknown as ProductTag[]
             }
 
-            if (isDefined(product.type)) {
-              product.type_id = (
+            if (isDefined(productData.type)) {
+              productData.type_id = (
                 (await this.productTypeService_.upsert(
-                  [product.type],
+                  [productData.type],
                   sharedContext
                 )) as unknown as ProductType[]
               )?.[0]!.id
             }
 
-            return product as CreateProductOnlyDTO
+            return productData as CreateProductOnlyDTO
           })
         )
 
@@ -242,9 +243,10 @@ export default class ProductModuleService<
         // Shipping profile is not part of the module
         // as well as sales channel
 
-        const products = (await this.productService_.create(productsData, {
-          transactionManager: manager,
-        })) as unknown as Product[]
+        const products = (await this.productService_.create(
+          productsData,
+          sharedContext
+        )) as unknown as Product[]
 
         const productByHandleMap = new Map<string, Product>(
           products.map((product) => [product.handle!, product])
@@ -261,11 +263,31 @@ export default class ProductModuleService<
           })
           .flat()
 
-        const productOptions = await this.productOptionService_.create(
+        const productOptions = (await this.productOptionService_.create(
           productOptionsData,
-          {
-            transactionManager: manager,
-          }
+          sharedContext
+        )) as unknown as ProductOption[]
+
+        for (const variants of productVariantsMap.values()) {
+          variants.forEach((variant) => {
+            variant.options = variant.options?.map((option, index) => {
+              const productOption = productOptions[index]
+              return {
+                option: productOption,
+                value: option.value,
+              }
+            })
+          })
+        }
+
+        await Promise.all(
+          [...productVariantsMap].map(async ([handle, variants]) => {
+            return await this.productVariantService_.create(
+              productByHandleMap.get(handle)!,
+              variants,
+              sharedContext
+            )
+          })
         )
 
         return products

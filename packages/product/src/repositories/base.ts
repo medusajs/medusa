@@ -12,7 +12,7 @@ async function transactionWrapper<T>(
     isolationLevel?: string
     transaction?: unknown
     enableNestedTransactions?: boolean
-  }
+  } = {}
 ): Promise<T[]> {
   // Reuse the same transaction if it is already provided and nested transactions are disabled
   if (!enableNestedTransactions && transaction) {
@@ -62,7 +62,7 @@ export abstract class AbstractRepositoryBase<T = any>
       isolationLevel?: string
       transaction?: unknown
       enableNestedTransactions?: boolean
-    }
+    } = {}
   ): Promise<T[]> {
     // @ts-ignore
     return await transactionWrapper.apply<T>(this, arguments)
@@ -97,7 +97,7 @@ export abstract class AbstractTreeRepositoryBase<T = any>
       isolationLevel?: string
       transaction?: unknown
       enableNestedTransactions?: boolean
-    }
+    } = {}
   ): Promise<T[]> {
     // @ts-ignore
     return await transactionWrapper.apply<T>(this, arguments)

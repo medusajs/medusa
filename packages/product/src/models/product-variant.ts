@@ -17,7 +17,6 @@ import ProductOptionValue from "./product-option-value"
 type OptionalFields =
   | "created_at"
   | "updated_at"
-  | "updated_at"
   | "deleted_at"
   | "allow_backorder"
   | "manage_inventory"
@@ -65,14 +64,14 @@ class ProductVariant {
   // Note: Upon serialization, this turns to a string. This is on purpose, because you would loose
   // precision if you cast numeric to JS number, as JS number is a float.
   // Ref: https://github.com/mikro-orm/mikro-orm/issues/2295
-  @Property({ columnType: "numeric" })
-  inventory_quantity: number
+  @Property({ columnType: "numeric", default: 100 })
+  inventory_quantity?: number = 100
 
   @Property({ columnType: "boolean", default: false })
-  allow_backorder: boolean
+  allow_backorder?: boolean = false
 
   @Property({ columnType: "boolean", default: true })
-  manage_inventory: boolean
+  manage_inventory?: boolean = true
 
   @Property({ columnType: "text", nullable: true })
   hs_code?: string | null
@@ -122,7 +121,7 @@ class ProductVariant {
 
   @ManyToOne(() => Product, {
     onDelete: "cascade",
-    index: "IDX_product_variant_product_id_index",
+    index: "IDX_product_variant_product_id",
     fieldName: "product_id",
   })
   product!: Product
