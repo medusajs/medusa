@@ -7,7 +7,7 @@ import {
   ProductTypes,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { MedusaError, ModuleUtils } from "@medusajs/utils"
+import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
@@ -21,7 +21,7 @@ export default class ProductService<TEntity = Product> {
   }
 
   async retrieve(productId: string, sharedContext?: Context): Promise<TEntity> {
-    const queryOptions = ModuleUtils.buildQuery<TEntity>({
+    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>({
       id: productId,
     })
     const product = await this.productRepository_.find(
@@ -57,7 +57,7 @@ export default class ProductService<TEntity = Product> {
       delete filters.category_ids
     }
 
-    const queryOptions = ModuleUtils.buildQuery<TEntity>(filters, config)
+    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
     return await this.productRepository_.find(queryOptions, sharedContext)
   }
 
@@ -79,7 +79,7 @@ export default class ProductService<TEntity = Product> {
       delete filters.category_ids
     }
 
-    const queryOptions = ModuleUtils.buildQuery<TEntity>(filters, config)
+    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
     return await this.productRepository_.findAndCount(
       queryOptions,
       sharedContext

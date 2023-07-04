@@ -1,6 +1,6 @@
 import { Product, ProductVariant } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import { isString, ModuleUtils } from "@medusajs/utils"
+import { isString, ModulesSdkUtils } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import ProductService from "./product"
 
@@ -29,7 +29,7 @@ export default class ProductVariantService<
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: Context
   ): Promise<TEntity[]> {
-    const queryOptions = ModuleUtils.buildQuery<TEntity>(filters, config)
+    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
     return await this.productVariantRepository_.find(
       queryOptions,
       sharedContext

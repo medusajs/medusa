@@ -23,11 +23,7 @@ import {
   ProductTypeRepository,
   ProductVariantRepository,
 } from "@repositories"
-import {
-  ProductServiceInitializeCustomDataLayerOptions,
-  ProductServiceInitializeOptions,
-} from "../types"
-import { Constructor, DAL } from "@medusajs/types"
+import { Constructor, DAL, ModulesSdkTypes } from "@medusajs/types"
 import { lowerCaseFirst } from "@medusajs/utils"
 import { BaseRepository } from "../repositories/base"
 
@@ -35,11 +31,11 @@ export default async ({
   container,
   options,
 }: LoaderOptions<
-  | ProductServiceInitializeOptions
-  | ProductServiceInitializeCustomDataLayerOptions
+  | ModulesSdkTypes.ModuleServiceInitializeOptions
+  | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
 >): Promise<void> => {
   const customRepositories = (
-    options as ProductServiceInitializeCustomDataLayerOptions
+    options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   )?.repositories
 
   container.register({

@@ -1,20 +1,7 @@
-import { Constructor, DAL, FindConfig } from "@medusajs/types"
+import { DAL, FindConfig } from "@medusajs/types"
 import { isObject } from "../common"
 
 export * from "./load-module-database-config"
-
-export interface ModuleServiceInitializeOptions {
-  database: {
-    clientUrl: string
-    schema?: string
-    driverOptions?: Record<string, unknown>
-  }
-}
-
-export type ModuleServiceInitializeCustomDataLayerOptions = {
-  manager?: any
-  repositories?: { [key: string]: Constructor<DAL.RepositoryService> }
-}
 
 export function deduplicateIfNecessary<T = any>(collection: T | T[]) {
   return Array.isArray(collection) ? [...new Set(collection)] : collection

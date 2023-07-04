@@ -7,7 +7,7 @@ import { ProductOption } from "@models"
 import { Context, DAL } from "@medusajs/types"
 import { BaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ModuleUtils } from "@medusajs/utils"
+import { ModulesSdkUtils } from "@medusajs/utils"
 
 export class ProductOptionRepository extends BaseRepository<ProductOption> {
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -26,7 +26,7 @@ export class ProductOptionRepository extends BaseRepository<ProductOption> {
     findOptions_.options.limit ??= 15
 
     if (findOptions_.options.populate) {
-      ModuleUtils.deduplicateIfNecessary(findOptions_.options.populate)
+      ModulesSdkUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transactionManager) {
@@ -55,7 +55,7 @@ export class ProductOptionRepository extends BaseRepository<ProductOption> {
     findOptions_.options.limit ??= 15
 
     if (findOptions_.options.populate) {
-      ModuleUtils.deduplicateIfNecessary(findOptions_.options.populate)
+      ModulesSdkUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transactionManager) {

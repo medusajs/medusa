@@ -1,8 +1,5 @@
 import { MedusaError } from "../common"
-import {
-  ModuleServiceInitializeCustomDataLayerOptions,
-  ModuleServiceInitializeOptions,
-} from "./index"
+import { ModulesSdkTypes } from "@medusajs/types"
 
 function getEnv(key: string, moduleName: string): string {
   const value =
@@ -12,7 +9,7 @@ function getEnv(key: string, moduleName: string): string {
 
 function isProductServiceInitializeOptions(
   obj: unknown
-): obj is ModuleServiceInitializeOptions {
+): obj is ModulesSdkTypes.ModuleServiceInitializeOptions {
   return !!(obj as any)?.database
 }
 
@@ -51,9 +48,9 @@ function getDefaultDriverOptions(clientUrl: string) {
 export function loadDatabaseConfig(
   moduleName: string,
   options?:
-    | ModuleServiceInitializeOptions
-    | ModuleServiceInitializeCustomDataLayerOptions
-): ModuleServiceInitializeOptions["database"] {
+    | ModulesSdkTypes.ModuleServiceInitializeOptions
+    | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
+): ModulesSdkTypes.ModuleServiceInitializeOptions["database"] {
   const clientUrl = getEnv("POSTGRES_URL", moduleName)
 
   const database = {

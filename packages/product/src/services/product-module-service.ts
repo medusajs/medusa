@@ -284,7 +284,7 @@ export default class ProductModuleService<
           [...productVariantsMap].map(async ([handle, variants]) => {
             return await this.productVariantService_.create(
               productByHandleMap.get(handle)!,
-              variants,
+              variants as unknown as ProductTypes.CreateProductVariantOnlyDTO[],
               sharedContext
             )
           })
