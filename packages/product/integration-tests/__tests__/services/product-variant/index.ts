@@ -1,6 +1,6 @@
 import { TestDatabase } from "../../../utils"
-import { ProductVariantService } from "@services"
-import { ProductVariantRepository } from "@repositories"
+import { ProductService, ProductVariantService } from "@services"
+import { ProductRepository, ProductVariantRepository } from "@repositories"
 import { Product, ProductTag, ProductVariant } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Collection } from "@mikro-orm/core"
@@ -12,6 +12,7 @@ import {
   createProductVariants,
 } from "../../../__fixtures__/product"
 import { productsData, variantsData } from "../../../__fixtures__/product/data"
+import { buildProductVariantOnlyData } from "../../../__fixtures__/variant/data/create-variant"
 
 describe("ProductVariant Service", () => {
   let service: ProductVariantService
@@ -28,8 +29,17 @@ describe("ProductVariant Service", () => {
     const productVariantRepository = new ProductVariantRepository({
       manager: repositoryManager,
     })
+    const productRepository = new ProductRepository({
+      manager: repositoryManager,
+    })
 
-    service = new ProductVariantService({ productVariantRepository })
+    const productService = new ProductService({
+      productRepository,
+    })
+    service = new ProductVariantService({
+      productService,
+      productVariantRepository,
+    })
   })
 
   afterEach(async () => {
@@ -180,6 +190,65 @@ describe("ProductVariant Service", () => {
           sku: "sku 1",
         }),
       ])
+    })
+  })
+
+  describe("create", function () {
+    let products: Product[]
+    let productOptions!: ProductOption[]
+
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+
+      products = (await createProductAndTags(
+        testManager,
+        productsData
+      )) as Product[]
+
+      productOptions = await createOptions(testManager, [
+        {
+          id: "test-option-1",
+          title: "size",
+          product: products[0],
+        },
+      ])
+    })
+
+    it("should create a variant", async () => {
+      const data = buildProductVariantOnlyData({
+        options: [
+          {
+            option: productOptions[0],
+            value: "XS",
+          },
+        ],
+      })
+
+      const variants = await service.create(products[0].id, [data])
+
+      expect(variants).toHaveLength(1)
+      expect(variants[0].options).toHaveLength(1)
+
+      expect(JSON.parse(JSON.stringify(variants[0]))).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          title: data.title,
+          sku: data.sku,
+          inventory_quantity: 100,
+          allow_backorder: false,
+          manage_inventory: true,
+          variant_rank: 0,
+          product: expect.objectContaining({
+            id: products[0].id,
+          }),
+          options: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              value: data.options![0].value,
+            }),
+          ]),
+        })
+      )
     })
   })
 })

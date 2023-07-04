@@ -137,13 +137,13 @@ describe("Product module", function () {
 
       const products = await module.create([data])
 
-      expect(products.length).toBe(1)
+      expect(products).toHaveLength(1)
 
-      expect(products[0].images.length).toBe(1)
-      expect(products[0].options.length).toBe(1)
-      expect(products[0].tags.length).toBe(1)
-      expect(products[0].categories?.length).toBe(0)
-      expect(products[0].variants.length).toBe(1)
+      expect(products[0].images).toHaveLength(1)
+      expect(products[0].options).toHaveLength(1)
+      expect(products[0].tags).toHaveLength(1)
+      expect(products[0].categories).toHaveLength(0)
+      expect(products[0].variants).toHaveLength(1)
 
       expect(products[0]).toEqual(
         expect.objectContaining({

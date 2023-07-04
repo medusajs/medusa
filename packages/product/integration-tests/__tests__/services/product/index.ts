@@ -51,8 +51,6 @@ describe("Product Service", () => {
 
     service = new ProductService({
       productRepository,
-      productVariantService,
-      productTagService,
     })
   })
 
@@ -77,8 +75,8 @@ describe("Product Service", () => {
 
       const products = await service.create([data])
 
-      expect(products.length).toBe(1)
-      expect(products[0]).toEqual(
+      expect(products).toHaveLength(1)
+      expect(JSON.parse(JSON.stringify(products[0]))).toEqual(
         expect.objectContaining({
           id: expect.any(String),
           title: data.title,
@@ -89,15 +87,12 @@ describe("Product Service", () => {
           discountable: data.discountable,
           thumbnail: images[0].url,
           status: data.status,
-        })
-      )
-
-      const productImages = products[0].images.toArray()
-      expect(productImages.length).toBe(1)
-      expect(productImages[0]).toEqual(
-        expect.objectContaining({
-          id: images[0].id,
-          url: images[0].url,
+          images: expect.arrayContaining([
+            expect.objectContaining({
+              id: images[0].id,
+              url: images[0].url,
+            }),
+          ]),
         })
       )
     })

@@ -1038,6 +1038,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "100",
           "mappedType": "decimal"
         },
         "allow_backorder": {
@@ -1198,7 +1199,7 @@
             "product_id"
           ],
           "composite": false,
-          "keyName": "IDX_product_variant_product_id_index",
+          "keyName": "IDX_product_variant_product_id",
           "primary": false,
           "unique": false
         },
@@ -1332,6 +1333,15 @@
           ],
           "composite": false,
           "keyName": "IDX_product_option_value_product_option",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "variant_id"
+          ],
+          "composite": false,
+          "keyName": "IDX_product_option_value_variant_id",
           "primary": false,
           "unique": false
         },

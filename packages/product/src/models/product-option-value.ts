@@ -17,8 +17,8 @@ type OptionalFields =
   | "deleted_at"
   | "allow_backorder"
   | "manage_inventory"
-  | "product"
-  | "product_id"
+  | "option_id"
+  | "variant_id"
 type OptionalRelations = "product" | "option" | "variant"
 
 @Entity({ tableName: "product_option_value" })

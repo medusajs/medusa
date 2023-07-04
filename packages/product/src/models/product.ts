@@ -24,6 +24,8 @@ import ProductImage from "./product-image"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =
+  | "collection_id"
+  | "type_id"
   | "is_giftcard"
   | "discountable"
   | "created_at"

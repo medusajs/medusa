@@ -38,7 +38,7 @@ export default class ProductVariantService<
 
   async create(
     productOrId: TProduct | string,
-    data: ProductTypes.CreateProductVariantDTO[],
+    data: ProductTypes.CreateProductVariantOnlyDTO[],
     sharedContext?: Context
   ): Promise<TEntity[]> {
     return await this.productVariantRepository_.transaction(
@@ -54,7 +54,7 @@ export default class ProductVariantService<
           )) as unknown as Product
         }
 
-        let computedRank = product.variants.length
+        let computedRank = product.variants.toArray().length
 
         const variants: ProductVariant[] = []
         data.forEach((variant) => {

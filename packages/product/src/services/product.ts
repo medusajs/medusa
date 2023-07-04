@@ -1,4 +1,3 @@
-import { ProductTagService, ProductVariantService } from "@services"
 import { Product } from "@models"
 import {
   Context,
@@ -12,8 +11,6 @@ import { MedusaError, ModuleUtils } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
-  productVariantService: ProductVariantService
-  productTagService: ProductTagService
 }
 
 export default class ProductService<TEntity = Product> {
@@ -25,9 +22,7 @@ export default class ProductService<TEntity = Product> {
 
   async retrieve(productId: string, sharedContext?: Context): Promise<TEntity> {
     const queryOptions = ModuleUtils.buildQuery<TEntity>({
-      where: {
-        id: productId,
-      },
+      id: productId,
     })
     const product = await this.productRepository_.find(
       queryOptions,
