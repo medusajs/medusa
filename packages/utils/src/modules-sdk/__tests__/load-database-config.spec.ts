@@ -17,6 +17,7 @@ describe("loadDatabaseConfig", function () {
           ssl: false,
         },
       },
+      debug: false,
       schema: "",
     })
 
@@ -31,6 +32,7 @@ describe("loadDatabaseConfig", function () {
           ssl: false,
         },
       },
+      debug: false,
       schema: "",
     })
   })
@@ -48,6 +50,7 @@ describe("loadDatabaseConfig", function () {
           },
         },
       },
+      debug: false,
       schema: "",
     })
 
@@ -64,6 +67,7 @@ describe("loadDatabaseConfig", function () {
           },
         },
       },
+      debug: false,
       schema: "",
     })
   })
@@ -85,6 +89,7 @@ describe("loadDatabaseConfig", function () {
           ssl: false,
         },
       },
+      debug: false,
       schema: "",
     })
   })
@@ -108,6 +113,7 @@ describe("loadDatabaseConfig", function () {
           },
         },
       },
+      debug: false,
       schema: "",
     })
   })

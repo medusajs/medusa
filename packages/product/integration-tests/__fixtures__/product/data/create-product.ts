@@ -79,6 +79,5 @@ export const buildProductData = ({
       },
     ],
     // TODO: add categories, must be created first
-    // TODO: add variants
   }
 }
