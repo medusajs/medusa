@@ -9,7 +9,7 @@ import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
 import { queryKeysFactory } from "../../utils"
 
-const ADMIN_RESERVATIONS_QUERY_KEY = `admin_stock_locations` as const
+const ADMIN_RESERVATIONS_QUERY_KEY = `admin_reservations` as const
 
 export const adminReservationsKeys = queryKeysFactory(
   ADMIN_RESERVATIONS_QUERY_KEY
