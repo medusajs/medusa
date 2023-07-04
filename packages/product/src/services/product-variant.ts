@@ -49,7 +49,7 @@ export default class ProductVariantService<
 
         if (isString(productOrId)) {
           product = (await this.productService_.retrieve(
-            productOrId,
+            productOrId as string,
             sharedContext
           )) as unknown as Product
         }

@@ -7,7 +7,7 @@ function getEnv(key: string, moduleName: string): string {
   return value ?? ""
 }
 
-function isProductServiceInitializeOptions(
+function isModuleServiceInitializeOptions(
   obj: unknown
 ): obj is ModulesSdkTypes.ModuleServiceInitializeOptions {
   return !!(obj as any)?.database
@@ -60,14 +60,16 @@ export function loadDatabaseConfig(
       getEnv("POSTGRES_DRIVER_OPTIONS", moduleName) ||
         JSON.stringify(getDefaultDriverOptions(clientUrl))
     ),
+    debug: process.env.NODE_ENV?.startsWith("dev") ?? false,
   }
 
-  if (isProductServiceInitializeOptions(options)) {
+  if (isModuleServiceInitializeOptions(options)) {
     database.clientUrl = options.database.clientUrl ?? database.clientUrl
     database.schema = options.database.schema ?? database.schema
     database.driverOptions =
       options.database.driverOptions ??
       getDefaultDriverOptions(database.clientUrl)
+    database.debug = options.database.debug ?? database.debug
   }
 
   if (!database.clientUrl) {
