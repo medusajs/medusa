@@ -246,7 +246,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/cli@npm:^7.12.1, @babel/cli@npm:^7.12.10, @babel/cli@npm:^7.14.3, @babel/cli@npm:^7.15.4, @babel/cli@npm:^7.7.5":
+"@babel/cli@npm:^7.12.10":
   version: 7.22.5
   resolution: "@babel/cli@npm:7.22.5"
   dependencies:
@@ -501,22 +501,6 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.4.0-0
   checksum: b83aa728cc2fd4882a82ce67c300407024a05adc3f88c461a02438b2ab50c66e711f8ba36ef622637eb7af4d40aaafa0d70e77e0da9adc5710f190a686082f94
-  languageName: node
-  linkType: hard
-
-"@babel/helper-define-polyfill-provider@npm:^0.3.3":
-  version: 0.3.3
-  resolution: "@babel/helper-define-polyfill-provider@npm:0.3.3"
-  dependencies:
-    "@babel/helper-compilation-targets": ^7.17.7
-    "@babel/helper-plugin-utils": ^7.16.7
-    debug: ^4.1.1
-    lodash.debounce: ^4.0.8
-    resolve: ^1.14.2
-    semver: ^6.1.2
-  peerDependencies:
-    "@babel/core": ^7.4.0-0
-  checksum: c3668f9ee2b76bfc08398756c504a8823e18bad05d0c2ee039b821c839e2b70f3b6ad8b7a3d3a6be434d981ed2af845a490aafecc50eaefb9b5099f2da156527
   languageName: node
   linkType: hard
 
@@ -1925,7 +1909,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-typescript@npm:^7.13.0, @babel/plugin-transform-typescript@npm:^7.15.4, @babel/plugin-transform-typescript@npm:^7.18.6, @babel/plugin-transform-typescript@npm:^7.22.5":
+"@babel/plugin-transform-typescript@npm:^7.13.0, @babel/plugin-transform-typescript@npm:^7.18.6, @babel/plugin-transform-typescript@npm:^7.22.5":
   version: 7.22.5
   resolution: "@babel/plugin-transform-typescript@npm:7.22.5"
   dependencies:
@@ -2154,7 +2138,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/preset-flow@npm:^7.12.1, @babel/preset-flow@npm:^7.14.0":
+"@babel/preset-flow@npm:^7.12.1":
   version: 7.22.5
   resolution: "@babel/preset-flow@npm:7.22.5"
   dependencies:
@@ -4828,7 +4812,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jridgewell/trace-mapping@npm:^0.3.12, @jridgewell/trace-mapping@npm:^0.3.13, @jridgewell/trace-mapping@npm:^0.3.15, @jridgewell/trace-mapping@npm:^0.3.17, @jridgewell/trace-mapping@npm:^0.3.9":
+"@jridgewell/trace-mapping@npm:^0.3.12, @jridgewell/trace-mapping@npm:^0.3.13, @jridgewell/trace-mapping@npm:^0.3.15, @jridgewell/trace-mapping@npm:^0.3.17, @jridgewell/trace-mapping@npm:^0.3.8, @jridgewell/trace-mapping@npm:^0.3.9":
   version: 0.3.18
   resolution: "@jridgewell/trace-mapping@npm:0.3.18"
   dependencies:
@@ -5562,7 +5546,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@*, @medusajs/types@^1.8.8, @medusajs/types@^1.8.9, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/types@*, @medusajs/types@^1.8.7, @medusajs/types@^1.8.8, @medusajs/types@^1.8.9, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -12111,16 +12095,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yargs@npm:^15.0.0":
-  version: 15.0.15
-  resolution: "@types/yargs@npm:15.0.15"
-  dependencies:
-    "@types/yargs-parser": "*"
-  checksum: b52519ba68a8d90996b54143ff74fcd8ac1722a1ef4a50ed8c3dbc1f7a76d14210f0262f8b91eabcdab202ff4babdd92ce7332ab1cdd6af4eae7c9fc81c83797
-  languageName: node
-  linkType: hard
-
-"@types/yargs@npm:^15.0.15":
+"@types/yargs@npm:^15.0.0, @types/yargs@npm:^15.0.15":
   version: 15.0.15
   resolution: "@types/yargs@npm:15.0.15"
   dependencies:
@@ -14322,19 +14297,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-corejs2@npm:^0.3.0":
-  version: 0.3.3
-  resolution: "babel-plugin-polyfill-corejs2@npm:0.3.3"
-  dependencies:
-    "@babel/compat-data": ^7.17.7
-    "@babel/helper-define-polyfill-provider": ^0.3.3
-    semver: ^6.1.1
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: 21e34d4ba961de66d3fe31f3fecca5612d5db99638949766a445d37de72c1f736552fe436f3bd3792e5cc307f48e8f78a498a01e858c84946627ddb662415cc4
-  languageName: node
-  linkType: hard
-
 "babel-plugin-polyfill-corejs2@npm:^0.4.3":
   version: 0.4.3
   resolution: "babel-plugin-polyfill-corejs2@npm:0.4.3"
@@ -14541,28 +14503,6 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0
   checksum: 2be440c0fd7d1df247417be35644cb89f40a300e7fcdc44878b737ec49b04380eff422e4ebdc7bb5efd5ecfef45b634fc5fe11c3a409a50c9084e81083037902
-  languageName: node
-  linkType: hard
-
-"babel-preset-gatsby-package@npm:^2.0.0":
-  version: 2.25.0
-  resolution: "babel-preset-gatsby-package@npm:2.25.0"
-  dependencies:
-    "@babel/plugin-proposal-nullish-coalescing-operator": ^7.14.5
-    "@babel/plugin-proposal-optional-chaining": ^7.14.5
-    "@babel/plugin-syntax-dynamic-import": ^7.8.3
-    "@babel/plugin-transform-runtime": ^7.15.0
-    "@babel/plugin-transform-typescript": ^7.15.4
-    "@babel/preset-env": ^7.15.4
-    "@babel/preset-flow": ^7.14.0
-    "@babel/preset-react": ^7.14.0
-    "@babel/runtime": ^7.15.4
-    babel-plugin-dynamic-import-node: ^2.3.3
-    babel-plugin-lodash: ^3.3.4
-    core-js: ^3.22.3
-  peerDependencies:
-    "@babel/core": ^7.11.6
-  checksum: 43809eafdc9999eb13aaeffce76ad34c7b7b3f1d9589682defd1c006b6d79bb3b00f9c4f2c5a473b4a2f774caba1ad027ec9dd6aac1115e91bfe8e4d3fd7abec
   languageName: node
   linkType: hard
 
