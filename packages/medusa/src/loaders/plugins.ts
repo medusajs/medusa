@@ -1,4 +1,4 @@
-import { SearchUtils } from "@medusajs/utils"
+import { SearchUtils, upperCaseFirst } from "@medusajs/utils"
 import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
 import { Express } from "express"
 import fs from "fs"
@@ -100,7 +100,7 @@ export default async ({
 function getResolvedPlugins(
   rootDirectory: string,
   configModule: ConfigModule,
-  extensionDirectoryPath: string = 'dist'
+  extensionDirectoryPath = "dist"
 ): undefined | PluginDetails[] {
   const { plugins } = configModule
 
@@ -132,8 +132,8 @@ export async function registerPluginModels({
   rootDirectory,
   container,
   configModule,
-  extensionDirectoryPath = 'dist',
-  pathGlob = "/models/*.js"
+  extensionDirectoryPath = "dist",
+  pathGlob = "/models/*.js",
 }: {
   rootDirectory: string
   container: MedusaContainer
@@ -141,20 +141,13 @@ export async function registerPluginModels({
   extensionDirectoryPath?: string
   pathGlob?: string
 }): Promise<void> {
-  const resolved = getResolvedPlugins(
-    rootDirectory,
-    configModule,
-    extensionDirectoryPath
-  ) || []
+  const resolved =
+    getResolvedPlugins(rootDirectory, configModule, extensionDirectoryPath) ||
+    []
 
   await Promise.all(
     resolved.map(async (pluginDetails) => {
-      registerModels(
-        pluginDetails,
-        container,
-        rootDirectory,
-        pathGlob,
-      )
+      registerModels(pluginDetails, container, rootDirectory, pathGlob)
     })
   )
 }
@@ -579,57 +572,74 @@ function registerRepositories(
  *    version, id, resolved path, etc. See resolvePlugin
  * @param {object} container - the container where the services will be
  *    registered
+ * @param rootDirectory
+ * @param pathGlob
  * @return {void}
  */
 function registerModels(
   pluginDetails: PluginDetails,
   container: MedusaContainer,
   rootDirectory: string,
-  pathGlob: string = "/models/*.js"
+  pathGlob = "/models/*.js"
 ): void {
-  const pluginFullPathGlob =  path.join(pluginDetails.resolve, pathGlob)
+  const pluginFullPathGlob = path.join(pluginDetails.resolve, pathGlob)
 
   const modelExtensionsMap = getModelExtensionsMap({
-    directory: rootDirectory,
+    directory: pluginDetails.resolve,
     pathGlob: pathGlob,
     config: { register: true },
   })
 
-  const coreOrPluginModelsPath = glob.sync(
-    pluginFullPathGlob,
-    { ignore: ["index.js", "index.js.map"] }
-  )
+  const pluginModels = glob.sync(pluginFullPathGlob, {
+    ignore: ["index.js", "index.js.map"],
+  })
 
-  coreOrPluginModelsPath.forEach((coreOrPluginModelPath) => {
+  const coreModelsFullGlob = path.join(__dirname, "../models/*.js")
+  const coreModels = glob.sync(coreModelsFullGlob, {
+    cwd: __dirname,
+    ignore: ["index.js", "index.ts", "index.js.map"],
+  })
+
+  // Apply the extended models to the core models first to ensure that
+  // when relationships are created, the extended models are used
+  coreModels.forEach((modelPath) => {
+    const loaded = require(modelPath) as
+      | ClassConstructor<unknown>
+      | EntitySchema
+
+    if (loaded) {
+      const name = formatRegistrationName(modelPath)
+      const mappedExtensionModel = modelExtensionsMap.get(name)
+      if (mappedExtensionModel) {
+        const modelName = upperCaseFirst(
+          formatRegistrationNameWithoutNamespace(modelPath)
+        )
+
+        loaded[modelName] = mappedExtensionModel
+      }
+    }
+  })
+
+  pluginModels.forEach((coreOrPluginModelPath) => {
     const loaded = require(coreOrPluginModelPath) as
       | ClassConstructor<unknown>
       | EntitySchema
 
-    Object.entries(loaded).map(
-      ([, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
-        if (typeof val === "function" || val instanceof EntitySchema) {
-          const name = formatRegistrationName(coreOrPluginModelPath)
-          const mappedExtensionModel = modelExtensionsMap.get(name)
+    if (loaded) {
+      Object.entries(loaded).map(
+        ([, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
+          if (typeof val === "function" || val instanceof EntitySchema) {
+            const name = formatRegistrationName(coreOrPluginModelPath)
 
-          // If an extension file is found, override it with that instead
-          if (mappedExtensionModel) {
-            const coreOrPluginModel = require(coreOrPluginModelPath)
-            const modelName = formatRegistrationNameWithoutNamespace(
-              coreOrPluginModelPath
-            )
+            container.register({
+              [name]: asValue(val),
+            })
 
-            coreOrPluginModel[modelName] = mappedExtensionModel
-            val = mappedExtensionModel
+            container.registerAdd("db_entities", asValue(val))
           }
-
-          container.register({
-            [name]: asValue(val),
-          })
-
-          container.registerAdd("db_entities", asValue(val))
         }
-      }
-    )
+      )
+    }
   })
 }
 
