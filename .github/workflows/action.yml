@@ -94,6 +94,7 @@ jobs:
           --health-retries 10
         ports:
           - 5432:5432
+
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
@@ -123,6 +124,7 @@ jobs:
         run: yarn test:integration
         env:
           DB_PASSWORD: postgres
+          DB_USERNAME: postgres
           SPLIT: ${{ steps['split-tests'].outputs['split'] }}
 
   integration-tests-api:
