@@ -59,9 +59,6 @@ export class Migration20230705092648 extends Migration {
     this.addSql(
       'create index "IDX_product_variant_product_id" on "product_variant" ("product_id");'
     )
-    this.addSql(
-      'alter index "idx_product_variant_product_id_index" rename to "IDX_product_variant_product_id";'
-    )
 
     this.addSql('drop index "IDX_product_option_value_product_option";')
     this.addSql(
@@ -72,9 +69,6 @@ export class Migration20230705092648 extends Migration {
     )
     this.addSql(
       'create index "IDX_product_option_value_deleted_at" on "product_option_value" ("deleted_at");'
-    )
-    this.addSql(
-      'alter index "idx_product_option_value_product_option" rename to "IDX_product_option_value_option_id";'
     )
   }
 
@@ -114,18 +108,12 @@ export class Migration20230705092648 extends Migration {
     this.addSql(
       'create index "IDX_product_variant_product_id_index" on "product_variant" ("product_id");'
     )
-    this.addSql(
-      'alter index "idx_product_variant_product_id" rename to "IDX_product_variant_product_id_index";'
-    )
 
     this.addSql('drop index "IDX_product_option_value_option_id";')
     this.addSql('drop index "IDX_product_option_value_variant_id";')
     this.addSql('drop index "IDX_product_option_value_deleted_at";')
     this.addSql(
       'create index "IDX_product_option_value_product_option" on "product_option_value" ("option_id");'
-    )
-    this.addSql(
-      'alter index "idx_product_option_value_option_id" rename to "IDX_product_option_value_product_option";'
     )
   }
 }
