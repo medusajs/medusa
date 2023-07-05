@@ -6,6 +6,7 @@ import {
   MODULE_SCOPE,
   ModuleDefinition,
   ModuleExports,
+  ModuleResolution,
 } from "@medusajs/types"
 import {
   createMedusaContainer,
@@ -38,7 +39,7 @@ type ModuleAlias = {
 
 export class MedusaModule {
   private static instances_: Map<string, any> = new Map()
-  private static keys_: Map<string, ModuleAlias[]> = new Map()
+  private static modules_: Map<string, ModuleAlias[]> = new Map()
   private static loading_: Map<string, Promise<any>> = new Map()
 
   public static getLoadedModules(): Map<
@@ -53,26 +54,27 @@ export class MedusaModule {
 
   public static clearInstances(): void {
     MedusaModule.instances_.clear()
+    MedusaModule.modules_.clear()
   }
 
   public static isInstalled(moduleKey: string, alias?: string): boolean {
     if (alias) {
       return (
-        MedusaModule.keys_.has(moduleKey) &&
-        MedusaModule.keys_.get(moduleKey)!.some((m) => m.alias === alias)
+        MedusaModule.modules_.has(moduleKey) &&
+        MedusaModule.modules_.get(moduleKey)!.some((m) => m.alias === alias)
       )
     }
 
-    return MedusaModule.keys_.has(moduleKey)
+    return MedusaModule.modules_.has(moduleKey)
   }
 
   public static getModule(moduleKey: string, alias?: string): any | undefined {
-    if (!MedusaModule.keys_.has(moduleKey)) {
+    if (!MedusaModule.modules_.has(moduleKey)) {
       return
     }
 
     let mod
-    const modules = MedusaModule.keys_.get(moduleKey)!
+    const modules = MedusaModule.modules_.get(moduleKey)!
     if (alias) {
       mod = modules.find((m) => m.alias === alias)
 
@@ -85,22 +87,26 @@ export class MedusaModule {
   }
 
   private static setModule(moduleKey: string, loadedModule: ModuleAlias): void {
-    if (!MedusaModule.keys_.has(moduleKey)) {
-      MedusaModule.keys_.set(moduleKey, [])
+    if (!MedusaModule.modules_.has(moduleKey)) {
+      MedusaModule.modules_.set(moduleKey, [])
     }
 
-    const modules = MedusaModule.keys_.get(moduleKey)!
+    const modules = MedusaModule.modules_.get(moduleKey)!
 
-    const has = MedusaModule.getModule(moduleKey, loadedModule.alias)
-
-    if (has) {
+    if (modules.some((m) => m.alias === loadedModule.alias)) {
       throw new Error(
-        `Module ${moduleKey} already registed. Please choose a different alias.`
+        `Module ${moduleKey} already registed as '${loadedModule.alias}'. Please choose a different alias.`
       )
     }
 
+    if (loadedModule.main) {
+      if (modules.some((m) => m.main)) {
+        throw new Error(`Module ${moduleKey} already have a 'main' registered.`)
+      }
+    }
+
     modules.push(loadedModule)
-    MedusaModule.keys_.set(moduleKey, modules!)
+    MedusaModule.modules_.set(moduleKey, modules!)
   }
 
   public static async bootstrap<T>(
@@ -176,7 +182,9 @@ export class MedusaModule {
 
     const services = {}
 
-    for (const resolution of Object.values(moduleResolutions)) {
+    for (const resolution of Object.values(
+      moduleResolutions
+    ) as ModuleResolution[]) {
       const keyName = resolution.definition.key
       const registrationName = resolution.definition.registrationName
 
@@ -192,8 +200,8 @@ export class MedusaModule {
       MedusaModule.setModule(keyName, {
         key: keyName,
         hash: hashKey,
-        alias: resolution.definition.alias,
-        main: resolution.definition.main,
+        alias: modDeclaration.alias ?? hashKey,
+        main: !!modDeclaration.main,
       })
     }
 
