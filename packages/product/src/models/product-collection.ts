@@ -12,7 +12,7 @@ import {
 
 import { generateEntityId, kebabCase } from "@medusajs/utils"
 import Product from "./product"
-import SoftDeletable from "../utils/soft-delete"
+import { SoftDeletable } from "../utils"
 
 type OptionalFields = "deleted_at"
 type OptionalRelations = "products"

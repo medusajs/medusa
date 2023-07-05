@@ -11,7 +11,7 @@ import {
 
 import { generateEntityId } from "@medusajs/utils"
 import Product from "./product"
-import SoftDeletable from "../utils/soft-delete"
+import { SoftDeletable } from "../utils"
 
 type OptionalRelations = "products"
 type OptionalFields = "deleted_at"

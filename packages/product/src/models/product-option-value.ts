@@ -11,7 +11,7 @@ import { generateEntityId } from "@medusajs/utils"
 
 import ProductOption from "./product-option"
 import { ProductVariant } from "./index"
-import SoftDeletable from "../utils/soft-delete"
+import { SoftDeletable } from "../utils"
 
 type OptionalFields =
   | "created_at"

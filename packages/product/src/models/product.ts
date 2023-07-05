@@ -22,7 +22,7 @@ import ProductTag from "./product-tag"
 import ProductType from "./product-type"
 import ProductVariant from "./product-variant"
 import ProductImage from "./product-image"
-import SoftDeletable from "../utils/soft-delete"
+import { SoftDeletable } from "../utils"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =

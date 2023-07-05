@@ -8,7 +8,7 @@ import {
 } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
-import SoftDeletable from "../utils/soft-delete"
+import { SoftDeletable } from "../utils"
 
 type OptionalFields = "deleted_at"
 

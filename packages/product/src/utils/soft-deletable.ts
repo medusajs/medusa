@@ -6,7 +6,7 @@ interface FilterArguments {
   withDeleted?: boolean
 }
 
-const SoftDeletable = (): ClassDecorator => {
+export const SoftDeletable = (): ClassDecorator => {
   return Filter({
     name: "softDeletable",
     cond: ({ withDeleted }: FilterArguments = {}) => {
@@ -20,5 +20,3 @@ const SoftDeletable = (): ClassDecorator => {
     default: true,
   })
 }
-
-export default SoftDeletable
