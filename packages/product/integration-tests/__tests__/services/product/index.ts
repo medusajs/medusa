@@ -143,7 +143,7 @@ describe("Product Service", () => {
         expect(products[0].id).toEqual(product.id)
       })
 
-      it("should list all products that including the deleted", async () => {
+      it("should list all products including the deleted", async () => {
         const products = await service.list({}, { withDeleted: true })
 
         expect(products).toHaveLength(2)
