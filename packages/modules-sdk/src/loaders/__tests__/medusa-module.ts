@@ -79,6 +79,29 @@ describe("Medusa Module", () => {
     expect(mockModuleLoader).toBeCalledTimes(2)
   })
 
+  it("MedusaModule bootstrap - Prevent concurrent requests", async () => {
+    const load: any = []
+
+    for (let i = 5; i--; ) {
+      load.push(
+        MedusaModule.bootstrap("moduleKey", "@path", {
+          scope: MODULE_SCOPE.INTERNAL,
+          resources: MODULE_RESOURCE_TYPE.ISOLATED,
+          resolve: "@path",
+          options: {
+            abc: 123,
+          },
+        } as InternalModuleDeclaration)
+      )
+    }
+
+    const intances = Promise.all(load)
+
+    expect(mockRegisterMedusaModule).toBeCalledTimes(1)
+    expect(mockModuleLoader).toBeCalledTimes(1)
+    expect(intances[(await intances).length - 1]).toBe(intances[0])
+  })
+
   it("MedusaModule - set module and return the first if there is no main", async () => {
     const moduleA = await MedusaModule.bootstrap("moduleKey", "@path", {
       scope: MODULE_SCOPE.INTERNAL,
