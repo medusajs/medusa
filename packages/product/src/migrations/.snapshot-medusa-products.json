@@ -213,6 +213,15 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_product_collection_deleted_at",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "IDX_product_collection_handle_unique",
           "columnNames": [
             "handle"
@@ -278,6 +287,15 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_product_image_deleted_at",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "image_pkey",
           "columnNames": [
             "id"
@@ -334,6 +352,15 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_product_tag_deleted_at",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "product_tag_pkey",
           "columnNames": [
             "id"
@@ -389,6 +416,15 @@
       "name": "product_type",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_product_type_deleted_at",
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "product_type_pkey",
           "columnNames": [
@@ -645,6 +681,15 @@
           "unique": false
         },
         {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_product_deleted_at",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "IDX_product_handle_unique",
           "columnNames": [
             "handle"
@@ -751,6 +796,15 @@
           ],
           "composite": false,
           "keyName": "IDX_product_option_product_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_product_option_deleted_at",
           "primary": false,
           "unique": false
         },
@@ -1197,6 +1251,15 @@
       "indexes": [
         {
           "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_product_variant_deleted_at",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
             "product_id"
           ],
           "composite": false,
@@ -1343,6 +1406,15 @@
           ],
           "composite": false,
           "keyName": "IDX_product_option_value_variant_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "IDX_product_option_value_deleted_at",
           "primary": false,
           "unique": false
         },
