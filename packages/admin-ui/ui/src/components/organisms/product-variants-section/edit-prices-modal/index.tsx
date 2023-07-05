@@ -41,6 +41,7 @@ function EditPricesActions(props: EditPricesActionsProps) {
         </DropdownMenu.Trigger>
 
         <DropdownMenu.Content
+          align="start"
           sideOffset={10}
           className="bg-grey-0 border-grey-20 rounded-rounded shadow-dropdown z-30 max-h-[500px] min-w-[272px] overflow-y-scroll border"
         >
@@ -50,7 +51,10 @@ function EditPricesActions(props: EditPricesActionsProps) {
           {currencies?.map((c) => (
             <DropdownMenu.Item
               key={c.code}
-              onClick={(event) => toggleCurrency(c.code)}
+              onClick={(event) => {
+                event.preventDefault()
+                toggleCurrency(c.code)
+              }}
               className="mb-1 cursor-pointer last:mb-0 hover:bg-gray-100"
             >
               <div className="flex justify-between gap-4 px-[12px] py-2 text-gray-800">
@@ -116,6 +120,8 @@ function CurrencyCell(props: CurrencyCellProps) {
     deselectCell,
   } = props
 
+  const [showDragIndicator, setShowDragIndicator] = useState(false)
+
   const amount =
     editedAmount ||
     getCurrencyPricesOnly(variant.prices!).find(
@@ -124,9 +130,10 @@ function CurrencyCell(props: CurrencyCellProps) {
 
   return (
     <td
+      onClick={() => selectCell(variant.id, currencyCode)}
       onMouseEnter={(e) => drag && selectCell(variant.id, currencyCode)}
       onMouseLeave={(e) => drag && deselectCell(variant.id, currencyCode)}
-      className={clsx("border", {
+      className={clsx("border pr-2", {
         "bg-blue-100": active,
       })}
     >
@@ -134,7 +141,7 @@ function CurrencyCell(props: CurrencyCellProps) {
         onFocus={() => setFocusedCell({ variantId: variant.id, currencyCode })}
         onBlur={() => setFocusedCell(undefined)}
         style={{ width: "100%", textAlign: "right", paddingRight: 8 }}
-        className={clsx("focus:outline-0", {
+        className={clsx("decoration-transparent focus:outline-0", {
           "bg-blue-100": active,
         })}
         onChange={(e) =>
@@ -174,7 +181,7 @@ function EditPricesTable(props: EditPricesTableProps) {
     currencyCode: string,
     newAmount: string
   ) => {
-    let amount: number | undefined = Number(newAmount)
+    let amount: number | undefined = parseFloat(newAmount)
 
     if (isNaN(amount as number)) {
       amount = undefined
@@ -250,22 +257,25 @@ function EditPricesTable(props: EditPricesTableProps) {
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full table-auto overflow-scroll">
+      <table
+        style={{ fontSize: 13 }}
+        className="w-full table-auto overflow-scroll"
+      >
         <thead>
           <tr
             style={{ lineHeight: 3 }}
             className="tw-text-medusa-text-subtle h-2 text-left font-normal"
           >
-            <th className="h-2 min-w-[180px] border pl-2 font-medium text-gray-400">
+            <th className="h-2 min-w-[180px] border pl-4 font-medium text-gray-400">
               Product
             </th>
-            <th className="min-w-[180px] border pl-2 font-medium text-gray-400">
+            <th className="min-w-[180px] border pl-4 font-medium text-gray-400">
               SKU
             </th>
             {props.currencies.map((c) => (
               <th
                 key={c}
-                className="min-w-[220px] border pl-2 font-medium text-gray-400"
+                className="min-w-[220px] border pl-4 font-medium text-gray-400"
               >
                 Price {c.toUpperCase()}
               </th>
@@ -274,10 +284,19 @@ function EditPricesTable(props: EditPricesTableProps) {
         </thead>
         <tbody>
           <tr style={{ lineHeight: 3 }}>
-            <td className="border pl-2">{props.product.title}</td>
-            <td className="border pl-2">-</td>
+            <td className="border pl-4">
+              <div className="text-black-800 flex items-center gap-2">
+                <img
+                  src={props.product.thumbnail}
+                  alt="Thumbnail"
+                  className="h-[22px] w-[16px] rounded"
+                />
+                {props.product.title}
+              </div>
+            </td>
+            <td className="border pl-4">-</td>
             {props.currencies.map((c) => (
-              <td className="border pl-2" key={c}>
+              <td className="border pr-4 text-right" key={c}>
                 -
               </td>
             ))}
@@ -285,8 +304,8 @@ function EditPricesTable(props: EditPricesTableProps) {
 
           {props.product.variants!.map((variant) => (
             <tr key={variant.id} style={{ lineHeight: 3 }}>
-              <td className="border pl-4">{variant.title}</td>
-              <td className="border pl-2 text-gray-400 ">{variant.sku}</td>
+              <td className="border pl-10 text-gray-400">{variant.title}</td>
+              <td className="border pl-4 text-gray-400 ">{variant.sku}</td>
 
               {props.currencies.map((c) => (
                 <CurrencyCell
@@ -337,52 +356,65 @@ function Index(props: EditPricesModalProps) {
 
   const toggleRegion = (regionId: string) => {}
 
+  useEffect(() => {
+    const onEsc = (e) => {
+      if (e.key === "Escape") {
+        props.close()
+      }
+    }
+    document.addEventListener("keydown", onEsc)
+
+    return () => document.removeEventListener("keydown", onEsc)
+  }, [])
+
   return (
-    <Fade isVisible isFullScreen>
-      <Modal.Body className="bg-white">
-        <div className="flex h-[64px] items-center justify-between px-4">
-          <div className="flex h-[20px] items-center gap-2">
-            <Button
-              variant="ghost"
-              size="small"
-              onClick={props.close}
-              className="text-grey-50 cursor-pointer"
-            >
-              <CrossIcon size={20} />
-            </Button>
-            <span className="text-small rounded-lg border border-2 border-gray-300 bg-gray-200 px-2 text-gray-600">
-              esc
-            </span>
+    <Fade isFullScreen isVisible>
+      <Modal.Body className="border bg-gray-200 p-2">
+        <div className="h-full rounded-lg border border-gray-300 bg-white">
+          <div className="flex h-[64px] items-center justify-between px-4">
+            <div className="flex h-[20px] items-center gap-2">
+              <Button
+                variant="ghost"
+                size="small"
+                onClick={props.close}
+                className="text-grey-50 cursor-pointer"
+              >
+                <CrossIcon size={20} />
+              </Button>
+              <span className="text-small rounded-lg border border-2 border-gray-300 bg-gray-100 px-2 font-medium text-gray-500">
+                esc
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="small"
+                onClick={props.close}
+                className="text-black-800  cursor-pointer border p-1.5 font-medium"
+              >
+                Discard
+              </Button>
+              <Button
+                variant="ghost"
+                size="small"
+                onClick={props.close}
+                className="cursor-pointer border bg-black p-1.5 font-medium text-white hover:bg-black"
+              >
+                Save and close
+              </Button>
+            </div>
           </div>
-          <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="small"
-              onClick={props.close}
-              className="text-black-800  cursor-pointer border p-1.5 font-medium"
-            >
-              Discard
-            </Button>
-            <Button
-              variant="ghost"
-              size="small"
-              onClick={props.close}
-              className="cursor-pointer border bg-black p-1.5 font-medium text-white"
-            >
-              Save and close
-            </Button>
-          </div>
+          <EditPricesActions
+            selectedCurrencies={selectedCurrencies}
+            selectedRegions={selectedRegions}
+            toggleCurrency={toggleCurrency}
+            toggleRegion={toggleRegion}
+          />
+          <EditPricesTable
+            product={props.product}
+            currencies={selectedCurrencies}
+          />
         </div>
-        <EditPricesActions
-          selectedCurrencies={selectedCurrencies}
-          selectedRegions={selectedRegions}
-          toggleCurrency={toggleCurrency}
-          toggleRegion={toggleRegion}
-        />
-        <EditPricesTable
-          product={props.product}
-          currencies={selectedCurrencies}
-        />
       </Modal.Body>
     </Fade>
   )
