@@ -37,14 +37,14 @@ jest.mock("./../../loaders", () => ({
     .mockImplementation((...args) => mockModuleLoader.apply(this, args)),
 }))
 
-describe("Medusa Module", () => {
+describe("Medusa Modules", () => {
   beforeEach(() => {
     MedusaModule.clearInstances()
     jest.resetModules()
     jest.clearAllMocks()
   })
 
-  it("MedusaModule bootstrap - Singleton instances", async () => {
+  it("should create singleton instances", async () => {
     await MedusaModule.bootstrap("moduleKey", "@path", {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.ISOLATED,
@@ -79,7 +79,7 @@ describe("Medusa Module", () => {
     expect(mockModuleLoader).toBeCalledTimes(2)
   })
 
-  it("MedusaModule bootstrap - Prevent concurrent requests", async () => {
+  it("should prevent the module being loaded multiple times under concurrent requests", async () => {
     const load: any = []
 
     for (let i = 5; i--; ) {
@@ -102,7 +102,7 @@ describe("Medusa Module", () => {
     expect(intances[(await intances).length - 1]).toBe(intances[0])
   })
 
-  it("MedusaModule - set module and return the first if there is no main", async () => {
+  it("getModule should return the first instance of the module if there is none flagged as 'main'", async () => {
     const moduleA = await MedusaModule.bootstrap("moduleKey", "@path", {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.ISOLATED,
@@ -124,7 +124,7 @@ describe("Medusa Module", () => {
     expect(MedusaModule.getModule("moduleKey")).toEqual(moduleA)
   })
 
-  it("MedusaModule - set module and return the main", async () => {
+  it("should return the module flagged as 'main' when multiple instances are available", async () => {
     const moduleA = await MedusaModule.bootstrap("moduleKey", "@path", {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.ISOLATED,
@@ -147,7 +147,7 @@ describe("Medusa Module", () => {
     expect(MedusaModule.getModule("moduleKey")).toEqual(moduleB)
   })
 
-  it("MedusaModule - set module and return the alias", async () => {
+  it("should retrieve the module by their given alias", async () => {
     const moduleA = await MedusaModule.bootstrap("moduleKey", "@path", {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.ISOLATED,
@@ -187,7 +187,7 @@ describe("Medusa Module", () => {
     expect(MedusaModule.getModule("moduleKey", "mod_C")).toEqual(moduleC)
   })
 
-  it("MedusaModule - Prevent two main modules being set as main", async () => {
+  it("should prevent two main modules being set as 'main'", async () => {
     await MedusaModule.bootstrap("moduleKey", "@path", {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.ISOLATED,
@@ -225,7 +225,7 @@ describe("Medusa Module", () => {
     )
   })
 
-  it("MedusaModule - Prevent same alias being used", async () => {
+  it("should prevent the same alias be used for different instances of the same module", async () => {
     await MedusaModule.bootstrap("moduleKey", "@path", {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.ISOLATED,

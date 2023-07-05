@@ -24,6 +24,42 @@ export const joinerConfig: JoinerServiceConfig = {
       },
     },
     {
+      name: "product_option",
+      args: {
+        methodSuffix: "Options",
+      },
+    },
+    {
+      name: "product_options",
+      args: {
+        methodSuffix: "Options",
+      },
+    },
+    {
+      name: "product_type",
+      args: {
+        methodSuffix: "Types",
+      },
+    },
+    {
+      name: "product_types",
+      args: {
+        methodSuffix: "Types",
+      },
+    },
+    {
+      name: "product_image",
+      args: {
+        methodSuffix: "Images",
+      },
+    },
+    {
+      name: "product_images",
+      args: {
+        methodSuffix: "Images",
+      },
+    },
+    {
       name: "product_tag",
       args: {
         methodSuffix: "Tags",
