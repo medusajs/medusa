@@ -1,6 +1,8 @@
 import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
+// TODO: Should we create a mikro orm specific package for this and the soft deletable decorator util?
+
 async function transactionWrapper<T>(
   this: any,
   task: (transactionManager: unknown) => Promise<T[]>,
