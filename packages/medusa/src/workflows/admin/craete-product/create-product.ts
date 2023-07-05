@@ -72,14 +72,14 @@ export async function createProductWorkflow(
     const command = {
       [Actions.createProduct]: {
         [TransactionHandlerType.INVOKE]: async (data: any[]) => {
-          return await stepHandlers.createProduct(data)
+          return await stepHandlers.createProducts(data)
         },
         [TransactionHandlerType.COMPENSATE]: async (
           data: any[],
           { invoke }
         ) => {
           const createdProducts = invoke[Actions.createProduct]
-          await stepHandlers.removeProduct(createdProducts)
+          await stepHandlers.removeProducts(createdProducts)
         },
       },
       [Actions.createInventoryItems]: {

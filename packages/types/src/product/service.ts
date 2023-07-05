@@ -57,4 +57,6 @@ export interface IProductModuleService {
     data: CreateProductDTO[],
     sharedContext?: Context
   ): Promise<ProductDTO[]>
+
+  delete(productIds: string[], sharedContext?: Context): Promise<ProductDTO[]>
 }

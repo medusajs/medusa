@@ -2,6 +2,7 @@ import {
   IInventoryService,
   InventoryItemDTO,
   IProductModuleService,
+  ProductTypes,
 } from "@medusajs/types"
 import { EntityManager } from "typeorm"
 import { ProductVariantInventoryService } from "../../../../services"
@@ -33,12 +34,14 @@ export class AdminCreateProductHandlers {
       productVariantInventoryService.withTransaction(manager)
   }
 
-  async createProduct(data: any) {
+  async createProducts(data: any): Promise<ProductTypes.ProductDTO[]> {
     return await this.productModuleService_.create(data)
   }
 
-  async removeProduct(products: any[]) {
-    return
+  async removeProducts(
+    products: ProductTypes.ProductDTO[]
+  ): Promise<ProductTypes.ProductDTO[]> {
+    return await this.productModuleService_.delete(products.map((p) => p.id))
   }
 
   async createInventoryItems(products: Product[] = []) {
