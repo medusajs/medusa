@@ -1,5 +1,6 @@
 import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { SoftDeletableKey } from "../utils"
 
 // TODO: Should we create a mikro orm specific package for this and the soft deletable decorator util?
 
@@ -58,12 +59,20 @@ const updateDeletedAtRecursively = async <T extends object = any>(
       .getDriver()
       .getMetadata()
       .get(entities[0].constructor.name).relations
+
     const relationsToCascade = relations.filter((relation) =>
       relation.cascade.includes("soft-remove" as any)
     )
 
     for (const relation of relationsToCascade) {
-      const relationEntities = (await entity[relation.name].init()).getItems()
+      const relationEntities = (await entity[relation.name].init()).getItems({
+        filters: {
+          [SoftDeletableKey]: {
+            withDeleted: true,
+          },
+        },
+      })
+
       await updateDeletedAtRecursively(manager, relationEntities, value)
     }
 
@@ -118,7 +127,11 @@ export abstract class AbstractBaseRepository<T = any>
   async restore(ids: string[], context?: Context): Promise<T[]> {
     const manager = (context?.transactionManager ??
       this.manager_) as SqlEntityManager
-    const entities = await this.find({ where: { id: { $in: ids } } as any })
+
+    const entities = await this.find({
+      where: { id: { $in: ids } } as any,
+      options: { withDeleted: true },
+    })
 
     await updateDeletedAtRecursively(manager, entities, null)
 

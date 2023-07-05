@@ -41,7 +41,9 @@ export class AdminCreateProductHandlers {
   async removeProducts(
     products: ProductTypes.ProductDTO[]
   ): Promise<ProductTypes.ProductDTO[]> {
-    return await this.productModuleService_.delete(products.map((p) => p.id))
+    return await this.productModuleService_.softDelete(
+      products.map((p) => p.id)
+    )
   }
 
   async createInventoryItems(products: Product[] = []) {

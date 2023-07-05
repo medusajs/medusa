@@ -64,4 +64,6 @@ export interface IProductModuleService {
     productIds: string[],
     sharedContext?: Context
   ): Promise<ProductDTO[]>
+
+  restore(productIds: string[], sharedContext?: Context): Promise<ProductDTO[]>
 }

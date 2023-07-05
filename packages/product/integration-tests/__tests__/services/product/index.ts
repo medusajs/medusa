@@ -1,9 +1,5 @@
 import { TestDatabase } from "../../../utils"
-import {
-  ProductService,
-  ProductTagService,
-  ProductVariantService,
-} from "@services"
+import { ProductService } from "@services"
 import { ProductRepository } from "@repositories"
 import { Image, Product, ProductCategory, ProductVariant } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
@@ -23,13 +19,6 @@ import {
 } from "../../../__fixtures__/product/data"
 import { buildProductOnlyData } from "../../../__fixtures__/product/data/create-product"
 import { kebabCase } from "@medusajs/utils"
-
-const productVariantService = {
-  list: jest.fn(),
-} as unknown as ProductVariantService
-const productTagService = {
-  list: jest.fn(),
-} as unknown as ProductTagService
 
 jest.setTimeout(30000)
 
@@ -95,30 +84,6 @@ describe("Product Service", () => {
           ]),
         })
       )
-    })
-  })
-
-  describe("delete", function () {
-    let images: Image[] = []
-
-    beforeEach(async () => {
-      testManager = await TestDatabase.forkManager()
-
-      images = await createImages(testManager, ["image-1"])
-    })
-
-    it("should soft delete a product", async () => {
-      const data = buildProductOnlyData({
-        images,
-        thumbnail: images[0].url,
-      })
-
-      let products = await service.create([data])
-      products = await service.softDelete(products.map((p) => p.id))
-
-      expect(products).toHaveLength(1)
-      expect(products[0].deleted_at).toBeDefined()
-      expect(products[0].deleted_at).not.toBeNull()
     })
   })
 
@@ -344,6 +309,54 @@ describe("Product Service", () => {
           })
         })
       })
+    })
+  })
+
+  describe("softDelete", function () {
+    let images: Image[] = []
+
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+
+      images = await createImages(testManager, ["image-1"])
+    })
+
+    it("should soft delete a product", async () => {
+      const data = buildProductOnlyData({
+        images,
+        thumbnail: images[0].url,
+      })
+
+      const products = await service.create([data])
+      const deleteProducts = await service.softDelete(products.map((p) => p.id))
+
+      expect(deleteProducts).toHaveLength(1)
+      expect(deleteProducts[0].deleted_at).not.toBeNull()
+    })
+  })
+
+  describe("restore", function () {
+    let images: Image[] = []
+
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+
+      images = await createImages(testManager, ["image-1"])
+    })
+
+    it("should restore a soft deleted product", async () => {
+      const data = buildProductOnlyData({
+        images,
+        thumbnail: images[0].url,
+      })
+
+      const products = await service.create([data])
+      const product = products[0]
+      await service.softDelete([product.id])
+      const restoreProducts = await service.restore([product.id])
+
+      expect(restoreProducts).toHaveLength(1)
+      expect(restoreProducts[0].deleted_at).toBeNull()
     })
   })
 })

@@ -324,4 +324,16 @@ export default class ProductModuleService<
     )
     return JSON.parse(JSON.stringify(products))
   }
+
+  async restore(
+    productIds: string[],
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductDTO[]> {
+    const products = await this.productService_.restore(
+      productIds,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(products))
+  }
 }

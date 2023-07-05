@@ -130,4 +130,18 @@ export default class ProductService<TEntity = Product> {
       { transaction: sharedContext?.transactionManager }
     )
   }
+
+  async restore(
+    productIds: string[],
+    sharedContext: Context = {}
+  ): Promise<TEntity[]> {
+    return await this.productRepository_.transaction(
+      async (manager) => {
+        return await this.productRepository_.restore(productIds, {
+          transactionManager: manager,
+        })
+      },
+      { transaction: sharedContext?.transactionManager }
+    )
+  }
 }
