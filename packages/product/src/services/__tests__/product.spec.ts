@@ -7,12 +7,6 @@ container.register({
     find: jest.fn().mockResolvedValue([]),
     findAndCount: jest.fn().mockResolvedValue([[], 0]),
   }),
-  productVariantService: asValue({
-    list: jest.fn().mockResolvedValue([]),
-  }),
-  productTagService: asValue({
-    list: jest.fn().mockResolvedValue([]),
-  }),
   productService: asClass(ProductService),
 })
 
@@ -37,9 +31,10 @@ describe("Product service", function () {
         where: {},
         options: {
           fields: undefined,
-          limit: undefined,
+          limit: 15,
           offset: undefined,
           populate: [],
+          withDeleted: undefined,
         },
       },
       undefined
@@ -74,9 +69,10 @@ describe("Product service", function () {
         },
         options: {
           fields: undefined,
-          limit: undefined,
+          limit: 15,
           offset: undefined,
           populate: [],
+          withDeleted: undefined,
         },
       },
       undefined
@@ -111,8 +107,9 @@ describe("Product service", function () {
         },
         options: {
           fields: undefined,
-          limit: undefined,
+          limit: 15,
           offset: undefined,
+          withDeleted: undefined,
           populate: ["tags"],
         },
       },

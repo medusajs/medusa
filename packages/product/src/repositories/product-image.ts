@@ -8,7 +8,7 @@ import { Context, DAL } from "@medusajs/types"
 import { Image } from "@models"
 import { BaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ModulesSdkUtils } from "@medusajs/utils"
+import { SoftDeletableKey } from "../utils"
 
 export class ProductImageRepository extends BaseRepository<Image> {
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -20,14 +20,15 @@ export class ProductImageRepository extends BaseRepository<Image> {
     findOptions: DAL.FindOptions<Image> = { where: {} },
     context: Context = {}
   ): Promise<Image[]> {
-    // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
-
     findOptions_.options ??= {}
-    findOptions_.options.limit ??= 15
 
-    if (findOptions_.options.populate) {
-      ModulesSdkUtils.deduplicateIfNecessary(findOptions_.options.populate)
+    if (findOptions_.options?.withDeleted) {
+      delete findOptions_.options.withDeleted
+      findOptions_.options["filters"] ??= {}
+      findOptions_.options["filters"][SoftDeletableKey] = {
+        withDeleted: true,
+      }
     }
 
     if (context.transactionManager) {
@@ -49,16 +50,16 @@ export class ProductImageRepository extends BaseRepository<Image> {
     findOptions: DAL.FindOptions<Image> = { where: {} },
     context: Context = {}
   ): Promise<[Image[], number]> {
-    // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
-
     findOptions_.options ??= {}
-    findOptions_.options.limit ??= 15
 
-    if (findOptions_.options.populate) {
-      ModulesSdkUtils.deduplicateIfNecessary(findOptions_.options.populate)
+    if (findOptions_.options?.withDeleted) {
+      delete findOptions_.options.withDeleted
+      findOptions_.options["filters"] ??= {}
+      findOptions_.options["filters"][SoftDeletableKey] = {
+        withDeleted: true,
+      }
     }
-
     if (context.transactionManager) {
       Object.assign(findOptions_.options, { ctx: context.transactionManager })
     }

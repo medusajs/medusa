@@ -7,7 +7,7 @@ import {
 import { Context, DAL } from "@medusajs/types"
 import { BaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ModulesSdkUtils } from "@medusajs/utils"
+import { SoftDeletableKey } from "../utils"
 
 export class ProductCollectionRepository extends BaseRepository<ProductCollection> {
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -19,14 +19,16 @@ export class ProductCollectionRepository extends BaseRepository<ProductCollectio
     findOptions: DAL.FindOptions<ProductCollection> = { where: {} },
     context: Context = {}
   ): Promise<ProductCollection[]> {
-    // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
 
     findOptions_.options ??= {}
-    findOptions_.options.limit ??= 15
 
-    if (findOptions_.options.populate) {
-      ModulesSdkUtils.deduplicateIfNecessary(findOptions_.options.populate)
+    if (findOptions_.options?.withDeleted) {
+      delete findOptions_.options.withDeleted
+      findOptions_.options["filters"] ??= {}
+      findOptions_.options["filters"][SoftDeletableKey] = {
+        withDeleted: true,
+      }
     }
 
     if (context.transactionManager) {
@@ -48,14 +50,16 @@ export class ProductCollectionRepository extends BaseRepository<ProductCollectio
     findOptions: DAL.FindOptions<ProductCollection> = { where: {} },
     context: Context = {}
   ): Promise<[ProductCollection[], number]> {
-    // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
 
     findOptions_.options ??= {}
-    findOptions_.options.limit ??= 15
 
-    if (findOptions_.options.populate) {
-      ModulesSdkUtils.deduplicateIfNecessary(findOptions_.options.populate)
+    if (findOptions_.options?.withDeleted) {
+      delete findOptions_.options.withDeleted
+      findOptions_.options["filters"] ??= {}
+      findOptions_.options["filters"][SoftDeletableKey] = {
+        withDeleted: true,
+      }
     }
 
     if (context.transactionManager) {

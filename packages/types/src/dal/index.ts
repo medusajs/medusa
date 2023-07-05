@@ -1,4 +1,4 @@
-import { Dictionary, FilterQuery, Order } from "./utils"
+import { FilterQuery, Order } from "./utils"
 
 export { FilterQuery } from "./utils"
 export interface BaseFilterable<T> {
@@ -13,7 +13,7 @@ export interface OptionsQuery<T, P extends string = never> {
   offset?: number
   fields?: string[]
   groupBy?: string | string[]
-  filters?: Dictionary<boolean | Dictionary> | string[] | boolean
+  withDeleted?: boolean
 }
 
 export type FindOptions<T = any> = {

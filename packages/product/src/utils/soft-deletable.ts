@@ -6,6 +6,8 @@ interface FilterArguments {
   withDeleted?: boolean
 }
 
+export const SoftDeletableKey = Symbol("softDeletable")
+
 export const SoftDeletable = (): ClassDecorator => {
   return Filter({
     name: "softDeletable",

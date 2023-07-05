@@ -8,7 +8,7 @@ import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
 import { AbstractTreeRepositoryBase } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ModulesSdkUtils } from "@medusajs/utils"
+import { SoftDeletableKey } from "../utils"
 
 export class ProductCategoryRepository extends AbstractTreeRepositoryBase<ProductCategory> {
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -21,13 +21,19 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
     transformOptions: ProductCategoryTransformOptions = {},
     context: Context = {}
   ): Promise<ProductCategory[]> {
-    // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
     const { includeDescendantsTree } = transformOptions
 
     findOptions_.options ??= {}
     const fields = (findOptions_.options.fields ??= [])
-    findOptions_.options.limit ??= 15
+
+    if (findOptions_.options?.withDeleted) {
+      delete findOptions_.options.withDeleted
+      findOptions_.options["filters"] ??= {}
+      findOptions_.options["filters"][SoftDeletableKey] = {
+        withDeleted: true,
+      }
+    }
 
     // Ref: Building descendants
     // mpath and parent_category_id needs to be added to the query for the tree building to be done accurately
@@ -35,10 +41,6 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
       fields.indexOf("mpath") === -1 && fields.push("mpath")
       fields.indexOf("parent_category_id") === -1 &&
         fields.push("parent_category_id")
-    }
-
-    if (findOptions_.options.populate) {
-      ModulesSdkUtils.deduplicateIfNecessary(findOptions_.options.populate)
     }
 
     if (context.transactionManager) {
@@ -111,14 +113,16 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
     transformOptions: ProductCategoryTransformOptions = {},
     context: Context = {}
   ): Promise<[ProductCategory[], number]> {
-    // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
 
     findOptions_.options ??= {}
-    findOptions_.options.limit ??= 15
 
-    if (findOptions_.options.populate) {
-      ModulesSdkUtils.deduplicateIfNecessary(findOptions_.options.populate)
+    if (findOptions_.options?.withDeleted) {
+      delete findOptions_.options.withDeleted
+      findOptions_.options["filters"] ??= {}
+      findOptions_.options["filters"][SoftDeletableKey] = {
+        withDeleted: true,
+      }
     }
 
     if (context.transactionManager) {

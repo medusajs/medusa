@@ -7,7 +7,7 @@ import {
 import { Context, DAL } from "@medusajs/types"
 import { BaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ModulesSdkUtils } from "@medusajs/utils"
+import { SoftDeletableKey } from "../utils"
 
 export class ProductRepository extends BaseRepository<Product> {
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -19,14 +19,15 @@ export class ProductRepository extends BaseRepository<Product> {
     findOptions: DAL.FindOptions<Product> = { where: {} },
     context: Context = {}
   ): Promise<Product[]> {
-    // Spread is used to cssopy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
-
     findOptions_.options ??= {}
-    findOptions_.options.limit ??= 15
 
-    if (findOptions_.options.populate) {
-      ModulesSdkUtils.deduplicateIfNecessary(findOptions_.options.populate)
+    if (findOptions_.options?.withDeleted) {
+      delete findOptions_.options.withDeleted
+      findOptions_.options["filters"] ??= {}
+      findOptions_.options["filters"][SoftDeletableKey] = {
+        withDeleted: true,
+      }
     }
 
     if (context.transactionManager) {
@@ -50,14 +51,15 @@ export class ProductRepository extends BaseRepository<Product> {
     findOptions: DAL.FindOptions<Product> = { where: {} },
     context: Context = {}
   ): Promise<[Product[], number]> {
-    // Spread is used to copy the options in case of manipulation to prevent side effects
     const findOptions_ = { ...findOptions }
-
     findOptions_.options ??= {}
-    findOptions_.options.limit ??= 15
 
-    if (findOptions_.options.populate) {
-      ModulesSdkUtils.deduplicateIfNecessary(findOptions_.options.populate)
+    if (findOptions_.options?.withDeleted) {
+      delete findOptions_.options.withDeleted
+      findOptions_.options["filters"] ??= {}
+      findOptions_.options["filters"][SoftDeletableKey] = {
+        withDeleted: true,
+      }
     }
 
     if (context.transactionManager) {
