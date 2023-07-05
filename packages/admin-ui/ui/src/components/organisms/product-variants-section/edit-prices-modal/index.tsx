@@ -7,7 +7,11 @@ import { Product, ProductVariant } from "@medusajs/client-types"
 import Modal from "../../../molecules/modal"
 import Fade from "../../../atoms/fade-wrapper"
 import Button from "../../../fundamentals/button"
-import { getAllProductPricesCurrencies, getCurrencyPricesOnly } from "./utils"
+import {
+  getAllProductPricesCurrencies,
+  getCurrencyPricesOnly,
+  getRegionPricesOnly,
+} from "./utils"
 import AdjustmentsIcon from "../../../fundamentals/icons/adjustments-icon"
 import { useAdminCurrencies, useAdminRegions } from "medusa-react"
 import CheckIcon from "../../../fundamentals/icons/check-icon"
@@ -31,7 +35,7 @@ function EditPricesActions(props: EditPricesActionsProps) {
   const { currencies } = useAdminCurrencies()
 
   return (
-    <div className="border-t py-[12px] px-4">
+    <div style={{ fontSize: 13 }} className="border-t py-[12px] px-4">
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
           <Button variant="secondary" size="small" className="text-gray-700">
@@ -73,7 +77,14 @@ function EditPricesActions(props: EditPricesActionsProps) {
             Regions
           </DropdownMenu.Label>
           {regions?.map((r) => (
-            <DropdownMenu.Item className="mb-1 last:mb-0" key={r}>
+            <DropdownMenu.Item
+              onClick={(event) => {
+                event.preventDefault()
+                toggleRegion(r.id)
+              }}
+              className="mb-1 cursor-pointer last:mb-0 hover:bg-gray-100"
+              key={r.id}
+            >
               <div className="flex justify-between gap-4 px-[12px] py-2 text-gray-800">
                 {r.name}
                 {selectedRegions.includes(r.id) && (
@@ -89,7 +100,12 @@ function EditPricesActions(props: EditPricesActionsProps) {
 }
 
 type CurrencyCellProps = {
-  currencyCode: string
+  currencyCode?: string
+  region?: string
+
+  rowIndex: number
+  colIndex: number
+
   variant: ProductVariant
   editedAmount?: number
   active?: boolean
@@ -101,7 +117,7 @@ type CurrencyCellProps = {
   selectCell: (variantId: string, currencyCode: string) => void
   deselectCell: (variantId: string, currencyCode: string) => void
   setFocusedCell: (
-    arg: { variantId: string; currencyCode: string } | undefined
+    arg: { variantId: string; currencyCodeOrRegion: string } | undefined
   ) => void
 }
 
@@ -112,7 +128,10 @@ function CurrencyCell(props: CurrencyCellProps) {
   const {
     variant,
     currencyCode,
+    region,
     editedAmount,
+    rowIndex,
+    colIndex,
     setEditedAmount,
     setFocusedCell,
     active,
@@ -120,25 +139,32 @@ function CurrencyCell(props: CurrencyCellProps) {
     deselectCell,
   } = props
 
-  const [showDragIndicator, setShowDragIndicator] = useState(false)
-
   const amount =
     editedAmount ||
     getCurrencyPricesOnly(variant.prices!).find(
-      (p) => p.currency_code === currencyCode
+      (p) => p.currency_code === currencyCode || p.region_id === region
     )?.amount
 
   return (
     <td
-      onClick={() => selectCell(variant.id, currencyCode)}
-      onMouseEnter={(e) => drag && selectCell(variant.id, currencyCode)}
-      onMouseLeave={(e) => drag && deselectCell(variant.id, currencyCode)}
+      onClick={() => selectCell(variant.id, currencyCode || region)}
+      onMouseEnter={(e) =>
+        drag && selectCell(variant.id, currencyCode || region)
+      }
+      onMouseLeave={(e) =>
+        drag && deselectCell(variant.id, currencyCode || region)
+      }
       className={clsx("border pr-2", {
         "bg-blue-100": active,
       })}
     >
       <AmountField
-        onFocus={() => setFocusedCell({ variantId: variant.id, currencyCode })}
+        onFocus={() =>
+          setFocusedCell({
+            variantId: variant.id,
+            currencyCodeOrRegion: currencyCode || region,
+          })
+        }
         onBlur={() => setFocusedCell(undefined)}
         style={{ width: "100%", textAlign: "right", paddingRight: 8 }}
         className={clsx("decoration-transparent focus:outline-0", {
@@ -161,6 +187,7 @@ function CurrencyCell(props: CurrencyCellProps) {
 type EditPricesTableProps = {
   product: EditPricesModalProps["product"]
   currencies: string[]
+  regions: string[]
 }
 
 let drag = false
@@ -173,6 +200,7 @@ let activeCurrencyOrRegion = undefined
 function EditPricesTable(props: EditPricesTableProps) {
   const [activeEditAmount, setActiveEditAmount] = useState<number | undefined>()
 
+  const { regions: storeRegions } = useAdminRegions()
   const [editedPrices, setEditedPrices] = useState({})
   const [selectedCells, setSelectedCells] = useState({})
 
@@ -193,20 +221,20 @@ function EditPricesTable(props: EditPricesTableProps) {
     setEditedPrices(prices)
   }
 
-  const selectCell = (variantId: string, currencyCode: string) => {
-    if (currencyCode !== activeCurrencyOrRegion) {
+  const selectCell = (variantId: string, currencyCodeOrRegion: string) => {
+    if (currencyCodeOrRegion !== activeCurrencyOrRegion) {
       return
     }
 
-    const key = `${variantId}-${currencyCode}`
+    const key = `${variantId}-${currencyCodeOrRegion}`
     const next = { ...selectedCells }
 
     next[key] = true
     setSelectedCells(next)
   }
 
-  const deselectCell = (variantId: string, currencyCode: string) => {
-    const key = `${variantId}-${currencyCode}`
+  const deselectCell = (variantId: string, currencyCodeOrRegion: string) => {
+    const key = `${variantId}-${currencyCodeOrRegion}`
     const next = { ...selectedCells }
 
     delete next[key]
@@ -215,13 +243,13 @@ function EditPricesTable(props: EditPricesTableProps) {
 
   const setFocusedCell = (props?: {
     variantId: string
-    currencyCode: string
+    currencyCodeOrRegion: string
   }) => {
     if (!props) {
       activeCurrencyOrRegion = undefined
     } else {
-      activeCurrencyOrRegion = props.currencyCode
-      selectCell(props.variantId, props.currencyCode)
+      activeCurrencyOrRegion = props.currencyCodeOrRegion
+      selectCell(props.variantId, props.currencyCodeOrRegion)
     }
   }
 
@@ -234,6 +262,14 @@ function EditPricesTable(props: EditPricesTableProps) {
         )?.amount
 
         nextState[`${variant.id}-${c}`] = amount
+      })
+
+      props.regions.forEach((r) => {
+        const amount = getRegionPricesOnly(variant.prices!).find(
+          (p) => p.region_id === r
+        )?.amount
+
+        nextState[`${variant.id}-${r}`] = amount
       })
     })
     setEditedPrices(nextState)
@@ -280,6 +316,14 @@ function EditPricesTable(props: EditPricesTableProps) {
                 Price {c.toUpperCase()}
               </th>
             ))}
+            {props.regions.map((r) => (
+              <th
+                key={r}
+                className="min-w-[220px] border pl-4 font-medium text-gray-400"
+              >
+                Price {storeRegions?.find((sr) => sr.id === r)?.name}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
@@ -300,28 +344,55 @@ function EditPricesTable(props: EditPricesTableProps) {
                 -
               </td>
             ))}
+            {props.regions.map((r) => (
+              <td className="border pr-4 text-right" key={r}>
+                -
+              </td>
+            ))}
           </tr>
 
-          {props.product.variants!.map((variant) => (
-            <tr key={variant.id} style={{ lineHeight: 3 }}>
-              <td className="border pl-10 text-gray-400">{variant.title}</td>
-              <td className="border pl-4 text-gray-400 ">{variant.sku}</td>
+          {props.product.variants!.map((variant, rowIndex) => {
+            return (
+              <tr key={variant.id} style={{ lineHeight: 3 }}>
+                <td className="border pl-10 text-gray-400">{variant.title}</td>
+                <td className="border pl-4 text-gray-400 ">{variant.sku}</td>
 
-              {props.currencies.map((c) => (
-                <CurrencyCell
-                  currencyCode={c}
-                  key={variant.id + c}
-                  variant={variant}
-                  active={!!selectedCells[`${variant.id}-${c}`]}
-                  editedAmount={editedPrices[`${variant.id}-${c}`]}
-                  setEditedAmount={setEditedAmount}
-                  selectCell={selectCell}
-                  deselectCell={deselectCell}
-                  setFocusedCell={setFocusedCell}
-                />
-              ))}
-            </tr>
-          ))}
+                {props.currencies.map((c, colIndex) => {
+                  return (
+                    <CurrencyCell
+                      currencyCode={c}
+                      key={variant.id + c}
+                      variant={variant}
+                      active={!!selectedCells[`${variant.id}-${c}`]}
+                      editedAmount={editedPrices[`${variant.id}-${c}`]}
+                      setEditedAmount={setEditedAmount}
+                      selectCell={selectCell}
+                      deselectCell={deselectCell}
+                      setFocusedCell={setFocusedCell}
+                      rowIndex={rowIndex}
+                      colIndex={colIndex}
+                    />
+                  )
+                })}
+
+                {props.regions.map((r, colIndex) => (
+                  <CurrencyCell
+                    region={r}
+                    variant={variant}
+                    key={variant.id + r}
+                    active={!!selectedCells[`${variant.id}-${r}`]}
+                    editedAmount={editedPrices[`${variant.id}-${r}`]}
+                    setEditedAmount={setEditedAmount}
+                    selectCell={selectCell}
+                    deselectCell={deselectCell}
+                    setFocusedCell={setFocusedCell}
+                    rowIndex={rowIndex}
+                    colIndex={props.currencies.length + colIndex}
+                  />
+                ))}
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </div>
@@ -340,7 +411,7 @@ function Index(props: EditPricesModalProps) {
   const currencies = getAllProductPricesCurrencies(props.product).sort()
 
   const [selectedCurrencies, setSelectedCurrencies] = useState(currencies)
-  const [selectedRegions, setSelectedRegions] = useState([])
+  const [selectedRegions, setSelectedRegions] = useState<string[]>([])
 
   const toggleCurrency = (currencyCode: string) => {
     const set = new Set(selectedCurrencies)
@@ -351,10 +422,18 @@ function Index(props: EditPricesModalProps) {
     }
 
     setSelectedCurrencies(Array.from(set))
-    console.log(selectedCurrencies)
   }
 
-  const toggleRegion = (regionId: string) => {}
+  const toggleRegion = (regionId: string) => {
+    const set = new Set(selectedRegions)
+    if (set.has(regionId)) {
+      set.delete(regionId)
+    } else {
+      set.add(regionId)
+    }
+
+    setSelectedRegions(Array.from(set))
+  }
 
   useEffect(() => {
     const onEsc = (e) => {
@@ -405,14 +484,15 @@ function Index(props: EditPricesModalProps) {
             </div>
           </div>
           <EditPricesActions
-            selectedCurrencies={selectedCurrencies}
-            selectedRegions={selectedRegions}
+            selectedCurrencies={selectedCurrencies.sort()}
+            selectedRegions={selectedRegions.sort()}
             toggleCurrency={toggleCurrency}
             toggleRegion={toggleRegion}
           />
           <EditPricesTable
             product={props.product}
-            currencies={selectedCurrencies}
+            currencies={selectedCurrencies.sort()}
+            regions={selectedRegions.sort()}
           />
         </div>
       </Modal.Body>

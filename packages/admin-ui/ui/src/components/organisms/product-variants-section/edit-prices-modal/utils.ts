@@ -39,3 +39,15 @@ export function getCurrencyPricesOnly(prices: MoneyAmount[]) {
     return true
   })
 }
+
+/**
+ * Return only currency prices.
+ */
+export function getRegionPricesOnly(prices: MoneyAmount[]) {
+  return prices.filter((price) => {
+    if (price.price_list || price.min_quantity || price.max_quantity) {
+      return false
+    }
+    return true
+  })
+}
