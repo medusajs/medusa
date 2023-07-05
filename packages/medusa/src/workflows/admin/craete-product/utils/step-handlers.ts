@@ -1,7 +1,7 @@
-import { Product, ProductVariant } from "../../../models"
 import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
-import { ProductVariantInventoryService } from "../../../services"
 import { EntityManager } from "typeorm"
+import { ProductVariantInventoryService } from "../../../../services"
+import { Product, ProductVariant } from "../../../../models"
 
 export class AdminCreateProductHandlers {
   protected manager_: EntityManager
