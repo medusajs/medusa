@@ -13,6 +13,6 @@ export default class ProductTypeService<TEntity = ProductType> {
   }
 
   upsert(types: CreateProductTypeDTO[], sharedContext?: Context) {
-    return this.productTypeRepository_.upsert(types, sharedContext)
+    return this.productTypeRepository_.upsert!(types, sharedContext)
   }
 }

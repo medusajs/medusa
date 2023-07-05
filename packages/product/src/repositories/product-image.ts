@@ -5,12 +5,12 @@ import {
   RequiredEntityData,
 } from "@mikro-orm/core"
 import { Context, DAL } from "@medusajs/types"
-import { Image } from "@models"
-import { BaseRepository } from "./base"
+import { Image, Product } from "@models"
+import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { SoftDeletableKey } from "../utils"
 
-export class ProductImageRepository extends BaseRepository<Image> {
+export class ProductImageRepository extends AbstractBaseRepository<Image> {
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
     super(...arguments)
@@ -115,5 +115,12 @@ export class ProductImageRepository extends BaseRepository<Image> {
     }
 
     return upsertedImgs
+  }
+
+  async delete(ids: string[], context: Context = {}): Promise<void> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
+    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
   }
 }

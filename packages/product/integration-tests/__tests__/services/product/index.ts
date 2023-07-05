@@ -114,7 +114,7 @@ describe("Product Service", () => {
       })
 
       let products = await service.create([data])
-      products = await service.delete(products.map((p) => p.id))
+      products = await service.softDelete(products.map((p) => p.id))
 
       expect(products).toHaveLength(1)
       expect(products[0].deleted_at).toBeDefined()
@@ -133,7 +133,7 @@ describe("Product Service", () => {
         const products = await createProductAndTags(testManager, productsData)
 
         product = products[1]
-        deletedProduct = await service.delete([products[0].id])
+        deletedProduct = await service.softDelete([products[0].id])
       })
 
       it("should list all products that are not deleted", async () => {

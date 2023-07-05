@@ -14,6 +14,7 @@ import {
 } from "@services"
 import * as DefaultRepositories from "@repositories"
 import {
+  BaseRepository,
   ProductCategoryRepository,
   ProductCollectionRepository,
   ProductImageRepository,
@@ -25,7 +26,6 @@ import {
 } from "@repositories"
 import { Constructor, DAL, ModulesSdkTypes } from "@medusajs/types"
 import { lowerCaseFirst } from "@medusajs/utils"
-import { BaseRepository } from "../repositories/base"
 
 export default async ({
   container,

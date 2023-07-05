@@ -1,6 +1,6 @@
-import { BaseRepository } from "@repositories"
+import { BaseRepository } from "../../src/repositories/base"
 
-class CustomRepository extends BaseRepository<any> {
+class CustomRepository extends BaseRepository {
   constructor({ manager }) {
     // @ts-ignore
     super(...arguments)

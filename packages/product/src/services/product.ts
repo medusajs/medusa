@@ -100,21 +100,32 @@ export default class ProductService<TEntity = Product> {
         })
 
         manager_.persist(products)
-        return products as unknown as TEntity[]
+        return products
       },
       { transaction: sharedContext?.transactionManager }
     )
   }
 
-  async delete(
+  async delete(ids: string[], sharedContext?: Context): Promise<void> {
+    await this.productRepository_.transaction(
+      async (manager) => {
+        await this.productRepository_.delete(ids, {
+          transactionManager: manager,
+        })
+      },
+      { transaction: sharedContext?.transactionManager }
+    )
+  }
+
+  async softDelete(
     productIds: string[],
-    sharedContext?: Context
+    sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return await this.productRepository_.transaction(
       async (manager) => {
-        return (await this.productRepository_.softDelete(productIds, {
+        return await this.productRepository_.softDelete(productIds, {
           transactionManager: manager,
-        })) as unknown as TEntity[]
+        })
       },
       { transaction: sharedContext?.transactionManager }
     )

@@ -5,11 +5,11 @@ import {
   LoadStrategy,
 } from "@mikro-orm/core"
 import { Context, DAL } from "@medusajs/types"
-import { BaseRepository } from "./base"
+import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { SoftDeletableKey } from "../utils"
 
-export class ProductRepository extends BaseRepository<Product> {
+export class ProductRepository extends AbstractBaseRepository<Product> {
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
     super(...arguments)
@@ -78,7 +78,6 @@ export class ProductRepository extends BaseRepository<Product> {
       findOptions_.options as MikroOptions<Product>
     )
   }
-
   /**
    * In order to be able to have a strict not in categories, and prevent a product
    * to be return in the case it also belongs to other categories, we need to
@@ -111,5 +110,12 @@ export class ProductRepository extends BaseRepository<Product> {
         }
       }
     }
+  }
+
+  async delete(ids: string[], context: Context = {}): Promise<void> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
+    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
   }
 }

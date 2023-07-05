@@ -1,5 +1,4 @@
 import { MedusaModule } from "@medusajs/modules-sdk"
-import { Product } from "@models"
 import { initialize } from "../../src"
 import * as CustomRepositories from "../__fixtures__/module"
 import { ProductRepository } from "../__fixtures__/module"
@@ -8,7 +7,7 @@ import { productsData } from "../__fixtures__/product/data"
 import { DB_URL, TestDatabase } from "../utils"
 import { buildProductData } from "../__fixtures__/product/data/create-product"
 import { kebabCase } from "@medusajs/utils"
-import { ProductModuleService } from "@services"
+import { IProductModuleService } from "@medusajs/types"
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -21,19 +20,18 @@ const afterEach_ = async () => {
 
 describe("Product module", function () {
   describe("Using built-in data access layer", function () {
-    let module: ProductModuleService
-    let products: Product[]
+    let module: IProductModuleService
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
-      products = await createProductAndTags(testManager, productsData)
+      await createProductAndTags(testManager, productsData)
 
-      module = (await initialize({
+      module = await initialize({
         database: {
           clientUrl: DB_URL,
           schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
         },
-      })) as ProductModuleService
+      })
     })
 
     afterEach(afterEach_)
@@ -49,21 +47,20 @@ describe("Product module", function () {
   })
 
   describe("Using custom data access layer", function () {
-    let module: ProductModuleService
-    let products: Product[]
+    let module: IProductModuleService
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
 
-      products = await createProductAndTags(testManager, productsData)
+      await createProductAndTags(testManager, productsData)
 
-      module = (await initialize({
+      module = await initialize({
         database: {
           clientUrl: DB_URL,
           schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
         },
         repositories: CustomRepositories,
-      })) as ProductModuleService
+      })
     })
 
     afterEach(afterEach_)
@@ -81,19 +78,18 @@ describe("Product module", function () {
   })
 
   describe("Using custom data access layer and connection", function () {
-    let module: ProductModuleService
-    let products: Product[]
+    let module: IProductModuleService
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
-      products = await createProductAndTags(testManager, productsData)
+      await createProductAndTags(testManager, productsData)
 
       MedusaModule.clearInstances()
 
-      module = (await initialize({
+      module = await initialize({
         manager: testManager,
         repositories: CustomRepositories,
-      })) as ProductModuleService
+      })
     })
 
     afterEach(afterEach_)
@@ -111,7 +107,7 @@ describe("Product module", function () {
   })
 
   describe("create", function () {
-    let module: ProductModuleService
+    let module: IProductModuleService
     let images = ["image-1"]
 
     beforeEach(async () => {
@@ -119,12 +115,12 @@ describe("Product module", function () {
 
       MedusaModule.clearInstances()
 
-      module = (await initialize({
+      module = await initialize({
         database: {
           clientUrl: DB_URL,
           schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
         },
-      })) as ProductModuleService
+      })
     })
 
     afterEach(afterEach_)
@@ -207,7 +203,7 @@ describe("Product module", function () {
   })
 
   describe("delete", function () {
-    let module: ProductModuleService
+    let module: IProductModuleService
     let images = ["image-1"]
 
     beforeEach(async () => {
@@ -215,12 +211,12 @@ describe("Product module", function () {
 
       MedusaModule.clearInstances()
 
-      module = (await initialize({
+      module = await initialize({
         database: {
           clientUrl: DB_URL,
           schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
         },
-      })) as ProductModuleService
+      })
     })
 
     afterEach(afterEach_)
@@ -233,7 +229,7 @@ describe("Product module", function () {
 
       const products = await module.create([data])
 
-      await module.delete([products[0].id])
+      await module.softDelete([products[0].id])
 
       const deletedProducts = await module.list(
         { id: products[0].id },
@@ -248,6 +244,7 @@ describe("Product module", function () {
           withDeleted: true,
         }
       )
+
       expect(deletedProducts).toHaveLength(1)
       expect(deletedProducts[0].deleted_at).toBeDefined()
       expect(deletedProducts[0].deleted_at).not.toBeNull()

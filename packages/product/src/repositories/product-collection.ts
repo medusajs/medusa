@@ -1,15 +1,15 @@
-import { ProductCollection } from "@models"
+import { Product, ProductCollection } from "@models"
 import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
 import { Context, DAL } from "@medusajs/types"
-import { BaseRepository } from "./base"
+import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { SoftDeletableKey } from "../utils"
 
-export class ProductCollectionRepository extends BaseRepository<ProductCollection> {
+export class ProductCollectionRepository extends AbstractBaseRepository<ProductCollection> {
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
     super(...arguments)
@@ -75,5 +75,12 @@ export class ProductCollectionRepository extends BaseRepository<ProductCollectio
       findOptions_.where as MikroFilterQuery<ProductCollection>,
       findOptions_.options as MikroOptions<ProductCollection>
     )
+  }
+
+  async delete(ids: string[], context: Context = {}): Promise<void> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
+    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
   }
 }

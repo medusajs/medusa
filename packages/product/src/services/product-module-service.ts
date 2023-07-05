@@ -310,11 +310,15 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(products))
   }
 
-  async delete(
+  async delete(productIds: string[], sharedContext?: Context): Promise<void> {
+    await this.productService_.delete(productIds, sharedContext)
+  }
+
+  async softDelete(
     productIds: string[],
     sharedContext?: Context
   ): Promise<ProductTypes.ProductDTO[]> {
-    const products = await this.productService_.delete(
+    const products = await this.productService_.softDelete(
       productIds,
       sharedContext
     )

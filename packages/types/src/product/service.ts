@@ -58,5 +58,10 @@ export interface IProductModuleService {
     sharedContext?: Context
   ): Promise<ProductDTO[]>
 
-  delete(productIds: string[], sharedContext?: Context): Promise<ProductDTO[]>
+  delete(productIds: string[], sharedContext?: Context): Promise<void>
+
+  softDelete(
+    productIds: string[],
+    sharedContext?: Context
+  ): Promise<ProductDTO[]>
 }

@@ -3,7 +3,7 @@ import {
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import { ProductCategory } from "@models"
+import { Product, ProductCategory } from "@models"
 import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
 import { AbstractTreeRepositoryBase } from "./base"
@@ -138,5 +138,12 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
       findOptions_.where as MikroFilterQuery<ProductCategory>,
       findOptions_.options as MikroOptions<ProductCategory>
     )
+  }
+
+  async delete(ids: string[], context: Context = {}): Promise<void> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
+    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
   }
 }

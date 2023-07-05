@@ -13,6 +13,6 @@ export default class ProductImageService<TEntity = Image> {
   }
 
   upsert(urls: string[], sharedContext?: Context) {
-    return this.productImageRepository_.upsert(urls, sharedContext)
+    return this.productImageRepository_.upsert!(urls, sharedContext)
   }
 }

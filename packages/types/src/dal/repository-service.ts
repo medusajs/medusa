@@ -11,13 +11,13 @@ export interface RepositoryService<T = any> {
   [key: string]: any
 
   transaction(
-    task: (transactionManager: unknown) => Promise<T[]>,
+    task: (transactionManager: unknown) => Promise<any>,
     context?: {
       isolationLevel?: string
       transaction?: unknown
       enableNestedTransactions?: boolean
     }
-  ): Promise<T[]>
+  ): Promise<any>
 
   find(options?: FindOptions<T>, context?: Context): Promise<T[]>
 
@@ -26,30 +26,26 @@ export interface RepositoryService<T = any> {
     context?: Context
   ): Promise<[T[], number]>
 
-  upsert(data: any, context?: Context): Promise<T[]>
+  // Only required for some repositories
+  upsert?(data: any, context?: Context): Promise<T[]>
+
+  delete(ids: string[], context?: Context): Promise<void>
 
   softDelete(ids: string[], context?: Context): Promise<T[]>
+
+  restore(ids: string[], context?: Context): Promise<T[]>
 }
 
-export interface TreeRepositoryService<T = any> {
-  [key: string]: any
-
-  transaction(
-    task: (transactionManager: unknown) => Promise<T[]>,
-    context?: {
-      isolationLevel?: string
-      transaction?: unknown
-      enableNestedTransactions?: boolean
-    }
-  ): Promise<T[]>
-
+export interface TreeRepositoryService<T = any> extends RepositoryService<T> {
   find(
     options?: FindOptions<T>,
-    transformOptions?: RepositoryTransformOptions
+    transformOptions?: RepositoryTransformOptions,
+    context?: Context
   ): Promise<T[]>
 
   findAndCount(
     options?: FindOptions<T>,
-    transformOptions?: RepositoryTransformOptions
+    transformOptions?: RepositoryTransformOptions,
+    context?: Context
   ): Promise<[T[], number]>
 }

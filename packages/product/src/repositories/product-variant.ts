@@ -3,13 +3,13 @@ import {
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import { ProductVariant } from "@models"
+import { Product, ProductVariant } from "@models"
 import { Context, DAL } from "@medusajs/types"
-import { BaseRepository } from "./base"
+import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { SoftDeletableKey } from "../utils"
 
-export class ProductVariantRepository extends BaseRepository<ProductVariant> {
+export class ProductVariantRepository extends AbstractBaseRepository<ProductVariant> {
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
     super(...arguments)
@@ -73,5 +73,12 @@ export class ProductVariantRepository extends BaseRepository<ProductVariant> {
       findOptions_.where as MikroFilterQuery<ProductVariant>,
       findOptions_.options as MikroOptions<ProductVariant>
     )
+  }
+
+  async delete(ids: string[], context: Context = {}): Promise<void> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
+    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
   }
 }

@@ -4,13 +4,13 @@ import {
   LoadStrategy,
   RequiredEntityData,
 } from "@mikro-orm/core"
-import { ProductTag } from "@models"
+import { Product, ProductTag } from "@models"
 import { Context, CreateProductTagDTO, DAL } from "@medusajs/types"
-import { BaseRepository } from "./base"
+import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { SoftDeletableKey } from "../utils"
 
-export class ProductTagRepository extends BaseRepository<ProductTag> {
+export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
     super(...arguments)
@@ -120,5 +120,12 @@ export class ProductTagRepository extends BaseRepository<ProductTag> {
     }
 
     return upsertedTags
+  }
+
+  async delete(ids: string[], context: Context = {}): Promise<void> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
+    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
   }
 }

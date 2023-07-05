@@ -3,9 +3,9 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 // TODO: Should we create a mikro orm specific package for this and the soft deletable decorator util?
 
-async function transactionWrapper<T>(
+async function transactionWrapper(
   this: any,
-  task: (transactionManager: unknown) => Promise<T[]>,
+  task: (transactionManager: unknown) => Promise<any>,
   {
     transaction,
     isolationLevel,
@@ -15,7 +15,7 @@ async function transactionWrapper<T>(
     transaction?: unknown
     enableNestedTransactions?: boolean
   } = {}
-): Promise<T[]> {
+): Promise<any> {
   // Reuse the same transaction if it is already provided and nested transactions are disabled
   if (!enableNestedTransactions && transaction) {
     return await task(transaction)
@@ -45,17 +45,43 @@ async function transactionWrapper<T>(
   }
 }
 
-export abstract class AbstractRepositoryBase<T = any>
+const updateDeletedAtRecursively = async <T extends object = any>(
+  manager: SqlEntityManager,
+  entities: T[],
+  value: Date | null
+) => {
+  for await (const entity of entities) {
+    if (!("deleted_at" in entity)) continue
+    ;(entity as any).deleted_at = value
+
+    const relations = manager
+      .getDriver()
+      .getMetadata()
+      .get(entities[0].constructor.name).relations
+    const relationsToCascade = relations.filter((relation) =>
+      relation.cascade.includes("soft-remove" as any)
+    )
+
+    for (const relation of relationsToCascade) {
+      const relationEntities = (await entity[relation.name].init()).getItems()
+      await updateDeletedAtRecursively(manager, relationEntities, value)
+    }
+
+    await manager.persist(entities)
+  }
+}
+
+export abstract class AbstractBaseRepository<T = any>
   implements DAL.RepositoryService<T>
 {
   protected readonly manager_: SqlEntityManager
 
   protected constructor({ manager }) {
-    this.manager_ = manager.fork()
+    this.manager_ = manager
   }
 
   async transaction(
-    task: (transactionManager: unknown) => Promise<T[]>,
+    task: (transactionManager: unknown) => Promise<any>,
     {
       transaction,
       isolationLevel,
@@ -65,9 +91,8 @@ export abstract class AbstractRepositoryBase<T = any>
       transaction?: unknown
       enableNestedTransactions?: boolean
     } = {}
-  ): Promise<T[]> {
-    // @ts-ignore
-    return await transactionWrapper.apply<T>(this, arguments)
+  ): Promise<any> {
+    return await transactionWrapper.apply(this, arguments)
   }
 
   abstract find(options?: DAL.FindOptions<T>, context?: Context)
@@ -77,34 +102,40 @@ export abstract class AbstractRepositoryBase<T = any>
     context?: Context
   ): Promise<[T[], number]>
 
-  abstract upsert(data: any, context?: Context): Promise<T[]>
+  abstract delete(ids: string[], context?: Context): Promise<void>
 
-  abstract softDelete(ids: string[], context?: Context): Promise<T[]>
+  async softDelete(ids: string[], context?: Context): Promise<T[]> {
+    const manager = (context?.transactionManager ??
+      this.manager_) as SqlEntityManager
+    const entities = await this.find({ where: { id: { $in: ids } } as any })
+
+    const date = new Date()
+    await updateDeletedAtRecursively(manager, entities, date)
+
+    return entities
+  }
+
+  async restore(ids: string[], context?: Context): Promise<T[]> {
+    const manager = (context?.transactionManager ??
+      this.manager_) as SqlEntityManager
+    const entities = await this.find({ where: { id: { $in: ids } } as any })
+
+    await updateDeletedAtRecursively(manager, entities, null)
+
+    return entities
+  }
 }
 
 export abstract class AbstractTreeRepositoryBase<T = any>
+  extends AbstractBaseRepository<T>
   implements DAL.TreeRepositoryService<T>
 {
   protected readonly manager_: SqlEntityManager
 
   protected constructor({ manager }) {
-    this.manager_ = manager.fork()
-  }
-
-  async transaction(
-    task: (transactionManager: unknown) => Promise<T[]>,
-    {
-      transaction,
-      isolationLevel,
-      enableNestedTransactions = false,
-    }: {
-      isolationLevel?: string
-      transaction?: unknown
-      enableNestedTransactions?: boolean
-    } = {}
-  ): Promise<T[]> {
     // @ts-ignore
-    return await transactionWrapper.apply<T>(this, arguments)
+    super(...arguments)
+    this.manager_ = manager
   }
 
   abstract find(
@@ -120,68 +151,28 @@ export abstract class AbstractTreeRepositoryBase<T = any>
   ): Promise<[T[], number]>
 }
 
-export class BaseRepository<
-  T extends object = any
-> extends AbstractRepositoryBase<T> {
-  protected manager_: SqlEntityManager
-
+/**
+ * Only used internally in order to be able to wrap in transaction from a
+ * non identified repository
+ */
+export class BaseRepository extends AbstractBaseRepository {
   constructor({ manager }) {
     // @ts-ignore
     super(...arguments)
-    this.manager_ = manager
   }
 
-  find(
-    options?: DAL.FindOptions,
-    transformOptions?: RepositoryTransformOptions
-  ): Promise<T[]> {
-    throw new Error("Method not implemented.")
+  delete(ids: string[], context?: Context): Promise<void> {
+    return Promise.resolve(undefined)
+  }
+
+  find(options?: DAL.FindOptions, context?: Context): Promise<any[]> {
+    return Promise.resolve([])
   }
 
   findAndCount(
     options?: DAL.FindOptions,
-    transformOptions?: RepositoryTransformOptions
-  ): Promise<[T[], number]> {
-    throw new Error("Method not implemented.")
-  }
-
-  upsert(data: any, context?: Context): Promise<any[]> {
-    throw new Error("Method not implemented.")
-  }
-
-  async softDelete(ids: string[], context?: Context): Promise<T[]> {
-    const manager = (context?.transactionManager ??
-      this.manager_) as SqlEntityManager
-    const entities = await this.find({ where: { id: { $in: ids } } })
-
-    const date = new Date()
-
-    const updateDeletedAtRecursively = async (entities: any) => {
-      for await (const entity of entities) {
-        if (!("deleted_at" in entity)) continue
-        ;(entity as any).deleted_at = date
-
-        const relations = manager
-          .getDriver()
-          .getMetadata()
-          .get(entities[0].constructor.name).relations
-        const relationsToCascade = relations.filter((relation) =>
-          relation.cascade.includes("soft-remove" as any)
-        )
-
-        for (const relation of relationsToCascade) {
-          const relationEntities = (
-            await entity[relation.name].init()
-          ).getItems()
-          await updateDeletedAtRecursively(relationEntities)
-        }
-
-        await manager.persist(entities)
-      }
-    }
-
-    await updateDeletedAtRecursively(entities)
-
-    return entities
+    context?: Context
+  ): Promise<[any[], number]> {
+    return Promise.resolve([[], 0])
   }
 }

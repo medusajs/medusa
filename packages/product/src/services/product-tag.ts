@@ -34,6 +34,6 @@ export default class ProductTagService<TEntity = ProductTag> {
   }
 
   upsert(tags: CreateProductTagDTO[], sharedContext?: Context) {
-    return this.productTagRepository_.upsert(tags, sharedContext)
+    return this.productTagRepository_.upsert!(tags, sharedContext)
   }
 }
