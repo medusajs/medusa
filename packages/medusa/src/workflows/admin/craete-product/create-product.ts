@@ -16,6 +16,8 @@ import { CreateProductVariantInput } from "../../../types/product-variant"
 
 enum Actions {
   createProduct = "createProduct",
+  createPrices = "createPrices",
+  attachToSalesChannel = "attachToSalesChannel",
   createInventoryItems = "createInventoryItems",
   attachInventoryItems = "attachInventoryItems",
 }
@@ -25,11 +27,19 @@ const workflowSteps: TransactionStepsDefinition = {
     action: Actions.createProduct,
     saveResponse: true,
     next: {
-      action: Actions.createInventoryItems,
+      action: Actions.attachToSalesChannel,
       saveResponse: true,
       next: {
-        action: Actions.attachInventoryItems,
-        noCompensation: true,
+        action: Actions.createPrices,
+        saveResponse: true,
+        next: {
+          action: Actions.createInventoryItems,
+          saveResponse: true,
+          next: {
+            action: Actions.attachInventoryItems,
+            noCompensation: true,
+          },
+        },
       },
     },
   },
