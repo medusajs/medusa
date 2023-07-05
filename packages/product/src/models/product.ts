@@ -67,10 +67,14 @@ class Product {
   @Property({ columnType: "text", nullable: true })
   thumbnail?: string | null
 
-  @OneToMany(() => ProductOption, (o) => o.product)
+  @OneToMany(() => ProductOption, (o) => o.product, {
+    cascade: ["soft-remove"] as any,
+  })
   options = new Collection<ProductOption>(this)
 
-  @OneToMany(() => ProductVariant, (variant) => variant.product)
+  @OneToMany(() => ProductVariant, (variant) => variant.product, {
+    cascade: ["soft-remove"] as any,
+  })
   variants = new Collection<ProductVariant>(this)
 
   @Property({ columnType: "text", nullable: true })
@@ -120,6 +124,7 @@ class Product {
     owner: true,
     pivotTable: "product_tags",
     index: "IDX_product_tag_id",
+    cascade: ["soft-remove"] as any,
   })
   tags = new Collection<ProductTag>(this)
 
@@ -127,12 +132,14 @@ class Product {
     owner: true,
     pivotTable: "product_images",
     index: "IDX_product_image_id",
+    cascade: ["soft-remove"] as any,
   })
   images = new Collection<ProductImage>(this)
 
   @ManyToMany(() => ProductCategory, "products", {
     owner: true,
     pivotTable: "product_category_product",
+    cascade: ["soft-remove"] as any,
   })
   categories = new Collection<ProductCategory>(this)
 

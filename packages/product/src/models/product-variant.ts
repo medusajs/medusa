@@ -131,7 +131,7 @@ class ProductVariant {
   product!: Product
 
   @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
-    cascade: [Cascade.PERSIST, Cascade.REMOVE],
+    cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove" as any],
   })
   options = new Collection<ProductOptionValue>(this)
 

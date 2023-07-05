@@ -314,7 +314,10 @@ export default class ProductModuleService<
     productIds: string[],
     sharedContext?: Context
   ): Promise<ProductTypes.ProductDTO[]> {
-    const products = this.productService_.delete(productIds, sharedContext)
+    const products = await this.productService_.delete(
+      productIds,
+      sharedContext
+    )
     return JSON.parse(JSON.stringify(products))
   }
 }

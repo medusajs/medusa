@@ -39,7 +39,7 @@ class ProductOption {
   product: Product
 
   @OneToMany(() => ProductOptionValue, (value) => value.option, {
-    cascade: [Cascade.REMOVE],
+    cascade: [Cascade.REMOVE, "soft-remove" as any],
   })
   values = new Collection<ProductOptionValue>(this)
 

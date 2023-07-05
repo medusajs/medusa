@@ -150,16 +150,37 @@ export class BaseRepository<
   }
 
   async softDelete(ids: string[], context?: Context): Promise<T[]> {
+    const manager = (context?.transactionManager ??
+      this.manager_) as SqlEntityManager
     const entities = await this.find({ where: { id: { $in: ids } } })
 
     const date = new Date()
 
-    for (const entity of entities) {
-      if (!("deleted_at" in entity)) continue
-      ;(entity as any).deleted_at = date
+    const updateDeletedAtRecursively = async (entities: any) => {
+      for await (const entity of entities) {
+        if (!("deleted_at" in entity)) continue
+        ;(entity as any).deleted_at = date
+
+        const relations = manager
+          .getDriver()
+          .getMetadata()
+          .get(entities[0].constructor.name).relations
+        const relationsToCascade = relations.filter((relation) =>
+          relation.cascade.includes("soft-remove" as any)
+        )
+
+        for (const relation of relationsToCascade) {
+          const relationEntities = (
+            await entity[relation.name].init()
+          ).getItems()
+          await updateDeletedAtRecursively(relationEntities)
+        }
+
+        await manager.persist(entities)
+      }
     }
 
-    await this.manager_.persist(entities)
+    await updateDeletedAtRecursively(entities)
 
     return entities
   }

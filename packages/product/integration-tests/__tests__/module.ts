@@ -205,4 +205,80 @@ describe("Product module", function () {
       )
     })
   })
+
+  describe("delete", function () {
+    let module: ProductModuleService
+    let images = ["image-1"]
+
+    beforeEach(async () => {
+      await beforeEach_()
+
+      MedusaModule.clearInstances()
+
+      module = (await initialize({
+        database: {
+          clientUrl: DB_URL,
+          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+        },
+      })) as ProductModuleService
+    })
+
+    afterEach(afterEach_)
+
+    it("should soft delete a product and its cascaded relations", async () => {
+      const data = buildProductData({
+        images,
+        thumbnail: images[0],
+      })
+
+      const products = await module.create([data])
+
+      await module.delete([products[0].id])
+
+      const deletedProducts = await module.list(
+        { id: products[0].id },
+        {
+          relations: [
+            "variants",
+            "variants.options",
+            "variants.options",
+            "options",
+            "options.values",
+          ],
+          withDeleted: true,
+        }
+      )
+      expect(deletedProducts).toHaveLength(1)
+      expect(deletedProducts[0].deleted_at).toBeDefined()
+      expect(deletedProducts[0].deleted_at).not.toBeNull()
+
+      for (const option of deletedProducts[0].options) {
+        expect(option.deleted_at).toBeDefined()
+        expect(option.deleted_at).not.toBeNull()
+      }
+
+      const productOptionsValues = deletedProducts[0].options
+        .map((o) => o.values)
+        .flat()
+
+      for (const optionValue of productOptionsValues) {
+        expect(optionValue.deleted_at).toBeDefined()
+        expect(optionValue.deleted_at).not.toBeNull()
+      }
+
+      for (const variant of deletedProducts[0].variants) {
+        expect(variant.deleted_at).toBeDefined()
+        expect(variant.deleted_at).not.toBeNull()
+      }
+
+      const variantsOptions = deletedProducts[0].options
+        .map((o) => o.values)
+        .flat()
+
+      for (const option of variantsOptions) {
+        expect(option.deleted_at).toBeDefined()
+        expect(option.deleted_at).not.toBeNull()
+      }
+    })
+  })
 })
