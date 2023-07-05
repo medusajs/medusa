@@ -76,6 +76,8 @@ export abstract class AbstractRepositoryBase<T = any>
   ): Promise<[T[], number]>
 
   abstract upsert(data: any, context?: Context): Promise<T[]>
+
+  abstract softDelete(ids: string[], context?: Context): Promise<T[]>
 }
 
 export abstract class AbstractTreeRepositoryBase<T = any>
@@ -116,10 +118,15 @@ export abstract class AbstractTreeRepositoryBase<T = any>
   ): Promise<[T[], number]>
 }
 
-export class BaseRepository<T> extends AbstractRepositoryBase<T> {
-  constructor() {
+export class BaseRepository<
+  T extends object = any
+> extends AbstractRepositoryBase<T> {
+  protected manager_: SqlEntityManager
+
+  constructor({ manager }) {
     // @ts-ignore
     super(...arguments)
+    this.manager_ = manager
   }
 
   find(
@@ -138,5 +145,20 @@ export class BaseRepository<T> extends AbstractRepositoryBase<T> {
 
   upsert(data: any, context?: Context): Promise<any[]> {
     throw new Error("Method not implemented.")
+  }
+
+  async softDelete(ids: string[], context?: Context): Promise<T[]> {
+    const entities = await this.find({ where: { id: { $in: ids } } })
+
+    const date = new Date()
+
+    for (const entity of entities) {
+      if (!("deleted_at" in entity)) continue
+      ;(entity as any).deleted_at = date
+    }
+
+    await this.manager_.persist(entities)
+
+    return entities
   }
 }

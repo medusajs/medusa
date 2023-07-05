@@ -14,11 +14,20 @@ export function buildQuery<T = any, TDto = any>(
   const where: DAL.FilterQuery<T> = {}
   buildWhere(filters, where)
 
+  const entityFilters = {}
+
+  if (config.withDeleted) {
+    entityFilters["softDeletable"] = {
+      withDeleted: true,
+    }
+  }
+
   const findOptions: DAL.OptionsQuery<T, any> = {
     populate: config.relations ?? [],
     fields: config.select,
     limit: config.take,
     offset: config.skip,
+    filters: entityFilters,
   } as any
 
   return { where, options: findOptions }

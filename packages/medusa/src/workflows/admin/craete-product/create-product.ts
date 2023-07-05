@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm"
-import { IInventoryService } from "@medusajs/types"
+import { IInventoryService, IProductModuleService } from "@medusajs/types"
 import { ulid } from "ulid"
 import { MedusaError } from "@medusajs/utils"
 import { AdminCreateProductHandlers } from "./utils/step-handlers"
@@ -52,6 +52,7 @@ const createProductOrchestrator = new TransactionOrchestrator(
 
 type InjectedDependencies = {
   manager: EntityManager
+  productModuleService: IProductModuleService
   productVariantInventoryService: ProductVariantInventoryService
   inventoryService?: IInventoryService
 }
@@ -61,19 +62,7 @@ export async function createProductWorkflow(
   productId: string,
   input: CreateProductVariantInput[]
 ): Promise<DistributedTransaction> {
-  const { manager, inventoryService, productVariantInventoryService } =
-    dependencies
-
-  const productVariantInventoryServiceTx =
-    productVariantInventoryService.withTransaction(manager)
-
-  const stepDependencies = {
-    manager,
-    inventoryService,
-    productVariantInventoryService: productVariantInventoryServiceTx,
-  }
-
-  const stepHandlers = new AdminCreateProductHandlers(stepDependencies)
+  const stepHandlers = new AdminCreateProductHandlers(dependencies)
 
   async function transactionHandler(
     actionId: string,

@@ -3,6 +3,7 @@ import {
   Collection,
   Entity,
   Enum,
+  Index,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -21,6 +22,7 @@ import ProductTag from "./product-tag"
 import ProductType from "./product-type"
 import ProductVariant from "./product-variant"
 import ProductImage from "./product-image"
+import SoftDeletable from "../utils/soft-delete"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =
@@ -33,6 +35,7 @@ type OptionalFields =
   | "deleted_at"
 
 @Entity({ tableName: "product" })
+@SoftDeletable()
 class Product {
   [OptionalProps]?: OptionalRelations | OptionalFields
 
@@ -149,6 +152,7 @@ class Product {
   })
   updated_at: Date
 
+  @Index({ name: "IDX_product_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date
 

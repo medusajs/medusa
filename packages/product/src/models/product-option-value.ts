@@ -1,6 +1,7 @@
 import {
   BeforeCreate,
   Entity,
+  Index,
   ManyToOne,
   OptionalProps,
   PrimaryKey,
@@ -10,6 +11,7 @@ import { generateEntityId } from "@medusajs/utils"
 
 import ProductOption from "./product-option"
 import { ProductVariant } from "./index"
+import SoftDeletable from "../utils/soft-delete"
 
 type OptionalFields =
   | "created_at"
@@ -22,6 +24,7 @@ type OptionalFields =
 type OptionalRelations = "product" | "option" | "variant"
 
 @Entity({ tableName: "product_option_value" })
+@SoftDeletable()
 class ProductOptionValue {
   [OptionalProps]?: OptionalFields | OptionalRelations
 
@@ -53,6 +56,7 @@ class ProductOptionValue {
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
 
+  @Index({ name: "IDX_product_option_value_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date
 

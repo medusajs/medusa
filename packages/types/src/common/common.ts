@@ -46,6 +46,7 @@ export interface FindConfig<Entity> {
   take?: number
   relations?: string[]
   order?: { [K: string]: "ASC" | "DESC" }
+  withDeleted?: boolean
 }
 
 export type ExtendedFindConfig<TEntity> = (

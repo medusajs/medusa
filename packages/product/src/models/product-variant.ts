@@ -3,6 +3,7 @@ import {
   Cascade,
   Collection,
   Entity,
+  Index,
   ManyToOne,
   OneToMany,
   OptionalProps,
@@ -13,6 +14,7 @@ import {
 import { generateEntityId } from "@medusajs/utils"
 import { Product } from "@models"
 import ProductOptionValue from "./product-option-value"
+import SoftDeletable from "../utils/soft-delete"
 
 type OptionalFields =
   | "created_at"
@@ -24,6 +26,7 @@ type OptionalFields =
   | "product_id"
 
 @Entity({ tableName: "product_variant" })
+@SoftDeletable()
 class ProductVariant {
   [OptionalProps]?: OptionalFields
 
@@ -116,6 +119,7 @@ class ProductVariant {
   })
   updated_at: Date
 
+  @Index({ name: "IDX_product_variant_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date
 

@@ -20,7 +20,7 @@ export const buildProductOnlyData = ({
   thumbnail?: string
   images?: { id?: string; url: string }[]
   status?: ProductTypes.ProductStatus
-}) => {
+} = {}) => {
   return {
     title: title ?? faker.commerce.productName(),
     description: description ?? faker.commerce.productName(),

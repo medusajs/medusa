@@ -27,6 +27,8 @@ export interface RepositoryService<T = any> {
   ): Promise<[T[], number]>
 
   upsert(data: any, context?: Context): Promise<T[]>
+
+  softDelete(ids: string[], context?: Context): Promise<T[]>
 }
 
 export interface TreeRepositoryService<T = any> {

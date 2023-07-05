@@ -2,6 +2,7 @@ import {
   BeforeCreate,
   Collection,
   Entity,
+  Index,
   ManyToMany,
   OptionalProps,
   PrimaryKey,
@@ -10,11 +11,13 @@ import {
 
 import { generateEntityId } from "@medusajs/utils"
 import Product from "./product"
+import SoftDeletable from "../utils/soft-delete"
 
 type OptionalRelations = "products"
 type OptionalFields = "deleted_at"
 
 @Entity({ tableName: "product_tag" })
+@SoftDeletable()
 class ProductTag {
   [OptionalProps]?: OptionalRelations | OptionalFields
 
@@ -27,6 +30,7 @@ class ProductTag {
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
 
+  @Index({ name: "IDX_product_tag_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date
 

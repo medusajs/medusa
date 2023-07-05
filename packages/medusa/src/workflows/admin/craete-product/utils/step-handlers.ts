@@ -1,21 +1,40 @@
-import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
+import {
+  IInventoryService,
+  InventoryItemDTO,
+  IProductModuleService,
+} from "@medusajs/types"
 import { EntityManager } from "typeorm"
 import { ProductVariantInventoryService } from "../../../../services"
 import { Product, ProductVariant } from "../../../../models"
 
+type InjectedDependencies = {
+  manager: EntityManager
+  productModuleService: IProductModuleService
+  productVariantInventoryService: ProductVariantInventoryService
+  inventoryService?: IInventoryService
+}
+
 export class AdminCreateProductHandlers {
   protected manager_: EntityManager
-  protected inventoryService_: IInventoryService
+  protected productModuleService_: IProductModuleService
+  protected inventoryService_?: IInventoryService
   protected productVariantInventoryService_: ProductVariantInventoryService
 
-  constructor({ manager, inventoryService, productVariantInventoryService }) {
+  constructor({
+    manager,
+    inventoryService,
+    productModuleService,
+    productVariantInventoryService,
+  }: InjectedDependencies) {
     this.manager_ = manager
     this.inventoryService_ = inventoryService
-    this.productVariantInventoryService_ = productVariantInventoryService
+    this.productModuleService_ = productModuleService
+    this.productVariantInventoryService_ =
+      productVariantInventoryService.withTransaction(manager)
   }
 
   async createProduct(data: any) {
-    return
+    return await this.productModuleService_.create(data)
   }
 
   async removeProduct(products: any[]) {

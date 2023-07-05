@@ -309,4 +309,12 @@ export default class ProductModuleService<
 
     return JSON.parse(JSON.stringify(products))
   }
+
+  async delete(
+    productIds: string[],
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductDTO[]> {
+    const products = this.productService_.delete(productIds, sharedContext)
+    return JSON.parse(JSON.stringify(products))
+  }
 }

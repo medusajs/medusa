@@ -98,7 +98,58 @@ describe("Product Service", () => {
     })
   })
 
+  describe("delete", function () {
+    let images: Image[] = []
+
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+
+      images = await createImages(testManager, ["image-1"])
+    })
+
+    it("should soft delete a product", async () => {
+      const data = buildProductOnlyData({
+        images,
+        thumbnail: images[0].url,
+      })
+
+      let products = await service.create([data])
+      products = await service.delete(products.map((p) => p.id))
+
+      expect(products).toHaveLength(1)
+      expect(products[0].deleted_at).toBeDefined()
+      expect(products[0].deleted_at).not.toBeNull()
+    })
+  })
+
   describe("list", () => {
+    describe("soft deleted", function () {
+      let deletedProduct
+      let product
+
+      beforeEach(async () => {
+        testManager = await TestDatabase.forkManager()
+
+        const products = await createProductAndTags(testManager, productsData)
+
+        product = products[1]
+        deletedProduct = await service.delete([products[0].id])
+      })
+
+      it("should list all products that are not deleted", async () => {
+        const products = await service.list()
+
+        expect(products).toHaveLength(1)
+        expect(products[0].id).toEqual(product.id)
+      })
+
+      it("should list all products that including the deleted", async () => {
+        const products = await service.list({}, { withDeleted: true })
+
+        expect(products).toHaveLength(2)
+      })
+    })
+
     describe("relation: tags", () => {
       beforeEach(async () => {
         testManager = await TestDatabase.forkManager()
