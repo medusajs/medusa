@@ -42,11 +42,12 @@ The module can be configured with the following options:
 | `noConsumer`          | `boolean?` | If set to `true`, a consumer is not created. This is useful for services that only need to publish events and don't have to process events published by other services. | `false`            |
 | `topic`               | `string?`  | The topic to which messages are published and from which they are consumed.                                                                                             | `medusa-event-bus` |
 
-Info: See how the options are applied in the KafkaEventBusService and loader.
+**Info**: See how the options are applied in the [KafkaEventBusService](https://github.com/medusajs/medusa/tree/develop/packages/event-bus-kafka/src/services/event-bus-kafka.ts).
 
-If you do not provide a kafkaConfig in the module options, the server will fail to start.
+The server will fail to start if you do not provide a `kafkaConfig` in the module options.
 
-The Kafka configuration object (kafkaConfig) should follow the format defined in the KafkaJS documentation. Here's an example:
+The Kafka configuration object (`kafkaConfig`) should follow the format defined in the [KafkaJS documentation](https://kafka.js.org/docs/configuration). Here's an example:
+
 
 ```js
 kafkaConfig: {
