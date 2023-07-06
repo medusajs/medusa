@@ -1,8 +1,11 @@
 import { EntityManager } from "typeorm"
-import { IInventoryService, IProductModuleService } from "@medusajs/types"
+import {
+  IInventoryService,
+  MedusaContainer,
+  ProductTypes,
+} from "@medusajs/types"
 import { ulid } from "ulid"
 import { MedusaError } from "@medusajs/utils"
-import { AdminCreateProductHandlers } from "./utils/step-handlers"
 import {
   DistributedTransaction,
   TransactionHandlerType,
@@ -11,8 +14,14 @@ import {
   TransactionState,
   TransactionStepsDefinition,
 } from "../../../utils/transaction"
-import { ProductVariantInventoryService } from "../../../services"
 import { CreateProductVariantInput } from "../../../types/product-variant"
+import {
+  attachInventoryItems,
+  createInventoryItems,
+  createProducts,
+  removeInventoryItems,
+  removeProducts,
+} from "../../functions"
 
 enum Actions {
   createProduct = "createProduct",
@@ -52,8 +61,7 @@ const createProductOrchestrator = new TransactionOrchestrator(
 
 type InjectedDependencies = {
   manager: EntityManager
-  productModuleService: IProductModuleService
-  productVariantInventoryService: ProductVariantInventoryService
+  container: MedusaContainer
   inventoryService?: IInventoryService
 }
 
@@ -62,8 +70,7 @@ export async function createProductWorkflow(
   productId: string,
   input: CreateProductVariantInput[]
 ): Promise<DistributedTransaction> {
-  const stepHandlers = new AdminCreateProductHandlers(dependencies)
-
+  const { manager, container } = dependencies
   async function transactionHandler(
     actionId: string,
     type: TransactionHandlerType,
@@ -71,15 +78,20 @@ export async function createProductWorkflow(
   ) {
     const command = {
       [Actions.createProduct]: {
-        [TransactionHandlerType.INVOKE]: async (data: any[]) => {
-          return await stepHandlers.createProducts(data)
+        [TransactionHandlerType.INVOKE]: async (
+          data: ProductTypes.CreateProductDTO[]
+        ) => {
+          return await createProducts({
+            container,
+            data,
+          })
         },
         [TransactionHandlerType.COMPENSATE]: async (
           data: any[],
           { invoke }
         ) => {
           const createdProducts = invoke[Actions.createProduct]
-          await stepHandlers.removeProducts(createdProducts)
+          return await removeProducts({ container, data: createdProducts })
         },
       },
       [Actions.createInventoryItems]: {
@@ -89,11 +101,19 @@ export async function createProductWorkflow(
         ) => {
           const { [Actions.createProduct]: products } = invoke
 
-          return await stepHandlers.createInventoryItems(products)
+          return await createInventoryItems({
+            container,
+            manager,
+            data: products,
+          })
         },
         [TransactionHandlerType.COMPENSATE]: async (_, { invoke }) => {
           const variantInventoryItemsData = invoke[Actions.createInventoryItems]
-          await stepHandlers.removeInventoryItems(variantInventoryItemsData)
+          await removeInventoryItems({
+            container,
+            manager,
+            data: variantInventoryItemsData,
+          })
         },
       },
       [Actions.attachInventoryItems]: {
@@ -104,7 +124,11 @@ export async function createProductWorkflow(
           const { [Actions.createInventoryItems]: inventoryItemsResult } =
             invoke
 
-          return await stepHandlers.attachInventoryItems(inventoryItemsResult)
+          return await attachInventoryItems({
+            container,
+            manager,
+            data: inventoryItemsResult,
+          })
         },
       },
     }
