@@ -1,16 +1,19 @@
 import { ProductOption } from "@models"
 import { Context, DAL, ProductTypes } from "@medusajs/types"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { ProductOptionRepository } from "@repositories"
 
 type InjectedDependencies = {
   productOptionRepository: DAL.RepositoryService
 }
 
-export default class ProductOptionService<TEntity = ProductOption> {
-  protected readonly productOptionRepository_: DAL.RepositoryService<TEntity>
+export default class ProductOptionService<
+  TEntity extends ProductOption = ProductOption
+> {
+  protected readonly productOptionRepository_: ProductOptionRepository
 
   constructor({ productOptionRepository }: InjectedDependencies) {
-    this.productOptionRepository_ = productOptionRepository
+    this.productOptionRepository_ =
+      productOptionRepository as ProductOptionRepository
   }
 
   async create(
@@ -19,14 +22,9 @@ export default class ProductOptionService<TEntity = ProductOption> {
   ) {
     return await this.productOptionRepository_.transaction(
       async (manager) => {
-        const manager_ = manager as SqlEntityManager
-        const options: ProductOption[] = []
-        data.forEach((option) => {
-          options.push(manager_.create(ProductOption, option))
+        return await this.productOptionRepository_.create(data, {
+          transactionManager: manager,
         })
-
-        await manager_.persist(options)
-        return options as unknown as TEntity[]
       },
       { transaction: sharedContext?.transactionManager }
     )

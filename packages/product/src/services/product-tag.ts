@@ -7,16 +7,19 @@ import {
   ProductTypes,
 } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
+import { ProductTagRepository } from "@repositories"
 
 type InjectedDependencies = {
   productTagRepository: DAL.RepositoryService
 }
 
-export default class ProductTagService<TEntity = ProductTag> {
-  protected readonly productTagRepository_: DAL.RepositoryService<TEntity>
+export default class ProductTagService<
+  TEntity extends ProductTag = ProductTag
+> {
+  protected readonly productTagRepository_: ProductTagRepository
 
   constructor({ productTagRepository }: InjectedDependencies) {
-    this.productTagRepository_ = productTagRepository
+    this.productTagRepository_ = productTagRepository as ProductTagRepository
   }
 
   async list(
@@ -24,16 +27,25 @@ export default class ProductTagService<TEntity = ProductTag> {
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
     sharedContext?: Context
   ): Promise<TEntity[]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
+    const queryOptions = ModulesSdkUtils.buildQuery<ProductTag>(filters, config)
 
     if (filters.value) {
-      queryOptions.where["value"] = { $ilike: filters.value }
+      queryOptions.where.value = "test"
     }
 
-    return await this.productTagRepository_.find(queryOptions, sharedContext)
+    return (await this.productTagRepository_.find(
+      queryOptions,
+      sharedContext
+    )) as TEntity[]
   }
 
-  upsert(tags: CreateProductTagDTO[], sharedContext?: Context) {
-    return this.productTagRepository_.upsert!(tags, sharedContext)
+  async upsert(
+    tags: CreateProductTagDTO[],
+    sharedContext?: Context
+  ): Promise<TEntity[]> {
+    return (await this.productTagRepository_.upsert!(
+      tags,
+      sharedContext
+    )) as TEntity[]
   }
 }

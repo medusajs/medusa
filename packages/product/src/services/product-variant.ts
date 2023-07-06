@@ -3,6 +3,7 @@ import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import { isString, ModulesSdkUtils } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import ProductService from "./product"
+import { ProductVariantRepository } from "@repositories"
 
 type InjectedDependencies = {
   productVariantRepository: DAL.RepositoryService
@@ -10,17 +11,18 @@ type InjectedDependencies = {
 }
 
 export default class ProductVariantService<
-  TEntity = ProductVariant,
-  TProduct = Product
+  TEntity extends ProductVariant = ProductVariant,
+  TProduct extends Product = Product
 > {
-  protected readonly productVariantRepository_: DAL.RepositoryService<TEntity>
+  protected readonly productVariantRepository_: ProductVariantRepository
   protected readonly productService_: ProductService<TProduct>
 
   constructor({
     productVariantRepository,
     productService,
   }: InjectedDependencies) {
-    this.productVariantRepository_ = productVariantRepository
+    this.productVariantRepository_ =
+      productVariantRepository as ProductVariantRepository
     this.productService_ = productService
   }
 
@@ -29,11 +31,14 @@ export default class ProductVariantService<
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: Context
   ): Promise<TEntity[]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
-    return await this.productVariantRepository_.find(
+    const queryOptions = ModulesSdkUtils.buildQuery<ProductVariant>(
+      filters,
+      config
+    )
+    return (await this.productVariantRepository_.find(
       queryOptions,
       sharedContext
-    )
+    )) as TEntity[]
   }
 
   async create(

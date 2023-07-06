@@ -5,23 +5,24 @@ import {
   FindConfig,
   ProductStatus,
   ProductTypes,
+  WithRequiredProperty,
 } from "@medusajs/types"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
+import { ProductRepository } from "@repositories"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
 }
 
-export default class ProductService<TEntity = Product> {
-  protected readonly productRepository_: DAL.RepositoryService<TEntity>
+export default class ProductService<TEntity extends Product = Product> {
+  protected readonly productRepository_: ProductRepository
 
   constructor({ productRepository }: InjectedDependencies) {
-    this.productRepository_ = productRepository
+    this.productRepository_ = productRepository as ProductRepository
   }
 
   async retrieve(productId: string, sharedContext?: Context): Promise<TEntity> {
-    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>({
+    const queryOptions = ModulesSdkUtils.buildQuery<Product>({
       id: productId,
     })
     const product = await this.productRepository_.find(
@@ -36,7 +37,7 @@ export default class ProductService<TEntity = Product> {
       )
     }
 
-    return product[0]
+    return product[0] as TEntity
   }
 
   async list(
@@ -57,8 +58,11 @@ export default class ProductService<TEntity = Product> {
       delete filters.category_ids
     }
 
-    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
-    return await this.productRepository_.find(queryOptions, sharedContext)
+    const queryOptions = ModulesSdkUtils.buildQuery<Product>(filters, config)
+    return (await this.productRepository_.find(
+      queryOptions,
+      sharedContext
+    )) as TEntity[]
   }
 
   async listAndCount(
@@ -79,11 +83,11 @@ export default class ProductService<TEntity = Product> {
       delete filters.category_ids
     }
 
-    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(filters, config)
-    return await this.productRepository_.findAndCount(
+    const queryOptions = ModulesSdkUtils.buildQuery<Product>(filters, config)
+    return (await this.productRepository_.findAndCount(
       queryOptions,
       sharedContext
-    )
+    )) as [TEntity[], number]
   }
 
   async create(
@@ -92,15 +96,19 @@ export default class ProductService<TEntity = Product> {
   ): Promise<TEntity[]> {
     return await this.productRepository_.transaction(
       async (manager) => {
-        const manager_ = manager as SqlEntityManager
-        const products: Product[] = []
         data.forEach((product) => {
           product.status ??= ProductStatus.DRAFT
-          products.push(manager_.create(Product, product as unknown as Product))
         })
 
-        manager_.persist(products)
-        return products
+        return await this.productRepository_.create(
+          data as WithRequiredProperty<
+            ProductTypes.CreateProductOnlyDTO,
+            "status"
+          >[],
+          {
+            transactionManager: manager,
+          }
+        )
       },
       { transaction: sharedContext?.transactionManager }
     )

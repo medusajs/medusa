@@ -11,9 +11,12 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { SoftDeletableKey } from "../utils"
 
 export class ProductImageRepository extends AbstractBaseRepository<Image> {
+  protected readonly manager_: SqlEntityManager
+
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
     super(...arguments)
+    this.manager_ = manager
   }
 
   async find(
@@ -122,5 +125,9 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
       this.manager_) as SqlEntityManager
 
     await manager.nativeDelete(Product, { id: { $in: ids } }, {})
+  }
+
+  async create(data: unknown[], context: Context = {}): Promise<Image[]> {
+    throw new Error("Method not implemented.")
   }
 }

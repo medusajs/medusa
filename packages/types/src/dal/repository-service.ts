@@ -29,6 +29,8 @@ export interface RepositoryService<T = any> {
   // Only required for some repositories
   upsert?(data: any, context?: Context): Promise<T[]>
 
+  create(data: unknown[], context?: Context): Promise<T[]>
+
   delete(ids: string[], context?: Context): Promise<void>
 
   softDelete(ids: string[], context?: Context): Promise<T[]>

@@ -2,6 +2,7 @@ import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
+  RequiredEntityData,
 } from "@mikro-orm/core"
 import { Product, ProductVariant } from "@models"
 import { Context, DAL } from "@medusajs/types"
@@ -10,9 +11,12 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { SoftDeletableKey } from "../utils"
 
 export class ProductVariantRepository extends AbstractBaseRepository<ProductVariant> {
+  protected readonly manager_: SqlEntityManager
+
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
     super(...arguments)
+    this.manager_ = manager
   }
 
   async find(
@@ -80,5 +84,21 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
       this.manager_) as SqlEntityManager
 
     await manager.nativeDelete(Product, { id: { $in: ids } }, {})
+  }
+
+  async create(
+    data: RequiredEntityData<ProductVariant>[],
+    context: Context = {}
+  ): Promise<ProductVariant[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
+    const variants = data.map((variant) => {
+      return manager.create(ProductVariant, variant)
+    })
+
+    await manager.persist(variants)
+
+    return variants
   }
 }

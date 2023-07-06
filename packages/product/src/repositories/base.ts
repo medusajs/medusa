@@ -111,6 +111,8 @@ export abstract class AbstractBaseRepository<T = any>
     context?: Context
   ): Promise<[T[], number]>
 
+  abstract create(data: unknown[], context?: Context): Promise<T[]>
+
   abstract delete(ids: string[], context?: Context): Promise<void>
 
   async softDelete(ids: string[], context?: Context): Promise<T[]> {
@@ -143,12 +145,9 @@ export abstract class AbstractTreeRepositoryBase<T = any>
   extends AbstractBaseRepository<T>
   implements DAL.TreeRepositoryService<T>
 {
-  protected readonly manager_: SqlEntityManager
-
   protected constructor({ manager }) {
     // @ts-ignore
     super(...arguments)
-    this.manager_ = manager
   }
 
   abstract find(
@@ -174,18 +173,22 @@ export class BaseRepository extends AbstractBaseRepository {
     super(...arguments)
   }
 
+  create(data: unknown[], context?: Context): Promise<any[]> {
+    throw new Error("Method not implemented.")
+  }
+
   delete(ids: string[], context?: Context): Promise<void> {
-    return Promise.resolve(undefined)
+    throw new Error("Method not implemented.")
   }
 
   find(options?: DAL.FindOptions, context?: Context): Promise<any[]> {
-    return Promise.resolve([])
+    throw new Error("Method not implemented.")
   }
 
   findAndCount(
     options?: DAL.FindOptions,
     context?: Context
   ): Promise<[any[], number]> {
-    return Promise.resolve([[], 0])
+    throw new Error("Method not implemented.")
   }
 }

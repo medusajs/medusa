@@ -4,15 +4,18 @@ import {
   LoadStrategy,
 } from "@mikro-orm/core"
 import { Product, ProductOption } from "@models"
-import { Context, DAL } from "@medusajs/types"
+import { Context, DAL, ProductTypes } from "@medusajs/types"
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { SoftDeletableKey } from "../utils"
 
 export class ProductOptionRepository extends AbstractBaseRepository<ProductOption> {
+  protected readonly manager_: SqlEntityManager
+
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
     super(...arguments)
+    this.manager_ = manager
   }
 
   async find(
@@ -80,5 +83,21 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
       this.manager_) as SqlEntityManager
 
     await manager.nativeDelete(Product, { id: { $in: ids } }, {})
+  }
+
+  async create(
+    data: (ProductTypes.CreateProductOptionDTO & { product: { id: string } })[],
+    context: Context = {}
+  ): Promise<ProductOption[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
+    const options = data.map((option) => {
+      return manager.create(ProductOption, option)
+    })
+
+    await manager.persist(options)
+
+    return options
   }
 }

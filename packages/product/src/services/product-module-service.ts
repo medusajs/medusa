@@ -30,7 +30,7 @@ import { isDefined, isString, kebabCase } from "@medusajs/utils"
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   productService: ProductService<any>
-  productVariantService: ProductVariantService<any>
+  productVariantService: ProductVariantService<any, any>
   productTagService: ProductTagService<any>
   productCategoryService: ProductCategoryService<any>
   productCollectionService: ProductCollectionService<any>
@@ -40,24 +40,27 @@ type InjectedDependencies = {
 }
 
 export default class ProductModuleService<
-  TProduct = Product,
-  TProductVariant = ProductVariant,
-  TProductTag = ProductTag,
-  TProductCollection = ProductCollection,
-  TProductCategory = ProductCategory,
-  TProductImage = Image,
-  TProductType = ProductType,
-  TProductOption = ProductOption
+  TProduct extends Product = Product,
+  TProductVariant extends ProductVariant = ProductVariant,
+  TProductTag extends ProductTag = ProductTag,
+  TProductCollection extends ProductCollection = ProductCollection,
+  TProductCategory extends ProductCategory = ProductCategory,
+  TProductImage extends Image = Image,
+  TProductType extends ProductType = ProductType,
+  TProductOption extends ProductOption = ProductOption
 > implements ProductTypes.IProductModuleService
 {
   protected baseRepository_: DAL.RepositoryService
   protected readonly productService_: ProductService<TProduct>
-  protected readonly productVariantService_: ProductVariantService<TProductVariant>
+  protected readonly productVariantService_: ProductVariantService<
+    TProductVariant,
+    TProduct
+  >
   protected readonly productCategoryService_: ProductCategoryService<TProductCategory>
   protected readonly productTagService_: ProductTagService<TProductTag>
   protected readonly productCollectionService_: ProductCollectionService<TProductCollection>
   protected readonly productImageService_: ProductImageService<TProductImage>
-  protected readonly productTypeService_: ProductTypeService<TProductImage>
+  protected readonly productTypeService_: ProductTypeService<TProductType>
   protected readonly productOptionService_: ProductOptionService<TProductOption>
 
   constructor({
@@ -182,7 +185,7 @@ export default class ProductModuleService<
     data: ProductTypes.CreateProductDTO[],
     sharedContext?: Context
   ): Promise<ProductTypes.ProductDTO[]> {
-    const products = (await this.baseRepository_.transaction(
+    const products = await this.baseRepository_.transaction(
       async (manager) => {
         sharedContext = sharedContext || {
           transactionManager: manager,
@@ -223,27 +226,27 @@ export default class ProductModuleService<
             }
 
             if (productData.images?.length) {
-              productData.images = (await this.productImageService_.upsert(
+              productData.images = await this.productImageService_.upsert(
                 productData.images.map((image) =>
                   isString(image) ? image : image.url
                 ),
                 sharedContext
-              )) as unknown as Image[]
+              )
             }
 
             if (productData.tags?.length) {
-              productData.tags = (await this.productTagService_.upsert(
+              productData.tags = await this.productTagService_.upsert(
                 productData.tags,
                 sharedContext
-              )) as unknown as ProductTag[]
+              )
             }
 
             if (isDefined(productData.type)) {
               productData.type_id = (
-                (await this.productTypeService_.upsert(
+                await this.productTypeService_.upsert(
                   [productData.type as ProductTypes.CreateProductTypeDTO],
                   sharedContext
-                )) as unknown as ProductType[]
+                )
               )?.[0]!.id
             }
 
@@ -255,12 +258,12 @@ export default class ProductModuleService<
         // Shipping profile is not part of the module
         // as well as sales channel
 
-        const products = (await this.productService_.create(
+        const products = await this.productService_.create(
           productsData,
           sharedContext
-        )) as unknown as Product[]
+        )
 
-        const productByHandleMap = new Map<string, Product>(
+        const productByHandleMap = new Map<string, TProduct>(
           products.map((product) => [product.handle!, product])
         )
 
@@ -275,10 +278,10 @@ export default class ProductModuleService<
           })
           .flat()
 
-        const productOptions = (await this.productOptionService_.create(
+        const productOptions = await this.productOptionService_.create(
           productOptionsData,
           sharedContext
-        )) as unknown as ProductOption[]
+        )
 
         for (const variants of productVariantsMap.values()) {
           variants.forEach((variant) => {
@@ -305,7 +308,7 @@ export default class ProductModuleService<
         return products
       },
       { transaction: sharedContext?.transactionManager }
-    )) as TProduct[]
+    )
 
     return JSON.parse(JSON.stringify(products))
   }
