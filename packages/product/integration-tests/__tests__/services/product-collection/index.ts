@@ -9,7 +9,7 @@ import { createCollections } from "../../../__fixtures__/product"
 
 jest.setTimeout(30000)
 
-describe("Product Service", () => {
+describe("Product collection Service", () => {
   let service: ProductCollectionService
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager

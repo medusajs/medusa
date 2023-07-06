@@ -10,7 +10,7 @@ import { productCategoriesData } from "../../../__fixtures__/product-category/da
 
 jest.setTimeout(30000)
 
-describe("ProductCategory Service", () => {
+describe("Product category Service", () => {
   let service: ProductCategoryService
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager

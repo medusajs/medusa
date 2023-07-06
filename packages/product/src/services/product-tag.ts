@@ -29,7 +29,7 @@ export default class ProductTagService<
     const queryOptions = ModulesSdkUtils.buildQuery<ProductTag>(filters, config)
 
     if (filters.value) {
-      queryOptions.where.value = "test"
+      queryOptions.where["value"] = { $ilike: filters.value }
     }
 
     return (await this.productTagRepository_.find(
