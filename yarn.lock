@@ -6172,6 +6172,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/event-bus-kafka@workspace:packages/event-bus-kafka":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/event-bus-kafka@workspace:packages/event-bus-kafka"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.8.8
+    "@medusajs/types": ^1.8.8
+    "@medusajs/utils": ^1.9.1
+    cross-env: ^5.2.1
+    jest: ^25.5.2
+    kafkajs: ^2.2.4
+    medusa-test-utils: ^1.1.40
+    ts-jest: ^25.5.1
+    typescript: ^4.4.4
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/event-bus-local@workspace:*, @medusajs/event-bus-local@workspace:packages/event-bus-local":
   version: 0.0.0-use.local
   resolution: "@medusajs/event-bus-local@workspace:packages/event-bus-local"
@@ -28855,6 +28871,13 @@ __metadata:
     jwa: ^1.4.1
     safe-buffer: ^5.0.1
   checksum: e770704533d92df358adad7d1261fdecad4d7b66fa153ba80d047e03ca0f1f73007ce5ed3fbc04d2eba09ba6e7e6e645f351e08e5ab51614df1b0aa4f384dfff
+  languageName: node
+  linkType: hard
+
+"kafkajs@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "kafkajs@npm:2.2.4"
+  checksum: 6eece1f682a257955f647b6142430e87681d11bf01e9ebe0a73b4bc0653b8f970c48ba72a3b25fdbb4205cfbb36e5ef93d954b8f8c5f7767ae2b4693bdec9d88
   languageName: node
   linkType: hard
 
