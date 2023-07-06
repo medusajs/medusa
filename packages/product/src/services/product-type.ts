@@ -1,6 +1,5 @@
 import { ProductType } from "@models"
 import { Context, CreateProductTypeDTO, DAL } from "@medusajs/types"
-import { ProductTypeRepository } from "@repositories"
 
 type InjectedDependencies = {
   productTypeRepository: DAL.RepositoryService
@@ -9,10 +8,10 @@ type InjectedDependencies = {
 export default class ProductTypeService<
   TEntity extends ProductType = ProductType
 > {
-  protected readonly productTypeRepository_: ProductTypeRepository
+  protected readonly productTypeRepository_: DAL.RepositoryService
 
   constructor({ productTypeRepository }: InjectedDependencies) {
-    this.productTypeRepository_ = productTypeRepository as ProductTypeRepository
+    this.productTypeRepository_ = productTypeRepository
   }
 
   async upsert(

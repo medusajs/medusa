@@ -1,7 +1,6 @@
 import { ProductCategory } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
-import { ProductCategoryRepository } from "@repositories"
 
 type InjectedDependencies = {
   productCategoryRepository: DAL.TreeRepositoryService
@@ -10,11 +9,10 @@ type InjectedDependencies = {
 export default class ProductCategoryService<
   TEntity extends ProductCategory = ProductCategory
 > {
-  protected readonly productCategoryRepository_: ProductCategoryRepository
+  protected readonly productCategoryRepository_: DAL.TreeRepositoryService
 
   constructor({ productCategoryRepository }: InjectedDependencies) {
-    this.productCategoryRepository_ =
-      productCategoryRepository as ProductCategoryRepository
+    this.productCategoryRepository_ = productCategoryRepository
   }
 
   async list(

@@ -8,8 +8,6 @@ import { Context } from "../shared-context"
  * ORM directly and allows to switch to another ORM without changing the business logic.
  */
 export interface RepositoryService<T = any> {
-  [key: string]: any
-
   transaction(
     task: (transactionManager: unknown) => Promise<any>,
     context?: {

@@ -1,17 +1,15 @@
 import { Image } from "@models"
 import { Context, DAL } from "@medusajs/types"
-import { ProductImageRepository } from "@repositories"
 
 type InjectedDependencies = {
   productImageRepository: DAL.RepositoryService
 }
 
 export default class ProductImageService<TEntity extends Image = Image> {
-  protected readonly productImageRepository_: ProductImageRepository
+  protected readonly productImageRepository_: DAL.RepositoryService
 
   constructor({ productImageRepository }: InjectedDependencies) {
-    this.productImageRepository_ =
-      productImageRepository as ProductImageRepository
+    this.productImageRepository_ = productImageRepository
   }
 
   async upsert(urls: string[], sharedContext?: Context): Promise<TEntity[]> {

@@ -7,7 +7,6 @@ import {
   ProductTypes,
 } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
-import { ProductTagRepository } from "@repositories"
 
 type InjectedDependencies = {
   productTagRepository: DAL.RepositoryService
@@ -16,10 +15,10 @@ type InjectedDependencies = {
 export default class ProductTagService<
   TEntity extends ProductTag = ProductTag
 > {
-  protected readonly productTagRepository_: ProductTagRepository
+  protected readonly productTagRepository_: DAL.RepositoryService
 
   constructor({ productTagRepository }: InjectedDependencies) {
-    this.productTagRepository_ = productTagRepository as ProductTagRepository
+    this.productTagRepository_ = productTagRepository
   }
 
   async list(

@@ -15,10 +15,10 @@ type InjectedDependencies = {
 }
 
 export default class ProductService<TEntity extends Product = Product> {
-  protected readonly productRepository_: ProductRepository
+  protected readonly productRepository_: DAL.RepositoryService
 
   constructor({ productRepository }: InjectedDependencies) {
-    this.productRepository_ = productRepository as ProductRepository
+    this.productRepository_ = productRepository
   }
 
   async retrieve(productId: string, sharedContext?: Context): Promise<TEntity> {
@@ -100,7 +100,7 @@ export default class ProductService<TEntity extends Product = Product> {
           product.status ??= ProductStatus.DRAFT
         })
 
-        return await this.productRepository_.create(
+        return await (this.productRepository_ as ProductRepository).create(
           data as WithRequiredProperty<
             ProductTypes.CreateProductOnlyDTO,
             "status"

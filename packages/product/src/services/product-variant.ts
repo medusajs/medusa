@@ -3,7 +3,6 @@ import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import { isString, ModulesSdkUtils } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import ProductService from "./product"
-import { ProductVariantRepository } from "@repositories"
 
 type InjectedDependencies = {
   productVariantRepository: DAL.RepositoryService
@@ -14,15 +13,14 @@ export default class ProductVariantService<
   TEntity extends ProductVariant = ProductVariant,
   TProduct extends Product = Product
 > {
-  protected readonly productVariantRepository_: ProductVariantRepository
+  protected readonly productVariantRepository_: DAL.RepositoryService
   protected readonly productService_: ProductService<TProduct>
 
   constructor({
     productVariantRepository,
     productService,
   }: InjectedDependencies) {
-    this.productVariantRepository_ =
-      productVariantRepository as ProductVariantRepository
+    this.productVariantRepository_ = productVariantRepository
     this.productService_ = productService
   }
 
