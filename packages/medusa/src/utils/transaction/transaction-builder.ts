@@ -22,7 +22,9 @@ export class TransactionBuilder {
       depth: -1,
       parent: null,
       next: steps
-        ? ((steps.action ? steps : steps.next) as InternalStep)
+        ? JSON.parse(
+            JSON.stringify((steps.action ? steps : steps.next) as InternalStep)
+          )
         : undefined,
     }
 
@@ -168,7 +170,21 @@ export class TransactionBuilder {
         ]
       }
     } else {
-      actionToMoveStep.next = parentTargetActionStep.next
+      if (actionToMoveStep.next) {
+        if (Array.isArray(actionToMoveStep.next)) {
+          actionToMoveStep.next.push(
+            parentTargetActionStep.next as InternalStep
+          )
+        } else {
+          actionToMoveStep.next = [
+            actionToMoveStep.next,
+            parentTargetActionStep.next as InternalStep,
+          ]
+        }
+      } else {
+        actionToMoveStep.next = parentTargetActionStep.next
+      }
+
       parentTargetActionStep.next = actionToMoveStep
     }
 
@@ -319,12 +335,19 @@ export class TransactionBuilder {
   }
 
   build(): TransactionStepsDefinition {
+    if (!this.steps.next) {
+      return {}
+    }
+
     const ignore = ["depth", "parent"]
     const result = JSON.parse(
-      JSON.stringify(this.steps.next, null),
+      JSON.stringify(
+        Array.isArray(this.steps.next) ? this.steps : this.steps.next,
+        null
+      ),
       (key, value) => {
         if (ignore.includes(key)) {
-          // return
+          return
         }
 
         return value
