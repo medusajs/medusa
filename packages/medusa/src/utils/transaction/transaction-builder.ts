@@ -1,0 +1,335 @@
+import { TransactionStepsDefinition } from "./types"
+
+export type ActionHandler = {
+  [type: string]: (data: any, context: any) => Promise<any>
+}
+
+interface InternalStep extends TransactionStepsDefinition {
+  next?: InternalStep | InternalStep[]
+  depth: number
+  parent?: InternalStep | null
+}
+
+export class TransactionBuilder {
+  private steps: InternalStep
+
+  constructor(steps?: TransactionStepsDefinition) {
+    this.load(steps)
+  }
+
+  load(steps?: TransactionStepsDefinition) {
+    this.steps = {
+      depth: -1,
+      parent: null,
+      next: steps
+        ? ((steps.action ? steps : steps.next) as InternalStep)
+        : undefined,
+    }
+
+    this.updateDepths(this.steps, {}, 1, -1)
+    return this
+  }
+
+  addAction(
+    action: string,
+    handler: ActionHandler,
+    options: Partial<TransactionStepsDefinition> = {}
+  ) {
+    let step = this.steps as InternalStep
+
+    while (step.next) {
+      step = Array.isArray(step.next)
+        ? (step.next[step.next.length - 1] as InternalStep)
+        : (step.next as InternalStep)
+    }
+    const newAction = {
+      action,
+      depth: step.depth + 1,
+      parent: step.action,
+      ...options,
+    } as InternalStep
+
+    step.next = newAction
+
+    return this
+  }
+
+  replaceAction(
+    existingAction: string,
+    action: string,
+    handler: ActionHandler,
+    options: Partial<TransactionStepsDefinition> = {}
+  ) {
+    const step = this.findStepByAction(existingAction)!
+    step.action = action
+
+    Object.assign(step, options)
+
+    return this
+  }
+
+  insertActionBefore(
+    existingAction: string,
+    action: string,
+    handler: ActionHandler,
+    options: Partial<TransactionStepsDefinition> = {}
+  ) {
+    const parentStep = this.findParentStepByAction(existingAction)
+    if (parentStep) {
+      const oldNext = parentStep.next!
+      const newDepth = parentStep.depth + 1
+      if (Array.isArray(parentStep.next)) {
+        const index = parentStep.next.findIndex(
+          (step) => step.action === existingAction
+        )
+        if (index > -1) {
+          parentStep.next[index] = {
+            action,
+            ...options,
+            next: oldNext[index],
+            depth: newDepth,
+          } as InternalStep
+        }
+      } else {
+        parentStep.next = {
+          action,
+          ...options,
+          next: oldNext,
+          depth: newDepth,
+        } as InternalStep
+      }
+
+      this.updateDepths(oldNext as InternalStep, parentStep)
+    }
+
+    return this
+  }
+
+  insertActionAfter(
+    existingAction: string,
+    action: string,
+    handler: ActionHandler,
+    options: Partial<TransactionStepsDefinition> = {}
+  ) {
+    const step = this.findStepByAction(existingAction)!
+    const oldNext = step.next
+    const newDepth = step.depth + 1
+    step.next = {
+      action,
+      ...options,
+      next: oldNext,
+      depth: newDepth,
+      parent: step.action,
+    } as InternalStep
+
+    this.updateDepths(oldNext as InternalStep, step.next)
+
+    return this
+  }
+
+  moveAction(
+    actionToMove: string,
+    targetAction: string,
+    runInParallel = false
+  ): TransactionBuilder {
+    const parentActionToMoveStep = this.findParentStepByAction(actionToMove)!
+
+    const parentTargetActionStep = this.findParentStepByAction(targetAction)!
+
+    const actionToMoveStep = this.findStepByAction(
+      actionToMove,
+      parentTargetActionStep
+    )!
+
+    if (!actionToMoveStep) {
+      throw new Error(
+        `Action "${actionToMove}" could not be found in next steps of "${targetAction}"`
+      )
+    }
+
+    if (Array.isArray(parentActionToMoveStep.next)) {
+      const index = parentActionToMoveStep.next.findIndex(
+        (step) => step.action === actionToMove
+      )
+      if (index > -1) {
+        parentActionToMoveStep.next.splice(index, 1)
+      }
+    } else {
+      delete parentActionToMoveStep.next
+    }
+
+    if (runInParallel) {
+      if (Array.isArray(parentTargetActionStep.next)) {
+        parentTargetActionStep.next.push(actionToMoveStep)
+      } else if (parentTargetActionStep.next) {
+        parentTargetActionStep.next = [
+          parentTargetActionStep.next,
+          actionToMoveStep,
+        ]
+      }
+    } else {
+      actionToMoveStep.next = parentTargetActionStep.next
+      parentTargetActionStep.next = actionToMoveStep
+    }
+
+    this.updateDepths(
+      actionToMoveStep as InternalStep,
+      parentTargetActionStep,
+      1,
+      parentTargetActionStep.depth
+    )
+
+    return this
+  }
+
+  mergeActions(where: string, ...actions: string[]) {
+    actions.unshift(where)
+
+    if (actions.length < 2) {
+      throw new Error("Cannot merge less than two actions")
+    }
+
+    for (const action of actions) {
+      if (action !== where) {
+        this.moveAction(action, where, true)
+      }
+    }
+
+    return this
+  }
+
+  deleteAction(action: string, steps: InternalStep = this.steps) {
+    const parentStep = this.findParentStepByAction(action, steps)!
+    const actionStep = this.findStepByAction(action)
+    if (actionStep) {
+      if (Array.isArray(parentStep.next)) {
+        const index = parentStep.next.findIndex(
+          (step) => step.action === action
+        )
+        if (index > -1 && actionStep.next) {
+          if (actionStep.next) {
+            parentStep.next[index] = actionStep.next as InternalStep
+          } else {
+            parentStep.next.splice(index, 1)
+          }
+        }
+      } else {
+        parentStep.next = actionStep.next
+      }
+      this.updateDepths(
+        actionStep.next as InternalStep,
+        parentStep,
+        1,
+        parentStep.depth
+      )
+    }
+    return this
+  }
+
+  pruneAction(action: string) {
+    const parentStep = this.findParentStepByAction(action, this.steps)
+    if (parentStep) {
+      const actionStep = this.findStepByAction(action)
+      if (actionStep) {
+        if (Array.isArray(parentStep.next)) {
+          const index = parentStep.next.findIndex(
+            (step) => step.action === action
+          )
+          if (index > -1) {
+            parentStep.next.splice(index, 1)
+          }
+        } else {
+          delete parentStep.next
+        }
+      }
+    }
+    return this
+  }
+
+  private findStepByAction(
+    action: string,
+    step: InternalStep = this.steps
+  ): InternalStep | undefined {
+    if (step.action === action) {
+      return step
+    }
+
+    if (Array.isArray(step.next)) {
+      for (const subStep of step.next) {
+        const found = this.findStepByAction(action, subStep as InternalStep)
+        if (found) {
+          return found
+        }
+      }
+    } else if (step.next && typeof step.next === "object") {
+      return this.findStepByAction(action, step.next as InternalStep)
+    }
+
+    return
+  }
+
+  private findParentStepByAction(
+    action: string,
+    step: InternalStep = this.steps
+  ): InternalStep | undefined {
+    if (!step.next) {
+      return
+    }
+
+    const nextSteps = Array.isArray(step.next) ? step.next : [step.next]
+    for (const nextStep of nextSteps) {
+      if (!nextStep) {
+        continue
+      }
+      if (nextStep.action === action) {
+        return step
+      }
+      const foundStep = this.findParentStepByAction(
+        action,
+        nextStep as InternalStep
+      )
+      if (foundStep) {
+        return foundStep
+      }
+    }
+
+    return
+  }
+
+  private updateDepths(
+    startingStep: InternalStep,
+    parent,
+    incr = 1,
+    beginFrom?: number
+  ): void {
+    if (!startingStep) {
+      return
+    }
+
+    const update = (step: InternalStep, parent, beginFrom) => {
+      step.depth = beginFrom + incr
+      step.parent = parent.action
+      if (Array.isArray(step.next)) {
+        step.next.forEach((nextAction) => update(nextAction, step, step.depth))
+      } else if (step.next) {
+        update(step.next, step, step.depth)
+      }
+    }
+    update(startingStep, parent, beginFrom ?? startingStep.depth)
+  }
+
+  build(): TransactionStepsDefinition {
+    const ignore = ["depth", "parent"]
+    const result = JSON.parse(
+      JSON.stringify(this.steps.next, null),
+      (key, value) => {
+        if (ignore.includes(key)) {
+          // return
+        }
+
+        return value
+      }
+    )
+    return result
+  }
+}

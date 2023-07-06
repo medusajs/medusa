@@ -1,4 +1,5 @@
-import { TransactionFlow, TransactionHandlerType, TransactionState } from "."
+import { TransactionFlow } from "./transaction-orchestrator"
+import { TransactionHandlerType, TransactionState } from "./types"
 
 /**
  * @typedef TransactionMetadata

@@ -1,12 +1,11 @@
 import { EventEmitter } from "events"
-
 import {
   TransactionHandlerType,
   TransactionStepsDefinition,
   TransactionStepStatus,
   TransactionState,
   TransactionModel,
-} from "."
+} from "./types"
 import {
   DistributedTransaction,
   TransactionCheckpoint,

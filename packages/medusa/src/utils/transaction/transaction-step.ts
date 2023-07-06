@@ -1,10 +1,10 @@
+import { TransactionPayload } from "./distributed-transaction"
 import {
   TransactionStepsDefinition,
   TransactionStepStatus,
   TransactionState,
   TransactionHandlerType,
-  TransactionPayload,
-} from "."
+} from "./types"
 
 export type TransactionStepHandler = (
   actionId: string,
