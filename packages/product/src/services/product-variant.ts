@@ -1,7 +1,6 @@
 import { Product, ProductVariant } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import { isString, ModulesSdkUtils } from "@medusajs/utils"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import ProductService from "./product"
 
 type InjectedDependencies = {
@@ -46,32 +45,28 @@ export default class ProductVariantService<
   ): Promise<TEntity[]> {
     return await this.productVariantRepository_.transaction(
       async (manager) => {
-        const manager_ = manager as SqlEntityManager
-
         let product = productOrId as unknown as Product
 
         if (isString(productOrId)) {
-          product = (await this.productService_.retrieve(
+          product = await this.productService_.retrieve(
             productOrId as string,
             sharedContext
-          )) as unknown as Product
+          )
         }
 
         let computedRank = product.variants.toArray().length
 
-        const variants: ProductVariant[] = []
-        data.forEach((variant) => {
-          variants.push(
-            manager_.create(ProductVariant, {
-              ...variant,
-              variant_rank: computedRank++,
-              product,
-            })
-          )
+        const data_ = [...data]
+        data_.forEach((variant) => {
+          Object.assign(variant, {
+            variant_rank: computedRank++,
+            product,
+          })
         })
 
-        manager_.persist(variants)
-        return variants as unknown as TEntity[]
+        return await this.productVariantRepository_.create(data_, {
+          transactionManager: manager,
+        })
       },
       { transaction: sharedContext?.transactionManager }
     )
