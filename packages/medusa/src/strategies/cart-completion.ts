@@ -197,6 +197,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         "region.tax_rates",
         "shipping_address",
         "shipping_methods",
+        "shipping_methods.shipping_option",
       ],
     })
 

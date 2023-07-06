@@ -15,6 +15,7 @@ const defaultRelations = [
   "return_order",
   "shipping_address",
   "shipping_methods",
+  "shipping_methods.shipping_option",
 ]
 
 const defaultFields = [
