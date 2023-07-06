@@ -50,7 +50,6 @@ The Kafka configuration object (kafkaConfig) should follow the format defined in
 
 ```js
 kafkaConfig: {
-  clientId: 'my-app',
   brokers: ['kafka1:9092', 'kafka2:9092']
 }
 ```
