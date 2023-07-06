@@ -30,9 +30,6 @@ export const buildProductOnlyData = ({
     thumbnail: thumbnail as string,
     status: status ?? ProductTypes.ProductStatus.PUBLISHED,
     images: (images ?? []) as Image[],
-    // TODO: add type, must be created first
-    // TODO: add categories, must be created first
-    // TODO: add tags, must be created first
   }
 }
 
