@@ -101,7 +101,7 @@ export const defaultAdminProductRelations = [
   "variants",
   "variants.prices",
   "variants.options",
-  "profile",
+  "profiles",
   "images",
   "options",
   "tags",

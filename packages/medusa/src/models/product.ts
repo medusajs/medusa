@@ -96,6 +96,8 @@ export class Product extends SoftDeletableEntity {
 
   profile_id: string
 
+  profile: ShippingProfile
+
   @ManyToMany(() => ShippingProfile, {
     cascade: ["remove", "soft-remove"],
   })
@@ -110,7 +112,7 @@ export class Product extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
-  profile: ShippingProfile
+  profiles: ShippingProfile[]
 
   @Column({ type: "int", nullable: true })
   weight: number | null
@@ -198,25 +200,22 @@ export class Product extends SoftDeletableEntity {
       this.handle = _.kebabCase(this.title)
     }
 
-    // TODO: Temporary in order to be able to use either the core product or the product module
     if (this.profile_id) {
-      this.profile = { id: this.profile_id } as ShippingProfile
+      this.profiles = [{ id: this.profile_id }] as ShippingProfile[]
     }
   }
 
-  // TODO: Temporary in order to be able to use either the core product or the product module
   @BeforeUpdate()
   private beforeUpdate(): void {
     if (this.profile_id) {
-      this.profile = [{ id: this.profile_id }] as any
+      this.profiles = [{ id: this.profile_id }] as ShippingProfile[]
     }
   }
 
-  // TODO: Temporary in order to be able to use either the core product or the product module
   @AfterLoad()
   private afterLoad(): void {
-    if (Array.isArray(this.profile)) {
-      this.profile = this.profile.pop()
+    if (this.profiles) {
+      this.profile = this.profiles.pop()!
       this.profile_id = this.profile?.id
     }
   }
@@ -322,6 +321,11 @@ export class Product extends SoftDeletableEntity {
  *     description: Available if the relation `profile` is expanded.
  *     nullable: true
  *     $ref: "#/components/schemas/ShippingProfile"
+ *  profiles:
+ *     description: Available if the relation `profiles` is expanded.
+ *     nullable: true
+ *     items:
+ *       $ref: "#/components/schemas/ShippingProfile"
  *   weight:
  *     description: The weight of the Product Variant. May be used in shipping rate calculations.
  *     nullable: true

@@ -11,6 +11,7 @@ import {
   ProductType,
   ProductVariant,
   SalesChannel,
+  ShippingProfile,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
@@ -447,7 +448,7 @@ class ProductService extends TransactionBaseService {
       let product = productRepo.create(rest)
 
       if (rest.profile_id) {
-        product.profile = [{ id: rest.profile_id! }] as any
+        product.profiles = [{ id: rest.profile_id! }] as ShippingProfile[]
       }
 
       if (images?.length) {
@@ -568,7 +569,7 @@ class ProductService extends TransactionBaseService {
       } = update
 
       if (rest.profile_id) {
-        product.profile = [{ id: rest.profile_id! }] as any
+        product.profiles = [{ id: rest.profile_id! }] as ShippingProfile[]
       }
 
       if (!product.thumbnail && !update.thumbnail && images?.length) {

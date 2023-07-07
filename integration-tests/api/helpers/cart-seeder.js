@@ -448,6 +448,7 @@ module.exports = async (dataSource, data = {}) => {
     is_giftcard: true,
     discountable: false,
     profile_id: gcProfile.id,
+    profiles: [{ id: defaultProfile.id }],
     options: [{ id: "denom", title: "Denomination" }],
   })
 
@@ -468,6 +469,7 @@ module.exports = async (dataSource, data = {}) => {
     id: "test-product",
     title: "test product",
     profile_id: defaultProfile.id,
+    profiles: [{ id: defaultProfile.id }],
     options: [{ id: "test-option", title: "Size" }],
   })
 

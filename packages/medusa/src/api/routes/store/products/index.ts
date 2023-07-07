@@ -65,6 +65,7 @@ export const defaultStoreProductsRelations = [
   "tags",
   "collection",
   "type",
+  "profiles",
 ]
 
 export const defaultStoreProductsFields: (keyof Product)[] = [
@@ -78,7 +79,6 @@ export const defaultStoreProductsFields: (keyof Product)[] = [
   "is_giftcard",
   "discountable",
   "thumbnail",
-  "profile_id",
   "collection_id",
   "type_id",
   "weight",
