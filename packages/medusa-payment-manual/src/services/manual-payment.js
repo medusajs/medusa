@@ -93,7 +93,7 @@ class ManualPaymentService extends PaymentService {
   }
 
   /**
-   * Updates the payment status to cancled
+   * Updates the payment status to canceled
    * @returns {object} object with canceled status
    */
   async cancelPayment() {
