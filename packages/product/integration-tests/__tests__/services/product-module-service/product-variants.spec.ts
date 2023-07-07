@@ -1,12 +1,12 @@
-import { TestDatabase } from "../../../utils"
-import { setupModuleService } from "../../../utils"
-import { ProductModuleService } from "@services"
+import { initialize } from "../../../../src"
+import { DB_URL, TestDatabase } from "../../../utils"
+import { IProductModuleService } from "@medusajs/types"
 import { Product, ProductVariant } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductTypes } from "@medusajs/types"
 
 describe("ProductModuleService product variants", () => {
-  let service: ProductModuleService
+  let service: IProductModuleService
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
   let variantOne: ProductVariant
@@ -17,7 +17,14 @@ describe("ProductModuleService product variants", () => {
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
     repositoryManager = await TestDatabase.forkManager()
-    service = setupModuleService({ repositoryManager })
+
+    service = await initialize({
+      database: {
+        clientUrl: DB_URL,
+        schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      },
+    })
+
     testManager = await TestDatabase.forkManager()
 
     productOne = testManager.create(Product, {
@@ -54,7 +61,7 @@ describe("ProductModuleService product variants", () => {
   })
 
   describe("listAndCountVariants", () => {
-    it("selecting by properties, scopes out the results", async () => {
+    it("should return variants and count queried by ID", async () => {
       const results = await service.listAndCountVariants({
         id: variantOne.id,
       })
@@ -70,7 +77,7 @@ describe("ProductModuleService product variants", () => {
     })
 
     // TODO: investigate why pagination is incorrect
-    it.skip("passing a limit, scopes the result to the limit", async () => {
+    it.skip("should return variants and count based on the 'take' parameter", async () => {
       const results = await service.listAndCountVariants(
         {},
         {
@@ -88,7 +95,7 @@ describe("ProductModuleService product variants", () => {
       ])
     })
 
-    it("passing populate, scopes the results of the response", async () => {
+    it("should return only requested fields and relations for variants", async () => {
       const results = await service.listAndCountVariants(
         {
           id: variantOne.id,
@@ -105,6 +112,7 @@ describe("ProductModuleService product variants", () => {
           id: "test-1",
           title: "variant 1",
           product_id: "product-1",
+          // TODO: investigate why this is returning more than the expected results
           product: expect.objectContaining({
             id: "product-1",
             title: "product 1",
@@ -115,7 +123,7 @@ describe("ProductModuleService product variants", () => {
   })
 
   describe("retrieveVariant", () => {
-    it("should return variant if variant with variant ID exists", async () => {
+    it("should return the requested variant", async () => {
       const result = await service.retrieveVariant(variantOne.id)
 
       expect(result).toEqual(
@@ -126,7 +134,7 @@ describe("ProductModuleService product variants", () => {
       )
     })
 
-    it("should return expected attributes when requested through config", async () => {
+    it("should return requested attributes when requested through config", async () => {
       const result = await service.retrieveVariant(
         variantOne.id,
         {
@@ -148,7 +156,7 @@ describe("ProductModuleService product variants", () => {
       )
     })
 
-    it("should throw an error ", async () => {
+    it("should throw an error when a variant with ID does not exist", async () => {
       let error
 
       try {
