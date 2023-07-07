@@ -45,13 +45,13 @@ export const simpleProductFactory = async (
   const defaultProfile = await manager.findOne(ShippingProfile, {
     where: {
       type: ShippingProfileType.DEFAULT,
-    }
+    },
   })
 
   const gcProfile = await manager.findOne(ShippingProfile, {
     where: {
       type: ShippingProfileType.GIFT_CARD,
-    }
+    },
   })
 
   let sales_channels
@@ -90,6 +90,9 @@ export const simpleProductFactory = async (
     discountable: !data.is_giftcard,
     tags: [] as ProductTag[],
     profile_id: data.is_giftcard ? gcProfile?.id : defaultProfile?.id,
+    profile: [
+      { id: data.is_giftcard ? gcProfile?.id : defaultProfile?.id },
+    ] as any,
     metadata: data.metadata || null,
   } as Product
 
@@ -153,13 +156,10 @@ export const simpleProductFactory = async (
     await simpleProductVariantFactory(dataSource, factoryData)
   }
 
-  return await manager.findOne(
-    Product,
-    {
-      where: {
-        id: prodId
-      },
-      relations: { tags: true, variants: { prices: true }}
-    }
-  )
+  return await manager.findOne(Product, {
+    where: {
+      id: prodId,
+    },
+    relations: { tags: true, variants: { prices: true } },
+  })
 }

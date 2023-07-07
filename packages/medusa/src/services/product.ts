@@ -446,6 +446,10 @@ class ProductService extends TransactionBaseService {
 
       let product = productRepo.create(rest)
 
+      if (rest.profile_id) {
+        product.profile = [{ id: rest.profile_id! }] as any
+      }
+
       if (images?.length) {
         product.images = await imageRepo.upsertImages(images)
       }
@@ -562,6 +566,10 @@ class ProductService extends TransactionBaseService {
         categories: categories,
         ...rest
       } = update
+
+      if (rest.profile_id) {
+        product.profile = [{ id: rest.profile_id! }] as any
+      }
 
       if (!product.thumbnail && !update.thumbnail && images?.length) {
         product.thumbnail = images[0]

@@ -8,18 +8,14 @@ export class addTableProductShippingProfile1680857773273
       `
         CREATE TABLE IF NOT EXISTS "product_shipping_profile"
         (
-            "id" text NOT NULL,
             "profile_id" text NOT NULL,
-            "product_id" text NOT NULL,
-            "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-            "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+            "product_id" text NOT NULL
         );
 
         INSERT INTO "product_shipping_profile" ("profile_id", "product_id")
         SELECT "profile_id", "id" FROM "product";
 
         ALTER TABLE "product" DROP COLUMN IF EXISTS "profile_id";
-        ALTER TABLE "product_shipping_profile" ADD CONSTRAINT "pk_product_shipping_profile" PRIMARY KEY ("id");
         CREATE UNIQUE INDEX IF NOT EXISTS "idx_product_shipping_profile_profile_id_product_id_unique" ON "product_shipping_profile" ("profile_id", "product_id");
         DROP INDEX IF EXISTS "IDX_80823b7ae866dc5acae2dac6d2";
       `

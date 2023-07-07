@@ -1,6 +1,7 @@
 import {
   AfterLoad,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   Index,
@@ -24,7 +25,7 @@ import { SalesChannel } from "./sales-channel"
 import { ShippingProfile } from "./shipping-profile"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import _ from "lodash"
-import { generateEntityId } from "../utils/generate-entity-id"
+import { generateEntityId } from "../utils"
 
 export enum ProductStatus {
   DRAFT = "draft",
@@ -95,7 +96,9 @@ export class Product extends SoftDeletableEntity {
 
   profile_id: string
 
-  @ManyToMany(() => ShippingProfile)
+  @ManyToMany(() => ShippingProfile, {
+    cascade: ["remove", "soft-remove"],
+  })
   @JoinTable({
     name: "product_shipping_profile",
     joinColumn: {
@@ -194,13 +197,27 @@ export class Product extends SoftDeletableEntity {
     if (!this.handle) {
       this.handle = _.kebabCase(this.title)
     }
+
+    // TODO: Temporary in order to be able to use either the core product or the product module
+    if (this.profile_id) {
+      this.profile = { id: this.profile_id } as ShippingProfile
+    }
   }
 
+  // TODO: Temporary in order to be able to use either the core product or the product module
+  @BeforeUpdate()
+  private beforeUpdate(): void {
+    if (this.profile_id) {
+      this.profile = [{ id: this.profile_id }] as any
+    }
+  }
+
+  // TODO: Temporary in order to be able to use either the core product or the product module
   @AfterLoad()
   private afterLoad(): void {
-    if (Array.isArray(this.profile) && this.profile.length) {
+    if (Array.isArray(this.profile)) {
       this.profile = this.profile.pop()
-      this.profile_id = this.profile.id
+      this.profile_id = this.profile?.id
     }
   }
 }
