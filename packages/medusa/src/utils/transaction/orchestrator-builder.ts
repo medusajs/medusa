@@ -10,7 +10,7 @@ interface InternalStep extends TransactionStepsDefinition {
   parent?: InternalStep | null
 }
 
-export class TransactionBuilder {
+export class OrchestratorBuilder {
   private steps: InternalStep
 
   constructor(steps?: TransactionStepsDefinition) {
@@ -37,13 +37,7 @@ export class TransactionBuilder {
     handler: ActionHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
-    let step = this.steps as InternalStep
-
-    while (step.next) {
-      step = Array.isArray(step.next)
-        ? (step.next[step.next.length - 1] as InternalStep)
-        : (step.next as InternalStep)
-    }
+    const step = this.findLastStep()
     const newAction = {
       action,
       depth: step.depth + 1,
@@ -62,7 +56,7 @@ export class TransactionBuilder {
     handler: ActionHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
-    const step = this.findStepByAction(existingAction)!
+    const step = this.findOrThrowStepByAction(existingAction)
     step.action = action
 
     Object.assign(step, options)
@@ -113,7 +107,7 @@ export class TransactionBuilder {
     handler: ActionHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
-    const step = this.findStepByAction(existingAction)!
+    const step = this.findOrThrowStepByAction(existingAction)
     const oldNext = step.next
     const newDepth = step.depth + 1
     step.next = {
@@ -129,15 +123,53 @@ export class TransactionBuilder {
     return this
   }
 
-  moveAction(
+  private appendTo(step: InternalStep | string, newStep: InternalStep) {
+    if (typeof step === "string") {
+      step = this.findOrThrowStepByAction(step)
+    }
+
+    step.next = {
+      ...newStep,
+      depth: step.depth + 1,
+      parent: step.action,
+    } as InternalStep
+
+    return this
+  }
+
+  appendAction(
+    action: string,
+    to: string,
+    handler: ActionHandler,
+    options: Partial<TransactionStepsDefinition> = {}
+  ) {
+    const newAction = {
+      action,
+      ...options,
+    } as InternalStep
+
+    const branch = this.findLastStep(this.findStepByAction(to))
+    this.appendTo(branch, newAction)
+
+    return this
+  }
+
+  private move(
     actionToMove: string,
     targetAction: string,
-    runInParallel = false
-  ): TransactionBuilder {
+    {
+      runInParallel,
+      mergeNext,
+    }: {
+      runInParallel?: boolean
+      mergeNext?: boolean
+    } = {
+      runInParallel: false,
+      mergeNext: false,
+    }
+  ): OrchestratorBuilder {
     const parentActionToMoveStep = this.findParentStepByAction(actionToMove)!
-
     const parentTargetActionStep = this.findParentStepByAction(targetAction)!
-
     const actionToMoveStep = this.findStepByAction(
       actionToMove,
       parentTargetActionStep
@@ -145,7 +177,7 @@ export class TransactionBuilder {
 
     if (!actionToMoveStep) {
       throw new Error(
-        `Action "${actionToMove}" could not be found in next steps of "${targetAction}"`
+        `Action "${actionToMove}" could not be found in the following steps of "${targetAction}"`
       )
     }
 
@@ -171,15 +203,22 @@ export class TransactionBuilder {
       }
     } else {
       if (actionToMoveStep.next) {
-        if (Array.isArray(actionToMoveStep.next)) {
-          actionToMoveStep.next.push(
+        if (mergeNext) {
+          if (Array.isArray(actionToMoveStep.next)) {
+            actionToMoveStep.next.push(
+              parentTargetActionStep.next as InternalStep
+            )
+          } else {
+            actionToMoveStep.next = [
+              actionToMoveStep.next,
+              parentTargetActionStep.next as InternalStep,
+            ]
+          }
+        } else {
+          this.appendTo(
+            this.findLastStep(actionToMoveStep),
             parentTargetActionStep.next as InternalStep
           )
-        } else {
-          actionToMoveStep.next = [
-            actionToMoveStep.next,
-            parentTargetActionStep.next as InternalStep,
-          ]
         }
       } else {
         actionToMoveStep.next = parentTargetActionStep.next
@@ -198,6 +237,26 @@ export class TransactionBuilder {
     return this
   }
 
+  moveAction(
+    actionToMove: string,
+    targetAction: string,
+    runInParallel = false
+  ): OrchestratorBuilder {
+    this.move(actionToMove, targetAction)
+
+    return this
+  }
+
+  moveAndMergeNextAction(
+    actionToMove: string,
+    targetAction: string,
+    runInParallel = false
+  ): OrchestratorBuilder {
+    this.move(actionToMove, targetAction, { mergeNext: true })
+
+    return this
+  }
+
   mergeActions(where: string, ...actions: string[]) {
     actions.unshift(where)
 
@@ -207,7 +266,7 @@ export class TransactionBuilder {
 
     for (const action of actions) {
       if (action !== where) {
-        this.moveAction(action, where, true)
+        this.move(action, where, { runInParallel: true })
       }
     }
 
@@ -215,50 +274,45 @@ export class TransactionBuilder {
   }
 
   deleteAction(action: string, steps: InternalStep = this.steps) {
+    const actionStep = this.findOrThrowStepByAction(action)
     const parentStep = this.findParentStepByAction(action, steps)!
-    const actionStep = this.findStepByAction(action)
-    if (actionStep) {
-      if (Array.isArray(parentStep.next)) {
-        const index = parentStep.next.findIndex(
-          (step) => step.action === action
-        )
-        if (index > -1 && actionStep.next) {
-          if (actionStep.next) {
-            parentStep.next[index] = actionStep.next as InternalStep
-          } else {
-            parentStep.next.splice(index, 1)
-          }
+
+    if (Array.isArray(parentStep.next)) {
+      const index = parentStep.next.findIndex((step) => step.action === action)
+      if (index > -1 && actionStep.next) {
+        if (actionStep.next) {
+          parentStep.next[index] = actionStep.next as InternalStep
+        } else {
+          parentStep.next.splice(index, 1)
         }
-      } else {
-        parentStep.next = actionStep.next
       }
-      this.updateDepths(
-        actionStep.next as InternalStep,
-        parentStep,
-        1,
-        parentStep.depth
-      )
+    } else {
+      parentStep.next = actionStep.next
     }
+
+    this.updateDepths(
+      actionStep.next as InternalStep,
+      parentStep,
+      1,
+      parentStep.depth
+    )
+
     return this
   }
 
   pruneAction(action: string) {
-    const parentStep = this.findParentStepByAction(action, this.steps)
-    if (parentStep) {
-      const actionStep = this.findStepByAction(action)
-      if (actionStep) {
-        if (Array.isArray(parentStep.next)) {
-          const index = parentStep.next.findIndex(
-            (step) => step.action === action
-          )
-          if (index > -1) {
-            parentStep.next.splice(index, 1)
-          }
-        } else {
-          delete parentStep.next
-        }
+    const actionStep = this.findOrThrowStepByAction(action)
+    const parentStep = this.findParentStepByAction(action, this.steps)!
+
+    if (Array.isArray(parentStep.next)) {
+      const index = parentStep.next.findIndex((step) => step.action === action)
+      if (index > -1) {
+        parentStep.next.splice(index, 1)
       }
+    } else {
+      delete parentStep.next
     }
+
     return this
   }
 
@@ -282,6 +336,18 @@ export class TransactionBuilder {
     }
 
     return
+  }
+
+  private findOrThrowStepByAction(
+    action: string,
+    steps: InternalStep = this.steps
+  ): InternalStep {
+    const step = this.findStepByAction(action, steps)
+    if (!step) {
+      throw new Error(`Action "${action}" could not be found`)
+    }
+
+    return step
   }
 
   private findParentStepByAction(
@@ -310,6 +376,17 @@ export class TransactionBuilder {
     }
 
     return
+  }
+
+  private findLastStep(steps: InternalStep = this.steps): InternalStep {
+    let step = steps as InternalStep
+    while (step.next) {
+      step = Array.isArray(step.next)
+        ? (step.next[step.next.length - 1] as InternalStep)
+        : (step.next as InternalStep)
+    }
+
+    return step
   }
 
   private updateDepths(
