@@ -1,4 +1,5 @@
 import {
+  AfterLoad,
   BeforeInsert,
   Column,
   Entity,
@@ -92,12 +93,18 @@ export class Product extends SoftDeletableEntity {
   })
   categories: ProductCategory[]
 
-  @Index()
-  @Column()
-  profile_id: string
-
-  @ManyToOne(() => ShippingProfile)
-  @JoinColumn({ name: "profile_id" })
+  @ManyToMany(() => ShippingProfile)
+  @JoinTable({
+    name: "product_shipping_profile",
+    joinColumn: {
+      name: "product_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "profile_id",
+      referencedColumnName: "id",
+    },
+  })
   profile: ShippingProfile
 
   @Column({ type: "int", nullable: true })
@@ -184,6 +191,13 @@ export class Product extends SoftDeletableEntity {
     this.id = generateEntityId(this.id, "prod")
     if (!this.handle) {
       this.handle = _.kebabCase(this.title)
+    }
+  }
+
+  @AfterLoad()
+  private afterLoad(): void {
+    if (Array.isArray(this.profile)) {
+      this.profile = this.profile.pop()
     }
   }
 }
