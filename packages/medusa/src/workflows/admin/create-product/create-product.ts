@@ -1,9 +1,5 @@
 import { EntityManager } from "typeorm"
-import {
-  IInventoryService,
-  MedusaContainer,
-  ProductTypes,
-} from "@medusajs/types"
+import { IInventoryService, MedusaContainer } from "@medusajs/types"
 import { ulid } from "ulid"
 import { MedusaError } from "@medusajs/utils"
 import {
@@ -19,11 +15,13 @@ import {
   attachInventoryItems,
   createInventoryItems,
   createProducts,
+  CreateProductsInputData,
   removeInventoryItems,
   removeProducts,
 } from "../../functions"
 
 enum Actions {
+  prepare = "prepare",
   createProduct = "createProduct",
   createPrices = "createPrices",
   attachToSalesChannel = "attachToSalesChannel",
@@ -65,10 +63,9 @@ type InjectedDependencies = {
   inventoryService?: IInventoryService
 }
 
-export async function createProductWorkflow(
+export async function createProductsWorkflow(
   dependencies: InjectedDependencies,
-  productId: string,
-  input: CreateProductVariantInput[]
+  input: CreateProductsInputData
 ): Promise<DistributedTransaction> {
   const { manager, container } = dependencies
   async function transactionHandler(
@@ -79,7 +76,7 @@ export async function createProductWorkflow(
     const command = {
       [Actions.createProduct]: {
         [TransactionHandlerType.INVOKE]: async (
-          data: ProductTypes.CreateProductDTO[]
+          data: CreateProductsInputData
         ) => {
           return await createProducts({
             container,
