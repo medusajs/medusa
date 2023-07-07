@@ -1,20 +1,20 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
-  DeleteDateColumn,
   Entity,
-  Index,
   Unique,
   UpdateDateColumn,
 } from "typeorm"
-import { resolveDbType } from "../utils"
+import { generateEntityId, resolveDbType } from "../utils"
+import { BaseEntity } from "../interfaces"
 
 @Entity()
 @Unique("idx_product_shipping_profile_profile_id_product_id_unique", [
   "product_id",
   "profile_id",
 ])
-export class ProductShippingProfile {
+export class ProductShippingProfile extends BaseEntity {
   @Column({ nullable: true })
   product_id: string
 
@@ -27,9 +27,10 @@ export class ProductShippingProfile {
   @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
-  @Index("idx_product_shipping_profile_deleted_at")
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date | null
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "prod_sp")
+  }
 }
 
 /**
@@ -38,12 +39,16 @@ export class ProductShippingProfile {
  * description: "Association between a product and a shipping profile."
  * type: object
  * required:
+ *   - id
  *   - created_at
  *   - profile_id
  *   - product_id
  *   - updated_at
- *   - deleted_at
  * properties:
+ *  id:
+ *     description: The id of the Product Shipping Profile.
+ *     type: string
+ *     example: prod_sp_01G1G5V239ENSZ5MV4JAR737BM
  *   profile_id:
  *     description: The id of the Shipping Profile.
  *     type: string
@@ -58,11 +63,6 @@ export class ProductShippingProfile {
  *     format: date-time
  *   updated_at:
  *     description: The date with timezone at which the resource was updated.
- *     type: string
- *     format: date-time
- *   deleted_at:
- *     description: The date with timezone at which the resource was deleted.
- *     nullable: true
  *     type: string
  *     format: date-time
  */
