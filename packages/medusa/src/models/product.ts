@@ -93,6 +93,8 @@ export class Product extends SoftDeletableEntity {
   })
   categories: ProductCategory[]
 
+  profile_id: string
+
   @ManyToMany(() => ShippingProfile)
   @JoinTable({
     name: "product_shipping_profile",
@@ -196,8 +198,9 @@ export class Product extends SoftDeletableEntity {
 
   @AfterLoad()
   private afterLoad(): void {
-    if (Array.isArray(this.profile)) {
+    if (Array.isArray(this.profile) && this.profile.length) {
       this.profile = this.profile.pop()
+      this.profile_id = this.profile.id
     }
   }
 }
