@@ -1,6 +1,6 @@
 import { Kafka, Producer, Consumer, Message } from "kafkajs"
-import { InternalModuleDeclaration, Logger } from "@medusajs/modules-sdk"
-import { EmitData } from "@medusajs/types"
+import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
+import { EmitData, Logger } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
 import { KafkaModuleOptions, ConsumerPayload } from "../types"
 
