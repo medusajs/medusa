@@ -19,7 +19,6 @@ import { SoftDeletable } from "../utils"
 type OptionalFields =
   | "created_at"
   | "updated_at"
-  | "deleted_at"
   | "allow_backorder"
   | "manage_inventory"
   | "product"
@@ -121,7 +120,7 @@ class ProductVariant {
 
   @Index({ name: "IDX_product_variant_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date
+  deleted_at?: Date
 
   @ManyToOne(() => Product, {
     onDelete: "cascade",

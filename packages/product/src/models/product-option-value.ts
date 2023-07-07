@@ -16,7 +16,6 @@ import { SoftDeletable } from "../utils"
 type OptionalFields =
   | "created_at"
   | "updated_at"
-  | "deleted_at"
   | "allow_backorder"
   | "manage_inventory"
   | "option_id"
@@ -58,7 +57,7 @@ class ProductOptionValue {
 
   @Index({ name: "IDX_product_option_value_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date
+  deleted_at?: Date
 
   @BeforeCreate()
   beforeCreate() {

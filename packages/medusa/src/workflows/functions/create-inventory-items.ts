@@ -1,4 +1,8 @@
-import { MedusaContainer, ProductTypes } from "@medusajs/types"
+import {
+  IInventoryService,
+  MedusaContainer,
+  ProductTypes,
+} from "@medusajs/types"
 import { EntityManager } from "typeorm"
 
 export async function createInventoryItems({
@@ -10,7 +14,8 @@ export async function createInventoryItems({
   manager: EntityManager
   data: ProductTypes.ProductDTO[]
 }) {
-  const inventoryService = container.resolve("inventoryService")
+  const inventoryService: IInventoryService =
+    container.resolve("inventoryService")
   const context = { transactionManager: manager }
 
   const variants = data.reduce(
@@ -31,15 +36,15 @@ export async function createInventoryItems({
 
       const inventoryItem = await inventoryService!.createInventoryItem(
         {
-          sku: variant.sku,
-          origin_country: variant.origin_country,
-          hs_code: variant.hs_code,
-          mid_code: variant.mid_code,
-          material: variant.material,
-          weight: variant.weight,
-          length: variant.length,
-          height: variant.height,
-          width: variant.width,
+          sku: variant.sku!,
+          origin_country: variant.origin_country!,
+          hs_code: variant.hs_code!,
+          mid_code: variant.mid_code!,
+          material: variant.material!,
+          weight: variant.weight!,
+          length: variant.length!,
+          height: variant.height!,
+          width: variant.width!,
         },
         context
       )

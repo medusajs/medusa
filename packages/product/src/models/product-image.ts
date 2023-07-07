@@ -14,16 +14,16 @@ import Product from "./product"
 import { SoftDeletable } from "../utils"
 
 type OptionalRelations = "products"
-type OptionalFields = "deleted_at"
 
 @Entity({ tableName: "image" })
 @SoftDeletable()
 class ProductImage {
-  [OptionalProps]?: OptionalRelations | OptionalFields
+  [OptionalProps]?: OptionalRelations
 
   @PrimaryKey({ columnType: "text" })
   id!: string
 
+  @Index({ name: "IDX_product_image_url" })
   @Property({ columnType: "text" })
   url: string
 
@@ -32,7 +32,7 @@ class ProductImage {
 
   @Index({ name: "IDX_product_image_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date
+  deleted_at?: Date
 
   @ManyToMany(() => Product, (product) => product.images)
   products = new Collection<Product>(this)

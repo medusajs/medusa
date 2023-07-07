@@ -32,7 +32,6 @@ type OptionalFields =
   | "discountable"
   | "created_at"
   | "updated_at"
-  | "deleted_at"
 
 @Entity({ tableName: "product" })
 @SoftDeletable()
@@ -161,7 +160,7 @@ class Product {
 
   @Index({ name: "IDX_product_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date
+  deleted_at?: Date
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null

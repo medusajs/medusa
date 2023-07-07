@@ -14,12 +14,11 @@ import Product from "./product"
 import { SoftDeletable } from "../utils"
 
 type OptionalRelations = "products"
-type OptionalFields = "deleted_at"
 
 @Entity({ tableName: "product_tag" })
 @SoftDeletable()
 class ProductTag {
-  [OptionalProps]?: OptionalRelations | OptionalFields
+  [OptionalProps]?: OptionalRelations
 
   @PrimaryKey({ columnType: "text" })
   id!: string
@@ -32,7 +31,7 @@ class ProductTag {
 
   @Index({ name: "IDX_product_tag_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date
+  deleted_at?: Date
 
   @ManyToMany(() => Product, (product) => product.tags)
   products = new Collection<Product>(this)

@@ -2,7 +2,6 @@ import {
   BeforeCreate,
   Entity,
   Index,
-  OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
@@ -10,13 +9,9 @@ import {
 import { generateEntityId } from "@medusajs/utils"
 import { SoftDeletable } from "../utils"
 
-type OptionalFields = "deleted_at"
-
 @Entity({ tableName: "product_type" })
 @SoftDeletable()
 class ProductType {
-  [OptionalProps]?: OptionalFields
-
   @PrimaryKey({ columnType: "text" })
   id!: string
 
@@ -28,7 +23,7 @@ class ProductType {
 
   @Index({ name: "IDX_product_type_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date
+  deleted_at?: Date
 
   @BeforeCreate()
   onCreate() {

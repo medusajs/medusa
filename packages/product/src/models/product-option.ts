@@ -16,7 +16,7 @@ import ProductOptionValue from "./product-option-value"
 import { SoftDeletable } from "../utils"
 
 type OptionalRelations = "values" | "product"
-type OptionalFields = "deleted_at" | "product_id"
+type OptionalFields = "product_id"
 
 @Entity({ tableName: "product_option" })
 @SoftDeletable()
@@ -48,7 +48,7 @@ class ProductOption {
 
   @Index({ name: "IDX_product_option_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date
+  deleted_at?: Date
 
   @BeforeCreate()
   beforeCreate() {

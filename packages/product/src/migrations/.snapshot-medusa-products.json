@@ -288,6 +288,15 @@
       "indexes": [
         {
           "columnNames": [
+            "url"
+          ],
+          "composite": false,
+          "keyName": "IDX_product_image_url",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
             "deleted_at"
           ],
           "composite": false,
