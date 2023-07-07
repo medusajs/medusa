@@ -321,9 +321,10 @@ export class Product extends SoftDeletableEntity {
  *     description: Available if the relation `profile` is expanded.
  *     nullable: true
  *     $ref: "#/components/schemas/ShippingProfile"
- *  profiles:
+ *   profiles:
  *     description: Available if the relation `profiles` is expanded.
  *     nullable: true
+ *     type: array
  *     items:
  *       $ref: "#/components/schemas/ShippingProfile"
  *   weight:
