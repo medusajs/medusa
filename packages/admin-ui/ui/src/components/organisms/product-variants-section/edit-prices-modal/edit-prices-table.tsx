@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useAdminRegions } from "medusa-react"
 import { Product } from "@medusajs/client-types"
+
 import { getCurrencyPricesOnly, getRegionPricesOnly } from "./utils"
 import CurrencyCell from "./currency-cell"
 
@@ -77,7 +78,7 @@ function EditPricesTable(props: EditPricesTableProps) {
   }
 
   const setPriceForCell = (
-    amount: number | null,
+    amount: number | undefined,
     variantId: string,
     currencyCode?: string,
     region?: string
@@ -104,6 +105,11 @@ function EditPricesTable(props: EditPricesTableProps) {
     if (!isDrag || !lastVisited || !anchor) {
       return
     }
+
+    if ((currencyCode || regionId) !== activeCurrencyOrRegion) {
+      return
+    }
+
     const currentY = event.target.getBoundingClientRect().bottom
 
     const move =
@@ -137,6 +143,10 @@ function EditPricesTable(props: EditPricesTableProps) {
       return
     }
 
+    if ((currencyCode || regionId) !== activeCurrencyOrRegion) {
+      return
+    }
+
     const currentY = event.target.getBoundingClientRect().bottom
 
     const move =
@@ -162,7 +172,7 @@ function EditPricesTable(props: EditPricesTableProps) {
   ) => {
     selectCell(variantId, currencyCode, regionId)
 
-    activeAmount = Number(event.target.value.replace(",", ""))
+    activeAmount = Number(event.target.value)
 
     activeCurrencyOrRegion = currencyCode || regionId
     anchor = { x: event.pageX, y: event.target.getBoundingClientRect().bottom }
@@ -170,18 +180,12 @@ function EditPricesTable(props: EditPricesTableProps) {
   }
 
   const onInputChange = (
-    value: string,
+    value: number | undefined,
     variantId: string,
     currencyCode?: string,
     regionId?: string
   ) => {
-    let amount: number | undefined = parseFloat(value.replace(",", ""))
-
-    if (isNaN(amount as number)) {
-      amount = undefined
-    }
-
-    setPriceForCell(amount, variantId, currencyCode, regionId)
+    setPriceForCell(value, variantId, currencyCode, regionId)
   }
 
   const onDragStart = () => {
@@ -221,7 +225,6 @@ function EditPricesTable(props: EditPricesTableProps) {
   useEffect(() => {
     const down = () => {
       setSelectedCells({})
-      setIsDrag(true)
     }
     const up = () => setIsDrag(false)
 
@@ -236,7 +239,14 @@ function EditPricesTable(props: EditPricesTableProps) {
 
   return (
     <div className="h-full overflow-x-auto">
-      <table style={{ fontSize: 13 }} className="w-full table-auto">
+      <table
+        onMouseMove={
+          /** prevent highlighting **/
+          (e) => e.preventDefault()
+        }
+        style={{ fontSize: 13 }}
+        className="w-full table-auto"
+      >
         <thead>
           <tr
             style={{ height: 42 }}

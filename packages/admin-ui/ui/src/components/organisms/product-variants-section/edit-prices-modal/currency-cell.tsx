@@ -38,16 +38,19 @@ type CurrencyCellProps = {
  * Amount cell container.
  */
 function CurrencyCell(props: CurrencyCellProps) {
-  const { variant, currencyCode, region, editedAmount, isSelected } = props
+  const { variant, currencyCode, region, isSelected } = props
 
-  const [showDragIndicator, setShowDragIndicator] = useState(false)
-
-  const amount =
-    typeof editedAmount === "number"
-      ? editedAmount
-      : getCurrencyPricesOnly(variant.prices!).find(
-          (p) => p.currency_code === currencyCode || p.region_id === region
-        )?.amount
+  const [showDragIndicator, setShowDragIndicator] = useState<
+    number | undefined
+  >(false)
+  const [localValue, setLocalValue] = useState(() => {
+    const price = getCurrencyPricesOnly(variant.prices!).find(
+      (p) => p.currency_code === currencyCode || p.region_id === region
+    )
+    if (price) {
+      return price.amount
+    }
+  })
 
   return (
     <td
@@ -70,16 +73,15 @@ function CurrencyCell(props: CurrencyCellProps) {
         }}
         onBlur={() => {
           setShowDragIndicator(false)
+          props.onInputChange(localValue, variant.id, currencyCode, region)
         }}
         style={{ width: "100%", textAlign: "right", paddingRight: 8 }}
         className={clsx("decoration-transparent focus:outline-0", {
           "bg-blue-100": isSelected,
         })}
-        onChange={(e) =>
-          props.onInputChange(e.target.value, variant.id, currencyCode, region)
-        }
+        onValueChange={(v) => setLocalValue(v?.float)}
         decimalSeparator="."
-        value={amount}
+        value={localValue}
       ></AmountField>
       {showDragIndicator && (
         <div
