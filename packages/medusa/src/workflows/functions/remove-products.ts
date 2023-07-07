@@ -5,7 +5,7 @@ export async function removeProducts({
   data,
 }: {
   container: MedusaContainer
-  data: (ProductTypes.CreateProductDTO & { id: string })[]
+  data: ProductTypes.ProductDTO[]
 }) {
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve("productModuleService")

@@ -1,5 +1,9 @@
 import { EntityManager } from "typeorm"
-import { IInventoryService, MedusaContainer } from "@medusajs/types"
+import {
+  IInventoryService,
+  MedusaContainer,
+  ProductTypes,
+} from "@medusajs/types"
 import { ulid } from "ulid"
 import { MedusaError } from "@medusajs/utils"
 import {
@@ -14,8 +18,11 @@ import { CreateProductVariantInput } from "../../../types/product-variant"
 import {
   attachInventoryItems,
   createInventoryItems,
+  CreateProductPreparedData,
   createProducts,
+  CreateProductsData,
   CreateProductsInputData,
+  prepareCreateProductData,
   removeInventoryItems,
   removeProducts,
 } from "../../functions"
@@ -23,28 +30,34 @@ import {
 enum Actions {
   prepare = "prepare",
   createProduct = "createProduct",
-  createPrices = "createPrices",
   attachToSalesChannel = "attachToSalesChannel",
+  attachShippingProfile = "attachShippingProfile",
+  createPrices = "createPrices",
   createInventoryItems = "createInventoryItems",
   attachInventoryItems = "attachInventoryItems",
 }
 
 const workflowSteps: TransactionStepsDefinition = {
   next: {
-    action: Actions.createProduct,
+    action: Actions.prepare,
     saveResponse: true,
+    noCompensation: true,
     next: {
-      action: Actions.attachToSalesChannel,
+      action: Actions.createProduct,
       saveResponse: true,
       next: {
-        action: Actions.createPrices,
+        action: Actions.attachToSalesChannel,
         saveResponse: true,
         next: {
-          action: Actions.createInventoryItems,
+          action: Actions.createPrices,
           saveResponse: true,
           next: {
-            action: Actions.attachInventoryItems,
-            noCompensation: true,
+            action: Actions.createInventoryItems,
+            saveResponse: true,
+            next: {
+              action: Actions.attachInventoryItems,
+              noCompensation: true,
+            },
           },
         },
       },
@@ -63,32 +76,66 @@ type InjectedDependencies = {
   inventoryService?: IInventoryService
 }
 
+type CreateProductsWorkflowInputData = {
+  shippingProfileId?: string
+  salesChannelIds?: string[]
+  product: ProductTypes.CreateProductDTO
+}[]
+
 export async function createProductsWorkflow(
   dependencies: InjectedDependencies,
   input: CreateProductsInputData
 ): Promise<DistributedTransaction> {
   const { manager, container } = dependencies
+
   async function transactionHandler(
     actionId: string,
     type: TransactionHandlerType,
     payload: TransactionPayload
   ) {
     const command = {
+      [Actions.prepare]: {
+        [TransactionHandlerType.INVOKE]: async (
+          data: CreateProductsWorkflowInputData
+        ) => {
+          return await prepareCreateProductData({
+            container,
+            manager,
+            data,
+          })
+        },
+      },
       [Actions.createProduct]: {
         [TransactionHandlerType.INVOKE]: async (
-          data: CreateProductsInputData
+          data: CreateProductsData,
+          { invoke }
         ) => {
-          return await createProducts({
+          const preparedData = invoke[
+            Actions.prepare
+          ] as CreateProductPreparedData
+
+          const products = await createProducts({
             container,
             data,
           })
+
+          return {
+            products,
+            ...preparedData,
+          }
         },
         [TransactionHandlerType.COMPENSATE]: async (
           data: any[],
           { invoke }
         ) => {
-          const createdProducts = invoke[Actions.createProduct]
-          return await removeProducts({ container, data: createdProducts })
+          const createdProductsRes = invoke[Actions.createProduct] as {
+            products: ProductTypes.ProductDTO[]
+          } & CreateProductPreparedData
+
+          return await removeProducts({
+            container,
+            data: createdProductsRes.products,
+          })
         },
       },
       [Actions.createInventoryItems]: {
