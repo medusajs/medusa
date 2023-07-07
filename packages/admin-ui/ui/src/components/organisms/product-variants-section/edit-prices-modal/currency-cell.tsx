@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 import { ProductVariant } from "@medusajs/client-types"
 import { getCurrencyPricesOnly } from "./utils"
@@ -38,7 +38,7 @@ type CurrencyCellProps = {
  * Amount cell container.
  */
 function CurrencyCell(props: CurrencyCellProps) {
-  const { variant, currencyCode, region, isSelected } = props
+  const { variant, currencyCode, region, editedAmount, isSelected } = props
 
   const [showDragIndicator, setShowDragIndicator] = useState<
     number | undefined
@@ -51,6 +51,10 @@ function CurrencyCell(props: CurrencyCellProps) {
       return price.amount
     }
   })
+
+  useEffect(() => {
+    setLocalValue(editedAmount)
+  }, [editedAmount])
 
   return (
     <td
@@ -86,6 +90,7 @@ function CurrencyCell(props: CurrencyCellProps) {
       {showDragIndicator && (
         <div
           onMouseDown={(event) => {
+            event.stopPropagation()
             props.onDragStart()
           }}
           className="absolute right-0 bottom-0 h-2 w-2 cursor-pointer rounded-full bg-blue-400"

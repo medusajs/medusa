@@ -27,7 +27,7 @@ let anchor: { x: number; y: number } | null = null
 let lastVisited: { x: number; y: number } | null = null
 
 let activeCurrencyOrRegion = undefined
-let activeAmount: null | number = null
+let activeAmount: undefined | number = undefined
 
 /**
  * Construct cell key.
@@ -84,7 +84,7 @@ function EditPricesTable(props: EditPricesTableProps) {
     region?: string
   ) => {
     const next = { ...editedPrices }
-    if (amount === null) {
+    if (typeof amount === "undefined") {
       delete next[getKey(variantId, currencyCode, region)]
     } else {
       next[getKey(variantId, currencyCode, region)] = amount
@@ -160,7 +160,7 @@ function EditPricesTable(props: EditPricesTableProps) {
       (anchorPosition === AnchorPosition.Below && move === MoveDirection.Down)
     ) {
       deselectCell(variantId, currencyCode, regionId)
-      setPriceForCell(null, variantId, currencyCode, regionId)
+      setPriceForCell(undefined, variantId, currencyCode, regionId)
     }
   }
 
@@ -171,8 +171,7 @@ function EditPricesTable(props: EditPricesTableProps) {
     regionId?: string
   ) => {
     selectCell(variantId, currencyCode, regionId)
-
-    activeAmount = Number(event.target.value)
+    activeAmount = Number(event.target.value?.replace(",", ""))
 
     activeCurrencyOrRegion = currencyCode || regionId
     anchor = { x: event.pageX, y: event.target.getBoundingClientRect().bottom }
@@ -201,25 +200,25 @@ function EditPricesTable(props: EditPricesTableProps) {
    */
 
   useEffect(() => {
-    const nextState = {}
-    props.product.variants!.forEach((variant) => {
-      props.currencies.forEach((c) => {
-        const amount = getCurrencyPricesOnly(variant.prices!).find(
-          (p) => p.currency_code === c
-        )?.amount
-
-        nextState[`${variant.id}-${c}`] = amount
-      })
-
-      props.regions.forEach((r) => {
-        const amount = getRegionPricesOnly(variant.prices!).find(
-          (p) => p.region_id === r
-        )?.amount
-
-        nextState[`${variant.id}-${r}`] = amount
-      })
-    })
-    setEditedPrices(nextState)
+    // const nextState = {}
+    // props.product.variants!.forEach((variant) => {
+    //   props.currencies.forEach((c) => {
+    //     const amount = getCurrencyPricesOnly(variant.prices!).find(
+    //       (p) => p.currency_code === c
+    //     )?.amount
+    //
+    //     nextState[`${variant.id}-${c}`] = amount
+    //   })
+    //
+    //   props.regions.forEach((r) => {
+    //     const amount = getRegionPricesOnly(variant.prices!).find(
+    //       (p) => p.region_id === r
+    //     )?.amount
+    //
+    //     nextState[`${variant.id}-${r}`] = amount
+    //   })
+    // })
+    // setEditedPrices(nextState)
   }, [props.currencies, props.product.variants])
 
   useEffect(() => {
