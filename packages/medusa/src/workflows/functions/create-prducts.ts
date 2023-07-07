@@ -33,7 +33,7 @@ export async function removeProducts({
     data,
   })
 
-  return await productModuleService.softDelete(data.map((p) => p.id))
+  return await productModuleService.create(data.map((p) => p.product))
 }
 
 export async function createProductsShippingProfileMap_({
