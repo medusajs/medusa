@@ -9,7 +9,7 @@ export type CreateProductsInputData = {
   sales_channel_ids?: string[]
   product: ProductTypes.CreateProductDTO
 }[]
-export async function removeProducts({
+export async function createProducts({
   container,
   manager,
   data,

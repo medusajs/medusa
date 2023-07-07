@@ -1,5 +1,5 @@
 export * from "./create-prducts"
-export * from "./remove-prducts"
+export * from "./remove-products"
 export * from "./create-inventory-items"
 export * from "./remove-inventory-items"
 export * from "./attach-inventory-items"
