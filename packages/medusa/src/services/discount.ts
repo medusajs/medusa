@@ -698,9 +698,9 @@ class DiscountService extends TransactionBaseService {
 
           if (await this.hasCustomerReachedLimit(disc, cart.customer)) {
             throw new MedusaError(
-              MedusaError.Types.CUSTOMER_DISCOUNT_LIMIT_REACHED,
+              MedusaError.Types.NOT_ALLOWED,
               `Discount ${disc.code} has been used a maximum allowed times by the customer`,
-              disc.code
+              MedusaError.Codes.CUSTOMER_DISCOUNT_LIMIT_REACHED
             )
           }
 
@@ -782,7 +782,7 @@ class DiscountService extends TransactionBaseService {
       return false
     }
 
-    const manager = this.manager_
+    const manager = this.activeManager_
     const orderRepo = manager.withRepository(this.orderRepository_)
     const [, count] = await orderRepo.findAndCount({
       relations: {

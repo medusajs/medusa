@@ -1456,7 +1456,7 @@ class CartService extends TransactionBaseService {
         } catch (error) {
           if (
             error &&
-            error.type === MedusaError.Types.CUSTOMER_DISCOUNT_LIMIT_REACHED
+            error.code === MedusaError.Codes.CUSTOMER_DISCOUNT_LIMIT_REACHED
           ) {
             await this.removeDiscount(cart.id, error.code)
           }

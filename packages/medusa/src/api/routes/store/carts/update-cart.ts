@@ -83,34 +83,20 @@ export default async (req, res) => {
   }
 
   await manager.transaction(async (transactionManager) => {
-    try {
+    await cartService.withTransaction(transactionManager).update(id, validated)
+
+    const updated = await cartService
+      .withTransaction(transactionManager)
+      .retrieve(id, {
+        relations: ["payment_sessions", "shipping_methods"],
+      })
+
+    if (updated.payment_sessions?.length && !validated.region_id) {
       await cartService
         .withTransaction(transactionManager)
-        .update(id, validated)
-
-      const updated = await cartService
-        .withTransaction(transactionManager)
-        .retrieve(id, {
-          relations: ["payment_sessions", "shipping_methods"],
-        })
-
-      if (updated.payment_sessions?.length && !validated.region_id) {
-        await cartService
-          .withTransaction(transactionManager)
-          .setPaymentSessions(id)
-      }
-    } catch (err) {
-      error = err
+        .setPaymentSessions(id)
     }
   })
-
-  if (error) {
-    return res.status(400).json({
-      message: error.message,
-      type: error?.type,
-      code: error?.code,
-    })
-  }
 
   const data = await cartService.retrieveWithTotals(id, {
     select: defaultStoreCartFields,
