@@ -45,7 +45,7 @@ export class ProductShippingProfile extends BaseEntity {
  *   - product_id
  *   - updated_at
  * properties:
- *  id:
+ *   id:
  *     description: The id of the Product Shipping Profile.
  *     type: string
  *     example: prod_sp_01G1G5V239ENSZ5MV4JAR737BM
