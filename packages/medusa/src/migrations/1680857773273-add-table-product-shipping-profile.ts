@@ -12,7 +12,7 @@ export class addTableProductShippingProfile1680857773273
             "profile_id" text NOT NULL,
             "product_id" text NOT NULL,
             "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
-            "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+            "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
         );
 
         INSERT INTO "product_shipping_profile" ("profile_id", "product_id")
