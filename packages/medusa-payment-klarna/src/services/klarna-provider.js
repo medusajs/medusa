@@ -39,6 +39,7 @@ class KlarnaProviderService extends PaymentService {
     this.klarnaOrderManagementUrl_ = "/ordermanagement/v1/orders"
 
     this.backendUrl_ = options.backend_url
+    this.locale_ = options.language ?? 'en-US'
 
     /** @private @const {ShippingProfileService} */
     this.shippingProfileService_ = shippingProfileService
@@ -101,7 +102,7 @@ class KlarnaProviderService extends PaymentService {
     let order = {
       // Cart id is stored, such that we can use it for hooks
       merchant_data: cart.resource_id ?? cart.id,
-      locale: "en-US",
+      locale: this.locale_,
     }
 
     const { region, gift_card_total, tax_total, total } = cart
@@ -265,7 +266,7 @@ class KlarnaProviderService extends PaymentService {
     const order = {
       // Custom id is stored, such that we can use it for hooks
       merchant_data: resource_id,
-      locale: "en-US",
+      locale: this.locale_,
       order_lines: [
         {
           name: "Payment Collection",
