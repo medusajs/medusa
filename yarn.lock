@@ -17878,6 +17878,7 @@ __metadata:
     uuid: ^9.0.0
     validator: ^13.9.0
     wait-on: ^7.0.1
+    winston: ^3.9.0
   bin:
     create-medusa-app: dist/index.js
   languageName: unknown
@@ -43148,6 +43149,25 @@ __metadata:
     triple-beam: ^1.3.0
     winston-transport: ^4.5.0
   checksum: 8d302d992e53e46c8f0355fae515356190d2dc9feaa8ae99afa5bba227f1fe2343ca9e367e5949a9b711f5f982e5b9280393d16be99fcd432660fd9597749954
+  languageName: node
+  linkType: hard
+
+"winston@npm:^3.9.0":
+  version: 3.9.0
+  resolution: "winston@npm:3.9.0"
+  dependencies:
+    "@colors/colors": 1.5.0
+    "@dabh/diagnostics": ^2.0.2
+    async: ^3.2.3
+    is-stream: ^2.0.0
+    logform: ^2.4.0
+    one-time: ^1.0.0
+    readable-stream: ^3.4.0
+    safe-stable-stringify: ^2.3.1
+    stack-trace: 0.0.x
+    triple-beam: ^1.3.0
+    winston-transport: ^4.5.0
+  checksum: e789b0c57bc3b0173c6fbd7caa4d60816a1a45cd796e5643e1bea65161d44c82a139b69f6ffc738a2919d80b5afc6df46c01947972173fc847ebcc668285fab3
   languageName: node
   linkType: hard
 
