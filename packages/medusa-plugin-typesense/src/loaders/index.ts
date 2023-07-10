@@ -13,7 +13,6 @@ export default async (container, options) => {
           if (e instanceof Typesense.Errors.ObjectNotFound) {
             return await typesenseService.createIndex(indexName, indexSettings)
           } else {
-            console.log(e)
             return Promise.reject(e)
           }
         }
@@ -21,6 +20,5 @@ export default async (container, options) => {
     )
   } catch (err) {
     // ignore
-    console.log(err)
   }
 }

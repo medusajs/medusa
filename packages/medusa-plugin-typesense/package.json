@@ -21,7 +21,7 @@
   "dependencies": {
     "@medusajs/modules-sdk": "^1.8.8",
     "@medusajs/utils": "^1.9.1",
-    "typesense": "^1.5.4"
+    "typesense": "1.7.0-1"
   },
   "peerDependencies": {
     "@medusajs/medusa": "^1.12.0"

@@ -27,13 +27,13 @@ class TypesenseSearchService extends SearchUtils.AbstractSearchService {
     }
 
     // options.config should be the same format used to initialize the Typesense Client
-    //  as described here: https://typesense.org/docs/0.22.1/api/authentication.html
+    //  as described here: https://typesense.org/docs/latest/api/authentication.html
     this.client_ = new Typesense(options.config)
   }
 
   async createIndex(indexName: string, options: Record<string, unknown>) {
     // options.collectionSchemas.{indexName} should be the schema of the collection
-    //  as described here: https://typesense.org/docs/0.22.1/api/collections.html#create-a-collection
+    //  as described here: https://typesense.org/docs/latest/api/collections.html#create-a-collection
     const collectionSchema = this.config_.settings?.[indexName]
       ?.indexSettings as unknown as CollectionCreateSchema
 

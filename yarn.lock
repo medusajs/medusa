@@ -30924,7 +30924,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     typescript: ^4.9.5
-    typesense: ^1.5.4
+    typesense: 1.7.0-1
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
   languageName: unknown
@@ -41511,15 +41511,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typesense@npm:^1.5.4":
-  version: 1.5.4
-  resolution: "typesense@npm:1.5.4"
+"typesense@npm:1.7.0-1":
+  version: 1.7.0-1
+  resolution: "typesense@npm:1.7.0-1"
   dependencies:
     axios: ^0.26.0
     loglevel: ^1.8.0
   peerDependencies:
     "@babel/runtime": ^7.17.2
-  checksum: 0331cda5f9f5a2f7fd93f3ac94f62b4ddd730162c64caf0d48840085e640de103b609fa1a6dbccd5d3ad38193149fc1f9bc66232f63cc0e08293bd24ab1b5c22
+  checksum: 33a95c8f3290bb41b462e8ba3c8fc12b074ca05b0dfaf53277590f3a751e04ab07c1e83b1340ffe29b66e742329cba9be18c8125e06d4ad9c28adba33e623648
   languageName: node
   linkType: hard
 
