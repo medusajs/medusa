@@ -1752,7 +1752,6 @@ describe("/admin/discounts", () => {
               discount_rule_id: expect.any(String),
               created_at: expect.any(String),
               updated_at: expect.any(String),
-              products: expect.any(Array),
             },
           ],
         },
@@ -2038,7 +2037,6 @@ describe("/admin/discounts", () => {
         created_at: expect.any(String),
         updated_at: expect.any(String),
         discount_rule_id: expect.any(String),
-        products: expect.any(Array),
         discount_rule: {
           id: expect.any(String),
           updated_at: expect.any(String),

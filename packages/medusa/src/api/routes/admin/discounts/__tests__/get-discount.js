@@ -20,11 +20,7 @@ const defaultFields = [
   "valid_duration",
 ]
 
-const defaultRelations = [
-  "parent_discount",
-  "regions",
-  "rule.conditions.products.profiles",
-]
+const defaultRelations = ["parent_discount", "regions", "rule.conditions"]
 
 describe("GET /admin/discounts/:discount_id", () => {
   describe("successful retrieval", () => {

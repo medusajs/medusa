@@ -17,7 +17,6 @@ Object {
   "discount_rule_id": Any<String>,
   "id": "test-condition",
   "operator": "in",
-  "products": Any<Array>,
   "type": "products",
   "updated_at": Any<String>,
 }
@@ -99,7 +98,6 @@ Object {
         "id": Any<String>,
         "metadata": null,
         "operator": "in",
-        "products": Any<Array>,
         "type": "products",
         "updated_at": Any<String>,
       },

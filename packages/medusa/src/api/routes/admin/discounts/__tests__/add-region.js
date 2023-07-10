@@ -48,11 +48,7 @@ describe("POST /admin/discounts/:discount_id/regions/:region_id", () => {
             "metadata",
             "valid_duration",
           ],
-          relations: [
-            "parent_discount",
-            "regions",
-            "rule.conditions.products.profiles",
-          ],
+          relations: ["parent_discount", "regions", "rule.conditions"],
         }
       )
 

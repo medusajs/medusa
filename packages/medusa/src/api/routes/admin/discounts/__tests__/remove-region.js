@@ -20,11 +20,7 @@ const defaultFields = [
   "valid_duration",
 ]
 
-const defaultRelations = [
-  "parent_discount",
-  "regions",
-  "rule.conditions.products.profiles",
-]
+const defaultRelations = ["parent_discount", "regions", "rule.conditions"]
 
 describe("DELETE /admin/discounts/:discount_id/regions/region_id", () => {
   describe("successful removal", () => {
