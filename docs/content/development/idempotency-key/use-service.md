@@ -39,7 +39,7 @@ The method requires as a parameter an object having the following properties:
 
 The method handles generating the idempotency key value and saving the idempotency key with its details in the database. It returns the full idempotency key object.
 
-Alternativaly, you can use the `initializeRequest` method that allows you to retrieve an idempotency key based on the value passed in the `Idempotency-Key` header of the request if it exists, or create a new key otherwise. For example:
+Alternatively, you can use the `initializeRequest` method that allows you to retrieve an idempotency key based on the value passed in the `Idempotency-Key` header of the request if it exists, or create a new key otherwise. For example:
 
 ```ts
 router.post("/custom-route", async (req, res) => {
