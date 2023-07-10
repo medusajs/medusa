@@ -45,9 +45,6 @@ export function getCurrencyPricesOnly(prices: MoneyAmount[]) {
  */
 export function getRegionPricesOnly(prices: MoneyAmount[]) {
   return prices.filter((price) => {
-    if (price.price_list || price.min_quantity || price.max_quantity) {
-      return false
-    }
-    return true
+    return !(price.price_list || price.min_quantity || price.max_quantity)
   })
 }

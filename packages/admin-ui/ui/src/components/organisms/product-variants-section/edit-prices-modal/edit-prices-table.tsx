@@ -26,7 +26,12 @@ enum AnchorPosition {
 let anchor: { x: number; y: number } | null = null
 let lastVisited: { x: number; y: number } | null = null
 
+/**
+ * During drag move keep info which column is active one
+ */
 let activeCurrencyOrRegion = undefined
+let lastVisitedVariant = undefined
+
 let activeAmount: undefined | number = undefined
 
 /**
@@ -44,7 +49,9 @@ function EditPricesTable(props: EditPricesTableProps) {
   const { regions: storeRegions } = useAdminRegions()
 
   const [isDrag, setIsDrag] = useState(false)
-  const [editedPrices, setEditedPrices] = useState<Record<string, number>>({})
+  const [editedPrices, setEditedPrices] = useState<
+    Record<string, number | undefined>
+  >({})
   const [selectedCells, setSelectedCells] = useState<Record<string, boolean>>(
     {}
   )
@@ -106,9 +113,14 @@ function EditPricesTable(props: EditPricesTableProps) {
       return
     }
 
-    if ((currencyCode || regionId) !== activeCurrencyOrRegion) {
+    if (variantId === lastVisitedVariant) {
+      // just side move
       return
     }
+
+    // console.log(event.target.getBoundingClientRect())
+
+    lastVisitedVariant = variantId
 
     const currentY = event.target.getBoundingClientRect().bottom
 
@@ -123,8 +135,8 @@ function EditPricesTable(props: EditPricesTableProps) {
         move === MoveDirection.Down) ||
       (anchorPosition === AnchorPosition.Below && move === MoveDirection.Up)
     ) {
-      selectCell(variantId, currencyCode, regionId)
-      setPriceForCell(activeAmount, variantId, currencyCode, regionId)
+      selectCell(variantId, activeCurrencyOrRegion)
+      setPriceForCell(activeAmount, variantId, activeCurrencyOrRegion)
     }
 
     lastVisited = {
@@ -133,17 +145,8 @@ function EditPricesTable(props: EditPricesTableProps) {
     }
   }
 
-  const onMouseCellLeave = (
-    event: React.MouseEvent,
-    variantId: string,
-    currencyCode?: string,
-    regionId?: string
-  ) => {
+  const onMouseCellLeave = (event: React.MouseEvent, variantId: string) => {
     if (!isDrag || !lastVisited || !anchor) {
-      return
-    }
-
-    if ((currencyCode || regionId) !== activeCurrencyOrRegion) {
       return
     }
 
@@ -159,8 +162,8 @@ function EditPricesTable(props: EditPricesTableProps) {
       (anchorPosition === AnchorPosition.Above && move === MoveDirection.Up) ||
       (anchorPosition === AnchorPosition.Below && move === MoveDirection.Down)
     ) {
-      deselectCell(variantId, currencyCode, regionId)
-      setPriceForCell(undefined, variantId, currencyCode, regionId)
+      deselectCell(variantId, activeCurrencyOrRegion)
+      setPriceForCell(undefined, variantId, activeCurrencyOrRegion)
     }
   }
 
@@ -200,25 +203,21 @@ function EditPricesTable(props: EditPricesTableProps) {
    */
 
   useEffect(() => {
-    // const nextState = {}
-    // props.product.variants!.forEach((variant) => {
-    //   props.currencies.forEach((c) => {
-    //     const amount = getCurrencyPricesOnly(variant.prices!).find(
-    //       (p) => p.currency_code === c
-    //     )?.amount
-    //
-    //     nextState[`${variant.id}-${c}`] = amount
-    //   })
-    //
-    //   props.regions.forEach((r) => {
-    //     const amount = getRegionPricesOnly(variant.prices!).find(
-    //       (p) => p.region_id === r
-    //     )?.amount
-    //
-    //     nextState[`${variant.id}-${r}`] = amount
-    //   })
-    // })
-    // setEditedPrices(nextState)
+    const nextState: Record<string, number | undefined> = {}
+    props.product.variants!.forEach((variant) => {
+      props.currencies.forEach((c) => {
+        nextState[getKey(variant.id, c)] = getCurrencyPricesOnly(
+          variant.prices!
+        ).find((p) => p.currency_code === c)?.amount
+      })
+
+      props.regions.forEach((r) => {
+        nextState[getKey(variant.id, undefined, r)] = getRegionPricesOnly(
+          variant.prices!
+        ).find((p) => p.region_id === r)?.amount
+      })
+    })
+    setEditedPrices(nextState)
   }, [props.currencies, props.product.variants])
 
   useEffect(() => {
@@ -320,6 +319,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                       onMouseCellLeave={onMouseCellLeave}
                       onDragStart={onDragStart}
                       onDragEnd={onDragEnd}
+                      isDragging={isDrag}
                     />
                   )
                 })}
@@ -339,6 +339,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                     onMouseCellLeave={onMouseCellLeave}
                     onDragStart={onDragStart}
                     onDragEnd={onDragEnd}
+                    isDragging={isDrag}
                   />
                 ))}
               </tr>

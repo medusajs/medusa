@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react"
-
 import { ProductVariant } from "@medusajs/client-types"
-import { getCurrencyPricesOnly } from "./utils"
-import clsx from "clsx"
 import AmountField from "react-currency-input-field"
+import clsx from "clsx"
 
 type CellEventHandler = (
   event: React.MouseEvent,
@@ -19,6 +17,7 @@ type CurrencyCellProps = {
   variant: ProductVariant
   editedAmount?: number
   isSelected?: boolean
+  isDragging?: boolean
 
   onDragStart: () => void
   onDragEnd: () => void
@@ -27,7 +26,7 @@ type CurrencyCellProps = {
   onMouseCellLeave: CellEventHandler
   onMouseCellClick: CellEventHandler
   onInputChange: (
-    value: string,
+    value: number | undefined,
     variantId: string,
     currencyCode?: string,
     regionId?: string
@@ -38,23 +37,27 @@ type CurrencyCellProps = {
  * Amount cell container.
  */
 function CurrencyCell(props: CurrencyCellProps) {
-  const { variant, currencyCode, region, editedAmount, isSelected } = props
+  const {
+    variant,
+    currencyCode,
+    region,
+    editedAmount,
+    isSelected,
+    isDragging,
+  } = props
 
-  const [showDragIndicator, setShowDragIndicator] = useState<
-    number | undefined
-  >(false)
-  const [localValue, setLocalValue] = useState(() => {
-    const price = getCurrencyPricesOnly(variant.prices!).find(
-      (p) => p.currency_code === currencyCode || p.region_id === region
-    )
-    if (price) {
-      return price.amount
-    }
-  })
+  const [showDragIndicator, setShowDragIndicator] = useState(false)
+  const [localValue, setLocalValue] = useState(editedAmount)
 
   useEffect(() => {
     setLocalValue(editedAmount)
   }, [editedAmount])
+
+  useEffect(() => {
+    if (!isDragging) {
+      setShowDragIndicator(false)
+    }
+  }, [isDragging])
 
   return (
     <td
@@ -62,9 +65,15 @@ function CurrencyCell(props: CurrencyCellProps) {
         props.onMouseCellClick(e, variant.id, currencyCode, region)
       }
       onMouseEnter={(e) => {
+        if (isDragging) {
+          setShowDragIndicator(true)
+        }
         props.onMouseCellEnter(e, variant.id, currencyCode, region)
       }}
       onMouseLeave={(e) => {
+        if (isDragging) {
+          setShowDragIndicator(false)
+        }
         props.onMouseCellLeave(e, variant.id, currencyCode, region)
       }}
       className={clsx("relative border pr-2", {
