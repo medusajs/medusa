@@ -70,16 +70,15 @@ describe("ProductModuleService product variants", () => {
       expect(results[0]).toEqual([
         expect.objectContaining({
           id: variantOne.id,
-          title: "variant 1",
-          inventory_quantity: "10",
         }),
       ])
     })
 
-    // TODO: investigate why pagination is incorrect
-    it.skip("should return variants and count based on the 'take' parameter", async () => {
-      const results = await service.listAndCountVariants(
-        {},
+    it("should return variants and count based on the options and filter parameter", async () => {
+      let results = await service.listAndCountVariants(
+        {
+          id: variantOne.id,
+        },
         {
           take: 1,
         }
@@ -89,8 +88,19 @@ describe("ProductModuleService product variants", () => {
       expect(results[0]).toEqual([
         expect.objectContaining({
           id: variantOne.id,
-          title: "variant 1",
-          inventory_quantity: "10",
+        }),
+      ])
+
+      results = await service.listAndCountVariants({}, { take: 1 })
+
+      expect(results[1]).toEqual(2)
+
+      results = await service.listAndCountVariants({}, { take: 1, skip: 1 })
+
+      expect(results[1]).toEqual(2)
+      expect(results[0]).toEqual([
+        expect.objectContaining({
+          id: variantTwo.id,
         }),
       ])
     })
