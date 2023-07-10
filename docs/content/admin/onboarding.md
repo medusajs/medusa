@@ -1190,7 +1190,7 @@ npx typeorm migration:create src/migrations/CreateOnboarding
 
 This will create a file in the `src/migrations` directory with the name formatted as `<TIMESTAMP>-CreateOnboarding.ts`.
 
-In that file, import the `genereteEntityId` utility method at the top of the file:
+In that file, import the `generateEntityId` utility method at the top of the file:
 
 ```ts
 import { generateEntityId } from "@medusajs/utils"

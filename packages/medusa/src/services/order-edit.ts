@@ -514,6 +514,7 @@ export default class OrderEditService extends TransactionBaseService {
         "items.variant",
         "region.tax_rates",
         "shipping_methods",
+        "shipping_methods.shipping_option",
         "shipping_methods.tax_lines",
       ],
     })

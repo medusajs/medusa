@@ -16,6 +16,7 @@ export interface Config {
   maxRetries: number
   apiKey?: string
   publishableApiKey?: string
+  customHeaders?: Record<string, any>
 }
 
 export interface RequestOptions {
@@ -199,6 +200,9 @@ class Client {
     options: RequestOptions = {},
     customHeaders: Record<string, any> = {}
   ): Promise<any> {
+   
+   customHeaders = { ...this.config.customHeaders, ...customHeaders }
+
     const reqOpts = {
       method,
       withCredentials: true,

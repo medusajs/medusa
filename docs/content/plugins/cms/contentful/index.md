@@ -183,7 +183,7 @@ Using the Medusa admin, you can add products to your Medusa backend. This will t
 
 This section explains how you can establish a two-way sync between Medusa and Contentful. This would ensure that not only is the data updated from the Medusa backend to Contentful, but also ensure the updates are relayed from Contentful to the Medusa backend.
 
-However, to perform this sync, it's required that you deploy your backend so that it can be publically accessible. You can learn how to do that through the [backend deployment](../../../deployments/server/index.mdx) guides.
+However, to perform this sync, it's required that you deploy your backend so that it can be publicly accessible. You can learn how to do that through the [backend deployment](../../../deployments/server/index.mdx) guides.
 
 Configuring two-way sync requires configuring Webhooks in Contentful. To do that:
 
