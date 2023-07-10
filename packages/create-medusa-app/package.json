@@ -52,7 +52,7 @@
     "typescript": "^5.0.4"
   },
   "engines": {
-    "node": ">=14.16"
+    "node": ">=16"
   },
   "repository": {
     "type": "git",

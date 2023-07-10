@@ -15,7 +15,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=16"
   },
   "scripts": {
     "build": "tsup src/index.ts",

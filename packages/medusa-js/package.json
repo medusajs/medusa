@@ -23,7 +23,7 @@
   "author": "Oliver Juhl",
   "license": "MIT",
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=16"
   },
   "dependencies": {
     "axios": "^0.24.0",
