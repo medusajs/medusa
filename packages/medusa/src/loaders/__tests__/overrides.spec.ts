@@ -1,7 +1,15 @@
 import { MedusaError } from "medusa-core-utils"
+import { IsString } from "class-validator"
 
 import overridesLoader from "../overrides"
-import { registerOverride } from '../../utils'
+import { registerOverride, resetOverride } from '../../utils'
+import { validator } from '../../utils/validator'
+import { AdminPostProductsReq } from "../../api/routes/admin/products/create-product"
+
+class ExtendedAdminPostProductsReq extends AdminPostProductsReq {
+  @IsString()
+  custom_attribute: string
+}
 
 async function registrationHelper({ key, override }): Promise<MedusaError | null> {
   let error = null
@@ -22,6 +30,10 @@ async function registrationHelper({ key, override }): Promise<MedusaError | null
 
 describe("overridesLoader", () => {
   let error, key, override
+
+  beforeEach(() => {
+    resetOverride()
+  })
 
   it("should not throw error when registered correctly", async () => {
     const error = await registrationHelper({
@@ -62,5 +74,53 @@ describe("overridesLoader", () => {
       'Override Registration Error: "doesnotexist" not found in "../api/routes/store/products/index" for registration key "api/routes/store/products/index"'
     )
     expect(error).toBeTruthy()
+  })
+
+  it("should correctly register the overriden validator", async () => {
+    let validationResult, error
+
+    validationResult = await validator(AdminPostProductsReq, {
+      title: "test",
+    })
+
+    expect(validationResult.custom_attribute).not.toBeDefined()
+
+    const result = await registrationHelper({
+      key: 'api/routes/admin/products/create-product',
+      override: {
+        AdminPostProductsReq: ExtendedAdminPostProductsReq,
+      }
+    })
+
+    try {
+      validationResult = await validator(AdminPostProductsReq, {
+        title: "test",
+      })
+    } catch (e) {
+      error = e
+    }
+
+    expect(error).toBeDefined()
+    expect(error.message).toEqual("custom_attribute must be a string")
+
+    validationResult = await validator(AdminPostProductsReq, {
+      title: "test",
+      custom_attribute: "test",
+    })
+
+    expect(validationResult.custom_attribute).toEqual("test")
+  })
+
+  it("should throw error when trying to register a validator that does not exist in core", async () => {
+    const error = await registrationHelper({
+      key: 'api/routes/admin/products/create-product',
+      override: {
+        ValidatorDoesnotExist: ExtendedAdminPostProductsReq,
+      }
+    })
+
+    expect(error?.message).toBe(
+      'Override Registration Error: "ValidatorDoesnotExist" not found in "../api/routes/admin/products/create-product" for registration key "api/routes/admin/products/create-product"'
+    )
   })
 })

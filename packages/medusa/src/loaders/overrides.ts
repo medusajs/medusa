@@ -21,7 +21,11 @@ export default async ({ isTest = false } = {}) => {
 
     Object.entries(override).forEach(([overrideKey, overrideValue]) => {
       if (coreImport[overrideKey]) {
-        coreImport[overrideKey] = coreImport[overrideKey].concat(overrideValue)
+        if (Array.isArray(coreImport[overrideKey])) {
+          coreImport[overrideKey] = coreImport[overrideKey].concat(overrideValue)
+        } else {
+          coreImport[overrideKey] = overrideValue
+        }
       } else {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,

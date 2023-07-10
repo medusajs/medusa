@@ -18,3 +18,11 @@ export function registerOverride({ key, override }: RegisterOverrideOptions) {
 
   registeredOverrides.set(key, override)
 }
+
+export function resetOverride(key?: string) {
+  if (key) {
+    registeredOverrides.delete(key)
+  } else {
+    registeredOverrides.clear()
+  }
+}
