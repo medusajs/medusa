@@ -215,7 +215,8 @@ export class Product extends SoftDeletableEntity {
   @AfterLoad()
   private afterLoad(): void {
     if (this.profiles) {
-      this.profile = this.profiles.pop()!
+      // There is always only one item due to the constraints on the pivot table
+      this.profile = this.profiles[0]!
       this.profile_id = this.profile?.id
     }
   }
