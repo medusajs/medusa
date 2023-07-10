@@ -1,5 +1,5 @@
 ---
-description: 'Learn what the dependency container is and how to use it in Medusa. Learn also what dependency injection is, and what the resources regsitered and their names are.'
+description: 'Learn what the dependency container is and how to use it in Medusa. Learn also what dependency injection is, and what the resources registered and their names are.'
 ---
 
 # Dependency Container and Injection

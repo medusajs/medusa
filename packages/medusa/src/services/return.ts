@@ -596,6 +596,7 @@ class ReturnService extends TransactionBaseService {
             "discounts.rule",
             "refunds",
             "shipping_methods",
+            "shipping_methods.shipping_option",
             "region",
             "swaps",
             "swaps.additional_items",
