@@ -212,13 +212,16 @@ export const defaultAdminDiscountsRelations = [
   "rule",
   "parent_discount",
   "regions",
-  "rule.conditions",
+  "rule.conditions.products.profiles",
 ]
 
 export const defaultAdminDiscountConditionFields: (keyof DiscountCondition)[] =
   ["id", "type", "operator", "discount_rule_id", "created_at", "updated_at"]
 
-export const defaultAdminDiscountConditionRelations = ["discount_rule"]
+export const defaultAdminDiscountConditionRelations = [
+  "discount_rule",
+  "products.profiles",
+]
 
 /**
  * @schema AdminDiscountsRes
