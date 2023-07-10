@@ -21,10 +21,9 @@ const defaultFields = [
 ]
 
 const defaultRelations = [
-  "rule",
   "parent_discount",
   "regions",
-  "rule.conditions",
+  "rule.conditions.products.profiles",
 ]
 
 describe("DELETE /admin/discounts/:discount_id/regions/region_id", () => {
