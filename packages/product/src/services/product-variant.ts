@@ -36,7 +36,7 @@ export default class ProductVariantService<
       )
     }
 
-    const queryOptions = ModulesSdkUtils.buildQuery<ProductVariant>({
+    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>({
       id: productVariantId,
     }, config)
 
@@ -60,7 +60,7 @@ export default class ProductVariantService<
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: Context
   ): Promise<TEntity[]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<ProductVariant>(
+    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(
       filters,
       config
     )
@@ -76,7 +76,7 @@ export default class ProductVariantService<
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: Context
   ): Promise<[TEntity[], number]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<ProductVariant>(
+    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>(
       filters,
       config
     )
