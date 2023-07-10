@@ -1,6 +1,6 @@
 # Class: FulfillmentProviderService
 
-Helps retrieve fulfillment providers
+Helps retrive fulfillment providers
 
 ## Hierarchy
 

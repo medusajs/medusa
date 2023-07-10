@@ -14,7 +14,7 @@
 
 **`Description`**
 
-Lists shipping options available
+Lists shiping options available
 
 #### Parameters
 
@@ -39,7 +39,7 @@ ___
 
 **`Description`**
 
-Lists shipping options available for a cart
+Lists shiping options available for a cart
 
 #### Parameters
 

@@ -459,7 +459,7 @@ shop.
 | :------ | :------ | :------ |
 | `cartOrId` | `string` \| `Cart` | the id of the cart to add shipping method to |
 | `optionId` | `string` | id of shipping option to add as valid method |
-| `data` | `Record`<`string`, `unknown`\> | the fulfillment data for the method |
+| `data` | `Record`<`string`, `unknown`\> | the fulmillment data for the method |
 
 #### Returns
 
@@ -682,7 +682,7 @@ Creates or fetches a user based on an email.
 
 `Promise`<`Customer`\>
 
-the resulting customer object
+the resultign customer object
 
 #### Defined in
 
@@ -792,7 +792,7 @@ Removes a payment session from the cart.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `cartId` | `string` | the id of the cart to remove from |
-| `providerId` | `string` | the id of the provider whose payment session    should be removed. |
+| `providerId` | `string` | the id of the provider whoose payment session    should be removed. |
 
 #### Returns
 
@@ -971,7 +971,7 @@ Refreshes a payment session on a cart
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `cartId` | `string` | the id of the cart to remove from |
-| `providerId` | `string` | the id of the provider whose payment session    should be removed. |
+| `providerId` | `string` | the id of the provider whoose payment session    should be removed. |
 
 #### Returns
 

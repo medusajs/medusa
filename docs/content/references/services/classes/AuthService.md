@@ -196,7 +196,7 @@ scrypt to match password with hashed value.
 `Promise`<`AuthenticateResult`\>
 
 success: whether authentication succeeded
-   user: the user document if authentication succeeded
+   user: the user document if authentication succeded
    error: a string with the error message
 
 #### Defined in
@@ -222,7 +222,7 @@ Authenticates a given user with an API token
 `Promise`<`AuthenticateResult`\>
 
 success: whether authentication succeeded
-   user: the user document if authentication succeeded
+   user: the user document if authentication succeded
    error: a string with the error message
 
 #### Defined in
@@ -250,7 +250,7 @@ scrypt to match password with hashed value.
 `Promise`<`AuthenticateResult`\>
 
 success: whether authentication succeeded
-   user: the user document if authentication succeeded
+   user: the user document if authentication succeded
    error: a string with the error message
 
 #### Defined in
