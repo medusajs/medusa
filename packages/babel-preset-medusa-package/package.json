@@ -2,6 +2,9 @@
   "name": "babel-preset-medusa-package",
   "version": "1.1.19",
   "author": "Sebastian Rindom <sebastian@mrbltech.com>",
+  "engines": {
+    "node": ">=16"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa.git",
@@ -24,8 +27,5 @@
   },
   "license": "MIT",
   "main": "index.js",
-  "engines": {
-    "node": ">=16"
-  },
   "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
 }

@@ -16,6 +16,9 @@
     "dist",
     "oas"
   ],
+  "engines": {
+    "node": ">=16"
+  },
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {

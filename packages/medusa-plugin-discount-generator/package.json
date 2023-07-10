@@ -9,6 +9,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-plugin-discount-generator"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "devDependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",

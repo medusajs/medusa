@@ -10,6 +10,9 @@
   },
   "author": "Oliver Juhl, Tomek Pur",
   "license": "MIT",
+  "engines": {
+    "node": ">=16"
+  },
   "devDependencies": {
     "@medusajs/medusa": "^1.12.1",
     "@types/express": "^4.17.17",

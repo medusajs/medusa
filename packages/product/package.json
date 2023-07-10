@@ -12,6 +12,9 @@
     "medusa-product-migrations-up": "dist/scripts/bin/run-migration-up.js",
     "medusa-product-seed": "dist/scripts/bin/run-seed.js"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",

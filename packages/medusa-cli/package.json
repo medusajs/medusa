@@ -6,6 +6,9 @@
   "bin": {
     "medusa": "cli.js"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",

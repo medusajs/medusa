@@ -4,6 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
     "test:integration": "jest --silent=false --runInBand --bail --detectOpenHandles --forceExit",
     "build": "babel src -d dist --extensions \".ts,.js\""

@@ -18,6 +18,9 @@
     "build": "tsc",
     "watch": "tsc --watch"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "dependencies": {
     "@medusajs/modules-sdk": "^1.8.8",
     "@medusajs/utils": "^1.9.1",

@@ -4,6 +4,9 @@
   "bin": {
     "medusa-admin": "./bin/medusa-admin.js"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "main": "index.js",
   "types": "types/index.d.ts",
   "files": [

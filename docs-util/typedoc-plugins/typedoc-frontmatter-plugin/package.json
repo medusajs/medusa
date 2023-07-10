@@ -20,6 +20,9 @@
     "typedoc": "^0.22.10",
     "typescript": "4.5.2"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "keywords": [
     "typedocplugin",
     "packages",

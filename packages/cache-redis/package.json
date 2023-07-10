@@ -3,6 +3,9 @@
   "version": "1.8.8",
   "description": "Redis Cache Module for Medusa",
   "main": "dist/index.js",
+  "engines": {
+    "node": ">=16"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",

@@ -10,6 +10,9 @@
   },
   "author": "Sebastian Rindom",
   "license": "MIT",
+  "engines": {
+    "node": ">=16"
+  },
   "devDependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",

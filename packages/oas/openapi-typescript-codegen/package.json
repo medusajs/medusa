@@ -13,6 +13,9 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/oas/openapi-typescript-codegen"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "author": "Medusa",
   "contributors": [
     "Ferdi Koomen"

@@ -25,6 +25,9 @@
     "ts-jest": "^25.5.1",
     "typescript": "^4.4.4"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "dependencies": {
     "awilix": "^8.0.1",
     "glob": "^7.1.6",

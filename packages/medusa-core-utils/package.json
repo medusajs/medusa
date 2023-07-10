@@ -3,6 +3,9 @@
   "version": "1.2.0",
   "description": "Core utils for Medusa",
   "main": "dist/index.js",
+  "engines": {
+    "node": ">=16"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",

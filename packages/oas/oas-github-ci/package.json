@@ -14,6 +14,9 @@
   "private": true,
   "author": "Medusa",
   "license": "MIT",
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
     "ci": "node scripts/build-openapi.js",
     "preview:admin": "yarn medusa-oas docs --src-file ../../../docs/api/admin/openapi.yaml --preview",
