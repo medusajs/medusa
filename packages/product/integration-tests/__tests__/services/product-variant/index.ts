@@ -21,6 +21,7 @@ describe("ProductVariant Service", () => {
   let variantOne: ProductVariant
   let variantTwo: ProductVariant
   let productOne: Product
+  const productVariantTestOne = "test-1"
 
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
@@ -57,7 +58,7 @@ describe("ProductVariant Service", () => {
       })
 
       variantOne = testManager.create(ProductVariant, {
-        id: "test-1",
+        id: productVariantTestOne,
         title: "variant 1",
         inventory_quantity: 10,
         product: productOne,
@@ -105,7 +106,7 @@ describe("ProductVariant Service", () => {
     it("passing populate, scopes the results of the response", async () => {
       const results = await service.list(
         {
-          id: "test-1",
+          id: productVariantTestOne,
         },
         {
           select: ["id", "title", "product.title"] as any,
@@ -115,7 +116,7 @@ describe("ProductVariant Service", () => {
 
       expect(results).toEqual([
         expect.objectContaining({
-          id: "test-1",
+          id: productVariantTestOne,
           title: "variant 1",
           product: expect.objectContaining({
             id: "product-1",
@@ -128,7 +129,7 @@ describe("ProductVariant Service", () => {
 
       expect(JSON.parse(JSON.stringify(results))).toEqual([
         {
-          id: "test-1",
+          id: productVariantTestOne,
           title: "variant 1",
           product_id: "product-1",
           product: {
@@ -185,7 +186,7 @@ describe("ProductVariant Service", () => {
 
       expect(JSON.parse(JSON.stringify(variants))).toEqual([
         expect.objectContaining({
-          id: "test-1",
+          id: productVariantTestOne,
           title: "variant title",
           sku: "sku 1",
         }),
@@ -263,7 +264,7 @@ describe("ProductVariant Service", () => {
       })
 
       variantOne = testManager.create(ProductVariant, {
-        id: "test-1",
+        id: productVariantTestOne,
         title: "variant 1",
         inventory_quantity: 10,
         product: productOne,
@@ -277,7 +278,7 @@ describe("ProductVariant Service", () => {
 
       expect(result).toEqual(
         expect.objectContaining({
-          id: "test-1",
+          id: productVariantTestOne,
           title: "variant 1",
         }),
       )
@@ -294,7 +295,7 @@ describe("ProductVariant Service", () => {
 
       expect(result).toEqual(
         expect.objectContaining({
-          id: "test-1",
+          id: productVariantTestOne,
           title: "variant 1",
           product_id: "product-1",
           product: expect.objectContaining({
@@ -317,7 +318,7 @@ describe("ProductVariant Service", () => {
       expect(error.message).toEqual("ProductVariant with id: does-not-exist was not found")
     })
 
-    it("should throw an error when a variant with ID does not exist", async () => {
+    it("should throw an error when an id is not provided", async () => {
       let error
 
       try {
