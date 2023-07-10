@@ -22,7 +22,7 @@ The `StockLocation` entity represents a stock location. It has minimal attribute
 
 ## StockLocationAddress Entity
 
-The `StockLocationAddress` is an entitiy that contains address-related fields, such as `city` or `country_code`.
+The `StockLocationAddress` is an entity that contains address-related fields, such as `city` or `country_code`.
 
 The `StockLocationAddress` entity belongs to the `StockLocation` entity. It is used to store the address details of a stock location.
 
