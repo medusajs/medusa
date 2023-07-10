@@ -157,7 +157,6 @@ function EditPricesTable(props: EditPricesTableProps) {
 
     activeCurrencyOrRegion = currencyCode || regionId
     activeAmount = Number(event.target.value?.replace(",", ""))
-
     selectCell(variantId, currencyCode, regionId)
   }
 
@@ -165,12 +164,21 @@ function EditPricesTable(props: EditPricesTableProps) {
     value: number | undefined,
     variantId: string,
     currencyCode?: string,
-    regionId?: string
+    regionId?: string,
+    persistActive?: boolean
   ) => {
     setPriceForCell(value, variantId, currencyCode, regionId)
+    if (persistActive) {
+      activeAmount = value
+    }
   }
 
-  const onDragStart = () => {
+  const onDragStart = (
+    variantId: string,
+    currencyCode?: string,
+    regionId?: string
+  ) => {
+    selectCell(variantId, currencyCode, regionId)
     setIsDrag(true)
   }
 
@@ -215,11 +223,11 @@ function EditPricesTable(props: EditPricesTableProps) {
 
   useEffect(() => {
     const down = () => {
-      document.body.style.pointerEvents = "none"
+      document.body.style.userSelect = "none"
       setSelectedCells({})
     }
     const up = () => {
-      document.body.style.pointerEvents = "auto"
+      document.body.style.userSelect = "auto"
       setIsDrag(false)
     }
 

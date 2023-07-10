@@ -12,7 +12,11 @@ type CurrencyCellProps = {
   isSelected?: boolean
   isDragging?: boolean
 
-  onDragStart: () => void
+  onDragStart: (
+    variantId: string,
+    currencyCode?: string,
+    regionId?: string
+  ) => void
   onDragEnd: () => void
 
   onMouseCellClick: (
@@ -26,7 +30,8 @@ type CurrencyCellProps = {
     value: number | undefined,
     variantId: string,
     currencyCode?: string,
-    regionId?: string
+    regionId?: string,
+    persist?: boolean
   ) => void
 }
 
@@ -71,15 +76,23 @@ function CurrencyCell(props: CurrencyCellProps) {
         className={clsx("decoration-transparent focus:outline-0", {
           "bg-blue-100": isSelected,
         })}
-        onValueChange={(v) => setLocalValue(v?.float)}
+        onValueChange={(_a, _b, v) => setLocalValue(v?.float)}
         decimalSeparator="."
         value={localValue}
       ></AmountField>
       {showDragIndicator && (
         <div
           onMouseDown={(event) => {
+            document.body.style.userSelect = "none"
             event.stopPropagation()
-            props.onDragStart()
+            props.onInputChange(
+              localValue,
+              variant.id,
+              currencyCode,
+              region,
+              true
+            )
+            props.onDragStart(variant.id, currencyCode, region)
           }}
           className="absolute right-0 bottom-0 h-2 w-2 cursor-pointer rounded-full bg-blue-400"
         />
