@@ -17,7 +17,7 @@ export default class ProductOptionService<
   }
 
   async create(
-    data: (ProductTypes.CreateProductOptionDTO & { product: { id: string } })[],
+    data: ProductTypes.CreateProductOptionOnlyDTO[],
     sharedContext?: Context
   ) {
     return await this.productOptionRepository_.transaction(

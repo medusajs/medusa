@@ -25,7 +25,7 @@ export async function attachInventoryItems({
     data
       .filter((d) => d)
       .map(async ({ variant, inventoryItem }) => {
-        return productVariantInventoryService.attachInventoryItem(
+        return await productVariantInventoryService.attachInventoryItem(
           variant.id,
           inventoryItem.id
         )
