@@ -186,7 +186,7 @@ This feature is only available if you have an event module installed in your Med
 
 ## Add Search to your Storefront
 
-In this section, you’ll learn how to add the UI on your storefront to allow searching with MeiliSearch. This section has instructions for Medusa’s [Next.js](../../starters/nextjs-medusa-starter.mdx) storefront as well as React-based frameworks.
+In this section, you’ll learn how to add the UI on your storefront to allow searching with MeiliSearch. This section has instructions for Medusa’s [Next.js Starter Template](../../starters/nextjs-medusa-starter.mdx) as well as React-based frameworks.
 
 ### Storefront Prerequisites
 
@@ -194,7 +194,7 @@ It is assumed you already have a storefront set up and working with the Medusa b
 
 :::tip
 
-If you don’t have a storefront set up, you can use the [Next.js starter storefront](../../starters/nextjs-medusa-starter.mdx) that Medusa provides.
+If you don’t have a storefront set up, you can use the [Next.js Starter Template](../../starters/nextjs-medusa-starter.mdx) that Medusa provides.
 
 :::
 
@@ -217,9 +217,9 @@ Make sure to replace `<MEILISEARCH_HOST>` and `<MEILISEARCH_MASTER_KEY>` accordi
 
 If this request is successful, the API key will be available under the `key` property returned in the JSON response.
 
-### Add to Next.js Storefront
+### Add to Next.js Starter Template
 
-The Next.js storefront has the MeiliSearch integration available out of the box. To get it working, you just need to follow two steps.
+The Next.js Starter Template has the MeiliSearch integration available out of the box. To get it working, you just need to follow two steps.
 
 First, ensure that the search feature is enabled in `store.config.json`:
 
@@ -241,15 +241,15 @@ NEXT_PUBLIC_SEARCH_INDEX_NAME=products
 
 Make sure to replace `<YOUR_MEILISEARCH_HOST>` with your MeiliSearch host and `<YOUR_API_KEY>` with the API key you created as instructed in the [Storefront Prerequisites](#storefront-prerequisites) section.
 
-If you run your Next.js storefront now while the Medusa backend and the MeiliSearch services are running, the search functionality will be available in your storefront.
+If you run your Next.js Starter Template now while the Medusa backend and the MeiliSearch services are running, the search functionality will be available in your storefront.
 
 :::note
 
-To make sure the Next.js storefront properly displays the products in the search result, include in the `displayedAttributes` setting of the MeiliSearch plugin on the Medusa backend at least the fields `title`, `handle`, `description`, and `thumbnail`.
+To make sure the Next.js Starter Template properly displays the products in the search result, include in the `displayedAttributes` setting of the MeiliSearch plugin on the Medusa backend at least the fields `title`, `handle`, `description`, and `thumbnail`.
 
 :::
 
-![Search Result on Next.js storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000298/Medusa%20Docs/MeiliSearch/gQVWvH2_datei5.png)
+![Search Result on Next.js Starter Template](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000298/Medusa%20Docs/MeiliSearch/gQVWvH2_datei5.png)
 
 ### Add to Other Storefronts
 
