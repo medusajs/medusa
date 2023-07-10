@@ -32,11 +32,7 @@ export class OrchestratorBuilder {
     return this
   }
 
-  addAction(
-    action: string,
-    handler: ActionHandler,
-    options: Partial<TransactionStepsDefinition> = {}
-  ) {
+  addAction(action: string, options: Partial<TransactionStepsDefinition> = {}) {
     const step = this.findLastStep()
     const newAction = {
       action,
@@ -53,7 +49,6 @@ export class OrchestratorBuilder {
   replaceAction(
     existingAction: string,
     action: string,
-    handler: ActionHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
     const step = this.findOrThrowStepByAction(existingAction)
@@ -67,7 +62,6 @@ export class OrchestratorBuilder {
   insertActionBefore(
     existingAction: string,
     action: string,
-    handler: ActionHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
     const parentStep = this.findParentStepByAction(existingAction)
@@ -104,7 +98,6 @@ export class OrchestratorBuilder {
   insertActionAfter(
     existingAction: string,
     action: string,
-    handler: ActionHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
     const step = this.findOrThrowStepByAction(existingAction)
@@ -140,7 +133,6 @@ export class OrchestratorBuilder {
   appendAction(
     action: string,
     to: string,
-    handler: ActionHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
     const newAction = {
@@ -237,11 +229,7 @@ export class OrchestratorBuilder {
     return this
   }
 
-  moveAction(
-    actionToMove: string,
-    targetAction: string,
-    runInParallel = false
-  ): OrchestratorBuilder {
+  moveAction(actionToMove: string, targetAction: string): OrchestratorBuilder {
     this.move(actionToMove, targetAction)
 
     return this
@@ -249,8 +237,7 @@ export class OrchestratorBuilder {
 
   moveAndMergeNextAction(
     actionToMove: string,
-    targetAction: string,
-    runInParallel = false
+    targetAction: string
   ): OrchestratorBuilder {
     this.move(actionToMove, targetAction, { mergeNext: true })
 

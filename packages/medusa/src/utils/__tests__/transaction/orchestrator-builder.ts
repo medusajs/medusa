@@ -15,13 +15,13 @@ describe("OrchestratorBuilder", () => {
   })
 
   it("should add a new action after the last action set", () => {
-    builder.addAction("foo", {})
+    builder.addAction("foo")
 
     expect(builder.build()).toEqual({
       action: "foo",
     })
 
-    builder.addAction("bar", {})
+    builder.addAction("bar")
 
     expect(builder.build()).toEqual({
       action: "foo",
@@ -32,10 +32,7 @@ describe("OrchestratorBuilder", () => {
   })
 
   it("should replace an action by another keeping its next steps", () => {
-    builder
-      .addAction("foo", {})
-      .addAction("axe", {})
-      .replaceAction("foo", "bar", {})
+    builder.addAction("foo").addAction("axe").replaceAction("foo", "bar")
     expect(builder.build()).toEqual({
       action: "bar",
       next: {
@@ -45,10 +42,7 @@ describe("OrchestratorBuilder", () => {
   })
 
   it("should insert a new action before an existing action", () => {
-    builder
-      .addAction("foo", {})
-      .addAction("bar", {})
-      .insertActionBefore("bar", "axe", {})
+    builder.addAction("foo").addAction("bar").insertActionBefore("bar", "axe")
 
     expect(builder.build()).toEqual({
       action: "foo",
@@ -62,10 +56,7 @@ describe("OrchestratorBuilder", () => {
   })
 
   it("should insert a new action after an existing action", () => {
-    builder
-      .addAction("foo", {})
-      .addAction("axe", {})
-      .insertActionAfter("foo", "bar", {})
+    builder.addAction("foo").addAction("axe").insertActionAfter("foo", "bar")
 
     expect(builder.build()).toEqual({
       action: "foo",
@@ -80,10 +71,10 @@ describe("OrchestratorBuilder", () => {
 
   it("should move an existing action and its next steps to another place. the destination will become next steps of the final branch", () => {
     builder
-      .addAction("foo", {})
-      .addAction("bar", {})
-      .addAction("axe", {})
-      .addAction("zzz", {})
+      .addAction("foo")
+      .addAction("bar")
+      .addAction("axe")
+      .addAction("zzz")
       .moveAction("axe", "foo")
 
     expect(builder.build()).toEqual({
@@ -102,9 +93,9 @@ describe("OrchestratorBuilder", () => {
 
   it("should merge two action to run in parallel", () => {
     builder
-      .addAction("foo", {})
-      .addAction("bar", {})
-      .addAction("axe", {})
+      .addAction("foo")
+      .addAction("bar")
+      .addAction("axe")
       .mergeActions("foo", "axe")
 
     expect(builder.build()).toEqual({
@@ -120,10 +111,10 @@ describe("OrchestratorBuilder", () => {
 
   it("should merge multiple actions to run in parallel", () => {
     builder
-      .addAction("foo", {})
-      .addAction("bar", {})
-      .addAction("axe", {})
-      .addAction("step", {})
+      .addAction("foo")
+      .addAction("bar")
+      .addAction("axe")
+      .addAction("step")
       .mergeActions("bar", "axe", "step")
 
     expect(builder.build()).toEqual({
@@ -143,16 +134,16 @@ describe("OrchestratorBuilder", () => {
   })
 
   it("should delete an action", () => {
-    builder.addAction("foo", {}).deleteAction("foo")
+    builder.addAction("foo").deleteAction("foo")
 
     expect(builder.build()).toEqual({})
   })
 
   it("should delete an action and keep all the next steps of that branch", () => {
     builder
-      .addAction("foo", {})
-      .addAction("bar", {})
-      .addAction("axe", {})
+      .addAction("foo")
+      .addAction("bar")
+      .addAction("axe")
       .deleteAction("bar")
 
     expect(builder.build()).toEqual({
@@ -165,10 +156,10 @@ describe("OrchestratorBuilder", () => {
 
   it("should delete an action and remove all the next steps of that branch", () => {
     builder
-      .addAction("foo", {})
-      .addAction("bar", {})
-      .addAction("axe", {})
-      .addAction("step", {})
+      .addAction("foo")
+      .addAction("bar")
+      .addAction("axe")
+      .addAction("step")
       .pruneAction("bar")
     expect(builder.build()).toEqual({
       action: "foo",
@@ -191,7 +182,7 @@ describe("OrchestratorBuilder", () => {
           },
         ],
       })
-      .appendAction("step", "bar", {}, { saveResponse: true })
+      .appendAction("step", "bar", { saveResponse: true })
 
     expect(builder.build()).toEqual({
       action: "foo",
@@ -240,8 +231,8 @@ describe("OrchestratorBuilder", () => {
     it("should load a transaction and add two steps", () => {
       const builder = new OrchestratorBuilder(loadedFlow)
       builder
-        .addAction("step_1", {}, { saveResponse: true })
-        .addAction("step_2", {}, { saveResponse: true })
+        .addAction("step_1", { saveResponse: true })
+        .addAction("step_2", { saveResponse: true })
 
       expect(builder.build()).toEqual({
         action: "createProduct",
@@ -276,8 +267,8 @@ describe("OrchestratorBuilder", () => {
     it("should load a transaction, add 2 steps and merge step_1 to run in parallel with createProduct", () => {
       const builder = new OrchestratorBuilder(loadedFlow)
       builder
-        .addAction("step_1", {}, { saveResponse: true })
-        .addAction("step_2", {}, { saveResponse: true })
+        .addAction("step_1", { saveResponse: true })
+        .addAction("step_2", { saveResponse: true })
         .mergeActions("createProduct", "step_1")
 
       expect(builder.build()).toEqual({
@@ -317,8 +308,8 @@ describe("OrchestratorBuilder", () => {
     it("should load a transaction, add 2 steps and move 'step_1' and all its next steps to run before 'createPrices'", () => {
       const builder = new OrchestratorBuilder(loadedFlow)
       builder
-        .addAction("step_1", {}, { saveResponse: true })
-        .addAction("step_2", {}, { saveResponse: true })
+        .addAction("step_1", { saveResponse: true })
+        .addAction("step_2", { saveResponse: true })
         .moveAction("step_1", "createPrices")
 
       expect(builder.build()).toEqual({
@@ -354,8 +345,8 @@ describe("OrchestratorBuilder", () => {
     it("should load a transaction, add 2 steps and move 'step_1' to run before 'createPrices' and merge next steps", () => {
       const builder = new OrchestratorBuilder(loadedFlow)
       builder
-        .addAction("step_1", {}, { saveResponse: true })
-        .addAction("step_2", {}, { saveResponse: true })
+        .addAction("step_1", { saveResponse: true })
+        .addAction("step_2", { saveResponse: true })
         .moveAndMergeNextAction("step_1", "createPrices")
 
       expect(builder.build()).toEqual({
@@ -393,29 +384,22 @@ describe("OrchestratorBuilder", () => {
     it("Fully compose a complex transaction", () => {
       const builder = new OrchestratorBuilder()
       builder
-        .addAction("step_1", {}, { saveResponse: true })
-        .addAction("step_2", {}, { saveResponse: true })
-        .addAction("step_3", {}, { saveResponse: true })
+        .addAction("step_1", { saveResponse: true })
+        .addAction("step_2", { saveResponse: true })
+        .addAction("step_3", { saveResponse: true })
 
-      builder.insertActionBefore(
-        "step_3",
-        "step_2.5",
-        {},
-        { saveResponse: false, noCompensation: true }
-      )
+      builder.insertActionBefore("step_3", "step_2.5", {
+        saveResponse: false,
+        noCompensation: true,
+      })
 
-      builder.insertActionAfter(
-        "step_1",
-        "step_1.1",
-        {},
-        { saveResponse: true }
-      )
+      builder.insertActionAfter("step_1", "step_1.1", { saveResponse: true })
 
-      builder.insertActionAfter("step_3", "step_4", {}, { async: false })
+      builder.insertActionAfter("step_3", "step_4", { async: false })
 
       builder
         .mergeActions("step_2", "step_2.5", "step_3")
-        .addAction("step_5", {}, { noCompensation: true })
+        .addAction("step_5", { noCompensation: true })
 
       builder.deleteAction("step_3")
 
