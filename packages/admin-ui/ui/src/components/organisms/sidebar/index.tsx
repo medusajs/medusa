@@ -72,7 +72,6 @@ const Sidebar: any = ({toggleSidebar}) => {
               icon={<SwatchIcon size={ICON_SIZE} />}
               text={"Categories"}
               triggerHandler={triggerHandler}
-              isNew
             />
           )}
           <SidebarMenuItem
@@ -87,7 +86,6 @@ const Sidebar: any = ({toggleSidebar}) => {
               icon={<BuildingsIcon size={ICON_SIZE} />}
               triggerHandler={triggerHandler}
               text={"Inventory"}
-              isNew
             />
           )}
           <SidebarMenuItem

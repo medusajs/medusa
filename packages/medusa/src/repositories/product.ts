@@ -18,10 +18,11 @@ import { ExtendedFindConfig } from "@medusajs/types"
 import {
   applyOrdering,
   getGroupedRelations,
+  mergeEntitiesWithRelations,
   queryEntityWithIds,
   queryEntityWithoutRelations,
 } from "../utils/repository"
-import { cloneDeep, groupBy, map, merge } from "lodash"
+import { cloneDeep } from "lodash"
 
 export type DefaultWithoutRelations = Omit<
   ExtendedFindConfig<Product>,
@@ -213,11 +214,13 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       customJoinBuilders: [
         (queryBuilder, alias, topLevel) => {
           if (topLevel === "variants") {
-            queryBuilder.leftJoinAndSelect(
-              `${alias}.${topLevel}`,
-              topLevel,
-              `${topLevel}.deleted_at IS NULL`
-            )
+            const joinMethod = select.filter(
+              (key) => !!key.match(/^variants\.\w+$/i)
+            ).length
+              ? "leftJoin"
+              : "leftJoinAndSelect"
+
+            queryBuilder[joinMethod](`${alias}.${topLevel}`, topLevel)
 
             if (
               !Object.keys(order!).some((key) => key.startsWith("variants"))
@@ -228,7 +231,8 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
             return false
           }
-          return true
+
+          return
         },
         (queryBuilder, alias, topLevel) => {
           if (topLevel === "categories") {
@@ -245,7 +249,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
             return false
           }
 
-          return true
+          return
         },
       ],
     })
@@ -479,9 +483,9 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       : { ...idsOrOptionsWithoutRelations.order }
     const originalSelect = isOptionsArray
       ? undefined
-      : (objectToStringPath(
-          idsOrOptionsWithoutRelations.select
-        ) as (keyof Product)[])
+      : (objectToStringPath(idsOrOptionsWithoutRelations.select, {
+          includeParentPropertyFields: false,
+        }) as (keyof Product)[])
     const clonedOptions = isOptionsArray
       ? idsOrOptionsWithoutRelations
       : cloneDeep(idsOrOptionsWithoutRelations)
@@ -543,10 +547,9 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
       withDeleted,
     })
 
-    const entitiesAndRelations = groupBy(entitiesIdsWithRelations, "id")
-    const entitiesToReturn = map(entitiesIds, (id) =>
-      merge({}, ...entitiesAndRelations[id])
-    )
+    const entitiesAndRelations = entities.concat(entitiesIdsWithRelations)
+    const entitiesToReturn =
+      mergeEntitiesWithRelations<Product>(entitiesAndRelations)
 
     return [entitiesToReturn, count]
   },

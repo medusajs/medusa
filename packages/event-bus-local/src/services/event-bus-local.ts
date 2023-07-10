@@ -1,5 +1,5 @@
-import { Logger, MedusaContainer } from "@medusajs/modules-sdk"
-import { EmitData, EventBusTypes, Subscriber } from "@medusajs/types"
+import { MedusaContainer } from "@medusajs/modules-sdk"
+import { EmitData, EventBusTypes, Logger, Subscriber } from "@medusajs/types"
 import { AbstractEventBusModuleService } from "@medusajs/utils"
 import { EventEmitter } from "events"
 import { ulid } from "ulid"

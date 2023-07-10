@@ -82,9 +82,9 @@ export const CustomerGroupRepository = dataSource
         : { ...idsOrOptionsWithoutRelations.order }
       const originalSelect = isOptionsArray
         ? undefined
-        : (objectToStringPath(
-            idsOrOptionsWithoutRelations.select
-          ) as (keyof CustomerGroup)[])
+        : (objectToStringPath(idsOrOptionsWithoutRelations.select, {
+            includeParentPropertyFields: false,
+          }) as (keyof CustomerGroup)[])
       const clonedOptions = isOptionsArray
         ? idsOrOptionsWithoutRelations
         : cloneDeep(idsOrOptionsWithoutRelations)
@@ -169,7 +169,7 @@ export const CustomerGroupRepository = dataSource
         withDeleted,
       })
 
-      const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
+      const entitiesAndRelations = entities.concat(entitiesIdsWithRelations)
       const entitiesToReturn =
         mergeEntitiesWithRelations<CustomerGroup>(entitiesAndRelations)
 

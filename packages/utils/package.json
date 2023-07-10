@@ -34,6 +34,6 @@
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
     "watch": "tsc --build --watch",
-    "test": "jest --passWithNoTests src"
+    "test": "jest"
   }
 }
