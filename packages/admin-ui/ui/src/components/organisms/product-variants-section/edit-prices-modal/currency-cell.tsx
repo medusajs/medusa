@@ -3,13 +3,6 @@ import { ProductVariant } from "@medusajs/client-types"
 import AmountField from "react-currency-input-field"
 import clsx from "clsx"
 
-type CellEventHandler = (
-  event: React.MouseEvent,
-  variantId: string,
-  currencyCode?: string,
-  regionId?: string
-) => void
-
 type CurrencyCellProps = {
   currencyCode?: string
   region?: string
@@ -22,9 +15,13 @@ type CurrencyCellProps = {
   onDragStart: () => void
   onDragEnd: () => void
 
-  onMouseCellEnter: CellEventHandler
-  onMouseCellLeave: CellEventHandler
-  onMouseCellClick: CellEventHandler
+  onMouseCellClick: (
+    event: React.MouseEvent,
+    variantId: string,
+    currencyCode?: string,
+    regionId?: string
+  ) => void
+
   onInputChange: (
     value: number | undefined,
     variantId: string,
@@ -53,29 +50,11 @@ function CurrencyCell(props: CurrencyCellProps) {
     setLocalValue(editedAmount)
   }, [editedAmount])
 
-  useEffect(() => {
-    if (!isDragging) {
-      setShowDragIndicator(false)
-    }
-  }, [isDragging])
-
   return (
     <td
       onMouseDown={(e) =>
         props.onMouseCellClick(e, variant.id, currencyCode, region)
       }
-      onMouseEnter={(e) => {
-        if (isDragging) {
-          setShowDragIndicator(true)
-        }
-        props.onMouseCellEnter(e, variant.id, currencyCode, region)
-      }}
-      onMouseLeave={(e) => {
-        if (isDragging) {
-          setShowDragIndicator(false)
-        }
-        props.onMouseCellLeave(e, variant.id, currencyCode, region)
-      }}
       className={clsx("relative border pr-2", {
         "bg-blue-100": isSelected,
       })}

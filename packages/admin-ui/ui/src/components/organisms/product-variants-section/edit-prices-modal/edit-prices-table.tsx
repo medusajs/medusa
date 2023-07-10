@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react"
 import { useAdminRegions } from "medusa-react"
 import { Product } from "@medusajs/client-types"
 
-import { getCurrencyPricesOnly, getRegionPricesOnly } from "./utils"
+import {
+  getCellYMidpoint,
+  getCurrencyPricesOnly,
+  getRegionPricesOnly,
+} from "./utils"
 import CurrencyCell from "./currency-cell"
 
 type EditPricesTableProps = {
@@ -12,19 +16,17 @@ type EditPricesTableProps = {
 }
 
 enum MoveDirection {
-  Up = 1,
-  Down,
-  Left,
-  Right,
+  Up = "UP",
+  Down = "DOWN",
 }
 
 enum AnchorPosition {
-  Above = 1,
-  Below,
+  Above = "ABOVE",
+  Below = "BELOW",
 }
 
-let anchor: { x: number; y: number } | null = null
-let lastVisited: { x: number; y: number } | null = null
+let anchor: number | null = null
+let lastVisited: number | null = null
 
 /**
  * During drag move keep info which column is active one
@@ -103,32 +105,22 @@ function EditPricesTable(props: EditPricesTableProps) {
    * ==================== HANDLERS ====================
    */
 
-  const onMouseCellEnter = (
-    event: React.MouseEvent,
-    variantId: string,
-    currencyCode?: string,
-    regionId?: string
-  ) => {
+  const onMouseRowEnter = (event: React.MouseEvent, variantId: string) => {
     if (!isDrag || !lastVisited || !anchor) {
       return
     }
 
     if (variantId === lastVisitedVariant) {
-      // just side move
+      // WE LEFT THE TABLE
+      lastVisited = getCellYMidpoint(event)
       return
     }
 
-    // console.log(event.target.getBoundingClientRect())
-
-    lastVisitedVariant = variantId
-
-    const currentY = event.target.getBoundingClientRect().bottom
-
-    const move =
-      currentY > lastVisited.y ? MoveDirection.Down : MoveDirection.Up
+    const currentY = getCellYMidpoint(event)
+    const move = currentY > lastVisited ? MoveDirection.Down : MoveDirection.Up
 
     const anchorPosition =
-      currentY > anchor.y ? AnchorPosition.Above : AnchorPosition.Below
+      currentY > anchor ? AnchorPosition.Above : AnchorPosition.Below
 
     if (
       (anchorPosition === AnchorPosition.Above &&
@@ -139,32 +131,17 @@ function EditPricesTable(props: EditPricesTableProps) {
       setPriceForCell(activeAmount, variantId, activeCurrencyOrRegion)
     }
 
-    lastVisited = {
-      x: event.pageX,
-      y: event.target.getBoundingClientRect().bottom,
-    }
-  }
-
-  const onMouseCellLeave = (event: React.MouseEvent, variantId: string) => {
-    if (!isDrag || !lastVisited || !anchor) {
-      return
-    }
-
-    const currentY = event.target.getBoundingClientRect().bottom
-
-    const move =
-      currentY > lastVisited.y ? MoveDirection.Down : MoveDirection.Up
-
-    const anchorPosition =
-      currentY > anchor.y ? AnchorPosition.Above : AnchorPosition.Below
-
     if (
+      anchor === currentY || // We returned to the anchor cell
       (anchorPosition === AnchorPosition.Above && move === MoveDirection.Up) ||
       (anchorPosition === AnchorPosition.Below && move === MoveDirection.Down)
     ) {
-      deselectCell(variantId, activeCurrencyOrRegion)
-      setPriceForCell(undefined, variantId, activeCurrencyOrRegion)
+      deselectCell(lastVisitedVariant, activeCurrencyOrRegion)
+      setPriceForCell(undefined, lastVisitedVariant, activeCurrencyOrRegion)
     }
+
+    lastVisitedVariant = variantId
+    lastVisited = getCellYMidpoint(event)
   }
 
   const onMouseCellClick = (
@@ -173,12 +150,14 @@ function EditPricesTable(props: EditPricesTableProps) {
     currencyCode?: string,
     regionId?: string
   ) => {
-    selectCell(variantId, currencyCode, regionId)
-    activeAmount = Number(event.target.value?.replace(",", ""))
+    anchor = getCellYMidpoint(event)
+    lastVisited = anchor
+    lastVisitedVariant = variantId
 
     activeCurrencyOrRegion = currencyCode || regionId
-    anchor = { x: event.pageX, y: event.target.getBoundingClientRect().bottom }
-    lastVisited = anchor
+    activeAmount = Number(event.target.value?.replace(",", ""))
+
+    selectCell(variantId, currencyCode, regionId)
   }
 
   const onInputChange = (
@@ -222,9 +201,13 @@ function EditPricesTable(props: EditPricesTableProps) {
 
   useEffect(() => {
     const down = () => {
+      document.body.style.pointerEvents = "none"
       setSelectedCells({})
     }
-    const up = () => setIsDrag(false)
+    const up = () => {
+      document.body.style.pointerEvents = "auto"
+      setIsDrag(false)
+    }
 
     document.addEventListener("mousedown", down)
     document.addEventListener("mouseup", up)
@@ -301,7 +284,11 @@ function EditPricesTable(props: EditPricesTableProps) {
 
           {props.product.variants!.map((variant) => {
             return (
-              <tr key={variant.id} style={{ lineHeight: 3 }}>
+              <tr
+                key={variant.id}
+                onMouseEnter={(e) => onMouseRowEnter(e, variant.id)}
+                style={{ lineHeight: 3 }}
+              >
                 <td className="border pl-10 text-gray-400">{variant.title}</td>
                 <td className="border pl-4 text-gray-400 ">{variant.sku}</td>
 
@@ -311,12 +298,12 @@ function EditPricesTable(props: EditPricesTableProps) {
                       key={variant.id + c}
                       currencyCode={c}
                       variant={variant}
-                      isSelected={selectedCells[getKey(variant.id, c)]}
+                      isSelected={
+                        isDrag && selectedCells[getKey(variant.id, c)]
+                      }
                       editedAmount={editedPrices[getKey(variant.id, c)]}
                       onInputChange={onInputChange}
                       onMouseCellClick={onMouseCellClick}
-                      onMouseCellEnter={onMouseCellEnter}
-                      onMouseCellLeave={onMouseCellLeave}
                       onDragStart={onDragStart}
                       onDragEnd={onDragEnd}
                       isDragging={isDrag}
@@ -329,14 +316,14 @@ function EditPricesTable(props: EditPricesTableProps) {
                     key={variant.id + r}
                     region={r!}
                     variant={variant}
-                    isSelected={selectedCells[getKey(variant.id, undefined, r)]}
+                    isSelected={
+                      isDrag && selectedCells[getKey(variant.id, undefined, r)]
+                    }
                     editedAmount={
                       editedPrices[getKey(variant.id, undefined, r)]
                     }
                     onInputChange={onInputChange}
                     onMouseCellClick={onMouseCellClick}
-                    onMouseCellEnter={onMouseCellEnter}
-                    onMouseCellLeave={onMouseCellLeave}
                     onDragStart={onDragStart}
                     onDragEnd={onDragEnd}
                     isDragging={isDrag}
