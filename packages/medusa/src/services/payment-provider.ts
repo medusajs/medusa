@@ -575,19 +575,21 @@ export default class PaymentProviderService extends TransactionBaseService {
 
       const provider = this.retrieveProvider(paymentSession.provider_id)
 
+      let updatedData
       if (provider instanceof AbstractPaymentProcessor) {
         const res = await provider.updatePaymentData(paymentSession.id, data)
         if ("error" in res) {
           this.throwFromPaymentProcessorError(res as PaymentProcessorError)
         } else {
-          session.data = res
+          updatedData = res
         }
       } else {
-        session.data = await provider
+        updatedData = await provider
           .withTransaction(transactionManager)
           .updatePaymentData(paymentSession.data, data)
       }
 
+      Object.assign(session.data, updatedData)
       session.status = paymentSession.status
 
       const sessionRepo = transactionManager.withRepository(

@@ -281,7 +281,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
     }
   }
 
-  async updatePaymentData(data, update) {
+  async updatePaymentData(sessionId: string, data: Record<string, unknown>) {
     try {
       // Prevent from updating the amount from here as it should go through
       // the updatePayment method to perform the correct logic
@@ -292,10 +292,7 @@ class PayPalProviderService extends AbstractPaymentProcessor {
         )
       }
 
-      return {
-        ...data,
-        ...update.data,
-      }
+      return data
     } catch (e) {
       return this.buildError("An error occurred in updatePaymentData", e)
     }
