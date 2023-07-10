@@ -97,7 +97,10 @@ export const defaultStoreProductsFields: (keyof Product)[] = [
 
 export const allowedStoreProductsFields = [
   ...defaultStoreProductsFields,
-  // TODO: order prop validation
+  // profile_id is not a column in the products table, so it should be ignored as it
+  // will be rejected by typeorm as invalid, though, it is an entity property
+  // that we want to return, so it part of the allowedStoreProductsFields
+  "profile_id",
   "variants.title",
   "variants.prices.amount",
 ]
