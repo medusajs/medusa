@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "14"
+          node-version: "16"
           cache: "yarn"
 
       - name: Assert changed
@@ -48,7 +48,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "14"
+          node-version: "16"
           cache: "yarn"
 
       - name: Assert changed
@@ -65,7 +65,7 @@ jobs:
       - name: Run unit tests
         run: yarn test
 
-  integration-tests:
+  integration-tests-packages:
     needs: setup
     runs-on: ubuntu-latest
     env:
@@ -109,7 +109,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "14"
+          node-version: "16"
           cache: "yarn"
 
       - name: Install dependencies
@@ -121,7 +121,7 @@ jobs:
         run: yarn build
 
       - name: Run integration tests
-        run: yarn test:integration
+        run: yarn test:integration:packages
         env:
           DB_PASSWORD: postgres
           DB_USERNAME: postgres
@@ -171,7 +171,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "14"
+          node-version: "16"
           cache: "yarn"
 
       - name: Install dependencies
@@ -223,7 +223,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "14"
+          node-version: "16"
           cache: "yarn"
 
       - name: Install dependencies
@@ -274,7 +274,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "14"
+          node-version: "16"
           cache: "yarn"
 
       - name: Install dependencies

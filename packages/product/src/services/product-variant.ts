@@ -1,6 +1,7 @@
 import { Product, ProductVariant } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import { isString, ModulesSdkUtils } from "@medusajs/utils"
+import { isString, ModulesSdkUtils, MedusaError, isDefined } from "@medusajs/utils"
+
 import ProductService from "./product"
 
 type InjectedDependencies = {
@@ -23,6 +24,37 @@ export default class ProductVariantService<
     this.productService_ = productService
   }
 
+  async retrieve(
+    productVariantId: string,
+    config: FindConfig<ProductTypes.ProductVariantDTO> = {},
+    sharedContext?: Context
+  ): Promise<TEntity> {
+    if (!isDefined(productVariantId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"productVariantId" must be defined`
+      )
+    }
+
+    const queryOptions = ModulesSdkUtils.buildQuery<ProductVariant>({
+      id: productVariantId,
+    }, config)
+
+    const productVariant = await this.productVariantRepository_.find(
+      queryOptions,
+      sharedContext
+    )
+
+    if (!productVariant?.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `ProductVariant with id: ${productVariantId} was not found`
+      )
+    }
+
+    return productVariant[0] as TEntity
+  }
+
   async list(
     filters: ProductTypes.FilterableProductVariantProps = {},
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
@@ -32,10 +64,27 @@ export default class ProductVariantService<
       filters,
       config
     )
+
     return (await this.productVariantRepository_.find(
       queryOptions,
       sharedContext
     )) as TEntity[]
+  }
+
+  async listAndCount(
+    filters: ProductTypes.FilterableProductVariantProps = {},
+    config: FindConfig<ProductTypes.ProductVariantDTO> = {},
+    sharedContext?: Context
+  ): Promise<[TEntity[], number]> {
+    const queryOptions = ModulesSdkUtils.buildQuery<ProductVariant>(
+      filters,
+      config
+    )
+
+    return (await this.productVariantRepository_.findAndCount(
+      queryOptions,
+      sharedContext
+    )) as [TEntity[], number]
   }
 
   async create(

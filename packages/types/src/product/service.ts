@@ -35,11 +35,23 @@ export interface IProductModuleService {
     sharedContext?: Context
   ): Promise<ProductTagDTO[]>
 
+  retrieveVariant(
+    productVariantId: string,
+    config?: FindConfig<ProductVariantDTO>,
+    sharedContext?: Context
+  ): Promise<ProductVariantDTO>
+
   listVariants(
     filters?: FilterableProductVariantProps,
     config?: FindConfig<ProductVariantDTO>,
     sharedContext?: Context
   ): Promise<ProductVariantDTO[]>
+
+  listAndCountVariants(
+    filters?: FilterableProductVariantProps,
+    config?: FindConfig<ProductVariantDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductVariantDTO[], number]>
 
   listCollections(
     filters?: FilterableProductCollectionProps,
