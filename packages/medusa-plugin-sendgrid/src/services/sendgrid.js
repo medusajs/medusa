@@ -625,9 +625,9 @@ class SendGridService extends NotificationService {
     // Fetch the return request
     const returnRequest = await this.returnService_.retrieve(return_id, {
       relations: [
-s        "items.item.tax_lines",
+        "items.item.tax_lines",
         "items.item.variant.product.profiles",
-        "shipping_method",s
+        "shipping_method",
         "shipping_method.tax_lines",
         "shipping_method.shipping_option",
       ],
