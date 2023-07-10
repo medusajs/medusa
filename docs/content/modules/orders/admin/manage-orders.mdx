@@ -565,13 +565,13 @@ medusa.admin.orders.capturePayment(orderId)
 import { useAdminCapturePayment } from "medusa-react"
 
 const CapturePayment = () => {
-  const capturePament = useAdminCapturePayment(
+  const capturePayment = useAdminCapturePayment(
     orderId
   )
   // ...
 
   const handleCapture = () => {
-    capturePament.mutate()
+    capturePayment.mutate()
   }
 
   // ...

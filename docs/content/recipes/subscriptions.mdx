@@ -56,7 +56,7 @@ There are different ways to implement subscriptions in your Medusa backend. This
 
 Stripe provides a [subscription payments](https://stripe.com/docs/billing/subscriptions/overview) that allows you to authorize payment on a subscription basis within Stripe. Stripe then handles checking for recurring payments and capturing payment at the specified interval.
 
-This approach allows you to deligate the complications of implementing the subscription logic to Stripe, but does not support using other payment providers.
+This approach allows you to delegate the complications of implementing the subscription logic to Stripe, but does not support using other payment providers.
 
 Medusa provides a Stripe plugin, however, it doesn't handle subscriptions. You can either use that plugin to add the subscription feature on top of it, or create a custom Stripe Subscription payment provider.
 
