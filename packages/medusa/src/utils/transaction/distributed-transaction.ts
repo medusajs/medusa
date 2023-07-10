@@ -3,7 +3,7 @@ import { TransactionHandlerType, TransactionState } from "./types"
 
 /**
  * @typedef TransactionMetadata
- * @property producer - The id of the producer that created the transaction (transactionModelId).
+ * @property model_id - The id of the model_id that created the transaction (transactionModelId).
  * @property reply_to_topic - The topic to reply to for the transaction.
  * @property idempotency_key - The idempotency key of the transaction.
  * @property action - The action of the transaction.
@@ -12,7 +12,7 @@ import { TransactionHandlerType, TransactionState } from "./types"
  * @property timestamp - The timestamp of the transaction.
  */
 export type TransactionMetadata = {
-  producer: string
+  model_id: string
   reply_to_topic: string
   idempotency_key: string
   action: string
@@ -23,11 +23,13 @@ export type TransactionMetadata = {
 
 /**
  * @typedef TransactionContext
+ * @property payload - Object containing the initial payload.
  * @property invoke - Object containing responses of Invoke handlers on steps flagged with saveResponse.
  * @property compensate - Object containing responses of Compensate handlers on steps flagged with saveResponse.
  */
 export class TransactionContext {
   constructor(
+    public payload: unknown = undefined,
     public invoke: Record<string, unknown> = {},
     public compensate: Record<string, unknown> = {}
   ) {}
@@ -37,7 +39,7 @@ export class TransactionStepError {
   constructor(
     public action: string,
     public handlerType: TransactionHandlerType,
-    public error: Error | null
+    public error: Error | unknown
   ) {}
 }
 
@@ -92,8 +94,9 @@ export class DistributedTransaction {
       this.errors = errors
     }
 
+    this.context.payload = payload
     if (context) {
-      this.context = context
+      this.context = { ...context }
     }
   }
 
@@ -112,7 +115,7 @@ export class DistributedTransaction {
   public addError(
     action: string,
     handlerType: TransactionHandlerType,
-    error: Error | null
+    error: Error | unknown
   ) {
     this.errors.push({
       action,

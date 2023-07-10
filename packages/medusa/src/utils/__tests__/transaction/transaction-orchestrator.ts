@@ -68,7 +68,7 @@ describe("Transaction Orchestrator", () => {
     expect(mocks.one).toBeCalledWith(
       expect.objectContaining({
         metadata: {
-          producer: "transaction-name",
+          model_id: "transaction-name",
           reply_to_topic: "trans:transaction-name",
           idempotency_key: "transaction_id_123:firstMethod:invoke",
           action: "firstMethod",
@@ -83,7 +83,7 @@ describe("Transaction Orchestrator", () => {
     expect(mocks.two).toBeCalledWith(
       expect.objectContaining({
         metadata: {
-          producer: "transaction-name",
+          model_id: "transaction-name",
           reply_to_topic: "trans:transaction-name",
           idempotency_key: "transaction_id_123:secondMethod:invoke",
           action: "secondMethod",
@@ -275,6 +275,9 @@ describe("Transaction Orchestrator", () => {
     expect(mocks.three).toBeCalledWith(
       { prop: 123 },
       {
+        payload: {
+          prop: 123,
+        },
         invoke: {
           firstMethod: { abc: 1234 },
           secondMethod: { def: "567" },
@@ -662,7 +665,10 @@ describe("Transaction Orchestrator", () => {
 
     const transaction = await strategy.beginTransaction(
       "transaction_id_123",
-      handler
+      handler,
+      {
+        myPayloadProp: "test",
+      }
     )
 
     await strategy.resume(transaction)
