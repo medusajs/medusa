@@ -14,6 +14,7 @@ import {
   PaymentIntentOptions,
   StripeOptions,
 } from "../types"
+import { MedusaError } from "@medusajs/utils"
 
 abstract class StripeBase extends AbstractPaymentProcessor {
   static identifier = ""
@@ -278,6 +279,25 @@ abstract class StripeBase extends AbstractPaymentProcessor {
       } catch (e) {
         return this.buildError("An error occurred in updatePayment", e)
       }
+    }
+  }
+
+  async updatePaymentData(sessionId: string, data: Record<string, unknown>) {
+    try {
+      // Prevent from updating the amount from here as it should go through
+      // the updatePayment method to perform the correct logic
+      if (data.amount) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Cannot update amount, use updatePayment instead"
+        )
+      }
+
+      return (await this.stripe_.paymentIntents.update(sessionId, {
+        ...data,
+      })) as unknown as PaymentProcessorSessionResponse["session_data"]
+    } catch (e) {
+      return this.buildError("An error occurred in updatePaymentData", e)
     }
   }
 
