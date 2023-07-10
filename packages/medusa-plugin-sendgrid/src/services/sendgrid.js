@@ -222,13 +222,19 @@ class SendGridService extends NotificationService {
     let templateId = this.getTemplateId(event)
 
     if (!templateId) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, `Sendgrid service: No template was set for event: ${event}`)
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No template was set for event: ${event}`
+      )
     }
 
     const data = await this.fetchData(event, eventData, attachmentGenerator)
     if (!data) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, "Sendgrid service: Invalid event data was received")
-   }
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Sendgrid service: Invalid event data was received"
+      )
+    }
 
     const attachments = await this.fetchAttachments(
       event,
@@ -261,10 +267,16 @@ class SendGridService extends NotificationService {
       })
     }
 
-   let status
-   await this.transporter_.sendMail(sendOptions)
-   .then(() => { status = "sent" })
-   .catch((error) => { status = "failed"; console.log(error) })
+    let status
+    await this.transporter_
+      .sendMail(sendOptions)
+      .then(() => {
+        status = "sent"
+      })
+      .catch((error) => {
+        status = "failed"
+        console.log(error)
+      })
 
     // We don't want heavy docs stored in DB
     delete sendOptions.attachments
@@ -618,6 +630,7 @@ class SendGridService extends NotificationService {
         "items.item.tax_lines",
         "items.item.variant",
         "items.item.variant.product",
+        "items.item.variant.product.profiles",
         "shipping_method",
         "shipping_method.tax_lines",
         "shipping_method.shipping_option",
@@ -628,7 +641,14 @@ class SendGridService extends NotificationService {
       {
         id: returnRequest.items.map(({ item_id }) => item_id),
       },
-      { relations: ["tax_lines", "variant", "variant.product"] }
+      {
+        relations: [
+          "tax_lines",
+          "variant",
+          "variant.product",
+          "variant.product.profiles",
+        ],
+      }
     )
 
     // Fetch the order
@@ -637,6 +657,7 @@ class SendGridService extends NotificationService {
       relations: [
         "items",
         "items.variant",
+        "items.variant.profiles",
         "items.tax_lines",
         "discounts",
         "discounts.rule",
@@ -774,7 +795,12 @@ class SendGridService extends NotificationService {
     })
 
     const cart = await this.cartService_.retrieve(swap.cart_id, {
-      relations: ["items", "items.variant", "items.variant.product"],
+      relations: [
+        "items",
+        "items.variant",
+        "items.variant.product",
+        "items.variant.product.profiles",
+      ],
       select: [
         "total",
         "tax_total",
@@ -857,6 +883,7 @@ class SendGridService extends NotificationService {
       relations: [
         "additional_items",
         "additional_items.variant.product",
+        "additional_items.variant.product.profiles",
         "additional_items.tax_lines",
         "return_order",
         "return_order.items",
@@ -873,7 +900,12 @@ class SendGridService extends NotificationService {
         id: returnRequest.items.map(({ item_id }) => item_id),
       },
       {
-        relations: ["tax_lines", "variant", "variant.product"],
+        relations: [
+          "tax_lines",
+          "variant",
+          "variant.product",
+          "variant.product.profiles",
+        ],
       }
     )
 
@@ -896,6 +928,7 @@ class SendGridService extends NotificationService {
         "items",
         "items.variant",
         "items.variant.product",
+        "items.variant.product.profiles",
         "items.tax_lines",
         "discounts",
         "discounts.rule",
@@ -915,7 +948,12 @@ class SendGridService extends NotificationService {
         "shipping_total",
         "subtotal",
       ],
-      relations: ["items", "items.variant", "items.variant.product"],
+      relations: [
+        "items",
+        "items.variant",
+        "items.variant.product",
+        "items.variant.product.profiles",
+      ],
     })
     const currencyCode = order.currency_code.toUpperCase()
 
@@ -1000,6 +1038,7 @@ class SendGridService extends NotificationService {
         "additional_items",
         "additional_items.variant",
         "additional_items.variant.product",
+        "additional_items.variant.product.profiles",
         "additional_items.tax_lines",
         "return_order",
         "return_order.items",
@@ -1013,12 +1052,14 @@ class SendGridService extends NotificationService {
         "items.tax_lines",
         "items.variant",
         "items.variant.product",
+        "items.variant.product.profiles",
         "discounts",
         "discounts.rule",
         "swaps",
         "swaps.additional_items",
         "swaps.additional_items.variant",
         "swaps.additional_items.variant.product",
+        "swaps.additional_items.variant.product.profiles",
         "swaps.additional_items.tax_lines",
       ],
     })
@@ -1031,7 +1072,12 @@ class SendGridService extends NotificationService {
         "shipping_total",
         "subtotal",
       ],
-      relations: ["items", "items.variant", "items.variant.product"],
+      relations: [
+        "items",
+        "items.variant",
+        "items.variant.product",
+        "items.variant.product.profiles",
+      ],
     })
 
     const returnRequest = swap.return_order
@@ -1040,7 +1086,12 @@ class SendGridService extends NotificationService {
         id: returnRequest.items.map(({ item_id }) => item_id),
       },
       {
-        relations: ["tax_lines", "variant", "variant.product"],
+        relations: [
+          "tax_lines",
+          "variant",
+          "variant.product",
+          "variant.product.profiles",
+        ],
       }
     )
 
@@ -1151,6 +1202,7 @@ class SendGridService extends NotificationService {
         "order.items",
         "order.items.variant",
         "order.items.variant.product",
+        "order.items.variant.product.profiles",
         "order.shipping_address",
       ],
     })
