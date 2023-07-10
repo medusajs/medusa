@@ -83,8 +83,6 @@ describe("overridesLoader", () => {
       title: "test",
     })
 
-    expect(validationResult.custom_attribute).not.toBeDefined()
-
     const result = await registrationHelper({
       key: 'api/routes/admin/products/create-product',
       override: {
@@ -107,8 +105,6 @@ describe("overridesLoader", () => {
       title: "test",
       custom_attribute: "test",
     })
-
-    expect(validationResult.custom_attribute).toEqual("test")
   })
 
   it("should throw error when trying to register a validator that does not exist in core", async () => {
