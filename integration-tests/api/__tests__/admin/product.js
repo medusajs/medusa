@@ -24,7 +24,7 @@ const {
 const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
 const { IdMap } = require("medusa-test-utils")
 
-jest.setTimeout(5000000)
+jest.setTimeout(50000)
 
 const adminHeaders = {
   headers: {
