@@ -33,7 +33,7 @@ export const buildProductOnlyData = ({
   }
 }
 
-export const buildProductData = ({
+export const buildProductAndRelationsData = ({
   title,
   description,
   subtitle,

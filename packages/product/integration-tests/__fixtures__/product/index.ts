@@ -9,6 +9,8 @@ import {
 } from "@models"
 import ProductOption from "../../../src/models/product-option"
 
+export * from "./data/create-product"
+
 export async function createProductAndTags(
   manager: SqlEntityManager,
   data: {

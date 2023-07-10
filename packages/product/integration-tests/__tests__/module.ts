@@ -5,7 +5,7 @@ import { ProductRepository } from "../__fixtures__/module"
 import { createProductAndTags } from "../__fixtures__/product"
 import { productsData } from "../__fixtures__/product/data"
 import { DB_URL, TestDatabase } from "../utils"
-import { buildProductData } from "../__fixtures__/product/data/create-product"
+import { buildProductAndRelationsData } from "../__fixtures__/product/data/create-product"
 import { kebabCase } from "@medusajs/utils"
 import { IProductModuleService } from "@medusajs/types"
 
@@ -126,7 +126,7 @@ describe("Product module", function () {
     afterEach(afterEach_)
 
     it("should create a product", async () => {
-      const data = buildProductData({
+      const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],
       })
@@ -222,7 +222,7 @@ describe("Product module", function () {
     afterEach(afterEach_)
 
     it("should soft delete a product and its cascaded relations", async () => {
-      const data = buildProductData({
+      const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],
       })
@@ -294,7 +294,7 @@ describe("Product module", function () {
     afterEach(afterEach_)
 
     it("should restore a soft deleted product and its cascaded relations", async () => {
-      const data = buildProductData({
+      const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],
       })
