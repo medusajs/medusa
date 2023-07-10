@@ -347,6 +347,7 @@ class OrderService extends TransactionBaseService {
       relationSet.add("items.adjustments")
       relationSet.add("items.variant")
       relationSet.add("items.variant.product")
+      relationSet.add("items.variant.product.profiles")
       relationSet.add("swaps")
       relationSet.add("swaps.additional_items")
       relationSet.add("swaps.additional_items.tax_lines")
@@ -1407,6 +1408,7 @@ class OrderService extends TransactionBaseService {
           "items.adjustments",
           "items.variant",
           "items.variant.product",
+          "items.variant.product.profiles",
           "payments",
         ],
       })

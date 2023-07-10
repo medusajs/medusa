@@ -387,6 +387,7 @@ class DraftOrderService extends TransactionBaseService {
             "items",
             "items.variant",
             "items.variant.product",
+            "items.variant.product.profiles",
             "payment_sessions",
           ],
         })

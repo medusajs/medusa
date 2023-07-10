@@ -484,6 +484,7 @@ class CartService extends TransactionBaseService {
             "items",
             "items.variant",
             "items.variant.product",
+            "items.variant.product.profiles",
             "payment_sessions",
           ],
         })
@@ -521,6 +522,7 @@ class CartService extends TransactionBaseService {
             "items",
             "items.variant",
             "items.variant.product",
+            "items.variant.product.profiles",
             "discounts",
             "discounts.rule",
             "region",
@@ -722,6 +724,7 @@ class CartService extends TransactionBaseService {
             "items",
             "items.variant",
             "items.variant.product",
+            "items.variant.product.profiles",
             "discounts",
             "discounts.rule",
             "region",
@@ -902,6 +905,7 @@ class CartService extends TransactionBaseService {
             "items",
             "items.variant",
             "items.variant.product",
+            "items.variant.product.profiles",
             "discounts",
             "discounts.rule",
             "region",
@@ -981,6 +985,7 @@ class CartService extends TransactionBaseService {
             "items",
             "items.variant",
             "items.variant.product",
+            "items.variant.product.profiles",
             "discounts",
             "discounts.rule",
             "region",
@@ -1057,6 +1062,7 @@ class CartService extends TransactionBaseService {
           "items",
           "items.variant",
           "items.variant.product",
+          "items.variant.product.profiles",
           "shipping_methods",
           "shipping_methods.shipping_option",
           "shipping_address",
@@ -1076,7 +1082,11 @@ class CartService extends TransactionBaseService {
           ) &&
           data.sales_channel_id
         ) {
-          relations.push("items.variant", "items.variant.product")
+          relations.push(
+            "items.variant",
+            "items.variant.product",
+            "items.variant.product.profiles"
+          )
         }
 
         const cart = await this.retrieve(cartId, {
@@ -1526,6 +1536,7 @@ class CartService extends TransactionBaseService {
             "items",
             "items.variant",
             "items.variant.product",
+            "items.variant.product.profiles",
             "region",
             "discounts",
             "discounts.rule",
@@ -1627,6 +1638,7 @@ class CartService extends TransactionBaseService {
             "items",
             "items.variant",
             "items.variant.product",
+            "items.variant.product.profiles",
           ],
         })
 
@@ -1700,6 +1712,7 @@ class CartService extends TransactionBaseService {
             "items",
             "items.variant",
             "items.variant.product",
+            "items.variant.product.profiles",
             "customer",
             "region",
             "region.payment_providers",
@@ -1826,6 +1839,7 @@ class CartService extends TransactionBaseService {
               "items",
               "items.variant",
               "items.variant.product",
+              "items.variant.product.profiles",
               "items.adjustments",
               "discounts",
               "discounts.rule",
@@ -2110,6 +2124,9 @@ class CartService extends TransactionBaseService {
                 "items",
                 "items.variant",
                 "items.variant.product",
+                "items.variant.product.profiles",
+                "items.variant.product.profiles",
+                "items.variant.product.profiles",
                 "payment_sessions",
               ],
             })
@@ -2451,6 +2468,7 @@ class CartService extends TransactionBaseService {
             "items",
             "items.variant",
             "items.variant.product",
+            "items.variant.product.profiles",
             "discounts",
             "discounts.rule",
             "payment_sessions",
@@ -2540,6 +2558,7 @@ class CartService extends TransactionBaseService {
                 "items",
                 "items.variant",
                 "items.variant.product",
+                "items.variant.product.profiles",
                 "items.adjustments",
                 "region",
                 "region.tax_rates",
@@ -2812,6 +2831,7 @@ class CartService extends TransactionBaseService {
     relationSet.add("items")
     relationSet.add("items.variant")
     relationSet.add("items.variant.product")
+    relationSet.add("items.variant.product.profiles")
     relationSet.add("items.tax_lines")
     relationSet.add("items.adjustments")
     relationSet.add("gift_cards")

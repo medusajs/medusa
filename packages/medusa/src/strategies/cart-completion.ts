@@ -192,6 +192,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         "items",
         "items.variant",
         "items.variant.product",
+        "items.variant.product.profiles",
         "items.adjustments",
         "region",
         "region.tax_rates",
@@ -296,6 +297,7 @@ class CartCompletionStrategy extends AbstractCartCompletionStrategy {
         "payment",
         "payment_sessions",
         "items.variant.product",
+        "items.variant.product.profiles",
       ],
     })
 

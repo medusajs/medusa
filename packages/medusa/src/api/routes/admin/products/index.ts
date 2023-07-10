@@ -120,7 +120,6 @@ export const defaultAdminProductFields: (keyof Product)[] = [
   "is_giftcard",
   "discountable",
   "thumbnail",
-  // "profile_id",
   "collection_id",
   "type_id",
   "weight",

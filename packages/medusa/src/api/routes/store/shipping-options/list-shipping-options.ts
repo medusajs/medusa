@@ -54,7 +54,11 @@ export default async (req, res) => {
   )
 
   const cart = await cartService.retrieveWithTotals(cart_id, {
-    relations: ["items.variant", "items.variant.product"],
+    relations: [
+      "items.variant",
+      "items.variant.product",
+      "items.variant.product.profiles",
+    ],
   })
 
   const options = await shippingProfileService.fetchCartOptions(cart)
