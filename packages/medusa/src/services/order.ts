@@ -1038,6 +1038,7 @@ class OrderService extends TransactionBaseService {
           "items",
           "items.variant",
           "items.variant.product",
+          "items.variant.product.profiles",
         ],
       })
       const { shipping_methods } = order

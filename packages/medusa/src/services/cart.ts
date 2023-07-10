@@ -2125,8 +2125,6 @@ class CartService extends TransactionBaseService {
                 "items.variant",
                 "items.variant.product",
                 "items.variant.product.profiles",
-                "items.variant.product.profiles",
-                "items.variant.product.profiles",
                 "payment_sessions",
               ],
             })
@@ -2309,7 +2307,7 @@ class CartService extends TransactionBaseService {
     cart.items = await lineItemServiceTx.list(
       { id: cart.items.map((i) => i.id) },
       {
-        relations: ["variant", "variant.product"],
+        relations: ["variant", "variant.product", "variant.product.profiles"],
       }
     )
   }

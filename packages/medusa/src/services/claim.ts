@@ -430,7 +430,11 @@ export default class ClaimService extends TransactionBaseService {
               id: result.additional_items.map((i) => i.id),
             },
             {
-              relations: ["variant", "variant.product"],
+              relations: [
+                "variant",
+                "variant.product",
+                "variant.product.profiles",
+              ],
             }
           )
 

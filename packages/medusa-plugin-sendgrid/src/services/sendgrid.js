@@ -657,7 +657,6 @@ class SendGridService extends NotificationService {
       relations: [
         "items",
         "items.variant",
-        "items.variant.profiles",
         "items.tax_lines",
         "discounts",
         "discounts.rule",

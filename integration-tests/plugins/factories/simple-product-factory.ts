@@ -1,5 +1,15 @@
-import { Product, ProductOption, ProductStatus, ProductType, ShippingProfile, ShippingProfileType, } from "@medusajs/medusa"
-import { ProductVariantFactoryData, simpleProductVariantFactory, } from "./simple-product-variant-factory"
+import {
+  Product,
+  ProductOption,
+  ProductStatus,
+  ProductType,
+  ShippingProfile,
+  ShippingProfileType,
+} from "@medusajs/medusa"
+import {
+  ProductVariantFactoryData,
+  simpleProductVariantFactory,
+} from "./simple-product-variant-factory"
 
 import { Connection } from "typeorm"
 import faker from "faker"
@@ -45,12 +55,13 @@ export const simpleProductFactory = async (
   const prodId = data.id || `simple-product-${Math.random() * 1000}`
   const toSave = manager.create(Product, {
     id: prodId,
-    type_id: typeId,
+    type_id: typeId!,
     status: data.status || ProductStatus.DRAFT,
     title: data.title || faker.commerce.productName(),
     is_giftcard: data.is_giftcard || false,
     discountable: !data.is_giftcard,
-    profile_id: data.is_giftcard ? gcProfile.id : defaultProfile.id,
+    profile_id: data.is_giftcard ? gcProfile!.id : defaultProfile!.id,
+    profiles: [{ id: data.is_giftcard ? gcProfile!.id : defaultProfile!.id }],
   })
 
   const product = await manager.save(toSave)
