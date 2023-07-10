@@ -1,6 +1,6 @@
 import { Product, ProductVariant } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import { isString, ModulesSdkUtils, MedusaError } from "@medusajs/utils"
+import { isString, ModulesSdkUtils, MedusaError, isDefined } from "@medusajs/utils"
 
 import ProductService from "./product"
 
@@ -29,7 +29,14 @@ export default class ProductVariantService<
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: Context
   ): Promise<TEntity> {
-    const queryOptions = ModulesSdkUtils.buildQuery<TEntity>({
+    if (!isDefined(productVariantId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"productVariantId" must be defined`
+      )
+    }
+
+    const queryOptions = ModulesSdkUtils.buildQuery<ProductVariant>({
       id: productVariantId,
     }, config)
 
