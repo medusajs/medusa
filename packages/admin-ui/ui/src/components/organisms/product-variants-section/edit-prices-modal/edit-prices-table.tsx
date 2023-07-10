@@ -8,6 +8,7 @@ import {
   getRegionPricesOnly,
 } from "./utils"
 import CurrencyCell from "./currency-cell"
+import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 
 type EditPricesTableProps = {
   product: Product
@@ -185,15 +186,28 @@ function EditPricesTable(props: EditPricesTableProps) {
     const nextState: Record<string, number | undefined> = {}
     props.product.variants!.forEach((variant) => {
       props.currencies.forEach((c) => {
-        nextState[getKey(variant.id, c)] = getCurrencyPricesOnly(
-          variant.prices!
-        ).find((p) => p.currency_code === c)?.amount
+        const currencyMetadata = CURRENCY_MAP[c.toUpperCase()]
+
+        const ma = getCurrencyPricesOnly(variant.prices!).find(
+          (p) => p.currency_code === c
+        )
+
+        if (ma) {
+          nextState[getKey(variant.id, c)] =
+            ma.amount / Math.pow(10, currencyMetadata.decimal_digits)
+        }
       })
 
       props.regions.forEach((r) => {
-        nextState[getKey(variant.id, undefined, r)] = getRegionPricesOnly(
-          variant.prices!
-        ).find((p) => p.region_id === r)?.amount
+        const ma = getRegionPricesOnly(variant.prices!).find(
+          (p) => p.region_id === r
+        )
+
+        if (ma) {
+          const currencyMetadata = CURRENCY_MAP[ma.currency_code.toUpperCase()]
+          nextState[getKey(variant.id, undefined, r)] =
+            ma.amount / Math.pow(10, currencyMetadata.decimal_digits)
+        }
       })
     })
     setEditedPrices(nextState)
