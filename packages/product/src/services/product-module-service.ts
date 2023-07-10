@@ -125,12 +125,40 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(products)), count]
   }
 
+  async retrieveVariant(
+    productVariantId: string,
+    config: FindConfig<ProductTypes.ProductVariantDTO> = {},
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductVariantDTO> {
+    const productVariant = await this.productVariantService_.retrieve(
+      productVariantId,
+      config,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productVariant))
+  }
+
   async listVariants(
     filters: ProductTypes.FilterableProductVariantProps = {},
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: Context
   ): Promise<ProductTypes.ProductVariantDTO[]> {
     const variants = await this.productVariantService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(variants))
+  }
+
+  async listAndCountVariants(
+    filters: ProductTypes.FilterableProductVariantProps = {},
+    config: FindConfig<ProductTypes.ProductVariantDTO> = {},
+    sharedContext?: Context
+  ): Promise<[ProductTypes.ProductVariantDTO[], number]> {
+    const variants = await this.productVariantService_.listAndCount(
       filters,
       config,
       sharedContext
