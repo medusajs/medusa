@@ -20,7 +20,7 @@ The notification contains details about the order including:
 
 The plugin registers a subscriber to the `order.placed` event. When an order is placed, the subscriber handler method uses the ID of the order to retrieve order details mentioned above.
 
-Then, the order notificaiton is sent to Slack using Webhooks. So, you'll need to create a Slack App, add it into your workspace, and activate Incoming Webhooks.
+Then, the order notification is sent to Slack using Webhooks. So, you'll need to create a Slack App, add it into your workspace, and activate Incoming Webhooks.
 
 ---
 
