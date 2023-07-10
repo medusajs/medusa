@@ -2,14 +2,16 @@ import { MedusaError } from "medusa-core-utils"
 
 import { registeredOverrides } from '../utils'
 
-export default async ({ isTest = false }) => {
+type CoreImport = { [key: string]: any }
+
+export default async ({ isTest = false } = {}) => {
   for (let [key, override] of registeredOverrides) {
     const distributionPath = isTest ? "../" : "@medusajs/medusa/dist/"
     const corePath = `${distributionPath}${key}`
-    let coreImport = ''
+    let coreImport: CoreImport = {}
 
     try {
-      coreImport = (await import(corePath)) as any
+      coreImport = (await import(corePath))
     } catch (e) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
