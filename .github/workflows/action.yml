@@ -65,7 +65,7 @@ jobs:
       - name: Run unit tests
         run: yarn test
 
-  integration-tests:
+  integration-tests-packages:
     needs: setup
     runs-on: ubuntu-latest
     env:
@@ -121,7 +121,7 @@ jobs:
         run: yarn build
 
       - name: Run integration tests
-        run: yarn test:integration
+        run: yarn test:integration:packages
         env:
           DB_PASSWORD: postgres
           DB_USERNAME: postgres
