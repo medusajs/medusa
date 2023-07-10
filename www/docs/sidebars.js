@@ -1380,6 +1380,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "development/endpoints/extend-validator",
+              label: "Extend Validator",
+            },
+            {
+              type: "doc",
               id: "development/endpoints/example-logged-in-user",
               label: "Example: Logged-In User",
             },
