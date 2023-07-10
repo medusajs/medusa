@@ -7,7 +7,6 @@ import {
 import { Context, DAL } from "@medusajs/types"
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { SoftDeletableKey } from "../utils"
 
 export class ProductCollectionRepository extends AbstractBaseRepository<ProductCollection> {
   protected readonly manager_: SqlEntityManager
@@ -23,16 +22,7 @@ export class ProductCollectionRepository extends AbstractBaseRepository<ProductC
     context: Context = {}
   ): Promise<ProductCollection[]> {
     const findOptions_ = { ...findOptions }
-
     findOptions_.options ??= {}
-
-    if (findOptions_.options?.withDeleted) {
-      delete findOptions_.options.withDeleted
-      findOptions_.options["filters"] ??= {}
-      findOptions_.options["filters"][SoftDeletableKey] = {
-        withDeleted: true,
-      }
-    }
 
     if (context.transactionManager) {
       Object.assign(findOptions_.options, { ctx: context.transactionManager })
@@ -54,16 +44,7 @@ export class ProductCollectionRepository extends AbstractBaseRepository<ProductC
     context: Context = {}
   ): Promise<[ProductCollection[], number]> {
     const findOptions_ = { ...findOptions }
-
     findOptions_.options ??= {}
-
-    if (findOptions_.options?.withDeleted) {
-      delete findOptions_.options.withDeleted
-      findOptions_.options["filters"] ??= {}
-      findOptions_.options["filters"][SoftDeletableKey] = {
-        withDeleted: true,
-      }
-    }
 
     if (context.transactionManager) {
       Object.assign(findOptions_.options, { ctx: context.transactionManager })

@@ -290,3 +290,8 @@ export interface CreateProductVariantOnlyDTO {
   options?: (CreateProductVariantOptionDTO & { option: any })[]
   metadata?: Record<string, unknown>
 }
+
+export interface CreateProductOptionOnlyDTO {
+  product: { id: string }
+  title: string
+}

@@ -8,7 +8,6 @@ import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
 import { AbstractTreeRepositoryBase } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { SoftDeletableKey } from "../utils"
 
 export class ProductCategoryRepository extends AbstractTreeRepositoryBase<ProductCategory> {
   protected readonly manager_: SqlEntityManager
@@ -26,17 +25,8 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
   ): Promise<ProductCategory[]> {
     const findOptions_ = { ...findOptions }
     const { includeDescendantsTree } = transformOptions
-
     findOptions_.options ??= {}
     const fields = (findOptions_.options.fields ??= [])
-
-    if (findOptions_.options?.withDeleted) {
-      delete findOptions_.options.withDeleted
-      findOptions_.options["filters"] ??= {}
-      findOptions_.options["filters"][SoftDeletableKey] = {
-        withDeleted: true,
-      }
-    }
 
     // Ref: Building descendants
     // mpath and parent_category_id needs to be added to the query for the tree building to be done accurately
@@ -117,16 +107,7 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
     context: Context = {}
   ): Promise<[ProductCategory[], number]> {
     const findOptions_ = { ...findOptions }
-
     findOptions_.options ??= {}
-
-    if (findOptions_.options?.withDeleted) {
-      delete findOptions_.options.withDeleted
-      findOptions_.options["filters"] ??= {}
-      findOptions_.options["filters"][SoftDeletableKey] = {
-        withDeleted: true,
-      }
-    }
 
     if (context.transactionManager) {
       Object.assign(findOptions_.options, { ctx: context.transactionManager })
