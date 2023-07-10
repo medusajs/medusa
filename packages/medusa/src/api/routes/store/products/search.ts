@@ -17,7 +17,6 @@ import { validator } from "../../../../utils/validator"
  *         $ref: "#/components/schemas/StorePostSearchReq"
  * x-codegen:
  *   method: search
- *   queryParams: StorePostSearchReq
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

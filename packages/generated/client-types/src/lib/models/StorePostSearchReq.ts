@@ -7,7 +7,7 @@ export interface StorePostSearchReq {
   /**
    * The query to run the search with.
    */
-  q: string
+  q?: string
   /**
    * How many products to skip in the result.
    */
@@ -16,4 +16,8 @@ export interface StorePostSearchReq {
    * Limit the number of products returned.
    */
   limit?: number
+  /**
+   * Filter based on the search engine.
+   */
+  filter?: any
 }
