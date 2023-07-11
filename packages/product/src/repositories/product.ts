@@ -3,6 +3,7 @@ import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
+  wrap
 } from "@mikro-orm/core"
 import {
   Context,
@@ -10,8 +11,11 @@ import {
   ProductTypes,
   WithRequiredProperty,
 } from "@medusajs/types"
-import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { MedusaError, isDefined } from "@medusajs/utils"
+
+import { AbstractBaseRepository } from "./base"
+import * as ProductServiceTypes from "../types/services/product"
 
 export class ProductRepository extends AbstractBaseRepository<Product> {
   protected readonly manager_: SqlEntityManager
@@ -121,7 +125,34 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
       return manager.create(Product, product)
     })
 
-    await manager.persist(products)
+    await manager.persistAndFlush(products)
+
+    return products
+  }
+
+  async update(
+    data: WithRequiredProperty<ProductServiceTypes.UpdateProductDTO, "id">[],
+    context: Context = {}
+  ): Promise<Product[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
+    const products = await Promise.all(
+      data.map(async (updateData) => {
+        if (!isDefined(updateData.id)) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `"id" must be defined`
+          )
+        }
+
+        const product = await manager.findOneOrFail(Product, updateData.id);
+
+        return manager.assign(product, updateData, { updateNestedEntities: true, mergeObjects: true })
+      })
+    )
+
+    await manager.persistAndFlush(products)
 
     return products
   }

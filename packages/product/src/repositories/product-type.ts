@@ -101,7 +101,7 @@ export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
         newTypes.push(this.manager_.create(ProductType, type))
       })
 
-      await this.manager_.persist(newTypes)
+      await this.manager_.persistAndFlush(newTypes)
       upsertedTypes.push(...newTypes)
     }
 

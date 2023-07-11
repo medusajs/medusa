@@ -245,6 +245,10 @@ export interface CreateProductDTO {
   metadata?: Record<string, unknown>
 }
 
+export interface UpdateProductDTO extends CreateProductDTO {
+  id: string
+}
+
 export interface CreateProductOnlyDTO {
   title: string
   subtitle?: string

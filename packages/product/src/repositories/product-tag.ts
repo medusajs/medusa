@@ -101,7 +101,7 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
         newTags.push(this.manager_.create(ProductTag, tag))
       })
 
-      await this.manager_.persist(newTags)
+      await this.manager_.persistAndFlush(newTags)
       upsertedTags.push(...newTags)
     }
 

@@ -7,8 +7,10 @@ import {
   ProductTypes,
   WithRequiredProperty,
 } from "@medusajs/types"
-import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
+import { ModulesSdkUtils, MedusaError, isDefined } from "@medusajs/utils"
 import { ProductRepository } from "@repositories"
+
+import * as ProductServiceTypes from "../types/services/product"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
@@ -21,10 +23,22 @@ export default class ProductService<TEntity extends Product = Product> {
     this.productRepository_ = productRepository
   }
 
-  async retrieve(productId: string, sharedContext?: Context): Promise<TEntity> {
+  async retrieve(
+    productId: string,
+    config: FindConfig<ProductTypes.ProductDTO> = {},
+    sharedContext?: Context
+  ): Promise<TEntity> {
+    if (!isDefined(productId)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `"productId" must be defined`
+      )
+    }
+
     const queryOptions = ModulesSdkUtils.buildQuery<Product>({
       id: productId,
-    })
+    }, config)
+
     const product = await this.productRepository_.find(
       queryOptions,
       sharedContext
@@ -104,6 +118,26 @@ export default class ProductService<TEntity extends Product = Product> {
           data as WithRequiredProperty<
             ProductTypes.CreateProductOnlyDTO,
             "status"
+          >[],
+          {
+            transactionManager: manager,
+          }
+        )
+      },
+      { transaction: sharedContext?.transactionManager }
+    )
+  }
+
+  async update(
+    data: ProductServiceTypes.UpdateProductDTO[],
+    sharedContext?: Context
+  ): Promise<TEntity[]> {
+    return await this.productRepository_.transaction(
+      async (manager) => {
+        return await (this.productRepository_ as ProductRepository).update(
+          data as WithRequiredProperty<
+            ProductServiceTypes.UpdateProductDTO,
+            "id"
           >[],
           {
             transactionManager: manager,

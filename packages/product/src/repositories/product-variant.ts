@@ -80,7 +80,7 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
       return manager.create(ProductVariant, variant)
     })
 
-    await manager.persist(variants)
+    await manager.persistAndFlush(variants)
 
     return variants
   }

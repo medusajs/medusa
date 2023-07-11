@@ -24,8 +24,10 @@ import {
   FindConfig,
   ProductTypes,
 } from "@medusajs/types"
+import { isDefined, isString, kebabCase, MedusaError } from "@medusajs/utils"
+
 import ProductImageService from "./product-image"
-import { isDefined, isString, kebabCase } from "@medusajs/utils"
+import * as ProductServiceTypes from "../types/services/product"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -101,10 +103,12 @@ export default class ProductModuleService<
 
   async retrieve(
     productId: string,
+    config: FindConfig<ProductTypes.ProductDTO> = {},
     sharedContext?: Context
   ): Promise<ProductTypes.ProductDTO> {
     const product = await this.productService_.retrieve(
       productId,
+      config,
       sharedContext
     )
 
@@ -355,6 +359,145 @@ export default class ProductModuleService<
           [...productVariantsMap].map(async ([handle, variants]) => {
             return await this.productVariantService_.create(
               productByHandleMap.get(handle)!,
+              variants as unknown as ProductTypes.CreateProductVariantOnlyDTO[],
+              sharedContext
+            )
+          })
+        )
+
+        return products
+      },
+      { transaction: sharedContext?.transactionManager }
+    )
+
+    return JSON.parse(JSON.stringify(products))
+  }
+
+  // TODO: cleanup, abstract common create and update steps
+  async update(
+    data: ProductTypes.UpdateProductDTO[],
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductDTO[]> {
+    const products = await this.baseRepository_.transaction(
+      async (manager) => {
+        sharedContext = sharedContext || {
+          transactionManager: manager,
+        }
+
+        const productVariantsMap = new Map<
+          string,
+          ProductTypes.CreateProductVariantDTO[]
+        >()
+        const productOptionsMap = new Map<
+          string,
+          ProductTypes.CreateProductOptionDTO[]
+        >()
+
+        const productsData = await Promise.all(
+          data.map(async (product) => {
+            const productData = { ...product }
+
+            if (!isDefined(productData.id)) {
+              throw new MedusaError(
+                MedusaError.Types.NOT_FOUND,
+                `"id" must be defined`
+              )
+            }
+
+            const variants = productData.variants
+            const options = productData.options
+            delete productData.options
+            delete productData.variants
+
+            productVariantsMap.set(productData.id, variants ?? [])
+            productOptionsMap.set(productData.id, options ?? [])
+
+            if (!productData.thumbnail && productData.images?.length) {
+              productData.thumbnail = isString(productData.images[0])
+                ? (productData.images[0] as string)
+                : (productData.images[0] as { url: string }).url
+            }
+
+            if (productData.is_giftcard) {
+              productData.discountable = false
+            }
+
+            if (productData.images?.length) {
+              productData.images = await this.productImageService_.upsert(
+                productData.images.map((image) =>
+                  isString(image) ? image : image.url
+                ),
+                sharedContext
+              )
+            }
+
+            if (productData.tags?.length) {
+              productData.tags = await this.productTagService_.upsert(
+                productData.tags,
+                sharedContext
+              )
+            }
+
+            if (isDefined(productData.type)) {
+              const productType = (
+                await this.productTypeService_.upsert(
+                  [productData.type as ProductTypes.CreateProductTypeDTO],
+                  sharedContext
+                )
+              )
+
+              productData.type_id = productType?.[0]!.id
+            }
+
+            return productData as ProductServiceTypes.UpdateProductDTO
+          })
+        )
+
+        // TODO
+        // Shipping profile is not part of the module
+        // as well as sales channel
+
+        const products = await this.productService_.update(
+          productsData,
+          sharedContext
+        )
+
+        const productByIdMap = new Map<string, TProduct>(
+          products.map((product) => [product.id, product])
+        )
+
+        const productOptionsData = [...productOptionsMap]
+          .map(([id, options]) => {
+            return options.map((option) => {
+              return {
+                ...option,
+                product: productByIdMap.get(id)!,
+              }
+            })
+          })
+          .flat()
+
+        const productOptions = await this.productOptionService_.create(
+          productOptionsData,
+          sharedContext
+        )
+
+        for (const variants of productVariantsMap.values()) {
+          variants.forEach((variant) => {
+            variant.options = variant.options?.map((option, index) => {
+              const productOption = productOptions[index]
+              return {
+                option: productOption,
+                value: option.value,
+              }
+            })
+          })
+        }
+
+        const variants = await Promise.all(
+          [...productVariantsMap].map(async ([id, variants]) => {
+            return await this.productVariantService_.create(
+              productByIdMap.get(id)!,
               variants as unknown as ProductTypes.CreateProductVariantOnlyDTO[],
               sharedContext
             )

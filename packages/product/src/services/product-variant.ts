@@ -99,6 +99,7 @@ export default class ProductVariantService<
         if (isString(productOrId)) {
           product = await this.productService_.retrieve(
             productOrId as string,
+            {},
             sharedContext
           )
         }

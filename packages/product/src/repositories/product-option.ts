@@ -79,7 +79,7 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
       return manager.create(ProductOption, option)
     })
 
-    await manager.persist(options)
+    await manager.persistAndFlush(options)
 
     return options
   }
