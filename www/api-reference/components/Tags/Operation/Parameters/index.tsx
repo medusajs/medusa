@@ -42,6 +42,7 @@ export type TagOperationParametersProps = {
 const TagOperationParameters = ({
   schemaObject,
 }: TagOperationParametersProps) => {
+  console.log(schemaObject)
   return (
     <div>
       {schemaObject.properties && (
@@ -95,10 +96,17 @@ const TagOperationParameters = ({
           })}
         </ul>
       )}
+      {(schemaObject.anyOf || schemaObject.allOf) && (
+        <TagOperationParametersUnion
+          schema={schemaObject}
+          name={schemaObject.title || ""}
+          is_required={false}
+        />
+      )}
       {schemaObject.oneOf && (
         <TagOperationParamatersOneOf schema={schemaObject} />
       )}
-      {!schemaObject.properties && (
+      {(!schemaObject.properties && !schemaObject.anyOf && !schemaObject.allOf && !schemaObject.oneOf) && (
         <TagOperationParametersDefault
           schema={schemaObject}
           name={schemaObject.title}

@@ -6,6 +6,10 @@ type CodeSample = {
   source: string
 }
 
+// export type Document = OpenAPIV3.Document<{
+//   security?: OpenAPIV3.SecurityRequirementObject
+// }>
+
 export type Operation = OpenAPIV3.OperationObject<{
   operationId: string
   summary: string
@@ -29,6 +33,10 @@ export type Operation = OpenAPIV3.OperationObject<{
     }
   }
 }>
+
+export type PathsObject = {
+  [pattern: string]: Path
+}
 
 export type Path = OpenAPIV3.PathItemObject & {
   [method in OpenAPIV3.HttpMethods]?: Operation
@@ -61,4 +69,8 @@ export type SchemaObject = (ArraySchemaObject | NonArraySchemaObject) & {
 
 export type PropertiesObject = {
   [name: string]: SchemaObject
+}
+
+export type SecuritySchemeObject = OpenAPIV3.SecuritySchemeObject & {
+  "x-displayName"?: string
 }

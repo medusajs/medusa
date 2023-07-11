@@ -32,7 +32,7 @@ const TagOperationParametersDescription = ({
       typeDescription = <>{schema.type}</>
   }
   return (
-    <span
+    <div
       className={clsx(
         "w-2/3 pb-0.5",
         "border-medusa-border-base dark:border-medusa-border-base-dark border-b border-solid"
@@ -43,7 +43,7 @@ const TagOperationParametersDescription = ({
         <>
           <br />
           <span>
-            Example: <InlineCode>{schema.example}</InlineCode>
+            Example: <InlineCode className="break-words">{JSON.stringify(schema.example)}</InlineCode>
           </span>
         </>
       )}
@@ -52,7 +52,7 @@ const TagOperationParametersDescription = ({
         <>
           <br />
           <span>
-            Default: <InlineCode>{schema.example}</InlineCode>
+            Default: <InlineCode className="break-words">{JSON.stringify(schema.default)}</InlineCode>
           </span>
         </>
       )}
@@ -62,13 +62,17 @@ const TagOperationParametersDescription = ({
           <span>{schema.description}</span>
         </>
       )}
-    </span>
+    </div>
   )
 }
 
 export default TagOperationParametersDescription
 
-function formatArrayDescription(schema: SchemaObject) {
+function formatArrayDescription(schema?: SchemaObject) {
+  if (!schema) {
+    return "Array"
+  }
+
   const type =
     schema.type === "object"
       ? `objects ${schema.title ? `(${schema.title})` : ""}`

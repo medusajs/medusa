@@ -1,14 +1,9 @@
-import fs from "fs"
 import { NextResponse } from "next/server"
 import path from "path"
-import { parseDocument } from "yaml"
+import OpenAPIParser from "@readme/openapi-parser"
 
-export function GET() {
-  const apiSpecFile = fs.readFileSync(
-    path.join(process.cwd(), "specs/admin/openapi.yaml"),
-    "utf-8"
-  )
-  const baseSpecs = parseDocument(apiSpecFile)
+export async function GET() {
+  const baseSpecs = await OpenAPIParser.parse(path.join(process.cwd(), "specs/admin/openapi.yaml"),)
 
   return NextResponse.json(baseSpecs, {
     status: 200,

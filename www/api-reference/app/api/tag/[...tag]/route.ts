@@ -2,13 +2,15 @@ import { NextRequest, NextResponse } from "next/server"
 import { promises as fs } from "fs"
 import path from "path"
 import { OpenAPIV3 } from "openapi-types"
-import mergeObjects from "@/utils/merge-object"
 import readSpecDocument from "@/utils/read-spec-document"
-import resolveRefs from "@/utils/resolve-refs"
+// import resolveRefs from "@/utils/resolve-refs"
 import getSectionId from "@/utils/get-section-id"
 import { Operation } from "@/types/openapi"
-import flattenArray from "@/utils/flatten-array"
-import convertToOpenApi from "@/utils/convert-to-openapi"
+import OpenAPIParser from "@readme/openapi-parser"
+
+type ParsedPathItemObject = OpenAPIV3.PathItemObject<Operation> & {
+  operationPath?: string
+}
 
 export async function GET(req: NextRequest) {
   const tagName = req.nextUrl.pathname.replace("/api/tag/", "").replace("/", "")
@@ -21,14 +23,22 @@ export async function GET(req: NextRequest) {
 
   const files = await fs.readdir(basePath)
 
-  let documents: OpenAPIV3.PathItemObject<Operation>[] = await Promise.all(
+  // read the path documents
+  let documents: ParsedPathItemObject[] = await Promise.all(
     files.map(async (file) => {
-      return (await readSpecDocument(
+      const fileContent = (await readSpecDocument(
         path.join(basePath, file)
       )) as OpenAPIV3.PathItemObject<Operation>
+
+      return {
+        ...fileContent,
+        // TODO replace /admin/ with stored value
+        operationPath: `/admin/${file.replace("_", "/").replace(".yaml", "")}`
+      }
     })
   )
 
+  // filter out operations not related to the passed tag
   documents = documents.filter((document) =>
     Object.values(document).some((operation) => {
       if (typeof operation !== "object" || !("tags" in operation)) {
@@ -39,42 +49,29 @@ export async function GET(req: NextRequest) {
     })
   )
 
-  documents = await Promise.all(
-    documents.map(async (document) => {
-      // load all references in document
-      const keys = Object.keys(document)
-      let values = await Promise.all(
-        Object.values(document).map(async (operation) => {
-          if (typeof operation === "string") {
-            return operation
-          }
+  // dereference the references in the paths
+  let paths: OpenAPIV3.Document = {
+    paths: {},
+    // These attributes are only for validation purposes
+    openapi: "3.0.0",
+    info: {
+      title: 'Medusa API',
+      version: '1.0.0'
+    },
+  }
 
-          if ("operationId" in operation && operation.operationId) {
-            return await resolveRefs(operation, basePath)
-          }
+  documents.forEach((document) => {
+    const documentPath = document.operationPath || ""
+    delete document.operationPath
+    paths.paths[documentPath] = document
+  })
 
-          return operation
-        })
-      )
-      values = flattenArray(values)
-
-      values.map((v) => {
-        if (typeof v === "string") {
-          return v
-        }
-
-        return convertToOpenApi(v)
-      })
-
-      const result = mergeObjects(keys, values)
-
-      return result
-    })
-  )
+  // resolve references in paths
+  paths = await OpenAPIParser.dereference(`${basePath}/`, paths, {}) as unknown as OpenAPIV3.Document
 
   return NextResponse.json(
     {
-      paths: documents,
+      paths: paths.paths,
     },
     {
       status: 200,

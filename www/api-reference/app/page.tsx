@@ -1,5 +1,5 @@
 import type { DescriptionProps } from "@/components/Description"
-import type { TagsProps } from "@/components/Tag"
+import type { TagsProps } from "@/components/Tags"
 import getBaseUrl from "@/utils/get-base-url"
 import dynamic from "next/dynamic"
 import { OpenAPIV3 } from "openapi-types"
@@ -11,7 +11,7 @@ const Description = dynamic<DescriptionProps>(
     loading: () => <Loading />,
   }
 ) as React.FC<DescriptionProps>
-const Tags = dynamic<TagsProps>(async () => import("@/components/Tag"), {
+const Tags = dynamic<TagsProps>(async () => import("@/components/Tags"), {
   loading: () => <Loading />,
 }) as React.FC<TagsProps>
 
@@ -20,16 +20,16 @@ const getBaseSpecs = async () => {
   return res.json() as unknown as OpenAPIV3.Document
 }
 
-const Reference = async () => {
+const ReferencePage = async () => {
   const specs = await getBaseSpecs()
 
   return (
     <div>
       <h1>{specs.info.title}</h1>
       {specs.info.description && <Description specs={specs} />}
-      {specs.tags && <Tags tags={specs.tags} />}
+      {specs.tags && <Tags tags={specs.tags} baseSpecs={specs} />}
     </div>
   )
 }
 
-export default Reference
+export default ReferencePage

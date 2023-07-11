@@ -14,8 +14,6 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
   const { isItemActive, setActivePath } = useSidebar()
   const active = isItemActive(item)
 
-  // console.log(activeItem, item, activeItem?.path === item.path)
-
   return (
     <li className={clsx("text-label-small-plus", className)}>
       <div

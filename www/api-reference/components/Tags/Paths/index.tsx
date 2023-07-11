@@ -4,7 +4,7 @@ import getSectionId from "@/utils/get-section-id"
 import fetcher from "@/utils/swr-fetcher"
 import { OpenAPIV3 } from "openapi-types"
 import useSWR from "swr"
-import { Operation, Path } from "@/types/openapi"
+import { Operation, Path, PathsObject } from "@/types/openapi"
 import {
   SidebarItemSections,
   SidebarItemType,
@@ -29,17 +29,17 @@ export type TagSectionPathsProps = {
 const TagPaths = ({ tag }: TagSectionPathsProps) => {
   const tagSlugName = getSectionId([tag.name])
   const { data } = useSWR<{
-    paths: Path[]
+    paths: PathsObject
   }>(`/api/tag/${tagSlugName}`, fetcher)
   const { addItems } = useSidebar()
 
   const paths = data?.paths || []
 
   useEffect(() => {
-    if (paths.length) {
+    if (paths) {
       const items: SidebarItemType[] = []
-      paths.forEach((path) => {
-        Object.entries(path).map(([method, operation]) => {
+      Object.entries(paths).forEach(([endpointPath, operations]) => {
+        Object.entries(operations).map(([method, operation]) => {
           const definedOperation = operation as Operation
           const definedMethod = method as OpenAPIV3.HttpMethods
           items.push({
@@ -61,11 +61,11 @@ const TagPaths = ({ tag }: TagSectionPathsProps) => {
   return (
     <div>
       {!paths && <Loading />}
-      {paths.length > 0 && (
+      {paths && (
         <>
-          {paths.map((path, pathIndex) => (
+          {Object.entries(paths).map(([endpointPath, operations], pathIndex) => (
             <div key={pathIndex}>
-              {Object.entries(path).map(
+              {Object.entries(operations).map(
                 ([method, operation], operationIndex) => (
                   <TagOperation
                     method={method}

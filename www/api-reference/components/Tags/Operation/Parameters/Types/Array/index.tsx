@@ -29,7 +29,7 @@ const TagOperationParametersArray = ({
 
   return (
     <>
-      {schema.items.type === "object" && (
+      {schema.items?.type === "object" && (
         <details>
           <summary>
             <TagOperationParametersDefault
@@ -42,11 +42,11 @@ const TagOperationParametersArray = ({
 
           <TagOperationParametersProperties
             schema={schema.items}
-            className="pl-1"
+            className="pl-1 bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark"
           />
         </details>
       )}
-      {schema.items.type !== "object" && (
+      {schema.items?.type !== "object" && (
         <TagOperationParametersDefault
           name={name}
           schema={schema}

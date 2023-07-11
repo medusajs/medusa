@@ -24,8 +24,8 @@ const TagOperationParametersUnion = ({
   is_required,
 }: TagOperationParametersUnionProps) => {
   const objectSchema = schema.anyOf
-    ? schema.anyOf.find((item) => item.type === "object")
-    : schema.allOf?.find((item) => item.type === "object")
+    ? schema.anyOf.find((item) => item.type === "object" && item.properties)
+    : schema.allOf?.find((item) => item.type === "object" && item.properties)
 
   return (
     <>
@@ -36,10 +36,11 @@ const TagOperationParametersUnion = ({
               name={name}
               schema={schema}
               is_required={is_required}
+              className="inline-flex w-11/12"
             />
           </summary>
 
-          <TagOperationParametersProperties schema={objectSchema} />
+          <TagOperationParametersProperties schema={objectSchema} className="pl-1 bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark" />
         </details>
       )}
       {!objectSchema && (

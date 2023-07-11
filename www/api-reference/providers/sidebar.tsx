@@ -46,11 +46,11 @@ type SidebarContextType = {
 
 const SidebarContext = createContext<SidebarContextType | null>(null)
 
-type SidebarProviderType = {
+type SidebarProviderProps = {
   children?: ReactNode
 }
 
-const SidebarProvider = ({ children }: SidebarProviderType) => {
+const SidebarProvider = ({ children }: SidebarProviderProps) => {
   const [items, setItems] = useState<SidebarSectionItemsType>({
     top: [],
     bottom: [],

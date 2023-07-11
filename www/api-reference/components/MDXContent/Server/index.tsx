@@ -5,6 +5,7 @@ import getCustomComponents, { ScopeType } from "../../MDXComponents"
 import { MDXRemoteProps } from "next-mdx-remote"
 import rehypeMdxCodeProps from "rehype-mdx-code-props"
 import rehypePrism from "@mapbox/rehype-prism"
+import getMdxOptions from "@/utils/get-mdx-options"
 
 type MDXContentServerProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -19,10 +20,7 @@ const MDXContentServer = ({ content, ...props }: MDXContentServerProps) => {
         source={content}
         components={getCustomComponents((props.scope as ScopeType) || {})}
         options={{
-          mdxOptions: {
-            remarkPlugins: [rehypeMdxCodeProps],
-            rehypePlugins: [rehypePrism],
-          },
+          mdxOptions: getMdxOptions(),
           scope: props.scope,
         }}
         {...props}

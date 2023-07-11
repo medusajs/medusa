@@ -23,7 +23,8 @@ const InlineCode = (props: InlineCodeProps) => {
             className={clsx(
               "border-medusa-border-base dark:border-medusa-border-base-dark border border-solid",
               "text-medusa-text-subtle dark:text-medusa-text-subtle-dark leading-6",
-              "bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark font-monospace text-body-regular rounded py-[1px] px-0.5"
+              "bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark font-monospace text-body-regular rounded py-[1px] px-0.5",
+              props.className
             )}
           />
         </CopyButton>
