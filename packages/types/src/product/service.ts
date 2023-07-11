@@ -65,6 +65,18 @@ export interface IProductModuleService {
     sharedContext?: Context
   ): Promise<ProductCategoryDTO[]>
 
+  retrieveCategory(
+    productCategoryId: string,
+    config?: FindConfig<ProductCategoryDTO>,
+    sharedContext?: Context
+  ): Promise<ProductCategoryDTO>
+
+  listAndCountCategories(
+    filters?: FilterableProductCategoryProps,
+    config?: FindConfig<ProductCategoryDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductCategoryDTO[], number]>
+
   create(
     data: CreateProductDTO[],
     sharedContext?: Context

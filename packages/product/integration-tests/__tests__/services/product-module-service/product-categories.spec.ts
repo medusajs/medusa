@@ -96,9 +96,6 @@ describe("ProductModuleService product categories", () => {
         }),
       ])
 
-      results = await service.listCategories({}, { take: 1 })
-
-
       results = await service.listCategories({}, { take: 1, skip: 1 })
 
       expect(results).toEqual([
