@@ -225,7 +225,7 @@ This feature is only available if you have an event module installed in your Med
 
 ## Add Search to your Storefront
 
-In this section, you’ll learn how to add the UI on your storefront to allow searching with Algolia. This section has instructions for Medusa’s [Next.js](../../starters/nextjs-medusa-starter.mdx) storefront as well as React-based frameworks.
+In this section, you’ll learn how to add the UI on your storefront to allow searching with Algolia. This section has instructions for Medusa’s [Next.js Starter Template](../../starters/nextjs-medusa-starter.mdx) as well as React-based frameworks.
 
 ### Storefront Prerequisites
 
@@ -233,13 +233,13 @@ It is assumed you already have a storefront set up and working with the Medusa b
 
 :::tip
 
-If you don’t have a storefront set up, you can use the [Next.js starter storefront](../../starters/nextjs-medusa-starter.mdx) that Medusa provides.
+If you don’t have a storefront set up, you can use the [Next.js Starter Template](../../starters/nextjs-medusa-starter.mdx) that Medusa provides.
 
 :::
 
-### Add to Next.js Storefront
+### Add to Next.js Starter Template
 
-The Next.js storefront has the Algolia integration available out of the box. To get it working, you just need to follow three steps.
+The Next.js Starter Template has the Algolia integration available out of the box. To get it working, you just need to follow three steps.
 
 First, ensure that the search feature is enabled in `store.config.json`:
 
@@ -277,15 +277,15 @@ export const SEARCH_INDEX_NAME =
   process.env.NEXT_PUBLIC_INDEX_NAME || "products"
 ```
 
-If you run your Next.js storefront now while the Medusa backend is running, the search functionality will be available in your storefront.
+If you run your Next.js Starter Template now while the Medusa backend is running, the search functionality will be available in your storefront.
 
 :::note
 
-To make sure the Next.js storefront properly displays the products in the search result, include in the `attributesToRetrieve` setting of the Algolia plugin on the Medusa backend at least the fields `title`, `handle`, `description`, and `thumbnail`.
+To make sure the Next.js Starter Template properly displays the products in the search result, include in the `attributesToRetrieve` setting of the Algolia plugin on the Medusa backend at least the fields `title`, `handle`, `description`, and `thumbnail`.
 
 :::
 
-![Search pop up in the Next.js storefront](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000082/Medusa%20Docs/Algolia/1f9qqK6_c0z8zi.png)
+![Search pop up in the Next.js Starter Template](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000082/Medusa%20Docs/Algolia/1f9qqK6_c0z8zi.png)
 
 ### Add to Other Storefronts
 

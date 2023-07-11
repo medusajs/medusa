@@ -1,35 +1,44 @@
 import { asClass, asFunction, asValue, createContainer } from "awilix"
 import { MockManager, MockRepository } from "medusa-test-utils"
-import PaymentProviderService from "../payment-provider";
-import { PaymentProviderServiceMock } from "../__mocks__/payment-provider";
-import { CustomerServiceMock } from "../__mocks__/customer";
-import { FlagRouter } from "../../utils/flag-router";
-import Logger from "../../loaders/logger";
+import PaymentProviderService from "../payment-provider"
+import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
+import { CustomerServiceMock } from "../__mocks__/customer"
+import { FlagRouter } from "../../utils/flag-router"
+import Logger from "../../loaders/logger"
 import {
   AbstractPaymentProcessor,
   PaymentProcessorContext,
   PaymentProcessorError,
-  PaymentProcessorSessionResponse
-} from "../../interfaces";
-import { PaymentSessionStatus } from "../../models";
-import { PaymentServiceMock } from "../__mocks__/payment";
+  PaymentProcessorSessionResponse,
+} from "../../interfaces"
+import { PaymentSessionStatus } from "../../models"
+import { PaymentServiceMock } from "../__mocks__/payment"
 
 export const defaultContainer = createContainer()
-defaultContainer.register("paymentProviderService", asClass(PaymentProviderService))
+defaultContainer.register(
+  "paymentProviderService",
+  asClass(PaymentProviderService)
+)
 defaultContainer.register("paymentService", asValue(PaymentServiceMock))
 defaultContainer.register("manager", asValue(MockManager))
 defaultContainer.register("paymentSessionRepository", asValue(MockRepository()))
-defaultContainer.register("paymentProviderRepository", asValue(PaymentProviderServiceMock))
+defaultContainer.register(
+  "paymentProviderRepository",
+  asValue(PaymentProviderServiceMock)
+)
 defaultContainer.register("paymentRepository", asValue(MockRepository()))
 defaultContainer.register("refundRepository", asValue(MockRepository()))
 defaultContainer.register("customerService", asValue(CustomerServiceMock))
 defaultContainer.register("featureFlagRouter", asValue(new FlagRouter({})))
 defaultContainer.register("logger", asValue(Logger))
-defaultContainer.register("pp_payment_processor", asFunction((cradle) => new PaymentProcessor(cradle)))
+defaultContainer.register(
+  "pp_payment_processor",
+  asFunction((cradle) => new PaymentProcessor(cradle))
+)
 
 export class PaymentProcessor extends AbstractPaymentProcessor {
   constructor(container) {
-    super(container);
+    super(container)
   }
   authorizePayment(context: PaymentProcessorContext): Promise<
     | PaymentProcessorError
@@ -38,43 +47,78 @@ export class PaymentProcessor extends AbstractPaymentProcessor {
         data: PaymentProcessorSessionResponse["session_data"]
       }
   > {
-    return Promise.resolve({ } as any);
+    return Promise.resolve({} as any)
   }
 
-  getPaymentStatus(paymentSessionData: Record<string, unknown>): Promise<PaymentSessionStatus> {
-    return Promise.resolve(PaymentSessionStatus.PENDING);
+  getPaymentStatus(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<PaymentSessionStatus> {
+    return Promise.resolve(PaymentSessionStatus.PENDING)
   }
 
   init(): Promise<void> {
-    return Promise.resolve(undefined);
+    return Promise.resolve(undefined)
   }
 
-  initiatePayment(context: PaymentProcessorContext): Promise<PaymentProcessorError | PaymentProcessorSessionResponse> {
-    return Promise.resolve({ } as PaymentProcessorSessionResponse);
+  initiatePayment(
+    context: PaymentProcessorContext
+  ): Promise<PaymentProcessorError | PaymentProcessorSessionResponse> {
+    return Promise.resolve({} as PaymentProcessorSessionResponse)
   }
 
-  retrievePayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
-    return Promise.resolve({ });
+  retrievePayment(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  > {
+    return Promise.resolve({})
   }
 
-  updatePayment(context: PaymentProcessorContext): Promise<PaymentProcessorError | void> {
-    return Promise.resolve(undefined);
+  updatePayment(
+    context: PaymentProcessorContext
+  ): Promise<PaymentProcessorError | void> {
+    return Promise.resolve(undefined)
   }
 
-  capturePayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
-    return Promise.resolve({ });
+  capturePayment(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  > {
+    return Promise.resolve({})
   }
 
-  refundPayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
-    return Promise.resolve({});
+  refundPayment(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  > {
+    return Promise.resolve({})
   }
 
-  cancelPayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
-    return Promise.resolve({});
+  cancelPayment(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  > {
+    return Promise.resolve({})
   }
 
-  deletePayment(paymentSessionData: Record<string, unknown>): Promise<PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]> {
-    return Promise.resolve({});
+  deletePayment(
+    paymentSessionData: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  > {
+    return Promise.resolve({})
+  }
+
+  updatePaymentData(
+    sessionId: string,
+    data: Record<string, unknown>
+  ): Promise<
+    PaymentProcessorError | PaymentProcessorSessionResponse["session_data"]
+  > {
+    return Promise.resolve({})
   }
 }
 

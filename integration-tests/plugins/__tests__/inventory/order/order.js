@@ -5,7 +5,6 @@ const { initDb, useDb } = require("../../../../helpers/use-db")
 const { setPort, useApi } = require("../../../../helpers/use-api")
 
 const adminSeeder = require("../../../helpers/admin-seeder")
-const cartSeeder = require("../../../helpers/cart-seeder")
 const {
   simpleProductFactory,
   simpleCustomerFactory,
