@@ -39,7 +39,7 @@ export class TransactionStepError {
   constructor(
     public action: string,
     public handlerType: TransactionHandlerType,
-    public error: Error | unknown
+    public error: Error | any
   ) {}
 }
 
@@ -115,7 +115,7 @@ export class DistributedTransaction {
   public addError(
     action: string,
     handlerType: TransactionHandlerType,
-    error: Error | unknown
+    error: Error | any
   ) {
     this.errors.push({
       action,

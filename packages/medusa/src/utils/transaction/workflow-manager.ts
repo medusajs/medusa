@@ -210,7 +210,7 @@ export class WorkflowManager {
   async registerStepFailure(
     workflowId: string,
     idempotencyKey: string,
-    error?: Error | unknown
+    error?: Error | any
   ): Promise<DistributedTransaction> {
     if (!WorkflowManager.workflows.has(workflowId)) {
       throw new Error(`Workflow with id "${workflowId}" not found.`)

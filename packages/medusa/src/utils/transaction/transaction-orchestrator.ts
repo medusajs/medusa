@@ -274,7 +274,7 @@ export class TransactionOrchestrator extends EventEmitter {
   private static async setStepFailure(
     transaction: DistributedTransaction,
     step: TransactionStep,
-    error: Error | unknown,
+    error: Error | any,
     maxRetries: number = TransactionOrchestrator.DEFAULT_RETRIES
   ): Promise<void> {
     step.failures++
@@ -704,7 +704,7 @@ export class TransactionOrchestrator extends EventEmitter {
    */
   public async registerStepFailure(
     responseIdempotencyKey: string,
-    error?: Error | unknown,
+    error?: Error | any,
     handler?: TransactionStepHandler,
     transaction?: DistributedTransaction
   ): Promise<DistributedTransaction> {
