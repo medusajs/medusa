@@ -49,10 +49,13 @@ function CurrencyCell(props: CurrencyCellProps) {
   } = props
 
   const [showDragIndicator, setShowDragIndicator] = useState(false)
-  const [localValue, setLocalValue] = useState(editedAmount)
+  const [localValue, setLocalValue] = useState({
+    value: editedAmount,
+    float: editedAmount,
+  })
 
   useEffect(() => {
-    setLocalValue(editedAmount)
+    setLocalValue({ value: editedAmount, float: editedAmount })
   }, [editedAmount])
 
   return (
@@ -70,15 +73,20 @@ function CurrencyCell(props: CurrencyCellProps) {
         }}
         onBlur={() => {
           setShowDragIndicator(false)
-          props.onInputChange(localValue, variant.id, currencyCode, region)
+          props.onInputChange(
+            localValue.float,
+            variant.id,
+            currencyCode,
+            region
+          )
         }}
         style={{ width: "100%", textAlign: "right", paddingRight: 8 }}
         className={clsx("decoration-transparent focus:outline-0", {
           "bg-blue-100": isSelected,
         })}
-        onValueChange={(_a, _b, v) => setLocalValue(v?.float)}
+        onValueChange={(_a, _b, v) => setLocalValue(v)}
         decimalSeparator="."
-        value={localValue}
+        value={localValue.value}
       ></AmountField>
       {showDragIndicator && (
         <div
@@ -86,7 +94,7 @@ function CurrencyCell(props: CurrencyCellProps) {
             document.body.style.userSelect = "none"
             event.stopPropagation()
             props.onInputChange(
-              localValue,
+              localValue.float,
               variant.id,
               currencyCode,
               region,
