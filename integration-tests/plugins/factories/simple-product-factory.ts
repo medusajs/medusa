@@ -75,7 +75,7 @@ export const simpleProductFactory = async (
     },
   ]
 
-  for (const pv of variants) {
+  product.variants = await Promise.all(variants.map(async (pv) => {
     const factoryData = {
       ...pv,
       product_id: prodId,
@@ -85,8 +85,8 @@ export const simpleProductFactory = async (
         { option_id: optionId, value: faker.commerce.productAdjective() },
       ]
     }
-    await simpleProductVariantFactory(connection, factoryData)
-  }
+    return await simpleProductVariantFactory(connection, factoryData)
+  }))
 
   return product
 }
