@@ -99,7 +99,7 @@ export class Product extends SoftDeletableEntity {
   profile: ShippingProfile
 
   @ManyToMany(() => ShippingProfile, {
-    cascade: ["remove", "soft-remove"],
+    cascade: true,
   })
   @JoinTable({
     name: "product_shipping_profile",
