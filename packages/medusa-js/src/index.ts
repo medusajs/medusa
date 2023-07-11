@@ -1,6 +1,6 @@
 import MedusaError from "./error"
 import KeyManager from "./key-manager"
-import Client, { Config } from "./request"
+import Client, { type Config } from "./request"
 import {
   Admin,
   AuthResource,
