@@ -120,33 +120,37 @@ export default class InventoryItemService {
    */
   @InjectEntityManager()
   async create(
-    data: CreateInventoryItemInput,
+    data: CreateInventoryItemInput | CreateInventoryItemInput[],
     @MedusaContext() context: SharedContext = {}
-  ): Promise<InventoryItem> {
+  ): Promise<InventoryItem[]> {
+    const toCreate = Array.isArray(data) ? data : [data]
+
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(InventoryItem)
 
-    const inventoryItem = itemRepository.create({
-      sku: data.sku,
-      origin_country: data.origin_country,
-      metadata: data.metadata,
-      hs_code: data.hs_code,
-      mid_code: data.mid_code,
-      material: data.material,
-      weight: data.weight,
-      length: data.length,
-      height: data.height,
-      width: data.width,
-      requires_shipping: data.requires_shipping,
-      description: data.description,
-      thumbnail: data.thumbnail,
-      title: data.title,
-    })
+    const inventoryItem = itemRepository.create(
+      toCreate.map((tc) => ({
+        sku: tc.sku,
+        origin_country: tc.origin_country,
+        metadata: tc.metadata,
+        hs_code: tc.hs_code,
+        mid_code: tc.mid_code,
+        material: tc.material,
+        weight: tc.weight,
+        length: tc.length,
+        height: tc.height,
+        width: tc.width,
+        requires_shipping: tc.requires_shipping,
+        description: tc.description,
+        thumbnail: tc.thumbnail,
+        title: tc.title,
+      }))
+    )
 
     const result = await itemRepository.save(inventoryItem)
 
     await this.eventBusService_?.emit?.(InventoryItemService.Events.CREATED, {
-      id: result.id,
+      ids: result.map((i) => i.id),
     })
 
     return result

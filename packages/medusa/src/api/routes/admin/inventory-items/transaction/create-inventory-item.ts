@@ -123,7 +123,8 @@ export const createInventoryItemTransaction = async (
         [TransactionHandlerType.INVOKE]: async (
           data: CreateInventoryItemInput
         ) => {
-          return await createInventoryItem(data)
+          const [item] = await createInventoryItem(data)
+          return item
         },
         [TransactionHandlerType.COMPENSATE]: async (
           data: CreateInventoryItemInput,

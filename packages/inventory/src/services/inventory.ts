@@ -258,14 +258,10 @@ export default class InventoryService implements IInventoryService {
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
   async createInventoryItem(
-    input: CreateInventoryItemInput,
+    input: CreateInventoryItemInput | CreateInventoryItemInput[],
     @MedusaContext() context: SharedContext = {}
-  ): Promise<InventoryItemDTO> {
-    const inventoryItem = await this.inventoryItemService_.create(
-      input,
-      context
-    )
-    return { ...inventoryItem }
+  ): Promise<InventoryItemDTO[]> {
+    return await this.inventoryItemService_.create(input, context)
   }
 
   /**

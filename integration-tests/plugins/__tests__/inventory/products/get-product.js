@@ -68,9 +68,11 @@ describe("Get products", () => {
       100
     )
 
-    invItem = await inventoryService.createInventoryItem({
+    const invItems = await inventoryService.createInventoryItem({
       sku: "test-sku",
     })
+    invItem = invItems[0]
+
     await productVariantInventoryService.attachInventoryItem(
       variantId,
       invItem.id

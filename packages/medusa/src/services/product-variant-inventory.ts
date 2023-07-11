@@ -3,21 +3,21 @@ import {
   ICacheService,
   IEventBusService,
   IInventoryService,
+  IStockLocationService,
   InventoryItemDTO,
   InventoryLevelDTO,
-  IStockLocationService,
   ReservationItemDTO,
   ReserveQuantityContext,
 } from "@medusajs/types"
 import { LineItem, Product, ProductVariant } from "../models"
-import { isDefined, MedusaError } from "@medusajs/utils"
+import { MedusaError, isDefined } from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
-import { TransactionBaseService } from "../interfaces"
 
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import ProductVariantService from "./product-variant"
 import SalesChannelInventoryService from "./sales-channel-inventory"
 import SalesChannelLocationService from "./sales-channel-location"
+import { TransactionBaseService } from "../interfaces"
 
 type InjectedDependencies = {
   manager: EntityManager

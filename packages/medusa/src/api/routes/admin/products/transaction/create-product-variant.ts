@@ -1,13 +1,3 @@
-import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
-import { EntityManager } from "typeorm"
-import { ulid } from "ulid"
-import { ProductVariant } from "../../../../../models"
-import {
-  ProductVariantInventoryService,
-  ProductVariantService,
-} from "../../../../../services"
-import { CreateProductVariantInput } from "../../../../../types/product-variant"
 import {
   DistributedTransaction,
   TransactionHandlerType,
@@ -16,6 +6,17 @@ import {
   TransactionState,
   TransactionStepsDefinition,
 } from "../../../../../utils/transaction"
+import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
+import {
+  ProductVariantInventoryService,
+  ProductVariantService,
+} from "../../../../../services"
+
+import { CreateProductVariantInput } from "../../../../../types/product-variant"
+import { EntityManager } from "typeorm"
+import { MedusaError } from "@medusajs/utils"
+import { ProductVariant } from "../../../../../models"
+import { ulid } from "ulid"
 
 enum actions {
   createVariants = "createVariants",
@@ -97,7 +98,7 @@ export const createVariantsTransaction = async (
           return
         }
 
-        const inventoryItem = await inventoryService!.createInventoryItem(
+        const [inventoryItem] = await inventoryService!.createInventoryItem(
           {
             sku: variant.sku,
             origin_country: variant.origin_country,

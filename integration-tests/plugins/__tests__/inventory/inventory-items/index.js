@@ -400,6 +400,7 @@ describe("Inventory Items endpoints", () => {
         })
       )
     })
+
     describe("List inventory items", () => {
       it("Lists inventory items with location", async () => {
         const api = useApi()
@@ -547,16 +548,16 @@ describe("Inventory Items endpoints", () => {
 
         const inventoryService = appContainer.resolve("inventoryService")
 
-        await Promise.all([
-          inventoryService.createInventoryItem({
+        await inventoryService.createInventoryItem([
+          {
             title: "Test Item",
-          }),
-          inventoryService.createInventoryItem({
+          },
+          {
             description: "Test Desc",
-          }),
-          inventoryService.createInventoryItem({
+          },
+          {
             sku: "Test Sku",
-          }),
+          },
         ])
 
         const response = await api.get(
@@ -592,7 +593,7 @@ describe("Inventory Items endpoints", () => {
       const api = useApi()
       const inventoryService = appContainer.resolve("inventoryService")
 
-      const invItem2 = await inventoryService.createInventoryItem({
+      const [invItem2] = await inventoryService.createInventoryItem({
         sku: "1234567",
       })
 
@@ -606,13 +607,13 @@ describe("Inventory Items endpoints", () => {
 
       locationId = stockRes.data.stock_location.id
 
-      const level = await inventoryService.createInventoryLevel({
+      const [level] = await inventoryService.createInventoryLevel({
         inventory_item_id: invItem2.id,
         location_id: locationId,
         stocked_quantity: 10,
       })
 
-      const reservation = await inventoryService.createReservationItem({
+      const [reservation] = await inventoryService.createReservationItem({
         inventory_item_id: invItem2.id,
         location_id: locationId,
         quantity: 5,
@@ -691,7 +692,7 @@ describe("Inventory Items endpoints", () => {
         "productVariantInventoryService"
       )
 
-      const invItem2 = await inventoryService.createInventoryItem({
+      const [invItem2] = await inventoryService.createInventoryItem({
         sku: "123456",
       })
 
@@ -786,6 +787,30 @@ describe("Inventory Items endpoints", () => {
             expect.objectContaining({
               inventory_item_id: itemId,
               location_id: location2Id,
+            }),
+          ])
+        )
+      })
+
+      it("bulk creates inventory items", async () => {
+        const items = [
+          {
+            sku: "sku-1",
+          },
+          {
+            sku: "sku-2",
+          },
+        ]
+        const createdItems = await inventoryService.createInventoryItem(items)
+
+        expect(createdItems).toHaveLength(2)
+        expect(createdItems).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              sku: "sku-1",
+            }),
+            expect.objectContaining({
+              sku: "sku-2",
             }),
           ])
         )

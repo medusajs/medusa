@@ -92,9 +92,10 @@ describe("Inventory Items endpoints", () => {
       locationId
     )
 
-    inventoryItem = await inventoryService.createInventoryItem({
+    const inventoryItems = await inventoryService.createInventoryItem({
       sku: "1234",
     })
+    inventoryItem = inventoryItems[0]
 
     await prodVarInventoryService.attachInventoryItem(
       variantId,
@@ -128,12 +129,13 @@ describe("Inventory Items endpoints", () => {
 
     lineItemId = orderRes.data.order.items[0].id
 
-    reservationItem = await inventoryService.createReservationItem({
+    const reservationItems = await inventoryService.createReservationItem({
       line_item_id: lineItemId,
       inventory_item_id: inventoryItem.id,
       location_id: locationId,
       quantity: 2,
     })
+    reservationItem = reservationItems[0]
   })
 
   afterAll(async () => {
@@ -226,7 +228,7 @@ describe("Inventory Items endpoints", () => {
           location2
         )
 
-        const inventoryItem1 = await inventoryService.createInventoryItem({
+        const [inventoryItem1] = await inventoryService.createInventoryItem({
           sku: "12345",
         })
         item2 = inventoryItem1.id
@@ -260,13 +262,14 @@ describe("Inventory Items endpoints", () => {
           adminHeaders
         )
 
-        reservation2 = await inventoryService.createReservationItem({
+        const reservations2 = await inventoryService.createReservationItem({
           line_item_id: "line-item-id-2",
           inventory_item_id: item2,
           location_id: location2,
           description: "test description",
           quantity: 1,
         })
+        reservation2 = reservations2[0]
       })
 
       it("lists reservation items", async () => {

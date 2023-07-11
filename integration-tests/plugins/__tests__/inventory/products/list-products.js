@@ -84,7 +84,7 @@ describe("Create Variant", () => {
       await salesChannelLocationService.associateLocation(sc2.id, sl1.id)
       await salesChannelLocationService.associateLocation(sc2.id, sl2.id)
 
-      const invItem = await inventoryService.createInventoryItem({
+      const [invItem] = await inventoryService.createInventoryItem({
         sku: "test-sku",
       })
       await productVariantInventoryService.attachInventoryItem(
@@ -168,7 +168,7 @@ describe("Create Variant", () => {
           },
           103
         )
-        const invItem = await inventoryService.createInventoryItem({
+        const [invItem] = await inventoryService.createInventoryItem({
           sku: "test-sku-1",
         })
         await productVariantInventoryService.attachInventoryItem(
@@ -190,7 +190,7 @@ describe("Create Variant", () => {
           },
           104
         )
-        const invItem1 = await inventoryService.createInventoryItem({
+        const [invItem1] = await inventoryService.createInventoryItem({
           sku: "test-sku-2",
         })
         await productVariantInventoryService.attachInventoryItem(

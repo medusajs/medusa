@@ -58,9 +58,9 @@ export interface IInventoryService {
 
   // TODO make it bulk
   createInventoryItem(
-    input: CreateInventoryItemInput,
+    input: CreateInventoryItemInput | CreateInventoryItemInput[],
     context?: SharedContext
-  ): Promise<InventoryItemDTO>
+  ): Promise<InventoryItemDTO[]>
 
   createInventoryLevel(
     data: CreateInventoryLevelInput | CreateInventoryLevelInput[],
