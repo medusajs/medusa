@@ -1,4 +1,4 @@
-import { ProductStatus } from "@medusajs/medusa"
+import { ProductStatus } from "@medusajs/types"
 
 export interface UpdateProductDTO {
   id: string
