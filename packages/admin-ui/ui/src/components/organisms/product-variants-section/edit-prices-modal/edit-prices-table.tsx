@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { useAdminRegions } from "medusa-react"
+import { useAdminCurrencies, useAdminRegions } from "medusa-react"
 import { Product } from "@medusajs/client-types"
 
 import {
@@ -8,6 +8,7 @@ import {
   getRegionPricesOnly,
 } from "./utils"
 import CurrencyCell from "./currency-cell"
+import IconBuildingTax from "../../../fundamentals/icons/building-tax-icon"
 import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 
 type EditPricesTableProps = {
@@ -50,6 +51,7 @@ function getKey(variantId: string, currencyCode?: string, regionId?: string) {
  */
 function EditPricesTable(props: EditPricesTableProps) {
   const { regions: storeRegions } = useAdminRegions()
+  const { currencies: storeCurrencies } = useAdminCurrencies()
 
   const [isDrag, setIsDrag] = useState(false)
   const [editedPrices, setEditedPrices] = useState<
@@ -261,22 +263,42 @@ function EditPricesTable(props: EditPricesTableProps) {
             <th className="min-w-[180px] border pl-4 font-medium text-gray-400">
               SKU
             </th>
-            {props.currencies.map((c) => (
-              <th
-                key={c}
-                className="min-w-[220px] border pl-4 font-medium text-gray-400"
-              >
-                Price {c.toUpperCase()}
-              </th>
-            ))}
-            {props.regions.map((r) => (
-              <th
-                key={r}
-                className="min-w-[220px] border pl-4 font-medium text-gray-400"
-              >
-                Price {storeRegions?.find((sr) => sr.id === r)?.name}
-              </th>
-            ))}
+            {props.currencies.map((c) => {
+              const currency = storeCurrencies?.find((sc) => sc.code === c)
+
+              return (
+                <th
+                  key={c}
+                  className="min-w-[220px] border px-4 font-medium text-gray-400"
+                >
+                  <div className="flex items-center justify-between">
+                    <span>Price {c.toUpperCase()}</span>
+                    {currency?.includes_tax && (
+                      <IconBuildingTax strokeWidth={1.3} size={20} />
+                    )}
+                  </div>
+                </th>
+              )
+            })}
+            {props.regions.map((r) => {
+              const region = storeRegions?.find((sr) => sr.id === r)
+              if (!region) {
+                return null
+              }
+              return (
+                <th
+                  key={r}
+                  className="min-w-[220px] border px-4 font-medium text-gray-400"
+                >
+                  <div className="flex items-center justify-between">
+                    <span>Price {region?.name}</span>
+                    {region.includes_tax && (
+                      <IconBuildingTax strokeWidth={1.3} size={20} />
+                    )}
+                  </div>
+                </th>
+              )
+            })}
           </tr>
         </thead>
         <tbody>
