@@ -21,8 +21,12 @@ function EditPricesActions(props: EditPricesActionsProps) {
   const { selectedCurrencies, selectedRegions, toggleCurrency, toggleRegion } =
     props
 
-  const { regions: _regions } = useAdminRegions()
-  const { currencies: _currencies } = useAdminCurrencies()
+  const { regions: _regions } = useAdminRegions({
+    limit: 1000,
+  })
+  const { currencies: _currencies } = useAdminCurrencies({
+    limit: 1000,
+  })
 
   const currencies = useMemo(() => {
     return (_currencies || []).sort((c1, c2) => c1.code.localeCompare(c2.code))

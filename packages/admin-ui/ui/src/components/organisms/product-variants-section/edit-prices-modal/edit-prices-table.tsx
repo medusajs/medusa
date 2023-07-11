@@ -50,8 +50,12 @@ function getKey(variantId: string, currencyCode?: string, regionId?: string) {
  * Edit prices table component.
  */
 function EditPricesTable(props: EditPricesTableProps) {
-  const { regions: storeRegions } = useAdminRegions()
-  const { currencies: storeCurrencies } = useAdminCurrencies()
+  const { regions: storeRegions } = useAdminRegions({
+    limit: 1000,
+  })
+  const { currencies: storeCurrencies } = useAdminCurrencies({
+    limit: 1000,
+  })
 
   const [isDrag, setIsDrag] = useState(false)
   const [editedPrices, setEditedPrices] = useState<
@@ -265,7 +269,6 @@ function EditPricesTable(props: EditPricesTableProps) {
             </th>
             {props.currencies.map((c) => {
               const currency = storeCurrencies?.find((sc) => sc.code === c)
-
               return (
                 <th
                   key={c}
