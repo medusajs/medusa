@@ -2,21 +2,39 @@ import Loading from "@/app/loading"
 import { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
+import type { TagOperationParamatersObjectProps } from "./Types/Object"
+import type { TagOperationParametersDefaultProps } from "./Types/Default"
+import type { TagOperationParametersArrayProps } from "./Types/Array"
+import type { TagOperationParametersUnionProps } from "./Types/Union"
 
-const TagOperationParametersObject = dynamic(() => import("./Types/Object"), {
-  loading: () => <Loading />
-})
-const TagOperationParametersDefault = dynamic(() => import("./Types/Default"), {
-  loading: () => <Loading />
-})
-const TagOperationParametersArray = dynamic(() => import("./Types/Array"), {
-  loading: () => <Loading />
-})
-const TagOperationParametersUnion = dynamic(() => import("./Types/Union"), {
-  loading: () => <Loading />
-})
+const TagOperationParametersObject = dynamic<TagOperationParamatersObjectProps>(
+  async () => import("./Types/Object"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<TagOperationParamatersObjectProps>
 
-type TagOperationParametersProps = {
+const TagOperationParametersDefault =
+  dynamic<TagOperationParametersDefaultProps>(
+    async () => import("./Types/Default"),
+    {
+      loading: () => <Loading />,
+    }
+  ) as React.FC<TagOperationParametersDefaultProps>
+const TagOperationParametersArray = dynamic<TagOperationParametersArrayProps>(
+  async () => import("./Types/Array"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<TagOperationParametersArrayProps>
+const TagOperationParametersUnion = dynamic<TagOperationParametersUnionProps>(
+  async () => import("./Types/Union"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<TagOperationParametersUnionProps>
+
+export type TagOperationParametersProps = {
   schemaObject: SchemaObject
 }
 
@@ -32,24 +50,40 @@ const TagOperationParameters = ({
 
             switch (true) {
               case value.type === "object":
-                content = <TagOperationParametersObject
-                  schema={value}
-                  name={key}
-                  is_required={schemaObject.required?.includes(key)}
-                />
+                content = (
+                  <TagOperationParametersObject
+                    schema={value}
+                    name={key}
+                    is_required={schemaObject.required?.includes(key)}
+                  />
+                )
                 break
               case value.type === "array":
-                content = <TagOperationParametersArray schema={value} name={key} is_required={schemaObject.required?.includes(key)} />
+                content = (
+                  <TagOperationParametersArray
+                    schema={value}
+                    name={key}
+                    is_required={schemaObject.required?.includes(key)}
+                  />
+                )
                 break
               case value.anyOf !== undefined || value.allOf !== undefined:
-                content = <TagOperationParametersUnion schema={value} name={key} is_required={schemaObject.required?.includes(key)} />
+                content = (
+                  <TagOperationParametersUnion
+                    schema={value}
+                    name={key}
+                    is_required={schemaObject.required?.includes(key)}
+                  />
+                )
                 break
               default:
-                content = <TagOperationParametersDefault
-                  schema={value}
-                  name={key}
-                  is_required={schemaObject.required?.includes(key)}
-                />
+                content = (
+                  <TagOperationParametersDefault
+                    schema={value}
+                    name={key}
+                    is_required={schemaObject.required?.includes(key)}
+                  />
+                )
             }
 
             return (

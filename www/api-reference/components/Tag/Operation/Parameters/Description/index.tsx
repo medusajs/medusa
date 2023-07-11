@@ -9,22 +9,23 @@ type TagOperationParametersDescriptionProps = {
 const TagOperationParametersDescription = ({
   schema,
 }: TagOperationParametersDescriptionProps) => {
-  console.log(schema.allOf)
   let typeDescription: ReactNode = <></>
   switch (true) {
     case schema.type === "object":
-      typeDescription = <>{schema.type} ({schema.title})</>
+      typeDescription = (
+        <>
+          {schema.type} ({schema.title})
+        </>
+      )
       break
     case schema.type === "array":
-      typeDescription = <>{schema.type === "array" && formatArrayDescription(schema.items)}</>
+      typeDescription = (
+        <>{schema.type === "array" && formatArrayDescription(schema.items)}</>
+      )
       break
     case schema.anyOf !== undefined:
     case schema.allOf !== undefined:
-      typeDescription =  (
-        <>
-          {formatUnionDescription(schema.allOf)}
-        </>
-      )
+      typeDescription = <>{formatUnionDescription(schema.allOf)}</>
       break
     default:
       typeDescription = <>{schema.type}</>
@@ -49,17 +50,16 @@ const TagOperationParametersDescription = ({
 
 export default TagOperationParametersDescription
 
-function formatArrayDescription (schema: SchemaObject) {
-  const type = schema.type === "object" ? `objects ${schema.title ? `(${schema.title})` : ""}` : `${schema.type}s`
+function formatArrayDescription(schema: SchemaObject) {
+  const type =
+    schema.type === "object"
+      ? `objects ${schema.title ? `(${schema.title})` : ""}`
+      : `${schema.type}s`
 
   return `Array of ${type}`
 }
 
-function formatUnionDescription (arr?: SchemaObject[]) {
+function formatUnionDescription(arr?: SchemaObject[]) {
   const types = [...new Set(arr?.map((type) => type.type))]
-  return (
-    <>
-      {types.join(" or ")}
-    </>
-  )
+  return <>{types.join(" or ")}</>
 }

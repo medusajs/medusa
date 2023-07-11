@@ -13,12 +13,16 @@ import {
 import { useEffect } from "react"
 import dynamic from "next/dynamic"
 import Loading from "@/app/loading"
+import type { TagOperationProps } from "../Operation"
 
-const TagOperation = dynamic(() => import("../Operation"), {
-  loading: () => <Loading />
-})
+const TagOperation = dynamic<TagOperationProps>(
+  async () => import("../Operation"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<TagOperationProps>
 
-type TagSectionPathsProps = {
+export type TagSectionPathsProps = {
   tag: OpenAPIV3.TagObject
 } & React.HTMLAttributes<HTMLDivElement>
 

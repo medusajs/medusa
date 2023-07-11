@@ -6,24 +6,30 @@ import { useInView } from "react-intersection-observer"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useSidebar } from "@/providers/sidebar"
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic"
 import Loading from "@/app/loading"
+import type { SectionProps } from "../../Section"
+import type { MDXContentClientProps } from "../../MDXContent/Client"
+import type { TagSectionPathsProps } from "../Paths"
 
 type TagSectionProps = {
   tag: OpenAPIV3.TagObject
 } & React.HTMLAttributes<HTMLDivElement>
 
-const TagPaths = dynamic(() => import('../Paths'), {
-  loading: () => <Loading />
-})
+const TagPaths = dynamic<TagSectionPathsProps>(async () => import("../Paths"), {
+  loading: () => <Loading />,
+}) as React.FC<TagSectionPathsProps>
 
-const Section = dynamic(() => import("../../Section"), {
-  loading: () => <Loading />
-})
+const Section = dynamic<SectionProps>(async () => import("../../Section"), {
+  loading: () => <Loading />,
+}) as React.FC<SectionProps>
 
-const MDXContentClient = dynamic(() => import("@/components/MDXContent/Client"), {
-  loading: () => <Loading />
-})
+const MDXContentClient = dynamic<MDXContentClientProps>(
+  async () => import("../../MDXContent/Client"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<MDXContentClientProps>
 
 const TagSection = ({ tag }: TagSectionProps) => {
   const { changeActiveItem } = useSidebar()
@@ -47,15 +53,12 @@ const TagSection = ({ tag }: TagSectionProps) => {
     <div className="min-h-screen" id={slugTagName} ref={ref}>
       <h2>{tag.name}</h2>
       {tag.description && (
-        <Section
-          addToSidebar={false}
-          content={<MDXContentClient content={tag.description} />}
-        />
+        <Section addToSidebar={false}>
+          <MDXContentClient content={tag.description} />
+        </Section>
       )}
       {loadPaths && <TagPaths tag={tag} />}
-      {!loadPaths && (
-        <Loading />
-      )}
+      {!loadPaths && <Loading />}
     </div>
   )
 }

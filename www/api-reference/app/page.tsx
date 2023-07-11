@@ -1,9 +1,19 @@
-import getBaseUrl from "@/utils/get-hostname"
+import type { DescriptionProps } from "@/components/Description"
+import type { TagsProps } from "@/components/Tag"
+import getBaseUrl from "@/utils/get-base-url"
 import dynamic from "next/dynamic"
 import { OpenAPIV3 } from "openapi-types"
+import Loading from "./loading"
 
-const Description = dynamic(() => import("@/components/Description"))
-const Tags = dynamic(() => import("@/components/Tag"))
+const Description = dynamic<DescriptionProps>(
+  async () => import("@/components/Description"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<DescriptionProps>
+const Tags = dynamic<TagsProps>(async () => import("@/components/Tag"), {
+  loading: () => <Loading />,
+}) as React.FC<TagsProps>
 
 const getBaseSpecs = async () => {
   const res = await fetch(`${getBaseUrl()}/api/base-specs`)

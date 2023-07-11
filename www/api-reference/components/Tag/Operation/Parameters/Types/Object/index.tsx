@@ -2,7 +2,7 @@ import { SchemaObject } from "@/types/openapi"
 import TagOperationParametersDefault from "../Default"
 import TagOperationParametersProperties from "../Properties"
 
-type TagOperationParamatersObject = {
+export type TagOperationParamatersObjectProps = {
   name: string
   schema: SchemaObject
   is_required?: boolean
@@ -12,7 +12,7 @@ const TagOperationParametersObject = ({
   name,
   schema,
   is_required,
-}: TagOperationParamatersObject) => {
+}: TagOperationParamatersObjectProps) => {
   if (schema.type !== "object" || !schema.properties) {
     return <></>
   }

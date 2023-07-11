@@ -2,7 +2,7 @@ import { SchemaObject } from "@/types/openapi"
 import TagOperationParametersName from "../../Name"
 import TagOperationParametersDescription from "../../Description"
 
-type TagOperationParametersDefaultProps = {
+export type TagOperationParametersDefaultProps = {
   name: string
   schema: SchemaObject
   is_required?: boolean

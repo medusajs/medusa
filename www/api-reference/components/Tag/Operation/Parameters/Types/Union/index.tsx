@@ -2,12 +2,17 @@ import { SchemaObject } from "@/types/openapi"
 import TagOperationParametersDefault from "../Default"
 import dynamic from "next/dynamic"
 import Loading from "@/app/loading"
+import type { TagOperationParametersPropertiesProps } from "../Properties"
 
-const TagOperationParametersProperties = dynamic(() => import("../Properties"), {
-  loading: () => <Loading />
-})
+const TagOperationParametersProperties =
+  dynamic<TagOperationParametersPropertiesProps>(
+    async () => import("../Properties"),
+    {
+      loading: () => <Loading />,
+    }
+  ) as React.FC<TagOperationParametersPropertiesProps>
 
-type TagOperationParametersUnionProps = {
+export type TagOperationParametersUnionProps = {
   name: string
   schema: SchemaObject
   is_required?: boolean
@@ -18,8 +23,10 @@ const TagOperationParametersUnion = ({
   schema,
   is_required,
 }: TagOperationParametersUnionProps) => {
-  const objectSchema = schema.anyOf ? schema.anyOf.find((item) => item.type === "object") : schema.allOf?.find((item) => item.type === "object")
-  
+  const objectSchema = schema.anyOf
+    ? schema.anyOf.find((item) => item.type === "object")
+    : schema.allOf?.find((item) => item.type === "object")
+
   return (
     <>
       {objectSchema && (

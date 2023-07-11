@@ -4,7 +4,7 @@ import { ReactNode } from "react"
 import getCustomComponents from "../../MDXComponents"
 import { MDXProvider } from "@mdx-js/react"
 
-type MDXContentClientProps = {
+export type MDXContentClientProps = {
   content: ReactNode
 }
 

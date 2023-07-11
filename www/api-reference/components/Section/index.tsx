@@ -8,12 +8,11 @@ import {
 import getSectionId from "@/utils/get-section-id"
 import { useEffect, useRef, useState } from "react"
 
-type SectionProps = {
-  content: React.ReactNode
+export type SectionProps = {
   addToSidebar?: boolean
-}
+} & React.AllHTMLAttributes<HTMLDivElement>
 
-const Section = ({ addToSidebar = true, content }: SectionProps) => {
+const Section = ({ addToSidebar = true, children }: SectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null)
   const { addItems } = useSidebar()
   const [scannedHeading, setScannedHeading] = useState(false)
@@ -42,7 +41,7 @@ const Section = ({ addToSidebar = true, content }: SectionProps) => {
 
   return (
     <div ref={sectionRef} className="w-api-ref-content">
-      {content}
+      {children}
     </div>
   )
 }

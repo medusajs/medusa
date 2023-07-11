@@ -4,7 +4,7 @@ import { OpenAPIV3 } from "openapi-types"
 import React from "react"
 import TagSection from "./Section"
 
-type TagsProps = {
+export type TagsProps = {
   tags: OpenAPIV3.TagObject[]
 } & React.HTMLAttributes<HTMLDivElement>
 

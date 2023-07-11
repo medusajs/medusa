@@ -1,3 +1,6 @@
+// The YAML reader does not convert the YAML files into proper
+// OpenAPI Specs. These utility functions handle doing that.
+
 const keysToConvert = [
   {
     key: "requestBody",
@@ -46,7 +49,7 @@ function arrayToObject(
     if (!isArrayOfObjects(arr)) {
       return arr
     }
-    
+
     if (hasOverlappingObjects(arr)) {
       arr = arr.map((item: Record<string, any>) => {
         Object.keys(item).forEach((key) => {
@@ -128,8 +131,12 @@ function isNumericalKey(key: string, exceptions: string[] = []) {
   })
 }
 
-function hasOverlappingObjects (arr: any[]) {
+function hasOverlappingObjects(arr: any[]) {
   return arr.some((item: Record<string, any>) => {
-    return Object.entries(item).some(([key, value]) => arr.some((item2) => item !== item2 && key in item2 && item2[key] === value))
+    return Object.entries(item).some(([key, value]) =>
+      arr.some(
+        (item2) => item !== item2 && key in item2 && item2[key] === value
+      )
+    )
   })
 }
