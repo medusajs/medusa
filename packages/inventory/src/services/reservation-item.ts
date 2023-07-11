@@ -139,16 +139,18 @@ export default class ReservationItemService {
     const manager = context.transactionManager!
     const reservationItemRepository = manager.getRepository(ReservationItem)
 
-    const reservationItem = reservationItemRepository.create({
-      inventory_item_id: data.inventory_item_id,
-      line_item_id: data.line_item_id,
-      location_id: data.location_id,
-      quantity: data.quantity,
-      metadata: data.metadata,
-      external_id: data.external_id,
-      description: data.description,
-      created_by: data.created_by,
-    })
+    const reservationItems = reservationItemRepository.create(
+      toCreate.map((tc) => ({
+        inventory_item_id: tc.inventory_item_id,
+        line_item_id: tc.line_item_id,
+        location_id: tc.location_id,
+        quantity: tc.quantity,
+        metadata: tc.metadata,
+        external_id: tc.external_id,
+        description: tc.description,
+        created_by: tc.created_by,
+      }))
+    )
 
     const [newReservationItems] = await Promise.all([
       reservationItemRepository.save(reservationItems),
@@ -291,12 +293,12 @@ export default class ReservationItemService {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
 
-    const locationIds = Array.isArray(locationId) ? locationId : [locationId]
+    const ids = Array.isArray(locationId) ? locationId : [locationId]
 
     await itemRepository
       .createQueryBuilder("reservation_item")
       .softDelete()
-      .where("location_id IN(:...locationIds)", { locationIds })
+      .where("location_id IN (:...ids)", { ids })
       .andWhere("deleted_at IS NULL")
       .execute()
 
