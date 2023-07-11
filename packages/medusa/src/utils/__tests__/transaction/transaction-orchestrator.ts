@@ -191,7 +191,7 @@ describe("Transaction Orchestrator", () => {
     expect(actionOrder).toEqual(["one", "two", "three"])
   })
 
-  it("Should store invoke's step response if flag 'saveResponse' is set to true", async () => {
+  it("Should store invoke's step response by default or if flag 'saveResponse' is set to true and ignore it if set to false", async () => {
     const mocks = {
       one: jest.fn().mockImplementation((data) => {
         return { abc: 1234 }
@@ -244,15 +244,13 @@ describe("Transaction Orchestrator", () => {
     const flow: TransactionStepsDefinition = {
       next: {
         action: "firstMethod",
-        saveResponse: true,
         next: {
           action: "secondMethod",
-          saveResponse: true,
           next: {
             action: "thirdMethod",
-            saveResponse: true,
             next: {
               action: "fourthMethod",
+              saveResponse: false,
             },
           },
         },

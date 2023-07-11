@@ -14,7 +14,7 @@ import {
 import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 
 export type TransactionFlow = {
-  transactionModelId: string
+  modelId: string
   definition: TransactionStepsDefinition
   transactionId: string
   hasFailedSteps: boolean
@@ -343,10 +343,10 @@ export class TransactionOrchestrator extends EventEmitter {
 
       const payload = new TransactionPayload(
         {
-          model_id: flow.transactionModelId,
+          model_id: flow.modelId,
           reply_to_topic: TransactionOrchestrator.getKeyName(
             "trans",
-            flow.transactionModelId
+            flow.modelId
           ),
           idempotency_key: TransactionOrchestrator.getKeyName(
             flow.transactionId,
@@ -384,13 +384,18 @@ export class TransactionOrchestrator extends EventEmitter {
         )
       } else {
         execution.push(
-          transaction
-            .saveCheckpoint()
-            .then(async () =>
-              transaction
-                .handler(step.definition.action + "", type, payload)
-                .catch(() => void 0)
-            )
+          transaction.saveCheckpoint().then(async () =>
+            transaction
+              .handler(step.definition.action + "", type, payload)
+              .catch(async (error) => {
+                await TransactionOrchestrator.setStepFailure(
+                  transaction,
+                  step,
+                  error,
+                  step.definition.maxRetries
+                )
+              })
+          )
         )
       }
     }
@@ -456,7 +461,7 @@ export class TransactionOrchestrator extends EventEmitter {
     transactionId: string
   ): Promise<TransactionFlow> {
     return {
-      transactionModelId: this.id,
+      modelId: this.id,
       transactionId: transactionId,
       hasFailedSteps: false,
       hasSkippedSteps: false,
@@ -533,7 +538,7 @@ export class TransactionOrchestrator extends EventEmitter {
               id,
               depth: level.length - 1,
               definition: definitionCopy,
-              saveResponse: definitionCopy.saveResponse,
+              saveResponse: definitionCopy.saveResponse ?? true,
               invoke: {
                 state: TransactionState.NOT_STARTED,
                 status: TransactionStepStatus.IDLE,

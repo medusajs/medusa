@@ -3,7 +3,7 @@ import { TransactionHandlerType, TransactionState } from "./types"
 
 /**
  * @typedef TransactionMetadata
- * @property model_id - The id of the model_id that created the transaction (transactionModelId).
+ * @property model_id - The id of the model_id that created the transaction (modelId).
  * @property reply_to_topic - The topic to reply to for the transaction.
  * @property idempotency_key - The idempotency key of the transaction.
  * @property action - The action of the transaction.
@@ -88,7 +88,7 @@ export class DistributedTransaction {
     context?: TransactionContext
   ) {
     this.transactionId = flow.transactionId
-    this.modelId = flow.transactionModelId
+    this.modelId = flow.modelId
 
     if (errors) {
       this.errors = errors
