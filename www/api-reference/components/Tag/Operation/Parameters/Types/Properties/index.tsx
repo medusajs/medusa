@@ -3,6 +3,7 @@ import { SchemaObject } from "@/types/openapi"
 import dynamic from "next/dynamic"
 import type { TagOperationParametersDefaultProps } from "../Default"
 import type { TagOperationParamatersObjectProps } from "../Object"
+import clsx from "clsx"
 
 const TagOperationParametersObject = dynamic<TagOperationParamatersObjectProps>(
   async () => import("../Object"),
@@ -20,13 +21,15 @@ const TagOperationParametersDefault =
 
 export type TagOperationParametersPropertiesProps = {
   schema: SchemaObject
+  className?: string
 }
 
 const TagOperationParametersProperties = ({
   schema,
+  className,
 }: TagOperationParametersPropertiesProps) => {
   return (
-    <>
+    <div className={clsx(className)}>
       {Object.entries(schema.properties).map(([key, value]) => {
         return (
           <div key={key}>
@@ -43,7 +46,7 @@ const TagOperationParametersProperties = ({
           </div>
         )
       })}
-    </>
+    </div>
   )
 }
 

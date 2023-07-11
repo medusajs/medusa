@@ -6,6 +6,7 @@ import type { TagOperationParamatersObjectProps } from "./Types/Object"
 import type { TagOperationParametersDefaultProps } from "./Types/Default"
 import type { TagOperationParametersArrayProps } from "./Types/Array"
 import type { TagOperationParametersUnionProps } from "./Types/Union"
+import TagOperationParamatersOneOf from "./Types/OneOf"
 
 const TagOperationParametersObject = dynamic<TagOperationParamatersObjectProps>(
   async () => import("./Types/Object"),
@@ -93,6 +94,16 @@ const TagOperationParameters = ({
             )
           })}
         </ul>
+      )}
+      {schemaObject.oneOf && (
+        <TagOperationParamatersOneOf schema={schemaObject} />
+      )}
+      {!schemaObject.properties && (
+        <TagOperationParametersDefault
+          schema={schemaObject}
+          name={schemaObject.title}
+          is_required={false}
+        />
       )}
     </div>
   )

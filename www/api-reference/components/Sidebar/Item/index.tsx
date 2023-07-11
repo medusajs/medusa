@@ -10,7 +10,11 @@ type SidebarItemProps = {
 
 const SidebarItem = ({ item, className }: SidebarItemProps) => {
   const [collapsed, setCollapsed] = useState(false)
-  const { activeItem, changeActiveItem } = useSidebar()
+  // const { activeItem, changeActiveItem } = useSidebar()
+  const { isItemActive, setActivePath } = useSidebar()
+  const active = isItemActive(item)
+
+  // console.log(activeItem, item, activeItem?.path === item.path)
 
   return (
     <li className={clsx("text-label-small-plus", className)}>
@@ -25,13 +29,13 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
           className={clsx(
             "block py-1 px-[20px]",
             "group-hover:text-medusa-text-base dark:group-hover:text-medusa-text-base-dark group-hover:no-underline",
-            activeItem?.path === item.path &&
-              "text-medusa-text-base dark:text-medusa-text-base-dark",
-            activeItem?.path !== item.path &&
-              "text-medusa-text-subtle dark:text-medusa-text-subtle"
+            active && "text-medusa-text-base dark:text-medusa-text-base-dark",
+            !active && "text-medusa-text-subtle dark:text-medusa-text-subtle"
           )}
           scroll={true}
-          onClick={() => changeActiveItem(item.path)}
+          onClick={() => {
+            setActivePath(item.path)
+          }}
         >
           {item.method && (
             <span
@@ -59,7 +63,7 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
           >
             <IconChevronRightMini
               iconColorClassName={clsx(
-                activeItem?.path === item.path &&
+                active &&
                   "stroke-medusa-text-base dark:stroke-medusa-text-base-dark"
               )}
               containerClassName={clsx(

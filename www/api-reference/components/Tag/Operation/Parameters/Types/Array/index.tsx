@@ -36,10 +36,14 @@ const TagOperationParametersArray = ({
               name={name}
               schema={schema}
               is_required={is_required}
+              className="inline-flex w-[calc(100%-16px)]"
             />
           </summary>
 
-          <TagOperationParametersProperties schema={schema.items} />
+          <TagOperationParametersProperties
+            schema={schema.items}
+            className="pl-1"
+          />
         </details>
       )}
       {schema.items.type !== "object" && (

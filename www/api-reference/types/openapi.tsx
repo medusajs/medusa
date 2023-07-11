@@ -36,21 +36,23 @@ export type Path = OpenAPIV3.PathItemObject & {
 
 export type ArraySchemaObject = Omit<
   OpenAPIV3.ArraySchemaObject,
-  "properties" | "anyOf" | "allOf"
+  "properties" | "anyOf" | "allOf" | "oneOf"
 > & {
   items: SchemaObject
   properties: PropertiesObject
   anyOf?: SchemaObject[]
   allOf?: SchemaObject[]
+  oneOf?: SchemaObject[]
 }
 
 export type NonArraySchemaObject = Omit<
   OpenAPIV3.NonArraySchemaObject,
-  "properties" | "anyOf" | "allOf"
+  "properties" | "anyOf" | "allOf" | "oneOf"
 > & {
   properties: PropertiesObject
   anyOf?: SchemaObject[]
   allOf?: SchemaObject[]
+  oneOf?: SchemaObject[]
 }
 
 export type SchemaObject = (ArraySchemaObject | NonArraySchemaObject) & {

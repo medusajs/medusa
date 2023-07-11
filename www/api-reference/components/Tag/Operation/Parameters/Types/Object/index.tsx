@@ -23,10 +23,11 @@ const TagOperationParametersObject = ({
           name={name}
           schema={schema}
           is_required={is_required}
+          className="inline-flex w-[calc(100%-16px)]"
         />
       </summary>
 
-      <TagOperationParametersProperties schema={schema} />
+      <TagOperationParametersProperties schema={schema} className="pl-1" />
     </details>
   )
 }

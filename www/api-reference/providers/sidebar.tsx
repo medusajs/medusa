@@ -1,7 +1,14 @@
 "use client"
 
 import { OpenAPIV3 } from "openapi-types"
-import { ReactNode, createContext, useContext, useState } from "react"
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 
 export enum SidebarItemSections {
   TOP = "top",
@@ -21,8 +28,11 @@ type SidebarSectionItemsType = {
 
 type SidebarContextType = {
   items: SidebarSectionItemsType
-  activeItem: SidebarItemType | null
-  changeActiveItem: (path: string) => void
+  // activeItem: SidebarItemType | null
+  activePath: string | null
+  setActivePath: (path: string | null) => void
+  // changeActiveItem: (path: string) => void
+  isItemActive: (item: SidebarItemType) => boolean
   addItems: (
     item: SidebarItemType[],
     options?: {
@@ -45,7 +55,7 @@ const SidebarProvider = ({ children }: SidebarProviderType) => {
     top: [],
     bottom: [],
   })
-  const [activeItem, setActiveItem] = useState<SidebarItemType | null>(null)
+  const [activePath, setActivePath] = useState<string | null>(null)
 
   const isPathInSidebar = (path: string, section: SidebarItemSections) => {
     const selectedSection =
@@ -133,21 +143,38 @@ const SidebarProvider = ({ children }: SidebarProviderType) => {
     }
   }
 
-  const changeActiveItem = (currentPath: string) => {
-    const activeItem =
-      items.top.find((item) => item.path === currentPath) ||
-      items.bottom.find((item) => item.path === currentPath) ||
-      null
-    setActiveItem(activeItem)
+  const isItemActive = useCallback(
+    (item: SidebarItemType): boolean => {
+      return (
+        item.path === activePath ||
+        item.children?.some((childItem) => isItemActive(childItem)) ||
+        false
+      )
+    },
+    [activePath]
+  )
+
+  const init = () => {
+    const currentPath = location.hash.replace("#", "")
+    if (currentPath) {
+      setActivePath(currentPath)
+    }
   }
+
+  useEffect(() => {
+    init()
+  }, [])
 
   return (
     <SidebarContext.Provider
       value={{
         items,
         addItems,
-        activeItem,
-        changeActiveItem,
+        // activeItem,
+        // changeActiveItem,
+        activePath,
+        setActivePath,
+        isItemActive,
       }}
     >
       {children}

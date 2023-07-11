@@ -32,7 +32,7 @@ const MDXContentClient = dynamic<MDXContentClientProps>(
 ) as React.FC<MDXContentClientProps>
 
 const TagSection = ({ tag }: TagSectionProps) => {
-  const { changeActiveItem } = useSidebar()
+  const { setActivePath } = useSidebar()
   const [loadPaths, setLoadPaths] = useState(false)
   const slugTagName = getSectionId([tag.name])
   const router = useRouter()
@@ -43,8 +43,10 @@ const TagSection = ({ tag }: TagSectionProps) => {
         setLoadPaths(true)
       }
       if (inView) {
-        void router.push(`#${slugTagName}`)
-        changeActiveItem(slugTagName)
+        void router.replace(`#${slugTagName}`, undefined, {
+          scroll: false,
+        })
+        setActivePath(slugTagName)
       }
     },
   })

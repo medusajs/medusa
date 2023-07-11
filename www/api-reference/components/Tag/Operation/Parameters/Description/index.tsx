@@ -1,3 +1,4 @@
+import InlineCode from "@/components/MDXComponents/InlineCode"
 import { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import { ReactNode } from "react"
@@ -38,6 +39,23 @@ const TagOperationParametersDescription = ({
       )}
     >
       {typeDescription}
+      {schema.example && (
+        <>
+          <br />
+          <span>
+            Example: <InlineCode>{schema.example}</InlineCode>
+          </span>
+        </>
+      )}
+
+      {schema.default && (
+        <>
+          <br />
+          <span>
+            Default: <InlineCode>{schema.example}</InlineCode>
+          </span>
+        </>
+      )}
       {schema.description && (
         <>
           <br />

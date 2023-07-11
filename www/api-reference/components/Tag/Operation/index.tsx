@@ -1,3 +1,5 @@
+"use client"
+
 import { Operation } from "@/types/openapi"
 import clsx from "clsx"
 import { OpenAPIV3 } from "openapi-types"
@@ -6,6 +8,8 @@ import { Suspense } from "react"
 import dynamic from "next/dynamic"
 import Loading from "@/app/loading"
 import type { TagOperationParametersProps } from "./Parameters"
+import { useInView } from "react-intersection-observer"
+import { useSidebar } from "@/providers/sidebar"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
   async () => import("./Parameters"),
@@ -22,12 +26,23 @@ export type TagOperationProps = {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TagOperation = ({ operation, method }: TagOperationProps) => {
+  const { setActivePath } = useSidebar()
+  const path = getSectionId([operation.operationId])
+  const { ref } = useInView({
+    threshold: 0.5,
+    onChange: (inView) => {
+      if (inView) {
+        // can't use router as it doesn't support
+        // not scrolling
+        history.pushState({}, "", `#${path}`)
+        setActivePath(path)
+      }
+    },
+  })
+  console.log(operation.responses)
   return (
     <Suspense fallback={<Loading />}>
-      <div
-        className={clsx("flex min-h-screen")}
-        id={getSectionId([operation.operationId])}
-      >
+      <div className={clsx("flex min-h-screen")} id={path} ref={ref}>
         <div className={clsx("w-api-ref-content")}>
           <h3>{operation.summary}</h3>
           <p>{operation.description}</p>
@@ -55,7 +70,7 @@ const TagOperation = ({ operation, method }: TagOperationProps) => {
           {Object.entries(operation.responses).map(([code, response]) => (
             <div key={code}>
               {response.content && (
-                <details>
+                <details open={code === "200"}>
                   <summary
                     className={clsx(
                       "mb-1 rounded-sm py-0.5 px-1",
@@ -68,11 +83,25 @@ const TagOperation = ({ operation, method }: TagOperationProps) => {
                     {code} {response.description}
                   </summary>
 
-                  <TagOperationParameters
-                    schemaObject={
-                      response.content[Object.keys(response.content)[0]].schema
-                    }
-                  />
+                  <>
+                    <div
+                      className={clsx(
+                        "border-medusa-border-base dark:border-medusa-border-base-dark border-b border-solid",
+                        "mb-1"
+                      )}
+                    >
+                      <span className={clsx("uppercase")}>
+                        Response Schema:
+                      </span>{" "}
+                      {Object.keys(response.content)[0]}
+                    </div>
+                    <TagOperationParameters
+                      schemaObject={
+                        response.content[Object.keys(response.content)[0]]
+                          .schema
+                      }
+                    />
+                  </>
                 </details>
               )}
               {!response.content && (
