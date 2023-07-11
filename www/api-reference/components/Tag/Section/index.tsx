@@ -43,9 +43,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
         setLoadPaths(true)
       }
       if (inView) {
-        void router.replace(`#${slugTagName}`, undefined, {
-          scroll: false,
-        })
+        void router.push(`#${slugTagName}`)
         setActivePath(slugTagName)
       }
     },
