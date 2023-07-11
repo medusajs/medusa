@@ -129,22 +129,22 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    const result = await this.manager_.findAndCount(
+    const [productCategories, count] = await this.manager_.findAndCount(
       ProductCategory,
       findOptions_.where as MikroFilterQuery<ProductCategory>,
       findOptions_.options as MikroOptions<ProductCategory>
     )
 
     if (!includeDescendantsTree) {
-      return result
+      return [productCategories, count]
     }
 
     return [
       await this.buildProductCategoriesWithDescendants(
-        result[0],
+        productCategories,
         findOptions_
       ),
-      result[1]
+      count
     ]
   }
 

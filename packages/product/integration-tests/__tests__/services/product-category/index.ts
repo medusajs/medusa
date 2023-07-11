@@ -447,7 +447,7 @@ describe("Product category Service", () => {
       ])
     })
 
-    it("includes the entire list of descendants when include_descendants_tree is true", async () => {
+    it("should includes descendants when include_descendants_tree is true", async () => {
       const productCategoryResults = await service.listAndCount(
         {
           parent_category_id: null,
