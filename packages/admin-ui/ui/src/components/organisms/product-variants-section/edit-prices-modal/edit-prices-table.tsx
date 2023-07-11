@@ -38,6 +38,8 @@ let lastVisitedVariant = undefined
 
 let activeAmount: undefined | number = undefined
 
+let stack: string[] = []
+
 /**
  * Construct cell key.
  * Cell row is defined by variant id and column is ether currency or region.
@@ -134,6 +136,11 @@ function EditPricesTable(props: EditPricesTableProps) {
         move === MoveDirection.Down) ||
       (anchorPosition === AnchorPosition.Below && move === MoveDirection.Up)
     ) {
+      if (move === MoveDirection.Down) {
+        stack.push(variantId)
+      } else {
+        stack.unshift(variantId)
+      }
       selectCell(variantId, activeCurrencyOrRegion)
       setPriceForCell(activeAmount, variantId, activeCurrencyOrRegion)
     }
@@ -143,6 +150,7 @@ function EditPricesTable(props: EditPricesTableProps) {
       (anchorPosition === AnchorPosition.Above && move === MoveDirection.Up) ||
       (anchorPosition === AnchorPosition.Below && move === MoveDirection.Down)
     ) {
+      stack = stack.filter((v) => v !== lastVisitedVariant)
       deselectCell(lastVisitedVariant, activeCurrencyOrRegion)
       setPriceForCell(undefined, lastVisitedVariant, activeCurrencyOrRegion)
     }
@@ -164,6 +172,7 @@ function EditPricesTable(props: EditPricesTableProps) {
     activeCurrencyOrRegion = currencyCode || regionId
     activeAmount = Number(event.target.value?.replace(",", ""))
     selectCell(variantId, currencyCode, regionId)
+    stack = [variantId]
   }
 
   const onInputChange = (
@@ -253,7 +262,7 @@ function EditPricesTable(props: EditPricesTableProps) {
           /** prevent highlighting **/
           (e) => e.preventDefault()
         }
-        style={{ fontSize: 13 }}
+        style={{ fontSize: 13, borderCollapse: "collapse" }}
         className="w-full table-auto"
       >
         <thead>
@@ -345,15 +354,24 @@ function EditPricesTable(props: EditPricesTableProps) {
                       key={variant.id + c}
                       currencyCode={c}
                       variant={variant}
-                      isSelected={
-                        isDrag && selectedCells[getKey(variant.id, c)]
-                      }
+                      isSelected={selectedCells[getKey(variant.id, c)]}
                       editedAmount={editedPrices[getKey(variant.id, c)]}
                       onInputChange={onInputChange}
                       onMouseCellClick={onMouseCellClick}
                       onDragStart={onDragStart}
                       onDragEnd={onDragEnd}
                       isDragging={isDrag}
+                      isRangeStart={
+                        activeCurrencyOrRegion === c && stack[0] === variant.id
+                      }
+                      isRangeEnd={
+                        activeCurrencyOrRegion === c &&
+                        stack[stack.length - 1] === variant.id
+                      }
+                      isInRange={
+                        activeCurrencyOrRegion === c &&
+                        stack.includes(variant.id)
+                      }
                     />
                   )
                 })}
@@ -363,9 +381,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                     key={variant.id + r}
                     region={r!}
                     variant={variant}
-                    isSelected={
-                      isDrag && selectedCells[getKey(variant.id, undefined, r)]
-                    }
+                    isSelected={selectedCells[getKey(variant.id, undefined, r)]}
                     editedAmount={
                       editedPrices[getKey(variant.id, undefined, r)]
                     }

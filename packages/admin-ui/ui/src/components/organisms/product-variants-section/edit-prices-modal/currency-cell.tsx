@@ -30,6 +30,10 @@ type CurrencyCellProps = {
   isSelected?: boolean
   isDragging?: boolean
 
+  isRangeStart: boolean
+  isRangeEnd: boolean
+  isInRange: boolean
+
   onDragStart: (
     variantId: string,
     currencyCode?: string,
@@ -64,11 +68,13 @@ function CurrencyCell(props: CurrencyCellProps) {
     editedAmount,
     isSelected,
     isDragging,
+    isInRange,
+    isRangeStart,
+    isRangeEnd,
   } = props
 
   const currencyMeta = useCurrencyMeta(currencyCode, region)
 
-  const [showDragIndicator, setShowDragIndicator] = useState(false)
   const [localValue, setLocalValue] = useState({
     value: editedAmount,
     float: editedAmount,
@@ -83,18 +89,18 @@ function CurrencyCell(props: CurrencyCellProps) {
       onMouseDown={(e) =>
         props.onMouseCellClick(e, variant.id, currencyCode, region)
       }
-      className={clsx("relative border pr-2 pl-4", {
-        "bg-blue-100": isSelected,
+      className={clsx("relative pr-2 pl-4", {
+        border: !isInRange,
+        "bg-blue-100": isSelected && !isRangeStart,
+        "border-x border-double border-blue-400": isInRange,
+        "border-t border-blue-400": isRangeStart,
+        "border-b border-blue-400": isRangeEnd,
       })}
     >
       <div className="flex">
         <span className="text-gray-400">{currencyMeta?.symbol_native}</span>
         <AmountField
-          onFocus={() => {
-            setShowDragIndicator(true)
-          }}
           onBlur={() => {
-            setShowDragIndicator(false)
             props.onInputChange(
               localValue.float,
               variant.id,
@@ -104,14 +110,14 @@ function CurrencyCell(props: CurrencyCellProps) {
           }}
           style={{ width: "100%", textAlign: "right", paddingRight: 8 }}
           className={clsx("decoration-transparent focus:outline-0", {
-            "bg-blue-100": isSelected,
+            "bg-blue-100": isSelected && !isRangeStart,
           })}
           onValueChange={(_a, _b, v) => setLocalValue(v)}
           decimalsLimit={currencyMeta?.decimal_digits || 2}
           decimalSeparator="."
           value={localValue.value}
         ></AmountField>
-        {showDragIndicator && (
+        {isRangeEnd && (
           <div
             style={{ bottom: -4, right: -4, zIndex: 9999 }}
             onMouseDown={(event) => {
