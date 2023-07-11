@@ -152,9 +152,9 @@ You can also check that the image was uploaded on the Space’s page.
 
 ---
 
-## Next.js Storefront Configuration
+## Next.js Starter Template Configuration
 
-If you’re using a [Next.js](../../starters/nextjs-medusa-starter.mdx) storefront, you need to add an additional configuration that adds the Space’s domain name into the configured images’ domain names. This is because all URLs of product images will be from the Space.
+If you’re using a [Next.js Starter Template](../../starters/nextjs-medusa-starter.mdx), you need to add an additional configuration that adds the Space’s domain name into the configured images’ domain names. This is because all URLs of product images will be from the Space.
 
 If this configuration is not added, you’ll receive the error ["next/image Un-configured Host”](https://nextjs.org/docs/messages/next-image-unconfigured-host).
 
@@ -182,6 +182,6 @@ Where `<YOUR_SPACE_DOMAIN>` is the domain name for your Space which can be retri
 
 ## See Also
 
-- Check out [more plugins](../overview.mdx) you can add to your store.
-- [Deploy the Medusa backend on DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md).
-- Install the [Next.js](../../starters/nextjs-medusa-starter.mdx) starter storefront.
+- Check out [more plugins](../overview.mdx) you can add to your store
+- [Deploy the Medusa backend on DigitalOcean](../../deployments/server/deploying-on-digital-ocean.md)
+- Install the [Next.js Starter Template](../../starters/nextjs-medusa-starter.mdx)

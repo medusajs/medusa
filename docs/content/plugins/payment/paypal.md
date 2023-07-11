@@ -109,7 +109,7 @@ All storefronts require that you obtain your PayPal Client ID. You can retrieve 
 
 ### Process Overview
 
-Aside from the Next.js Storefront, you need to add the implementation with PayPal manually.
+Aside from the Next.js Starter Template, you need to add the implementation with PayPal manually.
 
 :::note
 
@@ -130,9 +130,9 @@ In Medusa, by default, payments are authorized during checkout, but the payment 
 
 :::
 
-### Add to Next.js Storefront
+### Add to Next.js Starter Template
 
-Medusa has a Next.js storefront that you can easily use with your Medusa backend. If you don’t have the storefront installed, you can follow [this quickstart guide](../../starters/nextjs-medusa-starter.mdx).
+Medusa has a Next.js Starter Template that you can easily use with your Medusa backend. If you don’t have the storefront installed, you can follow [this quickstart guide](../../starters/nextjs-medusa-starter.mdx).
 
 In your `.env.local` file (or the file you’re using for your environment variables), add the following variable:
 

@@ -2,6 +2,8 @@ import promiseExec from "./promise-exec.js"
 import { Ora } from "ora"
 import { isAbortError } from "./create-abort-controller.js"
 import logMessage from "./log-message.js"
+import fs from "fs"
+import path from "path"
 
 type CloneRepoOptions = {
   directoryName?: string
@@ -39,6 +41,8 @@ export async function runCloneRepo({
       repoUrl,
       abortController,
     })
+
+    deleteGitDirectory(projectName)
   } catch (e) {
     if (isAbortError(e)) {
       process.exit()
@@ -50,4 +54,11 @@ export async function runCloneRepo({
       type: "error",
     })
   }
+}
+
+function deleteGitDirectory(projectDirectory: string) {
+  fs.rmSync(path.join(projectDirectory, ".git"), {
+    recursive: true,
+    force: true,
+  })
 }
