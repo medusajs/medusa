@@ -3,6 +3,7 @@ import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import { isString, ModulesSdkUtils, MedusaError, isDefined } from "@medusajs/utils"
 
 import ProductService from "./product"
+import { retrieveEntity } from "./helpers"
 
 type InjectedDependencies = {
   productVariantRepository: DAL.RepositoryService
@@ -29,30 +30,13 @@ export default class ProductVariantService<
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: Context
   ): Promise<TEntity> {
-    if (!isDefined(productVariantId)) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `"productVariantId" must be defined`
-      )
-    }
-
-    const queryOptions = ModulesSdkUtils.buildQuery<ProductVariant>({
+    return await retrieveEntity<ProductVariant, ProductTypes.ProductVariantDTO>({
       id: productVariantId,
-    }, config)
-
-    const productVariant = await this.productVariantRepository_.find(
-      queryOptions,
-      sharedContext
-    )
-
-    if (!productVariant?.length) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `ProductVariant with id: ${productVariantId} was not found`
-      )
-    }
-
-    return productVariant[0] as TEntity
+      entityName: ProductVariant.name,
+      repository: this.productVariantRepository_,
+      config,
+      sharedContext,
+    }) as TEntity
   }
 
   async list(

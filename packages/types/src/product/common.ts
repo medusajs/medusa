@@ -96,6 +96,7 @@ export interface ProductCollectionDTO {
   handle: string
   metadata?: Record<string, unknown> | null
   deleted_at?: string | Date
+  products: ProductDTO[]
 }
 
 export interface ProductTypeDTO {

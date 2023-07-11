@@ -181,12 +181,40 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(tags))
   }
 
+  async retrieveCollection(
+    productCollectionId: string,
+    config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductCollectionDTO> {
+    const productCollection = await this.productCollectionService_.retrieve(
+      productCollectionId,
+      config,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productCollection))
+  }
+
   async listCollections(
     filters: ProductTypes.FilterableProductCollectionProps = {},
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
     sharedContext?: Context
   ): Promise<ProductTypes.ProductCollectionDTO[]> {
     const collections = await this.productCollectionService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(collections))
+  }
+
+  async listAndCountCollections(
+    filters: ProductTypes.FilterableProductCollectionProps = {},
+    config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
+    sharedContext?: Context
+  ): Promise<[ProductTypes.ProductCollectionDTO[], number]> {
+    const collections = await this.productCollectionService_.listAndCount(
       filters,
       config,
       sharedContext
