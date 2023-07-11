@@ -1,5 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
@@ -930,7 +930,7 @@ class ProductService extends TransactionBaseService {
    *
    * @param productIds ID or IDs of the products to update
    * @param profileId Shipping profile ID to update the shipping options with
-   * @returns updated shipping options
+   * @returns updated products
    */
   async updateShippingProfile(
     productIds: string | string[],
@@ -941,7 +941,17 @@ class ProductService extends TransactionBaseService {
 
       const ids = isString(productIds) ? [productIds] : productIds
 
-      const products = await productRepo.upsertShippingProfile(ids, profileId)
+      let products = (
+        await this.list(
+          { id: In(ids) },
+          { relations: ["profiles"], select: ["id"] }
+        )
+      ).map((product) => {
+        product.profiles = [{ id: profileId }] as ShippingProfile[]
+        return product
+      })
+
+      products = await productRepo.save(products)
 
       await this.eventBus_
         .withTransaction(manager)

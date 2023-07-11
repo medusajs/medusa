@@ -384,9 +384,6 @@ class DraftOrderService extends TransactionBaseService {
           relations: [
             "shipping_methods",
             "shipping_methods.shipping_option",
-            "items",
-            "items.variant",
-            "items.variant.product",
             "items.variant.product.profiles",
             "payment_sessions",
           ],

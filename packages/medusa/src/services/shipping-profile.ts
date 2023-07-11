@@ -291,12 +291,7 @@ class ShippingProfileService extends TransactionBaseService {
       )
 
       let profile = await this.retrieve(profileId, {
-        relations: [
-          "products",
-          "products.profile",
-          "shipping_options",
-          "shipping_options.profile",
-        ],
+        relations: ["products.profiles", "shipping_options.profile"],
       })
 
       const { metadata, products, shipping_options, ...rest } = update
@@ -365,12 +360,7 @@ class ShippingProfileService extends TransactionBaseService {
       )
 
       return await this.retrieve(profileId, {
-        relations: [
-          "products",
-          "products.profile",
-          "shipping_options",
-          "shipping_options.profile",
-        ],
+        relations: ["products.profiles", "shipping_options.profile"],
       })
     })
   }
@@ -396,12 +386,7 @@ class ShippingProfileService extends TransactionBaseService {
       )
 
       return await this.retrieve(profileId, {
-        relations: [
-          "products",
-          "products.profile",
-          "shipping_options",
-          "shipping_options.profile",
-        ],
+        relations: ["products.profiles", "shipping_options.profile"],
       })
     })
   }
