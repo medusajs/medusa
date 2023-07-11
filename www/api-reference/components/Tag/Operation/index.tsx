@@ -39,7 +39,6 @@ const TagOperation = ({ operation, method }: TagOperationProps) => {
       }
     },
   })
-  console.log(operation.responses)
   return (
     <Suspense fallback={<Loading />}>
       <div className={clsx("flex min-h-screen")} id={path} ref={ref}>
