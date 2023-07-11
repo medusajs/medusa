@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/types",
-  "version": "1.8.9",
+  "version": "1.8.10",
   "description": "Medusa Types definition",
   "main": "dist/index.js",
   "repository": {
