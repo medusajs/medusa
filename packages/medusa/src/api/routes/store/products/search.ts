@@ -10,14 +10,13 @@ import { validator } from "../../../../utils/validator"
  * operationId: PostProductsSearch
  * summary: Search Products
  * description: "Run a search query on products using the search engine installed on Medusa"
- * parameters:
- *   - (query) q=* {string} The query to run the search with.
- *   - (query) offset {integer} How many products to skip in the result.
- *   - (query) limit {integer} Limit the number of products returned.
- *   - (query) filter {} Filter based on the search engine.
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         $ref: "#/components/schemas/StorePostSearchReq"
  * x-codegen:
  *   method: search
- *   queryParams: StorePostSearchReq
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -76,6 +75,22 @@ export default async (req, res) => {
   res.status(200).send(results)
 }
 
+/**
+ * @schema StorePostSearchReq
+ * type: object
+ * properties:
+ *  q:
+ *    type: string
+ *    description: The query to run the search with.
+ *  offset:
+ *    type: number
+ *    description: How many products to skip in the result.
+ *  limit:
+ *    type: number
+ *    description: Limit the number of products returned.
+ *  filter:
+ *    description: Filter based on the search engine.
+ */
 export class StorePostSearchReq {
   @IsOptional()
   @IsString()
