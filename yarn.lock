@@ -6401,7 +6401,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
-    "@medusajs/orchestration": ^0.0.1
+    "@medusajs/orchestration": ^0.0.2
     "@medusajs/types": ^1.8.9
     "@medusajs/utils": ^1.9.1
     awilix: ^8.0.0
@@ -6459,7 +6459,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/orchestration@^0.0.1, @medusajs/orchestration@workspace:packages/orchestration":
+"@medusajs/orchestration@^0.0.2, @medusajs/orchestration@workspace:packages/orchestration":
   version: 0.0.0-use.local
   resolution: "@medusajs/orchestration@workspace:packages/orchestration"
   dependencies:
@@ -6519,7 +6519,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^1.8.10, @medusajs/types@^1.8.8, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^1.8.10, @medusajs/types@^1.8.8, @medusajs/types@^1.8.9, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
