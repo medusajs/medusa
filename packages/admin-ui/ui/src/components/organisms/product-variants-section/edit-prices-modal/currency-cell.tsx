@@ -132,7 +132,7 @@ function CurrencyCell(props: CurrencyCellProps) {
               )
               props.onDragStart(variant.id, currencyCode, region)
             }}
-            className="absolute h-2 w-2 cursor-pointer rounded-full bg-blue-400"
+            className="absolute h-2 w-2 cursor-ns-resize rounded-full bg-blue-400"
           />
         )}
       </div>

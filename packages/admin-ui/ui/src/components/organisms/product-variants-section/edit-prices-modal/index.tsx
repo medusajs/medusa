@@ -4,7 +4,10 @@ import { Product } from "@medusajs/client-types"
 import Modal from "../../../molecules/modal"
 import Fade from "../../../atoms/fade-wrapper"
 import Button from "../../../fundamentals/button"
-import { getAllProductPricesCurrencies } from "./utils"
+import {
+  getAllProductPricesCurrencies,
+  getAllProductPricesRegions,
+} from "./utils"
 import CrossIcon from "../../../fundamentals/icons/cross-icon"
 import EditPricesTable from "./edit-prices-table"
 import EditPricesActions from "./edit-prices-actions"
@@ -18,10 +21,11 @@ type EditPricesModalProps = {
  * Edit prices modal container.
  */
 function EditPricesModal(props: EditPricesModalProps) {
+  const regions = getAllProductPricesRegions(props.product).sort()
   const currencies = getAllProductPricesCurrencies(props.product).sort()
 
   const [selectedCurrencies, setSelectedCurrencies] = useState(currencies)
-  const [selectedRegions, setSelectedRegions] = useState<string[]>([])
+  const [selectedRegions, setSelectedRegions] = useState<string[]>(regions)
 
   const toggleCurrency = (currencyCode: string) => {
     const set = new Set(selectedCurrencies)

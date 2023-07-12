@@ -25,6 +25,29 @@ export function getAllProductPricesCurrencies(product: Product) {
 }
 
 /**
+ * Extract regions that the product variants have pricing in.
+ */
+export function getAllProductPricesRegions(product: Product) {
+  const regionMap: Record<string, true> = {}
+
+  product.variants!.forEach((variant) => {
+    variant.prices!.forEach((price) => {
+      if (
+        price.price_list ||
+        price.min_quantity ||
+        price.max_quantity ||
+        !price.region_id
+      ) {
+        return
+      }
+      regionMap[price.region_id] = true
+    })
+  })
+
+  return Object.keys(regionMap)
+}
+
+/**
  * Return only currency prices.
  */
 export function getCurrencyPricesOnly(prices: MoneyAmount[]) {
