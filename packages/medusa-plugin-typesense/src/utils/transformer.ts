@@ -14,13 +14,13 @@ export const transformProduct = (product: Product) => {
 
   const flattenedVariantFields = product.variants.reduce((obj, variant) => {
     variantKeys.forEach((k) => {
-      if (k === "options" && variant[k]) {
-        const values = variant[k].map((option) => option.value)
+      if (k === "options" && variant.options) {
+        const values = variant.options.map((option) => option.value)
         obj[`${prefix}_options_value`] =
           obj[`${prefix}_options_value`].concat(values)
         return
       }
-      return variant[k] && obj[`${prefix}_${k}`].push(variant[k])
+      return variant.options && obj[`${prefix}_${k}`].push(variant.options)
     })
     return obj
   }, initialObj)
