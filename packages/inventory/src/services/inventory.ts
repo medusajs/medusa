@@ -383,23 +383,57 @@ export default class InventoryService implements IInventoryService {
   }
 
   /**
-   * Updates multiple inventory levels
+   * Updates an inventory level
    * @param inventoryItemId - the id of the inventory item associated with the level
    * @param locationId - the id of the location associated with the level
    * @param input - the input object
+   * @param context
    * @return The updated inventory level
    */
+  async updateInventoryLevel(
+    inventoryItemIdOrUpdates: ({
+      inventory_item_id: string
+      location_id: string
+    } & UpdateInventoryLevelInput)[],
+    context?: SharedContext
+  ): Promise<InventoryLevelDTO[]>
+  async updateInventoryLevel(
+    inventoryItemIdOrUpdates: string,
+    locationId: string,
+    input: UpdateInventoryLevelInput,
+    context?: SharedContext
+  ): Promise<InventoryLevelDTO[]>
   @InjectEntityManager(
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
-  async updateInventoryLevels(
-    updates: ({
-      inventory_item_id: string
-      location_id: string
-    } & UpdateInventoryLevelInput)[],
+  async updateInventoryLevel(
+    inventoryItemIdOrUpdates:
+      | string
+      | ({
+          inventory_item_id: string
+          location_id: string
+        } & UpdateInventoryLevelInput)[],
+    locationIdOrContext?: string | SharedContext,
+    input?: UpdateInventoryLevelInput,
     @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryLevelDTO[]> {
+    const updates = Array.isArray(inventoryItemIdOrUpdates)
+      ? inventoryItemIdOrUpdates
+      : [
+          {
+            inventory_item_id: inventoryItemIdOrUpdates,
+            location_id: locationIdOrContext as string,
+            ...input,
+          },
+        ]
+
+    const ctx =
+      Array.isArray(inventoryItemIdOrUpdates) &&
+      typeof locationIdOrContext === "object"
+        ? locationIdOrContext
+        : context
+
     const inventoryLevels = await this.ensureInventoryLevels(updates)
 
     const levelMap = inventoryLevels.reduce((acc, curr) => {
@@ -417,46 +451,8 @@ export default class InventoryService implements IInventoryService {
           .get(update.inventory_item_id)
           .get(update.location_id)
 
-        return this.inventoryLevelService_.update(levelId, update, context)
+        return this.inventoryLevelService_.update(levelId, update, ctx)
       })
-    )
-  }
-
-  /**
-   * Updates an inventory level
-   * @param inventoryItemId - the id of the inventory item associated with the level
-   * @param locationId - the id of the location associated with the level
-   * @param input - the input object
-   * @param context
-   * @return The updated inventory level
-   */
-  @InjectEntityManager(
-    (target) =>
-      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
-  )
-  async updateInventoryLevel(
-    inventoryItemId: string,
-    locationId: string,
-    input: UpdateInventoryLevelInput,
-    @MedusaContext() context: SharedContext = {}
-  ): Promise<InventoryLevelDTO> {
-    const [inventoryLevel] = await this.inventoryLevelService_.list(
-      { inventory_item_id: inventoryItemId, location_id: locationId },
-      { take: 1 },
-      context
-    )
-
-    if (!inventoryLevel) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Inventory level for item ${inventoryItemId} and location ${locationId} not found`
-      )
-    }
-
-    return await this.inventoryLevelService_.update(
-      inventoryLevel.id,
-      input,
-      context
     )
   }
 

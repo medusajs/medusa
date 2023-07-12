@@ -1036,7 +1036,7 @@ describe("Inventory Items endpoints", () => {
         })
         expect(levels).toHaveLength(2)
 
-        await inventoryService.updateInventoryLevels([
+        await inventoryService.updateInventoryLevel([
           {
             inventory_item_id: itemId,
             location_id: locationId,
