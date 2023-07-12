@@ -22,6 +22,7 @@ import {
   CreateProductOnlyDTO,
   DAL,
   FindConfig,
+  InternalModuleDeclaration,
   ProductTypes,
 } from "@medusajs/types"
 import ProductImageService from "./product-image"
@@ -70,17 +71,20 @@ export default class ProductModuleService<
   protected readonly productTypeService_: ProductTypeService<TProductType>
   protected readonly productOptionService_: ProductOptionService<TProductOption>
 
-  constructor({
-    baseRepository,
-    productService,
-    productVariantService,
-    productTagService,
-    productCategoryService,
-    productCollectionService,
-    productImageService,
-    productTypeService,
-    productOptionService,
-  }: InjectedDependencies) {
+  constructor(
+    {
+      baseRepository,
+      productService,
+      productVariantService,
+      productTagService,
+      productCategoryService,
+      productCollectionService,
+      productImageService,
+      productTypeService,
+      productOptionService,
+    }: InjectedDependencies,
+    protected readonly moduleDeclaration: InternalModuleDeclaration
+  ) {
     this.baseRepository_ = baseRepository
     this.productService_ = productService
     this.productVariantService_ = productVariantService

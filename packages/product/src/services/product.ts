@@ -14,7 +14,7 @@ import {
   ModulesSdkUtils,
 } from "@medusajs/utils"
 import { ProductRepository } from "@repositories"
-import { shouldForceTransaction } from "../utils"
+import { doNotForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
@@ -96,7 +96,7 @@ export default class ProductService<TEntity extends Product = Product> {
     )) as [TEntity[], number]
   }
 
-  @InjectEntityManager(shouldForceTransaction, "productRepository_")
+  @InjectEntityManager(doNotForceTransaction, "productRepository_")
   async create(
     data: ProductTypes.CreateProductOnlyDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -116,7 +116,7 @@ export default class ProductService<TEntity extends Product = Product> {
     )) as TEntity[]
   }
 
-  @InjectEntityManager(shouldForceTransaction, "productRepository_")
+  @InjectEntityManager(doNotForceTransaction, "productRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -126,7 +126,7 @@ export default class ProductService<TEntity extends Product = Product> {
     })
   }
 
-  @InjectEntityManager(shouldForceTransaction, "productRepository_")
+  @InjectEntityManager(doNotForceTransaction, "productRepository_")
   async softDelete(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -136,7 +136,7 @@ export default class ProductService<TEntity extends Product = Product> {
     })
   }
 
-  @InjectEntityManager(shouldForceTransaction, "productRepository_")
+  @InjectEntityManager(doNotForceTransaction, "productRepository_")
   async restore(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}

@@ -110,8 +110,8 @@ export abstract class AbstractBaseRepository<T = any>
       enableNestedTransactions = false,
     }: {
       isolationLevel?: string
-      transaction?: unknown
       enableNestedTransactions?: boolean
+      transaction?: unknown
     } = {}
   ): Promise<any> {
     return await transactionWrapper.apply(this, arguments)

@@ -9,7 +9,7 @@ import {
 } from "@medusajs/utils"
 
 import ProductService from "./product"
-import { shouldForceTransaction } from "../utils"
+import { doNotForceTransaction } from "../utils"
 import { ProductVariantRepository } from "@repositories"
 
 type InjectedDependencies = {
@@ -81,7 +81,7 @@ export default class ProductVariantService<
     )) as [TEntity[], number]
   }
 
-  @InjectEntityManager(shouldForceTransaction, "productVariantRepository_")
+  @InjectEntityManager(doNotForceTransaction, "productVariantRepository_")
   async create(
     productOrId: TProduct | string,
     data: ProductTypes.CreateProductVariantOnlyDTO[],

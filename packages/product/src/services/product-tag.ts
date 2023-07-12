@@ -11,7 +11,7 @@ import {
   MedusaContext,
   ModulesSdkUtils,
 } from "@medusajs/utils"
-import { shouldForceTransaction } from "../utils"
+import { doNotForceTransaction } from "../utils"
 import { ProductTagRepository } from "@repositories"
 
 type InjectedDependencies = {
@@ -44,7 +44,7 @@ export default class ProductTagService<
     )) as TEntity[]
   }
 
-  @InjectEntityManager(shouldForceTransaction, "productTagRepository_")
+  @InjectEntityManager(doNotForceTransaction, "productTagRepository_")
   async upsert(
     tags: CreateProductTagDTO[],
     @MedusaContext() sharedContext: Context = {}

@@ -6,4 +6,6 @@ export type SharedContext = {
 
 export type Context = {
   transactionManager?: unknown
+  isolationLevel?: string
+  enableNestedTransactions?: boolean
 }
