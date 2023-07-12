@@ -7,6 +7,8 @@ import { Context, DAL } from "@medusajs/types"
 import { Image, Product } from "@models"
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
+import { doNotForceTransaction } from "../utils"
 
 export class ProductImageRepository extends AbstractBaseRepository<Image> {
   protected readonly manager_: SqlEntityManager
@@ -59,9 +61,13 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
     )
   }
 
-  async upsert(urls: string[], context: Context = {}): Promise<Image[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  async upsert(
+    urls: string[],
+    @MedusaContext()
+    context: Context = {}
+  ): Promise<Image[]> {
+    const { transactionManager: manager } = context
 
     const existingImages = await this.find(
       {
@@ -86,27 +92,38 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
       if (aImg) {
         upsertedImgs.push(aImg)
       } else {
-        const newImg = manager.create(Image, { url })
+        const newImg = (manager as SqlEntityManager).create(Image, { url })
         imageToCreate.push(newImg)
       }
     })
 
     if (imageToCreate.length) {
-      await manager.persist(imageToCreate)
+      await (manager as SqlEntityManager).persist(imageToCreate)
       upsertedImgs.push(...imageToCreate)
     }
 
     return upsertedImgs
   }
 
-  async delete(ids: string[], context: Context = {}): Promise<void> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
-
-    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
+  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  async delete(
+    ids: string[],
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
+  ): Promise<void> {
+    await (manager as SqlEntityManager).nativeDelete(
+      Product,
+      { id: { $in: ids } },
+      {}
+    )
   }
 
-  async create(data: unknown[], context: Context = {}): Promise<Image[]> {
+  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  async create(
+    data: unknown[],
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
+  ): Promise<Image[]> {
     throw new Error("Method not implemented.")
   }
 }

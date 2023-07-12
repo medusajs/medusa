@@ -3,6 +3,7 @@ import { Context, DAL } from "@medusajs/types"
 import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
 import { doNotForceTransaction } from "../utils"
 import { ProductImageRepository } from "@repositories"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 type InjectedDependencies = {
   productImageRepository: DAL.RepositoryService

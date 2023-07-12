@@ -7,6 +7,8 @@ import { Product, ProductOption } from "@models"
 import { Context, DAL, ProductTypes } from "@medusajs/types"
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
+import { doNotForceTransaction } from "../utils"
 
 export class ProductOptionRepository extends AbstractBaseRepository<ProductOption> {
   protected readonly manager_: SqlEntityManager
@@ -59,25 +61,30 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
     )
   }
 
-  async delete(ids: string[], context: Context = {}): Promise<void> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
-
-    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
+  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  async delete(
+    ids: string[],
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
+  ): Promise<void> {
+    await (manager as SqlEntityManager).nativeDelete(
+      Product,
+      { id: { $in: ids } },
+      {}
+    )
   }
 
+  @InjectEntityManager(doNotForceTransaction, "__prototype__")
   async create(
     data: (ProductTypes.CreateProductOptionDTO & { product: { id: string } })[],
-    context: Context = {}
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
   ): Promise<ProductOption[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
-
     const options = data.map((option) => {
-      return manager.create(ProductOption, option)
+      return (manager as SqlEntityManager).create(ProductOption, option)
     })
 
-    await manager.persist(options)
+    await (manager as SqlEntityManager).persist(options)
 
     return options
   }

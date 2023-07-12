@@ -7,6 +7,8 @@ import {
 import { Context, DAL } from "@medusajs/types"
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
+import { doNotForceTransaction } from "../utils"
 
 export class ProductCollectionRepository extends AbstractBaseRepository<ProductCollection> {
   protected readonly manager_: SqlEntityManager
@@ -59,16 +61,24 @@ export class ProductCollectionRepository extends AbstractBaseRepository<ProductC
     )
   }
 
-  async delete(ids: string[], context: Context = {}): Promise<void> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
-
-    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
+  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  async delete(
+    ids: string[],
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
+  ): Promise<void> {
+    await (manager as SqlEntityManager).nativeDelete(
+      Product,
+      { id: { $in: ids } },
+      {}
+    )
   }
 
+  @InjectEntityManager(doNotForceTransaction, "__prototype__")
   async create(
     data: unknown[],
-    context: Context = {}
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
   ): Promise<ProductCollection[]> {
     throw new Error("Method not implemented.")
   }

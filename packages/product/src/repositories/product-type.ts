@@ -8,6 +8,8 @@ import { Product, ProductType } from "@models"
 import { Context, CreateProductTypeDTO, DAL } from "@medusajs/types"
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
+import { doNotForceTransaction } from "../utils"
 
 export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
   protected readonly manager_: SqlEntityManager
@@ -60,12 +62,13 @@ export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
     )
   }
 
+  @InjectEntityManager(doNotForceTransaction, "__prototype__")
   async upsert(
     types: CreateProductTypeDTO[],
+    @MedusaContext()
     context: Context = {}
   ): Promise<ProductType[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const { transactionManager: manager } = context
 
     const typesValues = types.map((type) => type.value)
     const existingTypes = await this.find(
@@ -91,7 +94,7 @@ export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
       if (aType) {
         upsertedTypes.push(aType)
       } else {
-        const newType = manager.create(ProductType, type)
+        const newType = (manager as SqlEntityManager).create(ProductType, type)
         typesToCreate.push(newType)
       }
     })
@@ -99,24 +102,35 @@ export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
     if (typesToCreate.length) {
       const newTypes: ProductType[] = []
       typesToCreate.forEach((type) => {
-        newTypes.push(manager.create(ProductType, type))
+        newTypes.push((manager as SqlEntityManager).create(ProductType, type))
       })
 
-      await manager.persist(newTypes)
+      await (manager as SqlEntityManager).persist(newTypes)
       upsertedTypes.push(...newTypes)
     }
 
     return upsertedTypes
   }
 
-  async delete(ids: string[], context: Context = {}): Promise<void> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
-
-    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
+  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  async delete(
+    ids: string[],
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
+  ): Promise<void> {
+    await (manager as SqlEntityManager).nativeDelete(
+      Product,
+      { id: { $in: ids } },
+      {}
+    )
   }
 
-  async create(data: unknown[], context: Context = {}): Promise<ProductType[]> {
+  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  async create(
+    data: unknown[],
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
+  ): Promise<ProductType[]> {
     throw new Error("Method not implemented.")
   }
 }

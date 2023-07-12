@@ -1,7 +1,8 @@
 import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { buildQuery } from "@medusajs/utils"
+import { buildQuery, InjectEntityManager, MedusaContext } from "@medusajs/utils"
 import { serialize } from "@mikro-orm/core"
+import { doNotForceTransaction } from "../utils"
 
 // TODO: Should we create a mikro orm specific package for this and the soft deletable decorator util?
 
@@ -135,21 +136,30 @@ export abstract class AbstractBaseRepository<T = any>
 
   abstract delete(ids: string[], context?: Context): Promise<void>
 
-  async softDelete(ids: string[], context?: Context): Promise<T[]> {
-    const manager = (context?.transactionManager ??
-      this.manager_) as SqlEntityManager
+  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  async softDelete(
+    ids: string[],
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
+  ): Promise<T[]> {
     const entities = await this.find({ where: { id: { $in: ids } } as any })
 
     const date = new Date()
-    await updateDeletedAtRecursively(manager, entities, date)
+    await updateDeletedAtRecursively(
+      manager as SqlEntityManager,
+      entities,
+      date
+    )
 
     return entities
   }
 
-  async restore(ids: string[], context?: Context): Promise<T[]> {
-    const manager = (context?.transactionManager ??
-      this.manager_) as SqlEntityManager
-
+  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  async restore(
+    ids: string[],
+    @MedusaContext()
+    { transactionManager: manager }: Context<SqlEntityManager> = {}
+  ): Promise<T[]> {
     const query = buildQuery(
       { id: { $in: ids } },
       {
@@ -159,7 +169,11 @@ export abstract class AbstractBaseRepository<T = any>
 
     const entities = await this.find(query)
 
-    await updateDeletedAtRecursively(manager, entities, null)
+    await updateDeletedAtRecursively(
+      manager as SqlEntityManager,
+      entities,
+      null
+    )
 
     return entities
   }
