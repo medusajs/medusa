@@ -62,7 +62,7 @@ export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, "")
+  @InjectEntityManager(doNotForceTransaction, false)
   async upsert(
     types: CreateProductTypeDTO[],
     @MedusaContext()
@@ -112,7 +112,7 @@ export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
     return upsertedTypes
   }
 
-  @InjectEntityManager(doNotForceTransaction, "")
+  @InjectEntityManager(doNotForceTransaction, false)
   async delete(
     ids: string[],
     @MedusaContext()
@@ -125,7 +125,7 @@ export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, "")
+  @InjectEntityManager(doNotForceTransaction, false)
   async create(
     data: unknown[],
     @MedusaContext()

@@ -2,7 +2,7 @@ import { Context, SharedContext } from "@medusajs/types"
 
 export function InjectEntityManager(
   shouldForceTransaction: (target: any) => boolean = () => false,
-  managerProperty: string = "manager_"
+  managerProperty: string | false = "manager_"
 ): MethodDecorator {
   return function (
     target: any,
@@ -26,9 +26,9 @@ export function InjectEntityManager(
         return await originalMethod.apply(this, args)
       }
 
-      return await (!!managerProperty
-        ? this[managerProperty]
-        : this
+      return await (managerProperty === false
+        ? this
+        : this[managerProperty]
       ).transaction(
         async (transactionManager) => {
           args[argIndex] = args[argIndex] ?? {}

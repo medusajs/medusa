@@ -62,7 +62,7 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, "")
+  @InjectEntityManager(doNotForceTransaction, false)
   async delete(
     ids: string[],
     @MedusaContext()
@@ -75,7 +75,7 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, "")
+  @InjectEntityManager(doNotForceTransaction, false)
   async create(
     data: RequiredEntityData<ProductVariant>[],
     @MedusaContext()

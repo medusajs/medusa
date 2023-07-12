@@ -108,7 +108,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     }
   }
 
-  @InjectEntityManager(doNotForceTransaction, "")
+  @InjectEntityManager(doNotForceTransaction, false)
   async delete(
     ids: string[],
     @MedusaContext()
@@ -121,7 +121,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, "")
+  @InjectEntityManager(doNotForceTransaction, false)
   async create(
     data: WithRequiredProperty<ProductTypes.CreateProductOnlyDTO, "status">[],
     @MedusaContext()
