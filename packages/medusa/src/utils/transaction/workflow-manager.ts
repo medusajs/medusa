@@ -37,8 +37,8 @@ type CompensateHandler = (
 ) => Promise<any>
 
 export class WorkflowManager {
-  private static workflows: Map<string, Workflow> = new Map()
-  private container: MedusaContainer
+  protected static workflows: Map<string, Workflow> = new Map()
+  protected container: MedusaContainer
 
   constructor(container?: MedusaContainer) {
     this.container = container as MedusaContainer
