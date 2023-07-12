@@ -1,4 +1,5 @@
 import IconChevronRightMini from "@/components/Icons/ChevronRightMini"
+import MethodLabel from "@/components/MethodLabel"
 import { SidebarItemType, useSidebar } from "@/providers/sidebar"
 import clsx from "clsx"
 import Link from "next/link"
@@ -43,21 +44,7 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
             setActivePath(item.path)
           }}
         >
-          {item.method && (
-            <span
-              className={clsx(
-                "text-label-x-small mr-0.5 rounded py-[4px] px-0.5 !text-[10px]",
-                item.method === "get" &&
-                  "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",
-                item.method === "post" &&
-                  "bg-medusa-tag-blue-bg dark:bg-medusa-tag-blue-bg-dark text-medusa-tag-blue-text dark:text-medusa-tag-blue-text-dark",
-                item.method === "delete" &&
-                  "bg-medusa-tag-red-bg dark:bg-medusa-tag-red-bg-dark text-medusa-tag-red-text dark:text-medusa-tag-red-text-dark"
-              )}
-            >
-              {item.method.toUpperCase()}
-            </span>
-          )}
+          {item.method && <MethodLabel method={item.method} />}
           {item.title}
         </Link>
         {item.children && (

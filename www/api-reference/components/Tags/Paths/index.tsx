@@ -76,6 +76,7 @@ const TagPaths = ({ tag }: TagSectionPathsProps) => {
                       operation={operation as Operation}
                       tag={tag}
                       key={`${pathIndex}-${operationIndex}`}
+                      endpointPath={endpointPath}
                     />
                   )
                 )}

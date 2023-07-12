@@ -555,7 +555,7 @@ module.exports = {
         "main-content-hidden-sidebar": "1440px",
         "api-ref-sidebar": "250px",
         "api-ref-main": "calc(100% - 250px)",
-        "api-ref-content": "calc(100% - 468px)",
+        "api-ref-content": "calc(100% - 484px)",
         "api-ref-code": "468px"
       },
       height: {

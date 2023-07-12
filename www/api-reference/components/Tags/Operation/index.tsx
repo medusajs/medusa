@@ -12,6 +12,7 @@ import { useInView } from "react-intersection-observer"
 import { useSidebar } from "@/providers/sidebar"
 import { useBaseSpecs } from "@/providers/base-specs"
 import SecurityDescription from "@/components/MDXComponents/Security/Description"
+import TagOperationCodeSection from "./CodeSection"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
   async () => import("./Parameters"),
@@ -24,10 +25,15 @@ export type TagOperationProps = {
   operation: Operation
   method?: string
   tag: OpenAPIV3.TagObject
+  endpointPath: string
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const TagOperation = ({ operation, method }: TagOperationProps) => {
+const TagOperation = ({
+  operation,
+  method,
+  endpointPath,
+}: TagOperationProps) => {
   const { setActivePath } = useSidebar()
   const { getSecuritySchema } = useBaseSpecs()
   const path = getSectionId([...(operation.tags || []), operation.operationId])
@@ -53,7 +59,11 @@ const TagOperation = ({ operation, method }: TagOperationProps) => {
 
   return (
     <Suspense fallback={<Loading />}>
-      <div className={clsx("flex min-h-screen")} id={path} ref={ref}>
+      <div
+        className={clsx("flex min-h-screen justify-between gap-1")}
+        id={path}
+        ref={ref}
+      >
         <div className={clsx("w-api-ref-content")}>
           <h3>{operation.summary}</h3>
           <p>{operation.description}</p>
@@ -163,6 +173,13 @@ const TagOperation = ({ operation, method }: TagOperationProps) => {
               )}
             </div>
           ))}
+        </div>
+        <div className={clsx("w-api-ref-code z-10")}>
+          <TagOperationCodeSection
+            method={method || ""}
+            operation={operation}
+            endpointPath={endpointPath}
+          />
         </div>
       </div>
     </Suspense>
