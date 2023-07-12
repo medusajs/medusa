@@ -120,13 +120,12 @@ export default class InventoryLevelService {
    */
   @InjectEntityManager()
   async create(
-    data: CreateInventoryLevelInput | CreateInventoryLevelInput[],
+    data: CreateInventoryLevelInput[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryLevel[]> {
     const manager = context.transactionManager!
 
-    const createData = Array.isArray(data) ? data : [data]
-    const toCreate = createData.map((d) => {
+    const toCreate = data.map((d) => {
       return {
         location_id: d.location_id,
         inventory_item_id: d.inventory_item_id,

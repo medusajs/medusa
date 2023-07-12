@@ -173,7 +173,7 @@ describe("Inventory Module", () => {
         requires_shipping: true,
       })
 
-      const [inventoryLevel] = await inventoryService.createInventoryLevel({
+      const inventoryLevel = await inventoryService.createInventoryLevel({
         inventory_item_id: inventoryItem.id,
         location_id: "location_123",
         stocked_quantity: 50,

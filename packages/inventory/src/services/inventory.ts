@@ -298,11 +298,22 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
-  async createInventoryLevel(
-    input: CreateInventoryLevelInput | CreateInventoryLevelInput[],
+  async createInventoryLevel<
+    TInput extends
+      | CreateInventoryLevelInput
+      | CreateInventoryLevelInput[] = CreateInventoryLevelInput,
+    TOutput = TInput extends [] ? InventoryLevelDTO[] : InventoryLevelDTO
+  >(
+    input: TInput,
     @MedusaContext() context: SharedContext = {}
-  ): Promise<InventoryLevelDTO[]> {
-    return await this.inventoryLevelService_.create(input, context)
+  ): Promise<TOutput> {
+    const createData: CreateInventoryLevelInput[] = Array.isArray(input)
+      ? input
+      : [input]
+
+    const result = await this.inventoryLevelService_.create(createData, context)
+
+    return (Array.isArray(input) ? result : result[0]) as unknown as TOutput
   }
 
   /**

@@ -73,7 +73,12 @@ export interface IInventoryService {
   ): Promise<InventoryItemDTO[]>
 
   createInventoryLevel(
-    data: CreateInventoryLevelInput | CreateInventoryLevelInput[],
+    data: CreateInventoryLevelInput ,
+    context?: SharedContext
+  ): Promise<InventoryLevelDTO>
+  
+  createInventoryLevel(
+    data:  CreateInventoryLevelInput[],
     context?: SharedContext
   ): Promise<InventoryLevelDTO[]>
 

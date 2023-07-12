@@ -607,7 +607,7 @@ describe("Inventory Items endpoints", () => {
 
       locationId = stockRes.data.stock_location.id
 
-      const [level] = await inventoryService.createInventoryLevel({
+      const level = await inventoryService.createInventoryLevel({
         inventory_item_id: invItem2.id,
         location_id: locationId,
         stocked_quantity: 10,
