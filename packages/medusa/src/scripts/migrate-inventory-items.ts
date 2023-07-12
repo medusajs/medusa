@@ -44,7 +44,7 @@ const migrateProductVariant = async (
   }
 
   const context = { transactionManager }
-  const [inventoryItem] = await inventoryService.createInventoryItem(
+  const inventoryItem = await inventoryService.createInventoryItem(
     {
       sku: variant.sku,
       material: variant.material,

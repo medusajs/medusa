@@ -95,7 +95,7 @@ describe("/store/carts", () => {
         name: "test-location",
       })
 
-      const [invItem] = await inventoryService.createInventoryItem({
+      const invItem = await inventoryService.createInventoryItem({
         sku: "test-sku",
       })
       invItemId = invItem.id

@@ -79,10 +79,10 @@ describe("List Variants", () => {
         location.id
       )
 
-      const invItems = await inventoryService.createInventoryItem({
+      invItem = await inventoryService.createInventoryItem({
         sku: "test-sku",
       })
-      invItem = invItems[0]
+
       const invItemId = invItem.id
 
       await prodVarInventoryService.attachInventoryItem(variantId, invItem.id)

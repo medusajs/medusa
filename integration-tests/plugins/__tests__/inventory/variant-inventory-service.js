@@ -52,15 +52,13 @@ describe("Inventory Module", () => {
       variant1 = variants[0]
       variant2 = variants[1]
 
-      let invItem = await inventoryService.createInventoryItem({
+      invItem1 = await inventoryService.createInventoryItem({
         sku: "test-sku-1",
       })
-      invItem1 = invItem[0]
 
-      invItem = await inventoryService.createInventoryItem({
+      invItem2 = await inventoryService.createInventoryItem({
         sku: "test-sku-2",
       })
-      invItem2 = invItem[0]
     })
 
     it("Attaches a single item with spread params", async () => {

@@ -52,13 +52,23 @@ export interface IInventoryService {
   ): Promise<ReservationItemDTO>
 
   createReservationItem(
-    input: CreateReservationItemInput | CreateReservationItemInput[],
+    input: CreateReservationItemInput[],
     context?: SharedContext
   ): Promise<ReservationItemDTO[]>
+  
+  createReservationItem(
+    input: CreateReservationItemInput,
+    context?: SharedContext
+  ): Promise<ReservationItemDTO>
 
   // TODO make it bulk
   createInventoryItem(
-    input: CreateInventoryItemInput | CreateInventoryItemInput[],
+    input: CreateInventoryItemInput,
+    context?: SharedContext
+  ): Promise<InventoryItemDTO>
+
+  createInventoryItem(
+    input: CreateInventoryItemInput[],
     context?: SharedContext
   ): Promise<InventoryItemDTO[]>
 

@@ -81,7 +81,7 @@ describe("Delete Variant", () => {
       )
       const variantService = appContainer.resolve("productVariantService")
 
-      const [invItem2] = await inventoryService.createInventoryItem({
+      const invItem2 = await inventoryService.createInventoryItem({
         sku: "123456",
       })
 

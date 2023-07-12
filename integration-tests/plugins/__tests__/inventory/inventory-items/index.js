@@ -593,7 +593,7 @@ describe("Inventory Items endpoints", () => {
       const api = useApi()
       const inventoryService = appContainer.resolve("inventoryService")
 
-      const [invItem2] = await inventoryService.createInventoryItem({
+      const invItem2 = await inventoryService.createInventoryItem({
         sku: "1234567",
       })
 
@@ -613,7 +613,7 @@ describe("Inventory Items endpoints", () => {
         stocked_quantity: 10,
       })
 
-      const [reservation] = await inventoryService.createReservationItem({
+      const reservation = await inventoryService.createReservationItem({
         inventory_item_id: invItem2.id,
         location_id: locationId,
         quantity: 5,
@@ -692,7 +692,7 @@ describe("Inventory Items endpoints", () => {
         "productVariantInventoryService"
       )
 
-      const [invItem2] = await inventoryService.createInventoryItem({
+      const invItem2 = await inventoryService.createInventoryItem({
         sku: "123456",
       })
 

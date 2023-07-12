@@ -493,19 +493,18 @@ class ProductVariantInventoryService extends TransactionBaseService {
       locationId = locations[0].location_id
     }
 
-    const reservationItems = await Promise.all(
-      variantInventory.map(async (inventoryPart) => {
+    const reservationItems = await this.inventoryService_.createReservationItem(
+      variantInventory.map((inventoryPart) => {
         const itemQuantity = inventoryPart.required_quantity * quantity
-        return await this.inventoryService_.createReservationItem(
-          {
-            ...toReserve,
-            location_id: locationId as string,
-            inventory_item_id: inventoryPart.inventory_item_id,
-            quantity: itemQuantity,
-          },
-          moduleContext
-        )
-      })
+
+        return {
+          ...toReserve,
+          location_id: locationId as string,
+          inventory_item_id: inventoryPart.inventory_item_id,
+          quantity: itemQuantity,
+        }
+      }),
+      moduleContext
     )
 
     return reservationItems.flat()

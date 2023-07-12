@@ -120,16 +120,14 @@ export default class InventoryItemService {
    */
   @InjectEntityManager()
   async create(
-    data: CreateInventoryItemInput | CreateInventoryItemInput[],
+    data: CreateInventoryItemInput[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryItem[]> {
-    const toCreate = Array.isArray(data) ? data : [data]
-
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(InventoryItem)
 
     const inventoryItem = itemRepository.create(
-      toCreate.map((tc) => ({
+      data.map((tc) => ({
         sku: tc.sku,
         origin_country: tc.origin_country,
         metadata: tc.metadata,

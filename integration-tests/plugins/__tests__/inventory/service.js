@@ -36,7 +36,7 @@ describe("Inventory Module", () => {
     it("createInventoryItem", async () => {
       const inventoryService = appContainer.resolve("inventoryService")
 
-      const [inventoryItem] = await inventoryService.createInventoryItem({
+      const inventoryItem = await inventoryService.createInventoryItem({
         sku: "sku_1",
         origin_country: "CH",
         mid_code: "mid code",
@@ -76,7 +76,7 @@ describe("Inventory Module", () => {
     it("updateInventoryItem", async () => {
       const inventoryService = appContainer.resolve("inventoryService")
 
-      const [item] = await inventoryService.createInventoryItem({
+      const item = await inventoryService.createInventoryItem({
         sku: "sku_1",
         origin_country: "CH",
         mid_code: "mid code",
@@ -129,7 +129,7 @@ describe("Inventory Module", () => {
     it("deleteInventoryItem and retrieveInventoryItem", async () => {
       const inventoryService = appContainer.resolve("inventoryService")
 
-      const [item] = await inventoryService.createInventoryItem({
+      const item = await inventoryService.createInventoryItem({
         sku: "sku_1",
         origin_country: "CH",
         mid_code: "mid code",
@@ -157,7 +157,7 @@ describe("Inventory Module", () => {
     it("createInventoryLevel", async () => {
       const inventoryService = appContainer.resolve("inventoryService")
 
-      const [inventoryItem] = await inventoryService.createInventoryItem({
+      const inventoryItem = await inventoryService.createInventoryItem({
         sku: "sku_1",
         origin_country: "CH",
         mid_code: "mid code",
@@ -246,7 +246,7 @@ describe("Inventory Module", () => {
     it("updateInventoryLevel", async () => {
       const inventoryService = appContainer.resolve("inventoryService")
 
-      const [inventoryItem] = await inventoryService.createInventoryItem({
+      const inventoryItem = await inventoryService.createInventoryItem({
         sku: "sku_1",
         origin_country: "CH",
         mid_code: "mid code",
@@ -299,7 +299,7 @@ describe("Inventory Module", () => {
     it("updateInventoryLevel bulk passes manager correctly", async () => {
       const inventoryService = appContainer.resolve("inventoryService")
 
-      const [inventoryItem] = await inventoryService.createInventoryItem({
+      const inventoryItem = await inventoryService.createInventoryItem({
         sku: "sku_1",
         origin_country: "CH",
         mid_code: "mid code",
@@ -348,7 +348,7 @@ describe("Inventory Module", () => {
     it("updateInventoryLevel passes manager correctly", async () => {
       const inventoryService = appContainer.resolve("inventoryService")
 
-      const [inventoryItem] = await inventoryService.createInventoryItem({
+      const inventoryItem = await inventoryService.createInventoryItem({
         sku: "sku_1",
         origin_country: "CH",
         mid_code: "mid code",
@@ -395,7 +395,7 @@ describe("Inventory Module", () => {
     it("deleteInventoryLevel", async () => {
       const inventoryService = appContainer.resolve("inventoryService")
 
-      const [inventoryItem] = await inventoryService.createInventoryItem({
+      const inventoryItem = await inventoryService.createInventoryItem({
         sku: "sku_1",
         origin_country: "CH",
         mid_code: "mid code",
@@ -438,7 +438,7 @@ describe("Inventory Module", () => {
       const inventoryService = appContainer.resolve("inventoryService")
 
       const locationId = "location_123"
-      const [inventoryItem] = await inventoryService.createInventoryItem({
+      const inventoryItem = await inventoryService.createInventoryItem({
         sku: "sku_1",
       })
 
@@ -464,8 +464,8 @@ describe("Inventory Module", () => {
         incoming_quantity: 0,
       })
 
-      const [inventoryReservation] =
-        await inventoryService.createReservationItem({
+      const inventoryReservation = await inventoryService.createReservationItem(
+        {
           line_item_id: "line_item_123",
           inventory_item_id: inventoryItem.id,
           location_id: locationId,
@@ -473,7 +473,8 @@ describe("Inventory Module", () => {
           metadata: {
             abc: 123,
           },
-        })
+        }
+      )
 
       expect(inventoryReservation).toEqual(
         expect.objectContaining({
@@ -506,7 +507,7 @@ describe("Inventory Module", () => {
       const locationId = "location_123"
       const newLocationId = "location_new"
 
-      const [inventoryItem] = await inventoryService.createInventoryItem({
+      const inventoryItem = await inventoryService.createInventoryItem({
         sku: "sku_1",
       })
 
@@ -526,8 +527,8 @@ describe("Inventory Module", () => {
         incoming_quantity: 0,
       })
 
-      const [inventoryReservation] =
-        await inventoryService.createReservationItem({
+      const inventoryReservation = await inventoryService.createReservationItem(
+        {
           line_item_id: "line_item_123",
           inventory_item_id: inventoryItem.id,
           location_id: locationId,
@@ -535,7 +536,8 @@ describe("Inventory Module", () => {
           metadata: {
             abc: 123,
           },
-        })
+        }
+      )
 
       const [available, reserved] = await Promise.all([
         inventoryService.retrieveAvailableQuantity(
@@ -626,7 +628,7 @@ describe("Inventory Module", () => {
 
       const locationId = "location_123"
 
-      const [inventoryItem] = await inventoryService.createInventoryItem({
+      const inventoryItem = await inventoryService.createInventoryItem({
         sku: "sku_1",
       })
 
@@ -636,13 +638,14 @@ describe("Inventory Module", () => {
         stocked_quantity: 10,
       })
 
-      const [inventoryReservation] =
-        await inventoryService.createReservationItem({
+      const inventoryReservation = await inventoryService.createReservationItem(
+        {
           line_item_id: "line_item_123",
           inventory_item_id: inventoryItem.id,
           location_id: locationId,
           quantity: 1,
-        })
+        }
+      )
 
       for (let quant = 1; quant <= 3; quant++) {
         await inventoryService.createReservationItem({
@@ -703,7 +706,7 @@ describe("Inventory Module", () => {
       const locationId = "location_123"
       const secondLocationId = "location_551"
 
-      const [inventoryItem] = await inventoryService.createInventoryItem({
+      const inventoryItem = await inventoryService.createInventoryItem({
         sku: "sku_1",
       })
 
@@ -751,7 +754,7 @@ describe("Inventory Module", () => {
       const locationId = "location_123"
       const secondLocationId = "location_551"
 
-      const [inventoryItem] = await inventoryService.createInventoryItem({
+      const inventoryItem = await inventoryService.createInventoryItem({
         sku: "sku_1",
       })
 

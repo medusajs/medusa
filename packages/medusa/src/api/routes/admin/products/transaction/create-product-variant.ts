@@ -98,7 +98,7 @@ export const createVariantsTransaction = async (
           return
         }
 
-        const [inventoryItem] = await inventoryService!.createInventoryItem(
+        const inventoryItem = await inventoryService!.createInventoryItem(
           {
             sku: variant.sku,
             origin_country: variant.origin_country,
