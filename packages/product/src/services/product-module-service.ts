@@ -302,12 +302,14 @@ export default class ProductModuleService<
             }
 
             if (isDefined(productData.type)) {
-              productData.type_id = (
+              const productType = (
                 await this.productTypeService_.upsert(
                   [productData.type as ProductTypes.CreateProductTypeDTO],
                   sharedContext
                 )
-              )?.[0]!.id
+              )
+
+              productData.type = productType?.[0]
             }
 
             return productData as CreateProductOnlyDTO
@@ -446,7 +448,7 @@ export default class ProductModuleService<
                 )
               )
 
-              productData.type_id = productType?.[0]!.id
+              productData.type = productType?.[0]
             }
 
             return productData as ProductServiceTypes.UpdateProductDTO

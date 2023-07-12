@@ -97,7 +97,7 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
         newImgs.push(this.manager_.create(Image, img))
       })
 
-      await this.manager_.persistAndFlush(newImgs)
+      await this.manager_.persist(newImgs)
       upsertedImgs.push(...newImgs)
     }
 
