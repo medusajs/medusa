@@ -80,7 +80,7 @@ export interface IInventoryService {
     locationId: string,
     update: UpdateInventoryLevelInput,
     context?: SharedContext
-  ): Promise<InventoryLevelDTO[]>
+  ): Promise<InventoryLevelDTO>
 
   updateInventoryItem(
     inventoryItemId: string,

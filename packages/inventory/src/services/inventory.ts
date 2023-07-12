@@ -402,7 +402,7 @@ export default class InventoryService implements IInventoryService {
     locationId: string,
     input: UpdateInventoryLevelInput,
     context?: SharedContext
-  ): Promise<InventoryLevelDTO[]>
+  ): Promise<InventoryLevelDTO>
   @InjectEntityManager(
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
@@ -417,7 +417,7 @@ export default class InventoryService implements IInventoryService {
     locationIdOrContext?: string | SharedContext,
     input?: UpdateInventoryLevelInput,
     @MedusaContext() context: SharedContext = {}
-  ): Promise<InventoryLevelDTO[]> {
+  ): Promise<InventoryLevelDTO[] | InventoryLevelDTO> {
     const updates = Array.isArray(inventoryItemIdOrUpdates)
       ? inventoryItemIdOrUpdates
       : [
@@ -445,7 +445,7 @@ export default class InventoryService implements IInventoryService {
       return acc
     }, new Map())
 
-    return await Promise.all(
+    const result = await Promise.all(
       updates.map(async (update) => {
         const levelId = levelMap
           .get(update.inventory_item_id)
@@ -454,6 +454,7 @@ export default class InventoryService implements IInventoryService {
         return this.inventoryLevelService_.update(levelId, update, ctx)
       })
     )
+    return Array.isArray(inventoryItemIdOrUpdates) ? result : result[0]
   }
 
   /**

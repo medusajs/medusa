@@ -270,7 +270,7 @@ describe("Inventory Module", () => {
         incoming_quantity: 0,
       })
 
-      const [updatedLevel] = await inventoryService.updateInventoryLevel(
+      const updatedLevel = await inventoryService.updateInventoryLevel(
         inventoryItem.id,
         "location_123",
         {
