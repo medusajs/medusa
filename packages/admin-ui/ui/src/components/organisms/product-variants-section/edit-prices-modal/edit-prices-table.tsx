@@ -15,6 +15,7 @@ type EditPricesTableProps = {
   product: Product
   currencies: string[]
   regions: string[]
+  onPriceUpdate: (prices: Record<string, number | undefined>) => void
 }
 
 enum MoveDirection {
@@ -314,6 +315,7 @@ function EditPricesTable(props: EditPricesTableProps) {
        * Undo last selection change (or delete) on CMD/CTR + Z
        */
       if ((e.ctrlKey || e.metaKey) && e.keyCode === 90) {
+        e.preventDefault()
         if (Object.keys(selectedCells).length) {
           e.stopPropagation()
           setEditedPrices(prevPriceState || {})
@@ -332,6 +334,13 @@ function EditPricesTable(props: EditPricesTableProps) {
       document.addEventListener("keydown", onKeyDown)
     }
   }, [Object.keys(selectedCells).length])
+
+  useEffect(() => {
+    // when drag is released, notify parent container that prices have changed
+    if (!isDrag) {
+      props.onPriceUpdate(editedPrices)
+    }
+  }, [isDrag, editedPrices])
 
   return (
     <div className="h-full overflow-x-auto">

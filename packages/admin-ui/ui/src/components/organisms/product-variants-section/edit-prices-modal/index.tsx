@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Product } from "@medusajs/client-types"
+import pick from "lodash/pick"
+import pickBy from "lodash/pickBy"
+import mapKeys from "lodash/mapKeys"
+import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 
 import Modal from "../../../molecules/modal"
 import Fade from "../../../atoms/fade-wrapper"
@@ -11,18 +15,37 @@ import {
 import CrossIcon from "../../../fundamentals/icons/cross-icon"
 import EditPricesTable from "./edit-prices-table"
 import EditPricesActions from "./edit-prices-actions"
+import { useAdminRegions, useAdminUpdateVariant } from "medusa-react"
 
 type EditPricesModalProps = {
   close: () => void
   product: Product
 }
 
+function useRegionsCurrencyMap() {
+  const map = {}
+  const { regions: storeRegions } = useAdminRegions({
+    limit: 1000,
+  })
+
+  storeRegions?.forEach((r) => {
+    map[r.id] = r.currency_code
+  })
+
+  return useMemo(() => map, [storeRegions])
+}
+
 /**
  * Edit prices modal container.
  */
 function EditPricesModal(props: EditPricesModalProps) {
+  const editedPrices = useRef({})
+
+  const regionCurrenciesMap = useRegionsCurrencyMap()
   const regions = getAllProductPricesRegions(props.product).sort()
   const currencies = getAllProductPricesCurrencies(props.product).sort()
+
+  const updateVariant = useAdminUpdateVariant(props.product.id)
 
   const [selectedCurrencies, setSelectedCurrencies] = useState(currencies)
   const [selectedRegions, setSelectedRegions] = useState<string[]>(regions)
@@ -49,6 +72,124 @@ function EditPricesModal(props: EditPricesModalProps) {
     setSelectedRegions(Array.from(set))
   }
 
+  const onPriceUpdate = (prices: Record<string, number | undefined>) => {
+    editedPrices.current = prices
+  }
+
+  const onSave = () => {
+    const pricesEditMap: Record<string, number | undefined> =
+      editedPrices.current
+    const variants = props.product.variants!
+
+    const promises = variants.map((variant) => {
+      const variantPrices = variant.prices!.filter((p) => !p.price_list_id) // TODO: confirm that updating won't delete price list MAs
+      // pick price edits that are related to the current variant
+      const variantPricesEditMap = mapKeys(
+        pickBy(pricesEditMap, (_, k) => k.includes(variant.id)),
+        (_, k) => k.split("-")[1]
+      )
+
+      const currencyPriceEdits = pickBy(
+        variantPricesEditMap,
+        (o, k) => !k.startsWith("reg") && selectedCurrencies.includes(k) // only visible columns
+      )
+
+      const regionPriceEdits = pickBy(
+        variantPricesEditMap,
+        (o, k) => k.startsWith("reg") && selectedRegions.includes(k) // only visible columns
+      )
+
+      const pricesPayload = []
+
+      variantPrices.forEach((price) => {
+        if (price.region_id) {
+          // region price
+
+          if (price.region_id in regionPriceEdits) {
+            // this MA is edited - UPDATE CASE
+
+            if (typeof regionPriceEdits[price.region_id] === "number") {
+              const p = { ...price }
+              p.amount =
+                regionPriceEdits[price.region_id]! *
+                Math.pow(
+                  10,
+                  CURRENCY_MAP[price.currency_code.toUpperCase()].decimal_digits
+                )
+              pricesPayload.push(p)
+            } else {
+              // amount is unset -> DELETED case just skip
+            }
+          } else {
+            pricesPayload.push(price) // not edited just send it so it's not deleted
+          }
+
+          delete regionPriceEdits[price.region_id]
+        } else {
+          // currency price
+
+          if (price.currency_code in currencyPriceEdits) {
+            // this MA is edited - UPDATE CASE
+
+            if (typeof currencyPriceEdits[price.currency_code] === "number") {
+              const p = { ...price }
+              p.amount =
+                currencyPriceEdits[price.currency_code] *
+                Math.pow(
+                  10,
+                  CURRENCY_MAP[price.currency_code.toUpperCase()].decimal_digits
+                )
+              pricesPayload.push(p)
+            } else {
+              // amount is unset -> DELETED case just skip
+            }
+          } else {
+            pricesPayload.push(price) // not edited just send it so it's not deleted
+          }
+
+          delete currencyPriceEdits[price.currency_code] // not deleted entries are new prices
+        }
+      })
+
+      Object.entries(currencyPriceEdits).forEach(([currency, amount]) => {
+        if (typeof amount === "number") {
+          amount *= Math.pow(
+            10,
+            CURRENCY_MAP[currency.toUpperCase()].decimal_digits
+          )
+          pricesPayload.push({ currency_code: currency, amount })
+        }
+      })
+
+      Object.entries(regionPriceEdits).forEach(([region, amount]) => {
+        if (typeof amount === "number") {
+          const currency = regionCurrenciesMap[region]
+          amount *= Math.pow(
+            10,
+            CURRENCY_MAP[currency.toUpperCase()].decimal_digits
+          )
+          pricesPayload.push({ region_id: region, amount })
+        }
+      })
+
+      return updateVariant.mutateAsync({
+        variant_id: variant.id,
+        prices: pricesPayload.map((p) =>
+          pick(p, ["id", "amount", "region_id", "currency_code"])
+        ),
+      })
+    })
+
+    Promise.all(promises)
+      .then(() => {
+        props.close()
+      })
+      .catch((e) => {
+        // TODO: notification
+        console.log(e)
+      })
+  }
+
   useEffect(() => {
     const onEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -56,7 +197,6 @@ function EditPricesModal(props: EditPricesModalProps) {
       }
     }
     document.addEventListener("keydown", onEsc)
-
     return () => document.removeEventListener("keydown", onEsc)
   }, [])
 
@@ -90,7 +230,7 @@ function EditPricesModal(props: EditPricesModalProps) {
               <Button
                 variant="ghost"
                 size="small"
-                onClick={props.close}
+                onClick={onSave}
                 className="cursor-pointer border bg-black p-1.5 font-medium text-white hover:bg-black"
               >
                 Save and close
@@ -107,6 +247,7 @@ function EditPricesModal(props: EditPricesModalProps) {
             product={props.product}
             currencies={selectedCurrencies.sort()}
             regions={selectedRegions.sort()}
+            onPriceUpdate={onPriceUpdate}
           />
         </div>
       </Modal.Body>
