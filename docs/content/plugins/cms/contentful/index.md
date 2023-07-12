@@ -227,7 +227,7 @@ To do that:
 
 :::warning
 
-This Gatsby storefront is deprecated. It's recommended to integrate Contentful into either the Next.js storefront or your custom storefront.
+This Gatsby storefront is deprecated. It's recommended to integrate Contentful into either the Next.js Starter Template or your custom storefront.
 
 :::
 
