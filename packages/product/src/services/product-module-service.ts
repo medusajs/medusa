@@ -25,6 +25,7 @@ import {
   ProductTypes,
 } from "@medusajs/types"
 import { isDefined, isString, kebabCase, MedusaError } from "@medusajs/utils"
+import { serialize } from "@mikro-orm/core"
 
 import ProductImageService from "./product-image"
 import { ProductServiceTypes } from "../types/services"
@@ -447,6 +448,18 @@ export default class ProductModuleService<
               productData.type = productType?.[0]
             }
 
+            if (isDefined(productData.categories)) {
+              if (productData.categories?.length) {
+                const categories = await this.listCategories(
+                  { id: productData.categories.map((c) => c.id) },
+                  {},
+                  sharedContext
+                )
+
+                productData.categories = categories.map((c) => ({ id: c.id }))
+              }
+            }
+
             return productData as ProductServiceTypes.UpdateProductDTO
           })
         )
@@ -502,8 +515,10 @@ export default class ProductModuleService<
       },
       { transaction: sharedContext?.transactionManager }
     )
-
-    return JSON.parse(JSON.stringify(products))
+console.log("products - ", products)
+    return serialize(products, {
+      populate: true
+    }) as ProductTypes.ProductDTO[]
   }
 
   async delete(productIds: string[], sharedContext?: Context): Promise<void> {

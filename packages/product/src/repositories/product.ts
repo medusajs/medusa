@@ -1,4 +1,4 @@
-import { Product } from "@models"
+import { Product, ProductCategory } from "@models"
 import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
@@ -137,15 +137,45 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     const manager = (context.transactionManager ??
       this.manager_) as SqlEntityManager
 
+    const productsToUpdate = await manager.find(Product, {
+      id: data.map((updateData) => updateData.id)
+    })
+
+    const productsToUpdateMap = new Map<string, Product>(
+      productsToUpdate.map((product) => [product.id, product])
+    )
+
     const products = await Promise.all(
       data.map(async (updateData) => {
-        const product = await manager.findOneOrFail(Product, updateData.id);
+        const product = productsToUpdateMap.get(updateData.id)
 
-        return manager.assign(product, updateData, { updateNestedEntities: true, mergeObjects: true })
+        if (!product) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Product with id "${updateData.id}" not found`
+          )
+        }
+
+        const categoriesData = updateData?.categories || []
+        delete updateData?.categories
+
+        manager.assign(product, updateData, { updateNestedEntities: true, mergeObjects: true })
+
+        await product.categories.init()
+
+        categoriesData.forEach(async (categoryData) => {
+          const productCategories = await manager.find(ProductCategory, categoriesData.map((c) => c.id))
+
+          // manager.assign(product.categories, categoriesData, { updateNestedEntities: true, mergeObjects: true })
+
+          await product.categories.add(productCategories)
+        })
+        console.log("product.categories - ", product.categories.toArray())
+        return product
       })
     )
 
-    await manager.persist(products)
+    await manager.persistAndFlush(products)
 
     return products
   }
