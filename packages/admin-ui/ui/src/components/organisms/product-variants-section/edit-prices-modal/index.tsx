@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { Product } from "@medusajs/client-types"
+import { useAdminRegions, useAdminUpdateVariant } from "medusa-react"
+import { MoneyAmount, Product } from "@medusajs/client-types"
 import pick from "lodash/pick"
 import pickBy from "lodash/pickBy"
 import mapKeys from "lodash/mapKeys"
+
 import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 
 import Modal from "../../../molecules/modal"
@@ -15,7 +17,8 @@ import {
 import CrossIcon from "../../../fundamentals/icons/cross-icon"
 import EditPricesTable from "./edit-prices-table"
 import EditPricesActions from "./edit-prices-actions"
-import { useAdminRegions, useAdminUpdateVariant } from "medusa-react"
+import useNotification from "../../../../hooks/use-notification"
+import DeletePrompt from "../../delete-prompt"
 
 type EditPricesModalProps = {
   close: () => void
@@ -45,8 +48,13 @@ function EditPricesModal(props: EditPricesModalProps) {
   const regions = getAllProductPricesRegions(props.product).sort()
   const currencies = getAllProductPricesCurrencies(props.product).sort()
 
+  const notification = useNotification()
   const updateVariant = useAdminUpdateVariant(props.product.id)
 
+  const [showCloseConfirmationPrompt, setShowCloseConfirmationPrompt] =
+    useState(false)
+  const [showSaveConfirmationPrompt, setShowSaveConfirmationPrompt] =
+    useState(false)
   const [selectedCurrencies, setSelectedCurrencies] = useState(currencies)
   const [selectedRegions, setSelectedRegions] = useState<string[]>(regions)
 
@@ -77,6 +85,10 @@ function EditPricesModal(props: EditPricesModalProps) {
   }
 
   const onSave = () => {
+    setShowSaveConfirmationPrompt(true)
+  }
+
+  const save = () => {
     const pricesEditMap: Record<string, number | undefined> =
       editedPrices.current
     const variants = props.product.variants!
@@ -99,7 +111,7 @@ function EditPricesModal(props: EditPricesModalProps) {
         (o, k) => k.startsWith("reg") && selectedRegions.includes(k) // only visible columns
       )
 
-      const pricesPayload = []
+      const pricesPayload: Partial<MoneyAmount>[] = []
 
       variantPrices.forEach((price) => {
         if (price.region_id) {
@@ -172,6 +184,7 @@ function EditPricesModal(props: EditPricesModalProps) {
         }
       })
 
+      // @ts-ignore
       return updateVariant.mutateAsync({
         variant_id: variant.id,
         prices: pricesPayload.map((p) =>
@@ -182,18 +195,22 @@ function EditPricesModal(props: EditPricesModalProps) {
 
     Promise.all(promises)
       .then(() => {
+        notification(
+          "Success",
+          "Successfully updated variant prices",
+          "success"
+        )
         props.close()
       })
       .catch((e) => {
-        // TODO: notification
-        console.log(e)
+        notification("Error", "Failed to update variant prices", "error")
       })
   }
 
   useEffect(() => {
     const onEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        props.close()
+        setShowCloseConfirmationPrompt(true)
       }
     }
     document.addEventListener("keydown", onEsc)
@@ -251,6 +268,24 @@ function EditPricesModal(props: EditPricesModalProps) {
           />
         </div>
       </Modal.Body>
+      {showCloseConfirmationPrompt && (
+        <DeletePrompt
+          handleClose={() => setShowCloseConfirmationPrompt(false)}
+          onDelete={props.close}
+          confirmText="Yes, close"
+          heading="Close"
+          text="Are you sure you want to close this editor without saving?"
+        />
+      )}
+      {showSaveConfirmationPrompt && (
+        <DeletePrompt
+          handleClose={() => setShowSaveConfirmationPrompt(false)}
+          onDelete={save}
+          confirmText="Yes, save"
+          heading="Save changes"
+          text="Save edited prices"
+        />
+      )}
     </Fade>
   )
 }

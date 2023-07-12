@@ -44,10 +44,17 @@ let lastVisitedVariant: string | undefined = undefined
 
 let activeAmount: number | undefined = undefined
 
+/**
+ * Pointer for displaying highlight rectangle range
+ */
 let startIndex: number | undefined
 let endIndex: number | undefined
 let anchorIndex: number | undefined
 
+/**
+ * Temp. variable for persisting previous "editedPrices" state before editing
+ * so we can undo changes.
+ */
 let prevPriceState: Record<string, number> | undefined = undefined
 
 /**
