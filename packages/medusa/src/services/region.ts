@@ -534,7 +534,7 @@ class RegionService extends TransactionBaseService {
     )
 
     const query = buildQuery(selector, config)
-    return regionRepo.findAndCount(query)
+    return await regionRepo.findAndCount(query)
   }
 
   /**
