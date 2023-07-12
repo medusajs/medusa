@@ -245,8 +245,34 @@ export interface CreateProductDTO {
   metadata?: Record<string, unknown>
 }
 
-export interface UpdateProductDTO extends CreateProductDTO {
+export interface UpdateProductDTO {
   id: string
+  title?: string
+  subtitle?: string
+  description?: string
+  is_giftcard?: boolean
+  discountable?: boolean
+  images?: string[] | { id?: string; url: string }[]
+  thumbnail?: string
+  handle?: string
+  status?: ProductStatus
+  type?: CreateProductTypeDTO
+  type_id?: string
+  collection_id?: string
+  tags?: CreateProductTagDTO[]
+  // sales_channel
+  categories?: { id: string }[]
+  options?: CreateProductOptionDTO[]
+  variants?: CreateProductVariantDTO[]
+  width?: number
+  height?: number
+  length?: number
+  weight?: number
+  origin_country?: string
+  hs_code?: string
+  material?: string
+  mid_code?: string
+  metadata?: Record<string, unknown>
 }
 
 export interface CreateProductOnlyDTO {

@@ -15,7 +15,7 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { MedusaError, isDefined } from "@medusajs/utils"
 
 import { AbstractBaseRepository } from "./base"
-import * as ProductServiceTypes from "../types/services/product"
+import { ProductServiceTypes } from "../types/services"
 
 export class ProductRepository extends AbstractBaseRepository<Product> {
   protected readonly manager_: SqlEntityManager
@@ -125,7 +125,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
       return manager.create(Product, product)
     })
 
-    await manager.persistAndFlush(products)
+    await manager.persist(products)
 
     return products
   }
@@ -139,20 +139,13 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
 
     const products = await Promise.all(
       data.map(async (updateData) => {
-        if (!isDefined(updateData.id)) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `Cannot update product without id`
-          )
-        }
-
         const product = await manager.findOneOrFail(Product, updateData.id);
 
         return manager.assign(product, updateData, { updateNestedEntities: true, mergeObjects: true })
       })
     )
 
-    await manager.persistAndFlush(products)
+    await manager.persist(products)
 
     return products
   }

@@ -27,7 +27,7 @@ import {
 import { isDefined, isString, kebabCase, MedusaError } from "@medusajs/utils"
 
 import ProductImageService from "./product-image"
-import * as ProductServiceTypes from "../types/services/product"
+import { ProductServiceTypes } from "../types/services"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -316,10 +316,6 @@ export default class ProductModuleService<
           })
         )
 
-        // TODO
-        // Shipping profile is not part of the module
-        // as well as sales channel
-
         const products = await this.productService_.create(
           productsData,
           sharedContext
@@ -454,10 +450,6 @@ export default class ProductModuleService<
             return productData as ProductServiceTypes.UpdateProductDTO
           })
         )
-
-        // TODO
-        // Shipping profile is not part of the module
-        // as well as sales channel
 
         const products = await this.productService_.update(
           productsData,

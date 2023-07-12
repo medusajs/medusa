@@ -197,7 +197,7 @@ describe("Product Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual(`Cannot update product without id`)
+      expect(error.message).toEqual(`You must pass a non-undefined value to the property id of entity Product.`)
 
       let result = await service.retrieve(productOne.id)
 

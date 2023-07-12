@@ -1,1 +1,1 @@
-export * from './product'
+export * as ProductServiceTypes from './product'

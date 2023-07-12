@@ -10,7 +10,7 @@ import {
 import { ModulesSdkUtils, MedusaError, isDefined } from "@medusajs/utils"
 import { ProductRepository } from "@repositories"
 
-import * as ProductServiceTypes from "../types/services/product"
+import { ProductServiceTypes } from "../types/services"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
