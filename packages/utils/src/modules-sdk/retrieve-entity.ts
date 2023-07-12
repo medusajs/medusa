@@ -1,6 +1,6 @@
 import { FindConfig, DAL, Context } from "@medusajs/types"
-import { ModulesSdkUtils, MedusaError, isDefined } from "@medusajs/utils"
-import { lowerCaseFirst } from "@medusajs/utils"
+import { MedusaError, isDefined, lowerCaseFirst } from "../common"
+import { buildQuery } from "./build-query"
 
 type RetrieveEntityParams<TDTO> = {
   id: string,
@@ -27,7 +27,7 @@ export async function retrieveEntity<
     )
   }
 
-  const queryOptions = ModulesSdkUtils.buildQuery<TEntity>({
+  const queryOptions = buildQuery<TEntity>({
     id,
   }, config)
 

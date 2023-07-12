@@ -1,8 +1,6 @@
 import { ProductCollection } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import { ModulesSdkUtils, MedusaError, isDefined } from "@medusajs/utils"
-
-import { retrieveEntity } from "./helpers"
+import { ModulesSdkUtils, MedusaError, isDefined, retrieveEntity } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productCollectionRepository: DAL.RepositoryService
