@@ -402,7 +402,7 @@ export default class ProductModuleService<
             if (!isDefined(productData.id)) {
               throw new MedusaError(
                 MedusaError.Types.NOT_FOUND,
-                `"id" must be defined`
+                `Cannot update product without id`
               )
             }
 

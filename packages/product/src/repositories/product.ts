@@ -142,7 +142,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
         if (!isDefined(updateData.id)) {
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
-            `"id" must be defined`
+            `Cannot update product without id`
           )
         }
 

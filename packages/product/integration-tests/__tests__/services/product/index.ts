@@ -197,7 +197,7 @@ describe("Product Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual(`"id" must be defined`)
+      expect(error.message).toEqual(`Cannot update product without id`)
 
       let result = await service.retrieve(productOne.id)
 
