@@ -14,7 +14,7 @@ Manage the content of your storefront with rich Content Management System (CMS) 
 
 ## Prerequisites
 
-- [Contentful account](https://stripe.com/)
+- [Contentful account](https://www.contentful.com)
 - [Medusa CLI Tool](https://docs.medusajs.com/cli/reference#how-to-install-cli-tool)
 - [PostgreSQL](https://docs.medusajs.com/development/backend/prepare-environment#postgresql)
 - [Redis](https://docs.medusajs.com/development/backend/prepare-environment#redis)
