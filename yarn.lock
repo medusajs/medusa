@@ -5049,8 +5049,8 @@ __metadata:
     "@hookform/error-message": ^2.0.1
     "@medusajs/medusa": "*"
     "@medusajs/types": "*"
-    "@medusajs/ui": 0.0.0-snapshot-20230711183522
-    "@medusajs/ui-preset": 0.0.0-snapshot-20230711183522
+    "@medusajs/ui": 0.0.0-snapshot-20230712150235
+    "@medusajs/ui-preset": 0.0.0-snapshot-20230712150235
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
     "@radix-ui/react-accordion": ^1.0.1
     "@radix-ui/react-avatar": ^1.0.1
@@ -5255,12 +5255,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/icons@npm:0.0.0-snapshot-20230711183522":
-  version: 0.0.0-snapshot-20230711183522
-  resolution: "@medusajs/icons@npm:0.0.0-snapshot-20230711183522"
+"@medusajs/icons@npm:0.0.0-snapshot-20230712150235":
+  version: 0.0.0-snapshot-20230712150235
+  resolution: "@medusajs/icons@npm:0.0.0-snapshot-20230712150235"
   peerDependencies:
     react: ^16.x || ^17.x || ^18.x
-  checksum: 30b7948edd42b1f6742d64e008a45be98efd2086c760ef26749a128bbb5da525b1495de1c0f45076d460fe225dd303c3e7a3d9c4873ac46ddeb2d55bb7ec9a69
+  checksum: ceb9032234bbcb4dd3141901c4128997d1af0722b31f355760ba43f7e3b135c6ac70961942e356ad1584541ee1fe2b9b283005e31f1e6308efa12e72af1f5729
   languageName: node
   linkType: hard
 
@@ -5577,24 +5577,26 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/ui-preset@npm:0.0.0-snapshot-20230711183522":
-  version: 0.0.0-snapshot-20230711183522
-  resolution: "@medusajs/ui-preset@npm:0.0.0-snapshot-20230711183522"
+"@medusajs/ui-preset@npm:0.0.0-snapshot-20230712150235":
+  version: 0.0.0-snapshot-20230712150235
+  resolution: "@medusajs/ui-preset@npm:0.0.0-snapshot-20230712150235"
   dependencies:
     tailwindcss: ^3.3.2
     tailwindcss-animate: ^1.0.6
-  checksum: 10200f7abd181f75914be9b8535b05ca5e701537fe9d4641c112bf49057f553d4534c6d3cc64d4c78fe040cf6272a57d881822b983fc9c398fea543161addbfa
+  checksum: b323f2e2cacf13266371bbcee096f82c134a6bd14c23db311a82dd2215dc6480f76d4e51fa3dceea6fcc48995363b5224f983bc1375e90ee576095288c96ee3a
   languageName: node
   linkType: hard
 
-"@medusajs/ui@npm:0.0.0-snapshot-20230711183522":
-  version: 0.0.0-snapshot-20230711183522
-  resolution: "@medusajs/ui@npm:0.0.0-snapshot-20230711183522"
+"@medusajs/ui@npm:0.0.0-snapshot-20230712150235":
+  version: 0.0.0-snapshot-20230712150235
+  resolution: "@medusajs/ui@npm:0.0.0-snapshot-20230712150235"
   dependencies:
-    "@medusajs/icons": 0.0.0-snapshot-20230711183522
+    "@medusajs/icons": 0.0.0-snapshot-20230712150235
     "@radix-ui/react-alert-dialog": ^1.0.4
+    "@radix-ui/react-avatar": ^1.0.3
     "@radix-ui/react-checkbox": ^1.0.4
     "@radix-ui/react-dialog": ^1.0.4
+    "@radix-ui/react-dropdown-menu": ^2.0.5
     "@radix-ui/react-label": ^2.0.2
     "@radix-ui/react-radio-group": ^1.1.3
     "@radix-ui/react-slot": ^1.0.2
@@ -5603,11 +5605,12 @@ __metadata:
     "@radix-ui/react-tooltip": ^1.0.6
     class-variance-authority: ^0.6.1
     clsx: ^1.2.1
+    react-wrap-balancer: ^1.0.0
     tailwind-merge: ^1.13.2
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 108621d38544f8e72c407308186677c4e72631d44e0f9f32673debd0157ab2f77f83b3c8105256c9c1584beddaa9d45881c4f81c4d264e407816b41017d4060c
+  checksum: 144bc45c4ea7535411517d43ef30540d80eaff6627ae745a03f1f3525573bd93e165cab1a53302c89a2059494cdda2b48492d68519b25463accb6602807e25ba
   languageName: node
   linkType: hard
 
@@ -6863,7 +6866,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-avatar@npm:^1.0.1":
+"@radix-ui/react-avatar@npm:^1.0.1, @radix-ui/react-avatar@npm:^1.0.3":
   version: 1.0.3
   resolution: "@radix-ui/react-avatar@npm:1.0.3"
   dependencies:
@@ -7065,7 +7068,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-dropdown-menu@npm:^2.0.2":
+"@radix-ui/react-dropdown-menu@npm:^2.0.2, @radix-ui/react-dropdown-menu@npm:^2.0.5":
   version: 2.0.5
   resolution: "@radix-ui/react-dropdown-menu@npm:2.0.5"
   dependencies:
@@ -34883,6 +34886,15 @@ __metadata:
     react: ">=16.6.0"
     react-dom: ">=16.6.0"
   checksum: 2ba754ba748faefa15f87c96dfa700d5525054a0141de8c75763aae6734af0740e77e11261a1e8f4ffc08fd9ab78510122e05c21c2d79066c38bb6861a886c82
+  languageName: node
+  linkType: hard
+
+"react-wrap-balancer@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "react-wrap-balancer@npm:1.0.0"
+  peerDependencies:
+    react: ">=16.8.0 || ^17.0.0 || ^18"
+  checksum: 50ff2fdc72ab7a6040a93db47001ce21949dc33beb433dccbf670082db15348334d910dccbd65da050fc34e9fda94077adc1e122a57a5b14122ebfede3bb1ce6
   languageName: node
   linkType: hard
 
