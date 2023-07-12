@@ -17,6 +17,16 @@ export interface RepositoryService<T = any> {
     }
   ): Promise<any>
 
+  serialize<T extends object, TResult extends object, TOptions = any>(
+    data: T,
+    options?: TOptions
+  ): Promise<TResult>
+
+  serialize<T extends object[], TResult extends object[], TOptions = any>(
+    data: T[],
+    options?: TOptions
+  ): Promise<TResult>
+
   find(options?: FindOptions<T>, context?: Context): Promise<T[]>
 
   findAndCount(

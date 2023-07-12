@@ -26,7 +26,6 @@ import {
 } from "@medusajs/types"
 import ProductImageService from "./product-image"
 import { isDefined, isString, kebabCase } from "@medusajs/utils"
-import { serialize } from "@mikro-orm/core"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -367,9 +366,12 @@ export default class ProductModuleService<
       { transaction: sharedContext?.transactionManager }
     )
 
-    return serialize(products, {
+    return this.baseRepository_.serialize<
+      TProduct[],
+      ProductTypes.ProductDTO[]
+    >(products, {
       populate: true,
-    }) as ProductTypes.ProductDTO[]
+    })
   }
 
   async delete(productIds: string[], sharedContext?: Context): Promise<void> {
@@ -384,7 +386,12 @@ export default class ProductModuleService<
       productIds,
       sharedContext
     )
-    return serialize(products) as unknown as ProductTypes.ProductDTO[]
+    return this.baseRepository_.serialize<
+      TProduct[],
+      ProductTypes.ProductDTO[]
+    >(products, {
+      populate: true,
+    })
   }
 
   async restore(
@@ -396,6 +403,11 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return serialize(products) as unknown as ProductTypes.ProductDTO[]
+    return this.baseRepository_.serialize<
+      TProduct[],
+      ProductTypes.ProductDTO[]
+    >(products, {
+      populate: true,
+    })
   }
 }
