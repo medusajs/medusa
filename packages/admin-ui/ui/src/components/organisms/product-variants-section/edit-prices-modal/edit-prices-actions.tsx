@@ -6,6 +6,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import Button from "../../../fundamentals/button"
 import AdjustmentsIcon from "../../../fundamentals/icons/adjustments-icon"
 import CheckIcon from "../../../fundamentals/icons/check-icon"
+import IconTooltip from "../../../molecules/icon-tooltip"
 
 type EditPricesActionsProps = {
   selectedCurrencies: string[]
@@ -37,7 +38,10 @@ function EditPricesActions(props: EditPricesActionsProps) {
   }, [_regions])
 
   return (
-    <div style={{ fontSize: 13 }} className="border-t py-[12px] px-4">
+    <div
+      style={{ fontSize: 13 }}
+      className="flex items-center gap-2 border-t py-[12px] px-4"
+    >
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
           <Button variant="secondary" size="small" className="text-gray-700">
@@ -97,6 +101,11 @@ function EditPricesActions(props: EditPricesActionsProps) {
           ))}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
+      <IconTooltip
+        side="right"
+        type="warning"
+        content="Only visible columns are saved."
+      />
     </div>
   )
 }

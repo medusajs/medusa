@@ -311,12 +311,12 @@ function EditPricesTable(props: EditPricesTableProps) {
       }
 
       /**
-       * Undo last selection change (or delete)
+       * Undo last selection change (or delete) on CMD/CTR + Z
        */
-      if (e.ctrlKey && e.key === "KeyZ") {
+      if ((e.ctrlKey || e.metaKey) && e.keyCode === 90) {
         if (Object.keys(selectedCells).length) {
           e.stopPropagation()
-          setEditedPrices(prevPriceState)
+          setEditedPrices(prevPriceState || {})
           resetSelection()
         }
       }
@@ -332,8 +332,6 @@ function EditPricesTable(props: EditPricesTableProps) {
       document.addEventListener("keydown", onKeyDown)
     }
   }, [Object.keys(selectedCells).length])
-
-  console.log(editedPrices)
 
   return (
     <div className="h-full overflow-x-auto">
