@@ -81,7 +81,7 @@ function CurrencyCell(props: CurrencyCellProps) {
   })
 
   useEffect(() => {
-    setLocalValue({ value: editedAmount, float: editedAmount })
+    setLocalValue({ value: editedAmount || "", float: editedAmount })
   }, [editedAmount])
 
   return (

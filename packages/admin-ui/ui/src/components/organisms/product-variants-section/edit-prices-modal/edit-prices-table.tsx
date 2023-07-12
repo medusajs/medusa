@@ -47,6 +47,8 @@ let startIndex: number | undefined
 let endIndex: number | undefined
 let anchorIndex: number | undefined
 
+let prevPriceState: Record<string, number> | undefined = undefined
+
 /**
  * Construct cell key.
  * Cell row is defined by variant id and column is ether currency or region.
@@ -116,11 +118,7 @@ function EditPricesTable(props: EditPricesTableProps) {
     region?: string
   ) => {
     const next = { ...editedPrices }
-    if (typeof amount === "undefined") {
-      delete next[getKey(variantId, currencyCode, region)]
-    } else {
-      next[getKey(variantId, currencyCode, region)] = amount
-    }
+    next[getKey(variantId, currencyCode, region)] = amount
     setEditedPrices(next)
   }
 
@@ -187,7 +185,11 @@ function EditPricesTable(props: EditPricesTableProps) {
       }
 
       deselectCell(lastVisitedVariant, activeCurrencyOrRegion)
-      setPriceForCell(undefined, lastVisitedVariant, activeCurrencyOrRegion)
+      setPriceForCell(
+        prevPriceState[getKey(lastVisitedVariant, activeCurrencyOrRegion)],
+        lastVisitedVariant,
+        activeCurrencyOrRegion
+      )
     }
 
     lastVisitedVariant = variantId
@@ -201,6 +203,8 @@ function EditPricesTable(props: EditPricesTableProps) {
     regionId?: string
   ) => {
     event.stopPropagation()
+
+    prevPriceState = editedPrices
 
     // set variant row anchors
     anchor = getCellYMidpoint(event)
@@ -276,6 +280,7 @@ function EditPricesTable(props: EditPricesTableProps) {
         }
       })
     })
+
     setEditedPrices(nextState)
   }, [props.currencies, props.regions, props.product.variants])
 
@@ -284,19 +289,51 @@ function EditPricesTable(props: EditPricesTableProps) {
       document.body.style.userSelect = "none"
       resetSelection()
     }
+
     const up = () => {
       document.body.style.userSelect = "auto"
       setIsDrag(false)
     }
 
+    /**
+     * Delete selected prices
+     */
+    const onKeyDown = (e: KeyboardEvent) => {
+      // if backspace is pressed but we aren't focused on any input
+      if (e.key === "Backspace" && document.activeElement === document.body) {
+        const next = { ...editedPrices }
+        Object.keys(selectedCells).forEach((k) => {
+          const [v, c] = k.split("-")
+          next[getKey(v, c)] = undefined
+        })
+        setEditedPrices(next)
+        // resetSelection()
+      }
+
+      /**
+       * Undo last selection change (or delete)
+       */
+      if (e.ctrlKey && e.key === "KeyZ") {
+        if (Object.keys(selectedCells).length) {
+          e.stopPropagation()
+          setEditedPrices(prevPriceState)
+          resetSelection()
+        }
+      }
+    }
+
     document.addEventListener("mousedown", down)
     document.addEventListener("mouseup", up)
+    document.addEventListener("keydown", onKeyDown)
 
     return () => {
       document.removeEventListener("mousedown", down)
       document.removeEventListener("mouseup", up)
+      document.addEventListener("keydown", onKeyDown)
     }
-  }, [])
+  }, [Object.keys(selectedCells).length])
+
+  console.log(editedPrices)
 
   return (
     <div className="h-full overflow-x-auto">
