@@ -27,7 +27,10 @@ const TagOperationParametersObject = ({
         />
       </summary>
 
-      <TagOperationParametersProperties schema={schema} className="pl-1 bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark" />
+      <TagOperationParametersProperties
+        schema={schema}
+        className="bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pl-1"
+      />
     </details>
   )
 }

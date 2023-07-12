@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
       return {
         ...fileContent,
         // TODO replace /admin/ with stored value
-        operationPath: `/admin/${file.replace("_", "/").replace(".yaml", "")}`
+        operationPath: `/admin/${file.replace("_", "/").replace(".yaml", "")}`,
       }
     })
   )
@@ -55,8 +55,8 @@ export async function GET(req: NextRequest) {
     // These attributes are only for validation purposes
     openapi: "3.0.0",
     info: {
-      title: 'Medusa API',
-      version: '1.0.0'
+      title: "Medusa API",
+      version: "1.0.0",
     },
   }
 
@@ -67,7 +67,11 @@ export async function GET(req: NextRequest) {
   })
 
   // resolve references in paths
-  paths = await OpenAPIParser.dereference(`${basePath}/`, paths, {}) as unknown as OpenAPIV3.Document
+  paths = (await OpenAPIParser.dereference(
+    `${basePath}/`,
+    paths,
+    {}
+  )) as unknown as OpenAPIV3.Document
 
   return NextResponse.json(
     {

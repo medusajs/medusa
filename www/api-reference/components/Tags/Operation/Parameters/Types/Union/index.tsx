@@ -40,7 +40,10 @@ const TagOperationParametersUnion = ({
             />
           </summary>
 
-          <TagOperationParametersProperties schema={objectSchema} className="pl-1 bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark" />
+          <TagOperationParametersProperties
+            schema={objectSchema}
+            className="bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pl-1"
+          />
         </details>
       )}
       {!objectSchema && (

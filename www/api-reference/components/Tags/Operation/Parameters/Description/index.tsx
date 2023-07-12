@@ -43,7 +43,10 @@ const TagOperationParametersDescription = ({
         <>
           <br />
           <span>
-            Example: <InlineCode className="break-words">{JSON.stringify(schema.example)}</InlineCode>
+            Example:{" "}
+            <InlineCode className="break-words">
+              {JSON.stringify(schema.example)}
+            </InlineCode>
           </span>
         </>
       )}
@@ -52,7 +55,10 @@ const TagOperationParametersDescription = ({
         <>
           <br />
           <span>
-            Default: <InlineCode className="break-words">{JSON.stringify(schema.default)}</InlineCode>
+            Default:{" "}
+            <InlineCode className="break-words">
+              {JSON.stringify(schema.default)}
+            </InlineCode>
           </span>
         </>
       )}

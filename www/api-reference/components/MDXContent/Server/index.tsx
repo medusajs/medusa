@@ -3,8 +3,6 @@
 import { MDXRemote } from "next-mdx-remote/rsc"
 import getCustomComponents, { ScopeType } from "../../MDXComponents"
 import { MDXRemoteProps } from "next-mdx-remote"
-import rehypeMdxCodeProps from "rehype-mdx-code-props"
-import rehypePrism from "@mapbox/rehype-prism"
 import getMdxOptions from "@/utils/get-mdx-options"
 
 type MDXContentServerProps = {

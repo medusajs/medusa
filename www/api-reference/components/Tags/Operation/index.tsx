@@ -1,6 +1,6 @@
 "use client"
 
-import { Operation, SecuritySchemeObject } from "@/types/openapi"
+import { Operation } from "@/types/openapi"
 import clsx from "clsx"
 import { OpenAPIV3 } from "openapi-types"
 import getSectionId from "@/utils/get-section-id"
@@ -53,7 +53,9 @@ const TagOperation = ({ operation, method }: TagOperationProps) => {
             <details className="my-1">
               <summary>
                 <div className="inline-flex w-11/12">
-                  <span className="w-1/3"><b>Authorizations</b></span>
+                  <span className="w-1/3">
+                    <b>Authorizations</b>
+                  </span>
                   <span className="w-2/3">
                     {operation.security?.map((security, index) => (
                       <div key={index}>
@@ -119,7 +121,7 @@ const TagOperation = ({ operation, method }: TagOperationProps) => {
                       code.match(/20[0-9]/) &&
                         "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",
                       !code.match(/20[0-9]/) &&
-                        "bg-medusa-tag-red-bg dark:bg-medusa-tag-red-bg-dark text-medusa-tag-red-text dark:text-medusa-tag-red-text-dark",
+                        "bg-medusa-tag-red-bg dark:bg-medusa-tag-red-bg-dark text-medusa-tag-red-text dark:text-medusa-tag-red-text-dark"
                     )}
                   >
                     {code} {response.description}

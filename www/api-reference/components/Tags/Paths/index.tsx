@@ -4,7 +4,7 @@ import getSectionId from "@/utils/get-section-id"
 import fetcher from "@/utils/swr-fetcher"
 import { OpenAPIV3 } from "openapi-types"
 import useSWR from "swr"
-import { Operation, Path, PathsObject } from "@/types/openapi"
+import { Operation, PathsObject } from "@/types/openapi"
 import {
   SidebarItemSections,
   SidebarItemType,
@@ -63,20 +63,22 @@ const TagPaths = ({ tag }: TagSectionPathsProps) => {
       {!paths && <Loading />}
       {paths && (
         <>
-          {Object.entries(paths).map(([endpointPath, operations], pathIndex) => (
-            <div key={pathIndex}>
-              {Object.entries(operations).map(
-                ([method, operation], operationIndex) => (
-                  <TagOperation
-                    method={method}
-                    operation={operation as Operation}
-                    tag={tag}
-                    key={`${pathIndex}-${operationIndex}`}
-                  />
-                )
-              )}
-            </div>
-          ))}
+          {Object.entries(paths).map(
+            ([endpointPath, operations], pathIndex) => (
+              <div key={pathIndex}>
+                {Object.entries(operations).map(
+                  ([method, operation], operationIndex) => (
+                    <TagOperation
+                      method={method}
+                      operation={operation as Operation}
+                      tag={tag}
+                      key={`${pathIndex}-${operationIndex}`}
+                    />
+                  )
+                )}
+              </div>
+            )
+          )}
         </>
       )}
     </div>
