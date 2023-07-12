@@ -83,7 +83,7 @@ class NotificationService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Notification[]> {
-    const [notifications] = await this.list(selector, config)
+    const [notifications] = await this.listAndCount(selector, config)
 
     return notifications
   }
