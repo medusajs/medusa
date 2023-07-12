@@ -68,7 +68,7 @@ If you already have a Medusa backend repository that you want to deploy then you
 
 ### Step 2: Configure the Template
 
-The second step provides customization posibilities by configuring environment variables.
+The second step provides customization possibilities by configuring environment variables.
 
 Add an application name and the admin credentials that will be used to create an initial admin user with which you can later sign in to your Medusa Admin. 
 

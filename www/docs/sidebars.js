@@ -134,7 +134,7 @@ module.exports = {
     {
       type: "doc",
       id: "starters/nextjs-medusa-starter",
-      label: "Next.js Storefront",
+      label: "Next.js Starter Template",
       customProps: {
         sidebar_icon: "nextjs",
       },
