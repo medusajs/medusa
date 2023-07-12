@@ -136,7 +136,7 @@ export abstract class AbstractBaseRepository<T = any>
 
   abstract delete(ids: string[], context?: Context): Promise<void>
 
-  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  @InjectEntityManager(doNotForceTransaction, "")
   async softDelete(
     ids: string[],
     @MedusaContext()
@@ -154,7 +154,7 @@ export abstract class AbstractBaseRepository<T = any>
     return entities
   }
 
-  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  @InjectEntityManager(doNotForceTransaction, "")
   async restore(
     ids: string[],
     @MedusaContext()

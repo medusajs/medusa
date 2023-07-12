@@ -62,7 +62,7 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  @InjectEntityManager(doNotForceTransaction, "")
   async upsert(
     tags: CreateProductTagDTO[],
     @MedusaContext()
@@ -112,7 +112,7 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     return upsertedTags
   }
 
-  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  @InjectEntityManager(doNotForceTransaction, "")
   async delete(
     ids: string[],
     @MedusaContext()
@@ -125,7 +125,7 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  @InjectEntityManager(doNotForceTransaction, "")
   async create(
     data: unknown[],
     @MedusaContext()

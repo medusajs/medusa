@@ -26,7 +26,10 @@ export function InjectEntityManager(
         return await originalMethod.apply(this, args)
       }
 
-      return await this[managerProperty].transaction(
+      return await (!!managerProperty
+        ? this[managerProperty]
+        : this
+      ).transaction(
         async (transactionManager) => {
           args[argIndex] = args[argIndex] ?? {}
           args[argIndex].transactionManager = transactionManager

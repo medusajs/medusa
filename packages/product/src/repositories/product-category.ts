@@ -152,7 +152,7 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
     ]
   }
 
-  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  @InjectEntityManager(doNotForceTransaction, "")
   async delete(
     ids: string[],
     @MedusaContext()

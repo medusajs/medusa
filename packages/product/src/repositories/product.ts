@@ -108,7 +108,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     }
   }
 
-  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  @InjectEntityManager(doNotForceTransaction, "")
   async delete(
     ids: string[],
     @MedusaContext()
@@ -121,12 +121,13 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  @InjectEntityManager(doNotForceTransaction, "")
   async create(
     data: WithRequiredProperty<ProductTypes.CreateProductOnlyDTO, "status">[],
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<Product[]> {
+    console.log((this as any).prototype)
     const products = data.map((product) => {
       return (manager as SqlEntityManager).create(Product, product)
     })

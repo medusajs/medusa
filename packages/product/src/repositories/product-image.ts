@@ -61,7 +61,7 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  @InjectEntityManager(doNotForceTransaction, "")
   async upsert(
     urls: string[],
     @MedusaContext()
@@ -105,7 +105,7 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
     return upsertedImgs
   }
 
-  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  @InjectEntityManager(doNotForceTransaction, "")
   async delete(
     ids: string[],
     @MedusaContext()
@@ -118,7 +118,7 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, "__prototype__")
+  @InjectEntityManager(doNotForceTransaction, "")
   async create(
     data: unknown[],
     @MedusaContext()
