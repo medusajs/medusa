@@ -28,7 +28,7 @@ type CurrencyCellProps = {
   variant: ProductVariant
   editedAmount?: number
   isSelected?: boolean
-  isDragging?: boolean
+  isAnchor?: boolean
 
   isRangeStart: boolean
   isRangeEnd: boolean
@@ -67,7 +67,7 @@ function CurrencyCell(props: CurrencyCellProps) {
     region,
     editedAmount,
     isSelected,
-    isDragging,
+    isAnchor,
     isInRange,
     isRangeStart,
     isRangeEnd,
@@ -91,7 +91,7 @@ function CurrencyCell(props: CurrencyCellProps) {
       }
       className={clsx("relative pr-2 pl-4", {
         border: !isInRange,
-        "bg-blue-100": isSelected && !isRangeStart,
+        "bg-blue-100": isSelected && !isAnchor,
         "border-x border-double border-blue-400": isInRange,
         "border-t border-blue-400": isRangeStart,
         "border-b border-blue-400": isRangeEnd,
@@ -110,7 +110,7 @@ function CurrencyCell(props: CurrencyCellProps) {
           }}
           style={{ width: "100%", textAlign: "right", paddingRight: 8 }}
           className={clsx("decoration-transparent focus:outline-0", {
-            "bg-blue-100": isSelected && !isRangeStart,
+            "bg-blue-100": isSelected && !isAnchor,
           })}
           onValueChange={(_a, _b, v) => setLocalValue(v)}
           decimalsLimit={currencyMeta?.decimal_digits || 2}

@@ -33,12 +33,17 @@ let lastVisited: number | null = null
 /**
  * During drag move keep info which column is active one
  */
-let activeCurrencyOrRegion = undefined
-let lastVisitedVariant = undefined
+let activeCurrencyOrRegion: string | undefined = undefined
+/**
+ * During drag move keep track of what variant has been last visited
+ */
+let lastVisitedVariant: string | undefined = undefined
 
-let activeAmount: undefined | number = undefined
+let activeAmount: number | undefined = undefined
 
-let stack: string[] = []
+let startIndex: number | undefined
+let endIndex: number | undefined
+let anchorIndex: number | undefined
 
 /**
  * Construct cell key.
@@ -137,9 +142,9 @@ function EditPricesTable(props: EditPricesTableProps) {
       (anchorPosition === AnchorPosition.Below && move === MoveDirection.Up)
     ) {
       if (move === MoveDirection.Down) {
-        stack.push(variantId)
-      } else {
-        stack.unshift(variantId)
+        endIndex++
+      } else if (anchor !== currentY) {
+        startIndex--
       }
       selectCell(variantId, activeCurrencyOrRegion)
       setPriceForCell(activeAmount, variantId, activeCurrencyOrRegion)
@@ -150,7 +155,12 @@ function EditPricesTable(props: EditPricesTableProps) {
       (anchorPosition === AnchorPosition.Above && move === MoveDirection.Up) ||
       (anchorPosition === AnchorPosition.Below && move === MoveDirection.Down)
     ) {
-      stack = stack.filter((v) => v !== lastVisitedVariant)
+      if (move === MoveDirection.Up) {
+        endIndex--
+      } else {
+        startIndex++
+      }
+
       deselectCell(lastVisitedVariant, activeCurrencyOrRegion)
       setPriceForCell(undefined, lastVisitedVariant, activeCurrencyOrRegion)
     }
@@ -172,7 +182,10 @@ function EditPricesTable(props: EditPricesTableProps) {
     activeCurrencyOrRegion = currencyCode || regionId
     activeAmount = Number(event.target.value?.replace(",", ""))
     selectCell(variantId, currencyCode, regionId)
-    stack = [variantId]
+
+    startIndex = props.product.variants!.findIndex((v) => v.id === variantId)
+    endIndex = startIndex
+    anchorIndex = startIndex
   }
 
   const onInputChange = (
@@ -200,6 +213,8 @@ function EditPricesTable(props: EditPricesTableProps) {
   const onDragEnd = () => {
     setIsDrag(false)
   }
+
+  console.log({ startIndex, endIndex })
 
   /**
    * ==================== EFFECTS ====================
@@ -338,7 +353,7 @@ function EditPricesTable(props: EditPricesTableProps) {
             ))}
           </tr>
 
-          {props.product.variants!.map((variant) => {
+          {props.product.variants!.map((variant, index) => {
             return (
               <tr
                 key={variant.id}
@@ -360,17 +375,17 @@ function EditPricesTable(props: EditPricesTableProps) {
                       onMouseCellClick={onMouseCellClick}
                       onDragStart={onDragStart}
                       onDragEnd={onDragEnd}
-                      isDragging={isDrag}
+                      isAnchor={anchorIndex === index}
                       isRangeStart={
-                        activeCurrencyOrRegion === c && stack[0] === variant.id
+                        activeCurrencyOrRegion === c && startIndex === index
                       }
                       isRangeEnd={
-                        activeCurrencyOrRegion === c &&
-                        stack[stack.length - 1] === variant.id
+                        activeCurrencyOrRegion === c && index === endIndex
                       }
                       isInRange={
                         activeCurrencyOrRegion === c &&
-                        stack.includes(variant.id)
+                        index >= startIndex &&
+                        index <= endIndex
                       }
                     />
                   )
