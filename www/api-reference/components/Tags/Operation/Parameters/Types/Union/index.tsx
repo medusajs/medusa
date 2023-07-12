@@ -1,4 +1,4 @@
-import { SchemaObject } from "@/types/openapi"
+import type { SchemaObject } from "@/types/openapi"
 import TagOperationParametersDefault from "../Default"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"

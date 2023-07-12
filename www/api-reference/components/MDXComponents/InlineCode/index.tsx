@@ -1,5 +1,14 @@
-import CopyButton from "@/components/CopyButton"
+import { CopyButtonProps } from "@/components/CopyButton"
+import Loading from "@/components/Loading"
 import clsx from "clsx"
+import dynamic from "next/dynamic"
+
+const CopyButton = dynamic<CopyButtonProps>(
+  async () => import("../../CopyButton"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<CopyButtonProps>
 
 export type InlineCodeProps = React.ComponentProps<"code">
 

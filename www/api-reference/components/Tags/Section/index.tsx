@@ -1,7 +1,7 @@
 "use client"
 
 import getSectionId from "@/utils/get-section-id"
-import { OpenAPIV3 } from "openapi-types"
+import type { OpenAPIV3 } from "openapi-types"
 import { useInView } from "react-intersection-observer"
 import { useState } from "react"
 import { useSidebar } from "@/providers/sidebar"
@@ -11,7 +11,7 @@ import type { SectionProps } from "../../Section"
 import type { MDXContentClientProps } from "../../MDXContent/Client"
 import type { TagSectionPathsProps } from "../Paths"
 
-type TagSectionProps = {
+export type TagSectionProps = {
   tag: OpenAPIV3.TagObject
 } & React.HTMLAttributes<HTMLDivElement>
 
@@ -54,7 +54,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
   })
 
   return (
-    <div className="min-h-screen" id={slugTagName} ref={ref}>
+    <div className="min-h-screen pt-[57px]" id={slugTagName} ref={ref}>
       <h2>{tag.name}</h2>
       {tag.description && (
         <Section addToSidebar={false}>

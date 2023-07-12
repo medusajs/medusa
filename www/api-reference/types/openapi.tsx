@@ -12,17 +12,17 @@ export type Operation = OpenAPIV3.OperationObject<{
   description: string
   "x-authenticated": boolean
   "x-codeSamples": CodeSample[]
-  requestBody: OpenAPIV3.RequestBodyObject & {
-    content: {
-      [media: string]: OpenAPIV3.MediaTypeObject & {
-        schema: SchemaObject
-      }
+  requestBody: RequestObject
+  responses: ResponsesObject
+}>
+
+export type RequestObject = OpenAPIV3.RequestBodyObject & {
+  content: {
+    [media: string]: OpenAPIV3.MediaTypeObject & {
+      schema: SchemaObject
     }
   }
-  responses: {
-    [code: string]: ResponseObject
-  }
-}>
+}
 
 export type ResponseObject = OpenAPIV3.ResponseObject & {
   content: {
@@ -31,6 +31,10 @@ export type ResponseObject = OpenAPIV3.ResponseObject & {
     }
   }
   contentSample?: string
+}
+
+export type ResponsesObject = {
+  [code: string]: ResponseObject
 }
 
 export type ExampleObject = {

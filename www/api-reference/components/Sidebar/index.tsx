@@ -3,9 +3,15 @@
 import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
 import clsx from "clsx"
 import { useEffect } from "react"
-import SidebarItem from "./Item"
 import getSectionId from "@/utils/get-section-id"
 import { useBaseSpecs } from "@/providers/base-specs"
+import dynamic from "next/dynamic"
+import { SidebarItemProps } from "./Item"
+import Loading from "../Loading"
+
+const SidebarItem = dynamic<SidebarItemProps>(async () => import("./Item"), {
+  loading: () => <Loading />,
+}) as React.FC<SidebarItemProps>
 
 type SidebarProps = {
   className?: string
@@ -27,7 +33,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
         }
       )
     }
-  }, [baseSpecs])
+  }, [baseSpecs, addItems])
 
   return (
     <aside
@@ -39,7 +45,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
     >
       <ul
         className={clsx(
-          "sticky top-0 h-screen max-h-screen w-full list-none overflow-auto p-0"
+          "sticky top-[57px] h-screen max-h-screen w-full list-none overflow-auto p-0"
         )}
       >
         {items.top.map((item, index) => (

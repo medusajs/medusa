@@ -1,17 +1,16 @@
-import { SchemaObject } from "@/types/openapi"
-import TagOperationParametersDefault from "../Default"
+import type { SchemaObject } from "@/types/openapi"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
-import type { TagOperationParametersPropertiesProps } from "../Properties"
-import { TagOperationParamatersObjectProps } from "../Object"
+import type { TagOperationParamatersObjectProps } from "../Object"
+import type { TagOperationParametersDefaultProps } from "../Default"
 
-const TagOperationParametersProperties =
-  dynamic<TagOperationParametersPropertiesProps>(
-    async () => import("../Properties"),
+const TagOperationParametersDefault =
+  dynamic<TagOperationParametersDefaultProps>(
+    async () => import("../Default"),
     {
       loading: () => <Loading />,
     }
-  ) as React.FC<TagOperationParametersPropertiesProps>
+  ) as React.FC<TagOperationParametersDefaultProps>
 
 const TagOperationParametersObject = dynamic<TagOperationParamatersObjectProps>(
   async () => import("../Object"),

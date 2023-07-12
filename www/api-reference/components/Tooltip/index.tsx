@@ -1,28 +1,32 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Tooltip as ReactTooltip } from "react-tooltip"
 import type { ITooltip } from "react-tooltip"
-import uuid from "react-uuid"
 import "react-tooltip/dist/react-tooltip.css"
 
-type TooltipProps = {
+export type TooltipProps = {
   text?: string
   tooltipClassName?: string
   html?: string
 } & React.HTMLAttributes<HTMLSpanElement> &
   ITooltip
 
-const Tooltip: React.FC<TooltipProps> = ({
+const Tooltip = ({
   text = "",
   tooltipClassName = "",
   children,
   html = "",
-}) => {
+}: TooltipProps) => {
   const [elementId, setElementId] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!elementId) {
-      setElementId(uuid())
+    async function initElementId() {
+      if (!elementId) {
+        const uuid = (await import("react-uuid")).default
+        setElementId(uuid())
+      }
     }
+
+    void initElementId()
   }, [elementId])
 
   return (

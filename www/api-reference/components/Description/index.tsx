@@ -1,6 +1,6 @@
 "use server"
 
-import { OpenAPIV3 } from "openapi-types"
+import type { OpenAPIV3 } from "openapi-types"
 import Section from "../Section"
 import MDXContentServer from "../MDXContent/Server"
 

@@ -1,12 +1,12 @@
 import Loading from "@/components/Loading"
-import { SchemaObject } from "@/types/openapi"
+import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import type { TagOperationParamatersObjectProps } from "./Types/Object"
 import type { TagOperationParametersDefaultProps } from "./Types/Default"
 import type { TagOperationParametersArrayProps } from "./Types/Array"
 import type { TagOperationParametersUnionProps } from "./Types/Union"
-import TagOperationParamatersOneOf from "./Types/OneOf"
+import type { TagOperationParamatersOneOfProps } from "./Types/OneOf"
 
 const TagOperationParametersObject = dynamic<TagOperationParamatersObjectProps>(
   async () => import("./Types/Object"),
@@ -34,6 +34,12 @@ const TagOperationParametersUnion = dynamic<TagOperationParametersUnionProps>(
     loading: () => <Loading />,
   }
 ) as React.FC<TagOperationParametersUnionProps>
+const TagOperationParamatersOneOf = dynamic<TagOperationParamatersOneOfProps>(
+  async () => import("./Types/OneOf"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<TagOperationParamatersOneOfProps>
 
 export type TagOperationParametersProps = {
   schemaObject: SchemaObject

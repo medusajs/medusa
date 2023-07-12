@@ -1,12 +1,19 @@
-import CodeBlock from "@/components/CodeBlock"
-import { ExampleObject, ResponseObject } from "@/types/openapi"
+import type { CodeBlockProps } from "@/components/CodeBlock"
+import Loading from "@/components/Loading"
+import type { ExampleObject, ResponseObject } from "@/types/openapi"
 import clsx from "clsx"
-import { JSONSchema7 } from "json-schema"
-import stringify from "json-stringify-pretty-compact"
-import { sample } from "openapi-sampler"
+import type { JSONSchema7 } from "json-schema"
+import dynamic from "next/dynamic"
 import { useEffect, useState } from "react"
 
-type TagsOperationCodeSectionResponsesSampleProps = {
+const CodeBlock = dynamic<CodeBlockProps>(
+  async () => import("../../../../../CodeBlock"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<CodeBlockProps>
+
+export type TagsOperationCodeSectionResponsesSampleProps = {
   response: ResponseObject
 } & React.AllHTMLAttributes<HTMLDivElement>
 
@@ -18,51 +25,58 @@ const TagsOperationCodeSectionResponsesSample = ({
   const [selectedExample, setSelectedExample] = useState("")
 
   useEffect(() => {
-    if (!response.content) {
-      return
-    }
+    async function initExamples() {
+      if (!response.content) {
+        return
+      }
 
-    const contentSchema = Object.values(response.content)[0]
-    const tempExamples = []
+      const contentSchema = Object.values(response.content)[0]
+      const tempExamples = []
 
-    if (contentSchema.examples) {
-      Object.entries(contentSchema.examples).forEach(([value, example]) => {
-        if ("$ref" in example) {
-          return
-        }
+      const stringify = (await import("json-stringify-pretty-compact")).default
 
+      if (contentSchema.examples) {
+        Object.entries(contentSchema.examples).forEach(([value, example]) => {
+          if ("$ref" in example) {
+            return
+          }
+
+          tempExamples.push({
+            title: example.summary,
+            value,
+            content: stringify(example.value, {
+              maxLength: 50,
+            }),
+          })
+        })
+      } else if (contentSchema.example) {
         tempExamples.push({
-          title: example.summary,
-          value,
-          content: stringify(example.value, {
+          title: "",
+          value: "",
+          content: stringify(contentSchema.example, {
             maxLength: 50,
           }),
         })
-      })
-    } else if (contentSchema.example) {
-      tempExamples.push({
-        title: "",
-        value: "",
-        content: stringify(contentSchema.example, {
-          maxLength: 50,
-        }),
-      })
-    } else {
-      const contentSample = sample({
-        ...contentSchema.schema,
-      } as JSONSchema7)
+      } else {
+        const sample = (await import("openapi-sampler")).sample
+        const contentSample = sample({
+          ...contentSchema.schema,
+        } as JSONSchema7)
 
-      tempExamples.push({
-        title: "",
-        value: "",
-        content: stringify(contentSample, {
-          maxLength: 50,
-        }),
-      })
+        tempExamples.push({
+          title: "",
+          value: "",
+          content: stringify(contentSample, {
+            maxLength: 50,
+          }),
+        })
+      }
+
+      setExamples(tempExamples)
+      setSelectedExample(tempExamples[0].value)
     }
 
-    setExamples(tempExamples)
-    setSelectedExample(tempExamples[0].value)
+    void initExamples()
   }, [response])
 
   return (

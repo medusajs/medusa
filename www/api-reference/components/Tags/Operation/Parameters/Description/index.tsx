@@ -1,7 +1,16 @@
-import InlineCode from "@/components/MDXComponents/InlineCode"
-import { SchemaObject } from "@/types/openapi"
+// import InlineCode from "@/components/MDXComponents/InlineCode"
+import Loading from "@/components/Loading"
+import type { InlineCodeProps } from "@/components/MDXComponents/InlineCode"
+import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
-import { ReactNode } from "react"
+import dynamic from "next/dynamic"
+
+const InlineCode = dynamic<InlineCodeProps>(
+  async () => import("../../../../MDXComponents/InlineCode"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<InlineCodeProps>
 
 type TagOperationParametersDescriptionProps = {
   schema: SchemaObject
@@ -10,7 +19,7 @@ type TagOperationParametersDescriptionProps = {
 const TagOperationParametersDescription = ({
   schema,
 }: TagOperationParametersDescriptionProps) => {
-  let typeDescription: ReactNode = <></>
+  let typeDescription: React.ReactNode = <></>
   switch (true) {
     case schema.type === "object":
       typeDescription = (

@@ -1,26 +1,32 @@
 "use client"
 
-import React, { useState, useEffect, useRef, useCallback } from "react"
-import copy from "copy-text-to-clipboard"
+import { useState, useEffect, useRef, useCallback } from "react"
 import clsx from "clsx"
-import Tooltip from "../Tooltip"
+import dynamic from "next/dynamic"
+import { TooltipProps } from "../Tooltip"
+import Loading from "../Loading"
 
-type CopyButtonProps = {
+const Tooltip = dynamic<TooltipProps>(async () => import("../Tooltip"), {
+  loading: () => <Loading />,
+}) as React.FC<TooltipProps>
+
+export type CopyButtonProps = {
   text: string
   buttonClassName?: string
   tooltipClassName?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
-const CopyButton: React.FC<CopyButtonProps> = ({
+const CopyButton = ({
   text,
   buttonClassName = "",
   tooltipClassName = "",
   children,
-}) => {
+}: CopyButtonProps) => {
   const [isCopied, setIsCopied] = useState(false)
   const copyTimeout = useRef<number | undefined>(undefined)
 
-  const handleCopy = useCallback(() => {
+  const handleCopy = useCallback(async () => {
+    const copy = (await import("copy-text-to-clipboard")).default
     copy(text)
     setIsCopied(true)
     copyTimeout.current = window.setTimeout(() => {

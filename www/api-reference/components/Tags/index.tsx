@@ -1,13 +1,18 @@
 "use client"
 
-import { OpenAPIV3 } from "openapi-types"
-import React, { useEffect, useState } from "react"
-import TagSection from "./Section"
+import type { OpenAPIV3 } from "openapi-types"
+import { useEffect, useState } from "react"
 import { useInView } from "react-intersection-observer"
 import useSWR from "swr"
 import fetcher from "@/utils/swr-fetcher"
 import Loading from "@/components/Loading"
 import { useBaseSpecs } from "@/providers/base-specs"
+import dynamic from "next/dynamic"
+import type { TagSectionProps } from "./Section"
+
+const TagSection = dynamic<TagSectionProps>(async () => import("./Section"), {
+  loading: () => <Loading />,
+}) as React.FC<TagSectionProps>
 
 export type TagsProps = React.HTMLAttributes<HTMLDivElement>
 

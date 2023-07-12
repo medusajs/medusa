@@ -1,12 +1,29 @@
-import IconChevronRightMini from "@/components/Icons/ChevronRightMini"
-import MethodLabel from "@/components/MethodLabel"
-import { SidebarItemType, useSidebar } from "@/providers/sidebar"
+import type IconProps from "@/components/Icons/types"
+import Loading from "@/components/Loading"
+import type { SidebarItemType } from "@/providers/sidebar"
+import { useSidebar } from "@/providers/sidebar"
 import clsx from "clsx"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useInView } from "react-intersection-observer"
+import type { MethodLabelProps } from "../../MethodLabel"
 
-type SidebarItemProps = {
+const IconChevronRightMini = dynamic<IconProps>(
+  async () => import("../../Icons/ChevronRightMini"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<IconProps>
+
+const MethodLabel = dynamic<MethodLabelProps>(
+  async () => import("../../MethodLabel"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<MethodLabelProps>
+
+export type SidebarItemProps = {
   item: SidebarItemType
 } & React.AllHTMLAttributes<HTMLLIElement>
 

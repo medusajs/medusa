@@ -10,7 +10,7 @@ const Tags = dynamic<TagsProps>(async () => import("@/components/Tags"), {
 
 const ReferencePage = async () => {
   return (
-    <div>
+    <div className="mt-3">
       <Section>
         <AdminDescription />
       </Section>

@@ -1,10 +1,7 @@
 "use client"
 
-import {
-  SidebarItemSections,
-  SidebarItemType,
-  useSidebar,
-} from "@/providers/sidebar"
+import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
+import type { SidebarItemType } from "@/providers/sidebar"
 import getSectionId from "@/utils/get-section-id"
 import { useEffect, useRef, useState } from "react"
 

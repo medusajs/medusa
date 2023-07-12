@@ -1,7 +1,17 @@
-import { Operation } from "@/types/openapi"
+import type { Operation } from "@/types/openapi"
 import clsx from "clsx"
+import dynamic from "next/dynamic"
 import { useEffect, useState } from "react"
-import TagsOperationCodeSectionResponsesSample from "./Sample"
+import type { TagsOperationCodeSectionResponsesSampleProps } from "./Sample"
+import Loading from "@/components/Loading"
+
+const TagsOperationCodeSectionResponsesSample =
+  dynamic<TagsOperationCodeSectionResponsesSampleProps>(
+    async () => import("./Sample"),
+    {
+      loading: () => <Loading />,
+    }
+  ) as React.FC<TagsOperationCodeSectionResponsesSampleProps>
 
 type TagsOperationCodeSectionResponsesProps = {
   operation: Operation

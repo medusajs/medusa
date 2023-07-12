@@ -1,4 +1,4 @@
-type TagOperationParametersNameProps = {
+export type TagOperationParametersNameProps = {
   name: string
   is_required?: boolean
 }

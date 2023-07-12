@@ -1,6 +1,6 @@
 import { Highlight, HighlightProps, themes } from "prism-react-renderer"
 
-type CodeBlockProps = {
+export type CodeBlockProps = {
   code: string
   language?: string
 } & Omit<HighlightProps, "code" | "language" | "children">

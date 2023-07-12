@@ -1,6 +1,6 @@
-import { MDXComponents } from "mdx/types"
+import type { MDXComponents } from "mdx/types"
 import Security from "./Security"
-import { OpenAPIV3 } from "openapi-types"
+import type { OpenAPIV3 } from "openapi-types"
 import InlineCode from "./InlineCode"
 
 export type ScopeType = {

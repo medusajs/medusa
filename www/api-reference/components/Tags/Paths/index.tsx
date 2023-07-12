@@ -2,14 +2,11 @@
 
 import getSectionId from "@/utils/get-section-id"
 import fetcher from "@/utils/swr-fetcher"
-import { OpenAPIV3 } from "openapi-types"
+import type { OpenAPIV3 } from "openapi-types"
 import useSWR from "swr"
-import { Operation, PathsObject } from "@/types/openapi"
-import {
-  SidebarItemSections,
-  SidebarItemType,
-  useSidebar,
-} from "@/providers/sidebar"
+import type { Operation, PathsObject } from "@/types/openapi"
+import type { SidebarItemType } from "@/providers/sidebar"
+import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
 import { useEffect } from "react"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
@@ -38,7 +35,7 @@ const TagPaths = ({ tag }: TagSectionPathsProps) => {
   useEffect(() => {
     if (paths) {
       const items: SidebarItemType[] = []
-      Object.entries(paths).forEach(([endpointPath, operations]) => {
+      Object.entries(paths).forEach(([, operations]) => {
         Object.entries(operations).map(([method, operation]) => {
           const definedOperation = operation as Operation
           const definedMethod = method as OpenAPIV3.HttpMethods

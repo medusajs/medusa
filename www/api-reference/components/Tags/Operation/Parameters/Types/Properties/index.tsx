@@ -1,5 +1,5 @@
 import Loading from "@/components/Loading"
-import { SchemaObject } from "@/types/openapi"
+import type { SchemaObject } from "@/types/openapi"
 import dynamic from "next/dynamic"
 import clsx from "clsx"
 import type { TagOperationParametersProps } from "../.."

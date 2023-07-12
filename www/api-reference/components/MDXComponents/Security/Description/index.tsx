@@ -1,10 +1,26 @@
-import MDXContentClient from "@/components/MDXContent/Client"
-import MDXContentServer from "@/components/MDXContent/Server"
-import { SecuritySchemeObject } from "@/types/openapi"
+import Loading from "@/components/Loading"
+import type { MDXContentClientProps } from "@/components/MDXContent/Client"
+import type { MDXContentServerProps } from "@/components/MDXContent/Server"
+import type { SecuritySchemeObject } from "@/types/openapi"
 import getSecuritySchemaTypeName from "@/utils/get-security-schema-type-name"
 import clsx from "clsx"
+import dynamic from "next/dynamic"
 
-type SecurityDescriptionProps = {
+const MDXContentClient = dynamic<MDXContentClientProps>(
+  async () => import("../../../MDXContent/Client"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<MDXContentClientProps>
+
+const MDXContentServer = dynamic<MDXContentServerProps>(
+  async () => import("../../../MDXContent/Server"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<MDXContentServerProps>
+
+export type SecurityDescriptionProps = {
   securitySchema: SecuritySchemeObject
   isServer?: boolean
 }

@@ -1,6 +1,6 @@
 import clsx from "clsx"
 
-type MethodLabelProps = {
+export type MethodLabelProps = {
   method: string
 }
 
