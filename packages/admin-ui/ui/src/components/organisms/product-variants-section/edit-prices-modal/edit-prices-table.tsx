@@ -27,8 +27,10 @@ enum AnchorPosition {
   Below = "BELOW",
 }
 
-let anchor: number | null = null
-let lastVisited: number | null = null
+// anchor cell midpoint Y
+let anchor: number | undefined = null
+// last visited cell midpoint Y
+let lastVisited: number | undefined = null
 
 /**
  * During drag move keep info which column is active one
@@ -126,6 +128,13 @@ function EditPricesTable(props: EditPricesTableProps) {
     anchorIndex = undefined
     startIndex = undefined
     endIndex = undefined
+
+    anchor = undefined
+    lastVisited = undefined
+    lastVisitedVariant = undefined
+    activeCurrencyOrRegion = undefined
+    activeAmount = undefined
+
     // warning state updates in event handlers will be batched together so if there is another
     // `setSelectedCells` (or `resetSelection`) call in the same event handler, only last state will apply
     setSelectedCells({})
@@ -238,6 +247,8 @@ function EditPricesTable(props: EditPricesTableProps) {
    */
 
   useEffect(() => {
+    resetSelection()
+
     const nextState: Record<string, number | undefined> = {}
     props.product.variants!.forEach((variant) => {
       props.currencies.forEach((c) => {
