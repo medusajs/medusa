@@ -32,8 +32,9 @@ export async function GET(req: NextRequest) {
 
       return {
         ...fileContent,
-        // TODO replace /admin/ with stored value
-        operationPath: `/admin/${file.replace("_", "/").replace(".yaml", "")}`,
+        operationPath: `/${file
+          .replaceAll("_", "/")
+          .replace(/\.[A-Za-z]+$/, "")}`,
       }
     })
   )

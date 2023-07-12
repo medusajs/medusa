@@ -11,7 +11,7 @@ import { useBaseSpecs } from "@/providers/base-specs"
 
 export type TagsProps = React.HTMLAttributes<HTMLDivElement>
 
-const Tags = (props: TagsProps) => {
+const Tags = () => {
   const [tags, setTags] = useState<OpenAPIV3.TagObject[]>([])
   const [loadData, setLoadData] = useState<boolean>(false)
   const { ref } = useInView()
