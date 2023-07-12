@@ -26,6 +26,7 @@ import {
 } from "@medusajs/types"
 import ProductImageService from "./product-image"
 import { isDefined, isString, kebabCase } from "@medusajs/utils"
+import { serialize } from "@mikro-orm/core"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -158,13 +159,13 @@ export default class ProductModuleService<
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: Context
   ): Promise<[ProductTypes.ProductVariantDTO[], number]> {
-    const variants = await this.productVariantService_.listAndCount(
+    const [variants, count] = await this.productVariantService_.listAndCount(
       filters,
       config,
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(variants))
+    return [JSON.parse(JSON.stringify(variants)), count]
   }
 
   async listTags(
@@ -366,7 +367,9 @@ export default class ProductModuleService<
       { transaction: sharedContext?.transactionManager }
     )
 
-    return JSON.parse(JSON.stringify(products))
+    return serialize(products, {
+      populate: true,
+    }) as ProductTypes.ProductDTO[]
   }
 
   async delete(productIds: string[], sharedContext?: Context): Promise<void> {
@@ -381,7 +384,7 @@ export default class ProductModuleService<
       productIds,
       sharedContext
     )
-    return JSON.parse(JSON.stringify(products))
+    return serialize(products) as unknown as ProductTypes.ProductDTO[]
   }
 
   async restore(
@@ -393,6 +396,6 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(products))
+    return serialize(products) as unknown as ProductTypes.ProductDTO[]
   }
 }

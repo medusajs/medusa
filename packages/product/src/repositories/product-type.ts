@@ -22,18 +22,17 @@ export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
     findOptions: DAL.FindOptions<ProductType> = { where: {} },
     context: Context = {}
   ): Promise<ProductType[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
-
-    if (context.transactionManager) {
-      Object.assign(findOptions_.options, { ctx: context.transactionManager })
-    }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return await this.manager_.find(
+    return await manager.find(
       ProductType,
       findOptions_.where as MikroFilterQuery<ProductType>,
       findOptions_.options as MikroOptions<ProductType>
@@ -44,18 +43,17 @@ export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
     findOptions: DAL.FindOptions<ProductType> = { where: {} },
     context: Context = {}
   ): Promise<[ProductType[], number]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
-
-    if (context.transactionManager) {
-      Object.assign(findOptions_.options, { ctx: context.transactionManager })
-    }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return await this.manager_.findAndCount(
+    return await manager.findAndCount(
       ProductType,
       findOptions_.where as MikroFilterQuery<ProductType>,
       findOptions_.options as MikroOptions<ProductType>
@@ -66,6 +64,9 @@ export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
     types: CreateProductTypeDTO[],
     context: Context = {}
   ): Promise<ProductType[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const typesValues = types.map((type) => type.value)
     const existingTypes = await this.find(
       {
@@ -90,7 +91,7 @@ export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
       if (aType) {
         upsertedTypes.push(aType)
       } else {
-        const newType = this.manager_.create(ProductType, type)
+        const newType = manager.create(ProductType, type)
         typesToCreate.push(newType)
       }
     })
@@ -98,10 +99,10 @@ export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
     if (typesToCreate.length) {
       const newTypes: ProductType[] = []
       typesToCreate.forEach((type) => {
-        newTypes.push(this.manager_.create(ProductType, type))
+        newTypes.push(manager.create(ProductType, type))
       })
 
-      await this.manager_.persist(newTypes)
+      await manager.persist(newTypes)
       upsertedTypes.push(...newTypes)
     }
 
