@@ -276,11 +276,22 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(categories))
   }
 
+  async create(data: ProductTypes.CreateProductDTO[], sharedContext?: Context) {
+    const products = await this.create_(data, sharedContext)
+
+    return this.baseRepository_.serialize<
+      TProduct[],
+      ProductTypes.ProductDTO[]
+    >(products, {
+      populate: true,
+    })
+  }
+
   @InjectEntityManager(shouldForceTransaction, "baseRepository_")
-  async create(
+  protected async create_(
     data: ProductTypes.CreateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<ProductTypes.ProductDTO[]> {
+  ): Promise<TProduct[]> {
     const productVariantsMap = new Map<
       string,
       ProductTypes.CreateProductVariantDTO[]
@@ -344,10 +355,6 @@ export default class ProductModuleService<
       })
     )
 
-    // TODO
-    // Shipping profile is not part of the module
-    // as well as sales channel
-
     const products = await this.productService_.create(
       productsData,
       sharedContext
@@ -395,12 +402,7 @@ export default class ProductModuleService<
       })
     )
 
-    return this.baseRepository_.serialize<
-      TProduct[],
-      ProductTypes.ProductDTO[]
-    >(products, {
-      populate: true,
-    })
+    return products
   }
 
   @InjectEntityManager(shouldForceTransaction, "baseRepository_")
@@ -411,15 +413,11 @@ export default class ProductModuleService<
     await this.productService_.delete(productIds, sharedContext)
   }
 
-  @InjectEntityManager(shouldForceTransaction, "baseRepository_")
   async softDelete(
     productIds: string[],
-    @MedusaContext() sharedContext: Context = {}
+    sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[]> {
-    const products = await this.productService_.softDelete(
-      productIds,
-      sharedContext
-    )
+    const products = await this.softDelete_(productIds, sharedContext)
 
     return this.baseRepository_.serialize<
       TProduct[],
@@ -430,14 +428,18 @@ export default class ProductModuleService<
   }
 
   @InjectEntityManager(shouldForceTransaction, "baseRepository_")
-  async restore(
+  protected async softDelete_(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
+  ): Promise<TProduct[]> {
+    return await this.productService_.softDelete(productIds, sharedContext)
+  }
+
+  async restore(
+    productIds: string[],
+    sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[]> {
-    const products = await this.productService_.restore(
-      productIds,
-      sharedContext
-    )
+    const products = await this.restore_(productIds, sharedContext)
 
     return this.baseRepository_.serialize<
       TProduct[],
@@ -445,5 +447,13 @@ export default class ProductModuleService<
     >(products, {
       populate: true,
     })
+  }
+
+  @InjectEntityManager(shouldForceTransaction, "baseRepository_")
+  async restore_(
+    productIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TProduct[]> {
+    return await this.productService_.restore(productIds, sharedContext)
   }
 }
