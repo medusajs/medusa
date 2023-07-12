@@ -254,7 +254,7 @@ The `productService` has a `count` method that returns a Promise. This Promi
 
 Custom endpoints must be transpiled and moved to the `dist` directory before you can start consuming them. When you run your backend using the `medusa develop` command, it watches the files under `src` for any changes, then triggers the `build` command and restarts the server.
 
-The build isn't triggerd though when the backend first starts running. So, make sure to run the `build` command before starting the backend:
+The build isn't triggered though when the backend first starts running. So, make sure to run the `build` command before starting the backend:
 
 ```bash npm2yarn
 npm run build

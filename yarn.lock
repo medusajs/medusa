@@ -6238,12 +6238,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/medusa-cli"
   dependencies:
-    "@babel/cli": ^7.7.5
-    "@babel/core": ^7.7.5
-    "@babel/plugin-proposal-class-properties": ^7.7.4
-    "@babel/plugin-transform-runtime": ^7.7.6
-    "@babel/preset-env": ^7.7.5
     "@medusajs/utils": ^1.9.1
+    "@types/yargs": ^15.0.15
     axios: ^0.21.4
     chalk: ^4.0.0
     configstore: 5.0.1
@@ -6269,8 +6265,9 @@ __metadata:
     resolve-cwd: ^3.0.0
     semver: ^7.3.8
     stack-trace: ^0.0.10
+    ts-jest: ^25.5.1
+    typescript: ^4.9.5
     ulid: ^2.3.0
-    url: ^0.11.0
     winston: ^3.8.2
     yargs: ^15.3.1
   bin:
@@ -6461,6 +6458,20 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/orchestration@workspace:packages/orchestration":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/orchestration@workspace:packages/orchestration"
+  dependencies:
+    "@medusajs/types": ^1.8.7
+    "@medusajs/utils": ^1.9.1
+    cross-env: ^5.2.1
+    graphql: ^16.6.0
+    jest: ^25.5.4
+    ts-jest: ^25.5.1
+    typescript: ^4.4.4
+  languageName: unknown
+  linkType: soft
+
 "@medusajs/product@workspace:packages/product":
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/product"
@@ -6507,7 +6518,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^1.8.8, @medusajs/types@^1.8.9, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^1.8.7, @medusajs/types@^1.8.8, @medusajs/types@^1.8.9, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -12623,6 +12634,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/yargs@npm:^15.0.15":
+  version: 15.0.15
+  resolution: "@types/yargs@npm:15.0.15"
+  dependencies:
+    "@types/yargs-parser": "*"
+  checksum: b52519ba68a8d90996b54143ff74fcd8ac1722a1ef4a50ed8c3dbc1f7a76d14210f0262f8b91eabcdab202ff4babdd92ce7332ab1cdd6af4eae7c9fc81c83797
+  languageName: node
+  linkType: hard
+
 "@types/yargs@npm:^16.0.0":
   version: 16.0.4
   resolution: "@types/yargs@npm:16.0.4"
@@ -17858,6 +17878,7 @@ __metadata:
     uuid: ^9.0.0
     validator: ^13.9.0
     wait-on: ^7.0.1
+    winston: ^3.9.0
   bin:
     create-medusa-app: dist/index.js
   languageName: unknown
@@ -23772,6 +23793,13 @@ __metadata:
   version: 15.8.0
   resolution: "graphql@npm:15.8.0"
   checksum: 30cc09b77170a9d1ed68e4c017ec8c5265f69501c96e4f34f8f6613f39a886c96dd9853eac925f212566ed651736334c8fe24ceae6c44e8d7625c95c3009a801
+  languageName: node
+  linkType: hard
+
+"graphql@npm:^16.6.0":
+  version: 16.6.0
+  resolution: "graphql@npm:16.6.0"
+  checksum: 3a2c15ff58b69d017618d2b224fa6f3c4a7937e1f711c3a5e0948db536b4931e6e649560b53de7cc26735e027ceea6e2d0a6bb7c29fc4639b290313e3aa71618
   languageName: node
   linkType: hard
 
@@ -43157,6 +43185,25 @@ __metadata:
     triple-beam: ^1.3.0
     winston-transport: ^4.5.0
   checksum: 8d302d992e53e46c8f0355fae515356190d2dc9feaa8ae99afa5bba227f1fe2343ca9e367e5949a9b711f5f982e5b9280393d16be99fcd432660fd9597749954
+  languageName: node
+  linkType: hard
+
+"winston@npm:^3.9.0":
+  version: 3.9.0
+  resolution: "winston@npm:3.9.0"
+  dependencies:
+    "@colors/colors": 1.5.0
+    "@dabh/diagnostics": ^2.0.2
+    async: ^3.2.3
+    is-stream: ^2.0.0
+    logform: ^2.4.0
+    one-time: ^1.0.0
+    readable-stream: ^3.4.0
+    safe-stable-stringify: ^2.3.1
+    stack-trace: 0.0.x
+    triple-beam: ^1.3.0
+    winston-transport: ^4.5.0
+  checksum: e789b0c57bc3b0173c6fbd7caa4d60816a1a45cd796e5643e1bea65161d44c82a139b69f6ffc738a2919d80b5afc6df46c01947972173fc847ebcc668285fab3
   languageName: node
   linkType: hard
 
