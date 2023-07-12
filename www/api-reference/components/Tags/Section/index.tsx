@@ -3,7 +3,7 @@
 import getSectionId from "@/utils/get-section-id"
 import type { OpenAPIV3 } from "openapi-types"
 import { useInView } from "react-intersection-observer"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useSidebar } from "@/providers/sidebar"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
@@ -52,6 +52,16 @@ const TagSection = ({ tag }: TagSectionProps) => {
       }
     },
   })
+
+  useEffect(() => {
+    if (location.hash && location.hash.includes(slugTagName)) {
+      const tagName = location.hash.replace("#", "").split("_")[0]
+      if (tagName === slugTagName) {
+        const elm = document.getElementById(tagName) as Element
+        elm?.scrollIntoView()
+      }
+    }
+  }, [slugTagName])
 
   return (
     <div className="min-h-screen pt-[57px]" id={slugTagName} ref={ref}>

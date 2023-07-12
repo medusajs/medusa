@@ -40,14 +40,6 @@ const Tags = () => {
     }
   }, [data, setBaseSpecs])
 
-  useEffect(() => {
-    if (location.hash) {
-      const tagName = location.hash.replace("#", "").split("_")[0]
-      const elm = document.getElementById(tagName) as Element
-      elm?.scrollIntoView()
-    }
-  }, [tags])
-
   return (
     <div ref={ref}>
       {isLoading && <Loading />}
