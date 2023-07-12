@@ -75,13 +75,20 @@ function EditPricesTable(props: EditPricesTableProps) {
   const selectCell = (
     variantId: string,
     currencyCode?: string,
-    region?: string
+    region?: string,
+    override?: boolean
   ) => {
     if ((currencyCode || region) !== activeCurrencyOrRegion) {
       return
     }
 
     const key = getKey(variantId, currencyCode, region)
+
+    if (override) {
+      setSelectedCells({ [key]: true })
+      return
+    }
+
     const next = { ...selectedCells }
 
     next[key] = true
@@ -113,6 +120,15 @@ function EditPricesTable(props: EditPricesTableProps) {
       next[getKey(variantId, currencyCode, region)] = amount
     }
     setEditedPrices(next)
+  }
+
+  const resetSelection = () => {
+    anchorIndex = undefined
+    startIndex = undefined
+    endIndex = undefined
+    // warning state updates in event handlers will be batched together so if there is another
+    // `setSelectedCells` (or `resetSelection`) call in the same event handler, only last state will apply
+    setSelectedCells({})
   }
 
   /**
@@ -175,13 +191,16 @@ function EditPricesTable(props: EditPricesTableProps) {
     currencyCode?: string,
     regionId?: string
   ) => {
+    event.stopPropagation()
+
+    // set variant row anchors
     anchor = getCellYMidpoint(event)
     lastVisited = anchor
     lastVisitedVariant = variantId
 
     activeCurrencyOrRegion = currencyCode || regionId
     activeAmount = Number(event.target.value?.replace(",", ""))
-    selectCell(variantId, currencyCode, regionId)
+    selectCell(variantId, currencyCode, regionId, true)
 
     startIndex = props.product.variants!.findIndex((v) => v.id === variantId)
     endIndex = startIndex
@@ -213,8 +232,6 @@ function EditPricesTable(props: EditPricesTableProps) {
   const onDragEnd = () => {
     setIsDrag(false)
   }
-
-  console.log({ startIndex, endIndex })
 
   /**
    * ==================== EFFECTS ====================
@@ -254,7 +271,7 @@ function EditPricesTable(props: EditPricesTableProps) {
   useEffect(() => {
     const down = () => {
       document.body.style.userSelect = "none"
-      setSelectedCells({})
+      resetSelection()
     }
     const up = () => {
       document.body.style.userSelect = "auto"
@@ -404,7 +421,18 @@ function EditPricesTable(props: EditPricesTableProps) {
                     onMouseCellClick={onMouseCellClick}
                     onDragStart={onDragStart}
                     onDragEnd={onDragEnd}
-                    isDragging={isDrag}
+                    isAnchor={anchorIndex === index}
+                    isRangeStart={
+                      activeCurrencyOrRegion === r && startIndex === index
+                    }
+                    isRangeEnd={
+                      activeCurrencyOrRegion === r && index === endIndex
+                    }
+                    isInRange={
+                      activeCurrencyOrRegion === r &&
+                      index >= startIndex &&
+                      index <= endIndex
+                    }
                   />
                 ))}
               </tr>
