@@ -6,7 +6,13 @@ import {
   FindConfig,
   ProductTypes,
 } from "@medusajs/types"
-import { ModulesSdkUtils } from "@medusajs/utils"
+import {
+  InjectEntityManager,
+  MedusaContext,
+  ModulesSdkUtils,
+} from "@medusajs/utils"
+import { shouldForceTransaction } from "../utils"
+import { ProductTagRepository } from "@repositories"
 
 type InjectedDependencies = {
   productTagRepository: DAL.RepositoryService
@@ -38,11 +44,12 @@ export default class ProductTagService<
     )) as TEntity[]
   }
 
+  @InjectEntityManager(shouldForceTransaction, "productTagRepository_")
   async upsert(
     tags: CreateProductTagDTO[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await this.productTagRepository_.upsert!(
+    return (await (this.productTagRepository_ as ProductTagRepository).upsert!(
       tags,
       sharedContext
     )) as TEntity[]

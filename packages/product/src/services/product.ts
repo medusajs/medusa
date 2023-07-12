@@ -7,8 +7,14 @@ import {
   ProductTypes,
   WithRequiredProperty,
 } from "@medusajs/types"
-import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
+import {
+  InjectEntityManager,
+  MedusaContext,
+  MedusaError,
+  ModulesSdkUtils,
+} from "@medusajs/utils"
 import { ProductRepository } from "@repositories"
+import { shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService
@@ -90,66 +96,53 @@ export default class ProductService<TEntity extends Product = Product> {
     )) as [TEntity[], number]
   }
 
+  @InjectEntityManager(shouldForceTransaction, "productRepository_")
   async create(
     data: ProductTypes.CreateProductOnlyDTO[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return await this.productRepository_.transaction(
-      async (manager) => {
-        data.forEach((product) => {
-          product.status ??= ProductStatus.DRAFT
-        })
+    data.forEach((product) => {
+      product.status ??= ProductStatus.DRAFT
+    })
 
-        return await (this.productRepository_ as ProductRepository).create(
-          data as WithRequiredProperty<
-            ProductTypes.CreateProductOnlyDTO,
-            "status"
-          >[],
-          {
-            transactionManager: manager,
-          }
-        )
-      },
-      { transaction: sharedContext?.transactionManager }
-    )
+    return (await (this.productRepository_ as ProductRepository).create(
+      data as WithRequiredProperty<
+        ProductTypes.CreateProductOnlyDTO,
+        "status"
+      >[],
+      {
+        transactionManager: sharedContext.transactionManager,
+      }
+    )) as TEntity[]
   }
 
-  async delete(ids: string[], sharedContext?: Context): Promise<void> {
-    await this.productRepository_.transaction(
-      async (manager) => {
-        await this.productRepository_.delete(ids, {
-          transactionManager: manager,
-        })
-      },
-      { transaction: sharedContext?.transactionManager }
-    )
+  @InjectEntityManager(shouldForceTransaction, "productRepository_")
+  async delete(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.productRepository_.delete(ids, {
+      transactionManager: sharedContext.transactionManager,
+    })
   }
 
+  @InjectEntityManager(shouldForceTransaction, "productRepository_")
   async softDelete(
     productIds: string[],
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return await this.productRepository_.transaction(
-      async (manager) => {
-        return await this.productRepository_.softDelete(productIds, {
-          transactionManager: manager,
-        })
-      },
-      { transaction: sharedContext?.transactionManager }
-    )
+    return await this.productRepository_.softDelete(productIds, {
+      transactionManager: sharedContext.transactionManager,
+    })
   }
 
+  @InjectEntityManager(shouldForceTransaction, "productRepository_")
   async restore(
     productIds: string[],
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return await this.productRepository_.transaction(
-      async (manager) => {
-        return await this.productRepository_.restore(productIds, {
-          transactionManager: manager,
-        })
-      },
-      { transaction: sharedContext?.transactionManager }
-    )
+    return await this.productRepository_.restore(productIds, {
+      transactionManager: sharedContext.transactionManager,
+    })
   }
 }

@@ -32,7 +32,8 @@ export function InjectEntityManager(
           args[argIndex].transactionManager = transactionManager
 
           return await originalMethod.apply(this, args)
-        }
+        },
+        { transaction: context?.transactionManager }
       )
     }
   }
