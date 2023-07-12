@@ -22,7 +22,7 @@ describe("Inventory Module", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd })
+    const { container, app, port } = await bootstrapApp({ cwd, verbose: false })
     appContainer = container
 
     express = app.listen(port, (err) => {
