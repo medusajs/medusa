@@ -605,6 +605,13 @@ module.exports = {
             fontWeight: "500",
           },
         ],
+        h4: [
+          "16px",
+          {
+            lineHeight: "20px",
+            fontWeight: "500",
+          },
+        ],
         "label-large-plus": [
           "16px",
           {

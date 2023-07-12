@@ -1,8 +1,9 @@
 import { SchemaObject } from "@/types/openapi"
 import TagOperationParametersDefault from "../Default"
 import dynamic from "next/dynamic"
-import Loading from "@/app/loading"
+import Loading from "@/components/Loading"
 import type { TagOperationParametersPropertiesProps } from "../Properties"
+import { TagOperationParamatersObjectProps } from "../Object"
 
 const TagOperationParametersProperties =
   dynamic<TagOperationParametersPropertiesProps>(
@@ -11,6 +12,13 @@ const TagOperationParametersProperties =
       loading: () => <Loading />,
     }
   ) as React.FC<TagOperationParametersPropertiesProps>
+
+const TagOperationParametersObject = dynamic<TagOperationParamatersObjectProps>(
+  async () => import("../Object"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<TagOperationParamatersObjectProps>
 
 export type TagOperationParametersArrayProps = {
   name: string
@@ -30,21 +38,11 @@ const TagOperationParametersArray = ({
   return (
     <>
       {schema.items?.type === "object" && (
-        <details>
-          <summary>
-            <TagOperationParametersDefault
-              name={name}
-              schema={schema}
-              is_required={is_required}
-              className="inline-flex w-[calc(100%-16px)]"
-            />
-          </summary>
-
-          <TagOperationParametersProperties
-            schema={schema.items}
-            className="bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pl-1"
-          />
-        </details>
+        <TagOperationParametersObject
+          name={name}
+          schema={schema.items}
+          is_required={is_required}
+        />
       )}
       {schema.items?.type !== "object" && (
         <TagOperationParametersDefault

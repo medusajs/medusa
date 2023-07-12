@@ -8,7 +8,7 @@ import {
   MDXRemoteSerializeResult,
 } from "next-mdx-remote"
 import { serialize } from "next-mdx-remote/serialize"
-import Loading from "@/app/loading"
+import Loading from "@/components/Loading"
 import getMdxOptions from "@/utils/get-mdx-options"
 
 export type MDXContentClientProps = {

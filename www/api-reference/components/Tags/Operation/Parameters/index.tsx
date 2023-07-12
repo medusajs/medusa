@@ -1,4 +1,4 @@
-import Loading from "@/app/loading"
+import Loading from "@/components/Loading"
 import { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"

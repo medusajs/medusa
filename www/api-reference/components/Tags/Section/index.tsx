@@ -4,10 +4,9 @@ import getSectionId from "@/utils/get-section-id"
 import { OpenAPIV3 } from "openapi-types"
 import { useInView } from "react-intersection-observer"
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { useSidebar } from "@/providers/sidebar"
 import dynamic from "next/dynamic"
-import Loading from "@/app/loading"
+import Loading from "@/components/Loading"
 import type { SectionProps } from "../../Section"
 import type { MDXContentClientProps } from "../../MDXContent/Client"
 import type { TagSectionPathsProps } from "../Paths"
@@ -35,7 +34,6 @@ const TagSection = ({ tag }: TagSectionProps) => {
   const { setActivePath } = useSidebar()
   const [loadPaths, setLoadPaths] = useState(false)
   const slugTagName = getSectionId([tag.name])
-  const router = useRouter()
   const { ref } = useInView({
     threshold: 0.5,
     onChange: (inView) => {
@@ -43,8 +41,14 @@ const TagSection = ({ tag }: TagSectionProps) => {
         setLoadPaths(true)
       }
       if (inView) {
-        void router.push(`#${slugTagName}`)
-        setActivePath(slugTagName)
+        // ensure that the hash link doesn't change if it links to an inner path
+        const currentHashArr = location.hash.replace("#", "").split("_")
+        if (currentHashArr.length < 2 || currentHashArr[0] !== slugTagName) {
+          // can't use next router as it doesn't support
+          // changing url without scrolling
+          history.pushState({}, "", `#${slugTagName}`)
+          setActivePath(slugTagName)
+        }
       }
     },
   })

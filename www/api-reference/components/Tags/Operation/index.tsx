@@ -4,9 +4,9 @@ import { Operation } from "@/types/openapi"
 import clsx from "clsx"
 import { OpenAPIV3 } from "openapi-types"
 import getSectionId from "@/utils/get-section-id"
-import { Suspense } from "react"
+import { Suspense, useEffect } from "react"
 import dynamic from "next/dynamic"
-import Loading from "@/app/loading"
+import Loading from "@/components/Loading"
 import type { TagOperationParametersProps } from "./Parameters"
 import { useInView } from "react-intersection-observer"
 import { useSidebar } from "@/providers/sidebar"
@@ -30,7 +30,7 @@ export type TagOperationProps = {
 const TagOperation = ({ operation, method }: TagOperationProps) => {
   const { setActivePath } = useSidebar()
   const { getSecuritySchema } = useBaseSpecs()
-  const path = getSectionId([operation.operationId])
+  const path = getSectionId([...(operation.tags || []), operation.operationId])
   const { ref } = useInView({
     threshold: 0.5,
     onChange: (inView) => {
@@ -42,6 +42,14 @@ const TagOperation = ({ operation, method }: TagOperationProps) => {
       }
     },
   })
+
+  useEffect(() => {
+    const currentHash = location.hash.replace("#", "")
+    if (currentHash === path) {
+      const elm = document.getElementById(currentHash) as Element
+      elm?.scrollIntoView()
+    }
+  }, [path])
 
   return (
     <Suspense fallback={<Loading />}>
@@ -114,7 +122,7 @@ const TagOperation = ({ operation, method }: TagOperationProps) => {
           {Object.entries(operation.responses).map(([code, response]) => (
             <div key={code}>
               {response.content && (
-                <details open={code === "200"}>
+                <details open={code === "200" || code === "201"}>
                   <summary
                     className={clsx(
                       "mb-1 rounded-sm py-0.5 px-1",

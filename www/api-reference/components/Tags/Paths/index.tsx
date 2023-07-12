@@ -12,7 +12,7 @@ import {
 } from "@/providers/sidebar"
 import { useEffect } from "react"
 import dynamic from "next/dynamic"
-import Loading from "@/app/loading"
+import Loading from "@/components/Loading"
 import type { TagOperationProps } from "../Operation"
 
 const TagOperation = dynamic<TagOperationProps>(
@@ -43,7 +43,10 @@ const TagPaths = ({ tag }: TagSectionPathsProps) => {
           const definedOperation = operation as Operation
           const definedMethod = method as OpenAPIV3.HttpMethods
           items.push({
-            path: getSectionId([definedOperation.operationId]),
+            path: getSectionId([
+              ...(definedOperation.tags || []),
+              definedOperation.operationId,
+            ]),
             title: definedOperation.summary || definedOperation.operationId,
             method: definedMethod,
           })

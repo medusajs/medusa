@@ -1,13 +1,11 @@
 "use client"
 
 import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
-import fetcher from "@/utils/swr-fetcher"
 import clsx from "clsx"
-import { OpenAPIV3 } from "openapi-types"
 import { useEffect } from "react"
-import useSWR from "swr"
 import SidebarItem from "./Item"
 import getSectionId from "@/utils/get-section-id"
+import { useBaseSpecs } from "@/providers/base-specs"
 
 type SidebarProps = {
   className?: string
@@ -15,12 +13,12 @@ type SidebarProps = {
 
 const Sidebar = ({ className = "" }: SidebarProps) => {
   const { items, addItems } = useSidebar()
-  const { data: specs } = useSWR<OpenAPIV3.Document>("/api/base-specs", fetcher)
+  const { baseSpecs } = useBaseSpecs()
 
   useEffect(() => {
-    if (specs) {
+    if (baseSpecs) {
       addItems(
-        specs.tags?.map((tag) => ({
+        baseSpecs.tags?.map((tag) => ({
           path: getSectionId([tag.name.toLowerCase()]),
           title: tag.name,
         })) || [],
@@ -29,7 +27,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
         }
       )
     }
-  }, [specs, addItems])
+  }, [baseSpecs])
 
   return (
     <aside

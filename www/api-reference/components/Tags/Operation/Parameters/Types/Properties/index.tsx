@@ -1,4 +1,4 @@
-import Loading from "@/app/loading"
+import Loading from "@/components/Loading"
 import { SchemaObject } from "@/types/openapi"
 import dynamic from "next/dynamic"
 import clsx from "clsx"
@@ -20,7 +20,6 @@ const TagOperationParametersProperties = ({
   schema,
   className,
 }: TagOperationParametersPropertiesProps) => {
-  // console.log(schema)
   return (
     <div className={clsx(className)}>
       {Object.entries(schema.properties).map(([key, value]) => {

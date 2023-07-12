@@ -13,9 +13,21 @@ const TagOperationParametersObject = ({
   schema,
   is_required,
 }: TagOperationParamatersObjectProps) => {
-  if (schema.type !== "object" || !schema.properties) {
+  if (schema.type !== "object") {
     return <></>
   }
+
+  if (!schema.properties) {
+    return (
+      <TagOperationParametersDefault
+        name={name}
+        schema={schema}
+        is_required={is_required}
+        className="inline-flex w-[calc(100%-16px)]"
+      />
+    )
+  }
+
   return (
     <details>
       <summary>

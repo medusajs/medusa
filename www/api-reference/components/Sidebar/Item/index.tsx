@@ -2,7 +2,8 @@ import IconChevronRightMini from "@/components/Icons/ChevronRightMini"
 import { SidebarItemType, useSidebar } from "@/providers/sidebar"
 import clsx from "clsx"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useInView } from "react-intersection-observer"
 
 type SidebarItemProps = {
   item: SidebarItemType
@@ -10,12 +11,19 @@ type SidebarItemProps = {
 
 const SidebarItem = ({ item, className }: SidebarItemProps) => {
   const [collapsed, setCollapsed] = useState(false)
-  // const { activeItem, changeActiveItem } = useSidebar()
   const { isItemActive, setActivePath } = useSidebar()
   const active = isItemActive(item)
+  const { ref, inView, entry } = useInView()
+
+  useEffect(() => {
+    if (active && !inView) {
+      // scroll to element
+      entry?.target.scrollIntoView()
+    }
+  }, [active])
 
   return (
-    <li className={clsx("text-label-small-plus", className)}>
+    <li className={clsx("text-label-small-plus", className)} ref={ref}>
       <div
         className={clsx(
           "group",

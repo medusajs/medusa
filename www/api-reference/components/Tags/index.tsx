@@ -4,49 +4,49 @@ import { OpenAPIV3 } from "openapi-types"
 import React, { useEffect, useState } from "react"
 import TagSection from "./Section"
 import { useInView } from "react-intersection-observer"
-import { useSidebar } from "@/providers/sidebar"
-import BaseSpecsProvider from "@/providers/base-specs"
 import useSWR from "swr"
 import fetcher from "@/utils/swr-fetcher"
-import Loading from "@/app/loading"
+import Loading from "@/components/Loading"
+import { useBaseSpecs } from "@/providers/base-specs"
 
 export type TagsProps = React.HTMLAttributes<HTMLDivElement>
 
 const Tags = (props: TagsProps) => {
   const [tags, setTags] = useState<OpenAPIV3.TagObject[]>([])
-  const { setActivePath } = useSidebar()
-  const { ref } = useInView({
-    onChange: (inView) => {
-      if (!inView) {
-        setActivePath(null)
-        history.pushState({}, "", "/")
-      }
-    },
-  })
+  const [loadData, setLoadData] = useState<boolean>(false)
+  const { ref } = useInView()
+  const { setBaseSpecs } = useBaseSpecs()
 
   const { data, isLoading } = useSWR<OpenAPIV3.Document>(
-    `/api/base-specs`,
+    loadData ? `/api/base-specs` : null,
     fetcher
   )
 
   useEffect(() => {
+    setLoadData(true)
+  }, [])
+
+  useEffect(() => {
+    if (data) {
+      setBaseSpecs(data)
+    }
     if (data?.tags) {
       setTags(data.tags)
     }
-  }, [data])
+  }, [data, setBaseSpecs])
 
-  // console.log(isLoading, data)
+  useEffect(() => {
+    if (location.hash) {
+      const tagName = location.hash.replace("#", "").split("_")[0]
+      const elm = document.getElementById(tagName) as Element
+      elm?.scrollIntoView()
+    }
+  }, [tags])
 
   return (
     <div ref={ref}>
       {isLoading && <Loading />}
-      {data && (
-        <BaseSpecsProvider initialSpecs={data}>
-          {tags.map((tag, index) => (
-            <TagSection tag={tag} key={index} />
-          ))}
-        </BaseSpecsProvider>
-      )}
+      {data && tags.map((tag, index) => <TagSection tag={tag} key={index} />)}
     </div>
   )
 }
