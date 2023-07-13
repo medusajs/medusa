@@ -1,0 +1,24 @@
+import CodeTabs from "@/components/CodeTabs"
+
+## Client Libraries
+
+<CodeTabs 
+  tabs={[
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `npm install @medusajs/medusa`,
+        lang: `bash`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `npm install medusa-react @tanstack/react-query @medusajs/medusa`,
+        lang: `bash`,
+      }
+    }
+  ]}
+/>

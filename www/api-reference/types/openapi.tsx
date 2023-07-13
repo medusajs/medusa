@@ -2,7 +2,7 @@ import type { OpenAPIV3 } from "openapi-types"
 
 export type Area = "admin" | "store"
 
-export type CodeSample = {
+export type Code = {
   lang: string
   label: string
   source: string
@@ -13,7 +13,7 @@ export type Operation = OpenAPIV3.OperationObject<{
   summary: string
   description: string
   "x-authenticated": boolean
-  "x-codeSamples": CodeSample[]
+  "x-codeSamples": Code[]
   requestBody: RequestObject
   responses: ResponsesObject
 }>

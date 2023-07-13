@@ -1,5 +1,9 @@
 /** VS Code Dark Theme: https://github.com/PrismJS/prism-themes/blob/master/themes/prism-vsc-dark-plus.css **/
 
+.section-content pre {
+	@apply rounded;
+}
+
 pre[class*="language-"],
 code[class*="language-"] {
 	color: #d4d4d4;

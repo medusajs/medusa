@@ -1,5 +1,5 @@
-import Button from "@/components/Button"
 import type { CodeBlockProps } from "@/components/CodeBlock"
+import CodeTabs from "@/components/CodeTabs"
 import Loading from "@/components/Loading"
 import type { ExampleObject, ResponseObject } from "@/types/openapi"
 import type { JSONSchema7 } from "json-schema"
@@ -23,11 +23,13 @@ const TagsOperationCodeSectionResponsesSample = ({
   response,
   className,
 }: TagsOperationCodeSectionResponsesSampleProps) => {
-  const [shortVersion, setShortVersion] = useState(true)
   const [examples, setExamples] = useState<ExampleObject[]>([])
   const [selectedExample, setSelectedExample] = useState<
     ExampleObject | undefined
   >()
+  const lang = response.content
+    ? getLanguageFromMedia(Object.keys(response.content)[0])
+    : ""
 
   const initExamples = () => {
     if (!response.content) {
@@ -129,29 +131,33 @@ const TagsOperationCodeSectionResponsesSample = ({
             </select>
           )}
           {selectedExample?.contentDetailed && (
-            <div className="my-1 flex gap-1">
-              <Button
-                isSelected={shortVersion}
-                onClick={() => setShortVersion(!shortVersion)}
-              >
-                Minimal Response
-              </Button>
-              <Button
-                isSelected={!shortVersion}
-                onClick={() => setShortVersion(!shortVersion)}
-              >
-                Detailed Response
-              </Button>
-            </div>
+            <CodeTabs
+              tabs={[
+                {
+                  label: "Minimal Response",
+                  value: "minimal",
+                  code: {
+                    source: selectedExample.content,
+                    lang: lang,
+                    preClassName: "max-h-[400px]",
+                  },
+                },
+                {
+                  label: "Detailed Response",
+                  value: "detailed",
+                  code: {
+                    source: selectedExample.contentDetailed,
+                    lang: lang,
+                    preClassName: "max-h-[400px]",
+                  },
+                },
+              ]}
+            />
           )}
-          {selectedExample && (
+          {selectedExample && !selectedExample.contentDetailed && (
             <CodeBlock
-              code={
-                selectedExample.contentDetailed && !shortVersion
-                  ? selectedExample.contentDetailed
-                  : selectedExample.content
-              }
-              language={getLanguageFromMedia(Object.keys(response.content)[0])}
+              source={selectedExample.content}
+              lang={getLanguageFromMedia(Object.keys(response.content)[0])}
               preClassName="max-h-[400px]"
             />
           )}

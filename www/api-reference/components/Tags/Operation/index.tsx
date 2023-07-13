@@ -11,6 +11,7 @@ import { useInView } from "react-intersection-observer"
 import { useSidebar } from "@/providers/sidebar"
 import type { TagOperationCodeSectionProps } from "./CodeSection"
 import TagsOperationDescriptionSection from "./DescriptionSection"
+import DividedLayout from "@/layouts/Divided"
 
 const TagOperationCodeSection = dynamic<TagOperationCodeSectionProps>(
   async () => import("./CodeSection"),
@@ -73,16 +74,16 @@ const TagOperation = ({
       id={path}
       ref={setRefs}
     >
-      <div className={clsx("w-api-ref-content")}>
-        <TagsOperationDescriptionSection operation={operation} />
-      </div>
-      <div className={clsx("w-api-ref-code z-10")}>
-        <TagOperationCodeSection
-          method={method || ""}
-          operation={operation}
-          endpointPath={endpointPath}
-        />
-      </div>
+      <DividedLayout
+        mainContent={<TagsOperationDescriptionSection operation={operation} />}
+        codeContent={
+          <TagOperationCodeSection
+            method={method || ""}
+            operation={operation}
+            endpointPath={endpointPath}
+          />
+        }
+      />
     </div>
   )
 }

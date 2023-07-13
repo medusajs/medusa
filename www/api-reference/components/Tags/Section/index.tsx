@@ -68,7 +68,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
     <div className="min-h-screen pt-[57px]" id={slugTagName} ref={ref}>
       <h2>{tag.name}</h2>
       {tag.description && (
-        <Section addToSidebar={false}>
+        <Section addToSidebar={false} className="w-api-ref-content">
           <MDXContentClient content={tag.description} />
         </Section>
       )}
