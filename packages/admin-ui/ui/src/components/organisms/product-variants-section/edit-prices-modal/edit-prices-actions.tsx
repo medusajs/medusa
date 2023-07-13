@@ -1,6 +1,10 @@
 import React, { useMemo } from "react"
 
-import { useAdminCurrencies, useAdminRegions } from "medusa-react"
+import {
+  useAdminCurrencies,
+  useAdminRegions,
+  useAdminStore,
+} from "medusa-react"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 
 import Button from "../../../fundamentals/button"
@@ -22,10 +26,9 @@ function EditPricesActions(props: EditPricesActionsProps) {
   const { selectedCurrencies, selectedRegions, toggleCurrency, toggleRegion } =
     props
 
+  const { store } = useAdminStore()
+  const _currencies = store?.currencies
   const { regions: _regions } = useAdminRegions({
-    limit: 1000,
-  })
-  const { currencies: _currencies } = useAdminCurrencies({
     limit: 1000,
   })
 

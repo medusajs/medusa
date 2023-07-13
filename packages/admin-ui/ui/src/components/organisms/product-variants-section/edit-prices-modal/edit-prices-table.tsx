@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react"
-import { useAdminCurrencies, useAdminRegions } from "medusa-react"
+import {
+  useAdminCurrencies,
+  useAdminRegions,
+  useAdminStore,
+} from "medusa-react"
 import { Product } from "@medusajs/client-types"
 
 import {
@@ -69,10 +73,9 @@ function getKey(variantId: string, currencyCode?: string, regionId?: string) {
  * Edit prices table component.
  */
 function EditPricesTable(props: EditPricesTableProps) {
+  const { store } = useAdminStore()
+  const storeCurrencies = store?.currencies
   const { regions: storeRegions } = useAdminRegions({
-    limit: 1000,
-  })
-  const { currencies: storeCurrencies } = useAdminCurrencies({
     limit: 1000,
   })
 
