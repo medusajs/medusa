@@ -420,6 +420,7 @@ export default class ProductModuleService<
           string,
           ProductTypes.CreateProductVariantDTO[]
         >()
+
         const productOptionsMap = new Map<
           string,
           ProductTypes.CreateProductOptionDTO[]
@@ -438,6 +439,7 @@ export default class ProductModuleService<
 
             const variants = productData.variants
             const options = productData.options
+
             delete productData.options
             delete productData.variants
 
@@ -463,11 +465,11 @@ export default class ProductModuleService<
               )
             }
 
-            if (productData.tags?.length) {
-              productData.tags = await this.productTagService_.upsert(
+            if (isDefined(productData.tags)) {
+              productData.tags = productData.tags.length ? await this.productTagService_.upsert(
                 productData.tags,
                 sharedContext
-              )
+              ): []
             }
 
             if (isDefined(productData.type)) {
@@ -479,18 +481,6 @@ export default class ProductModuleService<
               )
 
               productData.type = productType?.[0]
-            }
-
-            if (isDefined(productData.categories)) {
-              if (productData.categories?.length) {
-                const categories = await this.listCategories(
-                  { id: productData.categories.map((c) => c.id) },
-                  {},
-                  sharedContext
-                )
-
-                productData.categories = categories.map((c) => ({ id: c.id }))
-              }
             }
 
             return productData as ProductServiceTypes.UpdateProductDTO
@@ -548,7 +538,7 @@ export default class ProductModuleService<
       },
       { transaction: sharedContext?.transactionManager }
     )
-console.log("products - ", products)
+
     return serialize(products, {
       populate: true
     }) as ProductTypes.ProductDTO[]

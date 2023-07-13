@@ -1,4 +1,9 @@
-import { Product, ProductCategory } from "@models"
+import {
+  Product,
+  ProductCategory,
+  ProductCollection,
+  ProductType,
+} from "@models"
 import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
@@ -137,12 +142,54 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     data: WithRequiredProperty<ProductServiceTypes.UpdateProductDTO, "id">[],
     context: Context = {}
   ): Promise<Product[]> {
+    let categoryIds: string[] = []
+    let collectionIds: string[] = []
+    let typeIds: string[] = []
+
     const manager = (context.transactionManager ??
       this.manager_) as SqlEntityManager
+
+    data.forEach((productData) => {
+      categoryIds = categoryIds.concat(
+        productData?.categories?.map(c => c.id) || []
+      )
+
+      if (productData.collection_id) {
+        collectionIds.push(productData.collection_id)
+      }
+
+      if (productData.type_id) {
+        typeIds.push(productData.type_id)
+      }
+    })
 
     const productsToUpdate = await manager.find(Product, {
       id: data.map((updateData) => updateData.id)
     })
+
+    const collectionsToAssign = collectionIds.length ? await manager.find(ProductCollection, {
+      id: collectionIds
+    }) : []
+
+    const typesToAssign = typeIds.length ? await manager.find(ProductType, {
+      id: typeIds
+    }) : []
+
+    const categoriesToAssign = categoryIds.length ? await manager.find(ProductCategory, {
+      id: categoryIds
+    }) : []
+
+    const categoriesToAssignMap = new Map<string, ProductCategory>(
+      categoriesToAssign.map((category) => [category.id, category])
+    )
+
+    const collectionsToAssignMap = new Map<string, ProductCollection>(
+      collectionsToAssign.map((collection) => [collection.id, collection])
+    )
+
+    const typesToAssignMap = new Map<string, ProductType>(
+      typesToAssign.map((type) => [type.id, type])
+    )
 
     const productsToUpdateMap = new Map<string, Product>(
       productsToUpdate.map((product) => [product.id, product])
@@ -159,22 +206,52 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
           )
         }
 
-        const categoriesData = updateData?.categories || []
+        const {
+          categories: categoriesData,
+          tags: tagsData,
+          collection_id: collectionId,
+          type_id: typeId,
+        } = updateData
+
         delete updateData?.categories
+        delete updateData?.collection_id
+        delete updateData?.type_id
 
-        manager.assign(product, updateData, { updateNestedEntities: true, mergeObjects: true })
+        if (isDefined(categoriesData)) {
+          await product.categories.init()
+          await product.categories.removeAll()
 
-        await product.categories.init()
+          for (const categoryData of categoriesData) {
+            const productCategory = categoriesToAssignMap.get(categoryData.id)
 
-        categoriesData.forEach(async (categoryData) => {
-          const productCategories = await manager.find(ProductCategory, categoriesData.map((c) => c.id))
+            if (productCategory) {
+              await product.categories.add(productCategory)
+            }
+          }
+        }
 
-          // manager.assign(product.categories, categoriesData, { updateNestedEntities: true, mergeObjects: true })
+        if (isDefined(tagsData)) {
+          await product.tags.init()
+          await product.tags.removeAll()
+        }
 
-          await product.categories.add(productCategories)
-        })
-        console.log("product.categories - ", product.categories.toArray())
-        return product
+        if (isDefined(collectionId)) {
+          const collection = collectionsToAssignMap.get(collectionId)
+
+          if (collection) {
+            product.collection = collection
+          }
+        }
+
+        if (isDefined(typeId)) {
+          const type = typesToAssignMap.get(typeId)
+
+          if (type) {
+            product.type = type
+          }
+        }
+
+        return manager.assign(product, updateData)
       })
     )
 

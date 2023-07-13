@@ -197,7 +197,7 @@ describe("Product Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual(`You must pass a non-undefined value to the property id of entity Product.`)
+      expect(error.message).toEqual(`Product with id "undefined" not found`)
 
       let result = await service.retrieve(productOne.id)
 
@@ -217,7 +217,7 @@ describe("Product Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual(`Product not found ('does-not-exist')`)
+      expect(error.message).toEqual(`Product with id "does-not-exist" not found`)
     })
   })
 

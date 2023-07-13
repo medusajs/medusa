@@ -258,8 +258,8 @@ export interface UpdateProductDTO {
   handle?: string
   status?: ProductStatus
   type?: CreateProductTypeDTO
-  type_id?: string
-  collection_id?: string
+  type_id?: string | null
+  collection_id?: string | null
   tags?: CreateProductTagDTO[]
   // sales_channel
   categories?: { id: string }[]

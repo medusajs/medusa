@@ -1,11 +1,12 @@
 import { MedusaModule } from "@medusajs/modules-sdk"
-import { Product, ProductCategory } from "@models"
+import { Product, ProductCategory, ProductCollection, ProductType, ProductVariant } from "@models"
 import { IProductModuleService, ProductTypes } from "@medusajs/types"
 
 import { initialize } from "../../../../src"
 import { DB_URL, TestDatabase } from "../../../utils"
 import { buildProductAndRelationsData } from "../../../__fixtures__/product/data/create-product"
 import { createProductCategories } from "../../../__fixtures__/product-category"
+import { createCollections, createTypes } from "../../../__fixtures__/product"
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -20,20 +21,78 @@ describe("ProductModuleService products", function () {
   describe("update", function () {
     let module: IProductModuleService
     let productOne: Product
+    let productTwo: Product
     let productCategoryOne: ProductCategory
+    let productCategoryTwo: ProductCategory
+    let productCollectionOne: ProductCollection
+    let productCollectionTwo: ProductCollection
+    let variantOne: ProductVariant
+    let variantTwo: ProductVariant
+    let productTypeOne: ProductType
+    let productTypeTwo: ProductType
     let images = ["image-1"]
+
+    const productCategoriesData = [{
+      id: "test-1",
+      name: "category 1",
+    }, {
+      id: "test-2",
+      name: "category 2",
+    }]
+
+    const productCollectionsData = [
+      {
+        id: "test-1",
+        title: "col 1",
+      },
+      {
+        id: "test-2",
+        title: "col 2",
+      },
+    ]
+
+    const productTypesData = [
+      {
+        id: "type-1",
+        value: "type 1",
+      },
+      {
+        id: "type-2",
+        value: "type 2",
+      },
+    ]
+
+    const tagsData = [{
+      id: "tag-1",
+      value: "tag 1",
+    }]
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
-      const productCategoriesData = [{
-        id: "test-1",
-        name: "category 1",
-      }]
 
-      productCategoryOne = (await createProductCategories(
+      const collections = await createCollections(
+        testManager,
+        productCollectionsData
+      )
+
+      productCollectionOne = collections[0]
+      productCollectionTwo = collections[1]
+
+      const types = await createTypes(
+        testManager,
+        productTypesData,
+      )
+
+      productTypeOne = types[0]
+      productTypeTwo = types[1]
+
+      const categories = (await createProductCategories(
         testManager,
         productCategoriesData
-      ))[0]
+      ))
+
+      productCategoryOne = categories[0]
+      productCategoryTwo = categories[1]
 
       productOne = testManager.create(Product, {
         id: "product-1",
@@ -41,7 +100,16 @@ describe("ProductModuleService products", function () {
         status: ProductTypes.ProductStatus.PUBLISHED,
       })
 
-      await testManager.persistAndFlush([productOne])
+      productTwo = testManager.create(Product, {
+        id: "product-2",
+        title: "product 2",
+        status: ProductTypes.ProductStatus.PUBLISHED,
+        categories: [productCategoryOne],
+        collection_id: productCollectionOne.id,
+        tags: tagsData,
+      })
+
+      await testManager.persistAndFlush([productOne, productTwo])
 
       MedusaModule.clearInstances()
 
@@ -138,27 +206,174 @@ describe("ProductModuleService products", function () {
       )
     })
 
-    it.only("should add categories to a product", async () => {
+    it("should add relationships to a product", async () => {
       const updateData = {
         id: productOne.id,
         categories: [{
-          id: productCategoryOne?.id
-        }]
+          id: productCategoryOne.id
+        }],
+        collection_id: productCollectionOne.id,
+        type_id: productTypeOne.id
       }
-console.log("start updating")
+
       await module.update([updateData])
+
       const product = await module.retrieve(updateData.id, {
-        relations: ["categories"]
+        relations: ["categories", "collection", "type"]
       })
-console.log("done updating - ", product)
 
-      console.log("product - ", product)
+      expect(product).toEqual(
+        expect.objectContaining({
+          id: productOne.id,
+          categories: [
+            expect.objectContaining({
+              id: productCategoryOne.id
+            })
+          ],
+          collection: expect.objectContaining({
+            id: productCollectionOne.id
+          }),
+          type: expect.objectContaining({
+            id: productTypeOne.id
+          })
+        })
+      )
+    })
 
-      // expect(product).toEqual(
-      //   expect.objectContaining({
+    it("should upsert a product type when type object is passed", async () => {
+      let updateData = {
+        id: productTwo.id,
+        type: {
+          id: productTypeOne.id,
+          value: productTypeOne.value
+        }
+      }
 
-      //   })
-      // )
+      await module.update([updateData])
+
+      let product = await module.retrieve(updateData.id, {
+        relations: ["type"]
+      })
+
+      expect(product).toEqual(
+        expect.objectContaining({
+          id: productTwo.id,
+          type: expect.objectContaining({
+            id: productTypeOne.id
+          })
+        })
+      )
+
+      updateData = {
+        id: productTwo.id,
+        type: {
+          id: "new-type-id",
+          value: "new-type-value"
+        }
+      }
+
+      await module.update([updateData])
+
+      product = await module.retrieve(updateData.id, {
+        relations: ["type"]
+      })
+
+      expect(product).toEqual(
+        expect.objectContaining({
+          id: productTwo.id,
+          type: expect.objectContaining({
+            ...updateData.type
+          })
+        })
+      )
+    })
+
+    it("should replace relationships of a product", async () => {
+      const newTagData = {
+        id: "tag-2",
+        value: "tag 2",
+      }
+
+      const updateData = {
+        id: productTwo.id,
+        categories: [{
+          id: productCategoryTwo.id
+        }],
+        collection_id: productCollectionTwo.id,
+        type_id: productTypeTwo.id,
+        tags: [newTagData],
+      }
+
+      await module.update([updateData])
+
+      const product = await module.retrieve(updateData.id, {
+        relations: ["categories", "collection", "tags", "type"]
+      })
+
+      expect(product).toEqual(
+        expect.objectContaining({
+          id: productTwo.id,
+          categories: [
+            expect.objectContaining({
+              id: productCategoryTwo.id
+            })
+          ],
+          collection: expect.objectContaining({
+            id: productCollectionTwo.id
+          }),
+          tags: [
+            expect.objectContaining({
+              id: newTagData.id,
+              value: newTagData.value
+            })
+          ],
+          type: expect.objectContaining({
+            id: productTypeTwo.id
+          })
+        })
+      )
+    })
+
+    it("should remove relationships of a product", async () => {
+      const updateData = {
+        id: productTwo.id,
+        categories: [],
+        collection_id: null,
+        type_id: null,
+        tags: []
+      }
+
+      await module.update([updateData])
+
+      const product = await module.retrieve(updateData.id, {
+        relations: ["categories", "collection", "tags"]
+      })
+
+      expect(product).toEqual(
+        expect.objectContaining({
+          id: productTwo.id,
+          categories: [],
+          tags: [],
+          collection: null,
+          type: null
+        })
+      )
+    })
+
+    it("should throw an error when product ID does not exist", async () => {
+      let error
+      const updateData = {
+        id: "does-not-exist",
+        title: "test"
+      }
+
+      try {
+        await module.update([updateData])
+      } catch (e) {
+        error = e.message
+      }
+
+      expect(error).toEqual(`Product with id "does-not-exist" not found`)
     })
   })
 })
