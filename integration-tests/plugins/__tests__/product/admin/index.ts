@@ -1,16 +1,16 @@
-const path = require("path")
+import path from "path"
+import { bootstrapApp } from "../../../../helpers/bootstrap-app"
+import { setPort, useApi } from "../../../../helpers/use-api"
+import { initDb, useDb } from "../../../../helpers/use-db"
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+import adminSeeder from "../../../helpers/admin-seeder"
+import productSeeder from "../../../helpers/product-seeder"
 
-const adminSeeder = require("../../helpers/admin-seeder")
-const productSeeder = require("../../helpers/product-seeder")
-
-const {
+import {
   simpleProductFactory,
   simpleSalesChannelFactory,
-} = require("../../factories")
+} from "../../../../factories"
+import { AxiosInstance } from "axios"
 
 jest.setTimeout(50000)
 
@@ -23,13 +23,15 @@ const adminHeaders = {
 describe("/admin/products", () => {
   let medusaProcess
   let dbConnection
+  let express
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({
-      cwd,
-      env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
+    const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
+    dbConnection = await initDb({ cwd } as any)
+    const { app, port } = await bootstrapApp({ cwd })
+    setPort(port)
+    express = app.listen(port, () => {
+      process.send?.(port)
     })
   })
 
@@ -57,8 +59,8 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
-    it.only("creates a product", async () => {
-      const api = useApi()
+    it("creates a product", async () => {
+      const api = useApi()! as AxiosInstance
 
       const payload = {
         title: "Test",
@@ -97,8 +99,8 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      expect(response.status).toEqual(200)
-      expect(response.data.product).toEqual(
+      expect(response?.status).toEqual(200)
+      expect(response?.data.product).toEqual(
         expect.objectContaining({
           id: expect.stringMatching(/^prod_*/),
           title: "Test",
@@ -223,7 +225,7 @@ describe("/admin/products", () => {
     })
 
     it("creates a product that is not discountable", async () => {
-      const api = useApi()
+      const api = useApi()! as AxiosInstance
 
       const payload = {
         title: "Test",
@@ -250,8 +252,8 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      expect(response.status).toEqual(200)
-      expect(response.data.product).toEqual(
+      expect(response?.status).toEqual(200)
+      expect(response?.data.product).toEqual(
         expect.objectContaining({
           discountable: false,
         })
@@ -259,7 +261,7 @@ describe("/admin/products", () => {
     })
 
     it("Sets variant ranks when creating a product", async () => {
-      const api = useApi()
+      const api = useApi()! as AxiosInstance
 
       const payload = {
         title: "Test product - 1",
@@ -291,9 +293,9 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      expect(creationResponse.status).toEqual(200)
+      expect(creationResponse?.status).toEqual(200)
 
-      const productId = creationResponse.data.product.id
+      const productId = creationResponse?.data.product.id
 
       const response = await api
         .get(`/admin/products/${productId}`, adminHeaders)
@@ -301,7 +303,7 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      expect(response.data.product).toEqual(
+      expect(response?.data.product).toEqual(
         expect.objectContaining({
           title: "Test product - 1",
           variants: [
@@ -317,7 +319,7 @@ describe("/admin/products", () => {
     })
 
     it("creates a giftcard", async () => {
-      const api = useApi()
+      const api = useApi()! as AxiosInstance
 
       const payload = {
         title: "Test Giftcard",
@@ -339,9 +341,9 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      expect(response.status).toEqual(200)
+      expect(response?.status).toEqual(200)
 
-      expect(response.data.product).toEqual(
+      expect(response?.data.product).toEqual(
         expect.objectContaining({
           title: "Test Giftcard",
           discountable: false,
@@ -350,7 +352,7 @@ describe("/admin/products", () => {
     })
 
     it("updates a product (update prices, tags, update status, delete collection, delete type, replaces images)", async () => {
-      const api = useApi()
+      const api = useApi()! as AxiosInstance
 
       const payload = {
         collection_id: null,
@@ -377,9 +379,9 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      expect(response.status).toEqual(200)
+      expect(response?.status).toEqual(200)
 
-      expect(response.data.product).toEqual(
+      expect(response?.data.product).toEqual(
         expect.objectContaining({
           id: "test-product",
           created_at: expect.any(String),
@@ -470,7 +472,7 @@ describe("/admin/products", () => {
     })
 
     it("updates product (removes images when empty array included)", async () => {
-      const api = useApi()
+      const api = useApi()! as AxiosInstance
 
       const payload = {
         images: [],
@@ -482,21 +484,21 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      expect(response.status).toEqual(200)
+      expect(response?.status).toEqual(200)
 
-      expect(response.data.product.images.length).toEqual(0)
+      expect(response?.data.product.images.length).toEqual(0)
     })
 
     it("updates a product by deleting a field from metadata", async () => {
-      const api = useApi()
+      const api = useApi()! as AxiosInstance
 
-      const product = await simpleProductFactory(dbConnection, {
+      const product = (await simpleProductFactory(dbConnection, {
         metadata: {
           "test-key": "test-value",
           "test-key-2": "test-value-2",
           "test-key-3": "test-value-3",
         },
-      })
+      }))!
 
       const payload = {
         metadata: {
@@ -511,15 +513,15 @@ describe("/admin/products", () => {
         adminHeaders
       )
 
-      expect(response.status).toEqual(200)
-      expect(response.data.product.metadata).toEqual({
+      expect(response?.status).toEqual(200)
+      expect(response?.data.product.metadata).toEqual({
         "test-key-2": null,
         "test-key-3": "test-value-3",
       })
     })
 
     it("fails to update product with invalid status", async () => {
-      const api = useApi()
+      const api = useApi()! as AxiosInstance
 
       const payload = {
         status: null,
@@ -528,13 +530,13 @@ describe("/admin/products", () => {
       try {
         await api.post("/admin/products/test-product", payload, adminHeaders)
       } catch (e) {
-        expect(e.response.status).toEqual(400)
-        expect(e.response.data.type).toEqual("invalid_data")
+        expect(e.response?.status).toEqual(400)
+        expect(e.response?.data.type).toEqual("invalid_data")
       }
     })
 
     it("updates a product (variant ordering)", async () => {
-      const api = useApi()
+      const api = useApi()! as AxiosInstance
 
       const payload = {
         collection_id: null,
@@ -558,9 +560,9 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      expect(response.status).toEqual(200)
+      expect(response?.status).toEqual(200)
 
-      expect(response.data.product).toEqual(
+      expect(response?.data.product).toEqual(
         expect.objectContaining({
           title: "Test product",
           variants: [
@@ -584,7 +586,7 @@ describe("/admin/products", () => {
     })
 
     it("add option", async () => {
-      const api = useApi()
+      const api = useApi()! as AxiosInstance
 
       const payload = {
         title: "should_add",
@@ -596,9 +598,9 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      expect(response.status).toEqual(200)
+      expect(response?.status).toEqual(200)
 
-      expect(response.data.product).toEqual(
+      expect(response?.data.product).toEqual(
         expect.objectContaining({
           options: expect.arrayContaining([
             expect.objectContaining({
