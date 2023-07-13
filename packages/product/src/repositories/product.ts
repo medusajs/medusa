@@ -13,7 +13,6 @@ import {
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
-import { doNotForceTransaction } from "../utils"
 
 export class ProductRepository extends AbstractBaseRepository<Product> {
   protected readonly manager_: SqlEntityManager
@@ -75,7 +74,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
    * to be return in the case it also belongs to other categories, we need to
    * first find all products that are in the categories, and then exclude them
    */
-  private async mutateNotInCategoriesConstraints(
+  protected async mutateNotInCategoriesConstraints(
     findOptions: DAL.FindOptions<Product> = { where: {} },
     context: Context = {}
   ): Promise<void> {
