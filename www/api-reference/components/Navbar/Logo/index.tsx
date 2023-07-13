@@ -10,7 +10,7 @@ const NavbarLogo = () => {
   const pathname = usePathname()
 
   return (
-    <Link href={pathname} className="h-fit">
+    <Link href={pathname} className="flex-1">
       <Image
         src={
           colorMode === "light" ? "/images/logo.png" : "/images/logo-dark.png"

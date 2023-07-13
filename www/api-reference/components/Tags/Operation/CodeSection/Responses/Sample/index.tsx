@@ -105,10 +105,12 @@ const TagsOperationCodeSectionResponsesSample = ({
   return (
     <>
       <div className={className}>
-        <fieldset className="border-medusa-border-base dark:border-medusa-border-base-dark rounded border p-0.5">
-          <legend>Content type</legend>
-          <span>{Object.keys(response.content)[0]}</span>
-        </fieldset>
+        {response.content && (
+          <fieldset className="border-medusa-border-base dark:border-medusa-border-base-dark rounded border p-0.5">
+            <legend>Content type</legend>
+            <span>{Object.keys(response.content)[0]}</span>
+          </fieldset>
+        )}
         <div>
           {examples.length > 1 && (
             <select

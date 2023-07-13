@@ -5,6 +5,7 @@ import IconReport from "../Icons/Report"
 import NavbarIconButton from "./IconButton"
 import NavbarColorModeToggle from "./ColorModeToggle"
 import NavbarLogo from "./Logo"
+import SearchBar from "../SearchBar"
 
 const Navbar = () => {
   return (
@@ -16,7 +17,9 @@ const Navbar = () => {
     >
       <div className="flex items-center">
         <NavbarLogo />
-        {/* Add search bar */}
+        <div className="w-[280px] [&>*]:flex-1">
+          <SearchBar />
+        </div>
       </div>
       <div className="flex min-w-0 flex-1 items-center justify-end">
         <NavbarLink href="https://docs.medusajs.com/" label="Docs" />

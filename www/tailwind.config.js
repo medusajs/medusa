@@ -724,7 +724,7 @@ module.exports = {
       "search-arrow-dark": "url('/img/search-hit-arrow.svg')",
       "search-no-result": "url('/img/search-no-result-light.svg')",
       "search-no-result-dark": "url('/img/search-no-result.svg')",
-      "magnifying-glass": "url('/static/img/magnifying-glass.svg')",
+      "magnifying-glass": "url('/img/magnifying-glass.svg')",
       toc: "url('/img/side-menu-light.svg')",
       "toc-dark": "url('/img/side-menu.svg')",
     },
