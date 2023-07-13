@@ -289,7 +289,7 @@ function EditPricesTable(props: EditPricesTableProps) {
       })
     })
 
-    setEditedPrices(nextState)
+    setEditedPrices((s) => ({ ...nextState, ...s }))
   }, [props.currencies, props.regions, props.product.variants])
 
   useEffect(() => {

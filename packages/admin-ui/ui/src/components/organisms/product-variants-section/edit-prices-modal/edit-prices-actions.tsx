@@ -1,16 +1,11 @@
 import React, { useMemo } from "react"
 
-import {
-  useAdminCurrencies,
-  useAdminRegions,
-  useAdminStore,
-} from "medusa-react"
+import { useAdminRegions, useAdminStore } from "medusa-react"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 
 import Button from "../../../fundamentals/button"
 import AdjustmentsIcon from "../../../fundamentals/icons/adjustments-icon"
 import CheckIcon from "../../../fundamentals/icons/check-icon"
-import IconTooltip from "../../../molecules/icon-tooltip"
 
 type EditPricesActionsProps = {
   selectedCurrencies: string[]
@@ -104,11 +99,6 @@ function EditPricesActions(props: EditPricesActionsProps) {
           ))}
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-      <IconTooltip
-        side="right"
-        type="warning"
-        content="Only visible columns are saved"
-      />
     </div>
   )
 }

@@ -13,12 +13,15 @@ import Button from "../../../fundamentals/button"
 import {
   getAllProductPricesCurrencies,
   getAllProductPricesRegions,
+  getCurrencyPricesOnly,
+  getRegionPricesOnly,
 } from "./utils"
 import CrossIcon from "../../../fundamentals/icons/cross-icon"
 import EditPricesTable from "./edit-prices-table"
 import EditPricesActions from "./edit-prices-actions"
 import useNotification from "../../../../hooks/use-notification"
 import DeletePrompt from "../../delete-prompt"
+import SavePrompt from "./save-prompt"
 
 type EditPricesModalProps = {
   close: () => void
@@ -43,6 +46,10 @@ function useRegionsCurrencyMap() {
  */
 function EditPricesModal(props: EditPricesModalProps) {
   const editedPrices = useRef({})
+
+  const { regions: storeRegions } = useAdminRegions({
+    limit: 1000,
+  })
 
   const regionCurrenciesMap = useRegionsCurrencyMap()
   const regions = getAllProductPricesRegions(props.product).sort()
@@ -85,10 +92,68 @@ function EditPricesModal(props: EditPricesModalProps) {
   }
 
   const onSave = () => {
+    detectHiddenEditedColumns()
     setShowSaveConfirmationPrompt(true)
   }
 
-  const save = () => {
+  const detectHiddenEditedColumns = () => {
+    const initialState = {}
+
+    // figure out which price cells were initially populated
+    props.product.variants!.forEach((variant) => {
+      currencies.forEach((c) => {
+        const currencyMetadata = CURRENCY_MAP[c.toUpperCase()]
+
+        const ma = getCurrencyPricesOnly(variant.prices!).find(
+          (p) => p.currency_code === c
+        )
+
+        if (ma) {
+          initialState[`${variant.id}-${c}`] =
+            ma.amount / Math.pow(10, currencyMetadata.decimal_digits)
+        }
+      })
+
+      regions.forEach((r) => {
+        const ma = getRegionPricesOnly(variant.prices!).find(
+          (p) => p.region_id === r
+        )
+
+        if (ma) {
+          const currencyMetadata = CURRENCY_MAP[ma.currency_code.toUpperCase()]
+          initialState[`${variant.id}-${r}`] =
+            ma.amount / Math.pow(10, currencyMetadata.decimal_digits)
+        }
+      })
+    })
+
+    const diff = { ...editedPrices.current }
+
+    // all prices that differ from the initial populated value are changed prices
+    Object.keys(initialState).forEach((k) => {
+      if (initialState[k] === diff[k]) {
+        delete diff[k]
+      }
+    })
+
+    const dirtyColumns = [
+      ...new Set(Object.keys(diff).map((k) => k.split("-")[1])),
+    ]
+
+    const hiddenDirtyColumns = dirtyColumns.filter(
+      (c) => !selectedCurrencies.includes(c) && !selectedRegions.includes(c)
+    )
+
+    return hiddenDirtyColumns.map((c) => {
+      if (c.length === 3) {
+        return c.toUpperCase()
+      } else {
+        return storeRegions?.find((r) => r.id === c)?.name || c
+      }
+    })
+  }
+
+  const save = (saveOnlyVisible?: boolean) => {
     const pricesEditMap: Record<string, number | undefined> =
       editedPrices.current
     const variants = props.product.variants!
@@ -103,12 +168,16 @@ function EditPricesModal(props: EditPricesModalProps) {
 
       const currencyPriceEdits = pickBy(
         variantPricesEditMap,
-        (o, k) => !k.startsWith("reg") && selectedCurrencies.includes(k) // only visible columns
+        (o, k) =>
+          !k.startsWith("reg") &&
+          (saveOnlyVisible ? selectedCurrencies.includes(k) : true)
       )
 
       const regionPriceEdits = pickBy(
         variantPricesEditMap,
-        (o, k) => k.startsWith("reg") && selectedRegions.includes(k) // only visible columns
+        (o, k) =>
+          k.startsWith("reg") &&
+          (saveOnlyVisible ? selectedRegions.includes(k) : true)
       )
 
       const pricesPayload: Partial<MoneyAmount>[] = []
@@ -278,12 +347,11 @@ function EditPricesModal(props: EditPricesModalProps) {
         />
       )}
       {showSaveConfirmationPrompt && (
-        <DeletePrompt
+        <SavePrompt
+          onSaveAll={async () => save()}
+          onSaveOnlyVisible={async () => save(true)}
+          hiddenEditedColumns={detectHiddenEditedColumns()}
           handleClose={() => setShowSaveConfirmationPrompt(false)}
-          onDelete={async () => save()}
-          confirmText="Yes, save"
-          heading="Save changes"
-          text="Save edited prices"
         />
       )}
     </Fade>
