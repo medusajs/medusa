@@ -4,6 +4,8 @@ export type SharedContext = {
   transactionManager?: EntityManager
 }
 
-export type Context = {
-  transactionManager?: unknown
+export type Context<TManager = unknown> = {
+  transactionManager?: TManager
+  isolationLevel?: string
+  enableNestedTransactions?: boolean
 }
