@@ -36,7 +36,7 @@ describe("Inventory Module", () => {
     express.close()
   })
 
-  describe("ProductVariantInventoryItem", () => {
+  describe("ProductVariantInventoryService", () => {
     afterEach(async () => {
       const db = useDb()
       return await db.teardown()
@@ -61,122 +61,80 @@ describe("Inventory Module", () => {
       })
     })
 
-    it("Attaches a single item with spread params", async () => {
-      const pviService = appContainer.resolve("productVariantInventoryService")
-      await pviService.attachInventoryItem(variant1.id, invItem1.id)
+    describe("attachInventoryItem", () => {
+      it("should attach the single item with spread params", async () => {
+        const pviService = appContainer.resolve(
+          "productVariantInventoryService"
+        )
+        await pviService.attachInventoryItem(variant1.id, invItem1.id)
 
-      const variantItems = await pviService.listByVariant(variant1.id)
-      expect(variantItems.length).toEqual(1)
-      expect(variantItems[0]).toEqual(
-        expect.objectContaining({
-          inventory_item_id: invItem1.id,
-          variant_id: variant1.id,
-        })
-      )
-    })
-
-    it("Attaches a multiple inventory items and variants at once", async () => {
-      const pviService = appContainer.resolve("productVariantInventoryService")
-      await pviService.attachInventoryItem([
-        {
-          variantId: variant1.id,
-          inventoryItemId: invItem1.id,
-        },
-        {
-          variantId: variant2.id,
-          inventoryItemId: invItem2.id,
-        },
-      ])
-
-      const variantItems = await pviService.listByVariant([
-        variant1.id,
-        variant2.id,
-      ])
-      expect(variantItems.length).toEqual(2)
-      expect(variantItems).toEqual(
-        expect.arrayContaining([
+        const variantItems = await pviService.listByVariant(variant1.id)
+        expect(variantItems.length).toEqual(1)
+        expect(variantItems[0]).toEqual(
           expect.objectContaining({
             inventory_item_id: invItem1.id,
             variant_id: variant1.id,
-          }),
-          expect.objectContaining({
-            variant_id: variant2.id,
-            inventory_item_id: invItem2.id,
-          }),
+          })
+        )
+      })
+
+      it("should attach multiple inventory items and variants at once", async () => {
+        const pviService = appContainer.resolve(
+          "productVariantInventoryService"
+        )
+        await pviService.attachInventoryItem([
+          {
+            variantId: variant1.id,
+            inventoryItemId: invItem1.id,
+          },
+          {
+            variantId: variant2.id,
+            inventoryItemId: invItem2.id,
+          },
         ])
-      )
-    })
 
-    it("Skips existing attachments when attaching a singular inventory item", async () => {
-      const pviService = appContainer.resolve("productVariantInventoryService")
-      await pviService.attachInventoryItem(variant1.id, invItem1.id)
-      await pviService.attachInventoryItem(variant1.id, invItem1.id)
+        const variantItems = await pviService.listByVariant([
+          variant1.id,
+          variant2.id,
+        ])
+        expect(variantItems.length).toEqual(2)
+        expect(variantItems).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              inventory_item_id: invItem1.id,
+              variant_id: variant1.id,
+            }),
+            expect.objectContaining({
+              variant_id: variant2.id,
+              inventory_item_id: invItem2.id,
+            }),
+          ])
+        )
+      })
 
-      const variantItems = await pviService.listByVariant(variant1.id)
-      expect(variantItems.length).toEqual(1)
-      expect(variantItems[0]).toEqual(
-        expect.objectContaining({
-          inventory_item_id: invItem1.id,
-          variant_id: variant1.id,
-        })
-      )
-    })
+      it("should skip existing attachments when attaching a singular inventory item", async () => {
+        const pviService = appContainer.resolve(
+          "productVariantInventoryService"
+        )
+        await pviService.attachInventoryItem(variant1.id, invItem1.id)
+        await pviService.attachInventoryItem(variant1.id, invItem1.id)
 
-    it("Skips existing attachments when attaching multiple inventory item", async () => {
-      const pviService = appContainer.resolve("productVariantInventoryService")
-      await pviService.attachInventoryItem(variant1.id, invItem1.id)
-
-      await pviService.attachInventoryItem([
-        {
-          variantId: variant1.id,
-          inventoryItemId: invItem1.id,
-        },
-        {
-          variantId: variant2.id,
-          inventoryItemId: invItem2.id,
-        },
-      ])
-
-      const variantItems = await pviService.listByVariant([
-        variant1.id,
-        variant2.id,
-      ])
-      expect(variantItems.length).toEqual(2)
-      expect(variantItems).toEqual(
-        expect.arrayContaining([
+        const variantItems = await pviService.listByVariant(variant1.id)
+        expect(variantItems.length).toEqual(1)
+        expect(variantItems[0]).toEqual(
           expect.objectContaining({
             inventory_item_id: invItem1.id,
             variant_id: variant1.id,
-          }),
-          expect.objectContaining({
-            variant_id: variant2.id,
-            inventory_item_id: invItem2.id,
-          }),
-        ])
-      )
-    })
+          })
+        )
+      })
 
-    it("Fails to attach with required quantity below 1", async () => {
-      const pviService = appContainer.resolve("productVariantInventoryService")
+      it("should skip existing attachments when attaching multiple inventory items in bulk", async () => {
+        const pviService = appContainer.resolve(
+          "productVariantInventoryService"
+        )
+        await pviService.attachInventoryItem(variant1.id, invItem1.id)
 
-      let e
-      try {
-        await pviService.attachInventoryItem(variant1.id, invItem1.id, 0)
-      } catch (err) {
-        e = err
-      }
-
-      expect(e.message).toEqual(
-        `"requiredQuantity" must be greater than 0, the following entries are invalid: ${JSON.stringify(
-          {
-            variantId: variant1.id,
-            inventoryItemId: invItem1.id,
-            requiredQuantity: 0,
-          }
-        )}`
-      )
-
-      try {
         await pviService.attachInventoryItem([
           {
             variantId: variant1.id,
@@ -185,89 +143,147 @@ describe("Inventory Module", () => {
           {
             variantId: variant2.id,
             inventoryItemId: invItem2.id,
-            requiredQuantity: 0,
           },
         ])
-      } catch (err) {
-        e = err
-      }
 
-      expect(e.message).toEqual(
-        `"requiredQuantity" must be greater than 0, the following entries are invalid: ${JSON.stringify(
-          {
-            variantId: variant2.id,
-            inventoryItemId: invItem2.id,
-            requiredQuantity: 0,
-          }
-        )}`
-      )
-    })
-
-    it("Fails when attaching to a non-existing variant", async () => {
-      const pviService = appContainer.resolve("productVariantInventoryService")
-
-      let e
-      try {
-        await pviService.attachInventoryItem("variant1.id", invItem1.id)
-      } catch (err) {
-        e = err
-      }
-
-      expect(e.message).toEqual(
-        `Variants not found for the following ids: variant1.id`
-      )
-
-      try {
-        await pviService.attachInventoryItem([
-          {
-            variantId: "variant1.id",
-            inventoryItemId: invItem1.id,
-          },
-          {
-            variantId: variant2.id,
-            inventoryItemId: invItem2.id,
-          },
+        const variantItems = await pviService.listByVariant([
+          variant1.id,
+          variant2.id,
         ])
-      } catch (err) {
-        e = err
-      }
+        expect(variantItems.length).toEqual(2)
+        expect(variantItems).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              inventory_item_id: invItem1.id,
+              variant_id: variant1.id,
+            }),
+            expect.objectContaining({
+              variant_id: variant2.id,
+              inventory_item_id: invItem2.id,
+            }),
+          ])
+        )
+      })
 
-      expect(e.message).toEqual(
-        `Variants not found for the following ids: variant1.id`
-      )
-    })
-    it("Fails when attaching to a non-existing inventory item", async () => {
-      const pviService = appContainer.resolve("productVariantInventoryService")
+      it("should fail to attach items when a single item has a required_quantity below 1", async () => {
+        const pviService = appContainer.resolve(
+          "productVariantInventoryService"
+        )
 
-      let e
-      try {
-        await pviService.attachInventoryItem(variant1.id, "invItem1.id")
-      } catch (err) {
-        e = err
-      }
+        let e
+        try {
+          await pviService.attachInventoryItem(variant1.id, invItem1.id, 0)
+        } catch (err) {
+          e = err
+        }
 
-      expect(e.message).toEqual(
-        `Inventory items not found for the following ids: invItem1.id`
-      )
+        expect(e.message).toEqual(
+          `"requiredQuantity" must be greater than 0, the following entries are invalid: ${JSON.stringify(
+            {
+              variantId: variant1.id,
+              inventoryItemId: invItem1.id,
+              requiredQuantity: 0,
+            }
+          )}`
+        )
 
-      try {
-        await pviService.attachInventoryItem([
-          {
-            variantId: variant1.id,
-            inventoryItemId: invItem1.id,
-          },
-          {
-            variantId: variant2.id,
-            inventoryItemId: "invItem2.id",
-          },
-        ])
-      } catch (err) {
-        e = err
-      }
+        try {
+          await pviService.attachInventoryItem([
+            {
+              variantId: variant1.id,
+              inventoryItemId: invItem1.id,
+            },
+            {
+              variantId: variant2.id,
+              inventoryItemId: invItem2.id,
+              requiredQuantity: 0,
+            },
+          ])
+        } catch (err) {
+          e = err
+        }
 
-      expect(e.message).toEqual(
-        `Inventory items not found for the following ids: invItem2.id`
-      )
+        expect(e.message).toEqual(
+          `"requiredQuantity" must be greater than 0, the following entries are invalid: ${JSON.stringify(
+            {
+              variantId: variant2.id,
+              inventoryItemId: invItem2.id,
+              requiredQuantity: 0,
+            }
+          )}`
+        )
+      })
+
+      it("should fail to attach items when attaching to a non-existing variant", async () => {
+        const pviService = appContainer.resolve(
+          "productVariantInventoryService"
+        )
+
+        let e
+        try {
+          await pviService.attachInventoryItem("variant1.id", invItem1.id)
+        } catch (err) {
+          e = err
+        }
+
+        expect(e.message).toEqual(
+          `Variants not found for the following ids: variant1.id`
+        )
+
+        try {
+          await pviService.attachInventoryItem([
+            {
+              variantId: "variant1.id",
+              inventoryItemId: invItem1.id,
+            },
+            {
+              variantId: variant2.id,
+              inventoryItemId: invItem2.id,
+            },
+          ])
+        } catch (err) {
+          e = err
+        }
+
+        expect(e.message).toEqual(
+          `Variants not found for the following ids: variant1.id`
+        )
+      })
+      it("should fail to attach items when attaching to a non-existing inventory item", async () => {
+        const pviService = appContainer.resolve(
+          "productVariantInventoryService"
+        )
+
+        let e
+        try {
+          await pviService.attachInventoryItem(variant1.id, "invItem1.id")
+        } catch (err) {
+          e = err
+        }
+
+        expect(e.message).toEqual(
+          `Inventory items not found for the following ids: invItem1.id`
+        )
+
+        try {
+          await pviService.attachInventoryItem([
+            {
+              variantId: variant1.id,
+              inventoryItemId: invItem1.id,
+            },
+            {
+              variantId: variant2.id,
+              inventoryItemId: "invItem2.id",
+            },
+          ])
+        } catch (err) {
+          e = err
+        }
+
+        expect(e.message).toEqual(
+          `Inventory items not found for the following ids: invItem2.id`
+        )
+      })
     })
   })
 })

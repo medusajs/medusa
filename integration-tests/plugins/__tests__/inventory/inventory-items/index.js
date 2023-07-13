@@ -130,7 +130,7 @@ describe("Inventory Items endpoints", () => {
   })
 
   describe("Inventory Items", () => {
-    it("Create, update and delete inventory location level", async () => {
+    it("should create, update and delete the inventory location levels", async () => {
       const api = useApi()
       const inventoryItemId = inventoryItems[0].id
 
@@ -184,7 +184,7 @@ describe("Inventory Items endpoints", () => {
       )
     })
 
-    it("Update inventory item", async () => {
+    it("should update the inventory item", async () => {
       const api = useApi()
       const inventoryItemId = inventoryItems[0].id
 
@@ -210,7 +210,7 @@ describe("Inventory Items endpoints", () => {
       )
     })
 
-    it("fails to update location level to negative quantity", async () => {
+    it("should fail to update the location level to negative quantity", async () => {
       const api = useApi()
 
       const inventoryItemId = inventoryItems[0].id
@@ -244,7 +244,7 @@ describe("Inventory Items endpoints", () => {
       })
     })
 
-    it("Retrieve an inventory item", async () => {
+    it("should retrieve the inventory item", async () => {
       const api = useApi()
       const inventoryItemId = inventoryItems[0].id
 
@@ -315,7 +315,7 @@ describe("Inventory Items endpoints", () => {
       })
     })
 
-    it("Creates an inventory item using the api", async () => {
+    it("should create the inventory item using the api", async () => {
       const product = await simpleProductFactory(dbConnection, {})
 
       const api = useApi()
@@ -365,7 +365,7 @@ describe("Inventory Items endpoints", () => {
       expect(variantInventoryRes.status).toEqual(200)
     })
 
-    it("lists location levels based on id param constraint", async () => {
+    it("should list the location levels based on id param constraint", async () => {
       const api = useApi()
       const inventoryItemId = inventoryItems[0].id
 
@@ -402,7 +402,7 @@ describe("Inventory Items endpoints", () => {
     })
 
     describe("List inventory items", () => {
-      it("Lists inventory items with location", async () => {
+      it("should list inventory items with location", async () => {
         const api = useApi()
 
         await api.post(
@@ -455,7 +455,7 @@ describe("Inventory Items endpoints", () => {
         )
       })
 
-      it("Lists inventory items", async () => {
+      it("should list the inventory items", async () => {
         const api = useApi()
         const inventoryItemId = inventoryItems[0].id
 
@@ -543,7 +543,7 @@ describe("Inventory Items endpoints", () => {
         )
       })
 
-      it("Lists inventory items searching by title, description and sku", async () => {
+      it("should list the inventory items searching by title, description and sku", async () => {
         const api = useApi()
 
         const inventoryService = appContainer.resolve("inventoryService")
@@ -589,7 +589,7 @@ describe("Inventory Items endpoints", () => {
       })
     })
 
-    it("When deleting an inventory item it removes associated levels and reservations", async () => {
+    it("should remove associated levels and reservations when deleting an inventory item", async () => {
       const api = useApi()
       const inventoryService = appContainer.resolve("inventoryService")
 
@@ -654,7 +654,7 @@ describe("Inventory Items endpoints", () => {
       expect(inventoryLevelCountPostDelete).toEqual(0)
     })
 
-    it("When deleting an inventory item it removes the product variants associated to it", async () => {
+    it("should remove the product variant associations when deleting an inventory item", async () => {
       const api = useApi()
 
       await simpleProductFactory(
@@ -743,7 +743,7 @@ describe("Inventory Items endpoints", () => {
         )
       })
 
-      it("bulk removes inventoryItems", async () => {
+      it("should bulk remove the inventory items", async () => {
         const [items] = await inventoryService.listInventoryItems()
 
         const ids = items.map((item) => item.id)
@@ -756,7 +756,7 @@ describe("Inventory Items endpoints", () => {
         expect(emptyItems).toHaveLength(0)
       })
 
-      it("bulk creates inventoryLevels", async () => {
+      it("should bulk create the inventory levels", async () => {
         const [items] = await inventoryService.listInventoryItems()
 
         const itemId = items[0].id
@@ -792,7 +792,7 @@ describe("Inventory Items endpoints", () => {
         )
       })
 
-      it("bulk creates inventory items", async () => {
+      it("should bulk create the inventory items", async () => {
         const items = [
           {
             sku: "sku-1",
@@ -816,7 +816,7 @@ describe("Inventory Items endpoints", () => {
         )
       })
 
-      it("bulk deletes inventoryLevels by location id", async () => {
+      it("should bulk delete the inventory levels by location id", async () => {
         const [items] = await inventoryService.listInventoryItems()
 
         const itemId = items[0].id
@@ -845,7 +845,7 @@ describe("Inventory Items endpoints", () => {
         expect(levels).toHaveLength(0)
       })
 
-      it("bulk deletes inventoryLevels by location id", async () => {
+      it("should bulk delete the inventory levels by location id", async () => {
         const [items] = await inventoryService.listInventoryItems()
 
         const itemId = items[0].id
@@ -874,7 +874,7 @@ describe("Inventory Items endpoints", () => {
         expect(levels).toHaveLength(0)
       })
 
-      it("fails to create reservations for invalid configuration", async () => {
+      it("should fail to create the reservations with invalid configuration", async () => {
         const order = await simpleOrderFactory(dbConnection, {
           line_items: [
             { id: "line-item-1", quantity: 1 },
@@ -908,7 +908,7 @@ describe("Inventory Items endpoints", () => {
         )
       })
 
-      it("bulk deletes reservations by line item ids", async () => {
+      it("should bulk delete the reservations by their line item ids", async () => {
         const order = await simpleOrderFactory(dbConnection, {
           line_items: [
             { id: "line-item-1", quantity: 1 },
@@ -958,7 +958,7 @@ describe("Inventory Items endpoints", () => {
         expect(deletedReservations).toHaveLength(0)
       })
 
-      it("bulk deletes reservations by location id", async () => {
+      it("should bulk delete the reservations by their location id", async () => {
         const order = await simpleOrderFactory(dbConnection, {
           line_items: [
             { id: "line-item-1", quantity: 1 },
@@ -1014,7 +1014,7 @@ describe("Inventory Items endpoints", () => {
         expect(deletedReservations).toHaveLength(0)
       })
 
-      it("bulk updates inventory levels", async () => {
+      it("should bulk update the inventory levels", async () => {
         const [items] = await inventoryService.listInventoryItems()
 
         const itemId = items[0].id

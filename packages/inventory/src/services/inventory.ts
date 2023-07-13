@@ -187,13 +187,13 @@ export default class InventoryService implements IInventoryService {
   }
 
   private async ensureInventoryLevels(
-    entities: { location_id: string; inventory_item_id: string }[],
+    data: { location_id: string; inventory_item_id: string }[],
     context: SharedContext = {}
   ): Promise<InventoryLevelDTO[]> {
     const inventoryLevels = await this.inventoryLevelService_.list(
       {
-        inventory_item_id: entities.map((e) => e.inventory_item_id),
-        location_id: entities.map((e) => e.location_id),
+        inventory_item_id: data.map((e) => e.inventory_item_id),
+        location_id: data.map((e) => e.location_id),
       },
       {},
       context
@@ -203,15 +203,13 @@ export default class InventoryService implements IInventoryService {
       string,
       Map<string, InventoryLevelDTO>
     > = inventoryLevels.reduce((acc, curr) => {
-      if (acc.has(curr.inventory_item_id)) {
-        acc.get(curr.inventory_item_id).set(curr.location_id, curr)
-      } else {
-        acc.set(curr.inventory_item_id, new Map([[curr.location_id, curr]]))
-      }
+      const inventoryLevelMap = acc.get(curr.inventory_item_id) ?? new Map()
+      inventoryLevelMap.set(curr.location_id, curr)
+      acc.set(curr.inventory_item_id, inventoryLevelMap)
       return acc
     }, new Map())
 
-    const missing = entities.filter(
+    const missing = data.filter(
       (i) => !inventoryLevelMap.get(i.inventory_item_id)?.get(i.location_id)
     )
 
@@ -461,11 +459,9 @@ export default class InventoryService implements IInventoryService {
     const inventoryLevels = await this.ensureInventoryLevels(updates)
 
     const levelMap = inventoryLevels.reduce((acc, curr) => {
-      if (acc.has(curr.inventory_item_id)) {
-        acc.get(curr.inventory_item_id).set(curr.location_id, curr.id)
-      } else {
-        acc.set(curr.inventory_item_id, new Map([[curr.location_id, curr.id]]))
-      }
+      const inventoryLevelMap = acc.get(curr.inventory_item_id) ?? new Map()
+      inventoryLevelMap.set(curr.location_id, curr.id)
+      acc.set(curr.inventory_item_id, inventoryLevelMap)
       return acc
     }, new Map())
 
@@ -475,6 +471,7 @@ export default class InventoryService implements IInventoryService {
           .get(update.inventory_item_id)
           .get(update.location_id)
 
+        // TODO make this bulk
         return this.inventoryLevelService_.update(levelId, update, ctx)
       })
     )

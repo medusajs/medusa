@@ -152,13 +152,15 @@ export default class ReservationItemService {
 
     const [newReservationItems] = await Promise.all([
       reservationItemRepository.save(reservationItems),
-      ...data.map(async (data) =>
-        this.inventoryLevelService_.adjustReservedQuantity(
-          data.inventory_item_id,
-          data.location_id,
-          data.quantity,
-          context
-        )
+      ...data.map(
+        async (data) =>
+          // TODO make bulk
+          await this.inventoryLevelService_.adjustReservedQuantity(
+            data.inventory_item_id,
+            data.location_id,
+            data.quantity,
+            context
+          )
       ),
     ])
 
@@ -293,12 +295,7 @@ export default class ReservationItemService {
 
     const ids = Array.isArray(locationId) ? locationId : [locationId]
 
-    await itemRepository
-      .createQueryBuilder("reservation_item")
-      .softDelete()
-      .where("location_id IN (:...ids)", { ids })
-      .andWhere("deleted_at IS NULL")
-      .execute()
+    await itemRepository.softDelete({ location_id: In(ids) })
 
     await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
       location_id: locationId,
@@ -336,7 +333,7 @@ export default class ReservationItemService {
     await Promise.all(promises)
 
     await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
-      id: reservationItemId,
+      ids: reservationItemId,
     })
   }
 }

@@ -210,7 +210,7 @@ export default class InventoryItemService {
     await itemRepository.softDelete({ id: In(ids) })
 
     await this.eventBusService_?.emit?.(InventoryItemService.Events.DELETED, {
-      id: inventoryItemId,
+      ids: inventoryItemId,
     })
   }
 }

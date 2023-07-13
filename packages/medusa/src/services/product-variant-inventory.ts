@@ -18,6 +18,7 @@ import ProductVariantService from "./product-variant"
 import SalesChannelInventoryService from "./sales-channel-inventory"
 import SalesChannelLocationService from "./sales-channel-location"
 import { TransactionBaseService } from "../interfaces"
+import { getSetDifference } from "../utils/diff-set"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -309,12 +310,13 @@ class ProductVariantInventoryService extends TransactionBaseService {
     const foundVariantIds = new Set(variants.map((v) => v.id))
     const requestedVariantIds = new Set(data.map((v) => v.variantId))
     if (foundVariantIds.size !== requestedVariantIds.size) {
+      const difference = getSetDifference(requestedVariantIds, foundVariantIds)
+
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Variants not found for the following ids: ${data
-          .filter((d) => !foundVariantIds.has(d.variantId))
-          .map((d) => d.variantId)
-          .join(", ")}`
+        `Variants not found for the following ids: ${[...difference].join(
+          ", "
+        )}`
       )
     }
 
@@ -337,12 +339,13 @@ class ProductVariantInventoryService extends TransactionBaseService {
     )
 
     if (foundInventoryItemIds.size !== requestedInventoryItemIds.size) {
+      const difference = getSetDifference(requestedVariantIds, foundVariantIds)
+
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Inventory items not found for the following ids: ${data
-          .filter((d) => !foundInventoryItemIds.has(d.inventoryItemId))
-          .map((d) => d.inventoryItemId)
-          .join(", ")}`
+        `Inventory items not found for the following ids: ${[
+          ...difference,
+        ].join(", ")}`
       )
     }
 
@@ -359,37 +362,35 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
     const existingMap: Map<string, Set<string>> = existingAttachments.reduce(
       (acc, curr) => {
-        if (acc.has(curr.variant_id)) {
-          acc.get(curr.variant_id)!.add(curr.inventory_item_id)
-        } else {
-          acc.set(curr.variant_id, new Set([curr.inventory_item_id]))
-        }
+        const existingSet = acc.get(curr.variant_id) || new Set()
+        existingSet.add(curr.inventory_item_id)
+        acc.set(curr.variant_id, existingSet)
         return acc
       },
       new Map()
     )
 
-    const toCreate = await Promise.all(
-      data.map(async (d) => {
-        if (existingMap.get(d.variantId)?.has(d.inventoryItemId)) {
-          return null
-        }
+    const toCreate = (
+      await Promise.all(
+        data.map(async (d) => {
+          if (existingMap.get(d.variantId)?.has(d.inventoryItemId)) {
+            return null
+          }
 
-        return variantInventoryRepo.create({
-          variant_id: d.variantId,
-          inventory_item_id: d.inventoryItemId,
-          required_quantity: d.requiredQuantity ?? 1,
+          return variantInventoryRepo.create({
+            variant_id: d.variantId,
+            inventory_item_id: d.inventoryItemId,
+            required_quantity: d.requiredQuantity ?? 1,
+          })
         })
-      })
+      )
+    ).filter(
+      (
+        tc: ProductVariantInventoryItem | null
+      ): tc is ProductVariantInventoryItem => !!tc
     )
 
-    return await variantInventoryRepo.save(
-      toCreate.filter(
-        (
-          tc: ProductVariantInventoryItem | null
-        ): tc is ProductVariantInventoryItem => !!tc
-      )
-    )
+    return await variantInventoryRepo.save(toCreate)
   }
 
   /**

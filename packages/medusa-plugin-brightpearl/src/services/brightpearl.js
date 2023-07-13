@@ -1,8 +1,8 @@
-import { humanizeAmount, MedusaError } from "medusa-core-utils"
-import { updateInventoryAndReservations } from "@medusajs/medusa"
+import { MedusaError, humanizeAmount } from "medusa-core-utils"
 
 import { BaseService } from "medusa-interfaces"
 import Brightpearl from "../utils/brightpearl"
+import { updateInventoryAndReservations } from "@medusajs/medusa"
 
 class BrightpearlService extends BaseService {
   constructor(
@@ -760,6 +760,10 @@ class BrightpearlService extends BaseService {
     )
   }
 
+  /**
+   * create reservation based on reservation created event
+   * @param {{ ids: string[] }} eventData Event data from reservation created
+   */
   async createReservation(eventData) {
     const { ids } = eventData
 
