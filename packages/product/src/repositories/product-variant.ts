@@ -7,10 +7,16 @@ import {
 import { Product, ProductVariant } from "@models"
 import { Context, DAL, WithRequiredProperty } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { MedusaError, isDefined } from "@medusajs/utils"
+import {
+  MedusaError,
+  isDefined,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/utils"
 
 import { ProductVariantServiceTypes } from "../types/services"
 import { AbstractBaseRepository } from "./base"
+import { doNotForceTransaction } from "../utils"
 
 export class ProductVariantRepository extends AbstractBaseRepository<ProductVariant> {
   protected readonly manager_: SqlEntityManager
@@ -63,25 +69,30 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     )
   }
 
-  async delete(ids: string[], context: Context = {}): Promise<void> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
-
-    await manager.nativeDelete(ProductVariant, { id: { $in: ids } }, {})
+  @InjectTransactionManager()
+  async delete(
+    ids: string[],
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
+  ): Promise<void> {
+    await (manager as SqlEntityManager).nativeDelete(
+      ProductVariant,
+      { id: { $in: ids } },
+      {}
+    )
   }
 
+  @InjectTransactionManager()
   async create(
     data: RequiredEntityData<ProductVariant>[],
-    context: Context = {}
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
   ): Promise<ProductVariant[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
-
     const variants = data.map((variant) => {
-      return manager.create(ProductVariant, variant)
+      return (manager as SqlEntityManager).create(ProductVariant, variant)
     })
 
-    await manager.persist(variants)
+    await (manager as SqlEntityManager).persist(variants)
 
     return variants
   }

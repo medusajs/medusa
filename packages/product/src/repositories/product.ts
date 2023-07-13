@@ -17,7 +17,7 @@ import {
   WithRequiredProperty,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { MedusaError, isDefined } from "@medusajs/utils"
+import { MedusaError, isDefined, InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 
 import { AbstractBaseRepository } from "./base"
 import { ProductServiceTypes } from "../types/services"
@@ -82,7 +82,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
    * to be return in the case it also belongs to other categories, we need to
    * first find all products that are in the categories, and then exclude them
    */
-  private async mutateNotInCategoriesConstraints(
+  protected async mutateNotInCategoriesConstraints(
     findOptions: DAL.FindOptions<Product> = { where: {} },
     context: Context = {}
   ): Promise<void> {
@@ -115,25 +115,30 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     }
   }
 
-  async delete(ids: string[], context: Context = {}): Promise<void> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
-
-    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
+  @InjectTransactionManager()
+  async delete(
+    ids: string[],
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
+  ): Promise<void> {
+    await (manager as SqlEntityManager).nativeDelete(
+      Product,
+      { id: { $in: ids } },
+      {}
+    )
   }
 
+  @InjectTransactionManager()
   async create(
     data: WithRequiredProperty<ProductTypes.CreateProductOnlyDTO, "status">[],
-    context: Context = {}
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
   ): Promise<Product[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
-
     const products = data.map((product) => {
-      return manager.create(Product, product)
+      return (manager as SqlEntityManager).create(Product, product)
     })
 
-    await manager.persist(products)
+    await (manager as SqlEntityManager).persist(products)
 
     return products
   }

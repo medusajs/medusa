@@ -1,10 +1,19 @@
 import { Product, ProductVariant } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import { isString, ModulesSdkUtils, MedusaError, isDefined, retrieveEntity } from "@medusajs/utils"
-import { ProductVariantServiceTypes } from "../types/services"
 import { ProductVariantRepository } from "@repositories"
+import {
+  InjectTransactionManager,
+  isString,
+  MedusaContext,
+  ModulesSdkUtils,
+  retrieveEntity,
+  MedusaError,
+  isDefined,
+} from "@medusajs/utils"
 
+import { ProductVariantServiceTypes } from "../types/services"
 import ProductService from "./product"
+import { doNotForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productVariantRepository: DAL.RepositoryService
@@ -31,13 +40,16 @@ export default class ProductVariantService<
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: Context
   ): Promise<TEntity> {
-    return await retrieveEntity<ProductVariant, ProductTypes.ProductVariantDTO>({
+    return (await retrieveEntity<
+      ProductVariant,
+      ProductTypes.ProductVariantDTO
+    >({
       id: productVariantId,
       entityName: ProductVariant.name,
       repository: this.productVariantRepository_,
       config,
       sharedContext,
-    }) as TEntity
+    })) as TEntity
   }
 
   async list(
@@ -72,39 +84,37 @@ export default class ProductVariantService<
     )) as [TEntity[], number]
   }
 
+  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
   async create(
     productOrId: TProduct | string,
     data: ProductTypes.CreateProductVariantOnlyDTO[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return await this.productVariantRepository_.transaction(
-      async (manager) => {
-        let product = productOrId as unknown as Product
+    let product = productOrId as unknown as Product
 
-        if (isString(productOrId)) {
-          product = await this.productService_.retrieve(
-            productOrId,
-            {},
-            sharedContext
-          )
-        }
+    if (isString(productOrId)) {
+      product = await this.productService_.retrieve(
+        productOrId,
+        {},
+        sharedContext
+      )
+    }
 
-        let computedRank = product.variants.toArray().length
+    let computedRank = product.variants.toArray().length
 
-        const data_ = [...data]
-        data_.forEach((variant) => {
-          Object.assign(variant, {
-            variant_rank: computedRank++,
-            product,
-          })
-        })
+    const data_ = [...data]
+    data_.forEach((variant) => {
+      Object.assign(variant, {
+        variant_rank: computedRank++,
+        product,
+      })
+    })
 
-        return await this.productVariantRepository_.create(data_, {
-          transactionManager: manager,
-        })
-      },
-      { transaction: sharedContext?.transactionManager }
-    )
+    return (await (
+      this.productVariantRepository_ as ProductVariantRepository
+    ).create(data_, {
+      transactionManager: sharedContext.transactionManager,
+    })) as TEntity[]
   }
 
   async update(
