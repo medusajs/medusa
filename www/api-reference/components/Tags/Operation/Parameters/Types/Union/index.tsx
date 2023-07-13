@@ -1,16 +1,24 @@
 import type { SchemaObject } from "@/types/openapi"
-import TagOperationParametersDefault from "../Default"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
-import type { TagOperationParametersPropertiesProps } from "../Properties"
+import type { TagOperationParametersDefaultProps } from "../Default"
+import { TagOperationParametersObjectProps } from "../Object"
 
-const TagOperationParametersProperties =
-  dynamic<TagOperationParametersPropertiesProps>(
-    async () => import("../Properties"),
+const TagOperationParametersObject =
+  dynamic<TagOperationParametersObjectProps>(
+    async () => import("../Object"),
     {
       loading: () => <Loading />,
     }
-  ) as React.FC<TagOperationParametersPropertiesProps>
+  ) as React.FC<TagOperationParametersObjectProps>
+
+const TagOperationParametersDefault =
+  dynamic<TagOperationParametersDefaultProps>(
+    async () => import("../Default"),
+    {
+      loading: () => <Loading />,
+    }
+  ) as React.FC<TagOperationParametersDefaultProps>
 
 export type TagOperationParametersUnionProps = {
   name: string
@@ -21,39 +29,23 @@ export type TagOperationParametersUnionProps = {
 const TagOperationParametersUnion = ({
   name,
   schema,
-  is_required,
 }: TagOperationParametersUnionProps) => {
   const objectSchema = schema.anyOf
     ? schema.anyOf.find((item) => item.type === "object" && item.properties)
     : schema.allOf?.find((item) => item.type === "object" && item.properties)
 
-  return (
-    <>
-      {objectSchema && (
-        <details>
-          <summary>
-            <TagOperationParametersDefault
-              name={name}
-              schema={schema}
-              is_required={is_required}
-              className="inline-flex w-11/12"
-            />
-          </summary>
+  if (!objectSchema) {
+    return (
+      <TagOperationParametersDefault
+        schema={schema}
+        name={name}
+        is_required={false}
+      />
+    )
+  }
 
-          <TagOperationParametersProperties
-            schema={objectSchema}
-            className="bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pl-1"
-          />
-        </details>
-      )}
-      {!objectSchema && (
-        <TagOperationParametersDefault
-          name={name}
-          schema={schema}
-          is_required={is_required}
-        />
-      )}
-    </>
+  return (
+    <TagOperationParametersObject schema={objectSchema} name={name} />
   )
 }
 

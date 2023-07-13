@@ -3,6 +3,7 @@ import clsx from "clsx"
 import type { TagOperationParametersProps } from "../../Parameters"
 import Loading from "@/components/Loading"
 import dynamic from "next/dynamic"
+import { Suspense } from "react"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
   async () => import("../../Parameters"),
@@ -19,7 +20,7 @@ const TagsOperationDescriptionSectionRequest = ({
   requestBody,
 }: TagsOperationDescriptionSectionRequestProps) => {
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <div
         className={clsx(
           "border-medusa-border-base dark:border-medusa-border-base-dark border-b border-solid",
@@ -33,8 +34,9 @@ const TagsOperationDescriptionSectionRequest = ({
         schemaObject={
           requestBody.content[Object.keys(requestBody.content)[0]].schema
         }
+        topLevel={true}
       />
-    </>
+    </Suspense>
   )
 }
 

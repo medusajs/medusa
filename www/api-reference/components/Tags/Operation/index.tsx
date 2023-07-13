@@ -4,7 +4,7 @@ import type { Operation } from "@/types/openapi"
 import clsx from "clsx"
 import type { OpenAPIV3 } from "openapi-types"
 import getSectionId from "@/utils/get-section-id"
-import { Suspense, useEffect } from "react"
+import { Suspense, useCallback, useEffect, useRef } from "react"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
 import { useInView } from "react-intersection-observer"
@@ -34,7 +34,8 @@ const TagOperation = ({
 }: TagOperationProps) => {
   const { setActivePath } = useSidebar()
   const path = getSectionId([...(operation.tags || []), operation.operationId])
-  const { ref } = useInView({
+  const nodeRef = useRef<Element | null>()
+  const { ref, entry } = useInView({
     threshold: 0.5,
     onChange: (inView) => {
       if (inView) {
@@ -46,33 +47,43 @@ const TagOperation = ({
     },
   })
 
+  // Use `useCallback` so we don't recreate the function on each render
+  const setRefs = useCallback(
+    (node: Element | null) => {
+      // Ref's from useRef needs to have the node assigned to `current`
+      nodeRef.current = node;
+      // Callback refs, like the one from `useInView`, is a function that takes the node as an argument
+      ref(node);
+    },
+    [ref],
+  );
+
   useEffect(() => {
-    const currentHash = location.hash.replace("#", "")
-    if (currentHash === path) {
-      const elm = document.getElementById(currentHash) as Element
-      elm?.scrollIntoView()
+    if (nodeRef && nodeRef.current) {
+      const currentHash = location.hash.replace("#", "")
+      if (currentHash === path) {
+        nodeRef.current.scrollIntoView()
+      }
     }
-  }, [path])
+  }, [nodeRef])
 
   return (
-    <Suspense fallback={<Loading />}>
-      <div
-        className={clsx("flex min-h-screen justify-between gap-1 pt-[57px]")}
-        id={path}
-        ref={ref}
-      >
-        <div className={clsx("w-api-ref-content")}>
-          <TagsOperationDescriptionSection operation={operation} />
-        </div>
-        <div className={clsx("w-api-ref-code z-10")}>
-          <TagOperationCodeSection
-            method={method || ""}
-            operation={operation}
-            endpointPath={endpointPath}
-          />
-        </div>
+    <div
+      className={clsx("flex min-h-screen justify-between gap-1 pt-[57px]")}
+      id={path}
+      ref={setRefs}
+    >
+      <div className={clsx("w-api-ref-content")}>
+        <TagsOperationDescriptionSection operation={operation} />
       </div>
-    </Suspense>
+      <div className={clsx("w-api-ref-code z-10")}>
+        <TagOperationCodeSection
+          method={method || ""}
+          operation={operation}
+          endpointPath={endpointPath}
+        />
+      </div>
+    </div>
   )
 }
 

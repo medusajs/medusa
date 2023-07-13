@@ -4,6 +4,7 @@ import type { TagsOperationDescriptionSectionRequestProps } from "./Request"
 import type { TagsOperationDescriptionSectionResponsesProps } from "./Responses"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
+import { Suspense } from "react"
 
 const TagsOperationDescriptionSectionSecurity =
   dynamic<TagsOperationDescriptionSectionSecurityProps>(
@@ -38,7 +39,7 @@ const TagsOperationDescriptionSection = ({
   return (
     <>
       <h3>{operation.summary}</h3>
-      <p>{operation.description}</p>
+      <p className="my-1">{operation.description}</p>
       {operation.security && (
         <TagsOperationDescriptionSectionSecurity
           security={operation.security}

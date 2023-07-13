@@ -1,6 +1,8 @@
-import { OpenAPIV3 } from "openapi-types"
+import type { OpenAPIV3 } from "openapi-types"
 
-type CodeSample = {
+export type Area = "admin" | "store"
+
+export type CodeSample = {
   lang: string
   label: string
   source: string
@@ -41,6 +43,7 @@ export type ExampleObject = {
   title: string
   value: string
   content: string
+  contentDetailed?: string
 }
 
 export type PathsObject = {

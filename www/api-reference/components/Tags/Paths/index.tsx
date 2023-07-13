@@ -11,6 +11,7 @@ import { useEffect } from "react"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
 import type { TagOperationProps } from "../Operation"
+import { useArea } from "@/providers/area"
 
 const TagOperation = dynamic<TagOperationProps>(
   async () => import("../Operation"),
@@ -21,11 +22,11 @@ const TagOperation = dynamic<TagOperationProps>(
 
 export type TagSectionPathsProps = {
   tag: OpenAPIV3.TagObject
-  area: string
 } & React.HTMLAttributes<HTMLDivElement>
 
-const TagPaths = ({ tag, area }: TagSectionPathsProps) => {
+const TagPaths = ({ tag }: TagSectionPathsProps) => {
   const tagSlugName = getSectionId([tag.name])
+  const { area } = useArea()
   const { data } = useSWR<{
     paths: PathsObject
   }>(`/api/tag?tagName=${tagSlugName}&area=${area}`, fetcher)
@@ -60,30 +61,25 @@ const TagPaths = ({ tag, area }: TagSectionPathsProps) => {
   }, [paths])
 
   return (
-    <div>
-      {!paths && <Loading />}
-      {paths && (
-        <>
-          {Object.entries(paths).map(
-            ([endpointPath, operations], pathIndex) => (
-              <div key={pathIndex}>
-                {Object.entries(operations).map(
-                  ([method, operation], operationIndex) => (
-                    <TagOperation
-                      method={method}
-                      operation={operation as Operation}
-                      tag={tag}
-                      key={`${pathIndex}-${operationIndex}`}
-                      endpointPath={endpointPath}
-                    />
-                  )
-                )}
-              </div>
-            )
-          )}
-        </>
+    <>
+      {Object.entries(paths).map(
+        ([endpointPath, operations], pathIndex) => (
+          <div key={pathIndex}>
+            {Object.entries(operations).map(
+              ([method, operation], operationIndex) => (
+                <TagOperation
+                  method={method}
+                  operation={operation as Operation}
+                  tag={tag}
+                  key={`${pathIndex}-${operationIndex}`}
+                  endpointPath={endpointPath}
+                />
+              )
+            )}
+          </div>
+        )
       )}
-    </div>
+    </>
   )
 }
 

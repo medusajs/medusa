@@ -42,7 +42,7 @@ const Section = ({
   }, [sectionRef, addToSidebar, addItems, scannedHeading])
 
   return (
-    <div ref={sectionRef} className={clsx("w-api-ref-content", className)}>
+    <div ref={sectionRef} className={clsx("w-api-ref-content", "section-content", className)}>
       {children}
     </div>
   )

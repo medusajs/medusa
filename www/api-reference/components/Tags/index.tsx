@@ -8,19 +8,19 @@ import Loading from "@/components/Loading"
 import { useBaseSpecs } from "@/providers/base-specs"
 import dynamic from "next/dynamic"
 import type { TagSectionProps } from "./Section"
+import { useArea } from "@/providers/area"
 
 const TagSection = dynamic<TagSectionProps>(async () => import("./Section"), {
   loading: () => <Loading />,
 }) as React.FC<TagSectionProps>
 
-export type TagsProps = {
-  area: string
-} & React.HTMLAttributes<HTMLDivElement>
+export type TagsProps = React.HTMLAttributes<HTMLDivElement>
 
-const Tags = ({ area }: TagsProps) => {
+const Tags = () => {
   const [tags, setTags] = useState<OpenAPIV3.TagObject[]>([])
   const [loadData, setLoadData] = useState<boolean>(false)
   const { setBaseSpecs } = useBaseSpecs()
+  const { area } = useArea()
 
   const { data, isLoading } = useSWR<OpenAPIV3.Document>(
     loadData ? `/api/base-specs?area=${area}` : null,
@@ -41,13 +41,13 @@ const Tags = ({ area }: TagsProps) => {
   }, [data, setBaseSpecs])
 
   return (
-    <div>
+    <>
       {isLoading && <Loading />}
       {data &&
         tags.map((tag, index) => (
-          <TagSection tag={tag} key={index} area={area} />
+          <TagSection tag={tag} key={index} />
         ))}
-    </div>
+    </>
   )
 }
 

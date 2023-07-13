@@ -2,58 +2,77 @@ import type { SchemaObject } from "@/types/openapi"
 import TagOperationParametersDefault from "../Default"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
-import type { TagOperationParametersPropertiesProps } from "../Properties"
+import type { TagOperationParametersProps } from "../.."
+import clsx from "clsx"
+import { useState } from "react"
+import Details from "@/components/Details"
 
-const TagOperationParametersProperties =
-  dynamic<TagOperationParametersPropertiesProps>(
-    async () => import("../Properties"),
-    {
-      loading: () => <Loading />,
-    }
-  ) as React.FC<TagOperationParametersPropertiesProps>
+const TagOperationParameters = dynamic<TagOperationParametersProps>(
+  async () => import("../.."),
+  {
+    loading: () => <Loading />
+  }
+) as React.FC<TagOperationParametersProps>
 
-export type TagOperationParamatersObjectProps = {
-  name: string
+export type TagOperationParametersObjectProps = {
+  name?: string
   schema: SchemaObject
-  is_required?: boolean
+  isRequired?: boolean
+  topLevel?: boolean
 }
 
 const TagOperationParametersObject = ({
   name,
   schema,
-  is_required,
-}: TagOperationParamatersObjectProps) => {
-  if (schema.type !== "object") {
+  isRequired,
+  topLevel = false
+}: TagOperationParametersObjectProps) => {
+  if (schema.type !== "object" || (!schema.properties && !name)) {
     return <></>
   }
 
-  if (!schema.properties) {
+  const getPropertyDescriptionElm = () => {
     return (
       <TagOperationParametersDefault
         name={name}
         schema={schema}
-        is_required={is_required}
+        is_required={isRequired}
         className="inline-flex w-[calc(100%-16px)]"
       />
     )
   }
 
-  return (
-    <details>
-      <summary>
-        <TagOperationParametersDefault
-          name={name}
-          schema={schema}
-          is_required={is_required}
-          className="inline-flex w-[calc(100%-16px)]"
-        />
-      </summary>
+  const getPropertyParameterElms = (isNested = false) => {
+    return (
+      <>
+        {Object.entries(schema.properties).map(([key, value], index) => (
+          <TagOperationParameters
+            schemaObject={{
+              ...value,
+              title: key || value.title
+            }}
+            key={index}
+            className={clsx(
+              isNested && "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pl-1"
+            )}
+          />
+        ))}
+      </>
+    )
+  }
 
-      <TagOperationParametersProperties
-        schema={schema}
-        className="bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pl-1"
-      />
-    </details>
+  if (!schema.properties) {
+    return getPropertyDescriptionElm()
+  }
+
+  if (topLevel) {
+    return getPropertyParameterElms()
+  }
+
+  return (
+    <Details summaryContent={getPropertyDescriptionElm()}>
+      {getPropertyParameterElms(true)}
+    </Details>
   )
 }
 

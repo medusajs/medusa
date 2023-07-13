@@ -10,10 +10,10 @@ import Loading from "@/components/Loading"
 import type { SectionProps } from "../../Section"
 import type { MDXContentClientProps } from "../../MDXContent/Client"
 import type { TagSectionPathsProps } from "../Paths"
+import { useArea } from "@/providers/area"
 
 export type TagSectionProps = {
   tag: OpenAPIV3.TagObject
-  area: string
 } & React.HTMLAttributes<HTMLDivElement>
 
 const TagPaths = dynamic<TagSectionPathsProps>(async () => import("../Paths"), {
@@ -31,7 +31,7 @@ const MDXContentClient = dynamic<MDXContentClientProps>(
   }
 ) as React.FC<MDXContentClientProps>
 
-const TagSection = ({ tag, area }: TagSectionProps) => {
+const TagSection = ({ tag }: TagSectionProps) => {
   const { setActivePath } = useSidebar()
   const [loadPaths, setLoadPaths] = useState(false)
   const slugTagName = getSectionId([tag.name])
@@ -72,7 +72,7 @@ const TagSection = ({ tag, area }: TagSectionProps) => {
           <MDXContentClient content={tag.description} />
         </Section>
       )}
-      {loadPaths && <TagPaths tag={tag} area={area} />}
+      {loadPaths && <TagPaths tag={tag} />}
       {!loadPaths && <Loading />}
     </div>
   )

@@ -3,7 +3,6 @@ require("dotenv").config()
 const path = require("path")
 const fs = require("fs")
 const docsPath = path.join(__dirname, "../../docs/content")
-const apisPath = path.join(__dirname, "../../docs/api")
 const reverseSidebar = require("./src/utils/reverseSidebar")
 
 const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
@@ -183,47 +182,6 @@ const config = {
         },
         gtag: {
           trackingID: "G-S7G7X3JYS3",
-        },
-      },
-    ],
-    [
-      "redocusaurus",
-      {
-        // Plugin Options for loading OpenAPI files
-        specs: [
-          {
-            spec: path.join(apisPath, "store/openapi.yaml"),
-            route: "/api/store",
-            layout: {
-              noFooter: true,
-            },
-          },
-          {
-            spec: path.join(apisPath, "admin/openapi.yaml"),
-            route: "/api/admin",
-            layout: {
-              noFooter: true,
-            },
-          },
-        ],
-        // Theme Options for modifying how redoc renders them
-        theme: {
-          primaryColorDark: "#161618",
-          options: {
-            disableSearch: true,
-            nativeScrollbars: true,
-            sortTagsAlphabetically: true,
-            expandResponses: "200,204",
-            generatedPayloadSamplesMaxDepth: 4,
-            showObjectSchemaExamples: true,
-            requiredPropsFirst: true,
-            hideRequestPayloadSample: true,
-          },
-          theme: {
-            sidebar: {
-              width: "250px",
-            },
-          },
         },
       },
     ],

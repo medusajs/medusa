@@ -1,7 +1,6 @@
 import type { Operation } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
-import { useEffect, useState } from "react"
 import type { TagsOperationCodeSectionResponsesSampleProps } from "./Sample"
 import Loading from "@/components/Loading"
 
@@ -20,48 +19,30 @@ type TagsOperationCodeSectionResponsesProps = {
 const TagsOperationCodeSectionResponses = ({
   operation,
 }: TagsOperationCodeSectionResponsesProps) => {
-  const [responseCodes, setResponseCodes] = useState(
-    Object.keys(operation.responses).filter(
-      (responseCode) => operation.responses[responseCode].content
-    )
-  )
-  const [selectedResponseTab, setSelectedResponseTab] = useState("")
+  const responseCodes = Object.keys(operation.responses)
+  const responseCode = responseCodes.find((rc) => rc === "200" || rc === "201")
+  const response = responseCode ? operation.responses[responseCode] : null
 
-  useEffect(() => {
-    if (!selectedResponseTab && responseCodes.length) {
-      setSelectedResponseTab(responseCodes[0])
-    }
-  }, [responseCodes])
+  if (!response) {
+    return <></>
+  }
 
   return (
-    <div>
-      <h3>Response samples</h3>
-      <div className="mb-1 flex gap-1">
-        {responseCodes.map((responseCode, index) => (
-          <button
-            key={index}
-            onClick={() => setSelectedResponseTab(responseCode)}
-            className={clsx(
-              "text-medusa-text-base dark:text-medusa-text-base-dark border-medusa-border-base dark:border-medusa-border-base-dark cursor-pointer rounded border p-0.5",
-              selectedResponseTab === responseCode &&
-                "bg-medusa-bg-interactive dark:bg-medusa-bg-interactive-dark text-medusa-text-on-color",
-              selectedResponseTab !== responseCode &&
-                "bg-medusa-bg-base dark:bg-medusa-bg-base-dark"
-            )}
-          >
-            {responseCode}
-          </button>
-        ))}
-      </div>
+    <>
+      <h3>Response sample <span
+        className={clsx(
+          "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",
+          "border-medusa-tag-green-border dark:border-medusa-tag-green-border-dark rounded border p-0.5 w-[min-content]",
+          "text-label-small"
+        )}
+      >
+        {responseCode}
+      </span></h3>
 
-      {responseCodes.map((responseCode, index) => (
-        <TagsOperationCodeSectionResponsesSample
-          response={operation.responses[responseCode]}
-          key={index}
-          className={clsx(responseCode !== selectedResponseTab && "hidden")}
-        />
-      ))}
-    </div>
+      <TagsOperationCodeSectionResponsesSample
+        response={response}
+      />
+    </>
   )
 }
 

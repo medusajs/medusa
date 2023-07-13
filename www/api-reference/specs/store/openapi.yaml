@@ -424,8 +424,6 @@ tags:
     description: Order endpoints that allow handling orders in Medusa.
   - name: Products
     description: Product endpoints that allow handling products in Medusa.
-  - name: Product Variants
-    description: Product Variant endpoints that allow handling product variants in Medusa.
   - name: Regions
     description: Region endpoints that allow handling regions in Medusa.
   - name: Return Reasons

@@ -24,7 +24,7 @@ const TagOperationParametersDescription = ({
     case schema.type === "object":
       typeDescription = (
         <>
-          {schema.type} ({schema.title})
+          {schema.type} {schema.title ? `(${schema.title})` : ''}
         </>
       )
       break

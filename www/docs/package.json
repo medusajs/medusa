@@ -42,7 +42,6 @@
     "react-tooltip": "5.7.4",
     "react-transition-group": "^4.4.5",
     "react-uuid": "^2.0.0",
-    "redocusaurus": "^1.4.0",
     "tailwindcss": "^3.3.2",
     "url-loader": "^4.1.1"
   },

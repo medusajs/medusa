@@ -1,20 +1,19 @@
 import Loading from "@/components/Loading"
 import type { SchemaObject } from "@/types/openapi"
-import clsx from "clsx"
 import dynamic from "next/dynamic"
-import type { TagOperationParamatersObjectProps } from "./Types/Object"
+import type { TagOperationParametersObjectProps } from "./Types/Object"
 import type { TagOperationParametersDefaultProps } from "./Types/Default"
 import type { TagOperationParametersArrayProps } from "./Types/Array"
 import type { TagOperationParametersUnionProps } from "./Types/Union"
 import type { TagOperationParamatersOneOfProps } from "./Types/OneOf"
+import { Suspense } from "react"
 
-const TagOperationParametersObject = dynamic<TagOperationParamatersObjectProps>(
+const TagOperationParametersObject = dynamic<TagOperationParametersObjectProps>(
   async () => import("./Types/Object"),
   {
     loading: () => <Loading />,
   }
-) as React.FC<TagOperationParamatersObjectProps>
-
+) as React.FC<TagOperationParametersObjectProps>
 const TagOperationParametersDefault =
   dynamic<TagOperationParametersDefaultProps>(
     async () => import("./Types/Default"),
@@ -43,85 +42,61 @@ const TagOperationParamatersOneOf = dynamic<TagOperationParamatersOneOfProps>(
 
 export type TagOperationParametersProps = {
   schemaObject: SchemaObject
+  topLevel?: boolean
+  className?: string
 }
 
 const TagOperationParameters = ({
   schemaObject,
+  topLevel = false,
+  className
 }: TagOperationParametersProps) => {
-  return (
-    <div>
-      {schemaObject.properties && (
-        <ul>
-          {Object.entries(schemaObject.properties).map(([key, value]) => {
-            let content = <></>
 
-            switch (true) {
-              case value.type === "object":
-                content = (
-                  <TagOperationParametersObject
-                    schema={value}
-                    name={key}
-                    is_required={schemaObject.required?.includes(key)}
-                  />
-                )
-                break
-              case value.type === "array":
-                content = (
-                  <TagOperationParametersArray
-                    schema={value}
-                    name={key}
-                    is_required={schemaObject.required?.includes(key)}
-                  />
-                )
-                break
-              case value.anyOf !== undefined || value.allOf !== undefined:
-                content = (
-                  <TagOperationParametersUnion
-                    schema={value}
-                    name={key}
-                    is_required={schemaObject.required?.includes(key)}
-                  />
-                )
-                break
-              default:
-                content = (
-                  <TagOperationParametersDefault
-                    schema={value}
-                    name={key}
-                    is_required={schemaObject.required?.includes(key)}
-                  />
-                )
-            }
-
-            return (
-              <li className={clsx("mt-0.5")} key={key}>
-                {content}
-              </li>
-            )
-          })}
-        </ul>
-      )}
-      {(schemaObject.anyOf || schemaObject.allOf) && (
+  const getElement = () => {
+    if (schemaObject.type === "object") {
+      return <TagOperationParametersObject name={schemaObject.title || ""} schema={schemaObject} topLevel={topLevel} />
+    }
+  
+    if (schemaObject.type === "array") {
+      return (
+        <TagOperationParametersArray
+          name={schemaObject.title || ""}
+          schema={schemaObject}
+        />
+      )
+    }
+  
+    if (schemaObject.anyOf || schemaObject.allOf) {
+      return (
         <TagOperationParametersUnion
           schema={schemaObject}
           name={schemaObject.title || ""}
           is_required={false}
         />
-      )}
-      {schemaObject.oneOf && (
-        <TagOperationParamatersOneOf schema={schemaObject} />
-      )}
-      {!schemaObject.properties &&
-        !schemaObject.anyOf &&
-        !schemaObject.allOf &&
-        !schemaObject.oneOf && (
-          <TagOperationParametersDefault
-            schema={schemaObject}
-            name={schemaObject.title}
-            is_required={false}
-          />
-        )}
-    </div>
+      )
+    }
+  
+    if (schemaObject.oneOf) {
+      return <TagOperationParamatersOneOf schema={schemaObject} />
+    }
+
+    return (
+      <TagOperationParametersDefault
+        schema={schemaObject}
+        name={schemaObject.title}
+        is_required={false}
+      />
+    )
+
+    return <></>
+  }
+
+  return (
+    <Suspense fallback={<Loading />}>
+      <div className={className}>
+        {getElement()}
+      </div>
+    </Suspense>
   )
 }
 

@@ -170,8 +170,6 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       value={{
         items,
         addItems,
-        // activeItem,
-        // changeActiveItem,
         activePath,
         setActivePath,
         isItemActive,

@@ -1,11 +1,13 @@
+import clsx from "clsx"
 import { Highlight, HighlightProps, themes } from "prism-react-renderer"
 
 export type CodeBlockProps = {
   code: string
   language?: string
+  preClassName?: string
 } & Omit<HighlightProps, "code" | "language" | "children">
 
-const CodeBlock = ({ code, language = "", ...rest }: CodeBlockProps) => {
+const CodeBlock = ({ code, language = "", preClassName, ...rest }: CodeBlockProps) => {
   return (
     <Highlight
       theme={themes.vsDark}
@@ -14,7 +16,10 @@ const CodeBlock = ({ code, language = "", ...rest }: CodeBlockProps) => {
       {...rest}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre style={style} className={className}>
+        <pre style={style} className={clsx(
+          className,
+          preClassName
+        )}>
           {tokens.map((line, i) => (
             <div key={i} {...getLineProps({ line })}>
               <span className="mr-1">{i + 1}</span>

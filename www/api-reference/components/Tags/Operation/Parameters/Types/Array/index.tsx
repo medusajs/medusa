@@ -1,8 +1,9 @@
 import type { SchemaObject } from "@/types/openapi"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
-import type { TagOperationParamatersObjectProps } from "../Object"
 import type { TagOperationParametersDefaultProps } from "../Default"
+import type { TagOperationParametersProps } from "../.."
+import Details from "@/components/Details"
 
 const TagOperationParametersDefault =
   dynamic<TagOperationParametersDefaultProps>(
@@ -12,12 +13,12 @@ const TagOperationParametersDefault =
     }
   ) as React.FC<TagOperationParametersDefaultProps>
 
-const TagOperationParametersObject = dynamic<TagOperationParamatersObjectProps>(
-  async () => import("../Object"),
+const TagOperationParameters = dynamic<TagOperationParametersProps>(
+  async () => import("../.."),
   {
     loading: () => <Loading />,
   }
-) as React.FC<TagOperationParamatersObjectProps>
+) as React.FC<TagOperationParametersProps>
 
 export type TagOperationParametersArrayProps = {
   name: string
@@ -34,23 +35,32 @@ const TagOperationParametersArray = ({
     return <></>
   }
 
+  if (!schema.items) {
+    return (
+      <TagOperationParametersDefault
+        name={name}
+        schema={schema}
+        is_required={is_required}
+        className="inline-flex w-[calc(100%-16px)]"
+      />
+    )
+  }
+
   return (
-    <>
-      {schema.items?.type === "object" && (
-        <TagOperationParametersObject
-          name={name}
-          schema={schema.items}
-          is_required={is_required}
-        />
-      )}
-      {schema.items?.type !== "object" && (
-        <TagOperationParametersDefault
+    <Details summaryContent={(
+      <TagOperationParametersDefault
           name={name}
           schema={schema}
           is_required={is_required}
+          className="inline-flex w-[calc(100%-16px)]"
         />
-      )}
-    </>
+    )}>
+      <TagOperationParameters
+        schemaObject={schema.items}
+        className="bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pl-1"
+        topLevel={true}
+      />
+    </Details>
   )
 }
 

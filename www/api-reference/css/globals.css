@@ -37,7 +37,7 @@ p {
   clip-path: inset(0);
 }
 
-ul {
+.section-content ul {
   @apply list-disc px-1;
 }
 

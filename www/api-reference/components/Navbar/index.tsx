@@ -15,9 +15,7 @@ const Navbar = () => {
       )}
     >
       <div className="flex items-center">
-        <Link href="/" className="h-fit">
-          <NavbarLogo />
-        </Link>
+        <NavbarLogo />
         {/* Add search bar */}
       </div>
       <div className="flex min-w-0 flex-1 items-center justify-end">

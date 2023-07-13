@@ -1,7 +1,7 @@
 import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import type { TagOperationParametersProps } from "../.."
 import Loading from "@/components/Loading"
 
@@ -23,7 +23,7 @@ const TagOperationParamatersOneOf = ({
     schema.oneOf?.[0].title
   )
   return (
-    <div>
+    <Suspense fallback={<Loading />}>
       <ul className="flex list-none gap-1">
         {schema.oneOf?.map((item, index) => (
           <li
@@ -45,10 +45,10 @@ const TagOperationParamatersOneOf = ({
 
       {schema.oneOf?.map((item, index) => (
         <div className={clsx(activeTab !== item.title && "hidden")} key={index}>
-          <TagOperationParameters schemaObject={item} />
+          <TagOperationParameters schemaObject={item} topLevel={true} />
         </div>
       ))}
-    </div>
+    </Suspense>
   )
 }
 
