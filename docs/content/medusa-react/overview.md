@@ -190,6 +190,16 @@ Learn more about how you can use mutations in [Tanstack Query’s documentation]
 
 ### Custom Hooks
 
+:::note
+
+This feature is available in the `beta` version of Medusa React, which also requires the `beta` version of the Medusa core. You can install them with the following command:
+
+```bash
+npm install medusa-react@beta @medusajs/medusa@beta
+```
+
+:::
+
 Medusa React provides a utility function `createCustomAdminHooks` that allows developers to consume their admin custom endpoints using the same Medusa React methods and conventions. It returns custom mutation and query hooks that you can use to retrieve and manipulate data using your custom endpoints. This utility function is useful when customizing the admin with widgets.
 
 ```ts

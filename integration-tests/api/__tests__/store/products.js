@@ -10,6 +10,10 @@ const {
 
 const productSeeder = require("../../helpers/store-product-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
+const {
+  allowedStoreProductsFields,
+  defaultStoreProductsRelations,
+} = require("@medusajs/medusa/dist")
 
 jest.setTimeout(30000)
 
@@ -988,23 +992,28 @@ describe("/store/products", () => {
     it("response contains only fields defined with `fields` param", async () => {
       const api = useApi()
 
+      const fields = allowedStoreProductsFields
+
       const response = await api.get(
-        "/store/products/test-product?fields=handle"
+        `/store/products/test-product?fields=${fields.join(",")}`
       )
 
       expect(response.status).toEqual(200)
 
-      expect(Object.keys(response.data.product)).toEqual([
-        // fields
-        "handle",
-        // relations
-        "variants",
-        "options",
-        "images",
-        "tags",
-        "collection",
-        "type",
-      ])
+      const expectedProperties = [...fields, ...defaultStoreProductsRelations]
+      const actualProperties = [
+        ...Object.keys(response.data.product),
+        ...Object.keys(response.data.product.variants[0]).map(
+          (key) => `variants.${key}`
+        ),
+        "variants.prices.amount",
+        "options.values",
+      ]
+
+      expect(Object.keys(response.data.product).length).toEqual(31)
+      expect(actualProperties).toEqual(
+        expect.arrayContaining(expectedProperties)
+      )
     })
   })
 })

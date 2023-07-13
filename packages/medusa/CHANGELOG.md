@@ -1,5 +1,29 @@
 # Change Log
 
+## 1.12.2
+
+### Patch Changes
+
+- [#4410](https://github.com/medusajs/medusa/pull/4410) [`85eb12883`](https://github.com/medusajs/medusa/commit/85eb12883e0571d494687e7a7e2f310c878f721d) Thanks [@olivermrbl](https://github.com/olivermrbl)! - feat(medusa): Improve error messaging in plugin loader
+
+- [#4389](https://github.com/medusajs/medusa/pull/4389) [`9dcdc0041`](https://github.com/medusajs/medusa/commit/9dcdc0041a2b08cc0723343dd8d9127d9977b086) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, utils): fix the way selects are consumed alongside the relations
+
+- [#4397](https://github.com/medusajs/medusa/pull/4397) [`01245ac89`](https://github.com/medusajs/medusa/commit/01245ac89e13b687ac346c35168f9f28014e613d) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa): Allow to register extended validators seemlesly
+
+- [#4420](https://github.com/medusajs/medusa/pull/4420) [`6f1fa244f`](https://github.com/medusajs/medusa/commit/6f1fa244fa47d4ecdaa7363483bd7da555dbbf32) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(medusa-cli): Cleanup plugin setup + include Logger type update which is used across multiple packages
+
+- [#4443](https://github.com/medusajs/medusa/pull/4443) [`bdd9c5a7e`](https://github.com/medusajs/medusa/commit/bdd9c5a7e9a9b1a6b4d1e2dcf22f67540494fedc) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): model loader with customizations
+
+- [#4398](https://github.com/medusajs/medusa/pull/4398) [`9760d4a96`](https://github.com/medusajs/medusa/commit/9760d4a96c27f6f89a8c3f3b6e73b17547f97f2a) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa, utils): improve devx for core entity customizations
+
+- [#4442](https://github.com/medusajs/medusa/pull/4442) [`4264302f2`](https://github.com/medusajs/medusa/commit/4264302f214f0717e8b3218a15d43def9122879c) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(medusa, stripe, paypal): Add update payment session support to the abstract payment processor API
+
+- [#4367](https://github.com/medusajs/medusa/pull/4367) [`7bf7d2ade`](https://github.com/medusajs/medusa/commit/7bf7d2adef53b80230a36c22e639b471e501e52e) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(medusa): Concurrently get the items and count instead of sequentially
+
+- Updated dependencies [[`499c3478c`](https://github.com/medusajs/medusa/commit/499c3478c910c8b922a15cc6f4d9fbad122a347f), [`9dcdc0041`](https://github.com/medusajs/medusa/commit/9dcdc0041a2b08cc0723343dd8d9127d9977b086), [`6f1fa244f`](https://github.com/medusajs/medusa/commit/6f1fa244fa47d4ecdaa7363483bd7da555dbbf32), [`9760d4a96`](https://github.com/medusajs/medusa/commit/9760d4a96c27f6f89a8c3f3b6e73b17547f97f2a)]:
+  - @medusajs/utils@1.9.2
+  - @medusajs/medusa-cli@1.3.17
+
 ## 1.12.1
 
 ### Patch Changes
