@@ -219,7 +219,13 @@ class SendGridService extends NotificationService {
   }
 
   async sendNotification(event, eventData, attachmentGenerator) {
+    const data = await this.fetchData(event, eventData, attachmentGenerator)
+
     let templateId = this.getTemplateId(event)
+
+    if (data.locale) {
+      templateId = this.getLocalizedTemplateId(event, data.locale) || templateId
+    }
 
     if (!templateId) {
       throw new MedusaError(
@@ -228,23 +234,11 @@ class SendGridService extends NotificationService {
       )
     }
 
-    const data = await this.fetchData(event, eventData, attachmentGenerator)
-    if (!data) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Sendgrid service: Invalid event data was received"
-      )
-    }
-
     const attachments = await this.fetchAttachments(
       event,
       data,
       attachmentGenerator
     )
-
-    if (data.locale) {
-      templateId = this.getLocalizedTemplateId(event, data.locale) || templateId
-    }
 
     const sendOptions = {
       template_id: templateId,
