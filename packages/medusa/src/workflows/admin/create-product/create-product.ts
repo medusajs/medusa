@@ -17,6 +17,7 @@ import {
 import { CreateProductVariantInput } from "../../../types/product-variant"
 import {
   attachInventoryItems,
+  attachShippingProfileToProduct,
   createInventoryItems,
   CreateProductPreparedData,
   createProducts,
@@ -26,6 +27,7 @@ import {
   removeInventoryItems,
   removeProducts,
 } from "../../functions"
+import { detachShippingProfileFromProduct } from "../../functions/detach-shipping-profile-from-product"
 
 enum Actions {
   prepare = "prepare",
@@ -151,9 +153,35 @@ export async function createProductsWorkflow(
           data: CreateProductVariantInput[],
           { invoke }
         ) => {
-          const { productsHandleShippingProfileMap } = invoke[
+          const { productsHandleShippingProfileMap, products } = invoke[
             Actions.createProducts
           ] as CreateProductsStepResponse
+
+          return await attachShippingProfileToProduct({
+            container,
+            manager,
+            data: {
+              productsHandleShippingProfileMap,
+              products,
+            },
+          })
+        },
+        [TransactionHandlerType.COMPENSATE]: async (
+          data: CreateProductVariantInput[],
+          { invoke }
+        ) => {
+          const { productsHandleShippingProfileMap, products } = invoke[
+            Actions.createProducts
+          ] as CreateProductsStepResponse
+
+          return await detachShippingProfileFromProduct({
+            container,
+            manager,
+            data: {
+              productsHandleShippingProfileMap,
+              products,
+            },
+          })
         },
       },
       [Actions.attachToSalesChannel]: {

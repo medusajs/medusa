@@ -6486,7 +6486,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/product@workspace:packages/product":
+"@medusajs/product@workspace:^, @medusajs/product@workspace:packages/product":
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/product"
   dependencies:
@@ -24942,6 +24942,7 @@ __metadata:
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/medusa": "workspace:*"
+    "@medusajs/product": "workspace:^"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3

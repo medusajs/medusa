@@ -342,12 +342,22 @@ class ShippingProfileService extends TransactionBaseService {
   }
 
   /**
-   * Adds a product of an array of products to the profile.
+   * @deprecated use {@link addProducts} instead
+   */
+  async addProduct(
+    profileId: string,
+    productId: string | string[]
+  ): Promise<ShippingProfile> {
+    return await this.addProducts(profileId, productId)
+  }
+
+  /**
+   * Adds a product or an array of products to the profile.
    * @param profileId - the profile to add the products to.
    * @param productId - the ID of the product or multiple products to add.
    * @return the result of update
    */
-  async addProduct(
+  async addProducts(
     profileId: string,
     productId: string | string[]
   ): Promise<ShippingProfile> {
@@ -362,6 +372,26 @@ class ShippingProfileService extends TransactionBaseService {
       return await this.retrieve(profileId, {
         relations: ["products.profiles", "shipping_options.profile"],
       })
+    })
+  }
+
+  /**
+   * Removes a product or an array of products from the profile.
+   * @param profileId - the profile to add the products to.
+   * @param productId - the ID of the product or multiple products to add.
+   * @return the result of update
+   */
+  async removeProducts(
+    profileId: string | null,
+    productId: string | string[]
+  ): Promise<ShippingProfile | void> {
+    return await this.atomicPhase_(async (manager) => {
+      const productServiceTx = this.productService_.withTransaction(manager)
+
+      await productServiceTx.updateShippingProfile(
+        isString(productId) ? [productId] : productId,
+        null
+      )
     })
   }
 

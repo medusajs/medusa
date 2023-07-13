@@ -927,14 +927,14 @@ class ProductService extends TransactionBaseService {
   }
 
   /**
-   *
+   * Assign a product to a profile, if a profile id null is provided then detach the product from the profile
    * @param productIds ID or IDs of the products to update
    * @param profileId Shipping profile ID to update the shipping options with
    * @returns updated products
    */
   async updateShippingProfile(
     productIds: string | string[],
-    profileId: string
+    profileId: string | null
   ): Promise<Product[]> {
     return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.withRepository(this.productRepository_)
@@ -947,7 +947,9 @@ class ProductService extends TransactionBaseService {
           { relations: ["profiles"], select: ["id"] }
         )
       ).map((product) => {
-        product.profiles = [{ id: profileId }] as ShippingProfile[]
+        product.profiles = !profileId
+          ? []
+          : ([{ id: profileId }] as ShippingProfile[])
         return product
       })
 

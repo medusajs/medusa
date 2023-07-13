@@ -62,7 +62,7 @@ export async function createProductsShippingProfileMap_({
   const promises: Promise<any>[] = []
   for (const createProductData of data) {
     const { product } = createProductData
-    product.handle = kebabCase(product.title)
+    product.handle ??= kebabCase(product.title)
 
     let promise
     if (product.is_giftcard) {
