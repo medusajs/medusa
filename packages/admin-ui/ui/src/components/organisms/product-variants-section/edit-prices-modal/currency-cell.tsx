@@ -81,7 +81,10 @@ function CurrencyCell(props: CurrencyCellProps) {
   })
 
   useEffect(() => {
-    setLocalValue({ value: editedAmount || "", float: editedAmount })
+    setLocalValue({
+      value: editedAmount?.toFixed(currencyMeta?.decimal_digits) || "",
+      float: editedAmount,
+    })
   }, [editedAmount])
 
   return (
@@ -100,7 +103,7 @@ function CurrencyCell(props: CurrencyCellProps) {
       <div className="flex">
         <span className="text-gray-400">{currencyMeta?.symbol_native}</span>
         <AmountField
-          onBlur={() => {
+          onBlurCapture={() => {
             props.onInputChange(
               localValue.float,
               variant.id,
@@ -113,13 +116,12 @@ function CurrencyCell(props: CurrencyCellProps) {
             "bg-blue-100": isSelected && !isAnchor,
           })}
           onValueChange={(_a, _b, v) => setLocalValue(v)}
-          decimalsLimit={currencyMeta?.decimal_digits || 2}
-          fixedDecimalLength={currencyMeta?.decimal_digits || 2}
-          decimalScale={currencyMeta?.decimal_digits || 2}
+          allowDecimals={currencyMeta?.decimal_digits > 0}
+          decimalScale={currencyMeta?.decimal_digits}
           allowNegativeValue={false}
-          decimalSeparator="."
-          // placeholder="-"
           value={localValue.value}
+          decimalSeparator="."
+          placeholder="-"
         ></AmountField>
         {isRangeEnd && (
           <div

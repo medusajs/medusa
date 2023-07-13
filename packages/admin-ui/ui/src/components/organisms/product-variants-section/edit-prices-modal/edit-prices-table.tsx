@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react"
-import {
-  useAdminCurrencies,
-  useAdminRegions,
-  useAdminStore,
-} from "medusa-react"
+import { useAdminRegions, useAdminStore } from "medusa-react"
 import { Product } from "@medusajs/client-types"
 
 import {

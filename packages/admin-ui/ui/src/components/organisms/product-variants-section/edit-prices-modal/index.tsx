@@ -271,7 +271,7 @@ function EditPricesModal(props: EditPricesModalProps) {
       {showCloseConfirmationPrompt && (
         <DeletePrompt
           handleClose={() => setShowCloseConfirmationPrompt(false)}
-          onDelete={props.close}
+          onDelete={async () => props.close()}
           confirmText="Yes, close"
           heading="Close"
           text="Are you sure you want to close this editor without saving?"
@@ -280,7 +280,7 @@ function EditPricesModal(props: EditPricesModalProps) {
       {showSaveConfirmationPrompt && (
         <DeletePrompt
           handleClose={() => setShowSaveConfirmationPrompt(false)}
-          onDelete={save}
+          onDelete={async () => save()}
           confirmText="Yes, save"
           heading="Save changes"
           text="Save edited prices"
