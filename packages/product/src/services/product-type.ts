@@ -1,6 +1,6 @@
 import { ProductType } from "@models"
 import { Context, CreateProductTypeDTO, DAL } from "@medusajs/types"
-import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
+import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 import { doNotForceTransaction } from "../utils"
 import { ProductTypeRepository } from "@repositories"
 
@@ -17,7 +17,7 @@ export default class ProductTypeService<
     this.productTypeRepository_ = productTypeRepository
   }
 
-  @InjectEntityManager(doNotForceTransaction, "productTypeRepository_")
+  @InjectTransactionManager(doNotForceTransaction, "productTypeRepository_")
   async upsert(
     types: CreateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}

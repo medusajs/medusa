@@ -27,7 +27,7 @@ import {
 } from "@medusajs/types"
 import ProductImageService from "./product-image"
 import {
-  InjectEntityManager,
+  InjectTransactionManager,
   isDefined,
   isString,
   kebabCase,
@@ -287,7 +287,7 @@ export default class ProductModuleService<
     })
   }
 
-  @InjectEntityManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   protected async create_(
     data: ProductTypes.CreateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -405,7 +405,7 @@ export default class ProductModuleService<
     return products
   }
 
-  @InjectEntityManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async delete(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -427,7 +427,7 @@ export default class ProductModuleService<
     })
   }
 
-  @InjectEntityManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   protected async softDelete_(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -449,7 +449,7 @@ export default class ProductModuleService<
     })
   }
 
-  @InjectEntityManager(shouldForceTransaction, "baseRepository_")
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async restore_(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}

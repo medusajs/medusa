@@ -8,7 +8,7 @@ import {
   WithRequiredProperty,
 } from "@medusajs/types"
 import {
-  InjectEntityManager,
+  InjectTransactionManager,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
@@ -96,7 +96,7 @@ export default class ProductService<TEntity extends Product = Product> {
     )) as [TEntity[], number]
   }
 
-  @InjectEntityManager(doNotForceTransaction, "productRepository_")
+  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
   async create(
     data: ProductTypes.CreateProductOnlyDTO[],
     @MedusaContext() sharedContext: Context = {}
@@ -116,7 +116,7 @@ export default class ProductService<TEntity extends Product = Product> {
     )) as TEntity[]
   }
 
-  @InjectEntityManager(doNotForceTransaction, "productRepository_")
+  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
   async delete(
     ids: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -126,7 +126,7 @@ export default class ProductService<TEntity extends Product = Product> {
     })
   }
 
-  @InjectEntityManager(doNotForceTransaction, "productRepository_")
+  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
   async softDelete(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -136,7 +136,7 @@ export default class ProductService<TEntity extends Product = Product> {
     })
   }
 
-  @InjectEntityManager(doNotForceTransaction, "productRepository_")
+  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
   async restore(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}

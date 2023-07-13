@@ -1,7 +1,7 @@
 import { Product, ProductVariant } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
-  InjectEntityManager,
+  InjectTransactionManager,
   isString,
   MedusaContext,
   ModulesSdkUtils,
@@ -81,7 +81,7 @@ export default class ProductVariantService<
     )) as [TEntity[], number]
   }
 
-  @InjectEntityManager(doNotForceTransaction, "productVariantRepository_")
+  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
   async create(
     productOrId: TProduct | string,
     data: ProductTypes.CreateProductVariantOnlyDTO[],
