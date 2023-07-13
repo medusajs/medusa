@@ -3,13 +3,18 @@
 import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
 import type { SidebarItemType } from "@/providers/sidebar"
 import getSectionId from "@/utils/get-section-id"
+import clsx from "clsx"
 import { useEffect, useRef, useState } from "react"
 
 export type SectionProps = {
   addToSidebar?: boolean
 } & React.AllHTMLAttributes<HTMLDivElement>
 
-const Section = ({ addToSidebar = true, children }: SectionProps) => {
+const Section = ({
+  addToSidebar = true,
+  children,
+  className,
+}: SectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null)
   const { addItems } = useSidebar()
   const [scannedHeading, setScannedHeading] = useState(false)
@@ -37,7 +42,7 @@ const Section = ({ addToSidebar = true, children }: SectionProps) => {
   }, [sectionRef, addToSidebar, addItems, scannedHeading])
 
   return (
-    <div ref={sectionRef} className="w-api-ref-content">
+    <div ref={sectionRef} className={clsx("w-api-ref-content", className)}>
       {children}
     </div>
   )

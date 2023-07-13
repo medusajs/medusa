@@ -12,7 +12,7 @@ type ReferencePageProps = {
 const ReferencePage = async ({ params: { area } }: ReferencePageProps) => {
   return (
     <div className="mt-3">
-      <Section>
+      <Section className="prose dark:prose-invert">
         {area.includes("admin") && <AdminDescription />}
         {area.includes("store") && <StoreDescription />}
       </Section>

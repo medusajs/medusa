@@ -17,8 +17,16 @@ h3 {
   @apply text-h3 mb-0.5 mt-2;
 }
 
-h1, h2, h3 {
+h4 {
+  @apply text-h4 mb-0.5 mt-2;
+}
+
+h1, h2, h3, h4 {
   @apply text-medusa-text-base dark:text-medusa-text-base-dark;
+}
+
+hr {
+  @apply h-[1px] w-full border-0 bg-medusa-border-base dark:bg-medusa-border-base-dark my-2;
 }
 
 p {
@@ -27,6 +35,10 @@ p {
 
 .clip {
   clip-path: inset(0);
+}
+
+ul {
+  @apply list-disc px-1;
 }
 
 @import url('./code-theme.css');

@@ -1,17 +1,17 @@
-import clsx from "clsx"
-import Skeleton, { SkeletonProps } from "react-loading-skeleton"
-import "react-loading-skeleton/dist/skeleton.css"
-
-const Loading = (props: SkeletonProps) => {
+const Loading = () => {
   return (
-    <Skeleton
-      count={10}
-      containerClassName={clsx(
-        "w-api-ref-content block",
-        props.containerClassName
-      )}
-      {...props}
-    />
+    <span
+      role="status"
+      className="w-api-ref-content my-1 flex animate-pulse flex-col gap-1"
+    >
+      <span className=" h-1 w-full rounded-full bg-[#d1d5db] dark:bg-[#504F57]"></span>
+      <span className=" h-1 w-full rounded-full bg-[#d1d5db] dark:bg-[#504F57]"></span>
+      <span className=" h-1 w-full rounded-full bg-[#d1d5db] dark:bg-[#504F57]"></span>
+      <span className=" h-1 w-full rounded-full bg-[#d1d5db] dark:bg-[#504F57]"></span>
+      <span className=" h-1 w-full rounded-full bg-[#d1d5db] dark:bg-[#504F57]"></span>
+      <span className=" h-1 w-full rounded-full bg-[#d1d5db] dark:bg-[#504F57]"></span>
+      <span className="sr-only">Loading...</span>
+    </span>
   )
 }
 
