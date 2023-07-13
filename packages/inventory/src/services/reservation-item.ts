@@ -131,16 +131,14 @@ export default class ReservationItemService {
    */
   @InjectEntityManager()
   async create(
-    data: CreateReservationItemInput | CreateReservationItemInput[],
+    data: CreateReservationItemInput[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<ReservationItem[]> {
-    const toCreate = Array.isArray(data) ? data : [data]
-
     const manager = context.transactionManager!
     const reservationItemRepository = manager.getRepository(ReservationItem)
 
     const reservationItems = reservationItemRepository.create(
-      toCreate.map((tc) => ({
+      data.map((tc) => ({
         inventory_item_id: tc.inventory_item_id,
         line_item_id: tc.line_item_id,
         location_id: tc.location_id,
@@ -154,7 +152,7 @@ export default class ReservationItemService {
 
     const [newReservationItems] = await Promise.all([
       reservationItemRepository.save(reservationItems),
-      ...toCreate.map(async (data) =>
+      ...data.map(async (data) =>
         this.inventoryLevelService_.adjustReservedQuantity(
           data.inventory_item_id,
           data.location_id,
@@ -250,24 +248,24 @@ export default class ReservationItemService {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
 
-    const itemsIds = Array.isArray(lineItemId) ? lineItemId : [lineItemId]
+    const lineItemIds = Array.isArray(lineItemId) ? lineItemId : [lineItemId]
 
-    const items = await this.list(
-      { line_item_id: itemsIds },
+    const reservationItems = await this.list(
+      { line_item_id: lineItemIds },
       undefined,
       context
     )
 
     const ops: Promise<unknown>[] = [
-      itemRepository.softDelete({ line_item_id: In(itemsIds) }),
+      itemRepository.softDelete({ line_item_id: In(lineItemIds) }),
     ]
 
-    for (const item of items) {
+    for (const reservation of reservationItems) {
       ops.push(
         this.inventoryLevelService_.adjustReservedQuantity(
-          item.inventory_item_id,
-          item.location_id,
-          item.quantity * -1,
+          reservation.inventory_item_id,
+          reservation.location_id,
+          reservation.quantity * -1,
           context
         )
       )
