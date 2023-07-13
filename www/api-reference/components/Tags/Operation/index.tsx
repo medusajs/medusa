@@ -4,7 +4,7 @@ import type { Operation } from "@/types/openapi"
 import clsx from "clsx"
 import type { OpenAPIV3 } from "openapi-types"
 import getSectionId from "@/utils/get-section-id"
-import { Suspense, useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
 import { useInView } from "react-intersection-observer"
@@ -35,7 +35,7 @@ const TagOperation = ({
   const { setActivePath } = useSidebar()
   const path = getSectionId([...(operation.tags || []), operation.operationId])
   const nodeRef = useRef<Element | null>()
-  const { ref, entry } = useInView({
+  const { ref } = useInView({
     threshold: 0.5,
     onChange: (inView) => {
       if (inView) {
@@ -51,12 +51,12 @@ const TagOperation = ({
   const setRefs = useCallback(
     (node: Element | null) => {
       // Ref's from useRef needs to have the node assigned to `current`
-      nodeRef.current = node;
+      nodeRef.current = node
       // Callback refs, like the one from `useInView`, is a function that takes the node as an argument
-      ref(node);
+      ref(node)
     },
-    [ref],
-  );
+    [ref]
+  )
 
   useEffect(() => {
     if (nodeRef && nodeRef.current) {

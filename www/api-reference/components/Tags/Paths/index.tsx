@@ -62,23 +62,21 @@ const TagPaths = ({ tag }: TagSectionPathsProps) => {
 
   return (
     <>
-      {Object.entries(paths).map(
-        ([endpointPath, operations], pathIndex) => (
-          <div key={pathIndex}>
-            {Object.entries(operations).map(
-              ([method, operation], operationIndex) => (
-                <TagOperation
-                  method={method}
-                  operation={operation as Operation}
-                  tag={tag}
-                  key={`${pathIndex}-${operationIndex}`}
-                  endpointPath={endpointPath}
-                />
-              )
-            )}
-          </div>
-        )
-      )}
+      {Object.entries(paths).map(([endpointPath, operations], pathIndex) => (
+        <div key={pathIndex}>
+          {Object.entries(operations).map(
+            ([method, operation], operationIndex) => (
+              <TagOperation
+                method={method}
+                operation={operation as Operation}
+                tag={tag}
+                key={`${pathIndex}-${operationIndex}`}
+                endpointPath={endpointPath}
+              />
+            )
+          )}
+        </div>
+      ))}
     </>
   )
 }

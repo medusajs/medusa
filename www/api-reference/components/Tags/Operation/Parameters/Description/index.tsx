@@ -1,9 +1,9 @@
-// import InlineCode from "@/components/MDXComponents/InlineCode"
 import Loading from "@/components/Loading"
 import type { InlineCodeProps } from "@/components/MDXComponents/InlineCode"
 import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
+import Link from "next/link"
 
 const InlineCode = dynamic<InlineCodeProps>(
   async () => import("../../../../MDXComponents/InlineCode"),
@@ -24,7 +24,7 @@ const TagOperationParametersDescription = ({
     case schema.type === "object":
       typeDescription = (
         <>
-          {schema.type} {schema.title ? `(${schema.title})` : ''}
+          {schema.type} {schema.title ? `(${schema.title})` : ""}
         </>
       )
       break
@@ -75,6 +75,21 @@ const TagOperationParametersDescription = ({
         <>
           <br />
           <span>{schema.description}</span>
+        </>
+      )}
+      {schema.externalDocs && (
+        <>
+          <br />
+          <Link
+            href={schema.externalDocs.url}
+            className={clsx(
+              "text-medusa-text-base hover:text-medusa-text-subtle",
+              "dark:text-medusa-text-base-dark dark:hover:text-medusa-text-subtle-dark"
+            )}
+            target="_blank"
+          >
+            {schema.externalDocs.description || "Read More"}
+          </Link>
         </>
       )}
     </div>

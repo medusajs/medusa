@@ -29,19 +29,20 @@ const TagsOperationCodeSectionResponses = ({
 
   return (
     <>
-      <h3>Response sample <span
-        className={clsx(
-          "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",
-          "border-medusa-tag-green-border dark:border-medusa-tag-green-border-dark rounded border p-0.5 w-[min-content]",
-          "text-label-small"
-        )}
-      >
-        {responseCode}
-      </span></h3>
+      <h3>
+        Response sample{" "}
+        <span
+          className={clsx(
+            "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",
+            "border-medusa-tag-green-border dark:border-medusa-tag-green-border-dark w-[min-content] rounded border p-0.5",
+            "text-label-small"
+          )}
+        >
+          {responseCode}
+        </span>
+      </h3>
 
-      <TagsOperationCodeSectionResponsesSample
-        response={response}
-      />
+      <TagsOperationCodeSectionResponsesSample response={response} />
     </>
   )
 }

@@ -4,7 +4,6 @@ import type { TagsOperationDescriptionSectionRequestProps } from "./Request"
 import type { TagsOperationDescriptionSectionResponsesProps } from "./Responses"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
-import { Suspense } from "react"
 
 const TagsOperationDescriptionSectionSecurity =
   dynamic<TagsOperationDescriptionSectionSecurityProps>(

@@ -27,8 +27,8 @@ const TagsOperationDescriptionSectionResponses = ({
         return (
           <div key={code}>
             {response.content && (
-              <Details 
-                summaryElm={(
+              <Details
+                summaryElm={
                   <summary
                     className={clsx(
                       "mb-1 rounded-sm py-0.5 px-1",
@@ -40,7 +40,8 @@ const TagsOperationDescriptionSectionResponses = ({
                   >
                     {code} {response.description}
                   </summary>
-                )}>
+                }
+              >
                 <>
                   <div
                     className={clsx(
@@ -61,13 +62,15 @@ const TagsOperationDescriptionSectionResponses = ({
               </Details>
             )}
             {!response.content && (
-              <div className={clsx(
-                "mb-1 rounded-sm py-0.5 px-1",
-                code.match(/20[0-9]/) &&
-                  "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",
-                !code.match(/20[0-9]/) &&
-                  "bg-medusa-tag-red-bg dark:bg-medusa-tag-red-bg-dark text-medusa-tag-red-text dark:text-medusa-tag-red-text-dark"
-              )}>
+              <div
+                className={clsx(
+                  "mb-1 rounded-sm py-0.5 px-1",
+                  code.match(/20[0-9]/) &&
+                    "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",
+                  !code.match(/20[0-9]/) &&
+                    "bg-medusa-tag-red-bg dark:bg-medusa-tag-red-bg-dark text-medusa-tag-red-text dark:text-medusa-tag-red-text-dark"
+                )}
+              >
                 {code} {response.description}
               </div>
             )}

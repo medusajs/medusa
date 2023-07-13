@@ -4,13 +4,12 @@ import Loading from "@/components/Loading"
 import type { TagOperationParametersDefaultProps } from "../Default"
 import { TagOperationParametersObjectProps } from "../Object"
 
-const TagOperationParametersObject =
-  dynamic<TagOperationParametersObjectProps>(
-    async () => import("../Object"),
-    {
-      loading: () => <Loading />,
-    }
-  ) as React.FC<TagOperationParametersObjectProps>
+const TagOperationParametersObject = dynamic<TagOperationParametersObjectProps>(
+  async () => import("../Object"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<TagOperationParametersObjectProps>
 
 const TagOperationParametersDefault =
   dynamic<TagOperationParametersDefaultProps>(
@@ -44,9 +43,7 @@ const TagOperationParametersUnion = ({
     )
   }
 
-  return (
-    <TagOperationParametersObject schema={objectSchema} name={name} />
-  )
+  return <TagOperationParametersObject schema={objectSchema} name={name} />
 }
 
 export default TagOperationParametersUnion

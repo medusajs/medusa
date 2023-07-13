@@ -24,9 +24,9 @@ const TagsOperationDescriptionSectionSecurity = ({
 
   return (
     <Suspense fallback={<Loading />}>
-      <Details 
+      <Details
         className="my-1"
-        summaryContent={(
+        summaryContent={
           <div className="inline-flex w-11/12">
             <span className="w-1/3">
               <b>Authorizations</b>
@@ -35,12 +35,16 @@ const TagsOperationDescriptionSectionSecurity = ({
               {security.map((security, index) => (
                 <div key={index}>
                   {index !== 0 && " or "}
-                  {getSecuritySchema(Object.keys(security)[0])?.["x-displayName"]}
+                  {
+                    getSecuritySchema(Object.keys(security)[0])?.[
+                      "x-displayName"
+                    ]
+                  }
                 </div>
               ))}
             </span>
           </div>
-        )}
+        }
       >
         <div className="bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark p-1">
           {security.map((security, index) => {

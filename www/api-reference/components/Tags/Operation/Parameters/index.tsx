@@ -49,14 +49,19 @@ export type TagOperationParametersProps = {
 const TagOperationParameters = ({
   schemaObject,
   topLevel = false,
-  className
+  className,
 }: TagOperationParametersProps) => {
-
   const getElement = () => {
     if (schemaObject.type === "object") {
-      return <TagOperationParametersObject name={schemaObject.title || ""} schema={schemaObject} topLevel={topLevel} />
+      return (
+        <TagOperationParametersObject
+          name={schemaObject.title || ""}
+          schema={schemaObject}
+          topLevel={topLevel}
+        />
+      )
     }
-  
+
     if (schemaObject.type === "array") {
       return (
         <TagOperationParametersArray
@@ -65,7 +70,7 @@ const TagOperationParameters = ({
         />
       )
     }
-  
+
     if (schemaObject.anyOf || schemaObject.allOf) {
       return (
         <TagOperationParametersUnion
@@ -75,7 +80,7 @@ const TagOperationParameters = ({
         />
       )
     }
-  
+
     if (schemaObject.oneOf) {
       return <TagOperationParamatersOneOf schema={schemaObject} />
     }
@@ -93,9 +98,7 @@ const TagOperationParameters = ({
 
   return (
     <Suspense fallback={<Loading />}>
-      <div className={className}>
-        {getElement()}
-      </div>
+      <div className={className}>{getElement()}</div>
     </Suspense>
   )
 }

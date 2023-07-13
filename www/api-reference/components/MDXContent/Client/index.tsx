@@ -6,8 +6,8 @@ import type { ScopeType } from "../../MDXComponents"
 import { MDXRemote } from "next-mdx-remote"
 import type { MDXRemoteProps, MDXRemoteSerializeResult } from "next-mdx-remote"
 import { serialize } from "next-mdx-remote/serialize"
-import Loading from "@/components/Loading"
 import getMdxOptions from "@/utils/get-mdx-options"
+import ContentLoading from "@/components/ContentLoading"
 
 export type MDXContentClientProps = {
   content: any
@@ -33,7 +33,7 @@ const MDXContentClient = ({ content, ...props }: MDXContentClientProps) => {
 
   return (
     <>
-      {!parsedContent && <Loading />}
+      {!parsedContent && <ContentLoading />}
       {parsedContent !== undefined && (
         <MDXRemote
           {...parsedContent}

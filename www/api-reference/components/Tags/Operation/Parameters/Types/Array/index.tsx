@@ -47,14 +47,16 @@ const TagOperationParametersArray = ({
   }
 
   return (
-    <Details summaryContent={(
-      <TagOperationParametersDefault
+    <Details
+      summaryContent={
+        <TagOperationParametersDefault
           name={name}
           schema={schema}
           is_required={is_required}
           className="inline-flex w-[calc(100%-16px)]"
         />
-    )}>
+      }
+    >
       <TagOperationParameters
         schemaObject={schema.items}
         className="bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pl-1"

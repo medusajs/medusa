@@ -4,13 +4,12 @@ import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
 import type { TagOperationParametersProps } from "../.."
 import clsx from "clsx"
-import { useState } from "react"
 import Details from "@/components/Details"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
   async () => import("../.."),
   {
-    loading: () => <Loading />
+    loading: () => <Loading />,
   }
 ) as React.FC<TagOperationParametersProps>
 
@@ -25,7 +24,7 @@ const TagOperationParametersObject = ({
   name,
   schema,
   isRequired,
-  topLevel = false
+  topLevel = false,
 }: TagOperationParametersObjectProps) => {
   if (schema.type !== "object" || (!schema.properties && !name)) {
     return <></>
@@ -49,11 +48,12 @@ const TagOperationParametersObject = ({
           <TagOperationParameters
             schemaObject={{
               ...value,
-              title: key || value.title
+              title: key || value.title,
             }}
             key={index}
             className={clsx(
-              isNested && "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pl-1"
+              isNested &&
+                "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pl-2"
             )}
           />
         ))}

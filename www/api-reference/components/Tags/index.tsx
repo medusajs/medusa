@@ -9,6 +9,7 @@ import { useBaseSpecs } from "@/providers/base-specs"
 import dynamic from "next/dynamic"
 import type { TagSectionProps } from "./Section"
 import { useArea } from "@/providers/area"
+import ContentLoading from "../ContentLoading"
 
 const TagSection = dynamic<TagSectionProps>(async () => import("./Section"), {
   loading: () => <Loading />,
@@ -42,11 +43,8 @@ const Tags = () => {
 
   return (
     <>
-      {isLoading && <Loading />}
-      {data &&
-        tags.map((tag, index) => (
-          <TagSection tag={tag} key={index} />
-        ))}
+      {isLoading && <ContentLoading />}
+      {data && tags.map((tag, index) => <TagSection tag={tag} key={index} />)}
     </>
   )
 }

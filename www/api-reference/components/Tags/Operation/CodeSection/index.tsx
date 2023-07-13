@@ -5,12 +5,13 @@ import Loading from "@/components/Loading"
 import type { TagOperationCodeSectionRequestSamplesProps } from "./RequestSamples"
 import dynamic from "next/dynamic"
 
-const TagOperationCodeSectionRequestSamples = dynamic<TagOperationCodeSectionRequestSamplesProps>(
-  async () => import("./RequestSamples"),
-  {
-    loading: () => <Loading />,
-  }
-) as React.FC<TagOperationCodeSectionRequestSamplesProps>
+const TagOperationCodeSectionRequestSamples =
+  dynamic<TagOperationCodeSectionRequestSamplesProps>(
+    async () => import("./RequestSamples"),
+    {
+      loading: () => <Loading />,
+    }
+  ) as React.FC<TagOperationCodeSectionRequestSamplesProps>
 
 export type TagOperationCodeSectionProps = {
   operation: Operation
@@ -30,7 +31,11 @@ const TagOperationCodeSection = ({
           <MethodLabel method={method} />
           <code>{endpointPath}</code>
         </div>
-        {operation["x-codeSamples"] && <TagOperationCodeSectionRequestSamples codeSamples={operation["x-codeSamples"]} />}
+        {operation["x-codeSamples"] && (
+          <TagOperationCodeSectionRequestSamples
+            codeSamples={operation["x-codeSamples"]}
+          />
+        )}
         <TagsOperationCodeSectionResponses operation={operation} />
       </div>
     </>

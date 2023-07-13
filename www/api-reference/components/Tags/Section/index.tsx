@@ -10,7 +10,7 @@ import Loading from "@/components/Loading"
 import type { SectionProps } from "../../Section"
 import type { MDXContentClientProps } from "../../MDXContent/Client"
 import type { TagSectionPathsProps } from "../Paths"
-import { useArea } from "@/providers/area"
+import ContentLoading from "@/components/ContentLoading"
 
 export type TagSectionProps = {
   tag: OpenAPIV3.TagObject
@@ -73,7 +73,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
         </Section>
       )}
       {loadPaths && <TagPaths tag={tag} />}
-      {!loadPaths && <Loading />}
+      {!loadPaths && <ContentLoading />}
     </div>
   )
 }
