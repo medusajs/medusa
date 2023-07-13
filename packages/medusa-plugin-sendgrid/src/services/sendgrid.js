@@ -222,13 +222,19 @@ class SendGridService extends NotificationService {
     let templateId = this.getTemplateId(event)
 
     if (!templateId) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, `Sendgrid service: No template was set for event: ${event}`)
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No template was set for event: ${event}`
+      )
     }
 
     const data = await this.fetchData(event, eventData, attachmentGenerator)
     if (!data) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, "Sendgrid service: Invalid event data was received")
-   }
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Sendgrid service: Invalid event data was received"
+      )
+    }
 
     const attachments = await this.fetchAttachments(
       event,
@@ -261,10 +267,15 @@ class SendGridService extends NotificationService {
       })
     }
 
-   let status
-   await this.transporter_.sendMail(sendOptions)
-   .then(() => { status = "sent" })
-   .catch((error) => { status = "failed"; console.log(error) })
+    let status
+    await SendGrid.send(sendOptions)
+      .then(() => {
+        status = "sent"
+      })
+      .catch((error) => {
+        status = "failed"
+        console.log(error)
+      })
 
     // We don't want heavy docs stored in DB
     delete sendOptions.attachments
@@ -303,18 +314,11 @@ class SendGridService extends NotificationService {
 
   /**
    * Sends an email using SendGrid.
-   * @param {string} templateId - id of template in SendGrid
-   * @param {string} from - sender of email
-   * @param {string} to - receiver of email
-   * @param {Object} data - data to send in mail (match with template)
+   * @param {Object} options - send options containing to, from, template, and more. Read more here: https://github.com/sendgrid/sendgrid-nodejs/tree/main/packages/mail
    * @return {Promise} result of the send operation
    */
   async sendEmail(options) {
-    try {
-      return SendGrid.send(options)
-    } catch (error) {
-      throw error
-    }
+    return await SendGrid.send(options)
   }
 
   async orderShipmentCreatedData({ id, fulfillment_id }, attachmentGenerator) {
