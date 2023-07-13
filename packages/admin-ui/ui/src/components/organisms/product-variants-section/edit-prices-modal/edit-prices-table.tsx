@@ -333,6 +333,10 @@ function EditPricesTable(props: EditPricesTableProps) {
           resetSelection()
         }
       }
+
+      // if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
+      //   navigator.clipboard.writeText(JSON.stringify(editedPrices))
+      // }
     }
 
     document.addEventListener("mousedown", down)

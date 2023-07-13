@@ -114,7 +114,11 @@ function CurrencyCell(props: CurrencyCellProps) {
           })}
           onValueChange={(_a, _b, v) => setLocalValue(v)}
           decimalsLimit={currencyMeta?.decimal_digits || 2}
+          fixedDecimalLength={currencyMeta?.decimal_digits || 2}
+          decimalScale={currencyMeta?.decimal_digits || 2}
+          allowNegativeValue={false}
           decimalSeparator="."
+          // placeholder="-"
           value={localValue.value}
         ></AmountField>
         {isRangeEnd && (
