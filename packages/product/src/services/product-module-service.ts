@@ -22,10 +22,18 @@ import {
   CreateProductOnlyDTO,
   DAL,
   FindConfig,
+  InternalModuleDeclaration,
   ProductTypes,
 } from "@medusajs/types"
 import ProductImageService from "./product-image"
-import { isDefined, isString, kebabCase } from "@medusajs/utils"
+import {
+  InjectTransactionManager,
+  isDefined,
+  isString,
+  kebabCase,
+  MedusaContext,
+} from "@medusajs/utils"
+import { shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -63,17 +71,20 @@ export default class ProductModuleService<
   protected readonly productTypeService_: ProductTypeService<TProductType>
   protected readonly productOptionService_: ProductOptionService<TProductOption>
 
-  constructor({
-    baseRepository,
-    productService,
-    productVariantService,
-    productTagService,
-    productCategoryService,
-    productCollectionService,
-    productImageService,
-    productTypeService,
-    productOptionService,
-  }: InjectedDependencies) {
+  constructor(
+    {
+      baseRepository,
+      productService,
+      productVariantService,
+      productTagService,
+      productCategoryService,
+      productCollectionService,
+      productImageService,
+      productTypeService,
+      productOptionService,
+    }: InjectedDependencies,
+    protected readonly moduleDeclaration: InternalModuleDeclaration
+  ) {
     this.baseRepository_ = baseRepository
     this.productService_ = productService
     this.productVariantService_ = productVariantService
@@ -265,134 +276,8 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(categories))
   }
 
-  async create(
-    data: ProductTypes.CreateProductDTO[],
-    sharedContext?: Context
-  ): Promise<ProductTypes.ProductDTO[]> {
-    const products = await this.baseRepository_.transaction(
-      async (manager) => {
-        sharedContext = sharedContext || {
-          transactionManager: manager,
-        }
-
-        const productVariantsMap = new Map<
-          string,
-          ProductTypes.CreateProductVariantDTO[]
-        >()
-        const productOptionsMap = new Map<
-          string,
-          ProductTypes.CreateProductOptionDTO[]
-        >()
-
-        const productsData = await Promise.all(
-          data.map(async (product) => {
-            const productData = { ...product }
-            if (!productData.handle) {
-              productData.handle = kebabCase(product.title)
-            }
-
-            const variants = productData.variants
-            const options = productData.options
-            delete productData.options
-            delete productData.variants
-
-            productVariantsMap.set(productData.handle!, variants ?? [])
-            productOptionsMap.set(productData.handle!, options ?? [])
-
-            if (!productData.thumbnail && productData.images?.length) {
-              productData.thumbnail = isString(productData.images[0])
-                ? (productData.images[0] as string)
-                : (productData.images[0] as { url: string }).url
-            }
-
-            if (productData.is_giftcard) {
-              productData.discountable = false
-            }
-
-            if (productData.images?.length) {
-              productData.images = await this.productImageService_.upsert(
-                productData.images.map((image) =>
-                  isString(image) ? image : image.url
-                ),
-                sharedContext
-              )
-            }
-
-            if (productData.tags?.length) {
-              productData.tags = await this.productTagService_.upsert(
-                productData.tags,
-                sharedContext
-              )
-            }
-
-            if (isDefined(productData.type)) {
-              productData.type_id = (
-                await this.productTypeService_.upsert(
-                  [productData.type as ProductTypes.CreateProductTypeDTO],
-                  sharedContext
-                )
-              )?.[0]!.id
-            }
-
-            return productData as CreateProductOnlyDTO
-          })
-        )
-
-        // TODO
-        // Shipping profile is not part of the module
-        // as well as sales channel
-
-        const products = await this.productService_.create(
-          productsData,
-          sharedContext
-        )
-
-        const productByHandleMap = new Map<string, TProduct>(
-          products.map((product) => [product.handle!, product])
-        )
-
-        const productOptionsData = [...productOptionsMap]
-          .map(([handle, options]) => {
-            return options.map((option) => {
-              return {
-                ...option,
-                product: productByHandleMap.get(handle)!,
-              }
-            })
-          })
-          .flat()
-
-        const productOptions = await this.productOptionService_.create(
-          productOptionsData,
-          sharedContext
-        )
-
-        for (const variants of productVariantsMap.values()) {
-          variants.forEach((variant) => {
-            variant.options = variant.options?.map((option, index) => {
-              const productOption = productOptions[index]
-              return {
-                option: productOption,
-                value: option.value,
-              }
-            })
-          })
-        }
-
-        await Promise.all(
-          [...productVariantsMap].map(async ([handle, variants]) => {
-            return await this.productVariantService_.create(
-              productByHandleMap.get(handle)!,
-              variants as unknown as ProductTypes.CreateProductVariantOnlyDTO[],
-              sharedContext
-            )
-          })
-        )
-
-        return products
-      },
-      { transaction: sharedContext?.transactionManager }
-    )
+  async create(data: ProductTypes.CreateProductDTO[], sharedContext?: Context) {
+    const products = await this.create_(data, sharedContext)
 
     return this.baseRepository_.serialize<
       TProduct[],
@@ -402,18 +287,138 @@ export default class ProductModuleService<
     })
   }
 
-  async delete(productIds: string[], sharedContext?: Context): Promise<void> {
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  protected async create_(
+    data: ProductTypes.CreateProductDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TProduct[]> {
+    const productVariantsMap = new Map<
+      string,
+      ProductTypes.CreateProductVariantDTO[]
+    >()
+    const productOptionsMap = new Map<
+      string,
+      ProductTypes.CreateProductOptionDTO[]
+    >()
+
+    const productsData = await Promise.all(
+      data.map(async (product) => {
+        const productData = { ...product }
+        if (!productData.handle) {
+          productData.handle = kebabCase(product.title)
+        }
+
+        const variants = productData.variants
+        const options = productData.options
+        delete productData.options
+        delete productData.variants
+
+        productVariantsMap.set(productData.handle!, variants ?? [])
+        productOptionsMap.set(productData.handle!, options ?? [])
+
+        if (!productData.thumbnail && productData.images?.length) {
+          productData.thumbnail = isString(productData.images[0])
+            ? (productData.images[0] as string)
+            : (productData.images[0] as { url: string }).url
+        }
+
+        if (productData.is_giftcard) {
+          productData.discountable = false
+        }
+
+        if (productData.images?.length) {
+          productData.images = await this.productImageService_.upsert(
+            productData.images.map((image) =>
+              isString(image) ? image : image.url
+            ),
+            sharedContext
+          )
+        }
+
+        if (productData.tags?.length) {
+          productData.tags = await this.productTagService_.upsert(
+            productData.tags,
+            sharedContext
+          )
+        }
+
+        if (isDefined(productData.type)) {
+          productData.type_id = (
+            await this.productTypeService_.upsert(
+              [productData.type as ProductTypes.CreateProductTypeDTO],
+              sharedContext
+            )
+          )?.[0]!.id
+        }
+
+        return productData as CreateProductOnlyDTO
+      })
+    )
+
+    const products = await this.productService_.create(
+      productsData,
+      sharedContext
+    )
+
+    const productByHandleMap = new Map<string, TProduct>(
+      products.map((product) => [product.handle!, product])
+    )
+
+    const productOptionsData = [...productOptionsMap]
+      .map(([handle, options]) => {
+        return options.map((option) => {
+          return {
+            ...option,
+            product: productByHandleMap.get(handle)!,
+          }
+        })
+      })
+      .flat()
+
+    const productOptions = await this.productOptionService_.create(
+      productOptionsData,
+      sharedContext
+    )
+
+    for (const variants of productVariantsMap.values()) {
+      variants.forEach((variant) => {
+        variant.options = variant.options?.map((option, index) => {
+          const productOption = productOptions[index]
+          return {
+            option: productOption,
+            value: option.value,
+          }
+        })
+      })
+    }
+
+    await Promise.all(
+      [...productVariantsMap].map(async ([handle, variants]) => {
+        return await this.productVariantService_.create(
+          productByHandleMap.get(handle)!,
+          variants as unknown as ProductTypes.CreateProductVariantOnlyDTO[],
+          sharedContext
+        )
+      })
+    )
+
+    return products
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async delete(
+    productIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
     await this.productService_.delete(productIds, sharedContext)
   }
 
   async softDelete(
     productIds: string[],
-    sharedContext?: Context
+    sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[]> {
-    const products = await this.productService_.softDelete(
-      productIds,
-      sharedContext
-    )
+    const products = await this.softDelete_(productIds, sharedContext)
+
     return this.baseRepository_.serialize<
       TProduct[],
       ProductTypes.ProductDTO[]
@@ -422,14 +427,19 @@ export default class ProductModuleService<
     })
   }
 
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  protected async softDelete_(
+    productIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TProduct[]> {
+    return await this.productService_.softDelete(productIds, sharedContext)
+  }
+
   async restore(
     productIds: string[],
-    sharedContext?: Context
+    sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[]> {
-    const products = await this.productService_.restore(
-      productIds,
-      sharedContext
-    )
+    const products = await this.restore_(productIds, sharedContext)
 
     return this.baseRepository_.serialize<
       TProduct[],
@@ -437,5 +447,13 @@ export default class ProductModuleService<
     >(products, {
       populate: true,
     })
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async restore_(
+    productIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TProduct[]> {
+    return await this.productService_.restore(productIds, sharedContext)
   }
 }

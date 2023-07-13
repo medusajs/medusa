@@ -1,6 +1,8 @@
 import { ProductOption } from "@models"
 import { Context, DAL, ProductTypes } from "@medusajs/types"
 import { ProductOptionRepository } from "@repositories"
+import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import { doNotForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productOptionRepository: DAL.RepositoryService
@@ -16,17 +18,15 @@ export default class ProductOptionService<
       productOptionRepository as ProductOptionRepository
   }
 
+  @InjectTransactionManager(doNotForceTransaction, "productOptionRepository_")
   async create(
     data: ProductTypes.CreateProductOptionOnlyDTO[],
-    sharedContext?: Context
-  ) {
-    return await this.productOptionRepository_.transaction(
-      async (manager) => {
-        return await this.productOptionRepository_.create(data, {
-          transactionManager: manager,
-        })
-      },
-      { transaction: sharedContext?.transactionManager }
-    )
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TEntity[]> {
+    return (await (
+      this.productOptionRepository_ as ProductOptionRepository
+    ).create(data, {
+      transactionManager: sharedContext.transactionManager,
+    })) as TEntity[]
   }
 }

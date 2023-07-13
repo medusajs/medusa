@@ -1,6 +1,6 @@
 import { ProductCollection } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
-import { ModulesSdkUtils, MedusaError, isDefined, retrieveEntity } from "@medusajs/utils"
+import { ModulesSdkUtils, retrieveEntity } from "@medusajs/utils"
 
 type InjectedDependencies = {
   productCollectionRepository: DAL.RepositoryService
@@ -20,13 +20,16 @@ export default class ProductCollectionService<
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
     sharedContext?: Context
   ): Promise<TEntity> {
-    return await retrieveEntity<ProductCollection, ProductTypes.ProductCollectionDTO>({
+    return (await retrieveEntity<
+      ProductCollection,
+      ProductTypes.ProductCollectionDTO
+    >({
       id: productCollectionId,
       entityName: ProductCollection.name,
       repository: this.productCollectionRepository_,
       config,
       sharedContext,
-    }) as TEntity
+    })) as TEntity
   }
 
   async list(
@@ -51,9 +54,9 @@ export default class ProductCollectionService<
     )) as [TEntity[], number]
   }
 
-  private buildListQueryOptions(
+  protected buildListQueryOptions(
     filters: ProductTypes.FilterableProductCollectionProps = {},
-    config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
+    config: FindConfig<ProductTypes.ProductCollectionDTO> = {}
   ) {
     const queryOptions = ModulesSdkUtils.buildQuery<ProductCollection>(
       filters,

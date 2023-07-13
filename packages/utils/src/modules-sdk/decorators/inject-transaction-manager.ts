@@ -1,8 +1,8 @@
 import { Context, SharedContext } from "@medusajs/types"
 
-export function InjectEntityManager(
+export function InjectTransactionManager(
   shouldForceTransaction: (target: any) => boolean = () => false,
-  managerProperty: string | false = "manager_"
+  managerProperty?: string
 ): MethodDecorator {
   return function (
     target: any,
@@ -11,7 +11,7 @@ export function InjectEntityManager(
   ): void {
     if (!target.MedusaContextIndex_) {
       throw new Error(
-        `To apply @InjectEntityManager you have to flag a parameter using @MedusaContext`
+        `To apply @InjectTransactionManager you have to flag a parameter using @MedusaContext`
       )
     }
 
@@ -26,7 +26,7 @@ export function InjectEntityManager(
         return await originalMethod.apply(this, args)
       }
 
-      return await (managerProperty === false
+      return await (!managerProperty
         ? this
         : this[managerProperty]
       ).transaction(
