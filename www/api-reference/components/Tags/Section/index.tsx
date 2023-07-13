@@ -17,11 +17,11 @@ export type TagSectionProps = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 const TagPaths = dynamic<TagSectionPathsProps>(async () => import("../Paths"), {
-  loading: () => <Loading />,
+  loading: () => <ContentLoading />,
 }) as React.FC<TagSectionPathsProps>
 
 const Section = dynamic<SectionProps>(async () => import("../../Section"), {
-  loading: () => <Loading />,
+  loading: () => <ContentLoading />,
 }) as React.FC<SectionProps>
 
 const MDXContentClient = dynamic<MDXContentClientProps>(

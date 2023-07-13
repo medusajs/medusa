@@ -9,14 +9,14 @@ import type { SidebarItemType } from "@/providers/sidebar"
 import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
 import { useEffect } from "react"
 import dynamic from "next/dynamic"
-import Loading from "@/components/Loading"
 import type { TagOperationProps } from "../Operation"
 import { useArea } from "@/providers/area"
+import ContentLoading from "@/components/ContentLoading"
 
 const TagOperation = dynamic<TagOperationProps>(
   async () => import("../Operation"),
   {
-    loading: () => <Loading />,
+    loading: () => <ContentLoading />,
   }
 ) as React.FC<TagOperationProps>
 

@@ -4,7 +4,6 @@ import type { OpenAPIV3 } from "openapi-types"
 import { useEffect, useState } from "react"
 import useSWR from "swr"
 import fetcher from "@/utils/swr-fetcher"
-import Loading from "@/components/Loading"
 import { useBaseSpecs } from "@/providers/base-specs"
 import dynamic from "next/dynamic"
 import type { TagSectionProps } from "./Section"
@@ -12,7 +11,7 @@ import { useArea } from "@/providers/area"
 import ContentLoading from "../ContentLoading"
 
 const TagSection = dynamic<TagSectionProps>(async () => import("./Section"), {
-  loading: () => <Loading />,
+  loading: () => <ContentLoading />,
 }) as React.FC<TagSectionProps>
 
 export type TagsProps = React.HTMLAttributes<HTMLDivElement>
@@ -43,7 +42,7 @@ const Tags = () => {
 
   return (
     <>
-      {isLoading && <ContentLoading />}
+      {(isLoading || !data) && <ContentLoading />}
       {data && tags.map((tag, index) => <TagSection tag={tag} key={index} />)}
     </>
   )
