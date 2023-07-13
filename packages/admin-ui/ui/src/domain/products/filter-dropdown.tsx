@@ -1,13 +1,14 @@
-import clsx from "clsx"
-import { useMemo, useEffect, useState } from "react"
-import { useAdminProductTags, useAdminCollections } from "medusa-react"
+import { useAdminCollections, useAdminProductTags } from "medusa-react"
+import { useEffect, useMemo, useState } from "react"
+
 import CheckIcon from "../../components/fundamentals/icons/check-icon"
-import PlusIcon from "../../components/fundamentals/icons/plus-icon"
 import FilterDropdownContainer from "../../components/molecules/filter-dropdown/container"
 import FilterDropdownItem from "../../components/molecules/filter-dropdown/item"
+import PlusIcon from "../../components/fundamentals/icons/plus-icon"
 import SaveFilterItem from "../../components/molecules/filter-dropdown/save-field"
-import TagInput from "../../components/molecules/tag-input"
 import TabFilter from "../../components/molecules/filter-tab"
+import TagInput from "../../components/molecules/tag-input"
+import clsx from "clsx"
 
 const statusFilters = ["proposed", "draft", "published", "rejected"]
 
@@ -150,7 +151,7 @@ const ProductsFilter = ({
           open={tempState.collection.open}
           setFilter={(v) => setSingleFilter("collection", v)}
         />
-        <div className="flex w-full flex-col pb-2">
+        <div className="flex w-full flex-col py-2 px-4">
           <div
             className="hover:bg-grey-5 mb-1 flex w-full cursor-pointer items-center rounded px-3 py-1.5"
             onClick={() => {
@@ -186,12 +187,9 @@ const ProductsFilter = ({
               Tags
             </span>
           </div>
-
+          q
           {tempState.tags.open && (
-            <div
-              data-tip={tempState.tags.invalidTagsMessage || ""}
-              className="pl-6"
-            >
+            <div data-tip={tempState.tags.invalidTagsMessage || ""}>
               <TagInput
                 className="pt-0 pb-1"
                 showLabel={false}
