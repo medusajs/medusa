@@ -183,6 +183,20 @@ describe("/admin/regions", () => {
       expect(response.status).toEqual(200)
     })
 
+    it("returns count of total regions", async () => {
+      const api = useApi()
+
+      const response = await api.get(`/admin/regions?limit=2`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.data.regions).toHaveLength(2)
+      expect(response.data.count).toEqual(3)
+      expect(response.status).toEqual(200)
+    })
+
     it("filters correctly on update", async () => {
       const api = useApi()
 
@@ -351,7 +365,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/regions", () => {
         includes_tax: true,
       }
 
-      let response = await api
+      const response = await api
         .post(`/admin/regions`, payload, adminReqConfig)
         .catch((err) => {
           console.log(err)
