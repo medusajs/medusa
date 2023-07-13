@@ -14,6 +14,7 @@ import {
 import CurrencyCell from "./currency-cell"
 import IconBuildingTax from "../../../fundamentals/icons/building-tax-icon"
 import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
+import Tooltip from "../../../atoms/tooltip"
 
 type EditPricesTableProps = {
   product: Product
@@ -383,7 +384,9 @@ function EditPricesTable(props: EditPricesTableProps) {
                   <div className="flex items-center justify-between">
                     <span>Price {c.toUpperCase()}</span>
                     {currency?.includes_tax && (
-                      <IconBuildingTax strokeWidth={1.3} size={20} />
+                      <Tooltip content="Tax inclusive pricing" side="bottom">
+                        <IconBuildingTax strokeWidth={1.3} size={20} />
+                      </Tooltip>
                     )}
                   </div>
                 </th>
@@ -402,7 +405,9 @@ function EditPricesTable(props: EditPricesTableProps) {
                   <div className="flex items-center justify-between">
                     <span>Price {region?.name}</span>
                     {region.includes_tax && (
-                      <IconBuildingTax strokeWidth={1.3} size={20} />
+                      <Tooltip content="Tax inclusive pricing" side="bottom">
+                        <IconBuildingTax strokeWidth={1.3} size={20} />
+                      </Tooltip>
                     )}
                   </div>
                 </th>

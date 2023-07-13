@@ -107,7 +107,7 @@ function EditPricesActions(props: EditPricesActionsProps) {
       <IconTooltip
         side="right"
         type="warning"
-        content="Only visible columns are saved."
+        content="Only visible columns are saved"
       />
     </div>
   )
