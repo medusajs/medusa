@@ -280,7 +280,7 @@ export default class InventoryLevelService {
     await levelRepository.delete({ location_id: In(ids) })
 
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
-      location_id: locationId,
+      location_ids: ids,
     })
   }
 
