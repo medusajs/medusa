@@ -7,8 +7,6 @@ import {
   MedusaContext,
   ModulesSdkUtils,
   retrieveEntity,
-  MedusaError,
-  isDefined,
 } from "@medusajs/utils"
 
 import { ProductVariantServiceTypes } from "../types/services"

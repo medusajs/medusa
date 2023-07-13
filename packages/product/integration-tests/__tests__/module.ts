@@ -7,8 +7,7 @@ import { productsData } from "../__fixtures__/product/data"
 import { DB_URL, TestDatabase } from "../utils"
 import { buildProductAndRelationsData } from "../__fixtures__/product/data/create-product"
 import { kebabCase } from "@medusajs/utils"
-import { Product } from "@models"
-import { IProductModuleService, ProductTypes } from "@medusajs/types"
+import { IProductModuleService } from "@medusajs/types"
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()

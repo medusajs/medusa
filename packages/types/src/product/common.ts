@@ -218,8 +218,26 @@ export interface CreateProductVariantDTO {
   metadata?: Record<string, unknown>
 }
 
-export interface CreateOrUpdateProductVariantDTO extends CreateProductVariantDTO {
-  id?: string
+export interface UpdateProductVariantDTO {
+  id: string
+  title?: string
+  sku?: string
+  barcode?: string
+  ean?: string
+  upc?: string
+  allow_backorder?: boolean
+  inventory_quantity?: number
+  manage_inventory?: boolean
+  hs_code?: string
+  origin_country?: string
+  mid_code?: string
+  material?: string
+  weight?: number
+  length?: number
+  height?: number
+  width?: number
+  options?: CreateProductVariantOptionDTO[]
+  metadata?: Record<string, unknown>
 }
 
 export interface CreateProductDTO {
@@ -269,7 +287,7 @@ export interface UpdateProductDTO {
   // sales_channel
   categories?: { id: string }[]
   options?: CreateProductOptionDTO[]
-  variants?: CreateOrUpdateProductVariantDTO[]
+  variants?: (CreateProductVariantDTO | UpdateProductVariantDTO)[]
   width?: number
   height?: number
   length?: number

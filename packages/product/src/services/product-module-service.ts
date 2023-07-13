@@ -293,25 +293,129 @@ export default class ProductModuleService<
     })
   }
 
-  // TODO: cleanup, abstract common create and update steps
   async update(
     data: ProductTypes.UpdateProductDTO[],
     sharedContext?: Context
   ): Promise<ProductTypes.ProductDTO[]> {
-    const products = await this.baseRepository_.transaction(
-      async (manager) => {
-        const productIds = data.map(pd => pd.id)
-        sharedContext = sharedContext || {
-          transactionManager: manager,
+    const products = await this.update_(data, sharedContext)
+
+    return this.baseRepository_.serialize<
+      TProduct[],
+      ProductTypes.ProductDTO[]
+    >(products, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  protected async create_(
+    data: ProductTypes.CreateProductDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TProduct[]> {
+    const productVariantsMap = new Map<
+      string,
+      ProductTypes.CreateProductVariantDTO[]
+    >()
+    const productOptionsMap = new Map<
+      string,
+      ProductTypes.CreateProductOptionDTO[]
+    >()
+
+    const productsData = await Promise.all(
+      data.map(async (product) => {
+        const productData = { ...product }
+        if (!productData.handle) {
+          productData.handle = kebabCase(product.title)
         }
 
+        const variants = productData.variants
+        const options = productData.options
+        delete productData.options
+        delete productData.variants
+
+        productVariantsMap.set(productData.handle!, variants ?? [])
+        productOptionsMap.set(productData.handle!, options ?? [])
+
+        if (productData.is_giftcard) {
+          productData.discountable = false
+        }
+
+        await this.setupProductDataForImages(productData, sharedContext)
+        await this.upsertProductTags(productData, sharedContext)
+        await this.upsertProductTypes(productData, sharedContext)
+
+        return productData as CreateProductOnlyDTO
+      })
+    )
+
+    const products = await this.productService_.create(
+      productsData,
+      sharedContext
+    )
+
+    const productByHandleMap = new Map<string, TProduct>(
+      products.map((product) => [product.handle!, product])
+    )
+
+    const productOptionsData = [...productOptionsMap]
+      .map(([handle, options]) => {
+        return options.map((option) => {
+          return {
+            ...option,
+            product: productByHandleMap.get(handle)!,
+          }
+        })
+      })
+      .flat()
+
+    const productOptions = await this.productOptionService_.create(
+      productOptionsData,
+      sharedContext
+    )
+
+    for (const variants of productVariantsMap.values()) {
+      variants.forEach((variant) => {
+        variant.options = variant.options?.map((option, index) => {
+          const productOption = productOptions[index]
+          return {
+            option: productOption,
+            value: option.value,
+          }
+        })
+      })
+    }
+
+    await Promise.all(
+      [...productVariantsMap].map(async ([handle, variants]) => {
+        return await this.productVariantService_.create(
+          productByHandleMap.get(handle)!,
+          variants as unknown as ProductTypes.CreateProductVariantOnlyDTO[],
+          sharedContext
+        )
+      })
+    )
+
+    return products
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  protected async update_(
+    data: ProductTypes.UpdateProductDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TProduct[]> {
+    return await this.baseRepository_.transaction(
+      async (manager) => {
+        const productIds = data.map(pd => pd.id)
         const existingProductVariants = await this.productVariantService_.list(
           { product_id: productIds },
           {},
           sharedContext
         )
 
-        const existingProductVariantsMap = new Map(
+        const existingProductVariantsMap = new Map<
+          string,
+          ProductVariant[]
+        >(
           data.map((productData) => [
             productData.id,
             existingProductVariants.filter((variant) => variant.product_id === productData.id)
@@ -320,7 +424,7 @@ export default class ProductModuleService<
 
         const productVariantsMap = new Map<
           string,
-          ProductTypes.CreateOrUpdateProductVariantDTO[]
+          (ProductTypes.CreateProductVariantDTO | ProductTypes.UpdateProductVariantDTO)[]
         >()
 
         const productOptionsMap = new Map<
@@ -331,6 +435,9 @@ export default class ProductModuleService<
         const productsData = await Promise.all(
           data.map(async (product) => {
             const productData = { ...product }
+            const { variants, options } = productData
+            delete productData.options
+            delete productData.variants
 
             if (!isDefined(productData.id)) {
               throw new MedusaError(
@@ -339,51 +446,16 @@ export default class ProductModuleService<
               )
             }
 
-            const variants = productData.variants
-            const options = productData.options
-
-            delete productData.options
-            delete productData.variants
-
             productVariantsMap.set(productData.id, variants ?? [])
             productOptionsMap.set(productData.id, options ?? [])
-
-            if (!productData.thumbnail && productData.images?.length) {
-              productData.thumbnail = isString(productData.images[0])
-                ? (productData.images[0] as string)
-                : (productData.images[0] as { url: string }).url
-            }
 
             if (productData.is_giftcard) {
               productData.discountable = false
             }
 
-            if (productData.images?.length) {
-              productData.images = await this.productImageService_.upsert(
-                productData.images.map((image) =>
-                  isString(image) ? image : image.url
-                ),
-                sharedContext
-              )
-            }
-
-            if (isDefined(productData.tags)) {
-              productData.tags = productData.tags.length ? await this.productTagService_.upsert(
-                productData.tags,
-                sharedContext
-              ): []
-            }
-
-            if (isDefined(productData.type)) {
-              const productType = (
-                await this.productTypeService_.upsert(
-                  [productData.type as ProductTypes.CreateProductTypeDTO],
-                  sharedContext
-                )
-              )
-
-              productData.type = productType?.[0]
-            }
+            await this.setupProductDataForImages(productData, sharedContext)
+            await this.upsertProductTags(productData, sharedContext)
+            await this.upsertProductTypes(productData, sharedContext)
 
             return productData as ProductServiceTypes.UpdateProductDTO
           })
@@ -399,14 +471,10 @@ export default class ProductModuleService<
         )
 
         const productOptionsData = [...productOptionsMap]
-          .map(([id, options]) => {
-            return options.map((option) => {
-              return {
-                ...option,
-                product: productByIdMap.get(id)!,
-              }
-            })
-          })
+          .map(([id, options]) => options.map((option) => ({
+            ...option,
+            product: productByIdMap.get(id)!,
+          })))
           .flat()
 
         const productOptions = await this.productOptionService_.create(
@@ -422,30 +490,30 @@ export default class ProductModuleService<
 
         const productVariantsToUpdateMap = new Map<
           string,
-          ProductTypes.CreateOrUpdateProductVariantDTO[]
+          ProductTypes.UpdateProductVariantDTO[]
         >()
 
-
-        for (let [productId, variants] of productVariantsMap) {
+        for (const [productId, variants] of productVariantsMap) {
           const variantsToCreate: ProductTypes.CreateProductVariantDTO[] = []
-          const variantsToUpdate: ProductTypes.CreateOrUpdateProductVariantDTO[] = []
+          const variantsToUpdate: ProductTypes.UpdateProductVariantDTO[] = []
           const existingVariants = existingProductVariantsMap.get(productId)
 
           variants.forEach((variant) => {
+            const isVariantIdDefined = ("id" in variant) && isDefined(variant.id)
             const existingProductVariant = existingVariants
-              ?.find((existingVariant) => existingVariant.id === variant.id)
+              ?.find((existingVariant) => isVariantIdDefined && (existingVariant.id === variant.id))
 
-            if (isDefined(variant.id) && !existingProductVariant) {
+            if (isVariantIdDefined && !existingProductVariant) {
               throw new MedusaError(
                 MedusaError.Types.NOT_FOUND,
                 `ProductVariant "${variant.id}" not found for product "${productId}"`
               )
             }
 
-            if (isDefined(variant.id)) {
-              variantsToUpdate.push(variant)
+            if (isVariantIdDefined) {
+              variantsToUpdate.push(variant as ProductTypes.UpdateProductVariantDTO)
             } else {
-              variantsToCreate.push(variant)
+              variantsToCreate.push(variant as ProductTypes.CreateProductVariantDTO)
             }
 
             const variantOptions = variant.options?.map((option, index) => {
@@ -503,128 +571,54 @@ export default class ProductModuleService<
       },
       { transaction: sharedContext?.transactionManager }
     )
-
-    return serialize(products, {
-      populate: true
-    }) as ProductTypes.ProductDTO[]
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  protected async create_(
-    data: ProductTypes.CreateProductDTO[],
+  protected async setupProductDataForImages(
+    productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TProduct[]> {
-    const productVariantsMap = new Map<
-      string,
-      ProductTypes.CreateProductVariantDTO[]
-    >()
-    const productOptionsMap = new Map<
-      string,
-      ProductTypes.CreateProductOptionDTO[]
-    >()
-
-    const productsData = await Promise.all(
-      data.map(async (product) => {
-        const productData = { ...product }
-        if (!productData.handle) {
-          productData.handle = kebabCase(product.title)
-        }
-
-        const variants = productData.variants
-        const options = productData.options
-        delete productData.options
-        delete productData.variants
-
-        productVariantsMap.set(productData.handle!, variants ?? [])
-        productOptionsMap.set(productData.handle!, options ?? [])
-
-        if (!productData.thumbnail && productData.images?.length) {
-          productData.thumbnail = isString(productData.images[0])
-            ? (productData.images[0] as string)
-            : (productData.images[0] as { url: string }).url
-        }
-
-        if (productData.is_giftcard) {
-          productData.discountable = false
-        }
-
-        if (productData.images?.length) {
-          productData.images = await this.productImageService_.upsert(
-            productData.images.map((image) =>
-              isString(image) ? image : image.url
-            ),
-            sharedContext
-          )
-        }
-
-        if (productData.tags?.length) {
-          productData.tags = await this.productTagService_.upsert(
-            productData.tags,
-            sharedContext
-          )
-        }
-
-        if (isDefined(productData.type)) {
-          productData.type_id = (
-            await this.productTypeService_.upsert(
-              [productData.type as ProductTypes.CreateProductTypeDTO],
-              sharedContext
-            )
-          )?.[0]!.id
-        }
-
-        return productData as CreateProductOnlyDTO
-      })
-    )
-
-    const products = await this.productService_.create(
-      productsData,
-      sharedContext
-    )
-
-    const productByHandleMap = new Map<string, TProduct>(
-      products.map((product) => [product.handle!, product])
-    )
-
-    const productOptionsData = [...productOptionsMap]
-      .map(([handle, options]) => {
-        return options.map((option) => {
-          return {
-            ...option,
-            product: productByHandleMap.get(handle)!,
-          }
-        })
-      })
-      .flat()
-
-    const productOptions = await this.productOptionService_.create(
-      productOptionsData,
-      sharedContext
-    )
-
-    for (const variants of productVariantsMap.values()) {
-      variants.forEach((variant) => {
-        variant.options = variant.options?.map((option, index) => {
-          const productOption = productOptions[index]
-          return {
-            option: productOption,
-            value: option.value,
-          }
-        })
-      })
+  ) {
+    if (!productData.thumbnail && productData.images?.length) {
+      productData.thumbnail = isString(productData.images[0])
+        ? (productData.images[0] as string)
+        : (productData.images[0] as { url: string }).url
     }
 
-    await Promise.all(
-      [...productVariantsMap].map(async ([handle, variants]) => {
-        return await this.productVariantService_.create(
-          productByHandleMap.get(handle)!,
-          variants as unknown as ProductTypes.CreateProductVariantOnlyDTO[],
+    if (productData.images?.length) {
+      productData.images = await this.productImageService_.upsert(
+        productData.images.map((image) =>
+          isString(image) ? image : image.url
+        ),
+        sharedContext
+      )
+    }
+  }
+
+  protected async upsertProductTags(
+    productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    if (productData.tags?.length) {
+      productData.tags = await this.productTagService_.upsert(
+        productData.tags,
+        sharedContext
+      )
+    }
+  }
+
+  protected async upsertProductTypes(
+    productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    if (isDefined(productData.type)) {
+      const productType = (
+        await this.productTypeService_.upsert(
+          [productData.type as ProductTypes.CreateProductTypeDTO],
           sharedContext
         )
-      })
-    )
+      )
 
-    return products
+      productData.type = productType?.[0]
+    }
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")

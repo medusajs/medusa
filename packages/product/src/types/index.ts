@@ -4,4 +4,4 @@ export type InitializeModuleInjectableDependencies = {
   eventBusService?: IEventBusService
 }
 
-export * from './services'
+export * from "./services"
