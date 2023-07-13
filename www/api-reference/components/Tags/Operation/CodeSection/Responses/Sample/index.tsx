@@ -162,6 +162,7 @@ const TagsOperationCodeSectionResponsesSample = ({
               preClassName="max-h-[400px]"
             />
           )}
+          {!selectedExample && <>Empty Response</>}
         </div>
       </div>
     </>
