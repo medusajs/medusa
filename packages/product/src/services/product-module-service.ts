@@ -163,13 +163,13 @@ export default class ProductModuleService<
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: Context
   ): Promise<[ProductTypes.ProductVariantDTO[], number]> {
-    const variants = await this.productVariantService_.listAndCount(
+    const [variants, count] = await this.productVariantService_.listAndCount(
       filters,
       config,
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(variants))
+    return [JSON.parse(JSON.stringify(variants)), count]
   }
 
   async listTags(
@@ -186,12 +186,40 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(tags))
   }
 
+  async retrieveCollection(
+    productCollectionId: string,
+    config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductCollectionDTO> {
+    const productCollection = await this.productCollectionService_.retrieve(
+      productCollectionId,
+      config,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productCollection))
+  }
+
   async listCollections(
     filters: ProductTypes.FilterableProductCollectionProps = {},
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
     sharedContext?: Context
   ): Promise<ProductTypes.ProductCollectionDTO[]> {
     const collections = await this.productCollectionService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(collections))
+  }
+
+  async listAndCountCollections(
+    filters: ProductTypes.FilterableProductCollectionProps = {},
+    config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
+    sharedContext?: Context
+  ): Promise<[ProductTypes.ProductCollectionDTO[], number]> {
+    const collections = await this.productCollectionService_.listAndCount(
       filters,
       config,
       sharedContext
@@ -369,7 +397,12 @@ export default class ProductModuleService<
       { transaction: sharedContext?.transactionManager }
     )
 
-    return JSON.parse(JSON.stringify(products))
+    return this.baseRepository_.serialize<
+      TProduct[],
+      ProductTypes.ProductDTO[]
+    >(products, {
+      populate: true,
+    })
   }
 
   // TODO: cleanup, abstract common create and update steps
@@ -533,7 +566,12 @@ console.log("products - ", products)
       productIds,
       sharedContext
     )
-    return JSON.parse(JSON.stringify(products))
+    return this.baseRepository_.serialize<
+      TProduct[],
+      ProductTypes.ProductDTO[]
+    >(products, {
+      populate: true,
+    })
   }
 
   async restore(
@@ -545,6 +583,11 @@ console.log("products - ", products)
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(products))
+    return this.baseRepository_.serialize<
+      TProduct[],
+      ProductTypes.ProductDTO[]
+    >(products, {
+      populate: true,
+    })
   }
 }

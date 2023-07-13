@@ -9,7 +9,7 @@ In this document, you’ll learn how to customize the Contentful integration wit
 
 :::warning
 
-This guide covers how to customize the Gatsby storefront which is now deprecated. It's recommended to integrate Contentful into either the Next.js storefront or your custom storefront.
+This guide covers how to customize the Gatsby storefront which is now deprecated. It's recommended to integrate Contentful into either the Next.js Starter Template or your custom storefront.
 
 :::
 

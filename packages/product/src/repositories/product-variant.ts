@@ -22,18 +22,17 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     findOptions: DAL.FindOptions<ProductVariant> = { where: {} },
     context: Context = {}
   ): Promise<ProductVariant[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
-
-    if (context.transactionManager) {
-      Object.assign(findOptions_.options, { ctx: context.transactionManager })
-    }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return await this.manager_.find(
+    return await manager.find(
       ProductVariant,
       findOptions_.where as MikroFilterQuery<ProductVariant>,
       findOptions_.options as MikroOptions<ProductVariant>
@@ -44,18 +43,17 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     findOptions: DAL.FindOptions<ProductVariant> = { where: {} },
     context: Context = {}
   ): Promise<[ProductVariant[], number]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
-
-    if (context.transactionManager) {
-      Object.assign(findOptions_.options, { ctx: context.transactionManager })
-    }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return await this.manager_.findAndCount(
+    return await manager.findAndCount(
       ProductVariant,
       findOptions_.where as MikroFilterQuery<ProductVariant>,
       findOptions_.options as MikroOptions<ProductVariant>

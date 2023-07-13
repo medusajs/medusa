@@ -58,23 +58,35 @@ export interface IProductModuleService {
     sharedContext?: Context
   ): Promise<[ProductVariantDTO[], number]>
 
+  retrieveCollection(
+    productCollectionId: string,
+    config?: FindConfig<ProductCollectionDTO>,
+    sharedContext?: Context
+  ): Promise<ProductCollectionDTO>
+
   listCollections(
     filters?: FilterableProductCollectionProps,
     config?: FindConfig<ProductCollectionDTO>,
     sharedContext?: Context
   ): Promise<ProductCollectionDTO[]>
 
-  listCategories(
-    filters?: FilterableProductCategoryProps,
-    config?: FindConfig<ProductCategoryDTO>,
+  listAndCountCollections(
+    filters?: FilterableProductCollectionProps,
+    config?: FindConfig<ProductCollectionDTO>,
     sharedContext?: Context
-  ): Promise<ProductCategoryDTO[]>
+  ): Promise<[ProductCollectionDTO[], number]>
 
   retrieveCategory(
     productCategoryId: string,
     config?: FindConfig<ProductCategoryDTO>,
     sharedContext?: Context
   ): Promise<ProductCategoryDTO>
+
+  listCategories(
+    filters?: FilterableProductCategoryProps,
+    config?: FindConfig<ProductCategoryDTO>,
+    sharedContext?: Context
+  ): Promise<ProductCategoryDTO[]>
 
   listAndCountCategories(
     filters?: FilterableProductCategoryProps,

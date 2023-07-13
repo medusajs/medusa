@@ -30,12 +30,11 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     findOptions: DAL.FindOptions<Product> = { where: {} },
     context: Context = {}
   ): Promise<Product[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
-
-    if (context.transactionManager) {
-      Object.assign(findOptions_.options, { ctx: context.transactionManager })
-    }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
@@ -43,7 +42,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
 
     await this.mutateNotInCategoriesConstraints(findOptions_)
 
-    return await this.manager_.find(
+    return await manager.find(
       Product,
       findOptions_.where as MikroFilterQuery<Product>,
       findOptions_.options as MikroOptions<Product>
@@ -79,10 +78,14 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
    * first find all products that are in the categories, and then exclude them
    */
   private async mutateNotInCategoriesConstraints(
-    findOptions: DAL.FindOptions<Product> = { where: {} }
+    findOptions: DAL.FindOptions<Product> = { where: {} },
+    context: Context = {}
   ): Promise<void> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     if (findOptions.where.categories?.id?.["$nin"]) {
-      const productsInCategories = await this.manager_.find(
+      const productsInCategories = await manager.find(
         Product,
         {
           categories: {

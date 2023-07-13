@@ -2,7 +2,6 @@ import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
-  RequiredEntityData,
 } from "@mikro-orm/core"
 import { Context, DAL } from "@medusajs/types"
 import { Image, Product } from "@models"
@@ -22,18 +21,17 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
     findOptions: DAL.FindOptions<Image> = { where: {} },
     context: Context = {}
   ): Promise<Image[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
-
-    if (context.transactionManager) {
-      Object.assign(findOptions_.options, { ctx: context.transactionManager })
-    }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return await this.manager_.find(
+    return await manager.find(
       Image,
       findOptions_.where as MikroFilterQuery<Image>,
       findOptions_.options as MikroOptions<Image>
@@ -44,18 +42,17 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
     findOptions: DAL.FindOptions<Image> = { where: {} },
     context: Context = {}
   ): Promise<[Image[], number]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
-
-    if (context.transactionManager) {
-      Object.assign(findOptions_.options, { ctx: context.transactionManager })
-    }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return await this.manager_.findAndCount(
+    return await manager.findAndCount(
       Image,
       findOptions_.where as MikroFilterQuery<Image>,
       findOptions_.options as MikroOptions<Image>
@@ -63,6 +60,9 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
   }
 
   async upsert(urls: string[], context: Context = {}): Promise<Image[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const existingImages = await this.find(
       {
         where: {
@@ -79,26 +79,21 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
     )
 
     const upsertedImgs: Image[] = []
-    const imageToCreate: RequiredEntityData<Image>[] = []
+    const imageToCreate: Image[] = []
 
     urls.forEach((url) => {
       const aImg = existingImagesMap.get(url)
       if (aImg) {
         upsertedImgs.push(aImg)
       } else {
-        const newImg = this.manager_.create(Image, { url })
+        const newImg = manager.create(Image, { url })
         imageToCreate.push(newImg)
       }
     })
 
     if (imageToCreate.length) {
-      const newImgs: Image[] = []
-      imageToCreate.forEach((img) => {
-        newImgs.push(this.manager_.create(Image, img))
-      })
-
-      await this.manager_.persist(newImgs)
-      upsertedImgs.push(...newImgs)
+      await manager.persist(imageToCreate)
+      upsertedImgs.push(...imageToCreate)
     }
 
     return upsertedImgs
