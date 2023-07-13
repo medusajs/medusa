@@ -1,25 +1,24 @@
-import { DeepPartial, EntityManager } from "typeorm"
-
-import { isDefined, MedusaError } from "medusa-core-utils"
-
-import { TransactionBaseService } from "../interfaces"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { Country, Currency, Region } from "../models"
+import { CreateRegionInput, UpdateRegionInput } from "../types/region"
+import { DeepPartial, EntityManager } from "typeorm"
+import { FindConfig, Selector } from "../types/common"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { buildQuery, setMetadata } from "../utils"
+
 import { CountryRepository } from "../repositories/country"
 import { CurrencyRepository } from "../repositories/currency"
-import { FulfillmentProviderRepository } from "../repositories/fulfillment-provider"
-import { PaymentProviderRepository } from "../repositories/payment-provider"
-import { RegionRepository } from "../repositories/region"
-import { TaxProviderRepository } from "../repositories/tax-provider"
-import { FindConfig, Selector } from "../types/common"
-import { CreateRegionInput, UpdateRegionInput } from "../types/region"
-import { buildQuery, setMetadata } from "../utils"
-import { countries } from "../utils/countries"
-import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
+import { FlagRouter } from "../utils/flag-router"
+import { FulfillmentProviderRepository } from "../repositories/fulfillment-provider"
 import FulfillmentProviderService from "./fulfillment-provider"
+import { PaymentProviderRepository } from "../repositories/payment-provider"
 import { PaymentProviderService } from "./index"
+import { RegionRepository } from "../repositories/region"
 import StoreService from "./store"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { TaxProviderRepository } from "../repositories/tax-provider"
+import { TransactionBaseService } from "../interfaces"
+import { countries } from "../utils/countries"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -511,12 +510,31 @@ class RegionService extends TransactionBaseService {
       take: 10,
     }
   ): Promise<Region[]> {
+    const [regions] = await this.listAndCount(selector, config)
+    return regions
+  }
+
+  /**
+   * Lists all regions based on a query and returns them along with count
+   *
+   * @param {object} selector - query object for find
+   * @param {object} config - configuration settings
+   * @return {Promise} result of the find operation
+   */
+  async listAndCount(
+    selector: Selector<Region> = {},
+    config: FindConfig<Region> = {
+      relations: [],
+      skip: 0,
+      take: 10,
+    }
+  ): Promise<[Region[], number]> {
     const regionRepo = this.activeManager_.withRepository(
       this.regionRepository_
     )
 
     const query = buildQuery(selector, config)
-    return regionRepo.find(query)
+    return await regionRepo.findAndCount(query)
   }
 
   /**
