@@ -27,7 +27,7 @@ export type TagSectionPathsProps = {
 const TagPaths = ({ tag }: TagSectionPathsProps) => {
   const tagSlugName = getSectionId([tag.name])
   const { area } = useArea()
-  const { data } = useSWR<{
+  const { data, isLoading } = useSWR<{
     paths: PathsObject
   }>(`/api/tag?tagName=${tagSlugName}&area=${area}`, fetcher)
   const { addItems } = useSidebar()
@@ -62,6 +62,7 @@ const TagPaths = ({ tag }: TagSectionPathsProps) => {
 
   return (
     <>
+      {isLoading && <ContentLoading />}
       {Object.entries(paths).map(([endpointPath, operations], pathIndex) => (
         <div key={pathIndex}>
           {Object.entries(operations).map(
