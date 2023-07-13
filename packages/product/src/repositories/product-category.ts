@@ -8,8 +8,7 @@ import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
 import { AbstractTreeRepositoryBase } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
-import { doNotForceTransaction } from "../utils"
+import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 
 export class ProductCategoryRepository extends AbstractTreeRepositoryBase<ProductCategory> {
   protected readonly manager_: SqlEntityManager
@@ -152,7 +151,7 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
     ]
   }
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async delete(
     ids: string[],
     @MedusaContext()

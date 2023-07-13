@@ -7,8 +7,7 @@ import { Product, ProductOption } from "@models"
 import { Context, DAL, ProductTypes } from "@medusajs/types"
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
-import { doNotForceTransaction } from "../utils"
+import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 
 export class ProductOptionRepository extends AbstractBaseRepository<ProductOption> {
   protected readonly manager_: SqlEntityManager
@@ -61,7 +60,7 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async delete(
     ids: string[],
     @MedusaContext()
@@ -74,7 +73,7 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async create(
     data: (ProductTypes.CreateProductOptionDTO & { product: { id: string } })[],
     @MedusaContext()

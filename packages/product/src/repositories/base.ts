@@ -1,6 +1,10 @@
 import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { buildQuery, InjectEntityManager, MedusaContext } from "@medusajs/utils"
+import {
+  buildQuery,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/utils"
 import { serialize } from "@mikro-orm/core"
 import { doNotForceTransaction } from "../utils"
 
@@ -136,7 +140,7 @@ export abstract class AbstractBaseRepository<T = any>
 
   abstract delete(ids: string[], context?: Context): Promise<void>
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async softDelete(
     ids: string[],
     @MedusaContext()
@@ -154,7 +158,7 @@ export abstract class AbstractBaseRepository<T = any>
     return entities
   }
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async restore(
     ids: string[],
     @MedusaContext()

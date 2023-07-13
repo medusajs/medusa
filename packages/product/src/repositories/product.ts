@@ -12,7 +12,7 @@ import {
 } from "@medusajs/types"
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
+import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 import { doNotForceTransaction } from "../utils"
 
 export class ProductRepository extends AbstractBaseRepository<Product> {
@@ -108,7 +108,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     }
   }
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async delete(
     ids: string[],
     @MedusaContext()
@@ -121,7 +121,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async create(
     data: WithRequiredProperty<ProductTypes.CreateProductOnlyDTO, "status">[],
     @MedusaContext()

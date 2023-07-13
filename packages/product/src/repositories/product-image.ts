@@ -7,8 +7,7 @@ import { Context, DAL } from "@medusajs/types"
 import { Image, Product } from "@models"
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
-import { doNotForceTransaction } from "../utils"
+import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 
 export class ProductImageRepository extends AbstractBaseRepository<Image> {
   protected readonly manager_: SqlEntityManager
@@ -61,7 +60,7 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async upsert(
     urls: string[],
     @MedusaContext()
@@ -105,7 +104,7 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
     return upsertedImgs
   }
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async delete(
     ids: string[],
     @MedusaContext()
@@ -118,7 +117,7 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async create(
     data: unknown[],
     @MedusaContext()

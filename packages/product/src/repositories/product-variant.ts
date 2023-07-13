@@ -8,7 +8,7 @@ import { Product, ProductVariant } from "@models"
 import { Context, DAL } from "@medusajs/types"
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
+import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 import { doNotForceTransaction } from "../utils"
 
 export class ProductVariantRepository extends AbstractBaseRepository<ProductVariant> {
@@ -62,7 +62,7 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async delete(
     ids: string[],
     @MedusaContext()
@@ -75,7 +75,7 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async create(
     data: RequiredEntityData<ProductVariant>[],
     @MedusaContext()

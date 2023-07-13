@@ -8,8 +8,7 @@ import { Product, ProductTag } from "@models"
 import { Context, CreateProductTagDTO, DAL } from "@medusajs/types"
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectEntityManager, MedusaContext } from "@medusajs/utils"
-import { doNotForceTransaction } from "../utils"
+import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 
 export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
   protected readonly manager_: SqlEntityManager
@@ -62,7 +61,7 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async upsert(
     tags: CreateProductTagDTO[],
     @MedusaContext()
@@ -112,7 +111,7 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     return upsertedTags
   }
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async delete(
     ids: string[],
     @MedusaContext()
@@ -125,7 +124,7 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     )
   }
 
-  @InjectEntityManager(doNotForceTransaction, false)
+  @InjectTransactionManager()
   async create(
     data: unknown[],
     @MedusaContext()
