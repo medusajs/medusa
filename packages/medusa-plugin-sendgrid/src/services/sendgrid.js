@@ -34,6 +34,7 @@ class SendGridService extends NotificationService {
       totalsService,
       productVariantService,
       giftCardService,
+      logger,
     },
     options
   ) {
@@ -53,6 +54,7 @@ class SendGridService extends NotificationService {
     this.totalsService_ = totalsService
     this.productVariantService_ = productVariantService
     this.giftCardService_ = giftCardService
+    this.logger_ = logger
 
     SendGrid.setApiKey(options.api_key)
   }
@@ -268,7 +270,7 @@ class SendGridService extends NotificationService {
       })
       .catch((error) => {
         status = "failed"
-        console.log(error)
+        this.logger_.error(error)
       })
 
     // We don't want heavy docs stored in DB
