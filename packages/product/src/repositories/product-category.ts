@@ -23,6 +23,9 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
     transformOptions: ProductCategoryTransformOptions = {},
     context: Context = {}
   ): Promise<ProductCategory[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const findOptions_ = { ...findOptions }
     const { includeDescendantsTree } = transformOptions
     findOptions_.options ??= {}
@@ -36,15 +39,11 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
         fields.push("parent_category_id")
     }
 
-    if (context.transactionManager) {
-      Object.assign(findOptions_.options, { ctx: context.transactionManager })
-    }
-
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    const productCategories = await this.manager_.find(
+    const productCategories = await manager.find(
       ProductCategory,
       findOptions_.where as MikroFilterQuery<ProductCategory>,
       findOptions_.options as MikroOptions<ProductCategory>
@@ -62,8 +61,12 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
 
   async buildProductCategoriesWithDescendants(
     productCategories: ProductCategory[],
-    findOptions: DAL.FindOptions<ProductCategory> = { where: {} }
+    findOptions: DAL.FindOptions<ProductCategory> = { where: {} },
+    context: Context = {}
   ): Promise<ProductCategory[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     for (let productCategory of productCategories) {
       const whereOptions = {
         ...findOptions.where,
@@ -71,9 +74,11 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
           $like: `${productCategory.mpath}%`,
         },
       }
-      delete whereOptions.parent_category_id
 
-      const descendantsForCategory = await this.manager_.find(
+      delete whereOptions.parent_category_id
+      delete whereOptions.id
+
+      const descendantsForCategory = await manager.find(
         ProductCategory,
         whereOptions as MikroFilterQuery<ProductCategory>,
         findOptions.options as MikroOptions<ProductCategory>
@@ -106,22 +111,43 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
     transformOptions: ProductCategoryTransformOptions = {},
     context: Context = {}
   ): Promise<[ProductCategory[], number]> {
-    const findOptions_ = { ...findOptions }
-    findOptions_.options ??= {}
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
 
-    if (context.transactionManager) {
-      Object.assign(findOptions_.options, { ctx: context.transactionManager })
+    const findOptions_ = { ...findOptions }
+    const { includeDescendantsTree } = transformOptions
+    findOptions_.options ??= {}
+    const fields = (findOptions_.options.fields ??= [])
+
+    // Ref: Building descendants
+    // mpath and parent_category_id needs to be added to the query for the tree building to be done accurately
+    if (includeDescendantsTree) {
+      fields.indexOf("mpath") === -1 && fields.push("mpath")
+      fields.indexOf("parent_category_id") === -1 &&
+        fields.push("parent_category_id")
     }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return await this.manager_.findAndCount(
+    const [productCategories, count] = await manager.findAndCount(
       ProductCategory,
       findOptions_.where as MikroFilterQuery<ProductCategory>,
       findOptions_.options as MikroOptions<ProductCategory>
     )
+
+    if (!includeDescendantsTree) {
+      return [productCategories, count]
+    }
+
+    return [
+      await this.buildProductCategoriesWithDescendants(
+        productCategories,
+        findOptions_
+      ),
+      count,
+    ]
   }
 
   async delete(ids: string[], context: Context = {}): Promise<void> {

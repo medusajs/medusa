@@ -158,13 +158,13 @@ export default class ProductModuleService<
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
     sharedContext?: Context
   ): Promise<[ProductTypes.ProductVariantDTO[], number]> {
-    const variants = await this.productVariantService_.listAndCount(
+    const [variants, count] = await this.productVariantService_.listAndCount(
       filters,
       config,
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(variants))
+    return [JSON.parse(JSON.stringify(variants)), count]
   }
 
   async listTags(
@@ -181,6 +181,20 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(tags))
   }
 
+  async retrieveCollection(
+    productCollectionId: string,
+    config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductCollectionDTO> {
+    const productCollection = await this.productCollectionService_.retrieve(
+      productCollectionId,
+      config,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productCollection))
+  }
+
   async listCollections(
     filters: ProductTypes.FilterableProductCollectionProps = {},
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
@@ -195,12 +209,54 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(collections))
   }
 
+  async listAndCountCollections(
+    filters: ProductTypes.FilterableProductCollectionProps = {},
+    config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
+    sharedContext?: Context
+  ): Promise<[ProductTypes.ProductCollectionDTO[], number]> {
+    const collections = await this.productCollectionService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(collections))
+  }
+
+  async retrieveCategory(
+    productCategoryId: string,
+    config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductCategoryDTO> {
+    const productCategory = await this.productCategoryService_.retrieve(
+      productCategoryId,
+      config,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productCategory))
+  }
+
   async listCategories(
     filters: ProductTypes.FilterableProductCategoryProps = {},
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
     sharedContext?: Context
   ): Promise<ProductTypes.ProductCategoryDTO[]> {
     const categories = await this.productCategoryService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(categories))
+  }
+
+  async listAndCountCategories(
+    filters: ProductTypes.FilterableProductCategoryProps = {},
+    config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
+    sharedContext?: Context
+  ): Promise<[ProductTypes.ProductCategoryDTO[], number]> {
+    const categories = await this.productCategoryService_.listAndCount(
       filters,
       config,
       sharedContext
@@ -338,7 +394,12 @@ export default class ProductModuleService<
       { transaction: sharedContext?.transactionManager }
     )
 
-    return JSON.parse(JSON.stringify(products))
+    return this.baseRepository_.serialize<
+      TProduct[],
+      ProductTypes.ProductDTO[]
+    >(products, {
+      populate: true,
+    })
   }
 
   async delete(productIds: string[], sharedContext?: Context): Promise<void> {
@@ -353,7 +414,12 @@ export default class ProductModuleService<
       productIds,
       sharedContext
     )
-    return JSON.parse(JSON.stringify(products))
+    return this.baseRepository_.serialize<
+      TProduct[],
+      ProductTypes.ProductDTO[]
+    >(products, {
+      populate: true,
+    })
   }
 
   async restore(
@@ -365,6 +431,11 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(products))
+    return this.baseRepository_.serialize<
+      TProduct[],
+      ProductTypes.ProductDTO[]
+    >(products, {
+      populate: true,
+    })
   }
 }

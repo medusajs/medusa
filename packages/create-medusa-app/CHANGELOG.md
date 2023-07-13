@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.0.2
+
+### Patch Changes
+
+- [#4493](https://github.com/medusajs/medusa/pull/4493) [`4b4296dc1`](https://github.com/medusajs/medusa/commit/4b4296dc1651d325bd7e64eb0fdb0584989828f7) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): remove .git directory in the project
+
+- [#4369](https://github.com/medusajs/medusa/pull/4369) [`d363da2b7`](https://github.com/medusajs/medusa/commit/d363da2b72820defe90b12b0dc741087f3b21090) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(create-medusa-app): Cleanup the main script for readability and maintanability
+
+- Updated dependencies [[`499c3478c`](https://github.com/medusajs/medusa/commit/499c3478c910c8b922a15cc6f4d9fbad122a347f), [`9dcdc0041`](https://github.com/medusajs/medusa/commit/9dcdc0041a2b08cc0723343dd8d9127d9977b086), [`9760d4a96`](https://github.com/medusajs/medusa/commit/9760d4a96c27f6f89a8c3f3b6e73b17547f97f2a)]:
+  - @medusajs/utils@1.9.2
+
 ## 1.0.1
 
 ### Patch Changes

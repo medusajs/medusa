@@ -22,18 +22,17 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     findOptions: DAL.FindOptions<ProductTag> = { where: {} },
     context: Context = {}
   ): Promise<ProductTag[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
-
-    if (context.transactionManager) {
-      Object.assign(findOptions_.options, { ctx: context.transactionManager })
-    }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return await this.manager_.find(
+    return await manager.find(
       ProductTag,
       findOptions_.where as MikroFilterQuery<ProductTag>,
       findOptions_.options as MikroOptions<ProductTag>
@@ -44,18 +43,17 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     findOptions: DAL.FindOptions<ProductTag> = { where: {} },
     context: Context = {}
   ): Promise<[ProductTag[], number]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
-
-    if (context.transactionManager) {
-      Object.assign(findOptions_.options, { ctx: context.transactionManager })
-    }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return await this.manager_.findAndCount(
+    return await manager.findAndCount(
       ProductTag,
       findOptions_.where as MikroFilterQuery<ProductTag>,
       findOptions_.options as MikroOptions<ProductTag>
@@ -66,6 +64,9 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     tags: CreateProductTagDTO[],
     context: Context = {}
   ): Promise<ProductTag[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const tagsValues = tags.map((tag) => tag.value)
     const existingTags = await this.find(
       {
@@ -90,7 +91,7 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
       if (aTag) {
         upsertedTags.push(aTag)
       } else {
-        const newTag = this.manager_.create(ProductTag, tag)
+        const newTag = manager.create(ProductTag, tag)
         tagsToCreate.push(newTag)
       }
     })
@@ -98,10 +99,10 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     if (tagsToCreate.length) {
       const newTags: ProductTag[] = []
       tagsToCreate.forEach((tag) => {
-        newTags.push(this.manager_.create(ProductTag, tag))
+        newTags.push(manager.create(ProductTag, tag))
       })
 
-      await this.manager_.persist(newTags)
+      await manager.persist(newTags)
       upsertedTags.push(...newTags)
     }
 
