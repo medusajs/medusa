@@ -326,7 +326,7 @@ describe("Inventory Module", () => {
 
         let error
         try {
-          await inventoryService.updateInventoryLevel(
+          await inventoryService.updateInventoryLevels(
             [
               {
                 inventory_item_id: inventoryItem.id,

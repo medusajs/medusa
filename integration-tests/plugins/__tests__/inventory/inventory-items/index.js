@@ -548,7 +548,7 @@ describe("Inventory Items endpoints", () => {
 
         const inventoryService = appContainer.resolve("inventoryService")
 
-        await inventoryService.createInventoryItem([
+        await inventoryService.createInventoryItems([
           {
             title: "Test Item",
           },
@@ -761,7 +761,7 @@ describe("Inventory Items endpoints", () => {
 
         const itemId = items[0].id
 
-        await inventoryService.createInventoryLevel([
+        await inventoryService.createInventoryLevels([
           {
             inventory_item_id: itemId,
             location_id: locationId,
@@ -801,7 +801,7 @@ describe("Inventory Items endpoints", () => {
             sku: "sku-2",
           },
         ]
-        const createdItems = await inventoryService.createInventoryItem(items)
+        const createdItems = await inventoryService.createInventoryItems(items)
 
         expect(createdItems).toHaveLength(2)
         expect(createdItems).toEqual(
@@ -821,7 +821,7 @@ describe("Inventory Items endpoints", () => {
 
         const itemId = items[0].id
 
-        await inventoryService.createInventoryLevel([
+        await inventoryService.createInventoryLevels([
           {
             inventory_item_id: itemId,
             location_id: locationId,
@@ -850,7 +850,7 @@ describe("Inventory Items endpoints", () => {
 
         const itemId = items[0].id
 
-        await inventoryService.createInventoryLevel([
+        await inventoryService.createInventoryLevels([
           {
             inventory_item_id: itemId,
             location_id: locationId,
@@ -887,7 +887,7 @@ describe("Inventory Items endpoints", () => {
         const itemId = items[0].id
 
         const error = await inventoryService
-          .createReservationItem([
+          .createReservationItems([
             {
               inventory_item_id: itemId,
               location_id: locationId,
@@ -926,7 +926,7 @@ describe("Inventory Items endpoints", () => {
           stocked_quantity: 10,
         })
 
-        await inventoryService.createReservationItem([
+        await inventoryService.createReservationItems([
           {
             inventory_item_id: itemId,
             location_id: locationId,
@@ -982,7 +982,7 @@ describe("Inventory Items endpoints", () => {
           stocked_quantity: 10,
         })
 
-        await inventoryService.createReservationItem([
+        await inventoryService.createReservationItems([
           {
             inventory_item_id: itemId,
             location_id: locationId,
@@ -1036,7 +1036,7 @@ describe("Inventory Items endpoints", () => {
         })
         expect(levels).toHaveLength(2)
 
-        await inventoryService.updateInventoryLevel([
+        await inventoryService.updateInventoryLevels([
           {
             inventory_item_id: itemId,
             location_id: locationId,

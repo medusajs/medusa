@@ -339,7 +339,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
     )
 
     if (foundInventoryItemIds.size !== requestedInventoryItemIds.size) {
-      const difference = getSetDifference(requestedVariantIds, foundVariantIds)
+      const difference = getSetDifference(
+        requestedInventoryItemIds,
+        foundInventoryItemIds
+      )
 
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -494,19 +497,20 @@ class ProductVariantInventoryService extends TransactionBaseService {
       locationId = locations[0].location_id
     }
 
-    const reservationItems = await this.inventoryService_.createReservationItem(
-      variantInventory.map((inventoryPart) => {
-        const itemQuantity = inventoryPart.required_quantity * quantity
+    const reservationItems =
+      await this.inventoryService_.createReservationItems(
+        variantInventory.map((inventoryPart) => {
+          const itemQuantity = inventoryPart.required_quantity * quantity
 
-        return {
-          ...toReserve,
-          location_id: locationId as string,
-          inventory_item_id: inventoryPart.inventory_item_id,
-          quantity: itemQuantity,
-        }
-      }),
-      moduleContext
-    )
+          return {
+            ...toReserve,
+            location_id: locationId as string,
+            inventory_item_id: inventoryPart.inventory_item_id,
+            quantity: itemQuantity,
+          }
+        }),
+        moduleContext
+      )
 
     return reservationItems.flat()
   }

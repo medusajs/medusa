@@ -227,6 +227,19 @@ export default class InventoryService implements IInventoryService {
     )
   }
 
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
+  async createReservationItems(
+    input: CreateReservationItemInput[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<ReservationItemDTO[]> {
+    await this.ensureInventoryLevels(input, context)
+
+    return await this.reservationItemService_.create(input, context)
+  }
+
   /**
    * Creates a reservation item
    * @param input - the input object
@@ -236,26 +249,24 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
-  async createReservationItem<
-    TInput extends
-      | CreateReservationItemInput
-      | CreateReservationItemInput[] = CreateReservationItemInput,
-    TOutput = TInput extends CreateReservationItemInput[]
-      ? ReservationItemDTO[]
-      : ReservationItemDTO
-  >(
-    input: TInput,
+  async createReservationItem(
+    input: CreateReservationItemInput,
     @MedusaContext() context: SharedContext = {}
-  ): Promise<TOutput> {
-    const inputs: CreateReservationItemInput[] = Array.isArray(input)
-      ? input
-      : [input]
+  ): Promise<ReservationItemDTO> {
+    const [result] = await this.createReservationItems([input], context)
 
-    await this.ensureInventoryLevels(inputs, context)
+    return result
+  }
 
-    const result = await this.reservationItemService_.create(inputs, context)
-
-    return (Array.isArray(input) ? result : result[0]) as unknown as TOutput
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
+  async createInventoryItems(
+    input: CreateInventoryItemInput[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<InventoryItemDTO[]> {
+    return await this.inventoryItemService_.create(input, context)
   }
 
   /**
@@ -268,22 +279,24 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
-  async createInventoryItem<
-    TInput extends
-      | CreateInventoryItemInput
-      | CreateInventoryItemInput[] = CreateInventoryItemInput,
-    TOutput = TInput extends [] ? InventoryItemDTO[] : InventoryItemDTO
-  >(
-    input: TInput,
+  async createInventoryItem(
+    input: CreateInventoryItemInput,
     @MedusaContext() context: SharedContext = {}
-  ): Promise<TOutput> {
-    const toCreate: CreateInventoryItemInput[] = Array.isArray(input)
-      ? input
-      : [input]
+  ): Promise<InventoryItemDTO> {
+    const [result] = await this.createInventoryItems([input], context)
 
-    const result = await this.inventoryItemService_.create(toCreate, context)
+    return result
+  }
 
-    return (Array.isArray(input) ? result : result[0]) as unknown as TOutput
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
+  async createInventoryLevels(
+    input: CreateInventoryLevelInput[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<InventoryLevelDTO[]> {
+    return await this.inventoryLevelService_.create(input, context)
   }
 
   /**
@@ -296,22 +309,13 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
-  async createInventoryLevel<
-    TInput extends
-      | CreateInventoryLevelInput
-      | CreateInventoryLevelInput[] = CreateInventoryLevelInput,
-    TOutput = TInput extends [] ? InventoryLevelDTO[] : InventoryLevelDTO
-  >(
-    input: TInput,
+  async createInventoryLevel(
+    input: CreateInventoryLevelInput,
     @MedusaContext() context: SharedContext = {}
-  ): Promise<TOutput> {
-    const createData: CreateInventoryLevelInput[] = Array.isArray(input)
-      ? input
-      : [input]
+  ): Promise<InventoryLevelDTO> {
+    const [result] = await this.createInventoryLevels([input], context)
 
-    const result = await this.inventoryLevelService_.create(createData, context)
-
-    return (Array.isArray(input) ? result : result[0]) as unknown as TOutput
+    return result
   }
 
   /**
@@ -415,6 +419,38 @@ export default class InventoryService implements IInventoryService {
     return await this.inventoryLevelService_.delete(inventoryLevel.id, context)
   }
 
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
+  async updateInventoryLevels(
+    updates: ({
+      inventory_item_id: string
+      location_id: string
+    } & UpdateInventoryLevelInput)[],
+    context?: SharedContext
+  ): Promise<InventoryLevelDTO[]> {
+    const inventoryLevels = await this.ensureInventoryLevels(updates)
+
+    const levelMap = inventoryLevels.reduce((acc, curr) => {
+      const inventoryLevelMap = acc.get(curr.inventory_item_id) ?? new Map()
+      inventoryLevelMap.set(curr.location_id, curr.id)
+      acc.set(curr.inventory_item_id, inventoryLevelMap)
+      return acc
+    }, new Map())
+
+    return await Promise.all(
+      updates.map(async (update) => {
+        const levelId = levelMap
+          .get(update.inventory_item_id)
+          .get(update.location_id)
+
+        // TODO make this bulk
+        return this.inventoryLevelService_.update(levelId, update, context)
+      })
+    )
+  }
+
   /**
    * Updates an inventory level
    * @param inventoryItemId - the id of the inventory item associated with the level
@@ -427,57 +463,23 @@ export default class InventoryService implements IInventoryService {
     (target) =>
       target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
   )
-  async updateInventoryLevel<
-    TInput extends string | BulkUpdateInventoryLevelInput[] = string,
-    TOutput = TInput extends BulkUpdateInventoryLevelInput[]
-      ? InventoryLevelDTO[]
-      : InventoryLevelDTO
-  >(
-    inventoryItemIdOrUpdates: TInput,
-    locationIdOrContext?: string | SharedContext,
+  async updateInventoryLevel(
+    inventoryItemId: string,
+    locationIdOrContext?: string,
     input?: UpdateInventoryLevelInput,
     @MedusaContext() context: SharedContext = {}
-  ): Promise<TOutput> {
-    const updates: BulkUpdateInventoryLevelInput[] = Array.isArray(
-      inventoryItemIdOrUpdates
-    )
-      ? inventoryItemIdOrUpdates
-      : [
-          {
-            inventory_item_id: inventoryItemIdOrUpdates,
-            location_id: locationIdOrContext as string,
-            ...input,
-          },
-        ]
+  ): Promise<InventoryLevelDTO> {
+    const updates: BulkUpdateInventoryLevelInput[] = [
+      {
+        inventory_item_id: inventoryItemId,
+        location_id: locationIdOrContext as string,
+        ...input,
+      },
+    ]
 
-    const ctx =
-      Array.isArray(inventoryItemIdOrUpdates) &&
-      typeof locationIdOrContext === "object"
-        ? locationIdOrContext
-        : context
+    const [result] = await this.updateInventoryLevels(updates, context)
 
-    const inventoryLevels = await this.ensureInventoryLevels(updates)
-
-    const levelMap = inventoryLevels.reduce((acc, curr) => {
-      const inventoryLevelMap = acc.get(curr.inventory_item_id) ?? new Map()
-      inventoryLevelMap.set(curr.location_id, curr.id)
-      acc.set(curr.inventory_item_id, inventoryLevelMap)
-      return acc
-    }, new Map())
-
-    const result = await Promise.all(
-      updates.map(async (update) => {
-        const levelId = levelMap
-          .get(update.inventory_item_id)
-          .get(update.location_id)
-
-        // TODO make this bulk
-        return this.inventoryLevelService_.update(levelId, update, ctx)
-      })
-    )
-    return (Array.isArray(inventoryItemIdOrUpdates)
-      ? result
-      : result[0]) as unknown as TOutput
+    return result
   }
 
   /**
