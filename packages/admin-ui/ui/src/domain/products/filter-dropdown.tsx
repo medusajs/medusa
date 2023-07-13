@@ -187,7 +187,6 @@ const ProductsFilter = ({
               Tags
             </span>
           </div>
-          q
           {tempState.tags.open && (
             <div data-tip={tempState.tags.invalidTagsMessage || ""}>
               <TagInput
