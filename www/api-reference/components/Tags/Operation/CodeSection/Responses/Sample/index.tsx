@@ -152,6 +152,7 @@ const TagsOperationCodeSectionResponsesSample = ({
                   },
                 },
               ]}
+              className="mt-1"
             />
           )}
           {selectedExample && !selectedExample.contentDetailed && (

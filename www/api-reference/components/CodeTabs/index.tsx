@@ -1,6 +1,5 @@
 "use client"
 
-import type { Code } from "@/types/openapi"
 import clsx from "clsx"
 import { useState } from "react"
 import CodeBlock, { CodeBlockProps } from "../CodeBlock"
@@ -12,13 +11,14 @@ type CodeTabsProps = {
     code?: CodeBlockProps
     codeBlock?: React.ReactNode
   }[]
+  className?: string
 }
 
-const CodeTabs = ({ tabs }: CodeTabsProps) => {
+const CodeTabs = ({ tabs, className }: CodeTabsProps) => {
   const [selectedTab, setSelectedTab] = useState(tabs[0])
 
   return (
-    <div>
+    <div className={clsx(className)}>
       <ul className="bg-medusa-code-tabs-bg flex !list-none gap-1 rounded-t py-[12px] px-1">
         {tabs.map((tab, index) => (
           <li key={index}>
