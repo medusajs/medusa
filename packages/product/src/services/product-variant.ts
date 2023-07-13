@@ -1,6 +1,8 @@
 import { Product, ProductVariant } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import { isString, ModulesSdkUtils, MedusaError, isDefined, retrieveEntity } from "@medusajs/utils"
+import { ProductVariantServiceTypes } from "../types/services"
+import { ProductVariantRepository } from "@repositories"
 
 import ProductService from "./product"
 
@@ -81,7 +83,7 @@ export default class ProductVariantService<
 
         if (isString(productOrId)) {
           product = await this.productService_.retrieve(
-            productOrId as string,
+            productOrId,
             {},
             sharedContext
           )
@@ -98,6 +100,45 @@ export default class ProductVariantService<
         })
 
         return await this.productVariantRepository_.create(data_, {
+          transactionManager: manager,
+        })
+      },
+      { transaction: sharedContext?.transactionManager }
+    )
+  }
+
+  async update(
+    productOrId: TProduct | string,
+    data: ProductVariantServiceTypes.UpdateProductVariantDTO[],
+    sharedContext?: Context
+  ): Promise<TEntity[]> {
+    return await this.productVariantRepository_.transaction(
+      async (manager) => {
+        let product = productOrId as unknown as Product
+
+        if (isString(productOrId)) {
+          product = await this.productService_.retrieve(
+            productOrId,
+            {},
+            sharedContext
+          )
+        }
+
+        const variantsData = [...data]
+        variantsData.forEach((variant) => Object.assign(variant, { product }))
+
+        return await (this.productVariantRepository_ as ProductVariantRepository).update(variantsData, {
+          transactionManager: manager,
+        })
+      },
+      { transaction: sharedContext?.transactionManager }
+    )
+  }
+
+  async delete(ids: string[], sharedContext?: Context): Promise<void> {
+    await this.productVariantRepository_.transaction(
+      async (manager) => {
+        await this.productVariantRepository_.delete(ids, {
           transactionManager: manager,
         })
       },

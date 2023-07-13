@@ -28,6 +28,7 @@ describe("ProductModuleService products", function () {
     let productCollectionTwo: ProductCollection
     let variantOne: ProductVariant
     let variantTwo: ProductVariant
+    let variantThree: ProductVariant
     let productTypeOne: ProductType
     let productTypeTwo: ProductType
     let images = ["image-1"]
@@ -107,6 +108,27 @@ describe("ProductModuleService products", function () {
         categories: [productCategoryOne],
         collection_id: productCollectionOne.id,
         tags: tagsData,
+      })
+
+      variantOne = testManager.create(ProductVariant, {
+        id: "variant-1",
+        title: "variant 1",
+        inventory_quantity: 10,
+        product: productOne,
+      })
+
+      variantTwo = testManager.create(ProductVariant, {
+        id: "variant-2",
+        title: "variant 2",
+        inventory_quantity: 10,
+        product: productTwo,
+      })
+
+      variantThree = testManager.create(ProductVariant, {
+        id: "variant-3",
+        title: "variant 3",
+        inventory_quantity: 10,
+        product: productTwo,
       })
 
       await testManager.persistAndFlush([productOne, productTwo])
@@ -374,6 +396,42 @@ describe("ProductModuleService products", function () {
       }
 
       expect(error).toEqual(`Product with id "does-not-exist" not found`)
+    })
+
+    it("should update, create and delete variants", async () => {
+      const updateData = {
+        id: productTwo.id,
+        // Note: VariantThree is already assigned to productTwo, that should be deleted
+        variants: [{
+          id: variantTwo.id,
+          title: "updated-variant"
+        }, {
+          title: "created-variant"
+        }]
+      }
+
+      await module.update([updateData])
+
+      const product = await module.retrieve(updateData.id, {
+        relations: ["variants"]
+      })
+
+      expect(product.variants).toHaveLength(2)
+      expect(product).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          variants: expect.arrayContaining([
+            expect.objectContaining({
+              id: variantTwo.id,
+              title: "updated-variant",
+            }),
+            expect.objectContaining({
+              id: expect.any(String),
+              title: "created-variant",
+            }),
+          ]),
+        })
+      )
     })
   })
 })

@@ -28,7 +28,7 @@ import { isDefined, isString, kebabCase, MedusaError } from "@medusajs/utils"
 import { serialize } from "@mikro-orm/core"
 
 import ProductImageService from "./product-image"
-import { ProductServiceTypes } from "../types/services"
+import { ProductServiceTypes, ProductVariantServiceTypes } from "../types/services"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -284,6 +284,7 @@ export default class ProductModuleService<
           string,
           ProductTypes.CreateProductVariantDTO[]
         >()
+
         const productOptionsMap = new Map<
           string,
           ProductTypes.CreateProductOptionDTO[]
@@ -412,13 +413,27 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.baseRepository_.transaction(
       async (manager) => {
+        const productIds = data.map(pd => pd.id)
         sharedContext = sharedContext || {
           transactionManager: manager,
         }
 
+        const existingProductVariants = await this.productVariantService_.list(
+          { product_id: productIds },
+          {},
+          sharedContext
+        )
+
+        const existingProductVariantsMap = new Map(
+          data.map((productData) => [
+            productData.id,
+            existingProductVariants.filter((variant) => variant.product_id === productData.id)
+          ])
+        )
+
         const productVariantsMap = new Map<
           string,
-          ProductTypes.CreateProductVariantDTO[]
+          ProductTypes.CreateOrUpdateProductVariantDTO[]
         >()
 
         const productOptionsMap = new Map<
@@ -512,27 +527,90 @@ export default class ProductModuleService<
           sharedContext
         )
 
-        for (const variants of productVariantsMap.values()) {
+        let productVariantIdsToDelete: string[] = []
+        const productVariantsToCreateMap = new Map<
+          string,
+          ProductTypes.CreateProductVariantDTO[]
+        >()
+
+        const productVariantsToUpdateMap = new Map<
+          string,
+          ProductTypes.CreateOrUpdateProductVariantDTO[]
+        >()
+
+
+        for (let [productId, variants] of productVariantsMap) {
+          const variantsToCreate: ProductTypes.CreateProductVariantDTO[] = []
+          const variantsToUpdate: ProductTypes.CreateOrUpdateProductVariantDTO[] = []
+          const existingVariants = existingProductVariantsMap.get(productId)
+
           variants.forEach((variant) => {
-            variant.options = variant.options?.map((option, index) => {
+            const existingProductVariant = existingVariants
+              ?.find((existingVariant) => existingVariant.id === variant.id)
+
+            if (isDefined(variant.id) && !existingProductVariant) {
+              throw new MedusaError(
+                MedusaError.Types.NOT_FOUND,
+                `ProductVariant "${variant.id}" not found for product "${productId}"`
+              )
+            }
+
+            if (isDefined(variant.id)) {
+              variantsToUpdate.push(variant)
+            } else {
+              variantsToCreate.push(variant)
+            }
+
+            const variantOptions = variant.options?.map((option, index) => {
               const productOption = productOptions[index]
               return {
                 option: productOption,
                 value: option.value,
               }
             })
+
+            if (variantOptions) {
+              variant.options = variantOptions
+            }
           })
+
+          productVariantsToCreateMap.set(productId, variantsToCreate)
+          productVariantsToUpdateMap.set(productId, variantsToUpdate)
+
+          const variantsToUpdateIds = variantsToUpdate.map(v => v?.id) as string[]
+          const existingVariantIds = existingVariants?.map(v => v.id) || []
+          const variantsToUpdateSet = new Set(variantsToUpdateIds)
+
+          productVariantIdsToDelete = productVariantIdsToDelete.concat([
+            ...new Set(
+              existingVariantIds.filter(x => !variantsToUpdateSet.has(x))
+            )
+          ])
         }
 
-        const variants = await Promise.all(
-          [...productVariantsMap].map(async ([id, variants]) => {
+        await Promise.all(
+          [...productVariantsToCreateMap].map(async ([productId, variants]) => {
             return await this.productVariantService_.create(
-              productByIdMap.get(id)!,
+              productByIdMap.get(productId)!,
               variants as unknown as ProductTypes.CreateProductVariantOnlyDTO[],
               sharedContext
             )
           })
         )
+
+        await Promise.all(
+          [...productVariantsToUpdateMap].map(async ([productId, variants]) => {
+            return await this.productVariantService_.update(
+              productByIdMap.get(productId)!,
+              variants as unknown as ProductVariantServiceTypes.UpdateProductVariantDTO[],
+              sharedContext
+            )
+          })
+        )
+
+        if (productVariantIdsToDelete.length) {
+          await this.productVariantService_.delete(productVariantIdsToDelete, sharedContext)
+        }
 
         return products
       },

@@ -161,6 +161,7 @@ export interface FilterableProductVariantProps
   extends BaseFilterable<FilterableProductVariantProps> {
   id?: string | string[]
   sku?: string | string[]
+  product_id?: string | string[]
   options?: { id?: string[] }
 }
 
@@ -217,6 +218,10 @@ export interface CreateProductVariantDTO {
   metadata?: Record<string, unknown>
 }
 
+export interface CreateOrUpdateProductVariantDTO extends CreateProductVariantDTO {
+  id?: string
+}
+
 export interface CreateProductDTO {
   title: string
   subtitle?: string
@@ -264,7 +269,7 @@ export interface UpdateProductDTO {
   // sales_channel
   categories?: { id: string }[]
   options?: CreateProductOptionDTO[]
-  variants?: CreateProductVariantDTO[]
+  variants?: CreateOrUpdateProductVariantDTO[]
   width?: number
   height?: number
   length?: number
@@ -303,6 +308,28 @@ export interface CreateProductOnlyDTO {
 
 export interface CreateProductVariantOnlyDTO {
   title: string
+  sku?: string
+  barcode?: string
+  ean?: string
+  upc?: string
+  allow_backorder?: boolean
+  inventory_quantity?: number
+  manage_inventory?: boolean
+  hs_code?: string
+  origin_country?: string
+  mid_code?: string
+  material?: string
+  weight?: number
+  length?: number
+  height?: number
+  width?: number
+  options?: (CreateProductVariantOptionDTO & { option: any })[]
+  metadata?: Record<string, unknown>
+}
+
+export interface UpdateProductVariantOnlyDTO {
+  id: string,
+  title?: string
   sku?: string
   barcode?: string
   ean?: string

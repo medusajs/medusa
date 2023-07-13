@@ -5,9 +5,12 @@ import {
   RequiredEntityData,
 } from "@mikro-orm/core"
 import { Product, ProductVariant } from "@models"
-import { Context, DAL } from "@medusajs/types"
-import { AbstractBaseRepository } from "./base"
+import { Context, DAL, WithRequiredProperty } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { MedusaError, isDefined } from "@medusajs/utils"
+
+import { ProductVariantServiceTypes } from "../types/services"
+import { AbstractBaseRepository } from "./base"
 
 export class ProductVariantRepository extends AbstractBaseRepository<ProductVariant> {
   protected readonly manager_: SqlEntityManager
@@ -64,7 +67,7 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     const manager = (context.transactionManager ??
       this.manager_) as SqlEntityManager
 
-    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
+    await manager.nativeDelete(ProductVariant, { id: { $in: ids } }, {})
   }
 
   async create(
@@ -76,6 +79,39 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
 
     const variants = data.map((variant) => {
       return manager.create(ProductVariant, variant)
+    })
+
+    await manager.persist(variants)
+
+    return variants
+  }
+
+  async update(
+    data: WithRequiredProperty<ProductVariantServiceTypes.UpdateProductVariantDTO, "id">[],
+    context: Context = {}
+  ): Promise<ProductVariant[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
+    const productVariantsToUpdate = await manager.find(ProductVariant, {
+      id: data.map((updateData) => updateData.id)
+    })
+
+    const productVariantsToUpdateMap = new Map<string, ProductVariant>(
+      productVariantsToUpdate.map((variant) => [variant.id, variant])
+    )
+
+    const variants = data.map((variantData) => {
+      const productVariant = productVariantsToUpdateMap.get(variantData.id)
+
+      if (!productVariant) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `ProductVariant with id "${variantData.id}" not found`
+        )
+      }
+
+      return manager.assign(productVariant, variantData)
     })
 
     await manager.persist(variants)
