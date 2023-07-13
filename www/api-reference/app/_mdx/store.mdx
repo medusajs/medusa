@@ -1,91 +1,22 @@
-# Medusa Admin API
+# Medusa Storefront API
 
-API reference for Medusa's Admin endpoints. All endpoints are prefixed with `/admin`.
+API reference for Medusa's Storefront endpoints. All endpoints are prefixed with `/store`.
 
 ## Authentication
 
-There are two ways to send authenticated requests to the Medusa server: Using a user's API token, or using a Cookie Session ID.
-
-### API Token
-
-Use a user's API Token to send authenticated requests.
-
-#### How to Add API Token to a User
-
-At the moment, there's no direct way of adding an API Token for a user. The only way it can be done is through directly editing the database.
-
-If you're using a PostgreSQL database, you can run the following commands in your command line to add API token:
-
-```bash
-psql -d <DB_NAME> -U <DB_USER>
-UPDATE public.user SET api_token='<API_TOKEN>' WHERE email='<USER_EMAIL>';
-```
-
-Where:
-
-- `<DB_NAME>` is the name of the database schema you use for the Medusa
-server.
-- `<DB_USER>` is the name of the user that has privileges over the
-database schema.
-- `<API_TOKEN>` is the API token you want to associate with the user.
-You can use [this tool to generate a random
-token](https://randomkeygen.com/).
-- `<USER_EMAIL>` is the email address of the admin user you want to have
-this API token.
-
-
-#### How to Use the API Token
-
-
-The API token can be used for Bearer Authentication. It's passed in the
-`Authorization` header as the following:
-
-
-```
-Authorization: Bearer {api_token}
-```
-
-
-In this API reference, you'll find in the cURL request samples the use
-of `{api_token}`. This is where you must pass the API token.
-
-
-If you're following along with the JS Client request samples, you must
-provide the `apiKey` option when creating the Medusa client:
-
-
-```ts
-const medusa = new Medusa({ 
-  baseUrl: MEDUSA_BACKEND_URL,
-  maxRetries: 3,
-  apiKey: '{api_token}'
-})
-```
-
-
-If you're using Medusa React, you can pass the `apiKey` prop to
-`MedusaProvider`:
-
-
-```tsx
-<MedusaProvider
-  apiKey='api_token}'
-  //...
->
-  {/* ... */}
-</MedusaProvider>
-```
+To send requests as an authenticated customer, you must use the Cookie
+Session ID.
 
 ### Cookie Session ID
 
 Use a cookie session to send authenticated requests.
 
-### How to Obtain the Cookie Session
+#### How to Obtain the Cookie Session
 
 
 If you're sending requests through a browser, using JS Client, or using
 tools like Postman, the cookie session should be automatically set when
-the admin user is logged in.
+the customer is logged in.
 
 
 If you're sending requests using cURL, you must set the Session ID in
@@ -93,17 +24,16 @@ the cookie manually.
 
 
 To do that, send a request to [authenticate the
-user](#tag/Auth/operation/PostAuth) and pass the cURL option `-v`:
+customer](#tag/Auth/operation/PostAuth) and pass the cURL option `-v`:
 
 
 ```bash
-curl -v -X POST 'https://medusa-url.com/admin/auth' \
+curl -v -X POST 'https://medusa-url.com/store/auth' \
 -H 'Content-Type: application/json' \
 --data-raw '{
   "email": "user@example.com",
   "password": "supersecret"
 }'
-
 ```
 
 
@@ -112,7 +42,8 @@ should find in the headers a Cookie header similar to this:
 
 
 ```bash
-Set-Cookie: connect.sid=s%3A2Bu8BkaP9JUfHu9rG59G16Ma0QZf6Gj1.WT549XqX37PN8n0OecqnMCq798eLjZC5IT7yiDCBHPM;
+Set-Cookie:
+connect.sid=s%3A2Bu8BkaP9JUfHu9rG59G16Ma0QZf6Gj1.WT549XqX37PN8n0OecqnMCq798eLjZC5IT7yiDCBHPM;
 ```
 
 
@@ -121,7 +52,7 @@ it as a cookie in subsequent requests as the following:
 
 
 ```bash
-curl 'https://medusa-url.com/admin/products' \
+curl 'https://medusa-url.com/store/customers/me/orders' \
 -H 'Cookie: connect.sid={sid}'
 ```
 
@@ -131,6 +62,7 @@ Where `{sid}` is the value of `connect.sid` that you copied.
 ---
 
 ## Expanding Fields
+
 
 In many endpoints you'll find an `expand` query parameter that can be passed
 to the endpoint. You can use the `expand` query parameter to unpack an
@@ -144,30 +76,28 @@ that are expanded by default in the request.
 ### Expanding One Relation
 
 
-For example, when you retrieve products, you can retrieve their collection
-by passing to the `expand` query parameter the value `collection`:
+For example, when you retrieve a product, you can retrieve its collection by
+passing to the `expand` query parameter the value `collection`:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?expand=collection" \
--H 'Authorization: Bearer {api_token}'
+curl
+"http://localhost:9000/store/products/prod_01GDJGP2XPQT2N3JHZQFMH5V45?expand=collection"
 ```
 
-
 ### Expanding Multiple Relations
-
 
 You can expand more than one relation by separating the relations in the
 `expand` query parameter with a comma.
 
 
-For example, to retrieve both the variants and the collection of products,
+For example, to retrieve both the variants and the collection of a product,
 pass to the `expand` query parameter the value `variants,collection`:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?expand=variants,collection" \
--H 'Authorization: Bearer {api_token}'
+curl
+"http://localhost:9000/store/products/prod_01GDJGP2XPQT2N3JHZQFMH5V45?expand=variants,collection"
 ```
 
 
@@ -182,12 +112,12 @@ For example:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?expand" \
--H 'Authorization: Bearer {api_token}'
+curl
+"http://localhost:9000/store/products/prod_01GDJGP2XPQT2N3JHZQFMH5V45?expand"
 ```
 
 
-This would retrieve each product with only its properties, without any
+This would retrieve the product with only its properties, without any
 relations like `collection`.
 
 ---
@@ -218,8 +148,7 @@ parameter:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?fields=title" \
--H 'Authorization: Bearer {api_token}'
+curl "http://localhost:9000/store/products?fields=title"
 ```
 
 
@@ -232,8 +161,7 @@ value to the `expand` query parameter. For example:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?fields=title&expand" \
--H 'Authorization: Bearer {api_token}'
+curl "http://localhost:9000/store/products?fields=title&expand"
 ```
 
 
@@ -244,12 +172,11 @@ You can pass more than one field by seperating the field names in the
 `fields` query parameter with a comma.
 
 
-For example, to select the `title` and `handle` of products:
+For example, to select the `title` and `handle` of a product:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?fields=title,handle" \
--H 'Authorization: Bearer {api_token}'
+curl "http://localhost:9000/store/products?fields=title,handle"
 ```
 
 
@@ -261,8 +188,7 @@ entity. For example:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?fields" \
--H 'Authorization: Bearer {api_token}'
+curl "http://localhost:9000/store/products?fields"
 ```
 
 
@@ -271,8 +197,7 @@ relations aren't retrieved as well. For example:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?fields&expand" \
--H 'Authorization: Bearer {api_token}'
+curl "http://localhost:9000/store/products?fields&expand"
 ```
 
 ---
@@ -295,8 +220,7 @@ For example:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?title=Shirt" \
--H 'Authorization: Bearer {api_token}'
+curl "http://localhost:9000/store/products?title=Shirt"
 ```
 
 
@@ -309,17 +233,14 @@ For example, if the string has spaces, you can encode the space with `+` or
 
 
 ```bash
-curl "http://localhost:9000/admin/products?title=Blue%20Shirt" \
--H 'Authorization: Bearer {api_token}'
+curl "http://localhost:9000/store/products?title=Blue%20Shirt"
 ```
 
 
 You can use tools like [this one](https://www.urlencoder.org/) to learn how
 a value can be encoded.
 
-
 ### Integers
-
 
 You can pass an integer value in the form of `<parameter_name>=<value>`.
 
@@ -328,8 +249,7 @@ For example:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?offset=1" \
--H 'Authorization: Bearer {api_token}'
+curl "http://localhost:9000/store/products?offset=1"
 ```
 
 
@@ -343,8 +263,7 @@ For example:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?is_giftcard=true" \
--H 'Authorization: Bearer {api_token}'
+curl "http://localhost:9000/store/products?is_giftcard=true"
 ```
 
 
@@ -359,8 +278,7 @@ For example:
 
 
 ```bash
-curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17" \
--H 'Authorization: Bearer {api_token}'
+curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17"
 ```
 
 
@@ -372,8 +290,8 @@ For example:
 
 
 ```bash
-curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17T07:22:30Z" \
--H 'Authorization: Bearer {api_token}'
+curl -g
+"http://localhost:9000/store/products?created_at[lt]=2023-02-17T07:22:30Z"
 ```
 
 
@@ -389,8 +307,8 @@ For example:
 
 
 ```bash
-curl -g "http://localhost:9000/admin/products?sales_channel_id[]=sc_01GPGVB42PZ7N3YQEP2WDM7PC7&sales_channel_id[]=sc_234PGVB42PZ7N3YQEP2WDM7PC7" \
--H 'Authorization: Bearer {api_token}'
+curl -g
+"http://localhost:9000/store/products?sales_channel_id[]=sc_01GPGVB42PZ7N3YQEP2WDM7PC7&sales_channel_id[]=sc_234PGVB42PZ7N3YQEP2WDM7PC7"
 ```
 
 
@@ -410,8 +328,8 @@ For example:
 
 
 ```bash
-curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17&created_at[gt]=2022-09-17" \
--H 'Authorization: Bearer {api_token}'
+curl -g
+"http://localhost:9000/store/products?created_at[lt]=2023-02-17&created_at[gt]=2022-09-17"
 ```
 
 ---
@@ -422,21 +340,26 @@ curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17&created_
 ### Query Parameters
 
 
-In listing endpoints, such as list customers or list products, you can control the pagination using the query parameters `limit` and `offset`.
+In listing endpoints, such as list customers or list products, you can
+control the pagination using the query parameters `limit` and `offset`.
 
 
-`limit` is used to specify the maximum number of items that can be return in the response. `offset` is used to specify how many items to skip before returning the resulting entities.
+`limit` is used to specify the maximum number of items that can be return in
+the response. `offset` is used to specify how many items to skip before
+returning the resulting entities.
 
 
-You can use the `offset` query parameter to change between pages. For example, if the limit is 50, at page 1 the offset should be 0; at page 2 the offset should be 50, and so on.
+You can use the `offset` query parameter to change between pages. For
+example, if the limit is 50, at page 1 the offset should be 0; at page 2 the
+offset should be 50, and so on.
 
 
-For example, to limit the number of products returned in the List Products endpoint:
+For example, to limit the number of products returned in the List Products
+endpoint:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?limit=5" \
--H 'Authorization: Bearer {api_token}'
+curl "http://localhost:9000/store/products?limit=5"
 ```
 
 
@@ -471,8 +394,7 @@ sort products by their `created_at` attribute by setting `order` to
 
 
 ```bash
-curl "http://localhost:9000/admin/products?order=created_at" \
--H 'Authorization: Bearer {api_token}'
+curl "http://localhost:9000/list/products?order=created_at"
 ```
 
 
@@ -481,8 +403,7 @@ descending, pass a dash (`-`) before the attribute name. For example:
 
 
 ```bash
-curl "http://localhost:9000/admin/products?order=-created_at" \
--H 'Authorization: Bearer {api_token}'
+curl "http://localhost:9000/list/products?order=-created_at"
 ```
 
 

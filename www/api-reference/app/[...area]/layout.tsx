@@ -1,7 +1,7 @@
 import SidebarProvider from "@/providers/sidebar"
 import Sidebar from "@/components/Sidebar"
 import clsx from "clsx"
-import "../css/globals.css"
+import "../../css/globals.css"
 import BaseSpecsProvider from "@/providers/base-specs"
 import Navbar from "@/components/Navbar"
 
@@ -20,7 +20,7 @@ export default function RootLayout({
       <body
         className={clsx(
           "bg-docs-bg dark:bg-docs-bg-dark font-base text-body-regular h-full w-full",
-          "text-medusa-text-subtle dark:text-medusa-text-subtle-dark",
+          "text-medusa-text-subtle dark:text-medusa-text-subtle-dark"
         )}
       >
         <BaseSpecsProvider>

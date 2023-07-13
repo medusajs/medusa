@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { NextResponse } from "next/server"
 import { promises as fs } from "fs"
 import path from "path"
 import { OpenAPIV3 } from "openapi-types"
@@ -12,14 +12,33 @@ type ParsedPathItemObject = OpenAPIV3.PathItemObject<Operation> & {
   operationPath?: string
 }
 
-export async function GET(req: NextRequest) {
-  const tagName = req.nextUrl.pathname.replace("/api/tag/", "").replace("/", "")
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url)
+  const tagName = searchParams.get("tagName")
+  const area = searchParams.get("area")
 
-  // get path files
-  const basePath = path.join(process.cwd(), "specs/admin/paths")
+  if (area !== "admin" && area !== "store") {
+    return NextResponse.json(
+      {
+        success: false,
+        message: `area ${area} is not allowed`,
+      },
+      {
+        status: 400,
+      }
+    )
+  }
+
   // this is just to ensure that vercel picks up these files on build
   path.join(process.cwd(), "specs/admin/code_samples")
   path.join(process.cwd(), "specs/admin/components")
+  path.join(process.cwd(), "specs/admin/paths")
+  path.join(process.cwd(), "specs/store/code_samples")
+  path.join(process.cwd(), "specs/store/components")
+  path.join(process.cwd(), "specs/store/paths")
+
+  // get path files
+  const basePath = path.join(process.cwd(), `specs/${area}/paths`)
 
   const files = await fs.readdir(basePath)
 
@@ -38,6 +57,8 @@ export async function GET(req: NextRequest) {
       }
     })
   )
+
+  // console.log(documents)
 
   // filter out operations not related to the passed tag
   documents = documents.filter((document) =>

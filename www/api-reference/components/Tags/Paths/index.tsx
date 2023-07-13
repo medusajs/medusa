@@ -21,13 +21,14 @@ const TagOperation = dynamic<TagOperationProps>(
 
 export type TagSectionPathsProps = {
   tag: OpenAPIV3.TagObject
+  area: string
 } & React.HTMLAttributes<HTMLDivElement>
 
-const TagPaths = ({ tag }: TagSectionPathsProps) => {
+const TagPaths = ({ tag, area }: TagSectionPathsProps) => {
   const tagSlugName = getSectionId([tag.name])
   const { data } = useSWR<{
     paths: PathsObject
-  }>(`/api/tag/${tagSlugName}`, fetcher)
+  }>(`/api/tag?tagName=${tagSlugName}&area=${area}`, fetcher)
   const { addItems } = useSidebar()
 
   const paths = data?.paths || []
