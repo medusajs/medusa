@@ -48,6 +48,11 @@ module.exports = {
       scope: "internal",
       resources: "isolated",
       resolve: "@medusajs/product",
+      options: {
+        database: {
+          clientUrl: `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
+        },
+      },
     },
   },
 }

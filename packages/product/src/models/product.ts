@@ -132,6 +132,8 @@ class Product {
     pivotTable: "product_images",
     index: "IDX_product_image_id",
     cascade: ["soft-remove"] as any,
+    joinColumn: "product_id",
+    inverseJoinColumn: "image_id",
   })
   images = new Collection<ProductImage>(this)
 

@@ -919,8 +919,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "product_image_id": {
-          "name": "product_image_id",
+        "image_id": {
+          "name": "image_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -936,7 +936,7 @@
           "keyName": "product_images_pkey",
           "columnNames": [
             "product_id",
-            "product_image_id"
+            "image_id"
           ],
           "composite": true,
           "primary": true,
@@ -958,10 +958,10 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "product_images_product_image_id_foreign": {
-          "constraintName": "product_images_product_image_id_foreign",
+        "product_images_image_id_foreign": {
+          "constraintName": "product_images_image_id_foreign",
           "columnNames": [
-            "product_image_id"
+            "image_id"
           ],
           "localTableName": "public.product_images",
           "referencedColumnNames": [

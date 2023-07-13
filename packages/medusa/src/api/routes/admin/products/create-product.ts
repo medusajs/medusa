@@ -42,7 +42,11 @@ import {
   createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
-import { createProductsWorkflow } from "../../../../workflows/admin/create-product/create-product"
+import {
+  createProductsWorkflow,
+  CreateProductsWorkflowActions,
+  revertCreateProductsTransaction,
+} from "../../../../workflows/admin/create-product/create-product"
 
 /**
  * @oas [post] /admin/products
@@ -109,18 +113,6 @@ import { createProductsWorkflow } from "../../../../workflows/admin/create-produ
 export default async (req, res) => {
   const validated = await validator(AdminPostProductsReq, req.body)
 
-  if (req.scope.registrations["productModuleService"]) {
-    const products = await createProductsWorkflow(
-      {
-        container: req.scope,
-        manager: req.scope.resolve("manager"),
-      },
-      [validated]
-    )
-
-    return res.json({ product: products[0] })
-  }
-
   const logger: Logger = req.scope.resolve("logger")
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
@@ -142,6 +134,26 @@ export default async (req, res) => {
   )
 
   const entityManager: EntityManager = req.scope.resolve("manager")
+
+  if (req.scope.registrations["productModuleService"]) {
+    let transaction: DistributedTransaction
+    try {
+      transaction = await createProductsWorkflow(
+        {
+          container: req.scope,
+          manager: req.scope.resolve("manager"),
+        },
+        [validated]
+      )
+
+      const product =
+        transaction.getContext().invoke[CreateProductsWorkflowActions.result]
+      return res.json({ product })
+    } catch (e) {
+      await revertCreateProductsTransaction(transaction!)
+      throw e
+    }
+  }
 
   const product = await entityManager.transaction(async (manager) => {
     const { variants } = validated

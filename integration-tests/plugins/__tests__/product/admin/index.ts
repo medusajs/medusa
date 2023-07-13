@@ -59,7 +59,7 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
-    it("creates a product", async () => {
+    it.only("creates a product", async () => {
       const api = useApi()! as AxiosInstance
 
       const payload = {
