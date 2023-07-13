@@ -151,7 +151,7 @@ const ProductsFilter = ({
           open={tempState.collection.open}
           setFilter={(v) => setSingleFilter("collection", v)}
         />
-        <div className="flex w-full flex-col py-2 px-4">
+        <div className="flex w-full flex-col px-4 pt-2 pb-1">
           <div
             className="hover:bg-grey-5 mb-1 flex w-full cursor-pointer items-center rounded px-3 py-1.5"
             onClick={() => {
