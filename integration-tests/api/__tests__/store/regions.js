@@ -37,10 +37,6 @@ describe("/store/carts", () => {
   })
 
   describe("GET /store/regions", () => {
-    let rrId
-    let rrId_child
-    let rrResult
-
     beforeEach(async () => {
       const manager = dbConnection.manager
 
