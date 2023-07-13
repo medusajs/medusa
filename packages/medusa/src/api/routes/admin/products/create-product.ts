@@ -42,6 +42,7 @@ import {
   createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
+import { createProductsWorkflow } from "../../../../workflows/admin/create-product/create-product"
 
 /**
  * @oas [post] /admin/products
@@ -107,6 +108,18 @@ import {
  */
 export default async (req, res) => {
   const validated = await validator(AdminPostProductsReq, req.body)
+
+  if (req.scope.registrations["productModuleService"]) {
+    const products = await createProductsWorkflow(
+      {
+        container: req.scope,
+        manager: req.scope.resolve("manager"),
+      },
+      [validated]
+    )
+
+    return res.json({ product: products[0] })
+  }
 
   const logger: Logger = req.scope.resolve("logger")
   const productService: ProductService = req.scope.resolve("productService")

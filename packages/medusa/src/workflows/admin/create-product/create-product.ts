@@ -79,18 +79,35 @@ const createProductOrchestrator = new TransactionOrchestrator(
 type InjectedDependencies = {
   manager: EntityManager
   container: MedusaContainer
-  inventoryService?: IInventoryService
 }
 
-type CreateProductsWorkflowInputData = {
-  shippingProfileId?: string
-  salesChannelIds?: string[]
-  product: ProductTypes.CreateProductDTO
-}[]
+type CreateProductsWorkflowInputData = (ProductTypes.CreateProductDTO & {
+  sales_channels?: { id: string }[]
+})[]
 
 type CreateProductsStepResponse = {
   products: ProductTypes.ProductDTO[]
-} & CreateProductPreparedData
+  productsHandleShippingProfileMap: Map<string, string>
+  productsHandleSalesChannelsMap: Map<string, string[]>
+}
+
+const shouldSkipInventoryStep = (
+  container: MedusaContainer,
+  stepName: string
+) => {
+  const inventoryService = container.resolve(
+    "inventoryService"
+  ) as IInventoryService
+  if (!inventoryService) {
+    const logger = container.resolve("logger")
+    logger.warn(
+      `Inventory service not found. You should install the @medusajs/inventory package to use inventory. The '${stepName}' will be skipped.`
+    )
+    return true
+  }
+
+  return false
+}
 
 export async function createProductsWorkflow(
   dependencies: InjectedDependencies,
@@ -130,8 +147,11 @@ export async function createProductsWorkflow(
           })
 
           return {
+            productsHandleShippingProfileMap:
+              preparedData.productsHandleShippingProfileMap,
+            productsHandleSalesChannelsMap:
+              preparedData.productsHandleSalesChannelsMap,
             products,
-            ...preparedData,
           }
         },
         [TransactionHandlerType.COMPENSATE]: async (
@@ -199,6 +219,14 @@ export async function createProductsWorkflow(
           data: CreateProductVariantInput[],
           { invoke }
         ) => {
+          const shouldSkipStep_ = shouldSkipInventoryStep(
+            container,
+            Actions.createInventoryItems
+          )
+          if (shouldSkipStep_) {
+            return
+          }
+
           const { [Actions.createProducts]: products } = invoke
 
           return await createInventoryItems({
@@ -208,6 +236,14 @@ export async function createProductsWorkflow(
           })
         },
         [TransactionHandlerType.COMPENSATE]: async (_, { invoke }) => {
+          const shouldSkipStep_ = shouldSkipInventoryStep(
+            container,
+            Actions.createInventoryItems
+          )
+          if (shouldSkipStep_) {
+            return
+          }
+
           const variantInventoryItemsData = invoke[Actions.createInventoryItems]
           await removeInventoryItems({
             container,
@@ -221,6 +257,14 @@ export async function createProductsWorkflow(
           data: CreateProductVariantInput[],
           { invoke }
         ) => {
+          const shouldSkipStep_ = shouldSkipInventoryStep(
+            container,
+            Actions.attachInventoryItems
+          )
+          if (shouldSkipStep_) {
+            return
+          }
+
           const { [Actions.createInventoryItems]: inventoryItemsResult } =
             invoke
 

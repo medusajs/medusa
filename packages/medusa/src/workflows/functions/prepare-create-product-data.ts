@@ -5,13 +5,12 @@ import { kebabCase } from "@medusajs/utils"
 import { FlagRouter } from "../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../loaders/feature-flags/sales-channels"
 
-export type CreateProductsInputData = {
-  salesChannelIds?: string[]
-  shippingProfileId?: string
-  product: ProductTypes.CreateProductDTO
-}[]
+export type CreateProductsInputData = (ProductTypes.CreateProductDTO & {
+  sales_channels?: { id: string }[]
+})[]
 
 export type CreateProductPreparedData = {
+  products: ProductTypes.CreateProductDTO[]
   productsHandleShippingProfileMap: Map<string, string>
   productsHandleSalesChannelsMap: Map<string, string[]>
 }
@@ -38,7 +37,13 @@ export async function prepareCreateProductData({
     data,
   })
 
+  data = data.map((productData) => {
+    delete productData.sales_channels
+    return productData
+  })
+
   return {
+    products: data as ProductTypes.CreateProductDTO[],
     productsHandleShippingProfileMap,
     productsHandleSalesChannelsMap,
   }
@@ -56,29 +61,31 @@ export async function createProductsShippingProfileMap_({
   const shippingProfileService: ShippingProfileService = container
     .resolve("shippingProfileService")
     .withTransaction(manager)
+  const shippingProfileServiceTx =
+    shippingProfileService.withTransaction(manager)
+
+  const [gitCardShippingProfile, defaultShippingProfile] = await Promise.all([
+    shippingProfileServiceTx.retrieveGiftCardDefault(),
+    shippingProfileServiceTx.retrieveDefault(),
+  ])
 
   const productsHandleShippingProfileMap = new Map<string, string>()
 
-  const promises: Promise<any>[] = []
-  for (const createProductData of data) {
-    const { product } = createProductData
+  for (const product of data) {
     product.handle ??= kebabCase(product.title)
 
-    let promise
     if (product.is_giftcard) {
-      promise = shippingProfileService.retrieveGiftCardDefault()
+      productsHandleShippingProfileMap.set(
+        product.handle!,
+        gitCardShippingProfile!.id
+      )
     } else {
-      promise = shippingProfileService.retrieveDefault()
+      productsHandleShippingProfileMap.set(
+        product.handle!,
+        defaultShippingProfile!.id
+      )
     }
-
-    promise.then((profile) => {
-      productsHandleShippingProfileMap.set(product.handle!, profile.id)
-    })
-
-    promises.push(promise)
   }
-
-  await Promise.all(promises)
 
   return productsHandleShippingProfileMap
 }
@@ -97,34 +104,29 @@ export async function createProductsSalesChannelMap_({
     .resolve("salesChannelService")
     .withTransaction(manager)
 
+  const defaultSalesChannel = await salesChannelService
+    .withTransaction(manager)
+    .retrieveDefault()
+
   const productsHandleSalesChannelsMap = new Map<string, string[]>()
 
-  const promises: Promise<any>[] = []
-  for (const createProductData of data) {
-    const { product } = createProductData
+  for (const product of data) {
     product.handle = kebabCase(product.title)
 
-    let promise
     if (
       featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
-      !createProductData.salesChannelIds?.length
+      !product.sales_channels?.length
     ) {
-      promise = salesChannelService
-        .withTransaction(manager)
-        .retrieveDefault()
-        .then((channel) => [channel.id])
+      productsHandleSalesChannelsMap.set(product.handle!, [
+        defaultSalesChannel.id,
+      ])
     } else {
-      promise = Promise.resolve(createProductData.salesChannelIds)
+      productsHandleSalesChannelsMap.set(
+        product.handle!,
+        product.sales_channels!.map((s) => s.id)
+      )
     }
-
-    promise.then((salesChannelIds: string[]) => {
-      productsHandleSalesChannelsMap.set(product.handle!, salesChannelIds)
-    })
-
-    promises.push(promise)
   }
-
-  await Promise.all(promises)
 
   return productsHandleSalesChannelsMap
 }
