@@ -41,10 +41,10 @@ const TagOperationParametersDescription = ({
       typeDescription = (
         <>
           {schema.oneOf?.map((item, index) => (
-            <>
+            <span key={index}>
               {index !== 0 && <> or </>}
               {item.title || item.type}
-            </>
+            </span>
           ))}
         </>
       )

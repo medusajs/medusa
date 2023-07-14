@@ -37,7 +37,8 @@ const TagOperationParametersArray = ({
 
   if (
     !schema.items ||
-    (schema.items?.type !== "object" && schema.items?.type !== "array")
+    (schema.items.type !== "object" && schema.items.type !== "array") ||
+    (schema.items.type === "object" && !schema.items.properties)
   ) {
     return (
       <TagOperationParametersDefault
