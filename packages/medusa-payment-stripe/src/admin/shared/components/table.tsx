@@ -1,3 +1,4 @@
+import { WidgetPayment } from "../../../types"
 import {
   ColumnDef,
   flexRender,
@@ -5,10 +6,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import moment from "moment"
-import Badge from "./badge"
+import { Badge } from "@medusajs/ui"
 import StatusIndicator from "./dot"
 import { formatAmount } from "medusa-react"
-import { WidgetPayment } from "../../../types"
 import LinkIcon from "../icons/link"
 
 const STRIPE_DASHBOARD_URL = "https://dashboard.stripe.com"
@@ -108,16 +108,18 @@ const columns: ColumnDef<WidgetPayment>[] = [
       const riskScore = row.original.risk_score
 
       return (
-        <div className="flex flex-col gap-y-1">
+        <div className="flex">
           {!row.original.risk_level ? (
             "N/A"
           ) : (
-            <Badge>
-              <StatusIndicator
-                title={`${capitalize(riskLevel)} - ${riskScore}`}
-                variant={riskScoreToStatusMapper(riskScore)}
-              />
-            </Badge>
+            <div>
+              <Badge type="rounded" size="lg" className="flex justify-center">
+                <StatusIndicator
+                  title={`${capitalize(riskLevel)} - ${riskScore}`}
+                  variant={riskScoreToStatusMapper(riskScore)}
+                />
+              </Badge>
+            </div>
           )}
         </div>
       )
