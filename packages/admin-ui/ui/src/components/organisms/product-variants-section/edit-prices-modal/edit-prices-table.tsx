@@ -371,9 +371,6 @@ function EditPricesTable(props: EditPricesTableProps) {
             <th className="h-2 min-w-[180px] border pl-4 font-medium text-gray-400">
               Product
             </th>
-            <th className="min-w-[180px] border pl-4 font-medium text-gray-400">
-              SKU
-            </th>
             {props.currencies.map((c) => {
               const currency = storeCurrencies?.find((sc) => sc.code === c)
               return (
@@ -416,9 +413,9 @@ function EditPricesTable(props: EditPricesTableProps) {
           </tr>
         </thead>
         <tbody>
-          <tr style={{ lineHeight: 3 }}>
-            <td className="border pl-4">
-              <div className="text-black-800 flex items-center gap-2">
+          <tr style={{ lineHeight: 3, background: "#f9fafb" }}>
+            <td className="truncate border pl-4">
+              <div className="text-black-800 flex items-center gap-2 ">
                 <img
                   src={props.product.thumbnail}
                   alt="Thumbnail"
@@ -427,7 +424,6 @@ function EditPricesTable(props: EditPricesTableProps) {
                 {props.product.title}
               </div>
             </td>
-            <td className="border pl-4">-</td>
             {props.currencies.map((c) => (
               <td className="border pr-4 text-right" key={c}>
                 -
@@ -447,8 +443,9 @@ function EditPricesTable(props: EditPricesTableProps) {
                 onMouseEnter={(e) => onMouseRowEnter(e, variant.id)}
                 style={{ lineHeight: 3 }}
               >
-                <td className="border pl-10 text-gray-400">{variant.title}</td>
-                <td className="border pl-4 text-gray-400 ">{variant.sku}</td>
+                <td className="border pl-10 text-gray-600">
+                  {variant.title} {variant.sku && `∙ ${variant.sku}`}
+                </td>
 
                 {props.currencies.map((c) => {
                   return (

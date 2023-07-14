@@ -89,10 +89,14 @@ function CurrencyCell(props: CurrencyCellProps) {
 
   return (
     <td
-      onMouseDown={(e) =>
+      onMouseDown={(e) => {
+        if (!isSelected) {
+          e.preventDefault()
+          e.stopPropagation()
+        }
         props.onMouseCellClick(e, variant.id, currencyCode, region)
-      }
-      className={clsx("relative pr-2 pl-4", {
+      }}
+      className={clsx("relative cursor-pointer pr-2 pl-4", {
         border: !isInRange,
         "bg-blue-100": isSelected && !isAnchor,
         "border-x border-double border-blue-400": isInRange,
@@ -102,27 +106,31 @@ function CurrencyCell(props: CurrencyCellProps) {
     >
       <div className="flex">
         <span className="text-gray-400">{currencyMeta?.symbol_native}</span>
-        <AmountField
-          onBlurCapture={() => {
-            props.onInputChange(
-              localValue.float,
-              variant.id,
-              currencyCode,
-              region
-            )
-          }}
-          style={{ width: "100%", textAlign: "right", paddingRight: 8 }}
-          className={clsx("decoration-transparent focus:outline-0", {
-            "bg-blue-100": isSelected && !isAnchor,
-          })}
-          onValueChange={(_a, _b, v) => setLocalValue(v)}
-          allowDecimals={currencyMeta?.decimal_digits > 0}
-          decimalScale={currencyMeta?.decimal_digits}
-          allowNegativeValue={false}
-          value={localValue.value}
-          decimalSeparator="."
-          placeholder="-"
-        ></AmountField>
+        {isSelected ? (
+          <AmountField
+            onBlurCapture={() => {
+              props.onInputChange(
+                localValue.float,
+                variant.id,
+                currencyCode,
+                region
+              )
+            }}
+            style={{ width: "100%", textAlign: "right", paddingRight: 8 }}
+            className={clsx("decoration-transparent focus:outline-0", {
+              "bg-blue-100": isSelected && !isAnchor,
+            })}
+            onValueChange={(_a, _b, v) => setLocalValue(v)}
+            allowDecimals={currencyMeta?.decimal_digits > 0}
+            decimalScale={currencyMeta?.decimal_digits}
+            allowNegativeValue={false}
+            value={localValue.value}
+            decimalSeparator="."
+            placeholder="-"
+          ></AmountField>
+        ) : (
+          <span className="w-full pr-2 text-right">{localValue.value}</span>
+        )}
         {isRangeEnd && (
           <div
             style={{ bottom: -4, right: -4, zIndex: 9999 }}

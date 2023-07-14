@@ -1,7 +1,8 @@
-import React from "react"
+import React, { useState } from "react"
 
 import Button from "../../../fundamentals/button"
 import Modal from "../../../molecules/modal"
+import RadioGroup from "../../radio-group"
 
 type ConfirmationPromptProps = {
   handleClose: () => void
@@ -18,6 +19,8 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
 }) => {
   const hasHiddenColumns = !!hiddenEditedColumns.length
 
+  const [saveSelection, setSaveSelection] = useState("SAVE_VISIBLE_ONLY")
+
   return (
     <Modal isLargeModal={false} handleClose={handleClose}>
       <Modal.Body>
@@ -32,9 +35,30 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
                 : "Save edited variant prices"}
             </span>
           </div>
+
+          {hasHiddenColumns && (
+            <RadioGroup.Root
+              className="gap-base mt-2 flex-col"
+              value={saveSelection}
+              onValueChange={setSaveSelection}
+            >
+              <RadioGroup.Item
+                className="flex-1"
+                label={"Save all"}
+                description={"Save all price changes"}
+                value="SAVE_ALL"
+              />
+              <RadioGroup.Item
+                className="flex-1"
+                label={"Save only visible"}
+                description={"Save only visible price changes"}
+                value="SAVE_VISIBLE_ONLY"
+              />
+            </RadioGroup.Root>
+          )}
         </Modal.Content>
-        <Modal.Footer>
-          <div className="flex h-8 w-full justify-end gap-2">
+        <Modal.Footer className="flex items-center border border-t">
+          <div className="mt-4 flex h-8 w-full justify-end gap-2">
             <Button
               variant="ghost"
               className="text-small mr-2  justify-center"
@@ -43,23 +67,20 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
             >
               Cancel
             </Button>
-            {hasHiddenColumns && (
-              <Button
-                size="small"
-                className="text-small justify-center"
-                variant="primary"
-                onClick={onSaveOnlyVisible}
-              >
-                Save only visible
-              </Button>
-            )}
             <Button
               size="small"
-              className="text-small justify-center"
-              variant="primary"
-              onClick={onSaveAll}
+              color="black"
+              className="text-small justify-center bg-black text-white hover:bg-black"
+              variant="ghost"
+              onClick={
+                !hasHiddenColumns
+                  ? onSaveOnlyVisible
+                  : saveSelection === "SAVE_ALL"
+                  ? onSaveAll
+                  : onSaveOnlyVisible
+              }
             >
-              Save all
+              Save changes
             </Button>
           </div>
         </Modal.Footer>
