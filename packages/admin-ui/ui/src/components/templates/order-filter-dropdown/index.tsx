@@ -1,12 +1,12 @@
-import clsx from "clsx"
 import { useAdminRegions, useAdminSalesChannels } from "medusa-react"
 import { useEffect, useState } from "react"
+
 import FilterDropdownContainer from "../../../components/molecules/filter-dropdown/container"
 import FilterDropdownItem from "../../../components/molecules/filter-dropdown/item"
+import PlusIcon from "../../fundamentals/icons/plus-icon"
 import SaveFilterItem from "../../../components/molecules/filter-dropdown/save-field"
 import TabFilter from "../../../components/molecules/filter-tab"
-import PlusIcon from "../../fundamentals/icons/plus-icon"
-import FeatureToggle from "../../fundamentals/feature-toggle"
+import clsx from "clsx"
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 
 const REGION_PAGE_SIZE = 10

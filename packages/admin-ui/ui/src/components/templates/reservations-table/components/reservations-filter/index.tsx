@@ -10,6 +10,7 @@ import Button from "../../../../fundamentals/button"
 import { CalendarComponent } from "../../../../atoms/date-picker/date-picker"
 import CalendarIcon from "../../../../fundamentals/icons/calendar-icon"
 import CheckIcon from "../../../../fundamentals/icons/check-icon"
+import CollapsibleWrapper from "../../../../molecules/filter-dropdown/collapsible-wrapper"
 import CrossIcon from "../../../../fundamentals/icons/cross-icon"
 import FilterDropdownContainer from "../../../../molecules/filter-dropdown/container"
 import InputField from "../../../../molecules/input"
@@ -44,7 +45,7 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
   }
 
   return (
-    <div className="flex space-x-1">
+    <div className="flex">
       <FilterDropdownContainer
         submitFilters={onSubmit}
         clearFilters={onClear}
@@ -55,82 +56,80 @@ const ReservationsFilters = ({ filters, submitFilters, clearFilters }) => {
           </Button>
         }
       >
-        <div className="w-[320px]">
-          <SearchableFilterInventoryItem
-            title="Inventory item"
-            value={tempState.additionalFilters.inventory_item_id}
-            setFilter={(val) => {
-              setTempState(({ additionalFilters, ...state }) => {
-                return {
-                  ...state,
-                  additionalFilters: {
-                    ...additionalFilters,
-                    inventory_item_id: val,
-                  },
-                }
-              })
-            }}
-          />
-          <TextFilterItem
-            title="Description"
-            value={tempState.additionalFilters.description}
-            options={[
-              { label: "Equals", value: "equals" },
-              { label: "Contains", value: "contains" },
-            ]}
-            setFilter={(val) => {
-              setTempState((state) => {
-                return {
-                  ...state,
-                  additionalFilters: {
-                    description: val,
-                  },
-                }
-              })
-            }}
-          />
-          <DateFilterItem
-            title="Creation date"
-            value={tempState.additionalFilters.created_at}
-            setFilter={(val) => {
-              setTempState(({ additionalFilters, ...state }) => {
-                return {
-                  ...state,
-                  additionalFilters: { ...additionalFilters, created_at: val },
-                }
-              })
-            }}
-          />
-          <NumberFilterItem
-            title="Quantity"
-            value={tempState.additionalFilters.quantity}
-            options={[
-              { label: "Over", value: "gt" },
-              { label: "Under", value: "lt" },
-              { label: "Between", value: "between" },
-            ]}
-            setFilter={(val) => {
-              setTempState(({ additionalFilters, ...state }) => {
-                return {
-                  ...state,
-                  additionalFilters: { ...additionalFilters, quantity: val },
-                }
-              })
-            }}
-          />
-          <CreatedByFilterItem
-            title="Created by"
-            value={tempState.additionalFilters.created_by}
-            setFilter={(val) => {
-              setTempState(({ additionalFilters, ...state }) => {
-                return {
-                  ...state,
-                  additionalFilters: { ...additionalFilters, created_by: val },
-                }
-              })
-            }}
-          />
-        </div>
+        <SearchableFilterInventoryItem
+          title="Inventory item"
+          value={tempState.additionalFilters.inventory_item_id}
+          setFilter={(val) => {
+            setTempState(({ additionalFilters, ...state }) => {
+              return {
+                ...state,
+                additionalFilters: {
+                  ...additionalFilters,
+                  inventory_item_id: val,
+                },
+              }
+            })
+          }}
+        />
+        <TextFilterItem
+          title="Description"
+          value={tempState.additionalFilters.description}
+          options={[
+            { label: "Equals", value: "equals" },
+            { label: "Contains", value: "contains" },
+          ]}
+          setFilter={(val) => {
+            setTempState((state) => {
+              return {
+                ...state,
+                additionalFilters: {
+                  description: val,
+                },
+              }
+            })
+          }}
+        />
+        <DateFilterItem
+          title="Creation date"
+          value={tempState.additionalFilters.created_at}
+          setFilter={(val) => {
+            setTempState(({ additionalFilters, ...state }) => {
+              return {
+                ...state,
+                additionalFilters: { ...additionalFilters, created_at: val },
+              }
+            })
+          }}
+        />
+        <NumberFilterItem
+          title="Quantity"
+          value={tempState.additionalFilters.quantity}
+          options={[
+            { label: "Over", value: "gt" },
+            { label: "Under", value: "lt" },
+            { label: "Between", value: "between" },
+          ]}
+          setFilter={(val) => {
+            setTempState(({ additionalFilters, ...state }) => {
+              return {
+                ...state,
+                additionalFilters: { ...additionalFilters, quantity: val },
+              }
+            })
+          }}
+        />
+        <CreatedByFilterItem
+          title="Created by"
+          value={tempState.additionalFilters.created_by}
+          setFilter={(val) => {
+            setTempState(({ additionalFilters, ...state }) => {
+              return {
+                ...state,
+                additionalFilters: { ...additionalFilters, created_by: val },
+              }
+            })
+          }}
+        />
       </FilterDropdownContainer>
     </div>
   )
@@ -202,66 +201,64 @@ const SearchableFilterInventoryItem = ({
   }
 
   return (
-    <div className={clsx("w-full border-b")}>
-      <CollapsibleWrapper
-        title={title}
-        defaultOpen={!!value}
-        onOpenChange={(open) => {
-          if (!open) {
-            reset()
-          }
-        }}
-      >
-        <div className="gap-y-xsmall mb-2 flex w-full flex-col pt-2">
-          <InputField
-            value={query}
-            className="pr-1"
-            prefix={
-              selectedItems.size === 0 ? null : (
-                <div
-                  onClick={reset}
-                  className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
-                >
-                  <span className="text-grey-50">{selectedItems.size}</span>
-                  <CrossIcon size={16} />
-                </div>
-              )
-            }
-            placeholder={selectedItems.size ? "Items selected" : "Find items"}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
-        <div className="flex flex-col gap-y-1 pb-2">
-          {[...selectedItems].map((item, i) => {
-            return (
-              <InventoryItemItem
-                key={`selected-item-${i}`}
-                onClick={() => toggleInventoryItem(item)}
-                selected={true}
-                item={item}
-              />
+    <CollapsibleWrapper
+      title={title}
+      defaultOpen={!!value}
+      onOpenChange={(open) => {
+        if (!open) {
+          reset()
+        }
+      }}
+    >
+      <div className="gap-y-xsmall mb-2 flex w-full flex-col pt-2">
+        <InputField
+          value={query}
+          className="pr-1"
+          prefix={
+            selectedItems.size === 0 ? null : (
+              <div
+                onClick={reset}
+                className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
+              >
+                <span className="text-grey-50">{selectedItems.size}</span>
+                <CrossIcon size={16} />
+              </div>
             )
-          })}
-          {searchTerm &&
-            (isLoading ? (
-              <Spinner />
-            ) : (
-              <>
-                {inventory_items
-                  ?.filter((item) => !selectedIds.has(item.id))
-                  .map((item: InventoryItemDTO, i: number) => (
-                    <InventoryItemItem
-                      key={`item-${i}`}
-                      onClick={() => toggleInventoryItem(item)}
-                      selected={false}
-                      item={item}
-                    />
-                  ))}
-              </>
-            ))}
-        </div>
-      </CollapsibleWrapper>
-    </div>
+          }
+          placeholder={selectedItems.size ? "Items selected" : "Find items"}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </div>
+      <div className="flex flex-col gap-y-1 pb-2">
+        {[...selectedItems].map((item, i) => {
+          return (
+            <InventoryItemItem
+              key={`selected-item-${i}`}
+              onClick={() => toggleInventoryItem(item)}
+              selected={true}
+              item={item}
+            />
+          )
+        })}
+        {searchTerm &&
+          (isLoading ? (
+            <Spinner />
+          ) : (
+            <>
+              {inventory_items
+                ?.filter((item) => !selectedIds.has(item.id))
+                .map((item: InventoryItemDTO, i: number) => (
+                  <InventoryItemItem
+                    key={`item-${i}`}
+                    onClick={() => toggleInventoryItem(item)}
+                    selected={false}
+                    item={item}
+                  />
+                ))}
+            </>
+          ))}
+      </div>
+    </CollapsibleWrapper>
   )
 }
 
@@ -357,62 +354,60 @@ const CreatedByFilterItem = ({
   }
 
   return (
-    <div className={clsx("w-full cursor-pointer")}>
-      <CollapsibleWrapper
-        title={title}
-        defaultOpen={!!value}
-        onOpenChange={(open) => {
-          if (!open) {
-            reset()
-          }
-        }}
-      >
-        <div className="gap-y-xsmall mb-2 flex w-full flex-col pt-2">
-          <InputField
-            value={query}
-            placeholder="Find user"
-            onChange={(e) => setQuery(e.target.value)}
-            prefix={
-              selectedUsers.size === 0 ? null : (
-                <div
-                  onClick={reset}
-                  className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
-                >
-                  <span className="text-grey-50">{selectedUsers.size}</span>
-                  <CrossIcon size={16} />
-                </div>
-              )
-            }
-          />
-        </div>
-        <div className="flex flex-col gap-y-1 pb-2">
-          {[...selectedUsers].map((user, i) => {
-            return (
-              <CreatedByItem
-                key={`selected-user-${i}`}
-                onClick={() => toggleUser(user)}
-                selected={true}
-                user={user}
-              />
+    <CollapsibleWrapper
+      title={title}
+      defaultOpen={!!value}
+      onOpenChange={(open) => {
+        if (!open) {
+          reset()
+        }
+      }}
+    >
+      <div className="gap-y-xsmall mb-2 flex w-full flex-col pt-2">
+        <InputField
+          value={query}
+          placeholder="Find user"
+          onChange={(e) => setQuery(e.target.value)}
+          prefix={
+            selectedUsers.size === 0 ? null : (
+              <div
+                onClick={reset}
+                className="bg-grey-10 border-grey-20 text-grey-40 rounded-rounded gap-x-2xsmall mr-xsmall flex cursor-pointer items-center border py-0.5 pr-1 pl-2"
+              >
+                <span className="text-grey-50">{selectedUsers.size}</span>
+                <CrossIcon size={16} />
+              </div>
             )
-          })}
-          {!isLoading && searchTerm && (
-            <>
-              {displayUsers
-                ?.filter((user) => !selectedUsers.has(user))
-                .map((u, i) => (
-                  <CreatedByItem
-                    key={`user-${i}`}
-                    onClick={() => toggleUser(u)}
-                    selected={false}
-                    user={u}
-                  />
-                ))}
-            </>
-          )}
-        </div>
-      </CollapsibleWrapper>
-    </div>
+          }
+        />
+      </div>
+      <div className="flex flex-col gap-y-1 pb-2">
+        {[...selectedUsers].map((user, i) => {
+          return (
+            <CreatedByItem
+              key={`selected-user-${i}`}
+              onClick={() => toggleUser(user)}
+              selected={true}
+              user={user}
+            />
+          )
+        })}
+        {!isLoading && searchTerm && (
+          <>
+            {displayUsers
+              ?.filter((user) => !selectedUsers.has(user))
+              .map((u, i) => (
+                <CreatedByItem
+                  key={`user-${i}`}
+                  onClick={() => toggleUser(u)}
+                  selected={false}
+                  user={u}
+                />
+              ))}
+          </>
+        )}
+      </div>
+    </CollapsibleWrapper>
   )
 }
 
@@ -472,30 +467,28 @@ const TextFilterItem = ({
   }
 
   return (
-    <div className={clsx("w-full border-b")}>
-      <CollapsibleWrapper
-        title={title}
-        defaultOpen={!!value}
-        onOpenChange={(open) => {
-          if (!open) {
-            setFilter(undefined)
-          }
-        }}
-      >
-        <div className="gap-y-xsmall flex w-full flex-col py-2">
-          <PopoverSelect
-            options={options}
-            value={filterType}
-            onChange={selectFilterType}
-          />
-          <InputField
-            value={fieldValue?.[filterType.value]}
-            placeholder="Write something"
-            onChange={(e) => updateFieldValue(e.target.value)}
-          />
-        </div>
-      </CollapsibleWrapper>
-    </div>
+    <CollapsibleWrapper
+      title={title}
+      defaultOpen={!!value}
+      onOpenChange={(open) => {
+        if (!open) {
+          setFilter(undefined)
+        }
+      }}
+    >
+      <div className="gap-y-xsmall flex w-full flex-col py-2">
+        <PopoverSelect
+          options={options}
+          value={filterType}
+          onChange={selectFilterType}
+        />
+        <InputField
+          value={fieldValue?.[filterType.value]}
+          placeholder="Write something"
+          onChange={(e) => updateFieldValue(e.target.value)}
+        />
+      </div>
+    </CollapsibleWrapper>
   )
 }
 
@@ -593,44 +586,42 @@ const NumberFilterItem = ({
     setUpperBound(null)
   }
   return (
-    <div className={clsx("w-full border-b")}>
-      <CollapsibleWrapper
-        title={title}
-        defaultOpen={!!value}
-        onOpenChange={(open) => {
-          if (!open) {
-            reset()
-          }
-        }}
-      >
-        <div className="gap-y-xsmall flex w-full flex-col py-2">
-          <PopoverSelect
-            options={options}
-            value={filterType}
-            onChange={selectFilterType}
+    <CollapsibleWrapper
+      title={title}
+      defaultOpen={!!value}
+      onOpenChange={(open) => {
+        if (!open) {
+          reset()
+        }
+      }}
+    >
+      <div className="gap-y-xsmall flex w-full flex-col py-2">
+        <PopoverSelect
+          options={options}
+          value={filterType}
+          onChange={selectFilterType}
+        />
+        <div className="flex items-center gap-x-2">
+          <InputField
+            value={getLowerBoundValue()}
+            placeholder="0"
+            type="number"
+            onChange={(e) => updateFieldValue(e.target.value)}
           />
-          <div className="flex items-center gap-x-2">
-            <InputField
-              value={getLowerBoundValue()}
-              placeholder="0"
-              type="number"
-              onChange={(e) => updateFieldValue(e.target.value)}
-            />
-            {filterType.value === "between" && (
-              <>
-                <span>-</span>
-                <InputField
-                  value={upperBound ?? undefined}
-                  placeholder="0"
-                  type="number"
-                  onChange={(e) => setUpperBoundValue(e.target.value)}
-                />
-              </>
-            )}
-          </div>
+          {filterType.value === "between" && (
+            <>
+              <span>-</span>
+              <InputField
+                value={upperBound ?? undefined}
+                placeholder="0"
+                type="number"
+                onChange={(e) => setUpperBoundValue(e.target.value)}
+              />
+            </>
+          )}
         </div>
-      </CollapsibleWrapper>
-    </div>
+      </div>
+    </CollapsibleWrapper>
   )
 }
 
@@ -747,41 +738,39 @@ const DateFilterItem = ({
   }
 
   return (
-    <div className={clsx("w-full border-b")}>
-      <CollapsibleWrapper
-        title={title}
-        defaultOpen={!!value}
-        onOpenChange={(open) => {
-          if (!open) {
-            setFilter(undefined)
-          }
-        }}
-      >
-        <div className="gap-y-xsmall flex w-full flex-col py-2">
-          <PopoverSelect
-            options={options}
-            value={filterType}
-            onChange={updateFilterType}
-          />
+    <CollapsibleWrapper
+      title={title}
+      defaultOpen={!!value}
+      onOpenChange={(open) => {
+        if (!open) {
+          setFilter(undefined)
+        }
+      }}
+    >
+      <div className="gap-y-xsmall flex w-full flex-col py-2">
+        <PopoverSelect
+          options={options}
+          value={filterType}
+          onChange={updateFilterType}
+        />
 
-          <div className="flex items-center gap-x-2">
-            <FilterDatePicker
-              date={date1}
-              setDate={(date) => setFilterDate({ date1: date, date2 })}
-            />
-            {filterType.value === "between" && (
-              <>
-                <span>-</span>
-                <FilterDatePicker
-                  date={date2}
-                  setDate={(date) => setFilterDate({ date1, date2: date })}
-                />
-              </>
-            )}
-          </div>
+        <div className="flex items-center gap-x-2">
+          <FilterDatePicker
+            date={date1}
+            setDate={(date) => setFilterDate({ date1: date, date2 })}
+          />
+          {filterType.value === "between" && (
+            <>
+              <span>-</span>
+              <FilterDatePicker
+                date={date2}
+                setDate={(date) => setFilterDate({ date1, date2: date })}
+              />
+            </>
+          )}
         </div>
-      </CollapsibleWrapper>
-    </div>
+      </div>
+    </CollapsibleWrapper>
   )
 }
 
@@ -855,43 +844,6 @@ const PopoverSelect = ({
         ))}
       </RadixPopover.Content>
     </RadixPopover.Root>
-  )
-}
-
-const CollapsibleWrapper = ({
-  onOpenChange,
-  defaultOpen,
-  title,
-  children,
-}: {
-  onOpenChange: (boolean) => void
-  defaultOpen: boolean
-  title: string
-} & React.HTMLAttributes<HTMLDivElement>) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen)
-  return (
-    <div className={clsx("border-grey-5 w-full border-b")}>
-      <RadixCollapsible.Root
-        defaultOpen={defaultOpen}
-        onOpenChange={(open) => {
-          setIsOpen(open)
-          onOpenChange(open)
-        }}
-        className="w-full"
-      >
-        <RadixCollapsible.Trigger
-          className={clsx(
-            "text-grey-50 flex w-full cursor-pointer items-center justify-between rounded py-1.5 px-3"
-          )}
-        >
-          <p>{title}</p>
-          <Switch checked={isOpen} type="button" className="cursor-pointer" />
-        </RadixCollapsible.Trigger>
-        <RadixCollapsible.Content className="flex w-full flex-col gap-y-2 px-2">
-          {children}
-        </RadixCollapsible.Content>
-      </RadixCollapsible.Root>
-    </div>
   )
 }
 

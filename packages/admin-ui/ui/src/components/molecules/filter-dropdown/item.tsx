@@ -8,6 +8,7 @@ import ArrowRightIcon from "../../fundamentals/icons/arrow-right-icon"
 import { CalendarComponent } from "../../atoms/date-picker/date-picker"
 import CheckIcon from "../../fundamentals/icons/check-icon"
 import ChevronUpIcon from "../../fundamentals/icons/chevron-up"
+import CollapsibleWrapper from "./collapsible-wrapper"
 import { DateFilters } from "../../../utils/filters"
 import InputField from "../input"
 import Spinner from "../../atoms/spinner"
@@ -85,136 +86,93 @@ const FilterDropdownItem = ({
   }
 
   return (
-    <div
-      className={clsx("w-full cursor-pointer py-2 px-4 ", {
-        "inter-small-semibold": open,
-        "inter-small-regular": !open,
-      })}
+    <CollapsibleWrapper
+      onOpenChange={(open) => setFilter({ filter: filters, open })}
+      defaultOpen={!!open}
+      title={filterTitle}
     >
-      <RadixCollapsible.Root
-        className="w-full"
-        open={open}
-        onOpenChange={(open) => setFilter({ filter: filters, open })}
-      >
-        <RadixCollapsible.Trigger
-          className={clsx(
-            "hover:bg-grey-5 flex w-full items-center justify-between rounded py-1.5 px-3",
-            {
-              "inter-small-semibold": open,
-              "inter-small-regular": !open,
-            }
-          )}
-        >
-          <div className="flex items-center">
+      {hasPrev && (
+        <div className="w-full py-1 pl-6">
+          <button
+            onClick={handlePrev}
+            className="hover:text-violet-60 inter-base-semibold text-grey-90"
+          >
+            Back
+          </button>
+        </div>
+      )}
+      {isLoading ? (
+        <div className="flex items-center justify-center py-1">
+          <Spinner size={"large"} variant={"secondary"} />
+        </div>
+      ) : filterTitle === "Date" ? (
+        <DateFilter
+          options={options}
+          open={open}
+          setFilter={setFilter}
+          existingDate={filters}
+          filterTitle={filterTitle}
+        />
+      ) : (
+        options.map((el, i) => {
+          let value: string
+          let label: string
+
+          if (typeof el === "string") {
+            value = el
+            label = el
+          } else {
+            value = el.value
+            label = el.label
+          }
+
+          return (
             <div
-              className={`text-grey-0 border-grey-30 rounded-base flex h-5 w-5 justify-center border ${
-                open && "bg-violet-60"
-              }`}
+              className={clsx(
+                "hover:bg-grey-20 my-1 flex w-full items-center rounded py-1.5 pl-6",
+                {
+                  "inter-small-semibold": checked[value],
+                  "inter-small-regular": !checked[value],
+                }
+              )}
+              key={i}
+              onClick={() => onCheck(value)}
             >
-              <span className="self-center">
-                {open && <CheckIcon size={16} />}
-              </span>
-            </div>
-            <input
-              id={filterTitle}
-              className="hidden"
-              checked={open}
-              readOnly
-              type="checkbox"
-            />
-            <span className="ml-2">{filterTitle}</span>
-          </div>
-          {open && (
-            <span className="text-grey-50 self-end">
-              <ChevronUpIcon size={20} />
-            </span>
-          )}
-        </RadixCollapsible.Trigger>
-        <RadixCollapsible.Content className="w-full">
-          {hasPrev && (
-            <div className="flex py-2 pl-6">
-              <button
-                onClick={handlePrev}
-                className="hover:text-violet-60 text-grey-90 font-semibold"
+              <div
+                className={`text-grey-0 border-grey-30 rounded-base mr-2 flex h-5 w-5 justify-center border ${
+                  checked[value] === true && "bg-violet-60"
+                }`}
               >
-                Back
-              </button>
+                <span className="self-center">
+                  {checked[value] === true && <CheckIcon size={16} />}
+                </span>
+              </div>
+              <input
+                type="checkbox"
+                className="hidden"
+                id={value}
+                name={label}
+                value={value}
+                checked={checked[value] === true}
+                readOnly
+                style={{ marginRight: "5px" }}
+              />
+              {label}
             </div>
-          )}
-          {isLoading ? (
-            <div className="flex items-center justify-center py-1">
-              <Spinner size={"large"} variant={"secondary"} />
-            </div>
-          ) : filterTitle === "Date" ? (
-            <DateFilter
-              options={options}
-              open={open}
-              setFilter={setFilter}
-              existingDate={filters}
-              filterTitle={filterTitle}
-            />
-          ) : (
-            options.map((el, i) => {
-              let value: string
-              let label: string
-
-              if (typeof el === "string") {
-                value = el
-                label = el
-              } else {
-                value = el.value
-                label = el.label
-              }
-
-              return (
-                <div
-                  className={clsx(
-                    "hover:bg-grey-20 my-1 flex w-full items-center rounded py-1.5 pl-6",
-                    {
-                      "inter-small-semibold": checked[value],
-                      "inter-small-regular": !checked[value],
-                    }
-                  )}
-                  key={i}
-                  onClick={() => onCheck(value)}
-                >
-                  <div
-                    className={`text-grey-0 border-grey-30 rounded-base mr-2 flex h-5 w-5 justify-center border ${
-                      checked[value] === true && "bg-violet-60"
-                    }`}
-                  >
-                    <span className="self-center">
-                      {checked[value] === true && <CheckIcon size={16} />}
-                    </span>
-                  </div>
-                  <input
-                    type="checkbox"
-                    className="hidden"
-                    id={value}
-                    name={label}
-                    value={value}
-                    checked={checked[value] === true}
-                    readOnly
-                    style={{ marginRight: "5px" }}
-                  />
-                  {label}
-                </div>
-              )
-            })
-          )}
-          {hasMore && (
-            <div className="flex py-2 pl-6">
-              <button
-                onClick={handleNext}
-                className="hover:text-violet-60 text-grey-90 font-semibold"
-              >
-                Show more
-              </button>
-            </div>
-          )}
-        </RadixCollapsible.Content>
-      </RadixCollapsible.Root>
-    </div>
+          )
+        })
+      )}
+      {hasMore && (
+        <div className="w-full py-2 pl-6">
+          <button
+            onClick={handleNext}
+            className="hover:text-violet-60 text-grey-90 font-semibold"
+          >
+            Show more
+          </button>
+        </div>
+      )}
+    </CollapsibleWrapper>
   )
 }
 

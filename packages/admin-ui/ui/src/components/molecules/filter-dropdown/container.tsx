@@ -54,39 +54,41 @@ const FilterDropdownContainer = ({
       <RadixPopover.Content
         sideOffset={8}
         style={heightStyle}
-        className="bg-grey-0 rounded-rounded shadow-dropdown z-40 max-w-[320px] overflow-y-auto pt-1"
+        className="bg-grey-0 rounded-rounded shadow-dropdown z-40 max-w-[320px] overflow-y-auto overflow-x-hidden pt-1"
       >
-        {React.Children.toArray(children)
-          .filter(Boolean)
-          .map((child, idx) => {
-            return (
-              <div
-                key={idx}
-                className="border-grey-20 border-b last:border-0 last:pb-0"
-              >
-                {child}
-              </div>
-            )
-          })}
-        <div className="border-grey-20 gap-x-small flex grid grid-cols-2 border-b px-3 py-2.5">
-          <Button
-            size="small"
-            tabIndex={-1}
-            className="border-grey-20 mr-2 w-full border"
-            variant="ghost"
-            onClick={() => onClear()}
-          >
-            Clear
-          </Button>
-          <Button
-            tabIndex={-1}
-            variant="primary"
-            className="w-full justify-center"
-            size="small"
-            onClick={() => onSubmit()}
-          >
-            Apply
-          </Button>
+        <div className="w-[320px]">
+          {React.Children.toArray(children)
+            .filter(Boolean)
+            .map((child, idx) => {
+              return (
+                <div
+                  key={idx}
+                  className="border-grey-20 border-b last:border-0 last:pb-0"
+                >
+                  {child}
+                </div>
+              )
+            })}
+          <div className="border-grey-20 gap-x-small flex grid grid-cols-2 border-b px-3 py-2.5">
+            <Button
+              size="small"
+              tabIndex={-1}
+              className="border-grey-20 mr-2 w-full border"
+              variant="ghost"
+              onClick={() => onClear()}
+            >
+              Clear
+            </Button>
+            <Button
+              tabIndex={-1}
+              variant="primary"
+              className="w-full justify-center"
+              size="small"
+              onClick={() => onSubmit()}
+            >
+              Apply
+            </Button>
+          </div>
         </div>
       </RadixPopover.Content>
     </RadixPopover.Root>
