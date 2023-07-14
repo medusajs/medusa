@@ -28,7 +28,7 @@ const TagOperationParametersDefault = ({
   return (
     <div
       className={clsx(
-        "inline-flex w-[calc(100%-16px)] justify-between pl-0.5",
+        "my-0.5 inline-flex w-[calc(100%-16px)] justify-between pl-0.5",
         className
       )}
     >

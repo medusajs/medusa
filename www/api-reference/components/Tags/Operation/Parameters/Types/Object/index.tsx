@@ -3,8 +3,8 @@ import TagOperationParametersDefault from "../Default"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
 import type { TagOperationParametersProps } from "../.."
-import clsx from "clsx"
-import Details from "@/components/Details"
+import type { TagsOperationParametersNestedProps } from "../../Nested"
+import type { DetailsProps } from "@/components/Details"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
   async () => import("../.."),
@@ -12,6 +12,21 @@ const TagOperationParameters = dynamic<TagOperationParametersProps>(
     loading: () => <Loading />,
   }
 ) as React.FC<TagOperationParametersProps>
+
+const TagsOperationParametersNested =
+  dynamic<TagsOperationParametersNestedProps>(
+    async () => import("../../Nested"),
+    {
+      loading: () => <Loading />,
+    }
+  ) as React.FC<TagsOperationParametersNestedProps>
+
+const Details = dynamic<DetailsProps>(
+  async () => import("../../../../../Details"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<DetailsProps>
 
 export type TagOperationParametersObjectProps = {
   name?: string
@@ -42,15 +57,8 @@ const TagOperationParametersObject = ({
   }
 
   const getPropertyParameterElms = (isNested = false) => {
-    return (
-      <div
-        className={clsx(
-          isNested &&
-            "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pt-1 pl-2",
-          isNested &&
-            "border-medusa-border-base dark:border-medusa-border-base-dark my-1 rounded border"
-        )}
-      >
+    const content = (
+      <>
         {Object.entries(schema.properties).map(([key, value], index) => (
           <TagOperationParameters
             schemaObject={{
@@ -60,7 +68,17 @@ const TagOperationParametersObject = ({
             key={index}
           />
         ))}
-      </div>
+      </>
+    )
+    return (
+      <>
+        {isNested && (
+          <TagsOperationParametersNested>
+            {content}
+          </TagsOperationParametersNested>
+        )}
+        {!isNested && <div>{content}</div>}
+      </>
     )
   }
 

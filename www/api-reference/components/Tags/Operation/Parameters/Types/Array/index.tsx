@@ -4,6 +4,7 @@ import Loading from "@/components/Loading"
 import type { TagOperationParametersDefaultProps } from "../Default"
 import type { TagOperationParametersProps } from "../.."
 import Details from "@/components/Details"
+import TagsOperationParametersNested from "../../Nested"
 
 const TagOperationParametersDefault =
   dynamic<TagOperationParametersDefaultProps>(
@@ -60,11 +61,9 @@ const TagOperationParametersArray = ({
         />
       }
     >
-      <TagOperationParameters
-        schemaObject={schema.items}
-        className="bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pl-1"
-        topLevel={true}
-      />
+      <TagsOperationParametersNested>
+        <TagOperationParameters schemaObject={schema.items} topLevel={true} />
+      </TagsOperationParametersNested>
     </Details>
   )
 }
