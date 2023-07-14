@@ -1,7 +1,7 @@
 /** VS Code Dark Theme: https://github.com/PrismJS/prism-themes/blob/master/themes/prism-vsc-dark-plus.css **/
 
 .section-content pre {
-	@apply rounded;
+	@apply rounded border border-transparent dark:border-medusa-code-block-border;
 }
 
 pre[class*="language-"],

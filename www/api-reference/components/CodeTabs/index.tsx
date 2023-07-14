@@ -19,7 +19,12 @@ const CodeTabs = ({ tabs, className }: CodeTabsProps) => {
 
   return (
     <div className={clsx(className)}>
-      <ul className="bg-medusa-code-tabs-bg flex !list-none gap-1 rounded-t py-[12px] px-1">
+      <ul
+        className={clsx(
+          "bg-medusa-code-tabs-bg flex !list-none gap-1 rounded-t py-[12px] px-1",
+          "dark:border-medusa-code-block-border border border-b-0 border-transparent"
+        )}
+      >
         {tabs.map((tab, index) => (
           <li key={index}>
             <button
@@ -42,7 +47,7 @@ const CodeTabs = ({ tabs, className }: CodeTabsProps) => {
           <CodeBlock
             {...selectedTab.code}
             preClassName={clsx(
-              "!mt-0 !rounded-t-none",
+              "!mt-0 !rounded-t-none !border-t-0",
               selectedTab.code.preClassName
             )}
           />

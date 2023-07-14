@@ -23,7 +23,15 @@ const CodeBlock = ({
       {...rest}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <pre style={style} className={clsx("rounded", className, preClassName)}>
+        <pre
+          style={style}
+          className={clsx(
+            "rounded",
+            "dark:border-medusa-code-block-border border border-transparent",
+            className,
+            preClassName
+          )}
+        >
           {tokens.map((line, i) => (
             <div key={i} {...getLineProps({ line })}>
               {tokens.length > 1 && <span className="mr-1">{i + 1}</span>}

@@ -51,7 +51,7 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
         <Link
           href={`#${item.path}`}
           className={clsx(
-            "block py-1 px-[20px]",
+            "flex items-center gap-0.5 py-1 px-[20px]",
             "group-hover:text-medusa-text-base dark:group-hover:text-medusa-text-base-dark group-hover:no-underline",
             active && "text-medusa-text-base dark:text-medusa-text-base-dark",
             !active && "text-medusa-text-subtle dark:text-medusa-text-subtle"
@@ -61,8 +61,10 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
             setActivePath(item.path)
           }}
         >
-          {item.method && <MethodLabel method={item.method} />}
-          {item.title}
+          {item.method && (
+            <MethodLabel method={item.method} className="h-fit !py-0" />
+          )}
+          <span>{item.title}</span>
         </Link>
         {item.children && (
           <button

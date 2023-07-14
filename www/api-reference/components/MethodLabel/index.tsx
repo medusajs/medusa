@@ -2,9 +2,10 @@ import clsx from "clsx"
 
 export type MethodLabelProps = {
   method: string
+  className?: string
 }
 
-const MethodLabel = ({ method }: MethodLabelProps) => {
+const MethodLabel = ({ method, className }: MethodLabelProps) => {
   return (
     <span
       className={clsx(
@@ -14,10 +15,11 @@ const MethodLabel = ({ method }: MethodLabelProps) => {
         method === "post" &&
           "bg-medusa-tag-blue-bg dark:bg-medusa-tag-blue-bg-dark text-medusa-tag-blue-text dark:text-medusa-tag-blue-text-dark",
         method === "delete" &&
-          "bg-medusa-tag-red-bg dark:bg-medusa-tag-red-bg-dark text-medusa-tag-red-text dark:text-medusa-tag-red-text-dark"
+          "bg-medusa-tag-red-bg dark:bg-medusa-tag-red-bg-dark text-medusa-tag-red-text dark:text-medusa-tag-red-text-dark",
+        className
       )}
     >
-      {method.toUpperCase()}
+      {method === "delete" ? "DEL" : method.toUpperCase()}
     </span>
   )
 }
