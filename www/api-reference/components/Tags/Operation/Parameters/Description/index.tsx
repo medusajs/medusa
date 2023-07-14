@@ -72,7 +72,7 @@ const TagOperationParametersDescription = ({
         </>
       )}
 
-      {schema.default && (
+      {schema.default !== undefined && (
         <>
           <br />
           <span>

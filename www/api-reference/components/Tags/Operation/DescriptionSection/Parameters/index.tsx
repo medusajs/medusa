@@ -1,5 +1,5 @@
 import type { Parameter, SchemaObject } from "@/types/openapi"
-import TagsOperationParametersSection from "../../ParametersSection"
+import TagsOperationParametersSection from "../../Parameters/Section"
 
 export type TagsOperationDescriptionSectionParametersProps = {
   parameters: Parameter[]

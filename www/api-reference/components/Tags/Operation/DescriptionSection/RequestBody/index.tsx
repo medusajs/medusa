@@ -1,7 +1,7 @@
 import type { RequestObject } from "@/types/openapi"
 import Loading from "@/components/Loading"
 import { Suspense } from "react"
-import TagsOperationParametersSection from "../../ParametersSection"
+import TagsOperationParametersSection from "../../Parameters/Section"
 
 export type TagsOperationDescriptionSectionRequestProps = {
   requestBody: RequestObject

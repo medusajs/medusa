@@ -78,7 +78,6 @@ const TagOperationParamatersOneOf = ({
             <TagOperationParametersDefault
               schema={schema}
               name={schema.title || ""}
-              className="inline-flex w-[calc(100%-16px)]"
             />
           }
         >

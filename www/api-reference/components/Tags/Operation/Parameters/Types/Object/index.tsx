@@ -30,20 +30,25 @@ const TagOperationParametersObject = ({
     return <></>
   }
 
-  const getPropertyDescriptionElm = () => {
+  const getPropertyDescriptionElm = (className?: string) => {
     return (
       <TagOperationParametersDefault
         name={name}
         schema={schema}
         is_required={isRequired}
-        className="inline-flex w-[calc(100%-16px)]"
+        className={className}
       />
     )
   }
 
   const getPropertyParameterElms = (isNested = false) => {
     return (
-      <>
+      <div
+        className={clsx(
+          isNested &&
+            "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pt-1 pl-2"
+        )}
+      >
         {Object.entries(schema.properties).map(([key, value], index) => (
           <TagOperationParameters
             schemaObject={{
@@ -51,18 +56,14 @@ const TagOperationParametersObject = ({
               title: key || value.title,
             }}
             key={index}
-            className={clsx(
-              isNested &&
-                "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pl-2"
-            )}
           />
         ))}
-      </>
+      </div>
     )
   }
 
   if (!schema.properties) {
-    return getPropertyDescriptionElm()
+    return getPropertyDescriptionElm("pl-1.5")
   }
 
   if (topLevel) {

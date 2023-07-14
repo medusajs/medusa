@@ -95,6 +95,7 @@ const TagOperationParameters = ({
         schema={schemaObject}
         name={schemaObject.title}
         is_required={false}
+        className="pl-1.5"
       />
     )
 

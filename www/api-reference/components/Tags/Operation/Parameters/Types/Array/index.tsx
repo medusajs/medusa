@@ -35,13 +35,16 @@ const TagOperationParametersArray = ({
     return <></>
   }
 
-  if (!schema.items) {
+  if (
+    !schema.items ||
+    (schema.items?.type !== "object" && schema.items?.type !== "array")
+  ) {
     return (
       <TagOperationParametersDefault
         name={name}
         schema={schema}
         is_required={is_required}
-        className="inline-flex w-[calc(100%-16px)]"
+        className="pl-1.5"
       />
     )
   }
@@ -53,7 +56,6 @@ const TagOperationParametersArray = ({
           name={name}
           schema={schema}
           is_required={is_required}
-          className="inline-flex w-[calc(100%-16px)]"
         />
       }
     >

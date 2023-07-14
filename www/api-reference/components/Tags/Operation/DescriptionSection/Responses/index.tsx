@@ -3,7 +3,7 @@ import type { ResponsesObject } from "@/types/openapi"
 import clsx from "clsx"
 import { Suspense } from "react"
 import Details from "@/components/Details"
-import TagsOperationParametersSection from "../../ParametersSection"
+import TagsOperationParametersSection from "../../Parameters/Section"
 
 export type TagsOperationDescriptionSectionResponsesProps = {
   responses: ResponsesObject

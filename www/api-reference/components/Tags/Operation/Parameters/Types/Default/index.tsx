@@ -26,7 +26,12 @@ const TagOperationParametersDefault = ({
   className,
 }: TagOperationParametersDefaultProps) => {
   return (
-    <div className={clsx("flex", className)}>
+    <div
+      className={clsx(
+        "inline-flex w-[calc(100%-16px)] justify-between pl-0.5",
+        className
+      )}
+    >
       {name && (
         <TagOperationParametersName name={name} is_required={is_required} />
       )}
