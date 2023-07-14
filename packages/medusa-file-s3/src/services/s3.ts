@@ -10,7 +10,7 @@ import {
   IFileService,
   UploadStreamDescriptorType,
 } from "@medusajs/medusa"
-import stream from "stream"
+import stream, {Readable} from "stream"
 
 class S3Service extends AbstractFileService implements IFileService {
   protected bucket_: string
@@ -128,7 +128,8 @@ class S3Service extends AbstractFileService implements IFileService {
       Key: `${fileData.fileKey}`,
     }
 
-    return await client.getObject(params).createReadStream()
+    const object = await client.getObject(params)
+    return object.Body as Readable
   }
 
   async getPresignedDownloadUrl(
