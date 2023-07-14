@@ -59,7 +59,7 @@ describe("/store/carts", () => {
       await db.teardown()
     })
 
-    it("gets store regions with pagination", async () => {
+    it("should list the store regions with pagination", async () => {
       const api = useApi()
 
       const response = await api.get("/store/regions?limit=1&offset=1")

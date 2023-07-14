@@ -164,7 +164,7 @@ describe("/admin/notes", () => {
       })
     })
 
-    it("lists notes with correct pagination", async () => {
+    it("should list the notes with correct count in pagination", async () => {
       const api = useApi()
       const response = await api
         .get("/admin/notes?limit=2", {

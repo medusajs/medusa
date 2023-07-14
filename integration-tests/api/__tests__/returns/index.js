@@ -457,7 +457,7 @@ describe("/admin/orders", () => {
     expect(returnReceivedResponse.status).toEqual(200)
   })
 
-  it("lists returns with correct pagination", async () => {
+  it("shoutl list the returns with correct pagination", async () => {
     await adminSeeder(dbConnection)
     const api = useApi()
 

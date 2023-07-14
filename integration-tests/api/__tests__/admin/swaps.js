@@ -145,7 +145,7 @@ describe("/admin/swaps", () => {
         )
       })
 
-      it("lists swaps with correct pagination", async () => {
+      it("should list the swaps with correct pagination", async () => {
         const api = useApi()
 
         const response = await api.get("/admin/swaps?limit=5", adminHeaders)
