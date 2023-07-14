@@ -650,23 +650,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-sdk/lib-storage@npm:3.370.0":
-  version: 3.370.0
-  resolution: "@aws-sdk/lib-storage@npm:3.370.0"
-  dependencies:
-    "@smithy/abort-controller": ^1.0.1
-    "@smithy/middleware-endpoint": ^1.0.2
-    "@smithy/smithy-client": ^1.0.3
-    buffer: 5.6.0
-    events: 3.3.0
-    stream-browserify: 3.0.0
-    tslib: ^2.5.0
-  peerDependencies:
-    "@aws-sdk/client-s3": ^3.0.0
-  checksum: 9272c176205206c4b063db03528aaa25bcbc7d6ea0f4b7d71c46ac42a7c7ac75f4bcd4453fd813fd5a7f4b20e22b21faa388f4d0fe0a303145a942d7539eb581
-  languageName: node
-  linkType: hard
-
 "@aws-sdk/md5-js@npm:3.370.0":
   version: 3.370.0
   resolution: "@aws-sdk/md5-js@npm:3.370.0"
@@ -9650,7 +9633,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@smithy/abort-controller@npm:^1.0.1, @smithy/abort-controller@npm:^1.0.2":
+"@smithy/abort-controller@npm:^1.0.2":
   version: 1.0.2
   resolution: "@smithy/abort-controller@npm:1.0.2"
   dependencies:
@@ -17228,16 +17211,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"buffer@npm:5.6.0":
-  version: 5.6.0
-  resolution: "buffer@npm:5.6.0"
-  dependencies:
-    base64-js: ^1.0.2
-    ieee754: ^1.1.4
-  checksum: 07037a0278b07fbc779920f1ba1b473933ffb4a2e2f7b387c55daf6ac64a05b58c27da9e85730a4046e8f97a49f8acd9f7bf89605c0a4dfda88ebfb7e08bfe4a
-  languageName: node
-  linkType: hard
-
 "buffer@npm:^5.2.0, buffer@npm:^5.5.0, buffer@npm:^5.6.0, buffer@npm:^5.7.0":
   version: 5.7.1
   resolution: "buffer@npm:5.7.1"
@@ -22358,7 +22331,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"events@npm:3.3.0, events@npm:^3.0.0, events@npm:^3.2.0, events@npm:^3.3.0":
+"events@npm:^3.0.0, events@npm:^3.2.0, events@npm:^3.3.0":
   version: 3.3.0
   resolution: "events@npm:3.3.0"
   checksum: d6b6f2adbccbcda74ddbab52ed07db727ef52e31a61ed26db9feb7dc62af7fc8e060defa65e5f8af9449b86b52cc1a1f6a79f2eafcf4e62add2b7a1fa4a432f6
@@ -26023,7 +25996,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inherits@npm:2, inherits@npm:2.0.4, inherits@npm:^2.0.0, inherits@npm:^2.0.1, inherits@npm:^2.0.3, inherits@npm:^2.0.4, inherits@npm:~2.0.1, inherits@npm:~2.0.3, inherits@npm:~2.0.4":
+"inherits@npm:2, inherits@npm:2.0.4, inherits@npm:^2.0.0, inherits@npm:^2.0.1, inherits@npm:^2.0.3, inherits@npm:^2.0.4, inherits@npm:~2.0.1, inherits@npm:~2.0.3":
   version: 2.0.4
   resolution: "inherits@npm:2.0.4"
   checksum: 4e531f648b29039fb7426fb94075e6545faa1eb9fe83c29f0b6d9e7263aceb4289d2d4557db0d428188eeb449cc7c5e77b0a0b2c4e248ff2a65933a0dee49ef2
@@ -31633,7 +31606,6 @@ __metadata:
   resolution: "medusa-file-s3@workspace:packages/medusa-file-s3"
   dependencies:
     "@aws-sdk/client-s3": 3.370.0
-    "@aws-sdk/lib-storage": 3.370.0
     "@aws-sdk/s3-request-presigner": 3.370.0
     "@medusajs/medusa": ^1.12.1
     body-parser: ^1.19.0
@@ -37861,17 +37833,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"readable-stream@npm:^3.5.0":
-  version: 3.6.2
-  resolution: "readable-stream@npm:3.6.2"
-  dependencies:
-    inherits: ^2.0.3
-    string_decoder: ^1.1.1
-    util-deprecate: ^1.0.1
-  checksum: e37be5c79c376fdd088a45fa31ea2e423e5d48854be7a22a58869b4e84d25047b193f6acb54f1012331e1bcd667ffb569c01b99d36b0bd59658fb33f513511b7
-  languageName: node
-  linkType: hard
-
 "readable-web-to-node-stream@npm:^3.0.0":
   version: 3.0.2
   resolution: "readable-web-to-node-stream@npm:3.0.2"
@@ -40402,16 +40363,6 @@ __metadata:
   version: 2.13.2
   resolution: "store2@npm:2.13.2"
   checksum: a2c831200301c587fd7fdbe8b0bb916e80908efd10fb64d21e6253c86f89ad733a9480c76e9d874373763a2f80743d6c61ecf983c99fde549b2618b38d9c4285
-  languageName: node
-  linkType: hard
-
-"stream-browserify@npm:3.0.0":
-  version: 3.0.0
-  resolution: "stream-browserify@npm:3.0.0"
-  dependencies:
-    inherits: ~2.0.4
-    readable-stream: ^3.5.0
-  checksum: ec3b975a4e0aa4b3dc5e70ffae3fc8fd29ac725353a14e72f213dff477b00330140ad014b163a8cbb9922dfe90803f81a5ea2b269e1bbfd8bd71511b88f889ad
   languageName: node
   linkType: hard
 
