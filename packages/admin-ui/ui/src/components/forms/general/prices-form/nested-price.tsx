@@ -1,14 +1,15 @@
-import clsx from "clsx"
-import { Controller } from "react-hook-form"
 import { NestedPriceObject, PricesFormType } from "."
-import useToggleState from "../../../../hooks/use-toggle-state"
-import { currencies } from "../../../../utils/currencies"
-import { NestedForm } from "../../../../utils/nested-form"
-import IncludesTaxTooltip from "../../../atoms/includes-tax-tooltip"
+
 import CoinsIcon from "../../../fundamentals/icons/coins-icon"
+import { Controller } from "react-hook-form"
+import IncludesTaxTooltip from "../../../atoms/includes-tax-tooltip"
 import MapPinIcon from "../../../fundamentals/icons/map-pin-icon"
-import TriangleRightIcon from "../../../fundamentals/icons/triangle-right-icon"
+import { NestedForm } from "../../../../utils/nested-form"
 import PriceFormInput from "./price-form-input"
+import TriangleRightIcon from "../../../fundamentals/icons/triangle-right-icon"
+import clsx from "clsx"
+import { currencies } from "../../../../utils/currencies"
+import useToggleState from "../../../../hooks/use-toggle-state"
 
 type Props = {
   form: NestedForm<PricesFormType>
