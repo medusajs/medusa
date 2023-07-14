@@ -91,7 +91,7 @@ export class RemoteJoiner {
       ids?: (unknown | unknown[])[],
       relationship?: any
     ) => Promise<{
-      data: unknown[] | { [path: string]: unknown[] }
+      data: unknown[] | { [path: string]: unknown }
       path?: string
     }>
   ) {
@@ -105,7 +105,7 @@ export class RemoteJoiner {
       ids?: (unknown | unknown[])[],
       relationship?: any
     ) => Promise<{
-      data: unknown[] | { [path: string]: unknown[] }
+      data: unknown[] | { [path: string]: unknown }
       path?: string
     }>
   ): void {
@@ -232,7 +232,7 @@ export class RemoteJoiner {
     ids?: (unknown | unknown[])[],
     relationship?: any
   ): Promise<{
-    data: unknown[] | { [path: string]: unknown[] }
+    data: unknown[] | { [path: string]: unknown }
     path?: string
   }> {
     let uniqueIds = Array.isArray(ids) ? ids : ids ? [ids] : undefined

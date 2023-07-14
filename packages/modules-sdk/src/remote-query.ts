@@ -101,38 +101,51 @@ export class RemoteQuery {
 
     return { select: [...fields], relations }
   }
+
+  private hasPagination(options: { [attr: string]: unknown }): boolean {
+    if (!options) {
+      return false
+    }
+
+    const attrs = ["skip", "cursor"]
+    return Object.keys(options).some((key) => attrs.includes(key))
+  }
+
+  private buildPagination(options, count) {
+    return {
+      skip: options.skip,
+      take: options.take,
+      cursor: options.cursor,
+      // TODO: next cursor
+      count,
+    }
+  }
+
   public async remoteFetchData(
     expand: RemoteExpandProperty,
     keyField: string,
     ids?: (unknown | unknown[])[],
     relationship?: JoinerRelationship
   ): Promise<{
-    data: unknown[] | { [path: string]: unknown[] }
+    data: unknown[] | { [path: string]: unknown }
     path?: string
   }> {
     const serviceConfig = expand.serviceConfig
     const service = this.modulesMap.get(serviceConfig.serviceName)
-
-    let methodName = "list"
-
-    if (relationship?.args?.methodSuffix) {
-      methodName += toPascalCase(relationship.args.methodSuffix)
-    } else if (serviceConfig?.args?.methodSuffix) {
-      methodName += toPascalCase(serviceConfig.args.methodSuffix)
-    }
-
-    if (typeof service[methodName] !== "function") {
-      throw new Error(
-        `Method "${methodName}" does not exist on "${serviceConfig.serviceName}"`
-      )
-    }
 
     let filters = {}
     const options = {
       ...RemoteQuery.getAllFieldsAndRelations(expand),
     }
 
-    const availableOptions = ["skip", "take", "limit", "offset", "sort"]
+    const availableOptions = [
+      "skip",
+      "take",
+      "limit",
+      "offset",
+      "cursor",
+      "sort",
+    ]
     const availableOptionsAlias = new Map([
       ["limit", "take"],
       ["offset", "skip"],
@@ -153,8 +166,38 @@ export class RemoteQuery {
       filters[keyField] = ids
     }
 
+    const hasPagination = this.hasPagination(options)
+
+    let methodName = hasPagination ? "listAndCount" : "list"
+
+    if (relationship?.args?.methodSuffix) {
+      methodName += toPascalCase(relationship.args.methodSuffix)
+    } else if (serviceConfig?.args?.methodSuffix) {
+      methodName += toPascalCase(serviceConfig.args.methodSuffix)
+    }
+
+    if (typeof service[methodName] !== "function") {
+      throw new Error(
+        `Method "${methodName}" does not exist on "${serviceConfig.serviceName}"`
+      )
+    }
+
     const result = await service[methodName](filters, options)
-    return { data: result }
+
+    if (hasPagination) {
+      const [data, count] = result
+      return {
+        data: {
+          rows: data,
+          metadata: this.buildPagination(options, count),
+        },
+        path: "rows",
+      }
+    }
+
+    return {
+      data: result,
+    }
   }
 
   public async query(query: string, variables: any = {}): Promise<any> {
