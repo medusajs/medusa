@@ -78,12 +78,11 @@ class S3Service extends AbstractFileService implements IFileService {
       Key: fileKey,
       ContentType: file.mimetype,
     }
-
-    const result = await client.upload(params).promise()
+    await client.putObject(params)
 
     return {
-      url: result.Location,
-      key: result.Key,
+      url: `${this.s3Url_}/${params.Key}`,
+      key: params.Key,
     }
   }
 
