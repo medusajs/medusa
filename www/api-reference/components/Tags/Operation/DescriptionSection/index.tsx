@@ -1,9 +1,10 @@
 import type { Operation } from "@/types/openapi"
 import type { TagsOperationDescriptionSectionSecurityProps } from "./Security"
-import type { TagsOperationDescriptionSectionRequestProps } from "./Request"
+import type { TagsOperationDescriptionSectionRequestProps } from "./RequestBody"
 import type { TagsOperationDescriptionSectionResponsesProps } from "./Responses"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
+import TagsOperationDescriptionSectionParameters from "./Parameters"
 
 const TagsOperationDescriptionSectionSecurity =
   dynamic<TagsOperationDescriptionSectionSecurityProps>(
@@ -15,7 +16,7 @@ const TagsOperationDescriptionSectionSecurity =
 
 const TagsOperationDescriptionSectionRequest =
   dynamic<TagsOperationDescriptionSectionRequestProps>(
-    async () => import("./Request"),
+    async () => import("./RequestBody"),
     {
       loading: () => <Loading />,
     }
@@ -42,6 +43,11 @@ const TagsOperationDescriptionSection = ({
       {operation.security && (
         <TagsOperationDescriptionSectionSecurity
           security={operation.security}
+        />
+      )}
+      {operation.parameters && (
+        <TagsOperationDescriptionSectionParameters
+          parameters={operation.parameters}
         />
       )}
       {operation.requestBody && (

@@ -16,6 +16,7 @@ export type Operation = OpenAPIV3.OperationObject<{
   "x-codeSamples": Code[]
   requestBody: RequestObject
   responses: ResponsesObject
+  parameters: Parameter[]
 }>
 
 export type RequestObject = OpenAPIV3.RequestBodyObject & {
@@ -88,4 +89,11 @@ export type PropertiesObject = {
 
 export type SecuritySchemeObject = OpenAPIV3.SecuritySchemeObject & {
   "x-displayName"?: string
+}
+
+export type Parameter = OpenAPIV3.ParameterObject & {
+  examples: {
+    [media: string]: OpenAPIV3.ExampleObject
+  }
+  schema: SchemaObject
 }

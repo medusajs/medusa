@@ -1,17 +1,9 @@
 import Loading from "@/components/Loading"
 import type { ResponsesObject } from "@/types/openapi"
 import clsx from "clsx"
-import dynamic from "next/dynamic"
-import type { TagOperationParametersProps } from "../../Parameters"
 import { Suspense } from "react"
 import Details from "@/components/Details"
-
-const TagOperationParameters = dynamic<TagOperationParametersProps>(
-  async () => import("../../Parameters"),
-  {
-    loading: () => <Loading />,
-  }
-) as React.FC<TagOperationParametersProps>
+import TagsOperationParametersSection from "../../ParametersSection"
 
 export type TagsOperationDescriptionSectionResponsesProps = {
   responses: ResponsesObject
@@ -42,23 +34,13 @@ const TagsOperationDescriptionSectionResponses = ({
                   </summary>
                 }
               >
-                <>
-                  <div
-                    className={clsx(
-                      "border-medusa-border-base dark:border-medusa-border-base-dark border-b border-solid",
-                      "mb-1"
-                    )}
-                  >
-                    <span className={clsx("uppercase")}>Response Schema:</span>{" "}
-                    {Object.keys(response.content)[0]}
-                  </div>
-                  <TagOperationParameters
-                    schemaObject={
-                      response.content[Object.keys(response.content)[0]].schema
-                    }
-                    topLevel={true}
-                  />
-                </>
+                <TagsOperationParametersSection
+                  header="Response Schema"
+                  subheader={Object.keys(response.content)[0]}
+                  schema={
+                    response.content[Object.keys(response.content)[0]].schema
+                  }
+                />
               </Details>
             )}
             {!response.content && (
