@@ -11,8 +11,6 @@ import {
   UploadStreamDescriptorType,
 } from "@medusajs/medusa"
 import stream from "stream"
-import { PutObjectRequest } from "aws-sdk/clients/s3"
-import { ClientConfiguration } from "aws-sdk/clients/s3"
 
 class S3Service extends AbstractFileService implements IFileService {
   protected bucket_: string
