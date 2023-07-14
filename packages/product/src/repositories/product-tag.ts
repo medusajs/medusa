@@ -24,7 +24,7 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     context: Context = {}
   ): Promise<ProductTag[]> {
     const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+      this.manager_.fork()) as SqlEntityManager
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -45,7 +45,7 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     context: Context = {}
   ): Promise<[ProductTag[], number]> {
     const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+      this.manager_.fork()) as SqlEntityManager
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
