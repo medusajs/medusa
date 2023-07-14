@@ -16,6 +16,7 @@ const nextConfig = {
       },
     ]
   },
+  basePath: "/api",
 }
 
 const withMDX = mdx({

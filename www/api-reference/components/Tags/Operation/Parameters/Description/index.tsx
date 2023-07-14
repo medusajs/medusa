@@ -37,6 +37,18 @@ const TagOperationParametersDescription = ({
     case schema.allOf !== undefined:
       typeDescription = <>{formatUnionDescription(schema.allOf)}</>
       break
+    case schema.oneOf !== undefined:
+      typeDescription = (
+        <>
+          {schema.oneOf?.map((item, index) => (
+            <>
+              {index !== 0 && <> or </>}
+              {item.title || item.type}
+            </>
+          ))}
+        </>
+      )
+      break
     default:
       typeDescription = <>{schema.type}</>
   }

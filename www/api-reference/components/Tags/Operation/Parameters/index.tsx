@@ -82,7 +82,12 @@ const TagOperationParameters = ({
     }
 
     if (schemaObject.oneOf) {
-      return <TagOperationParamatersOneOf schema={schemaObject} />
+      return (
+        <TagOperationParamatersOneOf
+          schema={schemaObject}
+          isNested={!topLevel}
+        />
+      )
     }
 
     return (

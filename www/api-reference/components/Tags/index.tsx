@@ -23,7 +23,7 @@ const Tags = () => {
   const { area } = useArea()
 
   const { data, isLoading } = useSWR<OpenAPIV3.Document>(
-    loadData ? `/api/base-specs?area=${area}` : null,
+    loadData ? `/api/api/base-specs?area=${area}` : null,
     fetcher
   )
 

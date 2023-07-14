@@ -29,7 +29,7 @@ const TagPaths = ({ tag }: TagSectionPathsProps) => {
   const { area } = useArea()
   const { data, isLoading } = useSWR<{
     paths: PathsObject
-  }>(`/api/tag?tagName=${tagSlugName}&area=${area}`, fetcher)
+  }>(`/api/api/tag?tagName=${tagSlugName}&area=${area}`, fetcher)
   const { addItems } = useSidebar()
 
   const paths = data?.paths || []
