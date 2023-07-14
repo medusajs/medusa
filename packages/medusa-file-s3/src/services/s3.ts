@@ -1,5 +1,6 @@
 import fs from "fs"
-import aws from "aws-sdk"
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
+import * as aws from "@aws-sdk/client-s3"
 import { parse } from "path"
 import {
   AbstractFileService,
