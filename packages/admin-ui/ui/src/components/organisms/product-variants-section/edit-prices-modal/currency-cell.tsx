@@ -90,10 +90,10 @@ function CurrencyCell(props: CurrencyCellProps) {
   return (
     <td
       onMouseDown={(e) => {
-        if (!isSelected) {
-          e.preventDefault()
-          e.stopPropagation()
-        }
+        // if (!isSelected) { // TODO: first click only selects and doesn't focus
+        //   e.preventDefault()
+        //   e.stopPropagation()
+        // }
         props.onMouseCellClick(e, variant.id, currencyCode, region)
       }}
       className={clsx("relative cursor-pointer pr-2 pl-4", {

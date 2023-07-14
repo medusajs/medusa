@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useAdminRegions, useAdminStore } from "medusa-react"
 import { Product } from "@medusajs/client-types"
 
-import {
-  getCellYMidpoint,
-  getCurrencyPricesOnly,
-  getRegionPricesOnly,
-} from "./utils"
+import { getCurrencyPricesOnly, getRegionPricesOnly } from "./utils"
 import CurrencyCell from "./currency-cell"
 import IconBuildingTax from "../../../fundamentals/icons/building-tax-icon"
 import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
@@ -19,29 +15,13 @@ type EditPricesTableProps = {
   onPriceUpdate: (prices: Record<string, number | undefined>) => void
 }
 
-enum MoveDirection {
-  Up = "UP",
-  Down = "DOWN",
-}
-
-enum AnchorPosition {
-  Above = "ABOVE",
-  Below = "BELOW",
-}
-
-// anchor cell midpoint Y
-let anchor: number | undefined = null
-// last visited cell midpoint Y
-let lastVisited: number | undefined = null
+// variant cell that is origin ov the current drag move
+let anchorVariant: string | undefined
 
 /**
  * During drag move keep info which column is active one
  */
 let activeCurrencyOrRegion: string | undefined = undefined
-/**
- * During drag move keep track of what variant has been last visited
- */
-let lastVisitedVariant: string | undefined = undefined
 
 let activeAmount: number | undefined = undefined
 
@@ -57,6 +37,8 @@ let anchorIndex: number | undefined
  * so we can undo changes.
  */
 let prevPriceState: Record<string, number> | undefined = undefined
+
+let variantIds: string[] = []
 
 /**
  * Construct cell key.
@@ -135,9 +117,7 @@ function EditPricesTable(props: EditPricesTableProps) {
     startIndex = undefined
     endIndex = undefined
 
-    anchor = undefined
-    lastVisited = undefined
-    lastVisitedVariant = undefined
+    anchorVariant = undefined
     activeCurrencyOrRegion = undefined
     activeAmount = undefined
 
@@ -150,58 +130,47 @@ function EditPricesTable(props: EditPricesTableProps) {
    * ==================== HANDLERS ====================
    */
 
-  const onMouseRowEnter = (event: React.MouseEvent, variantId: string) => {
-    if (!isDrag || !lastVisited || !anchor) {
+  const onMouseRowEnter = (variantId: string) => {
+    if (!isDrag || !anchorVariant) {
       return
     }
 
-    if (variantId === lastVisitedVariant) {
-      // WE LEFT THE TABLE
-      lastVisited = getCellYMidpoint(event)
-      return
+    const currentIndex = variantIds.findIndex((v) => v === variantId)
+
+    if (currentIndex > anchorIndex) {
+      startIndex = anchorIndex
+      endIndex = currentIndex
+    } else {
+      startIndex = currentIndex
+      endIndex = anchorIndex
     }
 
-    const currentY = getCellYMidpoint(event)
-    const move = currentY > lastVisited ? MoveDirection.Down : MoveDirection.Up
+    const selectedVariants = variantIds.slice(startIndex, endIndex + 1)
 
-    const anchorPosition =
-      currentY > anchor ? AnchorPosition.Above : AnchorPosition.Below
+    const keys = selectedVariants.map((vId) =>
+      getKey(vId, activeCurrencyOrRegion)
+    )
 
-    if (
-      (anchorPosition === AnchorPosition.Above &&
-        move === MoveDirection.Down) ||
-      (anchorPosition === AnchorPosition.Below && move === MoveDirection.Up)
-    ) {
-      if (move === MoveDirection.Down) {
-        endIndex++
-      } else if (anchor !== currentY) {
-        startIndex--
+    const nextSelection = { ...selectedCells }
+    const nextPrices = { ...editedPrices }
+
+    Object.keys(nextSelection).forEach((k) => {
+      // deselect case
+      if (k.split("-")[1] === activeCurrencyOrRegion && !keys.includes(k)) {
+        delete nextSelection[k] // remove selection
+        nextPrices[k] = prevPriceState[k] // ...and reset price of that cell to the previous state
       }
-      selectCell(variantId, activeCurrencyOrRegion)
-      setPriceForCell(activeAmount, variantId, activeCurrencyOrRegion)
-    }
+    })
 
-    if (
-      anchor === currentY || // We returned to the anchor cell
-      (anchorPosition === AnchorPosition.Above && move === MoveDirection.Up) ||
-      (anchorPosition === AnchorPosition.Below && move === MoveDirection.Down)
-    ) {
-      if (move === MoveDirection.Up) {
-        endIndex--
-      } else {
-        startIndex++
-      }
+    // select cells in range and set price
+    keys.forEach((k) => {
+      nextSelection[k] = true
+      nextPrices[k] =
+        editedPrices[getKey(anchorVariant, activeCurrencyOrRegion)]
+    })
 
-      deselectCell(lastVisitedVariant, activeCurrencyOrRegion)
-      setPriceForCell(
-        prevPriceState[getKey(lastVisitedVariant, activeCurrencyOrRegion)],
-        lastVisitedVariant,
-        activeCurrencyOrRegion
-      )
-    }
-
-    lastVisitedVariant = variantId
-    lastVisited = getCellYMidpoint(event)
+    setSelectedCells(nextSelection)
+    setEditedPrices(nextPrices)
   }
 
   const onMouseCellClick = (
@@ -215,9 +184,8 @@ function EditPricesTable(props: EditPricesTableProps) {
     prevPriceState = editedPrices
 
     // set variant row anchors
-    anchor = getCellYMidpoint(event)
-    lastVisited = anchor
-    lastVisitedVariant = variantId
+    anchorVariant = variantId
+    anchorIndex = variantIds.findIndex((v) => v === anchorVariant)
 
     activeCurrencyOrRegion = currencyCode || regionId
     activeAmount = Number(event.target.value?.replace(",", ""))
@@ -288,6 +256,8 @@ function EditPricesTable(props: EditPricesTableProps) {
         }
       })
     })
+
+    variantIds = props.product.variants!.map((v) => v.id)
 
     setEditedPrices((s) => ({ ...nextState, ...s }))
   }, [props.currencies, props.regions, props.product.variants])
@@ -400,7 +370,10 @@ function EditPricesTable(props: EditPricesTableProps) {
                   className="min-w-[220px] border px-4 font-medium text-gray-400"
                 >
                   <div className="flex items-center justify-between">
-                    <span>Price {region?.name}</span>
+                    <span>
+                      Price {region?.name} (
+                      {region?.currency_code.toUpperCase()})
+                    </span>
                     {region.includes_tax && (
                       <Tooltip content="Tax inclusive pricing" side="bottom">
                         <IconBuildingTax strokeWidth={1.3} size={20} />
@@ -416,11 +389,13 @@ function EditPricesTable(props: EditPricesTableProps) {
           <tr style={{ lineHeight: 3, background: "#f9fafb" }}>
             <td className="truncate border pl-4">
               <div className="text-black-800 flex items-center gap-2 ">
-                <img
-                  src={props.product.thumbnail}
-                  alt="Thumbnail"
-                  className="h-[22px] w-[16px] rounded"
-                />
+                {props.product.thumbnail && (
+                  <img
+                    src={props.product.thumbnail}
+                    alt="Thumbnail"
+                    className="h-[22px] w-[16px] rounded"
+                  />
+                )}
                 {props.product.title}
               </div>
             </td>
@@ -440,7 +415,7 @@ function EditPricesTable(props: EditPricesTableProps) {
             return (
               <tr
                 key={variant.id}
-                onMouseEnter={(e) => onMouseRowEnter(e, variant.id)}
+                onMouseEnter={() => onMouseRowEnter(variant.id)}
                 style={{ lineHeight: 3 }}
               >
                 <td className="border pl-10 text-gray-600">

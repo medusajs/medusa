@@ -72,14 +72,3 @@ export function getRegionPricesOnly(prices: MoneyAmount[]) {
     return !(price.price_list || price.min_quantity || price.max_quantity)
   })
 }
-
-/**
- * Return vertical midpoint of the clicked cell
- */
-export function getCellYMidpoint(event: React.MouseEvent) {
-  return (
-    (event.currentTarget!.getBoundingClientRect().top +
-      event.currentTarget.getBoundingClientRect().bottom) /
-    2
-  )
-}
