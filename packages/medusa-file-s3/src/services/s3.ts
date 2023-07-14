@@ -94,15 +94,7 @@ class S3Service extends AbstractFileService implements IFileService {
       Key: `${file}`,
     }
 
-    return new Promise((resolve, reject) => {
-      client.deleteObject(params, (err, data) => {
-        if (err) {
-          reject(err)
-          return
-        }
-        resolve()
-      })
-    })
+    await client.deleteObject(params)
   }
 
   async getUploadStreamDescriptor(fileData: UploadStreamDescriptorType) {
