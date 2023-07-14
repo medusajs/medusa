@@ -35,10 +35,12 @@ class S3Service extends AbstractFileService implements IFileService {
     this.awsConfigObject_ = options.aws_config_object ?? {}
   }
 
-  protected getClient(overwriteConfig: Partial<ClientConfiguration> = {}) {
-    const config: ClientConfiguration = {
-      accessKeyId: this.accessKeyId_,
-      secretAccessKey: this.secretAccessKey_,
+  protected getClient(overwriteConfig: Partial<aws.S3ClientConfig> = {}) {
+    const config: aws.S3ClientConfig = {
+      credentials: {
+        accessKeyId: this.accessKeyId_,
+        secretAccessKey: this.secretAccessKey_,
+      },
       region: this.region_,
       endpoint: this.endpoint_,
       ...this.awsConfigObject_,
