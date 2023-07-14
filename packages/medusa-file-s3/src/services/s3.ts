@@ -1,6 +1,6 @@
 import fs from "fs"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
-import * as aws from "@aws-sdk/client-s3"
+import {S3, GetObjectCommand, S3ClientConfig, PutObjectRequest } from "@aws-sdk/client-s3"
 import { parse } from "path"
 import {
   AbstractFileService,
@@ -35,8 +35,8 @@ class S3Service extends AbstractFileService implements IFileService {
     this.awsConfigObject_ = options.aws_config_object ?? {}
   }
 
-  protected getClient(overwriteConfig: Partial<aws.S3ClientConfig> = {}) {
-    const config: aws.S3ClientConfig = {
+  protected getClient(overwriteConfig: Partial<S3ClientConfig> = {}) {
+    const config: S3ClientConfig = {
       credentials: {
         accessKeyId: this.accessKeyId_,
         secretAccessKey: this.secretAccessKey_,
@@ -47,7 +47,7 @@ class S3Service extends AbstractFileService implements IFileService {
       ...overwriteConfig,
     }
 
-    return new aws.S3(config)
+    return new S3(config)
   }
 
   async upload(file: Express.Multer.File): Promise<FileServiceUploadResult> {
@@ -108,11 +108,12 @@ class S3Service extends AbstractFileService implements IFileService {
       Body: pass,
       Key: fileKey,
       ContentType: fileData.contentType as string,
+      ContentLength: pass.readableLength,
     }
 
     return {
       writeStream: pass,
-      promise: client.upload(params).promise(),
+      promise: client.putObject(params),
       url: `${this.s3Url_}/${fileKey}`,
       fileKey,
     }
@@ -142,7 +143,7 @@ class S3Service extends AbstractFileService implements IFileService {
       Key: `${fileData.fileKey}`,
       Expires: this.downloadFileDuration_,
     }
-    const command = new aws.GetObjectCommand(params);
+    const command = new GetObjectCommand(params);
     return await getSignedUrl(client, command, { expiresIn: 3600 });
   }
 }
