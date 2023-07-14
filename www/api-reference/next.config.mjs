@@ -16,7 +16,7 @@ const nextConfig = {
       },
     ]
   },
-  basePath: "/api",
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH,
 }
 
 const withMDX = mdx({

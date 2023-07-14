@@ -9,6 +9,7 @@ import dynamic from "next/dynamic"
 import type { TagSectionProps } from "./Section"
 import { useArea } from "@/providers/area"
 import ContentLoading from "../ContentLoading"
+import getLinkWithBasePath from "@/utils/get-link-with-base-path"
 
 const TagSection = dynamic<TagSectionProps>(async () => import("./Section"), {
   loading: () => <ContentLoading />,
@@ -23,7 +24,7 @@ const Tags = () => {
   const { area } = useArea()
 
   const { data, isLoading } = useSWR<OpenAPIV3.Document>(
-    loadData ? `/api/api/base-specs?area=${area}` : null,
+    loadData ? getLinkWithBasePath(`/api/base-specs?area=${area}`) : null,
     fetcher
   )
 

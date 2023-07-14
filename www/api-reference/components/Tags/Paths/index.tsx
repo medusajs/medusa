@@ -12,6 +12,7 @@ import dynamic from "next/dynamic"
 import type { TagOperationProps } from "../Operation"
 import { useArea } from "@/providers/area"
 import ContentLoading from "@/components/ContentLoading"
+import getLinkWithBasePath from "@/utils/get-link-with-base-path"
 
 const TagOperation = dynamic<TagOperationProps>(
   async () => import("../Operation"),
@@ -29,7 +30,10 @@ const TagPaths = ({ tag }: TagSectionPathsProps) => {
   const { area } = useArea()
   const { data, isLoading } = useSWR<{
     paths: PathsObject
-  }>(`/api/api/tag?tagName=${tagSlugName}&area=${area}`, fetcher)
+  }>(
+    getLinkWithBasePath(`/api/tag?tagName=${tagSlugName}&area=${area}`),
+    fetcher
+  )
   const { addItems } = useSidebar()
 
   const paths = data?.paths || []
