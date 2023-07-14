@@ -12,47 +12,62 @@ export type TagsOperationDescriptionSectionResponsesProps = {
 const TagsOperationDescriptionSectionResponses = ({
   responses,
 }: TagsOperationDescriptionSectionResponsesProps) => {
+  const getHeaderClasses = (code: string): string => {
+    return clsx(
+      "mb-1 rounded-sm py-0.5 px-1",
+      code.match(/20[0-9]/) &&
+        "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",
+      !code.match(/20[0-9]/) &&
+        "bg-medusa-tag-red-bg dark:bg-medusa-tag-red-bg-dark text-medusa-tag-red-text dark:text-medusa-tag-red-text-dark"
+    )
+  }
+
   return (
     <Suspense fallback={<Loading />}>
       <h4>Responses</h4>
-      {Object.entries(responses).map(([code, response]) => {
+      {Object.entries(responses).map(([code, response], index) => {
         return (
           <div key={code}>
             {response.content && (
-              <Details
-                summaryElm={
-                  <summary
-                    className={clsx(
-                      "mb-1 rounded-sm py-0.5 px-1",
-                      code.match(/20[0-9]/) &&
-                        "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",
-                      !code.match(/20[0-9]/) &&
-                        "bg-medusa-tag-red-bg dark:bg-medusa-tag-red-bg-dark text-medusa-tag-red-text dark:text-medusa-tag-red-text-dark"
-                    )}
+              <>
+                {(code === "200" || code === "201") && (
+                  <>
+                    <div className={getHeaderClasses(code)}>
+                      {code} {response.description}
+                    </div>
+                    <TagsOperationParametersSection
+                      header="Response Schema"
+                      subheader={Object.keys(response.content)[0]}
+                      schema={
+                        response.content[Object.keys(response.content)[0]]
+                          .schema
+                      }
+                    />
+                  </>
+                )}
+                {code !== "200" && code !== "201" && (
+                  <Details
+                    summaryElm={
+                      <summary className={getHeaderClasses(code)}>
+                        {code} {response.description}
+                      </summary>
+                    }
+                    openInitial={index === 0}
                   >
-                    {code} {response.description}
-                  </summary>
-                }
-              >
-                <TagsOperationParametersSection
-                  header="Response Schema"
-                  subheader={Object.keys(response.content)[0]}
-                  schema={
-                    response.content[Object.keys(response.content)[0]].schema
-                  }
-                />
-              </Details>
+                    <TagsOperationParametersSection
+                      header="Response Schema"
+                      subheader={Object.keys(response.content)[0]}
+                      schema={
+                        response.content[Object.keys(response.content)[0]]
+                          .schema
+                      }
+                    />
+                  </Details>
+                )}
+              </>
             )}
             {!response.content && (
-              <div
-                className={clsx(
-                  "mb-1 rounded-sm py-0.5 px-1",
-                  code.match(/20[0-9]/) &&
-                    "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",
-                  !code.match(/20[0-9]/) &&
-                    "bg-medusa-tag-red-bg dark:bg-medusa-tag-red-bg-dark text-medusa-tag-red-text dark:text-medusa-tag-red-text-dark"
-                )}
-              >
+              <div className={getHeaderClasses(code)}>
                 {code} {response.description}
               </div>
             )}

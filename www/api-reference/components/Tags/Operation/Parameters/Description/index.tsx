@@ -53,12 +53,7 @@ const TagOperationParametersDescription = ({
       typeDescription = <>{schema.type}</>
   }
   return (
-    <div
-      className={clsx(
-        "w-2/3 pb-0.5",
-        "border-medusa-border-base dark:border-medusa-border-base-dark border-b border-solid"
-      )}
-    >
+    <div className={clsx("w-2/3 pb-0.5")}>
       {typeDescription}
       {schema.example && (
         <>

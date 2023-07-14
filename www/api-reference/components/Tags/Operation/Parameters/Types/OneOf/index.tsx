@@ -37,7 +37,7 @@ const TagOperationParamatersOneOf = ({
     return (
       <>
         <div className={clsx("flex items-center gap-1", isNested && "mt-1")}>
-          <span>One of</span>
+          <span className="my-2 inline-block pl-1.5">One of</span>
           <ul className="flex list-none gap-1">
             {schema.oneOf?.map((item, index) => (
               <li

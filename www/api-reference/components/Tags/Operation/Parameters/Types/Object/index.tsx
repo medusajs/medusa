@@ -46,7 +46,9 @@ const TagOperationParametersObject = ({
       <div
         className={clsx(
           isNested &&
-            "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pt-1 pl-2"
+            "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark pt-1 pl-2",
+          isNested &&
+            "border-medusa-border-base dark:border-medusa-border-base-dark my-1 rounded border"
         )}
       >
         {Object.entries(schema.properties).map(([key, value], index) => (
