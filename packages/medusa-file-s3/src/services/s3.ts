@@ -134,7 +134,7 @@ class S3Service extends AbstractFileService implements IFileService {
   async getPresignedDownloadUrl(
     fileData: GetUploadedFileType
   ): Promise<string> {
-    const client = this.getClient({ signatureVersion: "v4" })
+    const client = this.getClient()
 
     const params = {
       Bucket: this.bucket_,
