@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 
 import Button from "../../../fundamentals/button"
 import Modal from "../../../molecules/modal"
@@ -26,9 +26,9 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
             <span className="inter-large-semibold">Saving changes</span>
             <span className="inter-base-regular text-grey-50 mt-1 mb-4 w-[420px]">
               {hasHiddenColumns
-                ? `There are following hidden column which have edited prices: ${hiddenEditedColumns.join(
+                ? `You have edited prices in hidden columns: (${hiddenEditedColumns.join(
                     ", "
-                  )}. Would you like to save those changes as well?`
+                  )}). Do you wish to save these too?`
                 : "Save edited variant prices"}
             </span>
           </div>
