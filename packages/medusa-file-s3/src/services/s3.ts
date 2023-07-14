@@ -141,8 +141,8 @@ class S3Service extends AbstractFileService implements IFileService {
       Key: `${fileData.fileKey}`,
       Expires: this.downloadFileDuration_,
     }
-
-    return await client.getSignedUrlPromise("getObject", params)
+    const command = new aws.GetObjectCommand(params);
+    return await getSignedUrl(client, command, { expiresIn: 3600 });
   }
 }
 
