@@ -178,6 +178,20 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(variants)), count]
   }
 
+  async retrieveTag(
+    tagId: string,
+    config: FindConfig<ProductTypes.ProductTagDTO> = {},
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTagDTO> {
+    const productTag = await this.productTagService_.retrieve(
+      tagId,
+      config,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productTag))
+  }
+
   async listTags(
     filters: ProductTypes.FilterableProductTagProps = {},
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
@@ -190,6 +204,62 @@ export default class ProductModuleService<
     )
 
     return JSON.parse(JSON.stringify(tags))
+  }
+
+  async listAndCountTags(
+    filters: ProductTypes.FilterableProductTagProps = {},
+    config: FindConfig<ProductTypes.ProductTagDTO> = {},
+    sharedContext?: Context
+  ): Promise<[ProductTypes.ProductTagDTO[], number]> {
+    const [tags, count] = await this.productTagService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [JSON.parse(JSON.stringify(tags)), count]
+  }
+
+  async retrieveType(
+    typeId: string,
+    config: FindConfig<ProductTypes.ProductTypeDTO> = {},
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTypeDTO> {
+    const productType = await this.productTypeService_.retrieve(
+      typeId,
+      config,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productType))
+  }
+
+  async listTypes(
+    filters: ProductTypes.FilterableProductTypeProps = {},
+    config: FindConfig<ProductTypes.ProductTypeDTO> = {},
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductTypeDTO[]> {
+    const types = await this.productTypeService_.list(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(types))
+  }
+
+  async listAndCountTypes(
+    filters: ProductTypes.FilterableProductTypeProps = {},
+    config: FindConfig<ProductTypes.ProductTypeDTO> = {},
+    sharedContext?: Context
+  ): Promise<[ProductTypes.ProductTypeDTO[], number]> {
+    const [types, count] = await this.productTypeService_.listAndCount(
+      filters,
+      config,
+      sharedContext
+    )
+
+    return [JSON.parse(JSON.stringify(types)), count]
   }
 
   async retrieveCollection(

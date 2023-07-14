@@ -4,11 +4,13 @@ import {
   FilterableProductCollectionProps,
   FilterableProductProps,
   FilterableProductTagProps,
+  FilterableProductTypeProps,
   FilterableProductVariantProps,
   ProductCategoryDTO,
   ProductCollectionDTO,
   ProductDTO,
   ProductTagDTO,
+  ProductTypeDTO,
   ProductVariantDTO,
 } from "./common"
 import { FindConfig } from "../common"
@@ -29,11 +31,41 @@ export interface IProductModuleService {
     sharedContext?: Context
   ): Promise<[ProductDTO[], number]>
 
+  retrieveTag(
+    tagId: string,
+    config?: FindConfig<ProductTagDTO>,
+    sharedContext?: Context
+  ): Promise<ProductTagDTO>
+
   listTags(
     filters?: FilterableProductTagProps,
     config?: FindConfig<ProductTagDTO>,
     sharedContext?: Context
   ): Promise<ProductTagDTO[]>
+
+  listAndCountTags(
+    filters?: FilterableProductTagProps,
+    config?: FindConfig<ProductTagDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductTagDTO[], number]>
+
+  retrieveType(
+    typeId: string,
+    config?: FindConfig<ProductTypeDTO>,
+    sharedContext?: Context
+  ): Promise<ProductTypeDTO>
+
+  listTypes(
+    filters?: FilterableProductTypeProps,
+    config?: FindConfig<ProductTypeDTO>,
+    sharedContext?: Context
+  ): Promise<ProductTypeDTO[]>
+
+  listAndCountTypes(
+    filters?: FilterableProductTypeProps,
+    config?: FindConfig<ProductTypeDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductTypeDTO[], number]>
 
   retrieveVariant(
     productVariantId: string,

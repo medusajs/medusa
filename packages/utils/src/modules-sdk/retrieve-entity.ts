@@ -30,7 +30,7 @@ export async function retrieveEntity<
   const queryOptions = buildQuery<TEntity>({
     id,
   }, config)
-
+console.log("queryOptions - ", queryOptions)
   const entities = await repository.find(
     queryOptions,
     sharedContext

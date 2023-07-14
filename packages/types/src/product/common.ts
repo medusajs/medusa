@@ -151,6 +151,12 @@ export interface FilterableProductTagProps
   value?: string
 }
 
+export interface FilterableProductTypeProps
+  extends BaseFilterable<FilterableProductTypeProps> {
+  id?: string | string[]
+  value?: string
+}
+
 export interface FilterableProductCollectionProps
   extends BaseFilterable<FilterableProductCollectionProps> {
   id?: string | string[]
