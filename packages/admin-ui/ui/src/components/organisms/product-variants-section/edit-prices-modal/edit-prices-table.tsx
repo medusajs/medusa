@@ -367,12 +367,14 @@ function EditPricesTable(props: EditPricesTableProps) {
               return (
                 <th
                   key={r}
-                  className="min-w-[220px] border px-4 font-medium text-gray-400"
+                  className="min-w-[220px] max-w-[220px]  border px-4 font-medium text-gray-400"
                 >
-                  <div className="flex items-center justify-between">
-                    <span>
-                      Price {region?.name} (
-                      {region?.currency_code.toUpperCase()})
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="flex overflow-hidden">
+                      <span title={region?.name} className="truncate pr-1">
+                        Price {region?.name}
+                      </span>
+                      ({region?.currency_code.toUpperCase()})
                     </span>
                     {region.includes_tax && (
                       <Tooltip content="Tax inclusive pricing" side="bottom">
