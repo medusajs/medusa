@@ -289,7 +289,7 @@ function EditPricesModal(props: EditPricesModalProps) {
   return (
     <Fade isFullScreen isVisible>
       <Modal.Body className="border bg-gray-200 p-2">
-        <div className="h-full rounded-lg border border-gray-300 bg-white">
+        <div className="h-full overflow-hidden rounded-lg border border-gray-300 bg-white">
           <div className="flex h-[64px] items-center justify-between px-4">
             <div className="flex h-[20px] items-center gap-2">
               <Button
