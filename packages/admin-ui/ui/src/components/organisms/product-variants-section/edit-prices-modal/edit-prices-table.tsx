@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { useAdminRegions, useAdminStore } from "medusa-react"
 import { Product } from "@medusajs/client-types"
 
@@ -323,6 +323,16 @@ function EditPricesTable(props: EditPricesTableProps) {
     }
   }, [isDrag, editedPrices])
 
+  const firstColumnWidth = useMemo(() => {
+    let max = 0
+
+    props.product.variants.forEach(
+      (v) => (max = Math.max(max, v.title.length + (v.sku ? v.sku.length : 0)))
+    )
+
+    return Math.max(220, max * 8)
+  }, [props.product.variants])
+
   return (
     <div className="h-full overflow-x-auto">
       <table
@@ -338,7 +348,10 @@ function EditPricesTable(props: EditPricesTableProps) {
             style={{ height: 42 }}
             className="tw-text-medusa-text-subtle h-2 text-left font-normal"
           >
-            <th className="h-2 min-w-[180px] border pl-4 font-medium text-gray-400">
+            <th
+              style={{ maxWidth: firstColumnWidth }}
+              className="h-2 border pl-4 font-medium text-gray-400"
+            >
               Product
             </th>
             {props.currencies.map((c) => {
@@ -389,8 +402,11 @@ function EditPricesTable(props: EditPricesTableProps) {
         </thead>
         <tbody>
           <tr style={{ lineHeight: 3, background: "#f9fafb" }}>
-            <td className="truncate border pl-4">
-              <div className="text-black-800 flex items-center gap-2 ">
+            <td className="border pl-4 pr-4">
+              <div
+                style={{ maxWidth: firstColumnWidth }}
+                className="text-black-800 flex items-center gap-2 overflow-hidden"
+              >
                 {props.product.thumbnail && (
                   <img
                     src={props.product.thumbnail}
@@ -398,7 +414,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                     className="h-[22px] w-[16px] rounded"
                   />
                 )}
-                {props.product.title}
+                <span className="truncate">{props.product.title}</span>
               </div>
             </td>
             {props.currencies.map((c) => (
@@ -420,7 +436,13 @@ function EditPricesTable(props: EditPricesTableProps) {
                 onMouseEnter={() => onMouseRowEnter(variant.id)}
                 style={{ lineHeight: 3 }}
               >
-                <td className="border pl-10 text-gray-600">
+                <td
+                  style={{
+                    width: firstColumnWidth,
+                    minWidth: firstColumnWidth,
+                  }}
+                  className="border pl-10 text-gray-600"
+                >
                   {variant.title} {variant.sku && `∙ ${variant.sku}`}
                 </td>
 
