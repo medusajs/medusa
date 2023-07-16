@@ -3,6 +3,7 @@
   "version": "1.8.10",
   "description": "Medusa Types definition",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/medusajs/medusa",
