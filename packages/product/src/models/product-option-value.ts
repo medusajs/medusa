@@ -7,8 +7,8 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
+import { ProductOption, ProductVariant } from "./index"
 
-import { ProductVariant } from "./index"
 import { SoftDeletable } from "../utils"
 import { generateEntityId } from "@medusajs/utils"
 
