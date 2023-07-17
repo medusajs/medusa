@@ -104,8 +104,7 @@ export const allowedStoreProductsFields = [
 
 export const allowedStoreProductsRelations = [
   ...defaultStoreProductsRelations,
-  "variants.title",
-  "variants.prices.amount",
+  "variants.inventory_items",
   "sales_channels",
 ]
 

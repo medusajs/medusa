@@ -7,6 +7,7 @@ import {
 } from "typeorm"
 import { ConfigModule } from "../types/global"
 import "../utils/naming-strategy"
+import { handlePostgresDatabaseError } from "@medusajs/utils"
 
 type Options = {
   configModule: ConfigModule
@@ -52,33 +53,14 @@ export default async ({
       (configModule.projectConfig.database_logging || false),
   } as DataSourceOptions)
 
-  try {
-    await dataSource.initialize()
-  } catch (err) {
-    // database name does not exist
-    if (err.code === "3D000") {
-      throw new Error(
-        `Specified database does not exist. Please create it and try again.\n${err.message}`
-      )
-    }
-
-    throw err
-  }
+  await dataSource.initialize().catch(handlePostgresDatabaseError)
 
   // If migrations are not included in the config, we assume you are attempting to start the server
   // Therefore, throw if the database is not migrated
   if (!dataSource.migrations?.length) {
-    try {
-      await dataSource.query(`select * from migrations`)
-    } catch (err) {
-      if (err.code === "42P01") {
-        throw new Error(
-          `Migrations missing. Please run 'medusa migrations run' and try again.`
-        )
-      }
-
-      throw err
-    }
+    await dataSource
+      .query(`select * from migrations`)
+      .catch(handlePostgresDatabaseError)
   }
 
   return dataSource

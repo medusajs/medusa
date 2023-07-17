@@ -159,6 +159,10 @@ declare module "@medusajs/docs" {
   export declare type DocContextValue = {
     frontMatter: {
       addHowToData?: boolean
+      badge?: {
+        variant: string
+        text: string
+      }
     }
   } & DocusaurusDocContextValue
 }

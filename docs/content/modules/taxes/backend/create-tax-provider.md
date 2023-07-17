@@ -81,7 +81,7 @@ Add the static property `identifier` in your tax provider class:
 
 ```ts title=src/services/my-tax.ts
 class MyTaxService extends AbstractTaxService {
-  static identifer = "my-tax"
+  static identifier = "my-tax"
   // ...
 }
 ```

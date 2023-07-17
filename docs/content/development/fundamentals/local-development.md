@@ -190,5 +190,5 @@ medusa-dev --packages @medusajs/medusa-cli medusa-file-minio
 
 ## See Also
 
-- [Create a Plugin](../plugins/create.md)
+- [Create a Plugin](../plugins/create.mdx)
 - [Contribution Guidelines](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md)

@@ -29,7 +29,7 @@ You want to add or use the following store functionalities:
 
 It's assumed that you already have a Medusa backend installed and set up. If not, you can follow the [quickstart guide](../../../development/backend/install.mdx) to get started.
 
-It's also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install the [Next.js starter storefront](../../../starters/nextjs-medusa-starter.mdx).
+It's also assumed you already have a storefront set up. It can be a custom storefront or one of Medusa’s storefronts. If you don’t have a storefront set up, you can install the [Next.js Starter Template](../../../starters/nextjs-medusa-starter.mdx).
 
 ### JS Client
 
@@ -42,6 +42,12 @@ If you follow the JS Client code blocks, it’s assumed you already have [Medusa
 This guide also includes code snippets to send requests to your Medusa backend using Medusa React, among other methods.
 
 If you follow the Medusa React code blocks, it's assumed you already have [Medusa React installed](../../../medusa-react/overview.md) and have [used MedusaProvider higher in your component tree](../../../medusa-react/overview.md#usage).
+
+### @medusajs/product Module
+
+This guide also includes code snippets to utilize the `@medusajs/product` module in your storefront, among other methods.
+
+If you follow the `@medusajs/product` code blocks, it's assumed you already have the [@medusajs/product](../serverless-module.md) installed.
 
 ---
 
@@ -92,6 +98,29 @@ function Categories() {
 }
 
 export default Categories
+```
+
+</TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const categories = await productService.listCategories()
+
+  console.log(categories)
+}
 ```
 
 </TabItem>
@@ -160,6 +189,31 @@ function Category() {
 }
 
 export default Category
+```
+
+</TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const categories = await productService.listCategories({
+    id: productCategoryId,
+  })
+
+  console.log(categories[0])
+}
 ```
 
 </TabItem>
@@ -250,6 +304,31 @@ function Categories() {
 }
 
 export default Categories
+```
+
+</TabItem>
+<TabItem value="module" label={(
+  <>
+    @medusajs/product
+    <Badge variant="orange-dark">beta</Badge>
+  </>
+)}>
+
+```ts
+import {
+  initialize as initializeProductModule,
+} from "@medusajs/product"
+
+// in an async function, or you can use promises
+async () => {
+  // ...
+  const productService = await initializeProductModule()
+  const categories = await productService.listCategories({
+    handle,
+  })
+
+  console.log(categories[0])
+}
 ```
 
 </TabItem>

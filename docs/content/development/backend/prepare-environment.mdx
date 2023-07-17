@@ -4,6 +4,7 @@ description: 'Learn how to prepare your development environment while using Medu
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
+import MedusaCliTroubleshootingSection from '../../troubleshooting/cli-installation-errors/_reusable-section.mdx'
 
 # Prepare Development Environment
 
@@ -19,7 +20,7 @@ Node.js is the environment that makes it possible for Medusa to run, so you must
 
 :::caution
 
-Medusa supports v16 or greater of Node.js. You can check your Node.js version using the following command:
+Medusa supports v16+ of Node.js. You can check your Node.js version using the following command:
 
 ```bash noReport
 node -v
@@ -136,27 +137,13 @@ You can check that Medusa was installed by running the following command:
 medusa -v
 ```
 
-:::note
+#### Troubleshooting Installation
 
-If you run into any errors while installing the CLI tool, check out the [troubleshooting guide](../../troubleshooting/cli-installation-errors.mdx).
-
-:::
-
----
-
-## Install Medusa Backend
-
-If you're not interested in installing the optional tools and want to get started with Medusa quickly, check out the [Medusa Backend Quickstart](./install.mdx).
-
----
-
-## Optional Tools
-
-These tools are not required to have to run a Medusa backend, but it's highly recommended that you have them installed.
+<MedusaCliTroubleshootingSection />
 
 ### PostgreSQL
 
-Although you can use an SQLite database with Medusa which would require no necessary database installations, it is recommended to use a PostgreSQL database for your backend.
+The Medusa backend uses PostgreSQL to store data of your commerce system.
 
 :::tip
 
@@ -194,6 +181,10 @@ You can download PostgreSQL on your macOS using [the installer on their website]
 </Tabs>
 
 ---
+
+## Install Medusa Backend
+
+If you're not interested in installing the optional tools and want to get started with Medusa quickly, check out the [Medusa Backend Quickstart](./install.mdx).
 
 ## See Also
 

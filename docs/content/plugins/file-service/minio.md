@@ -9,7 +9,7 @@ This document will guide you through installing the MinIO file service plugin on
 
 ## Overview
 
-To manage images in Medusa, you need a file service plugin responsible for hosting. Without a file service plugin, you will face issues while working with Medusa, such as when uploading images for products.
+To upload and manage file assets in Medusa, you need a file service plugin responsible for hosting the files. Without a file service plugin, you will face issues while working with Medusa, such as when uploading images for products.
 
 Medusa provides three different options to handle your file storage. This document will focus on setting up [MinIO](https://min.io) on your local machine and connecting Medusa to it.
 
@@ -193,9 +193,9 @@ const plugins = [
 
 ---
 
-## Next.js Storefront Configuration
+## Next.js Starter Template Configuration
 
-If you’re using a [Next.js](../../starters/nextjs-medusa-starter.mdx) storefront, you need to add an additional configuration that adds the MinIO domain name into the configured images domain names. This is because all URLs of product images will be from the MinIO backend.
+If you’re using a [Next.js Starter Template](../../starters/nextjs-medusa-starter.mdx), you need to add an additional configuration that adds the MinIO domain name into the configured images domain names. This is because all URLs of product images will be from the MinIO backend.
 
 If this configuration is not added, you’ll receive the error ["next/image Un-configured Host”](https://nextjs.org/docs/messages/next-image-unconfigured-host).
 

@@ -1,5 +1,19 @@
 # Change Log
 
+## 6.0.2
+
+### Patch Changes
+
+- [#4409](https://github.com/medusajs/medusa/pull/4409) [`fe25c8a91`](https://github.com/medusajs/medusa/commit/fe25c8a91f4462c9ac5a15594fa71155df48c1eb) Thanks [@pevey](https://github.com/pevey)! - feat(medusa-react,medusa-js): Allow custom headers
+
+- [#4501](https://github.com/medusajs/medusa/pull/4501) [`708a55199`](https://github.com/medusajs/medusa/commit/708a55199aeb23f5a75fd240ddd10af2c95f3957) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-js): Update ambiguous type export
+
+## 6.0.1
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
 ## 6.0.0
 
 ### Patch Changes

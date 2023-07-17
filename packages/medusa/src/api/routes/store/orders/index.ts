@@ -83,6 +83,7 @@ export const defaultStoreOrdersRelations = [
   "items",
   "items.variant",
   "shipping_methods",
+  "shipping_methods.shipping_option",
   "discounts",
   "discounts.rule",
   "customer",
@@ -108,7 +109,6 @@ export const defaultStoreOrdersFields = [
   "currency_code",
   "tax_rate",
   "created_at",
-  "items.refundable",
 ] as (keyof Order)[]
 
 export const allowedStoreOrdersFields = [
@@ -124,6 +124,7 @@ export const allowedStoreOrdersFields = [
   "refundable_amount",
   "gift_card_total",
   "gift_card_tax_total",
+  "items.refundable",
 ]
 
 /**

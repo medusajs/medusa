@@ -1,5 +1,14 @@
 # @medusajs/cache-inmemory
 
+## 1.8.8
+
+### Patch Changes
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
+- Updated dependencies [[`14c0f62f8`](https://github.com/medusajs/medusa/commit/14c0f62f84704a4c87beff3daaff60a52f5c88b8)]:
+  - @medusajs/modules-sdk@1.8.8
+
 ## 1.8.7
 
 ### Patch Changes

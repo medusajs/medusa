@@ -2,6 +2,7 @@ import SendGrid from "@sendgrid/mail"
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import { NotificationService } from "medusa-interfaces"
 import { IsNull, Not } from "typeorm"
+import { MedusaError } from "@medusajs/utils"
 
 class SendGridService extends NotificationService {
   static identifier = "sendgrid"
@@ -33,6 +34,7 @@ class SendGridService extends NotificationService {
       totalsService,
       productVariantService,
       giftCardService,
+      logger,
     },
     options
   ) {
@@ -52,6 +54,7 @@ class SendGridService extends NotificationService {
     this.totalsService_ = totalsService
     this.productVariantService_ = productVariantService
     this.giftCardService_ = giftCardService
+    this.logger_ = logger
 
     SendGrid.setApiKey(options.api_key)
   }
@@ -218,22 +221,26 @@ class SendGridService extends NotificationService {
   }
 
   async sendNotification(event, eventData, attachmentGenerator) {
+    const data = await this.fetchData(event, eventData, attachmentGenerator)
+
     let templateId = this.getTemplateId(event)
 
-    if (!templateId) {
-      return false
+    if (data.locale) {
+      templateId = this.getLocalizedTemplateId(event, data.locale) || templateId
     }
 
-    const data = await this.fetchData(event, eventData, attachmentGenerator)
+    if (!templateId) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Sendgrid service: No template was set for event: ${event}`
+      )
+    }
+
     const attachments = await this.fetchAttachments(
       event,
       data,
       attachmentGenerator
     )
-
-    if (data.locale) {
-      templateId = this.getLocalizedTemplateId(event, data.locale) || templateId
-    }
 
     const sendOptions = {
       template_id: templateId,
@@ -256,9 +263,15 @@ class SendGridService extends NotificationService {
       })
     }
 
-    const status = await SendGrid.send(sendOptions)
-      .then(() => "sent")
-      .catch(() => "failed")
+    let status
+    await SendGrid.send(sendOptions)
+      .then(() => {
+        status = "sent"
+      })
+      .catch((error) => {
+        status = "failed"
+        this.logger_.error(error)
+      })
 
     // We don't want heavy docs stored in DB
     delete sendOptions.attachments
@@ -297,18 +310,11 @@ class SendGridService extends NotificationService {
 
   /**
    * Sends an email using SendGrid.
-   * @param {string} templateId - id of template in SendGrid
-   * @param {string} from - sender of email
-   * @param {string} to - receiver of email
-   * @param {Object} data - data to send in mail (match with template)
+   * @param {Object} options - send options containing to, from, template, and more. Read more here: https://github.com/sendgrid/sendgrid-nodejs/tree/main/packages/mail
    * @return {Promise} result of the send operation
    */
   async sendEmail(options) {
-    try {
-      return SendGrid.send(options)
-    } catch (error) {
-      throw error
-    }
+    return await SendGrid.send(options)
   }
 
   async orderShipmentCreatedData({ id, fulfillment_id }, attachmentGenerator) {
@@ -844,7 +850,9 @@ class SendGridService extends NotificationService {
   }
 
   async swapCreatedData({ id }) {
-    const store = await this.storeService_.retrieve({ where: { id: Not(IsNull()) } })
+    const store = await this.storeService_.retrieve({
+      where: { id: Not(IsNull()) },
+    })
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "additional_items",
@@ -907,7 +915,7 @@ class SendGridService extends NotificationService {
         "shipping_total",
         "subtotal",
       ],
-      relations: ["items", "items.variant", "items.variant.product"]
+      relations: ["items", "items.variant", "items.variant.product"],
     })
     const currencyCode = order.currency_code.toUpperCase()
 
@@ -987,6 +995,7 @@ class SendGridService extends NotificationService {
       relations: [
         "shipping_address",
         "shipping_methods",
+        "shipping_methods.shipping_option",
         "shipping_methods.tax_lines",
         "additional_items",
         "additional_items.variant",
@@ -1022,11 +1031,7 @@ class SendGridService extends NotificationService {
         "shipping_total",
         "subtotal",
       ],
-      relations: [
-        "items",
-        "items.variant",
-        "items.variant.product",
-      ]
+      relations: ["items", "items.variant", "items.variant.product"],
     })
 
     const returnRequest = swap.return_order
@@ -1146,7 +1151,7 @@ class SendGridService extends NotificationService {
         "order.items",
         "order.items.variant",
         "order.items.variant.product",
-        "order.shipping_address"
+        "order.shipping_address",
       ],
     })
 

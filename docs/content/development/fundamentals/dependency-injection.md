@@ -1,5 +1,5 @@
 ---
-description: 'Learn what the dependency container is and how to use it in Medusa. Learn also what dependency injection is, and what the resources regsitered and their names are.'
+description: 'Learn what the dependency container is and how to use it in Medusa. Learn also what dependency injection is, and what the resources registered and their names are.'
 ---
 
 # Dependency Container and Injection
@@ -38,7 +38,7 @@ The Medusa backend scans the core Medusa package, plugins, and your files in the
 
 :::tip
 
-The Lifetime column indicates the lifetime of a service. Other resources that aren't services don't have a lifetime, which is indicated with the `-` in the column. You can learn about what a lifetime is in the [Create a Service](../services/create-service.md) documentation.
+The Lifetime column indicates the lifetime of a service. Other resources that aren't services don't have a lifetime, which is indicated with the `-` in the column. You can learn about what a lifetime is in the [Create a Service](../services/create-service.mdx) documentation.
 
 :::
 
@@ -731,5 +731,5 @@ class OrderSubscriber {
 
 ## See Also
 
-- [Create services](../services/create-service.md)
+- [Create services](../services/create-service.mdx)
 - [Create subscribers](../events/create-subscriber.md)

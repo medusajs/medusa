@@ -134,7 +134,7 @@ mailchimpService.subscribeNewsletter(
 
 :::tip
 
-You can learn more about how you can use services in your endpoints, services, and subscribers in the [Services documentation](../../development/services/create-service.md#using-your-custom-service).
+You can learn more about how you can use services in your endpoints, services, and subscribers in the [Services documentation](../../development/services/create-service.mdx#using-your-custom-service).
 
 :::
 

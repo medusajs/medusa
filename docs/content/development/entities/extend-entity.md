@@ -67,48 +67,7 @@ Notice that you must pass the attributes you added to the entity into the `inter
 
 ---
 
-## Step 4: Extend Repository
-
-As the entity is used throughout the commerce application through its repository, the core package will not actually be aware that the entity was extended unless you also extend the repository.
-
-The steps here are similar to those described in the [How to Extend a Repository documentation](./extend-repository.md), however, the implementation is a little different.
-
-Start by creating the repository file `src/repositories/product.ts`. As mentioned in the repository documentation, the name of the file should be the same as the name in the core. So, if you’re extending another repository, use the file name of that repository instead.
-
-Then, in the file, add the following content:
-
-```ts title=src/repositories/product.ts
-import { Product } from "../models/product"
-import { 
-  dataSource,
-} from "@medusajs/medusa/dist/loaders/database"
-import {
-  // alias the core repository to not cause a naming conflict
-  ProductRepository as MedusaProductRepository,
-} from "@medusajs/medusa/dist/repositories/product"
-
-export const ProductRepository = dataSource
-  .getRepository(Product)
-  .extend({
-    // it is important to spread the existing repository here.
-    // Otherwise you will end up losing core properties.
-    // you also update the target to the extended entity
-    ...Object.assign(
-      MedusaProductRepository, 
-      { target: Product }
-    ),
-      
-    // you can add other customizations as well...
-  })
-
-export default ProductRepository
-```
-
-Instead of just spreading the properties of the `MedusaProductRepository` as you did when extending a repository, you have to change the value of the `target` property to be the entity you created.
-
----
-
-## Step 5: Create Migration
+## Step 4: Create Migration
 
 To reflect your entity changes on the database schema, you must create a migration with those changes.
 
@@ -139,7 +98,7 @@ export default changeProduct1680013376180
 
 ---
 
-## Step 6: Use Custom Entity
+## Step 5: Use Custom Entity
 
 For changes to take effect, you must transpile your code by running the `build` command in the root of the Medusa backend:
 
@@ -155,7 +114,7 @@ medusa migrations run
 
 You should see that your migration was executed, which means your changes were reflected in the database schema.
 
-You can now use your extended entity and its repository throughout your commerce application.
+You can now use your extended entity throughout your commerce application.
 
 ---
 
@@ -202,3 +161,9 @@ You can also add custom relations by changing the following defined variables:
 - `defaultStoreProductsRelations`: The relations of a product that are retrieved and returned by default in the product's store endpoints.
 
 If you want to apply this example for a different entity or set of endpoints, you would need to change the import path `@medusajs/medusa/dist/api/routes/store/products/index` to the path of the endpoints you're targeting. You also need to change `allowedStoreProductsFields` and `defaultStoreProductsFields` to the names of the variables in that file, and the same goes for relations. Typically, these names would be of the format `(allowed|default)(Store|Admin)(Entity)(Fields|Relation)`.
+
+---
+
+## Advanced Entity Definitions
+
+With entities, you can create relationships, index keys, and more. As Medusa uses Typeorm, you can learn about using these functionalities through [Typeorm's documentation](https://typeorm.io/).

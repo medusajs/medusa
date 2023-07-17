@@ -1,5 +1,15 @@
 # @medusajs/modules-sdk
 
+## 1.8.8
+
+### Patch Changes
+
+- [#4161](https://github.com/medusajs/medusa/pull/4161) [`14c0f62f8`](https://github.com/medusajs/medusa/commit/14c0f62f84704a4c87beff3daaff60a52f5c88b8) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(product): Experimental product module
+
+- Updated dependencies [[`f98ba5bde`](https://github.com/medusajs/medusa/commit/f98ba5bde83ba785eead31b0c9eb9f135d664178), [`d76ba0cd2`](https://github.com/medusajs/medusa/commit/d76ba0cd29694c2e31f9f89992a9fbc14659c1ae), [`14c0f62f8`](https://github.com/medusajs/medusa/commit/14c0f62f84704a4c87beff3daaff60a52f5c88b8)]:
+  - @medusajs/utils@1.9.1
+  - @medusajs/types@1.8.8
+
 ## 1.8.7
 
 ### Patch Changes

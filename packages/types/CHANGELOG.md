@@ -1,5 +1,27 @@
 # @medusajs/types
 
+## 1.8.10
+
+### Patch Changes
+
+- [#4098](https://github.com/medusajs/medusa/pull/4098) [`499c3478c`](https://github.com/medusajs/medusa/commit/499c3478c910c8b922a15cc6f4d9fbad122a347f) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - feat: Remote Joiner
+
+- [#4420](https://github.com/medusajs/medusa/pull/4420) [`6f1fa244f`](https://github.com/medusajs/medusa/commit/6f1fa244fa47d4ecdaa7363483bd7da555dbbf32) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(medusa-cli): Cleanup plugin setup + include Logger type update which is used across multiple packages
+
+## 1.8.9
+
+### Patch Changes
+
+- [#4348](https://github.com/medusajs/medusa/pull/4348) [`dc120121c`](https://github.com/medusajs/medusa/commit/dc120121c12bd2722d97c65e242888bb552ef78a) Thanks [@riqwan](https://github.com/riqwan)! - fix(product, types): correct path for migration files + fix types on product module service interface
+
+## 1.8.8
+
+### Patch Changes
+
+- [#4211](https://github.com/medusajs/medusa/pull/4211) [`d76ba0cd2`](https://github.com/medusajs/medusa/commit/d76ba0cd29694c2e31f9f89992a9fbc14659c1ae) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Order edit missing transaction when consuming the inventory module
+
+- [#4161](https://github.com/medusajs/medusa/pull/4161) [`14c0f62f8`](https://github.com/medusajs/medusa/commit/14c0f62f84704a4c87beff3daaff60a52f5c88b8) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(product): Experimental product module
+
 ## 1.8.7
 
 ### Patch Changes

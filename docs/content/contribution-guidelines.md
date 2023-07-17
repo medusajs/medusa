@@ -366,7 +366,7 @@ For example:
 
 ~~~md
 ```bash noReport
-medusa new my-medusa-store --seed
+medusa new my-medusa-store
 ```
 ~~~
 
@@ -378,7 +378,7 @@ For example:
 
 ~~~md
 ```bash noCopy
-medusa new my-medusa-store --seed
+medusa new my-medusa-store
 ```
 ~~~
 

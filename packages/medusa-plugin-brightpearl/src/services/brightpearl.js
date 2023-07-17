@@ -1,8 +1,5 @@
-import { MedusaError, humanizeAmount } from "medusa-core-utils"
-import {
-  ReservationType,
-  updateInventoryAndReservations,
-} from "@medusajs/medusa"
+import { humanizeAmount, MedusaError } from "medusa-core-utils"
+import { updateInventoryAndReservations } from "@medusajs/medusa"
 
 import { BaseService } from "medusa-interfaces"
 import Brightpearl from "../utils/brightpearl"
@@ -111,7 +108,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/goods-out`,
         bodyTemplate:
-          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
+          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -553,7 +550,10 @@ class BrightpearlService extends BaseService {
         currency: parentSo.currency,
         ref: parentSo.ref,
         externalRef: `${parentSo.externalRef}.${fromRefund.id}`,
-        channelId: this.options.channel_id || `1`,
+        channelId:
+          fromOrder.sales_channel?.metadata?.bp_id ||
+          this.options.channel_id ||
+          `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
         delivery: parentSo.delivery,
@@ -889,7 +889,10 @@ class BrightpearlService extends BaseService {
         currency: parentSo.currency,
         ref: parentSo.ref,
         externalRef: `${parentSo.externalRef}.${fromReturn.id}`,
-        channelId: this.options.channel_id || `1`,
+        channelId:
+          fromOrder.sales_channel?.metadata?.bp_id ||
+          this.options.channel_id ||
+          `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
         delivery: parentSo.delivery,
@@ -1002,6 +1005,7 @@ class BrightpearlService extends BaseService {
         "shipping_address",
         "billing_address",
         "shipping_methods",
+        "shipping_methods.shipping_option",
         "payments",
         "sales_channel",
       ],
@@ -1129,7 +1133,10 @@ class BrightpearlService extends BaseService {
       },
       ref: `${fromOrder.display_id}-S${sIndex + 1}`,
       externalRef: `${fromOrder.id}.${fromSwap.id}`,
-      channelId: this.options.channel_id || `1`,
+      channelId:
+        fromOrder.sales_channel?.metadata?.bp_id ||
+        this.options.channel_id ||
+        `1`,
       installedIntegrationInstanceId: authData.installation_instance_id,
       statusId:
         this.options.swap_status_id || this.options.default_status_id || `3`,
@@ -1216,7 +1223,10 @@ class BrightpearlService extends BaseService {
         currency: parentSo.currency,
         ref: `${parentSo.ref}-C${cIndex + 1}`,
         externalRef: `${parentSo.externalRef}.${fromClaim.id}`,
-        channelId: this.options.channel_id || `1`,
+        channelId:
+          fromOrder.sales_channel?.metadata?.bp_id ||
+          this.options.channel_id ||
+          `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
         delivery: parentSo.delivery,
@@ -1310,7 +1320,10 @@ class BrightpearlService extends BaseService {
         currency: parentSo.currency,
         ref: `${parentSo.ref}-S${sIndex + 1}`,
         externalRef: `${parentSo.externalRef}.${fromSwap.id}`,
-        channelId: this.options.channel_id || `1`,
+        channelId:
+          fromOrder.sales_channel?.metadata?.bp_id ||
+          this.options.channel_id ||
+          `1`,
         installedIntegrationInstanceId: authData.installation_instance_id,
         customer: parentSo.customer,
         delivery: parentSo.delivery,
@@ -1554,7 +1567,10 @@ class BrightpearlService extends BaseService {
       priceListId: this.options.cost_price_list || `1`,
       ref: `${fromOrder.display_id}-C${cIndex + 1}`,
       externalRef: `${fromOrder.id}.${fromClaim.id}`,
-      channelId: this.options.channel_id || `1`,
+      channelId:
+        fromOrder.sales_channel?.metadata?.bp_id ||
+        this.options.channel_id ||
+        `1`,
       installedIntegrationInstanceId: authData.installation_instance_id,
       statusId:
         this.options.claim_status_id || this.options.default_status_id || `3`,
@@ -1687,7 +1703,7 @@ class BrightpearlService extends BaseService {
       const { fulfillments: existingFulfillments, sales_channel } =
         await this.orderService_
           .withTransaction(transactionManager)
-          .retrieve(order.externalRef, {
+          .retrieve(order.externalRef.split(".")[0], {
             relations: ["fulfillments", "sales_channel"],
           })
 

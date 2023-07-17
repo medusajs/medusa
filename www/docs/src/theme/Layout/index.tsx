@@ -16,6 +16,7 @@ import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
 import "animate.css"
 import StructuredDataSearchbox from "@site/src/components/StructuredData/Searchbox"
+import { useUser } from "@site/src/providers/User"
 
 export default function Layout(props: Props): JSX.Element {
   const {
@@ -29,27 +30,24 @@ export default function Layout(props: Props): JSX.Element {
   useKeyboardNavigation()
   const isBrowser = useIsBrowser()
   const location = useLocation()
+  const { track } = useUser()
 
   useEffect(() => {
     if (isBrowser) {
-      if (window.analytics) {
-        const handlePlay = () => {
-          window.analytics.track("video_played")
-        }
+      const handlePlay = () => {
+        track("video_played")
+      }
 
-        const videos = document.querySelectorAll("video")
-        videos.forEach((video) =>
-          video.addEventListener("play", handlePlay, {
-            once: true,
-            capture: true,
-          })
-        )
+      const videos = document.querySelectorAll("video")
+      videos.forEach((video) =>
+        video.addEventListener("play", handlePlay, {
+          once: true,
+          capture: true,
+        })
+      )
 
-        return () => {
-          videos.forEach((video) =>
-            video.removeEventListener("play", handlePlay)
-          )
-        }
+      return () => {
+        videos.forEach((video) => video.removeEventListener("play", handlePlay))
       }
     }
   }, [isBrowser, location.pathname])

@@ -67,15 +67,19 @@ const plugins = [
     resolve: `medusa-payment-paypal`,
     options: {
       sandbox: process.env.PAYPAL_SANDBOX,
-      client_id: process.env.PAYPAL_CLIENT_ID,
-      client_secret: process.env.PAYPAL_CLIENT_SECRET,
-      auth_webhook_id: process.env.PAYPAL_AUTH_WEBHOOK_ID,
+      clientId: process.env.PAYPAL_CLIENT_ID,
+      clientSecret: process.env.PAYPAL_CLIENT_SECRET,
+      authWebhookId: process.env.PAYPAL_AUTH_WEBHOOK_ID,
     },
   },
 ]
 ```
 
 That’s all you need to install PayPal on your Medusa backend!
+
+The PayPal plugin also accepts the following optional configurations:
+
+- `capture`: : a boolean value that indicates whether payment should be captured manually or automatically. By default, it will be false, leading admins to capture the payment manually.
 
 ---
 
@@ -105,7 +109,7 @@ All storefronts require that you obtain your PayPal Client ID. You can retrieve 
 
 ### Process Overview
 
-Aside from the Next.js Storefront, you need to add the implementation with PayPal manually.
+Aside from the Next.js Starter Template, you need to add the implementation with PayPal manually.
 
 :::note
 
@@ -126,9 +130,9 @@ In Medusa, by default, payments are authorized during checkout, but the payment 
 
 :::
 
-### Add to Next.js Storefront
+### Add to Next.js Starter Template
 
-Medusa has a Next.js storefront that you can easily use with your Medusa backend. If you don’t have the storefront installed, you can follow [this quickstart guide](../../starters/nextjs-medusa-starter.mdx).
+Medusa has a Next.js Starter Template that you can easily use with your Medusa backend. If you don’t have the storefront installed, you can follow [this quickstart guide](../../starters/nextjs-medusa-starter.mdx).
 
 In your `.env.local` file (or the file you’re using for your environment variables), add the following variable:
 

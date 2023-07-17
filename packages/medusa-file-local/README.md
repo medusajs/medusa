@@ -31,7 +31,13 @@ npm install @medusajs/file-local
 ```js
 const plugins = [
   // ...
-  `@medusajs/file-local`
+  {
+    resolve: `@medusajs/file-local`,
+    options: {
+      upload_dir: 'uploads/images', // optional
+      backend_url: 'http://localhost:9000' // optional
+    }
+  },
 ]
 ```
 

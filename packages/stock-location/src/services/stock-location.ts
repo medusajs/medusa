@@ -53,18 +53,15 @@ export default class StockLocationService {
    * Lists all stock locations that match the given selector.
    * @param selector - Properties to filter by.
    * @param config - Additional configuration for the query.
+   * @param context
    * @return A list of stock locations.
    */
-  @InjectEntityManager(
-    (target) =>
-      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
-  )
   async list(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<StockLocation[]> {
-    const manager = context.transactionManager!
+    const manager = context.transactionManager ?? this.manager_
     const locationRepo = manager.getRepository(StockLocation)
 
     const query = buildQuery(selector, config)
@@ -75,18 +72,15 @@ export default class StockLocationService {
    * Lists all stock locations that match the given selector and returns the count of matching stock locations.
    * @param selector - Properties to filter by.
    * @param config - Additional configuration for the query.
+   * @param context
    * @return A list of stock locations and the count of matching stock locations.
    */
-  @InjectEntityManager(
-    (target) =>
-      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
-  )
   async listAndCount(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<[StockLocation[], number]> {
-    const manager = context.transactionManager!
+    const manager = context.transactionManager ?? this.manager_
     const locationRepo = manager.getRepository(StockLocation)
 
     const query = buildQuery(selector, config)
@@ -97,17 +91,14 @@ export default class StockLocationService {
    * Retrieves a Stock Location by its ID.
    * @param stockLocationId - The ID of the stock location.
    * @param config - Additional configuration for the query.
+   * @param context
    * @return The stock location.
    * @throws If the stock location ID is not definedor the stock location with the given ID was not found.
    */
-  @InjectEntityManager(
-    (target) =>
-      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
-  )
   async retrieve(
     stockLocationId: string,
     config: FindConfig<StockLocation> = {},
-    @MedusaContext() context: SharedContext = {}
+    context: SharedContext = {}
   ): Promise<StockLocation> {
     if (!isDefined(stockLocationId)) {
       throw new MedusaError(
@@ -116,7 +107,7 @@ export default class StockLocationService {
       )
     }
 
-    const manager = context.transactionManager!
+    const manager = context.transactionManager ?? this.manager_
     const locationRepo = manager.getRepository(StockLocation)
 
     const query = buildQuery({ id: stockLocationId }, config)
@@ -135,6 +126,7 @@ export default class StockLocationService {
   /**
    * Creates a new stock location.
    * @param data - The input data for creating a Stock Location.
+   * @param context
    * @returns The created stock location.
    */
   @InjectEntityManager(
@@ -182,6 +174,7 @@ export default class StockLocationService {
    * Updates an existing stock location.
    * @param stockLocationId - The ID of the stock location to update.
    * @param updateData - The update data for the stock location.
+   * @param context
    * @returns The updated stock location.
    */
   @InjectEntityManager(
@@ -231,6 +224,7 @@ export default class StockLocationService {
    * Updates an address for a Stock Location.
    * @param addressId - The ID of the address to update.
    * @param address - The update data for the address.
+   * @param context
    * @returns The updated stock location address.
    */
   @InjectEntityManager(
@@ -275,6 +269,7 @@ export default class StockLocationService {
   /**
    * Deletes a Stock Location.
    * @param id - The ID of the stock location to delete.
+   * @param context
    * @returns An empty promise.
    */
   @InjectEntityManager(

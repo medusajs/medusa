@@ -1,9 +1,12 @@
+import middlewares, { transformStoreQuery } from "../../../middlewares"
+
+import { PricedVariant } from "../../../../types/pricing"
 import { Router } from "express"
+import { StoreGetVariantsParams } from "./list-variants"
+import { StoreGetVariantsVariantParams } from "./get-variant"
 import { extendRequestParams } from "../../../middlewares/publishable-api-key/extend-request-params"
-import middlewares from "../../../middlewares"
 import { validateProductVariantSalesChannelAssociation } from "../../../middlewares/publishable-api-key/validate-variant-sales-channel-association"
 import { validateSalesChannelParam } from "../../../middlewares/publishable-api-key/validate-sales-channel-param"
-import { PricedVariant } from "../../../../types/pricing"
 
 const route = Router()
 
@@ -12,14 +15,33 @@ export default (app) => {
 
   route.use("/:id", validateProductVariantSalesChannelAssociation)
 
-  route.get("/", middlewares.wrap(require("./list-variants").default))
-  route.get("/:id", middlewares.wrap(require("./get-variant").default))
+  route.get(
+    "/",
+    transformStoreQuery(StoreGetVariantsParams, {
+      defaultRelations: defaultStoreVariantRelations,
+      allowedRelations: allowedStoreVariantRelations,
+      isList: true,
+    }),
+    middlewares.wrap(require("./list-variants").default)
+  )
+  route.get(
+    "/:id",
+    transformStoreQuery(StoreGetVariantsVariantParams, {
+      defaultRelations: defaultStoreVariantRelations,
+      allowedRelations: allowedStoreVariantRelations,
+    }),
+    middlewares.wrap(require("./get-variant").default)
+  )
 
   return app
 }
 
 export const defaultStoreVariantRelations = ["prices", "options", "product"]
 
+export const allowedStoreVariantRelations = [
+  ...defaultStoreVariantRelations,
+  "inventory_items",
+]
 /**
  * @schema StoreVariantsRes
  * type: object

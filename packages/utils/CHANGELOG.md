@@ -1,5 +1,23 @@
 # @medusajs/utils
 
+## 1.9.2
+
+### Patch Changes
+
+- [#4098](https://github.com/medusajs/medusa/pull/4098) [`499c3478c`](https://github.com/medusajs/medusa/commit/499c3478c910c8b922a15cc6f4d9fbad122a347f) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - feat: Remote Joiner
+
+- [#4389](https://github.com/medusajs/medusa/pull/4389) [`9dcdc0041`](https://github.com/medusajs/medusa/commit/9dcdc0041a2b08cc0723343dd8d9127d9977b086) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, utils): fix the way selects are consumed alongside the relations
+
+- [#4398](https://github.com/medusajs/medusa/pull/4398) [`9760d4a96`](https://github.com/medusajs/medusa/commit/9760d4a96c27f6f89a8c3f3b6e73b17547f97f2a) Thanks [@riqwan](https://github.com/riqwan)! - feat(medusa, utils): improve devx for core entity customizations
+
+## 1.9.1
+
+### Patch Changes
+
+- [#4273](https://github.com/medusajs/medusa/pull/4273) [`f98ba5bde`](https://github.com/medusajs/medusa/commit/f98ba5bde83ba785eead31b0c9eb9f135d664178) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app,medusa-cli): Allow clearing project
+
+- [#4161](https://github.com/medusajs/medusa/pull/4161) [`14c0f62f8`](https://github.com/medusajs/medusa/commit/14c0f62f84704a4c87beff3daaff60a52f5c88b8) Thanks [@adrien2p](https://github.com/adrien2p)! - feat(product): Experimental product module
+
 ## 1.9.0
 
 ### Minor Changes

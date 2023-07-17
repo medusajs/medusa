@@ -3,6 +3,9 @@
   "private": true,
   "workspaces": {
     "packages": [
+      "packages/medusa",
+      "packages/medusa-js",
+      "packages/medusa-react",
       "packages/*",
       "packages/generated/*",
       "packages/oas/*",
@@ -71,7 +74,7 @@
     "prettier": "prettier",
     "jest": "jest",
     "test": "turbo run test --no-daemon",
-    "test:integration": "turbo run test:integration --no-daemon",
+    "test:integration:packages": "turbo run test:integration --no-daemon --filter='./packages/*'",
     "test:integration:api": "turbo run test:integration --no-daemon --filter=integration-tests-api",
     "test:integration:plugins": "turbo run test:integration --no-daemon --filter=integration-tests-plugins",
     "test:integration:repositories": "turbo run test:integration --no-daemon --filter=integration-tests-repositories",
@@ -101,6 +104,7 @@
   "packageManager": "yarn@3.2.1",
   "resolutions": {
     "@redocly/cli/react": "^17.0.1",
-    "@redocly/cli/react-dom": "^17.0.1"
+    "@redocly/cli/react-dom": "^17.0.1",
+    "pg": "8.10.0"
   }
 }

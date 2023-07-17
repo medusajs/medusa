@@ -133,7 +133,7 @@ Run your backend with the following command:
 npx @medusajs/medusa-cli develop
 ```
 
-Then, try triggering one of the [mentioned events earlier in this document](#events-that-the-segment-plugin-tracks). For example, you can place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the [Next.js starter storefront](../../starters/nextjs-medusa-starter.mdx).
+Then, try triggering one of the [mentioned events earlier in this document](#events-that-the-segment-plugin-tracks). For example, you can place an order either using the [REST APIs](https://docs.medusajs.com/api/store) or using the [Next.js Starter Template](../../starters/nextjs-medusa-starter.mdx).
 
 After you place an order, on the Segment source that you created, click on the Debugger tab. You should see at least one event triggered for each order you place. If you click on the event, you can see the order details are passed to the event.
 
@@ -185,7 +185,7 @@ You resolve the `SegmentService` using dependency injection. Then, when the `cus
 
 :::info
 
-Services can be resolved and used in Subscribers, endpoints, and other Services. Learn [how to resolve services in the Services documentation](../../development/services/create-service.md#using-your-custom-service).
+Services can be resolved and used in Subscribers, endpoints, and other Services. Learn [how to resolve services in the Services documentation](../../development/services/create-service.mdx#using-your-custom-service).
 
 :::
 
@@ -199,13 +199,13 @@ The `SegmentService` also provides the method `identify` to tie a user to their 
 
 After adding the above subscriber, run your backend again if it isn’t running and create a customer using the REST APIs or one of the Medusa storefronts. If you check the Debugger in your Segment source, you should see a new event “Customer Created” tracked. If you click on it, you’ll see the data you passed to the `track` method.
 
-![The customer created event is recoreded on the Segment source](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000759/Medusa%20Docs/Segment/4LD41xE_qungdw.png)
+![The customer created event is recorded on the Segment source](https://res.cloudinary.com/dza7lstvk/image/upload/v1668000759/Medusa%20Docs/Segment/4LD41xE_qungdw.png)
 
 ---
 
 ## See Also
 
-- [Services Overview](../../development/services/create-service.md)
+- [Services Overview](../../development/services/create-service.mdx)
 - [Subscribers Overview](../../development/events/create-subscriber.md)
 - [Events Reference](../../development/events/events-list.md)
 - [Deploy the Medusa backend](../../deployments/server/index.mdx)

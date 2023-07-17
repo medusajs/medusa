@@ -1,5 +1,37 @@
 # @medusajs/admin-ui
 
+## 1.9.1
+
+### Patch Changes
+
+- [#4444](https://github.com/medusajs/medusa/pull/4444) [`78a1f3943`](https://github.com/medusajs/medusa/commit/78a1f3943b1631170721169c19b5b47a4832330f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(admin-ui): Remove new badges from inventory + categories
+
+- [#4389](https://github.com/medusajs/medusa/pull/4389) [`9dcdc0041`](https://github.com/medusajs/medusa/commit/9dcdc0041a2b08cc0723343dd8d9127d9977b086) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, utils): fix the way selects are consumed alongside the relations
+
+- Updated dependencies [[`fe25c8a91`](https://github.com/medusajs/medusa/commit/fe25c8a91f4462c9ac5a15594fa71155df48c1eb), [`417debfe7`](https://github.com/medusajs/medusa/commit/417debfe7db6edd6722929fe0f905a63548a0c9e)]:
+  - medusa-react@9.0.2
+
+## 1.9.0
+
+### Minor Changes
+
+- [#4115](https://github.com/medusajs/medusa/pull/4115) [`79cca2ab8`](https://github.com/medusajs/medusa/commit/79cca2ab809b77606e65706c19f9fce37b174365) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): Add filtering capabilities for reservations view
+
+### Patch Changes
+
+- [#4231](https://github.com/medusajs/medusa/pull/4231) [`1bd2e7a5b`](https://github.com/medusajs/medusa/commit/1bd2e7a5be4aeb15ac15f5f0e70dc37a6dfaa86f) Thanks [@fPolic](https://github.com/fPolic)! - fix(admin-ui): prevent Timeline flickering while loading
+
+- [#4316](https://github.com/medusajs/medusa/pull/4316) [`0bfdc33a0`](https://github.com/medusajs/medusa/commit/0bfdc33a0ba7f9518b68db762ede5960db878b6d) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): minor fixes for reservation management
+
+- [#4133](https://github.com/medusajs/medusa/pull/4133) [`869628bf4`](https://github.com/medusajs/medusa/commit/869628bf4c50f93375bd32946cd0605de3d981cd) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): rename allocation to reservation
+
+- [#4267](https://github.com/medusajs/medusa/pull/4267) [`f8643361c`](https://github.com/medusajs/medusa/commit/f8643361cdcb549c61e645d4ee275f20883e00d9) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa, admin-ui): remove reservations feature flag
+
+- [#4276](https://github.com/medusajs/medusa/pull/4276) [`afd1b67f1`](https://github.com/medusajs/medusa/commit/afd1b67f1c7de8cf07fd9fcbdde599a37914e9b5) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Use caret range
+
+- Updated dependencies [[`79cca2ab8`](https://github.com/medusajs/medusa/commit/79cca2ab809b77606e65706c19f9fce37b174365)]:
+  - medusa-react@9.0.1
+
 ## 1.8.7
 
 ### Patch Changes

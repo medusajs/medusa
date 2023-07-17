@@ -80,7 +80,7 @@ This uses Heroku Postgres's smallest plan. You can check out [the available plan
 Add a Redis instance to your Heroku app with the following command:
 
 ```bash
-heroku addons:create stackhero-redis:ist-ebi1rc
+heroku addons:create stackhero-redis:ist-m4euc0
 ```
 
 This uses the lowest plan in Stackhero Redis. You can check out [the plans and pricing of Stackhero Redis on Heroku's website.](https://elements.heroku.com/addons/stackhero-redis#pricing)
@@ -123,6 +123,12 @@ heroku config:get STACKHERO_REDIS_URL_TLS
 ```
 
 This prints the value of the environment variable which is a Redis connection string.
+
+:::note
+
+If you see nothing, you have to wait until the creation process of the stackhero redis instance is done. Try waiting a few minutes then trying again.
+
+:::
 
 Copy that value and use it to set the environment variable `REDIS_URL` with the following command:
 
@@ -192,6 +198,7 @@ module.exports = {
         : {},
   },
   plugins,
+  modules,
 }
 ```
 
@@ -249,7 +256,9 @@ Make sure to either set the `autoRebuild` option of the admin plugin to `true` o
 
 If you deployed the admin dashboard alongside the backend, you can test it by going to `<YOUR_APP_URL>/app`. If you changed the admin path, make sure to change `/app` to the path you've set.
 
-### Troubleshooting: Inspect Build Logs
+### Troubleshooting
+
+#### Inspect Build Logs
 
 If an error occurs during the deployment, you can explore your Heroku app build logs using the following command in the root directory of your Medusa backend:
 
@@ -258,6 +267,30 @@ heroku logs -n 500000 --remote heroku --tail -a <APP_NAME>
 ```
 
 Where `<APP_NAME>` is the name of the app.
+
+#### Error: Babel not found
+
+If you get the following error in the logs of your application:
+
+```bash
+/bin/sh: 1: /app/node_modules/.bin/babel: not found
+```
+
+You can resolve it by creating a file in the root of your Medusa backend directory named `Procfile` (without an extension) with the following content:
+
+```
+web: npm run serve
+```
+
+Then, push the changes with Git:
+
+```bash
+git add .
+git commit -m "Added Procfile"
+git push heroku HEAD:master
+```
+
+Once the application is re-published, you can access your store as expected.
 
 ---
 

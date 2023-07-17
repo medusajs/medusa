@@ -15,11 +15,11 @@ A search service is used to manage search indices of searchable items, such as p
 
 A search service is a service class that is defined in a TypeScript or JavaScript file, which is created in the `src/services` directory of your Medusa backend codebase or plugin. The class must extend the `AbstractSearchService` class imported from the `@medusajs/utils` package.
 
-Using the [dependency container and injection](../fundamentals/dependency-injection.md), the Medusa backend will then use and resolve the search service within the backend’s search operations, such as when the [Search Product](/api/store#tag/Products/operation/PostProductsSearch) endpoint is used. You can also [resolve the service](../services/create-service.md#use-a-service) within your resources to trigger the search where necessary.
+Using the [dependency container and injection](../fundamentals/dependency-injection.md), the Medusa backend will then use and resolve the search service within the backend’s search operations, such as when the [Search Product](/api/store#tag/Products/operation/PostProductsSearch) endpoint is used. You can also [resolve the service](../services/create-service.mdx#use-a-service) within your resources to trigger the search where necessary.
 
 Medusa provides official plugins that you can install and use in your Medusa backend. Check out available search plugins [here](../../plugins/search/index.mdx).
 
-### Heirarchy of Search Services
+### Hierarchy of Search Services
 
 Medusa provides a default search service that doesn’t actually perform any indexing or searching, but acts like a placeholder search service. Only one search service is registered in the dependency container under the `searchService` name.
 

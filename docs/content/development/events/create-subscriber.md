@@ -9,7 +9,7 @@ In this document, you’ll learn how to create a [Subscriber](./subscribers.mdx)
 
 ## Implementation
 
-A subscriber is a TypeScript or JavaScript file that is created under `src/subscribers`. Its file name, by convension, should be the class name of the subscriber without the word `Subscriber`. For example, if the subscriber is `HelloSubscriber`, the file name should be `hello.ts`.
+A subscriber is a TypeScript or JavaScript file that is created under `src/subscribers`. Its file name, by convention, should be the class name of the subscriber without the word `Subscriber`. For example, if the subscriber is `HelloSubscriber`, the file name should be `hello.ts`.
 
 After creating the file under `src/subscribers`, in the constructor of your subscriber, listen to events using `eventBusService.subscribe` , where `eventBusService` is a service injected into your subscriber’s constructor.
 
@@ -96,4 +96,4 @@ When using attributes defined in the subscriber, such as the `productService` in
 
 ## See Also
 
-- [Create a Plugin](../plugins/create.md)
+- [Create a Plugin](../plugins/create.mdx)

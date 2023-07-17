@@ -80,4 +80,4 @@ Once you disable a feature flag, all endpoints, entities, services, or other rel
 
 If you had the feature flag previously enabled, and you want to disable this feature flag completely, you might need to revert the migrations you ran when you enabled it.
 
-You can follow [this documentation to learn how to revert the last migration you ran](../../cli/reference.md#migrations).
+You can follow [this documentation to learn how to revert the last migration you ran](../../cli/reference.mdx#migrations).

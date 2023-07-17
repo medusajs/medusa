@@ -13,7 +13,7 @@ A fulfillment provider is the shipping provider used to fulfill orders and deliv
 
 By default, a Medusa Backend has a `manual` fulfillment provider which has minimal implementation. It allows you to accept orders and fulfill them manually. However, you can integrate any fulfillment provider into Medusa, and your fulfillment provider can interact with third-party shipping providers.
 
-Adding a fulfillment provider is as simple as creating one [service](../../../development/services/create-service.md) file in `src/services`. A fulfillment provider is essentially a service that extends the `FulfillmentService`. It requires implementing 4 methods:
+Adding a fulfillment provider is as simple as creating one [service](../../../development/services/create-service.mdx) file in `src/services`. A fulfillment provider is essentially a service that extends the `FulfillmentService`. It requires implementing 4 methods:
 
 1. `getFulfillmentOptions`: used to retrieve available fulfillment options provided by this fulfillment provider.
 2. `validateOption`: used to validate the shipping option when it’s being created by the admin.
@@ -44,7 +44,7 @@ Fulfillment provider services must extend the `FulfillmentService` class importe
 
 :::note
 
-Following the naming convention of Services, the name of the file should be the slug name of the fulfillment provider, and the name of the class should be the camel case name of the fulfillment provider suffixed with “Service”. You can learn more in the [service documentation](../../../development/services/create-service.md).
+Following the naming convention of Services, the name of the file should be the slug name of the fulfillment provider, and the name of the class should be the camel case name of the fulfillment provider suffixed with “Service”. You can learn more in the [service documentation](../../../development/services/create-service.mdx).
 
 :::
 

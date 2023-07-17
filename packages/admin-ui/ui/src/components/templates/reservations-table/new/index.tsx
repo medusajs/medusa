@@ -46,7 +46,7 @@ const NewReservation = ({
 
   const notification = useNotification()
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: NewReservationFormType) => {
     const payload = await createPayload(data)
 
     createReservation(payload, {
@@ -54,7 +54,7 @@ const NewReservation = ({
         notification("Success", "Successfully created reservation", "success")
         onClose()
       },
-      onError: (err) => {
+      onError: (err: Error) => {
         notification("Error", getErrorMessage(err), "error")
       },
     })
@@ -111,8 +111,8 @@ const createPayload = (
   data: NewReservationFormType
 ): AdminPostReservationsReq => {
   return {
-    location_id: data.general.location,
-    inventory_item_id: data.general.item.id!,
+    location_id: data.general.location!,
+    inventory_item_id: data.general.item!.id!,
     quantity: data.general.quantity,
     description: data.general.description,
     metadata: getSubmittableMetadata(data.metadata),

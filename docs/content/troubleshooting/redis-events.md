@@ -1,4 +1,6 @@
-# Redis not emitting events
+---
+title: 'Redis not emitting events'
+---
 
 :::note
 
