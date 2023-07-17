@@ -24,13 +24,13 @@ const TagOperationParameters = dynamic<TagOperationParametersProps>(
 export type TagOperationParametersArrayProps = {
   name: string
   schema: SchemaObject
-  is_required?: boolean
+  isRequired?: boolean
 }
 
 const TagOperationParametersArray = ({
   name,
   schema,
-  is_required,
+  isRequired,
 }: TagOperationParametersArrayProps) => {
   if (schema.type !== "array") {
     return <></>
@@ -45,7 +45,7 @@ const TagOperationParametersArray = ({
       <TagOperationParametersDefault
         name={name}
         schema={schema}
-        is_required={is_required}
+        isRequired={isRequired}
         className="pl-1.5"
       />
     )
@@ -57,7 +57,7 @@ const TagOperationParametersArray = ({
         <TagOperationParametersDefault
           name={name}
           schema={schema}
-          is_required={is_required}
+          isRequired={isRequired}
         />
       }
     >

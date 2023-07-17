@@ -22,12 +22,13 @@ const TagOperationParametersDefault =
 export type TagOperationParametersUnionProps = {
   name: string
   schema: SchemaObject
-  is_required?: boolean
+  isRequired?: boolean
 }
 
 const TagOperationParametersUnion = ({
   name,
   schema,
+  isRequired,
 }: TagOperationParametersUnionProps) => {
   const objectSchema = schema.anyOf
     ? schema.anyOf.find((item) => item.type === "object" && item.properties)
@@ -38,7 +39,7 @@ const TagOperationParametersUnion = ({
       <TagOperationParametersDefault
         schema={schema}
         name={name}
-        is_required={false}
+        isRequired={isRequired}
         className="pl-1.5"
       />
     )

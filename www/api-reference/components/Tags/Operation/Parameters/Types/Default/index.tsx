@@ -15,14 +15,14 @@ const TagOperationParametersName = dynamic<TagOperationParametersNameProps>(
 export type TagOperationParametersDefaultProps = {
   name?: string
   schema: SchemaObject
-  is_required?: boolean
+  isRequired?: boolean
   className?: string
 }
 
 const TagOperationParametersDefault = ({
   name,
   schema,
-  is_required,
+  isRequired,
   className,
 }: TagOperationParametersDefaultProps) => {
   return (
@@ -33,7 +33,7 @@ const TagOperationParametersDefault = ({
       )}
     >
       {name && (
-        <TagOperationParametersName name={name} is_required={is_required} />
+        <TagOperationParametersName name={name} isRequired={isRequired} />
       )}
       <TagOperationParametersDescription schema={schema} />
     </div>

@@ -24,11 +24,13 @@ const TagOperationParametersDefault =
 
 export type TagOperationParamatersOneOfProps = {
   schema: SchemaObject
+  isRequired?: boolean
   isNested?: boolean
 }
 
 const TagOperationParamatersOneOf = ({
   schema,
+  isRequired = false,
   isNested = false,
 }: TagOperationParamatersOneOfProps) => {
   const [activeTab, setActiveTab] = useState<number>(0)
@@ -78,6 +80,7 @@ const TagOperationParamatersOneOf = ({
             <TagOperationParametersDefault
               schema={schema}
               name={schema.title || ""}
+              isRequired={isRequired}
             />
           }
         >

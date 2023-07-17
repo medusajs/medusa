@@ -5,6 +5,7 @@ import Loading from "@/components/Loading"
 import type { TagOperationParametersProps } from "../.."
 import type { TagsOperationParametersNestedProps } from "../../Nested"
 import type { DetailsProps } from "@/components/Details"
+import checkRequired from "@/utils/check-required"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
   async () => import("../.."),
@@ -50,7 +51,7 @@ const TagOperationParametersObject = ({
       <TagOperationParametersDefault
         name={name}
         schema={schema}
-        is_required={isRequired}
+        isRequired={isRequired}
         className={className}
       />
     )
@@ -63,9 +64,10 @@ const TagOperationParametersObject = ({
           <TagOperationParameters
             schemaObject={{
               ...value,
-              title: key || value.title,
+              title: key,
             }}
             key={index}
+            isRequired={checkRequired(schema, key)}
           />
         ))}
       </>

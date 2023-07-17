@@ -7,6 +7,7 @@ import type { TagOperationParametersArrayProps } from "./Types/Array"
 import type { TagOperationParametersUnionProps } from "./Types/Union"
 import type { TagOperationParamatersOneOfProps } from "./Types/OneOf"
 import { Suspense } from "react"
+import checkRequired from "@/utils/check-required"
 
 const TagOperationParametersObject = dynamic<TagOperationParametersObjectProps>(
   async () => import("./Types/Object"),
@@ -44,13 +45,18 @@ export type TagOperationParametersProps = {
   schemaObject: SchemaObject
   topLevel?: boolean
   className?: string
+  isRequired?: boolean
 }
 
 const TagOperationParameters = ({
   schemaObject,
-  topLevel = false,
   className,
+  topLevel = false,
+  isRequired: originalIsRequired = false,
 }: TagOperationParametersProps) => {
+  const isRequired =
+    originalIsRequired || checkRequired(schemaObject, schemaObject.title)
+
   const getElement = () => {
     if (schemaObject.type === "object") {
       return (
@@ -58,6 +64,7 @@ const TagOperationParameters = ({
           name={schemaObject.title || ""}
           schema={schemaObject}
           topLevel={topLevel}
+          isRequired={isRequired}
         />
       )
     }
@@ -67,6 +74,7 @@ const TagOperationParameters = ({
         <TagOperationParametersArray
           name={schemaObject.title || ""}
           schema={schemaObject}
+          isRequired={isRequired}
         />
       )
     }
@@ -76,7 +84,7 @@ const TagOperationParameters = ({
         <TagOperationParametersUnion
           schema={schemaObject}
           name={schemaObject.title || ""}
-          is_required={false}
+          isRequired={isRequired}
         />
       )
     }
@@ -94,7 +102,7 @@ const TagOperationParameters = ({
       <TagOperationParametersDefault
         schema={schemaObject}
         name={schemaObject.title}
-        is_required={false}
+        isRequired={isRequired}
         className="pl-1.5"
       />
     )
