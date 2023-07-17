@@ -84,6 +84,17 @@ const TagOperationParametersDescription = ({
           <span>{schema.description}</span>
         </>
       )}
+      {schema.enum && (
+        <>
+          <br />
+          <span>
+            Enum:
+            {schema.enum.map((value, index) => (
+              <InlineCode key={index}>{JSON.stringify(value)}</InlineCode>
+            ))}
+          </span>
+        </>
+      )}
       {schema.externalDocs && (
         <>
           <br />
