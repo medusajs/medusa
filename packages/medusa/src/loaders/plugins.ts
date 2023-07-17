@@ -101,7 +101,7 @@ export default async ({
 function getResolvedPlugins(
   rootDirectory: string,
   configModule: ConfigModule,
-  extensionDirectoryPath: string = "dist"
+  extensionDirectoryPath = "dist"
 ): undefined | PluginDetails[] {
   const { plugins } = configModule
 
