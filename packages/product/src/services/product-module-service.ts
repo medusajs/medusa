@@ -35,7 +35,7 @@ import {
   MedusaContext,
 } from "@medusajs/utils"
 import { shouldForceTransaction } from "../utils"
-import { joinerConfig } from "src/joiner-config"
+import { joinerConfig } from "./../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
