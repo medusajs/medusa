@@ -131,24 +131,20 @@ export default class ProductService<TEntity extends Product = Product> {
     )) as TEntity[]
   }
 
+  @InjectTransactionManager(doNotForceTransaction, "productRepository_")
   async update(
     data: ProductServiceTypes.UpdateProductDTO[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return await this.productRepository_.transaction(
-      async (manager) => {
-        return await (this.productRepository_ as ProductRepository).update(
-          data as WithRequiredProperty<
-            ProductServiceTypes.UpdateProductDTO,
-            "id"
-          >[],
-          {
-            transactionManager: manager,
-          }
-        )
-      },
-      { transaction: sharedContext?.transactionManager }
-    )
+    return await (this.productRepository_ as ProductRepository).update(
+      data as WithRequiredProperty<
+        ProductServiceTypes.UpdateProductDTO,
+        "id"
+      >[],
+      {
+        transactionManager: sharedContext.transactionManager,
+      }
+    ) as TEntity[]
   }
 
   @InjectTransactionManager(doNotForceTransaction, "productRepository_")

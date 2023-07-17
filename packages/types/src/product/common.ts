@@ -254,7 +254,6 @@ export interface CreateProductDTO {
   type_id?: string
   collection_id?: string
   tags?: CreateProductTagDTO[]
-  // sales_channel
   categories?: { id: string }[]
   options?: CreateProductOptionDTO[]
   variants?: CreateProductVariantDTO[]
@@ -284,7 +283,6 @@ export interface UpdateProductDTO {
   type_id?: string | null
   collection_id?: string | null
   tags?: CreateProductTagDTO[]
-  // sales_channel
   categories?: { id: string }[]
   options?: CreateProductOptionDTO[]
   variants?: (CreateProductVariantDTO | UpdateProductVariantDTO)[]

@@ -163,7 +163,7 @@ describe("ProductModuleService products", function () {
       const product = await module.retrieve(updateData.id, {
         relations: ["images", "variants", "options", "options.values", "variants.options", "tags", "type",]
       })
-// console.log("product - ", JSON.stringify(product, null, 2))
+
       expect(product.images).toHaveLength(1)
       expect(product.variants[0].options).toHaveLength(1)
       expect(product.tags).toHaveLength(1)

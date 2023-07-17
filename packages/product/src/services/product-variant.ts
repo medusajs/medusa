@@ -115,42 +115,37 @@ export default class ProductVariantService<
     })) as TEntity[]
   }
 
+  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
   async update(
     productOrId: TProduct | string,
     data: ProductVariantServiceTypes.UpdateProductVariantDTO[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return await this.productVariantRepository_.transaction(
-      async (manager) => {
-        let product = productOrId as unknown as Product
+    let product = productOrId as unknown as Product
 
-        if (isString(productOrId)) {
-          product = await this.productService_.retrieve(
-            productOrId,
-            {},
-            sharedContext
-          )
-        }
+    if (isString(productOrId)) {
+      product = await this.productService_.retrieve(
+        productOrId,
+        {},
+        sharedContext
+      )
+    }
 
-        const variantsData = [...data]
-        variantsData.forEach((variant) => Object.assign(variant, { product }))
+    const variantsData = [...data]
+    variantsData.forEach((variant) => Object.assign(variant, { product }))
 
-        return await (this.productVariantRepository_ as ProductVariantRepository).update(variantsData, {
-          transactionManager: manager,
-        })
-      },
-      { transaction: sharedContext?.transactionManager }
-    )
+    return await (this.productVariantRepository_ as ProductVariantRepository).update(variantsData, {
+      transactionManager: sharedContext.transactionManager,
+    }) as TEntity[]
   }
 
-  async delete(ids: string[], sharedContext?: Context): Promise<void> {
-    await this.productVariantRepository_.transaction(
-      async (manager) => {
-        await this.productVariantRepository_.delete(ids, {
-          transactionManager: manager,
-        })
-      },
-      { transaction: sharedContext?.transactionManager }
-    )
+  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  async delete(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    return await this.productVariantRepository_.delete(ids, {
+      transactionManager: sharedContext.transactionManager,
+    })
   }
 }
