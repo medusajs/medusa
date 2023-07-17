@@ -14,25 +14,26 @@ import {
   TransactionState,
   TransactionStepsDefinition,
 } from "../../../utils/transaction"
-import { CreateProductVariantInput } from "../../../types/product-variant"
 import {
   attachInventoryItems,
-  attachShippingProfileToProduct,
+  attachShippingProfileToProducts,
   createInventoryItems,
-  CreateProductPreparedData,
   createProducts,
   CreateProductsData,
   CreateProductsInputData,
-  prepareCreateProductData,
+  CreateProductsPreparedData,
+  prepareCreateProductsData,
   removeInventoryItems,
   removeProducts,
 } from "../../functions"
-import { detachShippingProfileFromProduct } from "../../functions/detach-shipping-profile-from-product"
+import { detachShippingProfileFromProducts } from "../../functions/detach-shipping-profile-from-products"
 import { PricingService, ProductService } from "../../../services"
 import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "../../../api"
+import { attachSalesChannelToProducts } from "../../functions/attach-sales-channel-to-products"
+import { detachSalesChannelFromProducts } from "../../functions/detach-sales-channel-from-products"
 
 export enum CreateProductsWorkflowActions {
   prepare = "prepare",
@@ -136,13 +137,14 @@ export async function createProductsWorkflow(
         [TransactionHandlerType.INVOKE]: async (
           data: CreateProductsWorkflowInputData
         ) => {
-          return await prepareCreateProductData({
+          return await prepareCreateProductsData({
             container,
             manager,
             data,
           })
         },
       },
+
       [CreateProductsWorkflowActions.createProducts]: {
         [TransactionHandlerType.INVOKE]: async (
           data: CreateProductsData,
@@ -150,7 +152,7 @@ export async function createProductsWorkflow(
         ): Promise<ProductTypes.ProductDTO[]> => {
           const preparedData = invoke[
             CreateProductsWorkflowActions.prepare
-          ] as CreateProductPreparedData
+          ] as CreateProductsPreparedData
 
           return await createProducts({
             container,
@@ -171,9 +173,10 @@ export async function createProductsWorkflow(
           })
         },
       },
+
       [CreateProductsWorkflowActions.attachShippingProfile]: {
         [TransactionHandlerType.INVOKE]: async (
-          data: CreateProductVariantInput[],
+          data: CreateProductsWorkflowInputData,
           { invoke }
         ) => {
           const products = invoke[
@@ -181,9 +184,9 @@ export async function createProductsWorkflow(
           ] as ProductTypes.ProductDTO[]
           const { productsHandleShippingProfileMap } = invoke[
             CreateProductsWorkflowActions.prepare
-          ] as CreateProductPreparedData
+          ] as CreateProductsPreparedData
 
-          return await attachShippingProfileToProduct({
+          return await attachShippingProfileToProducts({
             container,
             manager,
             data: {
@@ -193,14 +196,17 @@ export async function createProductsWorkflow(
           })
         },
         [TransactionHandlerType.COMPENSATE]: async (
-          data: CreateProductVariantInput[],
+          data: CreateProductsWorkflowInputData,
           { invoke }
         ) => {
-          const { productsHandleShippingProfileMap, products } = invoke[
+          const products = invoke[
             CreateProductsWorkflowActions.createProducts
-          ] as CreateProductsStepResponse
+          ] as ProductTypes.ProductDTO[]
+          const { productsHandleShippingProfileMap } = invoke[
+            CreateProductsWorkflowActions.prepare
+          ] as CreateProductsPreparedData
 
-          return await detachShippingProfileFromProduct({
+          return await detachShippingProfileFromProducts({
             container,
             manager,
             data: {
@@ -210,9 +216,10 @@ export async function createProductsWorkflow(
           })
         },
       },
+
       [CreateProductsWorkflowActions.createPrices]: {
         [TransactionHandlerType.INVOKE]: async (
-          data: CreateProductVariantInput[],
+          data: CreateProductsWorkflowInputData,
           { invoke }
         ) => {
           const { productsHandleSalesChannelsMap } = invoke[
@@ -220,19 +227,53 @@ export async function createProductsWorkflow(
           ] as CreateProductsStepResponse
         },
       },
+
       [CreateProductsWorkflowActions.attachToSalesChannel]: {
         [TransactionHandlerType.INVOKE]: async (
-          data: CreateProductVariantInput[],
+          data: CreateProductsWorkflowInputData,
           { invoke }
         ) => {
-          const { productsHandleSalesChannelsMap } = invoke[
+          const products = invoke[
             CreateProductsWorkflowActions.createProducts
-          ] as CreateProductsStepResponse
+          ] as ProductTypes.ProductDTO[]
+          const { productsHandleSalesChannelsMap } = invoke[
+            CreateProductsWorkflowActions.prepare
+          ] as CreateProductsPreparedData
+
+          return await attachSalesChannelToProducts({
+            container,
+            manager,
+            data: {
+              productsHandleSalesChannelsMap,
+              products,
+            },
+          })
+        },
+        [TransactionHandlerType.COMPENSATE]: async (
+          data: CreateProductsWorkflowInputData,
+          { invoke }
+        ) => {
+          const products = invoke[
+            CreateProductsWorkflowActions.createProducts
+          ] as ProductTypes.ProductDTO[]
+          const { productsHandleSalesChannelsMap } = invoke[
+            CreateProductsWorkflowActions.prepare
+          ] as CreateProductsPreparedData
+
+          return await detachSalesChannelFromProducts({
+            container,
+            manager,
+            data: {
+              productsHandleSalesChannelsMap,
+              products,
+            },
+          })
         },
       },
+
       [CreateProductsWorkflowActions.createInventoryItems]: {
         [TransactionHandlerType.INVOKE]: async (
-          data: CreateProductVariantInput[],
+          data: CreateProductsWorkflowInputData,
           { invoke }
         ) => {
           const shouldSkipStep_ = shouldSkipInventoryStep(
@@ -270,9 +311,10 @@ export async function createProductsWorkflow(
           })
         },
       },
+
       [CreateProductsWorkflowActions.attachInventoryItems]: {
         [TransactionHandlerType.INVOKE]: async (
-          data: CreateProductVariantInput[],
+          data: CreateProductsWorkflowInputData,
           { invoke }
         ) => {
           const shouldSkipStep_ = shouldSkipInventoryStep(
@@ -295,9 +337,10 @@ export async function createProductsWorkflow(
           })
         },
       },
+
       [CreateProductsWorkflowActions.result]: {
         [TransactionHandlerType.INVOKE]: async (
-          data: CreateProductVariantInput[],
+          data: CreateProductsWorkflowInputData,
           { invoke }
         ) => {
           const { [CreateProductsWorkflowActions.createProducts]: products } =

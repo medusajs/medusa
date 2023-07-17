@@ -9,13 +9,13 @@ export type CreateProductsInputData = (ProductTypes.CreateProductDTO & {
   sales_channels?: { id: string }[]
 })[]
 
-export type CreateProductPreparedData = {
+export type CreateProductsPreparedData = {
   products: ProductTypes.CreateProductDTO[]
   productsHandleShippingProfileMap: Map<string, string>
   productsHandleSalesChannelsMap: Map<string, string[]>
 }
 
-export async function prepareCreateProductData({
+export async function prepareCreateProductsData({
   container,
   manager,
   data,
@@ -23,7 +23,7 @@ export async function prepareCreateProductData({
   container: MedusaContainer
   manager: EntityManager
   data: CreateProductsInputData
-}): Promise<CreateProductPreparedData> {
+}): Promise<CreateProductsPreparedData> {
   const productsHandleShippingProfileMap =
     await createProductsShippingProfileMap_({
       container,

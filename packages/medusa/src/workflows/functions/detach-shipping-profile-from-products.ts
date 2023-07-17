@@ -2,7 +2,7 @@ import { MedusaContainer, ProductTypes } from "@medusajs/types"
 import { EntityManager } from "typeorm"
 import { ShippingProfileService } from "../../services"
 
-export async function attachShippingProfileToProduct({
+export async function detachShippingProfileFromProducts({
   container,
   manager,
   data,
@@ -33,7 +33,10 @@ export async function attachShippingProfileToProduct({
   await Promise.all(
     Array.from(profileIdProductIdsMap.entries()).map(
       async ([profileId, productIds]) => {
-        return await shippingProfileServiceTx.addProducts(profileId, productIds)
+        return await shippingProfileServiceTx.removeProducts(
+          profileId,
+          productIds
+        )
       }
     )
   )
