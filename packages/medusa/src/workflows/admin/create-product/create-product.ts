@@ -34,6 +34,7 @@ import {
 } from "../../../api"
 import { attachSalesChannelToProducts } from "../../functions/attach-sales-channel-to-products"
 import { detachSalesChannelFromProducts } from "../../functions/detach-sales-channel-from-products"
+import { createProductsVariantsPrices } from "../../functions/create-products-variants-prices"
 
 export enum CreateProductsWorkflowActions {
   prepare = "prepare",
@@ -63,13 +64,10 @@ const workflowSteps: TransactionStepsDefinition = {
         },
         {
           action: CreateProductsWorkflowActions.createPrices,
-          saveResponse: true,
           next: {
             action: CreateProductsWorkflowActions.createInventoryItems,
-            saveResponse: true,
             next: {
               action: CreateProductsWorkflowActions.attachInventoryItems,
-              noCompensation: true,
               next: {
                 action: CreateProductsWorkflowActions.result,
                 noCompensation: true,
@@ -217,17 +215,6 @@ export async function createProductsWorkflow(
         },
       },
 
-      [CreateProductsWorkflowActions.createPrices]: {
-        [TransactionHandlerType.INVOKE]: async (
-          data: CreateProductsWorkflowInputData,
-          { invoke }
-        ) => {
-          const { productsHandleSalesChannelsMap } = invoke[
-            CreateProductsWorkflowActions.createProducts
-          ] as CreateProductsStepResponse
-        },
-      },
-
       [CreateProductsWorkflowActions.attachToSalesChannel]: {
         [TransactionHandlerType.INVOKE]: async (
           data: CreateProductsWorkflowInputData,
@@ -338,6 +325,25 @@ export async function createProductsWorkflow(
         },
       },
 
+      [CreateProductsWorkflowActions.createPrices]: {
+        [TransactionHandlerType.INVOKE]: async (
+          data: CreateProductsWorkflowInputData,
+          { invoke }
+        ) => {
+          const products = invoke[
+            CreateProductsWorkflowActions.createProducts
+          ] as ProductTypes.ProductDTO[]
+
+          return await createProductsVariantsPrices({
+            container,
+            manager,
+            data: {
+              products,
+            },
+          })
+        },
+      },
+
       [CreateProductsWorkflowActions.result]: {
         [TransactionHandlerType.INVOKE]: async (
           data: CreateProductsWorkflowInputData,
@@ -368,6 +374,7 @@ export async function createProductsWorkflow(
         },
       },
     }
+
     return command[actionId][type](payload.data, payload.context)
   }
 
