@@ -42,11 +42,7 @@ import {
   createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
-import {
-  createProductsWorkflow,
-  CreateProductsWorkflowActions,
-  revertCreateProductsTransaction,
-} from "../../../../workflows/admin/create-product/create-product"
+import { createProductsWorkflow } from "../../../../workflows/admin/create-product/create-product"
 
 /**
  * @oas [post] /admin/products
@@ -137,23 +133,14 @@ export default async (req, res) => {
   const productModuleService = req.scope.resolve("productModuleService")
 
   if (productModuleService) {
-    let transaction: DistributedTransaction
-    try {
-      transaction = await createProductsWorkflow(
-        {
-          container: req.scope,
-          manager: req.scope.resolve("manager"),
-        },
-        [validated]
-      )
-
-      const product =
-        transaction.getContext().invoke[CreateProductsWorkflowActions.result]
-      return res.json({ product })
-    } catch (e) {
-      await revertCreateProductsTransaction(transaction!)
-      throw e
-    }
+    const products = await createProductsWorkflow(
+      {
+        container: req.scope,
+        manager: req.scope.resolve("manager"),
+      },
+      [validated]
+    )
+    return res.json({ product: products[0] })
   }
 
   const product = await entityManager.transaction(async (manager) => {

@@ -36,6 +36,8 @@ import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "../../../api"
+import { Product } from "../../../models"
+import { PricedProduct } from "../../../types/pricing"
 
 export enum CreateProductsWorkflowActions {
   prepare = "prepare",
@@ -115,7 +117,7 @@ const shouldSkipInventoryStep = (
 export async function createProductsWorkflow(
   dependencies: InjectedDependencies,
   input: CreateProductsInputData
-): Promise<DistributedTransaction> {
+): Promise<(Product | PricedProduct)[]> {
   const { manager, container } = dependencies
 
   async function transactionHandler(
@@ -381,6 +383,7 @@ export async function createProductsWorkflow(
   await orchestrator.resume(transaction)
 
   if (transaction.getState() !== TransactionState.DONE) {
+    await revertCreateProductsTransaction(transaction)
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       transaction
@@ -390,7 +393,9 @@ export async function createProductsWorkflow(
     )
   }
 
-  return transaction
+  return transaction.getContext().invoke[
+    CreateProductsWorkflowActions.result
+  ] as (Product | PricedProduct)[]
 }
 
 export const revertCreateProductsTransaction = async (
