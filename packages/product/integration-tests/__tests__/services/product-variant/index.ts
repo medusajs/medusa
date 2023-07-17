@@ -6,12 +6,6 @@ import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Collection } from "@mikro-orm/core"
 import { ProductTypes } from "@medusajs/types"
 import { ProductOption } from "@medusajs/client-types"
-import { ProductTypes } from "@medusajs/types"
-import { Collection } from "@mikro-orm/core"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { Product, ProductTag, ProductVariant } from "@models"
-import { ProductVariantRepository } from "@repositories"
-import { ProductVariantService } from "@services"
 import {
   createOptions,
   createProductAndTags,
