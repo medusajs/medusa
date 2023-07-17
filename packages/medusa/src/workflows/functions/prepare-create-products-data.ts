@@ -60,11 +60,17 @@ export async function prepareCreateProductsData({
       .retrieveDefault()
   }
 
-  const productsHandleShippingProfileIdMap = new Map<string, string>()
-  const productsHandleSalesChannelsMap = new Map<string, string[]>()
+  const productsHandleShippingProfileIdMap = new Map<
+    ProductHandle,
+    ShippingProfileId
+  >()
+  const productsHandleSalesChannelsMap = new Map<
+    ProductHandle,
+    SalesChannelId[]
+  >()
   const productsHandleVariantsIndexPricesMap = new Map<
-    string,
-    { index: number; prices: ProductVariantPricesCreateReq[] }
+    ProductHandle,
+    VariantIndexAndPrices
   >()
 
   for (const product of data) {

@@ -56,7 +56,7 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
-    it("creates a product", async () => {
+    it("should create a product", async () => {
       const api = useApi()! as AxiosInstance
 
       const payload = {
@@ -221,7 +221,7 @@ describe("/admin/products", () => {
       )
     })
 
-    it("creates a product that is not discountable", async () => {
+    it("should create a product that is not discountable", async () => {
       const api = useApi()! as AxiosInstance
 
       const payload = {
@@ -257,7 +257,7 @@ describe("/admin/products", () => {
       )
     })
 
-    it("Sets variant ranks when creating a product", async () => {
+    it("should sets the variant ranks when creating a product", async () => {
       const api = useApi()! as AxiosInstance
 
       const payload = {
@@ -315,7 +315,7 @@ describe("/admin/products", () => {
       )
     })
 
-    it("creates a giftcard", async () => {
+    it("should create a giftcard", async () => {
       const api = useApi()! as AxiosInstance
 
       const payload = {
