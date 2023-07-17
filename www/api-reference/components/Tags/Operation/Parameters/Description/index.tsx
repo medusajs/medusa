@@ -53,7 +53,10 @@ const TagOperationParametersDescription = ({
           {schema.oneOf?.map((item, index) => (
             <span key={index}>
               {index !== 0 && <> or </>}
-              {item.title || item.type}
+              {item.type !== "array" && <>{item.title || item.type}</>}
+              {item.type === "array" && (
+                <>array{item.items.type ? ` of ${item.items.type}s` : ""}</>
+              )}
             </span>
           ))}
           {schema.nullable ? ` or null` : ""}
@@ -70,20 +73,8 @@ const TagOperationParametersDescription = ({
       )
   }
   return (
-    <div className={clsx("w-2/3 pb-0.5")}>
+    <div className={clsx("w-2/3 break-words pb-0.5 pl-0.5")}>
       {typeDescription}
-      {schema.example !== undefined && (
-        <>
-          <br />
-          <span>
-            Example:{" "}
-            <InlineCode className="break-words">
-              {JSON.stringify(schema.example)}
-            </InlineCode>
-          </span>
-        </>
-      )}
-
       {schema.default !== undefined && (
         <>
           <br />
@@ -103,6 +94,17 @@ const TagOperationParametersDescription = ({
             {schema.enum.map((value, index) => (
               <InlineCode key={index}>{JSON.stringify(value)}</InlineCode>
             ))}
+          </span>
+        </>
+      )}
+      {schema.example !== undefined && (
+        <>
+          <br />
+          <span>
+            Example:{" "}
+            <InlineCode className="break-words">
+              {JSON.stringify(schema.example)}
+            </InlineCode>
           </span>
         </>
       )}

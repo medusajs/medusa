@@ -8,7 +8,7 @@ const TagOperationParametersName = ({
   isRequired,
 }: TagOperationParametersNameProps) => {
   return (
-    <span className="font-monospace w-1/3 ">
+    <span className="font-monospace w-1/3 break-words pr-0.5">
       {name}
       {isRequired && (
         <>

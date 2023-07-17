@@ -22,7 +22,7 @@ const TagsOperationDescriptionSectionParameters = ({
   parameters.forEach((parameter) => {
     const parameterObject = {
       ...parameter.schema,
-      title: parameter.name,
+      parameterName: parameter.name,
       description: parameter.description,
       example: parameter.example,
       examples: parameter.examples,

@@ -58,16 +58,39 @@ const TagOperationParametersObject = ({
   }
 
   const getPropertyParameterElms = (isNested = false) => {
+    // sort properties to show required fields first
+    const sortedProperties = Object.keys(schema.properties).sort(
+      (property1, property2) => {
+        schema.properties[property1].isRequired = checkRequired(
+          schema,
+          property1
+        )
+        schema.properties[property2].isRequired = checkRequired(
+          schema,
+          property2
+        )
+
+        return schema.properties[property1].isRequired &&
+          schema.properties[property2].isRequired
+          ? 0
+          : schema.properties[property1].isRequired
+          ? -1
+          : 1
+      }
+    )
     const content = (
       <>
-        {Object.entries(schema.properties).map(([key, value], index) => (
+        {sortedProperties.map((property, index) => (
           <TagOperationParameters
             schemaObject={{
-              ...value,
-              parameterName: key,
+              ...schema.properties[property],
+              parameterName: property,
             }}
             key={index}
-            isRequired={checkRequired(schema, key)}
+            isRequired={
+              schema.properties[property].isRequired ||
+              checkRequired(schema, property)
+            }
           />
         ))}
       </>

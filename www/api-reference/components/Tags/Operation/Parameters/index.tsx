@@ -59,6 +59,26 @@ const TagOperationParameters = ({
   const propertyName = schemaObject.parameterName || schemaObject.title || ""
 
   const getElement = () => {
+    if (schemaObject.anyOf || schemaObject.allOf) {
+      return (
+        <TagOperationParametersUnion
+          schema={schemaObject}
+          name={propertyName}
+          isRequired={isRequired}
+          topLevel={topLevel}
+        />
+      )
+    }
+
+    if (schemaObject.oneOf) {
+      return (
+        <TagOperationParamatersOneOf
+          schema={schemaObject}
+          isNested={!topLevel}
+        />
+      )
+    }
+
     if (schemaObject.type === "object") {
       return (
         <TagOperationParametersObject
@@ -76,25 +96,6 @@ const TagOperationParameters = ({
           name={propertyName}
           schema={schemaObject}
           isRequired={isRequired}
-        />
-      )
-    }
-
-    if (schemaObject.anyOf || schemaObject.allOf) {
-      return (
-        <TagOperationParametersUnion
-          schema={schemaObject}
-          name={propertyName}
-          isRequired={isRequired}
-        />
-      )
-    }
-
-    if (schemaObject.oneOf) {
-      return (
-        <TagOperationParamatersOneOf
-          schema={schemaObject}
-          isNested={!topLevel}
         />
       )
     }

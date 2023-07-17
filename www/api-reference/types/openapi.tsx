@@ -82,6 +82,7 @@ export type SchemaObject = (ArraySchemaObject | NonArraySchemaObject) & {
   examples?: {
     [media: string]: OpenAPIV3.ExampleObject
   }
+  isRequired?: boolean
 }
 
 export type PropertiesObject = {

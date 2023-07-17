@@ -5,6 +5,7 @@ import type { TagsOperationDescriptionSectionResponsesProps } from "./Responses"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
 import TagsOperationDescriptionSectionParameters from "./Parameters"
+import MDXContentClient from "@/components/MDXContent/Client"
 
 const TagsOperationDescriptionSectionSecurity =
   dynamic<TagsOperationDescriptionSectionSecurityProps>(
@@ -39,7 +40,9 @@ const TagsOperationDescriptionSection = ({
   return (
     <>
       <h3>{operation.summary}</h3>
-      <p className="my-1">{operation.description}</p>
+      <p className="my-1">
+        <MDXContentClient content={operation.description} />
+      </p>
       {operation.security && (
         <TagsOperationDescriptionSectionSecurity
           security={operation.security}
