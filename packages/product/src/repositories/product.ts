@@ -3,6 +3,7 @@ import {
   ProductCategory,
   ProductCollection,
   ProductType,
+  ProductTag,
 } from "@models"
 import {
   FilterQuery as MikroFilterQuery,
@@ -148,6 +149,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     context: Context = {}
   ): Promise<Product[]> {
     let categoryIds: string[] = []
+    let tagIds: string[] = []
     let collectionIds: string[] = []
     let typeIds: string[] = []
 
@@ -157,6 +159,10 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     data.forEach((productData) => {
       categoryIds = categoryIds.concat(
         productData?.categories?.map(c => c.id) || []
+      )
+
+      tagIds = tagIds.concat(
+        productData?.tags?.map(c => c.id) || []
       )
 
       if (productData.collection_id) {
@@ -170,6 +176,8 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
 
     const productsToUpdate = await manager.find(Product, {
       id: data.map((updateData) => updateData.id)
+    }, {
+      populate: ["tags", "categories"]
     })
 
     const collectionsToAssign = collectionIds.length ? await manager.find(ProductCollection, {
@@ -184,8 +192,16 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
       id: categoryIds
     }) : []
 
+    const tagsToAssign = tagIds.length ? await manager.find(ProductTag, {
+      id: tagIds
+    }) : []
+
     const categoriesToAssignMap = new Map<string, ProductCategory>(
       categoriesToAssign.map((category) => [category.id, category])
+    )
+
+    const tagsToAssignMap = new Map<string, ProductTag>(
+      tagsToAssign.map((tag) => [tag.id, tag])
     )
 
     const collectionsToAssignMap = new Map<string, ProductCollection>(
@@ -219,12 +235,12 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
         } = updateData
 
         delete updateData?.categories
+        delete updateData?.tags
         delete updateData?.collection_id
         delete updateData?.type_id
 
         if (isDefined(categoriesData)) {
           await product.categories.init()
-          await product.categories.removeAll()
 
           for (const categoryData of categoriesData) {
             const productCategory = categoriesToAssignMap.get(categoryData.id)
@@ -233,11 +249,36 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
               await product.categories.add(productCategory)
             }
           }
+
+          const categoryIdsToAssignSet = new Set(categoriesData.map(cd => cd.id))
+          const categoriesToDelete = product.categories.getItems().filter(
+            (existingCategory) => !categoryIdsToAssignSet.has(existingCategory.id)
+          )
+
+          await product.categories.remove(categoriesToDelete)
         }
 
         if (isDefined(tagsData)) {
           await product.tags.init()
-          await product.tags.removeAll()
+
+          for (const tagData of tagsData) {
+            let productTag = tagsToAssignMap.get(tagData.id)
+
+            if (tagData instanceof ProductTag) {
+              productTag = tagData
+            }
+
+            if (productTag) {
+              await product.tags.add(productTag)
+            }
+          }
+
+          const tagIdsToAssignSet = new Set(tagsData.map(cd => cd.id))
+          const tagsToDelete = product.tags.getItems().filter(
+            (existingTag) => !tagIdsToAssignSet.has(existingTag.id)
+          )
+
+          await product.tags.remove(tagsToDelete)
         }
 
         if (isDefined(collectionId)) {
@@ -260,7 +301,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
       })
     )
 
-    await manager.persistAndFlush(products)
+    await manager.persist(products)
 
     return products
   }
