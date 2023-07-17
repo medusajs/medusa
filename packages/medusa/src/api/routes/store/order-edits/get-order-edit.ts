@@ -23,7 +23,7 @@ import { OrderEditService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/order-edits/{id}'
+ *       curl 'https://medusa-url.com/store/order-edits/{id}'
  * tags:
  *   - Order Edits
  * responses:

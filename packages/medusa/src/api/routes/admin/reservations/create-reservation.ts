@@ -34,9 +34,9 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/reservations' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *        curl -X POST 'https://medusa-url.com/admin/reservations' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "line_item_id": "item_123",
  *           "location_id": "loc_123",

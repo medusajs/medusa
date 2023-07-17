@@ -25,8 +25,8 @@ import { PaymentProvider } from "../../../../models"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/customers/me/payment-methods' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl 'https://medusa-url.com/store/customers/me/payment-methods' \
+ *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
  * tags:

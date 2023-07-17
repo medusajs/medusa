@@ -23,7 +23,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/orders/cart/{id}'
+ *       curl 'https://medusa-url.com/store/orders/cart/{id}'
  * tags:
  *   - Orders
  * responses:

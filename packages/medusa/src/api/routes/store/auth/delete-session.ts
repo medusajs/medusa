@@ -11,7 +11,7 @@
  *     label: cURL
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/store/auth' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
  * tags:

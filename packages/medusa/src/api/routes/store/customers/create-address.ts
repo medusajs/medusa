@@ -47,9 +47,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers/me/addresses' \
- *       --header 'Cookie: connect.sid={sid}' \
- *       --header 'Content-Type: application/json' \
+ *        curl -X POST 'https://medusa-url.com/store/customers/me/addresses' \
+ *       -H 'Cookie: connect.sid={sid}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "address": {
  *             "first_name": "Celia",

@@ -18,7 +18,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/taxes'
+ *        curl -X POST 'https://medusa-url.com/store/carts/{id}/taxes'
  * tags:
  *   - Carts
  * responses:

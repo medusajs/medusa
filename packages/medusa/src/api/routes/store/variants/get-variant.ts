@@ -39,7 +39,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/variants/{id}'
+ *       curl 'https://medusa-url.com/store/variants/{id}'
  * tags:
  *   - Variants
  * responses:

@@ -29,7 +29,7 @@ import RegionService from "../../../../services/region"
  *     label: cURL
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/admin/regions/{id}/fulfillment-providers/manual' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

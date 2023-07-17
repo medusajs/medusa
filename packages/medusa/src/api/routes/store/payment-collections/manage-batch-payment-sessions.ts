@@ -58,7 +58,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/batch'
+ *        curl -X POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/batch'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

@@ -131,8 +131,8 @@ import { Type } from "class-transformer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/price-lists' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/price-lists' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

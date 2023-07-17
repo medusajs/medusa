@@ -34,8 +34,8 @@ import { defaultRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/auth' \
- *       --header 'Content-Type: application/json' \
+ *        curl -X POST 'https://medusa-url.com/store/auth' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com",
  *           "password": "supersecret"

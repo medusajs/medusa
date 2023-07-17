@@ -24,7 +24,7 @@ import ReturnReasonService from "../../../../services/return-reason"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/return-reasons'
+ *       curl 'https://medusa-url.com/store/return-reasons'
  * tags:
  *   - Return Reasons
  * responses:

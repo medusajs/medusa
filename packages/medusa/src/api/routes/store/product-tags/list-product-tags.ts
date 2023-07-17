@@ -99,7 +99,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/product-tags'
+ *       curl 'https://medusa-url.com/store/product-tags'
  * tags:
  *   - Product Tags
  * responses:

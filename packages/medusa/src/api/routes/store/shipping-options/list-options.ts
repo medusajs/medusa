@@ -29,7 +29,7 @@ import { defaultRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/shipping-options'
+ *       curl 'https://medusa-url.com/store/shipping-options'
  * tags:
  *   - Shipping Options
  * responses:

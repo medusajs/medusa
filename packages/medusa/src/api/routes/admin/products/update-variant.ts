@@ -65,9 +65,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/products/asfsaf/variants/saaga' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *        curl -X POST 'https://medusa-url.com/admin/products/asfsaf/variants/saaga' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Color",
  *           "prices": [

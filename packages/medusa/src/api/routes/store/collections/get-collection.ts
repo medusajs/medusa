@@ -22,7 +22,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/collections/{id}'
+ *       curl 'https://medusa-url.com/store/collections/{id}'
  * tags:
  *   - Collections
  * responses:

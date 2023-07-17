@@ -57,8 +57,8 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/swaps' \
- *       --header 'Content-Type: application/json' \
+ *        curl -X POST 'https://medusa-url.com/store/swaps' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "order_id": "asfasf",
  *           "return_items": [

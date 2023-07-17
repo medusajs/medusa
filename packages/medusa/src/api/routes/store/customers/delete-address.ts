@@ -28,7 +28,7 @@ import CustomerService from "../../../../services/customer"
  *     label: cURL
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
  * tags:

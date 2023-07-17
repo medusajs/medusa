@@ -59,8 +59,8 @@ import { validator } from "../../../../utils/validator"
  *     label: cURL
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/admin/tax-rates/{id}/shipping-options/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *          "shipping_options": [
  *            "{shipping_option_id}"

@@ -39,8 +39,8 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/draft-orders/{id}/pay' \
- *       --header 'Authorization: Bearer {api_token}'
+ *        curl -X POST 'https://medusa-url.com/admin/draft-orders/{id}/pay' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

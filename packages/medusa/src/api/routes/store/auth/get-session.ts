@@ -23,8 +23,8 @@ import { defaultRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/auth' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl 'https://medusa-url.com/store/auth' \
+ *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
  * tags:

@@ -41,9 +41,9 @@ import { Type } from "class-transformer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/sales-channels/afasf/products/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *        curl -X POST 'https://medusa-url.com/admin/sales-channels/afasf/products/batch' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "product_ids": [
  *             {

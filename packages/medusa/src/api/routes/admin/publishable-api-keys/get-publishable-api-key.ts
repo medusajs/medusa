@@ -26,8 +26,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/publishable-api-keys/{pka_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/publishable-api-keys/{pka_id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

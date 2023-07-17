@@ -41,8 +41,8 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

@@ -34,7 +34,7 @@ import { EntityManager } from "typeorm"
  *     label: cURL
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/admin/store/currencies/eur' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

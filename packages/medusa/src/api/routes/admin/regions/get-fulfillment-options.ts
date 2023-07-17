@@ -26,8 +26,8 @@ import RegionService from "../../../../services/region"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/regions/{id}/fulfillment-options' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/regions/{id}/fulfillment-options' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

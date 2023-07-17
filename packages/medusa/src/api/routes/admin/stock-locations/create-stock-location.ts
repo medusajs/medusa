@@ -43,9 +43,9 @@ import { IStockLocationService } from "@medusajs/types"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/stock-locations' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *        curl -X POST 'https://medusa-url.com/admin/stock-locations' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "App"
  *       }'

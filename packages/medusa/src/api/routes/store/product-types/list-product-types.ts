@@ -99,8 +99,8 @@ import ProductTypeService from "../../../../services/product-type"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/product-types' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/store/product-types' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

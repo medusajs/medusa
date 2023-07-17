@@ -23,8 +23,8 @@ import CustomerService from "../../../../services/customer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/customers/me' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl 'https://medusa-url.com/store/customers/me' \
+ *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
  * tags:

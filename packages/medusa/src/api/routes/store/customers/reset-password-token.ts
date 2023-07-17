@@ -33,8 +33,8 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers/password-token' \
- *       --header 'Content-Type: application/json' \
+ *        curl -X POST 'https://medusa-url.com/store/customers/password-token' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com"
  *       }'

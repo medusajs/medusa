@@ -24,8 +24,8 @@ import ProductCollectionService from "../../../../services/product-collection"
  *     label: cURL
  *     source: |
  *       curl --location --request DELETE 'https://medusa-url.com/admin/collections/{id}/products/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "product_ids": [
  *               "prod_01G1G5V2MBA328390B5AXJ610F"

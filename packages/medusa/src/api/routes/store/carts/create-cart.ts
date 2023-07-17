@@ -52,7 +52,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts'
+ *        curl -X POST 'https://medusa-url.com/store/carts'
  * tags:
  *   - Carts
  * responses:

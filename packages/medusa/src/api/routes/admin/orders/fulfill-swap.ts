@@ -38,7 +38,7 @@ import { updateInventoryAndReservations } from "./create-fulfillment"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orders.fulfillSwap(order_id, swap_id, {
- *         
+ *
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
@@ -46,8 +46,8 @@ import { updateInventoryAndReservations } from "./create-fulfillment"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/swaps/{swap_id}/fulfillments' \
- *       --header 'Authorization: Bearer {api_token}'
+ *        curl -X POST 'https://medusa-url.com/admin/orders/{id}/swaps/{swap_id}/fulfillments' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

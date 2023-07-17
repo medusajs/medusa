@@ -48,7 +48,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/products/{id}'
+ *       curl 'https://medusa-url.com/store/products/{id}'
  * tags:
  *   - Products
  * responses:

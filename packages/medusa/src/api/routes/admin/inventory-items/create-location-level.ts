@@ -38,9 +38,9 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *        curl -X POST 'https://medusa-url.com/admin/inventory-items/{id}/location-levels' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "location_id": "sloc_123",
  *           "stocked_quantity": 10

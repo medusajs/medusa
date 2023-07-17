@@ -59,7 +59,7 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/orders?display_id=1&email=user@example.com'
+ *       curl 'https://medusa-url.com/store/orders?display_id=1&email=user@example.com'
  * tags:
  *   - Orders
  * responses:

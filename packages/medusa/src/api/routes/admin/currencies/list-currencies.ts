@@ -35,8 +35,8 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/currencies' \
- *       --header 'Authorization: Bearer {api_token}'
+ *        curl -X POST 'https://medusa-url.com/admin/currencies' \
+ *       -H 'Authorization: Bearer {api_token}'
  * tags:
  *   - Currencies
  * responses:

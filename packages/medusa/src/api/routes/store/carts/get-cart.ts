@@ -24,7 +24,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/carts/{id}'
+ *       curl 'https://medusa-url.com/store/carts/{id}'
  * tags:
  *   - Carts
  * responses:
