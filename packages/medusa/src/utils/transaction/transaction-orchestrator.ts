@@ -1,12 +1,11 @@
 import { EventEmitter } from "events"
-
 import {
   TransactionHandlerType,
   TransactionStepsDefinition,
   TransactionStepStatus,
   TransactionState,
   TransactionModel,
-} from "."
+} from "./types"
 import {
   DistributedTransaction,
   TransactionCheckpoint,
@@ -15,7 +14,7 @@ import {
 import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 
 export type TransactionFlow = {
-  transactionModelId: string
+  modelId: string
   definition: TransactionStepsDefinition
   transactionId: string
   hasFailedSteps: boolean
@@ -31,11 +30,11 @@ export type TransactionFlow = {
  * It is based on a single transaction definition, which is used to execute all the transaction steps
  */
 export class TransactionOrchestrator extends EventEmitter {
-  private ROOT_STEP = "_root"
+  private static ROOT_STEP = "_root"
   private invokeSteps: string[] = []
   private compensateSteps: string[] = []
 
-  public DEFAULT_RETRIES = 0
+  public static DEFAULT_RETRIES = 0
   constructor(
     public id: string,
     private definition: TransactionStepsDefinition
@@ -117,7 +116,7 @@ export class TransactionOrchestrator extends EventEmitter {
       return this.canMoveBackward(flow, step)
     } else {
       const previous = this.getPreviousStep(flow, step)
-      if (previous.id === this.ROOT_STEP) {
+      if (previous.id === TransactionOrchestrator.ROOT_STEP) {
         return true
       }
 
@@ -148,7 +147,7 @@ export class TransactionOrchestrator extends EventEmitter {
 
     for (const step of allSteps) {
       if (
-        step === this.ROOT_STEP ||
+        step === TransactionOrchestrator.ROOT_STEP ||
         !this.canContinue(flow, flow.steps[step])
       ) {
         continue
@@ -227,7 +226,7 @@ export class TransactionOrchestrator extends EventEmitter {
 
   private flagStepsToRevert(flow: TransactionFlow): void {
     for (const step in flow.steps) {
-      if (step === this.ROOT_STEP) {
+      if (step === TransactionOrchestrator.ROOT_STEP) {
         continue
       }
 
@@ -244,7 +243,7 @@ export class TransactionOrchestrator extends EventEmitter {
     }
   }
 
-  private async setStepSuccess(
+  private static async setStepSuccess(
     transaction: DistributedTransaction,
     step: TransactionStep,
     response: unknown
@@ -272,11 +271,11 @@ export class TransactionOrchestrator extends EventEmitter {
     }
   }
 
-  private async setStepFailure(
+  private static async setStepFailure(
     transaction: DistributedTransaction,
     step: TransactionStep,
-    error: Error | null,
-    maxRetries: number = this.DEFAULT_RETRIES
+    error: Error | any,
+    maxRetries: number = TransactionOrchestrator.DEFAULT_RETRIES
   ): Promise<void> {
     step.failures++
 
@@ -344,10 +343,10 @@ export class TransactionOrchestrator extends EventEmitter {
 
       const payload = new TransactionPayload(
         {
-          producer: flow.transactionModelId,
+          model_id: flow.modelId,
           reply_to_topic: TransactionOrchestrator.getKeyName(
             "trans",
-            flow.transactionModelId
+            flow.modelId
           ),
           idempotency_key: TransactionOrchestrator.getKeyName(
             flow.transactionId,
@@ -368,10 +367,14 @@ export class TransactionOrchestrator extends EventEmitter {
           transaction
             .handler(step.definition.action + "", type, payload)
             .then(async (response) => {
-              await this.setStepSuccess(transaction, step, response)
+              await TransactionOrchestrator.setStepSuccess(
+                transaction,
+                step,
+                response
+              )
             })
             .catch(async (error) => {
-              await this.setStepFailure(
+              await TransactionOrchestrator.setStepFailure(
                 transaction,
                 step,
                 error,
@@ -381,13 +384,18 @@ export class TransactionOrchestrator extends EventEmitter {
         )
       } else {
         execution.push(
-          transaction
-            .saveCheckpoint()
-            .then(async () =>
-              transaction
-                .handler(step.definition.action + "", type, payload)
-                .catch(() => void 0)
-            )
+          transaction.saveCheckpoint().then(async () =>
+            transaction
+              .handler(step.definition.action + "", type, payload)
+              .catch(async (error) => {
+                await TransactionOrchestrator.setStepFailure(
+                  transaction,
+                  step,
+                  error,
+                  step.definition.maxRetries
+                )
+              })
+          )
         )
       }
     }
@@ -453,17 +461,17 @@ export class TransactionOrchestrator extends EventEmitter {
     transactionId: string
   ): Promise<TransactionFlow> {
     return {
-      transactionModelId: this.id,
+      modelId: this.id,
       transactionId: transactionId,
       hasFailedSteps: false,
       hasSkippedSteps: false,
       state: TransactionState.NOT_STARTED,
       definition: this.definition,
-      steps: this.buildSteps(this.definition),
+      steps: TransactionOrchestrator.buildSteps(this.definition),
     }
   }
 
-  private async loadTransactionById(
+  private static async loadTransactionById(
     transactionId: string
   ): Promise<TransactionCheckpoint | null> {
     const transaction = await DistributedTransaction.loadTransaction(
@@ -472,26 +480,31 @@ export class TransactionOrchestrator extends EventEmitter {
 
     if (transaction !== null) {
       const flow = transaction.flow
-      transaction.flow.steps = this.buildSteps(flow.definition, flow.steps)
+      transaction.flow.steps = TransactionOrchestrator.buildSteps(
+        flow.definition,
+        flow.steps
+      )
       return transaction
     }
 
     return null
   }
 
-  private buildSteps(
+  private static buildSteps(
     flow: TransactionStepsDefinition,
     existingSteps?: { [key: string]: TransactionStep }
   ): { [key: string]: TransactionStep } {
     const states: { [key: string]: TransactionStep } = {
-      [this.ROOT_STEP]: {
-        id: this.ROOT_STEP,
+      [TransactionOrchestrator.ROOT_STEP]: {
+        id: TransactionOrchestrator.ROOT_STEP,
         next: [] as string[],
       } as TransactionStep,
     }
 
     const actionNames = new Set<string>()
-    const queue: any[] = [{ obj: flow, level: [this.ROOT_STEP] }]
+    const queue: any[] = [
+      { obj: flow, level: [TransactionOrchestrator.ROOT_STEP] },
+    ]
 
     while (queue.length > 0) {
       const { obj, level } = queue.shift()
@@ -525,7 +538,7 @@ export class TransactionOrchestrator extends EventEmitter {
               id,
               depth: level.length - 1,
               definition: definitionCopy,
-              saveResponse: definitionCopy.saveResponse,
+              saveResponse: definitionCopy.saveResponse ?? true,
               invoke: {
                 state: TransactionState.NOT_STARTED,
                 status: TransactionStepStatus.IDLE,
@@ -557,7 +570,8 @@ export class TransactionOrchestrator extends EventEmitter {
     handler: TransactionStepHandler,
     payload?: unknown
   ): Promise<DistributedTransaction> {
-    const existingTransaction = await this.loadTransactionById(transactionId)
+    const existingTransaction =
+      await TransactionOrchestrator.loadTransactionById(transactionId)
 
     let newTransaction = false
     let modelFlow
@@ -582,7 +596,7 @@ export class TransactionOrchestrator extends EventEmitter {
     return transaction
   }
 
-  private getStepByAction(
+  private static getStepByAction(
     flow: TransactionFlow,
     action: string
   ): TransactionStep | null {
@@ -594,11 +608,10 @@ export class TransactionOrchestrator extends EventEmitter {
     return null
   }
 
-  private async getTransactionAndStepFromIdempotencyKey(
+  private static async getTransactionAndStepFromIdempotencyKey(
     responseIdempotencyKey: string,
     handler?: TransactionStepHandler,
-    transaction?: DistributedTransaction,
-    payload?: unknown
+    transaction?: DistributedTransaction
   ): Promise<[DistributedTransaction, TransactionStep]> {
     const [transactionId, action, actionType] = responseIdempotencyKey.split(
       TransactionOrchestrator.SEPARATOR
@@ -611,7 +624,8 @@ export class TransactionOrchestrator extends EventEmitter {
     }
 
     if (!transaction) {
-      const existingTransaction = await this.loadTransactionById(transactionId)
+      const existingTransaction =
+        await TransactionOrchestrator.loadTransactionById(transactionId)
 
       if (existingTransaction === null) {
         throw new Error(`Transaction ${transactionId} could not be found.`)
@@ -620,13 +634,16 @@ export class TransactionOrchestrator extends EventEmitter {
       transaction = new DistributedTransaction(
         existingTransaction.flow,
         handler!,
-        payload,
+        undefined,
         existingTransaction.errors,
         existingTransaction.context
       )
     }
 
-    const step = this.getStepByAction(transaction.getFlow(), action)
+    const step = TransactionOrchestrator.getStepByAction(
+      transaction.getFlow(),
+      action
+    )
 
     if (step === null) {
       throw new Error("Action not found.")
@@ -653,15 +670,19 @@ export class TransactionOrchestrator extends EventEmitter {
     response?: unknown
   ): Promise<DistributedTransaction> {
     const [curTransaction, step] =
-      await this.getTransactionAndStepFromIdempotencyKey(
+      await TransactionOrchestrator.getTransactionAndStepFromIdempotencyKey(
         responseIdempotencyKey,
         handler,
-        transaction,
-        response
+        transaction
       )
 
     if (step.getStates().status === TransactionStepStatus.WAITING) {
-      await this.setStepSuccess(curTransaction, step, response)
+      await TransactionOrchestrator.setStepSuccess(
+        curTransaction,
+        step,
+        response
+      )
+
       this.emit("resume", curTransaction)
       await this.executeNext(curTransaction)
     } else {
@@ -683,21 +704,24 @@ export class TransactionOrchestrator extends EventEmitter {
    */
   public async registerStepFailure(
     responseIdempotencyKey: string,
-    error: Error | null,
+    error?: Error | any,
     handler?: TransactionStepHandler,
-    transaction?: DistributedTransaction,
-    response?: unknown
+    transaction?: DistributedTransaction
   ): Promise<DistributedTransaction> {
     const [curTransaction, step] =
-      await this.getTransactionAndStepFromIdempotencyKey(
+      await TransactionOrchestrator.getTransactionAndStepFromIdempotencyKey(
         responseIdempotencyKey,
         handler,
-        transaction,
-        response
+        transaction
       )
 
     if (step.getStates().status === TransactionStepStatus.WAITING) {
-      await this.setStepFailure(curTransaction, step, error, 0)
+      await TransactionOrchestrator.setStepFailure(
+        curTransaction,
+        step,
+        error,
+        0
+      )
       this.emit("resume", curTransaction)
       await this.executeNext(curTransaction)
     } else {

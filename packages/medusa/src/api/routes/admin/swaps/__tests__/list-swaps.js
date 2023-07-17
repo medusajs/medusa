@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
-import { request } from "../../../../../helpers/test-request"
 import { SwapServiceMock } from "../../../../../services/__mocks__/swap"
+import { request } from "../../../../../helpers/test-request"
 
 const defaultListOptions = {
   take: 50,
@@ -27,8 +27,8 @@ describe("GET /admin/swaps/", () => {
     })
 
     it("calls swapService list with default pagination and sorting options", () => {
-      expect(SwapServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(SwapServiceMock.list).toHaveBeenCalledWith(
+      expect(SwapServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(SwapServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
           ...defaultListOptions,

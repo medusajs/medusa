@@ -69,7 +69,7 @@ export default async (req, res) => {
   }
 
   const noteService: NoteService = req.scope.resolve("noteService")
-  const notes = await noteService.list(selector, {
+  const [notes, count] = await noteService.listAndCount(selector, {
     take: validated.limit,
     skip: validated.offset,
     relations: ["author"],
@@ -77,7 +77,7 @@ export default async (req, res) => {
 
   res.status(200).json({
     notes,
-    count: notes.length,
+    count,
     offset: validated.offset,
     limit: validated.limit,
   })
