@@ -64,7 +64,7 @@ const TagOperationParametersObject = ({
           <TagOperationParameters
             schemaObject={{
               ...value,
-              title: key,
+              parameterName: key,
             }}
             key={index}
             isRequired={checkRequired(schema, key)}

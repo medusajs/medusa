@@ -77,6 +77,7 @@ export type NonArraySchemaObject = Omit<
 }
 
 export type SchemaObject = (ArraySchemaObject | NonArraySchemaObject) & {
+  parameterName?: string
   resolvedRef?: SchemaObject
   examples?: {
     [media: string]: OpenAPIV3.ExampleObject

@@ -88,7 +88,7 @@ const TagOperationParamatersOneOf = ({
           summaryContent={
             <TagOperationParametersDefault
               schema={schema}
-              name={schema.title || ""}
+              name={schema.parameterName || schema.title || ""}
               isRequired={isRequired}
             />
           }

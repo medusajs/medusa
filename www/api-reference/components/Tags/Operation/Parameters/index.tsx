@@ -56,12 +56,13 @@ const TagOperationParameters = ({
 }: TagOperationParametersProps) => {
   const isRequired =
     originalIsRequired || checkRequired(schemaObject, schemaObject.title)
+  const propertyName = schemaObject.parameterName || schemaObject.title || ""
 
   const getElement = () => {
     if (schemaObject.type === "object") {
       return (
         <TagOperationParametersObject
-          name={schemaObject.title || ""}
+          name={propertyName}
           schema={schemaObject}
           topLevel={topLevel}
           isRequired={isRequired}
@@ -72,7 +73,7 @@ const TagOperationParameters = ({
     if (schemaObject.type === "array") {
       return (
         <TagOperationParametersArray
-          name={schemaObject.title || ""}
+          name={propertyName}
           schema={schemaObject}
           isRequired={isRequired}
         />
@@ -83,7 +84,7 @@ const TagOperationParameters = ({
       return (
         <TagOperationParametersUnion
           schema={schemaObject}
-          name={schemaObject.title || ""}
+          name={propertyName}
           isRequired={isRequired}
         />
       )
@@ -101,7 +102,7 @@ const TagOperationParameters = ({
     return (
       <TagOperationParametersDefault
         schema={schemaObject}
-        name={schemaObject.title}
+        name={propertyName}
         isRequired={isRequired}
         className="pl-1.5"
       />
