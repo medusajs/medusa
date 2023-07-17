@@ -7,13 +7,7 @@ import {
 } from "../../types/product-variant"
 import { MedusaError } from "@medusajs/utils"
 
-type ProductHandle = string
-type VariantIndexAndPrices = {
-  index: number
-  prices: ProductVariantPricesCreateReq[]
-}
-
-export async function createProductsVariantsPrices({
+export async function removeProductsVariantsPrices({
   container,
   manager,
   data,
@@ -23,8 +17,8 @@ export async function createProductsVariantsPrices({
   data: {
     products: ProductTypes.ProductDTO[]
     productsHandleVariantsIndexPricesMap: Map<
-      ProductHandle,
-      VariantIndexAndPrices
+      string,
+      { index: number; prices: ProductVariantPricesCreateReq[] }
     >
   }
 }) {

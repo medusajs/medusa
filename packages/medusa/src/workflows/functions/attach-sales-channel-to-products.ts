@@ -2,6 +2,9 @@ import { MedusaContainer, ProductTypes } from "@medusajs/types"
 import { EntityManager } from "typeorm"
 import { SalesChannelService } from "../../services"
 
+type ProductHandle = string
+type SalesChannelId = string
+
 export async function attachSalesChannelToProducts({
   container,
   manager,
@@ -10,7 +13,7 @@ export async function attachSalesChannelToProducts({
   container: MedusaContainer
   manager: EntityManager
   data: {
-    productsHandleSalesChannelsMap: Map<string, string[]>
+    productsHandleSalesChannelsMap: Map<ProductHandle, SalesChannelId[]>
     products: ProductTypes.ProductDTO[]
   }
 }): Promise<void> {
@@ -19,7 +22,7 @@ export async function attachSalesChannelToProducts({
   )
   const salesChannelServiceTx = salesChannelService.withTransaction(manager)
 
-  const salesChannelIdProductIdsMap = new Map<string, string[]>()
+  const salesChannelIdProductIdsMap = new Map<ProductHandle, SalesChannelId[]>()
   data.products.forEach((product) => {
     const salesChannelIds = data.productsHandleSalesChannelsMap.get(
       product.handle!

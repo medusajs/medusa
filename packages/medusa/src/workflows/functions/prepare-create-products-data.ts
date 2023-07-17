@@ -8,15 +8,23 @@ import { SalesChannel } from "../../models"
 import { ProductVariantPricesCreateReq } from "../../types/product-variant"
 import { AdminPostProductsReq } from "../../api"
 
-export type CreateProductsInputData = AdminPostProductsReq[]
+type CreateProductsInputData = AdminPostProductsReq[]
+
+type ShippingProfileId = string
+type SalesChannelId = string
+type ProductHandle = string
+type VariantIndexAndPrices = {
+  index: number
+  prices: ProductVariantPricesCreateReq[]
+}
 
 export type CreateProductsPreparedData = {
   products: ProductTypes.CreateProductDTO[]
-  productsHandleShippingProfileMap: Map<string, string>
-  productsHandleSalesChannelsMap: Map<string, string[]>
+  productsHandleShippingProfileIdMap: Map<ProductHandle, ShippingProfileId>
+  productsHandleSalesChannelsMap: Map<ProductHandle, SalesChannelId[]>
   productsHandleVariantsIndexPricesMap: Map<
-    string,
-    { index: number; prices: ProductVariantPricesCreateReq[] }
+    ProductHandle,
+    VariantIndexAndPrices
   >
 }
 
@@ -52,7 +60,7 @@ export async function prepareCreateProductsData({
       .retrieveDefault()
   }
 
-  const productsHandleShippingProfileMap = new Map<string, string>()
+  const productsHandleShippingProfileIdMap = new Map<string, string>()
   const productsHandleSalesChannelsMap = new Map<string, string[]>()
   const productsHandleVariantsIndexPricesMap = new Map<
     string,
@@ -63,12 +71,12 @@ export async function prepareCreateProductsData({
     product.handle ??= kebabCase(product.title)
 
     if (product.is_giftcard) {
-      productsHandleShippingProfileMap.set(
+      productsHandleShippingProfileIdMap.set(
         product.handle!,
         gitCardShippingProfile!.id
       )
     } else {
-      productsHandleShippingProfileMap.set(
+      productsHandleShippingProfileIdMap.set(
         product.handle!,
         defaultShippingProfile!.id
       )
@@ -111,7 +119,7 @@ export async function prepareCreateProductsData({
 
   return {
     products: data as ProductTypes.CreateProductDTO[],
-    productsHandleShippingProfileMap,
+    productsHandleShippingProfileIdMap,
     productsHandleSalesChannelsMap,
     productsHandleVariantsIndexPricesMap,
   }

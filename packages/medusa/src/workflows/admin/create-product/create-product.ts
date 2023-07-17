@@ -21,7 +21,6 @@ import {
   createInventoryItems,
   createProducts,
   CreateProductsData,
-  CreateProductsInputData,
   CreateProductsPreparedData,
   createProductsVariantsPrices,
   detachSalesChannelFromProducts,
@@ -116,7 +115,7 @@ const shouldSkipInventoryStep = (
 
 export async function createProductsWorkflow(
   dependencies: InjectedDependencies,
-  input: CreateProductsInputData
+  input: AdminPostProductsReq[]
 ): Promise<(Product | PricedProduct)[]> {
   const { manager, container } = dependencies
 
@@ -170,7 +169,7 @@ export async function createProductsWorkflow(
           const products = invoke[
             CreateProductsWorkflowActions.createProducts
           ] as ProductTypes.ProductDTO[]
-          const { productsHandleShippingProfileMap } = invoke[
+          const { productsHandleShippingProfileIdMap } = invoke[
             CreateProductsWorkflowActions.prepare
           ] as CreateProductsPreparedData
 
@@ -178,7 +177,7 @@ export async function createProductsWorkflow(
             container,
             manager,
             data: {
-              productsHandleShippingProfileMap,
+              productsHandleShippingProfileIdMap,
               products,
             },
           })
@@ -190,7 +189,7 @@ export async function createProductsWorkflow(
           const products = invoke[
             CreateProductsWorkflowActions.createProducts
           ] as ProductTypes.ProductDTO[]
-          const { productsHandleShippingProfileMap } = invoke[
+          const { productsHandleShippingProfileIdMap } = invoke[
             CreateProductsWorkflowActions.prepare
           ] as CreateProductsPreparedData
 
@@ -198,7 +197,7 @@ export async function createProductsWorkflow(
             container,
             manager,
             data: {
-              productsHandleShippingProfileMap,
+              productsHandleShippingProfileIdMap,
               products,
             },
           })
