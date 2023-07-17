@@ -41,11 +41,12 @@ export type Writable<T> = {
 }
 
 export interface FindConfig<Entity> {
-  select?: (keyof Entity)[]
+  select?: (keyof Entity | string)[]
   skip?: number
   take?: number
   relations?: string[]
   order?: { [K: string]: "ASC" | "DESC" }
+  withDeleted?: boolean
 }
 
 export type ExtendedFindConfig<TEntity> = (

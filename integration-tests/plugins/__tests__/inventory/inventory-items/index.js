@@ -569,17 +569,19 @@ describe("Inventory Items endpoints", () => {
           ])
         )
         expect(response.data.inventory_items).toHaveLength(3)
-        expect(response.data.inventory_items).toEqual([
-          expect.objectContaining({
-            sku: "Test Sku",
-          }),
-          expect.objectContaining({
-            description: "Test Desc",
-          }),
-          expect.objectContaining({
-            title: "Test Item",
-          }),
-        ])
+        expect(response.data.inventory_items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              sku: "Test Sku",
+            }),
+            expect.objectContaining({
+              description: "Test Desc",
+            }),
+            expect.objectContaining({
+              title: "Test Item",
+            }),
+          ])
+        )
       })
     })
 

@@ -1,10 +1,10 @@
-import { Type } from "class-transformer"
 import { IsInt, IsOptional } from "class-validator"
 
-import { SwapService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { FindConfig } from "../../../../types/common"
 import { Swap } from "../../../../models"
+import { SwapService } from "../../../../services"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /admin/swaps
@@ -72,9 +72,11 @@ export default async (req, res) => {
     order: { created_at: "DESC" },
   }
 
-  const swaps = await swapService.list(selector, { ...listConfig })
+  const [swaps, count] = await swapService.listAndCount(selector, {
+    ...listConfig,
+  })
 
-  res.json({ swaps, count: swaps.length, offset, limit })
+  res.json({ swaps, count, offset, limit })
 }
 
 export class AdminGetSwapsParams {

@@ -1,5 +1,6 @@
 import { MedusaContainer } from "../common"
 import { Logger } from "../logger"
+import { RepositoryService } from "../dal"
 
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
@@ -92,4 +93,18 @@ export type ModuleExports = {
     options: LoaderOptions,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
+}
+
+export interface ModuleServiceInitializeOptions {
+  database: {
+    clientUrl: string
+    schema?: string
+    driverOptions?: Record<string, unknown>
+    debug?: boolean
+  }
+}
+
+export type ModuleServiceInitializeCustomDataLayerOptions = {
+  manager?: any
+  repositories?: { [key: string]: Constructor<RepositoryService> }
 }

@@ -1,14 +1,9 @@
-import { FindOptions, RepositoryService } from "@medusajs/types"
+import { BaseRepository } from "../../src/repositories/base"
 
-class CustomRepository implements RepositoryService {
-  constructor() {}
-
-  find(options?: FindOptions): Promise<any[]> {
-    throw new Error("Method not implemented.")
-  }
-
-  findAndCount(options?: FindOptions): Promise<[any[], number]> {
-    throw new Error("Method not implemented.")
+class CustomRepository extends BaseRepository {
+  constructor({ manager }) {
+    // @ts-ignore
+    super(...arguments)
   }
 }
 
