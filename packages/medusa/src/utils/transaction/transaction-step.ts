@@ -1,10 +1,10 @@
+import { TransactionPayload } from "./distributed-transaction"
 import {
   TransactionStepsDefinition,
   TransactionStepStatus,
   TransactionState,
   TransactionHandlerType,
-  TransactionPayload,
-} from "."
+} from "./types"
 
 export type TransactionStepHandler = (
   actionId: string,
@@ -27,7 +27,7 @@ export class TransactionStep {
    * @member failures - The number of failures encountered while executing the step
    * @member lastAttempt - The timestamp of the last attempt made to execute the step
    * @member next - The ids of the next steps in the flow
-   * @member saveResponse - A flag indicating if the response of a step should be shared in the transaction context and available to subsequent steps - default is false
+   * @member saveResponse - A flag indicating if the response of a step should be shared in the transaction context and available to subsequent steps - default is true
    */
   private stepFailed = false
   id: string

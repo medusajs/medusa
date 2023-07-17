@@ -1,6 +1,6 @@
 import { TestDatabase } from "../../../utils"
-import { ProductVariantService } from "@services"
-import { ProductVariantRepository } from "@repositories"
+import { ProductService, ProductVariantService } from "@services"
+import { ProductRepository, ProductVariantRepository } from "@repositories"
 import { Product, ProductTag, ProductVariant } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { Collection } from "@mikro-orm/core"
@@ -12,6 +12,7 @@ import {
   createProductVariants,
 } from "../../../__fixtures__/product"
 import { productsData, variantsData } from "../../../__fixtures__/product/data"
+import { buildProductVariantOnlyData } from "../../../__fixtures__/variant/data/create-variant"
 
 describe("ProductVariant Service", () => {
   let service: ProductVariantService
@@ -20,6 +21,7 @@ describe("ProductVariant Service", () => {
   let variantOne: ProductVariant
   let variantTwo: ProductVariant
   let productOne: Product
+  const productVariantTestOne = "test-1"
 
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
@@ -28,8 +30,17 @@ describe("ProductVariant Service", () => {
     const productVariantRepository = new ProductVariantRepository({
       manager: repositoryManager,
     })
+    const productRepository = new ProductRepository({
+      manager: repositoryManager,
+    })
 
-    service = new ProductVariantService({ productVariantRepository })
+    const productService = new ProductService({
+      productRepository,
+    })
+    service = new ProductVariantService({
+      productService,
+      productVariantRepository,
+    })
   })
 
   afterEach(async () => {
@@ -47,7 +58,7 @@ describe("ProductVariant Service", () => {
       })
 
       variantOne = testManager.create(ProductVariant, {
-        id: "test-1",
+        id: productVariantTestOne,
         title: "variant 1",
         inventory_quantity: 10,
         product: productOne,
@@ -95,7 +106,7 @@ describe("ProductVariant Service", () => {
     it("passing populate, scopes the results of the response", async () => {
       const results = await service.list(
         {
-          id: "test-1",
+          id: productVariantTestOne,
         },
         {
           select: ["id", "title", "product.title"] as any,
@@ -105,7 +116,7 @@ describe("ProductVariant Service", () => {
 
       expect(results).toEqual([
         expect.objectContaining({
-          id: "test-1",
+          id: productVariantTestOne,
           title: "variant 1",
           product: expect.objectContaining({
             id: "product-1",
@@ -118,7 +129,7 @@ describe("ProductVariant Service", () => {
 
       expect(JSON.parse(JSON.stringify(results))).toEqual([
         {
-          id: "test-1",
+          id: productVariantTestOne,
           title: "variant 1",
           product_id: "product-1",
           product: {
@@ -175,11 +186,148 @@ describe("ProductVariant Service", () => {
 
       expect(JSON.parse(JSON.stringify(variants))).toEqual([
         expect.objectContaining({
-          id: "test-1",
+          id: productVariantTestOne,
           title: "variant title",
           sku: "sku 1",
         }),
       ])
+    })
+  })
+
+  describe("create", function () {
+    let products: Product[]
+    let productOptions!: ProductOption[]
+
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+
+      products = (await createProductAndTags(
+        testManager,
+        productsData
+      )) as Product[]
+
+      productOptions = await createOptions(testManager, [
+        {
+          id: "test-option-1",
+          title: "size",
+          product: products[0],
+        },
+      ])
+    })
+
+    it("should create a variant", async () => {
+      const data = buildProductVariantOnlyData({
+        options: [
+          {
+            option: productOptions[0],
+            value: "XS",
+          },
+        ],
+      })
+
+      const variants = await service.create(products[0].id, [data])
+
+      expect(variants).toHaveLength(1)
+      expect(variants[0].options).toHaveLength(1)
+
+      expect(JSON.parse(JSON.stringify(variants[0]))).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          title: data.title,
+          sku: data.sku,
+          inventory_quantity: 100,
+          allow_backorder: false,
+          manage_inventory: true,
+          variant_rank: 0,
+          product: expect.objectContaining({
+            id: products[0].id,
+          }),
+          options: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              value: data.options![0].value,
+            }),
+          ]),
+        })
+      )
+    })
+  })
+
+  describe("retrieve", () => {
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+
+      productOne = testManager.create(Product, {
+        id: "product-1",
+        title: "product 1",
+        status: ProductTypes.ProductStatus.PUBLISHED,
+      })
+
+      variantOne = testManager.create(ProductVariant, {
+        id: productVariantTestOne,
+        title: "variant 1",
+        inventory_quantity: 10,
+        product: productOne,
+      })
+
+      await testManager.persistAndFlush([variantOne])
+    })
+
+    it("should return the requested variant", async () => {
+      const result = await service.retrieve(variantOne.id)
+
+      expect(result).toEqual(
+        expect.objectContaining({
+          id: productVariantTestOne,
+          title: "variant 1",
+        }),
+      )
+    })
+
+    it("should return requested attributes when requested through config", async () => {
+      const result = await service.retrieve(
+        variantOne.id,
+        {
+          select: ["id", "title", "product.title"] as any,
+          relations: ["product"],
+        }
+      )
+
+      expect(result).toEqual(
+        expect.objectContaining({
+          id: productVariantTestOne,
+          title: "variant 1",
+          product_id: "product-1",
+          product: expect.objectContaining({
+            id: "product-1",
+            title: "product 1",
+          }),
+        }),
+      )
+    })
+
+    it("should throw an error when a variant with ID does not exist", async () => {
+      let error
+
+      try {
+        await service.retrieve("does-not-exist")
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual("ProductVariant with id: does-not-exist was not found")
+    })
+
+    it("should throw an error when an id is not provided", async () => {
+      let error
+
+      try {
+        await service.retrieve(undefined as unknown as string)
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual('"productVariantId" must be defined')
     })
   })
 })

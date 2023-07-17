@@ -3,6 +3,7 @@ import {
   Cascade,
   Collection,
   Entity,
+  Index,
   ManyToOne,
   OneToMany,
   OptionalProps,
@@ -13,18 +14,18 @@ import {
 import { generateEntityId } from "@medusajs/utils"
 import { Product } from "@models"
 import ProductOptionValue from "./product-option-value"
+import { SoftDeletable } from "../utils"
 
 type OptionalFields =
   | "created_at"
   | "updated_at"
-  | "updated_at"
-  | "deleted_at"
   | "allow_backorder"
   | "manage_inventory"
   | "product"
   | "product_id"
 
 @Entity({ tableName: "product_variant" })
+@SoftDeletable()
 class ProductVariant {
   [OptionalProps]?: OptionalFields
 
@@ -65,14 +66,14 @@ class ProductVariant {
   // Note: Upon serialization, this turns to a string. This is on purpose, because you would loose
   // precision if you cast numeric to JS number, as JS number is a float.
   // Ref: https://github.com/mikro-orm/mikro-orm/issues/2295
-  @Property({ columnType: "numeric" })
-  inventory_quantity: number
+  @Property({ columnType: "numeric", default: 100 })
+  inventory_quantity?: number = 100
 
   @Property({ columnType: "boolean", default: false })
-  allow_backorder: boolean
+  allow_backorder?: boolean = false
 
   @Property({ columnType: "boolean", default: true })
-  manage_inventory: boolean
+  manage_inventory?: boolean = true
 
   @Property({ columnType: "text", nullable: true })
   hs_code?: string | null
@@ -101,7 +102,7 @@ class ProductVariant {
   @Property({ columnType: "jsonb", nullable: true })
   metadata?: Record<string, unknown> | null
 
-  @Property({ columnType: "numeric", nullable: true })
+  @Property({ columnType: "numeric", nullable: true, default: 0 })
   variant_rank?: number | null
 
   @Property({ persist: false })
@@ -117,18 +118,19 @@ class ProductVariant {
   })
   updated_at: Date
 
+  @Index({ name: "IDX_product_variant_deleted_at" })
   @Property({ columnType: "timestamptz", nullable: true })
-  deleted_at: Date
+  deleted_at?: Date
 
   @ManyToOne(() => Product, {
     onDelete: "cascade",
-    index: "IDX_product_variant_product_id_index",
+    index: "IDX_product_variant_product_id",
     fieldName: "product_id",
   })
   product!: Product
 
   @OneToMany(() => ProductOptionValue, (optionValue) => optionValue.variant, {
-    cascade: [Cascade.PERSIST, Cascade.REMOVE],
+    cascade: [Cascade.PERSIST, Cascade.REMOVE, "soft-remove" as any],
   })
   options = new Collection<ProductOptionValue>(this)
 

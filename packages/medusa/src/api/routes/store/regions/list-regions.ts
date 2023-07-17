@@ -3,9 +3,9 @@ import { IsInt, IsOptional, ValidateNested } from "class-validator"
 import { DateComparisonOperator } from "../../../../types/common"
 import RegionService from "../../../../services/region"
 import { Type } from "class-transformer"
+import { defaultRelations } from "."
 import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
-import { defaultRelations } from "."
 
 /**
  * @oas [get] /store/regions
@@ -110,9 +110,12 @@ export default async (req, res) => {
     take: limit,
   }
 
-  const regions = await regionService.list(filterableFields, listConfig)
+  const [regions, count] = await regionService.listAndCount(
+    filterableFields,
+    listConfig
+  )
 
-  res.json({ regions })
+  res.json({ regions, count, limit, offset })
 }
 
 export class StoreGetRegionsParams {

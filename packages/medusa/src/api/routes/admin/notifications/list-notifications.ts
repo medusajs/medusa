@@ -3,9 +3,9 @@ import {
   defaultAdminNotificationsFields,
   defaultAdminNotificationsRelations,
 } from "./"
-import { Notification } from "../../../../models"
-import { FindConfig } from "../../../../types/common"
 
+import { FindConfig } from "../../../../types/common"
+import { Notification } from "../../../../models"
 import { NotificationService } from "../../../../services"
 import { Type } from "class-transformer"
 import { pick } from "lodash"
@@ -135,7 +135,10 @@ export default async (req, res) => {
     order: { created_at: "DESC" },
   } as FindConfig<Notification>
 
-  const notifications = await notificationService.list(selector, listConfig)
+  const [notifications, count] = await notificationService.listAndCount(
+    selector,
+    listConfig
+  )
 
   const resultFields = [
     ...(listConfig.select ?? []),
@@ -143,7 +146,7 @@ export default async (req, res) => {
   ]
   const data = notifications.map((o) => pick(o, resultFields))
 
-  res.json({ notifications: data })
+  res.json({ notifications: data, count, limit, offset })
 }
 
 export class AdminGetNotificationsParams {
