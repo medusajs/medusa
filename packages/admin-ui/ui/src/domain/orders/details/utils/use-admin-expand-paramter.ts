@@ -7,6 +7,7 @@ const orderRelations = [
   "discounts",
   "discounts.rule",
   "shipping_methods",
+  "shipping_methods.shipping_option",
   "payments",
   "items",
   "fulfillments",

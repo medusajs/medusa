@@ -3,36 +3,39 @@ import { LoaderOptions } from "@medusajs/modules-sdk"
 import { asClass } from "awilix"
 import {
   ProductCategoryService,
+  ProductCollectionService,
+  ProductImageService,
   ProductModuleService,
+  ProductOptionService,
   ProductService,
   ProductTagService,
+  ProductTypeService,
   ProductVariantService,
-  ProductCollectionService,
 } from "@services"
 import * as DefaultRepositories from "@repositories"
 import {
+  BaseRepository,
   ProductCategoryRepository,
   ProductCollectionRepository,
+  ProductImageRepository,
+  ProductOptionRepository,
   ProductRepository,
   ProductTagRepository,
+  ProductTypeRepository,
   ProductVariantRepository,
 } from "@repositories"
-import {
-  ProductServiceInitializeCustomDataLayerOptions,
-  ProductServiceInitializeOptions,
-} from "../types"
-import { Constructor, DAL } from "@medusajs/types"
+import { Constructor, DAL, ModulesSdkTypes } from "@medusajs/types"
 import { lowerCaseFirst } from "@medusajs/utils"
 
 export default async ({
   container,
   options,
 }: LoaderOptions<
-  | ProductServiceInitializeOptions
-  | ProductServiceInitializeCustomDataLayerOptions
+  | ModulesSdkTypes.ModuleServiceInitializeOptions
+  | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
 >): Promise<void> => {
   const customRepositories = (
-    options as ProductServiceInitializeCustomDataLayerOptions
+    options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   )?.repositories
 
   container.register({
@@ -42,6 +45,9 @@ export default async ({
     productVariantService: asClass(ProductVariantService).singleton(),
     productTagService: asClass(ProductTagService).singleton(),
     productCollectionService: asClass(ProductCollectionService).singleton(),
+    productImageService: asClass(ProductImageService).singleton(),
+    productTypeService: asClass(ProductTypeService).singleton(),
+    productOptionService: asClass(ProductOptionService).singleton(),
   })
 
   if (customRepositories) {
@@ -53,13 +59,17 @@ export default async ({
 
 function loadDefaultRepositories({ container }) {
   container.register({
-    productRepository: asClass(ProductRepository).singleton(),
-    productVariantRepository: asClass(ProductVariantRepository).singleton(),
-    productTagRepository: asClass(ProductTagRepository).singleton(),
+    baseRepository: asClass(BaseRepository).singleton(),
+    productImageRepository: asClass(ProductImageRepository).singleton(),
     productCategoryRepository: asClass(ProductCategoryRepository).singleton(),
     productCollectionRepository: asClass(
       ProductCollectionRepository
     ).singleton(),
+    productRepository: asClass(ProductRepository).singleton(),
+    productTagRepository: asClass(ProductTagRepository).singleton(),
+    productTypeRepository: asClass(ProductTypeRepository).singleton(),
+    productOptionRepository: asClass(ProductOptionRepository).singleton(),
+    productVariantRepository: asClass(ProductVariantRepository).singleton(),
   })
 }
 

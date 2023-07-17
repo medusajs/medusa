@@ -1,5 +1,6 @@
-import { Logger as _Logger } from "winston"
-import { MedusaContainer } from "../common/medusa-container"
+import { MedusaContainer } from "../common"
+import { Logger } from "../logger"
+import { RepositoryService } from "../dal"
 
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
@@ -13,12 +14,6 @@ export type LogLevel =
   | "log"
   | "migration"
 export type LoggerOptions = boolean | "all" | LogLevel[]
-
-export type Logger = _Logger & {
-  progress: (activityId: string, msg: string) => void
-  info: (msg: string) => void
-  warn: (msg: string) => void
-}
 
 export enum MODULE_SCOPE {
   INTERNAL = "internal",
@@ -98,4 +93,18 @@ export type ModuleExports = {
     options: LoaderOptions,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
+}
+
+export interface ModuleServiceInitializeOptions {
+  database: {
+    clientUrl: string
+    schema?: string
+    driverOptions?: Record<string, unknown>
+    debug?: boolean
+  }
+}
+
+export type ModuleServiceInitializeCustomDataLayerOptions = {
+  manager?: any
+  repositories?: { [key: string]: Constructor<RepositoryService> }
 }
