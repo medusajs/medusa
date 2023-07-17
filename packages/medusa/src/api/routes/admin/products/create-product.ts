@@ -134,8 +134,9 @@ export default async (req, res) => {
   )
 
   const entityManager: EntityManager = req.scope.resolve("manager")
+  const productModuleService = req.scope.resolve("productModuleService")
 
-  if (req.scope.registrations["productModuleService"]) {
+  if (productModuleService) {
     let transaction: DistributedTransaction
     try {
       transaction = await createProductsWorkflow(
