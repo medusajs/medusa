@@ -244,66 +244,155 @@ info:
     name: MIT
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
 tags:
+  - name: Apps
+    description: App endpoints that allow managing apps as an admin.
   - name: Auth
     description: Auth endpoints that allow authorization of admin Users and manages
       their sessions.
-  - name: Apps
-    description: App endpoints that allow handling apps in Medusa.
+    externalDocs:
+      description: How to implement user profiles
+      url: https://docs.medusajs.com/modules/users/admin/manage-profile
   - name: Batch Jobs
-    description: Batch Job endpoints that allow handling batch jobs in Medusa.
+    description: Batch Job endpoints that allow managing batch jobs as an admin.
+    externalDocs:
+      description: How to import products
+      url: https://docs.medusajs.com/modules/products/admin/import-products
   - name: Collections
-    description: Collection endpoints that allow handling collections in Medusa.
+    description: Collection endpoints that allow managing collections as an admin.
+  - name: Currencies
+    description: Currency endpoints that allow managineg currencies as an admin.
+    externalDocs:
+      description: How to manage currencies
+      url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-currencies
   - name: Customers
-    description: Customer endpoints that allow handling customers in Medusa.
+    description: Customer endpoints that allow managing customers as an admin.
+    externalDocs:
+      description: How to manage customers
+      url: https://docs.medusajs.com/modules/customers/admin/manage-customers
   - name: Customer Groups
-    description: Customer Group endpoints that allow handling customer groups in Medusa.
+    description: Customer Group endpoints that allow managing customer groups as an admin.
+    externalDocs:
+      description: How to manage customer groups
+      url: https://docs.medusajs.com/modules/customers/admin/manage-customer-groups
   - name: Discounts
-    description: Discount endpoints that allow handling discounts in Medusa.
+    description: Discount endpoints that allow managing discounts as an admin.
+    externalDocs:
+      description: How to manage discounts
+      url: https://docs.medusajs.com/modules/discounts/admin/manage-discounts
   - name: Draft Orders
-    description: Draft Order endpoints that allow handling draft orders in Medusa.
+    description: Draft Order endpoints that allow managing draft orders as an admin.
+    externalDocs:
+      description: How to manage draft orders
+      url: https://docs.medusajs.com/modules/orders/admin/manage-draft-orders
   - name: Gift Cards
-    description: Gift Card endpoints that allow handling gift cards in Medusa.
+    description: Gift Card endpoints that allow managing gift cards as an admin.
+    externalDocs:
+      description: How to manage gift cards
+      url: https://docs.medusajs.com/modules/gift-cards/admin/manage-gift-cards
+  - name: Inventory Items
+    description: Inventory items that allow managing inventory as an admin.
+    externalDocs:
+      description: How to manage invites
+      url: https://docs.medusajs.com/modules/multiwarehouse/admin/manage-inventory-items
   - name: Invites
-    description: Invite endpoints that allow handling invites in Medusa.
+    description: Invite endpoints that allow managing invites as an admin.
+    externalDocs:
+      description: How to manage invites
+      url: https://docs.medusajs.com/modules/users/admin/manage-invites
   - name: Notes
-    description: Note endpoints that allow handling notes in Medusa.
+    description: Note endpoints that allow managing notes as an admin.
   - name: Notifications
-    description: Notification endpoints that allow handling notifications in Medusa.
+    description: Notification endpoints that allow managing notifications as an admin.
   - name: Orders
-    description: Order endpoints that allow handling orders in Medusa.
+    description: Order endpoints that allow managing orders as an admin.
+    externalDocs:
+      description: How to manage orders
+      url: https://docs.medusajs.com/modules/orders/admin/manage-orders
+  - name: Payment Collections
+    description: Payment collection endpoints that allow managing payments as an admin.
   - name: Price Lists
-    description: Price List endpoints that allow handling price lists in Medusa.
+    description: Price List endpoints that allow managing price lists as an admin.
+    externalDocs:
+      description: How to manage price lists
+      url: https://docs.medusajs.com/modules/price-lists/admin/manage-price-lists
   - name: Products
-    description: Product endpoints that allow handling products in Medusa.
+    description: Product endpoints that allow managing products as an admin.
+    externalDocs:
+      description: How to manage products
+      url: https://docs.medusajs.com/modules/products/admin/manage-products
+  - name: Product Categories
+    description: Product category endpoints that allow managing categories as an admin.
+    externalDocs:
+      description: How to manage product categories
+      url: https://docs.medusajs.com/modules/products/admin/manage-categories
   - name: Product Tags
-    description: Product Tag endpoints that allow handling product tags in Medusa.
+    description: Product Tag endpoints that allow managing tags as an admin.
   - name: Product Types
-    description: Product Types endpoints that allow handling product types in Medusa.
+    description: Product Type endpoints that allow managing types as an admin.
+  - name: Publishable API Keys
+    description: Publishable API key endpoints that allow managing publishable API keys as an admin.
+    externalDocs:
+      description: How to manage publishable API keys
+      url: https://docs.medusajs.com/development/publishable-api-keys/admin/manage-publishable-api-keys
+  - name: Reservations
+    description: Reservation endpoints that allow managing reservations or item allocations as an admin.
+    externalDocs:
+      description: How to manage item allocations in orders
+      url: https://docs.medusajs.com/modules/multiwarehouse/admin/manage-item-allocations-in-orders
   - name: Regions
-    description: Region endpoints that allow handling regions in Medusa.
+    description: Region endpoints that allow managing regions as an admin.
+    externalDocs:
+      description: How to manage regions
+      url: https://docs.medusajs.com/modules/regions-and-currencies/admin/manage-regions
   - name: Return Reasons
-    description: Return Reason endpoints that allow handling return reasons in Medusa.
+    description: Return Reason endpoints that allow manage return reasons as an admin.
+    externalDocs:
+      description: How to manage return reasons
+      url: https://docs.medusajs.com/modules/orders/admin/manage-returns#manage-return-reasons
   - name: Returns
-    description: Return endpoints that allow handling returns in Medusa.
+    description: Return endpoints that allow handling returns as an admin.
+    externalDocs:
+      description: How to manage returns
+      url: https://docs.medusajs.com/modules/orders/admin/manage-returns
   - name: Sales Channels
-    description: Sales Channel endpoints that allow handling sales channels in Medusa.
+    description: Sales Channel endpoints that allow managing sales channels as an admin.
+    externalDocs:
+      description: How to manage sales channels
+      url: https://docs.medusajs.com/modules/sales-channels/admin/manage
   - name: Shipping Options
-    description: Shipping Option endpoints that allow handling shipping options in Medusa.
+    description: Shipping Option endpoints that allow handling shipping options as an admin.
   - name: Shipping Profiles
     description: Shipping Profile endpoints that allow handling shipping profiles in
       Medusa.
+  - name: Stock Locations
+    description: Stock Location endpoints that allow managing stock locations as an admin.
+    externalDocs:
+      description: How to manage stock locations.
+      url: https://docs.medusajs.com/modules/multiwarehouse/admin/manage-stock-locations
   - name: Store
-    description: Store endpoints that allow handling stores in Medusa.
+    description: Store endpoints that allow managing stores as an admin.
   - name: Swaps
-    description: Swap endpoints that allow handling swaps in Medusa.
+    description: Swap endpoints that allow managing swaps as an admin.
+    externalDocs:
+      description: How to manage swaps
+      url: https://docs.medusajs.com/modules/orders/admin/manage-swaps
   - name: Tax Rates
-    description: Tax Rate endpoints that allow handling tax rates in Medusa.
+    description: Tax Rate endpoints that allow managing tax rates as an admin.
+    externalDocs:
+      description: How to manage tax rates
+      url: https://docs.medusajs.com/modules/taxes/admin/manage-tax-rates
   - name: Uploads
-    description: Upload endpoints that allow handling uploads in Medusa.
+    description: Upload endpoints that allow handling uploads as an admin.
   - name: Users
-    description: User endpoints that allow handling users in Medusa.
+    description: User endpoints that allow handling users as an admin.
+    externalDocs:
+      description: How to manage users
+      url: https://docs.medusajs.com/modules/users/admin/manage-users
   - name: Variants
-    description: Product Variant endpoints that allow handling product variants in Medusa.
+    description: Product Variant endpoints that allow managing product variants as an admin.
+    externalDocs:
+      description: How to manage product variants
+      url: https://docs.medusajs.com/modules/products/admin/manage-products#manage-product-variants
 servers:
   - url: https://api.medusa-commerce.com
 paths: { }

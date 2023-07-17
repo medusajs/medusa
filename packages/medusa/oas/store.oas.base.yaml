@@ -225,32 +225,73 @@ info:
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
 tags:
   - name: Auth
-    description: Auth endpoints that allow authorization of customers and manages their
+    description: Auth endpoints that allow authorization of customers and managing their
       sessions.
+    externalDocs:
+      description: How to implement customer profiles in your storefront
+      url: https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles
   - name: Carts
-    description: Cart endpoints that allow handling carts in Medusa.
+    description: Cart endpoints that allow implementing cart functionalities in a storefront.
+    externalDocs:
+      description: How to implement cart functionality in your storefront
+      url: https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart
   - name: Collections
-    description: Collection endpoints that allow handling collections in Medusa.
+    description: Collection endpoints that allow showing collections in a storefront.
   - name: Customers
-    description: Customer endpoints that allow handling customers in Medusa.
+    description: Customer endpoints that allow implementing profile functionalities in a storefront.
+    externalDocs:
+      description: How to implement customer profiles in your storefront
+      url: https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles
   - name: Gift Cards
-    description: Gift Card endpoints that allow handling gift cards in Medusa.
+    description: Gift Card endpoints that allow retrieving gift cards in a storefront.
+    externalDocs:
+      description: How to use gift cards in a storefront
+      url: https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards
   - name: Orders
-    description: Order endpoints that allow handling orders in Medusa.
+    description: Order endpoints that allow viewing order details in a storefront.
+    externalDocs:
+      description: How to retrieve order details in a storefront
+      url: https://docs.medusajs.com/modules/orders/storefront/retrieve-order-details
+  - name: Order Edits
+    description: Order edit endpoints that allow editing orders in a storefront.
+    externalDocs:
+      description: How to handle order edits in a storefront
+      url: https://docs.medusajs.com/modules/orders/storefront/handle-order-edits
+  - name: Payment Collections
+    description: Payment collection endpoints that allow handling payments in a storefront.
   - name: Products
-    description: Product endpoints that allow handling products in Medusa.
-  - name: Product Variants
-    description: Product Variant endpoints that allow handling product variants in Medusa.
+    description: Product endpoints that allow retrieving product details in a storefront.
+    externalDocs:
+      description: How to show products in a storefront
+      url: https://docs.medusajs.com/modules/products/storefront/show-products
+  - name: Product Categories
+    description: Product category endpoints that allow retrieving product category details in a storefront.
+    externalDocs:
+      description: How to use product categories in a storefront
+      url: https://docs.medusajs.com/modules/products/storefront/use-categories
+  - name: Product Tags
+    description: Product tag endpoints that allow retrieving product tag details in a storefront.
+  - name: Product Types
+    description: Product type endpoints that allow retrieving product type details in a storefront.
   - name: Regions
-    description: Region endpoints that allow handling regions in Medusa.
-  - name: Return Reasons
-    description: Return Reason endpoints that allow handling return reasons in Medusa.
+    description: Region endpoints that allow retrieving region details in a storefront.
+    externalDocs:
+      description: How to use regions in a storefront
+      url: https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions
   - name: Returns
-    description: Return endpoints that allow handling returns in Medusa.
+    description: Return endpoints that allow implementing return functionalities in a storefront.
+    externalDocs:
+      description: How to create a return in a storefront
+      url: https://docs.medusajs.com/modules/orders/storefront/create-return
+  - name: Return Reasons
+    description: Return Reason endpoints that allow retrieving return reason details in a storefront.
   - name: Shipping Options
-    description: Shipping Option endpoints that allow handling shipping options in Medusa.
+    description: Shipping Option endpoints that allow retrieving shipping option details in a storefront.
   - name: Swaps
-    description: Swap endpoints that allow handling swaps in Medusa.
+    description: Swap endpoints that allow implementing swap functionalities in a storefront.
+    externalDocs:
+      description: How to create a swap in a storefront
+      url: https://docs.medusajs.com/modules/orders/storefront/create-swap
 servers:
   - url: https://api.medusa-commerce.com
 paths: { }
