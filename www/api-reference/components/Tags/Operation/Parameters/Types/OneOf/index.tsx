@@ -2,10 +2,11 @@ import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import { Suspense, useState } from "react"
-import type { TagOperationParametersProps } from "../.."
 import Loading from "@/components/Loading"
 import Details from "@/components/Details"
-import { TagOperationParametersDefaultProps } from "../Default"
+import type { TagOperationParametersDefaultProps } from "../Default"
+import type { TagsOperationParametersNestedProps } from "../../Nested"
+import type { TagOperationParametersProps } from "../.."
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
   async () => import("../.."),
@@ -21,6 +22,14 @@ const TagOperationParametersDefault =
       loading: () => <Loading />,
     }
   ) as React.FC<TagOperationParametersDefaultProps>
+
+const TagsOperationParametersNested =
+  dynamic<TagsOperationParametersNestedProps>(
+    async () => import("../../Nested"),
+    {
+      loading: () => <Loading />,
+    }
+  ) as React.FC<TagsOperationParametersNestedProps>
 
 export type TagOperationParamatersOneOfProps = {
   schema: SchemaObject
@@ -38,7 +47,7 @@ const TagOperationParamatersOneOf = ({
   const getContent = () => {
     return (
       <>
-        <div className={clsx("flex items-center gap-1", isNested && "mt-1")}>
+        <div className={clsx("flex items-center gap-1")}>
           <span className="my-2 inline-block pl-1.5">One of</span>
           <ul className="flex list-none gap-1">
             {schema.oneOf?.map((item, index) => (
@@ -84,7 +93,9 @@ const TagOperationParamatersOneOf = ({
             />
           }
         >
-          {getContent()}
+          <TagsOperationParametersNested>
+            {getContent()}
+          </TagsOperationParametersNested>
         </Details>
       )}
       {!isNested && getContent()}

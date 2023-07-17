@@ -1,5 +1,6 @@
 import Loading from "@/components/Loading"
 import type { InlineCodeProps } from "@/components/MDXComponents/InlineCode"
+import MDXContentClient from "@/components/MDXContent/Client"
 import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
@@ -25,17 +26,26 @@ const TagOperationParametersDescription = ({
       typeDescription = (
         <>
           {schema.type} {schema.title ? `(${schema.title})` : ""}
+          {schema.nullable ? ` or null` : ""}
         </>
       )
       break
     case schema.type === "array":
       typeDescription = (
-        <>{schema.type === "array" && formatArrayDescription(schema.items)}</>
+        <>
+          {schema.type === "array" && formatArrayDescription(schema.items)}
+          {schema.nullable ? ` or null` : ""}
+        </>
       )
       break
     case schema.anyOf !== undefined:
     case schema.allOf !== undefined:
-      typeDescription = <>{formatUnionDescription(schema.allOf)}</>
+      typeDescription = (
+        <>
+          {formatUnionDescription(schema.allOf)}
+          {schema.nullable ? ` or null` : ""}
+        </>
+      )
       break
     case schema.oneOf !== undefined:
       typeDescription = (
@@ -46,16 +56,23 @@ const TagOperationParametersDescription = ({
               {item.title || item.type}
             </span>
           ))}
+          {schema.nullable ? ` or null` : ""}
         </>
       )
       break
     default:
-      typeDescription = <>{schema.type}</>
+      typeDescription = (
+        <>
+          {schema.type}
+          {schema.nullable ? ` or null` : ""}
+          {schema.format ? ` <${schema.format}>` : ""}
+        </>
+      )
   }
   return (
     <div className={clsx("w-2/3 pb-0.5")}>
       {typeDescription}
-      {schema.example && (
+      {schema.example !== undefined && (
         <>
           <br />
           <span>
@@ -78,12 +95,6 @@ const TagOperationParametersDescription = ({
           </span>
         </>
       )}
-      {schema.description && (
-        <>
-          <br />
-          <span>{schema.description}</span>
-        </>
-      )}
       {schema.enum && (
         <>
           <br />
@@ -95,20 +106,23 @@ const TagOperationParametersDescription = ({
           </span>
         </>
       )}
-      {schema.externalDocs && (
+      {schema.description && (
         <>
           <br />
-          <Link
-            href={schema.externalDocs.url}
-            className={clsx(
-              "text-medusa-text-base hover:text-medusa-text-subtle",
-              "dark:text-medusa-text-base-dark dark:hover:text-medusa-text-subtle-dark"
-            )}
-            target="_blank"
-          >
-            {schema.externalDocs.description || "Read More"}
-          </Link>
+          <MDXContentClient content={schema.description} />
         </>
+      )}
+      {schema.externalDocs && (
+        <Link
+          href={schema.externalDocs.url}
+          className={clsx(
+            "text-medusa-text-base hover:text-medusa-text-subtle",
+            "dark:text-medusa-text-base-dark dark:hover:text-medusa-text-subtle-dark"
+          )}
+          target="_blank"
+        >
+          {schema.externalDocs.description || "Read More"}
+        </Link>
       )}
     </div>
   )
