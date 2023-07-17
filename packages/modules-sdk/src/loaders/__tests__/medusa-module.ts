@@ -3,6 +3,7 @@ import {
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
 } from "@medusajs/types"
+
 import { MedusaModule } from "../../medusa-module"
 import { asValue } from "awilix"
 
@@ -102,7 +103,7 @@ describe("Medusa Modules", () => {
     expect(intances[(await intances).length - 1]).toBe(intances[0])
   })
 
-  it("getModule should return the first instance of the module if there is none flagged as 'main'", async () => {
+  it("getModuleInstance should return the first instance of the module if there is none flagged as 'main'", async () => {
     const moduleA = await MedusaModule.bootstrap("moduleKey", "@path", {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.ISOLATED,
@@ -121,7 +122,7 @@ describe("Medusa Modules", () => {
       },
     } as InternalModuleDeclaration)
 
-    expect(MedusaModule.getModule("moduleKey")).toEqual(moduleA)
+    expect(MedusaModule.getModuleInstance("moduleKey")).toEqual(moduleA)
   })
 
   it("should return the module flagged as 'main' when multiple instances are available", async () => {
@@ -144,7 +145,7 @@ describe("Medusa Modules", () => {
       },
     } as InternalModuleDeclaration)
 
-    expect(MedusaModule.getModule("moduleKey")).toEqual(moduleB)
+    expect(MedusaModule.getModuleInstance("moduleKey")).toEqual(moduleB)
   })
 
   it("should retrieve the module by their given alias", async () => {
@@ -180,11 +181,17 @@ describe("Medusa Modules", () => {
     } as InternalModuleDeclaration)
 
     // main
-    expect(MedusaModule.getModule("moduleKey")).toEqual(moduleB)
+    expect(MedusaModule.getModuleInstance("moduleKey")).toEqual(moduleB)
 
-    expect(MedusaModule.getModule("moduleKey", "mod_A")).toEqual(moduleA)
-    expect(MedusaModule.getModule("moduleKey", "mod_B")).toEqual(moduleB)
-    expect(MedusaModule.getModule("moduleKey", "mod_C")).toEqual(moduleC)
+    expect(MedusaModule.getModuleInstance("moduleKey", "mod_A")).toEqual(
+      moduleA
+    )
+    expect(MedusaModule.getModuleInstance("moduleKey", "mod_B")).toEqual(
+      moduleB
+    )
+    expect(MedusaModule.getModuleInstance("moduleKey", "mod_C")).toEqual(
+      moduleC
+    )
   })
 
   it("should prevent two main modules being set as 'main'", async () => {

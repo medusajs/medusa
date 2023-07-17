@@ -13,8 +13,9 @@ import {
   simpleHash,
   stringifyCircular,
 } from "@medusajs/utils"
-import { asValue } from "awilix"
 import { moduleLoader, registerMedusaModule } from "./loaders"
+
+import { asValue } from "awilix"
 import { loadModuleMigrations } from "./loaders/utils"
 
 const logger: any = {
@@ -68,7 +69,10 @@ export class MedusaModule {
     return MedusaModule.modules_.has(moduleKey)
   }
 
-  public static getModule(moduleKey: string, alias?: string): any | undefined {
+  public static getModuleInstance(
+    moduleKey: string,
+    alias?: string
+  ): any | undefined {
     if (!MedusaModule.modules_.has(moduleKey)) {
       return
     }
@@ -86,7 +90,10 @@ export class MedusaModule {
     return MedusaModule.instances_.get(mod?.hash)
   }
 
-  private static setModule(moduleKey: string, loadedModule: ModuleAlias): void {
+  private static registerModule(
+    moduleKey: string,
+    loadedModule: ModuleAlias
+  ): void {
     if (!MedusaModule.modules_.has(moduleKey)) {
       MedusaModule.modules_.set(moduleKey, [])
     }
@@ -197,7 +204,7 @@ export class MedusaModule {
         ].__joinerConfig()
       }
 
-      MedusaModule.setModule(keyName, {
+      MedusaModule.registerModule(keyName, {
         key: keyName,
         hash: hashKey,
         alias: modDeclaration.alias ?? hashKey,
