@@ -1,7 +1,3 @@
-import stream from "stream"
-import aws from "aws-sdk"
-import { parse } from "path"
-import fs from "fs"
 import {
   AbstractFileService,
   DeleteFileType,
@@ -10,8 +6,13 @@ import {
   IFileService,
   UploadStreamDescriptorType,
 } from "@medusajs/medusa"
-import { MedusaError } from "medusa-core-utils"
 import { ClientConfiguration, PutObjectRequest } from "aws-sdk/clients/s3"
+
+import { MedusaError } from "medusa-core-utils"
+import aws from "aws-sdk"
+import fs from "fs"
+import { parse } from "path"
+import stream from "stream"
 
 class MinioService extends AbstractFileService implements IFileService {
   protected bucket_: string
@@ -123,7 +124,7 @@ class MinioService extends AbstractFileService implements IFileService {
       contentType?: string
     }
   ) {
-    const usePrivateBucket = !!fileData.usePrivateBucket
+    const usePrivateBucket = fileData.usePrivateBucket ?? true
 
     this.validatePrivateBucketConfiguration_(usePrivateBucket)
 
