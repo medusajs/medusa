@@ -1,4 +1,3 @@
-import React from "react"
 import { MoneyAmount, Product } from "@medusajs/client-types"
 
 /**
@@ -10,8 +9,8 @@ export function getAllProductPricesCurrencies(product: Product) {
   product.variants!.forEach((variant) => {
     variant.prices!.forEach((price) => {
       if (
-        price.price_list ||
-        price.region ||
+        price.price_list_id ||
+        price.region_id ||
         price.min_quantity ||
         price.max_quantity
       ) {
@@ -33,7 +32,7 @@ export function getAllProductPricesRegions(product: Product) {
   product.variants!.forEach((variant) => {
     variant.prices!.forEach((price) => {
       if (
-        price.price_list ||
+        price.price_list_id ||
         price.min_quantity ||
         price.max_quantity ||
         !price.region_id
@@ -53,8 +52,8 @@ export function getAllProductPricesRegions(product: Product) {
 export function getCurrencyPricesOnly(prices: MoneyAmount[]) {
   return prices.filter((price) => {
     if (
-      price.price_list ||
-      price.region ||
+      price.price_list_id ||
+      price.region_id ||
       price.min_quantity ||
       price.max_quantity
     ) {
@@ -69,6 +68,6 @@ export function getCurrencyPricesOnly(prices: MoneyAmount[]) {
  */
 export function getRegionPricesOnly(prices: MoneyAmount[]) {
   return prices.filter((price) => {
-    return !(price.price_list || price.min_quantity || price.max_quantity)
+    return !(price.price_list_id || price.min_quantity || price.max_quantity)
   })
 }
