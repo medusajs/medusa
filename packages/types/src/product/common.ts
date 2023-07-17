@@ -12,6 +12,7 @@ export enum ProductStatus {
  * DTO in and out of the module (module API)
  */
 
+// TODO: This DTO should represent the product, when used in config we should use Partial<ProductDTO>, it means that some props like handle should be updated to not be optional
 export interface ProductDTO {
   id: string
   title: string

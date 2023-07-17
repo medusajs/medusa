@@ -1,7 +1,11 @@
 import { MedusaContainer, ProductTypes } from "@medusajs/types"
 import { EntityManager } from "typeorm"
-import { PricingService } from "../../services"
-import { Product } from "../../models"
+import { ProductVariantService } from "../../services"
+import {
+  ProductVariantPricesCreateReq,
+  UpdateVariantPricesData,
+} from "../../types/product-variant"
+import { MedusaError } from "@medusajs/utils"
 
 export async function createProductsVariantsPrices({
   container,
@@ -12,10 +16,46 @@ export async function createProductsVariantsPrices({
   manager: EntityManager
   data: {
     products: ProductTypes.ProductDTO[]
+    productsHandleVariantsIndexPricesMap: Map<
+      string,
+      { index: number; prices: ProductVariantPricesCreateReq[] }
+    >
   }
 }) {
-  const pricingService: PricingService = container.resolve("pricingService")
-  const pricingServiceTx = pricingService.withTransaction(manager)
+  const productVariantService: ProductVariantService = container.resolve(
+    "productVariantService"
+  )
+  const productVariantServiceTx = productVariantService.withTransaction(manager)
 
-  await pricingServiceTx.setProductPrices(data.products as unknown as Product[])
+  const variantIdsPricesData: UpdateVariantPricesData[] = []
+  const productsMap = new Map<string, ProductTypes.ProductDTO>(
+    data.products.map((p) => [p.handle!, p])
+  )
+
+  for (const mapData of data.productsHandleVariantsIndexPricesMap.entries()) {
+    const [handle, { index, prices }] = mapData
+
+    const product = productsMap.get(handle)
+    if (!product) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Product with handle ${handle} not found`
+      )
+    }
+
+    const variant = product.variants[index]
+    if (!variant) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Variant with index ${index} not found in product with handle ${handle}`
+      )
+    }
+
+    variantIdsPricesData.push({
+      variantId: variant.id,
+      prices,
+    })
+  }
+
+  await productVariantServiceTx.updateVariantPrices(variantIdsPricesData)
 }

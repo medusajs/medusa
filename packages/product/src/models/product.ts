@@ -100,7 +100,7 @@ class Product {
   @Property({ columnType: "text", nullable: true })
   material?: string | null
 
-  @Property({ persist: false })
+  @Property({ columnType: "text", nullable: true })
   collection_id!: string
 
   @ManyToOne(() => ProductCollection, {
@@ -109,7 +109,7 @@ class Product {
   })
   collection!: ProductCollection
 
-  @Property({ persist: false })
+  @Property({ columnType: "text", nullable: true })
   type_id!: string
 
   @ManyToOne(() => ProductType, {
