@@ -22,7 +22,8 @@ const CodeTabs = ({ tabs, className }: CodeTabsProps) => {
       <ul
         className={clsx(
           "bg-medusa-code-tabs-bg flex !list-none gap-1 rounded-t py-[12px] px-1",
-          "dark:border-medusa-code-block-border border border-b-0 border-transparent"
+          "dark:border-medusa-code-block-border border border-b-0 border-transparent",
+          "mb-0"
         )}
       >
         {tabs.map((tab, index) => (

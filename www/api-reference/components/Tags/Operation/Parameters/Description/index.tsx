@@ -4,7 +4,7 @@ import MDXContentClient from "@/components/MDXContent/Client"
 import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
-import Link from "next/link"
+import type { LinkProps } from "../../../../MDXComponents/Link"
 
 const InlineCode = dynamic<InlineCodeProps>(
   async () => import("../../../../MDXComponents/InlineCode"),
@@ -12,6 +12,13 @@ const InlineCode = dynamic<InlineCodeProps>(
     loading: () => <Loading />,
   }
 ) as React.FC<InlineCodeProps>
+
+const Link = dynamic<LinkProps>(
+  async () => import("../../../../MDXComponents/Link"),
+  {
+    loading: () => <Loading />,
+  }
+) as React.FC<LinkProps>
 
 type TagOperationParametersDescriptionProps = {
   schema: SchemaObject

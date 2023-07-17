@@ -29,8 +29,8 @@ hr {
   @apply h-[1px] w-full border-0 bg-medusa-border-base dark:bg-medusa-border-base-dark my-2;
 }
 
-p {
-  @apply mb-0.5;
+p, ul, ol {
+  @apply mb-1;
 }
 
 .clip {
@@ -39,6 +39,10 @@ p {
 
 .section-content ul {
   @apply list-disc px-1;
+}
+
+.section-content h2 {
+  @apply pt-4;
 }
 
 @import url('./code-theme.css');
