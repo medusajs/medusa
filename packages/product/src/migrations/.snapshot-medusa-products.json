@@ -201,6 +201,13 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "keyName": "IDX_product_collection_deleted_at",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "IDX_product_collection_handle_unique",
           "columnNames": ["handle"],
           "composite": false,
@@ -209,6 +216,74 @@
         },
         {
           "keyName": "product_collection_pkey",
+          "columnNames": ["id"],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "metadata": {
+          "name": "metadata",
+          "type": "jsonb",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "json"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamptz",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 6,
+          "mappedType": "datetime"
+        }
+      },
+      "name": "image",
+      "schema": "public",
+      "indexes": [
+        {
+          "columnNames": ["url"],
+          "composite": false,
+          "keyName": "IDX_product_image_url",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "keyName": "IDX_product_image_deleted_at",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "image_pkey",
           "columnNames": ["id"],
           "composite": false,
           "primary": true,
@@ -261,6 +336,13 @@
       "name": "product_tag",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "keyName": "IDX_product_tag_deleted_at",
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "product_tag_pkey",
           "columnNames": ["id"],
@@ -315,6 +397,13 @@
       "name": "product_type",
       "schema": "public",
       "indexes": [
+        {
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "keyName": "IDX_product_type_deleted_at",
+          "primary": false,
+          "unique": false
+        },
         {
           "keyName": "product_type_pkey",
           "columnNames": ["id"],
@@ -562,6 +651,13 @@
           "unique": false
         },
         {
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "keyName": "IDX_product_deleted_at",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "IDX_product_handle_unique",
           "columnNames": ["handle"],
           "composite": false,
@@ -658,6 +754,13 @@
           "unique": false
         },
         {
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "keyName": "IDX_product_option_deleted_at",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "product_option_pkey",
           "columnNames": ["id"],
           "composite": false,
@@ -726,6 +829,60 @@
           "localTableName": "public.product_tags",
           "referencedColumnNames": ["id"],
           "referencedTableName": "public.product_tag",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "product_id": {
+          "name": "product_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "product_image_id": {
+          "name": "product_image_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "product_images",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "product_images_pkey",
+          "columnNames": ["product_id", "product_image_id"],
+          "composite": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "product_images_product_id_foreign": {
+          "constraintName": "product_images_product_id_foreign",
+          "columnNames": ["product_id"],
+          "localTableName": "public.product_images",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.product",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "product_images_product_image_id_foreign": {
+          "constraintName": "product_images_product_image_id_foreign",
+          "columnNames": ["product_image_id"],
+          "localTableName": "public.product_images",
+          "referencedColumnNames": ["id"],
+          "referencedTableName": "public.image",
           "deleteRule": "cascade",
           "updateRule": "cascade"
         }
@@ -848,6 +1005,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "default": "100",
           "mappedType": "decimal"
         },
         "allow_backorder": {
@@ -958,6 +1116,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "default": "0",
           "mappedType": "decimal"
         },
         "created_at": {
@@ -1004,9 +1163,16 @@
       "schema": "public",
       "indexes": [
         {
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "keyName": "IDX_product_variant_deleted_at",
+          "primary": false,
+          "unique": false
+        },
+        {
           "columnNames": ["product_id"],
           "composite": false,
-          "keyName": "IDX_product_variant_product_id_index",
+          "keyName": "IDX_product_variant_product_id",
           "primary": false,
           "unique": false
         },
@@ -1123,7 +1289,21 @@
         {
           "columnNames": ["option_id"],
           "composite": false,
-          "keyName": "IDX_product_option_value_product_option",
+          "keyName": "IDX_product_option_value_option_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": ["variant_id"],
+          "composite": false,
+          "keyName": "IDX_product_option_value_variant_id",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": ["deleted_at"],
+          "composite": false,
+          "keyName": "IDX_product_option_value_deleted_at",
           "primary": false,
           "unique": false
         },
