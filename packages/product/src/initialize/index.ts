@@ -5,18 +5,14 @@ import {
   MODULE_PACKAGE_NAMES,
   Modules,
 } from "@medusajs/modules-sdk"
-import { IProductModuleService } from "@medusajs/types"
+import { IProductModuleService, ModulesSdkTypes } from "@medusajs/types"
 import { moduleDefinition } from "../module-definition"
-import {
-  InitializeModuleInjectableDependencies,
-  ProductServiceInitializeCustomDataLayerOptions,
-  ProductServiceInitializeOptions,
-} from "../types"
+import { InitializeModuleInjectableDependencies } from "../types"
 
 export const initialize = async (
   options?:
-    | ProductServiceInitializeOptions
-    | ProductServiceInitializeCustomDataLayerOptions
+    | ModulesSdkTypes.ModuleServiceInitializeOptions
+    | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
     | ExternalModuleDeclaration,
   injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<IProductModuleService> => {

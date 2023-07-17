@@ -163,6 +163,22 @@ describe("/admin/notes", () => {
         ],
       })
     })
+
+    it("should list the notes with correct count in pagination", async () => {
+      const api = useApi()
+      const response = await api
+        .get("/admin/notes?limit=2", {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.notes.length).toEqual(2)
+      expect(response.data.count).toEqual(3)
+    })
   })
 
   describe("POST /admin/notes/:id", () => {

@@ -1,0 +1,13 @@
+type: object
+properties:
+  q:
+    type: string
+    description: The query to run the search with.
+  offset:
+    type: number
+    description: How many products to skip in the result.
+  limit:
+    type: number
+    description: Limit the number of products returned.
+  filter:
+    description: Filter based on the search engine.
