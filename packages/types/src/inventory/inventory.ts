@@ -56,6 +56,7 @@ export interface IInventoryService {
     context?: SharedContext
   ): Promise<ReservationItemDTO>
 
+  // TODO make it bulk
   createInventoryItem(
     input: CreateInventoryItemInput,
     context?: SharedContext
@@ -95,6 +96,7 @@ export interface IInventoryService {
     context?: SharedContext
   ): Promise<void>
 
+  // TODO make it bulk
   deleteInventoryItem(
     inventoryItemId: string,
     context?: SharedContext

@@ -105,14 +105,14 @@ export default async (req, res) => {
     take: validated.limit,
   }
 
-  const regions: Region[] = await regionService.list(
+  const [regions, count] = await regionService.listAndCount(
     _.pickBy(filterableFields, identity),
     listConfig
   )
 
   res.json({
     regions,
-    count: regions.length,
+    count,
     offset: validated.offset,
     limit: validated.limit,
   })

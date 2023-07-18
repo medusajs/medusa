@@ -9,9 +9,9 @@ const paths: LearningPathType[] = [
     description: "Create and deploy a full-fledged ecommerce store.",
     steps: [
       {
-        title: "Create a Next.js storefront",
+        title: "Create a Next.js Starter Template",
         description:
-          "Create a Next.js storefront and connect it to your Medusa backend.",
+          "Create a Next.js Starter Template and connect it to your Medusa backend.",
         path: "/starters/nextjs-medusa-starter",
       },
       {
@@ -100,7 +100,7 @@ const paths: LearningPathType[] = [
         path: "/starters/nextjs-medusa-starter",
         descriptionJSX: (
           <>
-            Build a storefront either using the Next.js starter or{" "}
+            Build a storefront either using the Next.js Starter Template or{" "}
             <Link href="/storefront/roadmap">from scratch</Link>.
           </>
         ),
@@ -168,7 +168,7 @@ const paths: LearningPathType[] = [
         path: "/starters/nextjs-medusa-starter",
         descriptionJSX: (
           <>
-            Build a storefront either using the Next.js starter or{" "}
+            Build a storefront either using the Next.js Starter Template or{" "}
             <Link href="/storefront/roadmap">from scratch</Link>.
           </>
         ),

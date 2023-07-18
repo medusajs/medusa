@@ -10,7 +10,7 @@ import { ProductTypes } from "@medusajs/types"
 
 jest.setTimeout(30000)
 
-describe("Product Service", () => {
+describe("Product tag Service", () => {
   let service: ProductTagService
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager

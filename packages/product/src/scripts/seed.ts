@@ -1,15 +1,12 @@
-import { createConnection, loadDatabaseConfig } from "../utils"
+import { createConnection } from "../utils"
 import * as ProductModels from "@models"
 import { Product, ProductCategory, ProductVariant } from "@models"
 import { EntitySchema } from "@mikro-orm/core"
-import { LoaderOptions, Logger } from "@medusajs/types"
-import {
-  ProductServiceInitializeCustomDataLayerOptions,
-  ProductServiceInitializeOptions,
-} from "../types"
+import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
 import { EOL } from "os"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { resolve } from "path"
+import { ModulesSdkUtils } from "@medusajs/utils"
 
 export async function run({
   options,
@@ -18,8 +15,8 @@ export async function run({
 }: Partial<
   Pick<
     LoaderOptions<
-      | ProductServiceInitializeOptions
-      | ProductServiceInitializeCustomDataLayerOptions
+      | ModulesSdkTypes.ModuleServiceInitializeOptions
+      | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
     >,
     "options" | "logger"
   >
@@ -38,7 +35,7 @@ export async function run({
 
   logger ??= console as unknown as Logger
 
-  const dbData = loadDatabaseConfig(options)
+  const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
   const orm = await createConnection(dbData, entities)

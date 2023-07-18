@@ -4,7 +4,7 @@ import path from "path"
 import { Ora } from "ora"
 import promiseExec from "./promise-exec.js"
 import { EOL } from "os"
-import { createFactBox, resetFactBox } from "./facts.js"
+import { displayFactBox, FactBoxOptions } from "./facts.js"
 import { clearProject } from "@medusajs/utils"
 import ProcessManager from "./process-manager.js"
 
@@ -45,6 +45,14 @@ export default async ({
     },
   }
 
+  const factBoxOptions: FactBoxOptions = {
+    interval: null,
+    spinner,
+    processManager,
+    message: "",
+    title: "",
+  }
+
   // initialize the invite token to return
   let inviteToken: string | undefined = undefined
 
@@ -54,11 +62,12 @@ export default async ({
     `DATABASE_TYPE=postgres${EOL}DATABASE_URL=${dbConnectionString}`
   )
 
-  let interval: NodeJS.Timer | null = createFactBox(
+  factBoxOptions.interval = displayFactBox({
+    ...factBoxOptions,
     spinner,
-    "Installing dependencies...",
-    processManager
-  )
+    title: "Installing dependencies...",
+    processManager,
+  })
 
   await processManager.runProcess({
     process: async () => {
@@ -73,30 +82,29 @@ export default async ({
     ignoreERESOLVE: true,
   })
 
-  interval = resetFactBox(
-    interval,
-    spinner,
-    "Installed Dependencies",
-    processManager
-  )
+  factBoxOptions.interval = displayFactBox({
+    ...factBoxOptions,
+    message: "Installed Dependencies",
+  })
 
   if (!boilerplate) {
-    interval = createFactBox(
-      spinner,
-      "Preparing Project Directory...",
-      processManager
-    )
+    factBoxOptions.interval = displayFactBox({
+      ...factBoxOptions,
+      title: "Preparing Project Directory...",
+    })
     // delete files and directories related to onboarding
     clearProject(directory)
-    interval = resetFactBox(
-      interval,
-      spinner,
-      "Prepared Project Directory",
-      processManager
-    )
+    displayFactBox({
+      ...factBoxOptions,
+      message: "Prepared Project Directory",
+    })
   }
 
-  interval = createFactBox(spinner, "Building Project...", processManager)
+  factBoxOptions.interval = displayFactBox({
+    ...factBoxOptions,
+    title: "Building Project...",
+  })
+
   await processManager.runProcess({
     process: async () => {
       try {
@@ -110,9 +118,11 @@ export default async ({
     ignoreERESOLVE: true,
   })
 
-  interval = resetFactBox(interval, spinner, "Project Built", processManager)
-
-  interval = createFactBox(spinner, "Running Migrations...", processManager)
+  displayFactBox({ ...factBoxOptions, message: "Project Built" })
+  factBoxOptions.interval = displayFactBox({
+    ...factBoxOptions,
+    title: "Running Migrations...",
+  })
 
   // run migrations
   await processManager.runProcess({
@@ -133,15 +143,17 @@ export default async ({
     },
   })
 
-  interval = resetFactBox(interval, spinner, "Ran Migrations", processManager)
+  factBoxOptions.interval = displayFactBox({
+    ...factBoxOptions,
+    message: "Ran Migrations",
+  })
 
   if (admin) {
     // create admin user
-    interval = createFactBox(
-      spinner,
-      "Creating an admin user...",
-      processManager
-    )
+    factBoxOptions.interval = displayFactBox({
+      ...factBoxOptions,
+      title: "Creating an admin user...",
+    })
 
     await processManager.runProcess({
       process: async () => {
@@ -155,16 +167,17 @@ export default async ({
       },
     })
 
-    interval = resetFactBox(
-      interval,
-      spinner,
-      "Created admin user",
-      processManager
-    )
+    factBoxOptions.interval = displayFactBox({
+      ...factBoxOptions,
+      message: "Created admin user",
+    })
   }
 
   if (seed || !boilerplate) {
-    interval = createFactBox(spinner, "Seeding database...", processManager)
+    factBoxOptions.interval = displayFactBox({
+      ...factBoxOptions,
+      title: "Seeding database...",
+    })
 
     // check if a seed file exists in the project
     if (!fs.existsSync(path.join(directory, "data", "seed.json"))) {
@@ -189,17 +202,19 @@ export default async ({
         )
       },
     })
-    resetFactBox(
-      interval,
-      spinner,
-      "Seeded database with demo data",
-      processManager
-    )
+
+    displayFactBox({
+      ...factBoxOptions,
+      message: "Seeded database with demo data",
+    })
   } else if (
     fs.existsSync(path.join(directory, "data", "seed-onboarding.json"))
   ) {
     // seed the database with onboarding seed
-    interval = createFactBox(spinner, "Finish preparation...", processManager)
+    factBoxOptions.interval = displayFactBox({
+      ...factBoxOptions,
+      title: "Finish preparation...",
+    })
 
     await processManager.runProcess({
       process: async () => {
@@ -212,7 +227,8 @@ export default async ({
         )
       },
     })
-    resetFactBox(interval, spinner, "Finished Preparation", processManager)
+
+    displayFactBox({ ...factBoxOptions, message: "Finished Preparation" })
   }
 
   return inviteToken
