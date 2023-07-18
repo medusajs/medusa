@@ -64,6 +64,7 @@ export interface ProductVariantDTO {
   options: ProductOptionValueDTO
   metadata?: Record<string, unknown> | null
   product: ProductDTO
+  product_id: string
   variant_rank?: number | null
   created_at: string | Date
   updated_at: string | Date

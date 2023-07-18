@@ -21,12 +21,13 @@ import {
   createProducts,
   CreateProductsData,
   CreateProductsPreparedData,
-  createProductsVariantsPrices,
+  detachInventoryItems,
   detachSalesChannelFromProducts,
   detachShippingProfileFromProducts,
   prepareCreateProductsData,
   removeInventoryItems,
   removeProducts,
+  updateProductsVariantsPrices,
 } from "../../functions"
 import { PricingService, ProductService } from "../../../services"
 import { CreateProductsWorkflowInputData, InjectedDependencies } from "./types"
@@ -61,8 +62,10 @@ export const workflowSteps: TransactionStepsDefinition = {
           action: CreateProductsWorkflowActions.createPrices,
           next: {
             action: CreateProductsWorkflowActions.createInventoryItems,
+            saveResponse: true,
             next: {
               action: CreateProductsWorkflowActions.attachInventoryItems,
+              saveResponse: true,
               next: {
                 action: CreateProductsWorkflowActions.result,
                 noCompensation: true,
@@ -255,6 +258,7 @@ export function transactionHandler(
 
         const variantInventoryItemsData =
           invoke[CreateProductsWorkflowActions.createInventoryItems]
+
         await removeInventoryItems({
           container,
           manager,
@@ -287,6 +291,29 @@ export function transactionHandler(
           data: inventoryItemsResult,
         })
       },
+      [TransactionHandlerType.COMPENSATE]: async (
+        data: CreateProductsWorkflowInputData,
+        { invoke }
+      ) => {
+        const shouldSkipStep_ = shouldSkipInventoryStep(
+          container,
+          CreateProductsWorkflowActions.attachInventoryItems
+        )
+        if (shouldSkipStep_) {
+          return
+        }
+
+        const {
+          [CreateProductsWorkflowActions.createInventoryItems]:
+            inventoryItemsResult,
+        } = invoke
+
+        return await detachInventoryItems({
+          container,
+          manager,
+          data: inventoryItemsResult,
+        })
+      },
     },
 
     [CreateProductsWorkflowActions.createPrices]: {
@@ -301,12 +328,43 @@ export function transactionHandler(
           CreateProductsWorkflowActions.createProducts
         ] as ProductTypes.ProductDTO[]
 
-        return await createProductsVariantsPrices({
+        return await updateProductsVariantsPrices({
           container,
           manager,
           data: {
             products,
             productsHandleVariantsIndexPricesMap,
+          },
+        })
+      },
+      [TransactionHandlerType.COMPENSATE]: async (
+        data: CreateProductsWorkflowInputData,
+        { invoke }
+      ) => {
+        const { productsHandleVariantsIndexPricesMap } = invoke[
+          CreateProductsWorkflowActions.prepare
+        ] as CreateProductsPreparedData
+        const products = invoke[
+          CreateProductsWorkflowActions.createProducts
+        ] as ProductTypes.ProductDTO[]
+
+        const updatedProductsHandleVariantsIndexPricesMap = new Map()
+        productsHandleVariantsIndexPricesMap.forEach(
+          ({ index, prices }, productHandle) => {
+            updatedProductsHandleVariantsIndexPricesMap.set(productHandle, {
+              index,
+              prices: [],
+            })
+          }
+        )
+
+        return await updateProductsVariantsPrices({
+          container,
+          manager,
+          data: {
+            products,
+            productsHandleVariantsIndexPricesMap:
+              updatedProductsHandleVariantsIndexPricesMap,
           },
         })
       },
@@ -334,11 +392,11 @@ export function transactionHandler(
             relations: defaultAdminProductRelations,
           })
 
-        const [product] = await pricingService
+        const res = await pricingService
           .withTransaction(manager)
           .setProductPrices([rawProduct])
 
-        return product
+        return res
       },
     },
   }

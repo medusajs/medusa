@@ -13,7 +13,7 @@ type VariantIndexAndPrices = {
   prices: ProductVariantPricesCreateReq[]
 }
 
-export async function createProductsVariantsPrices({
+export async function updateProductsVariantsPrices({
   container,
   manager,
   data,
