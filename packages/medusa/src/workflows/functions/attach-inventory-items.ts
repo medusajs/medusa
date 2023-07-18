@@ -4,6 +4,7 @@ import {
   ProductTypes,
 } from "@medusajs/types"
 import { EntityManager } from "typeorm"
+import { ProductVariantInventoryService } from "../../services"
 
 export async function attachInventoryItems({
   container,
@@ -17,9 +18,8 @@ export async function attachInventoryItems({
     inventoryItem: InventoryItemDTO
   }[]
 }) {
-  const productVariantInventoryService = container
-    .resolve("productVariantInventoryService")
-    .withTransaction(manager)
+  const productVariantInventoryService: ProductVariantInventoryService =
+    container.resolve("productVariantInventoryService").withTransaction(manager)
 
   return await Promise.all(
     data
