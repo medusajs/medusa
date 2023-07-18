@@ -4,7 +4,7 @@ import { SalesChannelService, ShippingProfileService } from "../../services"
 import { kebabCase } from "@medusajs/utils"
 import { FlagRouter } from "../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../loaders/feature-flags/sales-channels"
-import { SalesChannel } from "../../models"
+import { SalesChannel, ShippingProfileType } from "../../models"
 import { ProductVariantPricesCreateReq } from "../../types/product-variant"
 import { AdminPostProductsReq } from "../../api"
 
@@ -48,10 +48,15 @@ export async function prepareCreateProductsData({
   const shippingProfileServiceTx =
     shippingProfileService.withTransaction(manager)
 
-  const [gitCardShippingProfile, defaultShippingProfile] = await Promise.all([
-    shippingProfileServiceTx.retrieveGiftCardDefault(),
-    shippingProfileServiceTx.retrieveDefault(),
-  ])
+  const shippingProfiles = await shippingProfileServiceTx.list({
+    type: [ShippingProfileType.DEFAULT, ShippingProfileType.GIFT_CARD],
+  })
+  const defaultShippingProfile = shippingProfiles.find(
+    (sp) => sp.type === ShippingProfileType.DEFAULT
+  )
+  const gitCardShippingProfile = shippingProfiles.find(
+    (sp) => sp.type === ShippingProfileType.GIFT_CARD
+  )
 
   let defaultSalesChannel: SalesChannel | undefined
   if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {

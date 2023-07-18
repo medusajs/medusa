@@ -17,6 +17,8 @@ export class addTableProductShippingProfile1680857773273
 
         ALTER TABLE "product" DROP COLUMN IF EXISTS "profile_id";
         CREATE UNIQUE INDEX IF NOT EXISTS "idx_product_shipping_profile_profile_id_product_id_unique" ON "product_shipping_profile" ("profile_id", "product_id");
+        CREATE INDEX IF NOT EXISTS "idx_product_shipping_profile_product_id" ON "product_shipping_profile" ("product_id");
+        CREATE INDEX IF NOT EXISTS "idx_product_shipping_profile_profile_id" ON "product_shipping_profile" ("profile_id");
         DROP INDEX IF EXISTS "IDX_80823b7ae866dc5acae2dac6d2";
       `
     )
@@ -29,6 +31,8 @@ export class addTableProductShippingProfile1680857773273
         WHERE "product"."id" = "product_shipping_profile"."product_id";
 
         DROP INDEX IF EXISTS "idx_product_shipping_profile_profile_id_product_id_unique";
+        DROP INDEX IF EXISTS "idx_product_shipping_profile_product_id";
+        DROP INDEX IF EXISTS "idx_product_shipping_profile_profile_id";
 
         DROP TABLE IF EXISTS "product_shipping_profile";
 
