@@ -26,18 +26,18 @@ export interface WorkflowDefinition {
 
 export type InvokeHandler = (
   container: MedusaContainer,
-  payload: any,
-  invoke: { [actions: string]: any },
+  payload: unknown,
+  invoke: { [actions: string]: unknown },
   metadata: TransactionMetadata
-) => Promise<any>
+) => Promise<unknown>
 
 export type CompensateHandler = (
   container: MedusaContainer,
-  payload: any,
-  invoke: { [actions: string]: any },
-  compensate: { [actions: string]: any },
+  payload: unknown,
+  invoke: { [actions: string]: unknown },
+  compensate: { [actions: string]: unknown },
   metadata: TransactionMetadata
-) => Promise<any>
+) => Promise<unknown>
 
 export class WorkflowManager {
   protected static workflows: Map<string, WorkflowDefinition> = new Map()
