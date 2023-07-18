@@ -46,30 +46,27 @@ export enum CreateProductsWorkflowActions {
 export const workflowSteps: TransactionStepsDefinition = {
   next: {
     action: CreateProductsWorkflowActions.prepare,
-    saveResponse: true,
     noCompensation: true,
     next: {
       action: CreateProductsWorkflowActions.createProducts,
-      saveResponse: true,
       next: [
         {
           action: CreateProductsWorkflowActions.attachShippingProfile,
+          saveResponse: false,
         },
         {
           action: CreateProductsWorkflowActions.attachToSalesChannel,
+          saveResponse: false,
         },
         {
           action: CreateProductsWorkflowActions.createPrices,
           next: {
             action: CreateProductsWorkflowActions.createInventoryItems,
-            saveResponse: true,
             next: {
               action: CreateProductsWorkflowActions.attachInventoryItems,
-              saveResponse: true,
               next: {
                 action: CreateProductsWorkflowActions.result,
                 noCompensation: true,
-                saveResponse: true,
               },
             },
           },
