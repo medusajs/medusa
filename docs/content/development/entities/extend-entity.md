@@ -120,6 +120,14 @@ You can now use your extended entity throughout your commerce application.
 
 ## Access Custom Attributes and Relations in Core Endpoints
 
+### Request Parameters
+
+In most cases, after you extend an entity to add new attributes, you'll likely need to pass these attributes to endpoints defined in the core. By default, this causes an error, as request parameters are validated to ensure only those that are defined are passed to the endpoint.
+
+To allow passing your custom attribute, you'll need to [extend the validator](../endpoints/extend-validator.md) of the endpoint.
+
+### Response Fields
+
 After you add custom attributes, you'll notice that these attributes aren't returned as part of the response fields of core endpoints. Core endpoints have a defined set of fields and relations that can be returned by default in requests.
 
 To change that and ensure your custom attribute is returned in your request, you can extend the allowed fields of a set of endpoints in a loader file and add your attribute into them.
