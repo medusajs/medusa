@@ -39,9 +39,13 @@ For simplicity, this guide adds the code directly in `src/api/index.ts`. Make su
 
 In the file you created, which in this case is `src/api/index.ts`, add the following content to extend the validator:
 
+<!-- eslint-disable max-len -->
+
 ```ts title=src/api/index.ts
 import { registerOverriddenValidators } from "@medusajs/medusa"
-import { AdminPostProductsReq as MedusaAdminPostProductsReq } from "@medusajs/medusa/dist/api/routes/admin/products/create-product"
+import {
+   AdminPostProductsReq as MedusaAdminPostProductsReq,
+} from "@medusajs/medusa/dist/api/routes/admin/products/create-product"
 import { IsString } from "class-validator"
 
 class AdminPostProductsReq extends MedusaAdminPostProductsReq {
