@@ -132,19 +132,19 @@ export default async (req, res) => {
   const entityManager: EntityManager = req.scope.resolve("manager")
   const productModuleService = req.scope.resolve("productModuleService")
 
+  if (productModuleService) {
+    const products = await createProductsWorkflow(
+      {
+        container: req.scope,
+        manager: entityManager,
+      },
+      [validated]
+    )
+
+    return res.json({ product: products[0] })
+  }
+
   const product = await entityManager.transaction(async (manager) => {
-    if (productModuleService) {
-      const products = await createProductsWorkflow(
-        {
-          container: req.scope,
-          manager,
-        },
-        [validated]
-      )
-
-      return products[0]
-    }
-
     const { variants } = validated
     delete validated.variants
 
