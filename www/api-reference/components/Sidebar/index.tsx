@@ -1,10 +1,7 @@
 "use client"
 
-import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
+import { useSidebar } from "@/providers/sidebar"
 import clsx from "clsx"
-import { useEffect } from "react"
-import getSectionId from "@/utils/get-section-id"
-import { useBaseSpecs } from "@/providers/base-specs"
 import dynamic from "next/dynamic"
 import { SidebarItemProps } from "./Item"
 import Loading from "../Loading"
@@ -18,22 +15,7 @@ type SidebarProps = {
 }
 
 const Sidebar = ({ className = "" }: SidebarProps) => {
-  const { items, addItems } = useSidebar()
-  const { baseSpecs } = useBaseSpecs()
-
-  useEffect(() => {
-    if (baseSpecs) {
-      addItems(
-        baseSpecs.tags?.map((tag) => ({
-          path: getSectionId([tag.name.toLowerCase()]),
-          title: tag.name,
-        })) || [],
-        {
-          section: SidebarItemSections.BOTTOM,
-        }
-      )
-    }
-  }, [baseSpecs, addItems])
+  const { items } = useSidebar()
 
   return (
     <aside

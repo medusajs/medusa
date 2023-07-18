@@ -10,6 +10,8 @@ import type { TagSectionProps } from "./Section"
 import { useArea } from "@/providers/area"
 import ContentLoading from "../ContentLoading"
 import getLinkWithBasePath from "@/utils/get-link-with-base-path"
+import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
+import getSectionId from "@/utils/get-section-id"
 
 const TagSection = dynamic<TagSectionProps>(async () => import("./Section"), {
   loading: () => <ContentLoading />,
@@ -20,7 +22,8 @@ export type TagsProps = React.HTMLAttributes<HTMLDivElement>
 const Tags = () => {
   const [tags, setTags] = useState<OpenAPIV3.TagObject[]>([])
   const [loadData, setLoadData] = useState<boolean>(false)
-  const { setBaseSpecs } = useBaseSpecs()
+  const { baseSpecs, setBaseSpecs } = useBaseSpecs()
+  const { addItems } = useSidebar()
   const { area } = useArea()
 
   const { data, isLoading } = useSWR<OpenAPIV3.Document>(
@@ -40,6 +43,20 @@ const Tags = () => {
       setTags(data.tags)
     }
   }, [data, setBaseSpecs])
+
+  useEffect(() => {
+    if (baseSpecs) {
+      addItems(
+        baseSpecs.tags?.map((tag) => ({
+          path: getSectionId([tag.name.toLowerCase()]),
+          title: tag.name,
+        })) || [],
+        {
+          section: SidebarItemSections.BOTTOM,
+        }
+      )
+    }
+  }, [baseSpecs, addItems])
 
   return (
     <>
