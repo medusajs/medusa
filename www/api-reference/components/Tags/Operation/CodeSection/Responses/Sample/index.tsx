@@ -80,24 +80,10 @@ const TagsOperationCodeSectionResponsesSample = ({
         }
       )
 
-      let contentSampleDetailed = stringify(
-        sample({
-          ...contentSchema.schema,
-        } as JSONSchema7),
-        {
-          maxLength: 50,
-        }
-      )
-
-      if (contentSample === contentSampleDetailed) {
-        contentSampleDetailed = ""
-      }
-
       tempExamples.push({
         title: "",
         value: "",
         content: contentSample,
-        contentDetailed: contentSampleDetailed,
         contentSchema: stringify(contentSchema.schema, {
           maxLength: 50,
         }),
@@ -139,38 +125,6 @@ const TagsOperationCodeSectionResponsesSample = ({
               ))}
             </select>
           )}
-          {/* {selectedExample?.contentDetailed && (
-            <CodeTabs
-              tabs={[
-                {
-                  label: "Minimal Response",
-                  value: "minimal",
-                  code: {
-                    source: selectedExample.content,
-                    lang: lang,
-                    preClassName: "max-h-[400px]",
-                  },
-                },
-                {
-                  label: "Detailed Response",
-                  value: "detailed",
-                  code: {
-                    source: selectedExample.contentDetailed,
-                    lang: lang,
-                    preClassName: "max-h-[400px]",
-                  },
-                },
-              ]}
-              className="mt-1"
-            />
-          )}
-          {selectedExample && !selectedExample.contentDetailed && (
-            <CodeBlock
-              source={selectedExample.content}
-              lang={getLanguageFromMedia(Object.keys(response.content)[0])}
-              preClassName="max-h-[400px]"
-            />
-          )} */}
           {selectedExample?.contentSchema && (
             <CodeTabs
               tabs={[
@@ -189,7 +143,7 @@ const TagsOperationCodeSectionResponsesSample = ({
                   code: {
                     source: selectedExample.contentSchema,
                     lang: lang,
-                    className: "max-h-[400px]",
+                    className: "max-h-[400px] overflow-auto",
                   },
                 },
               ]}
