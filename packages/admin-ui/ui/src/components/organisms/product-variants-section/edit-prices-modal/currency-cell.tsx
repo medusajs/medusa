@@ -54,8 +54,7 @@ type CurrencyCellProps = {
     value: number | undefined,
     variantId: string,
     currencyCode?: string,
-    regionId?: string,
-    persist?: boolean
+    regionId?: string
   ) => void
 }
 

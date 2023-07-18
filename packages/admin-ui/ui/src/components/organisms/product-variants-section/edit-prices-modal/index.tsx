@@ -28,6 +28,9 @@ type EditPricesModalProps = {
   product: Product
 }
 
+/**
+ * Return map of regionIds <> currency_codes
+ */
 function useRegionsCurrencyMap() {
   const map = {}
   const { regions: storeRegions } = useAdminRegions({
@@ -159,7 +162,7 @@ function EditPricesModal(props: EditPricesModalProps) {
     const variants = props.product.variants!
 
     const promises = variants.map((variant) => {
-      const variantPrices = variant.prices!.filter((p) => !p.price_list_id) // TODO: confirm that updating won't delete price list MAs
+      const variantPrices = variant.prices!.filter((p) => !p.price_list_id)
       // pick price edits that are related to the current variant
       const variantPricesEditMap = mapKeys(
         pickBy(pricesEditMap, (_, k) => k.includes(variant.id)),

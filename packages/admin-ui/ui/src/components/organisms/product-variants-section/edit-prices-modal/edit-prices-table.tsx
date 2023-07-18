@@ -15,29 +15,32 @@ type EditPricesTableProps = {
   onPriceUpdate: (prices: Record<string, number | undefined>) => void
 }
 
-// variant cell that is origin ov the current drag move
+/**
+ * Variant cell that is origin of the current drag move.
+ */
 let anchorVariant: string | undefined
 
 /**
- * During drag move keep info which column is active one
+ * During drag move keep info which column is active one.
  */
 let activeCurrencyOrRegion: string | undefined = undefined
 
-let activeAmount: number | undefined = undefined
-
 /**
- * Pointer for displaying highlight rectangle range
+ * Pointer for displaying highlight rectangle range.
  */
 let startIndex: number | undefined
 let endIndex: number | undefined
 let anchorIndex: number | undefined
 
 /**
- * Temp. variable for persisting previous "editedPrices" state before editing
+ * Temp. variable for persisting previous "editedPrices" state before editing,
  * so we can undo changes.
  */
 let prevPriceState: Record<string, number> | undefined = undefined
 
+/**
+ * Ordered list of variant id that are currently rendered.
+ */
 let variantIds: string[] = []
 
 /**
@@ -108,7 +111,6 @@ function EditPricesTable(props: EditPricesTableProps) {
 
     anchorVariant = undefined
     activeCurrencyOrRegion = undefined
-    activeAmount = undefined
 
     // warning state updates in event handlers will be batched together so if there is another
     // `setSelectedCells` (or `resetSelection`) call in the same event handler, only last state will apply
@@ -182,7 +184,6 @@ function EditPricesTable(props: EditPricesTableProps) {
     anchorIndex = variantIds.findIndex((v) => v === anchorVariant)
 
     activeCurrencyOrRegion = currencyCode || regionId
-    activeAmount = Number(event.target.value?.replace(",", ""))
     setSelectedCells({ [getKey(variantId, currencyCode || regionId)]: true })
     setIsDrag(true)
 
@@ -195,13 +196,9 @@ function EditPricesTable(props: EditPricesTableProps) {
     value: number | undefined,
     variantId: string,
     currencyCode?: string,
-    regionId?: string,
-    persistActive?: boolean
+    regionId?: string
   ) => {
     setPriceForCell(value, variantId, currencyCode, regionId)
-    if (persistActive) {
-      activeAmount = value
-    }
   }
 
   const onDragFillStart = (
@@ -277,7 +274,6 @@ function EditPricesTable(props: EditPricesTableProps) {
           next[getKey(v, c)] = undefined
         })
         setEditedPrices(next)
-        // resetSelection()
       }
 
       /**
@@ -325,7 +321,7 @@ function EditPricesTable(props: EditPricesTableProps) {
     <div className="h-full overflow-x-auto">
       <table
         onMouseMove={
-          /** prevent highlighting **/
+          /** prevent default browser highlighting while dragging **/
           (e) => e.preventDefault()
         }
         style={{ fontSize: 13, borderCollapse: "collapse" }}
