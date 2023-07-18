@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 
-export class addTableProductShippingProfile1680857773273
+export class dropProductIdFkSalesChannels1680857773273
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
