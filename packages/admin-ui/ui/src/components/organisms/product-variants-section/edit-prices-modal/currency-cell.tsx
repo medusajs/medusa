@@ -6,6 +6,9 @@ import clsx from "clsx"
 import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 import { useAdminRegions } from "medusa-react"
 
+/**
+ * Return currency metadata or metadata of region's currency
+ */
 function useCurrencyMeta(
   currencyCode: string | undefined,
   regionId: string | undefined
@@ -81,8 +84,8 @@ function CurrencyCell(props: CurrencyCellProps) {
 
   const ref = useRef()
 
-  const currencyMeta = useCurrencyMeta(currencyCode, region)
   const [isEditable, setIsEditable] = useState(false)
+  const currencyMeta = useCurrencyMeta(currencyCode, region)
 
   const [localValue, setLocalValue] = useState({
     value: editedAmount,
@@ -91,6 +94,7 @@ function CurrencyCell(props: CurrencyCellProps) {
 
   useEffect(() => {
     setLocalValue({
+      // when amount changes with dragging, format received value
       value: editedAmount?.toFixed(currencyMeta?.decimal_digits) || "",
       float: editedAmount,
     })
@@ -101,6 +105,9 @@ function CurrencyCell(props: CurrencyCellProps) {
       setIsEditable(false)
     }
 
+    /**
+     * Register key listener on selected anchor cell
+     */
     if (isSelected && isAnchor) {
       const onkeydown = (e) => {
         if (document.activeElement?.tagName === "INPUT") {
@@ -122,6 +129,7 @@ function CurrencyCell(props: CurrencyCellProps) {
   }, [isSelected, isAnchor, ref.current])
 
   useEffect(() => {
+    // when cell bcomes editable underlying `span` element is replacet with an `input` which needs to be focused
     if (isEditable) {
       /**
        * HACK - for some reason focusing input will cause `react-currency-input-field` to double the digit that is set as value
@@ -134,29 +142,45 @@ function CurrencyCell(props: CurrencyCellProps) {
         value: localValue.float?.toFixed(currencyMeta?.decimal_digits) || "",
         float: localValue.float,
       })
-      props.onInputChange(localValue.float, variant.id, currencyCode, region) // notify parent container about the change
+
+      // notify parent container about the change
+      props.onInputChange(localValue.float, variant.id, currencyCode, region)
     }
   }, [isEditable])
 
+  /* ==================== HANDLERS ==================== */
+
+  const onCellMouseDown: React.MouseEventHandler = (event) => {
+    if (!isEditable) {
+      event.stopPropagation()
+      event.preventDefault()
+    }
+
+    props.onMouseCellClick(event, variant.id, currencyCode, region)
+
+    if (event.detail === 2) {
+      // Unformat value for edit
+      setLocalValue({
+        float: localValue.float,
+        value: String(localValue.float || ""),
+      })
+      setIsEditable(true)
+    }
+  }
+
+  const onFillIndicatorMouseDown: React.MouseEventHandler = (event) => {
+    document.body.style.userSelect = "none"
+    event.stopPropagation()
+    props.onDragFillStart(variant.id, currencyCode, region)
+  }
+
+  const onInputBlurCapture = () => {
+    setIsEditable(false)
+  }
+
   return (
     <td
-      onMouseDown={(e) => {
-        if (!isEditable) {
-          e.stopPropagation()
-          e.preventDefault()
-        }
-
-        props.onMouseCellClick(e, variant.id, currencyCode, region)
-
-        if (e.detail === 2) {
-          // Unformat value for edit
-          setLocalValue({
-            float: localValue.float,
-            value: String(localValue.float || ""),
-          })
-          setIsEditable(true)
-        }
-      }}
+      onMouseDown={onCellMouseDown}
       className={clsx("relative cursor-pointer pr-2 pl-4", {
         border: !isInRange,
         "bg-blue-100": isSelected && !isAnchor,
@@ -169,9 +193,7 @@ function CurrencyCell(props: CurrencyCellProps) {
         <span className="text-gray-400">{currencyMeta?.symbol_native}</span>
         <AmountField
           ref={ref}
-          onBlurCapture={() => {
-            setIsEditable(false)
-          }}
+          onBlurCapture={onInputBlurCapture}
           style={{ width: "100%", textAlign: "right", paddingRight: 8 }}
           className={clsx("decoration-transparent focus:outline-0", {
             "bg-blue-100": isSelected && !isAnchor,
@@ -179,20 +201,16 @@ function CurrencyCell(props: CurrencyCellProps) {
           onValueChange={(_a, _b, v) => setLocalValue(v)}
           allowDecimals={currencyMeta?.decimal_digits > 0}
           decimalScale={isEditable ? undefined : currencyMeta?.decimal_digits}
+          customInput={isEditable ? currencyInput : currencySpan}
           allowNegativeValue={false}
           value={localValue.value}
           decimalSeparator="."
           placeholder="-"
-          customInput={isEditable ? currencyInput : currencySpan}
         />
         {isRangeEnd && !isEditable && (
           <div
             style={{ bottom: -4, right: -4, zIndex: 9999 }}
-            onMouseDown={(event) => {
-              document.body.style.userSelect = "none"
-              event.stopPropagation()
-              props.onDragFillStart(variant.id, currencyCode, region)
-            }}
+            onMouseDown={onFillIndicatorMouseDown}
             className="absolute h-2 w-2 cursor-ns-resize rounded-full bg-blue-400"
           />
         )}
