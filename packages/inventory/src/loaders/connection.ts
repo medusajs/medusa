@@ -1,19 +1,17 @@
 import * as InventoryModels from "../models"
 
-import { DataSource, DataSourceOptions } from "typeorm"
 import {
   InternalModuleDeclaration,
   LoaderOptions,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
 } from "@medusajs/modules-sdk"
+import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
 
 import { InventoryItem } from "../models/test"
-import { InventoryServiceInitializeOptions } from "../types"
-import { MedusaError } from "@medusajs/utils"
+import { ModulesSdkTypes } from "@medusajs/types"
 import { asValue } from "awilix"
 import { createConnection } from "../utils/create-connection"
-import { moduleDefinition } from "../module-definition"
 
 export default async (
   { options, container }: LoaderOptions,
@@ -24,43 +22,25 @@ export default async (
     moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
   ) {
     const { projectConfig } = container.resolve("configModule")
-    return await loadDefault({
+    options = {
       database: {
-        clientUrl: projectConfig.database_url,
-        driverOptions: {
-          connection: { ssl: false },
-        },
+        clientUrl: projectConfig.database_url!,
       },
-      container,
+    }
+  }
+
+  const customManager = (
+    options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
+  )?.manager
+
+  if (!customManager) {
+    const dbData = ModulesSdkUtils.loadDatabaseConfig("inventory", options)
+    await loadDefault({ database: dbData, container })
+  } else {
+    container.register({
+      manager: asValue(customManager),
     })
   }
-
-  const dbData =
-    options?.database as InventoryServiceInitializeOptions["database"]
-
-  if (!dbData) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_ARGUMENT,
-      `Database config is not present at module config "options.database"`
-    )
-  }
-
-  const entities = Object.values(InventoryModels)
-  const dataSource = new DataSource({
-    type: dbData.type,
-    url: dbData.url,
-    database: dbData.database,
-    extra: dbData.extra || {},
-    schema: dbData.schema,
-    entities,
-    logging: dbData.logging,
-  } as DataSourceOptions)
-
-  await dataSource.initialize()
-
-  container.register({
-    manager: asValue(dataSource.manager),
-  })
 }
 
 async function loadDefault({ database, container }) {
