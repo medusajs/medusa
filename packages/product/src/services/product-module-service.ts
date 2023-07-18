@@ -414,10 +414,15 @@ export default class ProductModuleService<
       string,
       ProductVariant[]
     >(
-      data.map((productData) => [
-        productData.id,
-        existingProductVariants.filter((variant) => variant.product_id === productData.id)
-      ])
+      data.map((productData) => {
+        const productVariantsForProduct = existingProductVariants
+          .filter((variant) => variant.product_id === productData.id)
+
+        return [
+          productData.id,
+          productVariantsForProduct,
+        ]
+      })
     )
 
     const productVariantsMap = new Map<
@@ -495,15 +500,6 @@ export default class ProductModuleService<
 
       variants.forEach((variant) => {
         const isVariantIdDefined = ("id" in variant) && isDefined(variant.id)
-        const existingProductVariant = existingVariants
-          ?.find((existingVariant) => isVariantIdDefined && (existingVariant.id === variant.id))
-
-        if (isVariantIdDefined && !existingProductVariant) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `ProductVariant "${variant.id}" not found for product "${productId}"`
-          )
-        }
 
         if (isVariantIdDefined) {
           variantsToUpdate.push(variant as ProductTypes.UpdateProductVariantDTO)

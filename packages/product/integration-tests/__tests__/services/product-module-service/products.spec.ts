@@ -433,5 +433,32 @@ describe("ProductModuleService products", function () {
         })
       )
     })
+
+    it("should throw an error when variant with id does not exist", async () => {
+      let error
+
+      const updateData = {
+        id: productTwo.id,
+        // Note: VariantThree is already assigned to productTwo, that should be deleted
+        variants: [{
+          id: "does-not-exist",
+          title: "updated-variant"
+        }, {
+          title: "created-variant"
+        }]
+      }
+
+      try {
+        await module.update([updateData])
+      } catch (e) {
+        error = e
+      }
+
+      await module.retrieve(updateData.id, {
+        relations: ["variants"]
+      })
+
+      expect(error.message).toEqual(`ProductVariant with id "does-not-exist" not found`)
+    })
   })
 })
