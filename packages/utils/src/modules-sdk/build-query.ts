@@ -1,12 +1,5 @@
-/**
- * Move to a new build query utils
- */
-import { DAL, FindConfig } from "@medusajs/types"
-import { isObject } from "@medusajs/utils"
-
-export function deduplicateIfNecessary<T = any>(collection: T | T[]) {
-  return Array.isArray(collection) ? [...new Set(collection)] : collection
-}
+import { DAL, FindConfig, SoftDeletableFilterKey } from "@medusajs/types"
+import { deduplicate, isObject } from "../common"
 
 export function buildQuery<T = any, TDto = any>(
   filters: Record<string, any> = {},
@@ -16,11 +9,18 @@ export function buildQuery<T = any, TDto = any>(
   buildWhere(filters, where)
 
   const findOptions: DAL.OptionsQuery<T, any> = {
-    populate: config.relations ?? [],
-    fields: config.select,
-    limit: config.take,
+    populate: deduplicate(config.relations ?? []),
+    fields: config.select as string[],
+    limit: config.take ?? 15,
     offset: config.skip,
-  } as any
+  }
+
+  if (config.withDeleted) {
+    findOptions.filters ??= {}
+    findOptions.filters[SoftDeletableFilterKey] = {
+      withDeleted: true,
+    }
+  }
 
   return { where, options: findOptions }
 }
@@ -28,7 +28,7 @@ export function buildQuery<T = any, TDto = any>(
 function buildWhere(filters: Record<string, any> = {}, where = {}) {
   for (let [prop, value] of Object.entries(filters)) {
     if (Array.isArray(value)) {
-      value = deduplicateIfNecessary(value)
+      value = deduplicate(value)
       where[prop] = ["$in", "$nin"].includes(prop) ? value : { $in: value }
       continue
     }
