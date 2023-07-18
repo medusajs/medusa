@@ -1,3 +1,4 @@
+import { Context, MedusaContainer } from "@medusajs/types"
 import {
   OrchestratorBuilder,
   TransactionHandlerType,
@@ -7,10 +8,12 @@ import {
   TransactionStepsDefinition,
 } from "../transaction"
 
-import { MedusaContainer } from "@medusajs/types"
 export interface WorkflowDefinition {
   id: string
-  handler: (container: MedusaContainer) => TransactionStepHandler
+  handler: (
+    container: MedusaContainer,
+    context?: Context
+  ) => TransactionStepHandler
   orchestrator: TransactionOrchestrator
   flow_: TransactionStepsDefinition
   handlers_: Map<
