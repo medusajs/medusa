@@ -24,7 +24,7 @@ export async function updateProductsVariantsPrices({
     products: ProductTypes.ProductDTO[]
     productsHandleVariantsIndexPricesMap: Map<
       ProductHandle,
-      VariantIndexAndPrices
+      VariantIndexAndPrices[]
     >
   }
 }) {
@@ -39,7 +39,7 @@ export async function updateProductsVariantsPrices({
   )
 
   for (const mapData of data.productsHandleVariantsIndexPricesMap.entries()) {
-    const [handle, { index, prices }] = mapData
+    const [handle, variantData] = mapData
 
     const product = productsMap.get(handle)
     if (!product) {
@@ -49,17 +49,12 @@ export async function updateProductsVariantsPrices({
       )
     }
 
-    const variant = product.variants[index]
-    if (!variant) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Variant with index ${index} not found in product with handle ${handle}`
-      )
-    }
-
-    variantIdsPricesData.push({
-      variantId: variant.id,
-      prices,
+    variantData.forEach((item, index) => {
+      const variant = product.variants[index]
+      variantIdsPricesData.push({
+        variantId: variant.id,
+        prices: item.prices,
+      })
     })
   }
 

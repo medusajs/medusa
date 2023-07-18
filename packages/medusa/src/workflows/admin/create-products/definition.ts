@@ -349,14 +349,19 @@ export function transactionHandler(
         ] as ProductTypes.ProductDTO[]
 
         const updatedProductsHandleVariantsIndexPricesMap = new Map()
-        productsHandleVariantsIndexPricesMap.forEach(
-          ({ index, prices }, productHandle) => {
-            updatedProductsHandleVariantsIndexPricesMap.set(productHandle, {
+        productsHandleVariantsIndexPricesMap.forEach((items, productHandle) => {
+          const existingItems =
+            updatedProductsHandleVariantsIndexPricesMap.get(productHandle) ?? []
+
+          items.forEach(({ index }) => {
+            existingItems.push({
               index,
               prices: [],
             })
-          }
-        )
+          })
+
+          updatedProductsHandleVariantsIndexPricesMap.set(productHandle, items)
+        })
 
         return await updateProductsVariantsPrices({
           container,

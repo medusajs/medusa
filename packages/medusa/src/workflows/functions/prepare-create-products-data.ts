@@ -24,7 +24,7 @@ export type CreateProductsPreparedData = {
   productsHandleSalesChannelsMap: Map<ProductHandle, SalesChannelId[]>
   productsHandleVariantsIndexPricesMap: Map<
     ProductHandle,
-    VariantIndexAndPrices
+    VariantIndexAndPrices[]
   >
 }
 
@@ -70,7 +70,7 @@ export async function prepareCreateProductsData({
   >()
   const productsHandleVariantsIndexPricesMap = new Map<
     ProductHandle,
-    VariantIndexAndPrices
+    VariantIndexAndPrices[]
   >()
 
   for (const product of data) {
@@ -108,12 +108,17 @@ export async function prepareCreateProductsData({
       })
 
       if (hasPrices) {
+        const items =
+          productsHandleVariantsIndexPricesMap.get(product.handle!) ?? []
+
         product.variants.forEach((variant, index) => {
-          productsHandleVariantsIndexPricesMap.set(product.handle!, {
+          items.push({
             index,
             prices: variant.prices,
           })
         })
+
+        productsHandleVariantsIndexPricesMap.set(product.handle!, items)
       }
     }
   }
