@@ -3,21 +3,22 @@ import {
   ICacheService,
   IEventBusService,
   IInventoryService,
+  IStockLocationService,
   InventoryItemDTO,
   InventoryLevelDTO,
-  IStockLocationService,
   ReservationItemDTO,
   ReserveQuantityContext,
 } from "@medusajs/types"
 import { LineItem, Product, ProductVariant } from "../models"
-import { isDefined, MedusaError } from "@medusajs/utils"
+import { MedusaError, isDefined } from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
-import { TransactionBaseService } from "../interfaces"
 
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
 import ProductVariantService from "./product-variant"
 import SalesChannelInventoryService from "./sales-channel-inventory"
 import SalesChannelLocationService from "./sales-channel-location"
+import { TransactionBaseService } from "../interfaces"
+import { getSetDifference } from "../utils/diff-set"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -254,60 +255,145 @@ class ProductVariantInventoryService extends TransactionBaseService {
    * @returns the variant inventory item
    */
   async attachInventoryItem(
+    attachments: {
+      variantId: string
+      inventoryItemId: string
+      requiredQuantity?: number
+    }[]
+  ): Promise<ProductVariantInventoryItem[]>
+  async attachInventoryItem(
     variantId: string,
     inventoryItemId: string,
     requiredQuantity?: number
-  ): Promise<ProductVariantInventoryItem> {
+  ): Promise<ProductVariantInventoryItem[]>
+  async attachInventoryItem(
+    variantIdOrAttachments:
+      | string
+      | {
+          variantId: string
+          inventoryItemId: string
+          requiredQuantity?: number
+        }[],
+    inventoryItemId?: string,
+    requiredQuantity?: number
+  ): Promise<ProductVariantInventoryItem[]> {
+    const data = Array.isArray(variantIdOrAttachments)
+      ? variantIdOrAttachments
+      : [
+          {
+            variantId: variantIdOrAttachments,
+            inventoryItemId: inventoryItemId!,
+            requiredQuantity,
+          },
+        ]
+
+    const invalidDataEntries = data.filter(
+      (d) => typeof d.requiredQuantity === "number" && d.requiredQuantity < 1
+    )
+
+    if (invalidDataEntries.length) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `"requiredQuantity" must be greater than 0, the following entries are invalid: ${invalidDataEntries
+          .map((d) => JSON.stringify(d))
+          .join(", ")}`
+      )
+    }
+
     // Verify that variant exists
-    await this.productVariantService_
+    const variants = await this.productVariantService_
       .withTransaction(this.activeManager_)
-      .retrieve(variantId, {
-        select: ["id"],
+      .list({
+        id: data.map((d) => d.variantId),
       })
 
+    const foundVariantIds = new Set(variants.map((v) => v.id))
+    const requestedVariantIds = new Set(data.map((v) => v.variantId))
+    if (foundVariantIds.size !== requestedVariantIds.size) {
+      const difference = getSetDifference(requestedVariantIds, foundVariantIds)
+
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Variants not found for the following ids: ${[...difference].join(
+          ", "
+        )}`
+      )
+    }
+
     // Verify that item exists
-    await this.inventoryService_.retrieveInventoryItem(
-      inventoryItemId,
+    const [inventoryItems] = await this.inventoryService_.listInventoryItems(
+      {
+        id: data.map((d) => d.inventoryItemId),
+      },
       {
         select: ["id"],
       },
-      { transactionManager: this.activeManager_ }
+      {
+        transactionManager: this.activeManager_,
+      }
     )
+
+    const foundInventoryItemIds = new Set(inventoryItems.map((v) => v.id))
+    const requestedInventoryItemIds = new Set(
+      data.map((v) => v.inventoryItemId)
+    )
+
+    if (foundInventoryItemIds.size !== requestedInventoryItemIds.size) {
+      const difference = getSetDifference(
+        requestedInventoryItemIds,
+        foundInventoryItemIds
+      )
+
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Inventory items not found for the following ids: ${[
+          ...difference,
+        ].join(", ")}`
+      )
+    }
 
     const variantInventoryRepo = this.activeManager_.getRepository(
       ProductVariantInventoryItem
     )
 
-    const existing = await variantInventoryRepo.findOne({
-      where: {
-        variant_id: variantId,
-        inventory_item_id: inventoryItemId,
+    const existingAttachments = await variantInventoryRepo.find({
+      where: data.map((d) => ({
+        variant_id: d.variantId,
+        inventory_item_id: d.inventoryItemId,
+      })),
+    })
+
+    const existingMap: Map<string, Set<string>> = existingAttachments.reduce(
+      (acc, curr) => {
+        const existingSet = acc.get(curr.variant_id) || new Set()
+        existingSet.add(curr.inventory_item_id)
+        acc.set(curr.variant_id, existingSet)
+        return acc
       },
-    })
+      new Map()
+    )
 
-    if (existing) {
-      return existing
-    }
+    const toCreate = (
+      await Promise.all(
+        data.map(async (d) => {
+          if (existingMap.get(d.variantId)?.has(d.inventoryItemId)) {
+            return null
+          }
 
-    let quantityToStore = 1
-    if (typeof requiredQuantity !== "undefined") {
-      if (requiredQuantity < 1) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Quantity must be greater than 0"
-        )
-      } else {
-        quantityToStore = requiredQuantity
-      }
-    }
+          return variantInventoryRepo.create({
+            variant_id: d.variantId,
+            inventory_item_id: d.inventoryItemId,
+            required_quantity: d.requiredQuantity ?? 1,
+          })
+        })
+      )
+    ).filter(
+      (
+        tc: ProductVariantInventoryItem | null
+      ): tc is ProductVariantInventoryItem => !!tc
+    )
 
-    const variantInventory = variantInventoryRepo.create({
-      variant_id: variantId,
-      inventory_item_id: inventoryItemId,
-      required_quantity: quantityToStore,
-    })
-
-    return await variantInventoryRepo.save(variantInventory)
+    return await variantInventoryRepo.save(toCreate)
   }
 
   /**
@@ -411,22 +497,22 @@ class ProductVariantInventoryService extends TransactionBaseService {
       locationId = locations[0].location_id
     }
 
-    const reservationItems = await Promise.all(
-      variantInventory.map(async (inventoryPart) => {
-        const itemQuantity = inventoryPart.required_quantity * quantity
-        return await this.inventoryService_.createReservationItem(
-          {
+    const reservationItems =
+      await this.inventoryService_.createReservationItems(
+        variantInventory.map((inventoryPart) => {
+          const itemQuantity = inventoryPart.required_quantity * quantity
+
+          return {
             ...toReserve,
             location_id: locationId as string,
             inventory_item_id: inventoryPart.inventory_item_id,
             quantity: itemQuantity,
-          },
-          moduleContext
-        )
-      })
-    )
+          }
+        }),
+        moduleContext
+      )
 
-    return reservationItems
+    return reservationItems.flat()
   }
 
   /**

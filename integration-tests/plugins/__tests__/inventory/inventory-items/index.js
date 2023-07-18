@@ -8,7 +8,10 @@ const adminSeeder = require("../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
-const { simpleProductFactory } = require("../../../factories")
+const {
+  simpleProductFactory,
+  simpleOrderFactory,
+} = require("../../../factories")
 const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
 
 describe("Inventory Items endpoints", () => {
@@ -127,7 +130,7 @@ describe("Inventory Items endpoints", () => {
   })
 
   describe("Inventory Items", () => {
-    it("Create, update and delete inventory location level", async () => {
+    it("should create, update and delete the inventory location levels", async () => {
       const api = useApi()
       const inventoryItemId = inventoryItems[0].id
 
@@ -181,7 +184,7 @@ describe("Inventory Items endpoints", () => {
       )
     })
 
-    it("Update inventory item", async () => {
+    it("should update the inventory item", async () => {
       const api = useApi()
       const inventoryItemId = inventoryItems[0].id
 
@@ -207,7 +210,7 @@ describe("Inventory Items endpoints", () => {
       )
     })
 
-    it("fails to update location level to negative quantity", async () => {
+    it("should fail to update the location level to negative quantity", async () => {
       const api = useApi()
 
       const inventoryItemId = inventoryItems[0].id
@@ -241,7 +244,7 @@ describe("Inventory Items endpoints", () => {
       })
     })
 
-    it("Retrieve an inventory item", async () => {
+    it("should retrieve the inventory item", async () => {
       const api = useApi()
       const inventoryItemId = inventoryItems[0].id
 
@@ -312,7 +315,7 @@ describe("Inventory Items endpoints", () => {
       })
     })
 
-    it("Creates an inventory item using the api", async () => {
+    it("should create the inventory item using the api", async () => {
       const product = await simpleProductFactory(dbConnection, {})
 
       const api = useApi()
@@ -362,7 +365,7 @@ describe("Inventory Items endpoints", () => {
       expect(variantInventoryRes.status).toEqual(200)
     })
 
-    it("lists location levels based on id param constraint", async () => {
+    it("should list the location levels based on id param constraint", async () => {
       const api = useApi()
       const inventoryItemId = inventoryItems[0].id
 
@@ -397,8 +400,9 @@ describe("Inventory Items endpoints", () => {
         })
       )
     })
+
     describe("List inventory items", () => {
-      it("Lists inventory items with location", async () => {
+      it("should list inventory items with location", async () => {
         const api = useApi()
 
         await api.post(
@@ -451,7 +455,7 @@ describe("Inventory Items endpoints", () => {
         )
       })
 
-      it("Lists inventory items", async () => {
+      it("should list the inventory items", async () => {
         const api = useApi()
         const inventoryItemId = inventoryItems[0].id
 
@@ -539,21 +543,21 @@ describe("Inventory Items endpoints", () => {
         )
       })
 
-      it("Lists inventory items searching by title, description and sku", async () => {
+      it("should list the inventory items searching by title, description and sku", async () => {
         const api = useApi()
 
         const inventoryService = appContainer.resolve("inventoryService")
 
-        await Promise.all([
-          inventoryService.createInventoryItem({
+        await inventoryService.createInventoryItems([
+          {
             title: "Test Item",
-          }),
-          inventoryService.createInventoryItem({
+          },
+          {
             description: "Test Desc",
-          }),
-          inventoryService.createInventoryItem({
+          },
+          {
             sku: "Test Sku",
-          }),
+          },
         ])
 
         const response = await api.get(
@@ -585,7 +589,7 @@ describe("Inventory Items endpoints", () => {
       })
     })
 
-    it("When deleting an inventory item it removes associated levels and reservations", async () => {
+    it("should remove associated levels and reservations when deleting an inventory item", async () => {
       const api = useApi()
       const inventoryService = appContainer.resolve("inventoryService")
 
@@ -650,7 +654,7 @@ describe("Inventory Items endpoints", () => {
       expect(inventoryLevelCountPostDelete).toEqual(0)
     })
 
-    it("When deleting an inventory item it removes the product variants associated to it", async () => {
+    it("should remove the product variant associations when deleting an inventory item", async () => {
       const api = useApi()
 
       await simpleProductFactory(
@@ -726,6 +730,345 @@ describe("Inventory Items endpoints", () => {
           secondVariantId
         )
       ).toHaveLength(1)
+    })
+
+    describe("inventory service", () => {
+      let inventoryService
+      let productInventoryService
+
+      beforeAll(() => {
+        inventoryService = appContainer.resolve("inventoryService")
+        productInventoryService = appContainer.resolve(
+          "productVariantInventoryService"
+        )
+      })
+
+      it("should bulk remove the inventory items", async () => {
+        const [items] = await inventoryService.listInventoryItems()
+
+        const ids = items.map((item) => item.id)
+
+        expect(ids).not.toBeFalsy()
+
+        await inventoryService.deleteInventoryItem(ids)
+
+        const [emptyItems] = await inventoryService.listInventoryItems()
+        expect(emptyItems).toHaveLength(0)
+      })
+
+      it("should bulk create the inventory levels", async () => {
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        await inventoryService.createInventoryLevels([
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            stocked_quantity: 10,
+          },
+          {
+            inventory_item_id: itemId,
+            location_id: location2Id,
+            stocked_quantity: 10,
+          },
+        ])
+
+        const [levels] = await inventoryService.listInventoryLevels({
+          inventory_item_id: itemId,
+        })
+        expect(levels).toHaveLength(2)
+        expect(levels).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              inventory_item_id: itemId,
+              location_id: locationId,
+            }),
+            expect.objectContaining({
+              inventory_item_id: itemId,
+              location_id: location2Id,
+            }),
+          ])
+        )
+      })
+
+      it("should bulk create the inventory items", async () => {
+        const items = [
+          {
+            sku: "sku-1",
+          },
+          {
+            sku: "sku-2",
+          },
+        ]
+        const createdItems = await inventoryService.createInventoryItems(items)
+
+        expect(createdItems).toHaveLength(2)
+        expect(createdItems).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              sku: "sku-1",
+            }),
+            expect.objectContaining({
+              sku: "sku-2",
+            }),
+          ])
+        )
+      })
+
+      it("should bulk delete the inventory levels by location id", async () => {
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        await inventoryService.createInventoryLevels([
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            stocked_quantity: 10,
+          },
+          {
+            inventory_item_id: itemId,
+            location_id: location2Id,
+            stocked_quantity: 10,
+          },
+        ])
+
+        await inventoryService.deleteInventoryItemLevelByLocationId([
+          locationId,
+          location2Id,
+        ])
+
+        const [levels] = await inventoryService.listInventoryLevels({
+          inventory_item_id: itemId,
+        })
+        expect(levels).toHaveLength(0)
+      })
+
+      it("should bulk delete the inventory levels by location id", async () => {
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        await inventoryService.createInventoryLevels([
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            stocked_quantity: 10,
+          },
+          {
+            inventory_item_id: itemId,
+            location_id: location2Id,
+            stocked_quantity: 10,
+          },
+        ])
+
+        await inventoryService.deleteInventoryItemLevelByLocationId([
+          locationId,
+          location2Id,
+        ])
+
+        const [levels] = await inventoryService.listInventoryLevels({
+          inventory_item_id: itemId,
+        })
+        expect(levels).toHaveLength(0)
+      })
+
+      it("should fail to create the reservations with invalid configuration", async () => {
+        const order = await simpleOrderFactory(dbConnection, {
+          line_items: [
+            { id: "line-item-1", quantity: 1 },
+            { id: "line-item-2", quantity: 1 },
+          ],
+        })
+
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        const error = await inventoryService
+          .createReservationItems([
+            {
+              inventory_item_id: itemId,
+              location_id: locationId,
+              line_item_id: "line-item-1",
+              quantity: 1,
+            },
+            {
+              inventory_item_id: itemId,
+              location_id: locationId,
+              line_item_id: "line-item-2",
+              quantity: 1,
+            },
+          ])
+          .catch((err) => err)
+
+        expect(error.message).toEqual(
+          `Item ${itemId} is not stocked at location ${locationId}, Item ${itemId} is not stocked at location ${locationId}`
+        )
+      })
+
+      it("should bulk delete the reservations by their line item ids", async () => {
+        const order = await simpleOrderFactory(dbConnection, {
+          line_items: [
+            { id: "line-item-1", quantity: 1 },
+            { id: "line-item-2", quantity: 1 },
+          ],
+        })
+
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: itemId,
+          location_id: locationId,
+          stocked_quantity: 10,
+        })
+
+        await inventoryService.createReservationItems([
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            line_item_id: "line-item-1",
+            quantity: 1,
+          },
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            line_item_id: "line-item-2",
+            quantity: 1,
+          },
+        ])
+
+        const [reservations] = await inventoryService.listReservationItems({
+          inventory_item_id: itemId,
+        })
+        expect(reservations).toHaveLength(2)
+
+        await inventoryService.deleteReservationItemsByLineItem([
+          "line-item-1",
+          "line-item-2",
+        ])
+
+        const [deletedReservations] =
+          await inventoryService.listReservationItems({
+            inventory_item_id: itemId,
+          })
+        expect(deletedReservations).toHaveLength(0)
+      })
+
+      it("should bulk delete the reservations by their location id", async () => {
+        const order = await simpleOrderFactory(dbConnection, {
+          line_items: [
+            { id: "line-item-1", quantity: 1 },
+            { id: "line-item-2", quantity: 1 },
+          ],
+        })
+
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: itemId,
+          location_id: locationId,
+          stocked_quantity: 10,
+        })
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: itemId,
+          location_id: location2Id,
+          stocked_quantity: 10,
+        })
+
+        await inventoryService.createReservationItems([
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            line_item_id: "line-item-1",
+            quantity: 1,
+          },
+          {
+            inventory_item_id: itemId,
+            location_id: location2Id,
+            line_item_id: "line-item-2",
+            quantity: 1,
+          },
+        ])
+
+        const [reservations] = await inventoryService.listReservationItems({
+          inventory_item_id: itemId,
+        })
+        expect(reservations).toHaveLength(2)
+
+        await inventoryService.deleteReservationItemByLocationId([
+          location2Id,
+          locationId,
+        ])
+
+        const [deletedReservations] =
+          await inventoryService.listReservationItems({
+            inventory_item_id: itemId,
+          })
+        expect(deletedReservations).toHaveLength(0)
+      })
+
+      it("should bulk update the inventory levels", async () => {
+        const [items] = await inventoryService.listInventoryItems()
+
+        const itemId = items[0].id
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: itemId,
+          location_id: locationId,
+          stocked_quantity: 10,
+        })
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: itemId,
+          location_id: location2Id,
+          stocked_quantity: 10,
+        })
+
+        const levels = await inventoryService.listInventoryLevels({
+          inventory_item_id: itemId,
+        })
+        expect(levels).toHaveLength(2)
+
+        await inventoryService.updateInventoryLevels([
+          {
+            inventory_item_id: itemId,
+            location_id: locationId,
+            stocked_quantity: 20,
+          },
+          {
+            inventory_item_id: itemId,
+            location_id: location2Id,
+            stocked_quantity: 25,
+          },
+        ])
+
+        const [updatedLevels] = await inventoryService.listInventoryLevels({
+          inventory_item_id: itemId,
+        })
+
+        expect(updatedLevels).toHaveLength(2)
+        expect(updatedLevels).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              inventory_item_id: itemId,
+              location_id: locationId,
+              stocked_quantity: 20,
+            }),
+            expect.objectContaining({
+              inventory_item_id: itemId,
+              location_id: location2Id,
+              stocked_quantity: 25,
+            }),
+          ])
+        )
+      })
     })
   })
 })
