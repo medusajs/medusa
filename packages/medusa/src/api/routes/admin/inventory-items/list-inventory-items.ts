@@ -133,16 +133,16 @@ export default async (req: Request, res: Response) => {
     listConfig
   )
 
-  const inventory_items = await joinVariants(
-    inventoryItems,
-    productVariantInventoryService,
-    productVariantService
-  ).then(async (res) => {
-    return await joinLevels(res, locationIds, inventoryService)
-  })
+  // const inventory_items = await joinVariants(
+  //   inventoryItems,
+  //   productVariantInventoryService,
+  //   productVariantService
+  // ).then(async (res) => {
+  //   return await joinLevels(res, locationIds, inventoryService)
+  // })
 
   res.status(200).json({
-    inventory_items,
+    inventory_items: inventoryItems,
     count,
     offset: skip,
     limit: take,

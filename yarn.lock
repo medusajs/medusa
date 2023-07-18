@@ -6244,6 +6244,8 @@ __metadata:
     "@medusajs/modules-sdk": ^1.8.8
     "@medusajs/types": ^1.8.11
     "@medusajs/utils": ^1.9.1
+    "@mikro-orm/core": ^5.7.13
+    "@mikro-orm/postgresql": ^5.7.13
     awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
@@ -6702,6 +6704,53 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mikro-orm/core@npm:^5.7.13":
+  version: 5.7.13
+  resolution: "@mikro-orm/core@npm:5.7.13"
+  dependencies:
+    acorn-loose: 8.3.0
+    acorn-walk: 8.2.0
+    dotenv: 16.3.1
+    fs-extra: 11.1.1
+    globby: 11.1.0
+    mikro-orm: ~5.7.13
+    reflect-metadata: 0.1.13
+  peerDependencies:
+    "@mikro-orm/better-sqlite": ^5.0.0
+    "@mikro-orm/entity-generator": ^5.0.0
+    "@mikro-orm/mariadb": ^5.0.0
+    "@mikro-orm/migrations": ^5.0.0
+    "@mikro-orm/migrations-mongodb": ^5.0.0
+    "@mikro-orm/mongodb": ^5.0.0
+    "@mikro-orm/mysql": ^5.0.0
+    "@mikro-orm/postgresql": ^5.0.0
+    "@mikro-orm/seeder": ^5.0.0
+    "@mikro-orm/sqlite": ^5.0.0
+  peerDependenciesMeta:
+    "@mikro-orm/better-sqlite":
+      optional: true
+    "@mikro-orm/entity-generator":
+      optional: true
+    "@mikro-orm/mariadb":
+      optional: true
+    "@mikro-orm/migrations":
+      optional: true
+    "@mikro-orm/migrations-mongodb":
+      optional: true
+    "@mikro-orm/mongodb":
+      optional: true
+    "@mikro-orm/mysql":
+      optional: true
+    "@mikro-orm/postgresql":
+      optional: true
+    "@mikro-orm/seeder":
+      optional: true
+    "@mikro-orm/sqlite":
+      optional: true
+  checksum: c3ac85164a072257760fa55f71c2ffce67ded6c81ddfcc3f6ed973493c1a986ca9522e59e2c3ceed28b650da745dc1266180a19aecee476b8d157b2b26000efd
+  languageName: node
+  linkType: hard
+
 "@mikro-orm/knex@npm:~5.7.12":
   version: 5.7.12
   resolution: "@mikro-orm/knex@npm:5.7.12"
@@ -6740,6 +6789,44 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mikro-orm/knex@npm:~5.7.13":
+  version: 5.7.13
+  resolution: "@mikro-orm/knex@npm:5.7.13"
+  dependencies:
+    fs-extra: 11.1.1
+    knex: 2.5.1
+    sqlstring: 2.3.3
+  peerDependencies:
+    "@mikro-orm/core": ^5.0.0
+    "@mikro-orm/entity-generator": ^5.0.0
+    "@mikro-orm/migrations": ^5.0.0
+    better-sqlite3: "*"
+    mssql: "*"
+    mysql: "*"
+    mysql2: "*"
+    pg: "*"
+    sqlite3: "*"
+  peerDependenciesMeta:
+    "@mikro-orm/entity-generator":
+      optional: true
+    "@mikro-orm/migrations":
+      optional: true
+    better-sqlite3:
+      optional: true
+    mssql:
+      optional: true
+    mysql:
+      optional: true
+    mysql2:
+      optional: true
+    pg:
+      optional: true
+    sqlite3:
+      optional: true
+  checksum: 9654c0db99efad9320e3c85b9e1544fdd3013302fd0e489bb82686a40a0b3316c4af97fca21fddebeb3346f3db908d370c007147d25192f097d8d33a1c23205b
+  languageName: node
+  linkType: hard
+
 "@mikro-orm/migrations@npm:5.7.12":
   version: 5.7.12
   resolution: "@mikro-orm/migrations@npm:5.7.12"
@@ -6773,6 +6860,28 @@ __metadata:
     "@mikro-orm/seeder":
       optional: true
   checksum: b6aecd3eb9013720e242390f9a4b470ff45f222ccddfeb8b260a9c0682073dbe9b6cfb9f688b7fde19197748a9026073d0693d66a7a0b2de2c83abfbd1fec291
+  languageName: node
+  linkType: hard
+
+"@mikro-orm/postgresql@npm:^5.7.13":
+  version: 5.7.13
+  resolution: "@mikro-orm/postgresql@npm:5.7.13"
+  dependencies:
+    "@mikro-orm/knex": ~5.7.13
+    pg: 8.11.1
+  peerDependencies:
+    "@mikro-orm/core": ^5.0.0
+    "@mikro-orm/entity-generator": ^5.0.0
+    "@mikro-orm/migrations": ^5.0.0
+    "@mikro-orm/seeder": ^5.0.0
+  peerDependenciesMeta:
+    "@mikro-orm/entity-generator":
+      optional: true
+    "@mikro-orm/migrations":
+      optional: true
+    "@mikro-orm/seeder":
+      optional: true
+  checksum: 6a8bec222e19213a91d0a3badd282773cd26a29108deef6cc6124cb1dc51a46500ccff8f6862a8061f3d2c0ef23b427557656a6a41113c0036e3defc7e4e4c62
   languageName: node
   linkType: hard
 
@@ -19305,6 +19414,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"dotenv@npm:16.3.1":
+  version: 16.3.1
+  resolution: "dotenv@npm:16.3.1"
+  checksum: b95ff1bbe624ead85a3cd70dbd827e8e06d5f05f716f2d0cbc476532d54c7c9469c3bc4dd93ea519f6ad711cb522c00ac9a62b6eb340d5affae8008facc3fbd7
+  languageName: node
+  linkType: hard
+
 "dotenv@npm:^16.0.3":
   version: 16.0.3
   resolution: "dotenv@npm:16.0.3"
@@ -29083,6 +29199,45 @@ __metadata:
   languageName: node
   linkType: hard
 
+"knex@npm:2.5.1":
+  version: 2.5.1
+  resolution: "knex@npm:2.5.1"
+  dependencies:
+    colorette: 2.0.19
+    commander: ^10.0.0
+    debug: 4.3.4
+    escalade: ^3.1.1
+    esm: ^3.2.25
+    get-package-type: ^0.1.0
+    getopts: 2.3.0
+    interpret: ^2.2.0
+    lodash: ^4.17.21
+    pg-connection-string: 2.6.1
+    rechoir: ^0.8.0
+    resolve-from: ^5.0.0
+    tarn: ^3.0.2
+    tildify: 2.0.0
+  peerDependenciesMeta:
+    better-sqlite3:
+      optional: true
+    mysql:
+      optional: true
+    mysql2:
+      optional: true
+    pg:
+      optional: true
+    pg-native:
+      optional: true
+    sqlite3:
+      optional: true
+    tedious:
+      optional: true
+  bin:
+    knex: bin/cli.js
+  checksum: 33580641feaa93074bdc10e78f06382e5017d46a3cd22821c09057e7da303c35772add39a110fffe685c2f438a78751a0eb6f50aad1c4bdb032e8ec9b7879b69
+  languageName: node
+  linkType: hard
+
 "kuler@npm:^2.0.0":
   version: 2.0.0
   resolution: "kuler@npm:2.0.0"
@@ -31410,6 +31565,13 @@ __metadata:
   version: 5.7.12
   resolution: "mikro-orm@npm:5.7.12"
   checksum: 6b71e7b9803b7cbd934c6830df7fc010201ef48a9efaebbce98f3613896114cd464bf5a1d0746b42b14aea92e29a593f75775482d64e4cf856ffdbe341379edf
+  languageName: node
+  linkType: hard
+
+"mikro-orm@npm:~5.7.13":
+  version: 5.7.13
+  resolution: "mikro-orm@npm:5.7.13"
+  checksum: 35013a87b26363cf996591b3541f2d36df7bef7f8ff7644d5f3d3ab6a2c1f68b1d97758229faa322389ceca95c07e273216034df3daa9ef040a8dc3779529ed3
   languageName: node
   linkType: hard
 
@@ -34113,6 +34275,13 @@ __metadata:
   version: 2.5.0
   resolution: "pg-connection-string@npm:2.5.0"
   checksum: 4b1650132d8000d68864db774c4a99d98acf1cb90525045402b93d3b5a5f36500e5934c653598256cd86b3a310ba4639fbf1e8e1e04cefa46840838541b7626c
+  languageName: node
+  linkType: hard
+
+"pg-connection-string@npm:2.6.1":
+  version: 2.6.1
+  resolution: "pg-connection-string@npm:2.6.1"
+  checksum: e5a71a2da143b8dc17143a9db7737679b210643771aa678d3bc60c7bc70da11bbb8e2d531be91c8c4eddd6ac6046307811e793f5850b9ba595a11785c948a417
   languageName: node
   linkType: hard
 
