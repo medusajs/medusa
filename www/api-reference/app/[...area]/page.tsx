@@ -33,3 +33,14 @@ const ReferencePage = async ({ params: { area } }: ReferencePageProps) => {
 }
 
 export default ReferencePage
+
+export function generateMetadata({ params: { area } }: ReferencePageProps) {
+  return {
+    title: `Medusa ${capitalizeTitle(area[0])} API Reference`,
+    description: `REST API reference for the Medusa ${area[0]} API. This reference includes code snippets and examples for Medusa JS Client and cURL.`,
+  }
+}
+
+function capitalizeTitle(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+}

@@ -55,7 +55,9 @@ const CodeBlock = ({
           >
             <code
               className={clsx(
-                "text-code font-monospace table min-w-full p-1 print:whitespace-pre-wrap"
+                "text-code font-monospace table min-w-full print:whitespace-pre-wrap",
+                tokens.length > 1 && "py-1 pr-1",
+                tokens.length <= 1 && "p-1"
               )}
             >
               {tokens.map((line, i) => {
@@ -70,13 +72,13 @@ const CodeBlock = ({
                       <span
                         className={clsx(
                           "text-medusa-text-subtle mr-1 table-cell select-none",
-                          "bg-medusa-code-block-bg sticky left-0 w-[1%] pr-1 text-right"
+                          "bg-medusa-code-block-bg sticky left-0 w-[1%] px-1 text-right"
                         )}
                       >
                         {i + 1}
                       </span>
                     )}
-                    <span className={clsx(tokens.length > 1 && "pl-1")}>
+                    <span>
                       {line.map((token, key) => (
                         <span key={key} {...getTokenProps({ token })} />
                       ))}

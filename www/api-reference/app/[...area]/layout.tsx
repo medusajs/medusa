@@ -10,7 +10,7 @@ import { Roboto_Mono } from "next/font/google"
 
 export const metadata = {
   title: "Medusa API Reference",
-  description: "Check out Medusa's admin API reference",
+  description: "Check out Medusa's API reference",
 }
 
 const inter = Inter({
