@@ -1,8 +1,8 @@
 import type { MDXComponents } from "mdx/types"
 import Security from "./Security"
 import type { OpenAPIV3 } from "openapi-types"
-import InlineCode from "./InlineCode"
 import Link from "./Link"
+import CodeWrapper from "./CodeWrapper"
 
 export type ScopeType = {
   specs: OpenAPIV3.Document
@@ -11,7 +11,7 @@ export type ScopeType = {
 const getCustomComponents = (scope?: ScopeType): MDXComponents => {
   return {
     Security: () => <Security specs={scope?.specs} />,
-    code: InlineCode,
+    code: CodeWrapper,
     a: Link,
   }
 }

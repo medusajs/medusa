@@ -49,6 +49,9 @@ const TagsOperationCodeSectionResponsesSample = ({
           content: stringify(example.value, {
             maxLength: 50,
           }),
+          contentSchema: stringify(contentSchema.schema, {
+            maxLength: 50,
+          }),
         })
       })
     } else if (contentSchema.example) {
@@ -56,6 +59,9 @@ const TagsOperationCodeSectionResponsesSample = ({
         title: "",
         value: "",
         content: stringify(contentSchema.example, {
+          maxLength: 50,
+        }),
+        contentSchema: stringify(contentSchema.schema, {
           maxLength: 50,
         }),
       })
@@ -92,6 +98,9 @@ const TagsOperationCodeSectionResponsesSample = ({
         value: "",
         content: contentSample,
         contentDetailed: contentSampleDetailed,
+        contentSchema: stringify(contentSchema.schema, {
+          maxLength: 50,
+        }),
       })
     }
 
@@ -130,7 +139,7 @@ const TagsOperationCodeSectionResponsesSample = ({
               ))}
             </select>
           )}
-          {selectedExample?.contentDetailed && (
+          {/* {selectedExample?.contentDetailed && (
             <CodeTabs
               tabs={[
                 {
@@ -160,6 +169,38 @@ const TagsOperationCodeSectionResponsesSample = ({
               source={selectedExample.content}
               lang={getLanguageFromMedia(Object.keys(response.content)[0])}
               preClassName="max-h-[400px]"
+            />
+          )} */}
+          {selectedExample?.contentSchema && (
+            <CodeTabs
+              tabs={[
+                {
+                  label: "Example Response",
+                  value: "example",
+                  code: {
+                    source: selectedExample.content,
+                    lang: lang,
+                    className: "max-h-[400px]",
+                  },
+                },
+                {
+                  label: "Response Schema",
+                  value: "schema",
+                  code: {
+                    source: selectedExample.contentSchema,
+                    lang: lang,
+                    className: "max-h-[400px]",
+                  },
+                },
+              ]}
+              className="mt-1"
+            />
+          )}
+          {selectedExample && !selectedExample.contentSchema && (
+            <CodeBlock
+              source={selectedExample.content}
+              lang={getLanguageFromMedia(Object.keys(response.content)[0])}
+              className="max-h-[400px]"
             />
           )}
           {!selectedExample && <>Empty Response</>}

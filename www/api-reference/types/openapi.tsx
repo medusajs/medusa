@@ -45,6 +45,7 @@ export type ExampleObject = {
   value: string
   content: string
   contentDetailed?: string
+  contentSchema?: string
 }
 
 export type PathsObject = {

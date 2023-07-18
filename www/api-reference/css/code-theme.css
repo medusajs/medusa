@@ -1,10 +1,41 @@
 /** VS Code Dark Theme: https://github.com/PrismJS/prism-themes/blob/master/themes/prism-vsc-dark-plus.css **/
 
-.section-content pre {
+/* .section-content pre {
 	@apply rounded border border-transparent dark:border-medusa-code-block-border;
+} */
+
+/* .code-block {
+	@apply relative;
+	@apply xs:after:content-[''] xs:after:rounded xs:after:absolute xs:after:right-0 xs:after:top-0 xs:after:w-[calc(10%+24px)] xs:after:h-full xs:after:bg-code-fade;
+} */
+
+/* .prism-code {
+  @apply relative xs:max-w-[90%];
 }
 
-pre[class*="language-"],
+.prism-code *::selection, .code-header::selection {
+  @apply bg-medusa-code-text-highlight;
+}
+
+.prism-code:not(:hover)::-webkit-scrollbar-thumb,
+.prism-code:not(:hover)::-webkit-scrollbar-track {
+  @apply xs:invisible;
+}
+
+.prism-code:hover::-webkit-scrollbar-thumb,
+.prism-code:hover::-webkit-scrollbar-track {
+  @apply xs:opacity-100
+} */
+
+/* .prism-code {
+  @apply bg-transparent break-words !outline-none;
+}
+
+.prism-code div {
+  @apply !outline-none focus:!outline-none active:!outline-none;
+} */
+
+/* pre[class*="language-"],
 code[class*="language-"] {
 	color: #d4d4d4;
 	font-size: 13px;
@@ -23,6 +54,7 @@ code[class*="language-"] {
 	-moz-hyphens: none;
 	-ms-hyphens: none;
 	hyphens: none;
+	position: relative;
 }
 
 pre[class*="language-"]::selection,
@@ -52,11 +84,11 @@ pre[class*="language-"] {
 	border-radius: .3em;
 	color: #db4c69;
 	background: #1e1e1e;
-}
+} */
 /*********************************************************
 * Tokens
 */
-.namespace {
+/* .namespace {
 	opacity: .7;
 }
 
@@ -233,12 +265,12 @@ pre[class*="language-"] {
 
 .token.namespace {
 	color: #4ec9b0;
-}
+} */
 /*********************************************************
 * Language Specific
 */
 
-pre[class*="language-javascript"],
+/* pre[class*="language-javascript"],
 code[class*="language-javascript"],
 pre[class*="language-jsx"],
 code[class*="language-jsx"],
@@ -265,11 +297,11 @@ code[class*="language-html"] {
 
 .language-html .token.punctuation {
 	color: #808080;
-}
+} */
 /*********************************************************
 * Line highlighting
 */
-pre[class*="language-"] > code[class*="language-"] {
+/* pre[class*="language-"] > code[class*="language-"] {
 	position: relative;
 	z-index: 1;
 }
@@ -278,4 +310,4 @@ pre[class*="language-"] > code[class*="language-"] {
 	background: #f7ebc6;
 	box-shadow: inset 5px 0 0 #f7d87c;
 	z-index: 0;
-}
+} */

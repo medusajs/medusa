@@ -42,7 +42,15 @@ const Section = ({
   }, [sectionRef, addToSidebar, addItems, scannedHeading])
 
   return (
-    <div ref={sectionRef} className={clsx("section-content", className)}>
+    <div
+      ref={sectionRef}
+      className={clsx(
+        "[&_pre]:dark:border-medusa-code-block-border [&_pre]:rounded [&_pre]:border [&_pre]:border-transparent",
+        "[&_ul]:list-disc [&_ul]:px-1",
+        "[&_h2]:mt-0 [&_h2]:pt-[57px] [&_hr]:mt-[57px] [&_hr]:mb-0",
+        className
+      )}
+    >
       {children}
     </div>
   )

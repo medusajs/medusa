@@ -22,7 +22,7 @@
 
 .DocSearch-Input {
   @apply !text-body-regular !pl-1;
-  @apply placeholder:text-medusa-text-placeholder dark:placeholder:text-medusa-text-placeholder-dark;
+  @apply placeholder:text-medusa-text-muted dark:placeholder:text-medusa-text-muted-dark;
 }
 
 .DocSearch-Dropdown {
@@ -31,7 +31,7 @@
 }
 
 .DocSearch-Hit-source {
-  @apply !m-0 !text-label-small-plus uppercase text-medusa-text-placeholder dark:text-medusa-text-placeholder-dark;
+  @apply !m-0 !text-label-small-plus uppercase text-medusa-text-muted dark:text-medusa-text-muted-dark;
   @apply border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark;
   @apply !py-[10px] !px-1.5;
 }
@@ -178,7 +178,7 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 }
 
 .DocSearch-Button-Placeholder {
-  @apply text-medusa-text-placeholder dark:text-medusa-text-placeholder-dark;
+  @apply text-medusa-text-muted dark:text-medusa-text-muted-dark;
   @apply !pl-0.5 !text-label-small lg:!block !hidden;
 }
 
@@ -196,18 +196,19 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
   @apply lg:w-[280px] lg:max-w-[280px] lg:!h-2 lg:!p-0;
 }
 
+
 :root {
   --docsearch-searchbox-background: theme(colors.medusa.bg.field.DEFAULT) !important;
   --docsearch-searchbox-focus-background: theme(colors.medusa.bg.field.hover.DEFAULT) !important;
   --docsearch-searchbox-shadow: none !important;
   --docsearch-modal-height: 472px !important;
   --docsearch-modal-background: theme(colors.medusa.bg.base.DEFAULT) !important;
-  --docsearch-modal-shadow: theme(boxShadow.overlay) !important;
+  --docsearch-modal-shadow: theme(boxShadow.modal) !important;
   --docsearch-container-background: theme(colors.medusa.bg.overlay.DEFAULT) !important;
   --docsearch-key-gradient: theme(colors.medusa.bg.component.DEFAULT) !important;
   --docsearch-muted-color: theme(colors.medusa.text.subtle.DEFAULT) !important;
   --docsearch-spacing: 12px theme(spacing[1.5]) !important;
-  --docsearch-highlight-color: theme(colors.medusa.text.placeholder.DEFAULT) !important;
+  --docsearch-highlight-color: theme(colors.medusa.text.muted.DEFAULT) !important;
   --docsearch-text-color: theme(colors.medusa.text.base.DEFAULT) !important;
   --docsearch-hit-background: var(--docsearch-modal-background) !important;
   --docsearch-hit-height: auto !important;
@@ -219,9 +220,9 @@ html[data-theme="dark"] {
   --docsearch-searchbox-background: theme(colors.medusa.bg.field.dark) !important;
   --docsearch-searchbox-focus-background: theme(colors.medusa.bg.field.hover.dark) !important;
   --docsearch-modal-background: theme(colors.medusa.bg.base.dark) !important;
-  --docsearch-modal-shadow: theme(boxShadow.overlay-dark) !important;
+  --docsearch-modal-shadow: theme(boxShadow.modal-dark) !important;
   --docsearch-container-background: theme(colors.medusa.bg.overlay.dark) !important;
   --docsearch-key-gradient: theme(colors.medusa.bg.component.dark) !important;
   --docsearch-muted-color: theme(colors.medusa.text.subtle.dark) !important;
-  --docsearch-highlight-color: theme(colors.medusa.text.placeholder.dark) !important;
+  --docsearch-highlight-color: theme(colors.medusa.text.muted.dark) !important;
 }

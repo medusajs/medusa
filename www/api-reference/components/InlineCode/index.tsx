@@ -4,7 +4,7 @@ import clsx from "clsx"
 import dynamic from "next/dynamic"
 
 const CopyButton = dynamic<CopyButtonProps>(
-  async () => import("../../CopyButton"),
+  async () => import("../CopyButton"),
   {
     loading: () => <Loading />,
   }

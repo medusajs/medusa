@@ -17,7 +17,7 @@ const IconChevronDownMini = ({ iconColorClassName, ...props }: IconProps) => {
         strokeLinejoin="round"
         className={
           iconColorClassName ||
-          "stroke-medusa-icon-secondary dark:stroke-medusa-icon-secondary-dark"
+          "stroke-medusa-icon-subtle dark:stroke-medusa-icon-subtle-dark"
         }
       />
     </svg>

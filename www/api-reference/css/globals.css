@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap'); */
 
 h1 {
   @apply text-h1 mb-0.5;
@@ -37,12 +37,8 @@ p, ul, ol {
   clip-path: inset(0);
 }
 
-.section-content ul {
-  @apply list-disc px-1;
-}
-
-.section-content h2 {
-  @apply pt-4;
+html {
+  -webkit-font-smoothing: antialiased;
 }
 
 @import url('./code-theme.css');

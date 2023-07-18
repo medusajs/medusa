@@ -15,6 +15,7 @@ const Tooltip = ({
   tooltipClassName = "",
   children,
   html = "",
+  ...rest
 }: TooltipProps) => {
   const [elementId, setElementId] = useState<string | null>(null)
 
@@ -42,6 +43,7 @@ const Tooltip = ({
         anchorId={elementId || ""}
         className={tooltipClassName}
         wrapper="span"
+        {...rest}
       />
     </>
   )

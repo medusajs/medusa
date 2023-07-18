@@ -18,7 +18,7 @@ const CodeTabs = ({ tabs, className }: CodeTabsProps) => {
   const [selectedTab, setSelectedTab] = useState(tabs[0])
 
   return (
-    <div className={clsx(className)}>
+    <div className={clsx("my-1", className)}>
       <ul
         className={clsx(
           "bg-medusa-code-tabs-bg flex !list-none gap-1 rounded-t py-[12px] px-1",
@@ -47,9 +47,9 @@ const CodeTabs = ({ tabs, className }: CodeTabsProps) => {
         {selectedTab.code && (
           <CodeBlock
             {...selectedTab.code}
-            preClassName={clsx(
-              "!mt-0 !rounded-t-none !border-t-0",
-              selectedTab.code.preClassName
+            className={clsx(
+              "!mt-0 !rounded-t-none",
+              selectedTab.code.className
             )}
           />
         )}

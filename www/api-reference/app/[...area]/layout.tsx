@@ -5,11 +5,23 @@ import "../../css/globals.css"
 import BaseSpecsProvider from "@/providers/base-specs"
 import Navbar from "@/components/Navbar"
 import ColorModeProvider from "@/providers/color-mode"
+import { Inter } from "next/font/google"
+import { Roboto_Mono } from "next/font/google"
 
 export const metadata = {
   title: "Medusa API Reference",
   description: "Check out Medusa's admin API reference",
 }
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+})
+
+const robotoMono = Roboto_Mono({
+  subsets: ["latin"],
+  variable: "--font-roboto-mono",
+})
 
 export default function RootLayout({
   children,
@@ -20,6 +32,8 @@ export default function RootLayout({
     <html lang="en" className={clsx("h-full w-full")}>
       <body
         className={clsx(
+          inter.variable,
+          robotoMono.variable,
           "bg-docs-bg dark:bg-docs-bg-dark font-base text-body-regular h-full w-full",
           "text-medusa-text-subtle dark:text-medusa-text-subtle-dark"
         )}

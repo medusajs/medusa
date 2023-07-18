@@ -30,7 +30,7 @@ const TagsOperationCodeSectionResponses = ({
   return (
     <>
       <h3>
-        Response sample{" "}
+        Response{" "}
         <span
           className={clsx(
             "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",

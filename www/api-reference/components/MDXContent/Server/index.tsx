@@ -4,7 +4,6 @@ import { MDXRemote } from "next-mdx-remote/rsc"
 import getCustomComponents from "../../MDXComponents"
 import type { ScopeType } from "../../MDXComponents"
 import type { MDXRemoteProps } from "next-mdx-remote"
-import getMdxOptions from "@/utils/get-mdx-options"
 
 export type MDXContentServerProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -19,7 +18,6 @@ const MDXContentServer = ({ content, ...props }: MDXContentServerProps) => {
         source={content}
         components={getCustomComponents((props.scope as ScopeType) || {})}
         options={{
-          mdxOptions: getMdxOptions(),
           scope: props.scope,
         }}
         {...props}

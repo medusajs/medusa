@@ -40,9 +40,9 @@ const TagsOperationDescriptionSection = ({
   return (
     <>
       <h3>{operation.summary}</h3>
-      <p className="my-1">
+      <div className="my-1">
         <MDXContentClient content={operation.description} />
-      </p>
+      </div>
       {operation.security && (
         <TagsOperationDescriptionSectionSecurity
           security={operation.security}

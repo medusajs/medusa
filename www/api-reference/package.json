@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@docsearch/react": "^3.5.1",
-    "@mapbox/rehype-prism": "^0.8.0",
     "@mdx-js/loader": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
     "@next/mdx": "^13.4.4",
@@ -37,7 +36,6 @@
     "react-intersection-observer": "^9.4.4",
     "react-tooltip": "^5.13.1",
     "react-uuid": "^2.0.0",
-    "rehype-mdx-code-props": "^1.0.0",
     "slugify": "^1.6.6",
     "swr": "^2.1.5",
     "tailwindcss": "3.3.2",

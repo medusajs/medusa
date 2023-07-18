@@ -1,5 +1,5 @@
 import Loading from "@/components/Loading"
-import type { InlineCodeProps } from "@/components/MDXComponents/InlineCode"
+import type { InlineCodeProps } from "@/components/InlineCode"
 import MDXContentClient from "@/components/MDXContent/Client"
 import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
@@ -7,7 +7,7 @@ import dynamic from "next/dynamic"
 import type { LinkProps } from "../../../../MDXComponents/Link"
 
 const InlineCode = dynamic<InlineCodeProps>(
-  async () => import("../../../../MDXComponents/InlineCode"),
+  async () => import("../../../../InlineCode"),
   {
     loading: () => <Loading />,
   }

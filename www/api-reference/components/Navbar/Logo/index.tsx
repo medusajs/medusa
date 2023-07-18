@@ -4,19 +4,17 @@ import { useColorMode } from "@/providers/color-mode"
 import getLinkWithBasePath from "@/utils/get-link-with-base-path"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 
 const NavbarLogo = () => {
   const { colorMode } = useColorMode()
-  const pathname = usePathname()
 
   return (
-    <Link href={pathname} className="flex-1">
+    <Link href={`/`} className="flex-1">
       <Image
         src={
           colorMode === "light"
             ? getLinkWithBasePath("/images/logo.png")
-            : getLinkWithBasePath("images/logo-dark.png")
+            : getLinkWithBasePath("/images/logo-dark.png")
         }
         alt="Medusa Logo"
         height={20}

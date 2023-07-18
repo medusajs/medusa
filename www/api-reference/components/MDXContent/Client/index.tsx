@@ -6,7 +6,6 @@ import type { ScopeType } from "../../MDXComponents"
 import { MDXRemote } from "next-mdx-remote"
 import type { MDXRemoteProps, MDXRemoteSerializeResult } from "next-mdx-remote"
 import { serialize } from "next-mdx-remote/serialize"
-import getMdxOptions from "@/utils/get-mdx-options"
 import ContentLoading from "@/components/ContentLoading"
 
 export type MDXContentClientProps = {
@@ -19,7 +18,6 @@ const MDXContentClient = ({ content, ...props }: MDXContentClientProps) => {
   useEffect(() => {
     void serialize(content, {
       mdxOptions: {
-        ...getMdxOptions(),
         // A workaround for an error in next-mdx-remote
         // more details in this issue:
         // https://github.com/hashicorp/next-mdx-remote/issues/350

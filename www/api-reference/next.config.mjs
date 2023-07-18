@@ -1,6 +1,4 @@
 import mdx from "@next/mdx"
-import rehypeMdxCodeProps from "rehype-mdx-code-props"
-import rehypePrism from "@mapbox/rehype-prism"
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -22,7 +20,7 @@ const nextConfig = {
 const withMDX = mdx({
   extension: /\.mdx?$/,
   options: {
-    rehypePlugins: [rehypePrism, rehypeMdxCodeProps],
+    rehypePlugins: [],
   },
 })
 export default withMDX(nextConfig)
