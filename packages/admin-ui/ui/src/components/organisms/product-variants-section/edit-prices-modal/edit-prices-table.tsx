@@ -58,6 +58,7 @@ function EditPricesTable(props: EditPricesTableProps) {
     limit: 1000,
   })
 
+  const [isDragFill, setIsDragFill] = useState(false)
   const [isDrag, setIsDrag] = useState(false)
   const [editedPrices, setEditedPrices] = useState<
     Record<string, number | undefined>
@@ -86,18 +87,6 @@ function EditPricesTable(props: EditPricesTableProps) {
     const next = { ...selectedCells }
 
     next[key] = true
-    setSelectedCells(next)
-  }
-
-  const deselectCell = (
-    variantId: string,
-    currencyCode?: string,
-    region?: string
-  ) => {
-    const key = getKey(variantId, currencyCode, region)
-    const next = { ...selectedCells }
-
-    delete next[key]
     setSelectedCells(next)
   }
 
@@ -131,7 +120,7 @@ function EditPricesTable(props: EditPricesTableProps) {
    */
 
   const onMouseRowEnter = (variantId: string) => {
-    if (!isDrag || !anchorVariant) {
+    if (!(isDragFill || isDrag) || !anchorVariant) {
       return
     }
 
@@ -165,12 +154,17 @@ function EditPricesTable(props: EditPricesTableProps) {
     // select cells in range and set price
     keys.forEach((k) => {
       nextSelection[k] = true
-      nextPrices[k] =
-        editedPrices[getKey(anchorVariant, activeCurrencyOrRegion)]
+
+      if (isDragFill) {
+        nextPrices[k] =
+          editedPrices[getKey(anchorVariant, activeCurrencyOrRegion)]
+      }
     })
 
     setSelectedCells(nextSelection)
-    setEditedPrices(nextPrices)
+    if (isDragFill) {
+      setEditedPrices(nextPrices)
+    }
   }
 
   const onMouseCellClick = (
@@ -189,7 +183,8 @@ function EditPricesTable(props: EditPricesTableProps) {
 
     activeCurrencyOrRegion = currencyCode || regionId
     activeAmount = Number(event.target.value?.replace(",", ""))
-    selectCell(variantId, currencyCode, regionId, true)
+    setSelectedCells({ [getKey(variantId, currencyCode || regionId)]: true })
+    setIsDrag(true)
 
     startIndex = props.product.variants!.findIndex((v) => v.id === variantId)
     endIndex = startIndex
@@ -209,17 +204,13 @@ function EditPricesTable(props: EditPricesTableProps) {
     }
   }
 
-  const onDragStart = (
+  const onDragFillStart = (
     variantId: string,
     currencyCode?: string,
     regionId?: string
   ) => {
     selectCell(variantId, currencyCode, regionId)
-    setIsDrag(true)
-  }
-
-  const onDragEnd = () => {
-    setIsDrag(false)
+    setIsDragFill(true)
   }
 
   /**
@@ -270,6 +261,7 @@ function EditPricesTable(props: EditPricesTableProps) {
 
     const up = () => {
       document.body.style.userSelect = "auto"
+      setIsDragFill(false)
       setIsDrag(false)
     }
 
@@ -278,7 +270,7 @@ function EditPricesTable(props: EditPricesTableProps) {
      */
     const onKeyDown = (e: KeyboardEvent) => {
       // if backspace is pressed but we aren't focused on any input
-      if (e.key === "Backspace" && document.activeElement === document.body) {
+      if (e.key === "Backspace" && document.activeElement.tagName !== "INPUT") {
         const next = { ...editedPrices }
         Object.keys(selectedCells).forEach((k) => {
           const [v, c] = k.split("-")
@@ -299,10 +291,6 @@ function EditPricesTable(props: EditPricesTableProps) {
           resetSelection()
         }
       }
-
-      // if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
-      //   navigator.clipboard.writeText(JSON.stringify(editedPrices))
-      // }
     }
 
     document.addEventListener("mousedown", down)
@@ -314,19 +302,19 @@ function EditPricesTable(props: EditPricesTableProps) {
       document.removeEventListener("mouseup", up)
       document.addEventListener("keydown", onKeyDown)
     }
-  }, [Object.keys(selectedCells).length])
+  }, [selectedCells])
 
   useEffect(() => {
     // when drag is released, notify parent container that prices have changed
-    if (!isDrag) {
+    if (!isDragFill) {
       props.onPriceUpdate(editedPrices)
     }
-  }, [isDrag, editedPrices])
+  }, [isDragFill, editedPrices])
 
   const firstColumnWidth = useMemo(() => {
     let max = 0
 
-    props.product.variants.forEach(
+    props.product.variants!.forEach(
       (v) => (max = Math.max(max, v.title.length + (v.sku ? v.sku.length : 0)))
     )
 
@@ -456,8 +444,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                       editedAmount={editedPrices[getKey(variant.id, c)]}
                       onInputChange={onInputChange}
                       onMouseCellClick={onMouseCellClick}
-                      onDragStart={onDragStart}
-                      onDragEnd={onDragEnd}
+                      onDragFillStart={onDragFillStart}
                       isAnchor={anchorIndex === index}
                       isRangeStart={
                         activeCurrencyOrRegion === c && startIndex === index
@@ -485,8 +472,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                     }
                     onInputChange={onInputChange}
                     onMouseCellClick={onMouseCellClick}
-                    onDragStart={onDragStart}
-                    onDragEnd={onDragEnd}
+                    onDragFillStart={onDragFillStart}
                     isAnchor={anchorIndex === index}
                     isRangeStart={
                       activeCurrencyOrRegion === r && startIndex === index
