@@ -29,7 +29,6 @@ export default class ProductTypeService<
     this.productTypeRepository_ = productTypeRepository
   }
 
-
   async retrieve(
     productTypeId: string,
     config: FindConfig<ProductTypes.ProductTypeDTO> = {},
