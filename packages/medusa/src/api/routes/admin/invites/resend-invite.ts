@@ -28,7 +28,7 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *        curl -X POST 'https://medusa-url.com/admin/invites/{invite_id}/resend' \
+ *       curl -X POST 'https://medusa-url.com/admin/invites/{invite_id}/resend' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

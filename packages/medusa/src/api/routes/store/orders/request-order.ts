@@ -36,7 +36,7 @@ import { TokenEvents } from "../../../../types/token"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *        curl -X POST 'https://medusa-url.com/store/batch/customer/token' \
+ *       curl -X POST 'https://medusa-url.com/store/batch/customer/token' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "display_ids": ["id"],

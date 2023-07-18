@@ -33,7 +33,7 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *        curl -X POST 'https://medusa-url.com/admin/store/currencies/eur' \
+ *       curl -X POST 'https://medusa-url.com/admin/store/currencies/eur' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

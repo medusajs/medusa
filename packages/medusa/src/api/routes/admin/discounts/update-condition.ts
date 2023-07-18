@@ -42,7 +42,7 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *        curl -X POST 'https://medusa-url.com/admin/discounts/{id}/conditions/{condition}' \
+ *       curl -X POST 'https://medusa-url.com/admin/discounts/{id}/conditions/{condition}' \
  *       -H 'Authorization: Bearer {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{

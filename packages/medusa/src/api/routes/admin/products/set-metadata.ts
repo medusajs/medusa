@@ -37,7 +37,7 @@ import { PricingService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *        curl -X POST 'https://medusa-url.com/admin/products/{id}/metadata' \
+ *       curl -X POST 'https://medusa-url.com/admin/products/{id}/metadata' \
  *       -H 'Authorization: Bearer {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{

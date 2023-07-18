@@ -50,7 +50,7 @@ import { defaultRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *        curl -X POST 'https://medusa-url.com/store/returns' \
+ *       curl -X POST 'https://medusa-url.com/store/returns' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "order_id": "asfasf",
