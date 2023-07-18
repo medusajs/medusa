@@ -134,7 +134,7 @@ const TagsOperationCodeSectionResponsesSample = ({
                   code: {
                     source: selectedExample.content,
                     lang: lang,
-                    className: "max-h-[400px]",
+                    collapsed: true,
                   },
                 },
                 {
@@ -143,7 +143,7 @@ const TagsOperationCodeSectionResponsesSample = ({
                   code: {
                     source: selectedExample.contentSchema,
                     lang: lang,
-                    className: "max-h-[400px] overflow-auto",
+                    collapsed: true,
                   },
                 },
               ]}
@@ -154,7 +154,7 @@ const TagsOperationCodeSectionResponsesSample = ({
             <CodeBlock
               source={selectedExample.content}
               lang={getLanguageFromMedia(Object.keys(response.content)[0])}
-              className="max-h-[400px]"
+              collapsed={true}
             />
           )}
           {!selectedExample && <>Empty Response</>}

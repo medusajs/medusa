@@ -9,12 +9,14 @@ export type CodeBlockProps = {
   source: string
   lang?: string
   className?: string
+  collapsed?: boolean
 } & Omit<HighlightProps, "code" | "language" | "children">
 
 const CodeBlock = ({
   source,
   lang = "",
   className,
+  collapsed = false,
   ...rest
 }: CodeBlockProps) => {
   return (
@@ -23,6 +25,7 @@ const CodeBlock = ({
         "bg-medusa-code-block-bg relative mb-1 rounded",
         "border-medusa-code-block-border border",
         "xs:after:content-[''] xs:after:rounded xs:after:absolute xs:after:right-0 xs:after:top-0 xs:after:w-[calc(10%+24px)] xs:after:h-full xs:after:bg-code-fade",
+        collapsed && "max-h-[400px] overflow-auto",
         className
       )}
     >
