@@ -37,31 +37,31 @@ describe("Inventory Module", () => {
   })
 
   describe("ProductVariantInventoryService", () => {
-    afterEach(async () => {
-      const db = useDb()
-      return await db.teardown()
-    })
-
-    beforeEach(async () => {
-      const inventoryService = appContainer.resolve("inventoryService")
-
-      const { variants } = await simpleProductFactory(dbConnection, {
-        variants: [{}, {}],
-      })
-
-      variant1 = variants[0]
-      variant2 = variants[1]
-
-      invItem1 = await inventoryService.createInventoryItem({
-        sku: "test-sku-1",
-      })
-
-      invItem2 = await inventoryService.createInventoryItem({
-        sku: "test-sku-2",
-      })
-    })
-
     describe("attachInventoryItem", () => {
+      afterEach(async () => {
+        const db = useDb()
+        return await db.teardown()
+      })
+
+      beforeEach(async () => {
+        const inventoryService = appContainer.resolve("inventoryService")
+
+        const { variants } = await simpleProductFactory(dbConnection, {
+          variants: [{}, {}],
+        })
+
+        variant1 = variants[0]
+        variant2 = variants[1]
+
+        invItem1 = await inventoryService.createInventoryItem({
+          sku: "test-sku-1",
+        })
+
+        invItem2 = await inventoryService.createInventoryItem({
+          sku: "test-sku-2",
+        })
+      })
+
       it("should attach the single item with spread params", async () => {
         const pviService = appContainer.resolve(
           "productVariantInventoryService"
