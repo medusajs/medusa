@@ -1,5 +1,7 @@
 import {
+  CreateInventoryItemInput,
   IInventoryService,
+  InventoryItemDTO,
   MedusaContainer,
   ProductTypes,
 } from "@medusajs/types"
@@ -28,28 +30,40 @@ export async function createInventoryItems({
     []
   )
 
-  return await Promise.all(
-    variants.map(async (variant) => {
-      if (!variant.manage_inventory) {
-        return
-      }
+  const inventoryDataMap = new Map<
+    string,
+    CreateInventoryItemInput | InventoryItemDTO
+  >(
+    variants
+      .filter((variant) => {
+        return variant.manage_inventory
+      })
+      .map((variant) => {
+        /* */
 
-      const inventoryItem = await inventoryService!.createInventoryItem(
-        {
-          sku: variant.sku!,
-          origin_country: variant.origin_country!,
-          hs_code: variant.hs_code!,
-          mid_code: variant.mid_code!,
-          material: variant.material!,
-          weight: variant.weight!,
-          length: variant.length!,
-          height: variant.height!,
-          width: variant.width!,
-        },
-        context
-      )
-
-      return { variant, inventoryItem }
-    })
+        return [
+          variant.sku!,
+          {
+            sku: variant.sku!,
+            origin_country: variant.origin_country!,
+            hs_code: variant.hs_code!,
+            mid_code: variant.mid_code!,
+            material: variant.material!,
+            weight: variant.weight!,
+            length: variant.length!,
+            height: variant.height!,
+            width: variant.width!,
+          },
+        ]
+      })
   )
+
+  const inventoryItems = await inventoryService!.createInventoryItems(
+    [...inventoryDataMap.values()] as CreateInventoryItemInput[],
+    context
+  )
+
+  return inventoryItems.map((item) => {
+    inventoryDataMap.set(item.sku!, item)
+  })
 }

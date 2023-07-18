@@ -21,14 +21,10 @@ export async function attachInventoryItems({
   const productVariantInventoryService: ProductVariantInventoryService =
     container.resolve("productVariantInventoryService").withTransaction(manager)
 
-  return await Promise.all(
-    data
-      .filter((d) => d)
-      .map(async ({ variant, inventoryItem }) => {
-        return await productVariantInventoryService.attachInventoryItem(
-          variant.id,
-          inventoryItem.id
-        )
-      })
-  )
+  const inventoryData = data.map(({ variant, inventoryItem }) => ({
+    variantId: variant.id,
+    inventoryItemId: inventoryItem.id,
+  }))
+
+  return await productVariantInventoryService.attachInventoryItem(inventoryData)
 }
