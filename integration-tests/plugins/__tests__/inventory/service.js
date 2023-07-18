@@ -296,6 +296,104 @@ describe("Inventory Module", () => {
       )
     })
 
+    describe("updateInventoryLevel", () => {
+      it("should pass along the correct context when doing a bulk update", async () => {
+        const inventoryService = appContainer.resolve("inventoryService")
+
+        const inventoryItem = await inventoryService.createInventoryItem({
+          sku: "sku_1",
+          origin_country: "CH",
+          mid_code: "mid code",
+          material: "lycra",
+          weight: 100,
+          length: 200,
+          height: 50,
+          width: 50,
+          metadata: {
+            abc: 123,
+          },
+          hs_code: "hs_code 123",
+          requires_shipping: true,
+        })
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: inventoryItem.id,
+          location_id: "location_123",
+          stocked_quantity: 50,
+          reserved_quantity: 0,
+          incoming_quantity: 0,
+        })
+
+        let error
+        try {
+          await inventoryService.updateInventoryLevels(
+            [
+              {
+                inventory_item_id: inventoryItem.id,
+                location_id: "location_123",
+                stocked_quantity: 25,
+                reserved_quantity: 4,
+                incoming_quantity: 10,
+              },
+            ],
+            {
+              transactionManager: {},
+            }
+          )
+        } catch (e) {
+          error = e
+        }
+        expect(error.message).toEqual("manager.getRepository is not a function")
+      })
+
+      it("should pass along the correct context when doing a single update", async () => {
+        const inventoryService = appContainer.resolve("inventoryService")
+
+        const inventoryItem = await inventoryService.createInventoryItem({
+          sku: "sku_1",
+          origin_country: "CH",
+          mid_code: "mid code",
+          material: "lycra",
+          weight: 100,
+          length: 200,
+          height: 50,
+          width: 50,
+          metadata: {
+            abc: 123,
+          },
+          hs_code: "hs_code 123",
+          requires_shipping: true,
+        })
+
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: inventoryItem.id,
+          location_id: "location_123",
+          stocked_quantity: 50,
+          reserved_quantity: 0,
+          incoming_quantity: 0,
+        })
+
+        let error
+        try {
+          await inventoryService.updateInventoryLevel(
+            inventoryItem.id,
+            "location_123",
+            {
+              stocked_quantity: 25,
+              reserved_quantity: 4,
+              incoming_quantity: 10,
+            },
+            {
+              transactionManager: {},
+            }
+          )
+        } catch (e) {
+          error = e
+        }
+        expect(error.message).toEqual("manager.getRepository is not a function")
+      })
+    })
+
     it("deleteInventoryLevel", async () => {
       const inventoryService = appContainer.resolve("inventoryService")
 
