@@ -1,14 +1,14 @@
-import { MedusaContainer } from "@medusajs/types"
 import {
-  DistributedTransaction,
+  OrchestratorBuilder,
+  TransactionHandlerType,
   TransactionMetadata,
-} from "./distributed-transaction"
-import { TransactionOrchestrator } from "./transaction-orchestrator"
-import { TransactionStepHandler } from "./transaction-step"
-import { TransactionHandlerType, TransactionStepsDefinition } from "./types"
-import { OrchestratorBuilder } from "./orchestrator-builder"
+  TransactionOrchestrator,
+  TransactionStepHandler,
+  TransactionStepsDefinition,
+} from "../transaction"
 
-interface Workflow {
+import { MedusaContainer } from "@medusajs/types"
+export interface WorkflowDefinition {
   id: string
   handler: (container: MedusaContainer) => TransactionStepHandler
   orchestrator: TransactionOrchestrator
@@ -21,14 +21,14 @@ interface Workflow {
   optionalModules?: Set<string>
 }
 
-type InvokeHandler = (
+export type InvokeHandler = (
   container: MedusaContainer,
   payload: any,
   invoke: { [actions: string]: any },
   metadata: TransactionMetadata
 ) => Promise<any>
 
-type CompensateHandler = (
+export type CompensateHandler = (
   container: MedusaContainer,
   payload: any,
   invoke: { [actions: string]: any },
@@ -37,12 +37,7 @@ type CompensateHandler = (
 ) => Promise<any>
 
 export class WorkflowManager {
-  protected static workflows: Map<string, Workflow> = new Map()
-  protected container: MedusaContainer
-
-  constructor(container?: MedusaContainer) {
-    this.container = container as MedusaContainer
-  }
+  protected static workflows: Map<string, WorkflowDefinition> = new Map()
 
   static unregister(workflowId: string) {
     WorkflowManager.workflows.delete(workflowId)
@@ -54,6 +49,10 @@ export class WorkflowManager {
 
   static getWorkflows() {
     return WorkflowManager.workflows
+  }
+
+  static getWorkflow(workflowId: string) {
+    return WorkflowManager.workflows.get(workflowId)
   }
 
   static getTransactionDefinition(workflowId): OrchestratorBuilder {
@@ -125,7 +124,7 @@ export class WorkflowManager {
     })
   }
 
-  private static buildHandlers(
+  public static buildHandlers(
     handlers: Map<
       string,
       { invoke: InvokeHandler; compensate?: CompensateHandler }
@@ -163,64 +162,5 @@ export class WorkflowManager {
         return await command[handlerType](container, input, invoke, metadata)
       }
     }
-  }
-
-  async begin(
-    workflowId: string,
-    uniqueTransactionId: string,
-    input?: unknown
-  ) {
-    if (!WorkflowManager.workflows.has(workflowId)) {
-      throw new Error(`Workflow with id "${workflowId}" not found.`)
-    }
-
-    const workflow = WorkflowManager.workflows.get(workflowId)!
-
-    const orchestrator = workflow.orchestrator
-
-    const transaction = await orchestrator.beginTransaction(
-      uniqueTransactionId,
-      workflow.handler(this.container),
-      input
-    )
-
-    await orchestrator.resume(transaction)
-
-    return transaction
-  }
-
-  async registerStepSuccess(
-    workflowId: string,
-    idempotencyKey: string,
-    response?: unknown
-  ): Promise<DistributedTransaction> {
-    if (!WorkflowManager.workflows.has(workflowId)) {
-      throw new Error(`Workflow with id "${workflowId}" not found.`)
-    }
-
-    const workflow = WorkflowManager.workflows.get(workflowId)!
-    return await workflow.orchestrator.registerStepSuccess(
-      idempotencyKey,
-      workflow.handler(this.container),
-      undefined,
-      response
-    )
-  }
-
-  async registerStepFailure(
-    workflowId: string,
-    idempotencyKey: string,
-    error?: Error | any
-  ): Promise<DistributedTransaction> {
-    if (!WorkflowManager.workflows.has(workflowId)) {
-      throw new Error(`Workflow with id "${workflowId}" not found.`)
-    }
-
-    const workflow = WorkflowManager.workflows.get(workflowId)!
-    return await workflow.orchestrator.registerStepFailure(
-      idempotencyKey,
-      error,
-      workflow.handler(this.container)
-    )
   }
 }

@@ -1,11 +1,3 @@
-import { EntityManager } from "typeorm"
-import {
-  IInventoryService,
-  MedusaContainer,
-  ProductTypes,
-} from "@medusajs/types"
-import { ulid } from "ulid"
-import { MedusaError } from "@medusajs/utils"
 import {
   DistributedTransaction,
   TransactionHandlerType,
@@ -13,8 +5,12 @@ import {
   TransactionPayload,
   TransactionState,
   TransactionStepsDefinition,
-} from "../../../utils/transaction"
-import { CreateProductVariantInput } from "../../../types/product-variant"
+} from "@medusajs/orchestration"
+import {
+  IInventoryService,
+  MedusaContainer,
+  ProductTypes,
+} from "@medusajs/types"
 import {
   attachInventoryItems,
   createInventoryItems,
@@ -22,6 +18,11 @@ import {
   removeInventoryItems,
   removeProducts,
 } from "../../functions"
+
+import { CreateProductVariantInput } from "../../../types/product-variant"
+import { EntityManager } from "typeorm"
+import { MedusaError } from "@medusajs/utils"
+import { ulid } from "ulid"
 
 enum Actions {
   createProduct = "createProduct",

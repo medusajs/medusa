@@ -1,9 +1,9 @@
 import {
-  TransactionOrchestrator,
-  TransactionStepsDefinition,
   TransactionHandlerType,
+  TransactionOrchestrator,
   TransactionPayload,
   TransactionState,
+  TransactionStepsDefinition,
 } from "../../transaction"
 
 describe("Transaction Orchestrator", () => {
@@ -96,7 +96,7 @@ describe("Transaction Orchestrator", () => {
     )
   })
 
-  it("Should run steps in parallel if 'next' is an array", async () => {
+  it("Should resume steps in parallel if 'next' is an array", async () => {
     const actionOrder: string[] = []
     async function handler(
       actionId: string,
@@ -763,13 +763,13 @@ describe("Transaction Orchestrator", () => {
     )
     expect(transaction.getState()).toBe(TransactionState.INVOKING)
 
-    const resumedTransaction = await strategy.registerStepFailure(
+    const rundTransaction = await strategy.registerStepFailure(
       mocktransactionId,
       null,
       handler
     )
 
-    expect(resumedTransaction.getState()).toBe(TransactionState.COMPENSATING)
+    expect(rundTransaction.getState()).toBe(TransactionState.COMPENSATING)
     expect(mocks.compensateOne).toBeCalledTimes(1)
 
     const mocktransactionIdCompensate = TransactionOrchestrator.getKeyName(
@@ -780,10 +780,10 @@ describe("Transaction Orchestrator", () => {
     await strategy.registerStepSuccess(
       mocktransactionIdCompensate,
       undefined,
-      resumedTransaction
+      rundTransaction
     )
 
-    expect(resumedTransaction.getState()).toBe(TransactionState.REVERTED)
+    expect(rundTransaction.getState()).toBe(TransactionState.REVERTED)
   })
 
   it("Should revert a transaction when .cancelTransaction() is called", async () => {
