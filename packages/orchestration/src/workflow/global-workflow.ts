@@ -1,16 +1,58 @@
+import {
+  Context,
+  JoinerServiceConfig,
+  MedusaContainer,
+  ModuleDefinition,
+} from "@medusajs/types"
 import { WorkflowDefinition, WorkflowManager } from "./workflow-manager"
 
 import { DistributedTransaction } from "../transaction"
-import { MedusaContainer } from "@medusajs/types"
+import { MedusaModule } from "@medusajs/modules-sdk"
+import { asValue } from "awilix"
+import { createMedusaContainer } from "@medusajs/utils"
 
 export class GlobalWorkflow extends WorkflowManager {
   protected static workflows: Map<string, WorkflowDefinition> = new Map()
   protected container: MedusaContainer
+  protected context: Context
 
-  constructor(container?: MedusaContainer) {
+  constructor(
+    modulesLoaded?:
+      | (any & {
+          __joinerConfig: JoinerServiceConfig
+          __definition: ModuleDefinition
+        })[]
+      | MedusaContainer,
+    context?: Context
+  ) {
     super()
 
-    this.container = container as MedusaContainer
+    const container = createMedusaContainer()
+
+    // Medusa container
+    if (!Array.isArray(modulesLoaded) && modulesLoaded) {
+      const cradle = modulesLoaded.cradle
+      for (const key in cradle) {
+        container.register(key, asValue(cradle[key]))
+      }
+    }
+    // Array of modules
+    else if (modulesLoaded?.length) {
+      for (const mod of modulesLoaded) {
+        const registrationName = mod.__definition.registrationName
+        container.register(registrationName, asValue(mod))
+      }
+    }
+    // Modules loaded
+    else {
+      for (const [, mod] of MedusaModule.getLoadedModules().entries()) {
+        const registrationName = mod.__definition.registrationName
+        container.register(registrationName, asValue(mod))
+      }
+    }
+
+    this.container = container
+    this.context = context ?? {}
   }
 
   async begin(
@@ -28,7 +70,7 @@ export class GlobalWorkflow extends WorkflowManager {
 
     const transaction = await orchestrator.beginTransaction(
       uniqueTransactionId,
-      workflow.handler(this.container),
+      workflow.handler(this.container, this.context),
       input
     )
 
@@ -49,7 +91,7 @@ export class GlobalWorkflow extends WorkflowManager {
     const workflow = WorkflowManager.workflows.get(workflowId)!
     return await workflow.orchestrator.registerStepSuccess(
       idempotencyKey,
-      workflow.handler(this.container),
+      workflow.handler(this.container, this.context),
       undefined,
       response
     )
@@ -68,7 +110,7 @@ export class GlobalWorkflow extends WorkflowManager {
     return await workflow.orchestrator.registerStepFailure(
       idempotencyKey,
       error,
-      workflow.handler(this.container)
+      workflow.handler(this.container, this.context)
     )
   }
 }

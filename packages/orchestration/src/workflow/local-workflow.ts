@@ -104,7 +104,7 @@ export class LocalWorkflow extends OrchestratorBuilder {
 
     const transaction = await orchestrator.beginTransaction(
       uniqueTransactionId,
-      handler(this.container),
+      handler(this.container, this.context),
       input
     )
 
@@ -120,7 +120,7 @@ export class LocalWorkflow extends OrchestratorBuilder {
     const { handler, orchestrator } = this.workflow
     return await orchestrator.registerStepSuccess(
       idempotencyKey,
-      handler(this.container),
+      handler(this.container, this.context),
       undefined,
       response
     )
@@ -134,7 +134,7 @@ export class LocalWorkflow extends OrchestratorBuilder {
     return await orchestrator.registerStepFailure(
       idempotencyKey,
       error,
-      handler(this.container)
+      handler(this.container, this.context)
     )
   }
 }
