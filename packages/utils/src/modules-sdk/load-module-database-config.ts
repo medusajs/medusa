@@ -1,23 +1,19 @@
-import {
-  ProductServiceInitializeCustomDataLayerOptions,
-  ProductServiceInitializeOptions,
-} from "../types"
-import { MedusaError } from "@medusajs/utils"
+import { MedusaError } from "../common"
+import { ModulesSdkTypes } from "@medusajs/types"
 
-function getEnv(key: string): string {
-  const value = process.env[`PRODUCT_${key}`] ?? process.env[`${key}`]
+function getEnv(key: string, moduleName: string): string {
+  const value =
+    process.env[`${moduleName.toUpperCase()}_${key}`] ?? process.env[`${key}`]
   return value ?? ""
 }
 
-function isProductServiceInitializeOptions(
+function isModuleServiceInitializeOptions(
   obj: unknown
-): obj is ProductServiceInitializeOptions {
-  return !!(obj as ProductServiceInitializeOptions)?.database
+): obj is ModulesSdkTypes.ModuleServiceInitializeOptions {
+  return !!(obj as any)?.database
 }
 
-function getDefaultDriverOptions(
-  clientUrl: string
-): ProductServiceInitializeOptions["database"]["driverOptions"] {
+function getDefaultDriverOptions(clientUrl: string) {
   const localOptions = {
     connection: {
       ssl: false,
@@ -45,31 +41,35 @@ function getDefaultDriverOptions(
 
 /**
  * Load the config for the database connection. The options can be retrieved
- * through PRODUCT_* (e.g PRODUCT_POSTGRES_URL) or * (e.g POSTGRES_URL) environment variables or the options object.
+ * e.g through PRODUCT_* (e.g PRODUCT_POSTGRES_URL) or * (e.g POSTGRES_URL) environment variables or the options object.
  * @param options
+ * @param moduleName
  */
 export function loadDatabaseConfig(
+  moduleName: string,
   options?:
-    | ProductServiceInitializeOptions
-    | ProductServiceInitializeCustomDataLayerOptions
-): ProductServiceInitializeOptions["database"] {
-  const clientUrl = getEnv("POSTGRES_URL")
+    | ModulesSdkTypes.ModuleServiceInitializeOptions
+    | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
+): ModulesSdkTypes.ModuleServiceInitializeOptions["database"] {
+  const clientUrl = getEnv("POSTGRES_URL", moduleName)
 
-  const database: ProductServiceInitializeOptions["database"] = {
-    clientUrl: getEnv("POSTGRES_URL"),
-    schema: getEnv("POSTGRES_SCHEMA") ?? "public",
+  const database = {
+    clientUrl: getEnv("POSTGRES_URL", moduleName),
+    schema: getEnv("POSTGRES_SCHEMA", moduleName) ?? "public",
     driverOptions: JSON.parse(
-      getEnv("POSTGRES_DRIVER_OPTIONS") ||
+      getEnv("POSTGRES_DRIVER_OPTIONS", moduleName) ||
         JSON.stringify(getDefaultDriverOptions(clientUrl))
     ),
+    debug: process.env.NODE_ENV?.startsWith("dev") ?? false,
   }
 
-  if (isProductServiceInitializeOptions(options)) {
+  if (isModuleServiceInitializeOptions(options)) {
     database.clientUrl = options.database.clientUrl ?? database.clientUrl
     database.schema = options.database.schema ?? database.schema
     database.driverOptions =
       options.database.driverOptions ??
       getDefaultDriverOptions(database.clientUrl)
+    database.debug = options.database.debug ?? database.debug
   }
 
   if (!database.clientUrl) {
