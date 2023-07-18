@@ -336,6 +336,12 @@ export default class ProductModuleService<
         productVariantsMap.set(productData.handle!, variants ?? [])
         productOptionsMap.set(productData.handle!, options ?? [])
 
+        if (!productData.thumbnail && productData.images?.length) {
+          productData.thumbnail = isString(productData.images[0])
+            ? (productData.images[0] as string)
+            : (productData.images[0] as { url: string }).url
+        }
+
         if (productData.is_giftcard) {
           productData.discountable = false
         }

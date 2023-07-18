@@ -16,8 +16,8 @@ import {
 } from "@medusajs/utils"
 import { ProductRepository } from "@repositories"
 
-import { doNotForceTransaction } from "../utils"
 import { ProductServiceTypes } from "../types/services"
+import { doNotForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   productRepository: DAL.RepositoryService

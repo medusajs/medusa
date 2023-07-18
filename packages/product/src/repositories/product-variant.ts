@@ -4,7 +4,7 @@ import {
   LoadStrategy,
   RequiredEntityData,
 } from "@mikro-orm/core"
-import { Product, ProductVariant } from "@models"
+import { ProductVariant } from "@models"
 import { Context, DAL, WithRequiredProperty } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {

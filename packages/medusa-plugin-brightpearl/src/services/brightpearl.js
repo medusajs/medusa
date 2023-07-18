@@ -1,8 +1,8 @@
-import { humanizeAmount, MedusaError } from "medusa-core-utils"
-import { updateInventoryAndReservations } from "@medusajs/medusa"
+import { MedusaError, humanizeAmount } from "medusa-core-utils"
 
 import { BaseService } from "medusa-interfaces"
 import Brightpearl from "../utils/brightpearl"
+import { updateInventoryAndReservations } from "@medusajs/medusa"
 
 class BrightpearlService extends BaseService {
   constructor(
@@ -117,7 +117,7 @@ class BrightpearlService extends BaseService {
         httpMethod: "POST",
         uriTemplate: `${this.options.backend_url}/brightpearl/inventory-update`,
         bodyTemplate:
-          '{"account": "${account-code}", "lifecycle_event": "${lifecycle-event}", "resource_type": "${resource-type}", "id": "${resource-id}" }',
+          "{\"account\": \"${account-code}\", \"lifecycle_event\": \"${lifecycle-event}\", \"resource_type\": \"${resource-type}\", \"id\": \"${resource-id}\" }",
         contentType: "application/json",
         idSetAccepted: false,
       },
@@ -760,8 +760,14 @@ class BrightpearlService extends BaseService {
     )
   }
 
+  /**
+   * create reservation based on reservation created event
+   * @param {{ ids: string[] }} eventData Event data from reservation created
+   */
   async createReservation(eventData) {
-    const { id } = eventData
+    const { ids } = eventData
+
+    const [id] = ids
 
     if (!id) {
       return
