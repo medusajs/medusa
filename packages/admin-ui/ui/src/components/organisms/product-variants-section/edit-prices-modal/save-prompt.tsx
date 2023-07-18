@@ -11,6 +11,11 @@ type ConfirmationPromptProps = {
   hiddenEditedColumns: string[]
 }
 
+enum SaveMode {
+  SAVE_VISIBLE_ONLY = "SAVE_VISIBLE_ONLY",
+  SAVE_ALL = "SAVE_ALL",
+}
+
 const SavePrompt: React.FC<ConfirmationPromptProps> = ({
   handleClose,
   onSaveOnlyVisible,
@@ -19,7 +24,9 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
 }) => {
   const hasHiddenColumns = !!hiddenEditedColumns.length
 
-  const [saveSelection, setSaveSelection] = useState("SAVE_VISIBLE_ONLY")
+  const [saveSelection, setSaveSelection] = useState<SaveMode>(
+    SaveMode.SAVE_VISIBLE_ONLY
+  )
 
   return (
     <Modal isLargeModal={false} handleClose={handleClose}>
@@ -46,13 +53,13 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
                 className="flex-1"
                 label={"Save all"}
                 description={"Save all price changes"}
-                value="SAVE_ALL"
+                value={SaveMode.SAVE_ALL}
               />
               <RadioGroup.Item
                 className="flex-1"
                 label={"Save only visible"}
                 description={"Save only visible price changes"}
-                value="SAVE_VISIBLE_ONLY"
+                value={SaveMode.SAVE_VISIBLE_ONLY}
               />
             </RadioGroup.Root>
           )}
@@ -75,7 +82,7 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
               onClick={
                 !hasHiddenColumns
                   ? onSaveOnlyVisible
-                  : saveSelection === "SAVE_ALL"
+                  : saveSelection === SaveMode.SAVE_ALL
                   ? onSaveAll
                   : onSaveOnlyVisible
               }
