@@ -307,15 +307,17 @@ function EditPricesTable(props: EditPricesTableProps) {
     }
   }, [isDragFill, editedPrices])
 
-  const firstColumnWidth = useMemo(() => {
+  const productTitle = useMemo(() => {
     let max = 0
 
     props.product.variants!.forEach(
       (v) => (max = Math.max(max, v.title.length + (v.sku ? v.sku.length : 0)))
     )
 
-    return Math.max(220, max * 8)
-  }, [props.product.variants])
+    return props.product.title.length > max
+      ? props.product.title.substring(0, max) + "..."
+      : props.product.title
+  }, [props.product])
 
   return (
     <div className="h-full overflow-x-auto">
@@ -332,10 +334,7 @@ function EditPricesTable(props: EditPricesTableProps) {
             style={{ height: 42 }}
             className="tw-text-medusa-text-subtle h-2 text-left font-normal"
           >
-            <th
-              style={{ maxWidth: firstColumnWidth }}
-              className="h-2 border pl-4 font-medium text-gray-400"
-            >
+            <th className="h-2 border pl-4 font-medium text-gray-400">
               Product
             </th>
             {props.currencies.map((c) => {
@@ -387,10 +386,7 @@ function EditPricesTable(props: EditPricesTableProps) {
         <tbody>
           <tr style={{ lineHeight: 3, background: "#f9fafb" }}>
             <td className="border pl-4 pr-4">
-              <div
-                style={{ maxWidth: firstColumnWidth }}
-                className="text-black-800 flex items-center gap-2 overflow-hidden"
-              >
+              <div className="text-black-800 flex items-center gap-2 overflow-hidden">
                 {props.product.thumbnail && (
                   <img
                     src={props.product.thumbnail}
@@ -398,7 +394,9 @@ function EditPricesTable(props: EditPricesTableProps) {
                     className="h-[22px] w-[16px] rounded"
                   />
                 )}
-                <span className="truncate">{props.product.title}</span>
+                <span title={props.product.title} className="truncate">
+                  {productTitle}
+                </span>
               </div>
             </td>
             {props.currencies.map((c) => (
@@ -420,13 +418,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                 onMouseEnter={() => onMouseRowEnter(variant.id)}
                 style={{ lineHeight: 3 }}
               >
-                <td
-                  style={{
-                    width: firstColumnWidth,
-                    minWidth: firstColumnWidth,
-                  }}
-                  className="border pl-10 text-gray-600"
-                >
+                <td className="whitespace-nowrap border pl-10 pr-4 text-gray-600">
                   {variant.title} {variant.sku && `∙ ${variant.sku}`}
                 </td>
 
