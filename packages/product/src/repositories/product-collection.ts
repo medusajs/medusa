@@ -91,8 +91,8 @@ export class ProductCollectionRepository extends BaseRepository {
   ): Promise<ProductCollection[]> {
     const manager = this.getActiveManager(context)
 
-    const productCollections = data.map((typeData) => {
-      return manager.create(ProductCollection, typeData)
+    const productCollections = data.map((collectionData) => {
+      return manager.create(ProductCollection, collectionData)
     })
 
     await manager.persist(productCollections)
@@ -108,7 +108,7 @@ export class ProductCollectionRepository extends BaseRepository {
   ): Promise<ProductCollection[]> {
     const manager = this.getActiveManager(context)
     const collectionIds = data.map((collectionData) => collectionData.id)
-    const existingTypes = await this.find(
+    const existingCollections = await this.find(
       {
         where: {
           id: {
@@ -119,21 +119,21 @@ export class ProductCollectionRepository extends BaseRepository {
       context
     )
 
-    const existingTypesMap = new Map(
-      existingTypes.map<[string, ProductCollection]>((collection) => [collection.id, collection])
+    const existingCollectionsMap = new Map(
+      existingCollections.map<[string, ProductCollection]>((collection) => [collection.id, collection])
     )
 
     const productCollections = data.map((collectionData) => {
-      const existingType = existingTypesMap.get(collectionData.id)
+      const existingCollection = existingCollectionsMap.get(collectionData.id)
 
-      if (!existingType) {
+      if (!existingCollection) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
           `ProductCollection with id "${collectionData.id}" not found`
         )
       }
 
-      return manager.assign(existingType, collectionData)
+      return manager.assign(existingCollection, collectionData)
     })
 
     await manager.persist(productCollections)
