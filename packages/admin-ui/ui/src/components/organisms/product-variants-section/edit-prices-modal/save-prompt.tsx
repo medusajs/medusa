@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import clsx from "clsx"
 
 import Button from "../../../fundamentals/button"
 import Modal from "../../../molecules/modal"
@@ -22,6 +23,8 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
   onSaveAll,
   hiddenEditedColumns,
 }) => {
+  const [isLoading, setIsLoading] = useState(false)
+
   const hasHiddenColumns = !!hiddenEditedColumns.length
 
   const [saveSelection, setSaveSelection] = useState<SaveMode>(
@@ -77,15 +80,24 @@ const SavePrompt: React.FC<ConfirmationPromptProps> = ({
             <Button
               size="small"
               color="black"
-              className="text-small justify-center bg-black text-white hover:bg-black"
-              variant="ghost"
-              onClick={
-                !hasHiddenColumns
+              className={clsx(
+                "text-small justify-center bg-black text-white active:bg-black active:text-white",
+                {
+                  "hover:bg-black": !isLoading,
+                }
+              )}
+              loading={isLoading}
+              onClick={() => {
+                setIsLoading(true)
+
+                const callback = !hasHiddenColumns
                   ? onSaveOnlyVisible
                   : saveSelection === SaveMode.SAVE_ALL
                   ? onSaveAll
                   : onSaveOnlyVisible
-              }
+
+                callback()
+              }}
             >
               Save changes
             </Button>
