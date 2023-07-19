@@ -49,7 +49,6 @@ const TagOperation = ({
       }
     },
   })
-  const loadingRef = useRef(null)
 
   // Use `useCallback` so we don't recreate the function on each render
   const setRefs = useCallback(
@@ -78,7 +77,7 @@ const TagOperation = ({
         }, 200)
       }
     }
-  }, [nodeRef])
+  }, [nodeRef, path])
 
   return (
     <div

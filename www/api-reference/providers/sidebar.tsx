@@ -46,6 +46,11 @@ type SidebarContextType = {
       ignoreExisting?: boolean
     }
   ) => void
+  findItemInSection: (
+    section: SidebarItemType[],
+    itemPath: string,
+    checkChildren?: boolean
+  ) => SidebarItemType | undefined
 }
 
 const SidebarContext = createContext<SidebarContextType | null>(null)
@@ -63,16 +68,16 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
 
   const findItemInSection = (
     section: SidebarItemType[],
-    itemPath: string
+    itemPath: string,
+    checkChildren = true
   ): SidebarItemType | undefined => {
-    return section.find((item) => item.path === itemPath)
-  }
-
-  const findItemIndexSection = (
-    section: SidebarItemType[],
-    itemPath: string
-  ): number => {
-    return section.findIndex((item) => item.path === itemPath)
+    return section.find(
+      (item) =>
+        item.path === itemPath ||
+        (checkChildren &&
+          item.children &&
+          findItemInSection(item.children, itemPath))
+    )
   }
 
   const isPathInSidebar = (path: string, section: SidebarItemSections) => {
@@ -195,6 +200,7 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
         activePath,
         setActivePath,
         isItemActive,
+        findItemInSection,
       }}
     >
       {children}

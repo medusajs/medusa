@@ -74,11 +74,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
           <MDXContentClient content={tag.description} />
         </Section>
       )}
-      {loadPaths && (
-        <Suspense fallback={<DividedLoading />}>
-          <TagPaths tag={tag} />
-        </Suspense>
-      )}
+      {loadPaths && <TagPaths tag={tag} />}
     </div>
   )
 }

@@ -47,6 +47,7 @@
   },
   "devDependencies": {
     "@types/mapbox__rehype-prism": "^0.8.0",
+    "@types/react-transition-group": "^4.4.6",
     "eslint-config-google": "^0.14.0"
   }
 }

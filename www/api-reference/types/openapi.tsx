@@ -100,3 +100,13 @@ export type Parameter = OpenAPIV3.ParameterObject & {
   }
   schema: SchemaObject
 }
+
+export type Document = Omit<OpenAPIV3.Document, "paths"> & {
+  paths: PathsObject
+}
+
+export type ExpandedDocument = Document & {
+  expandedTags?: {
+    [k: string]: PathsObject
+  }
+}

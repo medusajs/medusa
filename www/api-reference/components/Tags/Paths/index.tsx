@@ -13,6 +13,10 @@ import type { TagOperationProps } from "../Operation"
 import { useArea } from "@/providers/area"
 import getLinkWithBasePath from "@/utils/get-link-with-base-path"
 import clsx from "clsx"
+import { useBaseSpecs } from "@/providers/base-specs"
+import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
+import SpinnerLoading from "@/components/Loading/Spinner"
+import DividedLayout from "@/layouts/Divided"
 
 const TagOperation = dynamic<TagOperationProps>(
   async () => import("../Operation")
@@ -25,48 +29,65 @@ export type TagPathsProps = {
 const TagPaths = ({ tag, className }: TagPathsProps) => {
   const tagSlugName = getSectionId([tag.name])
   const { area } = useArea()
-  const { data } = useSWR<{
+  const { items, addItems, findItemInSection } = useSidebar()
+  const { baseSpecs } = useBaseSpecs()
+  // if paths are already loaded since through
+  // the expanded field, they're loaded directly
+  // otherwise, they're loaded using the API endpoint
+  let paths: PathsObject =
+    baseSpecs?.expandedTags &&
+    Object.hasOwn(baseSpecs.expandedTags, tagSlugName)
+      ? baseSpecs.expandedTags[tagSlugName]
+      : {}
+  const { data, isLoading } = useSWR<{
     paths: PathsObject
   }>(
-    getLinkWithBasePath(`/api/tag?tagName=${tagSlugName}&area=${area}`),
+    !Object.keys(paths).length
+      ? getLinkWithBasePath(`/api/tag?tagName=${tagSlugName}&area=${area}`)
+      : null,
     fetcher
   )
-  const { addItems } = useSidebar()
 
-  const paths = data?.paths || []
+  paths = data?.paths || paths
 
   useEffect(() => {
     if (paths) {
-      const items: SidebarItemType[] = []
-      Object.entries(paths).forEach(([, operations]) => {
-        Object.entries(operations).map(([method, operation]) => {
-          const definedOperation = operation as Operation
-          const definedMethod = method as OpenAPIV3.HttpMethods
-          items.push({
-            path: getSectionId([
-              ...(definedOperation.tags || []),
-              definedOperation.operationId,
-            ]),
-            title: definedOperation.summary || definedOperation.operationId,
-            method: definedMethod,
-            loaded: true,
-          })
-        })
-      })
+      const parentItem = findItemInSection(
+        items[SidebarItemSections.BOTTOM],
+        tagSlugName,
+        false
+      )
+      if (!parentItem?.children?.length) {
+        const items: SidebarItemType[] = getTagChildSidebarItems(paths)
 
-      addItems(items, {
-        section: SidebarItemSections.BOTTOM,
-        parent: {
-          path: tagSlugName,
-          changeLoaded: true,
-        },
-      })
+        addItems(items, {
+          section: SidebarItemSections.BOTTOM,
+          parent: {
+            path: tagSlugName,
+            changeLoaded: true,
+          },
+        })
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paths])
 
   return (
     <div className={clsx("relative z-10 overflow-hidden", className)}>
+      {isLoading && (
+        <DividedLayout
+          mainContent={
+            <div className="flex min-h-screen w-full items-center justify-center">
+              <SpinnerLoading
+                iconProps={{
+                  className: "h-3 w-3",
+                }}
+              />
+            </div>
+          }
+          codeContent={<></>}
+        />
+      )}
       {Object.entries(paths).map(([endpointPath, operations], pathIndex) => (
         <div key={pathIndex}>
           {Object.entries(operations).map(

@@ -1,19 +1,18 @@
 "use client"
 
-import { SecuritySchemeObject } from "@/types/openapi"
-import { OpenAPIV3 } from "openapi-types"
+import { ExpandedDocument, SecuritySchemeObject } from "@/types/openapi"
 import { ReactNode, createContext, useContext, useState } from "react"
 
 type BaseSpecsContextType = {
-  baseSpecs: OpenAPIV3.Document | null
-  setBaseSpecs: (value: OpenAPIV3.Document) => void
+  baseSpecs: ExpandedDocument | null
+  setBaseSpecs: (value: ExpandedDocument) => void
   getSecuritySchema: (securityName: string) => SecuritySchemeObject | null
 }
 
 const BaseSpecsContext = createContext<BaseSpecsContextType | null>(null)
 
 type BaseSpecsProviderProps = {
-  initialSpecs?: OpenAPIV3.Document | null
+  initialSpecs?: ExpandedDocument | null
   children?: ReactNode
 }
 
@@ -21,7 +20,7 @@ const BaseSpecsProvider = ({
   children,
   initialSpecs = null,
 }: BaseSpecsProviderProps) => {
-  const [baseSpecs, setBaseSpecs] = useState<OpenAPIV3.Document | null>(
+  const [baseSpecs, setBaseSpecs] = useState<ExpandedDocument | null>(
     initialSpecs
   )
 

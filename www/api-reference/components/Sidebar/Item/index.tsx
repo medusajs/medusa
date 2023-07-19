@@ -72,7 +72,7 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
           )}
           <span>{item.title}</span>
         </Link>
-        {item.children && (
+        {item.children && item.children.length > 0 && (
           <button
             className={clsx(
               "cursor-pointer border-0 bg-transparent p-0 shadow-none"
@@ -93,7 +93,7 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
         )}
         {showLoading && !item.loaded && <SpinnerLoading />}
       </div>
-      {item.children && (
+      {item.children && item.children.length > 0 && (
         <ul
           className={clsx(
             "ease-ease overflow-hidden pl-0.5 transition-[height] duration-200",

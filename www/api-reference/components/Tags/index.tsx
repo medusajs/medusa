@@ -11,6 +11,8 @@ import { useArea } from "@/providers/area"
 import getLinkWithBasePath from "@/utils/get-link-with-base-path"
 import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
 import getSectionId from "@/utils/get-section-id"
+import { ExpandedDocument } from "@/types/openapi"
+import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
 
 const TagSection = dynamic<TagSectionProps>(
   async () => import("./Section")
@@ -18,21 +20,34 @@ const TagSection = dynamic<TagSectionProps>(
 
 export type TagsProps = React.HTMLAttributes<HTMLDivElement>
 
+function getCurrentTag() {
+  return typeof location !== "undefined"
+    ? location.hash.replace("#", "").split("_")[0]
+    : ""
+}
+
 const Tags = () => {
   const [tags, setTags] = useState<OpenAPIV3.TagObject[]>([])
   const [loadData, setLoadData] = useState<boolean>(false)
+  const [expand, setExpand] = useState<string>("")
   const { baseSpecs, setBaseSpecs } = useBaseSpecs()
   const { addItems } = useSidebar()
   const { area } = useArea()
 
-  const { data } = useSWR<OpenAPIV3.Document>(
-    loadData ? getLinkWithBasePath(`/api/base-specs?area=${area}`) : null,
+  const { data } = useSWR<ExpandedDocument>(
+    loadData && !baseSpecs
+      ? getLinkWithBasePath(`/api/base-specs?area=${area}&expand=${expand}`)
+      : null,
     fetcher
   )
 
   useEffect(() => {
-    setLoadData(true)
+    setExpand(getCurrentTag())
   }, [])
+
+  useEffect(() => {
+    setLoadData(true)
+  }, [expand])
 
   useEffect(() => {
     if (data) {
@@ -46,10 +61,20 @@ const Tags = () => {
   useEffect(() => {
     if (baseSpecs) {
       addItems(
-        baseSpecs.tags?.map((tag) => ({
-          path: getSectionId([tag.name.toLowerCase()]),
-          title: tag.name,
-        })) || [],
+        baseSpecs.tags?.map((tag) => {
+          const tagPathName = getSectionId([tag.name.toLowerCase()])
+          const childItems =
+            baseSpecs.expandedTags &&
+            Object.hasOwn(baseSpecs.expandedTags, tagPathName)
+              ? getTagChildSidebarItems(baseSpecs.expandedTags[tagPathName])
+              : []
+          return {
+            path: tagPathName,
+            title: tag.name,
+            children: childItems,
+            loaded: childItems.length > 0,
+          }
+        }) || [],
         {
           section: SidebarItemSections.BOTTOM,
         }
@@ -59,7 +84,9 @@ const Tags = () => {
 
   return (
     <>
-      {data && tags.map((tag, index) => <TagSection tag={tag} key={index} />)}
+      {tags.map((tag, index) => (
+        <TagSection tag={tag} key={index} />
+      ))}
     </>
   )
 }
