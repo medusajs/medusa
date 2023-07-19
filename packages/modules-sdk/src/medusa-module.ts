@@ -1,10 +1,9 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  JoinerServiceConfig,
+  LoadedModule,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-  ModuleDefinition,
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
@@ -43,13 +42,7 @@ export class MedusaModule {
   private static modules_: Map<string, ModuleAlias[]> = new Map()
   private static loading_: Map<string, Promise<any>> = new Map()
 
-  public static getLoadedModules(): Map<
-    string,
-    any & {
-      __joinerConfig: JoinerServiceConfig
-      __definition: ModuleDefinition
-    }
-  > {
+  public static getLoadedModules(): Map<string, LoadedModule> {
     return MedusaModule.instances_
   }
 

@@ -1,22 +1,20 @@
-import { RemoteJoiner } from "@medusajs/orchestration"
 import {
   JoinerRelationship,
   JoinerServiceConfig,
-  ModuleDefinition,
+  LoadedModule,
   RemoteExpandProperty,
 } from "@medusajs/types"
-import { toPascalCase } from "@medusajs/utils"
+
 import { MedusaModule } from "./medusa-module"
+import { RemoteJoiner } from "@medusajs/orchestration"
+import { toPascalCase } from "@medusajs/utils"
 
 export class RemoteQuery {
   private remoteJoiner: RemoteJoiner
-  private modulesMap: Map<string, any> = new Map()
+  private modulesMap: Map<string, LoadedModule> = new Map()
 
   constructor(
-    modulesLoaded?: (any & {
-      __joinerConfig: JoinerServiceConfig
-      __definition: ModuleDefinition
-    })[],
+    modulesLoaded?: LoadedModule[],
     remoteFetchData?: (
       expand: RemoteExpandProperty,
       keyField: string,
@@ -131,7 +129,7 @@ export class RemoteQuery {
     path?: string
   }> {
     const serviceConfig = expand.serviceConfig
-    const service = this.modulesMap.get(serviceConfig.serviceName)
+    const service = this.modulesMap.get(serviceConfig.serviceName)!
 
     let filters = {}
     const options = {
