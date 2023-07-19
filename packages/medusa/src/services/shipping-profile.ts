@@ -290,18 +290,16 @@ class ShippingProfileService extends TransactionBaseService {
         this.shippingProfileRepository_
       )
 
-      let profile = await this.retrieve(profileId, {
-        relations: ["products.profiles", "shipping_options.profile"],
-      })
+      const profile = await this.retrieve(profileId)
 
       const { metadata, products, shipping_options, ...rest } = update
 
       if (products) {
-        profile = await this.addProduct(profile.id, products)
+        await this.addProduct(profile.id, products)
       }
 
       if (shipping_options) {
-        profile = await this.addShippingOption(profile.id, shipping_options)
+        await this.addShippingOption(profile.id, shipping_options)
       }
 
       if (metadata) {
@@ -369,9 +367,7 @@ class ShippingProfileService extends TransactionBaseService {
         profileId
       )
 
-      return await this.retrieve(profileId, {
-        relations: ["products.profiles", "shipping_options.profile"],
-      })
+      return await this.retrieve(profileId)
     })
   }
 
