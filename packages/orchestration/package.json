@@ -17,7 +17,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "^1.8.10",
+    "@medusajs/types": "^1.8.11",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "ts-jest": "^25.5.1",

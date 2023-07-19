@@ -1,19 +1,3 @@
-import { SearchUtils, upperCaseFirst } from "@medusajs/utils"
-import { aliasTo, asFunction, asValue, Lifetime } from "awilix"
-import { Express } from "express"
-import fs from "fs"
-import { sync as existsSync } from "fs-exists-cached"
-import glob from "glob"
-import _ from "lodash"
-import { createRequireFromPath } from "medusa-core-utils"
-import {
-  FileService,
-  FulfillmentService,
-  OauthService,
-} from "medusa-interfaces"
-import { trackInstallation } from "medusa-telemetry"
-import path from "path"
-import { EntitySchema } from "typeorm"
 import {
   AbstractTaxService,
   isBatchJobStrategy,
@@ -23,7 +7,6 @@ import {
   isPriceSelectionStrategy,
   isTaxCalculationStrategy,
 } from "../interfaces"
-import { MiddlewareService } from "../services"
 import {
   ClassConstructor,
   ConfigModule,
@@ -31,15 +14,33 @@ import {
   MedusaContainer,
 } from "../types/global"
 import {
+  FileService,
+  FulfillmentService,
+  OauthService,
+} from "medusa-interfaces"
+import { Lifetime, aliasTo, asFunction, asValue } from "awilix"
+import { SearchUtils, upperCaseFirst } from "@medusajs/utils"
+import {
   formatRegistrationName,
   formatRegistrationNameWithoutNamespace,
 } from "../utils/format-registration-name"
-import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
 import {
   registerPaymentProcessorFromClass,
   registerPaymentServiceFromClass,
 } from "./helpers/plugins"
+
+import { EntitySchema } from "typeorm"
+import { Express } from "express"
+import { MiddlewareService } from "../services"
+import _ from "lodash"
+import { createRequireFromPath } from "medusa-core-utils"
+import { sync as existsSync } from "fs-exists-cached"
+import fs from "fs"
+import { getModelExtensionsMap } from "./helpers/get-model-extension-map"
+import glob from "glob"
 import logger from "./logger"
+import path from "path"
+import { trackInstallation } from "medusa-telemetry"
 
 type Options = {
   rootDirectory: string
