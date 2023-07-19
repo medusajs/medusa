@@ -1,11 +1,4 @@
-import { TestDatabase } from "../../../utils"
-import { ProductService } from "@services"
-import { ProductRepository } from "@repositories"
 import { Image, Product, ProductCategory, ProductVariant } from "@models"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductDTO } from "@medusajs/types"
-
-import { createProductCategories } from "../../../__fixtures__/product-category"
 import {
   assignCategoriesToProduct,
   createImages,
@@ -17,7 +10,14 @@ import {
   productsData,
   variantsData,
 } from "../../../__fixtures__/product/data"
+
+import { ProductDTO } from "@medusajs/types"
+import { ProductRepository } from "@repositories"
+import { ProductService } from "@services"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { TestDatabase } from "../../../utils"
 import { buildProductOnlyData } from "../../../__fixtures__/product/data/create-product"
+import { createProductCategories } from "../../../__fixtures__/product-category"
 import { kebabCase } from "@medusajs/utils"
 
 jest.setTimeout(30000)

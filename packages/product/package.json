@@ -37,7 +37,6 @@
   },
   "devDependencies": {
     "@mikro-orm/cli": "5.7.12",
-    "@mikro-orm/migrations": "5.7.12",
     "cross-env": "^5.2.1",
     "faker": "^6.6.6",
     "jest": "^25.5.4",

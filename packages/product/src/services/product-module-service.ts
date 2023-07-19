@@ -23,6 +23,7 @@ import {
   DAL,
   FindConfig,
   InternalModuleDeclaration,
+  JoinerServiceConfig,
   ProductTypes,
 } from "@medusajs/types"
 import ProductImageService from "./product-image"
@@ -34,6 +35,7 @@ import {
   MedusaContext,
 } from "@medusajs/utils"
 import { shouldForceTransaction } from "../utils"
+import { joinerConfig } from "./../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -94,6 +96,10 @@ export default class ProductModuleService<
     this.productImageService_ = productImageService
     this.productTypeService_ = productTypeService
     this.productOptionService_ = productOptionService
+  }
+
+  __joinerConfig(): JoinerServiceConfig {
+    return joinerConfig
   }
 
   async list(
