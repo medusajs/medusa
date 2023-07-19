@@ -298,7 +298,7 @@ function EditPricesModal(props: EditPricesModalProps) {
               <Button
                 variant="ghost"
                 size="small"
-                onClick={props.close}
+                onClick={() => setShowCloseConfirmationPrompt(true)}
                 className="text-grey-50 cursor-pointer"
               >
                 <CrossIcon size={20} />
