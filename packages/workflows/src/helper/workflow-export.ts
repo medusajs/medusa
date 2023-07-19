@@ -23,21 +23,19 @@ export const exportWorkflow = (
           __joinerConfig: JoinerServiceConfig
           __definition: ModuleDefinition
         })[]
-      | MedusaContainer,
-    context?: Context
-  ): { run: (input?: any) => Promise<DistributedTransaction> } => {
-    const flow = new LocalWorkflow(
-      workflowId,
-      container,
-      context
-    ) as LocalWorkflow & {
-      run: (input?: any) => Promise<DistributedTransaction>
+      | MedusaContainer
+  ): LocalWorkflow & {
+    run: (input?: any, context?: Context) => Promise<DistributedTransaction>
+  } => {
+    const flow = new LocalWorkflow(workflowId, container) as LocalWorkflow & {
+      run: (input?: any, context?: Context) => Promise<DistributedTransaction>
     }
 
-    flow.run = async (input?) => {
+    flow.run = async (input?, context?: Context) => {
       const transaction = await flow.begin(
         context?.transactionId ?? ulid(),
-        inputAlias ? { [inputAlias]: input } : input
+        inputAlias ? { [inputAlias]: input } : input,
+        context
       )
 
       const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]

@@ -7,8 +7,8 @@ import {
 import { DistributedTransaction, TransactionOrchestrator } from "../transaction"
 import {
   WorkflowDefinition,
-  WorkflowHandler,
   WorkflowManager,
+  WorkflowStepHandler,
 } from "./workflow-manager"
 
 import { MedusaModule } from "@medusajs/modules-sdk"
@@ -18,12 +18,11 @@ import { createMedusaContainer } from "@medusajs/utils"
 
 export class LocalWorkflow extends OrchestratorBuilder {
   protected container: MedusaContainer
-  protected context: Context
   private workflowId: string
   private workflow: WorkflowDefinition
   private handlers: Map<
     string,
-    { invoke: WorkflowHandler; compensate?: WorkflowHandler }
+    { invoke: WorkflowStepHandler; compensate?: WorkflowStepHandler }
   >
 
   constructor(
@@ -33,8 +32,7 @@ export class LocalWorkflow extends OrchestratorBuilder {
           __joinerConfig: JoinerServiceConfig
           __definition: ModuleDefinition
         })[]
-      | MedusaContainer,
-    context?: Context
+      | MedusaContainer
   ) {
     const globalWorkflow = WorkflowManager.getWorkflow(workflowId)
     if (!globalWorkflow) {
@@ -72,13 +70,12 @@ export class LocalWorkflow extends OrchestratorBuilder {
     }
 
     this.container = container
-    this.context = context ?? {}
   }
 
   commit(
     handlers?: Map<
       string,
-      { invoke: WorkflowHandler; compensate?: WorkflowHandler }
+      { invoke: WorkflowStepHandler; compensate?: WorkflowStepHandler }
     >
   ) {
     const finalFlow = this.build()
@@ -98,12 +95,12 @@ export class LocalWorkflow extends OrchestratorBuilder {
     }
   }
 
-  async begin(uniqueTransactionId: string, input?: unknown) {
+  async begin(uniqueTransactionId: string, input?: unknown, context?: Context) {
     const { handler, orchestrator } = this.workflow
 
     const transaction = await orchestrator.beginTransaction(
       uniqueTransactionId,
-      handler(this.container, this.context),
+      handler(this.container, context),
       input
     )
 
@@ -114,12 +111,13 @@ export class LocalWorkflow extends OrchestratorBuilder {
 
   async registerStepSuccess(
     idempotencyKey: string,
-    response?: unknown
+    response?: unknown,
+    context?: Context
   ): Promise<DistributedTransaction> {
     const { handler, orchestrator } = this.workflow
     return await orchestrator.registerStepSuccess(
       idempotencyKey,
-      handler(this.container, this.context),
+      handler(this.container, context),
       undefined,
       response
     )
@@ -127,13 +125,14 @@ export class LocalWorkflow extends OrchestratorBuilder {
 
   async registerStepFailure(
     idempotencyKey: string,
-    error?: Error | any
+    error?: Error | any,
+    context?: Context
   ): Promise<DistributedTransaction> {
     const { handler, orchestrator } = this.workflow
     return await orchestrator.registerStepFailure(
       idempotencyKey,
       error,
-      handler(this.container, this.context)
+      handler(this.container, context)
     )
   }
 }

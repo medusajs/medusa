@@ -1,5 +1,8 @@
 import { Context, MedusaContainer, SharedContext } from "@medusajs/types"
-import { TransactionMetadata, WorkflowHandler } from "@medusajs/orchestration"
+import {
+  TransactionMetadata,
+  WorkflowStepHandler,
+} from "@medusajs/orchestration"
 
 import { InputAlias } from "../definitions"
 
@@ -34,7 +37,7 @@ export type PipelineHandler = (
 export function pipe(
   input: PipelineInput,
   ...functions: PipelineHandler[]
-): WorkflowHandler {
+): WorkflowStepHandler {
   return async ({
     container,
     payload,
