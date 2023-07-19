@@ -1,4 +1,9 @@
-import { Context, DAL, FindOptions } from "@medusajs/types"
+import {
+  Context,
+  CreateInventoryItemInput,
+  DAL,
+  FindOptions,
+} from "@medusajs/types"
 import { InventoryItem, ReservationItem } from "../models"
 
 import { AbstractBaseRepository } from "./base"
@@ -8,6 +13,7 @@ import {
   FilterQuery as MikroQuery,
   LoadStrategy,
   FindOptions as MikroOptions,
+  DeepPartial,
 } from "@mikro-orm/core"
 
 type InjectedDependencies = { manager: SqlEntityManager }
@@ -23,20 +29,16 @@ export class InventoryItemRepository extends AbstractBaseRepository<InventoryIte
     this.manager_ = manager
   }
 
-  @InjectTransactionManager()
   async find(
     options?: FindOptions<InventoryItem> | undefined,
-    @MedusaContext()
     context: Context = {}
   ): Promise<InventoryItem[]> {
     const [items] = await this.findAndCount(options, context)
     return items
   }
 
-  @InjectTransactionManager()
   async findAndCount(
     options?: FindOptions<InventoryItem> | undefined,
-    @MedusaContext()
     context: Context = {}
   ): Promise<[InventoryItem[], number]> {
     const manager = (context.transactionManager ??
@@ -56,13 +58,52 @@ export class InventoryItemRepository extends AbstractBaseRepository<InventoryIte
     )
   }
 
+  @InjectTransactionManager()
   async create(
-    data: unknown[],
-    context?: Context | undefined
+    data: CreateInventoryItemInput[],
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
   ): Promise<InventoryItem[]> {
-    throw new Error("Method not implemented.")
+    const items = data.map((item) => {
+      return (manager as SqlEntityManager).create(InventoryItem, item)
+    })
+
+    ;(manager as SqlEntityManager).persist(items)
+
+    return items
   }
-  async delete(ids: string[], context?: Context | undefined): Promise<void> {
-    throw new Error("Method not implemented.")
+
+  @InjectTransactionManager()
+  async update(
+    data: {
+      item: InventoryItem
+      update: Omit<
+        Partial<InventoryItem>,
+        "id" | "created_at" | "metadata" | "deleted_at" | "updated_at"
+      >
+    }[],
+    @MedusaContext()
+    { transactionManager }: Context = {}
+  ): Promise<InventoryItem[]> {
+    const manager = (transactionManager ?? this.manager_) as SqlEntityManager
+
+    const items = data.map(({ item, update }) => {
+      return manager.assign(item, update)
+    })
+
+    return items
+  }
+
+  @InjectTransactionManager()
+  async delete(
+    ids: string[],
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
+  ): Promise<void> {
+    await (manager as SqlEntityManager).nativeDelete(
+      InventoryItem,
+      { id: { $in: ids } },
+      {}
+    )
   }
 }
