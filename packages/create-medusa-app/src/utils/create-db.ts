@@ -1,9 +1,11 @@
+import { EOL } from "os"
 import pg from "pg"
 import postgresClient from "./postgres-client.js"
 import inquirer from "inquirer"
 import logMessage from "./log-message.js"
 import formatConnectionString from "./format-connection-string.js"
 import { Ora } from "ora"
+import { getCurrentOs } from "./get-current-os.js"
 
 type CreateDbOptions = {
   client: pg.Client
@@ -80,9 +82,7 @@ export async function getDbClientAndCredentials(dbName: string): Promise<{
       })
     } catch (e) {
       logMessage({
-        message:
-          "Couldn't connect to PostgreSQL. Make sure you have PostgreSQL installed and the credentials you provided are correct.${EOL}${EOL}" +
-          "You can learn how to install PostgreSQL here: https://docs.medusajs.com/development/backend/prepare-environment#postgresql",
+        message: `Couldn't connect to PostgreSQL. Make sure you have PostgreSQL installed and the credentials you provided are correct.${EOL}${EOL}You can learn how to install PostgreSQL here: https://docs.medusajs.com/development/backend/prepare-environment?os=${getCurrentOs()}#postgresql`,
         type: "error",
       })
     }
