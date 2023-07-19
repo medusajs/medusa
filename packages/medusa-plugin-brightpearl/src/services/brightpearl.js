@@ -664,7 +664,7 @@ class BrightpearlService extends BaseService {
       reservationItems
     )
 
-    if (!order?.metadata?.brightpearl_sales_order_id || !lineItems?.length) {
+    if (!order?.metadata?.brightpearl_sales_order_id) {
       return this.attemptRetryEvent(
         "reservation-items.bulk-created",
         eventData,
@@ -680,6 +680,24 @@ class BrightpearlService extends BaseService {
       { id: lineItems.map((item) => item.variant_id) },
       {}
     )
+
+    const [allReservationsForLineItems] =
+      await this.inventoryService_.listReservationItems({
+        line_item_id: lineItems.map((item) => item.id),
+      })
+
+    const lineItemReservationsMap = allReservationsForLineItems.reduce(
+      (acc, r) => {
+        if (acc.has(r.line_item_id)) {
+          acc.get(r.line_item_id).push(r)
+        } else {
+          acc.set(r.line_item_id, [r])
+        }
+        return acc
+      },
+      new Map()
+    )
+
     const lineItemMap = new Map(lineItems.map((item) => [item.id, item]))
     const variantMap = new Map(variants.map((v) => [v.id, v]))
 
@@ -688,24 +706,28 @@ class BrightpearlService extends BaseService {
     )
 
     const rows = await Promise.all(
-      reservationItems.map(async (item) => {
-        const lineItem = lineItemMap.get(item.line_item_id)
-        const variant = variantMap.get(lineItem.variant_id)
+      lineItems.map(async (item) => {
+        const reservations = lineItemReservationsMap.get(item.id)
+        const variant = variantMap.get(item.variant_id)
 
         const bpProduct = await this.retrieveProductBySKU(variant.sku)
 
-        if (!lineItem || !variant || !bpProduct) {
+        if (!reservations?.length || !variant || !bpProduct) {
           return null
         }
 
         const bpOrderRow = bpOrder.rows.find(
-          (row) => row.externalRef === lineItem.id
+          (row) => row.externalRef === item.id
         )
+
+        const reservedQuantity = reservations.reduce((acc, next) => {
+          return acc + next.quantity
+        }, 0)
 
         return {
           productId: bpProduct.productId,
           id: bpOrderRow.id,
-          quantity: item.quantity,
+          quantity: reservedQuantity,
         }
       })
     )
@@ -739,13 +761,16 @@ class BrightpearlService extends BaseService {
       )
     }
 
+    reservation[0].orderRows = order.rows.reduce((acc, next) => {
+      acc[next.id] = {
+        productId: next.productId,
+        quantity: next.quantity,
+      }
+      return acc
+    }, reservation[0].orderRows)
+
     const updatePayload = {
       products: [
-        ...order.rows.map((row) => ({
-          productId: row.productId,
-          salesOrderRowId: row.id,
-          quantity: row.quantity,
-        })),
         ...Object.entries(reservation[0].orderRows).map(([key, value]) => ({
           productId: value.productId,
           quantity: value.quantity,
@@ -809,11 +834,20 @@ class BrightpearlService extends BaseService {
       (row) => row.externalRef === lineItems[0].id
     )
 
+    const { reservationItems } =
+      await this.inventoryService_.listReservationItems({
+        line_item_id: reservationItem.line_item_id,
+      })
+
+    const reservedQuantity = reservationItems.reduce((acc, next) => {
+      return acc + next.quantity
+    }, 0)
+
     order.rows = [
       {
         productId: bpProduct.productId,
         id: bpOrderRow.id,
-        quantity: reservationItem.quantity,
+        quantity: reservedQuantity,
       },
     ]
 
@@ -844,13 +878,18 @@ class BrightpearlService extends BaseService {
       )
     }
 
+    const existingRow = reservation[0].orderRows[bpOrderRow.id]
+    if (!existingRow) {
+      reservation[0].orderRows[bpOrderRow.id] = {
+        productId: bpProduct.productId,
+        quantity: reservedQuantity,
+      }
+    } else {
+      reservation[0].orderRows[bpOrderRow.id].quantity = reservedQuantity
+    }
+
     const updatePayload = {
       products: [
-        {
-          productId: bpProduct.productId,
-          salesOrderRowId: bpOrderRow.id,
-          quantity: reservationItem.quantity,
-        },
         ...Object.entries(reservation[0].orderRows).map(([key, value]) => ({
           productId: value.productId,
           quantity: value.quantity,
