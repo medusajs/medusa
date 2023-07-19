@@ -761,7 +761,7 @@ describe("/store/carts", () => {
       await doAfterEach()
     })
 
-    it("updates line item of cart", async () => {
+    it.only("updates line item of cart", async () => {
       const api = useApi()
 
       const response = await api
@@ -769,6 +769,9 @@ describe("/store/carts", () => {
           "/store/carts/test-cart-3/line-items/test-item3/",
           {
             quantity: 3,
+            metadata: {
+              another: "prop",
+            },
           },
           { withCredentials: true }
         )
@@ -782,6 +785,10 @@ describe("/store/carts", () => {
             variant_id: "test-variant-sale-cg",
             quantity: 3,
             adjustments: [],
+            metadata: {
+              "some-existing": "prop",
+              another: "prop",
+            },
           }),
         ])
       )

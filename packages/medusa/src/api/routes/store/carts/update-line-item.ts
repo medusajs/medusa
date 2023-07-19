@@ -89,7 +89,7 @@ export default async (req, res) => {
         variant_id: existing.variant.id,
         region_id: cart.region_id,
         quantity: validated.quantity,
-        metadata: validated.metadata || existing.metadata || {},
+        metadata: validated.metadata || {},
       }
 
       await cartService

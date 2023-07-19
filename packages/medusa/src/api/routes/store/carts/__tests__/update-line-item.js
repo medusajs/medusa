@@ -139,7 +139,7 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
     })
   })
 
-  describe("uses existing metadata if no metadata in request body", () => {
+  describe("uses empty metadata if no metadata in request body", () => {
     let subject
 
     beforeAll(async () => {
@@ -166,9 +166,52 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
         IdMap.getId("cartLineItemMetadata"),
         IdMap.getId("lineWithMetadata"),
         {
-          metadata: {
-            status: "confirmed",
+          metadata: {},
+          quantity: 3,
+          region_id: expect.any(String),
+          variant_id: expect.any(String),
+        }
+      )
+    })
+
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
+    })
+
+    it("returns the cart", () => {
+      expect(subject.body.cart.id).toEqual(IdMap.getId("cartLineItemMetadata"))
+    })
+  })
+
+  describe("uses metadata if in request body", () => {
+    let subject
+
+    beforeAll(async () => {
+      const cartId = IdMap.getId("cartLineItemMetadata")
+      const lineId = IdMap.getId("lineWithMetadata")
+      subject = await request(
+        "POST",
+        `/store/carts/${cartId}/line-items/${lineId}`,
+        {
+          payload: {
+            quantity: 3,
+            metadata: { test: "this" },
           },
+        }
+      )
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls CartService updateLineItem", () => {
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledWith(
+        IdMap.getId("cartLineItemMetadata"),
+        IdMap.getId("lineWithMetadata"),
+        {
+          metadata: { test: "this" },
           quantity: 3,
           region_id: expect.any(String),
           variant_id: expect.any(String),
