@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.12.2",
+  "version": "1.12.3",
   "description": "Building blocks for digital commerce",
   "main": "dist/index.js",
   "bin": "./cli.js",
@@ -19,7 +19,7 @@
   "author": "Sebastian Rindom",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "^1.8.10",
+    "@medusajs/types": "^1.8.11",
     "@types/express": "^4.17.17",
     "@types/ioredis": "^4.28.10",
     "@types/jsonwebtoken": "^8.5.9",
