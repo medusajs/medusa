@@ -938,6 +938,7 @@ module.exports = async (dataSource, data = {}) => {
     quantity: 1,
     variant_id: "test-variant-sale-cg",
     cart_id: "test-cart-3",
+    metadata: { "some-existing": "prop" },
   })
   await manager.save(li3)
 }
