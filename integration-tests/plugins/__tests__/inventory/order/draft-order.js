@@ -119,7 +119,7 @@ describe("/store/carts", () => {
       })
     })
 
-    it("creates an order from a draft order and doesn't adjust reservations", async () => {
+    it("should create the order from a draft order and shouldn't adjust reservations", async () => {
       const api = useApi()
       let inventoryItem = await api.get(
         `/admin/inventory-items/${invItemId}`,
