@@ -9,7 +9,7 @@ export interface StorePostCartsCartLineItemsItemReq {
    */
   quantity: number
   /**
-   * An optional key-value map with additional details about the Line Item.
+   * An optional key-value map with additional details about the Line Item. If omitted, the metadata will remain unchanged."
    */
   metadata?: Record<string, any>
 }

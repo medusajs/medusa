@@ -761,7 +761,7 @@ describe("/store/carts", () => {
       await doAfterEach()
     })
 
-    it.only("updates line item of cart", async () => {
+    it("updates line item of cart", async () => {
       const api = useApi()
 
       const response = await api
