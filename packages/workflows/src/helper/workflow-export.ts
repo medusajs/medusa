@@ -11,6 +11,7 @@ import {
 } from "@medusajs/orchestration"
 import { InputAlias, Workflows } from "../definitions"
 
+import { MedusaModule } from "@medusajs/modules-sdk"
 import { ulid } from "ulid"
 
 export const exportWorkflow = (
@@ -27,6 +28,12 @@ export const exportWorkflow = (
   ): LocalWorkflow & {
     run: (input?: any, context?: Context) => Promise<DistributedTransaction>
   } => {
+    if (!container) {
+      container = [...MedusaModule.getLoadedModules().entries()].map(
+        (_, mod) => mod
+      )
+    }
+
     const flow = new LocalWorkflow(workflowId, container) as LocalWorkflow & {
       run: (input?: any, context?: Context) => Promise<DistributedTransaction>
     }
