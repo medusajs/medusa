@@ -1,5 +1,11 @@
 # @medusajs/client-types
 
+## 0.2.4
+
+### Patch Changes
+
+- [#4230](https://github.com/medusajs/medusa/pull/4230) [`2f283996f`](https://github.com/medusajs/medusa/commit/2f283996f80313b074b96c690bcd953c67665c1b) Thanks [@erikengervall](https://github.com/erikengervall)! - feat(medusa): Add `metadata` to `StorePostCartsCartLineItemsItemReq`
+
 ## 0.2.3
 
 ### Patch Changes
