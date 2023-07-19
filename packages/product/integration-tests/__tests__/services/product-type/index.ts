@@ -154,22 +154,22 @@ describe("ProductType Service", () => {
   })
 
   describe("retrieve", () => {
-    const tagId = "type-1"
-    const tagValue = "Type 1"
+    const typeId = "type-1"
+    const typeValue = "Type 1"
 
-    it("should return tag for the given id", async () => {
-      const tag = await service.retrieve(
-        tagId,
+    it("should return type for the given id", async () => {
+      const type = await service.retrieve(
+        typeId,
       )
 
-      expect(tag).toEqual(
+      expect(type).toEqual(
         expect.objectContaining({
-          id: tagId
+          id: typeId
         })
       )
     })
 
-    it("should throw an error when tag with id does not exist", async () => {
+    it("should throw an error when type with id does not exist", async () => {
       let error
 
       try {
@@ -193,22 +193,88 @@ describe("ProductType Service", () => {
       expect(error.message).toEqual('"productTypeId" must be defined')
     })
 
-    it("should return tag based on config select param", async () => {
-      const tag = await service.retrieve(
-        tagId,
+    it("should return type based on config select param", async () => {
+      const type = await service.retrieve(
+        typeId,
         {
           select: ["id", "value"],
         }
       )
 
-      const serialized = JSON.parse(JSON.stringify(tag))
+      const serialized = JSON.parse(JSON.stringify(type))
 
       expect(serialized).toEqual(
         {
-          id: tagId,
-          value: tagValue,
+          id: typeId,
+          value: typeValue,
         }
       )
+    })
+  })
+
+  describe("delete", () => {
+    const typeId = "type-1"
+
+    it("should delete the product type given an ID successfully", async () => {
+      await service.delete(
+        [typeId],
+      )
+
+      const types = await service.list({
+        id: typeId
+      })
+
+      expect(types).toHaveLength(0)
+    })
+  })
+
+  describe("update", () => {
+    const typeId = "type-1"
+
+    it("should update the value of the type successfully", async () => {
+      await service.update(
+        [{
+          id: typeId,
+          value: "UK"
+        }]
+      )
+
+      const productType = await service.retrieve(typeId)
+
+      expect(productType.value).toEqual("UK")
+    })
+
+    it("should throw an error when an id does not exist", async () => {
+      let error
+
+      try {
+        await service.update([
+        {
+          id: "does-not-exist",
+          value: "UK"
+        }
+      ])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual('ProductType with id "does-not-exist" not found')
+    })
+  })
+
+  describe("create", () => {
+    it("should create a type successfully", async () => {
+      await service.create(
+        [{
+          value: "UK"
+        }]
+      )
+
+      const [productType] = await service.list({
+        value: "UK"
+      })
+
+      expect(productType.value).toEqual("UK")
     })
   })
 })

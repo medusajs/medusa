@@ -233,5 +233,71 @@ describe("ProductModuleService product tags", () => {
       expect(error.message).toEqual("ProductTag with id: does-not-exist was not found")
     })
   })
+
+  describe("deleteTags", () => {
+    const tagId = "tag-1"
+
+    it("should delete the product tag given an ID successfully", async () => {
+      await service.deleteTags(
+        [tagId],
+      )
+
+      const tags = await service.listTags({
+        id: tagId
+      })
+
+      expect(tags).toHaveLength(0)
+    })
+  })
+
+  describe("updateTags", () => {
+    const tagId = "tag-1"
+
+    it("should update the value of the tag successfully", async () => {
+      await service.updateTags(
+        [{
+          id: tagId,
+          value: "UK"
+        }]
+      )
+
+      const productTag = await service.retrieveTag(tagId)
+
+      expect(productTag.value).toEqual("UK")
+    })
+
+    it("should throw an error when an id does not exist", async () => {
+      let error
+
+      try {
+        await service.updateTags([
+          {
+            id: "does-not-exist",
+            value: "UK"
+          }
+        ])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual('ProductTag with id "does-not-exist" not found')
+    })
+  })
+
+  describe("createTags", () => {
+    it("should create a tag successfully", async () => {
+      const res = await service.createTags(
+        [{
+          value: "UK"
+        }]
+      )
+
+      const productTag = await service.listTags({
+        value: "UK"
+      })
+
+      expect(productTag[0]?.value).toEqual("UK")
+    })
+  })
 })
 

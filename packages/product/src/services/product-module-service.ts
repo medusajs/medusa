@@ -230,6 +230,40 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(tags)), count]
   }
 
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async createTags(
+    data: ProductTypes.CreateProductTagDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const productTags = await this.productTagService_.create(
+      data,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productTags))
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async updateTags(
+    data: ProductTypes.UpdateProductTagDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const productTags = await this.productTagService_.update(
+      data,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productTags))
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async deleteTags(
+    productTagIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.productTagService_.delete(productTagIds, sharedContext)
+  }
+
   @InjectManager("baseRepository_")
   async retrieveType(
     typeId: string,
@@ -273,6 +307,40 @@ export default class ProductModuleService<
     )
 
     return [JSON.parse(JSON.stringify(types)), count]
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async createTypes(
+    data: ProductTypes.CreateProductTypeDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const productTypes = await this.productTypeService_.create(
+      data,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productTypes))
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async updateTypes(
+    data: ProductTypes.UpdateProductTypeDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const productTypes = await this.productTypeService_.update(
+      data,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productTypes))
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async deleteTypes(
+    productTypeIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.productTypeService_.delete(productTypeIds, sharedContext)
   }
 
   @InjectManager("baseRepository_")

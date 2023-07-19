@@ -1,5 +1,9 @@
 import {
   CreateProductDTO,
+  CreateProductTagDTO,
+  CreateProductTypeDTO,
+  UpdateProductTagDTO,
+  UpdateProductTypeDTO,
   FilterableProductCategoryProps,
   FilterableProductCollectionProps,
   FilterableProductProps,
@@ -49,6 +53,21 @@ export interface IProductModuleService {
     sharedContext?: Context
   ): Promise<[ProductTagDTO[], number]>
 
+  createTags(
+    data: CreateProductTagDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductDTO[]>
+
+  updateTags(
+    data: UpdateProductTagDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductDTO[]>
+
+  deleteTags(
+    productTagIds: string[],
+    sharedContext?: Context,
+  ): Promise<void>
+
   retrieveType(
     typeId: string,
     config?: FindConfig<ProductTypeDTO>,
@@ -66,6 +85,21 @@ export interface IProductModuleService {
     config?: FindConfig<ProductTypeDTO>,
     sharedContext?: Context
   ): Promise<[ProductTypeDTO[], number]>
+
+  createTypes(
+    data: CreateProductTypeDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductDTO[]>
+
+  updateTypes(
+    data: UpdateProductTypeDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductDTO[]>
+
+  deleteTypes(
+    productTypeIds: string[],
+    sharedContext?: Context,
+  ): Promise<void>
 
   retrieveVariant(
     productVariantId: string,

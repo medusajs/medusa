@@ -5,10 +5,17 @@ import {
   RequiredEntityData,
 } from "@mikro-orm/core"
 import { Product, ProductType } from "@models"
-import { Context, CreateProductTypeDTO, DAL } from "@medusajs/types"
-import { BaseRepository } from "./base"
+import {
+  Context,
+  DAL,
+  CreateProductTypeDTO,
+  UpsertProductTypeDTO,
+  UpdateProductTypeDTO,
+} from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import { InjectTransactionManager, MedusaContext, MedusaError } from "@medusajs/utils"
+
+import { BaseRepository } from "./base"
 
 export class ProductTypeRepository extends BaseRepository {
   protected readonly manager_: SqlEntityManager
@@ -116,7 +123,7 @@ export class ProductTypeRepository extends BaseRepository {
     { transactionManager: manager }: Context = {}
   ): Promise<void> {
     await (manager as SqlEntityManager).nativeDelete(
-      Product,
+      ProductType,
       { id: { $in: ids } },
       {}
     )
@@ -124,10 +131,59 @@ export class ProductTypeRepository extends BaseRepository {
 
   @InjectTransactionManager()
   async create(
-    data: unknown[],
+    data: CreateProductTypeDTO[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<ProductType[]> {
-    throw new Error("Method not implemented.")
+    const manager = this.getActiveManager(context)
+
+    const productTypes = data.map((typeData) => {
+      return manager.create(ProductType, typeData)
+    })
+
+    await manager.persist(productTypes)
+
+    return productTypes
+  }
+
+  @InjectTransactionManager()
+  async update(
+    data: UpdateProductTypeDTO[],
+    @MedusaContext()
+    context: Context = {}
+  ): Promise<ProductType[]> {
+    const manager = this.getActiveManager(context)
+    const typeIds = data.map((typeData) => typeData.id)
+    const existingTypes = await this.find(
+      {
+        where: {
+          id: {
+            $in: typeIds,
+          },
+        },
+      },
+      context
+    )
+
+    const existingTypesMap = new Map(
+      existingTypes.map<[string, ProductType]>((type) => [type.id, type])
+    )
+
+    const productTypes = data.map((typeData) => {
+      const existingType = existingTypesMap.get(typeData.id)
+
+      if (!existingType) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `ProductType with id "${typeData.id}" not found`
+        )
+      }
+
+      return manager.assign(existingType, typeData)
+    })
+
+    await manager.persist(productTypes)
+
+    return productTypes
   }
 }

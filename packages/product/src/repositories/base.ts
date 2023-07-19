@@ -226,7 +226,7 @@ export class BaseRepository extends AbstractBaseRepository {
       return manager as SqlEntityManager
     }
 
-    return this.manager_
+    return this.manager_ as SqlEntityManager
   }
 
   serialize<

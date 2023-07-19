@@ -205,5 +205,72 @@ describe("ProductModuleService product types", () => {
       expect(error.message).toEqual("ProductType with id: does-not-exist was not found")
     })
   })
+
+
+  describe("deleteTypes", () => {
+    const typeId = "type-1"
+
+    it("should delete the product type given an ID successfully", async () => {
+      await service.deleteTypes(
+        [typeId],
+      )
+
+      const types = await service.listTypes({
+        id: typeId
+      })
+
+      expect(types).toHaveLength(0)
+    })
+  })
+
+  describe("updateTypes", () => {
+    const typeId = "type-1"
+
+    it("should update the value of the type successfully", async () => {
+      await service.updateTypes(
+        [{
+          id: typeId,
+          value: "UK"
+        }]
+      )
+
+      const productType = await service.retrieveType(typeId)
+
+      expect(productType.value).toEqual("UK")
+    })
+
+    it("should throw an error when an id does not exist", async () => {
+      let error
+
+      try {
+        await service.updateTypes([
+          {
+            id: "does-not-exist",
+            value: "UK"
+          }
+        ])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual('ProductType with id "does-not-exist" not found')
+    })
+  })
+
+  describe("createTypes", () => {
+    it("should create a type successfully", async () => {
+      const res = await service.createTypes(
+        [{
+          value: "UK"
+        }]
+      )
+
+      const productType = await service.listTypes({
+        value: "UK"
+      })
+
+      expect(productType[0]?.value).toEqual("UK")
+    })
+  })
 })
 

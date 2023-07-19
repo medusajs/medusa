@@ -189,8 +189,27 @@ export interface CreateProductTypeDTO {
   value: string
 }
 
-export interface CreateProductTagDTO {
+export interface UpsertProductTypeDTO {
   id?: string
+  value: string
+}
+
+export interface UpdateProductTypeDTO {
+  id: string
+  value: string
+}
+
+export interface CreateProductTagDTO {
+  value: string
+}
+
+export interface UpsertProductTagDTO {
+  id?: string
+  value: string
+}
+
+export interface UpdateProductTagDTO {
+  id: string
   value: string
 }
 
