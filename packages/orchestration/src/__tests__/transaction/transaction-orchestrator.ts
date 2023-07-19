@@ -763,13 +763,13 @@ describe("Transaction Orchestrator", () => {
     )
     expect(transaction.getState()).toBe(TransactionState.INVOKING)
 
-    const rundTransaction = await strategy.registerStepFailure(
+    const resumedTransaction = await strategy.registerStepFailure(
       mocktransactionId,
       null,
       handler
     )
 
-    expect(rundTransaction.getState()).toBe(TransactionState.COMPENSATING)
+    expect(resumedTransaction.getState()).toBe(TransactionState.COMPENSATING)
     expect(mocks.compensateOne).toBeCalledTimes(1)
 
     const mocktransactionIdCompensate = TransactionOrchestrator.getKeyName(
@@ -780,10 +780,10 @@ describe("Transaction Orchestrator", () => {
     await strategy.registerStepSuccess(
       mocktransactionIdCompensate,
       undefined,
-      rundTransaction
+      resumedTransaction
     )
 
-    expect(rundTransaction.getState()).toBe(TransactionState.REVERTED)
+    expect(resumedTransaction.getState()).toBe(TransactionState.REVERTED)
   })
 
   it("Should revert a transaction when .cancelTransaction() is called", async () => {
