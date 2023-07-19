@@ -1,0 +1,1 @@
+export { BaseRepository } from "./base"
