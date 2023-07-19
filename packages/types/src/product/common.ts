@@ -184,9 +184,26 @@ export interface FilterableProductCategoryProps
  * Write DTO (module API input)
  */
 
+export interface CreateProductCollectionDTO {
+  title: string
+  handle?: string
+  products?: ProductDTO[]
+  metadata?: Record<string, unknown>
+}
+
+export interface UpdateProductCollectionDTO {
+  id: string
+  value?: string
+  title?: string
+  handle?: string
+  products?: ProductDTO[]
+  metadata?: Record<string, unknown>
+}
+
 export interface CreateProductTypeDTO {
   id?: string
   value: string
+  metadata?: Record<string, unknown>
 }
 
 export interface UpsertProductTypeDTO {
@@ -196,7 +213,8 @@ export interface UpsertProductTypeDTO {
 
 export interface UpdateProductTypeDTO {
   id: string
-  value: string
+  value?: string
+  metadata?: Record<string, unknown>
 }
 
 export interface CreateProductTagDTO {
@@ -210,7 +228,7 @@ export interface UpsertProductTagDTO {
 
 export interface UpdateProductTagDTO {
   id: string
-  value: string
+  value?: string
 }
 
 export interface CreateProductOptionDTO {

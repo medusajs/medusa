@@ -206,7 +206,6 @@ describe("ProductModuleService product types", () => {
     })
   })
 
-
   describe("deleteTypes", () => {
     const typeId = "type-1"
 

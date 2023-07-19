@@ -16,6 +16,8 @@ import {
   ProductTagDTO,
   ProductTypeDTO,
   ProductVariantDTO,
+  CreateProductCollectionDTO,
+  UpdateProductCollectionDTO,
 } from "./common"
 import { FindConfig } from "../common"
 import { Context } from "../shared-context"
@@ -56,12 +58,12 @@ export interface IProductModuleService {
   createTags(
     data: CreateProductTagDTO[],
     sharedContext?: Context,
-  ): Promise<ProductDTO[]>
+  ): Promise<ProductTagDTO[]>
 
   updateTags(
     data: UpdateProductTagDTO[],
     sharedContext?: Context,
-  ): Promise<ProductDTO[]>
+  ): Promise<ProductTagDTO[]>
 
   deleteTags(
     productTagIds: string[],
@@ -89,12 +91,12 @@ export interface IProductModuleService {
   createTypes(
     data: CreateProductTypeDTO[],
     sharedContext?: Context,
-  ): Promise<ProductDTO[]>
+  ): Promise<ProductTypeDTO[]>
 
   updateTypes(
     data: UpdateProductTypeDTO[],
     sharedContext?: Context,
-  ): Promise<ProductDTO[]>
+  ): Promise<ProductTypeDTO[]>
 
   deleteTypes(
     productTypeIds: string[],
@@ -136,6 +138,21 @@ export interface IProductModuleService {
     config?: FindConfig<ProductCollectionDTO>,
     sharedContext?: Context
   ): Promise<[ProductCollectionDTO[], number]>
+
+  createCollections(
+    data: CreateProductCollectionDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductCollectionDTO[]>
+
+  updateCollections(
+    data: UpdateProductCollectionDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductCollectionDTO[]>
+
+  deleteCollections(
+    productCollectionIds: string[],
+    sharedContext?: Context,
+  ): Promise<void>
 
   retrieveCategory(
     productCategoryId: string,

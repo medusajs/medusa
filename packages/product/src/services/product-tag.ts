@@ -87,22 +87,22 @@ export default class ProductTagService<
 
   @InjectTransactionManager(shouldForceTransaction, "productTagRepository_")
   async create(
-    tags: CreateProductTagDTO[],
+    data: CreateProductTagDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.productTagRepository_ as ProductTagRepository).create(
-      tags,
+      data,
       sharedContext
     )) as TEntity[]
   }
 
   @InjectTransactionManager(shouldForceTransaction, "productTagRepository_")
   async update(
-    tags: UpdateProductTagDTO[],
+    data: UpdateProductTagDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.productTagRepository_ as ProductTagRepository).update(
-      tags,
+      data,
       sharedContext
     )) as TEntity[]
   }
@@ -117,11 +117,11 @@ export default class ProductTagService<
 
   @InjectTransactionManager(doNotForceTransaction, "productTagRepository_")
   async upsert(
-    tags: UpsertProductTagDTO[],
+    data: UpsertProductTagDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.productTagRepository_ as ProductTagRepository).upsert!(
-      tags,
+      data,
       sharedContext
     )) as TEntity[]
   }

@@ -388,6 +388,40 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(collections))
   }
 
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async createCollections(
+    data: ProductTypes.CreateProductCollectionDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const productCollections = await this.productCollectionService_.create(
+      data,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productCollections))
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async updateCollections(
+    data: ProductTypes.UpdateProductCollectionDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const productCollections = await this.productCollectionService_.update(
+      data,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productCollections))
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async deleteCollections(
+    productCollectionIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.productCollectionService_.delete(productCollectionIds, sharedContext)
+  }
+
   @InjectManager("baseRepository_")
   async retrieveCategory(
     productCategoryId: string,

@@ -94,22 +94,22 @@ export default class ProductTypeService<
 
   @InjectTransactionManager(shouldForceTransaction, "productTypeRepository_")
   async create(
-    tags: CreateProductTypeDTO[],
+    data: CreateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.productTypeRepository_ as ProductTypeRepository).create(
-      tags,
+      data,
       sharedContext
     )) as TEntity[]
   }
 
   @InjectTransactionManager(shouldForceTransaction, "productTypeRepository_")
   async update(
-    tags: UpdateProductTypeDTO[],
+    data: UpdateProductTypeDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.productTypeRepository_ as ProductTypeRepository).update(
-      tags,
+      data,
       sharedContext
     )) as TEntity[]
   }

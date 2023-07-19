@@ -4,12 +4,22 @@ import {
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import { Context, DAL } from "@medusajs/types"
-import { AbstractBaseRepository } from "./base"
+import {
+  Context,
+  DAL,
+  FindConfig,
+  ProductTypes,
+} from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import {
+  MedusaError,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/utils"
 
-export class ProductCollectionRepository extends AbstractBaseRepository<ProductCollection> {
+import { BaseRepository } from "./base"
+
+export class ProductCollectionRepository extends BaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -62,23 +72,72 @@ export class ProductCollectionRepository extends AbstractBaseRepository<ProductC
 
   @InjectTransactionManager()
   async delete(
-    ids: string[],
+    collectionIds: string[],
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<void> {
     await (manager as SqlEntityManager).nativeDelete(
-      Product,
-      { id: { $in: ids } },
+      ProductCollection,
+      { id: { $in: collectionIds } },
       {}
     )
   }
 
   @InjectTransactionManager()
   async create(
-    data: unknown[],
+    data: ProductTypes.CreateProductCollectionDTO[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<ProductCollection[]> {
-    throw new Error("Method not implemented.")
+    const manager = this.getActiveManager(context)
+
+    const productCollections = data.map((typeData) => {
+      return manager.create(ProductCollection, typeData)
+    })
+
+    await manager.persist(productCollections)
+
+    return productCollections
+  }
+
+  @InjectTransactionManager()
+  async update(
+    data: ProductTypes.UpdateProductCollectionDTO[],
+    @MedusaContext()
+    context: Context = {}
+  ): Promise<ProductCollection[]> {
+    const manager = this.getActiveManager(context)
+    const collectionIds = data.map((collectionData) => collectionData.id)
+    const existingTypes = await this.find(
+      {
+        where: {
+          id: {
+            $in: collectionIds,
+          },
+        },
+      },
+      context
+    )
+
+    const existingTypesMap = new Map(
+      existingTypes.map<[string, ProductCollection]>((collection) => [collection.id, collection])
+    )
+
+    const productCollections = data.map((collectionData) => {
+      const existingType = existingTypesMap.get(collectionData.id)
+
+      if (!existingType) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `ProductCollection with id "${collectionData.id}" not found`
+        )
+      }
+
+      return manager.assign(existingType, collectionData)
+    })
+
+    await manager.persist(productCollections)
+
+    return productCollections
   }
 }
