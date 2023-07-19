@@ -1,16 +1,11 @@
 import { useBaseSpecs } from "@/providers/base-specs"
 import type { OpenAPIV3 } from "openapi-types"
-import Loading from "@/components/Loading"
 import dynamic from "next/dynamic"
 import type { SecurityDescriptionProps } from "../../../../MDXComponents/Security/Description"
-import { Suspense } from "react"
 import Details from "@/components/Details"
 
 const SecurityDescription = dynamic<SecurityDescriptionProps>(
-  async () => import("../../../../MDXComponents/Security/Description"),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("../../../../MDXComponents/Security/Description")
 ) as React.FC<SecurityDescriptionProps>
 
 export type TagsOperationDescriptionSectionSecurityProps = {
@@ -23,7 +18,7 @@ const TagsOperationDescriptionSectionSecurity = ({
   const { getSecuritySchema } = useBaseSpecs()
 
   return (
-    <Suspense fallback={<Loading />}>
+    <>
       <Details
         className="my-1"
         summaryContent={
@@ -62,7 +57,7 @@ const TagsOperationDescriptionSectionSecurity = ({
           })}
         </div>
       </Details>
-    </Suspense>
+    </>
   )
 }
 

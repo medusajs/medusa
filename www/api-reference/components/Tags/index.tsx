@@ -8,14 +8,13 @@ import { useBaseSpecs } from "@/providers/base-specs"
 import dynamic from "next/dynamic"
 import type { TagSectionProps } from "./Section"
 import { useArea } from "@/providers/area"
-import ContentLoading from "../ContentLoading"
 import getLinkWithBasePath from "@/utils/get-link-with-base-path"
 import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
 import getSectionId from "@/utils/get-section-id"
 
-const TagSection = dynamic<TagSectionProps>(async () => import("./Section"), {
-  loading: () => <ContentLoading />,
-}) as React.FC<TagSectionProps>
+const TagSection = dynamic<TagSectionProps>(
+  async () => import("./Section")
+) as React.FC<TagSectionProps>
 
 export type TagsProps = React.HTMLAttributes<HTMLDivElement>
 
@@ -26,7 +25,7 @@ const Tags = () => {
   const { addItems } = useSidebar()
   const { area } = useArea()
 
-  const { data, isLoading } = useSWR<OpenAPIV3.Document>(
+  const { data } = useSWR<OpenAPIV3.Document>(
     loadData ? getLinkWithBasePath(`/api/base-specs?area=${area}`) : null,
     fetcher
   )
@@ -60,7 +59,6 @@ const Tags = () => {
 
   return (
     <>
-      {(isLoading || !data) && <ContentLoading />}
       {data && tags.map((tag, index) => <TagSection tag={tag} key={index} />)}
     </>
   )

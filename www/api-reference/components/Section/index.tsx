@@ -30,6 +30,7 @@ const Section = ({
           items.push({
             path: `${id}`,
             title: heading.textContent,
+            loaded: true,
           })
           heading.id = id
         }

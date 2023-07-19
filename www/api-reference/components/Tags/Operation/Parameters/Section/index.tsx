@@ -1,14 +1,10 @@
-import Loading from "@/components/Loading"
 import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import type { TagOperationParametersProps } from ".."
 import dynamic from "next/dynamic"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
-  async () => import(".."),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("..")
 ) as React.FC<TagOperationParametersProps>
 
 type TagsOperationParametersSectionProps = {

@@ -4,10 +4,10 @@ import { useState, useEffect, useRef, useCallback } from "react"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import { TooltipProps } from "../Tooltip"
-import Loading from "../Loading"
+import SpinnerLoading from "../Loading/Spinner"
 
 const Tooltip = dynamic<TooltipProps>(async () => import("../Tooltip"), {
-  loading: () => <Loading />,
+  loading: () => <SpinnerLoading />,
 }) as React.FC<TooltipProps>
 
 export type CopyButtonProps = {

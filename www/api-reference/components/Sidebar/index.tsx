@@ -7,7 +7,7 @@ import { SidebarItemProps } from "./Item"
 import Loading from "../Loading"
 
 const SidebarItem = dynamic<SidebarItemProps>(async () => import("./Item"), {
-  loading: () => <Loading />,
+  loading: () => <Loading count={1} />,
 }) as React.FC<SidebarItemProps>
 
 type SidebarProps = {

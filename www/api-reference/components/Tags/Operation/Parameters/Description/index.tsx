@@ -1,4 +1,3 @@
-import Loading from "@/components/Loading"
 import type { InlineCodeProps } from "@/components/InlineCode"
 import MDXContentClient from "@/components/MDXContent/Client"
 import type { SchemaObject } from "@/types/openapi"
@@ -7,17 +6,11 @@ import dynamic from "next/dynamic"
 import type { LinkProps } from "../../../../MDXComponents/Link"
 
 const InlineCode = dynamic<InlineCodeProps>(
-  async () => import("../../../../InlineCode"),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("../../../../InlineCode")
 ) as React.FC<InlineCodeProps>
 
 const Link = dynamic<LinkProps>(
-  async () => import("../../../../MDXComponents/Link"),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("../../../../MDXComponents/Link")
 ) as React.FC<LinkProps>
 
 type TagOperationParametersDescriptionProps = {

@@ -1,32 +1,22 @@
 import type { SchemaObject } from "@/types/openapi"
 import TagOperationParametersDefault from "../Default"
 import dynamic from "next/dynamic"
-import Loading from "@/components/Loading"
 import type { TagOperationParametersProps } from "../.."
 import type { TagsOperationParametersNestedProps } from "../../Nested"
 import type { DetailsProps } from "@/components/Details"
 import checkRequired from "@/utils/check-required"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
-  async () => import("../.."),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("../..")
 ) as React.FC<TagOperationParametersProps>
 
 const TagsOperationParametersNested =
   dynamic<TagsOperationParametersNestedProps>(
-    async () => import("../../Nested"),
-    {
-      loading: () => <Loading />,
-    }
+    async () => import("../../Nested")
   ) as React.FC<TagsOperationParametersNestedProps>
 
 const Details = dynamic<DetailsProps>(
-  async () => import("../../../../../Details"),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("../../../../../Details")
 ) as React.FC<DetailsProps>
 
 export type TagOperationParametersObjectProps = {

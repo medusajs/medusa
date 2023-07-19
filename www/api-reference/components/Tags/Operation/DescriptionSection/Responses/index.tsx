@@ -1,7 +1,5 @@
-import Loading from "@/components/Loading"
 import type { ResponsesObject } from "@/types/openapi"
 import clsx from "clsx"
-import { Suspense } from "react"
 import Details from "@/components/Details"
 import TagsOperationParametersSection from "../../Parameters/Section"
 
@@ -23,7 +21,7 @@ const TagsOperationDescriptionSectionResponses = ({
   }
 
   return (
-    <Suspense fallback={<Loading />}>
+    <>
       <h4>Responses</h4>
       {Object.entries(responses).map(([code, response], index) => {
         return (
@@ -74,7 +72,7 @@ const TagsOperationDescriptionSectionResponses = ({
           </div>
         )
       })}
-    </Suspense>
+    </>
   )
 }
 

@@ -19,10 +19,12 @@ const AreaProvider = ({ area: passedArea, children }: AreaProviderProps) => {
   const [area, setArea] = useState<Area>(passedArea)
 
   return (
-    <AreaContext.Provider value={{
-      area,
-      setArea
-    }}>
+    <AreaContext.Provider
+      value={{
+        area,
+        setArea,
+      }}
+    >
       {children}
     </AreaContext.Provider>
   )

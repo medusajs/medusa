@@ -11,24 +11,21 @@ import { useEffect } from "react"
 import dynamic from "next/dynamic"
 import type { TagOperationProps } from "../Operation"
 import { useArea } from "@/providers/area"
-import ContentLoading from "@/components/ContentLoading"
 import getLinkWithBasePath from "@/utils/get-link-with-base-path"
+import clsx from "clsx"
 
 const TagOperation = dynamic<TagOperationProps>(
-  async () => import("../Operation"),
-  {
-    loading: () => <ContentLoading />,
-  }
+  async () => import("../Operation")
 ) as React.FC<TagOperationProps>
 
-export type TagSectionPathsProps = {
+export type TagPathsProps = {
   tag: OpenAPIV3.TagObject
 } & React.HTMLAttributes<HTMLDivElement>
 
-const TagPaths = ({ tag }: TagSectionPathsProps) => {
+const TagPaths = ({ tag, className }: TagPathsProps) => {
   const tagSlugName = getSectionId([tag.name])
   const { area } = useArea()
-  const { data, isLoading } = useSWR<{
+  const { data } = useSWR<{
     paths: PathsObject
   }>(
     getLinkWithBasePath(`/api/tag?tagName=${tagSlugName}&area=${area}`),
@@ -52,21 +49,24 @@ const TagPaths = ({ tag }: TagSectionPathsProps) => {
             ]),
             title: definedOperation.summary || definedOperation.operationId,
             method: definedMethod,
+            loaded: true,
           })
         })
       })
 
       addItems(items, {
         section: SidebarItemSections.BOTTOM,
-        parentPath: tagSlugName,
+        parent: {
+          path: tagSlugName,
+          changeLoaded: true,
+        },
       })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paths])
 
   return (
-    <>
-      {isLoading && <ContentLoading />}
+    <div className={clsx("relative z-10 overflow-hidden", className)}>
       {Object.entries(paths).map(([endpointPath, operations], pathIndex) => (
         <div key={pathIndex}>
           {Object.entries(operations).map(
@@ -82,7 +82,7 @@ const TagPaths = ({ tag }: TagSectionPathsProps) => {
           )}
         </div>
       ))}
-    </>
+    </div>
   )
 }
 

@@ -20,6 +20,7 @@ export type SidebarItemType = {
   title: string
   method?: OpenAPIV3.HttpMethods
   children?: SidebarItemType[]
+  loaded?: boolean
 }
 
 type SidebarSectionItemsType = {
@@ -37,7 +38,10 @@ type SidebarContextType = {
     item: SidebarItemType[],
     options?: {
       section?: SidebarItemSections
-      parentPath?: string
+      parent?: {
+        path: string
+        changeLoaded?: boolean
+      }
       indexPosition?: number
       ignoreExisting?: boolean
     }
@@ -57,10 +61,24 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
   })
   const [activePath, setActivePath] = useState<string | null>(null)
 
+  const findItemInSection = (
+    section: SidebarItemType[],
+    itemPath: string
+  ): SidebarItemType | undefined => {
+    return section.find((item) => item.path === itemPath)
+  }
+
+  const findItemIndexSection = (
+    section: SidebarItemType[],
+    itemPath: string
+  ): number => {
+    return section.findIndex((item) => item.path === itemPath)
+  }
+
   const isPathInSidebar = (path: string, section: SidebarItemSections) => {
     const selectedSection =
       section === SidebarItemSections.BOTTOM ? items.bottom : items.top
-    return selectedSection.some((item) => item.path === path)
+    return findItemInSection(selectedSection, path) !== undefined
   }
 
   const setSectionItems = (
@@ -84,14 +102,17 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
     newItems: SidebarItemType[],
     options?: {
       section?: SidebarItemSections
-      parentPath?: string
+      parent?: {
+        path: string
+        changeLoaded?: boolean
+      }
       indexPosition?: number
       ignoreExisting?: boolean
     }
   ) => {
     const {
       section = SidebarItemSections.TOP,
-      parentPath,
+      parent,
       indexPosition,
       ignoreExisting = false,
     } = options || {}
@@ -107,19 +128,20 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
     const oldItems =
       section === SidebarItemSections.TOP ? items.top : items.bottom
 
-    if (!parentPath && !indexPosition && indexPosition !== 0) {
+    if (!parent && !indexPosition && indexPosition !== 0) {
       setSectionItems([...oldItems, ...newItems], section)
       return
     }
 
-    if (parentPath) {
+    if (parent) {
       // find parent index
       setSectionItems(
         oldItems.map((i) => {
-          if (i.path === parentPath) {
+          if (i.path === parent.path) {
             return {
               ...i,
               children: [...(i.children || []), ...newItems],
+              loaded: parent.changeLoaded ? true : i.loaded,
             }
           } else {
             return i

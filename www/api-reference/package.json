@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "NODE_ENV=test next build",
+    "build": "next build",
+    "build:dev": "NODE_ENV=test next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -18,6 +19,7 @@
     "@types/node": "20.2.5",
     "@types/react": "18.2.7",
     "@types/react-dom": "18.2.4",
+    "animate.css": "^4.1.1",
     "autoprefixer": "10.4.14",
     "clsx": "^1.2.1",
     "copy-text-to-clipboard": "^3.1.0",
@@ -35,6 +37,7 @@
     "react-dom": "18.2.0",
     "react-intersection-observer": "^9.4.4",
     "react-tooltip": "^5.13.1",
+    "react-transition-group": "^4.4.5",
     "react-uuid": "^2.0.0",
     "slugify": "^1.6.6",
     "swr": "^2.1.5",

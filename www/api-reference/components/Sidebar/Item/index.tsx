@@ -1,5 +1,4 @@
 import type IconProps from "@/components/Icons/types"
-import Loading from "@/components/Loading"
 import type { SidebarItemType } from "@/providers/sidebar"
 import { useSidebar } from "@/providers/sidebar"
 import clsx from "clsx"
@@ -7,19 +6,20 @@ import dynamic from "next/dynamic"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { useInView } from "react-intersection-observer"
+import SpinnerLoading from "@/components/Loading/Spinner"
 import type { MethodLabelProps } from "../../MethodLabel"
 
 const IconChevronRightMini = dynamic<IconProps>(
   async () => import("../../Icons/ChevronRightMini"),
   {
-    loading: () => <Loading />,
+    loading: () => <SpinnerLoading />,
   }
 ) as React.FC<IconProps>
 
 const MethodLabel = dynamic<MethodLabelProps>(
   async () => import("../../MethodLabel"),
   {
-    loading: () => <Loading />,
+    loading: () => <SpinnerLoading />,
   }
 ) as React.FC<MethodLabelProps>
 
@@ -29,6 +29,7 @@ export type SidebarItemProps = {
 
 const SidebarItem = ({ item, className }: SidebarItemProps) => {
   const [collapsed, setCollapsed] = useState(false)
+  const [showLoading, setShowLoading] = useState(false)
   const { isItemActive, setActivePath } = useSidebar()
   const active = isItemActive(item)
   const { ref, inView, entry } = useInView()
@@ -38,6 +39,9 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
       // scroll to element
       entry?.target.scrollIntoView()
     }
+    if (active) {
+      setShowLoading(true)
+    }
   }, [active])
 
   return (
@@ -45,7 +49,8 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
       <div
         className={clsx(
           "group",
-          item.children?.length && "flex justify-between pr-0.5"
+          (item.children?.length || (showLoading && !item.loaded)) &&
+            "flex items-center justify-between pr-0.5"
         )}
       >
         <Link
@@ -59,6 +64,7 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
           scroll={true}
           onClick={() => {
             setActivePath(item.path)
+            setShowLoading(true)
           }}
         >
           {item.method && (
@@ -85,12 +91,13 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
             />
           </button>
         )}
+        {showLoading && !item.loaded && <SpinnerLoading />}
       </div>
       {item.children && (
         <ul
           className={clsx(
             "ease-ease overflow-hidden pl-0.5 transition-[height] duration-200",
-            collapsed && "h-0"
+            collapsed && "m-0 h-0"
           )}
         >
           {item.children.map((childItem, index) => (

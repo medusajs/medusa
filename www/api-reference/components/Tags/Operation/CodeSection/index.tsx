@@ -1,16 +1,12 @@
 import MethodLabel from "@/components/MethodLabel"
 import type { Operation } from "@/types/openapi"
 import TagsOperationCodeSectionResponses from "./Responses"
-import Loading from "@/components/Loading"
 import type { TagOperationCodeSectionRequestSamplesProps } from "./RequestSamples"
 import dynamic from "next/dynamic"
 
 const TagOperationCodeSectionRequestSamples =
   dynamic<TagOperationCodeSectionRequestSamplesProps>(
-    async () => import("./RequestSamples"),
-    {
-      loading: () => <Loading />,
-    }
+    async () => import("./RequestSamples")
   ) as React.FC<TagOperationCodeSectionRequestSamplesProps>
 
 export type TagOperationCodeSectionProps = {

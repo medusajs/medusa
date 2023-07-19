@@ -1,12 +1,12 @@
 import { CopyButtonProps } from "@/components/CopyButton"
-import Loading from "@/components/Loading"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
+import SpinnerLoading from "../Loading/Spinner"
 
 const CopyButton = dynamic<CopyButtonProps>(
   async () => import("../CopyButton"),
   {
-    loading: () => <Loading />,
+    loading: () => <SpinnerLoading />,
   }
 ) as React.FC<CopyButtonProps>
 

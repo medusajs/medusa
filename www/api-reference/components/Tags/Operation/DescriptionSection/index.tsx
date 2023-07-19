@@ -3,32 +3,22 @@ import type { TagsOperationDescriptionSectionSecurityProps } from "./Security"
 import type { TagsOperationDescriptionSectionRequestProps } from "./RequestBody"
 import type { TagsOperationDescriptionSectionResponsesProps } from "./Responses"
 import dynamic from "next/dynamic"
-import Loading from "@/components/Loading"
 import TagsOperationDescriptionSectionParameters from "./Parameters"
 import MDXContentClient from "@/components/MDXContent/Client"
 
 const TagsOperationDescriptionSectionSecurity =
   dynamic<TagsOperationDescriptionSectionSecurityProps>(
-    async () => import("./Security"),
-    {
-      loading: () => <Loading />,
-    }
+    async () => import("./Security")
   ) as React.FC<TagsOperationDescriptionSectionSecurityProps>
 
 const TagsOperationDescriptionSectionRequest =
   dynamic<TagsOperationDescriptionSectionRequestProps>(
-    async () => import("./RequestBody"),
-    {
-      loading: () => <Loading />,
-    }
+    async () => import("./RequestBody")
   ) as React.FC<TagsOperationDescriptionSectionRequestProps>
 
 const TagsOperationDescriptionSectionResponses =
   dynamic<TagsOperationDescriptionSectionResponsesProps>(
-    async () => import("./Responses"),
-    {
-      loading: () => <Loading />,
-    }
+    async () => import("./Responses")
   ) as React.FC<TagsOperationDescriptionSectionResponsesProps>
 
 type TagsOperationDescriptionSectionProps = {

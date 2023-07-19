@@ -3,26 +3,26 @@
 import getSectionId from "@/utils/get-section-id"
 import type { OpenAPIV3 } from "openapi-types"
 import { useInView } from "react-intersection-observer"
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useSidebar } from "@/providers/sidebar"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
 import type { SectionProps } from "../../Section"
 import type { MDXContentClientProps } from "../../MDXContent/Client"
-import type { TagSectionPathsProps } from "../Paths"
-import ContentLoading from "@/components/ContentLoading"
+import type { TagPathsProps } from "../Paths"
+import DividedLoading from "@/components/Loading/Divided"
 
 export type TagSectionProps = {
   tag: OpenAPIV3.TagObject
 } & React.HTMLAttributes<HTMLDivElement>
 
-const TagPaths = dynamic<TagSectionPathsProps>(async () => import("../Paths"), {
-  loading: () => <ContentLoading />,
-}) as React.FC<TagSectionPathsProps>
+const TagPaths = dynamic<TagPathsProps>(
+  async () => import("../Paths")
+) as React.FC<TagPathsProps>
 
-const Section = dynamic<SectionProps>(async () => import("../../Section"), {
-  loading: () => <ContentLoading />,
-}) as React.FC<SectionProps>
+const Section = dynamic<SectionProps>(
+  async () => import("../../Section")
+) as React.FC<SectionProps>
 
 const MDXContentClient = dynamic<MDXContentClientProps>(
   async () => import("../../MDXContent/Client"),
@@ -56,10 +56,12 @@ const TagSection = ({ tag }: TagSectionProps) => {
 
   useEffect(() => {
     if (location.hash && location.hash.includes(slugTagName)) {
-      const tagName = location.hash.replace("#", "").split("_")[0]
-      if (tagName === slugTagName) {
-        const elm = document.getElementById(tagName) as Element
+      const tagName = location.hash.replace("#", "").split("_")
+      if (tagName.length === 1 && tagName[0] === slugTagName) {
+        const elm = document.getElementById(tagName[0]) as Element
         elm?.scrollIntoView()
+      } else if (tagName.length > 1 && tagName[0] === slugTagName) {
+        setLoadPaths(true)
       }
     }
   }, [slugTagName])
@@ -72,8 +74,11 @@ const TagSection = ({ tag }: TagSectionProps) => {
           <MDXContentClient content={tag.description} />
         </Section>
       )}
-      {loadPaths && <TagPaths tag={tag} />}
-      {!loadPaths && <ContentLoading />}
+      {loadPaths && (
+        <Suspense fallback={<DividedLoading />}>
+          <TagPaths tag={tag} />
+        </Suspense>
+      )}
     </div>
   )
 }

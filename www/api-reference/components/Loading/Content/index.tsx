@@ -1,4 +1,4 @@
-import Loading from "../Loading"
+import Loading from ".."
 
 const ContentLoading = () => {
   return (

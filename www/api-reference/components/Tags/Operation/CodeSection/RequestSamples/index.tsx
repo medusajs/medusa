@@ -1,6 +1,4 @@
-import Loading from "@/components/Loading"
 import type { Code } from "@/types/openapi"
-import { Suspense, useState } from "react"
 import CodeTabs from "@/components/CodeTabs"
 import slugify from "slugify"
 
@@ -12,7 +10,7 @@ const TagOperationCodeSectionRequestSamples = ({
   codeSamples,
 }: TagOperationCodeSectionRequestSamplesProps) => {
   return (
-    <Suspense fallback={<Loading />}>
+    <>
       <h3>Request samples</h3>
       <CodeTabs
         tabs={codeSamples.map((codeSample) => ({
@@ -21,7 +19,7 @@ const TagOperationCodeSectionRequestSamples = ({
           code: codeSample,
         }))}
       />
-    </Suspense>
+    </>
   )
 }
 

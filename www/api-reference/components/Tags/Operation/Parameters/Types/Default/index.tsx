@@ -3,13 +3,9 @@ import TagOperationParametersDescription from "../../Description"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import type { TagOperationParametersNameProps } from "../../Name"
-import Loading from "@/components/Loading"
 
 const TagOperationParametersName = dynamic<TagOperationParametersNameProps>(
-  async () => import("../../Name"),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("../../Name")
 ) as React.FC<TagOperationParametersNameProps>
 
 export type TagOperationParametersDefaultProps = {

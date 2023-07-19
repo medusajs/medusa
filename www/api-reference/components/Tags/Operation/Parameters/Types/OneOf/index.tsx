@@ -1,34 +1,24 @@
 import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
-import { Suspense, useState } from "react"
-import Loading from "@/components/Loading"
+import { useState } from "react"
 import Details from "@/components/Details"
 import type { TagOperationParametersDefaultProps } from "../Default"
 import type { TagsOperationParametersNestedProps } from "../../Nested"
 import type { TagOperationParametersProps } from "../.."
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
-  async () => import("../.."),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("../..")
 ) as React.FC<TagOperationParametersProps>
 
 const TagOperationParametersDefault =
   dynamic<TagOperationParametersDefaultProps>(
-    async () => import("../Default"),
-    {
-      loading: () => <Loading />,
-    }
+    async () => import("../Default")
   ) as React.FC<TagOperationParametersDefaultProps>
 
 const TagsOperationParametersNested =
   dynamic<TagsOperationParametersNestedProps>(
-    async () => import("../../Nested"),
-    {
-      loading: () => <Loading />,
-    }
+    async () => import("../../Nested")
   ) as React.FC<TagsOperationParametersNestedProps>
 
 export type TagOperationParamatersOneOfProps = {
@@ -82,7 +72,7 @@ const TagOperationParamatersOneOf = ({
   }
 
   return (
-    <Suspense fallback={<Loading />}>
+    <>
       {isNested && (
         <Details
           summaryContent={
@@ -99,7 +89,7 @@ const TagOperationParamatersOneOf = ({
         </Details>
       )}
       {!isNested && getContent()}
-    </Suspense>
+    </>
   )
 }
 

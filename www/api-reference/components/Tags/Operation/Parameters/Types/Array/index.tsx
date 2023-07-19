@@ -1,6 +1,5 @@
 import type { SchemaObject } from "@/types/openapi"
 import dynamic from "next/dynamic"
-import Loading from "@/components/Loading"
 import type { TagOperationParametersDefaultProps } from "../Default"
 import type { TagOperationParametersProps } from "../.."
 import Details from "@/components/Details"
@@ -8,17 +7,11 @@ import TagsOperationParametersNested from "../../Nested"
 
 const TagOperationParametersDefault =
   dynamic<TagOperationParametersDefaultProps>(
-    async () => import("../Default"),
-    {
-      loading: () => <Loading />,
-    }
+    async () => import("../Default")
   ) as React.FC<TagOperationParametersDefaultProps>
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
-  async () => import("../.."),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("../..")
 ) as React.FC<TagOperationParametersProps>
 
 export type TagOperationParametersArrayProps = {

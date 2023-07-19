@@ -1,6 +1,5 @@
 import type { CodeBlockProps } from "@/components/CodeBlock"
 import CodeTabs from "@/components/CodeTabs"
-import Loading from "@/components/Loading"
 import type { ExampleObject, ResponseObject } from "@/types/openapi"
 import type { JSONSchema7 } from "json-schema"
 import stringify from "json-stringify-pretty-compact"
@@ -9,10 +8,7 @@ import { sample } from "openapi-sampler"
 import { useEffect, useState } from "react"
 
 const CodeBlock = dynamic<CodeBlockProps>(
-  async () => import("../../../../../CodeBlock"),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("../../../../../CodeBlock")
 ) as React.FC<CodeBlockProps>
 
 export type TagsOperationCodeSectionResponsesSampleProps = {

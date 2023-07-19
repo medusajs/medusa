@@ -4,20 +4,18 @@ import type { Operation } from "@/types/openapi"
 import clsx from "clsx"
 import type { OpenAPIV3 } from "openapi-types"
 import getSectionId from "@/utils/get-section-id"
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import dynamic from "next/dynamic"
-import Loading from "@/components/Loading"
 import { useInView } from "react-intersection-observer"
 import { useSidebar } from "@/providers/sidebar"
 import type { TagOperationCodeSectionProps } from "./CodeSection"
 import TagsOperationDescriptionSection from "./DescriptionSection"
 import DividedLayout from "@/layouts/Divided"
+import DividedLoading from "@/components/Loading/Divided"
+import { CSSTransition } from "react-transition-group"
 
 const TagOperationCodeSection = dynamic<TagOperationCodeSectionProps>(
-  async () => import("./CodeSection"),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("./CodeSection")
 ) as React.FC<TagOperationCodeSectionProps>
 
 export type TagOperationProps = {
@@ -34,12 +32,16 @@ const TagOperation = ({
   endpointPath,
 }: TagOperationProps) => {
   const { setActivePath } = useSidebar()
+  const [show, setShow] = useState(false)
   const path = getSectionId([...(operation.tags || []), operation.operationId])
   const nodeRef = useRef<Element | null>()
-  const { ref } = useInView({
+  const { ref, inView } = useInView({
     threshold: 0.5,
-    onChange: (inView) => {
-      if (inView) {
+    onChange: (changedInView) => {
+      if (changedInView) {
+        if (!show) {
+          setShow(true)
+        }
         // can't use next router as it doesn't support
         // changing url without scrolling
         history.pushState({}, "", `#${path}`)
@@ -47,6 +49,7 @@ const TagOperation = ({
       }
     },
   })
+  const loadingRef = useRef(null)
 
   // Use `useCallback` so we don't recreate the function on each render
   const setRefs = useCallback(
@@ -60,30 +63,57 @@ const TagOperation = ({
   )
 
   useEffect(() => {
+    const enableShow = () => {
+      setTimeout(() => {
+        setShow(true)
+      }, 300)
+    }
+
     if (nodeRef && nodeRef.current) {
       const currentHash = location.hash.replace("#", "")
       if (currentHash === path) {
-        nodeRef.current.scrollIntoView()
+        setTimeout(() => {
+          nodeRef.current?.scrollIntoView()
+          enableShow()
+        }, 200)
       }
     }
   }, [nodeRef])
 
   return (
     <div
-      className={clsx("flex min-h-screen justify-between gap-1 pt-[57px]")}
+      className={clsx("relative min-h-screen w-full pt-[57px]")}
       id={path}
       ref={setRefs}
     >
-      <DividedLayout
-        mainContent={<TagsOperationDescriptionSection operation={operation} />}
-        codeContent={
-          <TagOperationCodeSection
-            method={method || ""}
-            operation={operation}
-            endpointPath={endpointPath}
-          />
-        }
-      />
+      <CSSTransition
+        in={!show}
+        classNames={{ exit: "animate-fadeOut" }}
+        timeout={100}
+        unmountOnExit
+      >
+        <DividedLoading />
+      </CSSTransition>
+      <div
+        className={clsx(
+          "flex w-full justify-between gap-1",
+          !show && "hidden",
+          show && "animate-fadeIn"
+        )}
+      >
+        <DividedLayout
+          mainContent={
+            <TagsOperationDescriptionSection operation={operation} />
+          }
+          codeContent={
+            <TagOperationCodeSection
+              method={method || ""}
+              operation={operation}
+              endpointPath={endpointPath}
+            />
+          }
+        />
+      </div>
     </div>
   )
 }

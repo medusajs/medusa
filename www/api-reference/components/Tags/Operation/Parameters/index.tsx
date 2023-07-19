@@ -1,4 +1,3 @@
-import Loading from "@/components/Loading"
 import type { SchemaObject } from "@/types/openapi"
 import dynamic from "next/dynamic"
 import type { TagOperationParametersObjectProps } from "./Types/Object"
@@ -6,39 +5,23 @@ import type { TagOperationParametersDefaultProps } from "./Types/Default"
 import type { TagOperationParametersArrayProps } from "./Types/Array"
 import type { TagOperationParametersUnionProps } from "./Types/Union"
 import type { TagOperationParamatersOneOfProps } from "./Types/OneOf"
-import { Suspense } from "react"
 import checkRequired from "@/utils/check-required"
 
 const TagOperationParametersObject = dynamic<TagOperationParametersObjectProps>(
-  async () => import("./Types/Object"),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("./Types/Object")
 ) as React.FC<TagOperationParametersObjectProps>
 const TagOperationParametersDefault =
   dynamic<TagOperationParametersDefaultProps>(
-    async () => import("./Types/Default"),
-    {
-      loading: () => <Loading />,
-    }
+    async () => import("./Types/Default")
   ) as React.FC<TagOperationParametersDefaultProps>
 const TagOperationParametersArray = dynamic<TagOperationParametersArrayProps>(
-  async () => import("./Types/Array"),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("./Types/Array")
 ) as React.FC<TagOperationParametersArrayProps>
 const TagOperationParametersUnion = dynamic<TagOperationParametersUnionProps>(
-  async () => import("./Types/Union"),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("./Types/Union")
 ) as React.FC<TagOperationParametersUnionProps>
 const TagOperationParamatersOneOf = dynamic<TagOperationParamatersOneOfProps>(
-  async () => import("./Types/OneOf"),
-  {
-    loading: () => <Loading />,
-  }
+  async () => import("./Types/OneOf")
 ) as React.FC<TagOperationParamatersOneOfProps>
 
 export type TagOperationParametersProps = {
@@ -112,11 +95,7 @@ const TagOperationParameters = ({
     return <></>
   }
 
-  return (
-    <Suspense fallback={<Loading />}>
-      <div className={className}>{getElement()}</div>
-    </Suspense>
-  )
+  return <div className={className}>{getElement()}</div>
 }
 
 export default TagOperationParameters
