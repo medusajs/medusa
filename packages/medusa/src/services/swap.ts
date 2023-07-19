@@ -278,11 +278,31 @@ class SwapService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<Swap[]> {
+    const [swaps] = await this.listAndCount(selector, config)
+
+    return swaps
+  }
+
+  /**
+   * List swaps.
+   *
+   * @param selector - the query object for find
+   * @param config - the configuration used to find the objects. contains relations, skip, and take.
+   * @return the result of the find operation
+   */
+  async listAndCount(
+    selector: Selector<Swap>,
+    config: FindConfig<Swap> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<[Swap[], number]> {
     const swapRepo = this.activeManager_.withRepository(this.swapRepository_)
     const query = buildQuery(selector, config)
     query.relationLoadStrategy = "query"
 
-    return await swapRepo.find(query)
+    return await swapRepo.findAndCount(query)
   }
 
   /**
@@ -579,6 +599,7 @@ class SwapService extends TransactionBaseService {
           "return_order",
           "return_order.items",
           "return_order.shipping_method",
+          "return_order.shipping_method.shipping_option",
           "return_order.shipping_method.tax_lines",
         ],
       })
@@ -918,6 +939,7 @@ class SwapService extends TransactionBaseService {
           "additional_items.variant",
           "additional_items.variant.product",
           "shipping_methods",
+          "shipping_methods.shipping_option",
           "shipping_methods.tax_lines",
           "order",
           "order.region",

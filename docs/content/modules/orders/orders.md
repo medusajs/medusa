@@ -182,7 +182,7 @@ Medusa provides the necessary infrastructure and tooling that allows automating 
 
 The Medusa backend facilitates automating these flows by allowing the customer to submit a [return](https://docs.medusajs.com/api/store#tag/Returns/operation/PostReturns) or [swap](https://docs.medusajs.com/api/store#tag/Swaps/operation/PostSwaps) requests through the store APIs. The merchant can then review and handle these requests. This eliminates the need for the customer to perform the same action through customer support or other means.
 
-You can also integrate these flows within bigger processes that trigger requesting or creating these flows. It can be done through core APIs, [custom endpoints](../../development/endpoints/overview.mdx), or [custom services](../../development/services/overview.mdx). You can also listen to events related to orders such as [Order](../../development/events/events-list.md#order-events) or [Swap](../../development/events/events-list.md#swap-events) events with [subscribers](../../development/events/subscribers.mdx) to perform asynchronus actions.
+You can also integrate these flows within bigger processes that trigger requesting or creating these flows. It can be done through core APIs, [custom endpoints](../../development/endpoints/overview.mdx), or [custom services](../../development/services/overview.mdx). You can also listen to events related to orders such as [Order](../../development/events/events-list.md#order-events) or [Swap](../../development/events/events-list.md#swap-events) events with [subscribers](../../development/events/subscribers.mdx) to perform asynchronous actions.
 
 ---
 

@@ -134,7 +134,7 @@ module.exports = {
     {
       type: "doc",
       id: "starters/nextjs-medusa-starter",
-      label: "Next.js Storefront",
+      label: "Next.js Starter Template",
       customProps: {
         sidebar_icon: "nextjs",
       },
@@ -1380,6 +1380,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "development/endpoints/extend-validator",
+              label: "Extend Validator",
+            },
+            {
+              type: "doc",
               id: "development/endpoints/example-logged-in-user",
               label: "Example: Logged-In User",
             },
@@ -2233,15 +2238,6 @@ module.exports = {
       customProps: {
         sidebar_is_back_link: true,
         sidebar_icon: "back-arrow",
-      },
-    },
-    {
-      type: "doc",
-      id: "js-client/overview",
-      label: "Medusa JS Client",
-      customProps: {
-        sidebar_is_title: true,
-        sidebar_icon: "javascript",
       },
     },
     {

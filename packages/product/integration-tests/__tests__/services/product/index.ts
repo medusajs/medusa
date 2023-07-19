@@ -1,17 +1,14 @@
 import { TestDatabase } from "../../../utils"
-import {
-  ProductService,
-  ProductTagService,
-  ProductVariantService,
-} from "@services"
+import { ProductService } from "@services"
 import { ProductRepository } from "@repositories"
-import { Product, ProductCategory, ProductVariant } from "@models"
+import { Image, Product, ProductCategory, ProductVariant } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductDTO } from "@medusajs/types"
 
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import {
   assignCategoriesToProduct,
+  createImages,
   createProductAndTags,
   createProductVariants,
 } from "../../../__fixtures__/product"
@@ -20,13 +17,8 @@ import {
   productsData,
   variantsData,
 } from "../../../__fixtures__/product/data"
-
-const productVariantService = {
-  list: jest.fn(),
-} as unknown as ProductVariantService
-const productTagService = {
-  list: jest.fn(),
-} as unknown as ProductTagService
+import { buildProductOnlyData } from "../../../__fixtures__/product/data/create-product"
+import { kebabCase } from "@medusajs/utils"
 
 jest.setTimeout(30000)
 
@@ -48,8 +40,6 @@ describe("Product Service", () => {
 
     service = new ProductService({
       productRepository,
-      productVariantService,
-      productTagService,
     })
   })
 
@@ -57,7 +47,74 @@ describe("Product Service", () => {
     await TestDatabase.clearDatabase()
   })
 
+  describe("create", function () {
+    let images: Image[] = []
+
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+
+      images = await createImages(testManager, ["image-1"])
+    })
+
+    it("should create a product", async () => {
+      const data = buildProductOnlyData({
+        images,
+        thumbnail: images[0].url,
+      })
+
+      const products = await service.create([data])
+
+      expect(products).toHaveLength(1)
+      expect(JSON.parse(JSON.stringify(products[0]))).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          title: data.title,
+          handle: kebabCase(data.title),
+          description: data.description,
+          subtitle: data.subtitle,
+          is_giftcard: data.is_giftcard,
+          discountable: data.discountable,
+          thumbnail: images[0].url,
+          status: data.status,
+          images: expect.arrayContaining([
+            expect.objectContaining({
+              id: images[0].id,
+              url: images[0].url,
+            }),
+          ]),
+        })
+      )
+    })
+  })
+
   describe("list", () => {
+    describe("soft deleted", function () {
+      let deletedProduct
+      let product
+
+      beforeEach(async () => {
+        testManager = await TestDatabase.forkManager()
+
+        const products = await createProductAndTags(testManager, productsData)
+
+        product = products[1]
+        deletedProduct = await service.softDelete([products[0].id])
+      })
+
+      it("should list all products that are not deleted", async () => {
+        const products = await service.list()
+
+        expect(products).toHaveLength(1)
+        expect(products[0].id).toEqual(product.id)
+      })
+
+      it("should list all products including the deleted", async () => {
+        const products = await service.list({}, { withDeleted: true })
+
+        expect(products).toHaveLength(2)
+      })
+    })
+
     describe("relation: tags", () => {
       beforeEach(async () => {
         testManager = await TestDatabase.forkManager()
@@ -65,7 +122,7 @@ describe("Product Service", () => {
         products = await createProductAndTags(testManager, productsData)
       })
 
-      it("filter by id and including relations", async () => {
+      it("should filter by id and including relations", async () => {
         const productsResult = await service.list(
           {
             id: products[0].id,
@@ -95,7 +152,7 @@ describe("Product Service", () => {
         })
       })
 
-      it("filter by id and without relations", async () => {
+      it("should filter by id and without relations", async () => {
         const productsResult = await service.list({
           id: products[0].id,
         })
@@ -137,7 +194,7 @@ describe("Product Service", () => {
         )
       })
 
-      it("filter by categories relation and scope fields", async () => {
+      it("should filter by categories relation and scope fields", async () => {
         const products = await service.list(
           {
             id: workingProduct.id,
@@ -187,7 +244,7 @@ describe("Product Service", () => {
         ])
       })
 
-      it("returns empty array when querying for a category that doesnt exist", async () => {
+      it("should returns empty array when querying for a category that doesnt exist", async () => {
         const products = await service.list(
           {
             id: workingProduct.id,
@@ -215,7 +272,7 @@ describe("Product Service", () => {
         variants = await createProductVariants(testManager, variantsData)
       })
 
-      it("filter by id and including relations", async () => {
+      it("should filter by id and including relations", async () => {
         const productsResult = await service.list(
           {
             id: products[0].id,
@@ -252,6 +309,54 @@ describe("Product Service", () => {
           })
         })
       })
+    })
+  })
+
+  describe("softDelete", function () {
+    let images: Image[] = []
+
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+
+      images = await createImages(testManager, ["image-1"])
+    })
+
+    it("should soft delete a product", async () => {
+      const data = buildProductOnlyData({
+        images,
+        thumbnail: images[0].url,
+      })
+
+      const products = await service.create([data])
+      const deleteProducts = await service.softDelete(products.map((p) => p.id))
+
+      expect(deleteProducts).toHaveLength(1)
+      expect(deleteProducts[0].deleted_at).not.toBeNull()
+    })
+  })
+
+  describe("restore", function () {
+    let images: Image[] = []
+
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+
+      images = await createImages(testManager, ["image-1"])
+    })
+
+    it("should restore a soft deleted product", async () => {
+      const data = buildProductOnlyData({
+        images,
+        thumbnail: images[0].url,
+      })
+
+      const products = await service.create([data])
+      const product = products[0]
+      await service.softDelete([product.id])
+      const restoreProducts = await service.restore([product.id])
+
+      expect(restoreProducts).toHaveLength(1)
+      expect(restoreProducts[0].deleted_at).toBeNull()
     })
   })
 })

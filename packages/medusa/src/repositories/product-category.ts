@@ -1,10 +1,9 @@
 import {
-  Brackets,
+  DeleteResult,
+  FindOneOptions,
   FindOptionsWhere,
   ILike,
-  DeleteResult,
   In,
-  FindOneOptions,
 } from "typeorm"
 import { ProductCategory } from "../models/product-category"
 import { ExtendedFindConfig, QuerySelector } from "../types/common"
@@ -44,7 +43,9 @@ export const ProductCategoryRepository = dataSource
       const options_ = { ...options }
       options_.where = options_.where as FindOptionsWhere<ProductCategory>
 
-      const columnsSelected = objectToStringPath(options_.select)
+      const columnsSelected = objectToStringPath(options_.select, {
+        includeParentPropertyFields: false,
+      })
       const relationsSelected = objectToStringPath(options_.relations)
 
       const fetchSelectColumns = (relationName: string): string[] => {
