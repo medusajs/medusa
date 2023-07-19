@@ -1,6 +1,3 @@
-import { FindConfig } from "../common"
-import { JoinerServiceConfig } from "../joiner"
-import { SharedContext } from "../shared-context"
 import {
   CreateInventoryItemInput,
   CreateInventoryLevelInput,
@@ -14,6 +11,10 @@ import {
   UpdateInventoryLevelInput,
   UpdateReservationItemInput,
 } from "./common"
+
+import { FindConfig } from "../common"
+import { JoinerServiceConfig } from "../joiner"
+import { SharedContext } from ".."
 
 export interface IInventoryService {
   __joinerConfig(): JoinerServiceConfig
@@ -57,15 +58,38 @@ export interface IInventoryService {
     context?: SharedContext
   ): Promise<ReservationItemDTO>
 
+  createReservationItems(
+    input: CreateReservationItemInput[],
+    context?: SharedContext
+  ): Promise<ReservationItemDTO[]>
+
   createInventoryItem(
     input: CreateInventoryItemInput,
     context?: SharedContext
   ): Promise<InventoryItemDTO>
 
+  createInventoryItems(
+    input: CreateInventoryItemInput[],
+    context?: SharedContext
+  ): Promise<InventoryItemDTO[]>
+
   createInventoryLevel(
     data: CreateInventoryLevelInput,
     context?: SharedContext
   ): Promise<InventoryLevelDTO>
+
+  createInventoryLevels(
+    data: CreateInventoryLevelInput[],
+    context?: SharedContext
+  ): Promise<InventoryLevelDTO[]>
+
+  updateInventoryLevels(
+    updates: ({
+      inventory_item_id: string
+      location_id: string
+    } & UpdateInventoryLevelInput)[],
+    context?: SharedContext
+  ): Promise<InventoryLevelDTO[]>
 
   updateInventoryLevel(
     inventoryItemId: string,
@@ -96,18 +120,19 @@ export interface IInventoryService {
     context?: SharedContext
   ): Promise<void>
 
+  // TODO make it bulk
   deleteInventoryItem(
-    inventoryItemId: string,
+    inventoryItemId: string | string[],
     context?: SharedContext
   ): Promise<void>
 
   deleteInventoryItemLevelByLocationId(
-    locationId: string,
+    locationId: string | string[],
     context?: SharedContext
   ): Promise<void>
 
   deleteReservationItemByLocationId(
-    locationId: string,
+    locationId: string | string[],
     context?: SharedContext
   ): Promise<void>
 
