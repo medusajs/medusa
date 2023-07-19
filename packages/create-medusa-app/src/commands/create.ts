@@ -53,11 +53,14 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
   }
   const dbName = `medusa-${nanoid(4)}`
   let isProjectCreated = false
+  let isDbInitialized = false
   let printedMessage = false
 
   processManager.onTerminated(async () => {
     spinner.stop()
-    if (client) {
+    // prevent an error from occurring if
+    // client hasn't been declared yet
+    if (isDbInitialized && client) {
       await client.end()
     }
 
@@ -86,6 +89,7 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
 
   const projectName = await askForProjectName()
   const { client, dbConnectionString } = await getDbClientAndCredentials(dbName)
+  isDbInitialized = true
   const adminEmail = await askForAdminEmail(seed, boilerplate)
 
   logMessage({
