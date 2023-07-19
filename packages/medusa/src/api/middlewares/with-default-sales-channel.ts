@@ -1,5 +1,7 @@
 import { FlagRouter } from "@medusajs/utils"
 import { NextFunction, Request, Response } from "express"
+
+import { FlagRouter } from "../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../loaders/feature-flags/sales-channels"
 import { SalesChannelService } from "../../services"
 
@@ -38,6 +40,7 @@ export function withDefaultSalesChannel({
           : defaultSalesChannel.id
       }
     } catch {
+      // noop
     } finally {
       next()
     }
