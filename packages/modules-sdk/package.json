@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@medusajs/orchestration": "^0.0.2",
-    "@medusajs/types": "^1.8.9",
+    "@medusajs/types": "^1.8.11",
     "@medusajs/utils": "^1.9.1",
     "awilix": "^8.0.0",
     "resolve-cwd": "^3.0.0"

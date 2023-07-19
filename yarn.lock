@@ -6415,7 +6415,7 @@ __metadata:
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
     "@medusajs/orchestration": ^0.0.2
-    "@medusajs/types": ^1.8.9
+    "@medusajs/types": ^1.8.11
     "@medusajs/utils": ^1.9.1
     awilix: ^8.0.0
     cross-env: ^5.2.1
@@ -6476,7 +6476,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/orchestration@workspace:packages/orchestration"
   dependencies:
-    "@medusajs/types": ^1.8.10
+    "@medusajs/types": ^1.8.11
     "@medusajs/utils": ^1.9.2
     cross-env: ^5.2.1
     graphql: ^16.6.0
