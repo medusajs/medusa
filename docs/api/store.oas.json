@@ -4517,17 +4517,36 @@
         "operationId": "PostProductsSearch",
         "summary": "Search Products",
         "description": "Run a search query on products using the search engine installed on Medusa",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/StorePostSearchReq"
-              }
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "description": "The query to run the search with.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "How many products to skip in the result.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of products returned.",
+            "schema": {
+              "type": "integer"
             }
           }
-        },
+        ],
         "x-codegen": {
-          "method": "search"
+          "method": "search",
+          "queryParams": "StorePostSearchReq"
         },
         "x-codeSamples": [
           {
@@ -4538,7 +4557,7 @@
           {
             "lang": "Shell",
             "label": "cURL",
-            "source": "curl --location --request POST 'https://medusa-url.com/store/products/search' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"q\": \"Shirt\"\n}'\n"
+            "source": "curl --location --request POST 'https://medusa-url.com/store/products/search?q=Shirt'\n"
           }
         ],
         "tags": [
@@ -14169,6 +14188,10 @@
           "quantity": {
             "type": "number",
             "description": "The quantity to set the Line Item to."
+          },
+          "metadata": {
+            "type": "object",
+            "description": "An optional key-value map with additional details about the Line Item. If omitted, the metadata will remain unchanged.\""
           }
         }
       },
@@ -14596,26 +14619,6 @@
                 "description": "The ID of the Shipping Option to create the Shipping Method from."
               }
             }
-          }
-        }
-      },
-      "StorePostSearchReq": {
-        "type": "object",
-        "properties": {
-          "q": {
-            "type": "string",
-            "description": "The query to run the search with."
-          },
-          "offset": {
-            "type": "number",
-            "description": "How many products to skip in the result."
-          },
-          "limit": {
-            "type": "number",
-            "description": "Limit the number of products returned."
-          },
-          "filter": {
-            "description": "Filter based on the search engine."
           }
         }
       },
