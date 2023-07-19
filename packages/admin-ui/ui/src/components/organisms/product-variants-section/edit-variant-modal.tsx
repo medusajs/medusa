@@ -197,12 +197,15 @@ export const getEditVariantDefaultValues = (
       length: variant.length,
     },
     prices: {
-      prices: variant.prices.map((price) => ({
-        id: price.id,
-        amount: price.amount,
-        currency_code: price.currency_code,
-        region_id: price.region_id,
-      })),
+      prices: variant.prices
+        // Price list prices cannot be saved from the edit variant modal
+        .filter((price) => !price.price_list_id)
+        .map((price) => ({
+          id: price.id,
+          amount: price.amount,
+          currency_code: price.currency_code,
+          region_id: price.region_id,
+        })),
     },
     options,
     metadata: getMetadataFormValues(variant.metadata),
