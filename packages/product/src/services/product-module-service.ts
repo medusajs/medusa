@@ -28,7 +28,7 @@ import {
 import ProductImageService from "./product-image"
 import {
   InjectTransactionManager,
-  InjectForkedManager,
+  InjectManager,
   isDefined,
   isString,
   kebabCase,
@@ -97,10 +97,11 @@ export default class ProductModuleService<
     this.productOptionService_ = productOptionService
   }
 
+  @InjectManager("baseRepository_")
   async list(
     filters: ProductTypes.FilterableProductProps = {},
     config: FindConfig<ProductTypes.ProductDTO> = {},
-    sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {},
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.productService_.list(
       filters,
@@ -111,9 +112,10 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(products))
   }
 
+  @InjectManager("baseRepository_")
   async retrieve(
     productId: string,
-    sharedContext?: Context,
+    @MedusaContext() sharedContext: Context = {},
   ): Promise<ProductTypes.ProductDTO> {
     const product = await this.productService_.retrieve(
       productId,
@@ -123,10 +125,11 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(product))
   }
 
+  @InjectManager("baseRepository_")
   async listAndCount(
     filters: ProductTypes.FilterableProductProps = {},
     config: FindConfig<ProductTypes.ProductDTO> = {},
-    sharedContext?: Context,
+    @MedusaContext() sharedContext: Context = {},
   ): Promise<[ProductTypes.ProductDTO[], number]> {
     const [products, count] = await this.productService_.listAndCount(
       filters,
@@ -137,10 +140,11 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(products)), count]
   }
 
+  @InjectManager("baseRepository_")
   async retrieveVariant(
     productVariantId: string,
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
-    sharedContext?: Context,
+    @MedusaContext() sharedContext: Context = {},
   ): Promise<ProductTypes.ProductVariantDTO> {
     const productVariant = await this.productVariantService_.retrieve(
       productVariantId,
@@ -151,10 +155,11 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productVariant))
   }
 
+  @InjectManager("baseRepository_")
   async listVariants(
     filters: ProductTypes.FilterableProductVariantProps = {},
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {},
   ): Promise<ProductTypes.ProductVariantDTO[]> {
     const variants = await this.productVariantService_.list(
       filters,
@@ -165,10 +170,11 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(variants))
   }
 
+  @InjectManager("baseRepository_")
   async listAndCountVariants(
     filters: ProductTypes.FilterableProductVariantProps = {},
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {},
   ): Promise<[ProductTypes.ProductVariantDTO[], number]> {
     const [variants, count] = await this.productVariantService_.listAndCount(
       filters,
@@ -179,10 +185,11 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(variants)), count]
   }
 
+  @InjectManager("baseRepository_")
   async retrieveTag(
     tagId: string,
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {},
   ): Promise<ProductTypes.ProductTagDTO> {
     const productTag = await this.productTagService_.retrieve(
       tagId,
@@ -193,11 +200,11 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productTag))
   }
 
-  @InjectForkedManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async listTags(
     filters: ProductTypes.FilterableProductTagProps = {},
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
-    @MedusaContext() sharedContext: Context = {}
+    @MedusaContext() sharedContext: Context = {},
   ): Promise<ProductTypes.ProductTagDTO[]> {
     const tags = await this.productTagService_.list(
       filters,
@@ -208,7 +215,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(tags))
   }
 
-  @InjectForkedManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async listAndCountTags(
     filters: ProductTypes.FilterableProductTagProps = {},
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
@@ -223,7 +230,7 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(tags)), count]
   }
 
-  @InjectForkedManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async retrieveType(
     typeId: string,
     config: FindConfig<ProductTypes.ProductTypeDTO> = {},
@@ -238,7 +245,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productType))
   }
 
-  @InjectForkedManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async listTypes(
     filters: ProductTypes.FilterableProductTypeProps = {},
     config: FindConfig<ProductTypes.ProductTypeDTO> = {},
@@ -253,7 +260,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(types))
   }
 
-  @InjectForkedManager("baseRepository_")
+  @InjectManager("baseRepository_")
   async listAndCountTypes(
     filters: ProductTypes.FilterableProductTypeProps = {},
     config: FindConfig<ProductTypes.ProductTypeDTO> = {},
@@ -268,6 +275,7 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(types)), count]
   }
 
+  @InjectManager("baseRepository_")
   async retrieveCollection(
     productCollectionId: string,
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
@@ -282,6 +290,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productCollection))
   }
 
+  @InjectManager("baseRepository_")
   async listCollections(
     filters: ProductTypes.FilterableProductCollectionProps = {},
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
@@ -296,6 +305,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(collections))
   }
 
+  @InjectManager("baseRepository_")
   async listAndCountCollections(
     filters: ProductTypes.FilterableProductCollectionProps = {},
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
@@ -310,6 +320,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(collections))
   }
 
+  @InjectManager("baseRepository_")
   async retrieveCategory(
     productCategoryId: string,
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
@@ -324,6 +335,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productCategory))
   }
 
+  @InjectManager("baseRepository_")
   async listCategories(
     filters: ProductTypes.FilterableProductCategoryProps = {},
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
@@ -338,6 +350,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(categories))
   }
 
+  @InjectManager("baseRepository_")
   async listAndCountCategories(
     filters: ProductTypes.FilterableProductCategoryProps = {},
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},

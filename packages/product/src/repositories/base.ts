@@ -216,17 +216,17 @@ export class BaseRepository extends AbstractBaseRepository {
 
   protected getActiveManager(
     @MedusaContext()
-    { transactionManager, forkedManager }: Context = {}
+    { transactionManager, manager }: Context = {}
   ) {
     if (transactionManager) {
       return transactionManager as SqlEntityManager
     }
 
-    if (forkedManager) {
-      return forkedManager as SqlEntityManager
+    if (manager) {
+      return manager as SqlEntityManager
     }
 
-    return this.manager_ as SqlEntityManager
+    return this.manager_
   }
 
   serialize<

@@ -1,6 +1,6 @@
 import { Context, SharedContext } from "@medusajs/types"
 
-export function InjectForkedManager(
+export function InjectManager(
   managerProperty?: string
 ): MethodDecorator {
   return function (
@@ -10,7 +10,7 @@ export function InjectForkedManager(
   ): void {
     if (!target.MedusaContextIndex_) {
       throw new Error(
-        `To apply @InjectForkedManager you have to flag a parameter using @MedusaContext`
+        `To apply @InjectManager you have to flag a parameter using @MedusaContext`
       )
     }
 
@@ -21,7 +21,7 @@ export function InjectForkedManager(
       const context: SharedContext | Context = args[argIndex] ?? {}
       const resourceWithManager = await (!managerProperty ? this : this[managerProperty])
 
-      context.forkedManager = context.forkedManager ?? await resourceWithManager.manager_.fork()
+      context.manager = context.manager ?? await resourceWithManager.manager_.fork()
       args[argIndex] = context
 
       return originalMethod.apply(this, args)
