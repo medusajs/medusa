@@ -72,9 +72,9 @@ The files will be stored under the `upload_dir` specified in the plugin options 
 
 ---
 
-## Next.js Storefront Configuration
+## Next.js Starter Template Configuration
 
-If you’re using a [Next.js](../../starters/nextjs-medusa-starter.mdx) storefront, you need to add an additional configuration that adds the backend's domain name into the configured images domain names. This is because all URLs of product images will be from the Medusa backend.
+If you’re using a [Next.js Starter Template](../../starters/nextjs-medusa-starter.mdx), you need to add an additional configuration that adds the backend's domain name into the configured images domain names. This is because all URLs of product images will be from the Medusa backend.
 
 If this configuration is not added, you’ll receive the error ["next/image Un-configured Host”](https://nextjs.org/docs/messages/next-image-unconfigured-host).
 

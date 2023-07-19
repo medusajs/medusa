@@ -18,6 +18,12 @@ const {
 
 jest.setTimeout(30000)
 
+const adminHeaders = {
+  headers: {
+    authorization: "Bearer test_token",
+  },
+}
+
 describe("/admin/orders", () => {
   let medusaProcess
   let dbConnection
@@ -60,11 +66,7 @@ describe("/admin/orders", () => {
           },
         ],
       },
-      {
-        headers: {
-          authorization: "Bearer test_token",
-        },
-      }
+      adminHeaders
     )
 
     expect(response.status).toEqual(200)
@@ -103,11 +105,7 @@ describe("/admin/orders", () => {
           },
         ],
       },
-      {
-        headers: {
-          authorization: "Bearer test_token",
-        },
-      }
+      adminHeaders
     )
 
     expect(response.status).toEqual(200)
@@ -156,11 +154,7 @@ describe("/admin/orders", () => {
           },
         ],
       },
-      {
-        headers: {
-          authorization: "Bearer test_token",
-        },
-      }
+      adminHeaders
     )
 
     expect(response.status).toEqual(200)
@@ -215,11 +209,7 @@ describe("/admin/orders", () => {
           },
         ],
       },
-      {
-        headers: {
-          authorization: "Bearer test_token",
-        },
-      }
+      adminHeaders
     )
 
     expect(response.status).toEqual(200)
@@ -364,11 +354,7 @@ describe("/admin/orders", () => {
           },
         ],
       },
-      {
-        headers: {
-          authorization: "Bearer test_token",
-        },
-      }
+      adminHeaders
     )
 
     expect(response.status).toEqual(200)
@@ -421,7 +407,7 @@ describe("/admin/orders", () => {
           },
         ],
       },
-      { headers: { authorization: "Bearer test_token" } }
+      adminHeaders
     )
 
     const claimId = createRes.data.order.claims[0].id
@@ -430,7 +416,7 @@ describe("/admin/orders", () => {
     const claimFulfillmentCreatedResponse = await api.post(
       `/admin/orders/${order.id}/claims/${claimId}/fulfillments`,
       {},
-      { headers: { authorization: "Bearer test_token" } }
+      adminHeaders
     )
 
     const fulfillmentId =
@@ -438,7 +424,7 @@ describe("/admin/orders", () => {
     await api.post(
       `/admin/orders/${order.id}/claims/${claimId}/shipments`,
       { fulfillment_id: fulfillmentId },
-      { headers: { authorization: "Bearer test_token" } }
+      adminHeaders
     )
 
     const returnCreatedResponse = await api.post(
@@ -452,11 +438,7 @@ describe("/admin/orders", () => {
           },
         ],
       },
-      {
-        headers: {
-          authorization: "Bearer test_token",
-        },
-      }
+      adminHeaders
     )
 
     const returnOrder = returnCreatedResponse.data.order.returns[0]
@@ -469,23 +451,56 @@ describe("/admin/orders", () => {
           quantity: i.quantity,
         })),
       },
-      {
-        headers: {
-          authorization: "Bearer test_token",
-        },
-      }
+      adminHeaders
     )
 
     expect(returnReceivedResponse.status).toEqual(200)
   })
+
+  it("shoutl list the returns with correct pagination", async () => {
+    await adminSeeder(dbConnection)
+    const api = useApi()
+
+    const createOrderAndReturn = async (suffix = "") => {
+      const order = await createReturnableOrder(
+        dbConnection,
+        {
+          discount: false,
+          oldTaxes: false,
+        },
+        suffix
+      )
+
+      const response = await api.post(
+        `/admin/orders/${order.id}/return`,
+        {
+          items: [
+            {
+              item_id: "test-item" + suffix,
+              quantity: 1,
+              note: "TOO SMALL",
+            },
+          ],
+        },
+        adminHeaders
+      )
+    }
+
+    await Promise.all([createOrderAndReturn(), createOrderAndReturn("-1")])
+
+    const result = await api.get(`/admin/returns?limit=1`, adminHeaders)
+
+    expect(result.status).toEqual(200)
+    expect(result.data.count).toEqual(2)
+  })
 })
 
-const createReturnableOrder = async (dbConnection, options) => {
+const createReturnableOrder = async (dbConnection, options, suffix = "") => {
   await simpleProductFactory(
     dbConnection,
     {
-      id: "test-product",
-      variants: [{ id: "test-variant" }],
+      id: "test-product" + suffix,
+      variants: [{ id: "test-variant" + suffix }],
     },
     100
   )
@@ -495,24 +510,24 @@ const createReturnableOrder = async (dbConnection, options) => {
   if (options.discount) {
     discounts = [
       {
-        code: "TESTCODE",
+        code: "TESTCODE" + suffix,
       },
     ]
   }
 
   return await simpleOrderFactory(dbConnection, {
-    email: "test@testson.com",
+    email: "test@testson.com" + suffix,
     tax_rate: options.oldTaxes ? undefined : null,
     region: {
-      id: "test-region",
+      id: "test-region" + suffix,
       name: "Test region",
       tax_rate: 12.5, // Should be ignored due to item tax line
     },
     discounts,
     line_items: [
       {
-        id: "test-item",
-        variant_id: "test-variant",
+        id: "test-item" + suffix,
+        variant_id: "test-variant" + suffix,
         quantity: 2,
         fulfilled_quantity: options.shipped ? 2 : undefined,
         shipped_quantity: options.shipped ? 2 : undefined,
@@ -521,9 +536,9 @@ const createReturnableOrder = async (dbConnection, options) => {
           ? [
               {
                 amount: 200,
-                discount_code: "TESTCODE",
+                discount_code: "TESTCODE" + suffix,
                 description: "discount",
-                item_id: "test-item",
+                item_id: "test-item" + suffix,
               },
             ]
           : [],

@@ -5,7 +5,6 @@ const { initDb, useDb } = require("../../../../helpers/use-db")
 const { setPort, useApi } = require("../../../../helpers/use-api")
 
 const adminSeeder = require("../../../helpers/admin-seeder")
-const cartSeeder = require("../../../helpers/cart-seeder")
 const {
   simpleProductFactory,
   simpleCustomerFactory,
@@ -543,11 +542,9 @@ describe("/store/carts", () => {
       it("Deletes multiple reservations on successful fulfillment with reservation", async () => {
         const api = useApi()
 
-        const a = await inventoryService.updateInventoryLevel(
-          invItemId,
-          locationId,
-          { stocked_quantity: 2 }
-        )
+        await inventoryService.updateInventoryLevel(invItemId, locationId, {
+          stocked_quantity: 2,
+        })
 
         await prodVarInventoryService.reserveQuantity(variantId, 1, {
           locationId: locationId,
@@ -664,11 +661,9 @@ describe("/store/carts", () => {
       it("Adjusts single reservation on successful fulfillment with over-reserved line item", async () => {
         const api = useApi()
 
-        const a = await inventoryService.updateInventoryLevel(
-          invItemId,
-          locationId,
-          { stocked_quantity: 3 }
-        )
+        await inventoryService.updateInventoryLevel(invItemId, locationId, {
+          stocked_quantity: 3,
+        })
 
         await prodVarInventoryService.reserveQuantity(variantId, 3, {
           locationId: locationId,
@@ -738,11 +733,9 @@ describe("/store/carts", () => {
           stocked_quantity: 3,
         })
 
-        const a = await inventoryService.updateInventoryLevel(
-          invItemId,
-          locationId,
-          { stocked_quantity: 3 }
-        )
+        await inventoryService.updateInventoryLevel(invItemId, locationId, {
+          stocked_quantity: 3,
+        })
 
         await prodVarInventoryService.reserveQuantity(variantId, 1, {
           locationId: locationId,

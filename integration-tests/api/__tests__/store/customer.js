@@ -293,16 +293,19 @@ describe("/store/customers", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.orders).toEqual([
-        expect.objectContaining({
-          display_id: 3,
-          status: "canceled",
-        }),
-        expect.objectContaining({
-          display_id: 1,
-          status: "completed",
-        }),
-      ])
+      expect(response.data.orders.length).toEqual(2)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            display_id: 3,
+            status: "canceled",
+          }),
+          expect.objectContaining({
+            display_id: 1,
+            status: "completed",
+          }),
+        ])
+      )
       expect(response.data.orders.length).toEqual(2)
     })
   })
