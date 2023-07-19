@@ -1,12 +1,14 @@
-import { Currency } from "@medusajs/medusa"
-import { useQueryClient } from "@tanstack/react-query"
-import { adminStoreKeys, useAdminUpdateCurrency } from "medusa-react"
-import { useEffect } from "react"
 import { Controller, useForm } from "react-hook-form"
-import Switch from "../../../../components/atoms/switch"
+import { adminStoreKeys, useAdminUpdateCurrency } from "medusa-react"
+
 import CoinsIcon from "../../../../components/fundamentals/icons/coins-icon"
-import useNotification from "../../../../hooks/use-notification"
+import { Currency } from "@medusajs/medusa"
+import FeatureToggle from "../../../../components/fundamentals/feature-toggle"
+import Switch from "../../../../components/atoms/switch"
 import { getErrorMessage } from "../../../../utils/error-messages"
+import { useEffect } from "react"
+import useNotification from "../../../../hooks/use-notification"
+import { useQueryClient } from "@tanstack/react-query"
 
 type CurrencyTaxSettingFormType = {
   includes_tax: boolean
@@ -70,21 +72,23 @@ const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
             </div>
           )}
         </div>
-        <Controller
-          control={control}
-          name="includes_tax"
-          render={({ field: { value, onChange } }) => {
-            return (
-              <Switch
-                checked={value}
-                onCheckedChange={(data) => {
-                  onChange(data)
-                  onSubmit()
-                }}
-              />
-            )
-          }}
-        />
+        <FeatureToggle featureFlag="tax_inclusive_pricing">
+          <Controller
+            control={control}
+            name="includes_tax"
+            render={({ field: { value, onChange } }) => {
+              return (
+                <Switch
+                  checked={value}
+                  onCheckedChange={(data) => {
+                    onChange(data)
+                    onSubmit()
+                  }}
+                />
+              )
+            }}
+          />
+        </FeatureToggle>
       </div>
     </form>
   )
