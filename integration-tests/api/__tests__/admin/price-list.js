@@ -1,21 +1,21 @@
 const path = require("path")
 const { Region } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
+const setupServer = require("../../../environment-helpers/setup-server")
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { useDb, initDb } = require("../../../helpers/use-db")
+  require("../../../environment-helpers/start-server-with-environment").default
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb, initDb } = require("../../../environment-helpers/use-db")
 
 const {
   simpleProductFactory,
   simplePriceListFactory,
   simpleRegionFactory,
-} = require("../../factories")
-const adminSeeder = require("../../helpers/admin-seeder")
-const customerSeeder = require("../../helpers/customer-seeder")
-const priceListSeeder = require("../../helpers/price-list-seeder")
-const productSeeder = require("../../helpers/product-seeder")
+} = require("../../../factories")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const customerSeeder = require("../../../helpers/customer-seeder")
+const priceListSeeder = require("../../../helpers/price-list-seeder")
+const productSeeder = require("../../../helpers/product-seeder")
 
 const adminReqConfig = {
   headers: {

@@ -1,4 +1,4 @@
-const { useApi } = require("../../helpers/use-api")
+const { useApi } = require("../environment-helpers/use-api")
 
 const header = {
   headers: {
@@ -88,7 +88,7 @@ module.exports.expectAllPostCallsToReturn = async function (
  * @param {Object} param0 - contains the path which to
  * call (path), and the object within the response.data (get)
  * we want to retrieve.
- * @returns {Object} found within response.data corresponding
+ * @return {Object} found within response.data corresponding
  * to the get parameter provided.
  */
 module.exports.callGet = async function ({ path, get }) {
