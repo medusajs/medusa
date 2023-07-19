@@ -18,20 +18,25 @@ export interface WorkflowDefinition {
   flow_: TransactionStepsDefinition
   handlers_: Map<
     string,
-    { invoke: WorkflowHandler; compensate?: WorkflowHandler }
+    { invoke: WorkflowStepHandler; compensate?: WorkflowStepHandler }
   >
   requiredModules?: Set<string>
   optionalModules?: Set<string>
 }
 
-export type WorkflowHandler = (args: {
+export type WorkflowHandler = Map<
+  string,
+  { invoke: WorkflowStepHandler; compensate?: WorkflowStepHandler }
+>
+
+export type WorkflowStepHandler = (args: {
   container: MedusaContainer
   payload: unknown
   invoke: { [actions: string]: unknown }
   compensate: { [actions: string]: unknown }
   metadata: TransactionMetadata
   context?: Context
-}) => Promise<unknown>
+}) => unknown
 
 export class WorkflowManager {
   protected static workflows: Map<string, WorkflowDefinition> = new Map()
@@ -64,10 +69,7 @@ export class WorkflowManager {
   static register(
     workflowId: string,
     flow: TransactionStepsDefinition | OrchestratorBuilder,
-    handlers: Map<
-      string,
-      { invoke: WorkflowHandler; compensate?: WorkflowHandler }
-    >,
+    handlers: WorkflowHandler,
     requiredModules?: Set<string>,
     optionalModules?: Set<string>
   ) {
@@ -93,7 +95,7 @@ export class WorkflowManager {
     flow: TransactionStepsDefinition | OrchestratorBuilder,
     handlers: Map<
       string,
-      { invoke: WorkflowHandler; compensate?: WorkflowHandler }
+      { invoke: WorkflowStepHandler; compensate?: WorkflowStepHandler }
     >,
     requiredModules?: Set<string>,
     optionalModules?: Set<string>
@@ -124,7 +126,7 @@ export class WorkflowManager {
   public static buildHandlers(
     handlers: Map<
       string,
-      { invoke: WorkflowHandler; compensate?: WorkflowHandler }
+      { invoke: WorkflowStepHandler; compensate?: WorkflowStepHandler }
     >
   ): (container: MedusaContainer, context?: Context) => TransactionStepHandler {
     return (
