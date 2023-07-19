@@ -1,14 +1,11 @@
 import DividedLayout from "@/layouts/Divided"
 import Loading from ".."
-import { forwardRef } from "react"
 
 type DividedLoadingProps = {
   className?: string
 }
 
-const DividedLoading = forwardRef(function DividedLoading({
-  className,
-}: DividedLoadingProps) {
+const DividedLoading = ({ className }: DividedLoadingProps) => {
   return (
     <DividedLayout
       mainContent={
@@ -53,6 +50,6 @@ const DividedLoading = forwardRef(function DividedLoading({
       className={className}
     />
   )
-})
+}
 
 export default DividedLoading

@@ -35,7 +35,7 @@ const TagOperation = ({
   const [show, setShow] = useState(false)
   const path = getSectionId([...(operation.tags || []), operation.operationId])
   const nodeRef = useRef<Element | null>()
-  const { ref, inView } = useInView({
+  const { ref } = useInView({
     threshold: 0.5,
     onChange: (changedInView) => {
       if (changedInView) {
@@ -74,7 +74,9 @@ const TagOperation = ({
         setTimeout(() => {
           nodeRef.current?.scrollIntoView()
           enableShow()
-        }, 200)
+        }, 300)
+      } else if (currentHash.split("_")[0] === path.split("_")[0]) {
+        enableShow()
       }
     }
   }, [nodeRef, path])
@@ -91,14 +93,17 @@ const TagOperation = ({
         timeout={100}
         unmountOnExit
       >
-        <DividedLoading />
+        <DividedLoading className="absolute top-0 left-0 h-full w-full" />
       </CSSTransition>
       <div
         className={clsx(
-          "flex w-full justify-between gap-1",
-          !show && "hidden",
+          "flex w-full justify-between gap-1 opacity-0",
+          !show && "invisible",
           show && "animate-fadeIn"
         )}
+        style={{
+          animationFillMode: "forwards",
+        }}
       >
         <DividedLayout
           mainContent={

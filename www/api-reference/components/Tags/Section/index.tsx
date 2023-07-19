@@ -3,22 +3,17 @@
 import getSectionId from "@/utils/get-section-id"
 import type { OpenAPIV3 } from "openapi-types"
 import { useInView } from "react-intersection-observer"
-import { Suspense, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useSidebar } from "@/providers/sidebar"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
 import type { SectionProps } from "../../Section"
 import type { MDXContentClientProps } from "../../MDXContent/Client"
-import type { TagPathsProps } from "../Paths"
-import DividedLoading from "@/components/Loading/Divided"
+import TagPaths from "../Paths"
 
 export type TagSectionProps = {
   tag: OpenAPIV3.TagObject
 } & React.HTMLAttributes<HTMLDivElement>
-
-const TagPaths = dynamic<TagPathsProps>(
-  async () => import("../Paths")
-) as React.FC<TagPathsProps>
 
 const Section = dynamic<SectionProps>(
   async () => import("../../Section")
