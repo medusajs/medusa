@@ -134,7 +134,7 @@ module.exports = {
     {
       type: "doc",
       id: "starters/nextjs-medusa-starter",
-      label: "Next.js Storefront",
+      label: "Next.js Starter Template",
       customProps: {
         sidebar_icon: "nextjs",
       },
@@ -1377,6 +1377,11 @@ module.exports = {
               type: "doc",
               id: "development/endpoints/add-middleware",
               label: "Middleware",
+            },
+            {
+              type: "doc",
+              id: "development/endpoints/extend-validator",
+              label: "Extend Validator",
             },
             {
               type: "doc",

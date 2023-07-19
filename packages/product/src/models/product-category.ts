@@ -21,7 +21,7 @@ class ProductCategory {
   id!: string
 
   @Property({ columnType: "text", nullable: false })
-  name: string
+  name?: string
 
   @Property({ columnType: "text", default: "", nullable: false })
   description?: string

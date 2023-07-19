@@ -1,4 +1,5 @@
 export * from "./build-query"
+export * from "./deduplicate"
 export * from "./errors"
 export * from "./generate-entity-id"
 export * from "./get-config-file"
