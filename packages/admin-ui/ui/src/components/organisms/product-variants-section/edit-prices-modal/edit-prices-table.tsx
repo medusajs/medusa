@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { useAdminRegions, useAdminStore } from "medusa-react"
 import { Product } from "@medusajs/client-types"
 
@@ -60,6 +60,8 @@ function EditPricesTable(props: EditPricesTableProps) {
   const { regions: storeRegions } = useAdminRegions({
     limit: 1000,
   })
+
+  const initialPricesSet = useRef(false)
 
   const [isDragFill, setIsDragFill] = useState(false)
   const [isDrag, setIsDrag] = useState(false)
@@ -217,6 +219,14 @@ function EditPricesTable(props: EditPricesTableProps) {
   useEffect(() => {
     resetSelection()
 
+    /**
+     * Called initially to populate `editedPrices` but called on column toggle as well
+     */
+
+    if (!props.currencies || !props.regions || !props.product.variants) {
+      return
+    }
+
     const nextState: Record<string, number | undefined> = {}
     props.product.variants!.forEach((variant) => {
       props.currencies.forEach((c) => {
@@ -247,7 +257,9 @@ function EditPricesTable(props: EditPricesTableProps) {
 
     variantIds = props.product.variants!.map((v) => v.id)
 
-    setEditedPrices((s) => ({ ...nextState, ...s }))
+    initialPricesSet.current = true
+
+    setEditedPrices((s) => ({ ...nextState, ...s })) // called on column toggle -> don't override previous edits
   }, [props.currencies, props.regions, props.product.variants])
 
   useEffect(() => {
@@ -318,6 +330,15 @@ function EditPricesTable(props: EditPricesTableProps) {
       ? props.product.title.substring(0, max) + "..."
       : props.product.title
   }, [props.product])
+
+  if (!initialPricesSet.current) {
+    /**
+     * Don't render the table until initial prices are populated in the state.
+     * This prevents cells from populating `editedPrices` with `undefined` values
+     * when `onInputChange` is called in an effect on mount.
+     */
+    return
+  }
 
   return (
     <div className="h-full overflow-x-auto">

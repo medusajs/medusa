@@ -128,7 +128,7 @@ function CurrencyCell(props: CurrencyCellProps) {
   }, [isSelected, isAnchor, ref.current])
 
   useEffect(() => {
-    // when cell bcomes editable underlying `span` element is replacet with an `input` which needs to be focused
+    // when cell becomes editable underlying `span` element is replaced with an `input` which needs to be focused
     if (isEditable) {
       /**
        * HACK - for some reason focusing input will cause `react-currency-input-field` to double the digit that is set as value
