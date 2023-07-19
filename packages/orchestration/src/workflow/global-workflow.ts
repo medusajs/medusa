@@ -7,7 +7,6 @@ import {
 import { WorkflowDefinition, WorkflowManager } from "./workflow-manager"
 
 import { DistributedTransaction } from "../transaction"
-import { MedusaModule } from "@medusajs/modules-sdk"
 import { asValue } from "awilix"
 import { createMedusaContainer } from "@medusajs/utils"
 
@@ -45,9 +44,13 @@ export class GlobalWorkflow extends WorkflowManager {
     }
     // Modules loaded
     else {
-      for (const [, mod] of MedusaModule.getLoadedModules().entries()) {
-        const registrationName = mod.__definition.registrationName
-        container.register(registrationName, asValue(mod))
+      // TODO: expose global modules in @medusajs/utils
+      if (typeof global.MedusaModule !== "undefined") {
+        const modules = global.MedusaModule.getLoadedModules()
+        for (const [, mod] of modules.entries()) {
+          const registrationName = mod.__definition.registrationName
+          container.register(registrationName, asValue(mod))
+        }
       }
     }
 

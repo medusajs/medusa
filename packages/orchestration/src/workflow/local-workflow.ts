@@ -11,7 +11,6 @@ import {
   WorkflowStepHandler,
 } from "./workflow-manager"
 
-import { MedusaModule } from "@medusajs/modules-sdk"
 import { OrchestratorBuilder } from "../transaction/orchestrator-builder"
 import { asValue } from "awilix"
 import { createMedusaContainer } from "@medusajs/utils"
@@ -63,9 +62,13 @@ export class LocalWorkflow extends OrchestratorBuilder {
     }
     // Modules loaded
     else {
-      for (const [, mod] of MedusaModule.getLoadedModules().entries()) {
-        const registrationName = mod.__definition.registrationName
-        container.register(registrationName, asValue(mod))
+      // TODO: expose global modules in @medusajs/utils
+      if (typeof global.MedusaModule !== "undefined") {
+        const modules = global.MedusaModule.getLoadedModules()
+        for (const [, mod] of modules.entries()) {
+          const registrationName = mod.__definition.registrationName
+          container.register(registrationName, asValue(mod))
+        }
       }
     }
 
