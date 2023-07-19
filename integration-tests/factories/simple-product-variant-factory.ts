@@ -11,6 +11,7 @@ export type ProductVariantFactoryData = {
   id?: string
   is_giftcard?: boolean
   sku?: string
+  manage_inventory?: boolean
   inventory_quantity?: number
   title?: string
   options?: { option_id: string; value: string }[]
@@ -33,6 +34,10 @@ export const simpleProductVariantFactory = async (
     id,
     product_id: data.product_id,
     sku: data.sku,
+    manage_inventory:
+      typeof data.manage_inventory !== "undefined"
+        ? data.manage_inventory
+        : true,
     inventory_quantity:
       typeof data.inventory_quantity !== "undefined"
         ? data.inventory_quantity
