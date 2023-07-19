@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.12.3
+
+### Patch Changes
+
+- [#4459](https://github.com/medusajs/medusa/pull/4459) [`befc2f1c8`](https://github.com/medusajs/medusa/commit/befc2f1c80b6aaeb3a5153f7fdeaa96cf832e46f) Thanks [@adrien2p](https://github.com/adrien2p)! - Feat(product): product module create - delete - soft delete - restore - create workflow
+
+- [#4503](https://github.com/medusajs/medusa/pull/4503) [`d184d23c6`](https://github.com/medusajs/medusa/commit/d184d23c6384d5f8bf52827826b62c6bef37f884) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa,inventory,types,brightpearl): update some inventory methods to be bulk-operation enabled
+
+- [#4514](https://github.com/medusajs/medusa/pull/4514) [`56d1d326d`](https://github.com/medusajs/medusa/commit/56d1d326d4492626e9297e4cac9b4cb44ae0f165) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): provide correct count of regions
+
+- [#4472](https://github.com/medusajs/medusa/pull/4472) [`43427b889`](https://github.com/medusajs/medusa/commit/43427b8893baedd7abe7b38cf5360aa2d245293d) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Transaction Orchestrator Flow Builder
+
 ## 1.12.2
 
 ### Patch Changes
