@@ -77,16 +77,11 @@ export default class InventoryService implements IInventoryService {
     config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 },
     context: SharedContext = {}
   ): Promise<[InventoryItemDTO[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
-
-    return await manager.findAndCount(InventoryItem, {}, {})
-
-    // return await this.inventoryItemService_.listAndCount(
-    //   selector,
-    //   config,
-    //   context
-    // )
+    return await this.inventoryItemService_.listAndCount(
+      selector,
+      config,
+      context
+    )
   }
   async list(
     selector: FilterableInventoryItemProps,

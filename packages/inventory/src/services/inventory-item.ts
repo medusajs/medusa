@@ -1,5 +1,6 @@
 import {
   CreateInventoryItemInput,
+  DAL,
   FilterableInventoryItemProps,
   FindConfig,
   IEventBusService,
@@ -11,15 +12,18 @@ import {
   isDefined,
   MedusaContext,
   MedusaError,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
 import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryItem } from "../models"
 import { getListQuery } from "../utils/query"
 import { buildQuery } from "../utils/build-query"
+import { InventoryItemRepository } from "../repositories"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
   manager: EntityManager
+  inventoryItemRepository: InventoryItemRepository
 }
 
 export default class InventoryItemService {
@@ -31,10 +35,16 @@ export default class InventoryItemService {
 
   protected readonly manager_: EntityManager
   protected readonly eventBusService_: IEventBusService | undefined
+  protected readonly inventoryItemRepository_: InventoryItemRepository
 
-  constructor({ eventBusService, manager }: InjectedDependencies) {
+  constructor({
+    eventBusService,
+    inventoryItemRepository,
+    manager,
+  }: InjectedDependencies) {
     this.manager_ = manager
     this.eventBusService_ = eventBusService
+    this.inventoryItemRepository_ = inventoryItemRepository
   }
 
   /**
@@ -45,15 +55,20 @@ export default class InventoryItemService {
    */
   async list(
     selector: FilterableInventoryItemProps = {},
-    config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
+    config: FindConfig<InventoryItem> = { relations: [] },
     context: SharedContext = {}
   ): Promise<InventoryItemDTO[]> {
-    const queryBuilder = getListQuery(
-      context.transactionManager ?? this.manager_,
+    const queryOptions = ModulesSdkUtils.buildQuery<InventoryItem>(
       selector,
       config
     )
-    return await queryBuilder.getMany()
+
+    // const queryBuilder = getListQuery(
+    //   context.transactionManager ?? this.manager_,
+    //   selector,
+    //   config
+    // )
+    return await this.inventoryItemRepository_.find(queryOptions, context)
   }
 
   /**
@@ -76,20 +91,26 @@ export default class InventoryItemService {
       )
     }
 
-    const manager = context.transactionManager ?? this.manager_
-    const itemRepository = manager.getRepository(InventoryItem)
+    const queryOptions = ModulesSdkUtils.buildQuery<InventoryItem>(
+      {
+        id: inventoryItemId,
+      },
+      config
+    )
 
-    const query = buildQuery({ id: inventoryItemId }, config) as FindManyOptions
-    const [inventoryItem] = await itemRepository.find(query)
+    const inventoryItem = await this.inventoryItemRepository_.find(
+      queryOptions,
+      context
+    )
 
-    if (!inventoryItem) {
+    if (!inventoryItem?.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `InventoryItem with id ${inventoryItemId} was not found`
       )
     }
 
-    return inventoryItem
+    return inventoryItem[0]
   }
 
   /**
@@ -103,13 +124,15 @@ export default class InventoryItemService {
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
     context: SharedContext = {}
   ): Promise<[InventoryItemDTO[], number]> {
-    const queryBuilder = getListQuery(
-      context.transactionManager ?? this.manager_,
+    const queryOptions = ModulesSdkUtils.buildQuery<InventoryItem>(
       selector,
       config
     )
 
-    return await queryBuilder.getManyAndCount()
+    return await this.inventoryItemRepository_.findAndCount(
+      queryOptions,
+      context
+    )
   }
 
   /**
