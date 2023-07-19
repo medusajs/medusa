@@ -1,52 +1,72 @@
-import { generateEntityId } from "@medusajs/utils"
 import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
+  BeforeCreate,
+  Collection,
   Entity,
   Index,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from "typeorm"
+  ManyToMany,
+  OptionalProps,
+  PrimaryKey,
+  Property,
+  Unique,
+} from "@mikro-orm/core"
 
-@Entity()
-@Index(["inventory_item_id", "location_id"], { unique: true })
+import { generateEntityId } from "@medusajs/utils"
+
+@Entity({ tableName: "inventory_level" })
+@Unique({
+  name: "IDX_inventory_level_item_id_location_id",
+  properties: ["inventory_item_id", "location_id"],
+})
 export class InventoryLevel {
-  @PrimaryColumn()
+  @PrimaryKey({ columnType: "text" })
   id: string
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+  })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+  })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null
 
-  @Index()
-  @Column({ type: "text" })
+  @Index({
+    name: "IDX_inventory_level_inventory_item_id",
+    expression: `CREATE INDEX "IDX_inventory_level_inventory_item_id" ON "inventory_level" ("inventory_item_id") WHERE deleted_at IS NULL;`,
+  })
+  @Property({ columnType: "text" })
   inventory_item_id: string
 
-  @Index()
-  @Column({ type: "text" })
+  @Index({
+    name: "IDX_inventory_level_location_id",
+    expression: `CREATE INDEX "IDX_inventory_level_location_id" ON "inventory_level" ("location_id") WHERE deleted_at IS NULL;`,
+  })
+  @Property({ columnType: "text" })
   location_id: string
 
-  @Column({ default: 0 })
+  @Property({ columnType: "numeric", default: 0 })
   stocked_quantity: number
 
-  @Column({ default: 0 })
+  @Property({ columnType: "numeric", default: 0 })
   reserved_quantity: number
 
-  @Column({ default: 0 })
+  @Property({ columnType: "numeric", default: 0 })
   incoming_quantity: number
 
-  @Column({ type: "jsonb", nullable: true })
+  @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 
-  @BeforeInsert()
+  @BeforeCreate()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "ilev")
   }
 }
+
+export default InventoryLevel

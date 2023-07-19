@@ -8,7 +8,7 @@ import {
 } from "@medusajs/modules-sdk"
 import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
 
-import { InventoryItem } from "../models/test"
+import { EntitySchema } from "@mikro-orm/core"
 import { ModulesSdkTypes } from "@medusajs/types"
 import { asValue } from "awilix"
 import { createConnection } from "../utils/create-connection"
@@ -51,7 +51,7 @@ async function loadDefault({ database, container }) {
     )
   }
 
-  const entities = [InventoryItem]
+  const entities = Object.values(InventoryModels) as unknown as EntitySchema[]
 
   const orm = await createConnection(database, entities)
 

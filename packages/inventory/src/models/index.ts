@@ -1,3 +1,3 @@
-export * from "./reservation-item"
-export * from "./inventory-item"
-export * from "./inventory-level"
+export { default as ReservationItem } from "./reservation-item"
+export { default as InventoryItem } from "./inventory-item"
+export { default as InventoryLevel } from "./inventory-level"

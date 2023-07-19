@@ -1,74 +1,85 @@
-import { generateEntityId } from "@medusajs/utils"
 import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
+  BeforeCreate,
+  Collection,
   Entity,
   Index,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from "typeorm"
+  ManyToMany,
+  OptionalProps,
+  PrimaryKey,
+  Property,
+  Unique,
+} from "@mikro-orm/core"
 
-@Entity()
+import { generateEntityId } from "@medusajs/utils"
+
+@Entity({ tableName: "inventory_item" })
 export class InventoryItem {
-  @PrimaryColumn()
+  @PrimaryKey({ columnType: "text" })
   id: string
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+  })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+  })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null
 
-  @Index({ unique: true })
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
+  @Unique({ name: "IDX_inventory_item_sku", properties: ["sku"] })
   sku: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   origin_country: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   hs_code: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   mid_code: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   material: string | null
 
-  @Column({ type: "int", nullable: true })
+  @Property({ columnType: "numeric", nullable: true })
   weight: number | null
 
-  @Column({ type: "int", nullable: true })
+  @Property({ columnType: "numeric", nullable: true })
   length: number | null
 
-  @Column({ type: "int", nullable: true })
+  @Property({ columnType: "numeric", nullable: true })
   height: number | null
 
-  @Column({ type: "int", nullable: true })
+  @Property({ columnType: "numeric", nullable: true })
   width: number | null
 
-  @Column({ default: true })
+  @Property({ default: true })
   requires_shipping: boolean
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   description: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   title: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   thumbnail: string | null
 
-  @Column({ type: "jsonb", nullable: true })
+  @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 
-  @BeforeInsert()
+  @BeforeCreate()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "iitem")
   }
 }
+
+export default InventoryItem

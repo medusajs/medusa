@@ -29,7 +29,7 @@ import InventoryItemService from "./inventory-item"
 import InventoryLevelService from "./inventory-level"
 import ReservationItemService from "./reservation-item"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InventoryItem } from "../models/test"
+import { InventoryItem } from "../models"
 
 type InjectedDependencies = {
   manager: any

@@ -1,58 +1,74 @@
-import { generateEntityId } from "@medusajs/utils"
 import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
+  BeforeCreate,
+  Collection,
   Entity,
   Index,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from "typeorm"
+  ManyToMany,
+  OptionalProps,
+  PrimaryKey,
+  Property,
+} from "@mikro-orm/core"
 
-@Entity()
+import { generateEntityId } from "@medusajs/utils"
+
+@Entity({ tableName: "reservation_item" })
 export class ReservationItem {
-  @PrimaryColumn()
+  @PrimaryKey({ columnType: "text" })
   id: string
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @Property({ onCreate: () => new Date(), columnType: "timestamptz" })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+  })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @Property({ columnType: "timestamptz" })
   deleted_at: Date | null
 
-  @Index()
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
+  @Index({
+    name: "IDX_reservation_item_line_item_id",
+    expression: `CREATE INDEX "IDX_reservation_item_line_item_id" ON "reservation_item" ("line_item_id") WHERE deleted_at IS NULL;`,
+  })
   line_item_id: string | null
 
-  @Index()
-  @Column({ type: "text" })
+  @Property({ columnType: "text" })
+  @Index({
+    name: "IDX_reservation_item_reservation_id",
+    expression: `CREATE INDEX "IDX_reservation_item_inventory_item_id" ON "reservation_item" ("inventory_item_id") WHERE deleted_at IS NULL;`,
+  })
   inventory_item_id: string
 
-  @Index()
-  @Column({ type: "text" })
+  @Property({ columnType: "text" })
+  @Index({
+    name: "IDX_reservation_item_location_id",
+    expression: `CREATE INDEX "IDX_reservation_item_location_id" ON "reservation_item" ("location_id") WHERE deleted_at IS NULL;`,
+  })
   location_id: string
 
-  @Column()
+  @Property({ columnType: "numeric" })
   quantity: number
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   external_id: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   description: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   created_by: string | null
 
-  @Column({ type: "jsonb", nullable: true })
+  @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 
-  @BeforeInsert()
+  @BeforeCreate()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "resitem")
   }
 }
+
+export default ReservationItem
