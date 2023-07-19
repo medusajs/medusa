@@ -1,9 +1,5 @@
 import { TransactionStepsDefinition } from "./types"
 
-export type ActionHandler = {
-  [type: string]: (data: any, context: any) => Promise<any>
-}
-
 interface InternalStep extends TransactionStepsDefinition {
   next?: InternalStep | InternalStep[]
   depth: number

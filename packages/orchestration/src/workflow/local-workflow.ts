@@ -1,16 +1,15 @@
 import {
-  CompensateHandler,
-  InvokeHandler,
-  WorkflowDefinition,
-  WorkflowManager,
-} from "./workflow-manager"
-import {
   Context,
   JoinerServiceConfig,
   MedusaContainer,
   ModuleDefinition,
 } from "@medusajs/types"
 import { DistributedTransaction, TransactionOrchestrator } from "../transaction"
+import {
+  WorkflowDefinition,
+  WorkflowHandler,
+  WorkflowManager,
+} from "./workflow-manager"
 
 import { MedusaModule } from "@medusajs/modules-sdk"
 import { OrchestratorBuilder } from "../transaction/orchestrator-builder"
@@ -24,7 +23,7 @@ export class LocalWorkflow extends OrchestratorBuilder {
   private workflow: WorkflowDefinition
   private handlers: Map<
     string,
-    { invoke: InvokeHandler; compensate?: CompensateHandler }
+    { invoke: WorkflowHandler; compensate?: WorkflowHandler }
   >
 
   constructor(
@@ -79,7 +78,7 @@ export class LocalWorkflow extends OrchestratorBuilder {
   commit(
     handlers?: Map<
       string,
-      { invoke: InvokeHandler; compensate?: CompensateHandler }
+      { invoke: WorkflowHandler; compensate?: WorkflowHandler }
     >
   ) {
     const finalFlow = this.build()
