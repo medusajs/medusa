@@ -64,7 +64,7 @@ export function getCurrencyPricesOnly(prices: MoneyAmount[]) {
 }
 
 /**
- * Return only currency prices.
+ * Return only region prices.
  */
 export function getRegionPricesOnly(prices: MoneyAmount[]) {
   return prices.filter((price) => {
