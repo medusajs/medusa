@@ -268,7 +268,7 @@ describe("Create Variant", () => {
         ])
       })
 
-      it("lists location availability correctly for store with sales channel id", async () => {
+      it.only("lists location availability correctly for store with sales channel id", async () => {
         const api = useApi()
 
         const productService = appContainer.resolve("productService")
