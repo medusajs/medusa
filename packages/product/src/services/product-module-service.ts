@@ -28,6 +28,7 @@ import {
 import ProductImageService from "./product-image"
 import {
   InjectTransactionManager,
+  InjectForkedManager,
   isDefined,
   isString,
   kebabCase,
@@ -99,7 +100,7 @@ export default class ProductModuleService<
   async list(
     filters: ProductTypes.FilterableProductProps = {},
     config: FindConfig<ProductTypes.ProductDTO> = {},
-    sharedContext?: Context
+    sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.productService_.list(
       filters,
@@ -112,7 +113,7 @@ export default class ProductModuleService<
 
   async retrieve(
     productId: string,
-    sharedContext?: Context
+    sharedContext?: Context,
   ): Promise<ProductTypes.ProductDTO> {
     const product = await this.productService_.retrieve(
       productId,
@@ -125,7 +126,7 @@ export default class ProductModuleService<
   async listAndCount(
     filters: ProductTypes.FilterableProductProps = {},
     config: FindConfig<ProductTypes.ProductDTO> = {},
-    sharedContext?: Context
+    sharedContext?: Context,
   ): Promise<[ProductTypes.ProductDTO[], number]> {
     const [products, count] = await this.productService_.listAndCount(
       filters,
@@ -139,7 +140,7 @@ export default class ProductModuleService<
   async retrieveVariant(
     productVariantId: string,
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
-    sharedContext?: Context
+    sharedContext?: Context,
   ): Promise<ProductTypes.ProductVariantDTO> {
     const productVariant = await this.productVariantService_.retrieve(
       productVariantId,
@@ -192,10 +193,11 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productTag))
   }
 
+  @InjectForkedManager("baseRepository_")
   async listTags(
     filters: ProductTypes.FilterableProductTagProps = {},
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductTagDTO[]> {
     const tags = await this.productTagService_.list(
       filters,
@@ -206,10 +208,11 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(tags))
   }
 
+  @InjectForkedManager("baseRepository_")
   async listAndCountTags(
     filters: ProductTypes.FilterableProductTagProps = {},
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[ProductTypes.ProductTagDTO[], number]> {
     const [tags, count] = await this.productTagService_.listAndCount(
       filters,
@@ -220,10 +223,11 @@ export default class ProductModuleService<
     return [JSON.parse(JSON.stringify(tags)), count]
   }
 
+  @InjectForkedManager("baseRepository_")
   async retrieveType(
     typeId: string,
     config: FindConfig<ProductTypes.ProductTypeDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductTypeDTO> {
     const productType = await this.productTypeService_.retrieve(
       typeId,
@@ -234,10 +238,11 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(productType))
   }
 
+  @InjectForkedManager("baseRepository_")
   async listTypes(
     filters: ProductTypes.FilterableProductTypeProps = {},
     config: FindConfig<ProductTypes.ProductTypeDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductTypeDTO[]> {
     const types = await this.productTypeService_.list(
       filters,
@@ -248,10 +253,11 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(types))
   }
 
+  @InjectForkedManager("baseRepository_")
   async listAndCountTypes(
     filters: ProductTypes.FilterableProductTypeProps = {},
     config: FindConfig<ProductTypes.ProductTypeDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[ProductTypes.ProductTypeDTO[], number]> {
     const [types, count] = await this.productTypeService_.listAndCount(
       filters,

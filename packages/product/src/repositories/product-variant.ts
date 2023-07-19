@@ -9,7 +9,6 @@ import { Context, DAL } from "@medusajs/types"
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
-import { doNotForceTransaction } from "../utils"
 
 export class ProductVariantRepository extends AbstractBaseRepository<ProductVariant> {
   protected readonly manager_: SqlEntityManager

@@ -6,7 +6,6 @@ import {
   MedusaContext,
 } from "@medusajs/utils"
 import { serialize } from "@mikro-orm/core"
-import { doNotForceTransaction } from "../utils"
 
 // TODO: Should we create a mikro orm specific package for this and the soft deletable decorator util?
 
@@ -213,6 +212,21 @@ export class BaseRepository extends AbstractBaseRepository {
   constructor({ manager }) {
     // @ts-ignore
     super(...arguments)
+  }
+
+  protected getActiveManager(
+    @MedusaContext()
+    { transactionManager, forkedManager }: Context = {}
+  ) {
+    if (transactionManager) {
+      return transactionManager as SqlEntityManager
+    }
+
+    if (forkedManager) {
+      return forkedManager as SqlEntityManager
+    }
+
+    return this.manager_ as SqlEntityManager
   }
 
   serialize<

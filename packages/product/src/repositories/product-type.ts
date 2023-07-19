@@ -6,11 +6,11 @@ import {
 } from "@mikro-orm/core"
 import { Product, ProductType } from "@models"
 import { Context, CreateProductTypeDTO, DAL } from "@medusajs/types"
-import { AbstractBaseRepository } from "./base"
+import { BaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 
-export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
+export class ProductTypeRepository extends BaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -23,8 +23,7 @@ export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
     findOptions: DAL.FindOptions<ProductType> = { where: {} },
     context: Context = {}
   ): Promise<ProductType[]> {
-    const manager = (context.transactionManager ??
-      this.manager_.fork()) as SqlEntityManager
+    const manager = this.getActiveManager(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -44,8 +43,7 @@ export class ProductTypeRepository extends AbstractBaseRepository<ProductType> {
     findOptions: DAL.FindOptions<ProductType> = { where: {} },
     context: Context = {}
   ): Promise<[ProductType[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_.fork()) as SqlEntityManager
+    const manager = this.getActiveManager(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}

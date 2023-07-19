@@ -6,11 +6,11 @@ import {
 } from "@mikro-orm/core"
 import { Product, ProductTag } from "@models"
 import { Context, CreateProductTagDTO, DAL } from "@medusajs/types"
-import { AbstractBaseRepository } from "./base"
+import { BaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 
-export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
+export class ProductTagRepository extends BaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -23,10 +23,9 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     findOptions: DAL.FindOptions<ProductTag> = { where: {} },
     context: Context = {}
   ): Promise<ProductTag[]> {
-    const manager = (context.transactionManager ??
-      this.manager_.fork()) as SqlEntityManager
-
+    const manager = this.getActiveManager(context)
     const findOptions_ = { ...findOptions }
+
     findOptions_.options ??= {}
 
     Object.assign(findOptions_.options, {
@@ -44,8 +43,7 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     findOptions: DAL.FindOptions<ProductTag> = { where: {} },
     context: Context = {}
   ): Promise<[ProductTag[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_.fork()) as SqlEntityManager
+    const manager = this.getActiveManager(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
