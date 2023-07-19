@@ -60,17 +60,6 @@ export class LocalWorkflow extends OrchestratorBuilder {
         container.register(registrationName, asValue(mod))
       }
     }
-    // Modules loaded
-    else {
-      // TODO: expose global modules in @medusajs/utils
-      if (typeof global.MedusaModule !== "undefined") {
-        const modules = global.MedusaModule.getLoadedModules()
-        for (const [, mod] of modules.entries()) {
-          const registrationName = mod.__definition.registrationName
-          container.register(registrationName, asValue(mod))
-        }
-      }
-    }
 
     this.container = container
   }

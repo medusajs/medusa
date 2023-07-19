@@ -6569,6 +6569,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows@workspace:packages/workflows"
   dependencies:
+    "@medusajs/modules-sdk": ^1.8.8
     "@medusajs/orchestration": ^0.0.2
     "@medusajs/types": ^1.8.10
     "@medusajs/utils": ^1.9.2

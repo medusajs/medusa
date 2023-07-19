@@ -1,8 +1,10 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
+  JoinerServiceConfig,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  ModuleDefinition,
   ModuleExports,
 } from "@medusajs/types"
 import {
@@ -10,8 +12,9 @@ import {
   simpleHash,
   stringifyCircular,
 } from "@medusajs/utils"
-import { asValue } from "awilix"
 import { moduleLoader, registerMedusaModule } from "./loaders"
+
+import { asValue } from "awilix"
 import { loadModuleMigrations } from "./loaders/utils"
 
 const logger: any = {
@@ -23,6 +26,17 @@ const logger: any = {
 
 export class MedusaModule {
   private static instances_: Map<string, any> = new Map()
+
+  public static getLoadedModules(): Map<
+    string,
+    any & {
+      __joinerConfig: JoinerServiceConfig
+      __definition: ModuleDefinition
+    }
+  > {
+    return MedusaModule.instances_
+  }
+
   public static clearInstances(): void {
     MedusaModule.instances_.clear()
   }
