@@ -9,11 +9,14 @@ import {
   LocalWorkflow,
   TransactionState,
 } from "@medusajs/orchestration"
+import { InputAlias, Workflows } from "../definitions"
 
-import { Workflows } from "../definitions"
 import { ulid } from "ulid"
 
-export const exportWorkflow = (workflowId: Workflows) => {
+export const exportWorkflow = (
+  workflowId: Workflows,
+  inputAlias?: InputAlias | string
+) => {
   return (
     container?:
       | (any & {
@@ -34,7 +37,7 @@ export const exportWorkflow = (workflowId: Workflows) => {
     flow.run = async (input?) => {
       const transaction = await flow.begin(
         context?.transactionId ?? ulid(),
-        input
+        inputAlias ? { [inputAlias]: input } : input
       )
 
       const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]

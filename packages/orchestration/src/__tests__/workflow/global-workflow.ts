@@ -32,7 +32,7 @@ describe("WorkflowManager", () => {
     })
 
     handlers.set("callExternal", {
-      invoke: jest.fn((container, payload, invoke, metadata) => {
+      invoke: jest.fn(({ metadata }) => {
         asyncStepIdempotencyKey = metadata.idempotency_key
       }),
     })
