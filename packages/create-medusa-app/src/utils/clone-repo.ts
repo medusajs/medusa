@@ -71,5 +71,5 @@ function deleteGitDirectory(projectDirectory: string) {
 }
 
 function getRepoUrl(stable?: boolean) {
-  return stable ? `${DEFAULT_REPO} -b feat/onboarding` : DEFAULT_REPO
+  return !stable ? `${DEFAULT_REPO} -b feat/onboarding` : DEFAULT_REPO
 }
