@@ -11,7 +11,7 @@ import { serialize } from "@mikro-orm/core"
 
 async function transactionWrapper<TManager = unknown>(
   this: any,
-  task: (transactionManager: TManager) => Promise<any>,
+  task: (transactionManager: unknown) => Promise<any>,
   {
     transaction,
     isolationLevel,
@@ -27,28 +27,15 @@ async function transactionWrapper<TManager = unknown>(
     return await task(transaction)
   }
 
-  const forkedManager = this.manager_.fork()
-
   const options = {}
+
   if (isolationLevel) {
     Object.assign(options, { isolationLevel })
   }
 
-  if (transaction) {
-    Object.assign(options, { ctx: transaction })
-    await forkedManager.begin(options)
-  } else {
-    await forkedManager.begin(options)
-  }
-
-  try {
-    const result = await task(forkedManager)
-    await forkedManager.commit()
-    return result
-  } catch (e) {
-    await forkedManager.rollback()
-    throw e
-  }
+  const transactionRunner =
+    this.manager_.transactional ?? this.manager_.transaction
+  return await transactionRunner(task, options)
 }
 
 const updateDeletedAtRecursively = async <T extends object = any>(
@@ -107,7 +94,9 @@ export abstract class AbstractBaseRepository<T = any>
   }
 
   getFreshManager<TManager = unknown>(): TManager {
-    return this.manager_.fork() as unknown as TManager
+    return (this.manager_.fork
+      ? this.manager_.fork()
+      : this.manager_) as unknown as TManager
   }
 
   getActiveManager<TManager = unknown>(
