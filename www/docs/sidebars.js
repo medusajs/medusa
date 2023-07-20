@@ -337,11 +337,6 @@ module.exports = {
           items: [
             {
               type: "doc",
-              id: "troubleshooting/eaddrinuse",
-              label: "EADDRINUSE Error",
-            },
-            {
-              type: "doc",
               id: "troubleshooting/create-medusa-app-errors",
               label: "Create Medusa App Errors",
             },
