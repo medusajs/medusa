@@ -200,7 +200,7 @@ export default async ({
   }).then(async () =>
     open(
       stable
-        ? "http://localhost:9000/app"
+        ? "http://localhost:9000/store/products"
         : inviteToken
         ? `http://localhost:7001/invite?token=${inviteToken}&first_run=true`
         : "http://localhost:7001"
