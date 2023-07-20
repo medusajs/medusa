@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:67](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/new-totals.ts#L67)
+[medusa/src/services/new-totals.ts:67](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/new-totals.ts#L67)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:64](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/new-totals.ts#L64)
+[medusa/src/services/new-totals.ts:64](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/new-totals.ts#L64)
 
 ___
 
@@ -90,7 +90,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:65](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/new-totals.ts#L65)
+[medusa/src/services/new-totals.ts:65](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/new-totals.ts#L65)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:63](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/new-totals.ts#L63)
+[medusa/src/services/new-totals.ts:63](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/new-totals.ts#L63)
 
 ___
 
@@ -124,7 +124,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -142,7 +142,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -181,7 +181,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -207,7 +207,7 @@ Calculate and return the gift cards totals
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:447](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/new-totals.ts#L447)
+[medusa/src/services/new-totals.ts:447](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/new-totals.ts#L447)
 
 ___
 
@@ -238,7 +238,7 @@ Calculate and return the gift cards totals based on their transactions
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:526](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/new-totals.ts#L526)
+[medusa/src/services/new-totals.ts:526](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/new-totals.ts#L526)
 
 ___
 
@@ -268,7 +268,7 @@ Return the amount that can be refund on a line item
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:333](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/new-totals.ts#L333)
+[medusa/src/services/new-totals.ts:333](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/new-totals.ts#L333)
 
 ___
 
@@ -295,7 +295,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:403](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/new-totals.ts#L403)
+[medusa/src/services/new-totals.ts:403](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/new-totals.ts#L403)
 
 ___
 
@@ -321,7 +321,7 @@ Calculate and return the items totals for either the legacy calculation or the n
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:87](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/new-totals.ts#L87)
+[medusa/src/services/new-totals.ts:87](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/new-totals.ts#L87)
 
 ___
 
@@ -349,7 +349,7 @@ Calculate and return the legacy calculated totals using the tax rate
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:254](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/new-totals.ts#L254)
+[medusa/src/services/new-totals.ts:254](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/new-totals.ts#L254)
 
 ___
 
@@ -378,7 +378,7 @@ Calculate and return the totals for an item
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:147](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/new-totals.ts#L147)
+[medusa/src/services/new-totals.ts:147](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/new-totals.ts#L147)
 
 ___
 
@@ -405,7 +405,7 @@ Calculate and return the shipping methods totals for either the legacy calculati
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:572](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/new-totals.ts#L572)
+[medusa/src/services/new-totals.ts:572](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/new-totals.ts#L572)
 
 ___
 
@@ -431,7 +431,7 @@ Calculate and return the shipping method totals legacy using teh tax rate
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:729](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/new-totals.ts#L729)
+[medusa/src/services/new-totals.ts:729](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/new-totals.ts#L729)
 
 ___
 
@@ -458,7 +458,7 @@ Calculate and return the shipping method totals
 
 #### Defined in
 
-[medusa/src/services/new-totals.ts:646](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/new-totals.ts#L646)
+[medusa/src/services/new-totals.ts:646](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/new-totals.ts#L646)
 
 ___
 
@@ -482,7 +482,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -506,4 +506,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
