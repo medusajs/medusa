@@ -11,8 +11,19 @@ import {
 
 import { generateEntityId } from "@medusajs/utils"
 
+type OptionalFields =
+  | "line_item_id"
+  | "created_at"
+  | "updated_at"
+  | "deleted_at"
+  | "external_id"
+  | "description"
+  | "created_by"
+
 @Entity({ tableName: "reservation_item" })
 export class ReservationItem {
+  [OptionalProps]?: OptionalFields
+
   @PrimaryKey({ columnType: "text" })
   id: string
 

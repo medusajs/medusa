@@ -12,12 +12,21 @@ import {
 
 import { generateEntityId } from "@medusajs/utils"
 
+type OptionalProperties =
+  | "deleted_at"
+  | "created_at"
+  | "updated_at"
+  | "stocked_quantity"
+  | "reserved_quantity"
+  | "incoming_quantity"
+
 @Entity({ tableName: "inventory_level" })
 @Unique({
   name: "IDX_inventory_level_item_id_location_id",
   properties: ["inventory_item_id", "location_id"],
 })
 export class InventoryLevel {
+  [OptionalProps]?: OptionalProperties
   @PrimaryKey({ columnType: "text" })
   id: string
 

@@ -8,23 +8,18 @@ import {
   Context,
 } from "@medusajs/types"
 import {
-  InjectEntityManager,
   InjectTransactionManager,
   isDefined,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
-import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryItem } from "../models"
-import { getListQuery } from "../utils/query"
-import { buildQuery } from "../utils/build-query"
 import { InventoryItemRepository } from "../repositories"
 import { doNotForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
-  manager: EntityManager
   inventoryItemRepository: InventoryItemRepository
 }
 
@@ -35,16 +30,13 @@ export default class InventoryItemService {
     DELETED: "inventory-item.deleted",
   }
 
-  protected readonly manager_: EntityManager
   protected readonly eventBusService_: IEventBusService | undefined
   protected readonly inventoryItemRepository_: InventoryItemRepository
 
   constructor({
     eventBusService,
     inventoryItemRepository,
-    manager,
   }: InjectedDependencies) {
-    this.manager_ = manager
     this.eventBusService_ = eventBusService
     this.inventoryItemRepository_ = inventoryItemRepository
   }
