@@ -7,7 +7,7 @@ import {
 } from "@medusajs/utils"
 import { serialize } from "@mikro-orm/core"
 
-// TODO: Should we create a mikro orm specific package for this and the soft deletable decorator util?
+// TODO: move to utils package
 
 async function transactionWrapper<TManager = unknown>(
   this: any,
@@ -38,8 +38,9 @@ async function transactionWrapper<TManager = unknown>(
   return await transactionRunner(task, options)
 }
 
-const updateDeletedAtRecursively = async <T extends object = any>(
-  manager: SqlEntityManager,
+// TODO: move to utils package
+const mikroOrmUpdateDeletedAtRecursively = async <T extends object = any>(
+  manager: any,
   entities: T[],
   value: Date | null
 ) => {
@@ -65,7 +66,7 @@ const updateDeletedAtRecursively = async <T extends object = any>(
         },
       })
 
-      await updateDeletedAtRecursively(manager, relationEntities, value)
+      await mikroOrmUpdateDeletedAtRecursively(manager, relationEntities, value)
     }
 
     await manager.persist(entities)
@@ -84,6 +85,7 @@ const serializer = <
   return Array.isArray(data) ? result : result[0]
 }
 
+// TODO: move to utils package
 export abstract class AbstractBaseRepository<T = any>
   implements DAL.RepositoryService<T>
 {
@@ -148,7 +150,7 @@ export abstract class AbstractBaseRepository<T = any>
     const entities = await this.find({ where: { id: { $in: ids } } as any })
 
     const date = new Date()
-    await updateDeletedAtRecursively(
+    await mikroOrmUpdateDeletedAtRecursively(
       manager as SqlEntityManager,
       entities,
       date
@@ -172,7 +174,7 @@ export abstract class AbstractBaseRepository<T = any>
 
     const entities = await this.find(query)
 
-    await updateDeletedAtRecursively(
+    await mikroOrmUpdateDeletedAtRecursively(
       manager as SqlEntityManager,
       entities,
       null
@@ -182,6 +184,7 @@ export abstract class AbstractBaseRepository<T = any>
   }
 }
 
+// TODO: move to utils package
 export abstract class AbstractTreeRepositoryBase<T = any>
   extends AbstractBaseRepository<T>
   implements DAL.TreeRepositoryService<T>
@@ -204,6 +207,7 @@ export abstract class AbstractTreeRepositoryBase<T = any>
   ): Promise<[T[], number]>
 }
 
+// TODO: move to utils package
 /**
  * Only used internally in order to be able to wrap in transaction from a
  * non identified repository
