@@ -65,6 +65,7 @@ describe("Create Variant", () => {
         {
           id: productId,
           status: "published",
+          sales_channels: [],
           variants: [{ id: variantId }],
         },
         100
@@ -132,6 +133,7 @@ describe("Create Variant", () => {
           {
             id: `${productId}-1`,
             status: "published",
+            sales_channels: [],
             variants: [
               {
                 id: `${variantId}-1`,
@@ -147,6 +149,7 @@ describe("Create Variant", () => {
             id: `${productId}-2`,
             status: "published",
             variants: [{ id: `${variantId}-2`, manage_inventory: true }],
+            sales_channels: [],
           },
           102
         )
@@ -155,6 +158,7 @@ describe("Create Variant", () => {
           {
             id: `${productId}-3`,
             status: "published",
+            sales_channels: [],
             variants: [
               {
                 id: `${variantId}-3`,
@@ -177,6 +181,7 @@ describe("Create Variant", () => {
           {
             id: `${productId}-4`,
             status: "published",
+            sales_channels: [],
             variants: [
               {
                 id: `${variantId}-4`,

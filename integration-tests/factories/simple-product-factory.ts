@@ -57,9 +57,10 @@ export const simpleProductFactory = async (
   let sales_channels
   if (data.sales_channels) {
     sales_channels = await Promise.all(
-      data.sales_channels.map(
-        async (salesChannel) =>
-          await simpleSalesChannelFactory(dataSource, salesChannel)
+      data.sales_channels.map(async (salesChannel) =>
+        salesChannel
+          ? await simpleSalesChannelFactory(dataSource, salesChannel)
+          : null
       )
     )
   } else {
