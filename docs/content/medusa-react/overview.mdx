@@ -250,11 +250,14 @@ type AdminBlogPostRes = {
 const BlogPost = () => {
   const { id } = useParams() 
 
-  const { data: { post }, isLoading } = useAdminCustomQuery<AdminBlogPostQuery, AdminBlogPostRes>(
+  const { data: { post }, isLoading } = useAdminCustomQuery<
+    AdminBlogPostQuery,
+    AdminBlogPostRes
+  >(
     `/blog/posts/${id}`,  // path
     ["blog-post", id], // queryKey
     {
-      expand: "author" // query
+      expand: "author", // query
     }
    )
 
@@ -297,12 +300,14 @@ type AdminBlogPostsQuery = {
 const AuthorsBlogPosts = () => {
   const { id } = useParams() 
 
-  const { data: { posts }, isLoading } = useAdminCustomQuery<AdminBlogPostsQuery, AdminBlogPostsRes>(
+  const { data: { posts }, isLoading } = useAdminCustomQuery<
+    AdminBlogPostsQuery, AdminBlogPostsRes
+  >(
     `/blog/posts`,  // path
     ["blog-posts", "list", id], // queryKey
     {
       expand: "author", // query
-      author_id: "auth_123"
+      author_id: "auth_123",
     }
    )
 
@@ -372,15 +377,15 @@ const CreateBlogPost = () => {
     `/blog/posts`,
     ["blog-posts"],
     {
-      product: true
-    },
+      product: true,
+    }
    )
 
   const handleCreate = (args: AdminBlogPostReq) => {
     return mutate(args, {
       onSuccess: (data) => {
         navigate(`blog/posts/${data.post.id}`)
-      }
+      },
     })
   }
 
@@ -388,9 +393,9 @@ const CreateBlogPost = () => {
   return (
     <button
       onClick={() => handleCreate({
-        title: 'First Blog Post',
-        content: 'Blog Content',
-        author_id: "auth_123"
+        title: "First Blog Post",
+        content: "Blog Content",
+        author_id: "auth_123",
       })}>
         Create
     </button>
@@ -432,19 +437,21 @@ const BlogPost = () => {
   const { id } = useParams()
   const navigate = useNavigate() 
 
-  const { mutate, isLoading } = useAdminCustomDelete<AdminBlogPostDeleteRes>(
-    `/blog/posts/${id}`,  // path
-    ["blog-posts"], // queryKey - we want to refetch the previous list queries
+  const { mutate, isLoading } = useAdminCustomDelete<
+    AdminBlogPostDeleteRes
+  >(
+    `/blog/posts/${id}`,
+    ["blog-posts"],
     {
-      product: true
-    },
+      product: true,
+    }
    )
 
   const handleDelete = () => {
     return mutate(undefined, {
       onSuccess: () => {
         navigate("..")
-      }
+      },
     })
   }
 

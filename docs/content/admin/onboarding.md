@@ -2292,22 +2292,25 @@ There are different ways you can consume custom backend endpoints. The Medusa Re
 Add the following imports at the top of `src/admin/widgets/onboarding-flow/onboarding-flow.tsx`:
 
 ```tsx title=src/admin/widgets/onboarding-flow/onboarding-flow.tsx
-import { useAdminCustomPost, useAdminCustomQuery } from "medusa-react";
+import {
+  useAdminCustomPost,
+  useAdminCustomQuery,
+} from "medusa-react"
 ```
 
 Next, add the following at the top of the `OnboardingFlow` component:
 
 ```tsx title=src/admin/widgets/onboarding-flow/onboarding-flow.tsx
 const OnboardingFlow = (props: any) => {
-  const QUERY_KEY = ["onboarding_state"];
+  const QUERY_KEY = ["onboarding_state"]
   const { data, isLoading } = useAdminCustomQuery<
     undefined,
     OnboardingStateRes
-  >("/onboarding", QUERY_KEY);
+  >("/onboarding", QUERY_KEY)
   const { mutate } = useAdminCustomPost<
     AdminOnboardingUpdateStateReq,
     OnboardingStateRes
-  >("/onboarding", QUERY_KEY);
+  >("/onboarding", QUERY_KEY)
 
   // ...
 }
