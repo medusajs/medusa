@@ -12,10 +12,7 @@ type CloneRepoOptions = {
   stable?: boolean
 }
 
-const DEFAULT_REPO =
-  "https://github.com/medusajs/medusa-starter-default -b feat/onboarding"
-
-const STABLE_REPO = "https://github.com/medusajs/medusa-starter-default"
+const DEFAULT_REPO = "https://github.com/medusajs/medusa-starter-default"
 
 export default async function cloneRepo({
   directoryName = "",
@@ -24,9 +21,7 @@ export default async function cloneRepo({
   stable = false,
 }: CloneRepoOptions) {
   await promiseExec(
-    `git clone ${
-      repoUrl || (stable ? STABLE_REPO : DEFAULT_REPO)
-    } ${directoryName}`,
+    `git clone ${repoUrl || getRepoUrl(stable)} ${directoryName}`,
     {
       signal: abortController?.signal,
     }
@@ -73,4 +68,8 @@ function deleteGitDirectory(projectDirectory: string) {
     recursive: true,
     force: true,
   })
+}
+
+function getRepoUrl(stable?: boolean) {
+  return stable ? `${DEFAULT_REPO} -b feat/onboarding` : DEFAULT_REPO
 }
