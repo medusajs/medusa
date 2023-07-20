@@ -288,6 +288,19 @@ function EditPricesTable(props: EditPricesTableProps) {
         setEditedPrices(next)
       }
 
+      if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
+        let ret = ""
+        Object.keys(selectedCells).forEach((k) => {
+          const variant = props.product.variants!.find(
+            (v) => v.id === k.split("-")[0]
+          )
+
+          ret += `${variant.title}\t${editedPrices[k] ?? ""}\n`
+        })
+
+        navigator.clipboard.writeText(ret)
+      }
+
       /**
        * Undo last selection change (or delete) on CMD/CTR + Z
        */
@@ -301,14 +314,75 @@ function EditPricesTable(props: EditPricesTableProps) {
       }
     }
 
+    const onPaste = (event: ClipboardEvent) => {
+      const paste = (event.clipboardData || window.clipboardData).getData(
+        "text"
+      )
+
+      const rows = paste.trim().split("\n")
+
+      // single cell click -> determine from the content
+      if (startIndex === endIndex) {
+        const _edited = { ...editedPrices }
+
+        for (let indx = 0; indx < rows.length; indx++) {
+          if (indx >= variantIds.length) {
+            break
+          }
+
+          const r = rows[indx]
+          const parts = r.split("\t")
+
+          if (parts.length === 1) {
+            // assume price only
+            const amount = parseFloat(parts[0])
+
+            _edited[
+              getKey(variantIds[startIndex + indx], activeCurrencyOrRegion)
+            ] = !isNaN(amount) ? amount : undefined
+          }
+        }
+
+        setEditedPrices(_edited)
+      }
+
+      // range is selected, fill that range
+      if (startIndex < endIndex) {
+        const _edited = { ...editedPrices }
+        for (let i = startIndex!; i <= endIndex; i++) {
+          if (rows.length <= i) {
+            break
+          }
+
+          const r = rows[i]
+          const parts = r.split("\t")
+
+          // assume price only
+          if (parts.length === 1) {
+            const amount = parseFloat(parts[0])
+
+            _edited[getKey(variantIds[i], activeCurrencyOrRegion)] = !isNaN(
+              amount
+            )
+              ? amount
+              : undefined
+          }
+        }
+        setEditedPrices(_edited)
+      }
+    }
+
     document.addEventListener("mousedown", down)
     document.addEventListener("mouseup", up)
     document.addEventListener("keydown", onKeyDown)
 
+    document.addEventListener("paste", onPaste)
+
     return () => {
       document.removeEventListener("mousedown", down)
       document.removeEventListener("mouseup", up)
-      document.addEventListener("keydown", onKeyDown)
+      document.removeEventListener("keydown", onKeyDown)
+      document.removeEventListener("paste", onPaste)
     }
   }, [selectedCells])
 
