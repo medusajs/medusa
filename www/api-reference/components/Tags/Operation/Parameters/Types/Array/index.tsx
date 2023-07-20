@@ -4,14 +4,21 @@ import type { TagOperationParametersDefaultProps } from "../Default"
 import type { TagOperationParametersProps } from "../.."
 import Details from "@/components/Details"
 import TagsOperationParametersNested from "../../Nested"
+import Loading from "@/components/Loading"
 
 const TagOperationParametersDefault =
   dynamic<TagOperationParametersDefaultProps>(
-    async () => import("../Default")
+    async () => import("../Default"),
+    {
+      loading: () => <Loading />,
+    }
   ) as React.FC<TagOperationParametersDefaultProps>
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
-  async () => import("../..")
+  async () => import("../.."),
+  {
+    loading: () => <Loading />,
+  }
 ) as React.FC<TagOperationParametersProps>
 
 export type TagOperationParametersArrayProps = {

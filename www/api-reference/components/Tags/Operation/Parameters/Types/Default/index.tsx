@@ -1,12 +1,7 @@
 import type { SchemaObject } from "@/types/openapi"
 import TagOperationParametersDescription from "../../Description"
 import clsx from "clsx"
-import dynamic from "next/dynamic"
-import type { TagOperationParametersNameProps } from "../../Name"
-
-const TagOperationParametersName = dynamic<TagOperationParametersNameProps>(
-  async () => import("../../Name")
-) as React.FC<TagOperationParametersNameProps>
+import TagOperationParametersName from "../../Name"
 
 export type TagOperationParametersDefaultProps = {
   name?: string

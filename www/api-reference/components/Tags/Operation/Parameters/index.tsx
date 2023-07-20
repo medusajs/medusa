@@ -6,22 +6,38 @@ import type { TagOperationParametersArrayProps } from "./Types/Array"
 import type { TagOperationParametersUnionProps } from "./Types/Union"
 import type { TagOperationParamatersOneOfProps } from "./Types/OneOf"
 import checkRequired from "@/utils/check-required"
+import Loading from "@/components/Loading"
 
 const TagOperationParametersObject = dynamic<TagOperationParametersObjectProps>(
-  async () => import("./Types/Object")
+  async () => import("./Types/Object"),
+  {
+    loading: () => <Loading />,
+  }
 ) as React.FC<TagOperationParametersObjectProps>
 const TagOperationParametersDefault =
   dynamic<TagOperationParametersDefaultProps>(
-    async () => import("./Types/Default")
+    async () => import("./Types/Default"),
+    {
+      loading: () => <Loading />,
+    }
   ) as React.FC<TagOperationParametersDefaultProps>
 const TagOperationParametersArray = dynamic<TagOperationParametersArrayProps>(
-  async () => import("./Types/Array")
+  async () => import("./Types/Array"),
+  {
+    loading: () => <Loading />,
+  }
 ) as React.FC<TagOperationParametersArrayProps>
 const TagOperationParametersUnion = dynamic<TagOperationParametersUnionProps>(
-  async () => import("./Types/Union")
+  async () => import("./Types/Union"),
+  {
+    loading: () => <Loading />,
+  }
 ) as React.FC<TagOperationParametersUnionProps>
 const TagOperationParamatersOneOf = dynamic<TagOperationParamatersOneOfProps>(
-  async () => import("./Types/OneOf")
+  async () => import("./Types/OneOf"),
+  {
+    loading: () => <Loading />,
+  }
 ) as React.FC<TagOperationParamatersOneOfProps>
 
 export type TagOperationParametersProps = {

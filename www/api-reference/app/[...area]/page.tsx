@@ -18,6 +18,10 @@ const ReferencePage = async ({ params: { area } }: ReferencePageProps) => {
     <AreaProvider area={area}>
       <div className="mt-3">
         <DividedLayout
+          mainContent={<h1>Medusa {capitalizeTitle(area[0])} API Reference</h1>}
+          codeContent={<></>}
+        />
+        <DividedLayout
           mainContent={
             <Section>
               {area.includes("admin") && <AdminDescription />}
@@ -25,6 +29,7 @@ const ReferencePage = async ({ params: { area } }: ReferencePageProps) => {
             </Section>
           }
           codeContent={<ClientLibraries />}
+          className="flex-col-reverse"
         />
         <Tags />
       </div>

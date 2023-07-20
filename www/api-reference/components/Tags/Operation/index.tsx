@@ -34,9 +34,11 @@ const TagOperation = ({
   const { setActivePath } = useSidebar()
   const [show, setShow] = useState(false)
   const path = getSectionId([...(operation.tags || []), operation.operationId])
-  const nodeRef = useRef<Element | null>()
+  const nodeRef = useRef<Element | null>(null)
+  // const nodeRef = useRef<HTMLDivElement>(null)
   const { ref } = useInView({
-    threshold: 0.5,
+    threshold: 0.3,
+    rootMargin: `57px 0px 0px 0px`,
     onChange: (changedInView) => {
       if (changedInView) {
         if (!show) {
@@ -116,6 +118,7 @@ const TagOperation = ({
               endpointPath={endpointPath}
             />
           }
+          codeContentClassName="bg-docs-bg-surface dark:bg-docs-bg-surface-dark"
         />
       </div>
     </div>

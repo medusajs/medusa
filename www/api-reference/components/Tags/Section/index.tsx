@@ -10,6 +10,7 @@ import Loading from "@/components/Loading"
 import type { SectionProps } from "../../Section"
 import type { MDXContentClientProps } from "../../MDXContent/Client"
 import TagPaths from "../Paths"
+import DividedLayout from "@/layouts/Divided"
 
 export type TagSectionProps = {
   tag: OpenAPIV3.TagObject
@@ -63,12 +64,19 @@ const TagSection = ({ tag }: TagSectionProps) => {
 
   return (
     <div className="min-h-screen pt-[57px]" id={slugTagName} ref={ref}>
-      <h2>{tag.name}</h2>
-      {tag.description && (
-        <Section addToSidebar={false} className="w-api-ref-content">
-          <MDXContentClient content={tag.description} />
-        </Section>
-      )}
+      <DividedLayout
+        mainContent={
+          <>
+            <h2>{tag.name}</h2>
+            {tag.description && (
+              <Section addToSidebar={false}>
+                <MDXContentClient content={tag.description} />
+              </Section>
+            )}
+          </>
+        }
+        codeContent={<></>}
+      />
       {loadPaths && <TagPaths tag={tag} />}
     </div>
   )

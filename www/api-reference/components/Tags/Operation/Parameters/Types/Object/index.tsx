@@ -5,18 +5,28 @@ import type { TagOperationParametersProps } from "../.."
 import type { TagsOperationParametersNestedProps } from "../../Nested"
 import type { DetailsProps } from "@/components/Details"
 import checkRequired from "@/utils/check-required"
+import Loading from "@/components/Loading"
 
 const TagOperationParameters = dynamic<TagOperationParametersProps>(
-  async () => import("../..")
+  async () => import("../.."),
+  {
+    loading: () => <Loading />,
+  }
 ) as React.FC<TagOperationParametersProps>
 
 const TagsOperationParametersNested =
   dynamic<TagsOperationParametersNestedProps>(
-    async () => import("../../Nested")
+    async () => import("../../Nested"),
+    {
+      loading: () => <Loading />,
+    }
   ) as React.FC<TagsOperationParametersNestedProps>
 
 const Details = dynamic<DetailsProps>(
-  async () => import("../../../../../Details")
+  async () => import("../../../../../Details"),
+  {
+    loading: () => <Loading />,
+  }
 ) as React.FC<DetailsProps>
 
 export type TagOperationParametersObjectProps = {

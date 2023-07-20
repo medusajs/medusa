@@ -13,6 +13,7 @@ import {
 export enum SidebarItemSections {
   TOP = "top",
   BOTTOM = "bottom",
+  MOBILE = "mobile",
 }
 
 export type SidebarItemType = {
@@ -21,6 +22,7 @@ export type SidebarItemType = {
   method?: OpenAPIV3.HttpMethods
   children?: SidebarItemType[]
   loaded?: boolean
+  isPathHref?: boolean
 }
 
 type SidebarSectionItemsType = {
@@ -29,10 +31,8 @@ type SidebarSectionItemsType = {
 
 type SidebarContextType = {
   items: SidebarSectionItemsType
-  // activeItem: SidebarItemType | null
   activePath: string | null
   setActivePath: (path: string | null) => void
-  // changeActiveItem: (path: string) => void
   isItemActive: (item: SidebarItemType) => boolean
   addItems: (
     item: SidebarItemType[],
@@ -51,6 +51,8 @@ type SidebarContextType = {
     itemPath: string,
     checkChildren?: boolean
   ) => SidebarItemType | undefined
+  sidebarOpen: boolean
+  setSidebarOpen: (value: boolean) => void
 }
 
 const SidebarContext = createContext<SidebarContextType | null>(null)
@@ -63,8 +65,35 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
   const [items, setItems] = useState<SidebarSectionItemsType>({
     top: [],
     bottom: [],
+    mobile: [
+      {
+        title: "Docs",
+        path: "https://docs.medusajs.com/",
+        loaded: true,
+        isPathHref: true,
+      },
+      {
+        title: "User Guide",
+        path: "https://docs.medusajs.com/user-guide",
+        loaded: true,
+        isPathHref: true,
+      },
+      {
+        title: "Store API",
+        path: "/store",
+        loaded: true,
+        isPathHref: true,
+      },
+      {
+        title: "Admin API",
+        path: "/admin",
+        loaded: true,
+        isPathHref: true,
+      },
+    ],
   })
   const [activePath, setActivePath] = useState<string | null>(null)
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
 
   const findItemInSection = (
     section: SidebarItemType[],
@@ -92,13 +121,18 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
   ) => {
     if (section === SidebarItemSections.TOP) {
       setItems({
-        bottom: items.bottom,
+        ...items,
         top: newItems,
       })
-    } else {
+    } else if (section === SidebarItemSections.BOTTOM) {
       setItems({
+        ...items,
         bottom: newItems,
-        top: items.top,
+      })
+    } else if (section === SidebarItemSections.MOBILE) {
+      setItems({
+        ...items,
+        mobile: newItems,
       })
     }
   }
@@ -131,7 +165,11 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
     }
 
     const oldItems =
-      section === SidebarItemSections.TOP ? items.top : items.bottom
+      section === SidebarItemSections.TOP
+        ? items.top
+        : SidebarItemSections.BOTTOM
+        ? items.bottom
+        : items.mobile
 
     if (!parent && !indexPosition && indexPosition !== 0) {
       setSectionItems([...oldItems, ...newItems], section)
@@ -201,6 +239,8 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
         setActivePath,
         isItemActive,
         findItemInSection,
+        sidebarOpen,
+        setSidebarOpen,
       }}
     >
       {children}

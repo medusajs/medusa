@@ -4,10 +4,10 @@ import { useSidebar } from "@/providers/sidebar"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import Link from "next/link"
-import { useEffect, useState } from "react"
-import { useInView } from "react-intersection-observer"
+import { useEffect, useRef, useState } from "react"
 import SpinnerLoading from "@/components/Loading/Spinner"
 import type { MethodLabelProps } from "../../MethodLabel"
+import checkSidebarItemVisibility from "@/utils/check-sidebar-item-visibility"
 
 const IconChevronRightMini = dynamic<IconProps>(
   async () => import("../../Icons/ChevronRightMini"),
@@ -30,14 +30,20 @@ export type SidebarItemProps = {
 const SidebarItem = ({ item, className }: SidebarItemProps) => {
   const [collapsed, setCollapsed] = useState(false)
   const [showLoading, setShowLoading] = useState(false)
-  const { isItemActive, setActivePath } = useSidebar()
+  const { isItemActive, setActivePath, setSidebarOpen } = useSidebar()
   const active = isItemActive(item)
-  const { ref, inView, entry } = useInView()
+  const ref = useRef<HTMLLIElement>(null)
 
   useEffect(() => {
-    if (active && !inView) {
-      // scroll to element
-      entry?.target.scrollIntoView()
+    if (active && ref.current && window.innerWidth >= 992) {
+      if (
+        !checkSidebarItemVisibility(ref.current, {
+          topMargin: 57,
+        })
+      ) {
+        // scroll to element
+        ref.current.scrollIntoView()
+      }
     }
     if (active) {
       setShowLoading(true)
@@ -54,7 +60,7 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
         )}
       >
         <Link
-          href={`#${item.path}`}
+          href={item.isPathHref ? item.path : `#${item.path}`}
           className={clsx(
             "flex items-center gap-0.5 py-1 px-[20px]",
             "group-hover:text-medusa-text-base dark:group-hover:text-medusa-text-base-dark group-hover:no-underline",
@@ -65,6 +71,7 @@ const SidebarItem = ({ item, className }: SidebarItemProps) => {
           onClick={() => {
             setActivePath(item.path)
             setShowLoading(true)
+            setSidebarOpen(false)
           }}
         >
           {item.method && (
