@@ -363,6 +363,11 @@ module.exports = {
           items: [
             {
               type: "doc",
+              id: "troubleshooting/eaddrinuse",
+              label: "EADDRINUSE Error",
+            },
+            {
+              type: "doc",
               id: "troubleshooting/database-error",
               label: "Database SASL Error",
             },
@@ -402,6 +407,11 @@ module.exports = {
               type: "doc",
               id: "troubleshooting/signing-in-to-admin",
               label: "Signing in to the Admin Dashboard",
+            },
+            {
+              type: "doc",
+              id: "troubleshooting/custom-hooks-error",
+              label: "Custom Hooks Error",
             },
           ],
         },
