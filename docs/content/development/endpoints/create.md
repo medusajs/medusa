@@ -169,7 +169,10 @@ Then, add the middleware to your route:
 
 ```ts
 router.options("/store/hello", cors(corsOptions))
-router.get("/store/hello", cors(corsOptions), authenticateCustomer(), 
+router.get(
+  "/store/hello",
+  cors(corsOptions),
+  authenticateCustomer(), 
   async (req, res) => {
     if (req.user) {
       // user is logged in
