@@ -4,16 +4,19 @@ import {
   LoadStrategy,
   RequiredEntityData,
 } from "@mikro-orm/core"
-import { Product, ProductType } from "@models"
+import { ProductType } from "@models"
 import {
   Context,
-  DAL,
   CreateProductTypeDTO,
-  UpsertProductTypeDTO,
+  DAL,
   UpdateProductTypeDTO,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext, MedusaError } from "@medusajs/utils"
+import {
+  InjectTransactionManager,
+  MedusaContext,
+  MedusaError,
+} from "@medusajs/utils"
 
 import { BaseRepository } from "./base"
 
@@ -30,7 +33,7 @@ export class ProductTypeRepository extends BaseRepository {
     findOptions: DAL.FindOptions<ProductType> = { where: {} },
     context: Context = {}
   ): Promise<ProductType[]> {
-    const manager = this.getActiveManager(context)
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -50,7 +53,7 @@ export class ProductTypeRepository extends BaseRepository {
     findOptions: DAL.FindOptions<ProductType> = { where: {} },
     context: Context = {}
   ): Promise<[ProductType[], number]> {
-    const manager = this.getActiveManager(context)
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -135,7 +138,7 @@ export class ProductTypeRepository extends BaseRepository {
     @MedusaContext()
     context: Context = {}
   ): Promise<ProductType[]> {
-    const manager = this.getActiveManager(context)
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const productTypes = data.map((typeData) => {
       return manager.create(ProductType, typeData)
@@ -152,7 +155,7 @@ export class ProductTypeRepository extends BaseRepository {
     @MedusaContext()
     context: Context = {}
   ): Promise<ProductType[]> {
-    const manager = this.getActiveManager(context)
+    const manager = this.getActiveManager<SqlEntityManager>(context)
     const typeIds = data.map((typeData) => typeData.id)
     const existingTypes = await this.find(
       {

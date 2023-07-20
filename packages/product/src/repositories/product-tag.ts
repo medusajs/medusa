@@ -4,17 +4,21 @@ import {
   LoadStrategy,
   RequiredEntityData,
 } from "@mikro-orm/core"
-import { Product, ProductTag } from "@models"
+import { ProductTag } from "@models"
 import {
   Context,
   CreateProductTagDTO,
+  DAL,
   UpdateProductTagDTO,
   UpsertProductTagDTO,
-  DAL,
 } from "@medusajs/types"
 import { BaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext, MedusaError } from "@medusajs/utils"
+import {
+  InjectTransactionManager,
+  MedusaContext,
+  MedusaError,
+} from "@medusajs/utils"
 
 export class ProductTagRepository extends BaseRepository {
   protected readonly manager_: SqlEntityManager
@@ -29,7 +33,7 @@ export class ProductTagRepository extends BaseRepository {
     findOptions: DAL.FindOptions<ProductTag> = { where: {} },
     context: Context = {}
   ): Promise<ProductTag[]> {
-    const manager = this.getActiveManager(context)
+    const manager = this.getActiveManager<SqlEntityManager>(context)
     const findOptions_ = { ...findOptions }
 
     findOptions_.options ??= {}
@@ -49,7 +53,7 @@ export class ProductTagRepository extends BaseRepository {
     findOptions: DAL.FindOptions<ProductTag> = { where: {} },
     context: Context = {}
   ): Promise<[ProductTag[], number]> {
-    const manager = this.getActiveManager(context)
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -71,7 +75,7 @@ export class ProductTagRepository extends BaseRepository {
     @MedusaContext()
     context: Context = {}
   ): Promise<ProductTag[]> {
-    const manager = this.getActiveManager(context)
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const productTags = data.map((tagData) => {
       return manager.create(ProductTag, tagData)
@@ -88,7 +92,7 @@ export class ProductTagRepository extends BaseRepository {
     @MedusaContext()
     context: Context = {}
   ): Promise<ProductTag[]> {
-    const manager = this.getActiveManager(context)
+    const manager = this.getActiveManager<SqlEntityManager>(context)
     const tagIds = data.map((tagData) => tagData.id)
     const existingTags = await this.find(
       {
@@ -178,12 +182,8 @@ export class ProductTagRepository extends BaseRepository {
     @MedusaContext()
     context: Context = {}
   ): Promise<void> {
-    const manager = this.getActiveManager(context)
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    await manager.nativeDelete(
-      ProductTag,
-      { id: { $in: ids } },
-      {}
-    )
+    await manager.nativeDelete(ProductTag, { id: { $in: ids } }, {})
   }
 }

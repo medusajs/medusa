@@ -22,8 +22,7 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
     findOptions: DAL.FindOptions<ProductOption> = { where: {} },
     context: Context = {}
   ): Promise<ProductOption[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -43,8 +42,7 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
     findOptions: DAL.FindOptions<ProductOption> = { where: {} },
     context: Context = {}
   ): Promise<[ProductOption[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}

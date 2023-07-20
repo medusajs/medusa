@@ -1,20 +1,15 @@
-import { Product, ProductCollection } from "@models"
+import { ProductCollection } from "@models"
 import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import {
-  Context,
-  DAL,
-  FindConfig,
-  ProductTypes,
-} from "@medusajs/types"
+import { Context, DAL, ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
-  MedusaError,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
 } from "@medusajs/utils"
 
 import { BaseRepository } from "./base"
@@ -89,7 +84,7 @@ export class ProductCollectionRepository extends BaseRepository {
     @MedusaContext()
     context: Context = {}
   ): Promise<ProductCollection[]> {
-    const manager = this.getActiveManager(context)
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const productCollections = data.map((collectionData) => {
       return manager.create(ProductCollection, collectionData)
@@ -106,7 +101,7 @@ export class ProductCollectionRepository extends BaseRepository {
     @MedusaContext()
     context: Context = {}
   ): Promise<ProductCollection[]> {
-    const manager = this.getActiveManager(context)
+    const manager = this.getActiveManager<SqlEntityManager>(context)
     const collectionIds = data.map((collectionData) => collectionData.id)
     const existingCollections = await this.find(
       {
@@ -120,7 +115,10 @@ export class ProductCollectionRepository extends BaseRepository {
     )
 
     const existingCollectionsMap = new Map(
-      existingCollections.map<[string, ProductCollection]>((collection) => [collection.id, collection])
+      existingCollections.map<[string, ProductCollection]>((collection) => [
+        collection.id,
+        collection,
+      ])
     )
 
     const productCollections = data.map((collectionData) => {

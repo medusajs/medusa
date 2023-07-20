@@ -8,18 +8,18 @@ import { Context } from "../shared-context"
  * ORM directly and allows to switch to another ORM without changing the business logic.
  */
 export interface RepositoryService<T = any> {
-  transaction(
-    task: (transactionManager: unknown) => Promise<any>,
+  transaction<TManager = unknown>(
+    task: (transactionManager: TManager) => Promise<any>,
     context?: {
       isolationLevel?: string
-      transaction?: unknown
+      transaction?: TManager
       enableNestedTransactions?: boolean
     }
   ): Promise<any>
 
-  getFreshManager(): unknown
+  getFreshManager<TManager = unknown>(): TManager
 
-  getActiveManager(): unknown
+  getActiveManager<TManager = unknown>(): TManager
 
   serialize<TData extends object, TResult extends object, TOptions = any>(
     data: TData,

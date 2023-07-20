@@ -24,8 +24,7 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
     transformOptions: ProductCategoryTransformOptions = {},
     context: Context = {}
   ): Promise<ProductCategory[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     const { includeDescendantsTree } = transformOptions
@@ -65,8 +64,7 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
     findOptions: DAL.FindOptions<ProductCategory> = { where: {} },
     context: Context = {}
   ): Promise<ProductCategory[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     for (let productCategory of productCategories) {
       const whereOptions = {
@@ -112,8 +110,7 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
     transformOptions: ProductCategoryTransformOptions = {},
     context: Context = {}
   ): Promise<[ProductCategory[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     const { includeDescendantsTree } = transformOptions

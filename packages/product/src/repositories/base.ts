@@ -9,16 +9,16 @@ import { serialize } from "@mikro-orm/core"
 
 // TODO: Should we create a mikro orm specific package for this and the soft deletable decorator util?
 
-async function transactionWrapper(
+async function transactionWrapper<TManager = unknown>(
   this: any,
-  task: (transactionManager: unknown) => Promise<any>,
+  task: (transactionManager: TManager) => Promise<any>,
   {
     transaction,
     isolationLevel,
     enableNestedTransactions = false,
   }: {
     isolationLevel?: string
-    transaction?: unknown
+    transaction?: TManager
     enableNestedTransactions?: boolean
   } = {}
 ): Promise<any> {
@@ -106,19 +106,19 @@ export abstract class AbstractBaseRepository<T = any>
     this.manager_ = manager
   }
 
-  getFreshManager() {
-    return this.manager_.fork()
+  getFreshManager<TManager = unknown>(): TManager {
+    return this.manager_.fork() as unknown as TManager
   }
 
-  getActiveManager(
+  getActiveManager<TManager = unknown>(
     @MedusaContext()
     { transactionManager, manager }: Context = {}
-  ) {
-    return transactionManager ?? manager ?? this.manager_
+  ): TManager {
+    return (transactionManager ?? manager ?? this.manager_) as TManager
   }
 
-  async transaction(
-    task: (transactionManager: unknown) => Promise<any>,
+  async transaction<TManager = unknown>(
+    task: (transactionManager: TManager) => Promise<any>,
     {
       transaction,
       isolationLevel,
@@ -126,7 +126,7 @@ export abstract class AbstractBaseRepository<T = any>
     }: {
       isolationLevel?: string
       enableNestedTransactions?: boolean
-      transaction?: unknown
+      transaction?: TManager
     } = {}
   ): Promise<any> {
     return await transactionWrapper.apply(this, arguments)

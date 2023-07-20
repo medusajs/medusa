@@ -23,8 +23,7 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     findOptions: DAL.FindOptions<ProductVariant> = { where: {} },
     context: Context = {}
   ): Promise<ProductVariant[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -44,8 +43,7 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     findOptions: DAL.FindOptions<ProductVariant> = { where: {} },
     context: Context = {}
   ): Promise<[ProductVariant[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
