@@ -1,17 +1,17 @@
 const path = require("path")
 const { ShippingProfile } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
+const setupServer = require("../../../environment-helpers/setup-server")
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
-const shippingOptionSeeder = require("../../helpers/shipping-option-seeder")
+  require("../../../environment-helpers/start-server-with-environment").default
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const shippingOptionSeeder = require("../../../helpers/shipping-option-seeder")
 const {
   simpleShippingOptionFactory,
   simpleRegionFactory,
-} = require("../../factories")
+} = require("../../../factories")
 
 const adminReqConfig = {
   headers: {

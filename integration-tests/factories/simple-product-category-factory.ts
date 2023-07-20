@@ -8,5 +8,5 @@ export const simpleProductCategoryFactory = async (
   const manager = dataSource.manager
   const productCategory = manager.create(ProductCategory, data)
 
-  return await manager.save(productCategory)
+  return (await manager.save(productCategory)) as ProductCategory
 }

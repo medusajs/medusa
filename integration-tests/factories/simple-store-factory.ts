@@ -1,6 +1,6 @@
 import { SalesChannel, Store } from "@medusajs/medusa"
 import faker from "faker"
-import { DataSource, Not, IsNull } from "typeorm"
+import { DataSource, IsNull, Not } from "typeorm"
 
 export type StoreFactoryData = {
   swap_link_template?: string
@@ -27,12 +27,16 @@ export const simpleStoreFactory = async (
 
   await manager.insert(SalesChannel, {
     id: "test-channel",
-    name: "Default"
+    name: "Default",
   })
 
   const storeToSave = await manager.save(store)
 
-  await manager.query(`update store set default_sales_channel_id = 'test-channel' where id = '${storeToSave!.id}'`)
+  await manager.query(
+    `update store set default_sales_channel_id = 'test-channel' where id = '${
+      storeToSave!.id
+    }'`
+  )
 
   return storeToSave!
 }
