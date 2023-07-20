@@ -9,7 +9,7 @@ export enum Modules {
   STOCK_LOCATION = "stockLocationService",
   INVENTORY = "inventoryService",
   CACHE = "cacheService",
-  PRODUCT = "productModuleService",
+  PRODUCT = "productService",
 }
 
 export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
@@ -33,6 +33,7 @@ export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
     label: "StockLocationService",
     isRequired: false,
     canOverride: true,
+    isQueryable: true,
     dependencies: ["eventBusService"],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
@@ -46,6 +47,7 @@ export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
     label: "InventoryService",
     isRequired: false,
     canOverride: true,
+    isQueryable: true,
     dependencies: ["eventBusService"],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
@@ -66,11 +68,12 @@ export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
   },
   [Modules.PRODUCT]: {
     key: Modules.PRODUCT,
-    registrationName: Modules.PRODUCT,
+    registrationName: "productModuleService",
     defaultPackage: false,
     label: "ProductModuleService",
     isRequired: false,
     canOverride: true,
+    isQueryable: true,
     dependencies: [],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.EXTERNAL,

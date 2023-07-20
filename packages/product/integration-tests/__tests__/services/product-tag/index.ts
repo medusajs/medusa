@@ -1,12 +1,12 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-import { ProductTagService } from "@services"
-import { ProductTagRepository } from "@repositories"
 import { Product } from "@models"
+import { ProductTagRepository } from "@repositories"
+import { ProductTagService } from "@services"
 
-import { TestDatabase } from "../../../utils"
-import { createProductAndTags } from "../../../__fixtures__/product"
 import { ProductTypes } from "@medusajs/types"
+import { createProductAndTags } from "../../../__fixtures__/product"
+import { TestDatabase } from "../../../utils"
 
 jest.setTimeout(30000)
 
