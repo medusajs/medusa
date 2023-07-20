@@ -25,8 +25,8 @@ export const exportWorkflow = (
     run: (args: FlowRunOptions) => Promise<DistributedTransaction>
   } => {
     if (!container) {
-      container = [...MedusaModule.getLoadedModules().entries()].map(
-        ([_, mod]) => mod
+      container = MedusaModule.getLoadedModules().map(
+        (mod) => Object.values(mod)[0]
       )
     }
 

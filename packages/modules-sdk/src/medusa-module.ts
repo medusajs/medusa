@@ -26,7 +26,10 @@ const logger: any = {
 
 declare global {
   interface MedusaModule {
-    getLoadedModules(): Map<string, any>
+    getLoadedModules(
+      aliases?: Map<string, string>
+    ): { [key: string]: LoadedModule }[]
+    getModuleInstance(moduleKey: string, alias?: string): LoadedModule
   }
 }
 
@@ -42,8 +45,16 @@ export class MedusaModule {
   private static modules_: Map<string, ModuleAlias[]> = new Map()
   private static loading_: Map<string, Promise<any>> = new Map()
 
-  public static getLoadedModules(): Map<string, LoadedModule> {
-    return MedusaModule.instances_
+  public static getLoadedModules(
+    aliases?: Map<string, string>
+  ): { [key: string]: LoadedModule }[] {
+    return [...MedusaModule.modules_.entries()].map(([key]) => {
+      if (aliases?.has(key)) {
+        return MedusaModule.getModuleInstance(key, aliases.get(key))
+      }
+
+      return MedusaModule.getModuleInstance(key)
+    })
   }
 
   public static clearInstances(): void {
