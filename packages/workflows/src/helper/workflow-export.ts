@@ -1,9 +1,4 @@
-import {
-  Context,
-  JoinerServiceConfig,
-  MedusaContainer,
-  ModuleDefinition,
-} from "@medusajs/types"
+import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
   DistributedTransaction,
   LocalWorkflow,
@@ -14,31 +9,32 @@ import { InputAlias, Workflows } from "../definitions"
 import { MedusaModule } from "@medusajs/modules-sdk"
 import { ulid } from "ulid"
 
+type FlowRunOptions = {
+  input?: unknown
+  context?: Context
+  onFail?: (errorMessage: string) => void
+}
+
 export const exportWorkflow = (
   workflowId: Workflows,
   inputAlias?: InputAlias | string
 ) => {
   return (
-    container?:
-      | (any & {
-          __joinerConfig: JoinerServiceConfig
-          __definition: ModuleDefinition
-        })[]
-      | MedusaContainer
+    container?: LoadedModule[] | MedusaContainer
   ): LocalWorkflow & {
-    run: (input?: any, context?: Context) => Promise<DistributedTransaction>
+    run: (args: FlowRunOptions) => Promise<DistributedTransaction>
   } => {
     if (!container) {
       container = [...MedusaModule.getLoadedModules().entries()].map(
-        (_, mod) => mod
+        ([_, mod]) => mod
       )
     }
 
     const flow = new LocalWorkflow(workflowId, container) as LocalWorkflow & {
-      run: (input?: any, context?: Context) => Promise<DistributedTransaction>
+      run: (args: FlowRunOptions) => Promise<DistributedTransaction>
     }
 
-    flow.run = async (input?, context?: Context) => {
+    flow.run = async ({ input, context, onFail }: FlowRunOptions) => {
       const transaction = await flow.begin(
         context?.transactionId ?? ulid(),
         inputAlias ? { [inputAlias]: input } : input,
@@ -47,12 +43,16 @@ export const exportWorkflow = (
 
       const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
       if (failedStatus.includes(transaction.getState())) {
-        throw new Error(
-          transaction
-            .getErrors()
-            .map((err) => err.error?.message)
-            .join("\n")
-        )
+        const errorMessage = transaction
+          .getErrors()
+          .map((err) => err.error?.message)
+          .join("\n")
+
+        if (onFail) {
+          await onFail(errorMessage)
+        } else {
+          throw new Error(errorMessage)
+        }
       }
 
       return transaction

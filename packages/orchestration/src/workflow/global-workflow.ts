@@ -1,9 +1,4 @@
-import {
-  Context,
-  JoinerServiceConfig,
-  MedusaContainer,
-  ModuleDefinition,
-} from "@medusajs/types"
+import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import { WorkflowDefinition, WorkflowManager } from "./workflow-manager"
 
 import { DistributedTransaction } from "../transaction"
@@ -16,12 +11,7 @@ export class GlobalWorkflow extends WorkflowManager {
   protected context: Context
 
   constructor(
-    modulesLoaded?:
-      | (any & {
-          __joinerConfig: JoinerServiceConfig
-          __definition: ModuleDefinition
-        })[]
-      | MedusaContainer,
+    modulesLoaded?: LoadedModule[] | MedusaContainer,
     context?: Context
   ) {
     super()
