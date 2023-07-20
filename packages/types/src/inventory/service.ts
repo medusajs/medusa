@@ -13,9 +13,11 @@ import {
 } from "./common"
 
 import { FindConfig } from "../common"
+import { JoinerServiceConfig } from "../joiner"
 import { SharedContext } from ".."
 
 export interface IInventoryService {
+  __joinerConfig(): JoinerServiceConfig
   listInventoryItems(
     selector: FilterableInventoryItemProps,
     config?: FindConfig<InventoryItemDTO>,
@@ -72,12 +74,12 @@ export interface IInventoryService {
   ): Promise<InventoryItemDTO[]>
 
   createInventoryLevel(
-    data: CreateInventoryLevelInput ,
+    data: CreateInventoryLevelInput,
     context?: SharedContext
   ): Promise<InventoryLevelDTO>
-  
+
   createInventoryLevels(
-    data:  CreateInventoryLevelInput[],
+    data: CreateInventoryLevelInput[],
     context?: SharedContext
   ): Promise<InventoryLevelDTO[]>
 
