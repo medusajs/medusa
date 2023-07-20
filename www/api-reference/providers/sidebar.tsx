@@ -53,6 +53,7 @@ type SidebarContextType = {
   ) => SidebarItemType | undefined
   sidebarOpen: boolean
   setSidebarOpen: (value: boolean) => void
+  isSidebarEmpty: () => boolean
 }
 
 const SidebarContext = createContext<SidebarContextType | null>(null)
@@ -219,6 +220,12 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
     [activePath]
   )
 
+  const isSidebarEmpty = useCallback((): boolean => {
+    return Object.values(items).every(
+      (sectionItems) => sectionItems.length === 0
+    )
+  }, [items])
+
   const init = () => {
     const currentPath = location.hash.replace("#", "")
     if (currentPath) {
@@ -241,6 +248,7 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
         findItemInSection,
         sidebarOpen,
         setSidebarOpen,
+        isSidebarEmpty,
       }}
     >
       {children}

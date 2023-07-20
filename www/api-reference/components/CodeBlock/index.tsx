@@ -93,7 +93,7 @@ const CodeBlock = ({
           </pre>
         )}
       </Highlight>
-      <div className={clsx("absolute right-1 top-1 z-50 flex gap-1")}>
+      <div className={clsx("absolute right-1 top-1 z-50 hidden gap-1 md:flex")}>
         <CopyButton text={source} tooltipClassName="font-base">
           <IconCopy />
         </CopyButton>

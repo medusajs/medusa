@@ -5,12 +5,16 @@ import NavbarIconButton from "../IconButton"
 import { useSidebar } from "@/providers/sidebar"
 
 const NavbarMenuButton = () => {
-  const { sidebarOpen, setSidebarOpen } = useSidebar()
+  const { items, sidebarOpen, setSidebarOpen } = useSidebar()
 
   return (
     <NavbarIconButton
       className="mr-1 lg:hidden"
-      onClick={() => setSidebarOpen(!sidebarOpen)}
+      onClick={() => {
+        if (items.top.length !== 0 || items.bottom.length !== 0) {
+          setSidebarOpen(!sidebarOpen)
+        }
+      }}
     >
       <IconBarsThree />
     </NavbarIconButton>
