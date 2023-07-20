@@ -25755,6 +25755,18 @@
             "items": {
               "$ref": "#/components/schemas/Notification"
             }
+          },
+          "count": {
+            "type": "integer",
+            "description": "The total number of notifications"
+          },
+          "offset": {
+            "type": "integer",
+            "description": "The number of notifications skipped before these notifications"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "The number of notifications per page"
           }
         }
       },
