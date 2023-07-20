@@ -42,6 +42,9 @@ const TagOperation = ({
     onChange: (changedInView) => {
       if (changedInView) {
         if (!show) {
+          if (loading) {
+            removeLoading()
+          }
           setShow(true)
         }
         // can't use next router as it doesn't support
@@ -65,6 +68,7 @@ const TagOperation = ({
 
   useEffect(() => {
     const enableShow = () => {
+      removeLoading()
       setTimeout(() => {
         setShow(true)
       }, 300)
@@ -82,12 +86,6 @@ const TagOperation = ({
       }
     }
   }, [nodeRef, path])
-
-  useEffect(() => {
-    if (show && loading) {
-      removeLoading()
-    }
-  }, [show])
 
   return (
     <div

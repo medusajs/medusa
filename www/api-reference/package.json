@@ -43,11 +43,11 @@
     "swr": "^2.1.5",
     "tailwindcss": "3.3.2",
     "typescript": "5.0.4",
-    "yaml": "^2.3.1"
+    "yaml": "^2.3.1",
+    "eslint-config-google": "^0.14.0"
   },
   "devDependencies": {
     "@types/mapbox__rehype-prism": "^0.8.0",
-    "@types/react-transition-group": "^4.4.6",
-    "eslint-config-google": "^0.14.0"
+    "@types/react-transition-group": "^4.4.6"
   }
 }

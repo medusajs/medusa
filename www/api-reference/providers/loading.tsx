@@ -14,17 +14,19 @@ type LoadingProviderProps = {
 
 const LoadingProvider = ({
   children,
-  initialLoading = false
+  initialLoading = false,
 }: LoadingProviderProps) => {
   const [loading, setLoading] = useState<boolean>(initialLoading)
 
   const removeLoading = () => setLoading(false)
 
   return (
-    <LoadingContext.Provider value={{
-      loading,
-      removeLoading
-    }}>
+    <LoadingContext.Provider
+      value={{
+        loading,
+        removeLoading,
+      }}
+    >
       {children}
     </LoadingContext.Provider>
   )
