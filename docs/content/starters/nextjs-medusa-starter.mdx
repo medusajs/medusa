@@ -113,6 +113,16 @@ Your Next.js Starter Template is now running at `localhost:8000`
 
 ## Development Notes
 
+### Changing Medusa Backend URL
+
+By default, the Medusa backend runs at `http://localhost:9000`. This value is defined in your Next.js starter template under the environment variable `NEXT_PUBLIC_MEDUSA_BACKEND_URL`.
+
+If you need to change the URL of your Medusa backend because you changed the backend's default port or because you deployed your backend, change the value of `NEXT_PUBLIC_MEDUSA_BACKEND_URL` (typically in `.env.local`) to your backend URL. For example:
+
+```bash
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://localhost:9001
+```
+
 ### Toggle Search Engine Feature
 
 The Next.js Starter Template by default is compatible with MeiliSearch.
