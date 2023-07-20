@@ -163,3 +163,6 @@ export class WorkflowManager {
     }
   }
 }
+
+global.WorkflowManager ??= WorkflowManager
+exports.WorkflowManager = global.WorkflowManager
