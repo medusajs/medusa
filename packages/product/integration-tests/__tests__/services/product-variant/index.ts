@@ -280,18 +280,15 @@ describe("ProductVariant Service", () => {
         expect.objectContaining({
           id: productVariantTestOne,
           title: "variant 1",
-        }),
+        })
       )
     })
 
     it("should return requested attributes when requested through config", async () => {
-      const result = await service.retrieve(
-        variantOne.id,
-        {
-          select: ["id", "title", "product.title"] as any,
-          relations: ["product"],
-        }
-      )
+      const result = await service.retrieve(variantOne.id, {
+        select: ["id", "title", "product.title"] as any,
+        relations: ["product"],
+      })
 
       expect(result).toEqual(
         expect.objectContaining({
@@ -302,7 +299,7 @@ describe("ProductVariant Service", () => {
             id: "product-1",
             title: "product 1",
           }),
-        }),
+        })
       )
     })
 
@@ -315,7 +312,9 @@ describe("ProductVariant Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual("ProductVariant with id: does-not-exist was not found")
+      expect(error.message).toEqual(
+        "ProductVariant with id: does-not-exist was not found"
+      )
     })
 
     it("should throw an error when an id is not provided", async () => {
