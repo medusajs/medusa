@@ -1,11 +1,11 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 import { ProductCollection } from "@models"
-import { ProductCollectionService } from "@services"
 import { ProductCollectionRepository } from "@repositories"
+import { ProductCollectionService } from "@services"
 
-import { TestDatabase } from "../../../utils"
 import { createCollections } from "../../../__fixtures__/product"
+import { TestDatabase } from "../../../utils"
 
 jest.setTimeout(30000)
 

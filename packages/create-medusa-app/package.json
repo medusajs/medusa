@@ -1,6 +1,6 @@
 {
   "name": "create-medusa-app",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Create a Medusa project using a single command.",
   "type": "module",
   "exports": "./dist/index.js",

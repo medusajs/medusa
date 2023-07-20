@@ -23,18 +23,20 @@ import {
   DAL,
   FindConfig,
   InternalModuleDeclaration,
+  JoinerServiceConfig,
   ProductTypes,
 } from "@medusajs/types"
 import ProductImageService from "./product-image"
 import {
-  InjectTransactionManager,
   InjectManager,
+  InjectTransactionManager,
   isDefined,
   isString,
   kebabCase,
   MedusaContext,
 } from "@medusajs/utils"
 import { shouldForceTransaction } from "../utils"
+import { joinerConfig } from "./../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -97,11 +99,15 @@ export default class ProductModuleService<
     this.productOptionService_ = productOptionService
   }
 
+  __joinerConfig(): JoinerServiceConfig {
+    return joinerConfig
+  }
+
   @InjectManager("baseRepository_")
   async list(
     filters: ProductTypes.FilterableProductProps = {},
     config: FindConfig<ProductTypes.ProductDTO> = {},
-    @MedusaContext() sharedContext: Context = {},
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.productService_.list(
       filters,
@@ -115,7 +121,7 @@ export default class ProductModuleService<
   @InjectManager("baseRepository_")
   async retrieve(
     productId: string,
-    @MedusaContext() sharedContext: Context = {},
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO> {
     const product = await this.productService_.retrieve(
       productId,
@@ -129,7 +135,7 @@ export default class ProductModuleService<
   async listAndCount(
     filters: ProductTypes.FilterableProductProps = {},
     config: FindConfig<ProductTypes.ProductDTO> = {},
-    @MedusaContext() sharedContext: Context = {},
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[ProductTypes.ProductDTO[], number]> {
     const [products, count] = await this.productService_.listAndCount(
       filters,
@@ -144,7 +150,7 @@ export default class ProductModuleService<
   async retrieveVariant(
     productVariantId: string,
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
-    @MedusaContext() sharedContext: Context = {},
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductVariantDTO> {
     const productVariant = await this.productVariantService_.retrieve(
       productVariantId,
@@ -159,7 +165,7 @@ export default class ProductModuleService<
   async listVariants(
     filters: ProductTypes.FilterableProductVariantProps = {},
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
-    @MedusaContext() sharedContext: Context = {},
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductVariantDTO[]> {
     const variants = await this.productVariantService_.list(
       filters,
@@ -174,7 +180,7 @@ export default class ProductModuleService<
   async listAndCountVariants(
     filters: ProductTypes.FilterableProductVariantProps = {},
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
-    @MedusaContext() sharedContext: Context = {},
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[ProductTypes.ProductVariantDTO[], number]> {
     const [variants, count] = await this.productVariantService_.listAndCount(
       filters,
@@ -189,7 +195,7 @@ export default class ProductModuleService<
   async retrieveTag(
     tagId: string,
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
-    @MedusaContext() sharedContext: Context = {},
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductTagDTO> {
     const productTag = await this.productTagService_.retrieve(
       tagId,
@@ -204,7 +210,7 @@ export default class ProductModuleService<
   async listTags(
     filters: ProductTypes.FilterableProductTagProps = {},
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
-    @MedusaContext() sharedContext: Context = {},
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductTagDTO[]> {
     const tags = await this.productTagService_.list(
       filters,
@@ -419,7 +425,10 @@ export default class ProductModuleService<
     productCollectionIds: string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await this.productCollectionService_.delete(productCollectionIds, sharedContext)
+    await this.productCollectionService_.delete(
+      productCollectionIds,
+      sharedContext
+    )
   }
 
   @InjectManager("baseRepository_")

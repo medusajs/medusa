@@ -1,4 +1,3 @@
-import { ProductCollection } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
   ModulesSdkUtils,
@@ -9,6 +8,8 @@ import {
 
 import { shouldForceTransaction } from "../utils"
 import { ProductCollectionRepository } from "../repositories"
+
+import { ProductCollection } from "@models"
 
 type InjectedDependencies = {
   productCollectionRepository: DAL.RepositoryService

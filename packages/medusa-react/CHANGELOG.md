@@ -1,5 +1,13 @@
 # Change Log
 
+## 9.0.3
+
+### Patch Changes
+
+- [#4467](https://github.com/medusajs/medusa/pull/4467) [`3e6cee284`](https://github.com/medusajs/medusa/commit/3e6cee28469b5ce30687de5e5096266244f6b3a9) Thanks [@josetr](https://github.com/josetr)! - fix(medusa-react): add missing adminInventoryItemsKeys.lists() to inventory hooks
+
+- [#4538](https://github.com/medusajs/medusa/pull/4538) [`e3a856521`](https://github.com/medusajs/medusa/commit/e3a85652132c110e4dd81ae1120414121fbab0fd) Thanks [@josetr](https://github.com/josetr)! - fix(medusa-react): fix admin user mutation hooks invalidating wrong keys
+
 ## 9.0.2
 
 ### Patch Changes
