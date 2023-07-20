@@ -114,15 +114,7 @@ export abstract class AbstractBaseRepository<T = any>
     @MedusaContext()
     { transactionManager, manager }: Context = {}
   ) {
-    if (transactionManager) {
-      return transactionManager as SqlEntityManager
-    }
-
-    if (manager) {
-      return manager as SqlEntityManager
-    }
-
-    return this.manager_ as SqlEntityManager
+    return transactionManager ?? manager ?? this.manager_
   }
 
   async transaction(
