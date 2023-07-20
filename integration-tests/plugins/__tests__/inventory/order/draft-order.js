@@ -1,29 +1,23 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const { setPort, useApi } = require("../../../../helpers/use-api")
+const {
+  bootstrapApp,
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const { setPort, useApi } = require("../../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
-const cartSeeder = require("../../../helpers/cart-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 const {
   simpleProductFactory,
   simpleCustomerFactory,
-} = require("../../../../api/factories")
-const { simpleSalesChannelFactory } = require("../../../../api/factories")
+} = require("../../../../factories")
 const {
-  simpleOrderFactory,
   simpleRegionFactory,
-  simpleCartFactory,
   simpleShippingOptionFactory,
-} = require("../../../factories")
-const {
-  simpleDiscountFactory,
-} = require("../../../factories/simple-discount-factory")
-const draftOrderSeeder = require("../../../../api/helpers/draft-order-seeder")
+} = require("../../../../factories")
 const {
   simpleAddressFactory,
-} = require("../../../factories/simple-address-factory")
+} = require("../../../../factories/simple-address-factory")
 
 jest.setTimeout(30000)
 
