@@ -1,8 +1,6 @@
 import { Context, SharedContext } from "@medusajs/types"
 
-export function InjectManager(
-  managerProperty?: string
-): MethodDecorator {
+export function InjectManager(managerProperty?: string): MethodDecorator {
   return function (
     target: any,
     propertyKey: string | symbol,
@@ -19,9 +17,12 @@ export function InjectManager(
 
     descriptor.value = async function (...args: any[]) {
       const context: SharedContext | Context = args[argIndex] ?? {}
-      const resourceWithManager = await (!managerProperty ? this : this[managerProperty])
+      const resourceWithManager = await (!managerProperty
+        ? this
+        : this[managerProperty])
 
-      context.manager = context.manager ?? await resourceWithManager.manager_.fork()
+      context.manager =
+        context.manager ?? (await resourceWithManager.getFreshManager())
       args[argIndex] = context
 
       return originalMethod.apply(this, args)

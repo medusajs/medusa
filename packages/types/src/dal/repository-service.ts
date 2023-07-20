@@ -17,6 +17,10 @@ export interface RepositoryService<T = any> {
     }
   ): Promise<any>
 
+  getFreshManager(): unknown
+
+  getActiveManager(): unknown
+
   serialize<TData extends object, TResult extends object, TOptions = any>(
     data: TData,
     options?: TOptions

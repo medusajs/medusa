@@ -106,6 +106,25 @@ export abstract class AbstractBaseRepository<T = any>
     this.manager_ = manager
   }
 
+  getFreshManager() {
+    return this.manager_.fork()
+  }
+
+  getActiveManager(
+    @MedusaContext()
+    { transactionManager, manager }: Context = {}
+  ) {
+    if (transactionManager) {
+      return transactionManager as SqlEntityManager
+    }
+
+    if (manager) {
+      return manager as SqlEntityManager
+    }
+
+    return this.manager_ as SqlEntityManager
+  }
+
   async transaction(
     task: (transactionManager: unknown) => Promise<any>,
     {
@@ -212,21 +231,6 @@ export class BaseRepository extends AbstractBaseRepository {
   constructor({ manager }) {
     // @ts-ignore
     super(...arguments)
-  }
-
-  protected getActiveManager(
-    @MedusaContext()
-    { transactionManager, manager }: Context = {}
-  ) {
-    if (transactionManager) {
-      return transactionManager as SqlEntityManager
-    }
-
-    if (manager) {
-      return manager as SqlEntityManager
-    }
-
-    return this.manager_ as SqlEntityManager
   }
 
   serialize<
