@@ -11,8 +11,10 @@ export type ProductVariantFactoryData = {
   id?: string
   is_giftcard?: boolean
   sku?: string
+  manage_inventory?: boolean
   inventory_quantity?: number
   title?: string
+  allow_backorder?: boolean
   options?: { option_id: string; value: string }[]
   prices?: { currency: string; amount: number; region_id?: string }[]
 }
@@ -33,6 +35,11 @@ export const simpleProductVariantFactory = async (
     id,
     product_id: data.product_id,
     sku: data.sku,
+    allow_backorder: data.allow_backorder ?? false,
+    manage_inventory:
+      typeof data.manage_inventory !== "undefined"
+        ? data.manage_inventory
+        : true,
     inventory_quantity:
       typeof data.inventory_quantity !== "undefined"
         ? data.inventory_quantity
@@ -45,7 +52,7 @@ export const simpleProductVariantFactory = async (
   const options = data.options || [{ option_id: "test-option", value: "Large" }]
   for (const o of options) {
     await manager.insert(ProductOptionValue, {
-      id: `${variant.id}-${o.option_id ?? Math.random()}`,
+      id: `${o.value}-${o.option_id ?? Math.random()}`,
       value: o.value,
       variant_id: id,
       option_id: o.option_id,
