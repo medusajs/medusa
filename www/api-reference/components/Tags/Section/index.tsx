@@ -11,6 +11,7 @@ import type { SectionProps } from "../../Section"
 import type { MDXContentClientProps } from "../../MDXContent/Client"
 import TagPaths from "../Paths"
 import DividedLayout from "@/layouts/Divided"
+import LoadingProvider from "@/providers/loading"
 
 export type TagSectionProps = {
   tag: OpenAPIV3.TagObject
@@ -77,7 +78,11 @@ const TagSection = ({ tag }: TagSectionProps) => {
         }
         codeContent={<></>}
       />
-      {loadPaths && <TagPaths tag={tag} />}
+      {loadPaths && (
+        <LoadingProvider initialLoading={true}>
+          <TagPaths tag={tag} />
+        </LoadingProvider>
+      )}
     </div>
   )
 }

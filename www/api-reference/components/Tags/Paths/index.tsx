@@ -15,8 +15,8 @@ import getLinkWithBasePath from "@/utils/get-link-with-base-path"
 import clsx from "clsx"
 import { useBaseSpecs } from "@/providers/base-specs"
 import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
-import SpinnerLoading from "@/components/Loading/Spinner"
-import DividedLayout from "@/layouts/Divided"
+import { useLoading } from "@/providers/loading"
+import DividedLoading from "@/components/Loading/Divided"
 
 const TagOperation = dynamic<TagOperationProps>(
   async () => import("../Operation")
@@ -31,6 +31,7 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
   const { area } = useArea()
   const { items, addItems, findItemInSection } = useSidebar()
   const { baseSpecs } = useBaseSpecs()
+  const { loading } = useLoading()
   // if paths are already loaded since through
   // the expanded field, they're loaded directly
   // otherwise, they're loaded using the API endpoint
@@ -39,7 +40,7 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
     Object.hasOwn(baseSpecs.expandedTags, tagSlugName)
       ? baseSpecs.expandedTags[tagSlugName]
       : {}
-  const { data, isLoading } = useSWR<{
+  const { data } = useSWR<{
     paths: PathsObject
   }>(
     !Object.keys(paths).length
@@ -74,19 +75,8 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
 
   return (
     <div className={clsx("relative z-10 overflow-hidden", className)}>
-      {isLoading && (
-        <DividedLayout
-          mainContent={
-            <div className="flex min-h-screen w-full items-center justify-center">
-              <SpinnerLoading
-                iconProps={{
-                  className: "h-3 w-3",
-                }}
-              />
-            </div>
-          }
-          codeContent={<></>}
-        />
+      {loading && (
+        <DividedLoading className="absolute top-0 left-0 h-full w-full" />
       )}
       {Object.entries(paths).map(([endpointPath, operations], pathIndex) => (
         <div key={pathIndex}>

@@ -11,8 +11,7 @@ import { useSidebar } from "@/providers/sidebar"
 import type { TagOperationCodeSectionProps } from "./CodeSection"
 import TagsOperationDescriptionSection from "./DescriptionSection"
 import DividedLayout from "@/layouts/Divided"
-import DividedLoading from "@/components/Loading/Divided"
-import { CSSTransition } from "react-transition-group"
+import { useLoading } from "@/providers/loading"
 
 const TagOperationCodeSection = dynamic<TagOperationCodeSectionProps>(
   async () => import("./CodeSection")
@@ -35,6 +34,7 @@ const TagOperation = ({
   const [show, setShow] = useState(false)
   const path = getSectionId([...(operation.tags || []), operation.operationId])
   const nodeRef = useRef<Element | null>(null)
+  const { loading, removeLoading } = useLoading()
   // const nodeRef = useRef<HTMLDivElement>(null)
   const { ref } = useInView({
     threshold: 0.3,
@@ -83,20 +83,18 @@ const TagOperation = ({
     }
   }, [nodeRef, path])
 
+  useEffect(() => {
+    if (show && loading) {
+      removeLoading()
+    }
+  }, [show])
+
   return (
     <div
       className={clsx("relative min-h-screen w-full pt-[57px]")}
       id={path}
       ref={setRefs}
     >
-      <CSSTransition
-        in={!show}
-        classNames={{ exit: "animate-fadeOut" }}
-        timeout={100}
-        unmountOnExit
-      >
-        <DividedLoading className="absolute top-0 left-0 h-full w-full" />
-      </CSSTransition>
       <div
         className={clsx(
           "flex w-full justify-between gap-1 opacity-0",
