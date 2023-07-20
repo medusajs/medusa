@@ -6,10 +6,10 @@ When you run your backend you may run to an error similar to the following:
 
 ```bash
 code: 'EADDRINUSE',
-  errno: -48,
-  syscall: 'Listen',
-  address: '::',
-  port: 9000
+errno: -48,
+syscall: 'Listen',
+address: '::',
+port: 9000
 ```
 
 This means that there's another process running at port `9000`. You need to either:
