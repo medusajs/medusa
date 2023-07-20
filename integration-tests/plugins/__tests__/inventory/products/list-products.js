@@ -1,20 +1,17 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const { setPort, useApi } = require("../../../../helpers/use-api")
-
 const {
-  ProductVariantInventoryService,
-  ProductVariantService,
-} = require("@medusajs/medusa")
+  bootstrapApp,
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const { setPort, useApi } = require("../../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
-const { simpleProductFactory } = require("../../../factories")
-const { simpleSalesChannelFactory } = require("../../../../api/factories")
+const { simpleProductFactory } = require("../../../../factories")
+const { simpleSalesChannelFactory } = require("../../../../factories")
 
 const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
 
@@ -68,6 +65,7 @@ describe("Create Variant", () => {
         {
           id: productId,
           status: "published",
+          sales_channels: [],
           variants: [{ id: variantId }],
         },
         100
@@ -135,6 +133,7 @@ describe("Create Variant", () => {
           {
             id: `${productId}-1`,
             status: "published",
+            sales_channels: [],
             variants: [
               {
                 id: `${variantId}-1`,
@@ -150,6 +149,7 @@ describe("Create Variant", () => {
             id: `${productId}-2`,
             status: "published",
             variants: [{ id: `${variantId}-2`, manage_inventory: true }],
+            sales_channels: [],
           },
           102
         )
@@ -158,6 +158,7 @@ describe("Create Variant", () => {
           {
             id: `${productId}-3`,
             status: "published",
+            sales_channels: [],
             variants: [
               {
                 id: `${variantId}-3`,
@@ -180,6 +181,7 @@ describe("Create Variant", () => {
           {
             id: `${productId}-4`,
             status: "published",
+            sales_channels: [],
             variants: [
               {
                 id: `${variantId}-4`,

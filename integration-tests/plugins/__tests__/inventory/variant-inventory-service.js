@@ -1,11 +1,8 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const {
-  simpleProductVariantFactory,
-  simpleProductFactory,
-} = require("../../factories")
+const { bootstrapApp } = require("../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const { simpleProductFactory } = require("../../../factories")
 
 jest.setTimeout(50000)
 

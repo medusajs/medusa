@@ -57,9 +57,10 @@ export const simpleProductFactory = async (
   let sales_channels
   if (data.sales_channels) {
     sales_channels = await Promise.all(
-      data.sales_channels.map(
-        async (salesChannel) =>
-          await simpleSalesChannelFactory(dataSource, salesChannel)
+      data.sales_channels.map(async (salesChannel) =>
+        salesChannel
+          ? await simpleSalesChannelFactory(dataSource, salesChannel)
+          : null
       )
     )
   } else {
@@ -121,7 +122,7 @@ export const simpleProductFactory = async (
 
   toSave.sales_channels = sales_channels
 
-  await manager.save(toSave)
+  const product = await manager.save(toSave)
 
   const optionId = `${prodId}-option`
   const options = data.options || [{ id: optionId, title: "Size" }]
@@ -143,23 +144,20 @@ export const simpleProductFactory = async (
     },
   ]
 
-  for (const pv of variants) {
-    const factoryData = {
-      ...pv,
-      product_id: prodId,
-    }
-    if (typeof pv.options === "undefined") {
-      factoryData.options = [
-        { option_id: optionId, value: faker.commerce.productAdjective() },
-      ]
-    }
-    await simpleProductVariantFactory(dataSource, factoryData)
-  }
+  product.variants = await Promise.all(
+    variants.map(async (pv) => {
+      const factoryData = {
+        ...pv,
+        product_id: prodId,
+      }
+      if (typeof pv.options === "undefined") {
+        factoryData.options = [
+          { option_id: optionId, value: faker.commerce.productAdjective() },
+        ]
+      }
+      return await simpleProductVariantFactory(dataSource, factoryData)
+    })
+  )
 
-  return await manager.findOne(Product, {
-    where: {
-      id: prodId,
-    },
-    relations: { tags: true, variants: { prices: true } },
-  })
+  return product
 }

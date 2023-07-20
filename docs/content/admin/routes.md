@@ -291,11 +291,11 @@ export default CustomPage
 
 ## Querying and Mutating Data
 
-You might need to interact with the Medusa backend from your admin route. To do so, you can utilize the [Medusa React package](../medusa-react/overview.md). It contains a collection of queries and mutation built on `@tanstack/react-query` that lets you interact with the Medusa backend.
+You might need to interact with the Medusa backend from your admin route. To do so, you can utilize the [Medusa React package](../medusa-react/overview.mdx). It contains a collection of queries and mutation built on `@tanstack/react-query` that lets you interact with the Medusa backend.
 
 :::note
 
-Make sure to also install the Medusa React package first if you’re intending to use it, as explained in the [Medusa React guide](../medusa-react/overview.md).
+Make sure to also install the Medusa React package first if you’re intending to use it, as explained in the [Medusa React guide](../medusa-react/overview.mdx).
 
 :::
 
@@ -316,7 +316,7 @@ const CustomPage = () => {
 export default CustomPage
 ```
 
-You can also use `medusa-react` to interact with custom endpoints using the [createCustomAdminHooks utility function](../medusa-react/overview.md#custom-hooks).
+You can also use `medusa-react` to interact with custom endpoints using the [createCustomAdminHooks utility function](../medusa-react/overview.mdx#custom-hooks).
 
 ---
 

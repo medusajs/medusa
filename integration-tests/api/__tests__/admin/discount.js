@@ -6,15 +6,15 @@ const {
   CustomerGroup,
 } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
-const discountSeeder = require("../../helpers/discount-seeder")
-const { simpleProductFactory } = require("../../factories")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const discountSeeder = require("../../../helpers/discount-seeder")
+const { simpleProductFactory } = require("../../../factories")
 const {
   simpleDiscountFactory,
-} = require("../../factories/simple-discount-factory")
+} = require("../../../factories/simple-discount-factory")
 
 jest.setTimeout(30000)
 

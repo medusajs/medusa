@@ -2,6 +2,9 @@
 description: 'Learn how to install Medusa React in a React storefront. Medusa React is a React library that provides a set of utilities and hooks for interactive with the Medusa backend.'
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Medusa React
 
 [Medusa React](https://www.npmjs.com/package/medusa-react) is a React library that provides a set of utilities and hooks for interacting seamlessly with the Medusa backend. It can be used to build custom React-based storefronts or admin dashboards.
@@ -200,92 +203,269 @@ npm install medusa-react@beta @medusajs/medusa@beta
 
 :::
 
-Medusa React provides a utility function `createCustomAdminHooks` that allows developers to consume their admin custom endpoints using the same Medusa React methods and conventions. It returns custom mutation and query hooks that you can use to retrieve and manipulate data using your custom endpoints. This utility function is useful when customizing the admin with widgets.
+Medusa React provides three utility hooks that allows developers to consume their admin custom endpoints using the same Medusa React methods and conventions.
+
+#### useAdminCustomQuery
+
+The `useAdminCustomQuery` utility hook can be used to send a `GET` request to a custom endpoint in your Medusa backend and retrieve data. It's a generic function, so you can pass a type for the request and the response if you're using TypeScript in your development. The first type parameter is the type of the request body, and the second type parameter is the type of the expected response body:
 
 ```ts
-import { createCustomAdminHooks } from "medusa-react"
-
-const {
-  useAdminEntity,
-  useAdminEntities,
-  useAdminCreateMutation,
-  useAdminUpdateMutation,
-  useAdminDeleteMutation,
-} = createCustomAdminHooks(
-  `/vendors`, 
-  "vendors",
-  { product: true }
-)
+useAdminCustomQuery<RequestType, ResponseType>
 ```
 
-It accepts the following parameters:
+The hook accepts the following parameters:
 
-1. `path`: (required) the first parameter is a string that indicates the base path to the custom endpoint. For example, if you have custom endpoints that begin with `/admin/vendors`, the value of this parameter would be `vendors`. The `/admin` prefix will be added automatically.
-2. `queryKey`: (required) the second parameter is a string used to generate query keys for all `GET` hooks, which is used by Tanstack Query for caching. When a mutation related to this same key succeeds, the key will be automatically invalidated.
-3. `relatedDomains`: (optional) the third parameter is an object that can be used to specify domains related to this custom hook. This will ensure that Tanstack Query invalides the keys for those domains when your custom mutations succeed. For example, if your custom endpoint is related to products, you can pass `{ product: true }` as the value of this parameter. Then, when you use your custom mutation and it succeeds, the product's key `adminProductKeys.all` will be invalidated automatically, and all products will be re-fetched.
+1. `path`: (required) the first parameter is a string indicating the path of your endpoint. For example, if you have custom endpoints that begin with `/admin/vendors`, the value of this parameter would be `vendors`. The `/admin` prefix will be added automatically.
+2. `queryKey`: (required) the second parameter is a string used to generate query keys, which are used by Tanstack Query for caching. When a mutation related to this same key succeeds, the key will be automatically invalidated.
+3. `query`: (optional) the third parameter is an object that can be used to pass query parameters to the endpoint. For example, if you want to pass an `expand` query parameter you can pass it within this object. Each query parameter's name is a key in the object. There are no limitations on what the type of the value can be, so you can pass an array or simply a string as a value.
+4. `options`: (optional) the fourth parameter is an object of [TanStack Query options](https://tanstack.com/query/v4/docs/react/reference/useQuery).
 
-:::note
+The request returns an object containing keys like `data` which is an object that includes the data returned in the response, and `isLoading` which is a boolean value indicating whether the request is still in progress. You can learn more about the returned object's properties in [TanStack Query's documentation](https://tanstack.com/query/v4/docs/react/reference/useQuery).
 
-While the mechanism implemented using the `relatedDomains` parameter may seem a bit excessive, Tanstack Query is smart enough to only re-fetch the queries that are currently active. So, it won't result in all queries being re-fetched simultaneously.
+For example:
 
-:::
+<Tabs groupId="admin-custom-query" isCodeTabs={true}>
+<TabItem value="post-page" label="src/admin/routes/blog/posts/[id]/page.tsx" default>
 
-The function returns an object containing the following hooks:
+```tsx
+import { useAdminCustomQuery } from "medusa-react"
+import { useParams } from "react-router-dom"
 
-- `useAdminEntity`: is a query hook that allows retrieving a single entry using your custom endpoint. For example, if you have the `GET` endpoint `/admin/vendors/:id`, where `:id` is the ID of a vendor, you can use this hook to call that endpoint and retrieve a vendor by its ID.
-- `useAdminEntities`: is a query hook that allows retrieving a list of entries using your custom endpoint. For example, if you have the `GET` endpoint `/admin/vendors`, you can use this hook to call that endpoint and retrieve the list of vendors.
-- `useAdminCreateMutation`: is a mutation hook that allows creating an entry using your custom endpoint. For example, if you have the `POST` endpoint `/admin/vendors`, you can use this hook to call that endpoint and create a vendor.
-- `useAdminUpdateMutation`: is a mutation hook that allows updating an entry using your custom endpoint. For example, if you have the `POST` endpoint `/admin/vendors/:id`, you can use this hook to call that endpoint and update a vendor.
-- `useAdminDeleteMutation`: is a mutation hook that allows deleting an entry using your custom endpoint. For example, if you have the `DELETE` endpoint `/admin/vendors/:id`, you can use this hook to call that endpoint and delete a vendor.
+type BlogPost = {
+  title: string,
+  content: string,
+  author_id: string,
+}
 
-Each of these hooks are generic, allowing you to set the types for the functions and receive IntelliSense for the query parameters, the payload, and return data. The first generic type accepted would be the type of the request, and the second type accepted would be the type of the response.
+// Single post
+type AdminBlogPostQuery = {
+  expand?: string,
+  fields?: string
+}
 
-An example of using `createCustomAdminHooks`:
+type AdminBlogPostRes = {
+  post: BlogPost,
+}
+
+const BlogPost = () => {
+  const { id } = useParams() 
+
+  const { data: { post }, isLoading } = useAdminCustomQuery<
+    AdminBlogPostQuery,
+    AdminBlogPostRes
+  >(
+    `/blog/posts/${id}`,  // path
+    ["blog-post", id], // queryKey
+    {
+      expand: "author", // query
+    }
+   )
+
+  return (
+    <>
+      {isLoading && <span>Loading...</span>}
+      {post && <span>{post.title}</span>}
+    </>
+  )
+}
+
+export default BlogPost
+```
+
+</TabItem>
+<TabItem value="posts-page" label="src/admin/routes/blog/author/[id]/posts/page.tsx">
+
+```tsx
+import { useAdminCustomQuery } from "medusa-react"
+import { useParams } from "react-router-dom"
+
+type BlogPost = {
+  title: string,
+  content: string,
+  author_id: string,
+}
+
+type AdminBlogPostsRes = {
+  posts: BlogPost[],
+  count: number
+}
+
+type AdminBlogPostsQuery = {
+  author_id: string,
+  created_at?: string,
+  expand?: string,
+  fields?: string
+}
+
+const AuthorsBlogPosts = () => {
+  const { id } = useParams() 
+
+  const { data: { posts }, isLoading } = useAdminCustomQuery<
+    AdminBlogPostsQuery, AdminBlogPostsRes
+  >(
+    `/blog/posts`,  // path
+    ["blog-posts", "list", id], // queryKey
+    {
+      expand: "author", // query
+      author_id: "auth_123",
+    }
+   )
+
+   return (
+     <>
+       {isLoading && <span>Loading...</span>}
+       {posts && <span>{posts.map((post, index) => (
+        <span key={index}>{post.title}</span>
+       ))}</span>}
+     </>
+   )
+}
+
+export default AuthorsBlogPosts
+```
+
+</TabItem>
+</Tabs>
+
+#### useAdminCustomPost
+
+The `useAdminCustomPost` utility hook can be used to send a `POST` request to a custom endpoint in your Medusa backend. It's a generic function, so you can pass a type for the request and the response if you're using TypeScript in your development. The first type parameter is the type of the request body, and the second type parameter is the type of the expected response body:
 
 ```ts
-import { createCustomAdminHooks } from "medusa-react"
+useAdminCustomPost<RequestType, ResponseType>
+```
 
-type PostVendorsReq = {
-  name: string
+The hook accepts the following parameters:
+
+1. `path`: (required) the first parameter is a string indicating the path of your endpoint. For example, if you have custom endpoints that begin with `/admin/vendors`, the value of this parameter would be `vendors`. The `/admin` prefix will be added automatically.
+2. `queryKey`: (required) the second parameter is a string used to generate query keys, which are used by Tanstack Query for caching. When the mutation succeeds, the key will be automatically invalidated.
+3. `relatedDomains`: (optional) the third parameter is an object that can be used to specify domains related to this custom hook. This will ensure that Tanstack Query invalides the keys for those domains when your custom mutations succeed. For example, if your custom endpoint is related to products, you can pass `["products"]` as the value of this parameter. Then, when you use your custom mutation and it succeeds, the product's key `adminProductKeys.all` will be invalidated automatically, and all products will be re-fetched.
+4. `options`: (optional) the fourth parameter is an object of [Mutation options](https://tanstack.com/query/v4/docs/react/reference/useMutation).
+
+The request returns an object containing keys like `mutation` which is a function that can be used to send the `POST` request at a later point. You can learn more about the returned object's properties in [TanStack Query's documentation](https://tanstack.com/query/v4/docs/react/reference/useMutation).
+
+For example:
+
+```tsx title=src/admin/routes/blog/posts/page.tsx
+import { useAdminCustomPost } from "medusa-react"
+import { useNavigate } from "react-router-dom"
+
+type BlogPost = {
+  id: string
+  title: string,
+  content: string,
+  author_id: string,
 }
 
-type PostVendorRes = {
-  vendor: Vendor // assuming there's a type vendor
+type AdminBlogPostReq = {
+  title: string,
+  content: string,
+  author_id: string,
 }
 
-const MyWidget = () => {
-  const { 
-    useAdminCreateMutation: useCreateVendor,
-  } = createCustomAdminHooks(
-    `/vendors`, 
-    "vendors",
-    { product: true }
-  )
+type AdminBlogPostRes = {
+  post: BlogPost,
+}
 
-  const { mutate } = useCreateVendor<
-    PostVendorsReq, 
-    PostVendorRes
-  >()
+const CreateBlogPost = () => {
+  const navigate = useNavigate() 
 
-  // ...
+  const { mutate, isLoading } = useAdminCustomPost<
+    AdminBlogPostReq,
+    AdminBlogPostRes
+  >(
+    `/blog/posts`,
+    ["blog-posts"],
+    {
+      product: true,
+    }
+   )
 
-  const handleCreate = () => {
-    mutate({
-      name: "Vendor 1",
-    }, {
-      onSuccess({ vendor }) {
-        console.log(vendor)
+  const handleCreate = (args: AdminBlogPostReq) => {
+    return mutate(args, {
+      onSuccess: (data) => {
+        navigate(`blog/posts/${data.post.id}`)
       },
     })
   }
 
-  // ...
+  // TODO replace with actual form
+  return (
+    <button
+      onClick={() => handleCreate({
+        title: "First Blog Post",
+        content: "Blog Content",
+        author_id: "auth_123",
+      })}>
+        Create
+    </button>
+  )
 }
+
+export default CreateBlogPost
 ```
 
-In the example above, you use `createCustomAdminHooks` to create the custom hook `useAdminCreateMutation`, renamed to `useCreateVendor`. You then use `useCreateVendor` to initialize the `mutate` function. You set the generic types of useCreateVendor to the types `PostVendorsReq` and `PostVendorRes`, which are assumed to be  the types of the create endpoint's request and response respectively.
+#### useAdminCustomDelete
 
-Later in your code, you can use the `mutate` function to send a request to your endpoint and create a new vendor. The `mutate` function accepts the request's body parameters as an object. You can use the `onSuccess` function, which can be defined in the second parameter object of the `mutate` function, to get access to the response received.
+The `useAdminCustomDelete` utility hook can be used to send a `DELETE` request to a custom endpoint in your Medusa backend. It's a generic function, so you can pass a type for the request body if you're using TypeScript in your development:
+
+```ts
+useAdminCustomPost<RequestType, ResponseType>
+```
+
+The hook accepts the following parameters:
+
+1. `path`: (required) the first parameter is a string indicating the path of your endpoint. For example, if you have custom endpoints that begin with `/admin/vendors`, the value of this parameter would be `vendors`. The `/admin` prefix will be added automatically.
+2. `queryKey`: (required) the second parameter is a string used to generate query keys, which are used by Tanstack Query for caching. When the mutation succeeds, the key will be automatically invalidated.
+3. `relatedDomains`: (optional) the third parameter is an object that can be used to specify domains related to this custom hook. This will ensure that Tanstack Query invalides the keys for those domains when your custom mutations succeed. For example, if your custom endpoint is related to products, you can pass `["products"]` as the value of this parameter. Then, when you use your custom mutation and it succeeds, the product's key `adminProductKeys.all` will be invalidated automatically, and all products will be re-fetched.
+4. `options`: (optional) the fourth parameter is an object of [Mutation options](https://tanstack.com/query/v4/docs/react/reference/useMutation).
+
+The request returns an object containing keys like `mutation` which is a function that can be used to send the `DELETE` request at a later point. You can learn more about the returned object's properties in [TanStack Query's documentation](https://tanstack.com/query/v4/docs/react/reference/useMutation).
+
+For example:
+
+```tsx title=src/admin/routes/blog/posts/[id]/page.tsx
+import { useAdminCustomDelete } from "medusa-react"
+import { useNavigate, useParams } from "react-router-dom"
+
+type AdminBlogPostDeleteRes = {
+  id: string,
+  type: string
+}
+
+const BlogPost = () => {
+  const { id } = useParams()
+  const navigate = useNavigate() 
+
+  const { mutate, isLoading } = useAdminCustomDelete<
+    AdminBlogPostDeleteRes
+  >(
+    `/blog/posts/${id}`,
+    ["blog-posts"],
+    {
+      product: true,
+    }
+   )
+
+  const handleDelete = () => {
+    return mutate(undefined, {
+      onSuccess: () => {
+        navigate("..")
+      },
+    })
+  }
+
+  // TODO replace with actual form
+  return (
+    <button
+      onClick={() => handleDelete()}>
+        Delete
+    </button>
+  )
+}
+
+export default BlogPost
+```
 
 ---
 
