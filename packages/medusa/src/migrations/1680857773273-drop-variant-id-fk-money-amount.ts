@@ -3,6 +3,8 @@ import { MigrationInterface, QueryRunner } from "typeorm"
 export class dropVariantIdFkMoneyAmount1680857773273
   implements MigrationInterface
 {
+  name = "dropVariantIdFkMoneyAmount1680857773273"
+
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `
