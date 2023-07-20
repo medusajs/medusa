@@ -29,6 +29,7 @@ export type CartFactoryData = {
   shipping_address?: AddressFactoryData
   shipping_methods?: ShippingMethodFactoryData[]
   sales_channel?: SalesChannelFactoryData
+  sales_channel_id?: string
 }
 
 export const simpleCartFactory = async (
@@ -83,7 +84,7 @@ export const simpleCartFactory = async (
     region_id: regionId,
     customer_id: customerId,
     shipping_address_id: address.id,
-    sales_channel_id: sales_channel?.id ?? null,
+    sales_channel_id: sales_channel?.id ?? data.sales_channel_id ?? null,
   })
 
   const cart = await manager.save(toSave)

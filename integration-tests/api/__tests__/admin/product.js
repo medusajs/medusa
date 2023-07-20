@@ -1,11 +1,11 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../helpers/admin-seeder")
-const productSeeder = require("../../helpers/product-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const productSeeder = require("../../../helpers/product-seeder")
 
 const {
   ProductVariant,
@@ -14,13 +14,13 @@ const {
   DiscountConditionType,
   DiscountConditionOperator,
 } = require("@medusajs/medusa")
-const priceListSeeder = require("../../helpers/price-list-seeder")
+const priceListSeeder = require("../../../helpers/price-list-seeder")
 const {
   simpleProductFactory,
   simpleDiscountFactory,
   simpleSalesChannelFactory,
   simpleRegionFactory,
-} = require("../../factories")
+} = require("../../../factories")
 const { DiscountRuleType, AllocationType } = require("@medusajs/medusa/dist")
 const { IdMap } = require("medusa-test-utils")
 
