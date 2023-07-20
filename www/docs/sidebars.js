@@ -336,7 +336,7 @@ module.exports = {
           label: "Installation Errors",
           items: [
             {
-              type: "ref",
+              type: "doc",
               id: "troubleshooting/eaddrinuse",
               label: "EADDRINUSE Error",
             },
