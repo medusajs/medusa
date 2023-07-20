@@ -1,9 +1,4 @@
-import {
-  Context,
-  JoinerServiceConfig,
-  MedusaContainer,
-  ModuleDefinition,
-} from "@medusajs/types"
+import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import { DistributedTransaction, TransactionOrchestrator } from "../transaction"
 import {
   WorkflowDefinition,
@@ -26,12 +21,7 @@ export class LocalWorkflow extends OrchestratorBuilder {
 
   constructor(
     workflowId: string,
-    modulesLoaded?:
-      | (any & {
-          __joinerConfig: JoinerServiceConfig
-          __definition: ModuleDefinition
-        })[]
-      | MedusaContainer
+    modulesLoaded?: LoadedModule[] | MedusaContainer
   ) {
     const globalWorkflow = WorkflowManager.getWorkflow(workflowId)
     if (!globalWorkflow) {
