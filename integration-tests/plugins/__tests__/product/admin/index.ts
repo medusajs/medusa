@@ -1,10 +1,10 @@
 import path from "path"
-import { bootstrapApp } from "../../../../helpers/bootstrap-app"
-import { setPort, useApi } from "../../../../helpers/use-api"
-import { initDb, useDb } from "../../../../helpers/use-db"
+import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { setPort, useApi } from "../../../../environment-helpers/use-api"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
-import adminSeeder from "../../../helpers/admin-seeder"
-import productSeeder from "../../../helpers/product-seeder"
+import adminSeeder from "../../../../helpers/admin-seeder"
+import productSeeder from "../../../../helpers/product-seeder"
 
 import { simpleSalesChannelFactory } from "../../../../factories"
 import { AxiosInstance } from "axios"
