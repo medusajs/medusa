@@ -336,7 +336,7 @@ module.exports = {
           label: "Installation Errors",
           items: [
             {
-              type: "doc",
+              type: "ref",
               id: "troubleshooting/eaddrinuse",
               label: "EADDRINUSE Error",
             },
@@ -366,6 +366,11 @@ module.exports = {
           type: "category",
           label: "Medusa Backend Errors",
           items: [
+            {
+              type: "doc",
+              id: "troubleshooting/eaddrinuse",
+              label: "EADDRINUSE Error",
+            },
             {
               type: "doc",
               id: "troubleshooting/database-error",
@@ -407,6 +412,11 @@ module.exports = {
               type: "doc",
               id: "troubleshooting/signing-in-to-admin",
               label: "Signing in to the Admin Dashboard",
+            },
+            {
+              type: "doc",
+              id: "troubleshooting/custom-hooks-error",
+              label: "Custom Hooks Error",
             },
           ],
         },
