@@ -26,8 +26,8 @@ export class RemoteQuery {
     }>
   ) {
     if (!modulesLoaded?.length) {
-      modulesLoaded = [...MedusaModule.getLoadedModules().entries()].map(
-        ([, mod]) => mod
+      modulesLoaded = MedusaModule.getLoadedModules().map(
+        (mod) => Object.values(mod)[0]
       )
     }
 
