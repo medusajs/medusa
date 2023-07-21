@@ -1,10 +1,10 @@
 {
   "name": "@medusajs/admin",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "bin": {
     "medusa-admin": "./bin/medusa-admin.js"
   },
-  "main": "index.js",
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
     "bin",

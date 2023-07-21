@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.3.11
+
+### Patch Changes
+
+- [#4503](https://github.com/medusajs/medusa/pull/4503) [`d184d23c6`](https://github.com/medusajs/medusa/commit/d184d23c6384d5f8bf52827826b62c6bef37f884) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(medusa,inventory,types,brightpearl): update some inventory methods to be bulk-operation enabled
+
+- [#4383](https://github.com/medusajs/medusa/pull/4383) [`130465713`](https://github.com/medusajs/medusa/commit/1304657133585f7850807d9508be2780a08d2b12) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa-plugin-brightpearl): change the way reservations are handled
+
 ## 1.3.10
 
 ### Patch Changes

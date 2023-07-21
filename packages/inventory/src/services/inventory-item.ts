@@ -12,7 +12,7 @@ import {
   MedusaContext,
   MedusaError,
 } from "@medusajs/utils"
-import { DeepPartial, EntityManager, FindManyOptions } from "typeorm"
+import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryItem } from "../models"
 import { getListQuery } from "../utils/query"
 import { buildQuery } from "../utils/build-query"
@@ -120,33 +120,35 @@ export default class InventoryItemService {
    */
   @InjectEntityManager()
   async create(
-    data: CreateInventoryItemInput,
+    data: CreateInventoryItemInput[],
     @MedusaContext() context: SharedContext = {}
-  ): Promise<InventoryItem> {
+  ): Promise<InventoryItem[]> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(InventoryItem)
 
-    const inventoryItem = itemRepository.create({
-      sku: data.sku,
-      origin_country: data.origin_country,
-      metadata: data.metadata,
-      hs_code: data.hs_code,
-      mid_code: data.mid_code,
-      material: data.material,
-      weight: data.weight,
-      length: data.length,
-      height: data.height,
-      width: data.width,
-      requires_shipping: data.requires_shipping,
-      description: data.description,
-      thumbnail: data.thumbnail,
-      title: data.title,
-    })
+    const inventoryItem = itemRepository.create(
+      data.map((tc) => ({
+        sku: tc.sku,
+        origin_country: tc.origin_country,
+        metadata: tc.metadata,
+        hs_code: tc.hs_code,
+        mid_code: tc.mid_code,
+        material: tc.material,
+        weight: tc.weight,
+        length: tc.length,
+        height: tc.height,
+        width: tc.width,
+        requires_shipping: tc.requires_shipping,
+        description: tc.description,
+        thumbnail: tc.thumbnail,
+        title: tc.title,
+      }))
+    )
 
     const result = await itemRepository.save(inventoryItem)
 
     await this.eventBusService_?.emit?.(InventoryItemService.Events.CREATED, {
-      id: result.id,
+      ids: result.map((i) => i.id),
     })
 
     return result
@@ -195,16 +197,20 @@ export default class InventoryItemService {
    */
   @InjectEntityManager()
   async delete(
-    inventoryItemId: string,
+    inventoryItemId: string | string[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(InventoryItem)
 
-    await itemRepository.softRemove({ id: inventoryItemId })
+    const ids = Array.isArray(inventoryItemId)
+      ? inventoryItemId
+      : [inventoryItemId]
+
+    await itemRepository.softDelete({ id: In(ids) })
 
     await this.eventBusService_?.emit?.(InventoryItemService.Events.DELETED, {
-      id: inventoryItemId,
+      ids: inventoryItemId,
     })
   }
 }

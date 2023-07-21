@@ -1,9 +1,9 @@
+import * as ProductModels from "@models"
+
 import { ModuleExports } from "@medusajs/types"
 import { ProductModuleService } from "@services"
-import loadContainer from "./loaders/container"
 import loadConnection from "./loaders/connection"
-import * as ProductModels from "@models"
-import { revertMigration, runMigrations } from "./scripts"
+import loadContainer from "./loaders/container"
 
 const service = ProductModuleService
 const loaders = [loadContainer, loadConnection] as any
@@ -13,6 +13,4 @@ export const moduleDefinition: ModuleExports = {
   service,
   loaders,
   models,
-  runMigrations,
-  revertMigration,
 }

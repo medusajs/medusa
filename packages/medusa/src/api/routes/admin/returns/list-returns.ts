@@ -1,11 +1,11 @@
 import { IsNumber, IsOptional } from "class-validator"
 
-import { ReturnService } from "../../../../services"
-import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { FindConfig } from "../../../../types/common"
 import { Return } from "../../../../models"
+import { ReturnService } from "../../../../services"
+import { Type } from "class-transformer"
 import { defaultRelationsList } from "."
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /admin/returns
@@ -73,11 +73,13 @@ export default async (req, res) => {
     order: { created_at: "DESC" },
   } as FindConfig<Return>
 
-  const returns = await returnService.list(selector, { ...listConfig })
+  const [returns, count] = await returnService.listAndCount(selector, {
+    ...listConfig,
+  })
 
   res.json({
     returns,
-    count: returns.length,
+    count,
     offset: validated.offset,
     limit: validated.limit,
   })

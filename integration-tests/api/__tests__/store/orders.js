@@ -11,16 +11,16 @@ const {
   PaymentSession,
 } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 const {
   simpleRegionFactory,
   simpleProductFactory,
   simpleCartFactory,
   simpleShippingOptionFactory,
   simpleOrderFactory,
-} = require("../../factories")
+} = require("../../../factories")
 const { MedusaError } = require("medusa-core-utils")
 
 jest.setTimeout(30000)

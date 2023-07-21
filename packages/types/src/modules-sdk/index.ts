@@ -1,5 +1,6 @@
 import { MedusaContainer } from "../common"
 import { Logger } from "../logger"
+import { RepositoryService } from "../dal"
 
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
@@ -30,6 +31,8 @@ export type InternalModuleDeclaration = {
   dependencies?: string[]
   resolve?: string
   options?: Record<string, unknown>
+  alias?: string // If multiple modules are registered with the same key, the alias can be used to differentiate them
+  main?: boolean // If the module is the main module for the key when multiple ones are registered
 }
 
 export type ExternalModuleDeclaration = {
@@ -39,6 +42,8 @@ export type ExternalModuleDeclaration = {
     url: string
     keepAlive: boolean
   }
+  alias?: string // If multiple modules are registered with the same key, the alias can be used to differentiate them
+  main?: boolean // If the module is the main module for the key when multiple ones are registered
 }
 
 export type ModuleResolution = {
@@ -57,6 +62,7 @@ export type ModuleDefinition = {
   label: string
   canOverride?: boolean
   isRequired?: boolean
+  isQueryable?: boolean // If the modules should be queryable via Remote Joiner
   dependencies?: string[]
   defaultModuleDeclaration:
     | InternalModuleDeclaration
@@ -92,4 +98,18 @@ export type ModuleExports = {
     options: LoaderOptions,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void>
+}
+
+export interface ModuleServiceInitializeOptions {
+  database: {
+    clientUrl: string
+    schema?: string
+    driverOptions?: Record<string, unknown>
+    debug?: boolean
+  }
+}
+
+export type ModuleServiceInitializeCustomDataLayerOptions = {
+  manager?: any
+  repositories?: { [key: string]: Constructor<RepositoryService> }
 }
