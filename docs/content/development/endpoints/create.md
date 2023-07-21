@@ -22,7 +22,7 @@ To create a new endpoint, start by creating a new file in `src/api` called `i
 ```ts title=src/api/index.ts
 import { Router } from "express"
 
-export default (rootDirectory, pluginOptions) => {
+export default (rootDirectory, options) => {
   const router = Router()
 
   router.get("/hello", (req, res) => {
@@ -38,7 +38,7 @@ export default (rootDirectory, pluginOptions) => {
 This exports a function that returns an Express router. The function receives two parameters:
 
 - `rootDirectory` is the absolute path to the root directory that your backend is running from.
-- `pluginOptions` is an object that has your plugin's options. If your API route is not implemented in a plugin, then it will be an empty object.
+- `options` is an object that contains the configurations exported from `medusa-config.js`. If your API route is part of a plugin, then it will contain the plugin's options instead.
 
 ### Defining Multiple Routes or Middlewares
 
@@ -49,7 +49,7 @@ For example:
 ```ts title=src/api/index.ts
 import { Router } from "express"
 
-export default (rootDirectory, pluginOptions) => {
+export default (rootDirectory, options) => {
   const router = Router()
 
   router.get("/hello", (req, res) => {
@@ -88,6 +88,79 @@ By Medusa’s conventions:
 - All Admin REST APIs are prefixed by `/admin`. For example, the `/admin/products` endpoint lets you retrieve the products to display them on your Admin.
 
 You can also create endpoints that don't reside under these two prefixes, similar to the `hello` endpoint in the previous example.
+
+---
+
+## Retrieve Medusa Config
+
+As mentioned, the second parameter `options` includes the configurations exported from `medusa-config.js`. However, in plugins it only includes the plugin's options.
+
+If you need to access the Medusa configuration in your endpoint, you can use the `getConfigFile` method imported from `medusa-core-utils`. It accepts the following parameters:
+
+1. `rootDirectory`: The first parameter is a string indicating root directory of your Medusa backend.
+2. `config`: The second parameter is a string indicating the name of the config file, which should be `medusa-config` unless you change it.
+
+The function returns an object with the following properties:
+
+1. `configModule`: An object containing the configurations exported from `medusa-config.js`.
+2. `configFilePath`: A string indicating absolute path to the configuration file.
+3. `error`: if any errors occur, they'll be included as the value of this property. Otherwise, its value will be `undefined`.
+
+Here's an example of retrieving the configurations within an endpoint using `getConfigFile`:
+
+```ts title=src/api/index.ts
+import { Router } from "express"
+import { ConfigModule } from "@medusajs/medusa"
+import { getConfigFile } from "medusa-core-utils"
+
+export default (rootDirectory) => {
+  const router = Router()
+  const { configModule } = getConfigFile<ConfigModule>(
+    rootDirectory,
+    "medusa-config"
+  )
+
+  router.get("/store-cors", (req, res) => {
+    res.json({
+      store_cors: configModule.projectConfig.store_cors,
+    })
+  })
+
+  return router
+}
+```
+
+Notice that `getConfigFile` is a generic function. So, if you're using TypeScript, you should pass it the type `ConfigModule` imported from `@medusajs/medusa`.
+
+If you're accessing custom configurations, you'll need to create a new type that defines these configurations. For example:
+
+```ts title=src/api/index.ts
+import { Router } from "express"
+import { ConfigModule } from "@medusajs/medusa"
+import { getConfigFile } from "medusa-core-utils"
+
+type MyConfigModule = ConfigModule & {
+  projectConfig: {
+    custom_config?: string
+  }
+}
+
+export default (rootDirectory) => {
+  const router = Router()
+  const { configModule } = getConfigFile<MyConfigModule>(
+    rootDirectory,
+    "medusa-config"
+  )
+
+  router.get("/hello", (req, res) => {
+    res.json({
+      custom_config: configModule.projectConfig.custom_config,
+    })
+  })
+
+  return router
+}
+```
 
 ---
 
@@ -148,6 +221,42 @@ router.get("/admin/hello", cors(corsOptions), (req, res) => {
   // ...
 })
 ```
+
+---
+
+## Parse Request Body Parameters
+
+If you want to accept request body parameters, you need to pass express middlewares that parse the payload type to your router.
+
+For example:
+
+```ts
+import bodyParser from "body-parser"
+import express, { Router } from "express"
+
+
+export default (rootDirectory, pluginOptions) => {
+  const router = Router()
+
+  router.use(express.json())
+  router.use(express.urlencoded({ extended: true }))
+
+  router.post("/store/hello", (req, res) => {
+    res.json({
+      message: req.body.name,
+    })
+  })
+
+  return router
+}
+```
+
+In the code snippet above, you use the following middlewares:
+
+- `express.json()`: parses requests with JSON payloads
+- `express.urlencoded()`: parses requests with urlencoded payloads.
+
+You can learn about other available middlewares in the [Express documentation](https://expressjs.com/en/api.html#express).
 
 ---
 
