@@ -82,7 +82,7 @@ describe("WorkflowManager", () => {
 
   it("should begin a transaction and returns its final state", async () => {
     const flow = new LocalWorkflow("create-product", container)
-    const transaction = await flow.begin("t-id", {
+    const transaction = await flow.run("t-id", {
       input: 123,
     })
 
@@ -97,7 +97,7 @@ describe("WorkflowManager", () => {
 
   it("should begin a transaction and revert it when fail", async () => {
     const flow = new LocalWorkflow("broken-delivery", container)
-    const transaction = await flow.begin("t-id")
+    const transaction = await flow.run("t-id")
 
     expect(handlers.get("foo").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("broken").invoke).toHaveBeenCalledTimes(1)
@@ -110,7 +110,7 @@ describe("WorkflowManager", () => {
 
   it("should continue an asyncronous transaction after reporting a successful step", async () => {
     const flow = new LocalWorkflow("deliver-product", container)
-    const transaction = await flow.begin("t-id")
+    const transaction = await flow.run("t-id")
 
     expect(handlers.get("foo").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("callExternal").invoke).toHaveBeenCalledTimes(1)
@@ -129,7 +129,7 @@ describe("WorkflowManager", () => {
 
   it("should revert an asyncronous transaction after reporting a failure step", async () => {
     const flow = new LocalWorkflow("deliver-product", container)
-    const transaction = await flow.begin("t-id")
+    const transaction = await flow.run("t-id")
 
     expect(handlers.get("foo").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("callExternal").invoke).toHaveBeenCalledTimes(1)
@@ -160,7 +160,7 @@ describe("WorkflowManager", () => {
 
     flow.insertActionBefore("bar", "xor", { maxRetries: 3 }, additionalHandler)
 
-    const transaction = await flow.begin("t-id")
+    const transaction = await flow.run("t-id")
 
     expect(handlers.get("foo").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("bar").invoke).toHaveBeenCalledTimes(1)

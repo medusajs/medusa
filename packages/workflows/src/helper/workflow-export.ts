@@ -7,9 +7,9 @@ import {
 } from "@medusajs/orchestration"
 import { InputAlias, Workflows } from "../definitions"
 
+import { EOL } from "os"
 import { MedusaModule } from "@medusajs/modules-sdk"
 import { ulid } from "ulid"
-import { EOL } from "os"
 
 type FlowRunOptions = {
   input?: unknown
@@ -41,8 +41,9 @@ export const exportWorkflow = (
       run: (args: FlowRunOptions) => Promise<DistributedTransaction>
     }
 
+    const originalRun = flow.run.bind(flow)
     flow.run = async ({ input, context, onFail }: FlowRunOptions) => {
-      const transaction = await flow.begin(
+      const transaction = await originalRun(
         context?.transactionId ?? ulid(),
         input,
         context

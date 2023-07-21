@@ -74,7 +74,7 @@ export class LocalWorkflow {
     this.hasChanges = false
   }
 
-  async begin(uniqueTransactionId: string, input?: unknown, context?: Context) {
+  async run(uniqueTransactionId: string, input?: unknown, context?: Context) {
     if (this.hasChanges) {
       this.commit()
     }

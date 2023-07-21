@@ -37,11 +37,7 @@ export class GlobalWorkflow extends WorkflowManager {
     this.context = context ?? {}
   }
 
-  async begin(
-    workflowId: string,
-    uniqueTransactionId: string,
-    input?: unknown
-  ) {
+  async run(workflowId: string, uniqueTransactionId: string, input?: unknown) {
     if (!WorkflowManager.workflows.has(workflowId)) {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
