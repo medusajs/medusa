@@ -43,6 +43,9 @@ const handlers = new Map([
   ],
 ])
 
-WorkflowManager.register(Workflows.CreateProduct, workflowSteps, handlers)
+WorkflowManager.register(Workflows.CreateProducts, workflowSteps, handlers)
 
-export const createProduct = exportWorkflow(Workflows.CreateProduct)
+export const createProduct = exportWorkflow(
+  Workflows.CreateProducts,
+  Actions.createProduct
+)
