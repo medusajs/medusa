@@ -5,6 +5,7 @@ import {
 } from "@medusajs/orchestration"
 import { createProducts, removeProducts } from "../functions"
 import { exportWorkflow, pipe } from "../helper"
+import { ProductTypes } from "@medusajs/types"
 
 enum Actions {
   createProduct = "createProduct",
@@ -45,7 +46,7 @@ const handlers = new Map([
 
 WorkflowManager.register(Workflows.CreateProducts, workflowSteps, handlers)
 
-export const createProduct = exportWorkflow(
+export const createProduct = exportWorkflow<ProductTypes.CreateProductDTO>(
   Workflows.CreateProducts,
   Actions.createProduct
 )
