@@ -135,6 +135,15 @@ function CurrencyCell(props: CurrencyCellProps) {
        * If we use set timout it will work as expected.
        */
       setTimeout(() => ref.current.focus())
+
+      const onEnter = (e: KeyboardEvent) => {
+        if (e.key === "Enter") {
+          ref.current.blur()
+        }
+      }
+
+      document.addEventListener("keypress", onEnter)
+      return () => document.removeEventListener("keypress", onEnter)
     } else {
       // Format value back after edit
       setLocalValue({
