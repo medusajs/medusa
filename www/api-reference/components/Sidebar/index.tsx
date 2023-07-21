@@ -75,6 +75,15 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
             <Loading className="px-1" />
           </>
         )}
+        {items.bottom.length > 0 && (
+          <li
+            className={clsx(
+              "text-label-x-small-plus px-[20px] pt-1 pb-[6px] uppercase"
+            )}
+          >
+            Endpoints
+          </li>
+        )}
         {items.bottom.map((item, index) => (
           <SidebarItem item={item} key={index} />
         ))}
