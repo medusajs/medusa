@@ -7,8 +7,6 @@ import {
   ShippingProfileType,
   Store,
 } from "@medusajs/medusa"
-import faker from "faker"
-import { DataSource } from "typeorm"
 import {
   ProductVariantFactoryData,
   simpleProductVariantFactory,
@@ -17,6 +15,9 @@ import {
   SalesChannelFactoryData,
   simpleSalesChannelFactory,
 } from "./simple-sales-channel-factory"
+
+import { DataSource } from "typeorm"
+import faker from "faker"
 
 export type ProductFactoryData = {
   id?: string
@@ -149,7 +150,15 @@ export const simpleProductFactory = async (
       }
       if (typeof pv.options === "undefined") {
         factoryData.options = [
-          { option_id: optionId, value: faker.commerce.productAdjective() },
+          {
+            option_id: optionId,
+            value:
+              faker.commerce.productAdjective() +
+              " " +
+              faker.commerce.productMaterial() +
+              " " +
+              Math.round(Math.random() * 1000),
+          },
         ]
       }
       return await simpleProductVariantFactory(dataSource, factoryData)
