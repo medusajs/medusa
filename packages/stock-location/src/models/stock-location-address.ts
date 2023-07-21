@@ -1,58 +1,67 @@
-import { generateEntityId } from "@medusajs/utils"
 import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
+  BeforeCreate,
+  Collection,
   Entity,
   Index,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from "typeorm"
+  ManyToMany,
+  OptionalProps,
+  PrimaryKey,
+  Property,
+  Unique,
+} from "@mikro-orm/core"
 
-@Entity()
+import { generateEntityId } from "@medusajs/utils"
+
+@Entity({ tableName: "stock_location_address" })
 export class StockLocationAddress {
-  @PrimaryColumn()
+  @PrimaryKey({ columnType: "text" })
   id: string
 
-  @CreateDateColumn({ type: "timestamptz" })
+  @Property({
+    onCreate: () => new Date(),
+    columnType: "timestamptz",
+  })
   created_at: Date
 
-  @UpdateDateColumn({ type: "timestamptz" })
+  @Property({
+    onCreate: () => new Date(),
+    onUpdate: () => new Date(),
+    columnType: "timestamptz",
+  })
   updated_at: Date
 
-  @DeleteDateColumn({ type: "timestamptz" })
+  @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null
 
-  @Column({ type: "text" })
+  @Property({ columnType: "text" })
   address_1: string
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   address_2: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   company: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   city: string | null
 
-  @Index()
-  @Column({ type: "text" })
+  @Index({ name: "IDX_stock_location_address_country_code" })
+  @Property({ columnType: "text" })
   country_code: string
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   phone: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   province: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Property({ columnType: "text", nullable: true })
   postal_code: string | null
 
-  @Column({ type: "jsonb", nullable: true })
+  @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 
-  @BeforeInsert()
+  @BeforeCreate()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "laddr")
   }
