@@ -18,6 +18,12 @@ type FlowRunOptions<TData = unknown> = {
   throwOnError?: boolean
 }
 
+type WorkflowResult = {
+  errors: TransactionStepError[]
+  transaction: DistributedTransaction
+  result: unknown
+}
+
 export const exportWorkflow = <TData = unknown>(
   workflowId: Workflows,
   defaultResult?: string
@@ -26,10 +32,10 @@ export const exportWorkflow = <TData = unknown>(
     container?: LoadedModule[] | MedusaContainer
   ): Omit<LocalWorkflow, "run"> & {
     run: (
-      args: FlowRunOptions<
+      args?: FlowRunOptions<
         TDataOverride extends undefined ? TData : TDataOverride
       >
-    ) => Promise<DistributedTransaction>
+    ) => Promise<WorkflowResult>
   } {
     if (!container) {
       container = MedusaModule.getLoadedModules().map(
@@ -38,7 +44,11 @@ export const exportWorkflow = <TData = unknown>(
     }
 
     const flow = new LocalWorkflow(workflowId, container) as LocalWorkflow & {
-      run: (args: FlowRunOptions) => Promise<DistributedTransaction>
+      run: (args: FlowRunOptions) => Promise<{
+        errors: TransactionStepError[]
+        transaction: DistributedTransaction
+        result: unknown
+      }>
     }
 
     const originalRun = flow.run.bind(flow)
@@ -47,11 +57,7 @@ export const exportWorkflow = <TData = unknown>(
         throwOnError: true,
         resultFrom: defaultResult,
       }
-    ): Promise<{
-      errors: TransactionStepError[]
-      transaction: DistributedTransaction
-      result: unknown
-    }> => {
+    ): Promise<WorkflowResult> => {
       const transaction = await originalRun(
         context?.transactionId ?? ulid(),
         input,
