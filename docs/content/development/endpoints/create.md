@@ -22,7 +22,7 @@ To create a new endpoint, start by creating a new file in `src/api` called `i
 ```ts title=src/api/index.ts
 import { Router } from "express"
 
-export default (rootDirectory, pluginOptions) => {
+export default (rootDirectory, options) => {
   const router = Router()
 
   router.get("/hello", (req, res) => {
@@ -38,7 +38,7 @@ export default (rootDirectory, pluginOptions) => {
 This exports a function that returns an Express router. The function receives two parameters:
 
 - `rootDirectory` is the absolute path to the root directory that your backend is running from.
-- `pluginOptions` is an object that has your plugin's options. If your API route is not implemented in a plugin, then it will be an empty object.
+- `options` is an object that contains the options exported from `medusa-config.js`. If your API route is part of a plugin, then it will contain the plugin's options instead.
 
 ### Defining Multiple Routes or Middlewares
 
@@ -49,7 +49,7 @@ For example:
 ```ts title=src/api/index.ts
 import { Router } from "express"
 
-export default (rootDirectory, pluginOptions) => {
+export default (rootDirectory, options) => {
   const router = Router()
 
   router.get("/hello", (req, res) => {
