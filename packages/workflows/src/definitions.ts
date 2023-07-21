@@ -1,5 +1,5 @@
 export enum Workflows {
-  CreateProduct = "create-product",
+  CreateProducts = "create-products",
 }
 
 export enum InputAlias {
