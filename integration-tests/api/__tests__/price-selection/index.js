@@ -459,7 +459,7 @@ describe("Promotions", () => {
       )
     })
 
-    it("fetches product with price groups in money amounts with login gets only valid groups", async () => {
+    it("should only join price lists with customer groups for the customer, not empty groups", async () => {
       const api = useApi()
 
       const authResponse = await api.post("/store/auth", {
