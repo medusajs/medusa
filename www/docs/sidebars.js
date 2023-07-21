@@ -1876,7 +1876,7 @@ module.exports = {
         {
           type: "doc",
           id: "troubleshooting/database-error",
-          label: "Database SASL Error",
+          label: "Database Errors",
         },
         {
           type: "doc",
