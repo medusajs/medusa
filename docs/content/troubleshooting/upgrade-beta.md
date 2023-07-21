@@ -8,4 +8,4 @@ To resolve this issue, try the following:
 
 - Remove the `yarn.lock` or `package-lock.json` file in your project.
 - Remove the `node_modules` directory
-- Try installing again.
+- Install again.
