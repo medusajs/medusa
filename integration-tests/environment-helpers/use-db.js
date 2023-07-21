@@ -103,8 +103,11 @@ module.exports = {
       getModuleSharedResources,
     } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
 
-    const { migrations: moduleMigrations, models: moduleModels } =
-      getModuleSharedResources(configModule, featureFlagsRouter)
+    const {
+      migrations: moduleMigrations,
+      models: moduleModels,
+      runMigrationScripts,
+    } = getModuleSharedResources(configModule, featureFlagsRouter)
 
     const enabledMigrations = getEnabledMigrations([migrationDir], (flag) =>
       featureFlagsRouter.isFeatureEnabled(flag)
@@ -126,6 +129,18 @@ module.exports = {
     await dbDataSource.initialize()
 
     await dbDataSource.runMigrations()
+
+    console.log(JSON.stringify(runMigrationScripts, null, 2))
+
+    for (const script of runMigrationScripts) {
+      await script({
+        options: {
+          database: {
+            clientUrl: DB_URL,
+          },
+        },
+      })
+    }
 
     instance.setDb(dbDataSource)
     return dbDataSource

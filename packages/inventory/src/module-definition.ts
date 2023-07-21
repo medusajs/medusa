@@ -8,8 +8,6 @@ import loadConnection from "./loaders/connection"
 import loadContainer from "./loaders/container"
 import migrations from "./migrations.old"
 
-// TODO: Validate if migations are required here
-
 const service = InventoryService
 const loaders = [loadContainer, loadConnection]
 const models = Object.values(InventoryModels)
@@ -20,5 +18,5 @@ export const moduleDefinition: ModuleExports = {
   // models,
   runMigrations,
   revertMigration,
-  migrations,
+  // migrations,
 }

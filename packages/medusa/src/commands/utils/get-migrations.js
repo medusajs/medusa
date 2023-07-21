@@ -1,16 +1,17 @@
 import { MedusaModule, registerModules } from "@medusajs/modules-sdk"
-import fs from "fs"
-import { sync as existsSync } from "fs-exists-cached"
-import glob from "glob"
-import { isString } from "lodash"
 import {
   createRequireFromPath,
   getConfigFile,
   isDefined,
 } from "medusa-core-utils"
-import path from "path"
-import { handleConfigError } from "../../loaders/config"
+
 import { MEDUSA_PROJECT_NAME } from "../../loaders/plugins"
+import { sync as existsSync } from "fs-exists-cached"
+import fs from "fs"
+import glob from "glob"
+import { handleConfigError } from "../../loaders/config"
+import { isString } from "lodash"
+import path from "path"
 
 function createFileContentHash(path, files) {
   return path + files
@@ -110,11 +111,15 @@ export function getInternalModules(configModule) {
     let loadedModule = null
     try {
       loadedModule = require(moduleResolution.resolutionPath).default
+      console.log(JSON.stringify(require(moduleResolution.resolutionPath)))
     } catch (error) {
       console.log("Error loading Module", error)
       continue
     }
 
+    // console.log("loaded module")
+    // console.log(moduleResolution.resolutionPath)
+    // console.log(JSON.stringify(loadedModule, null, 2))
     modules.push({
       moduleDeclaration: moduleResolution.moduleDeclaration,
       loadedModule,
@@ -204,6 +209,7 @@ export const getModuleMigrations = (configModule, isFlagEnabled) => {
 
   const allModules = []
 
+  console.log(JSON.stringify(loadedModules, null, 2))
   for (const loadedModule of loadedModules) {
     const mod = loadedModule.loadedModule
 
@@ -224,6 +230,7 @@ export const getModuleMigrations = (configModule, isFlagEnabled) => {
       moduleDeclaration: loadedModule.moduleDeclaration,
       models: mod.models ?? [],
       migrations: moduleMigrations,
+      runMigration: mod.runMigration,
     })
   }
 
@@ -238,8 +245,13 @@ export const getModuleSharedResources = (configModule, featureFlagsRouter) => {
 
   let migrations = []
   let models = []
+  const runMigrationScripts = []
 
   for (const mod of loadedModules) {
+    if (mod.runMigration) {
+      runMigrationScripts.push(mod.runMigration)
+    }
+
     if (mod.moduleDeclaration.resources !== "shared") {
       continue
     }
@@ -252,6 +264,7 @@ export const getModuleSharedResources = (configModule, featureFlagsRouter) => {
   return {
     models,
     migrations,
+    runMigrationScripts,
   }
 }
 
