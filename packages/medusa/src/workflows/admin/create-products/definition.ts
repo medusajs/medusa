@@ -129,6 +129,10 @@ export function transactionHandler(
           CreateProductsWorkflowActions.createProducts
         ] as ProductTypes.ProductDTO[]
 
+        if (!products?.length) {
+          return
+        }
+
         return await removeProducts({
           container,
           data: products,
@@ -249,12 +253,13 @@ export function transactionHandler(
           container,
           CreateProductsWorkflowActions.createInventoryItems
         )
-        if (shouldSkipStep_) {
-          return
-        }
 
         const variantInventoryItemsData =
           invoke[CreateProductsWorkflowActions.createInventoryItems]
+
+        if (shouldSkipStep_ || !variantInventoryItemsData?.length) {
+          return
+        }
 
         await removeInventoryItems({
           container,
@@ -296,14 +301,15 @@ export function transactionHandler(
           container,
           CreateProductsWorkflowActions.attachInventoryItems
         )
-        if (shouldSkipStep_) {
-          return
-        }
 
         const {
           [CreateProductsWorkflowActions.createInventoryItems]:
             inventoryItemsResult,
         } = invoke
+
+        if (shouldSkipStep_ || !inventoryItemsResult?.length) {
+          return
+        }
 
         return await detachInventoryItems({
           container,
@@ -344,6 +350,10 @@ export function transactionHandler(
         const products = invoke[
           CreateProductsWorkflowActions.createProducts
         ] as ProductTypes.ProductDTO[]
+
+        if (!productsHandleVariantsIndexPricesMap?.size) {
+          return
+        }
 
         const updatedProductsHandleVariantsIndexPricesMap = new Map()
         productsHandleVariantsIndexPricesMap.forEach((items, productHandle) => {
