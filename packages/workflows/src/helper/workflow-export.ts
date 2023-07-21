@@ -43,13 +43,7 @@ export const exportWorkflow = <TData = unknown>(
       )
     }
 
-    const flow = new LocalWorkflow(workflowId, container) as LocalWorkflow & {
-      run: (args: FlowRunOptions) => Promise<{
-        errors: TransactionStepError[]
-        transaction: DistributedTransaction
-        result: unknown
-      }>
-    }
+    const flow = new LocalWorkflow(workflowId, container)
 
     const originalRun = flow.run.bind(flow)
     const newRun = async (
@@ -94,6 +88,12 @@ export const exportWorkflow = <TData = unknown>(
     }
     flow.run = newRun as any
 
-    return flow
+    return flow as unknown as LocalWorkflow & {
+      run: (
+        args?: FlowRunOptions<
+          TDataOverride extends undefined ? TData : TDataOverride
+        >
+      ) => Promise<WorkflowResult>
+    }
   }
 }
