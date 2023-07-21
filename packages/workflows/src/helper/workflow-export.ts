@@ -4,16 +4,16 @@ import {
   LocalWorkflow,
   TransactionState,
 } from "@medusajs/orchestration"
-import { Workflows } from "../definitions"
 
 import { EOL } from "os"
 import { MedusaModule } from "@medusajs/modules-sdk"
+import { Workflows } from "../definitions"
 import { ulid } from "ulid"
 
 type FlowRunOptions<TData = unknown> = {
   input?: TData
   context?: Context
-  resultFrom?: string
+  resultFrom?: string | string[]
   throwOnError?: boolean
 }
 
@@ -65,9 +65,17 @@ export const exportWorkflow = <TData = unknown>(
         }
       }
 
-      const result = resultFrom
-        ? transaction.getContext().invoke?.[resultFrom]
-        : undefined
+      let result: string | string[] | undefined = undefined
+
+      if (resultFrom) {
+        if (Array.isArray(resultFrom)) {
+          result = resultFrom.map(
+            (from) => transaction.getContext().invoke?.[from]
+          )
+        } else {
+          result = transaction.getContext().invoke?.[resultFrom]
+        }
+      }
 
       return {
         errors,
