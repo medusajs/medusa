@@ -2,6 +2,7 @@ import clsx from "clsx"
 
 export type ButtonProps = {
   isSelected?: boolean
+  disabled?: boolean
 } & React.HTMLAttributes<HTMLButtonElement>
 
 const Button = ({
@@ -13,7 +14,7 @@ const Button = ({
   return (
     <button
       className={clsx(
-        "text-medusa-text-base dark:text-medusa-text-base-dark rounded border p-0.5",
+        "btn-primary",
         isSelected &&
           "bg-medusa-bg-interactive dark:bg-medusa-bg-interactive-dark text-medusa-text-on-color border-transparent",
         !isSelected &&

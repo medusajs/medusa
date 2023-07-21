@@ -2,6 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  h1 {
+    @apply text-h1 mb-0.5;
+  }
+  
+  h2 {
+    @apply text-h2 mb-0.5 mt-2;
+  }
+  
+  h3 {
+    @apply text-h3 mb-0.5 mt-2;
+  }
+  
+  h4 {
+    @apply text-h4 mb-0.5 mt-2;
+  }
+  
+  h1, h2, h3, h4 {
+    @apply text-medusa-text-base dark:text-medusa-text-base-dark;
+  }
+  
+  hr {
+    @apply h-[1px] w-full border-0 bg-medusa-border-base dark:bg-medusa-border-base-dark my-2;
+  }
+  
+  p, ul, ol {
+    @apply mb-1;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
 @layer utilities {
   @-webkit-keyframes fadeInDown {
     from {
@@ -132,42 +166,43 @@
     animation: slideInLeft 300ms;
   }
 
+  .animate-fill-forwards {
+    animation-fill-mode: forwards;
+  }
+
+  .animate-fast {
+    animation-duration: 300ms;
+  }
+
   .clip {
     clip-path: inset(0);
   }
 }
 
-@layer base {
-  h1 {
-    @apply text-h1 mb-0.5;
-  }
-  
-  h2 {
-    @apply text-h2 mb-0.5 mt-2;
-  }
-  
-  h3 {
-    @apply text-h3 mb-0.5 mt-2;
-  }
-  
-  h4 {
-    @apply text-h4 mb-0.5 mt-2;
-  }
-  
-  h1, h2, h3, h4 {
-    @apply text-medusa-text-base dark:text-medusa-text-base-dark;
-  }
-  
-  hr {
-    @apply h-[1px] w-full border-0 bg-medusa-border-base dark:bg-medusa-border-base-dark my-2;
-  }
-  
-  p, ul, ol {
-    @apply mb-1;
+@layer components {
+  .btn-primary {
+    @apply inline-flex flex-row justify-center items-center;
+    @apply py-[6px] px-[12px] rounded cursor-pointer;
+    @apply bg-button-neutral dark:bg-button-neutral-dark;
+    @apply hover:!bg-no-image hover:bg-medusa-button-neutral-hover dark:hover:bg-medusa-button-neutral-hover-dark hover:no-underline;
+    @apply active:!bg-no-image active:bg-medusa-button-neutral-pressed dark:active:bg-medusa-button-neutral-pressed-dark;
+    @apply focus:shadow-focus dark:focus:shadow-focus-dark;
+    @apply disabled:!bg-no-image disabled:bg-medusa-button-disabled dark:disabled:bg-medusa-button-disabled-dark;
+    @apply border border-solid border-medusa-border-neutral-buttons dark:border-medusa-border-neutral-buttons-dark;
+    @apply text-label-small-plus text-medusa-text-base dark:text-medusa-text-base-dark;
+    @apply hover:text-medusa-text-base dark:hover:text-medusa-text-base-dark;
   }
 
-  html {
-    -webkit-font-smoothing: antialiased;
+  .btn-inverted {
+    @apply inline-flex flex-row justify-center items-center;
+    @apply py-[6px] px-[12px] rounded cursor-pointer;
+    @apply bg-button-inverted dark:bg-button-inverted-dark;
+    @apply hover:!bg-no-image hover:bg-medusa-button-inverted-hover dark:hover:bg-medusa-button-inverted-hover-dark hover:no-underline;
+    @apply active:!bg-no-image active:bg-medusa-button-inverted-pressed dark:active:bg-medusa-button-inverted-pressed-dark;
+    @apply focus:shadow-focus dark:focus:shadow-focus-dark;
+    @apply disabled:!bg-no-image disabled:bg-medusa-button-disabled dark:disabled:bg-medusa-button-disabled-dark;
+    @apply text-label-small-plus text-medusa-text-on-color dark:text-medusa-text-on-inverted-dark;
+    @apply border-transparent border;
   }
 }
 

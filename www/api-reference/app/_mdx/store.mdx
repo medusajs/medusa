@@ -1,3 +1,5 @@
+import Feedback from "@/components/Feedback"
+
 This API reference includes Medusa's Store APIs, which are REST APIs exposed by the Medusa backend. They are typically used to create a storefront for your commerce store, such as a webshop or a commerce mobile app.
 
 All endpoints are prefixed with `/store`. So, during development, the endpoints will be available under the path `http://localhost:9000/store`. For production, replace `http://localhost:9000` with your Medusa backend URL.
@@ -9,6 +11,14 @@ There are different ways you can send requests to these endpoints, including:
 - Using cURL
 
 Aside from this API reference, check out the [Commerce Modules](https://docs.medusajs.com/modules/overview) section of the documentation for guides on how to use these APIs in different scenarios.
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "introduction"
+  }}
+/>
 
 ---
 
@@ -68,6 +78,14 @@ curl 'https://medusa-url.com/store/customers/me/orders' \
 
 Where `{sid}` is the value of `connect.sid` that you copied.
 
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "authentication-cookie"
+  }}
+/>
+
 ---
 
 ## Expanding Fields
@@ -125,6 +143,14 @@ curl "http://localhost:9000/store/products/prod_01GDJGP2XPQT2N3JHZQFMH5V45?expan
 
 This would retrieve the product with only its properties, without any
 relations like `collection`.
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "expand"
+  }}
+/>
 
 ---
 
@@ -205,6 +231,14 @@ relations aren't retrieved as well. For example:
 ```bash
 curl "http://localhost:9000/store/products?fields&expand"
 ```
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "select-fields"
+  }}
+/>
 
 ---
 
@@ -335,6 +369,14 @@ For example:
 curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17&created_at[gt]=2022-09-17"
 ```
 
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "query-parameters"
+  }}
+/>
+
 ---
 
 ## Pagination
@@ -412,3 +454,11 @@ curl "http://localhost:9000/list/products?order=-created_at"
 
 This sorts the products by their `created_at` attribute in the descending
 order.
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "pagination"
+  }}
+/>

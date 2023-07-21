@@ -22,7 +22,7 @@ const Tooltip = ({
   useEffect(() => {
     async function initElementId() {
       if (!elementId) {
-        const uuid = (await import("react-uuid")).default
+        const uuid = (await import("uuid")).v4
         setElementId(uuid())
       }
     }

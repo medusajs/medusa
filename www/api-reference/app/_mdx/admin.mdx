@@ -1,4 +1,5 @@
 import CodeTabs from "@/components/CodeTabs"
+import Feedback from "@/components/Feedback"
 
 This API reference includes Medusa's Admin APIs, which are REST APIs exposed by the Medusa backend. They are typically used to perform admin functionalities or create an admin dashboard to access and manipulate your commerce store's data.
 
@@ -11,6 +12,14 @@ There are different ways you can send requests to these endpoints, including:
 - Using cURL
 
 Aside from this API reference, check out the [Commerce Modules](https://docs.medusajs.com/modules/overview) section of the documentation for guides on how to use these APIs in different scenarios.
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "admin",
+    section: "introduction"
+  }}
+/>
 
 ---
 
@@ -89,6 +98,14 @@ You can also pass it to client libraries:
   ]}
 />
 
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "admin",
+    section: "authentication-api-key"
+  }}
+/>
+
 ### Cookie Session ID
 
 Use a cookie session to send authenticated requests.
@@ -140,6 +157,14 @@ curl 'https://medusa-url.com/admin/products' \
 
 
 Where `{sid}` is the value of `connect.sid` that you copied.
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "admin",
+    section: "authentication-cookie"
+  }}
+/>
 
 ---
 
@@ -202,6 +227,14 @@ curl "http://localhost:9000/admin/products?expand" \
 
 This would retrieve each product with only its properties, without any
 relations like `collection`.
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "admin",
+    section: "expand"
+  }}
+/>
 
 ---
 
@@ -287,6 +320,14 @@ relations aren't retrieved as well. For example:
 curl "http://localhost:9000/admin/products?fields&expand" \
 -H 'Authorization: Bearer {api_token}'
 ```
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "admin",
+    section: "select-fields"
+  }}
+/>
 
 ---
 
@@ -427,10 +468,17 @@ curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17&created_
 -H 'Authorization: Bearer {api_token}'
 ```
 
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "admin",
+    section: "query-parameters"
+  }}
+/>
+
 ---
 
 ## Pagination
-
 
 ### Query Parameters
 
@@ -501,3 +549,11 @@ curl "http://localhost:9000/admin/products?order=-created_at" \
 
 This sorts the products by their `created_at` attribute in the descending
 order.
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "admin",
+    section: "pagination"
+  }}
+/>
