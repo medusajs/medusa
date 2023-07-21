@@ -14,8 +14,12 @@ import {
 import { StockLocationAddress } from "./stock-location-address"
 import { generateEntityId } from "@medusajs/utils"
 
+type OptionalFields = "created_at" | "updated_at"
+
 @Entity({ tableName: "stock_location" })
 export class StockLocation {
+  [OptionalProps]?: OptionalFields
+
   @PrimaryKey({ columnType: "text" })
   id: string
 
