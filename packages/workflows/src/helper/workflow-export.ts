@@ -42,7 +42,7 @@ export const exportWorkflow = (
     }
 
     const originalRun = flow.run.bind(flow)
-    flow.run = async ({ input, context, onFail }: FlowRunOptions) => {
+    const newRun = async ({ input, context, onFail }: FlowRunOptions) => {
       const transaction = await originalRun(
         context?.transactionId ?? ulid(),
         input,
@@ -65,6 +65,7 @@ export const exportWorkflow = (
 
       return transaction
     }
+    flow.run = newRun as typeof flow.run
 
     return flow
   }
