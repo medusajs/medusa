@@ -3,30 +3,33 @@ import {
   DistributedTransaction,
   LocalWorkflow,
   TransactionState,
-  TransactionStepError,
 } from "@medusajs/orchestration"
-import { InputAlias, Workflows } from "../definitions"
+import { Workflows } from "../definitions"
 
 import { EOL } from "os"
 import { MedusaModule } from "@medusajs/modules-sdk"
 import { ulid } from "ulid"
 
-type FlowRunOptions = {
-  input?: unknown
+type FlowRunOptions<TData = unknown> = {
+  input?: TData
   context?: Context
   resultFrom?: string
   throwOnError?: boolean
 }
 
-export const exportWorkflow = (
+export const exportWorkflow = <TData = unknown>(
   workflowId: Workflows,
   defaultResult?: string
 ) => {
-  return (
+  return function <TDataOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
-  ): LocalWorkflow & {
-    run: (args: FlowRunOptions) => Promise<DistributedTransaction>
-  } => {
+  ): Omit<LocalWorkflow, "run"> & {
+    run: (
+      args: FlowRunOptions<
+        TDataOverride extends undefined ? TData : TDataOverride
+      >
+    ) => Promise<DistributedTransaction>
+  } {
     if (!container) {
       container = MedusaModule.getLoadedModules().map(
         (mod) => Object.values(mod)[0]
