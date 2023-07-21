@@ -3,7 +3,10 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { createProducts, removeProducts } from "../functions"
+import {
+  createProducts as createProductsHandler,
+  removeProducts,
+} from "../functions"
 import { exportWorkflow, pipe } from "../helper"
 import { ProductTypes } from "@medusajs/types"
 
@@ -29,7 +32,7 @@ const handlers = new Map([
             alias: InputAlias.Products,
           },
         },
-        createProducts
+        createProductsHandler
       ),
       compensate: pipe(
         {
@@ -46,7 +49,7 @@ const handlers = new Map([
 
 WorkflowManager.register(Workflows.CreateProducts, workflowSteps, handlers)
 
-export const createProduct = exportWorkflow<ProductTypes.CreateProductDTO>(
+export const createProducts = exportWorkflow<ProductTypes.CreateProductDTO>(
   Workflows.CreateProducts,
   Actions.createProduct
 )
