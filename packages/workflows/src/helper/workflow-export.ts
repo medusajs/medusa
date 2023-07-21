@@ -3,6 +3,7 @@ import {
   DistributedTransaction,
   LocalWorkflow,
   TransactionState,
+  TransactionStepError,
 } from "@medusajs/orchestration"
 
 import { EOL } from "os"
@@ -28,7 +29,11 @@ export const exportWorkflow = <TData = unknown>(
       args: FlowRunOptions<
         TDataOverride extends undefined ? TData : TDataOverride
       >
-    ) => Promise<DistributedTransaction>
+    ) => Promise<{
+      errors: TransactionStepError[]
+      transaction: DistributedTransaction
+      result: unknown
+    }>
   } {
     if (!container) {
       container = MedusaModule.getLoadedModules().map(
@@ -56,13 +61,11 @@ export const exportWorkflow = <TData = unknown>(
       const errors = transaction.getErrors()
 
       const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
-      if (failedStatus.includes(transaction.getState())) {
-        if (throwOnError) {
-          const errorMessage = errors
-            ?.map((err) => `${err.error?.message}${EOL}${err.error?.stack}`)
-            ?.join(`${EOL}`)
-          throw new Error(errorMessage)
-        }
+      if (failedStatus.includes(transaction.getState()) && throwOnError) {
+        const errorMessage = errors
+          ?.map((err) => `${err.error?.message}${EOL}${err.error?.stack}`)
+          ?.join(`${EOL}`)
+        throw new Error(errorMessage)
       }
 
       let result: string | string[] | undefined = undefined
