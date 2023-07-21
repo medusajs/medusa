@@ -1,14 +1,14 @@
-import { simpleSalesChannelFactory } from "../../../factories"
+import { simpleSalesChannelFactory } from "../../../../factories"
 
 const path = require("path")
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
+const setupServer = require("../../../../environment-helpers/setup-server")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
 
-const { simpleProductCategoryFactory } = require("../../../factories")
+const { simpleProductCategoryFactory } = require("../../../../factories")
 
-const productSeeder = require("../../../helpers/store-product-seeder")
-const adminSeeder = require("../../../helpers/admin-seeder")
+const productSeeder = require("../../../../helpers/store-product-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 

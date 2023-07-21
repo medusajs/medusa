@@ -73,7 +73,7 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
       jest.clearAllMocks()
     })
 
-    it("calls CartService create", () => {
+    it("calls CartService removeLineItem", () => {
       expect(CartServiceMock.removeLineItem).toHaveBeenCalledTimes(1)
       expect(CartServiceMock.removeLineItem).toHaveBeenCalledWith(
         IdMap.getId("fr-cart"),
@@ -87,6 +87,144 @@ describe("POST /store/carts/:id/line-items/:line_id", () => {
 
     it("returns the cart", () => {
       expect(subject.body.cart.id).toEqual(IdMap.getId("fr-cart"))
+    })
+  })
+
+  describe("updates metadata if included in request body", () => {
+    let subject
+
+    beforeAll(async () => {
+      const cartId = IdMap.getId("fr-cart")
+      const lineId = IdMap.getId("existingLine")
+      subject = await request(
+        "POST",
+        `/store/carts/${cartId}/line-items/${lineId}`,
+        {
+          payload: {
+            quantity: 3,
+            metadata: {
+              potato: "tomato",
+            },
+          },
+        }
+      )
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls CartService updateLineItem", () => {
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledWith(
+        IdMap.getId("fr-cart"),
+        IdMap.getId("existingLine"),
+        {
+          metadata: {
+            potato: "tomato",
+          },
+          quantity: 3,
+          region_id: expect.any(String),
+          variant_id: expect.any(String),
+        }
+      )
+    })
+
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
+    })
+
+    it("returns the cart", () => {
+      expect(subject.body.cart.id).toEqual(IdMap.getId("fr-cart"))
+    })
+  })
+
+  describe("uses empty metadata if no metadata in request body", () => {
+    let subject
+
+    beforeAll(async () => {
+      const cartId = IdMap.getId("cartLineItemMetadata")
+      const lineId = IdMap.getId("lineWithMetadata")
+      subject = await request(
+        "POST",
+        `/store/carts/${cartId}/line-items/${lineId}`,
+        {
+          payload: {
+            quantity: 3,
+          },
+        }
+      )
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls CartService updateLineItem", () => {
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledWith(
+        IdMap.getId("cartLineItemMetadata"),
+        IdMap.getId("lineWithMetadata"),
+        {
+          metadata: {},
+          quantity: 3,
+          region_id: expect.any(String),
+          variant_id: expect.any(String),
+        }
+      )
+    })
+
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
+    })
+
+    it("returns the cart", () => {
+      expect(subject.body.cart.id).toEqual(IdMap.getId("cartLineItemMetadata"))
+    })
+  })
+
+  describe("uses metadata if in request body", () => {
+    let subject
+
+    beforeAll(async () => {
+      const cartId = IdMap.getId("cartLineItemMetadata")
+      const lineId = IdMap.getId("lineWithMetadata")
+      subject = await request(
+        "POST",
+        `/store/carts/${cartId}/line-items/${lineId}`,
+        {
+          payload: {
+            quantity: 3,
+            metadata: { test: "this" },
+          },
+        }
+      )
+    })
+
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("calls CartService updateLineItem", () => {
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledTimes(1)
+      expect(CartServiceMock.updateLineItem).toHaveBeenCalledWith(
+        IdMap.getId("cartLineItemMetadata"),
+        IdMap.getId("lineWithMetadata"),
+        {
+          metadata: { test: "this" },
+          quantity: 3,
+          region_id: expect.any(String),
+          variant_id: expect.any(String),
+        }
+      )
+    })
+
+    it("returns 200", () => {
+      expect(subject.status).toEqual(200)
+    })
+
+    it("returns the cart", () => {
+      expect(subject.body.cart.id).toEqual(IdMap.getId("cartLineItemMetadata"))
     })
   })
 })

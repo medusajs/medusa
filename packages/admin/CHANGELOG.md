@@ -1,5 +1,16 @@
 # @medusajs/admin
 
+## 6.0.3
+
+### Patch Changes
+
+- [#4552](https://github.com/medusajs/medusa/pull/4552) [`221f62dc4`](https://github.com/medusajs/medusa/commit/221f62dc4cf4a30505bf3e15034c735663659ade) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Omit PriceList prices from variant update
+
+- [#4516](https://github.com/medusajs/medusa/pull/4516) [`bfc0ea569`](https://github.com/medusajs/medusa/commit/bfc0ea5695b8999a63df9ba58409e3e139473afa) Thanks [@fPolic](https://github.com/fPolic)! - feat(admin-ui): variant prices bulk editor
+
+- Updated dependencies [[`aae4b3ad3`](https://github.com/medusajs/medusa/commit/aae4b3ad371e0b7e8e0007a6ef21ee66eda665f1), [`55db91415`](https://github.com/medusajs/medusa/commit/55db914151fc70cf0abe8a71dd8e17067cce3908), [`221f62dc4`](https://github.com/medusajs/medusa/commit/221f62dc4cf4a30505bf3e15034c735663659ade), [`bfc0ea569`](https://github.com/medusajs/medusa/commit/bfc0ea5695b8999a63df9ba58409e3e139473afa)]:
+  - @medusajs/admin-ui@1.9.2
+
 ## 6.0.2
 
 ### Patch Changes

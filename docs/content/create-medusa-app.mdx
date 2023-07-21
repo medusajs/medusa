@@ -14,6 +14,7 @@ import OtherErrorsSection from "./troubleshooting/create-medusa-app-errors/_othe
 import EagainError from "./troubleshooting/create-medusa-app-errors/_eagain-error.md"
 import ConnectionErrorSection from './troubleshooting/database-errors/_connection-error.md'
 import FreshInstallationSection from './troubleshooting/awilix-resolution-error/_fresh-installation.md'
+import EaddrinuseSection from './troubleshooting/eaddrinuse.md'
 
 # Install Medusa with create-medusa-app
 
@@ -149,6 +150,10 @@ Based on what you're building, you can find a development path for you in the Re
 
 <Troubleshooting
   sections={[
+    {
+      title: 'Error: EADDRINUSE',
+      content: <EaddrinuseSection />
+    },
     {
       title: "EAGAIN error",
       content: <EagainError />

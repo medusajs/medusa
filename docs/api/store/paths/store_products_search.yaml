@@ -2,26 +2,13 @@ post:
   operationId: PostProductsSearch
   summary: Search Products
   description: Run a search query on products using the search engine installed on Medusa
-  parameters:
-    - in: query
-      name: q
-      required: true
-      description: The query to run the search with.
-      schema:
-        type: string
-    - in: query
-      name: offset
-      description: How many products to skip in the result.
-      schema:
-        type: integer
-    - in: query
-      name: limit
-      description: Limit the number of products returned.
-      schema:
-        type: integer
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/StorePostSearchReq.yaml
   x-codegen:
     method: search
-    queryParams: StorePostSearchReq
   x-codeSamples:
     - lang: JavaScript
       label: JS Client

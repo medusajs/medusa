@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.3
+
+### Patch Changes
+
+- [#4543](https://github.com/medusajs/medusa/pull/4543) [`f32588122`](https://github.com/medusajs/medusa/commit/f32588122733a4dca54d06a53d18e14ad8ed021b) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(create-medusa-app): improved error messages
+
 ## 1.0.2
 
 ### Patch Changes

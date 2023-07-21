@@ -1230,7 +1230,7 @@ You will most likely need to interact with the Medusa backend  from your Widgets
 
 :::note
 
-Make sure to also install the Medusa React package first if you’re intending to use it, as explained in the [Medusa React guide](../medusa-react/overview.md).
+Make sure to also install the Medusa React package first if you’re intending to use it, as explained in the [Medusa React guide](../medusa-react/overview.mdx).
 
 :::
 
@@ -1273,7 +1273,7 @@ export const config: WidgetConfig = {
 export default ProductWidget
 ```
 
-You can also use `medusa-react` to interact with custom endpoints using the [createCustomAdminHooks utility function](../medusa-react/overview.md#custom-hooks).
+You can also use `medusa-react` to interact with custom endpoints using the [createCustomAdminHooks utility function](../medusa-react/overview.mdx#custom-hooks).
 
 ---
 
