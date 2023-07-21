@@ -3,38 +3,16 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import {
-  attachInventoryItems,
-  createInventoryItems,
-  createProducts,
-  removeInventoryItems,
-  removeProducts,
-} from "../functions"
-import { emptyHandler, exportWorkflow, pipe } from "../helper"
+import { createProducts, removeProducts } from "../functions"
+import { exportWorkflow, pipe } from "../helper"
 
 enum Actions {
   createProduct = "createProduct",
-  createPrices = "createPrices",
-  attachToSalesChannel = "attachToSalesChannel",
-  createInventoryItems = "createInventoryItems",
-  attachInventoryItems = "attachInventoryItems",
 }
 
 const workflowSteps: TransactionStepsDefinition = {
   next: {
     action: Actions.createProduct,
-    next: {
-      action: Actions.attachToSalesChannel,
-      next: {
-        action: Actions.createPrices,
-        next: {
-          action: Actions.createInventoryItems,
-          next: {
-            action: Actions.attachInventoryItems,
-          },
-        },
-      },
-    },
   },
 }
 
@@ -46,7 +24,7 @@ const handlers = new Map([
         {
           inputAlias: InputAlias.Products,
           invoke: {
-            from: Actions.createProduct,
+            from: InputAlias.Products,
             alias: InputAlias.Products,
           },
         },
@@ -61,48 +39,6 @@ const handlers = new Map([
         },
         removeProducts
       ),
-    },
-  ],
-
-  [
-    Actions.createInventoryItems,
-    {
-      invoke: pipe(
-        {
-          invoke: {
-            from: Actions.createProduct,
-            alias: InputAlias.Products,
-          },
-        },
-        createInventoryItems
-      ),
-      compensate: pipe(
-        {
-          invoke: {
-            from: Actions.createInventoryItems,
-            alias: InputAlias.InventoryItems,
-          },
-        },
-        removeInventoryItems
-      ),
-    },
-  ],
-
-  [
-    Actions.attachInventoryItems,
-    {
-      invoke: pipe(
-        {
-          invoke: [
-            {
-              from: Actions.createInventoryItems,
-              alias: InputAlias.InventoryItems,
-            },
-          ],
-        },
-        attachInventoryItems
-      ),
-      compensate: emptyHandler,
     },
   ],
 ])
