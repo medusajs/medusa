@@ -11,31 +11,35 @@ import { MedusaModule } from "@medusajs/modules-sdk"
 import { Workflows } from "../definitions"
 import { ulid } from "ulid"
 
-type FlowRunOptions<TData = unknown> = {
+export type FlowRunOptions<TData = unknown> = {
   input?: TData
   context?: Context
   resultFrom?: string | string[]
   throwOnError?: boolean
 }
 
-type WorkflowResult = {
+export type WorkflowResult<TResult = unknown> = {
   errors: TransactionStepError[]
   transaction: DistributedTransaction
-  result: unknown
+  result: TResult
 }
 
-export const exportWorkflow = <TData = unknown>(
+export const exportWorkflow = <TData = unknown, TResult = unknown>(
   workflowId: Workflows,
   defaultResult?: string
 ) => {
-  return function <TDataOverride = undefined>(
+  return function <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
   ): Omit<LocalWorkflow, "run"> & {
     run: (
       args?: FlowRunOptions<
         TDataOverride extends undefined ? TData : TDataOverride
       >
-    ) => Promise<WorkflowResult>
+    ) => Promise<
+      WorkflowResult<
+        TResultOverride extends undefined ? TResult : TResultOverride
+      >
+    >
   } {
     if (!container) {
       container = MedusaModule.getLoadedModules().map(
@@ -51,7 +55,7 @@ export const exportWorkflow = <TData = unknown>(
         throwOnError: true,
         resultFrom: defaultResult,
       }
-    ): Promise<WorkflowResult> => {
+    ) => {
       const transaction = await originalRun(
         context?.transactionId ?? ulid(),
         input,
@@ -68,7 +72,7 @@ export const exportWorkflow = <TData = unknown>(
         throw new Error(errorMessage)
       }
 
-      let result: string | string[] | undefined = undefined
+      let result: any = undefined
 
       if (resultFrom) {
         if (Array.isArray(resultFrom)) {
@@ -93,7 +97,11 @@ export const exportWorkflow = <TData = unknown>(
         args?: FlowRunOptions<
           TDataOverride extends undefined ? TData : TDataOverride
         >
-      ) => Promise<WorkflowResult>
+      ) => Promise<
+        WorkflowResult<
+          TResultOverride extends undefined ? TResult : TResultOverride
+        >
+      >
     }
   }
 }
