@@ -38,7 +38,78 @@ export default (rootDirectory, options) => {
 This exports a function that returns an Express router. The function receives two parameters:
 
 - `rootDirectory` is the absolute path to the root directory that your backend is running from.
-- `options` is an object that contains the options exported from `medusa-config.js`. If your API route is part of a plugin, then it will contain the plugin's options instead.
+- `options` is an object that contains the configurations exported from `medusa-config.js`. If your API route is part of a plugin, then it will contain the plugin's options instead.
+
+### Retrieve Medusa Config
+
+As mentioned, the second parameter `options` includes the configurations exported from `medusa-config.js`. However, in plugins it only includes the plugin's options.
+
+If you need to access the Medusa configuration in your endpoint, you can use the `getConfigFile` method imported from `medusa-core-utils`. It accepts the following parameters:
+
+1. `rootDirectory`: The first parameter is a string indicating root directory of your Medusa backend.
+2. `config`: The second parameter is a string indicating the name of the config file, which should be `medusa-config` unless you change it.
+
+The function returns an object with the following properties:
+
+1. `configModule`: An object containing the configurations exported from `medusa-config.js`.
+2. `configFilePath`: A string indicating absolute path to the configuration file.
+3. `error`: if any errors occur, they'll be included as the value of this property. Otherwise, its value will be `undefined`.
+
+Here's an example of retrieving the configurations within an endpoint using `getConfigFile`:
+
+```ts title=src/api/index.ts
+import { Router } from "express"
+import { ConfigModule } from "@medusajs/medusa"
+import { getConfigFile } from "medusa-core-utils"
+
+export default (rootDirectory) => {
+  const router = Router()
+  const { configModule } = getConfigFile<ConfigModule>(
+    rootDirectory,
+    "medusa-config"
+  )
+
+  router.get("/store-cors", (req, res) => {
+    res.json({
+      store_cors: configModule.projectConfig.store_cors,
+    })
+  })
+
+  return router
+}
+```
+
+Notice that `getConfigFile` is a generic function. So, if you're using TypeScript, you should pass it the type `ConfigModule` imported from `@medusajs/medusa`.
+
+If you're accessing custom configurations, you'll need to create a new type that defines these configurations. For example:
+
+```ts title=src/api/index.ts
+import { Router } from "express"
+import { ConfigModule } from "@medusajs/medusa"
+import { getConfigFile } from "medusa-core-utils"
+
+type MyConfigModule = ConfigModule & {
+  projectConfig: {
+    custom_config?: string
+  }
+}
+
+export default (rootDirectory) => {
+  const router = Router()
+  const { configModule } = getConfigFile<MyConfigModule>(
+    rootDirectory,
+    "medusa-config"
+  )
+
+  router.get("/hello", (req, res) => {
+    res.json({
+      custom_config: configModule.projectConfig.custom_config,
+    })
+  })
+
+  return router
+}
+```
 
 ### Defining Multiple Routes or Middlewares
 
