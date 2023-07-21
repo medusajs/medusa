@@ -3,6 +3,7 @@ import {
   DistributedTransaction,
   LocalWorkflow,
   TransactionState,
+  TransactionStepError,
 } from "@medusajs/orchestration"
 
 import { EOL } from "os"
@@ -28,7 +29,11 @@ export const exportWorkflow = <TData = unknown>(
       args: FlowRunOptions<
         TDataOverride extends undefined ? TData : TDataOverride
       >
-    ) => Promise<DistributedTransaction>
+    ) => Promise<{
+      errors: TransactionStepError[]
+      transaction: DistributedTransaction
+      result: unknown
+    }>
   } {
     if (!container) {
       container = MedusaModule.getLoadedModules().map(
