@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "rootDir": "..",
     "target": "es5",
     "lib": [
       "dom",
@@ -28,7 +29,8 @@
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "typeRoots": ["./node_modules/@types", "./types"]
   },
   "include": [
     "next-env.d.ts",
@@ -41,6 +43,7 @@
   "exclude": [
     "node_modules",
     "public",
-    "specs"
+    "specs",
+    "../../node_modules"
   ]
 }

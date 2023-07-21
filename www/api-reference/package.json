@@ -14,6 +14,7 @@
     "@mdx-js/loader": "^2.3.0",
     "@mdx-js/react": "^2.3.0",
     "@next/mdx": "^13.4.4",
+    "@octokit/request": "^8.1.1",
     "@readme/openapi-parser": "^2.5.0",
     "@segment/analytics-next": "^1.53.1",
     "@types/mdx": "^2.0.5",
@@ -49,6 +50,7 @@
   },
   "devDependencies": {
     "@types/mapbox__rehype-prism": "^0.8.0",
-    "@types/react-transition-group": "^4.4.6"
+    "@types/react-transition-group": "^4.4.6",
+    "@types/uuid": "^9.0.2"
   }
 }

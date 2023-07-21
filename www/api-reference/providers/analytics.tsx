@@ -1,7 +1,7 @@
 "use client"
 
 import React, { createContext, useContext, useEffect, useState } from "react"
-import { AnalyticsBrowser } from "@segment/analytics-next"
+import { Analytics, AnalyticsBrowser } from "@segment/analytics-next"
 import { Area } from "@/types/openapi"
 
 export type ExtraData = {
@@ -10,7 +10,8 @@ export type ExtraData = {
 }
 
 type AnalyticsContextType = {
-  analytics: AnalyticsBrowser | null
+  loaded: boolean
+  analytics: Analytics | null
   track: (
     event: string,
     options?: Record<string, any>,
@@ -27,23 +28,34 @@ type AnalyticsProviderProps = {
 const LOCAL_STORAGE_KEY = "ajs_anonymous_id"
 
 const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children }) => {
-  const [analytics, setAnalytics] = useState<AnalyticsBrowser | null>(null)
+  // loaded is used to ensure that a connection has been made to segment
+  // even if it failed. This is to ensure that the connection isn't
+  // continuously retried
+  const [loaded, setLoaded] = useState<boolean>(false)
+  const [analytics, setAnalytics] = useState<Analytics | null>(null)
+  const analyticsBrowser = new AnalyticsBrowser()
 
   const init = () => {
-    if (!analytics) {
-      // setAnalytics(
-      //   AnalyticsBrowser.load(
-      //     { writeKey: process.env.NEXT_PUBLIC_SEGMENT_API_KEY || "temp" },
-      //     {
-      //       initialPageview: true,
-      //       user: {
-      //         localStorage: {
-      //           key: LOCAL_STORAGE_KEY,
-      //         },
-      //       },
-      //     }
-      //   )
-      // )
+    if (!loaded) {
+      analyticsBrowser
+        .load(
+          { writeKey: process.env.NEXT_PUBLIC_SEGMENT_API_KEY || "temp" },
+          {
+            initialPageview: true,
+            user: {
+              localStorage: {
+                key: LOCAL_STORAGE_KEY,
+              },
+            },
+          }
+        )
+        .then((instance) => {
+          setAnalytics(instance[0])
+        })
+        .catch((e) =>
+          console.error(`Could not connect to Segment. Error: ${e}`)
+        )
+        .finally(() => setLoaded(true))
     }
   }
 
@@ -53,12 +65,11 @@ const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children }) => {
     callback?: () => void
   ) => {
     if (analytics) {
-      const userId = (await analytics.user()).anonymousId
       void analytics.track(
         event,
         {
           ...options,
-          uuid: userId,
+          uuid: analytics.user().anonymousId(),
         },
         callback
       )
@@ -79,6 +90,7 @@ const AnalyticsProvider: React.FC<AnalyticsProviderProps> = ({ children }) => {
       value={{
         analytics,
         track,
+        loaded,
       }}
     >
       {children}

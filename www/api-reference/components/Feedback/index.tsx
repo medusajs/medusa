@@ -49,10 +49,10 @@ const Feedback: React.FC<FeedbackProps> = ({
     : inlineFeedbackRef
 
   const pathname = usePathname()
-  const { analytics, track } = useAnalytics()
+  const { loaded, track } = useAnalytics()
 
   function handleFeedback(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    if (!analytics) {
+    if (!loaded) {
       return
     }
     const feedback = (e.target as Element).classList.contains("positive")

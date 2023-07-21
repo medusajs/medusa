@@ -188,6 +188,7 @@
     @apply active:!bg-no-image active:bg-medusa-button-neutral-pressed dark:active:bg-medusa-button-neutral-pressed-dark;
     @apply focus:shadow-focus dark:focus:shadow-focus-dark;
     @apply disabled:!bg-no-image disabled:bg-medusa-button-disabled dark:disabled:bg-medusa-button-disabled-dark;
+    @apply disabled:cursor-not-allowed;
     @apply border border-solid border-medusa-border-neutral-buttons dark:border-medusa-border-neutral-buttons-dark;
     @apply text-label-small-plus text-medusa-text-base dark:text-medusa-text-base-dark;
     @apply hover:text-medusa-text-base dark:hover:text-medusa-text-base-dark;
@@ -201,6 +202,7 @@
     @apply active:!bg-no-image active:bg-medusa-button-inverted-pressed dark:active:bg-medusa-button-inverted-pressed-dark;
     @apply focus:shadow-focus dark:focus:shadow-focus-dark;
     @apply disabled:!bg-no-image disabled:bg-medusa-button-disabled dark:disabled:bg-medusa-button-disabled-dark;
+    @apply disabled:cursor-not-allowed;
     @apply text-label-small-plus text-medusa-text-on-color dark:text-medusa-text-on-inverted-dark;
     @apply border-transparent border;
   }
