@@ -84,7 +84,7 @@ describe("WorkflowManager", () => {
   })
 
   it("should begin a transaction and returns its final state", async () => {
-    const transaction = await flow.begin("create-product", "t-id", {
+    const transaction = await flow.run("create-product", "t-id", {
       input: 123,
     })
 
@@ -98,7 +98,7 @@ describe("WorkflowManager", () => {
   })
 
   it("should begin a transaction and revert it when fail", async () => {
-    const transaction = await flow.begin("broken-delivery", "t-id")
+    const transaction = await flow.run("broken-delivery", "t-id")
 
     expect(handlers.get("foo").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("broken").invoke).toHaveBeenCalledTimes(1)
@@ -110,7 +110,7 @@ describe("WorkflowManager", () => {
   })
 
   it("should continue an asyncronous transaction after reporting a successful step", async () => {
-    const transaction = await flow.begin("deliver-product", "t-id")
+    const transaction = await flow.run("deliver-product", "t-id")
 
     expect(handlers.get("foo").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("callExternal").invoke).toHaveBeenCalledTimes(1)
@@ -129,7 +129,7 @@ describe("WorkflowManager", () => {
   })
 
   it("should revert an asyncronous transaction after reporting a failure step", async () => {
-    const transaction = await flow.begin("deliver-product", "t-id")
+    const transaction = await flow.run("deliver-product", "t-id")
 
     expect(handlers.get("foo").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("callExternal").invoke).toHaveBeenCalledTimes(1)
@@ -165,7 +165,7 @@ describe("WorkflowManager", () => {
 
     WorkflowManager.update("create-product", definition, additionalHandlers)
 
-    const transaction = await flow.begin("create-product", "t-id")
+    const transaction = await flow.run("create-product", "t-id")
 
     expect(handlers.get("foo").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("bar").invoke).toHaveBeenCalledTimes(1)
