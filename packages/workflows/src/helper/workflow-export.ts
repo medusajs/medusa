@@ -3,16 +3,23 @@ import {
   DistributedTransaction,
   LocalWorkflow,
   TransactionState,
+  TransactionStepError,
 } from "@medusajs/orchestration"
 import { InputAlias, Workflows } from "../definitions"
 
 import { MedusaModule } from "@medusajs/modules-sdk"
 import { ulid } from "ulid"
+import { EOL } from "os"
 
 type FlowRunOptions = {
   input?: unknown
   context?: Context
-  onFail?: (errorMessage: string) => void
+  onFail?: ({
+    errors,
+  }: {
+    errors: TransactionStepError[]
+    transaction: DistributedTransaction
+  }) => void
 }
 
 export const exportWorkflow = (
@@ -37,20 +44,20 @@ export const exportWorkflow = (
     flow.run = async ({ input, context, onFail }: FlowRunOptions) => {
       const transaction = await flow.begin(
         context?.transactionId ?? ulid(),
-        inputAlias ? { [inputAlias]: input } : input,
+        input,
         context
       )
 
       const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
       if (failedStatus.includes(transaction.getState())) {
-        const errorMessage = transaction
-          .getErrors()
-          .map((err) => err.error?.message)
-          .join("\n")
+        const errors = transaction.getErrors()
 
         if (onFail) {
-          await onFail(errorMessage)
+          await onFail({ errors, transaction })
         } else {
+          const errorMessage = errors
+            ?.map((err) => `${err.error?.message}${EOL}${err.error?.stack}`)
+            ?.join(`${EOL}`)
           throw new Error(errorMessage)
         }
       }
