@@ -1,3 +1,4 @@
+import { EOL } from "os"
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
   DistributedTransaction,
@@ -37,7 +38,7 @@ export const exportWorkflow = (
     flow.run = async ({ input, context, onFail }: FlowRunOptions) => {
       const transaction = await flow.begin(
         context?.transactionId ?? ulid(),
-        inputAlias ? { [inputAlias]: input } : input,
+        input,
         context
       )
 
@@ -45,8 +46,8 @@ export const exportWorkflow = (
       if (failedStatus.includes(transaction.getState())) {
         const errorMessage = transaction
           .getErrors()
-          .map((err) => err.error?.message)
-          .join("\n")
+          ?.map((err) => `${err.error?.message}${EOL}${err.error?.stack}`)
+          ?.join(`${EOL}`)
 
         if (onFail) {
           await onFail(errorMessage)
