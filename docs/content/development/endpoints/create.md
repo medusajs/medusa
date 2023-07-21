@@ -40,7 +40,58 @@ This exports a function that returns an Express router. The function receives tw
 - `rootDirectory` is the absolute path to the root directory that your backend is running from.
 - `options` is an object that contains the configurations exported from `medusa-config.js`. If your API route is part of a plugin, then it will contain the plugin's options instead.
 
-### Retrieve Medusa Config
+### Defining Multiple Routes or Middlewares
+
+Instead of returning an Express router in the function, you can return an array of routes and [middlewares](./add-middleware.mdx).
+
+For example:
+
+```ts title=src/api/index.ts
+import { Router } from "express"
+
+export default (rootDirectory, options) => {
+  const router = Router()
+
+  router.get("/hello", (req, res) => {
+    res.json({
+      message: "Welcome to My Store!",
+    })
+  })
+
+  // you can also define the middleware
+  // in another file and import it
+  const middleware = (res, req, next) => {
+    // TODO define global middleware
+    console.log("hello from middleware")
+    next()
+  }
+
+  const anotherRouter = Router()
+  anotherRouter.get("/store/*", (req, res, next) => {
+    // TODO perform an actions for all store endpoints
+    next()
+  })
+
+  return [middleware, router, anotherRouter]
+}
+```
+
+This allows you to export multiple routers and middlewares from the same file. You can also import the routers, routes, and middlewares from other files, then import them in `src/api/index.ts` instead of defining them within the same file.
+
+### Endpoints Path
+
+Your endpoint can be under any path you wish.
+
+By Medusa’s conventions:
+
+- All Storefront REST APIs are prefixed by `/store`. For example, the `/store/products` endpoint lets you retrieve the products to display them on your storefront.
+- All Admin REST APIs are prefixed by `/admin`. For example, the `/admin/products` endpoint lets you retrieve the products to display them on your Admin.
+
+You can also create endpoints that don't reside under these two prefixes, similar to the `hello` endpoint in the previous example.
+
+---
+
+## Retrieve Medusa Config
 
 As mentioned, the second parameter `options` includes the configurations exported from `medusa-config.js`. However, in plugins it only includes the plugin's options.
 
@@ -111,55 +162,6 @@ export default (rootDirectory) => {
 }
 ```
 
-### Defining Multiple Routes or Middlewares
-
-Instead of returning an Express router in the function, you can return an array of routes and [middlewares](./add-middleware.mdx).
-
-For example:
-
-```ts title=src/api/index.ts
-import { Router } from "express"
-
-export default (rootDirectory, options) => {
-  const router = Router()
-
-  router.get("/hello", (req, res) => {
-    res.json({
-      message: "Welcome to My Store!",
-    })
-  })
-
-  // you can also define the middleware
-  // in another file and import it
-  const middleware = (res, req, next) => {
-    // TODO define global middleware
-    console.log("hello from middleware")
-    next()
-  }
-
-  const anotherRouter = Router()
-  anotherRouter.get("/store/*", (req, res, next) => {
-    // TODO perform an actions for all store endpoints
-    next()
-  })
-
-  return [middleware, router, anotherRouter]
-}
-```
-
-This allows you to export multiple routers and middlewares from the same file. You can also import the routers, routes, and middlewares from other files, then import them in `src/api/index.ts` instead of defining them within the same file.
-
-### Endpoints Path
-
-Your endpoint can be under any path you wish.
-
-By Medusa’s conventions:
-
-- All Storefront REST APIs are prefixed by `/store`. For example, the `/store/products` endpoint lets you retrieve the products to display them on your storefront.
-- All Admin REST APIs are prefixed by `/admin`. For example, the `/admin/products` endpoint lets you retrieve the products to display them on your Admin.
-
-You can also create endpoints that don't reside under these two prefixes, similar to the `hello` endpoint in the previous example.
-
 ---
 
 ## CORS Configuration
@@ -219,6 +221,42 @@ router.get("/admin/hello", cors(corsOptions), (req, res) => {
   // ...
 })
 ```
+
+---
+
+## Parse Request Body Parameters
+
+If you want to accept request body parameters, you need to pass express middlewares that parse the payload type to your router.
+
+For example:
+
+```ts
+import bodyParser from "body-parser"
+import express, { Router } from "express"
+
+
+export default (rootDirectory, pluginOptions) => {
+  const router = Router()
+
+  router.use(express.json())
+  router.use(express.urlencoded({ extended: true }))
+
+  router.post("/store/hello", (req, res) => {
+    res.json({
+      message: req.body.name,
+    })
+  })
+
+  return router
+}
+```
+
+In the code snippet above, you use the following middlewares:
+
+- `express.json()`: parses requests with JSON payloads
+- `express.urlencoded()`: parses requests with urlencoded payloads.
+
+You can learn about other available middlewares in the [Express documentation](https://expressjs.com/en/api.html#express).
 
 ---
 
