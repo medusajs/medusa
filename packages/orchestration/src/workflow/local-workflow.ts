@@ -121,8 +121,8 @@ export class LocalWorkflow {
 
   addAction(
     action: string,
-    options: Partial<TransactionStepsDefinition> = {},
-    handler: StepHandler
+    handler: StepHandler,
+    options: Partial<TransactionStepsDefinition> = {}
   ) {
     if (!handler?.invoke) {
       throw new Error(
@@ -140,8 +140,8 @@ export class LocalWorkflow {
   replaceAction(
     existingAction: string,
     action: string,
-    options: Partial<TransactionStepsDefinition> = {},
-    handler: StepHandler
+    handler: StepHandler,
+    options: Partial<TransactionStepsDefinition> = {}
   ) {
     if (!handler?.invoke) {
       throw new Error(
@@ -165,8 +165,8 @@ export class LocalWorkflow {
   insertActionBefore(
     existingAction: string,
     action: string,
-    options: Partial<TransactionStepsDefinition> = {},
-    handler: StepHandler
+    handler: StepHandler,
+    options: Partial<TransactionStepsDefinition> = {}
   ) {
     if (!handler?.invoke) {
       throw new Error(
@@ -184,8 +184,8 @@ export class LocalWorkflow {
   insertActionAfter(
     existingAction: string,
     action: string,
-    options: Partial<TransactionStepsDefinition> = {},
-    handler: StepHandler
+    handler: StepHandler,
+    options: Partial<TransactionStepsDefinition> = {}
   ) {
     if (!handler?.invoke) {
       throw new Error(
@@ -203,8 +203,8 @@ export class LocalWorkflow {
   appendAction(
     action: string,
     to: string,
-    options: Partial<TransactionStepsDefinition> = {},
-    handler: StepHandler
+    handler: StepHandler,
+    options: Partial<TransactionStepsDefinition> = {}
   ) {
     if (!handler?.invoke) {
       throw new Error(

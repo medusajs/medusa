@@ -158,7 +158,7 @@ describe("WorkflowManager", () => {
       compensate: jest.fn().mockResolvedValue({}),
     }
 
-    flow.insertActionBefore("bar", "xor", { maxRetries: 3 }, additionalHandler)
+    flow.insertActionBefore("bar", "xor", additionalHandler, { maxRetries: 3 })
 
     const transaction = await flow.run("t-id")
 
