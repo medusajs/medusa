@@ -123,7 +123,8 @@ const DraftOrderDetails = () => {
 
   const { getWidgets } = useWidgets()
 
-  const widgets = getWidgets("draft_order.details")
+  const afterWidgets = getWidgets("draft_order.details.after")
+  const beforeWidgets = getWidgets("draft_order.details.before")
 
   const { cart } = draft_order || {}
   const { region } = cart || {}
@@ -142,6 +143,21 @@ const DraftOrderDetails = () => {
       ) : (
         <div className="flex space-x-4">
           <div className="flex h-full w-full flex-col">
+            {beforeWidgets?.length > 0 && (
+              <div className="mb-4 flex w-full flex-col gap-y-4">
+                {beforeWidgets.map((w, i) => {
+                  return (
+                    <WidgetContainer
+                      key={i}
+                      widget={w}
+                      injectionZone="draft_order.details.before"
+                      entity={draft_order}
+                    />
+                  )
+                })}
+              </div>
+            )}
+
             <BodyCard
               className={"mb-4 min-h-[200px] w-full"}
               title={`Order #${draft_order.display_id}`}
@@ -365,14 +381,14 @@ const DraftOrderDetails = () => {
                 </div>
               </div>
             </BodyCard>
-            {widgets?.length > 0 && (
+            {afterWidgets?.length > 0 && (
               <div className="mb-4 flex w-full flex-col gap-y-4">
-                {widgets.map((w, i) => {
+                {afterWidgets.map((w, i) => {
                   return (
                     <WidgetContainer
                       key={i}
                       widget={w}
-                      injectionZone="draft_order.details"
+                      injectionZone="draft_order.details.after"
                       entity={draft_order}
                     />
                   )
