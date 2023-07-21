@@ -157,21 +157,22 @@ Protected routes are routes that should be accessible by logged-in customers or 
 
 ### Protect Store Routes
 
-To make a storefront route protected, first, import the `authenticate-customer` middleware:
+To make a storefront route protected, first, import the `authenticateCustomer` middleware:
 
 <!-- eslint-disable max-len -->
 
 ```ts
-import 
-  authenticate 
-from "@medusajs/medusa/dist/api/middlewares/authenticate-customer"
+import { authenticateCustomer } from "@medusajs/medusa"
 ```
 
 Then, add the middleware to your route:
 
 ```ts
 router.options("/store/hello", cors(corsOptions))
-router.get("/store/hello", cors(corsOptions), authenticate(), 
+router.get(
+  "/store/hello",
+  cors(corsOptions),
+  authenticateCustomer(), 
   async (req, res) => {
     if (req.user) {
       // user is logged in
@@ -193,9 +194,7 @@ To make an admin route protected, first, import the `authenticate` middleware:
 <!-- eslint-disable max-len -->
 
 ```ts
-import 
-  authenticate 
-from "@medusajs/medusa/dist/api/middlewares/authenticate"
+import { authenticate } from "@medusajs/medusa"
 ```
 
 Then, add the middleware to your route:
