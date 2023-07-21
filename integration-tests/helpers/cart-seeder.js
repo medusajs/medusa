@@ -20,6 +20,8 @@ const {
 } = require("@medusajs/medusa")
 
 module.exports = async (dataSource, data = {}) => {
+  const salesChannelId = data?.sales_channel_id
+
   const yesterday = ((today) => new Date(today.setDate(today.getDate() - 1)))(
     new Date()
   )
@@ -641,6 +643,7 @@ module.exports = async (dataSource, data = {}) => {
     id: "test-cart",
     customer_id: "some-customer",
     email: "some-customer@email.com",
+    sales_channel_id: salesChannelId,
     shipping_address: {
       id: "test-shipping-address",
       first_name: "lebron",
@@ -658,6 +661,7 @@ module.exports = async (dataSource, data = {}) => {
     customer_id: "some-customer",
     email: "some-customer@email.com",
     discounts: [totalFixed100],
+    sales_channel_id: salesChannelId,
     shipping_address: {
       id: "test-shipping-address",
       first_name: "lebron",
@@ -675,6 +679,7 @@ module.exports = async (dataSource, data = {}) => {
     customer_id: "some-customer",
     email: "some-customer@email.com",
     discounts: [itemFixed200],
+    sales_channel_id: salesChannelId,
     shipping_address: {
       id: "test-shipping-address",
       first_name: "lebron",
@@ -692,6 +697,7 @@ module.exports = async (dataSource, data = {}) => {
     customer_id: "some-customer",
     email: "some-customer@email.com",
     discounts: [tenPercent],
+    sales_channel_id: salesChannelId,
     shipping_address: {
       id: "test-shipping-address",
       first_name: "lebron",
@@ -709,6 +715,7 @@ module.exports = async (dataSource, data = {}) => {
     customer_id: "some-customer",
     email: "some-customer@email.com",
     discounts: [itemPerc15],
+    sales_channel_id: salesChannelId,
     shipping_address: {
       id: "test-shipping-address",
       first_name: "lebron",
@@ -725,6 +732,7 @@ module.exports = async (dataSource, data = {}) => {
     id: "test-cart-2",
     customer_id: "some-customer",
     email: "some-customer@email.com",
+    sales_channel_id: salesChannelId,
     shipping_address: {
       id: "test-shipping-address",
       first_name: "lebron",
@@ -741,6 +749,7 @@ module.exports = async (dataSource, data = {}) => {
     type: "swap",
     customer_id: "some-customer",
     email: "some-customer@email.com",
+    sales_channel_id: salesChannelId,
     shipping_address: {
       id: "test-shipping-address",
       first_name: "lebron",

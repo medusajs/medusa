@@ -9,7 +9,7 @@ const {
 module.exports = async (dataSource, data = {}) => {
   const manager = dataSource.manager
 
-  let orderWithClaim = manager.create(Order, {
+  const orderWithClaim = manager.create(Order, {
     id: "order-with-claim",
     customer_id: "test-customer",
     email: "test@email.com",
