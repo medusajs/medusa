@@ -152,20 +152,19 @@ describe("WorkflowManager", () => {
 
   it("should update a flow with a new step and a new handler", async () => {
     const flow = new LocalWorkflow("create-product", container)
-    flow.insertActionBefore("bar", "xor", { maxRetries: 3 })
 
-    const additionalHandlers = new Map()
-    additionalHandlers.set("xor", {
+    const additionalHandler = {
       invoke: jest.fn().mockResolvedValue({ done: true }),
       compensate: jest.fn().mockResolvedValue({}),
-    })
-    flow.commit(additionalHandlers)
+    }
+
+    flow.insertActionBefore("bar", "xor", { maxRetries: 3 }, additionalHandler)
 
     const transaction = await flow.begin("t-id")
 
     expect(handlers.get("foo").invoke).toHaveBeenCalledTimes(1)
     expect(handlers.get("bar").invoke).toHaveBeenCalledTimes(1)
-    expect(additionalHandlers.get("xor").invoke).toHaveBeenCalledTimes(1)
+    expect(additionalHandler.invoke).toHaveBeenCalledTimes(1)
 
     expect(transaction.getState()).toBe(TransactionState.DONE)
 

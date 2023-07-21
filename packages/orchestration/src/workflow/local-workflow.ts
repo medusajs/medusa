@@ -1,5 +1,9 @@
 import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
-import { DistributedTransaction, TransactionOrchestrator } from "../transaction"
+import {
+  DistributedTransaction,
+  TransactionOrchestrator,
+  TransactionStepsDefinition,
+} from "../transaction"
 import {
   WorkflowDefinition,
   WorkflowManager,
@@ -10,14 +14,18 @@ import { OrchestratorBuilder } from "../transaction/orchestrator-builder"
 import { asValue } from "awilix"
 import { createMedusaContainer } from "@medusajs/utils"
 
-export class LocalWorkflow extends OrchestratorBuilder {
+type StepHandler = {
+  invoke: WorkflowStepHandler
+  compensate?: WorkflowStepHandler
+}
+
+export class LocalWorkflow {
   protected container: MedusaContainer
   private workflowId: string
+  private flow: OrchestratorBuilder
   private workflow: WorkflowDefinition
-  private handlers: Map<
-    string,
-    { invoke: WorkflowStepHandler; compensate?: WorkflowStepHandler }
-  >
+  private handlers: Map<string, StepHandler>
+  private hasChanges = false
 
   constructor(
     workflowId: string,
@@ -28,8 +36,7 @@ export class LocalWorkflow extends OrchestratorBuilder {
       throw new Error(`Workflow with id "${workflowId}" not found.`)
     }
 
-    super(globalWorkflow.flow_)
-
+    this.flow = new OrchestratorBuilder(globalWorkflow.flow_)
     this.workflowId = workflowId
     this.workflow = globalWorkflow
     this.handlers = new Map(globalWorkflow.handlers_)
@@ -54,19 +61,8 @@ export class LocalWorkflow extends OrchestratorBuilder {
     this.container = container
   }
 
-  commit(
-    handlers?: Map<
-      string,
-      { invoke: WorkflowStepHandler; compensate?: WorkflowStepHandler }
-    >
-  ) {
-    const finalFlow = this.build()
-
-    if (handlers) {
-      for (const [key, value] of handlers.entries()) {
-        this.handlers.set(key, value)
-      }
-    }
+  private commit() {
+    const finalFlow = this.flow.build()
 
     this.workflow = {
       id: this.workflowId,
@@ -75,9 +71,14 @@ export class LocalWorkflow extends OrchestratorBuilder {
       handler: WorkflowManager.buildHandlers(this.handlers),
       handlers_: this.handlers,
     }
+    this.hasChanges = false
   }
 
   async begin(uniqueTransactionId: string, input?: unknown, context?: Context) {
+    if (this.hasChanges) {
+      this.commit()
+    }
+
     const { handler, orchestrator } = this.workflow
 
     const transaction = await orchestrator.beginTransaction(
@@ -116,5 +117,143 @@ export class LocalWorkflow extends OrchestratorBuilder {
       error,
       handler(this.container, context)
     )
+  }
+
+  addAction(
+    action: string,
+    options: Partial<TransactionStepsDefinition> = {},
+    handler: StepHandler
+  ) {
+    if (!handler?.invoke) {
+      throw new Error(
+        `Handler for action "${action}" is missing invoke function.`
+      )
+    }
+
+    this.flow.addAction(action, options)
+    this.handlers.set(action, handler)
+
+    this.hasChanges = true
+    return this.flow
+  }
+
+  replaceAction(
+    existingAction: string,
+    action: string,
+    options: Partial<TransactionStepsDefinition> = {},
+    handler: StepHandler
+  ) {
+    if (!handler?.invoke) {
+      throw new Error(
+        `Handler for action "${action}" is missing invoke function.`
+      )
+    }
+
+    if (!handler?.invoke) {
+      throw new Error(
+        `Handler for action "${action}" is missing invoke function.`
+      )
+    }
+
+    this.flow.replaceAction(existingAction, action, options)
+    this.handlers.set(action, handler)
+
+    this.hasChanges = true
+    return this.flow
+  }
+
+  insertActionBefore(
+    existingAction: string,
+    action: string,
+    options: Partial<TransactionStepsDefinition> = {},
+    handler: StepHandler
+  ) {
+    if (!handler?.invoke) {
+      throw new Error(
+        `Handler for action "${action}" is missing invoke function.`
+      )
+    }
+
+    this.flow.insertActionBefore(existingAction, action, options)
+    this.handlers.set(action, handler)
+
+    this.hasChanges = true
+    return this.flow
+  }
+
+  insertActionAfter(
+    existingAction: string,
+    action: string,
+    options: Partial<TransactionStepsDefinition> = {},
+    handler: StepHandler
+  ) {
+    if (!handler?.invoke) {
+      throw new Error(
+        `Handler for action "${action}" is missing invoke function.`
+      )
+    }
+
+    this.flow.insertActionAfter(existingAction, action, options)
+    this.handlers.set(action, handler)
+
+    this.hasChanges = true
+    return this.flow
+  }
+
+  appendAction(
+    action: string,
+    to: string,
+    options: Partial<TransactionStepsDefinition> = {},
+    handler: StepHandler
+  ) {
+    if (!handler?.invoke) {
+      throw new Error(
+        `Handler for action "${action}" is missing invoke function.`
+      )
+    }
+
+    this.flow.appendAction(action, to, options)
+    this.handlers.set(action, handler)
+
+    this.hasChanges = true
+    return this.flow
+  }
+
+  moveAction(actionToMove: string, targetAction: string): OrchestratorBuilder {
+    this.flow.moveAction(actionToMove, targetAction)
+
+    this.hasChanges = true
+    return this.flow
+  }
+
+  moveAndMergeNextAction(
+    actionToMove: string,
+    targetAction: string
+  ): OrchestratorBuilder {
+    this.flow.moveAndMergeNextAction(actionToMove, targetAction)
+
+    this.hasChanges = true
+    return this.flow
+  }
+
+  mergeActions(where: string, ...actions: string[]) {
+    this.flow.mergeActions(where, ...actions)
+
+    this.hasChanges = true
+    return this.flow
+  }
+
+  deleteAction(action: string, parentSteps?) {
+    this.flow.deleteAction(action, parentSteps)
+
+    this.hasChanges = true
+    return this.flow
+  }
+
+  pruneAction(action: string) {
+    this.flow.pruneAction(action)
+
+    this.hasChanges = true
+    return this.flow
   }
 }
