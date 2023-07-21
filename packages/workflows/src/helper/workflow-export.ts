@@ -29,11 +29,7 @@ export const exportWorkflow = <TData = unknown>(
       args: FlowRunOptions<
         TDataOverride extends undefined ? TData : TDataOverride
       >
-    ) => Promise<{
-      errors: TransactionStepError[]
-      transaction: DistributedTransaction
-      result: unknown
-    }>
+    ) => Promise<DistributedTransaction>
   } {
     if (!container) {
       container = MedusaModule.getLoadedModules().map(
@@ -51,7 +47,11 @@ export const exportWorkflow = <TData = unknown>(
         throwOnError: true,
         resultFrom: defaultResult,
       }
-    ) => {
+    ): Promise<{
+      errors: TransactionStepError[]
+      transaction: DistributedTransaction
+      result: unknown
+    }> => {
       const transaction = await originalRun(
         context?.transactionId ?? ulid(),
         input,
