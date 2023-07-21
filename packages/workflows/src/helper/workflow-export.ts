@@ -22,10 +22,7 @@ type FlowRunOptions = {
   }) => void
 }
 
-export const exportWorkflow = (
-  workflowId: Workflows,
-  inputAlias?: InputAlias | string
-) => {
+export const exportWorkflow = (workflowId: Workflows) => {
   return (
     container?: LoadedModule[] | MedusaContainer
   ): LocalWorkflow & {

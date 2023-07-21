@@ -45,7 +45,4 @@ const handlers = new Map([
 
 WorkflowManager.register(Workflows.CreateProduct, workflowSteps, handlers)
 
-export const createProduct = exportWorkflow(
-  Workflows.CreateProduct,
-  InputAlias.Products
-)
+export const createProduct = exportWorkflow(Workflows.CreateProduct)
