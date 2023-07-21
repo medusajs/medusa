@@ -4,7 +4,7 @@
   "bin": {
     "medusa-admin": "./bin/medusa-admin.js"
   },
-  "main": "index.js",
+  "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
     "bin",
