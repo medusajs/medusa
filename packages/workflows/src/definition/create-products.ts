@@ -11,18 +11,18 @@ import { exportWorkflow, pipe } from "../helper"
 import { ProductTypes } from "@medusajs/types"
 
 enum Actions {
-  createProduct = "createProduct",
+  createProducts = "createProducts",
 }
 
 const workflowSteps: TransactionStepsDefinition = {
   next: {
-    action: Actions.createProduct,
+    action: Actions.createProducts,
   },
 }
 
 const handlers = new Map([
   [
-    Actions.createProduct,
+    Actions.createProducts,
     {
       invoke: pipe(
         {
@@ -37,7 +37,7 @@ const handlers = new Map([
       compensate: pipe(
         {
           invoke: {
-            from: Actions.createProduct,
+            from: Actions.createProducts,
             alias: InputAlias.Products,
           },
         },
@@ -51,5 +51,5 @@ WorkflowManager.register(Workflows.CreateProducts, workflowSteps, handlers)
 
 export const createProducts = exportWorkflow<ProductTypes.CreateProductDTO>(
   Workflows.CreateProducts,
-  Actions.createProduct
+  Actions.createProducts
 )
