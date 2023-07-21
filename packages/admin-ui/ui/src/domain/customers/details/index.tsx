@@ -75,6 +75,17 @@ const CustomerDetail = () => {
         className="mb-xsmall"
       />
       <div className="gap-y-xsmall flex flex-col">
+        {getWidgets("customer.details.before").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              entity={customer}
+              injectionZone="customer.details.before"
+              widget={w}
+            />
+          )
+        })}
+
         <Section>
           <div className="flex w-full items-start justify-between">
             <div className="gap-x-base flex w-full items-center">
@@ -139,12 +150,12 @@ const CustomerDetail = () => {
           </div>
         </BodyCard>
 
-        {getWidgets("customer.details").map((w, i) => {
+        {getWidgets("customer.details.after").map((w, i) => {
           return (
             <WidgetContainer
               key={i}
               entity={customer}
-              injectionZone="customer.details"
+              injectionZone="customer.details.after"
               widget={w}
             />
           )
