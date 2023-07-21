@@ -1,4 +1,4 @@
 export * from "./definition"
 export * from "./definitions"
-export * from "./functions"
+export * as Handlers from "./handlers"
 export * from "./helper"

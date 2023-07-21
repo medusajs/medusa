@@ -6,7 +6,7 @@ import {
 import {
   createProducts as createProductsHandler,
   removeProducts,
-} from "../functions"
+} from "../handlers"
 import { exportWorkflow, pipe } from "../helper"
 import { ProductTypes } from "@medusajs/types"
 
