@@ -14,15 +14,14 @@ import { ulid } from "ulid"
 type FlowRunOptions = {
   input?: unknown
   context?: Context
-  onFail?: ({
-    errors,
-  }: {
-    errors: TransactionStepError[]
-    transaction: DistributedTransaction
-  }) => void
+  resultFrom?: string
+  throwOnError?: boolean
 }
 
-export const exportWorkflow = (workflowId: Workflows) => {
+export const exportWorkflow = (
+  workflowId: Workflows,
+  defaultResult?: string
+) => {
   return (
     container?: LoadedModule[] | MedusaContainer
   ): LocalWorkflow & {
@@ -39,20 +38,23 @@ export const exportWorkflow = (workflowId: Workflows) => {
     }
 
     const originalRun = flow.run.bind(flow)
-    const newRun = async ({ input, context, onFail }: FlowRunOptions) => {
+    const newRun = async (
+      { input, context, throwOnError, resultFrom }: FlowRunOptions = {
+        throwOnError: true,
+        resultFrom: defaultResult,
+      }
+    ) => {
       const transaction = await originalRun(
         context?.transactionId ?? ulid(),
         input,
         context
       )
 
+      const errors = transaction.getErrors()
+
       const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
       if (failedStatus.includes(transaction.getState())) {
-        const errors = transaction.getErrors()
-
-        if (onFail) {
-          await onFail({ errors, transaction })
-        } else {
+        if (throwOnError) {
           const errorMessage = errors
             ?.map((err) => `${err.error?.message}${EOL}${err.error?.stack}`)
             ?.join(`${EOL}`)
@@ -60,9 +62,17 @@ export const exportWorkflow = (workflowId: Workflows) => {
         }
       }
 
-      return transaction
+      const result = resultFrom
+        ? transaction.getContext().invoke?.[resultFrom]
+        : undefined
+
+      return {
+        errors,
+        transaction,
+        result,
+      }
     }
-    flow.run = newRun as typeof flow.run
+    flow.run = newRun as any
 
     return flow
   }
