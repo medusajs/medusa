@@ -216,7 +216,7 @@ export class MedusaModule {
       })
     }
 
-    MedusaModule.instances_.set(hashKey, services[moduleKey])
+    MedusaModule.instances_.set(hashKey, services)
     finishLoading(services)
     MedusaModule.loading_.delete(hashKey)
 
