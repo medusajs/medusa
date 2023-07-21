@@ -45,9 +45,11 @@ export class LocalWorkflow extends OrchestratorBuilder {
     }
     // Array of modules
     else if (modulesLoaded?.length) {
-      for (const mod of modulesLoaded) {
-        const registrationName = mod.__definition.registrationName
-        container.register(registrationName, asValue(mod))
+      for (const loaded of modulesLoaded) {
+        Object.values(loaded).forEach((mod: any) => {
+          const registrationName = mod.__definition.registrationName
+          container.register(registrationName, asValue(mod))
+        })
       }
     }
 
