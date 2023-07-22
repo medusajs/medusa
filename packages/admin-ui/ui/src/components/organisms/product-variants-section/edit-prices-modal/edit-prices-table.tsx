@@ -15,15 +15,19 @@ type EditPricesTableProps = {
   onPriceUpdate: (prices: Record<string, number | undefined>) => void
 }
 
+function mod(n, m) {
+  return ((n % m) + m) % m
+}
+
 /**
  * Variant cell that is origin of the current drag move.
  */
 let anchorVariant: string | undefined
 
 /**
- * During drag move keep info which column is active one.
+ * Currency or region column that is origin of the drag move.
  */
-let activeCurrencyOrRegion: string | undefined = undefined
+let anchorCurrencyOrRegion: string | undefined
 
 /**
  * Pointer for displaying highlight rectangle range.
@@ -63,6 +67,8 @@ function EditPricesTable(props: EditPricesTableProps) {
 
   const initialPricesSet = useRef(false)
 
+  const columns = [...props.currencies, ...props.regions]
+
   const [isDragFill, setIsDragFill] = useState(false)
   const [isDrag, setIsDrag] = useState(false)
   const [editedPrices, setEditedPrices] = useState<
@@ -78,7 +84,7 @@ function EditPricesTable(props: EditPricesTableProps) {
     region?: string,
     override?: boolean
   ) => {
-    if ((currencyCode || region) !== activeCurrencyOrRegion) {
+    if ((currencyCode || region) !== anchorCurrencyOrRegion) {
       return
     }
 
@@ -112,11 +118,76 @@ function EditPricesTable(props: EditPricesTableProps) {
     endIndex = undefined
 
     anchorVariant = undefined
-    activeCurrencyOrRegion = undefined
+    anchorCurrencyOrRegion = undefined
 
     // warning state updates in event handlers will be batched together so if there is another
     // `setSelectedCells` (or `resetSelection`) call in the same event handler, only last state will apply
     setSelectedCells({})
+  }
+
+  const moveAnchor = (
+    direction: "UP" | "DOWN" | "LEFT" | "RIGHT",
+    isShift: boolean
+  ) => {
+    if (!anchorIndex) {
+      setSelectedCells({ [getKey(variantIds[0], columns[0])]: true })
+    }
+
+    if (direction === "DOWN") {
+      let ind = variantIds.findIndex((v) => v === anchorVariant)
+      ind = mod(ind + 1, variantIds.length)
+      const nextVariant = variantIds[ind]
+
+      anchorVariant = nextVariant
+      anchorIndex = ind
+      startIndex = ind
+      endIndex = ind
+
+      setSelectedCells({ [getKey(nextVariant, anchorCurrencyOrRegion)]: true })
+    }
+
+    if (direction === "UP") {
+      let ind = variantIds.findIndex((v) => v === anchorVariant)
+      ind = mod(ind - 1, variantIds.length)
+      const nextVariant = variantIds[ind]
+
+      anchorVariant = nextVariant
+      anchorIndex = ind
+      startIndex = ind
+      endIndex = ind
+
+      setSelectedCells({ [getKey(nextVariant, anchorCurrencyOrRegion)]: true })
+    }
+
+    if (direction === "LEFT") {
+      let ind = columns.findIndex((v) => v === anchorCurrencyOrRegion)
+      ind = mod(ind - 1, columns.length)
+      const nextCol = columns[ind]
+
+      anchorCurrencyOrRegion = nextCol
+
+      startIndex = anchorIndex
+      endIndex = anchorIndex
+
+      setSelectedCells({
+        [getKey(anchorVariant, nextCol)]: true,
+      })
+    }
+
+    if (direction === "RIGHT") {
+      let ind = columns.findIndex((v) => v === anchorCurrencyOrRegion)
+      ind = mod(ind + 1, columns.length)
+      const nextCol = columns[ind]
+
+      anchorCurrencyOrRegion = nextCol
+
+      startIndex = anchorIndex
+      endIndex = anchorIndex
+
+      setSelectedCells({
+        [getKey(anchorVariant, nextCol)]: true,
+      })
+    }
   }
 
   /**
@@ -141,7 +212,7 @@ function EditPricesTable(props: EditPricesTableProps) {
     const selectedVariants = variantIds.slice(startIndex, endIndex + 1)
 
     const keys = selectedVariants.map((vId) =>
-      getKey(vId, activeCurrencyOrRegion)
+      getKey(vId, anchorCurrencyOrRegion)
     )
 
     const nextSelection = { ...selectedCells }
@@ -149,7 +220,7 @@ function EditPricesTable(props: EditPricesTableProps) {
 
     Object.keys(nextSelection).forEach((k) => {
       // deselect case
-      if (k.split("-")[1] === activeCurrencyOrRegion && !keys.includes(k)) {
+      if (k.split("-")[1] === anchorCurrencyOrRegion && !keys.includes(k)) {
         delete nextSelection[k] // remove selection
         nextPrices[k] = prevPriceState[k] // ...and reset price of that cell to the previous state
       }
@@ -161,7 +232,7 @@ function EditPricesTable(props: EditPricesTableProps) {
 
       if (isDragFill) {
         nextPrices[k] =
-          editedPrices[getKey(anchorVariant, activeCurrencyOrRegion)]
+          editedPrices[getKey(anchorVariant, anchorCurrencyOrRegion)]
       }
     })
 
@@ -170,6 +241,8 @@ function EditPricesTable(props: EditPricesTableProps) {
       setEditedPrices(nextPrices)
     }
   }
+
+  const onMouseColEnter = (currencyOrRegion: string) => {}
 
   const onMouseCellClick = (
     event: React.MouseEvent,
@@ -185,7 +258,7 @@ function EditPricesTable(props: EditPricesTableProps) {
     anchorVariant = variantId
     anchorIndex = variantIds.findIndex((v) => v === anchorVariant)
 
-    activeCurrencyOrRegion = currencyCode || regionId
+    anchorCurrencyOrRegion = currencyCode || regionId
     setSelectedCells({ [getKey(variantId, currencyCode || regionId)]: true })
     setIsDrag(true)
 
@@ -288,6 +361,30 @@ function EditPricesTable(props: EditPricesTableProps) {
         setEditedPrices(next)
       }
 
+      if (e.key === "Tab") {
+        if (e.shiftKey) {
+          moveAnchor("LEFT", false) // OR RIGHT AND UP
+        } else {
+          moveAnchor("RIGHT", false) // OR RIGHT AND DOWN
+        }
+      }
+
+      if (e.keyCode === 38) {
+        moveAnchor("UP", e.shiftKey)
+      }
+
+      if (e.keyCode === 40) {
+        moveAnchor("DOWN", e.shiftKey)
+      }
+
+      if (e.keyCode === 37) {
+        moveAnchor("LEFT", e.shiftKey)
+      }
+
+      if (e.keyCode === 39) {
+        moveAnchor("RIGHT", e.shiftKey)
+      }
+
       if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
         let ret = ""
         Object.keys(selectedCells).forEach((k) => {
@@ -338,7 +435,7 @@ function EditPricesTable(props: EditPricesTableProps) {
             const amount = parseFloat(parts[0])
 
             _edited[
-              getKey(variantIds[startIndex + indx], activeCurrencyOrRegion)
+              getKey(variantIds[startIndex + indx], anchorCurrencyOrRegion)
             ] = !isNaN(amount) ? amount : undefined
           }
         }
@@ -361,7 +458,7 @@ function EditPricesTable(props: EditPricesTableProps) {
           if (parts.length === 1) {
             const amount = parseFloat(parts[0])
 
-            _edited[getKey(variantIds[i], activeCurrencyOrRegion)] = !isNaN(
+            _edited[getKey(variantIds[i], anchorCurrencyOrRegion)] = !isNaN(
               amount
             )
               ? amount
@@ -530,13 +627,13 @@ function EditPricesTable(props: EditPricesTableProps) {
                       onDragFillStart={onDragFillStart}
                       isAnchor={anchorIndex === index}
                       isRangeStart={
-                        activeCurrencyOrRegion === c && startIndex === index
+                        anchorCurrencyOrRegion === c && startIndex === index
                       }
                       isRangeEnd={
-                        activeCurrencyOrRegion === c && index === endIndex
+                        anchorCurrencyOrRegion === c && index === endIndex
                       }
                       isInRange={
-                        activeCurrencyOrRegion === c &&
+                        anchorCurrencyOrRegion === c &&
                         index >= startIndex &&
                         index <= endIndex
                       }
@@ -558,13 +655,13 @@ function EditPricesTable(props: EditPricesTableProps) {
                     onDragFillStart={onDragFillStart}
                     isAnchor={anchorIndex === index}
                     isRangeStart={
-                      activeCurrencyOrRegion === r && startIndex === index
+                      anchorCurrencyOrRegion === r && startIndex === index
                     }
                     isRangeEnd={
-                      activeCurrencyOrRegion === r && index === endIndex
+                      anchorCurrencyOrRegion === r && index === endIndex
                     }
                     isInRange={
-                      activeCurrencyOrRegion === r &&
+                      anchorCurrencyOrRegion === r &&
                       index >= startIndex &&
                       index <= endIndex
                     }
