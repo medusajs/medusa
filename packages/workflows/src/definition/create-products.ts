@@ -52,5 +52,5 @@ WorkflowManager.register(Workflows.CreateProducts, workflowSteps, handlers)
 
 export const createProducts = exportWorkflow<
   ProductTypes.CreateProductDTO[],
-  ProductTypes.ProductDTO
+  ProductTypes.ProductDTO[]
 >(Workflows.CreateProducts, Actions.createProducts)
