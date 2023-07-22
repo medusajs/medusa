@@ -308,7 +308,7 @@ function EditPricesTable(props: EditPricesTableProps) {
     return () => {
       document.removeEventListener("mousedown", down)
       document.removeEventListener("mouseup", up)
-      document.addEventListener("keydown", onKeyDown)
+      document.removeEventListener("keydown", onKeyDown)
     }
   }, [selectedCells])
 
