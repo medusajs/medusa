@@ -670,7 +670,6 @@ describe("CartService", () => {
     const lineItemService = {
       delete: jest.fn(),
       update: jest.fn(),
-      deleteWithTaxLines: jest.fn(),
       withTransaction: function () {
         return this
       },
@@ -742,8 +741,8 @@ describe("CartService", () => {
         IdMap.getId("itemToRemove")
       )
 
-      expect(lineItemService.deleteWithTaxLines).toHaveBeenCalledTimes(1)
-      expect(lineItemService.deleteWithTaxLines).toHaveBeenCalledWith(
+      expect(lineItemService.delete).toHaveBeenCalledTimes(1)
+      expect(lineItemService.delete).toHaveBeenCalledWith(
         IdMap.getId("itemToRemove")
       )
 
@@ -813,7 +812,7 @@ describe("CartService", () => {
         IdMap.getId("nonExisting")
       )
 
-      expect(lineItemService.deleteWithTaxLines).toHaveBeenCalledTimes(0)
+      expect(lineItemService.delete).toHaveBeenCalledTimes(0)
     })
   })
 
