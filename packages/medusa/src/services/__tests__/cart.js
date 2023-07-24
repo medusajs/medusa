@@ -859,7 +859,9 @@ describe("CartService", () => {
           gift_cards: true,
           items: {
             variant: {
-              product: true,
+              product: {
+                profiles: true,
+              },
             },
           },
           payment_sessions: true,

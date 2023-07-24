@@ -126,7 +126,6 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<Product[]> {
-    console.log((this as any).prototype)
     const products = data.map((product) => {
       return (manager as SqlEntityManager).create(Product, product)
     })

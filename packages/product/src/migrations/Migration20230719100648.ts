@@ -1,6 +1,6 @@
 import { Migration } from "@mikro-orm/migrations"
 
-export class Migration20230710091208 extends Migration {
+export class Migration20230719100648 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table "product_category" ("id" text not null, "name" text not null, "description" text not null default \'\', "handle" text not null, "mpath" text not null, "is_active" boolean not null default false, "is_internal" boolean not null default false, "rank" numeric not null default 0, "parent_category_id" text null, "created_at" timestamptz not null, "updated_at" timestamptz not null, constraint "product_category_pkey" primary key ("id"));'
@@ -70,7 +70,7 @@ export class Migration20230710091208 extends Migration {
     )
 
     this.addSql(
-      'create table "product_images" ("product_id" text not null, "product_image_id" text not null, constraint "product_images_pkey" primary key ("product_id", "product_image_id"));'
+      'create table "product_images" ("product_id" text not null, "image_id" text not null, constraint "product_images_pkey" primary key ("product_id", "image_id"));'
     )
 
     this.addSql(
@@ -78,7 +78,7 @@ export class Migration20230710091208 extends Migration {
     )
 
     this.addSql(
-      'create table "product_variant" ("id" text not null, "title" text not null, "sku" text null, "barcode" text null, "ean" text null, "upc" text null, "inventory_quantity" numeric not null default 100, "allow_backorder" boolean not null default false, "manage_inventory" boolean not null default true, "hs_code" text null, "origin_country" text null, "mid_code" text null, "material" text null, "weight" numeric null, "length" numeric null, "height" numeric null, "width" numeric null, "metadata" jsonb null, "variant_rank" numeric null default 0, "created_at" timestamptz not null, "updated_at" timestamptz not null, "deleted_at" timestamptz null, "product_id" text not null, constraint "product_variant_pkey" primary key ("id"));'
+      'create table "product_variant" ("id" text not null, "title" text not null, "sku" text null, "barcode" text null, "ean" text null, "upc" text null, "inventory_quantity" numeric not null default 100, "allow_backorder" boolean not null default false, "manage_inventory" boolean not null default true, "hs_code" text null, "origin_country" text null, "mid_code" text null, "material" text null, "weight" numeric null, "length" numeric null, "height" numeric null, "width" numeric null, "metadata" jsonb null, "variant_rank" numeric null default 0, "product_id" text not null, "created_at" timestamptz not null, "updated_at" timestamptz not null, "deleted_at" timestamptz null, constraint "product_variant_pkey" primary key ("id"));'
     )
     this.addSql(
       'create index "IDX_product_variant_deleted_at" on "product_variant" ("deleted_at");'
@@ -138,7 +138,7 @@ export class Migration20230710091208 extends Migration {
       'alter table "product_images" add constraint "product_images_product_id_foreign" foreign key ("product_id") references "product" ("id") on update cascade on delete cascade;'
     )
     this.addSql(
-      'alter table "product_images" add constraint "product_images_product_image_id_foreign" foreign key ("product_image_id") references "image" ("id") on update cascade on delete cascade;'
+      'alter table "product_images" add constraint "product_images_image_id_foreign" foreign key ("image_id") references "image" ("id") on update cascade on delete cascade;'
     )
 
     this.addSql(

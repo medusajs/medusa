@@ -106,6 +106,7 @@ module.exports = async (dataSource, data = {}) => {
     handle: "test-product-reg",
     title: "Multi Reg Test product",
     profile_id: defaultProfile.id,
+    profiles: [{ id: defaultProfile.id }],
     description: "test-product-description",
     status: "published",
     collection_id: "test-collection",
