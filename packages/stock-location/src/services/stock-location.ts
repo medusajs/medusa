@@ -32,6 +32,8 @@ type InjectedDependencies = {
   manager: EntityManager
   eventBusService: IEventBusService
   baseRepository: DAL.RepositoryService
+  stockLocationRepository: StockLocationRepostiory
+  stockLocationAddressRepository: StockLocationAddressRepository
 }
 
 /**
@@ -53,13 +55,21 @@ export default class StockLocationService {
   protected readonly stockLocationAddressRepository_: StockLocationAddressRepository
 
   constructor(
-    { eventBusService, manager, baseRepository }: InjectedDependencies,
+    {
+      eventBusService,
+      manager,
+      baseRepository,
+      stockLocationRepository,
+      stockLocationAddressRepository,
+    }: InjectedDependencies,
     options?: unknown,
     protected readonly moduleDeclaration?: InternalModuleDeclaration
   ) {
     this.manager_ = manager
     this.eventBusService_ = eventBusService
     this.baseRepository_ = baseRepository
+    this.stockLocationRepository_ = stockLocationRepository
+    this.stockLocationAddressRepository_ = stockLocationAddressRepository
   }
 
   __joinerConfig(): JoinerServiceConfig {
