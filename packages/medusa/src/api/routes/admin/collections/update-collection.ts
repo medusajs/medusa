@@ -8,7 +8,7 @@ import { defaultAdminCollectionsRelations } from "."
  * @oas [post] /admin/collections/{id}
  * operationId: "PostCollectionsCollection"
  * summary: "Update a Collection"
- * description: "Updates a Product Collection."
+ * description: "Update a Product Collection's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Collection.
@@ -26,8 +26,8 @@ import { defaultAdminCollectionsRelations } from "."
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.collections.update(collection_id, {
- *         title: 'New Collection'
+ *       medusa.admin.collections.update(collectionId, {
+ *         title: "New Collection"
  *       })
  *       .then(({ collection }) => {
  *         console.log(collection.id);
@@ -96,10 +96,10 @@ export default async (req: Request, res: Response) => {
  * properties:
  *   title:
  *     type: string
- *     description:  The title to identify the Collection by.
+ *     description: The title of the collection.
  *   handle:
  *     type: string
- *     description:  An optional handle to be used in slugs, if none is provided we will kebab-case the title.
+ *     description: An optional handle to be used in slugs. If none is provided, the kebab-case version of the title will be used.
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object

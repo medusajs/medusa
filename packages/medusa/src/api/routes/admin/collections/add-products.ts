@@ -8,11 +8,11 @@ import { defaultAdminCollectionsRelations } from "./index"
 /**
  * @oas [post] /admin/collections/{id}/products/batch
  * operationId: "PostProductsToCollection"
- * summary: "Update Products"
- * description: "Updates products associated with a Product Collection"
+ * summary: "Add Products to Collection"
+ * description: "Add products to a product collection."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Collection.
+ *   - (path) id=* {string} The ID of the product collection.
  * requestBody:
  *   content:
  *     application/json:
@@ -21,6 +21,21 @@ import { defaultAdminCollectionsRelations } from "./index"
  * x-codegen:
  *   method: addProducts
  * x-codeSamples:
+ *   - lang: JavaScript
+ *     label: JS Client
+ *     source: |
+ *       import Medusa from "@medusajs/medusa-js"
+ *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+ *       // must be previously logged in or use api token
+ *       medusa.admin.collections.addProducts(collectionId, {
+ *         product_ids: [
+ *           productId1,
+ *           productId2
+ *         ]
+ *       })
+ *       .then(({ collection }) => {
+ *         console.log(collection.products)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |

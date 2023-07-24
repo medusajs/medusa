@@ -10,8 +10,8 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /admin/customer-groups/{id}/customers/batch
  * operationId: "PostCustomerGroupsGroupCustomersBatch"
- * summary: "Add Customers"
- * description: "Adds a list of customers, represented by id's, to a customer group."
+ * summary: "Add Customers to Group"
+ * description: "Add a list of customers to a customer group."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the customer group.
@@ -29,10 +29,10 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.customerGroups.addCustomers(customer_group_id, {
+ *       medusa.admin.customerGroups.addCustomers(customerGroupId, {
  *         customer_ids: [
  *           {
- *             id: customer_id
+ *             id: customerId
  *           }
  *         ]
  *       })

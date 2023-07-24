@@ -6,7 +6,7 @@ import _ from "lodash"
  * operationId: "GetAuth"
  * summary: "Get Current User"
  * x-authenticated: true
- * description: "Gets the currently logged in User."
+ * description: "Gets the currently logged in user's details."
  * x-codegen:
  *   method: getSession
  * x-codeSamples:

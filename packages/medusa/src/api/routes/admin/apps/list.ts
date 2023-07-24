@@ -4,7 +4,7 @@ import { OauthService } from "../../../../services"
  * @oas [get] /admin/apps
  * operationId: "GetApps"
  * summary: "List Applications"
- * description: "Retrieve a list of applications."
+ * description: "Retrieve a list of applications registered in the Medusa backend."
  * x-authenticated: true
  * x-codegen:
  *   method: list

@@ -11,7 +11,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/customer-groups/{id}
  * operationId: "PostCustomerGroupsGroup"
  * summary: "Update a Customer Group"
- * description: "Update a CustomerGroup."
+ * description: "Update a Customer Group's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the customer group.
@@ -29,8 +29,8 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.customerGroups.update(customer_group_id, {
- *         name: 'VIP'
+ *       medusa.admin.customerGroups.update(customerGroupId, {
+ *         name: "VIP"
  *       })
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
@@ -114,7 +114,7 @@ export default async (req: Request, res: Response) => {
  *     description: "Name of the customer group"
  *     type: string
  *   metadata:
- *     description: "Metadata for the customer."
+ *     description: "Metadata of the customer group."
  *     type: object
  */
 export class AdminPostCustomerGroupsGroupReq {

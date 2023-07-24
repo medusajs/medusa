@@ -10,7 +10,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/currencies/{code}
  * operationId: "PostCurrenciesCurrency"
  * summary: "Update a Currency"
- * description: "Update a Currency"
+ * description: "Update a Currency's details."
  * x-authenticated: true
  * parameters:
  *   - (path) code=* {string} The code of the Currency.
@@ -74,7 +74,8 @@ export default async (req: ExtendedRequest<Currency>, res) => {
  * properties:
  *   includes_tax:
  *     type: boolean
- *     description: "[EXPERIMENTAL] Tax included in prices of currency."
+ *     x-featureFlag: true
+ *     description: "Tax included in prices of currency."
  */
 export class AdminPostCurrenciesCurrencyReq {
   @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [

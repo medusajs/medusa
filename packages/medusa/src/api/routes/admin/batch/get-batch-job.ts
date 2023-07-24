@@ -2,7 +2,7 @@
  * @oas [get] /admin/batch-jobs/{id}
  * operationId: "GetBatchJobsBatchJob"
  * summary: "Get a Batch Job"
- * description: "Retrieves a Batch Job."
+ * description: "Retrieve the details of a batch job."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Batch Job
@@ -15,7 +15,7 @@
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.batchJobs.retrieve(batch_job_id)
+ *       medusa.admin.batchJobs.retrieve(batchJobId)
  *       .then(({ batch_job }) => {
  *         console.log(batch_job.id);
  *       });

@@ -9,7 +9,11 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/batch-jobs
  * operationId: "PostBatchJobs"
  * summary: "Create a Batch Job"
- * description: "Creates a Batch Job."
+ * description: "Create a Batch Job to be executed asynchronously in the Medusa backend. If `dry_run` is set to `true`, the batch job will not be executed until the it is confirmed,
+ *  which can be done using the Confirm Batch Job endpoint."
+ * externalDocs:
+ *   description: "How to create a batch job"
+ *   url: "https://docs.medusajs.com/development/batch-jobs/create#create-batch-job"
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -97,7 +101,7 @@ export default async (req, res) => {
  * properties:
  *   type:
  *     type: string
- *     description: The type of batch job to start.
+ *     description: The type of batch job to start, which is defined by the `batchType` property of the associated batch job strategy.
  *     example: product-export
  *   context:
  *     type: object
@@ -120,7 +124,7 @@ export default async (req, res) => {
  *           - images
  *   dry_run:
  *     type: boolean
- *     description: Set a batch job in dry_run mode to get some information on what will be done without applying any modifications.
+ *     description: Set a batch job in dry_run mode, which would delay executing the batch job until it's confirmed.
  *     default: false
  */
 export class AdminPostBatchesReq {

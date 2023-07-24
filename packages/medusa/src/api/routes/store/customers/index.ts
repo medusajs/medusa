@@ -240,7 +240,7 @@ export type StoreCustomersResetPasswordRes = {
  *     description: The total number of items available
  *     type: integer
  *   offset:
- *     description: The number of items skipped before these items
+ *     description: The number of items skipped before the returned results
  *     type: integer
  *   limit:
  *     description: The number of items per page

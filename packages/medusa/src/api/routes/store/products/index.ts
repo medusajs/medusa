@@ -186,7 +186,7 @@ export type StorePostSearchRes = {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of items skipped before the returned results
  *   limit:
  *     type: integer
  *     description: The number of items per page

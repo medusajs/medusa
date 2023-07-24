@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/batch-jobs/{id}/cancel
  * operationId: "PostBatchJobsBatchJobCancel"
  * summary: "Cancel a Batch Job"
- * description: "Marks a batch job as canceled"
+ * description: "Marks a batch job as canceled. When a batch job is canceled, the processing of the batch job doesn’t automatically stop."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the batch job.
@@ -18,7 +18,7 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.batchJobs.cancel(batch_job_id)
+ *       medusa.admin.batchJobs.cancel(batchJobId)
  *       .then(({ batch_job }) => {
  *         console.log(batch_job.id);
  *       });

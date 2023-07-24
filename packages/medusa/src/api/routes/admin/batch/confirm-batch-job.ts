@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/batch-jobs/{id}/confirm
  * operationId: "PostBatchJobsBatchJobConfirmProcessing"
  * summary: "Confirm a Batch Job"
- * description: "Confirms that a previously requested batch job should be executed."
+ * description: "When a batch job is created, it is not executed automatically if `dry_run` is set to `true`. This endpoint confirms that the batch job should be executed."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the batch job.
@@ -18,7 +18,7 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.batchJobs.confirm(batch_job_id)
+ *       medusa.admin.batchJobs.confirm(batchJobId)
  *       .then(({ batch_job }) => {
  *         console.log(batch_job.id);
  *       });
