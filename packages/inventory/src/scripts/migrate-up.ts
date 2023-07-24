@@ -13,7 +13,7 @@ export async function runMigrations(
 ) {
   logger ??= console as unknown as Logger
 
-  const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)
+  const dbData = ModulesSdkUtils.loadDatabaseConfig("inventory", options)
 
   const entities = Object.values(InventoryModels) as unknown as EntitySchema[]
 

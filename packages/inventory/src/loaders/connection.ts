@@ -17,10 +17,7 @@ export default async (
   { options, container }: LoaderOptions,
   moduleDeclaration?: InternalModuleDeclaration
 ): Promise<void> => {
-  if (
-    moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
-    moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
-  ) {
+  if (moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL) {
     const { projectConfig } = container.resolve("configModule")
     options = {
       database: {
@@ -53,6 +50,7 @@ async function loadDefault({ database, container }) {
 
   const entities = Object.values(InventoryModels) as unknown as EntitySchema[]
 
+  console.log("entities", entities)
   const orm = await createConnection(database, entities)
 
   container.register({

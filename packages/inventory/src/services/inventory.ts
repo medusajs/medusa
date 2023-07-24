@@ -16,12 +16,10 @@ import {
   JoinerServiceConfig,
   MODULE_RESOURCE_TYPE,
   ReservationItemDTO,
-  SharedContext,
   UpdateInventoryLevelInput,
   UpdateReservationItemInput,
 } from "@medusajs/types"
 import {
-  InjectEntityManager,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,

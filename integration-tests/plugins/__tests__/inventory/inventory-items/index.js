@@ -30,7 +30,7 @@ describe("Inventory Items endpoints", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd })
+    const { container, app, port } = await bootstrapApp({ cwd, verbose: true })
     appContainer = container
 
     setPort(port)
@@ -45,6 +45,8 @@ describe("Inventory Items endpoints", () => {
 
     const api = useApi()
 
+    console.log("created product")
+
     await simpleProductFactory(
       dbConnection,
       {
@@ -53,6 +55,8 @@ describe("Inventory Items endpoints", () => {
       },
       100
     )
+
+    console.log("created product")
 
     const prodVarInventoryService = appContainer.resolve(
       "productVariantInventoryService"
@@ -83,6 +87,8 @@ describe("Inventory Items endpoints", () => {
       adminHeaders
     )
 
+    console.log("created variant")
+
     const variant = response.data.product.variants[0]
 
     variantId = variant.id
@@ -90,6 +96,8 @@ describe("Inventory Items endpoints", () => {
     inventoryItems = await prodVarInventoryService.listInventoryItemsByVariant(
       variantId
     )
+
+    console.log("listed items")
 
     const stockRes = await api.post(
       `/admin/stock-locations`,
@@ -99,6 +107,8 @@ describe("Inventory Items endpoints", () => {
       adminHeaders
     )
     locationId = stockRes.data.stock_location.id
+
+    console.log("created location")
 
     const secondStockRes = await api.post(
       `/admin/stock-locations`,

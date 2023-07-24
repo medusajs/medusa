@@ -111,15 +111,11 @@ export function getInternalModules(configModule) {
     let loadedModule = null
     try {
       loadedModule = require(moduleResolution.resolutionPath).default
-      console.log(JSON.stringify(require(moduleResolution.resolutionPath)))
     } catch (error) {
       console.log("Error loading Module", error)
       continue
     }
 
-    // console.log("loaded module")
-    // console.log(moduleResolution.resolutionPath)
-    // console.log(JSON.stringify(loadedModule, null, 2))
     modules.push({
       moduleDeclaration: moduleResolution.moduleDeclaration,
       loadedModule,
@@ -209,9 +205,8 @@ export const getModuleMigrations = (configModule, isFlagEnabled) => {
 
   const allModules = []
 
-  console.log(JSON.stringify(loadedModules, null, 2))
-  for (const loadedModule of loadedModules) {
-    const mod = loadedModule.loadedModule
+  for (const module of loadedModules) {
+    const mod = module.loadedModule
 
     const moduleMigrations = (mod.migrations ?? [])
       .map((migration) => {
@@ -227,10 +222,10 @@ export const getModuleMigrations = (configModule, isFlagEnabled) => {
       .filter(Boolean)
 
     allModules.push({
-      moduleDeclaration: loadedModule.moduleDeclaration,
+      moduleDeclaration: module.moduleDeclaration,
       models: mod.models ?? [],
       migrations: moduleMigrations,
-      runMigration: mod.runMigration,
+      runMigration: mod.runMigrations,
     })
   }
 

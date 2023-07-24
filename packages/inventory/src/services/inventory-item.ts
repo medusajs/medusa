@@ -50,7 +50,7 @@ export default class InventoryItemService {
   async list(
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [] },
-    context: Context = {}
+    context?: Context
   ): Promise<InventoryItemDTO[]> {
     const queryOptions = ModulesSdkUtils.buildQuery<InventoryItem>(
       selector,
@@ -76,7 +76,7 @@ export default class InventoryItemService {
   async retrieve(
     inventoryItemId: string,
     config: FindConfig<InventoryItem> = {},
-    context: Context = {}
+    context?: Context
   ): Promise<InventoryItem> {
     if (!isDefined(inventoryItemId)) {
       throw new MedusaError(
@@ -116,7 +116,7 @@ export default class InventoryItemService {
   async listAndCount(
     selector: FilterableInventoryItemProps = {},
     config: FindConfig<InventoryItem> = { relations: [], skip: 0, take: 10 },
-    context: Context = {}
+    context?: Context
   ): Promise<[InventoryItemDTO[], number]> {
     const queryOptions = ModulesSdkUtils.buildQuery<InventoryItem>(
       selector,

@@ -130,8 +130,6 @@ module.exports = {
 
     await dbDataSource.runMigrations()
 
-    console.log(JSON.stringify(runMigrationScripts, null, 2))
-
     for (const script of runMigrationScripts) {
       await script({
         options: {
