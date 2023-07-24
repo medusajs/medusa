@@ -21,11 +21,10 @@ type StepHandler = {
 
 export class LocalWorkflow {
   protected container: MedusaContainer
-  private workflowId: string
-  private flow: OrchestratorBuilder
-  private workflow: WorkflowDefinition
-  private handlers: Map<string, StepHandler>
-  private hasChanges = false
+  protected workflowId: string
+  protected flow: OrchestratorBuilder
+  protected workflow: WorkflowDefinition
+  protected handlers: Map<string, StepHandler>
 
   constructor(
     workflowId: string,
@@ -61,7 +60,7 @@ export class LocalWorkflow {
     this.container = container
   }
 
-  private commit() {
+  protected commit() {
     const finalFlow = this.flow.build()
 
     this.workflow = {
@@ -71,11 +70,10 @@ export class LocalWorkflow {
       handler: WorkflowManager.buildHandlers(this.handlers),
       handlers_: this.handlers,
     }
-    this.hasChanges = false
   }
 
   async run(uniqueTransactionId: string, input?: unknown, context?: Context) {
-    if (this.hasChanges) {
+    if (this.flow.hasChanges) {
       this.commit()
     }
 
@@ -124,17 +122,10 @@ export class LocalWorkflow {
     handler: StepHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
-    if (!handler?.invoke) {
-      throw new Error(
-        `Handler for action "${action}" is missing invoke function.`
-      )
-    }
-
-    this.flow.addAction(action, options)
+    this.assertHandler(handler, action)
     this.handlers.set(action, handler)
 
-    this.hasChanges = true
-    return this.flow
+    return this.flow.addAction(action, options)
   }
 
   replaceAction(
@@ -143,23 +134,10 @@ export class LocalWorkflow {
     handler: StepHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
-    if (!handler?.invoke) {
-      throw new Error(
-        `Handler for action "${action}" is missing invoke function.`
-      )
-    }
-
-    if (!handler?.invoke) {
-      throw new Error(
-        `Handler for action "${action}" is missing invoke function.`
-      )
-    }
-
-    this.flow.replaceAction(existingAction, action, options)
+    this.assertHandler(handler, action)
     this.handlers.set(action, handler)
 
-    this.hasChanges = true
-    return this.flow
+    return this.flow.replaceAction(existingAction, action, options)
   }
 
   insertActionBefore(
@@ -168,17 +146,10 @@ export class LocalWorkflow {
     handler: StepHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
-    if (!handler?.invoke) {
-      throw new Error(
-        `Handler for action "${action}" is missing invoke function.`
-      )
-    }
-
-    this.flow.insertActionBefore(existingAction, action, options)
+    this.assertHandler(handler, action)
     this.handlers.set(action, handler)
 
-    this.hasChanges = true
-    return this.flow
+    return this.flow.insertActionBefore(existingAction, action, options)
   }
 
   insertActionAfter(
@@ -187,17 +158,10 @@ export class LocalWorkflow {
     handler: StepHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
-    if (!handler?.invoke) {
-      throw new Error(
-        `Handler for action "${action}" is missing invoke function.`
-      )
-    }
-
-    this.flow.insertActionAfter(existingAction, action, options)
+    this.assertHandler(handler, action)
     this.handlers.set(action, handler)
 
-    this.hasChanges = true
-    return this.flow
+    return this.flow.insertActionAfter(existingAction, action, options)
   }
 
   appendAction(
@@ -206,54 +170,40 @@ export class LocalWorkflow {
     handler: StepHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
-    if (!handler?.invoke) {
-      throw new Error(
-        `Handler for action "${action}" is missing invoke function.`
-      )
-    }
-
-    this.flow.appendAction(action, to, options)
+    this.assertHandler(handler, action)
     this.handlers.set(action, handler)
 
-    this.hasChanges = true
-    return this.flow
+    return this.flow.appendAction(action, to, options)
   }
 
   moveAction(actionToMove: string, targetAction: string): OrchestratorBuilder {
-    this.flow.moveAction(actionToMove, targetAction)
-
-    this.hasChanges = true
-    return this.flow
+    return this.flow.moveAction(actionToMove, targetAction)
   }
 
   moveAndMergeNextAction(
     actionToMove: string,
     targetAction: string
   ): OrchestratorBuilder {
-    this.flow.moveAndMergeNextAction(actionToMove, targetAction)
-
-    this.hasChanges = true
-    return this.flow
+    return this.flow.moveAndMergeNextAction(actionToMove, targetAction)
   }
 
   mergeActions(where: string, ...actions: string[]) {
-    this.flow.mergeActions(where, ...actions)
-
-    this.hasChanges = true
-    return this.flow
+    return this.flow.mergeActions(where, ...actions)
   }
 
   deleteAction(action: string, parentSteps?) {
-    this.flow.deleteAction(action, parentSteps)
-
-    this.hasChanges = true
-    return this.flow
+    return this.flow.deleteAction(action, parentSteps)
   }
 
   pruneAction(action: string) {
-    this.flow.pruneAction(action)
+    return this.flow.pruneAction(action)
+  }
 
-    this.hasChanges = true
-    return this.flow
+  protected assertHandler(handler: StepHandler, action: string): void | never {
+    if (!handler?.invoke) {
+      throw new Error(
+        `Handler for action "${action}" is missing invoke function.`
+      )
+    }
   }
 }

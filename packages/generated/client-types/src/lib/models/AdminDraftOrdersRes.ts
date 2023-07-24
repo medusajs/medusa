@@ -7,6 +7,7 @@ import type { Cart } from "./Cart"
 import type { Discount } from "./Discount"
 import type { DraftOrder } from "./DraftOrder"
 import type { LineItem } from "./LineItem"
+import type { Product } from "./Product"
 import type { ProductVariant } from "./ProductVariant"
 import type { Region } from "./Region"
 import type { ShippingMethod } from "./ShippingMethod"
@@ -58,7 +59,12 @@ export interface AdminDraftOrdersRes {
                 | "variant"
               >,
               {
-                variant: SetRelation<ProductVariant, "product">
+                variant: Merge<
+                  SetRelation<ProductVariant, "product">,
+                  {
+                    product: SetRelation<Product, "profiles">
+                  }
+                >
               }
             >
           >

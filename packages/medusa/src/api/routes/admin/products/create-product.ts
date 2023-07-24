@@ -41,6 +41,7 @@ import { Logger } from "../../../../types/global"
 import { ProductStatus } from "../../../../models"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { Type } from "class-transformer"
+import { createProductsWorkflow } from "../../../../workflows/admin/create-products"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -129,6 +130,19 @@ export default async (req, res) => {
   )
 
   const entityManager: EntityManager = req.scope.resolve("manager")
+  const productModuleService = req.scope.resolve("productModuleService")
+
+  if (productModuleService) {
+    const products = await createProductsWorkflow(
+      {
+        container: req.scope,
+        manager: entityManager,
+      },
+      [validated]
+    )
+
+    return res.json({ product: products[0] })
+  }
 
   const product = await entityManager.transaction(async (manager) => {
     const { variants } = validated

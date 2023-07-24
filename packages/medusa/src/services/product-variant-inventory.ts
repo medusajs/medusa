@@ -3,14 +3,14 @@ import {
   ICacheService,
   IEventBusService,
   IInventoryService,
-  IStockLocationService,
   InventoryItemDTO,
   InventoryLevelDTO,
+  IStockLocationService,
   ReservationItemDTO,
   ReserveQuantityContext,
 } from "@medusajs/types"
 import { LineItem, Product, ProductVariant } from "../models"
-import { MedusaError, isDefined } from "@medusajs/utils"
+import { isDefined, MedusaError } from "@medusajs/utils"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
@@ -303,9 +303,14 @@ class ProductVariantInventoryService extends TransactionBaseService {
     // Verify that variant exists
     const variants = await this.productVariantService_
       .withTransaction(this.activeManager_)
-      .list({
-        id: data.map((d) => d.variantId),
-      })
+      .list(
+        {
+          id: data.map((d) => d.variantId),
+        },
+        {
+          select: ["id"],
+        }
+      )
 
     const foundVariantIds = new Set(variants.map((v) => v.id))
     const requestedVariantIds = new Set(data.map((v) => v.variantId))

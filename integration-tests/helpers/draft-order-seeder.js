@@ -34,6 +34,7 @@ module.exports = async (dataSource, data = {}) => {
     id: "test-product",
     title: "test product",
     profile_id: defaultProfile.id,
+    profiles: [{ id: defaultProfile.id }],
     options: [{ id: "test-option", title: "Size" }],
   })
 
@@ -52,6 +53,7 @@ module.exports = async (dataSource, data = {}) => {
     id: "test-product-2",
     title: "test product 2",
     profile_id: defaultProfile.id,
+    profiles: [{ id: defaultProfile.id }],
     options: [{ id: "test-option-color", title: "Color" }],
   })
 
