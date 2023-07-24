@@ -215,7 +215,7 @@ describe("/admin/shipping-profiles", () => {
         })
     })
 
-    it.only("updates a shipping profile", async () => {
+    it("updates a shipping profile", async () => {
       const api = useApi()
 
       const testProducts = await Promise.all(
