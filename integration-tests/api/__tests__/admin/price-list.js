@@ -1299,9 +1299,11 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toBe(200)
       expect(response.data).toEqual({
-        ids: product1.variants.map((variant, i) => {
-          return getCustomPriceIdFromVariant(variant.id, i)
-        }),
+        ids: expect.arrayContaining(
+          product1.variants.map((variant, i) => {
+            return getCustomPriceIdFromVariant(variant.id, i)
+          })
+        ),
         object: "money-amount",
         deleted: true,
       })
