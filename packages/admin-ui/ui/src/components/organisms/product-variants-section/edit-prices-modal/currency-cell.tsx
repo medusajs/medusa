@@ -37,6 +37,12 @@ type CurrencyCellProps = {
   isRangeEnd: boolean
   isInRange: boolean
 
+  isRangeStartCol: boolean
+  isRangeEndCol: boolean
+  isInRangeCol: boolean
+
+  onColumnOver: (currencyOrRegion: string) => void
+
   onDragFillStart: (
     variantId: string,
     currencyCode?: string,
@@ -79,6 +85,7 @@ function CurrencyCell(props: CurrencyCellProps) {
     isInRange,
     isRangeStart,
     isRangeEnd,
+    onColumnOver,
   } = props
 
   const ref = useRef()
@@ -188,13 +195,20 @@ function CurrencyCell(props: CurrencyCellProps) {
 
   return (
     <td
+      onMouseOver={() => onColumnOver(currencyCode || region)}
       onMouseDown={onCellMouseDown}
       className={clsx("relative cursor-pointer pr-2 pl-4", {
-        border: !isInRange,
+        // "border-blue-100": isInRange && props.isInRangeCol,
+        border: !(isInRange && props.isInRangeCol),
         "bg-blue-100": isSelected && !isAnchor,
-        "border-x border-double border-blue-400": isInRange,
-        "border-t border-blue-400": isRangeStart,
-        "border-b border-blue-400": isRangeEnd,
+        "border-l border-double border-blue-400":
+          props.isRangeStartCol && isInRange,
+        "border-r border-double border-blue-400":
+          props.isRangeEndCol && isInRange,
+        "border-t border-double border-blue-400":
+          isRangeStart && props.isInRangeCol,
+        "border-b border-double border-blue-400":
+          isRangeEnd && props.isInRangeCol,
       })}
     >
       <div className="flex">
@@ -215,7 +229,7 @@ function CurrencyCell(props: CurrencyCellProps) {
           decimalSeparator="."
           placeholder="-"
         />
-        {isRangeEnd && !isEditable && (
+        {isRangeEnd && props.isRangeEndCol && !isEditable && (
           <div
             style={{ bottom: -4, right: -4, zIndex: 9999 }}
             onMouseDown={onFillIndicatorMouseDown}
