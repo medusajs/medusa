@@ -22,10 +22,30 @@ npm install @medusajs/medusa-js
 
 Import Medusa as a default import and initiate it:
 
-```js
+```ts
 import Medusa from "@medusajs/medusa-js"
 
 const medusa = new Medusa()
+```
+
+### Troubleshooting: Could not find a declaration file for module '@medusajs/medusa-js'
+
+If you import `@medusajs/medusa-js` in your code and see the following TypeScript error:
+
+```bash
+Could not find a declaration file for module '@medusajs/medusa-js'
+```
+
+Make sure to set `moduleResolution` in your `tsconfig.json` to `nodenext` or `node`:
+
+```json title=tsconfig.json
+{
+  "compilerOptions": {
+    "moduleResolution": "nodenext",
+    // ...
+  },
+  // ...
+}
 ```
 
 ---
@@ -36,7 +56,7 @@ You'll find in the sidebar of this reference names of different resources. These
 
 For example, to create a new customer you can access the [create](/references/js-client/classes/CustomerResource#create) method under the [customers](/references/js-client/classes/CustomerResource) property of your client:
 
-```js
+```ts
 import Medusa from "@medusajs/medusa-js"
 
 const medusa = new Medusa()
@@ -49,7 +69,7 @@ medusa.customers.create({
 
 The `customers` resource also has another resource `addresses` nested inside it with its own method that you can access similarly:
 
-```js
+```ts
 medusa.customers.addresses.addAddress({
   // data
 })
@@ -79,7 +99,7 @@ Authentication using cookies is done automatically by Axios, which is used withi
 
 The package can be initialized with several options:
 
-```js
+```ts
 const medusa = new Medusa({
   maxRetries: 3,
   baseUrl: "https://api.example.com",
