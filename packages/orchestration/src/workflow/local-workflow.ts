@@ -21,11 +21,10 @@ type StepHandler = {
 
 export class LocalWorkflow {
   protected container: MedusaContainer
-  private workflowId: string
-  private flow: OrchestratorBuilder
-  private workflow: WorkflowDefinition
-  private handlers: Map<string, StepHandler>
-  private hasChanges = false
+  protected workflowId: string
+  protected flow: OrchestratorBuilder
+  protected workflow: WorkflowDefinition
+  protected handlers: Map<string, StepHandler>
 
   constructor(
     workflowId: string,
@@ -61,7 +60,7 @@ export class LocalWorkflow {
     this.container = container
   }
 
-  private commit() {
+  protected commit() {
     const finalFlow = this.flow.build()
 
     this.workflow = {
@@ -71,11 +70,10 @@ export class LocalWorkflow {
       handler: WorkflowManager.buildHandlers(this.handlers),
       handlers_: this.handlers,
     }
-    this.hasChanges = false
   }
 
   async run(uniqueTransactionId: string, input?: unknown, context?: Context) {
-    if (this.hasChanges) {
+    if (this.flow.hasChanges) {
       this.commit()
     }
 
@@ -133,7 +131,6 @@ export class LocalWorkflow {
     this.flow.addAction(action, options)
     this.handlers.set(action, handler)
 
-    this.hasChanges = true
     return this.flow
   }
 
@@ -158,7 +155,6 @@ export class LocalWorkflow {
     this.flow.replaceAction(existingAction, action, options)
     this.handlers.set(action, handler)
 
-    this.hasChanges = true
     return this.flow
   }
 
@@ -177,7 +173,6 @@ export class LocalWorkflow {
     this.flow.insertActionBefore(existingAction, action, options)
     this.handlers.set(action, handler)
 
-    this.hasChanges = true
     return this.flow
   }
 
@@ -196,7 +191,6 @@ export class LocalWorkflow {
     this.flow.insertActionAfter(existingAction, action, options)
     this.handlers.set(action, handler)
 
-    this.hasChanges = true
     return this.flow
   }
 
@@ -215,45 +209,6 @@ export class LocalWorkflow {
     this.flow.appendAction(action, to, options)
     this.handlers.set(action, handler)
 
-    this.hasChanges = true
-    return this.flow
-  }
-
-  moveAction(actionToMove: string, targetAction: string): OrchestratorBuilder {
-    this.flow.moveAction(actionToMove, targetAction)
-
-    this.hasChanges = true
-    return this.flow
-  }
-
-  moveAndMergeNextAction(
-    actionToMove: string,
-    targetAction: string
-  ): OrchestratorBuilder {
-    this.flow.moveAndMergeNextAction(actionToMove, targetAction)
-
-    this.hasChanges = true
-    return this.flow
-  }
-
-  mergeActions(where: string, ...actions: string[]) {
-    this.flow.mergeActions(where, ...actions)
-
-    this.hasChanges = true
-    return this.flow
-  }
-
-  deleteAction(action: string, parentSteps?) {
-    this.flow.deleteAction(action, parentSteps)
-
-    this.hasChanges = true
-    return this.flow
-  }
-
-  pruneAction(action: string) {
-    this.flow.pruneAction(action)
-
-    this.hasChanges = true
     return this.flow
   }
 }
