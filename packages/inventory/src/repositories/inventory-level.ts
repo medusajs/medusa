@@ -9,6 +9,11 @@ import { InventoryLevel, ReservationItem } from "../models"
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import {
+  FilterQuery as MikroQuery,
+  LoadStrategy,
+  FindOptions as MikroOptions,
+} from "@mikro-orm/core"
 
 // eslint-disable-next-line max-len
 export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLevel> {
@@ -25,14 +30,29 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
     options?: FindOptions<InventoryLevel> | undefined,
     context?: Context | undefined
   ): Promise<InventoryLevel[]> {
-    throw new Error("Method not implemented.")
+    const [levels] = await this.findAndCount(options, context)
+    return levels
   }
 
   async findAndCount(
     options?: FindOptions<InventoryLevel> | undefined,
-    context?: Context | undefined
+    context: Context | undefined = {}
   ): Promise<[InventoryLevel[], number]> {
-    throw new Error("Method not implemented.")
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
+    const findOptions_ = { ...options }
+    findOptions_.options ??= {}
+
+    Object.assign(findOptions_.options, {
+      strategy: LoadStrategy.SELECT_IN,
+    })
+
+    return await manager.findAndCount(
+      InventoryLevel,
+      findOptions_.where as MikroQuery<InventoryLevel>,
+      findOptions_.options as MikroOptions<InventoryLevel>
+    )
   }
 
   @InjectTransactionManager()

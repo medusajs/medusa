@@ -36,11 +36,16 @@ export default class InventoryLevelService {
 
   protected readonly manager_: EntityManager
   protected readonly eventBusService_: IEventBusService | undefined
-  protected readonly inventoryLevelRepository: InventoryLevelRepository
+  protected readonly inventoryLevelRepository_: InventoryLevelRepository
 
-  constructor({ eventBusService, manager }: InjectedDependencies) {
+  constructor({
+    eventBusService,
+    inventoryLevelRepository,
+    manager,
+  }: InjectedDependencies) {
     this.manager_ = manager
     this.eventBusService_ = eventBusService
+    this.inventoryLevelRepository_ = inventoryLevelRepository
   }
 
   /**
@@ -60,7 +65,7 @@ export default class InventoryLevelService {
       config
     )
 
-    return await this.inventoryLevelRepository.find(queryOptions, context)
+    return await this.inventoryLevelRepository_.find(queryOptions, context)
   }
 
   /**
@@ -85,7 +90,7 @@ export default class InventoryLevelService {
       config
     )
 
-    return await this.inventoryLevelRepository.findAndCount(
+    return await this.inventoryLevelRepository_.findAndCount(
       queryOptions,
       context
     )
@@ -116,7 +121,7 @@ export default class InventoryLevelService {
       config
     )
 
-    const [inventoryLevel] = await this.inventoryLevelRepository.find(
+    const [inventoryLevel] = await this.inventoryLevelRepository_.find(
       queryOptions,
       context
     )
@@ -142,7 +147,7 @@ export default class InventoryLevelService {
     data: CreateInventoryLevelInput[],
     @MedusaContext() context: Context = {}
   ): Promise<InventoryLevel[]> {
-    const result = await this.inventoryLevelRepository.create(data, context)
+    const result = await this.inventoryLevelRepository_.create(data, context)
 
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.CREATED, {
       ids: result.map((i) => i.id),
@@ -175,7 +180,7 @@ export default class InventoryLevelService {
       return item
     }
 
-    const [updatedItem] = await this.inventoryLevelRepository.update(
+    const [updatedItem] = await this.inventoryLevelRepository_.update(
       [{ item, update: data }],
       context
     )
@@ -201,7 +206,7 @@ export default class InventoryLevelService {
     quantity: number,
     @MedusaContext() context: Context = {}
   ): Promise<void> {
-    return await this.inventoryLevelRepository.adjustReservedQuantity(
+    return await this.inventoryLevelRepository_.adjustReservedQuantity(
       inventoryItemId,
       locationId,
       quantity
@@ -237,7 +242,7 @@ export default class InventoryLevelService {
       context
     )
 
-    await this.inventoryLevelRepository.delete(
+    await this.inventoryLevelRepository_.delete(
       inventoryLevels.map((i) => i.id),
       context
     )
@@ -261,7 +266,7 @@ export default class InventoryLevelService {
       ? inventoryLevelId
       : [inventoryLevelId]
 
-    await this.inventoryLevelRepository.delete(ids, context)
+    await this.inventoryLevelRepository_.delete(ids, context)
 
     await this.eventBusService_?.emit?.(InventoryLevelService.Events.DELETED, {
       ids: inventoryLevelId,
@@ -286,7 +291,7 @@ export default class InventoryLevelService {
       context
     )
 
-    await this.inventoryLevelRepository.delete(
+    await this.inventoryLevelRepository_.delete(
       inventoryLevels.map((i) => i.id),
       context
     )
@@ -312,7 +317,7 @@ export default class InventoryLevelService {
       locationIds = [locationIds]
     }
 
-    return await this.inventoryLevelRepository.getStockedQuantity(
+    return await this.inventoryLevelRepository_.getStockedQuantity(
       inventoryItemId,
       locationIds,
       context
@@ -342,7 +347,7 @@ export default class InventoryLevelService {
       locationIds = [locationIds]
     }
 
-    return this.inventoryLevelRepository.getAvailableQuantity(
+    return this.inventoryLevelRepository_.getAvailableQuantity(
       inventoryItemId,
       locationIds,
       context
@@ -377,7 +382,7 @@ export default class InventoryLevelService {
       locationIds = [locationIds]
     }
 
-    return await this.inventoryLevelRepository.getReservedQuantity(
+    return await this.inventoryLevelRepository_.getReservedQuantity(
       inventoryItemId,
       locationIds,
       context
