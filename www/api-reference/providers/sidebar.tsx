@@ -235,6 +235,21 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
 
   useEffect(() => {
     init()
+
+    const handleScroll = () => {
+      if (window.scrollY === 0) {
+        setActivePath(null)
+        // can't use next router as it doesn't support
+        // changing url without scrolling
+        history.pushState({}, "", location.pathname)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
   }, [])
 
   return (

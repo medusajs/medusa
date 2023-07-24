@@ -67,19 +67,17 @@ const TagOperation = ({
 
   useEffect(() => {
     const enableShow = () => {
-      removeLoading()
-      setTimeout(() => {
-        setShow(true)
-      }, 300)
+      setShow(true)
     }
 
     if (nodeRef && nodeRef.current) {
+      removeLoading()
       const currentHash = location.hash.replace("#", "")
       if (currentHash === path) {
         setTimeout(() => {
           nodeRef.current?.scrollIntoView()
           enableShow()
-        }, 300)
+        }, 100)
       } else if (currentHash.split("_")[0] === path.split("_")[0]) {
         enableShow()
       }
