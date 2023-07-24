@@ -122,11 +122,7 @@ export class LocalWorkflow {
     handler: StepHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
-    if (!handler?.invoke) {
-      throw new Error(
-        `Handler for action "${action}" is missing invoke function.`
-      )
-    }
+    this.assertHandler(handler, action)
 
     this.flow.addAction(action, options)
     this.handlers.set(action, handler)
@@ -140,17 +136,7 @@ export class LocalWorkflow {
     handler: StepHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
-    if (!handler?.invoke) {
-      throw new Error(
-        `Handler for action "${action}" is missing invoke function.`
-      )
-    }
-
-    if (!handler?.invoke) {
-      throw new Error(
-        `Handler for action "${action}" is missing invoke function.`
-      )
-    }
+    this.assertHandler(handler, action)
 
     this.flow.replaceAction(existingAction, action, options)
     this.handlers.set(action, handler)
@@ -164,11 +150,7 @@ export class LocalWorkflow {
     handler: StepHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
-    if (!handler?.invoke) {
-      throw new Error(
-        `Handler for action "${action}" is missing invoke function.`
-      )
-    }
+    this.assertHandler(handler, action)
 
     this.flow.insertActionBefore(existingAction, action, options)
     this.handlers.set(action, handler)
@@ -182,11 +164,7 @@ export class LocalWorkflow {
     handler: StepHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
-    if (!handler?.invoke) {
-      throw new Error(
-        `Handler for action "${action}" is missing invoke function.`
-      )
-    }
+    this.assertHandler(handler, action)
 
     this.flow.insertActionAfter(existingAction, action, options)
     this.handlers.set(action, handler)
@@ -200,15 +178,19 @@ export class LocalWorkflow {
     handler: StepHandler,
     options: Partial<TransactionStepsDefinition> = {}
   ) {
-    if (!handler?.invoke) {
-      throw new Error(
-        `Handler for action "${action}" is missing invoke function.`
-      )
-    }
+    this.assertHandler(handler, action)
 
     this.flow.appendAction(action, to, options)
     this.handlers.set(action, handler)
 
     return this.flow
+  }
+
+  protected assertHandler(handler: StepHandler, action: string): void | never {
+    if (!handler?.invoke) {
+      throw new Error(
+        `Handler for action "${action}" is missing invoke function.`
+      )
+    }
   }
 }
