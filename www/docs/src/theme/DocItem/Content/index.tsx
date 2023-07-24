@@ -42,7 +42,7 @@ export default function DocItemContent({ children }: Props): JSX.Element {
             badge && "md:tw-flex md:tw-items-center md:tw-gap-0.5 tw-mb-2"
           )}
         >
-          <Heading as="h1" className="!tw-mb-0">
+          <Heading as="h1" className={clsx(badge && "!tw-mb-0")}>
             {syntheticTitle}
             {badge && (
               <Badge
