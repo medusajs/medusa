@@ -3,7 +3,7 @@ import { MedusaError } from "@medusajs/utils"
 import {
   TransactionOrchestrator,
   TransactionState,
-} from "../../../utils/transaction"
+} from "@medusajs/orchestration"
 import { AdminPostProductsReq } from "../../../api"
 import { Product } from "../../../models"
 import { PricedProduct } from "../../../types/pricing"
