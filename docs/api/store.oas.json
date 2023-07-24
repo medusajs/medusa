@@ -14169,6 +14169,10 @@
           "quantity": {
             "type": "number",
             "description": "The quantity to set the Line Item to."
+          },
+          "metadata": {
+            "type": "object",
+            "description": "An optional key-value map with additional details about the Line Item. If omitted, the metadata will remain unchanged.\""
           }
         }
       },
@@ -14861,6 +14865,18 @@
             "items": {
               "$ref": "#/components/schemas/Region"
             }
+          },
+          "count": {
+            "type": "integer",
+            "description": "The total number of items available"
+          },
+          "offset": {
+            "type": "integer",
+            "description": "The number of items skipped before these items"
+          },
+          "limit": {
+            "type": "integer",
+            "description": "The number of items per page"
           }
         }
       },
