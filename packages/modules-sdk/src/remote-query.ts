@@ -32,9 +32,7 @@ export class RemoteQuery {
     }
 
     const servicesConfig: JoinerServiceConfig[] = []
-    for (const modService of modulesLoaded) {
-      const mod: any = Object.values(modService)[0]
-
+    for (const mod of modulesLoaded) {
       if (!mod.__definition.isQueryable) {
         continue
       }
