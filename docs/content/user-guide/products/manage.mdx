@@ -5,6 +5,7 @@ addHowToData: true
 ---
 
 import UiIcon from '@site/src/components/UiIcon';
+import getOsShortcut from '@site/src/utils/get-os-shortcut'
 
 # Manage Products
 
@@ -240,6 +241,42 @@ To delete a variant:
 2. Find the variant you want to duplicate in the Variants section.
 3. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon.
 4. Click on Delete Variant from the dropdown.
+
+---
+
+## Edit Product Prices with Bulk Editor
+
+The prices bulk editor allows you to edit the prices of a product's variants using a spreadsheet interface.
+
+To open the prices bulk editor:
+
+1. Go to the product's details page.
+2. Click on the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999308/Medusa%20Docs/UI%20Icons/1ordBC6_ssysel.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999326/Medusa%20Docs/UI%20Icons/dSwWYBH_stzgoi.png" alt="three dots" /> icon at the top right of the Variants section.
+3. Click on Edit Prices from the dropdown.
+
+This opens the prices bulk editor in a pop-up. Some tips on how to use the bulk editor:
+
+- To view or hide currencies or regions from the editor:
+    1. Click on the View button.
+    2. Check or uncheck a currency/region by clicking on it in the dropdown.
+- To edit a cell's value, there are two ways:
+    1. To edit the value without replacing the existing one, double-click the cell, then enter your new value.
+    2. To edit the value by replacing the existing one, click on the cell and start typing your new value.
+- After editing a cell's value, you can persist it by either clicking outside the cell or pressing <kbd>tab</kbd>
+- To delete a value, select the cell then press <kbd>backspace</kbd>
+- To delete the value of multiple adjacent cells in a column, click on a cell, then drag either up or down to other cells in the same column. Once you've selected all cells you want to delete their values, press <kbd>backspace</kbd>
+- To apply a value of a cell to other adjacent cells in a column,  click on a cell, then drag the blue dot at the corner of that cell either up or down to other cells you want to apply the value to.
+- To undo a change you made in the currently selected cell(s), press <kbd children={getOsShortcut()}></kbd> + <kbd>Z</kbd>
+
+Once you're done making changes, you can save your changes by clicking the "Save and close" button. Then, in the pop-up that opens:
+
+- If you made edits to a value in a currency or region that is now hidden, you'll be shown the option to save all changes or just save the changes made in the currently visible currencies and regions. Choose one of the options then click the "Save changes" button.
+- Otherwise, you can directly click the "Save changes" button.
+
+To discard the changes you made:
+
+1. Either press <kbd>esc</kbd> or click the <UiIcon lightIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999180/Medusa%20Docs/UI%20Icons/kvGRHQR_s0ptsm.png" darkIcon="https://res.cloudinary.com/dza7lstvk/image/upload/v1667999200/Medusa%20Docs/UI%20Icons/RJ4SLIu_n30zqr.png" alt="X" /> icon at the top left.
+2. Confirm discarding the changes by clicking the “Yes, close” button in the pop-up.
 
 ---
 

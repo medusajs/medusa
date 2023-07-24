@@ -1,11 +1,11 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { useDb, initDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb, initDb } = require("../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../helpers/admin-seeder")
-const promotionsSeeder = require("../../helpers/price-selection-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const promotionsSeeder = require("../../../helpers/price-selection-seeder")
 
 jest.setTimeout(30000)
 
