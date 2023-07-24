@@ -29,13 +29,15 @@ async function transactionWrapper<TManager = unknown>(
 
   const options = {}
 
+  if (transaction) {
+    Object.assign(options, { ctx: transaction })
+  }
+
   if (isolationLevel) {
     Object.assign(options, { isolationLevel })
   }
 
-  const transactionRunner =
-    this.manager_.transactional ?? this.manager_.transaction
-  return await transactionRunner(task, options)
+  return await (this.manager_ as SqlEntityManager).transactional(task, options)
 }
 
 // TODO: move to utils package

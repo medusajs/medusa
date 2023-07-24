@@ -105,7 +105,7 @@ class ProductVariant {
   @Property({ columnType: "numeric", nullable: true, default: 0 })
   variant_rank?: number | null
 
-  @Property({ persist: false })
+  @Property({ columnType: "text", nullable: true })
   product_id!: string
 
   @Property({ onCreate: () => new Date(), columnType: "timestamptz" })

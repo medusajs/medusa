@@ -280,7 +280,9 @@ describe("SwapService", () => {
               },
               items: {
                 variant: {
-                  product: true,
+                  product: {
+                    profiles: true,
+                  },
                 },
               },
               swaps: {

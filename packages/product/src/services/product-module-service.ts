@@ -548,7 +548,7 @@ export default class ProductModuleService<
               [productData.type as ProductTypes.CreateProductTypeDTO],
               sharedContext
             )
-          )?.[0]!.id
+          )?.[0]!?.id
         }
 
         return productData as CreateProductOnlyDTO

@@ -2,6 +2,7 @@ const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_NAME = process.env.DB_TEMP_NAME
+const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`
 
 module.exports = {
   plugins: [
@@ -23,7 +24,7 @@ module.exports = {
   ],
   projectConfig: {
     // redis_url: REDIS_URL,
-    database_url: `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}`,
+    database_url: DB_URL,
     database_type: "postgres",
     jwt_secret: "test",
     cookie_secret: "test",
@@ -43,6 +44,17 @@ module.exports = {
     cacheService: {
       resolve: "@medusajs/cache-inmemory",
       options: { ttl: 5 },
+    },
+    productModuleService: {
+      scope: "internal",
+      resources: "isolated",
+      resolve: "@medusajs/product",
+      options: {
+        database: {
+          clientUrl: DB_URL,
+          debug: false,
+        },
+      },
     },
   },
 }

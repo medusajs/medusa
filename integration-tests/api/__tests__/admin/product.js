@@ -26,9 +26,6 @@ const { IdMap } = require("medusa-test-utils")
 
 jest.setTimeout(50000)
 
-const testProductId = "test-product"
-const testProduct1Id = "test-product1"
-const testProductFilteringId1 = "test-product_filtering_1"
 const adminHeaders = {
   headers: {
     Authorization: "Bearer test_token",
