@@ -35,7 +35,6 @@ const TagOperation = ({
   const path = getSectionId([...(operation.tags || []), operation.operationId])
   const nodeRef = useRef<Element | null>(null)
   const { loading, removeLoading } = useLoading()
-  // const nodeRef = useRef<HTMLDivElement>(null)
   const { ref } = useInView({
     threshold: 0.3,
     rootMargin: `57px 0px 0px 0px`,

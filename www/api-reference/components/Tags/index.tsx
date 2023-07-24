@@ -83,11 +83,11 @@ const Tags = () => {
   }, [baseSpecs, addItems])
 
   return (
-    <>
+    <div>
       {tags.map((tag, index) => (
         <TagSection tag={tag} key={index} />
       ))}
-    </>
+    </div>
   )
 }
 
