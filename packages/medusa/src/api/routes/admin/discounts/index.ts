@@ -210,7 +210,6 @@ export const defaultAdminDiscountsFields: (keyof Discount)[] = [
 ]
 
 export const defaultAdminDiscountsRelations = [
-  "rule",
   "parent_discount",
   "regions",
   "rule.conditions",

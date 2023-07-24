@@ -74,6 +74,10 @@ export interface Product {
    */
   profile?: ShippingProfile | null
   /**
+   * Available if the relation `profiles` is expanded.
+   */
+  profiles?: Array<ShippingProfile> | null
+  /**
    * The weight of the Product Variant. May be used in shipping rate calculations.
    */
   weight: number | null
