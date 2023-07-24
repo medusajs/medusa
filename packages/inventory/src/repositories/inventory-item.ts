@@ -64,6 +64,10 @@ export class InventoryItemRepository extends AbstractBaseRepository<InventoryIte
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<InventoryItem[]> {
+    const [item] = data
+
+    ;(manager as SqlEntityManager).create(InventoryItem, item)
+
     const items = data.map((item) => {
       return (manager as SqlEntityManager).create(InventoryItem, item)
     })

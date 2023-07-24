@@ -60,3 +60,5 @@ export class StockLocation {
     this.id = generateEntityId(this.id, "sloc")
   }
 }
+
+export default StockLocation

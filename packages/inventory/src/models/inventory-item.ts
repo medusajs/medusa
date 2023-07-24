@@ -37,7 +37,6 @@ export class InventoryItem {
   deleted_at: Date | null
 
   @Property({ columnType: "text", nullable: true })
-  @Unique({ name: "IDX_inventory_item_sku", properties: ["sku"] })
   sku: string | null
 
   @Property({ columnType: "text", nullable: true })

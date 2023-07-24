@@ -24,9 +24,6 @@ export class Migration20230719071200 extends Migration {
         "metadata" jsonb null, 
         constraint "PK_inventory_item_id" primary key ("id"));`
     )
-    this.addSql(
-      `alter table "inventory_item" add constraint "IDX_inventory_item_sku" unique ("sku");`
-    )
 
     this.addSql(
       `create table "inventory_level" (

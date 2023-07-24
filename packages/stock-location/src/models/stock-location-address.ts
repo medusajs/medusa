@@ -68,3 +68,5 @@ export class StockLocationAddress {
     this.id = generateEntityId(this.id, "laddr")
   }
 }
+
+export default StockLocationAddress

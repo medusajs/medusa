@@ -19,7 +19,10 @@ export default async (
   { options, container }: LoaderOptions,
   moduleDeclaration?: InternalModuleDeclaration
 ): Promise<void> => {
-  if (moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL) {
+  if (
+    moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
+    moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
+  ) {
     const { projectConfig } = container.resolve("configModule")
     options = {
       database: {

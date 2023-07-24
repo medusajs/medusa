@@ -1,4 +1,4 @@
-import * as InventoryModels from "../models"
+import * as StockModels from "../models"
 
 import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/modules-sdk"
 
@@ -13,9 +13,9 @@ export async function revertMigration(
 ) {
   logger ??= console as unknown as Logger
 
-  const dbData = ModulesSdkUtils.loadDatabaseConfig("inventory", options)
+  const dbData = ModulesSdkUtils.loadDatabaseConfig("stock-location", options)
 
-  const entities = Object.values(InventoryModels) as unknown as EntitySchema[]
+  const entities = Object.values(StockModels) as unknown as EntitySchema[]
 
   const orm = await createConnection(dbData, entities)
 
@@ -23,10 +23,10 @@ export async function revertMigration(
     const migrator = orm.getMigrator()
     await migrator.down()
 
-    logger?.info("Inventory module migration reverted")
+    logger?.info("Stock location module migration reverted")
   } catch (error) {
     logger?.error(
-      `Inventory module migration failed to revert - Error: ${error}`
+      `Stock location module migration failed to revert - Error: ${error}`
     )
   }
 

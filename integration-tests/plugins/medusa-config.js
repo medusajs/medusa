@@ -41,13 +41,25 @@ module.exports = {
   modules: {
     [Modules.STOCK_LOCATION]: {
       scope: "internal",
-      resources: "shared",
+      resources: "isolated",
       resolve: "@medusajs/stock-location",
+      options: {
+        database: {
+          clientUrl: DB_URL,
+          debug: false,
+        },
+      },
     },
     [Modules.INVENTORY]: {
       scope: "internal",
-      resources: "shared",
+      resources: "isolated",
       resolve: "@medusajs/inventory",
+      options: {
+        database: {
+          clientUrl: DB_URL,
+          debug: false,
+        },
+      },
     },
     [Modules.CACHE]: {
       resolve: "@medusajs/cache-inmemory",
