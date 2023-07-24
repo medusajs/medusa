@@ -42,6 +42,7 @@ import {
   createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
+import { createProductsWorkflow } from "../../../../workflows/admin/create-products"
 
 /**
  * @oas [post] /admin/products
@@ -129,6 +130,19 @@ export default async (req, res) => {
   )
 
   const entityManager: EntityManager = req.scope.resolve("manager")
+  const productModuleService = req.scope.resolve("productModuleService")
+
+  if (productModuleService) {
+    const products = await createProductsWorkflow(
+      {
+        container: req.scope,
+        manager: entityManager,
+      },
+      [validated]
+    )
+
+    return res.json({ product: products[0] })
+  }
 
   const product = await entityManager.transaction(async (manager) => {
     const { variants } = validated

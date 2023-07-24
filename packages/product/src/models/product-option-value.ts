@@ -32,7 +32,7 @@ class ProductOptionValue {
   @Property({ columnType: "text" })
   value: string
 
-  @Property({ persist: false })
+  @Property({ columnType: "text", nullable: true })
   option_id!: string
 
   @ManyToOne(() => ProductOption, {
@@ -41,7 +41,7 @@ class ProductOptionValue {
   })
   option: ProductOption
 
-  @Property({ persist: false })
+  @Property({ columnType: "text", nullable: true })
   variant_id!: string
 
   @ManyToOne(() => ProductVariant, {

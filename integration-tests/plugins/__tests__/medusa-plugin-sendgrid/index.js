@@ -120,6 +120,8 @@ describe("medusa-plugin-sendgrid", () => {
             updated_at: expect.any(Date),
             product: {
               profile_id: expect.any(String),
+              profile: expect.any(Object),
+              profiles: expect.any(Array),
               created_at: expect.any(Date),
               updated_at: expect.any(Date),
             },
@@ -242,6 +244,8 @@ describe("medusa-plugin-sendgrid", () => {
               updated_at: expect.any(Date),
               product: {
                 profile_id: expect.any(String),
+                profile: expect.any(Object),
+                profiles: expect.any(Array),
                 created_at: expect.any(Date),
                 updated_at: expect.any(Date),
               },
@@ -303,6 +307,8 @@ describe("medusa-plugin-sendgrid", () => {
             updated_at: expect.any(Date),
             product: {
               profile_id: expect.any(String),
+              profile: expect.any(Object),
+              profiles: expect.any(Array),
               created_at: expect.any(Date),
               updated_at: expect.any(Date),
             },
@@ -485,6 +491,8 @@ describe("medusa-plugin-sendgrid", () => {
             updated_at: expect.any(Date),
             product: {
               profile_id: expect.any(String),
+              profile: expect.any(Object),
+              profiles: expect.any(Array),
               created_at: expect.any(Date),
               updated_at: expect.any(Date),
             },
@@ -592,6 +600,8 @@ describe("medusa-plugin-sendgrid", () => {
         updated_at: expect.any(Date),
         product: {
           profile_id: expect.any(String),
+          profile: expect.any(Object),
+          profiles: expect.any(Array),
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         },
@@ -780,6 +790,8 @@ const getReturnSnap = (received = false) => {
       updated_at: expect.any(Date),
       product: {
         profile_id: expect.any(String),
+        profile: expect.any(Object),
+        profiles: expect.any(Array),
         created_at: expect.any(Date),
         updated_at: expect.any(Date),
       },
