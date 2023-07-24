@@ -83,7 +83,7 @@ import { Type } from "class-transformer"
  *     source: |
  *       curl 'https://medusa-url.com/store/collections'
  * tags:
- *   - Collections
+ *   - Product Collections
  * responses:
  *  "200":
  *    description: OK

@@ -33,7 +33,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Collections
+ *   - Product Collections
  * responses:
  *  "200":
  *    description: OK

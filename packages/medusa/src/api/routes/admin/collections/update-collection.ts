@@ -45,7 +45,7 @@ import { defaultAdminCollectionsRelations } from "."
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Collections
+ *   - Product Collections
  * responses:
  *  "200":
  *    description: OK

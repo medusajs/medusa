@@ -24,7 +24,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *     source: |
  *       curl 'https://medusa-url.com/store/collections/{id}'
  * tags:
- *   - Collections
+ *   - Product Collections
  * responses:
  *  "200":
  *    description: OK
