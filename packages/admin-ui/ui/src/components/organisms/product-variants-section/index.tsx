@@ -18,6 +18,8 @@ import { adminInventoryItemsKeys, useMedusa } from "medusa-react"
 import { useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import useToggleState from "../../../hooks/use-toggle-state"
+import DollarSignIcon from "../../fundamentals/icons/dollar-sign-icon"
+import Index from "./edit-prices-modal"
 
 type Props = {
   product: Product
@@ -59,11 +61,22 @@ const ProductVariantsSection = ({ product }: Props) => {
     toggle: toggleEditVariants,
   } = useToggleState()
 
+  const {
+    state: showEditPrices,
+    close: hideEditPrices,
+    toggle: toggleEditPrices,
+  } = useToggleState()
+
   const actions: ActionType[] = [
     {
       label: "Add Variant",
       onClick: toggleAddVariant,
       icon: <PlusIcon size="20" />,
+    },
+    {
+      label: "Edit Prices",
+      onClick: toggleEditPrices,
+      icon: <DollarSignIcon size="20" />,
     },
     {
       label: "Edit Variants",
@@ -148,6 +161,7 @@ const ProductVariantsSection = ({ product }: Props) => {
         onClose={closeEditVariants}
         product={product}
       />
+      {showEditPrices && <Index close={hideEditPrices} product={product} />}
       {variantToEdit && (
         <EditVariantModal
           variant={variantToEdit.base}

@@ -1,14 +1,14 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 const {
   simpleProductFactory,
   simpleShippingOptionFactory,
   simpleShippingProfileFactory,
-} = require("../../factories")
-const adminSeeder = require("../../helpers/admin-seeder")
+} = require("../../../factories")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 const adminReqConfig = {
   headers: {

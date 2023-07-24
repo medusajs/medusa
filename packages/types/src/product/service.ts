@@ -12,10 +12,14 @@ import {
   ProductTagDTO,
   ProductVariantDTO,
 } from "./common"
-import { FindConfig } from "../common"
+
 import { Context } from "../shared-context"
+import { FindConfig } from "../common"
+import { JoinerServiceConfig } from "../joiner"
 
 export interface IProductModuleService {
+  __joinerConfig(): JoinerServiceConfig
+
   retrieve(
     productId: string,
     config?: FindConfig<ProductDTO>,

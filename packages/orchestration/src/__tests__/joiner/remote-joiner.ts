@@ -49,7 +49,7 @@ describe("RemoteJoiner", () => {
 
   it("Simple query of a service, its id and no fields specified", async () => {
     const query = {
-      service: "User",
+      service: "user",
       args: [
         {
           name: "id",
@@ -69,20 +69,62 @@ describe("RemoteJoiner", () => {
     })
   })
 
-  it("Transforms main service name into PascalCase", async () => {
+  it("Simple query of a service by its alias", async () => {
     const query = {
-      service: "user",
+      alias: "customer",
       fields: ["id"],
+      args: [
+        {
+          name: "id",
+          value: "1",
+        },
+      ],
     }
 
     await joiner.query(query)
 
     expect(serviceMock.userService).toHaveBeenCalledTimes(1)
+    expect(serviceMock.userService).toHaveBeenCalledWith({
+      args: [],
+      fields: ["id"],
+      options: { id: ["1"] },
+    })
+  })
+
+  it("Simple query of a service by its alias with extra arguments", async () => {
+    const query = {
+      alias: "me",
+      fields: ["id"],
+      args: [
+        {
+          name: "id",
+          value: 1,
+        },
+        {
+          name: "arg1",
+          value: "abc",
+        },
+      ],
+    }
+
+    await joiner.query(query)
+
+    expect(serviceMock.userService).toHaveBeenCalledTimes(1)
+    expect(serviceMock.userService).toHaveBeenCalledWith({
+      args: [
+        {
+          name: "arg1",
+          value: "abc",
+        },
+      ],
+      fields: ["id"],
+      options: { id: [1] },
+    })
   })
 
   it("Simple query of a service, its id and a few fields specified", async () => {
     const query = {
-      service: "User",
+      service: "user",
       args: [
         {
           name: "id",
@@ -148,7 +190,7 @@ describe("RemoteJoiner", () => {
 
   it("Query a service using more than 1 argument, expanding a property with another argument", async () => {
     const query = {
-      service: "User",
+      service: "user",
       args: [
         {
           name: "id",
@@ -213,7 +255,7 @@ describe("RemoteJoiner", () => {
 
   it("Query a service expanding multiple nested properties", async () => {
     const query = {
-      service: "Order",
+      service: "order",
       fields: ["number", "date", "products"],
       expands: [
         {

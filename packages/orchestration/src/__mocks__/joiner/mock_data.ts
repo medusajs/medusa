@@ -3,22 +3,36 @@ import { remoteJoinerData } from "./../../__fixtures__/joiner/data"
 
 export const serviceConfigs: JoinerServiceConfig[] = [
   {
-    serviceName: "User",
+    serviceName: "user",
     primaryKeys: ["id"],
+    args: {
+      methodSuffix: "User",
+    },
+    alias: [
+      {
+        name: "me",
+        args: {
+          extraArgument: 123,
+        },
+      },
+      {
+        name: "customer",
+      },
+    ],
     relationships: [
       {
         foreignKey: "products.product_id",
-        serviceName: "Product",
+        serviceName: "product",
         primaryKey: "id",
         alias: "product",
       },
     ],
     extends: [
       {
-        serviceName: "Variant",
-        resolve: {
+        serviceName: "variantService",
+        relationship: {
           foreignKey: "user_id",
-          serviceName: "User",
+          serviceName: "user",
           primaryKey: "id",
           alias: "user",
         },
@@ -26,55 +40,58 @@ export const serviceConfigs: JoinerServiceConfig[] = [
     ],
   },
   {
-    serviceName: "Product",
+    serviceName: "product",
     primaryKeys: ["id", "sku"],
     relationships: [
       {
         foreignKey: "user_id",
-        serviceName: "User",
+        serviceName: "user",
         primaryKey: "id",
         alias: "user",
       },
     ],
   },
   {
-    serviceName: "Variant",
+    serviceName: "variantService",
+    alias: {
+      name: "variant",
+    },
     primaryKeys: ["id"],
     relationships: [
       {
         foreignKey: "product_id",
-        serviceName: "Product",
+        serviceName: "product",
         primaryKey: "id",
         alias: "product",
       },
       {
         foreignKey: "variant_id",
         primaryKey: "id",
-        serviceName: "Order",
+        serviceName: "order",
         alias: "orders",
         inverse: true, // In an inverted relationship the foreign key is on Order and the primary key is on variant
       },
     ],
   },
   {
-    serviceName: "Order",
+    serviceName: "order",
     primaryKeys: ["id"],
     relationships: [
       {
         foreignKey: "product_id",
-        serviceName: "Product",
+        serviceName: "product",
         primaryKey: "id",
         alias: "product",
       },
       {
         foreignKey: "products.variant_id,product_id",
-        serviceName: "Variant",
+        serviceName: "variantService",
         primaryKey: "id,product_id",
         alias: "variant",
       },
       {
         foreignKey: "user_id",
-        serviceName: "User",
+        serviceName: "user",
         primaryKey: "id",
         alias: "user",
       },
