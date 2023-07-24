@@ -123,11 +123,9 @@ export class LocalWorkflow {
     options: Partial<TransactionStepsDefinition> = {}
   ) {
     this.assertHandler(handler, action)
-
-    this.flow.addAction(action, options)
     this.handlers.set(action, handler)
 
-    return this.flow
+    return this.flow.addAction(action, options)
   }
 
   replaceAction(
@@ -137,11 +135,9 @@ export class LocalWorkflow {
     options: Partial<TransactionStepsDefinition> = {}
   ) {
     this.assertHandler(handler, action)
-
-    this.flow.replaceAction(existingAction, action, options)
     this.handlers.set(action, handler)
 
-    return this.flow
+    return this.flow.replaceAction(existingAction, action, options)
   }
 
   insertActionBefore(
@@ -151,11 +147,9 @@ export class LocalWorkflow {
     options: Partial<TransactionStepsDefinition> = {}
   ) {
     this.assertHandler(handler, action)
-
-    this.flow.insertActionBefore(existingAction, action, options)
     this.handlers.set(action, handler)
 
-    return this.flow
+    return this.flow.insertActionBefore(existingAction, action, options)
   }
 
   insertActionAfter(
@@ -165,11 +159,9 @@ export class LocalWorkflow {
     options: Partial<TransactionStepsDefinition> = {}
   ) {
     this.assertHandler(handler, action)
-
-    this.flow.insertActionAfter(existingAction, action, options)
     this.handlers.set(action, handler)
 
-    return this.flow
+    return this.flow.insertActionAfter(existingAction, action, options)
   }
 
   appendAction(
@@ -179,11 +171,32 @@ export class LocalWorkflow {
     options: Partial<TransactionStepsDefinition> = {}
   ) {
     this.assertHandler(handler, action)
-
-    this.flow.appendAction(action, to, options)
     this.handlers.set(action, handler)
 
-    return this.flow
+    return this.flow.appendAction(action, to, options)
+  }
+
+  moveAction(actionToMove: string, targetAction: string): OrchestratorBuilder {
+    return this.flow.moveAction(actionToMove, targetAction)
+  }
+
+  moveAndMergeNextAction(
+    actionToMove: string,
+    targetAction: string
+  ): OrchestratorBuilder {
+    return this.flow.moveAndMergeNextAction(actionToMove, targetAction)
+  }
+
+  mergeActions(where: string, ...actions: string[]) {
+    return this.flow.mergeActions(where, ...actions)
+  }
+
+  deleteAction(action: string, parentSteps?) {
+    return this.flow.deleteAction(action, parentSteps)
+  }
+
+  pruneAction(action: string) {
+    return this.flow.pruneAction(action)
   }
 
   protected assertHandler(handler: StepHandler, action: string): void | never {
