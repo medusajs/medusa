@@ -514,7 +514,7 @@ class CartService extends TransactionBaseService {
 
         await this.lineItemService_
           .withTransaction(transactionManager)
-          .delete(lineItem.id)
+          .deleteWithTaxLines(lineItem.id)
 
         const result = await this.retrieve(cartId, {
           relations: [
