@@ -22,6 +22,7 @@ export async function createConnection(
     migrations: {
       path: __dirname + "/../migrations",
     },
+    contextName: "stock-location",
   })
 
   return orm

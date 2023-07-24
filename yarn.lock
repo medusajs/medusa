@@ -24976,7 +24976,7 @@ __metadata:
     "@medusajs/product": "workspace:^"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
-    jest: ^26.6.3
+    jest: 26
     jest-environment-node: 26.6.2
     medusa-fulfillment-webshipper: "workspace:*"
     medusa-interfaces: "workspace:*"
@@ -28353,6 +28353,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jest@npm:26, jest@npm:^26.6.3":
+  version: 26.6.3
+  resolution: "jest@npm:26.6.3"
+  dependencies:
+    "@jest/core": ^26.6.3
+    import-local: ^3.0.2
+    jest-cli: ^26.6.3
+  bin:
+    jest: bin/jest.js
+  checksum: 4469f5c426f5b00855e2264dc4fce5ab16c0fab31d2dc6fc829d769ca7ec84a9c74763f7c1d281d085ad55897927a08df2b4778b0df899a66188ff0722e17d29
+  languageName: node
+  linkType: hard
+
 "jest@npm:^25.5.2, jest@npm:^25.5.4":
   version: 25.5.4
   resolution: "jest@npm:25.5.4"
@@ -28363,19 +28376,6 @@ __metadata:
   bin:
     jest: bin/jest.js
   checksum: a5c58268632b37b2c9bd4ca0f067bda030d1330581d3295e110584863bf8e48f76d40624c02b0a26ad8d05f18ef2e84851f7fef271b8c7684684992bef03c838
-  languageName: node
-  linkType: hard
-
-"jest@npm:^26.6.3":
-  version: 26.6.3
-  resolution: "jest@npm:26.6.3"
-  dependencies:
-    "@jest/core": ^26.6.3
-    import-local: ^3.0.2
-    jest-cli: ^26.6.3
-  bin:
-    jest: bin/jest.js
-  checksum: 4469f5c426f5b00855e2264dc4fce5ab16c0fab31d2dc6fc829d769ca7ec84a9c74763f7c1d281d085ad55897927a08df2b4778b0df899a66188ff0722e17d29
   languageName: node
   linkType: hard
 
