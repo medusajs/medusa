@@ -87,6 +87,7 @@ class Medusa {
 export default Medusa
 export { default as MedusaError } from "./error"
 export { default as KeyManager } from "./key-manager"
-export { Config, default as Client } from "./request"
+export { default as Client, Config } from "./request"
 export * from "./resources"
 export * from "./typings"
+

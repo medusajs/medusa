@@ -1,5 +1,7 @@
+import { ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
+  Image,
   Product,
   ProductCategory,
   ProductCollection,
@@ -7,9 +9,16 @@ import {
 } from "@models"
 import ProductOption from "../../../src/models/product-option"
 
+export * from "./data/create-product"
+
 export async function createProductAndTags(
   manager: SqlEntityManager,
-  data: any[]
+  data: {
+    id?: string
+    title: string
+    status: ProductTypes.ProductStatus
+    tags?: { id: string; value: string }[]
+  }[]
 ) {
   const products: any[] = data.map((productData) => {
     return manager.create(Product, productData)
@@ -35,7 +44,11 @@ export async function createProductVariants(
 
 export async function createCollections(
   manager: SqlEntityManager,
-  collectionData: any[]
+  collectionData: {
+    id?: string
+    title: string
+    handle?: string
+  }[]
 ) {
   const collections: any[] = collectionData.map((collectionData) => {
     return manager.create(ProductCollection, collectionData)
@@ -48,15 +61,39 @@ export async function createCollections(
 
 export async function createOptions(
   manager: SqlEntityManager,
-  optionsData: any[]
+  optionsData: {
+    id?: string
+    product: { id: string }
+    title: string
+    value?: string
+    values?: {
+      id?: string
+      value: string
+      variant?: { id: string } & any
+    }[]
+    variant?: { id: string } & any
+  }[]
 ) {
-  const options: any[] = optionsData.map((o) => {
-    return manager.create(ProductOption, o)
+  const options: any[] = optionsData.map((option) => {
+    return manager.create(ProductOption, option)
   })
 
   await manager.persistAndFlush(options)
 
   return options
+}
+
+export async function createImages(
+  manager: SqlEntityManager,
+  imagesData: string[]
+) {
+  const images: any[] = imagesData.map((img) => {
+    return manager.create(Image, { url: img })
+  })
+
+  await manager.persistAndFlush(images)
+
+  return images
 }
 
 export async function assignCategoriesToProduct(

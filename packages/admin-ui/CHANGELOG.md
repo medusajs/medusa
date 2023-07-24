@@ -1,5 +1,31 @@
 # @medusajs/admin-ui
 
+## 1.9.2
+
+### Patch Changes
+
+- [#4541](https://github.com/medusajs/medusa/pull/4541) [`aae4b3ad3`](https://github.com/medusajs/medusa/commit/aae4b3ad371e0b7e8e0007a6ef21ee66eda665f1) Thanks [@pKorsholm](https://github.com/pKorsholm)! - feat(admin-ui): always show list of currencies in currency overview
+
+- [#4530](https://github.com/medusajs/medusa/pull/4530) [`55db91415`](https://github.com/medusajs/medusa/commit/55db914151fc70cf0abe8a71dd8e17067cce3908) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(admin-ui): number input setting
+
+- [#4552](https://github.com/medusajs/medusa/pull/4552) [`221f62dc4`](https://github.com/medusajs/medusa/commit/221f62dc4cf4a30505bf3e15034c735663659ade) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Omit PriceList prices from variant update
+
+- [#4516](https://github.com/medusajs/medusa/pull/4516) [`bfc0ea569`](https://github.com/medusajs/medusa/commit/bfc0ea5695b8999a63df9ba58409e3e139473afa) Thanks [@fPolic](https://github.com/fPolic)! - feat(admin-ui): variant prices bulk editor
+
+- Updated dependencies [[`3e6cee284`](https://github.com/medusajs/medusa/commit/3e6cee28469b5ce30687de5e5096266244f6b3a9), [`e3a856521`](https://github.com/medusajs/medusa/commit/e3a85652132c110e4dd81ae1120414121fbab0fd)]:
+  - medusa-react@9.0.3
+
+## 1.9.1
+
+### Patch Changes
+
+- [#4444](https://github.com/medusajs/medusa/pull/4444) [`78a1f3943`](https://github.com/medusajs/medusa/commit/78a1f3943b1631170721169c19b5b47a4832330f) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore(admin-ui): Remove new badges from inventory + categories
+
+- [#4389](https://github.com/medusajs/medusa/pull/4389) [`9dcdc0041`](https://github.com/medusajs/medusa/commit/9dcdc0041a2b08cc0723343dd8d9127d9977b086) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, utils): fix the way selects are consumed alongside the relations
+
+- Updated dependencies [[`fe25c8a91`](https://github.com/medusajs/medusa/commit/fe25c8a91f4462c9ac5a15594fa71155df48c1eb), [`417debfe7`](https://github.com/medusajs/medusa/commit/417debfe7db6edd6722929fe0f905a63548a0c9e)]:
+  - medusa-react@9.0.2
+
 ## 1.9.0
 
 ### Minor Changes

@@ -6,11 +6,11 @@ addHowToData: true
 import Troubleshooting from '@site/src/components/Troubleshooting'
 import CorsErrorSection from '../../troubleshooting/cors-issues.md'
 
-# Deploy Next.js Storefront on Vercel
+# Deploy Next.js Starter Template on Vercel
 
-In this document, you’ll learn how to deploy the Next.js Storefront on Vercel.
+In this document, you’ll learn how to deploy the Next.js Starter Template on Vercel.
 
-Alternatively, you can directly deploy the Next.js storefront to Vercel with this button.
+Alternatively, you can directly deploy the Next.js Starter Template to Vercel with this button.
 
 <a 
   href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmedusajs%2Fnextjs-starter-medusa.git&env=NEXT_PUBLIC_MEDUSA_BACKEND_URL&envDescription=URL%20of%20your%20Medusa%20Backend" class="img-url no-zoom-img">
@@ -21,9 +21,9 @@ Alternatively, you can directly deploy the Next.js storefront to Vercel with thi
 
 ### Medusa Components
 
-It is assumed you already have installed the Next.js storefront locally. If not, please follow along with [this guide](../../starters/nextjs-medusa-starter.mdx) instead.
+It is assumed you already have installed the Next.js Starter Template locally. If not, please follow along with [this guide](../../starters/nextjs-medusa-starter.mdx) instead.
 
-It’s also assumed you already have the Medusa backend deployed, which the Next.js storefront interacts with. If not, you can check out one of the [deployment documentation related to the Medusa backend](../server/index.mdx).
+It’s also assumed you already have the Medusa backend deployed, which the Next.js Starter Template interacts with. If not, you can check out one of the [deployment documentation related to the Medusa backend](../server/index.mdx).
 
 ### Required Accounts
 
@@ -50,7 +50,7 @@ This step is only required if you’re deploying from the Vercel website. Howeve
 
 :::
 
-Before you can deploy your Next.js storefront, you need to create a GitHub repository and push the code base to it. To do that:
+Before you can deploy your Next.js Starter Template, you need to create a GitHub repository and push the code base to it. To do that:
 
 1. On GitHub, click the plus icon at the top right, then click New Repository.
 2. You’ll then be redirected to a new page with a form. In the form, enter the Repository Name.
@@ -62,7 +62,7 @@ The next step is to push the code to the GitHub repository you just created.
 
 After creating the repository, you’ll be redirected to the repository’s page. On that page, you should see a URL that you can copy to connect your repository to a local directory.
 
-Copy the link. Then, open your terminal in the directory that holds your Next.js storefront codebase and run the following commands:
+Copy the link. Then, open your terminal in the directory that holds your Next.js Starter Template codebase and run the following commands:
 
 ```bash
 git init
@@ -94,7 +94,7 @@ This section explains how to deploy the storefront using the Vercel website:
 1. Open the [Vercel dashboard](https://vercel.com/dashboard) after logging in.
 2. Click on the “Add New…” button next to the search bar.
 3. Choose Project from the dropdown.
-4. In the new page that opens, find the Git repository that holds your Next.js storefront and click on the Import button. If you haven’t connected your Vercel account to any Git provider, you must do that first.
+4. In the new page that opens, find the Git repository that holds your Next.js Starter Template and click on the Import button. If you haven’t connected your Vercel account to any Git provider, you must do that first.
 5. In the Configure Project form:
     1. Open the Environment Variables collapsible, and add an environment variable with the name `NEXT_PUBLIC_MEDUSA_BACKEND_URL` and the value being the URL to your deployed Medusa Backend.
     2. You can optionally edit the Project Name.
@@ -138,11 +138,11 @@ At this point, when you visit the storefront, you will face errors related to Cr
 
 ## Step 3: Configure CORS on the Medusa Backend
 
-To send requests to the Medusa backend from the Next.js storefront, you must set the `STORE_CORS` environment variable on your backend to the Next.js storefront’s URL.
+To send requests to the Medusa backend from the Next.js Starter Template, you must set the `STORE_CORS` environment variable on your backend to the Next.js Starter Template’s URL.
 
 :::tip
 
-If you want to set a custom domain to your Next.js storefront website on Vercel, make sure to do it before this step. You can refer to this guide on [Vercel’s documentation](https://vercel.com/docs/concepts/projects/domains/add-a-domain).
+If you want to set a custom domain to your Next.js Starter Template website on Vercel, make sure to do it before this step. You can refer to this guide on [Vercel’s documentation](https://vercel.com/docs/concepts/projects/domains/add-a-domain).
 
 :::
 
@@ -152,9 +152,9 @@ On your Medusa backend, add the following environment variable:
 STORE_CORS=<STOREFRONT_URL>
 ```
 
-Where `<STOREFRONT_URL>` is the URL of your Next.js storefront that you just deployed.
+Where `<STOREFRONT_URL>` is the URL of your Next.js Starter Template that you just deployed.
 
-Then, restart your Medusa backend. Once the backend is running again, you can use your Next.js storefront.
+Then, restart your Medusa backend. Once the backend is running again, you can use your Next.js Starter Template.
 
 ---
 

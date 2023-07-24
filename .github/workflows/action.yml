@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "14"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Assert changed
@@ -48,7 +48,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "14"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Assert changed
@@ -64,6 +64,68 @@ jobs:
 
       - name: Run unit tests
         run: yarn test
+
+  integration-tests-packages:
+    needs: setup
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 1s
+          --health-timeout 10s
+          --health-retries 10
+        ports:
+          - 6379:6379
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 1s
+          --health-timeout 10s
+          --health-retries 10
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "16"
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: pipeline
+
+      - name: Build Packages
+        run: yarn build
+
+      - name: Run integration tests
+        run: yarn test:integration:packages
+        env:
+          DB_PASSWORD: postgres
+          DB_USERNAME: postgres
+          SPLIT: ${{ steps['split-tests'].outputs['split'] }}
 
   integration-tests-api:
     needs: setup
@@ -109,7 +171,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "14"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Install dependencies
@@ -161,7 +223,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "14"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Install dependencies
@@ -212,7 +274,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "14"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Install dependencies

@@ -26,6 +26,8 @@ import {
   updatePaymentContextWithExistingCustomer,
   updatePaymentContextWithExistingCustomerStripeId,
   updatePaymentContextWithWrongEmail,
+  updatePaymentDataWithAmountData,
+  updatePaymentDataWithoutAmountData,
 } from "../__fixtures__/data"
 import {
   PARTIALLY_FAIL_INTENT_ID,
@@ -568,6 +570,55 @@ describe("StripeTest", () => {
         error: "An error occurred in updatePayment",
         code: "",
         detail: "Error",
+      })
+    })
+  })
+
+  describe("updatePaymentData", function () {
+    let stripeTest
+
+    beforeAll(async () => {
+      const scopedContainer = { ...container }
+      stripeTest = new StripeTest(scopedContainer, { api_key: "test" })
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("should succeed to update the payment data", async () => {
+      const result = await stripeTest.updatePaymentData(
+        updatePaymentDataWithoutAmountData.sessionId,
+        { ...updatePaymentDataWithoutAmountData, sessionId: undefined }
+      )
+
+      expect(StripeMock.paymentIntents.update).toHaveBeenCalled()
+      expect(StripeMock.paymentIntents.update).toHaveBeenCalledWith(
+        updatePaymentDataWithoutAmountData.sessionId,
+        {
+          customProp: updatePaymentDataWithoutAmountData.customProp,
+        }
+      )
+
+      expect(result).toEqual(
+        expect.objectContaining({
+          customProp: updatePaymentDataWithoutAmountData.customProp,
+        })
+      )
+    })
+
+    it("should fail to update the payment data if the amount is present", async () => {
+      const result = await stripeTest.updatePaymentData(
+        updatePaymentDataWithAmountData.sessionId,
+        { ...updatePaymentDataWithAmountData, sessionId: undefined }
+      )
+
+      expect(StripeMock.paymentIntents.update).not.toHaveBeenCalled()
+
+      expect(result).toEqual({
+        error: "An error occurred in updatePaymentData",
+        code: undefined,
+        detail: "Cannot update amount, use updatePayment instead",
       })
     })
   })

@@ -9,7 +9,7 @@ In this document, you’ll learn how to create a [Subscriber](./subscribers.mdx)
 
 ## Implementation
 
-A subscriber is a TypeScript or JavaScript file that is created under `src/subscribers`. Its file name, by convension, should be the class name of the subscriber without the word `Subscriber`. For example, if the subscriber is `HelloSubscriber`, the file name should be `hello.ts`.
+A subscriber is a TypeScript or JavaScript file that is created under `src/subscribers`. Its file name, by convention, should be the class name of the subscriber without the word `Subscriber`. For example, if the subscriber is `HelloSubscriber`, the file name should be `hello.ts`.
 
 After creating the file under `src/subscribers`, in the constructor of your subscriber, listen to events using `eventBusService.subscribe` , where `eventBusService` is a service injected into your subscriber’s constructor.
 
@@ -50,6 +50,39 @@ An example of using the subscribe method with the third parameter:
 eventBusService.subscribe("order.placed", this.handleOrder, {
   subscriberId: "my-unique-subscriber",
 })
+```
+
+---
+
+## Retrieve Medusa Configurations
+
+Within your subscriber, you may need to access the Medusa configuration exported from `medusa-config.js`. To do that, you can access `configModule` using dependency injection.
+
+For example:
+
+```ts
+import { ConfigModule, EventBusService } from "@medusajs/medusa"
+
+type InjectedDependencies = {
+  eventBusService: EventBusService
+  configModule: ConfigModule
+}
+
+class OrderNotifierSubscriber {
+  protected readonly configModule_: ConfigModule
+  
+  constructor({
+    eventBusService,
+    configModule,
+  }: InjectedDependencies) {
+    this.configModule_ = configModule
+    eventBusService.subscribe("order.placed", this.handleOrder)
+  }
+
+  // ...
+}
+
+export default OrderNotifierSubscriber
 ```
 
 ---
