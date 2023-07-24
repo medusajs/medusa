@@ -278,7 +278,7 @@ module.exports = async (dataSource, data = {}) => {
         id: "test-price2",
         region_id: "test-region",
         currency_code: "usd",
-        amount: 130,
+        amount: 90,
         price_list_id: "pl_2",
       },
       {
@@ -881,4 +881,110 @@ module.exports = async (dataSource, data = {}) => {
   })
 
   await manager.save(cart_region1)
+
+  const customerPl = await manager.create(Customer, {
+    id: "test-customer-5-pl",
+    email: "test5@email-pl.com",
+    first_name: "John",
+    last_name: "Deere",
+    password_hash:
+      "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
+    has_account: true,
+  })
+  await manager.save(customerPl)
+
+  const pPl = await manager.create(Product, {
+    id: "test-product-pl",
+    handle: "test-product-pl",
+    title: "Test product",
+    profile_id: defaultProfile.id,
+    description: "test-product-description1",
+    collection_id: "test-collection",
+    tags: [],
+  })
+
+  await manager.save(pPl)
+
+  await manager.save(ProductOption, {
+    id: "test-option-pl",
+    title: "test-option",
+    product_id: "test-product-pl",
+  })
+
+  const c_group_pl = await manager.create(CustomerGroup, {
+    id: "test-group-pl",
+    name: "test-group-pl",
+  })
+  await manager.save(c_group_pl)
+
+  customerPl.groups = [c_group_pl]
+  await manager.save(customerPl)
+
+  const c_group_not_pl = await manager.create(CustomerGroup, {
+    id: "test-group-not-pl",
+    name: "test-group-not-pl",
+  })
+  await manager.save(c_group_not_pl)
+
+  const priceListPl = await manager.create(PriceList, {
+    id: "pl_current_pl",
+    name: "Past winter sale",
+    description: "Winter sale for key accounts.",
+    type: "sale",
+    status: "active",
+  })
+
+  priceListPl.customer_groups = [c_group_pl]
+  await manager.save(priceListPl)
+
+  const priceListNotPL = await manager.create(PriceList, {
+    id: "pl_current_not_pl",
+    name: "Past winter sale",
+    description: "Winter sale for key accounts.",
+    type: "sale",
+    status: "active",
+  })
+  priceListNotPL.customer_groups = [c_group_not_pl]
+
+  await manager.save(priceListNotPL)
+
+  const variantPl = await manager.create(ProductVariant, {
+    id: "test-variant-pl",
+    inventory_quantity: 10,
+    title: "Test variant",
+    sku: "test-sku-pl",
+    status: "published",
+    product_id: "test-product-pl",
+    prices: [
+      {
+        id: "test-price120",
+        region_id: "test-region",
+        currency_code: "usd",
+        amount: 90,
+        price_list_id: "pl_current_not_pl",
+      },
+      {
+        id: "test-price1120",
+        region_id: "test-region",
+        currency_code: "usd",
+        amount: 120,
+      },
+      {
+        id: "test-price2120",
+        region_id: "test-region",
+        currency_code: "usd",
+        amount: 110,
+        price_list_id: "pl_current_pl",
+      },
+    ],
+    options: [
+      {
+        id: "test-variant-option-pl",
+        value: "Default variant",
+        option_id: "test-option-pl",
+      },
+    ],
+  })
+
+  await manager.save(variantPl)
 }
