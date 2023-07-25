@@ -380,7 +380,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "length": 6,
           "mappedType": "datetime"
         },

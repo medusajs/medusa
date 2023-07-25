@@ -93,16 +93,12 @@ const updateDeletedAtRecursively = async <T extends object = any>(
       await updateDeletedAtRecursively(manager, relationEntities, value)
     }
 
-    manager.persist(entities)
+    await manager.persistAndFlush(entities)
   }
 }
 
-const serializer = async <
-  T extends object | object[],
-  TResult extends object | object[],
-  TOutput = T extends object[] ? TResult[] : TResult
->(
-  data: T,
+const serializer = async <TOutput extends object>(
+  data: any,
   options?: any
 ): Promise<TOutput> => {
   options ??= {}
@@ -135,12 +131,11 @@ export abstract class AbstractBaseRepository<T = any>
     return await transactionWrapper.apply(this, arguments)
   }
 
-  async serialize<
-    T extends object | object[],
-    TResult extends object,
-    TOutput = T extends object[] ? TResult[] : TResult
-  >(data: T, options?: any): Promise<TOutput> {
-    return (await serializer<T, TResult>(data, options)) as TOutput
+  async serialize<TOutput extends object | object[]>(
+    data: any,
+    options?: any
+  ): Promise<TOutput> {
+    return await serializer<TOutput>(data, options)
   }
 
   abstract find(options?: DAL.FindOptions<T>, context?: Context)

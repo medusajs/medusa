@@ -52,16 +52,16 @@ export class InventoryItem {
   @Property({ columnType: "text", nullable: true })
   material: string | null
 
-  @Property({ columnType: "numeric", nullable: true })
+  @Property({ columnType: "numeric", nullable: true, serializer: Number })
   weight: number | null
 
-  @Property({ columnType: "numeric", nullable: true })
+  @Property({ columnType: "numeric", nullable: true, serializer: Number })
   length: number | null
 
-  @Property({ columnType: "numeric", nullable: true })
+  @Property({ columnType: "numeric", nullable: true, serializer: Number })
   height: number | null
 
-  @Property({ columnType: "numeric", nullable: true })
+  @Property({ columnType: "numeric", nullable: true, serializer: Number })
   width: number | null
 
   @Property({ default: true })

@@ -27,6 +27,14 @@ const keepTables = [
   "currency",
 ]
 
+const otherTables = [
+  "inventory_item",
+  "inventory_level",
+  "reservation_item",
+  "stock_location",
+  "stock_location_address",
+]
+
 const DbTestUtil = {
   db_: null,
 
@@ -55,8 +63,27 @@ const DbTestUtil = {
         continue
       }
 
-      await manager.query(`DELETE
+      await manager.query(` DELETE
                            FROM "${entity.tableName}";`)
+    }
+
+    for (const entity of otherTables) {
+      if (
+        keepTables.includes(entity.tableName) &&
+        !forceDelete.includes(entity.tableName)
+      ) {
+        continue
+      }
+
+      await manager.query(`
+      DO
+      $do$
+      BEGIN
+        IF (SELECT Count(*) > 0 FROM pg_catalog.pg_tables where tablename='${entity}') THEN
+            DELETE FROM ${entity};
+        END IF;
+      END
+      $do$`)
     }
 
     await manager.query(`SET session_replication_role = 'origin';`)

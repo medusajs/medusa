@@ -54,7 +54,7 @@ export class Migration20230719071200 extends Migration {
         "id" text not null, 
         "created_at" timestamptz not null, 
         "updated_at" timestamptz not null, 
-        "deleted_at" timestamptz not null, 
+        "deleted_at" timestamptz null, 
         "line_item_id" text null, 
         "inventory_item_id" text not null, 
         "location_id" text not null, 

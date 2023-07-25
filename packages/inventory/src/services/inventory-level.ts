@@ -8,7 +8,6 @@ import {
   UpdateInventoryLevelInput,
 } from "@medusajs/types"
 import {
-  InjectEntityManager,
   InjectTransactionManager,
   isDefined,
   MedusaContext,

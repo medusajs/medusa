@@ -24,7 +24,7 @@ export async function createConnection(
     },
   })
 
-  types.setTypeParser(1700, (val) => parseFloat(val))
+  types.setTypeParser(1700, (val) => val)
 
   return orm
 }

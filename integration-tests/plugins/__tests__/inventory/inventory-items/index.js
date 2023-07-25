@@ -186,7 +186,7 @@ describe("Inventory Items endpoints", () => {
       )
     })
 
-    it.only("should update the inventory item", async () => {
+    it("should update the inventory item", async () => {
       const api = useApi()
       const inventoryItemId = inventoryItems[0].id
 
@@ -359,7 +359,9 @@ describe("Inventory Items endpoints", () => {
           id: variantId,
           inventory: [
             expect.objectContaining({
-              ...inventoryItemCreateRes.data.inventory_item,
+              location_levels: [],
+              reserved_quantity: 0,
+              stocked_quantity: 0,
             }),
           ],
         }),

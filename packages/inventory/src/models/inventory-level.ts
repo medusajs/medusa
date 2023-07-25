@@ -62,13 +62,17 @@ export class InventoryLevel {
   @Property({ columnType: "text" })
   location_id: string
 
-  @Property({ columnType: "numeric", default: 0 })
+  @Property({ columnType: "numeric", default: 0, serializer: Number })
   stocked_quantity: number
 
-  @Property({ columnType: "numeric", default: 0 })
+  @Property({
+    columnType: "numeric",
+    default: 0,
+    serializer: Number,
+  })
   reserved_quantity: number
 
-  @Property({ columnType: "numeric", default: 0 })
+  @Property({ columnType: "numeric", default: 0, serializer: Number })
   incoming_quantity: number
 
   @Property({ columnType: "jsonb", nullable: true })
@@ -78,18 +82,6 @@ export class InventoryLevel {
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "ilev")
   }
-
-  // @OnLoad()
-  // @AfterUpdate()
-  // private loadVariables(): void {
-  //   this.stocked_quantity = parseInt(this.stocked_quantity as unknown as string)
-  //   this.reserved_quantity = parseInt(
-  //     this.reserved_quantity as unknown as string
-  //   )
-  //   this.incoming_quantity = parseInt(
-  //     this.incoming_quantity as unknown as string
-  //   )
-  // }
 }
 
 export default InventoryLevel

@@ -41,7 +41,9 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
     const manager = (context.transactionManager ??
       this.manager_) as SqlEntityManager
 
-    const findOptions_ = { ...options }
+    const where = { deleted_at: null, ...options?.where }
+    const findOptions_ = { ...options, where }
+
     findOptions_.options ??= {}
 
     Object.assign(findOptions_.options, {
@@ -124,7 +126,7 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
       })
       .execute()
 
-    return result["sum"] ?? 0
+    return Number(result["sum"]) ?? 0
   }
 
   @InjectTransactionManager()
@@ -148,7 +150,7 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
       })
       .execute()
 
-    return result["sum"] ?? 0
+    return Number(result["sum"]) ?? 0
   }
 
   @InjectTransactionManager()

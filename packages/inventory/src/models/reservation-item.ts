@@ -37,7 +37,7 @@ export class ReservationItem {
   })
   updated_at: Date
 
-  @Property({ columnType: "timestamptz" })
+  @Property({ columnType: "timestamptz", nullable: true })
   deleted_at: Date | null
 
   @Property({ columnType: "text", nullable: true })
@@ -61,7 +61,7 @@ export class ReservationItem {
   })
   location_id: string
 
-  @Property({ columnType: "numeric" })
+  @Property({ columnType: "numeric", serializer: Number })
   quantity: number
 
   @Property({ columnType: "text", nullable: true })

@@ -8,12 +8,17 @@ import { InventoryItem, ReservationItem } from "../models"
 
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import {
+  InjectTransactionManager,
+  MedusaContext,
+  isDefined,
+} from "@medusajs/utils"
 import {
   FilterQuery as MikroQuery,
   LoadStrategy,
   FindOptions as MikroOptions,
   DeepPartial,
+  EntityData,
 } from "@mikro-orm/core"
 
 type InjectedDependencies = { manager: SqlEntityManager }
@@ -44,7 +49,8 @@ export class InventoryItemRepository extends AbstractBaseRepository<InventoryIte
     const manager = (context.transactionManager ??
       this.manager_) as SqlEntityManager
 
-    const findOptions_ = { ...options }
+    const where = { deleted_at: null, ...options?.where }
+    const findOptions_ = { ...options, where }
     findOptions_.options ??= {}
 
     Object.assign(findOptions_.options, {
@@ -91,9 +97,36 @@ export class InventoryItemRepository extends AbstractBaseRepository<InventoryIte
   ): Promise<InventoryItem[]> {
     const manager = (transactionManager ?? this.manager_) as SqlEntityManager
 
+    const uglyConversion = (
+      item: Omit<
+        Partial<InventoryItem>,
+        "id" | "created_at" | "metadata" | "deleted_at" | "updated_at"
+      >
+    ): EntityData<InventoryItem> => {
+      const it = {
+        ...item,
+      }
+      if (isDefined(item.weight)) {
+        it.weight = item.weight!.toString() as unknown as number
+      }
+      if (isDefined(item.length)) {
+        it.length = item.length!.toString() as unknown as number
+      }
+      if (isDefined(item.height)) {
+        it.height = item.height!.toString() as unknown as number
+      }
+      if (isDefined(item.width)) {
+        it.width = item.width!.toString() as unknown as number
+      }
+
+      return it
+    }
+
     const items = data.map(({ item, update }) => {
-      return manager.assign(item, update)
+      return manager.assign(item, uglyConversion(update))
     })
+
+    await manager.persistAndFlush(items)
 
     return items
   }

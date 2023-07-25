@@ -90,6 +90,8 @@ export class StockLocationAddressRepository extends AbstractBaseRepository<Stock
       return manager.assign(item, update)
     })
 
+    await manager.persistAndFlush(items)
+
     return items
   }
 

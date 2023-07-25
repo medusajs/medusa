@@ -13,11 +13,7 @@ import {
 import { AbstractBaseRepository } from "./base"
 import { ReservationItem } from "../models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import {
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-} from "@medusajs/utils"
+import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 
 // eslint-disable-next-line max-len
 export class ReservationItemRepository extends AbstractBaseRepository<ReservationItem> {
@@ -45,7 +41,9 @@ export class ReservationItemRepository extends AbstractBaseRepository<Reservatio
     const manager = (context.transactionManager ??
       this.manager_) as SqlEntityManager
 
-    const findOptions_ = { ...options }
+    const where = { deleted_at: null, ...options?.where }
+    const findOptions_ = { ...options, where }
+
     findOptions_.options ??= {}
 
     Object.assign(findOptions_.options, {
@@ -101,6 +99,8 @@ export class ReservationItemRepository extends AbstractBaseRepository<Reservatio
     const items = data.map(({ item, update }) => {
       return manager.assign(item, update)
     })
+
+    await manager.persistAndFlush(items)
 
     return items
   }
