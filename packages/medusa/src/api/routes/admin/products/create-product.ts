@@ -1,4 +1,8 @@
 import {
+  CreateProductVariantInput,
+  ProductVariantPricesCreateReq,
+} from "../../../../types/product-variant"
+import {
   IsArray,
   IsBoolean,
   IsEnum,
@@ -8,7 +12,6 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   PricingService,
   ProductService,
@@ -24,25 +27,22 @@ import {
   ProductTypeReq,
 } from "../../../../types/product"
 import {
-  CreateProductVariantInput,
-  ProductVariantPricesCreateReq,
-} from "../../../../types/product-variant"
-
-import { IInventoryService } from "@medusajs/types"
-import { Type } from "class-transformer"
-import { EntityManager } from "typeorm"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { ProductStatus } from "../../../../models"
-import { Logger } from "../../../../types/global"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { FlagRouter } from "../../../../utils/flag-router"
-import { DistributedTransaction } from "../../../../utils/transaction"
-import { validator } from "../../../../utils/validator"
-import {
   createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
+import { DistributedTransaction } from "@medusajs/orchestration"
+import { EntityManager } from "typeorm"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { FlagRouter } from "../../../../utils/flag-router"
+import { IInventoryService } from "@medusajs/types"
+import { Logger } from "../../../../types/global"
+import { ProductStatus } from "../../../../models"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { Type } from "class-transformer"
 import { createProductsWorkflow } from "../../../../workflows/admin/create-products"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/products

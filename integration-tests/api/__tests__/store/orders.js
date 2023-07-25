@@ -215,33 +215,36 @@ describe("/store/carts", () => {
         "/store/orders?display_id=111&email=test@email.com&fields=status,email"
       )
 
-      expect(Object.keys(response.data.order)).toEqual([
-        // fields
-        "status",
-        "email",
+      expect(Object.keys(response.data.order)).toHaveLength(20)
+      expect(Object.keys(response.data.order)).toEqual(
+        expect.arrayContaining([
+          // fields
+          "status",
+          "email",
 
-        // relations
-        "shipping_address",
-        "fulfillments",
-        "items",
-        "shipping_methods",
-        "discounts",
-        "customer",
-        "payments",
-        "region",
+          // relations
+          "shipping_address",
+          "fulfillments",
+          "items",
+          "shipping_methods",
+          "discounts",
+          "customer",
+          "payments",
+          "region",
 
-        // totals
-        "shipping_total",
-        "discount_total",
-        "tax_total",
-        "refunded_total",
-        "total",
-        "subtotal",
-        "paid_total",
-        "refundable_amount",
-        "gift_card_total",
-        "gift_card_tax_total",
-      ])
+          // totals
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "total",
+          "subtotal",
+          "paid_total",
+          "refundable_amount",
+          "gift_card_total",
+          "gift_card_tax_total",
+        ])
+      )
     })
 
     it("get order response contains only fields defined with `fields` param", async () => {
@@ -249,32 +252,35 @@ describe("/store/carts", () => {
 
       const response = await api.get("/store/orders/order_test?fields=status")
 
-      expect(Object.keys(response.data.order)).toEqual([
-        // fields
-        "status",
+      expect(Object.keys(response.data.order)).toHaveLength(19)
+      expect(Object.keys(response.data.order)).toEqual(
+        expect.arrayContaining([
+          // fields
+          "status",
 
-        // default relations
-        "shipping_address",
-        "fulfillments",
-        "items",
-        "shipping_methods",
-        "discounts",
-        "customer",
-        "payments",
-        "region",
+          // default relations
+          "shipping_address",
+          "fulfillments",
+          "items",
+          "shipping_methods",
+          "discounts",
+          "customer",
+          "payments",
+          "region",
 
-        // totals
-        "shipping_total",
-        "discount_total",
-        "tax_total",
-        "refunded_total",
-        "total",
-        "subtotal",
-        "paid_total",
-        "refundable_amount",
-        "gift_card_total",
-        "gift_card_tax_total",
-      ])
+          // totals
+          "shipping_total",
+          "discount_total",
+          "tax_total",
+          "refunded_total",
+          "total",
+          "subtotal",
+          "paid_total",
+          "refundable_amount",
+          "gift_card_total",
+          "gift_card_tax_total",
+        ])
+      )
     })
 
     it("get order response contains only fields defined with `fields` and `expand` param", async () => {

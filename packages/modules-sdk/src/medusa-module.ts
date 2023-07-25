@@ -1,10 +1,9 @@
 import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
-  JoinerServiceConfig,
+  LoadedModule,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
-  ModuleDefinition,
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
@@ -27,7 +26,10 @@ const logger: any = {
 
 declare global {
   interface MedusaModule {
-    getLoadedModules(): Map<string, any>
+    getLoadedModules(
+      aliases?: Map<string, string>
+    ): { [key: string]: LoadedModule }[]
+    getModuleInstance(moduleKey: string, alias?: string): LoadedModule
   }
 }
 
@@ -43,14 +45,16 @@ export class MedusaModule {
   private static modules_: Map<string, ModuleAlias[]> = new Map()
   private static loading_: Map<string, Promise<any>> = new Map()
 
-  public static getLoadedModules(): Map<
-    string,
-    any & {
-      __joinerConfig: JoinerServiceConfig
-      __definition: ModuleDefinition
-    }
-  > {
-    return MedusaModule.instances_
+  public static getLoadedModules(
+    aliases?: Map<string, string>
+  ): { [key: string]: LoadedModule }[] {
+    return [...MedusaModule.modules_.entries()].map(([key]) => {
+      if (aliases?.has(key)) {
+        return MedusaModule.getModuleInstance(key, aliases.get(key))
+      }
+
+      return MedusaModule.getModuleInstance(key)
+    })
   }
 
   public static clearInstances(): void {
@@ -267,3 +271,6 @@ export class MedusaModule {
     }
   }
 }
+
+global.MedusaModule ??= MedusaModule
+exports.MedusaModule = global.MedusaModule
