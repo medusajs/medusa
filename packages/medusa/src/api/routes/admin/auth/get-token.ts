@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken"
-import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import AuthService from "../../../../services/auth"
