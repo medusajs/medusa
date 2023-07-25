@@ -40,7 +40,6 @@ describe("Inventory Module", () => {
         name: "first location",
       })
 
-      console.log(created)
       expect(created).toEqual({
         id: expect.any(String),
         name: "first location",
@@ -82,7 +81,6 @@ describe("Inventory Module", () => {
     it("update", async () => {
       const stockLocationService = appContainer.resolve("stockLocationService")
 
-      console.log("here")
       const loc = await stockLocationService.create({
         name: "location",
         address: {
@@ -130,7 +128,6 @@ describe("Inventory Module", () => {
           }),
         })
       )
-      console.log("here")
 
       expect(
         await stockLocationService.update(loc.id, {
