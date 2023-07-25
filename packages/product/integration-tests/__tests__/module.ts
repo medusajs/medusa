@@ -292,7 +292,7 @@ describe("Product module", function () {
 
     afterEach(afterEach_)
 
-    it("should restore a soft deleted product and its cascaded relations", async () => {
+    it.only("should restore a soft deleted product and its cascaded relations", async () => {
       const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],

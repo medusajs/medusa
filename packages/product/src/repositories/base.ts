@@ -47,13 +47,15 @@ const mikroOrmUpdateDeletedAtRecursively = async <T extends object = any>(
   value: Date | null
 ) => {
   for await (const entity of entities) {
-    if (!("deleted_at" in entity)) continue
+    if (!("deleted_at" in entity)) {
+      continue
+    }
     ;(entity as any).deleted_at = value
 
     const relations = manager
       .getDriver()
       .getMetadata()
-      .get(entities[0].constructor.name).relations
+      .get(entity.constructor.name).relations
 
     const relationsToCascade = relations.filter((relation) =>
       relation.cascade.includes("soft-remove" as any)
@@ -71,7 +73,7 @@ const mikroOrmUpdateDeletedAtRecursively = async <T extends object = any>(
       await mikroOrmUpdateDeletedAtRecursively(manager, relationEntities, value)
     }
 
-    await manager.persist(entities)
+    await manager.persist(entity)
   }
 }
 

@@ -2,19 +2,23 @@ import {
   CreateProductDTO,
   CreateProductTagDTO,
   CreateProductTypeDTO,
+  CreateProductOptionDTO,
   UpdateProductTagDTO,
   UpdateProductTypeDTO,
+  UpdateProductOptionDTO,
   FilterableProductCategoryProps,
   FilterableProductCollectionProps,
   FilterableProductProps,
   FilterableProductTagProps,
   FilterableProductTypeProps,
+  FilterableProductOptionProps,
   FilterableProductVariantProps,
   ProductCategoryDTO,
   ProductCollectionDTO,
   ProductDTO,
   ProductTagDTO,
   ProductTypeDTO,
+  ProductOptionDTO,
   ProductVariantDTO,
   CreateProductCollectionDTO,
   UpdateProductCollectionDTO,
@@ -104,6 +108,39 @@ export interface IProductModuleService {
 
   deleteTypes(
     productTypeIds: string[],
+    sharedContext?: Context,
+  ): Promise<void>
+
+  retrieveOption(
+    optionId: string,
+    config?: FindConfig<ProductOptionDTO>,
+    sharedContext?: Context
+  ): Promise<ProductOptionDTO>
+
+  listOptions(
+    filters?: FilterableProductOptionProps,
+    config?: FindConfig<ProductOptionDTO>,
+    sharedContext?: Context
+  ): Promise<ProductOptionDTO[]>
+
+  listAndCountOptions(
+    filters?: FilterableProductOptionProps,
+    config?: FindConfig<ProductOptionDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductOptionDTO[], number]>
+
+  createOptions(
+    data: CreateProductOptionDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductOptionDTO[]>
+
+  updateOptions(
+    data: UpdateProductOptionDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductOptionDTO[]>
+
+  deleteOptions(
+    productOptionIds: string[],
     sharedContext?: Context,
   ): Promise<void>
 

@@ -159,6 +159,13 @@ export interface FilterableProductTypeProps
   value?: string
 }
 
+export interface FilterableProductOptionProps
+  extends BaseFilterable<FilterableProductOptionProps> {
+  id?: string | string[]
+  title?: string
+  product_id?: string | string[]
+}
+
 export interface FilterableProductCollectionProps
   extends BaseFilterable<FilterableProductCollectionProps> {
   id?: string | string[]
@@ -235,6 +242,14 @@ export interface UpdateProductTagDTO {
 
 export interface CreateProductOptionDTO {
   title: string
+  product_id?: string
+  product?: Record<any, any>
+}
+
+export interface UpdateProductOptionDTO {
+  id: string
+  title?: string
+  product_id?: string
 }
 
 export interface CreateProductVariantOptionDTO {
@@ -338,6 +353,7 @@ export interface CreateProductVariantOnlyDTO {
 }
 
 export interface CreateProductOptionOnlyDTO {
-  product: { id: string }
+  product_id?: string
+  product?: Record<any, any>
   title: string
 }
