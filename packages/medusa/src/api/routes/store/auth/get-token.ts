@@ -32,7 +32,7 @@ import { MedusaError } from "medusa-core-utils"
  *         password: 'supersecret'
  *       })
  *       .then(({ accessToken }) => {
- *         console.log(accessToekn);
+ *         console.log(accessToken);
  *       });
  *   - lang: Shell
  *     label: cURL
