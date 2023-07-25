@@ -8,6 +8,13 @@ import IconBuildingTax from "../../../fundamentals/icons/building-tax-icon"
 import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 import Tooltip from "../../../atoms/tooltip"
 
+enum ArrowMove {
+  UP,
+  DOWN,
+  LEFT,
+  RIGHT,
+}
+
 type EditPricesTableProps = {
   product: Product
   currencies: string[]
@@ -145,80 +152,131 @@ function EditPricesTable(props: EditPricesTableProps) {
     setSelectedCells({})
   }
 
-  const moveAnchor = (
-    direction: "UP" | "DOWN" | "LEFT" | "RIGHT",
-    isShift: boolean
-  ) => {
+  const moveAnchor = (direction: ArrowMove, isShift: boolean) => {
     if (!anchorIndex) {
       setSelectedCells({ [getKey(variantIds[0], columns[0])]: true })
     }
 
-    if (direction === "DOWN") {
-      let ind = variantIds.findIndex((v) => v === anchorVariant)
-      ind = mod(ind + 1, variantIds.length)
-      const nextVariant = variantIds[ind]
-
+    if (direction === ArrowMove.DOWN) {
       if (!isShift) {
+        let ind = variantIds.findIndex((v) => v === anchorVariant)
+        ind = mod(ind + 1, variantIds.length)
+        const nextVariant = variantIds[ind]
+
         anchorVariant = nextVariant
         anchorIndex = ind
         startIndex = ind
         endIndex = ind
+
+        startIndexCol = anchorIndexCol
+        endIndexCol = anchorIndexCol
+
         setSelectedCells({
           [getKey(nextVariant, anchorCurrencyOrRegion)]: true,
         })
       } else {
-        endIndex = Math.min(endIndex + 1, variantIds.length - 1)
+        if (anchorIndex === startIndex) {
+          endIndex = Math.min(endIndex + 1, variantIds.length - 1)
+        } else {
+          startIndex = Math.min(startIndex + 1, variantIds.length - 1)
+        }
+
+        onSelectionRangeChange()
       }
     }
 
-    if (direction === "UP") {
-      let ind = variantIds.findIndex((v) => v === anchorVariant)
-      ind = mod(ind - 1, variantIds.length)
-      const nextVariant = variantIds[ind]
-
+    if (direction === ArrowMove.UP) {
       if (!isShift) {
+        let ind = variantIds.findIndex((v) => v === anchorVariant)
+        ind = mod(ind - 1, variantIds.length)
+        const nextVariant = variantIds[ind]
+
         anchorVariant = nextVariant
         anchorIndex = ind
         startIndex = ind
         endIndex = ind
+
+        startIndexCol = anchorIndexCol
+        endIndexCol = anchorIndexCol
+
         setSelectedCells({
           [getKey(nextVariant, anchorCurrencyOrRegion)]: true,
         })
       } else {
-        endIndex = Math.min(endIndex - 1, variantIds.length - 1)
+        if (anchorIndex === startIndex) {
+          if (startIndex === endIndex) {
+            startIndex = Math.max(startIndex - 1, 0)
+          } else {
+            endIndex = Math.max(endIndex - 1, 0)
+          }
+        } else {
+          startIndex = Math.max(startIndex - 1, 0)
+        }
+
+        onSelectionRangeChange()
       }
     }
 
-    if (direction === "LEFT") {
-      let ind = columns.findIndex((v) => v === anchorCurrencyOrRegion)
-      ind = mod(ind - 1, columns.length)
-      const nextCol = columns[ind]
+    if (direction === ArrowMove.LEFT) {
+      if (!isShift) {
+        let ind = columns.findIndex((v) => v === anchorCurrencyOrRegion)
+        ind = mod(ind - 1, columns.length)
+        const nextCol = columns[ind]
 
-      anchorCurrencyOrRegion = nextCol
+        anchorCurrencyOrRegion = nextCol
 
-      anchorIndexCol = ind
-      startIndexCol = ind
-      endIndexCol = ind
+        anchorIndexCol = ind
+        startIndexCol = ind
+        endIndexCol = ind
 
-      setSelectedCells({
-        [getKey(anchorVariant, nextCol)]: true,
-      })
+        startIndex = anchorIndex
+        endIndex = anchorIndex
+
+        setSelectedCells({
+          [getKey(anchorVariant, nextCol)]: true,
+        })
+      } else {
+        if (anchorIndexCol === startIndexCol) {
+          if (startIndexCol === endIndexCol) {
+            startIndexCol = Math.max(startIndexCol - 1, 0)
+          } else {
+            endIndexCol = Math.max(endIndexCol - 1, 0)
+          }
+        } else {
+          startIndexCol = Math.max(startIndexCol - 1, 0)
+        }
+
+        onSelectionRangeChange()
+      }
     }
 
-    if (direction === "RIGHT") {
-      let ind = columns.findIndex((v) => v === anchorCurrencyOrRegion)
-      ind = mod(ind + 1, columns.length)
-      const nextCol = columns[ind]
+    if (direction === ArrowMove.RIGHT) {
+      if (!isShift) {
+        let ind = columns.findIndex((v) => v === anchorCurrencyOrRegion)
+        ind = mod(ind + 1, columns.length)
+        const nextCol = columns[ind]
 
-      anchorCurrencyOrRegion = nextCol
+        anchorCurrencyOrRegion = nextCol
 
-      anchorIndexCol = ind
-      startIndexCol = ind
-      endIndexCol = ind
+        anchorIndexCol = ind
+        startIndexCol = ind
+        endIndexCol = ind
 
-      setSelectedCells({
-        [getKey(anchorVariant, nextCol)]: true,
-      })
+        startIndex = anchorIndex
+        endIndex = anchorIndex
+
+        setSelectedCells({
+          [getKey(anchorVariant, nextCol)]: true,
+        })
+      } else {
+        if (anchorIndexCol === startIndexCol) {
+          endIndexCol = Math.min(endIndexCol + 1, columns.length - 1)
+        } else {
+          startIndexCol = Math.min(startIndexCol + 1, columns.length - 1)
+        }
+
+        onSelectionRangeChange()
+      }
     }
   }
 
@@ -421,27 +479,36 @@ function EditPricesTable(props: EditPricesTableProps) {
       }
 
       if (e.key === "Tab") {
+        e.stopPropagation()
+        e.preventDefault()
+
         if (e.shiftKey) {
-          moveAnchor("LEFT", false) // OR RIGHT AND UP
+          if (anchorIndexCol === 0) {
+            moveAnchor(ArrowMove.UP, false)
+          }
+          moveAnchor(ArrowMove.LEFT, false)
         } else {
-          moveAnchor("RIGHT", false) // OR RIGHT AND DOWN
+          if (anchorIndexCol === columns.length - 1) {
+            moveAnchor(ArrowMove.DOWN, false)
+          }
+          moveAnchor(ArrowMove.RIGHT, false)
         }
       }
 
       if (e.keyCode === 38) {
-        moveAnchor("UP", e.shiftKey)
+        moveAnchor(ArrowMove.UP, e.shiftKey)
       }
 
       if (e.keyCode === 40) {
-        moveAnchor("DOWN", e.shiftKey)
+        moveAnchor(ArrowMove.DOWN, e.shiftKey)
       }
 
       if (e.keyCode === 37) {
-        moveAnchor("LEFT", e.shiftKey)
+        moveAnchor(ArrowMove.LEFT, e.shiftKey)
       }
 
       if (e.keyCode === 39) {
-        moveAnchor("RIGHT", e.shiftKey)
+        moveAnchor(ArrowMove.RIGHT, e.shiftKey)
       }
 
       if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
