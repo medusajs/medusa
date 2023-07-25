@@ -67,7 +67,7 @@ export const defaultAdminCollectionsFields = [
   "created_at",
   "updated_at",
 ]
-export const defaultAdminCollectionsRelations = ["products"]
+export const defaultAdminCollectionsRelations = ["products.profiles"]
 
 /**
  * @schema AdminCollectionsListRes

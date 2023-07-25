@@ -1879,7 +1879,7 @@ describe("/admin/discounts", () => {
       const cond = discount.data.discount.rule.conditions[0]
 
       const response = await api.post(
-        `/admin/discounts/test-discount/conditions/${cond.id}?expand=rule,rule.conditions,rule.conditions.products`,
+        `/admin/discounts/test-discount/conditions/${cond.id}?expand=rule.conditions.products.profiles`,
         {
           products: [prod2.id],
         },
@@ -1911,6 +1911,8 @@ describe("/admin/discounts", () => {
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
                   profile_id: expect.any(String),
+                  profiles: expect.any(Array),
+                  profile: expect.any(Object),
                   type_id: expect.any(String),
                   id: "test-product",
                 },
@@ -2047,7 +2049,7 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       const discountCondition = await api.get(
-        "/admin/discounts/test-discount/conditions/test-condition?expand=products&fields=id,type",
+        "/admin/discounts/test-discount/conditions/test-condition?expand=products.profiles&fields=id,type",
         adminReqConfig
       )
 
@@ -2061,6 +2063,8 @@ describe("/admin/discounts", () => {
           {
             id: "test-product",
             profile_id: expect.any(String),
+            profiles: expect.any(Array),
+            profile: expect.any(Object),
             type_id: expect.any(String),
             created_at: expect.any(String),
             updated_at: expect.any(String),
@@ -2353,7 +2357,7 @@ describe("/admin/discounts", () => {
       const cond = discount.data.discount.rule.conditions[0]
 
       const response = await api.post(
-        `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule,rule.conditions,rule.conditions.products`,
+        `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule.conditions.products.profiles`,
         {
           resources: [{ id: prod2.id }, { id: prod3.id }],
         },
@@ -2490,7 +2494,7 @@ describe("/admin/discounts", () => {
       const cond = discount.data.discount.rule.conditions[0]
 
       const response = await api.delete(
-        `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule,rule.conditions,rule.conditions.products`,
+        `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule.conditions.products.profiles`,
         {
           ...adminReqConfig,
           data: {

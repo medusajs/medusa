@@ -100,16 +100,16 @@ class Product {
   @Property({ columnType: "text", nullable: true })
   material?: string | null
 
-  @Property({ persist: false })
+  @Property({ columnType: "text", nullable: true })
   collection_id!: string
 
   @ManyToOne(() => ProductCollection, {
     nullable: true,
     fieldName: "collection_id",
   })
-  collection!: ProductCollection
+  collection!: ProductCollection | null
 
-  @Property({ persist: false })
+  @Property({ columnType: "text", nullable: true })
   type_id!: string
 
   @ManyToOne(() => ProductType, {
@@ -132,6 +132,8 @@ class Product {
     pivotTable: "product_images",
     index: "IDX_product_image_id",
     cascade: ["soft-remove"] as any,
+    joinColumn: "product_id",
+    inverseJoinColumn: "image_id",
   })
   images = new Collection<ProductImage>(this)
 

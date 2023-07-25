@@ -286,9 +286,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
         if (isDefined(collectionId)) {
           const collection = collectionsToAssignMap.get(collectionId)
 
-          if (collection) {
-            product.collection = collection
-          }
+          product.collection = collection || null
         }
 
         if (isDefined(typeId)) {

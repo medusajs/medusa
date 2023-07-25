@@ -12,6 +12,7 @@ export enum ProductStatus {
  * DTO in and out of the module (module API)
  */
 
+// TODO: This DTO should represent the product, when used in config we should use Partial<ProductDTO>, it means that some props like handle should be updated to not be optional
 export interface ProductDTO {
   id: string
   title: string
@@ -63,6 +64,7 @@ export interface ProductVariantDTO {
   options: ProductOptionValueDTO
   metadata?: Record<string, unknown> | null
   product: ProductDTO
+  product_id: string
   variant_rank?: number | null
   created_at: string | Date
   updated_at: string | Date

@@ -222,6 +222,7 @@ describe("/store/products", () => {
         "tags",
         "collection",
         "type",
+        "profiles",
       ])
     })
 
@@ -992,7 +993,12 @@ describe("/store/products", () => {
     it("response contains only fields defined with `fields` param", async () => {
       const api = useApi()
 
-      const fields = allowedStoreProductsFields
+      // profile_id is not a column in the products table, so it should be ignored as it
+      // will be rejected by typeorm as invalid, though, it is an entity property
+      // that we want to return, so it part of the allowedStoreProductsFields
+      const fields = allowedStoreProductsFields.filter(
+        (f) => f !== "profile_id"
+      )
 
       const response = await api.get(
         `/store/products/test-product?fields=${fields.join(",")}`
