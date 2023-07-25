@@ -46,7 +46,7 @@ const mikroOrmUpdateDeletedAtRecursively = async <T extends object = any>(
   entities: T[],
   value: Date | null
 ) => {
-  for await (const entity of entities) {
+  for (const entity of entities) {
     if (!("deleted_at" in entity)) continue
 
     ;(entity as any).deleted_at = value
@@ -61,7 +61,13 @@ const mikroOrmUpdateDeletedAtRecursively = async <T extends object = any>(
     )
 
     for (const relation of relationsToCascade) {
-      const relationEntities = (await entity[relation.name].init()).getItems({
+      let collectionRelation = entity[relation.name]
+
+      if (!collectionRelation.isInitialized()) {
+        await collectionRelation.init()
+      }
+
+      const relationEntities = await collectionRelation.getItems({
         filters: {
           [DAL.SoftDeletableFilterKey]: {
             withDeleted: true,
@@ -151,8 +157,8 @@ export abstract class AbstractBaseRepository<T = any>
     { transactionManager: manager }: Context = {}
   ): Promise<T[]> {
     const entities = await this.find({ where: { id: { $in: ids } } as any })
-
     const date = new Date()
+
     await mikroOrmUpdateDeletedAtRecursively(
       manager as SqlEntityManager,
       entities,
