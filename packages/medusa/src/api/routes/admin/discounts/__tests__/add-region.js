@@ -39,6 +39,7 @@ describe("POST /admin/discounts/:discount_id/regions/:region_id", () => {
             "rule_id",
             "parent_discount_id",
             "usage_limit",
+            "usage_limit_per_customer",
             "usage_count",
             "starts_at",
             "ends_at",

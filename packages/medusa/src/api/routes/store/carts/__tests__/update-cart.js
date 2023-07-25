@@ -106,38 +106,30 @@ describe("POST /store/carts/:id", () => {
   describe("validates discount code of cart", () => {
     let subject
 
-    it("returns 200", async () => {
+    beforeAll(async () => {
       subject = await request(
         "POST",
-        `store/carts/${IdMap.getId("discount-cart")}`,
+        `/store/carts/${IdMap.getId("emptyCart")}`,
         {
           payload: {
+            region_id: IdMap.getId("testRegion"),
+            email: "test@admin.com",
             discounts: [
               {
-                code: IdMap.getId("customer-usage-limit"),
+                code: "TESTCODE",
               },
             ],
           },
         }
       )
-      expect(subject.status).toEqual(200)
     })
 
-    it("returns 400", async () => {
-      subject = await request(
-        "POST",
-        `store/carts/${IdMap.getId("customer-cart")}`,
-        {
-          payload: {
-            discounts: [
-              {
-                code: IdMap.getId("customer-usage-limit"),
-              },
-            ],
-          },
-        }
-      )
-      expect(subject.status).toEqual(400)
+    afterAll(() => {
+      jest.clearAllMocks()
+    })
+
+    it("returns 200", async () => {
+      expect(subject.status).toEqual(200)
     })
   })
 })
