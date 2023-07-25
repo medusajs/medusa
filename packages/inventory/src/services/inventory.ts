@@ -89,7 +89,7 @@ export default class InventoryService implements IInventoryService {
   async list(
     selector: FilterableInventoryItemProps,
     config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 },
-    context: SharedContext = {}
+    context: Context = {}
   ): Promise<InventoryItemDTO[]> {
     return await this.inventoryItemService_.list(selector, config, context)
   }
