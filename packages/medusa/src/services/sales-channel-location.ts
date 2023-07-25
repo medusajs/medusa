@@ -79,9 +79,7 @@ class SalesChannelLocationService extends TransactionBaseService {
 
     if (this.stockLocationService_) {
       // trhows error if not found
-      await this.stockLocationService_.retrieve(locationId, undefined, {
-        transactionManager: this.activeManager_,
-      })
+      await this.stockLocationService_.retrieve(locationId, undefined)
     }
 
     const salesChannelLocationRepo =
@@ -132,10 +130,7 @@ class SalesChannelLocationService extends TransactionBaseService {
   async listSalesChannelIds(locationId: string): Promise<string[]> {
     const location = await this.stockLocationService_.retrieve(
       locationId,
-      undefined,
-      {
-        transactionManager: this.activeManager_,
-      }
+      undefined
     )
 
     const salesChannelRepo =

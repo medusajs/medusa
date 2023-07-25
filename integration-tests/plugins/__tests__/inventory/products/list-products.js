@@ -85,6 +85,8 @@ describe("Create Variant", () => {
       const invItem = await inventoryService.createInventoryItem({
         sku: "test-sku",
       })
+
+      console.log(invItem)
       await productVariantInventoryService.attachInventoryItem(
         variantId,
         invItem.id
@@ -103,7 +105,7 @@ describe("Create Variant", () => {
       })
     })
 
-    it("lists location availability correctly", async () => {
+    it.only("lists location availability correctly", async () => {
       const api = useApi()
 
       const res = await api.get(`/admin/products`, adminHeaders)
