@@ -97,7 +97,6 @@ export default async ({
     })
   )
 
-  //#region bearer auth
   // Admin bearer JWT token authentication strategy, best suited for web SPAs or mobile apps
   passport.use(
     "admin-bearer",
