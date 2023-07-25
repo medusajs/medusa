@@ -13,7 +13,7 @@ jest.setTimeout(50000)
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    Authorization: "Token test_token",
   },
 }
 

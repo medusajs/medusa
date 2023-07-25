@@ -58,7 +58,7 @@ describe("medusa-plugin-sendgrid", () => {
     const response = await api.post(
       `/admin/orders/${order.id}/cancel`,
       {},
-      { headers: { authorization: "Bearer test_token" } }
+      { headers: { Authorization: "Token test_token" } }
     )
     expect(response.status).toEqual(200)
 
@@ -144,7 +144,7 @@ describe("medusa-plugin-sendgrid", () => {
     const { data: fulfillmentData } = await api.post(
       `/admin/orders/${order.id}/fulfillment`,
       { items: [{ item_id: "test-item", quantity: 2 }] },
-      { headers: { authorization: "Bearer test_token" } }
+      { headers: { Authorization: "Token test_token" } }
     )
 
     const fulfillment = fulfillmentData.order.fulfillments[0]
@@ -152,7 +152,7 @@ describe("medusa-plugin-sendgrid", () => {
     const response = await api.post(
       `/admin/orders/${order.id}/shipment`,
       { fulfillment_id: fulfillment.id },
-      { headers: { authorization: "Bearer test_token" } }
+      { headers: { Authorization: "Token test_token" } }
     )
 
     expect(response.status).toEqual(200)
@@ -338,7 +338,7 @@ describe("medusa-plugin-sendgrid", () => {
         additional_items: [{ variant_id: "variant-2", quantity: 1 }],
         return_items: [{ item_id: "test-item", quantity: 1 }],
       },
-      { headers: { authorization: "Bearer test_token" } }
+      { headers: { Authorization: "Token test_token" } }
     )
 
     expect(response.status).toEqual(200)
@@ -353,7 +353,7 @@ describe("medusa-plugin-sendgrid", () => {
           quantity: i.quantity,
         })),
       },
-      { headers: { authorization: "Bearer test_token" } }
+      { headers: { Authorization: "Token test_token" } }
     )
 
     const sendgridService = appContainer.resolve("sendgridService")
@@ -380,7 +380,7 @@ describe("medusa-plugin-sendgrid", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          Authorization: "Token test_token",
         },
       }
     )
@@ -397,7 +397,7 @@ describe("medusa-plugin-sendgrid", () => {
           quantity: i.quantity,
         })),
       },
-      { headers: { authorization: "Bearer test_token" } }
+      { headers: { Authorization: "Token test_token" } }
     )
 
     const sendgridService = appContainer.resolve("sendgridService")
@@ -434,7 +434,7 @@ describe("medusa-plugin-sendgrid", () => {
           { reason: "missing_item", item_id: "test-item", quantity: 1 },
         ],
       },
-      { headers: { authorization: "Bearer test_token" } }
+      { headers: { Authorization: "Token test_token" } }
     )
 
     expect(response.status).toEqual(200)
@@ -444,14 +444,14 @@ describe("medusa-plugin-sendgrid", () => {
     const { data: fulfillmentData } = await api.post(
       `/admin/orders/${order.id}/claims/${claimId}/fulfillments`,
       {},
-      { headers: { authorization: "Bearer test_token" } }
+      { headers: { Authorization: "Token test_token" } }
     )
 
     const fulfillmentId = fulfillmentData.order.claims[0].fulfillments[0].id
     await api.post(
       `/admin/orders/${order.id}/claims/${claimId}/shipments`,
       { fulfillment_id: fulfillmentId },
-      { headers: { authorization: "Bearer test_token" } }
+      { headers: { Authorization: "Token test_token" } }
     )
 
     const sendgridService = appContainer.resolve("sendgridService")
@@ -537,7 +537,7 @@ describe("medusa-plugin-sendgrid", () => {
         additional_items: [{ variant_id: "variant-2", quantity: 1 }],
         return_items: [{ item_id: "test-item", quantity: 1 }],
       },
-      { headers: { authorization: "Bearer test_token" } }
+      { headers: { Authorization: "Token test_token" } }
     )
 
     expect(response.status).toEqual(200)
@@ -565,14 +565,14 @@ describe("medusa-plugin-sendgrid", () => {
     const { data: fulfillmentData } = await api.post(
       `/admin/orders/${order.id}/swaps/${swapId}/fulfillments`,
       {},
-      { headers: { authorization: "Bearer test_token" } }
+      { headers: { Authorization: "Token test_token" } }
     )
 
     const fulfillmentId = fulfillmentData.order.swaps[0].fulfillments[0].id
     await api.post(
       `/admin/orders/${order.id}/swaps/${swapId}/shipments`,
       { fulfillment_id: fulfillmentId },
-      { headers: { authorization: "Bearer test_token" } }
+      { headers: { Authorization: "Token test_token" } }
     )
 
     const sendgridService = appContainer.resolve("sendgridService")
@@ -719,7 +719,7 @@ describe("medusa-plugin-sendgrid", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          Authorization: "Token test_token",
         },
       }
     )
@@ -749,7 +749,7 @@ describe("medusa-plugin-sendgrid", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          Authorization: "Token test_token",
         },
       }
     )

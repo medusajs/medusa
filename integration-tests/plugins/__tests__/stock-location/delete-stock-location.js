@@ -78,7 +78,7 @@ describe("Sales channels", () => {
       ).toHaveLength(1)
 
       await api.delete(`/admin/stock-locations/${loc.id}`, {
-        headers: { Authorization: "Bearer test_token" },
+        headers: { Authorization: "Token test_token" },
       })
 
       expect(

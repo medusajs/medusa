@@ -11,7 +11,7 @@ const { simpleSalesChannelFactory } = require("../../../../api/factories")
 
 jest.setTimeout(30000)
 
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const adminHeaders = { headers: { Authorization: "Token test_token" } }
 
 describe("/store/carts", () => {
   let express

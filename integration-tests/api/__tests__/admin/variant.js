@@ -11,7 +11,7 @@ const productSeeder = require("../../helpers/product-seeder")
 
 const adminHeaders = {
   headers: {
-    Authorization: "Bearer test_token",
+    Authorization: "Token test_token",
   },
 }
 

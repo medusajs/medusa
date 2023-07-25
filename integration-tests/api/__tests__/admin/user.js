@@ -17,7 +17,7 @@ jest.setTimeout(30000)
 
 const adminReqConfig = {
   headers: {
-    Authorization: "Bearer test_token",
+    Authorization: "Token test_token",
   },
 }
 
@@ -331,7 +331,7 @@ describe("/admin/users", () => {
       const usersBeforeDelete = usersBeforeDeleteResponse.data.users
 
       const response = await api.delete(`/admin/users/${userId}`, {
-        headers: { Authorization: "Bearer test_token" },
+        headers: { Authorization: "Token test_token" },
       })
 
       const usersAfterDeleteResponse = await api.get(

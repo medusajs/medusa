@@ -113,7 +113,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          Authorization: "Token test_token",
         },
       }
     )
@@ -159,7 +159,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          Authorization: "Token test_token",
         },
       }
     )
@@ -204,7 +204,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          Authorization: "Token test_token",
         },
       }
     )
@@ -249,7 +249,7 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /store/carts", () => {
       },
       {
         headers: {
-          authorization: "Bearer test_token",
+          Authorization: "Token test_token",
         },
       }
     )

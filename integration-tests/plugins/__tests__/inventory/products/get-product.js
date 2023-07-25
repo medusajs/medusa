@@ -16,7 +16,7 @@ jest.setTimeout(30000)
 const { simpleProductFactory } = require("../../../factories")
 const { simpleSalesChannelFactory } = require("../../../../api/factories")
 
-const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
+const adminHeaders = { headers: { Authorization: "Token test_token" } }
 
 describe("Get products", () => {
   let appContainer

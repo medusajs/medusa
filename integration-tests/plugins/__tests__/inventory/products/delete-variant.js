@@ -68,7 +68,7 @@ describe("Delete Variant", () => {
           ],
           prices: [{ currency_code: "usd", amount: 2300 }],
         },
-        { headers: { Authorization: "Bearer test_token" } }
+        { headers: { Authorization: "Token test_token" } }
       )
 
       const variantId = response.data.product.variants.find(
@@ -96,7 +96,7 @@ describe("Delete Variant", () => {
       ).toHaveLength(2)
 
       await api.delete(`/admin/products/test-product/variants/${variantId}`, {
-        headers: { Authorization: "Bearer test_token" },
+        headers: { Authorization: "Token test_token" },
       })
 
       await expect(variantService.retrieve(variantId)).rejects.toThrow(
