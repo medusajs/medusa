@@ -1,9 +1,5 @@
 import { TransactionStepsDefinition } from "./types"
 
-export type ActionHandler = {
-  [type: string]: (data: any, context: any) => Promise<any>
-}
-
 interface InternalStep extends TransactionStepsDefinition {
   next?: InternalStep | InternalStep[]
   depth: number
@@ -11,7 +7,12 @@ interface InternalStep extends TransactionStepsDefinition {
 }
 
 export class OrchestratorBuilder {
-  private steps: InternalStep
+  protected steps: InternalStep
+  protected hasChanges_ = false
+
+  get hasChanges() {
+    return this.hasChanges_
+  }
 
   constructor(steps?: TransactionStepsDefinition) {
     this.load(steps)
@@ -42,6 +43,7 @@ export class OrchestratorBuilder {
     } as InternalStep
 
     step.next = newAction
+    this.hasChanges_ = true
 
     return this
   }
@@ -56,6 +58,7 @@ export class OrchestratorBuilder {
 
     Object.assign(step, options)
 
+    this.hasChanges_ = true
     return this
   }
 
@@ -92,6 +95,7 @@ export class OrchestratorBuilder {
       this.updateDepths(oldNext as InternalStep, parentStep)
     }
 
+    this.hasChanges_ = true
     return this
   }
 
@@ -112,11 +116,12 @@ export class OrchestratorBuilder {
     } as InternalStep
 
     this.updateDepths(oldNext as InternalStep, step.next)
+    this.hasChanges_ = true
 
     return this
   }
 
-  private appendTo(step: InternalStep | string, newStep: InternalStep) {
+  protected appendTo(step: InternalStep | string, newStep: InternalStep) {
     if (typeof step === "string") {
       step = this.findOrThrowStepByAction(step)
     }
@@ -127,6 +132,7 @@ export class OrchestratorBuilder {
       parent: step.action,
     } as InternalStep
 
+    this.hasChanges_ = true
     return this
   }
 
@@ -146,7 +152,7 @@ export class OrchestratorBuilder {
     return this
   }
 
-  private move(
+  protected move(
     actionToMove: string,
     targetAction: string,
     {
@@ -226,22 +232,20 @@ export class OrchestratorBuilder {
       parentTargetActionStep.depth
     )
 
+    this.hasChanges_ = true
+
     return this
   }
 
   moveAction(actionToMove: string, targetAction: string): OrchestratorBuilder {
-    this.move(actionToMove, targetAction)
-
-    return this
+    return this.move(actionToMove, targetAction)
   }
 
   moveAndMergeNextAction(
     actionToMove: string,
     targetAction: string
   ): OrchestratorBuilder {
-    this.move(actionToMove, targetAction, { mergeNext: true })
-
-    return this
+    return this.move(actionToMove, targetAction, { mergeNext: true })
   }
 
   mergeActions(where: string, ...actions: string[]) {
@@ -284,6 +288,8 @@ export class OrchestratorBuilder {
       parentStep.depth
     )
 
+    this.hasChanges_ = true
+
     return this
   }
 
@@ -300,10 +306,11 @@ export class OrchestratorBuilder {
       delete parentStep.next
     }
 
+    this.hasChanges_ = true
     return this
   }
 
-  private findStepByAction(
+  protected findStepByAction(
     action: string,
     step: InternalStep = this.steps
   ): InternalStep | undefined {
@@ -325,7 +332,7 @@ export class OrchestratorBuilder {
     return
   }
 
-  private findOrThrowStepByAction(
+  protected findOrThrowStepByAction(
     action: string,
     steps: InternalStep = this.steps
   ): InternalStep {
@@ -337,7 +344,7 @@ export class OrchestratorBuilder {
     return step
   }
 
-  private findParentStepByAction(
+  protected findParentStepByAction(
     action: string,
     step: InternalStep = this.steps
   ): InternalStep | undefined {
@@ -365,7 +372,7 @@ export class OrchestratorBuilder {
     return
   }
 
-  private findLastStep(steps: InternalStep = this.steps): InternalStep {
+  protected findLastStep(steps: InternalStep = this.steps): InternalStep {
     let step = steps as InternalStep
     while (step.next) {
       step = Array.isArray(step.next)
@@ -376,7 +383,7 @@ export class OrchestratorBuilder {
     return step
   }
 
-  private updateDepths(
+  protected updateDepths(
     startingStep: InternalStep,
     parent,
     incr = 1,
@@ -417,6 +424,8 @@ export class OrchestratorBuilder {
         return value
       }
     )
+
+    this.hasChanges_ = false
     return result
   }
 }

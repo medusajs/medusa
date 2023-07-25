@@ -1,9 +1,9 @@
 import {
-  TransactionOrchestrator,
-  TransactionStepsDefinition,
   TransactionHandlerType,
+  TransactionOrchestrator,
   TransactionPayload,
   TransactionState,
+  TransactionStepsDefinition,
 } from "../../transaction"
 
 describe("Transaction Orchestrator", () => {
@@ -96,7 +96,7 @@ describe("Transaction Orchestrator", () => {
     )
   })
 
-  it("Should run steps in parallel if 'next' is an array", async () => {
+  it("Should resume steps in parallel if 'next' is an array", async () => {
     const actionOrder: string[] = []
     async function handler(
       actionId: string,
