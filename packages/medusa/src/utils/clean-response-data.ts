@@ -1,5 +1,6 @@
 import { pick } from "lodash"
 import { omitDeep } from "./omit-deep"
+import { buildSelects, objectToStringPath } from "@medusajs/utils"
 
 // TODO: once the legacy totals decoration will be removed.
 // We will be able to only compute the totals if one of the total fields is present
@@ -48,6 +49,7 @@ function cleanResponseData<T extends unknown | unknown[]>(
       : Partial<T>
   }
 
+  fields = objectToStringPath(buildSelects(fields))
   const fieldsSet = new Set([...fields, ...INCLUDED_FIELDS])
 
   fields = [...fieldsSet]
