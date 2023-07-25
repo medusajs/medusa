@@ -145,7 +145,6 @@ export default async ({
       }
     )
   )
-  //#endregion
 
   app.use(passport.initialize())
   app.use(passport.session())
