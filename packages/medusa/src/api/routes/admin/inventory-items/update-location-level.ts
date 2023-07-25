@@ -75,7 +75,6 @@ export default async (req: Request, res: Response) => {
 
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
-  const manager: EntityManager = req.scope.resolve("manager")
 
   const validatedBody =
     req.validatedBody as AdminPostInventoryItemsItemLocationLevelsLevelReq

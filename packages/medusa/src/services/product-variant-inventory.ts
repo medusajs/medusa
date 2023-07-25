@@ -714,9 +714,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     const itemIds = Array.isArray(lineItemId) ? lineItemId : [lineItemId]
-    await this.inventoryService_.deleteReservationItemsByLineItem(itemIds, {
-      transactionManager: this.activeManager_,
-    })
+    await this.inventoryService_.deleteReservationItemsByLineItem(itemIds)
   }
 
   /**
@@ -760,10 +758,7 @@ class ProductVariantInventoryService extends TransactionBaseService {
         return await this.inventoryService_.adjustInventory(
           inventoryPart.inventory_item_id,
           locationId,
-          itemQuantity,
-          {
-            transactionManager: this.activeManager_,
-          }
+          itemQuantity
         )
       })
     )

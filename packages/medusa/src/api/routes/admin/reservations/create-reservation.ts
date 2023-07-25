@@ -78,7 +78,7 @@ export default async (req, res) => {
 
   if (isDefined(validatedBody.line_item_id)) {
     await validateUpdateReservationQuantity(
-      validatedBody.line_item_id,
+      validatedBody.line_item_id!,
       validatedBody.quantity,
       {
         lineItemService: req.scope.resolve("lineItemService"),

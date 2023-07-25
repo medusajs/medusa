@@ -43,22 +43,18 @@ const migrateProductVariant = async (
     return
   }
 
-  const context = { transactionManager }
-  const inventoryItem = await inventoryService.createInventoryItem(
-    {
-      sku: variant.sku,
-      material: variant.material,
-      width: variant.width,
-      length: variant.length,
-      height: variant.height,
-      weight: variant.weight,
-      origin_country: variant.origin_country,
-      hs_code: variant.hs_code,
-      mid_code: variant.mid_code,
-      requires_shipping: true,
-    },
-    context
-  )
+  const inventoryItem = await inventoryService.createInventoryItem({
+    sku: variant.sku,
+    material: variant.material,
+    width: variant.width,
+    length: variant.length,
+    height: variant.height,
+    weight: variant.weight,
+    origin_country: variant.origin_country,
+    hs_code: variant.hs_code,
+    mid_code: variant.mid_code,
+    requires_shipping: true,
+  })
 
   await productVariantInventoryServiceTx.attachInventoryItem(
     variant.id,
@@ -66,15 +62,12 @@ const migrateProductVariant = async (
     1
   )
 
-  await inventoryService.createInventoryLevel(
-    {
-      location_id: locationId,
-      inventory_item_id: inventoryItem.id,
-      stocked_quantity: variant.inventory_quantity,
-      incoming_quantity: 0,
-    },
-    context
-  )
+  await inventoryService.createInventoryLevel({
+    location_id: locationId,
+    inventory_item_id: inventoryItem.id,
+    stocked_quantity: variant.inventory_quantity,
+    incoming_quantity: 0,
+  })
 }
 
 const migrateStockLocation = async (container: AwilixContainer) => {
