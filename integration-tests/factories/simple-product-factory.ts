@@ -153,15 +153,7 @@ export const simpleProductFactory = async (
       }
       if (typeof pv.options === "undefined") {
         factoryData.options = [
-          {
-            option_id: optionId,
-            value:
-              faker.commerce.productAdjective() +
-              " " +
-              faker.commerce.productMaterial() +
-              " " +
-              Math.round(Math.random() * 1000),
-          },
+          { option_id: optionId, value: faker.commerce.productAdjective() },
         ]
       }
       return await simpleProductVariantFactory(dataSource, factoryData)
