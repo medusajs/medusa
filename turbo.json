@@ -25,7 +25,6 @@
     }
   },
   "globalDependencies": [
-    ".env",
     "turbo.json"
   ]
 }
