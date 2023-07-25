@@ -93,7 +93,17 @@ export default class StockLocationService {
       config
     )
 
-    return await this.stockLocationRepository_.find(queryOptions, context)
+    const locations = await this.stockLocationRepository_.find(
+      queryOptions,
+      context
+    )
+
+    const serialized = await this.baseRepository_.serialize<StockLocation[]>(
+      locations,
+      { populate: true }
+    )
+
+    return serialized
   }
 
   /**
@@ -113,10 +123,17 @@ export default class StockLocationService {
       config
     )
 
-    return await this.stockLocationRepository_.findAndCount(
+    const [locations, count] = await this.stockLocationRepository_.findAndCount(
       queryOptions,
       context
     )
+
+    const serialized = await this.baseRepository_.serialize<StockLocation[]>(
+      locations,
+      { populate: true }
+    )
+
+    return [serialized, count]
   }
 
   /**
@@ -155,7 +172,12 @@ export default class StockLocationService {
       )
     }
 
-    return loc
+    const serialized = await this.baseRepository_.serialize<StockLocation>(
+      loc,
+      { populate: true }
+    )
+
+    return serialized
   }
 
   /**
@@ -203,7 +225,12 @@ export default class StockLocationService {
       id: result.id,
     })
 
-    return result
+    const serialized = await this.baseRepository_.serialize<StockLocation>(
+      result,
+      { populate: true }
+    )
+
+    return serialized
   }
 
   /**
@@ -242,7 +269,7 @@ export default class StockLocationService {
       )
     }
 
-    const updatedLocation = await this.stockLocationRepository_.update(
+    const [updatedLocation] = await this.stockLocationRepository_.update(
       [{ item, update: data }],
       context
     )
@@ -251,7 +278,12 @@ export default class StockLocationService {
       id: stockLocationId,
     })
 
-    return updatedLocation[0]
+    const serialized = await this.baseRepository_.serialize<StockLocation>(
+      updatedLocation,
+      { populate: true }
+    )
+
+    return serialized
   }
 
   /**
@@ -305,7 +337,13 @@ export default class StockLocationService {
       context
     )
 
-    return updatedAddress
+    const serialized =
+      await this.baseRepository_.serialize<StockLocationAddress>(
+        updatedAddress,
+        { populate: true }
+      )
+
+    return serialized
   }
 
   /**
