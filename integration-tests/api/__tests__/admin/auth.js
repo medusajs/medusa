@@ -61,6 +61,6 @@ describe("/admin/auth", () => {
       })
 
     expect(response.status).toEqual(200)
-    expect(token).toEqual(expect.any(String))
+    expect(response.data.access_token).toEqual(expect.any(String))
   })
 })
