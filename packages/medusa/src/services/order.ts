@@ -342,11 +342,9 @@ class OrderService extends TransactionBaseService {
     const totalsToSelect = select.filter((v) => totalFields.includes(v))
     if (totalsToSelect.length > 0) {
       const relationSet = new Set(relations)
-      relationSet.add("items")
       relationSet.add("items.tax_lines")
       relationSet.add("items.adjustments")
-      relationSet.add("items.variant")
-      relationSet.add("items.variant.product")
+      relationSet.add("items.variant.product.profiles")
       relationSet.add("swaps")
       relationSet.add("swaps.additional_items")
       relationSet.add("swaps.additional_items.tax_lines")
@@ -1034,9 +1032,7 @@ class OrderService extends TransactionBaseService {
         relations: [
           "shipping_methods",
           "shipping_methods.shipping_option",
-          "items",
-          "items.variant",
-          "items.variant.product",
+          "items.variant.product.profiles",
         ],
       })
       const { shipping_methods } = order
@@ -1403,10 +1399,8 @@ class OrderService extends TransactionBaseService {
           "billing_address",
           "shipping_methods",
           "shipping_methods.shipping_option",
-          "items",
           "items.adjustments",
-          "items.variant",
-          "items.variant.product",
+          "items.variant.product.profiles",
           "payments",
         ],
       })

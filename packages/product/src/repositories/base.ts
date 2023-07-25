@@ -6,7 +6,6 @@ import {
   MedusaContext,
 } from "@medusajs/utils"
 import { serialize } from "@mikro-orm/core"
-import { doNotForceTransaction } from "../utils"
 
 // TODO: Should we create a mikro orm specific package for this and the soft deletable decorator util?
 
@@ -28,28 +27,17 @@ async function transactionWrapper(
     return await task(transaction)
   }
 
-  const forkedManager = this.manager_.fork()
-
   const options = {}
+
+  if (transaction) {
+    Object.assign(options, { ctx: transaction })
+  }
+
   if (isolationLevel) {
     Object.assign(options, { isolationLevel })
   }
 
-  if (transaction) {
-    Object.assign(options, { ctx: transaction })
-    await forkedManager.begin(options)
-  } else {
-    await forkedManager.begin(options)
-  }
-
-  try {
-    const result = await task(forkedManager)
-    await forkedManager.commit()
-    return result
-  } catch (e) {
-    await forkedManager.rollback()
-    throw e
-  }
+  return await (this.manager_ as SqlEntityManager).transactional(task, options)
 }
 
 const updateDeletedAtRecursively = async <T extends object = any>(

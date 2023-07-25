@@ -53,12 +53,8 @@ export default async (req, res) => {
     "shippingProfileService"
   )
 
-  const cart = await cartService.retrieveWithTotals(cart_id, {
-    relations: ["items.variant", "items.variant.product"],
-  })
-
+  const cart = await cartService.retrieveWithTotals(cart_id)
   const options = await shippingProfileService.fetchCartOptions(cart)
-
   const data = await pricingService.setShippingOptionPrices(options, {
     cart_id,
   })

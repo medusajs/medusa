@@ -91,8 +91,11 @@ export const simpleProductFactory = async (
     discountable: !data.is_giftcard,
     tags: [] as ProductTag[],
     profile_id: data.is_giftcard ? gcProfile?.id : defaultProfile?.id,
+    profiles: [
+      { id: data.is_giftcard ? gcProfile?.id : defaultProfile?.id },
+    ] as ShippingProfile[],
     metadata: data.metadata || null,
-  } as Product
+  } as unknown as Product
 
   if (typeof data.tags !== "undefined") {
     for (let i = 0; i < data.tags.length; i++) {

@@ -40,13 +40,13 @@ export const simpleShippingOptionFactory = async (
   const defaultProfile = await manager.findOne(ShippingProfile, {
     where: {
       type: ShippingProfileType.DEFAULT,
-    }
+    },
   })
 
   const gcProfile = await manager.findOne(ShippingProfile, {
     where: {
       type: ShippingProfileType.GIFT_CARD,
-    }
+    },
   })
 
   let region_id = data.region_id
@@ -62,7 +62,7 @@ export const simpleShippingOptionFactory = async (
     is_return: data.is_return ?? false,
     region_id: region_id,
     provider_id: "test-ful",
-    profile_id: data.is_giftcard ? gcProfile.id : defaultProfile.id,
+    profile_id: data.is_giftcard ? gcProfile?.id : defaultProfile?.id,
     price_type: data.price_type ?? ShippingOptionPriceType.FLAT_RATE,
     data: data.data ?? {},
     requirements: (data.requirements || []) as ShippingOptionRequirement[],

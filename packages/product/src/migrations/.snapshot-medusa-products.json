@@ -845,8 +845,8 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "product_image_id": {
-          "name": "product_image_id",
+        "image_id": {
+          "name": "image_id",
           "type": "text",
           "unsigned": false,
           "autoincrement": false,
@@ -860,7 +860,10 @@
       "indexes": [
         {
           "keyName": "product_images_pkey",
-          "columnNames": ["product_id", "product_image_id"],
+          "columnNames": [
+            "product_id",
+            "image_id"
+          ],
           "composite": true,
           "primary": true,
           "unique": true
@@ -877,9 +880,11 @@
           "deleteRule": "cascade",
           "updateRule": "cascade"
         },
-        "product_images_product_image_id_foreign": {
-          "constraintName": "product_images_product_image_id_foreign",
-          "columnNames": ["product_image_id"],
+        "product_images_image_id_foreign": {
+          "constraintName": "product_images_image_id_foreign",
+          "columnNames": [
+            "image_id"
+          ],
           "localTableName": "public.product_images",
           "referencedColumnNames": ["id"],
           "referencedTableName": "public.image",
@@ -1119,6 +1124,15 @@
           "default": "0",
           "mappedType": "decimal"
         },
+        "product_id": {
+          "name": "product_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamptz",
@@ -1148,15 +1162,6 @@
           "nullable": true,
           "length": 6,
           "mappedType": "datetime"
-        },
-        "product_id": {
-          "name": "product_id",
-          "type": "text",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "text"
         }
       },
       "name": "product_variant",
