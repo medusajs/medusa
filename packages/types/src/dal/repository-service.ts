@@ -1,6 +1,6 @@
+import { Context } from "../shared-context"
 import { FindOptions } from "./index"
 import { RepositoryTransformOptions } from "../common"
-import { Context } from "../shared-context"
 
 /**
  * Data access layer (DAL) interface to implements for any repository service.
