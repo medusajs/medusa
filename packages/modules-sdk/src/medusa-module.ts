@@ -272,5 +272,5 @@ export class MedusaModule {
   }
 }
 
-//global.MedusaModule ??= MedusaModule
-//exports.MedusaModule = global.MedusaModule
+global.MedusaModule ??= MedusaModule
+exports.MedusaModule = global.MedusaModule
