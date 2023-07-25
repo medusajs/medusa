@@ -36,21 +36,17 @@ describe("Inventory Module", () => {
     it("create", async () => {
       const stockLocationService = appContainer.resolve("stockLocationService")
 
-      expect(
-        await stockLocationService.create({
-          name: "first location",
-        })
-      ).toEqual(
-        expect.objectContaining({
-          id: expect.any(String),
-          name: "first location",
-          deleted_at: null,
-          address_id: null,
-          metadata: null,
-          created_at: expect.any(Date),
-          updated_at: expect.any(Date),
-        })
-      )
+      const created = await stockLocationService.create({
+        name: "first location",
+      })
+
+      console.log(created)
+      expect(created).toEqual({
+        id: expect.any(String),
+        name: "first location",
+        created_at: expect.any(Date),
+        updated_at: expect.any(Date),
+      })
 
       expect(
         await stockLocationService.create({
@@ -86,6 +82,7 @@ describe("Inventory Module", () => {
     it("update", async () => {
       const stockLocationService = appContainer.resolve("stockLocationService")
 
+      console.log("here")
       const loc = await stockLocationService.create({
         name: "location",
         address: {
@@ -133,6 +130,7 @@ describe("Inventory Module", () => {
           }),
         })
       )
+      console.log("here")
 
       expect(
         await stockLocationService.update(loc.id, {

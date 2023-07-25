@@ -149,6 +149,21 @@ export default class StockLocationService {
     config: FindConfig<StockLocation> = {},
     context: Context = {}
   ): Promise<StockLocation> {
+    const loc = await this.retrieve_(stockLocationId, config, context)
+
+    const serialized = await this.baseRepository_.serialize<StockLocation>(
+      loc,
+      { populate: true }
+    )
+
+    return serialized
+  }
+
+  protected async retrieve_(
+    stockLocationId: string,
+    config: FindConfig<StockLocation> = {},
+    context: Context = {}
+  ): Promise<StockLocation> {
     if (!isDefined(stockLocationId)) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -172,12 +187,7 @@ export default class StockLocationService {
       )
     }
 
-    const serialized = await this.baseRepository_.serialize<StockLocation>(
-      loc,
-      { populate: true }
-    )
-
-    return serialized
+    return loc
   }
 
   /**
@@ -187,30 +197,40 @@ export default class StockLocationService {
    * @returns The created stock location.
    */
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async create(
+    data: CreateStockLocationInput,
+    context: Context = {}
+  ): Promise<StockLocation> {
+    const result = await this.create_(data, context)
+
+    const serialized = await this.baseRepository_.serialize<StockLocation>(
+      result,
+      { populate: true }
+    )
+
+    return serialized
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async create_(
     data: CreateStockLocationInput,
     @MedusaContext() context: Context = {}
   ): Promise<StockLocation> {
-    let addressId
     if (isDefined(data.address) || isDefined(data.address_id)) {
       if (typeof data.address === "string" || data.address_id) {
         const addrId = (data.address ?? data.address_id) as string
-        addressId = addrId
+        data.address_id = addrId
       } else {
         const [addressResult] =
           await this.stockLocationAddressRepository_.create(
             [data.address!],
             context
           )
-        addressId = addressResult.id
+        data.address_id = addressResult.id
       }
     }
-    delete data.address
 
-    if (addressId) {
-      data.address_id = addressId
-    }
+    delete data.address
 
     const { metadata } = data
     if (metadata) {
@@ -225,12 +245,7 @@ export default class StockLocationService {
       id: result.id,
     })
 
-    const serialized = await this.baseRepository_.serialize<StockLocation>(
-      result,
-      { populate: true }
-    )
-
-    return serialized
+    return result
   }
 
   /**
@@ -240,13 +255,34 @@ export default class StockLocationService {
    * @param context
    * @returns The updated stock location.
    */
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async update(
+    stockLocationId: string,
+    updateData: UpdateStockLocationInput,
+    context: Context = {}
+  ): Promise<StockLocation> {
+    const updatedLocation = await this.update_(
+      stockLocationId,
+      updateData,
+      context
+    )
+
+    const serialized = await this.baseRepository_.serialize<StockLocation>(
+      updatedLocation,
+      { populate: true }
+    )
+
+    return serialized
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async update_(
     stockLocationId: string,
     updateData: UpdateStockLocationInput,
     @MedusaContext() context: Context = {}
   ): Promise<StockLocation> {
     const item = await this.retrieve(stockLocationId, undefined, context)
+
+    item.address = null
 
     const { address, ...data } = updateData
 
@@ -293,8 +329,28 @@ export default class StockLocationService {
    * @param context
    * @returns The updated stock location address.
    */
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   protected async updateAddress(
+    addressId: string,
+    address: StockLocationAddressInput,
+    context: Context = {}
+  ): Promise<StockLocationAddress> {
+    const updatedAddress = await this.updateAddress_(
+      addressId,
+      address,
+      context
+    )
+
+    const serialized =
+      await this.baseRepository_.serialize<StockLocationAddress>(
+        updatedAddress,
+        { populate: true }
+      )
+
+    return serialized
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  protected async updateAddress_(
     addressId: string,
     address: StockLocationAddressInput,
     @MedusaContext() context: Context = {}
@@ -337,13 +393,7 @@ export default class StockLocationService {
       context
     )
 
-    const serialized =
-      await this.baseRepository_.serialize<StockLocationAddress>(
-        updatedAddress,
-        { populate: true }
-      )
-
-    return serialized
+    return updatedAddress
   }
 
   /**

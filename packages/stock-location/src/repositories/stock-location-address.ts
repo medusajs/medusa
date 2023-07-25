@@ -67,7 +67,7 @@ export class StockLocationAddressRepository extends AbstractBaseRepository<Stock
       return (manager as SqlEntityManager).create(StockLocationAddress, item)
     })
 
-    ;(manager as SqlEntityManager).persist(items)
+    await (manager as SqlEntityManager).persistAndFlush(items)
 
     return items
   }

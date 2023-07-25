@@ -77,15 +77,13 @@ export class StockLocationRepostiory extends AbstractBaseRepository<StockLocatio
       >
     }[],
     @MedusaContext()
-    { transactionManager }: Context = {}
+    { transactionManager: manager }: Context = {}
   ): Promise<StockLocation[]> {
-    const manager = (transactionManager ?? this.manager_) as SqlEntityManager
-
     const items = data.map(({ item, update }) => {
-      return manager.assign(item, update)
+      return (manager as SqlEntityManager).assign<StockLocation>(item, update)
     })
 
-    await manager.persistAndFlush(items)
+    await (manager as SqlEntityManager).persistAndFlush(items)
 
     return items
   }
