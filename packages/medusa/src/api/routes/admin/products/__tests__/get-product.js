@@ -56,16 +56,16 @@ describe("GET /admin/products/:id", () => {
             "metadata",
           ],
           relations: [
-            "variants",
-            "variants.prices",
-            "variants.options",
-            "profiles",
+            "collection",
             "images",
             "options",
+            "profiles",
+            "sales_channels",
             "tags",
             "type",
-            "collection",
-            "sales_channels",
+            "variants",
+            "variants.options",
+            "variants.prices",
           ],
         }
       )

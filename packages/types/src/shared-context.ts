@@ -8,4 +8,5 @@ export type Context<TManager = unknown> = {
   transactionManager?: TManager
   isolationLevel?: string
   enableNestedTransactions?: boolean
+  transactionId?: string
 }
