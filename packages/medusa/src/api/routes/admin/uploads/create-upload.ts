@@ -3,8 +3,8 @@ import fs from "fs"
 /**
  * @oas [post] /admin/uploads
  * operationId: "PostUploads"
- * summary: "Upload files"
- * description: "Uploads at least one file to the specific fileservice that is installed in Medusa."
+ * summary: "Upload Files"
+ * description: "Upload at least one file to a public bucket or storage. The file upload is handled by the file service installed on the Medusa backend."
  * x-authenticated: true
  * requestBody:
  *   content:

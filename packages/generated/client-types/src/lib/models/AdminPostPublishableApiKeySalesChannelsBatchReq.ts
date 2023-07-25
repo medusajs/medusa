@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostPublishableApiKeySalesChannelsBatchReq {
   /**
-   * The IDs of the sales channels to add to the publishable api key
+   * The IDs of the sales channels to add to the publishable API key
    */
   sales_channel_ids: Array<{
     /**

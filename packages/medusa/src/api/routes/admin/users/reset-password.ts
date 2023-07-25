@@ -12,8 +12,10 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/users/reset-password
  * operationId: "PostUsersUserPassword"
  * summary: "Reset Password"
- * description: "Sets the password for a User given the correct token."
- * x-authenticated: true
+ * description: "Reset the password of an admin User using their reset password token. A user must request to reset their password first before attempting to reset their password with this request."
+ * externalDocs:
+ *   description: How to reset a user's password
+ *   url: https://docs.medusajs.com/modules/users/admin/manage-profile#reset-password
  * requestBody:
  *   content:
  *     application/json:
@@ -29,8 +31,8 @@ import { EntityManager } from "typeorm"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.users.resetPassword({
- *         token: 'supersecrettoken',
- *         password: 'supersecret'
+ *         token: "supersecrettoken",
+ *         password: "supersecret"
  *       })
  *       .then(({ user }) => {
  *         console.log(user.id);
@@ -129,14 +131,14 @@ export type payload = {
  *   - password
  * properties:
  *   email:
- *     description: "The Users email."
+ *     description: "The User's email."
  *     type: string
  *     format: email
  *   token:
- *     description: "The token generated from the 'password-token' endpoint."
+ *     description: "The password-reset token generated when the password reset was requested."
  *     type: string
  *   password:
- *     description: "The Users new password."
+ *     description: "The User's new password."
  *     type: string
  *     format: password
  */

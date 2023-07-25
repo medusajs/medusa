@@ -49,6 +49,7 @@ export const defaultAdminNotificationsFields = [
  * properties:
  *   notifications:
  *     type: array
+ *     description: an array of notifications
  *     items:
  *       $ref: "#/components/schemas/Notification"
  *   count:
@@ -56,7 +57,7 @@ export const defaultAdminNotificationsFields = [
  *     description: The total number of notifications
  *   offset:
  *     type: integer
- *     description: The number of notifications skipped before these notifications
+ *     description: The number of notifications skipped when retrieving the notifications.
  *   limit:
  *     type: integer
  *     description: The number of notifications per page
@@ -76,6 +77,7 @@ export type AdminNotificationsListRes = PaginatedResponse & {
  *   - notification
  * properties:
  *   notification:
+ *     description: Notification details
  *     $ref: "#/components/schemas/Notification"
  */
 export type AdminNotificationsRes = {

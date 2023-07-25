@@ -12,6 +12,7 @@ import { FindParams } from "../../../../types/common"
  * summary: "Update a Product Category"
  * description: "Updates a Product Category."
  * x-authenticated: true
+ * x-featureFlag: "product_categories"
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product category.

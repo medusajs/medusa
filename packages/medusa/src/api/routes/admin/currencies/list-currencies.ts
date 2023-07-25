@@ -19,7 +19,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *     description: filter currencies by whether they include taxes or not.
  *     schema:
  *       type: boolean
- *       x-featureFlag: true
+ *       x-featureFlag: "tax_inclusive_pricing"
  *   - (query) order {string} A field to sort order the retrieved currencies by.
  *   - (query) offset=0 {number} The number of currencies to skip when retrieving the currencies.
  *   - (query) limit=20 {number} The number of currencies to return.

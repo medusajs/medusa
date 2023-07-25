@@ -6,7 +6,7 @@ import { SwapService } from "../../../../services"
  * @oas [get] /admin/swaps/{id}
  * operationId: "GetSwapsSwap"
  * summary: "Get a Swap"
- * description: "Retrieves a Swap."
+ * description: "Retrieve a Swap's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Swap.
@@ -19,7 +19,7 @@ import { SwapService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.swaps.retrieve(swap_id)
+ *       medusa.admin.swaps.retrieve(swapId)
  *       .then(({ swap }) => {
  *         console.log(swap.id);
  *       });

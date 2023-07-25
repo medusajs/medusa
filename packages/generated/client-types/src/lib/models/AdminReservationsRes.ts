@@ -6,5 +6,8 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { ReservationItemDTO } from "./ReservationItemDTO"
 
 export interface AdminReservationsRes {
+  /**
+   * Reservation details.
+   */
   reservation: ReservationItemDTO
 }

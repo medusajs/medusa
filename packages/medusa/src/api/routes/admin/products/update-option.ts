@@ -9,7 +9,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/products/{id}/options/{option_id}
  * operationId: "PostProductsProductOptionsOption"
  * summary: "Update a Product Option"
- * description: "Updates a Product Option"
+ * description: "Update a Product Option's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
@@ -28,8 +28,8 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.products.updateOption(product_id, option_id, {
- *         title: 'Size'
+ *       medusa.admin.products.updateOption(productId, optionId, {
+ *         title: "Size"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);

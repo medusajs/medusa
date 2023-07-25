@@ -8,7 +8,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/customers
  * operationId: "PostCustomers"
  * summary: "Create a Customer"
- * description: "Creates a Customer."
+ * description: "Allow admins to create a customer."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -25,10 +25,10 @@ import { EntityManager } from "typeorm"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.customers.create({
- *         email: 'user@example.com',
- *         first_name: 'Caterina',
- *         last_name: 'Yost',
- *         password: 'supersecret'
+ *         email: "user@example.com",
+ *         first_name: "Caterina",
+ *         last_name: "Yost",
+ *         password: "supersecret"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);

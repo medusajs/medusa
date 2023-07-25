@@ -13,7 +13,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [get] /admin/draft-orders/{id}
  * operationId: "GetDraftOrdersDraftOrder"
  * summary: "Get a Draft Order"
- * description: "Retrieves a Draft Order."
+ * description: "Retrieve a Draft Order's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Draft Order.
@@ -26,7 +26,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.draftOrders.retrieve(draft_order_id)
+ *       medusa.admin.draftOrders.retrieve(draftOrderId)
  *       .then(({ draft_order }) => {
  *         console.log(draft_order.id);
  *       });

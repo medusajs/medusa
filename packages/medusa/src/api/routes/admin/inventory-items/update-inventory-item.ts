@@ -9,12 +9,12 @@ import { IInventoryService } from "@medusajs/types"
  * @oas [post] /admin/inventory-items/{id}
  * operationId: "PostInventoryItemsInventoryItem"
  * summary: "Update an Inventory Item"
- * description: "Updates an Inventory Item."
+ * description: "Update an Inventory Item's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned inventory level.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned inventory level.
  * requestBody:
  *   content:
  *     application/json:

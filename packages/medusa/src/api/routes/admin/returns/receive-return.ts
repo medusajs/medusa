@@ -17,7 +17,7 @@ import { defaultRelations } from "."
  * @oas [post] /admin/returns/{id}/receive
  * operationId: "PostReturnsReturnReceive"
  * summary: "Receive a Return"
- * description: "Registers a Return as received. Updates statuses on Orders and Swaps accordingly."
+ * description: "Mark a Return as received. This also updates the status of associated order, claim, or swap accordingly."
  * parameters:
  *   - (path) id=* {string} The ID of the Return.
  * requestBody:
@@ -34,7 +34,7 @@ import { defaultRelations } from "."
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.returns.receive(return_id, {
+ *       medusa.admin.returns.receive(returnId, {
  *         items: [
  *           {
  *             item_id,

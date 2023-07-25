@@ -8,14 +8,17 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 /**
  * @oas [post] /admin/orders/{id}/swaps/{swap_id}/cancel
  * operationId: "PostOrdersSwapCancel"
- * summary: "Cancels a Swap"
- * description: "Cancels a Swap"
+ * summary: "Cancel a Swap"
+ * description: "Cancel a Swap and change its status."
  * x-authenticated: true
+ * externalDocs:
+ *   description: Canceling a swap
+ *   url: https://docs.medusajs.com/modules/orders/swaps#canceling-a-swap
  * parameters:
- *   - (path) id=* {string} The ID of the Order.
+ *   - (path) id=* {string} The ID of the Order the swap is associated with.
  *   - (path) swap_id=* {string} The ID of the Swap.
- *   - (query) expand {string} Comma separated list of relations to include in the result.
- *   - (query) fields {string} Comma separated list of fields to include in the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * x-codegen:
  *   method: cancelSwap
  *   params: AdminPostOrdersSwapCancelParams
@@ -26,7 +29,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.cancelSwap(order_id, swap_id)
+ *       medusa.admin.orders.cancelSwap(orderId, swapId)
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       });

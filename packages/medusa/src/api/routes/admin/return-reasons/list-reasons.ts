@@ -10,7 +10,7 @@ import { Selector } from "../../../../types/common"
  * @oas [get] /admin/return-reasons
  * operationId: "GetReturnReasons"
  * summary: "List Return Reasons"
- * description: "Retrieves a list of Return Reasons."
+ * description: "Retrieve a list of Return Reasons."
  * x-authenticated: true
  * x-codegen:
  *   method: list

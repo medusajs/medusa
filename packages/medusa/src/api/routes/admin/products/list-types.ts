@@ -5,7 +5,7 @@ import { ProductService } from "../../../../services"
  * deprecated: true
  * operationId: "GetProductsTypes"
  * summary: "List Product Types"
- * description: "Retrieves a list of Product Types."
+ * description: "Retrieve a list of Product Types."
  * x-authenticated: true
  * x-codegen:
  *   method: listTypes

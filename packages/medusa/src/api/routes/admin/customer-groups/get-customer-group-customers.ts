@@ -14,7 +14,7 @@ import { Type } from "class-transformer"
  *   - (path) id=* {string} The ID of the customer group.
  *   - (query) limit=50 {integer} The number of customers to return.
  *   - (query) offset=0 {integer} The number of customers to skip when retrieving the customers.
- *   - (query) expand {string} Comma-separated fields that should be expanded in the returned customers.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned customers.
  *   - (query) q {string} a term to search customers by email, first_name, and last_name.
  * x-codegen:
  *   method: listCustomers

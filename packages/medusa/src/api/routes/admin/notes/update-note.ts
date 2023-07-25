@@ -8,9 +8,9 @@ import { EntityManager } from "typeorm"
  * operationId: "PostNotesNote"
  * summary: "Update a Note"
  * x-authenticated: true
- * description: "Updates a Note associated with some resource"
+ * description: "Update a Note's details.'"
  * parameters:
- *   - (path) id=* {string} The ID of the Note to update
+ *   - (path) id=* {string} The ID of the Note
  * requestBody:
  *  content:
  *    application/json:
@@ -25,8 +25,8 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.notes.update(note_id, {
- *        value: 'We delivered this order'
+ *       medusa.admin.notes.update(noteId, {
+ *        value: "We delivered this order"
  *       })
  *       .then(({ note }) => {
  *         console.log(note.id);
@@ -89,7 +89,7 @@ export default async (req, res) => {
  * properties:
  *   value:
  *     type: string
- *     description: The updated description of the Note.
+ *     description: The description of the Note.
  */
 export class AdminPostNotesNoteReq {
   @IsString()

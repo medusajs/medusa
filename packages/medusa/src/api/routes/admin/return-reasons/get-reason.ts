@@ -9,7 +9,7 @@ import { ReturnReasonService } from "../../../../services"
  * @oas [get] /admin/return-reasons/{id}
  * operationId: "GetReturnReasonsReason"
  * summary: "Get a Return Reason"
- * description: "Retrieves a Return Reason."
+ * description: "Retrieve a Return Reason's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Return Reason.
@@ -22,7 +22,7 @@ import { ReturnReasonService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.returnReasons.retrieve(return_reason_id)
+ *       medusa.admin.returnReasons.retrieve(returnReasonId)
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
  *       });

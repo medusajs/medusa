@@ -5,10 +5,10 @@ import { MedusaError } from "@medusajs/utils"
  * @oas [get] /admin/reservations/{id}
  * operationId: "GetReservationsReservation"
  * summary: "Get a Reservation"
- * description: "Retrieves a single reservation using its ID"
+ * description: "Retrieve a reservation's details.'"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the reservation to retrieve.
+ *   - (path) id=* {string} The ID of the reservation.
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client

@@ -7,8 +7,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 /**
  * @oas [post] /admin/publishable-api-keys
  * operationId: "PostPublishableApiKeys"
- * summary: "Create PublishableApiKey"
- * description: "Creates a PublishableApiKey."
+ * summary: "Create Publishable API Key"
+ * description: "Creates a Publishable API Key."
  * requestBody:
  *   content:
  *     application/json:
@@ -90,7 +90,7 @@ export default async (req: Request, res: Response) => {
  *   - title
  * properties:
  *   title:
- *     description: A title for the publishable api key
+ *     description: The title of the publishable API key
  *     type: string
  */
 export class AdminPostPublishableApiKeysReq {

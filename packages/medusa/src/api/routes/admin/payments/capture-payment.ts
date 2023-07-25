@@ -4,7 +4,7 @@ import { PaymentService } from "../../../../services"
  * @oas [post] /admin/payments/{id}/capture
  * operationId: "PostPaymentsPaymentCapture"
  * summary: "Capture a Payment"
- * description: "Captures a Payment."
+ * description: "Capture a Payment."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Payment.
@@ -17,7 +17,7 @@ import { PaymentService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.payments.capturePayment(payment_id)
+ *       medusa.admin.payments.capturePayment(paymentId)
  *       .then(({ payment }) => {
  *         console.log(payment.id);
  *       });

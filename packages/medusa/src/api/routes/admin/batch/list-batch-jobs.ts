@@ -12,10 +12,10 @@ import { isDefined } from "medusa-core-utils"
  * @oas [get] /admin/batch-jobs
  * operationId: "GetBatchJobs"
  * summary: "List Batch Jobs"
- * description: "Retrieve a list of Batch Jobs. The batch jobs can be filtered by fields such as `type` or `confirmed_at` date. The batch jobs can also be sorted or paginated."
+ * description: "Retrieve a list of Batch Jobs. The batch jobs can be filtered by fields such as `type` or `confirmed_at`. The batch jobs can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) limit=10 {integer} The number of batch jobs to return.
+ *   - (query) limit=10 {integer} Limit the number of batch jobs returned.
  *   - (query) offset=0 {integer} The number of batch jobs to skip when retrieving the batch jobs.
  *   - in: query
  *     name: id
@@ -159,8 +159,8 @@ import { isDefined } from "medusa-core-utils"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
- *   - (query) order {string} A field to sort order the retrieved batch jobs by.
- *   - (query) expand {string} Comma-separated fields that should be expanded in the returned batch jobs.
+ *   - (query) order {string} A batch-job field to sort-order the retrieved batch jobs by.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned batch jobs.
  *   - (query) fields {string} Comma-separated fields that should be included in the returned batch jobs.
  *   - in: query
  *     name: created_at

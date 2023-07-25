@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface GetPublishableApiKeySalesChannelsParams {
   /**
-   * Query used for searching sales channels' names and descriptions.
+   * query to search sales channels' names and descriptions.
    */
   q?: string
 }

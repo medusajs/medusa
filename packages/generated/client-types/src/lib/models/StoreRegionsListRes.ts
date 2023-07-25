@@ -17,7 +17,7 @@ export interface StoreRegionsListRes {
    */
   count?: number
   /**
-   * The number of items skipped before these items
+   * The number of items skipped before the returned results
    */
   offset?: number
   /**

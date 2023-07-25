@@ -111,7 +111,7 @@ export type AdminCustomerGroupsDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before the returned results
+ *     description: The number of customer groups skipped when retrieving the customer groups.
  *   limit:
  *     type: integer
  *     description: The number of items per page

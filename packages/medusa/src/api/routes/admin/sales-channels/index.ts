@@ -92,6 +92,7 @@ export default (app) => {
  *   - sales_channel
  * properties:
  *   sales_channel:
+ *     description: Sales Channel's details.
  *     $ref: "#/components/schemas/SalesChannel"
  */
 export type AdminSalesChannelsRes = {
@@ -153,6 +154,7 @@ export type AdminSalesChannelsDeleteLocationRes = DeleteResponse
  * properties:
  *   sales_channels:
  *     type: array
+ *     description: "An array of sales channels details."
  *     items:
  *       $ref: "#/components/schemas/SalesChannel"
  *   count:

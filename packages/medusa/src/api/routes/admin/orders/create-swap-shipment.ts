@@ -15,14 +15,18 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 /**
  * @oas [post] /admin/orders/{id}/swaps/{swap_id}/shipments
  * operationId: "PostOrdersOrderSwapsSwapShipments"
- * summary: "Create Swap Shipment"
- * description: "Registers a Swap Fulfillment as shipped."
+ * summary: "Ship a Swap's Fulfillment"
+ * description: "RMark a swap's fulfillment as shipped. This changes the swap's fulfillment status to either `shipped` or `partially_shipped`, depending on
+ *  whether all the items were shipped."
  * x-authenticated: true
+ * externalDocs:
+ *   description: Handling swap fulfillments
+ *   url: https://docs.medusajs.com/modules/orders/swaps#handling-swap-fulfillment
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (path) swap_id=* {string} The ID of the Swap.
- *   - (query) expand {string} Comma separated list of relations to include in the result.
- *   - (query) fields {string} Comma separated list of fields to include in the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:

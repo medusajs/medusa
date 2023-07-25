@@ -99,7 +99,7 @@ import { Type } from "class-transformer"
  *            description: filter by dates greater than or equal to this date
  *            format: date
  *   - (query) limit=10 {integer} The number of customer groups to return.
- *   - (query) expand {string} Comma-separated fields that should be expanded in the returned customer groups.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned customer groups.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetCustomerGroupsParams

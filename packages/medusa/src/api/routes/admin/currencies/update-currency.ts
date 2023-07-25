@@ -74,7 +74,7 @@ export default async (req: ExtendedRequest<Currency>, res) => {
  * properties:
  *   includes_tax:
  *     type: boolean
- *     x-featureFlag: true
+ *     x-featureFlag: "tax_inclusive_pricing"
  *     description: "Tax included in prices of currency."
  */
 export class AdminPostCurrenciesCurrencyReq {

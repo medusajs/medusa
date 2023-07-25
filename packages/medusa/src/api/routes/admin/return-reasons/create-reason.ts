@@ -12,7 +12,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/return-reasons
  * operationId: "PostReturnReasons"
  * summary: "Create a Return Reason"
- * description: "Creates a Return Reason"
+ * description: "Create a Return Reason."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -29,8 +29,8 @@ import { EntityManager } from "typeorm"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.returnReasons.create({
- *         label: 'Damaged',
- *         value: 'damaged'
+ *         label: "Damaged",
+ *         value: "damaged"
  *       })
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
@@ -102,13 +102,13 @@ export default async (req, res) => {
  *     description: "The label to display to the Customer."
  *     type: string
  *   value:
- *     description: "The value that the Return Reason will be identified by. Must be unique."
+ *     description: "A unique value of the return reason."
  *     type: string
  *   parent_return_reason_id:
  *     description: "The ID of the parent return reason."
  *     type: string
  *   description:
- *     description: "An optional description to for the Reason."
+ *     description: "The description of the Reason."
  *     type: string
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.

@@ -4,7 +4,7 @@ import { ShippingProfileService } from "../../../../services"
  * @oas [get] /admin/shipping-profiles
  * operationId: "GetShippingProfiles"
  * summary: "List Shipping Profiles"
- * description: "Retrieves a list of Shipping Profile."
+ * description: "Retrieve a list of Shipping Profiles."
  * x-authenticated: true
  * x-codegen:
  *   method: list

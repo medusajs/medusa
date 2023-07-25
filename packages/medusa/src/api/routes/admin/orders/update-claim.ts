@@ -20,13 +20,13 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/claims/{claim_id}
  * operationId: "PostOrdersOrderClaimsClaim"
  * summary: "Update a Claim"
- * description: "Updates a Claim."
+ * description: "Update a Claim's details."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Order.
+ *   - (path) id=* {string} The ID of the Order associated with the claim.
  *   - (path) claim_id=* {string} The ID of the Claim.
- *   - (query) expand {string} Comma separated list of relations to include in the result.
- *   - (query) fields {string} Comma separated list of fields to include in the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -42,7 +42,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.updateClaim(order_id, claim_id, {
+ *       medusa.admin.orders.updateClaim(orderId, claimId, {
  *         no_notification: true
  *       })
  *       .then(({ order }) => {

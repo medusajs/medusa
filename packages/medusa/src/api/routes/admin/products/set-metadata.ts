@@ -8,8 +8,8 @@ import { PricingService } from "../../../../services"
 /**
  * @oas [post] /admin/products/{id}/metadata
  * operationId: "PostProductsProductMetadata"
- * summary: "Set Product Metadata"
- * description: "Set metadata key/value pair for Product"
+ * summary: "Set Metadata"
+ * description: "Set the metadata of a Product. It can be any key-value pair, which allows adding custom data to a product."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
@@ -27,9 +27,9 @@ import { PricingService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.products.setMetadata(product_id, {
- *       key: 'test',
- *         value: 'true'
+ *       medusa.admin.products.setMetadata(productId, {
+ *         key: "test",
+ *         value: "true"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);

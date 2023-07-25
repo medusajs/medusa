@@ -47,6 +47,7 @@ export default (app) => {
  * properties:
  *   uploads:
  *     type: array
+ *     description: "Uploaded files details."
  *     items:
  *       type: object
  *       required:

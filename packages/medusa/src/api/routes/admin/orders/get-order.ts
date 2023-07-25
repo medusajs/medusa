@@ -7,12 +7,12 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [get] /admin/orders/{id}
  * operationId: "GetOrdersOrder"
  * summary: "Get an Order"
- * description: "Retrieves an Order"
+ * description: "Retrieve an Order's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * x-codegen:
  *   method: retrieve
  *   queryParams: AdminGetOrdersOrderParams
@@ -23,7 +23,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.retrieve(order_id)
+ *       medusa.admin.orders.retrieve(orderId)
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       });

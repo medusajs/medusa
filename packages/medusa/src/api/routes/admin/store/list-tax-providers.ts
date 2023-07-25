@@ -4,7 +4,7 @@ import { TaxProviderService } from "../../../../services"
  * @oas [get] /admin/store/tax-providers
  * operationId: "GetStoreTaxProviders"
  * summary: "List Tax Providers"
- * description: "Retrieves the configured Tax Providers"
+ * description: "Retrieve a list of available Tax Providers in a store."
  * x-authenticated: true
  * x-codegen:
  *   method: listTaxProviders

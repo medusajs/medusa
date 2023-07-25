@@ -9,8 +9,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 /**
  * @oas [post] /admin/publishable-api-keys/{id}/sales-channels/batch
  * operationId: "PostPublishableApiKeySalesChannelsChannelsBatch"
- * summary: "Add SalesChannels"
- * description: "Assign a batch of sales channels to a publishable api key."
+ * summary: "Add Sales Channels"
+ * description: "Assign a list of sales channels to a publishable API key."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Publishable Api Key.
@@ -31,7 +31,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       medusa.admin.publishableApiKeys.addSalesChannelsBatch(publishableApiKeyId, {
  *         sales_channel_ids: [
  *           {
- *             id: channel_id
+ *             id: channelId
  *           }
  *         ]
  *       })
@@ -110,7 +110,7 @@ export default async (req: Request, res: Response): Promise<void> => {
  *   - sales_channel_ids
  * properties:
  *   sales_channel_ids:
- *     description: The IDs of the sales channels to add to the publishable api key
+ *     description: The IDs of the sales channels to add to the publishable API key
  *     type: array
  *     items:
  *       type: object

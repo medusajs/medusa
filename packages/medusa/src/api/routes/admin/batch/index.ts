@@ -75,7 +75,7 @@ export type AdminBatchJobRes = {
  *      description: The total number of items available
  *   offset:
  *      type: integer
- *      description: The number of items skipped before the returned results
+ *      description: The number of batch jobs skipped when retrieving the batch jobs.
  *   limit:
  *      type: integer
  *      description: The number of items per page

@@ -4,7 +4,7 @@ import { PricingService, ProductService } from "../../../../services"
  * @oas [get] /admin/products/{id}
  * operationId: "GetProductsProduct"
  * summary: "Get a Product"
- * description: "Retrieves a Product."
+ * description: "Retrieve a Product's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
@@ -17,7 +17,7 @@ import { PricingService, ProductService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.products.retrieve(product_id)
+ *       medusa.admin.products.retrieve(productId)
  *       .then(({ product }) => {
  *         console.log(product.id);
  *       });

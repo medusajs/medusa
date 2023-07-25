@@ -11,8 +11,8 @@ import {
 /**
  * @oas [post] /admin/order-edits/{id}
  * operationId: "PostOrderEditsOrderEdit"
- * summary: "Update an OrderEdit"
- * description: "Updates a OrderEdit."
+ * summary: "Update an Order Edit"
+ * description: "Updates an Order Edit's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
@@ -30,7 +30,7 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.update(order_edit_id, {
+ *       medusa.admin.orderEdits.update(orderEditId, {
  *         internal_note: "internal reason XY"
  *       })
  *         .then(({ order_edit }) => {
@@ -103,7 +103,7 @@ export default async (req: Request, res: Response) => {
  * type: object
  * properties:
  *   internal_note:
- *     description: An optional note to create or update for the order edit.
+ *     description: An optional note to create or update in the order edit.
  *     type: string
  */
 export class AdminPostOrderEditsOrderEditReq {

@@ -10,11 +10,11 @@ import { validator } from "../../../../utils/validator"
  * operationId: "GetNotes"
  * summary: "List Notes"
  * x-authenticated: true
- * description: "Retrieves a list of notes"
+ * description: "Retrieve a list of notes. The notes can be filtered by fields such as `resource_id`. The notes can also be paginated."
  * parameters:
- *   - (query) limit=50 {number} The number of notes to get
- *   - (query) offset=0 {number} The offset at which to get notes
- *   - (query) resource_id {string} The ID which the notes belongs to
+ *   - (query) limit=50 {number} Limit the number of notes returned.
+ *   - (query) offset=0 {number} The number of notes to skip when retrieving the notes.
+ *   - (query) resource_id {string} Filter by resource ID
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetNotesParams

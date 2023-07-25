@@ -7,12 +7,12 @@ import { FindParams } from "../../../../types/common"
  * @oas [post] /admin/inventory-items/{id}/location-levels
  * operationId: "PostInventoryItemsInventoryItemLocationLevels"
  * summary: "Create an Inventory Level"
- * description: "Creates an Inventory Level for a given Inventory Item."
+ * description: "Create an Inventory Level for a given Inventory Item."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned inventory item.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned inventory item.
  * requestBody:
  *   content:
  *     application/json:
@@ -29,7 +29,7 @@ import { FindParams } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.inventoryItems.createLocationLevel(inventoryItemId, {
- *         location_id: 'sloc_123',
+ *         location_id: "sloc_123",
  *         stocked_quantity: 10,
  *       })
  *       .then(({ inventory_item }) => {
@@ -111,13 +111,13 @@ export default async (req: Request, res: Response) => {
  *   - stocked_quantity
  * properties:
  *   location_id:
- *     description: the item location ID
+ *     description: the ID of the stock location
  *     type: string
  *   stocked_quantity:
- *     description: the stock quantity of an inventory item at the given location ID
+ *     description: the stock quantity of the inventory item at this location
  *     type: number
  *   incoming_quantity:
- *     description: the incoming stock quantity of an inventory item at the given location ID
+ *     description: the incoming stock quantity of the inventory item at this location
  *     type: number
  */
 export class AdminPostInventoryItemsItemLocationLevelsReq {

@@ -7,7 +7,7 @@ import PriceListService from "../../../../services/price-list"
  * @oas [get] /admin/price-lists/{id}
  * operationId: "GetPriceListsPriceList"
  * summary: "Get a Price List"
- * description: "Retrieves a Price List."
+ * description: "Retrieve a Price List's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Price List.
@@ -20,7 +20,7 @@ import PriceListService from "../../../../services/price-list"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.priceLists.retrieve(price_list_id)
+ *       medusa.admin.priceLists.retrieve(priceListId)
  *       .then(({ price_list }) => {
  *         console.log(price_list.id);
  *       });

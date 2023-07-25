@@ -4,7 +4,7 @@ import InviteService from "../../../../services/invite"
  * @oas [get] /admin/invites
  * operationId: "GetInvites"
  * summary: "Lists Invites"
- * description: "Lists all Invites"
+ * description: "Retrieve a list of invites."
  * x-authenticated: true
  * x-codegen:
  *   method: list

@@ -15,10 +15,11 @@ import {
  * @oas [post] /admin/order-edits/{id}/request
  * operationId: "PostOrderEditsOrderEditRequest"
  * summary: "Request Confirmation"
- * description: "Request customer confirmation of an Order Edit"
+ * description: "Request customer confirmation of an Order Edit. This would emit the event `order-edit.requested` which Notification Providers listen to and send
+ *  a notification to the customer about the order edit."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Order Edit to request confirmation from.
+ *   - (path) id=* {string} The ID of the Order Edit.
  * x-codegen:
  *   method: requestConfirmation
  * x-codeSamples:
@@ -28,7 +29,7 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.requestConfirmation(order_edit_id)
+ *       medusa.admin.orderEdits.requestConfirmation(orderEditId)
  *         .then({ order_edit }) => {
  *           console.log(order_edit.id)
  *         })

@@ -51,7 +51,7 @@ export default (app) => {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before the returned results
+ *     description: The number of currencies skipped when retrieving the currencies.
  *   limit:
  *     type: integer
  *     description: The number of items per page

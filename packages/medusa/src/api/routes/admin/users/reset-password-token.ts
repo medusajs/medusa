@@ -7,8 +7,10 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/users/password-token
  * operationId: "PostUsersUserPasswordToken"
  * summary: "Request Password Reset"
- * description: "Generates a password token for a User with a given email."
- * x-authenticated: true
+ * description: "Generate a password token for an admin user with a given email."
+ * externalDocs:
+ *   description: How to reset a user's password
+ *   url: https://docs.medusajs.com/modules/users/admin/manage-profile#reset-password
  * requestBody:
  *   content:
  *     application/json:
@@ -24,7 +26,7 @@ import { EntityManager } from "typeorm"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.users.sendResetPasswordToken({
- *         email: 'user@example.com'
+ *         email: "user@example.com"
  *       })
  *       .then(() => {
  *         // successful
@@ -90,7 +92,7 @@ export default async (req, res) => {
  *   - email
  * properties:
  *   email:
- *     description: "The Users email."
+ *     description: "The User's email."
  *     type: string
  *     format: email
  */

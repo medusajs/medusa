@@ -5,7 +5,7 @@ import { IsString } from "class-validator"
  * @oas [post] /admin/uploads/download-url
  * operationId: "PostUploadsDownloadUrl"
  * summary: "Get a File's Download URL"
- * description: "Creates a presigned download url for a file"
+ * description: "Create and retrieve a presigned or public download URL for a file. The URL creation is handled by the file service installed on the Medusa backend."
  * x-authenticated: true
  * requestBody:
  *   content:

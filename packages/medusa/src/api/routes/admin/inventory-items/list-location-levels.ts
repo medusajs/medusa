@@ -8,22 +8,22 @@ import { IsType } from "../../../../utils/validators/is-type"
 /**
  * @oas [get] /admin/inventory-items/{id}/location-levels
  * operationId: "GetInventoryItemsInventoryItemLocationLevels"
- * summary: "List Inventory Levels"
- * description: "Lists inventory levels of an inventory item."
+ * summary: "List Inventory Level"
+ * description: "Retrieve a list of inventory levels of an inventory item. The inventory levels can be filtered by fields such as `location_id`. The inventory levels can also be paginated."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Inventory Item.
+ *   - (path) id=* {string} The ID of the Inventory Item the locations are associated with.
  *   - in: query
  *     name: location_id
  *     style: form
  *     explode: false
- *     description: Locations ids to search for.
+ *     description: Filter by location IDs.
  *     schema:
  *       type: array
  *       items:
  *         type: string
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned inventory levels.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned inventory levels.
  * x-codegen:
  *   method: listLocationLevels
  *   queryParams: AdminGetInventoryItemsItemLocationLevelsParams

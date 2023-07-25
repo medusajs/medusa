@@ -5,7 +5,8 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/invites/{invite_id}/resend
  * operationId: "PostInvitesInviteResend"
  * summary: "Resend an Invite"
- * description: "Resends an Invite by triggering the 'invite' created event again"
+ * description: "Resend an Invite. This renews the expiry date by 7 days and generates a new token for the invite. It also triggers the `invite.created` event, so if you have a Notification Provider installed that handles this
+ *  event, a notification should be sent to the email associated with the invite to allow them to accept the invite."
  * x-authenticated: true
  * parameters:
  *   - (path) invite_id=* {string} The ID of the Invite
@@ -18,7 +19,7 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.invites.resend(invite_id)
+ *       medusa.admin.invites.resend(inviteId)
  *       .then(() => {
  *         // successful
  *       })
