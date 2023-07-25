@@ -6,11 +6,13 @@ import {
 import { Product, ProductCategory } from "@models"
 import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
-import { AbstractTreeRepositoryBase } from "./base"
+import { BaseTreeRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import { InjectTransactionManager, MedusaContext, isDefined } from "@medusajs/utils"
 
-export class ProductCategoryRepository extends AbstractTreeRepositoryBase<ProductCategory> {
+import { ProductCategoryServiceTypes } from "../types"
+
+export class ProductCategoryRepository extends BaseTreeRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -161,10 +163,48 @@ export class ProductCategoryRepository extends AbstractTreeRepositoryBase<Produc
     )
   }
 
+  @InjectTransactionManager()
   async create(
-    data: unknown[],
-    context: Context = {}
-  ): Promise<ProductCategory[]> {
-    throw new Error("Method not implemented.")
+    data: ProductCategoryServiceTypes.CreateProductCategoryDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<ProductCategory> {
+    const manager = this.getActiveManager<SqlEntityManager>(sharedContext)
+    const parentIds = []
+    const includeNull = parentIds.includes(null)
+    const parentCategories = await manager.find(
+      ProductCategory,
+      {
+        $or: [
+          { parent_category_id: { $in: parentIds.filter(Boolean) } },
+          (includeNull ? { parent_category_id: { $eq: null } } : {})
+        ]
+      }
+    )
+
+    const parentCategoryMap = new Map<string | null, ProductCategory[]>()
+
+    parentCategories.forEach((category) => {
+      const parentCategoryId = category.parent_category_id || null
+      const array = parentCategoryMap.get(parentCategoryId) || []
+
+      array.push(category)
+
+      parentCategoryMap.set(parentCategoryId, array)
+    })
+
+    const productCategories = data.map((categoryData, index) => {
+      const parentCategoryId = categoryData?.parent_category_id || null
+      const siblings = parentCategoryMap.get(parentCategoryId) || []
+
+      if (!isDefined(categoryData.rank)) {
+        categoryData.rank = siblings.length
+      }
+
+      return manager.create(ProductCategory, categoryData)
+    })
+
+    await manager.persist(productCategories)
+
+    return productCategories
   }
 }

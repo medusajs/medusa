@@ -560,4 +560,65 @@ describe("Product category Service", () => {
       ])
     })
   })
+
+  describe("create", () => {
+    it("should create a category successfully", async () => {
+      await service.create({
+        name: "New Category",
+        parent_category_id: null,
+      })
+
+      const [productCategory] = await service.list({
+        name: "New Category"
+      })
+
+      expect(productCategory).toEqual(
+        expect.objectContaining({
+          name: "New Category",
+          rank: 0,
+        })
+      )
+    })
+
+    it("should append rank from an existing category depending on parent", async () => {
+      await service.create({
+        name: "New Category",
+        parent_category_id: null,
+        rank: 0
+      })
+
+      await service.create({
+        name: "New Category 2",
+        parent_category_id: null,
+      })
+
+      const [productCategoryNew] = await service.list({
+        name: "New Category 2"
+      })
+
+      expect(productCategoryNew).toEqual(
+        expect.objectContaining({
+          name: "New Category 2",
+          rank: 1,
+        })
+      )
+
+      await service.create({
+        name: "New Category 2.1",
+        parent_category_id: productCategoryNew.id,
+      })
+
+      const [productCategoryWithParent] = await service.list({
+        name: "New Category 2.1"
+      })
+
+      expect(productCategoryWithParent).toEqual(
+        expect.objectContaining({
+          name: "New Category 2.1",
+          parent_category_id: productCategoryNew.id,
+          rank: 0,
+        })
+      )
+    })
+  })
 })

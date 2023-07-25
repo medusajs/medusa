@@ -214,6 +214,8 @@ export abstract class AbstractTreeRepositoryBase<T = any>
     transformOptions?: RepositoryTransformOptions,
     context?: Context
   ): Promise<[T[], number]>
+
+  abstract create(data: unknown, context?: Context): Promise<T>
 }
 
 // TODO: move to utils package
@@ -250,6 +252,38 @@ export class BaseRepository extends AbstractBaseRepository {
     options?: DAL.FindOptions,
     context?: Context
   ): Promise<[any[], number]> {
+    throw new Error("Method not implemented.")
+  }
+}
+
+
+export class BaseTreeRepository extends AbstractTreeRepositoryBase {
+  constructor({ manager }) {
+    // @ts-ignore
+    super(...arguments)
+  }
+
+  find(
+    options?: DAL.FindOptions,
+    transformOptions?: RepositoryTransformOptions,
+    context?: Context
+  ): Promise<any[]> {
+    throw new Error("Method not implemented.")
+  }
+
+  findAndCount(
+    options?: DAL.FindOptions,
+    transformOptions?: RepositoryTransformOptions,
+    context?: Context
+  ): Promise<[any[], number]> {
+    throw new Error("Method not implemented.")
+  }
+
+  create(data: unknown, context?: Context): Promise<any> {
+    throw new Error("Method not implemented.")
+  }
+
+  delete(ids: string[], context?: Context): Promise<void> {
     throw new Error("Method not implemented.")
   }
 }
