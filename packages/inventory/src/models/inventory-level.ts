@@ -1,9 +1,11 @@
 import {
+  AfterUpdate,
   BeforeCreate,
   Collection,
   Entity,
   Index,
   ManyToMany,
+  OnLoad,
   OptionalProps,
   PrimaryKey,
   Property,
@@ -75,6 +77,18 @@ export class InventoryLevel {
   @BeforeCreate()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "ilev")
+  }
+
+  @OnLoad()
+  @AfterUpdate()
+  private loadVariables(): void {
+    this.stocked_quantity = parseInt(this.stocked_quantity as unknown as string)
+    this.reserved_quantity = parseInt(
+      this.reserved_quantity as unknown as string
+    )
+    this.incoming_quantity = parseInt(
+      this.incoming_quantity as unknown as string
+    )
   }
 }
 

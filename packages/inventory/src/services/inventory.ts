@@ -183,7 +183,7 @@ export default class InventoryService implements IInventoryService {
         `Inventory level for item ${inventoryItemId} and location ${locationId} not found`
       )
     }
-    return inventoryLevel
+    return JSON.parse(JSON.stringify(inventoryLevel))
   }
 
   /**

@@ -36,8 +36,6 @@ async function transactionWrapper(
   if (!enableNestedTransactions && transaction) {
     return await task(transaction)
   }
-  console.log("forked this.manager_", this.manager_)
-
   const forkedManager = this.manager_.fork()
 
   const options = {}
@@ -131,8 +129,6 @@ export abstract class AbstractBaseRepository<T = any>
       transaction?: unknown
     } = {}
   ): Promise<any> {
-    console.log("this.manager_", this.manager_)
-
     // eslint-disable-next-line prefer-rest-params
     return await transactionWrapper.apply(this, arguments)
   }
