@@ -1,12 +1,13 @@
-import { RemoteJoiner } from "@medusajs/orchestration"
 import {
   JoinerRelationship,
   JoinerServiceConfig,
   ModuleDefinition,
   RemoteExpandProperty,
 } from "@medusajs/types"
-import { toPascalCase } from "@medusajs/utils"
+
 import { MedusaModule } from "./medusa-module"
+import { RemoteJoiner } from "@medusajs/orchestration"
+import { toPascalCase } from "@medusajs/utils"
 
 export class RemoteQuery {
   private remoteJoiner: RemoteJoiner
@@ -34,9 +35,7 @@ export class RemoteQuery {
     }
 
     const servicesConfig: JoinerServiceConfig[] = []
-    for (const modService of modulesLoaded) {
-      const mod: any = Object.values(modService)[0]
-
+    for (const mod of modulesLoaded) {
       if (!mod.__definition.isQueryable) {
         continue
       }
