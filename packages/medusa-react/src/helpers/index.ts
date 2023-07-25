@@ -126,11 +126,8 @@ export const formatAmount = ({
   })
 }
 
-// we should probably add a more extensive list
-const noDivisionCurrencies = ["krw", "jpy", "vnd"]
-
 const convertToDecimal = (amount: number, region: RegionInfo) => {
-  const divisor = 100
+  const divisor = 100;
   const currencyInfo = currencies[region];
   if (currencyInfo) {
     divisor = 10 ** currencyInfo.decimal_digits;
