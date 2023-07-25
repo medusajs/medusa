@@ -1,15 +1,15 @@
 const path = require("path")
 const { ProductCategory } = require("@medusajs/medusa")
 
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const adminSeeder = require("../../../helpers/admin-seeder")
-const productSeeder = require("../../../helpers/product-seeder")
+const setupServer = require("../../../../environment-helpers/setup-server")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const productSeeder = require("../../../../helpers/product-seeder")
 const {
   simpleProductCategoryFactory,
   simpleSalesChannelFactory,
-} = require("../../../factories")
+} = require("../../../../factories")
 
 const testProductId = "test-product"
 const testProduct1Id = "test-product1"

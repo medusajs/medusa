@@ -1,18 +1,5 @@
-import { LoaderOptions } from "@medusajs/modules-sdk"
-
-import { asClass } from "awilix"
-import {
-  ProductCategoryService,
-  ProductCollectionService,
-  ProductImageService,
-  ProductModuleService,
-  ProductOptionService,
-  ProductService,
-  ProductTagService,
-  ProductTypeService,
-  ProductVariantService,
-} from "@services"
 import * as DefaultRepositories from "@repositories"
+
 import {
   BaseRepository,
   ProductCategoryRepository,
@@ -25,6 +12,20 @@ import {
   ProductVariantRepository,
 } from "@repositories"
 import { Constructor, DAL, ModulesSdkTypes } from "@medusajs/types"
+import {
+  ProductCategoryService,
+  ProductCollectionService,
+  ProductImageService,
+  ProductModuleService,
+  ProductOptionService,
+  ProductService,
+  ProductTagService,
+  ProductTypeService,
+  ProductVariantService,
+} from "@services"
+
+import { LoaderOptions } from "@medusajs/modules-sdk"
+import { asClass } from "awilix"
 import { lowerCaseFirst } from "@medusajs/utils"
 
 export default async ({

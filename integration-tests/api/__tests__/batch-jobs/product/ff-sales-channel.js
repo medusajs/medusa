@@ -1,19 +1,19 @@
 const fs = require("fs")
 const path = require("path")
 
-const { useApi } = require("../../../../helpers/use-api")
-const { useDb } = require("../../../../helpers/use-db")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { useDb } = require("../../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
-const userSeeder = require("../../../helpers/user-seeder")
-const { simpleSalesChannelFactory } = require("../../../factories")
-const batchJobSeeder = require("../../../helpers/batch-job-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const userSeeder = require("../../../../helpers/user-seeder")
+const { simpleSalesChannelFactory } = require("../../../../factories")
+const batchJobSeeder = require("../../../../helpers/batch-job-seeder")
 const {
   simpleProductCollectionFactory,
-} = require("../../../factories/simple-product-collection-factory")
+} = require("../../../../factories/simple-product-collection-factory")
 
 const startServerWithEnvironment =
-  require("../../../../helpers/start-server-with-environment").default
+  require("../../../../environment-helpers/start-server-with-environment").default
 
 jest.setTimeout(30000)
 

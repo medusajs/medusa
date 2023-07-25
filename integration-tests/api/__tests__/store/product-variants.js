@@ -1,12 +1,12 @@
 const { ProductVariant } = require("@medusajs/medusa")
 const path = require("path")
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const { simpleProductFactory } = require("../../factories")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const { simpleProductFactory } = require("../../../factories")
 
-const productSeeder = require("../../helpers/product-seeder")
-const storeProductSeeder = require("../../helpers/store-product-seeder")
+const productSeeder = require("../../../helpers/product-seeder")
+const storeProductSeeder = require("../../../helpers/store-product-seeder")
 jest.setTimeout(30000)
 describe("/store/variants", () => {
   let medusaProcess

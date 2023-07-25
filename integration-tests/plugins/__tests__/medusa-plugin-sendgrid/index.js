@@ -1,10 +1,10 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const { setPort, useApi } = require("../../../helpers/use-api")
+const { bootstrapApp } = require("../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const { setPort, useApi } = require("../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../helpers/admin-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 jest.setTimeout(10000)
 
@@ -13,7 +13,7 @@ const {
   simpleStoreFactory,
   simpleProductFactory,
   simpleShippingOptionFactory,
-} = require("../../factories")
+} = require("../../../factories")
 
 describe("medusa-plugin-sendgrid", () => {
   let appContainer
@@ -120,6 +120,8 @@ describe("medusa-plugin-sendgrid", () => {
             updated_at: expect.any(Date),
             product: {
               profile_id: expect.any(String),
+              profile: expect.any(Object),
+              profiles: expect.any(Array),
               created_at: expect.any(Date),
               updated_at: expect.any(Date),
             },
@@ -242,6 +244,8 @@ describe("medusa-plugin-sendgrid", () => {
               updated_at: expect.any(Date),
               product: {
                 profile_id: expect.any(String),
+                profile: expect.any(Object),
+                profiles: expect.any(Array),
                 created_at: expect.any(Date),
                 updated_at: expect.any(Date),
               },
@@ -303,6 +307,8 @@ describe("medusa-plugin-sendgrid", () => {
             updated_at: expect.any(Date),
             product: {
               profile_id: expect.any(String),
+              profile: expect.any(Object),
+              profiles: expect.any(Array),
               created_at: expect.any(Date),
               updated_at: expect.any(Date),
             },
@@ -485,6 +491,8 @@ describe("medusa-plugin-sendgrid", () => {
             updated_at: expect.any(Date),
             product: {
               profile_id: expect.any(String),
+              profile: expect.any(Object),
+              profiles: expect.any(Array),
               created_at: expect.any(Date),
               updated_at: expect.any(Date),
             },
@@ -592,6 +600,8 @@ describe("medusa-plugin-sendgrid", () => {
         updated_at: expect.any(Date),
         product: {
           profile_id: expect.any(String),
+          profile: expect.any(Object),
+          profiles: expect.any(Array),
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         },
@@ -780,6 +790,8 @@ const getReturnSnap = (received = false) => {
       updated_at: expect.any(Date),
       product: {
         profile_id: expect.any(String),
+        profile: expect.any(Object),
+        profiles: expect.any(Array),
         created_at: expect.any(Date),
         updated_at: expect.any(Date),
       },

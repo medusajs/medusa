@@ -1,13 +1,13 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const { simpleProductFactory } = require("../../factories")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const { simpleProductFactory } = require("../../../factories")
 
-const adminSeeder = require("../../helpers/admin-seeder")
-const adminVariantsSeeder = require("../../helpers/admin-variants-seeder")
-const productSeeder = require("../../helpers/product-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const adminVariantsSeeder = require("../../../helpers/admin-variants-seeder")
+const productSeeder = require("../../../helpers/product-seeder")
 
 const adminHeaders = {
   headers: {
@@ -262,6 +262,12 @@ describe("/admin/products", () => {
           product_id: productData.id,
           sku: `test-product_filtering_by_variant_id-${i}`,
           title: `test-product_filtering_by_variant_id-${i}`,
+          options: [
+            {
+              option_id: "test-product_filtering_by_variant_id-option",
+              value: `Large-${i}`,
+            },
+          ],
         })
       }
 

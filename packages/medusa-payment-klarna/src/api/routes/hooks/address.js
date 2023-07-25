@@ -42,9 +42,7 @@ export default async (req, res) => {
         "region",
         "shipping_methods",
         "shipping_methods.shipping_option",
-        "items",
-        "items.variant",
-        "items.variant.product",
+        "items.variant.product.profiles",
       ],
     })
     const shippingOptions = await shippingProfileService.fetchCartOptions(cart)

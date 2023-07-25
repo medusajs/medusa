@@ -10,6 +10,10 @@ program
     "--no-boilerplate",
     "Install a Medusa project without the boilerplate and demo files."
   )
+  .option(
+    "--stable",
+    "Install the latest stable version. This removes all onboarding features"
+  )
   .parse()
 
 void create(program.opts())

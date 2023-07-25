@@ -2,10 +2,10 @@ const jwt = require("jsonwebtoken")
 const path = require("path")
 const { Address, Customer, Order, Region } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const { simpleOrderFactory } = require("../../factories")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const { simpleOrderFactory } = require("../../../factories")
 
 jest.setTimeout(30000)
 

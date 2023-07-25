@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[medusa/src/services/return.ts:64](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L64)
+[medusa/src/services/return.ts:64](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L64)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,7 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
 
 ___
 
@@ -66,7 +66,7 @@ TransactionBaseService.\_\_moduleDeclaration\_\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/return.ts:58](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L58)
+[medusa/src/services/return.ts:58](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L58)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/return.ts:55](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L55)
+[medusa/src/services/return.ts:55](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L55)
 
 ___
 
@@ -100,7 +100,7 @@ TransactionBaseService.manager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/return.ts:60](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L60)
+[medusa/src/services/return.ts:60](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L60)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/return.ts:62](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L62)
+[medusa/src/services/return.ts:62](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L62)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/return.ts:54](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L54)
+[medusa/src/services/return.ts:54](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L54)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/return.ts:59](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L59)
+[medusa/src/services/return.ts:59](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L59)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/return.ts:53](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L53)
+[medusa/src/services/return.ts:53](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L53)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/return.ts:57](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L57)
+[medusa/src/services/return.ts:57](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L57)
 
 ___
 
@@ -170,7 +170,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/return.ts:56](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L56)
+[medusa/src/services/return.ts:56](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L56)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/return.ts:52](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L52)
+[medusa/src/services/return.ts:52](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L52)
 
 ___
 
@@ -194,7 +194,7 @@ TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ## Accessors
 
@@ -212,7 +212,7 @@ TransactionBaseService.activeManager\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -251,7 +251,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -275,7 +275,7 @@ the updated Return
 
 #### Defined in
 
-[medusa/src/services/return.ts:161](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L161)
+[medusa/src/services/return.ts:178](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L178)
 
 ___
 
@@ -301,7 +301,7 @@ the created return
 
 #### Defined in
 
-[medusa/src/services/return.ts:346](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L346)
+[medusa/src/services/return.ts:363](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L363)
 
 ___
 
@@ -321,7 +321,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/return.ts:490](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L490)
+[medusa/src/services/return.ts:507](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L507)
 
 ___
 
@@ -347,7 +347,7 @@ the line items generated by the transformer.
 
 #### Defined in
 
-[medusa/src/services/return.ts:101](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L101)
+[medusa/src/services/return.ts:101](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L101)
 
 ___
 
@@ -370,7 +370,30 @@ the result of the find operation
 
 #### Defined in
 
-[medusa/src/services/return.ts:141](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L141)
+[medusa/src/services/return.ts:141](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L141)
+
+___
+
+### listAndCount
+
+▸ **listAndCount**(`selector`, `config?`): `Promise`<[`Return`[], `number`]\>
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `Selector`<`Return`\> | the query object for find |
+| `config` | `FindConfig`<`Return`\> | the config object for find |
+
+#### Returns
+
+`Promise`<[`Return`[], `number`]\>
+
+the result of the find operation
+
+#### Defined in
+
+[medusa/src/services/return.ts:158](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L158)
 
 ___
 
@@ -405,7 +428,7 @@ the result of the update operation
 
 #### Defined in
 
-[medusa/src/services/return.ts:561](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L561)
+[medusa/src/services/return.ts:578](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L578)
 
 ___
 
@@ -430,7 +453,7 @@ the return
 
 #### Defined in
 
-[medusa/src/services/return.ts:259](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L259)
+[medusa/src/services/return.ts:276](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L276)
 
 ___
 
@@ -451,7 +474,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/return.ts:287](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L287)
+[medusa/src/services/return.ts:304](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L304)
 
 ___
 
@@ -475,7 +498,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -496,7 +519,7 @@ ___
 
 #### Defined in
 
-[medusa/src/services/return.ts:312](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L312)
+[medusa/src/services/return.ts:329](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L329)
 
 ___
 
@@ -527,7 +550,7 @@ a line item where the quantity is set to the requested
 
 #### Defined in
 
-[medusa/src/services/return.ts:217](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L217)
+[medusa/src/services/return.ts:234](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L234)
 
 ___
 
@@ -555,7 +578,7 @@ when statuses are not sufficient for returns.
 
 #### Defined in
 
-[medusa/src/services/return.ts:187](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/services/return.ts#L187)
+[medusa/src/services/return.ts:204](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/services/return.ts#L204)
 
 ___
 
@@ -579,4 +602,4 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/499c3478c/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/95c538c67/packages/medusa/src/interfaces/transaction-base-service.ts#L20)

@@ -2,15 +2,15 @@ const path = require("path")
 const { OrderEditItemChangeType, OrderEdit } = require("@medusajs/medusa")
 const { IdMap } = require("medusa-test-utils")
 
-const { useApi } = require("../../../../helpers/use-api")
-const { useDb, initDb } = require("../../../../helpers/use-db")
-const adminSeeder = require("../../../helpers/admin-seeder")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { useDb, initDb } = require("../../../../environment-helpers/use-db")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 const {
   simpleOrderEditFactory,
-} = require("../../../factories/simple-order-edit-factory")
+} = require("../../../../factories/simple-order-edit-factory")
 const {
   simpleOrderItemChangeFactory,
-} = require("../../../factories/simple-order-item-change-factory")
+} = require("../../../../factories/simple-order-item-change-factory")
 const {
   simpleLineItemFactory,
   simpleProductFactory,
@@ -18,8 +18,8 @@ const {
   simpleDiscountFactory,
   simpleCartFactory,
   simpleRegionFactory,
-} = require("../../../factories")
-const setupServer = require("../../../../helpers/setup-server")
+} = require("../../../../factories")
+const setupServer = require("../../../../environment-helpers/setup-server")
 
 jest.setTimeout(30000)
 

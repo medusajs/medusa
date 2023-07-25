@@ -1,16 +1,16 @@
 const path = require("path")
 
-const draftOrderSeeder = require("../../../helpers/draft-order-seeder")
-const adminSeeder = require("../../../helpers/admin-seeder")
+const draftOrderSeeder = require("../../../../helpers/draft-order-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 const {
   simpleDiscountFactory,
   simpleRegionFactory,
   simpleShippingOptionFactory,
-} = require("../../../factories")
+} = require("../../../../factories")
 const startServerWithEnvironment =
-  require("../../../../helpers/start-server-with-environment").default
-const { useDb } = require("../../../../helpers/use-db")
-const { useApi } = require("../../../../helpers/use-api")
+  require("../../../../environment-helpers/start-server-with-environment").default
+const { useDb } = require("../../../../environment-helpers/use-db")
+const { useApi } = require("../../../../environment-helpers/use-api")
 
 jest.setTimeout(30000)
 

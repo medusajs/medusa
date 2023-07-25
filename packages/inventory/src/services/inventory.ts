@@ -11,6 +11,7 @@ import {
   IInventoryService,
   InventoryItemDTO,
   InventoryLevelDTO,
+  JoinerServiceConfig,
   MODULE_RESOURCE_TYPE,
   ReservationItemDTO,
   SharedContext,
@@ -23,6 +24,7 @@ import {
   MedusaError,
 } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
+import { joinerConfig } from "../joiner-config"
 import InventoryItemService from "./inventory-item"
 import InventoryLevelService from "./inventory-level"
 import ReservationItemService from "./reservation-item"
@@ -57,6 +59,10 @@ export default class InventoryService implements IInventoryService {
     this.reservationItemService_ = reservationItemService
   }
 
+  __joinerConfig(): JoinerServiceConfig {
+    return joinerConfig
+  }
+
   /**
    * Lists inventory items that match the given selector
    * @param selector - the selector to filter inventory items by
@@ -74,6 +80,13 @@ export default class InventoryService implements IInventoryService {
       config,
       context
     )
+  }
+  async list(
+    selector: FilterableInventoryItemProps,
+    config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 },
+    context: SharedContext = {}
+  ): Promise<InventoryItemDTO[]> {
+    return await this.inventoryItemService_.list(selector, config, context)
   }
 
   /**

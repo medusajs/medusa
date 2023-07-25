@@ -1,10 +1,10 @@
 const path = require("path")
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
-const productSeeder = require("../../helpers/product-seeder")
-const adminSeeder = require("../../helpers/admin-seeder")
+const productSeeder = require("../../../helpers/product-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 const {
   DiscountRuleType,
   AllocationType,
@@ -12,10 +12,7 @@ const {
   DiscountConditionOperator,
 } = require("@medusajs/medusa")
 const { IdMap } = require("medusa-test-utils")
-const {
-  simpleDiscountFactory,
-  simpleSalesChannelFactory,
-} = require("../../factories")
+const { simpleDiscountFactory } = require("../../../factories")
 
 jest.setTimeout(30000)
 

@@ -1,16 +1,17 @@
-import { ICacheService } from "@medusajs/types"
-import { isDefined } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 import {
   AbstractPriceSelectionStrategy,
   PriceSelectionContext,
   PriceSelectionResult,
   PriceType,
 } from "../interfaces"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { MoneyAmountRepository } from "../repositories/money-amount"
-import { TaxServiceRate } from "../types/tax-service"
+
+import { EntityManager } from "typeorm"
 import { FlagRouter } from "../utils/flag-router"
+import { ICacheService } from "@medusajs/types"
+import { MoneyAmountRepository } from "../repositories/money-amount"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { TaxServiceRate } from "../types/tax-service"
+import { isDefined } from "medusa-core-utils"
 
 class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   protected manager_: EntityManager

@@ -18,7 +18,7 @@ export const initialize = async (
 ): Promise<IProductModuleService> => {
   const serviceKey = Modules.PRODUCT
 
-  const loaded = await MedusaModule.bootstrap(
+  const loaded = await MedusaModule.bootstrap<IProductModuleService>(
     serviceKey,
     MODULE_PACKAGE_NAMES[Modules.PRODUCT],
     options as InternalModuleDeclaration | ExternalModuleDeclaration,
@@ -26,5 +26,5 @@ export const initialize = async (
     injectedDependencies
   )
 
-  return loaded[serviceKey] as IProductModuleService
+  return loaded[serviceKey]
 }

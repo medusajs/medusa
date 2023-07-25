@@ -1,18 +1,18 @@
 const path = require("path")
 const { IdMap } = require("medusa-test-utils")
 
-const { useApi } = require("../../../helpers/use-api")
-const { useDb, initDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb, initDb } = require("../../../environment-helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
 const {
   simplePublishableApiKeyFactory,
-} = require("../../factories/simple-publishable-api-key-factory")
+} = require("../../../factories/simple-publishable-api-key-factory")
 const {
   simpleSalesChannelFactory,
   simpleProductFactory,
   simpleRegionFactory,
-} = require("../../factories")
-const setupServer = require("../../../helpers/setup-server")
+} = require("../../../factories")
+const setupServer = require("../../../environment-helpers/setup-server")
 
 jest.setTimeout(50000)
 
