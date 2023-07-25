@@ -122,7 +122,7 @@ export default async ({
     )
   )
 
-  // Store bearer JWT token authentication strategy, best suitet for web SPAs or mobile apps
+  // Store bearer JWT token authentication strategy, best suited for web SPAs or mobile apps
   passport.use(
     "store-bearer",
     new JWTStrategy(
