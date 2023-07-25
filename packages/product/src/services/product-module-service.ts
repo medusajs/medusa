@@ -285,10 +285,7 @@ export default class ProductModuleService<
   async create(data: ProductTypes.CreateProductDTO[], sharedContext?: Context) {
     const products = await this.create_(data, sharedContext)
 
-    return this.baseRepository_.serialize<
-      TProduct[],
-      ProductTypes.ProductDTO[]
-    >(products, {
+    return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
       populate: true,
     })
   }
@@ -425,10 +422,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.softDelete_(productIds, sharedContext)
 
-    return this.baseRepository_.serialize<
-      TProduct[],
-      ProductTypes.ProductDTO[]
-    >(products, {
+    return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
       populate: true,
     })
   }
@@ -447,10 +441,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.restore_(productIds, sharedContext)
 
-    return this.baseRepository_.serialize<
-      TProduct[],
-      ProductTypes.ProductDTO[]
-    >(products, {
+    return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
       populate: true,
     })
   }
