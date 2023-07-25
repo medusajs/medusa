@@ -18,6 +18,8 @@
   "license": "MIT",
   "devDependencies": {
     "@medusajs/types": "^1.8.8",
+    "@mikro-orm/cli": "5.7.12",
+    "@mikro-orm/migrations": "5.7.12",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "rimraf": "^5.0.1",
@@ -37,6 +39,12 @@
     "watch": "tsc --build --watch",
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
+    "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create --initial",
+    "migration:create": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create",
+    "migration:up": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:up",
+    "orm:cache:clear": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm cache:clear"
   }
 }

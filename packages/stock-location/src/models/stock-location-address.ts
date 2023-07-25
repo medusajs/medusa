@@ -1,13 +1,10 @@
 import {
   BeforeCreate,
-  Collection,
   Entity,
   Index,
-  ManyToMany,
   OptionalProps,
   PrimaryKey,
   Property,
-  Unique,
 } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"

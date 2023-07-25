@@ -18,8 +18,6 @@
   "license": "MIT",
   "devDependencies": {
     "@medusajs/types": "^1.8.11",
-    "@mikro-orm/cli": "5.7.12",
-    "@mikro-orm/migrations": "5.7.12",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "rimraf": "^5.0.1",
@@ -29,9 +27,10 @@
   "dependencies": {
     "@medusajs/modules-sdk": "^1.8.8",
     "@medusajs/utils": "^1.9.1",
-    "@mikro-orm/core": "5.7.12",
-    "@mikro-orm/migrations": "5.7.12",
-    "@mikro-orm/postgresql": "5.7.12",
+    "@mikro-orm/cli": "^5.7.13",
+    "@mikro-orm/core": "5.7.13",
+    "@mikro-orm/migrations": "^5.7.13",
+    "@mikro-orm/postgresql": "5.7.13",
     "awilix": "^8.0.0",
     "typeorm": "^0.3.16"
   },
@@ -40,7 +39,6 @@
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "test": "jest --passWithNoTests",
-    
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "migration:generate": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:generate",
     "migration:initial": " MIKRO_ORM_CLI=./mikro-orm.config.dev.ts mikro-orm migration:create --initial",

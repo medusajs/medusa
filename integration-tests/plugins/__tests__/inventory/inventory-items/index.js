@@ -45,8 +45,6 @@ describe("Inventory Items endpoints", () => {
 
     const api = useApi()
 
-    console.log("created product")
-
     await simpleProductFactory(
       dbConnection,
       {
@@ -55,8 +53,6 @@ describe("Inventory Items endpoints", () => {
       },
       100
     )
-
-    console.log("created product")
 
     const prodVarInventoryService = appContainer.resolve(
       "productVariantInventoryService"
@@ -87,8 +83,6 @@ describe("Inventory Items endpoints", () => {
       adminHeaders
     )
 
-    console.log("created variant")
-
     const variant = response.data.product.variants[0]
 
     variantId = variant.id
@@ -96,8 +90,6 @@ describe("Inventory Items endpoints", () => {
     inventoryItems = await prodVarInventoryService.listInventoryItemsByVariant(
       variantId
     )
-
-    console.log("listed items")
 
     const stockRes = await api.post(
       `/admin/stock-locations`,
@@ -107,8 +99,6 @@ describe("Inventory Items endpoints", () => {
       adminHeaders
     )
     locationId = stockRes.data.stock_location.id
-
-    console.log("created location")
 
     const secondStockRes = await api.post(
       `/admin/stock-locations`,

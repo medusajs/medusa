@@ -1,5 +1,3 @@
-import * as StockLocationModels from "./models"
-
 import { ModuleExports } from "@medusajs/types"
 import StockLocationService from "./services/stock-location"
 import loadConnection from "./loaders/connection"
