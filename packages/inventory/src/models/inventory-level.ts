@@ -79,17 +79,17 @@ export class InventoryLevel {
     this.id = generateEntityId(this.id, "ilev")
   }
 
-  @OnLoad()
-  @AfterUpdate()
-  private loadVariables(): void {
-    this.stocked_quantity = parseInt(this.stocked_quantity as unknown as string)
-    this.reserved_quantity = parseInt(
-      this.reserved_quantity as unknown as string
-    )
-    this.incoming_quantity = parseInt(
-      this.incoming_quantity as unknown as string
-    )
-  }
+  // @OnLoad()
+  // @AfterUpdate()
+  // private loadVariables(): void {
+  //   this.stocked_quantity = parseInt(this.stocked_quantity as unknown as string)
+  //   this.reserved_quantity = parseInt(
+  //     this.reserved_quantity as unknown as string
+  //   )
+  //   this.incoming_quantity = parseInt(
+  //     this.incoming_quantity as unknown as string
+  //   )
+  // }
 }
 
 export default InventoryLevel

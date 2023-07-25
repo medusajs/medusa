@@ -1,5 +1,5 @@
 import { MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql"
-
+import { types } from "pg"
 import { ModuleServiceInitializeOptions } from "@medusajs/types"
 
 export async function createConnection(
@@ -23,6 +23,8 @@ export async function createConnection(
       path: __dirname + "/../migrations",
     },
   })
+
+  types.setTypeParser(1700, (val) => parseFloat(val))
 
   return orm
 }

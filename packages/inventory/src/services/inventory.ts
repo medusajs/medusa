@@ -29,6 +29,7 @@ import InventoryItemService from "./inventory-item"
 import InventoryLevelService from "./inventory-level"
 import ReservationItemService from "./reservation-item"
 import { shouldForceTransaction } from "../utils"
+import { InventoryItem, InventoryLevel } from "../models"
 
 type InjectedDependencies = {
   manager: any
@@ -157,7 +158,14 @@ export default class InventoryService implements IInventoryService {
       config,
       context
     )
-    return { ...inventoryItem }
+    const serialized = await this.baseRepository_.serialize<
+      InventoryItem,
+      InventoryItemDTO
+    >(inventoryItem, {
+      populate: true,
+    })
+
+    return serialized
   }
 
   /**
@@ -183,7 +191,14 @@ export default class InventoryService implements IInventoryService {
         `Inventory level for item ${inventoryItemId} and location ${locationId} not found`
       )
     }
-    return JSON.parse(JSON.stringify(inventoryLevel))
+    const serialized = await this.baseRepository_.serialize<
+      InventoryLevel,
+      InventoryLevelDTO
+    >(inventoryLevel, {
+      populate: true,
+    })
+
+    return serialized
   }
 
   /**
@@ -295,12 +310,13 @@ export default class InventoryService implements IInventoryService {
     return result
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async createInventoryLevels(
     input: CreateInventoryLevelInput[],
-    @MedusaContext() context: Context = {}
+    context: Context = {}
   ): Promise<InventoryLevelDTO[]> {
-    return await this.inventoryLevelService_.create(input, context)
+    const levels = await this.createInventoryLevels_(input, context)
+
+    return this.baseRepository_.serialize(levels, { populate: true })
   }
 
   /**
@@ -309,14 +325,21 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return The created inventory level
    */
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async createInventoryLevel(
     input: CreateInventoryLevelInput,
-    @MedusaContext() context: Context = {}
+    context: Context = {}
   ): Promise<InventoryLevelDTO> {
-    const [result] = await this.createInventoryLevels([input], context)
+    const [result] = await this.createInventoryLevels_([input], context)
 
-    return result
+    return this.baseRepository_.serialize(result, { populate: true })
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  protected async createInventoryLevels_(
+    input: CreateInventoryLevelInput[],
+    @MedusaContext() context: Context = {}
+  ): Promise<InventoryLevelDTO[]> {
+    return await this.inventoryLevelService_.create(input, context)
   }
 
   /**

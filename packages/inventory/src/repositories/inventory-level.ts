@@ -98,6 +98,8 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
       return manager.assign(item, update)
     })
 
+    await manager.persistAndFlush(items)
+
     return items
   }
 

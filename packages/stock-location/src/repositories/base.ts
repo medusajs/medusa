@@ -69,7 +69,7 @@ const updateDeletedAtRecursively = async <T extends object = any>(
     if (!("deleted_at" in entity)) {
       continue
     }
-    (entity as any).deleted_at = value
+    ;(entity as any).deleted_at = value
 
     const relations = manager
       .getDriver()
@@ -92,20 +92,21 @@ const updateDeletedAtRecursively = async <T extends object = any>(
       await updateDeletedAtRecursively(manager, relationEntities, value)
     }
 
-    await manager.persist(entities)
+    manager.persist(entities)
   }
 }
 
 const serializer = async <
   T extends object | object[],
-  TResult extends object | object[]
+  TResult extends object | object[],
+  TOutput = T extends object[] ? TResult[] : TResult
 >(
   data: T,
   options?: any
-): Promise<TResult> => {
+): Promise<TOutput> => {
   options ??= {}
   const result = serialize(data, options)
-  return Array.isArray(data) ? result : result[0]
+  return result as unknown as Promise<TOutput>
 }
 
 export abstract class AbstractBaseRepository<T = any>
@@ -134,10 +135,11 @@ export abstract class AbstractBaseRepository<T = any>
   }
 
   async serialize<
-    TData extends object | object[] = object[],
-    TResult extends object | object[] = object[]
-  >(data: TData, options?: any): Promise<TResult> {
-    return serializer<TData, TResult>(data, options)
+    T extends object | object[],
+    TResult extends object,
+    TOutput = T extends object[] ? TResult[] : TResult
+  >(data: T, options?: any): Promise<TOutput> {
+    return (await serializer<T, TResult>(data, options)) as TOutput
   }
 
   abstract find(options?: DAL.FindOptions<T>, context?: Context)
@@ -226,13 +228,6 @@ export class BaseRepository extends AbstractBaseRepository {
     // @ts-ignore
     // eslint-disable-next-line prefer-rest-params
     super(...arguments)
-  }
-
-  async serialize<
-    TData extends object | object[] = object[],
-    TResult extends object | object[] = object[]
-  >(data: TData, options?: any): Promise<TResult> {
-    return serializer<TData, TResult>(data, options)
   }
 
   async create(data: unknown[], context?: Context): Promise<any[]> {

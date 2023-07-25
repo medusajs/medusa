@@ -132,7 +132,7 @@ describe("Inventory Items endpoints", () => {
   })
 
   describe("Inventory Items", () => {
-    it.only("should create, update and delete the inventory location levels", async () => {
+    it("should create, update and delete the inventory location levels", async () => {
       const api = useApi()
       const inventoryItemId = inventoryItems[0].id
 
@@ -186,7 +186,7 @@ describe("Inventory Items endpoints", () => {
       )
     })
 
-    it("should update the inventory item", async () => {
+    it.only("should update the inventory item", async () => {
       const api = useApi()
       const inventoryItemId = inventoryItems[0].id
 

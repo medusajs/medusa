@@ -11,6 +11,7 @@ import {
 } from "@mikro-orm/core"
 
 import { generateEntityId } from "@medusajs/utils"
+import { BeforeUpdate } from "typeorm"
 
 type OptionalFields = "requires_shipping" | "created_at" | "updated_at"
 @Entity({ tableName: "inventory_item" })
