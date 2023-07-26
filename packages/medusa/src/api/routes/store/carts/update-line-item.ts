@@ -123,7 +123,7 @@ export default async (req, res) => {
  * properties:
  *   quantity:
  *     type: number
- *     description: The quantity to set the Line Item to.
+ *     description: The quantity of the line item in the cart.
  *   metadata:
  *     type: object
  *     description: An optional key-value map with additional details about the Line Item. If omitted, the metadata will remain unchanged."
