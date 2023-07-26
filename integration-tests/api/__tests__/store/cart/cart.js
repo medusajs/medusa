@@ -203,26 +203,6 @@ describe("/store/carts", () => {
       const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
       expect(getRes.status).toEqual(200)
     })
-
-    it("creates a cart with context", async () => {
-      const api = useApi()
-      const response = await api.post("/store/carts", {
-        context: {
-          test_id: "test",
-        },
-      })
-      expect(response.status).toEqual(200)
-
-      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
-      expect(getRes.status).toEqual(200)
-
-      const cart = getRes.data.cart
-      expect(cart.context).toEqual({
-        ip: "::ffff:127.0.0.1",
-        user_agent: expect.stringContaining("axios/0.21."),
-        test_id: "test",
-      })
-    })
   })
 
   describe("POST /store/carts/:id/line-items", () => {

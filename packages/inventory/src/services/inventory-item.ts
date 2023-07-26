@@ -17,6 +17,8 @@ import {
 import { InventoryItem } from "../models"
 import { InventoryItemRepository } from "../repositories"
 import { doNotForceTransaction } from "../utils"
+import { query } from "express"
+import { buildWhere } from "../utils/build-query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -56,6 +58,8 @@ export default class InventoryItemService {
       selector,
       config
     )
+
+    queryOptions.where = buildWhere(selector)
 
     // const queryBuilder = getListQuery(
     //   context.transactionManager ?? this.manager_,
@@ -122,6 +126,7 @@ export default class InventoryItemService {
       selector,
       config
     )
+    queryOptions.where = buildWhere(selector)
 
     return await this.inventoryItemRepository_.findAndCount(
       queryOptions,

@@ -17,9 +17,9 @@ import {
 } from "@medusajs/utils"
 import { InventoryLevelService } from "."
 import { ReservationItem } from "../models"
-import { buildQuery } from "../utils/build-query"
 import { ReservationItemRepository } from "../repositories"
 import { doNotForceTransaction } from "../utils"
+import { buildWhere } from "../utils/build-query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -65,6 +65,8 @@ export default class ReservationItemService {
       config
     )
 
+    queryOptions.where = buildWhere(selector)
+
     return await this.reservationItemRepository_.find(queryOptions, context)
   }
 
@@ -84,6 +86,8 @@ export default class ReservationItemService {
       selector,
       config
     )
+
+    queryOptions.where = buildWhere(selector)
 
     return await this.reservationItemRepository_.findAndCount(
       queryOptions,

@@ -14,16 +14,14 @@ import {
   MedusaError,
   ModulesSdkUtils,
 } from "@medusajs/utils"
-import { DeepPartial, EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryLevel } from "../models"
-import { buildQuery } from "../utils/build-query"
 import { InventoryLevelRepository } from "../repositories"
 import { doNotForceTransaction } from "../utils"
+import { buildWhere } from "../utils/build-query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
   inventoryLevelRepository: InventoryLevelRepository
-  manager: EntityManager
 }
 
 export default class InventoryLevelService {
@@ -33,16 +31,13 @@ export default class InventoryLevelService {
     DELETED: "inventory-level.deleted",
   }
 
-  protected readonly manager_: EntityManager
   protected readonly eventBusService_: IEventBusService | undefined
   protected readonly inventoryLevelRepository_: InventoryLevelRepository
 
   constructor({
     eventBusService,
     inventoryLevelRepository,
-    manager,
   }: InjectedDependencies) {
-    this.manager_ = manager
     this.eventBusService_ = eventBusService
     this.inventoryLevelRepository_ = inventoryLevelRepository
   }
@@ -63,6 +58,8 @@ export default class InventoryLevelService {
       selector,
       config
     )
+
+    queryOptions.where = buildWhere(selector)
 
     return await this.inventoryLevelRepository_.find(queryOptions, context)
   }
@@ -88,6 +85,8 @@ export default class InventoryLevelService {
       selector,
       config
     )
+
+    queryOptions.where = buildWhere(selector)
 
     return await this.inventoryLevelRepository_.findAndCount(
       queryOptions,

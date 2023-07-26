@@ -1,30 +1,33 @@
-import { ExtendedFindConfig, FindConfig } from "@medusajs/types"
+import { ExtendedFindConfig, FilterQuery, FindConfig } from "@medusajs/types"
 import {
-  And,
   FindManyOptions,
   FindOperator,
   FindOptionsOrder,
   FindOptionsRelations,
   FindOptionsSelect,
   FindOptionsWhere,
-  ILike,
-  In,
-  IsNull,
-  LessThan,
-  LessThanOrEqual,
-  MoreThan,
-  MoreThanOrEqual,
 } from "typeorm"
 import { buildOrder, buildRelations, buildSelects } from "@medusajs/utils"
 
-const operatorsMap = {
-  lt: (value) => LessThan(value),
-  gt: (value) => MoreThan(value),
-  lte: (value) => LessThanOrEqual(value),
-  gte: (value) => MoreThanOrEqual(value),
-  contains: (value) => ILike(`%${value}%`),
-  starts_with: (value) => ILike(`${value}%`),
-  ends_with: (value) => ILike(`%${value}`),
+const getOperator = (key, value) => {
+  switch (key) {
+    case "lt":
+      return { $lt: value }
+    case "gt":
+      return { $gt: value }
+    case "lte":
+      return { $lte: value }
+    case "gte":
+      return { $gte: value }
+    case "contains":
+      return { $ilike: `%${value}%` }
+    case "starts_with":
+      return { $ilike: `${value}%` }
+    case "ends_with":
+      return { $ilike: `%${value}` }
+    default:
+      return undefined
+  }
 }
 
 /**
@@ -33,44 +36,44 @@ const operatorsMap = {
  * @param config The config
  * @return The QueryBuilderConfig
  */
-export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
-  selector: TWhereKeys,
-  config: FindConfig<TEntity> = {}
-) {
-  const query: ExtendedFindConfig<TEntity> = {
-    where: buildWhere<TWhereKeys, TEntity>(selector),
-  }
+// export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
+//   selector: TWhereKeys,
+//   config: FindConfig<TEntity> = {}
+// ) {
+//   const query: ExtendedFindConfig<TEntity> = {
+//     where: buildWhere<TWhereKeys, TEntity>(selector),
+//   }
 
-  if ("deleted_at" in selector) {
-    query.withDeleted = true
-  }
+//   if ("deleted_at" in selector) {
+//     query.withDeleted = true
+//   }
 
-  if ("skip" in config) {
-    ;(query as FindManyOptions<TEntity>).skip = config.skip
-  }
+//   if ("skip" in config) {
+//     (query as FindManyOptions<TEntity>).skip = config.skip
+//   }
 
-  if ("take" in config) {
-    ;(query as FindManyOptions<TEntity>).take = config.take
-  }
+//   if ("take" in config) {
+//     (query as FindManyOptions<TEntity>).take = config.take
+//   }
 
-  if (config.relations) {
-    query.relations = buildRelations(
-      config.relations
-    ) as FindOptionsRelations<TEntity>
-  }
+//   if (config.relations) {
+//     query.relations = buildRelations(
+//       config.relations
+//     ) as FindOptionsRelations<TEntity>
+//   }
 
-  if (config.select) {
-    query.select = buildSelects(
-      config.select as string[]
-    ) as FindOptionsSelect<TEntity>
-  }
+//   if (config.select) {
+//     query.select = buildSelects(
+//       config.select as string[]
+//     ) as FindOptionsSelect<TEntity>
+//   }
 
-  if (config.order) {
-    query.order = buildOrder(config.order) as FindOptionsOrder<TEntity>
-  }
+//   if (config.order) {
+//     query.order = buildOrder(config.order) as FindOptionsOrder<TEntity>
+//   }
 
-  return query
-}
+//   return query
+// }
 
 /**
  * @param constraints
@@ -95,17 +98,17 @@ export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
  *    amount: MoreThan(10)
  * }
  */
-function buildWhere<TWhereKeys extends object, TEntity>(
+export function buildWhere<TWhereKeys extends object, TEntity>(
   constraints: TWhereKeys
-): FindOptionsWhere<TEntity> {
-  const where: FindOptionsWhere<TEntity> = {}
+): FilterQuery<TEntity> {
+  const where: FilterQuery<TEntity> = {}
   for (const [key, value] of Object.entries(constraints)) {
     if (value === undefined) {
       continue
     }
 
     if (value === null) {
-      where[key] = IsNull()
+      where[key] = { $eq: null }
       continue
     }
 
@@ -115,15 +118,16 @@ function buildWhere<TWhereKeys extends object, TEntity>(
     }
 
     if (Array.isArray(value)) {
-      where[key] = In(value)
+      where[key] = { $in: value }
       continue
     }
 
     if (typeof value === "object") {
       Object.entries(value).forEach(([objectKey, objectValue]) => {
         where[key] = where[key] || []
-        if (operatorsMap[objectKey]) {
-          where[key].push(operatorsMap[objectKey](objectValue))
+        const operator = getOperator(objectKey, objectValue)
+        if (operator) {
+          where[key].push(operator)
         } else {
           if (objectValue != undefined && typeof objectValue === "object") {
             where[key] = buildWhere<any, TEntity>(objectValue)
@@ -141,7 +145,7 @@ function buildWhere<TWhereKeys extends object, TEntity>(
       if (where[key].length === 1) {
         where[key] = where[key][0]
       } else {
-        where[key] = And(...where[key])
+        where[key] = { $and: where[key] }
       }
 
       continue
