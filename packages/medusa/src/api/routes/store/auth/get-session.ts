@@ -5,7 +5,7 @@ import { defaultRelations } from "."
  * @oas [get] /store/auth
  * operationId: "GetAuth"
  * summary: "Get Current Customer"
- * description: "Gets the currently logged in Customer."
+ * description: "Retrieve the currently logged in Customer's details."
  * x-authenticated: true
  * x-codegen:
  *   method: getSession

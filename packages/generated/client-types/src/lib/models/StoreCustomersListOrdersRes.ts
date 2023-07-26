@@ -15,6 +15,9 @@ import type { ShippingMethod } from "./ShippingMethod"
 import type { Swap } from "./Swap"
 
 export interface StoreCustomersListOrdersRes {
+  /**
+   * An array of orders details.
+   */
   orders: Array<
     Merge<
       SetRelation<
@@ -129,7 +132,7 @@ export interface StoreCustomersListOrdersRes {
    */
   count: number
   /**
-   * The number of items skipped before the returned results
+   * The number of orders skipped when retrieving the orders.
    */
   offset: number
   /**

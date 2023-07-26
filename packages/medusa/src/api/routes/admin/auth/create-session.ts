@@ -12,7 +12,7 @@ import { validator } from "../../../../utils/validator"
  * operationId: "PostAuth"
  * summary: "User Login"
  * x-authenticated: false
- * description: "Logs a User in and includes the Cookie session in the response header. The cookie session can be used in subsequent requests to authorize the user to perform admin functionalities.
+ * description: "Log a User in and includes the Cookie session in the response header. The cookie session can be used in subsequent requests to authorize the user to perform admin functionalities.
  * When using Medusa's JS or Medusa React clients, the cookie is automatically attached to subsequent requests."
  * requestBody:
  *   content:

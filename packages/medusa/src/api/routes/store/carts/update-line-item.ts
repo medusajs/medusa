@@ -9,10 +9,10 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /store/carts/{id}/line-items/{line_id}
  * operationId: PostCartsCartLineItemsItem
  * summary: Update a Line Item
- * description: "Updates a Line Item if the desired quantity can be fulfilled."
+ * description: "Update a line item's quantity."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
- *   - (path) line_id=* {string} The id of the Line Item.
+ *   - (path) id=* {string} The ID of the Cart.
+ *   - (path) line_id=* {string} The ID of the Line Item.
  * requestBody:
  *   content:
  *     application/json:
@@ -26,7 +26,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.lineItems.update(cart_id, line_id, {
+ *       medusa.carts.lineItems.update(cartId, lineId, {
  *         quantity: 1
  *       })
  *       .then(({ cart }) => {
@@ -123,7 +123,7 @@ export default async (req, res) => {
  * properties:
  *   quantity:
  *     type: number
- *     description: The quantity to set the Line Item to.
+ *     description: The quantity of the line item in the cart.
  */
 export class StorePostCartsCartLineItemsItemReq {
   @IsInt()

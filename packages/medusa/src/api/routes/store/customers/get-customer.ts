@@ -5,7 +5,7 @@ import CustomerService from "../../../../services/customer"
  * @oas [get] /store/customers/me
  * operationId: GetCustomersCustomer
  * summary: Get a Customer
- * description: "Retrieves a Customer - the Customer must be logged in to retrieve their details."
+ * description: "Retrieve the logged-in Customer's details."
  * x-authenticated: true
  * x-codegen:
  *   method: retrieve

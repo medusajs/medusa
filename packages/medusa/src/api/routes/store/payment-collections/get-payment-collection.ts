@@ -5,12 +5,12 @@ import { FindParams } from "../../../../types/common"
  * @oas [get] /store/payment-collections/{id}
  * operationId: "GetPaymentCollectionsPaymentCollection"
  * summary: "Get a PaymentCollection"
- * description: "Get a Payment Collection"
+ * description: "Retrieve a Payment Collection's details."
  * x-authenticated: false
  * parameters:
  *   - (path) id=* {string} The ID of the PaymentCollection.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) fields {string} Comma-separated fields that should be expanded in the returned payment collection.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned payment collection.
  * x-codegen:
  *   method: retrieve
  *   queryParams: StoreGetPaymentCollectionsParams

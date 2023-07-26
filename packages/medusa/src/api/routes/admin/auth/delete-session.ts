@@ -3,7 +3,7 @@
  * operationId: "DeleteAuth"
  * summary: "User Logout"
  * x-authenticated: true
- * description: "Deletes the current session for the logged in user. This will only work if you're using Cookie session for authentication. If the API token is still passed in the header,
+ * description: "Delete the current session for the logged in user. This will only work if you're using Cookie session for authentication. If the API token is still passed in the header,
  * the user is still authorized to perform admin functionalities in other endpoints."
  * x-codegen:
  *   method: deleteSession

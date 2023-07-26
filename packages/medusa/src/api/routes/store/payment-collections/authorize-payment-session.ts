@@ -6,7 +6,7 @@ import { PaymentCollectionService } from "../../../../services"
  * @oas [post] /store/payment-collections/{id}/sessions/{session_id}/authorize
  * operationId: "PostPaymentCollectionsSessionsSessionAuthorize"
  * summary: "Authorize Payment Session"
- * description: "Authorizes a Payment Session of a Payment Collection."
+ * description: "Authorize a Payment Session of a Payment Collection."
  * x-authenticated: false
  * parameters:
  *   - (path) id=* {string} The ID of the Payment Collections.
@@ -20,7 +20,7 @@ import { PaymentCollectionService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.paymentCollections.authorize(payment_id, session_id)
+ *       medusa.paymentCollections.authorize(paymentId, sessionId)
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
  *       });

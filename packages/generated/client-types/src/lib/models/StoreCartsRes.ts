@@ -11,6 +11,9 @@ import type { Region } from "./Region"
 import type { ShippingMethod } from "./ShippingMethod"
 
 export interface StoreCartsRes {
+  /**
+   * Cart details.
+   */
   cart: Merge<
     SetRelation<
       Cart,

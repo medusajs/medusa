@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/batch-jobs/{id}/cancel
  * operationId: "PostBatchJobsBatchJobCancel"
  * summary: "Cancel a Batch Job"
- * description: "Marks a batch job as canceled. When a batch job is canceled, the processing of the batch job doesn’t automatically stop."
+ * description: "Mark a batch job as canceled. When a batch job is canceled, the processing of the batch job doesn’t automatically stop."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the batch job.

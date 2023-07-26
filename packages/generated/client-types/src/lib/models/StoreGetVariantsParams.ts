@@ -5,39 +5,47 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StoreGetVariantsParams {
   /**
-   * A comma separated list of Product Variant ids to filter by.
+   * Filter by a comma-separated list of IDs. If supplied, it overrides the `id` parameter.
    */
   ids?: string
   /**
-   * A sales channel id for result configuration.
+   * Filter by one or more IDs. If `ids` is supplied, it's overrides the value of this parameter.
+   */
+  id?: string | Array<string>
+  /**
+   * "Filter by sales channel IDs. When provided, only products available in the selected sales channels are retrieved. Alternatively, you can pass a publishable API key in the request header and this will have the same effect."
    */
   sales_channel_id?: string
   /**
-   * A comma separated list of Product Variant relations to load.
+   * Comma-separated relations that should be expanded in the returned product variants.
    */
   expand?: string
   /**
-   * How many product variants to skip in the result.
+   * Comma-separated fields that should be included in the returned product variants.
+   */
+  fields?: string
+  /**
+   * The number of products to skip when retrieving the product variants.
    */
   offset?: number
   /**
-   * Maximum number of Product Variants to return.
+   * Limit the number of product variants returned.
    */
   limit?: number
   /**
-   * The id of the Cart to set prices based on.
+   * The ID of the cart. This is useful for accurate pricing based on the cart's context.
    */
   cart_id?: string
   /**
-   * The id of the Region to set prices based on.
+   * The ID of the region. This is useful for accurate pricing based on the selected region.
    */
   region_id?: string
   /**
-   * The currency code to use for price selection.
+   * A 3 character ISO currency code. This is useful for accurate pricing based on the selected currency.
    */
   currency_code?: string
   /**
-   * product variant title to search for.
+   * Filter by title
    */
   title?: string | Array<string>
   /**
@@ -47,19 +55,19 @@ export interface StoreGetVariantsParams {
     | number
     | {
         /**
-         * filter by inventory quantity less than this number
+         * Filter by inventory quantity less than this number
          */
         lt?: number
         /**
-         * filter by inventory quantity greater than this number
+         * Filter by inventory quantity greater than this number
          */
         gt?: number
         /**
-         * filter by inventory quantity less than or equal to this number
+         * Filter by inventory quantity less than or equal to this number
          */
         lte?: number
         /**
-         * filter by inventory quantity greater than or equal to this number
+         * Filter by inventory quantity greater than or equal to this number
          */
         gte?: number
       }

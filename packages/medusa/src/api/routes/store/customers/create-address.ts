@@ -10,7 +10,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /store/customers/me/addresses
  * operationId: PostCustomersCustomerAddresses
  * summary: "Add a Shipping Address"
- * description: "Adds a Shipping Address to a Customer's saved addresses."
+ * description: "Add a Shipping Address to a Customer's saved addresses."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -28,17 +28,15 @@ import { validator } from "../../../../utils/validator"
  *       // must be previously logged
  *       medusa.customers.addresses.addAddress({
  *         address: {
- *           first_name: 'Celia',
- *           last_name: 'Schumm',
- *           address_1: '225 Bednar Curve',
- *           city: 'Danielville',
- *           country_code: 'US',
- *           postal_code: '85137',
- *           phone: '981-596-6748 x90188',
- *           company: 'Wyman LLC',
- *           address_2: '',
- *           province: 'Georgia',
- *           metadata: {}
+ *           first_name: "Celia",
+ *           last_name: "Schumm",
+ *           address_1: "225 Bednar Curve",
+ *           city: "Danielville",
+ *           country_code: "US",
+ *           postal_code: "85137",
+ *           phone: "981-596-6748 x90188",
+ *           company: "Wyman LLC",
+ *           province: "Georgia",
  *         }
  *       })
  *       .then(({ customer }) => {
@@ -116,7 +114,7 @@ export default async (req, res) => {
  *   - address
  * properties:
  *   address:
- *     description: "The Address to add to the Customer."
+ *     description: "The Address to add to the Customer's saved addresses."
  *     $ref: "#/components/schemas/AddressCreatePayload"
  */
 export class StorePostCustomersCustomerAddressesReq {

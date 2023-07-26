@@ -8,7 +8,7 @@ import ReturnReasonService from "../../../../services/return-reason"
  * @oas [get] /store/return-reasons
  * operationId: "GetReturnReasons"
  * summary: "List Return Reasons"
- * description: "Retrieves a list of Return Reasons."
+ * description: "Retrieve a list of Return Reasons. This is useful when implementing a Create Return flow in the storefront."
  * x-codegen:
  *   method: list
  * x-codeSamples:

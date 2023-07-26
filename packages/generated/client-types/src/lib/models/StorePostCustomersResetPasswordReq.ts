@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StorePostCustomersResetPasswordReq {
   /**
-   * The email of the customer.
+   * The customer's email.
    */
   email: string
   /**
-   * The Customer's password.
+   * The customer's password.
    */
   password: string
   /**
