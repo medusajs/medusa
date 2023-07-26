@@ -268,14 +268,16 @@ export default class StockLocationService {
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  async update_(
+  protected async update_(
     stockLocationId: string,
     updateData: UpdateStockLocationInput,
     @MedusaContext() context: Context = {}
   ): Promise<StockLocation> {
-    const item = await this.retrieve(stockLocationId, undefined, context)
-
-    item.address = null
+    const item = await this.retrieve_(
+      stockLocationId,
+      { relations: [] },
+      context
+    )
 
     const { address, ...data } = updateData
 
@@ -289,7 +291,7 @@ export default class StockLocationService {
       }
     }
 
-    const { metadata, ...fields } = data
+    const { metadata } = data
 
     if (metadata) {
       data.metadata = setMetadata(item, metadata)
@@ -304,12 +306,7 @@ export default class StockLocationService {
       id: stockLocationId,
     })
 
-    const serialized = await this.baseRepository_.serialize<StockLocation>(
-      updatedLocation,
-      { populate: true }
-    )
-
-    return serialized
+    return updatedLocation
   }
 
   /**

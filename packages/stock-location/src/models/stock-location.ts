@@ -47,7 +47,7 @@ export class StockLocation {
     nullable: true,
     fieldName: "address_id",
   })
-  address: StockLocationAddress | null
+  address?: StockLocationAddress | null
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null

@@ -1,5 +1,5 @@
 import { Context, CreateStockLocationInput, FindOptions } from "@medusajs/types"
-import { StockLocation } from "../models"
+import { StockLocation, StockLocationAddress } from "../models"
 
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
@@ -8,6 +8,7 @@ import {
   FilterQuery as MikroQuery,
   LoadStrategy,
   FindOptions as MikroOptions,
+  wrap,
 } from "@mikro-orm/core"
 
 type InjectedDependencies = { manager: SqlEntityManager }
@@ -73,14 +74,20 @@ export class StockLocationRepostiory extends AbstractBaseRepository<StockLocatio
       item: StockLocation
       update: Omit<
         Partial<StockLocation>,
-        "id" | "created_at" | "metadata" | "deleted_at" | "updated_at"
+        "id" | "created_at" | "deleted_at" | "updated_at"
       >
     }[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    { transactionManager }: Context = {}
   ): Promise<StockLocation[]> {
+    const manager = (transactionManager ?? this.manager_) as SqlEntityManager
+
     const items = data.map(({ item, update }) => {
-      return (manager as SqlEntityManager).assign<StockLocation>(item, update)
+      return manager.assign<StockLocation>(item, update, {
+        onlyProperties: true,
+        mergeObjects: true,
+        updateNestedEntities: false,
+      })
     })
 
     await (manager as SqlEntityManager).persistAndFlush(items)
