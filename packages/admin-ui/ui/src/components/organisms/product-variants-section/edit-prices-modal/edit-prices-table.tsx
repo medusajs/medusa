@@ -513,12 +513,26 @@ function EditPricesTable(props: EditPricesTableProps) {
 
       if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
         let ret = ""
-        Object.keys(selectedCells).forEach((k) => {
-          const variant = props.product.variants!.find(
-            (v) => v.id === k.split("-")[0]
-          )
+        const variants = {}
+        const columns = {}
 
-          ret += `${variant.title}\t${editedPrices[k] ?? ""}\n`
+        Object.keys(selectedCells).forEach((k) => {
+          const [r, c] = k.split("-")
+          variants[r] = true
+          columns[c] = true
+        })
+
+        ret = "\t" + Object.keys(columns).join("\t")
+
+        Object.keys(variants).forEach((k) => {
+          const variant = props.product.variants!.find((v) => v.id === k)
+
+          ret += `\n${variant.title}\t`
+          Object.keys(columns).forEach((c) => {
+            const price = editedPrices[getKey(k, c)]
+
+            ret += (!isNaN(price) ? price : "") + "\t"
+          })
         })
 
         navigator.clipboard.writeText(ret)
