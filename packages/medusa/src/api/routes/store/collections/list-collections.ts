@@ -1,10 +1,4 @@
-import {
-  IsArray,
-  IsInt,
-  IsOptional,
-  ValidateNested,
-  IsString,
-} from "class-validator"
+import { IsArray, IsInt, IsOptional, ValidateNested } from "class-validator"
 
 import { DateComparisonOperator, FindParams } from "../../../../types/common"
 import ProductCollectionService from "../../../../services/product-collection"
