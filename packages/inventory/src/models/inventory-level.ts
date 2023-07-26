@@ -5,6 +5,7 @@ import {
   Entity,
   Index,
   ManyToMany,
+  ManyToOne,
   OnLoad,
   OptionalProps,
   PrimaryKey,
@@ -12,6 +13,7 @@ import {
   Unique,
 } from "@mikro-orm/core"
 
+import InventoryItem from "./inventory-item"
 import { generateEntityId } from "@medusajs/utils"
 
 type OptionalProperties =
@@ -77,6 +79,12 @@ export class InventoryLevel {
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
+
+  @ManyToOne(() => InventoryItem, {
+    nullable: true,
+    fieldName: "inventory_item_id",
+  })
+  inventory_item: InventoryItem | null
 
   @BeforeCreate()
   private beforeInsert(): void {

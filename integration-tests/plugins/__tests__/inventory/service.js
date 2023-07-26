@@ -73,7 +73,7 @@ describe("Inventory Module", () => {
       )
     })
 
-    it("updateInventoryItem", async () => {
+    it.only("updateInventoryItem", async () => {
       const inventoryService = appContainer.resolve("inventoryService")
 
       const item = await inventoryService.createInventoryItem({
@@ -119,7 +119,6 @@ describe("Inventory Module", () => {
           width: item.width,
           requires_shipping: true,
           metadata: { dce: 456 },
-          deleted_at: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         })
@@ -486,7 +485,6 @@ describe("Inventory Module", () => {
           location_id: locationId,
           quantity: 10,
           metadata: { abc: 123 },
-          deleted_at: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         })

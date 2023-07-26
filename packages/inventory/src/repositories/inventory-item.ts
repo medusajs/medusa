@@ -7,7 +7,11 @@ import {
 import { InventoryItem, ReservationItem } from "../models"
 
 import { AbstractBaseRepository } from "./base"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+import {
+  QueryBuilder,
+  SelectQueryBuilder,
+  SqlEntityManager,
+} from "@mikro-orm/postgresql"
 import {
   InjectTransactionManager,
   MedusaContext,
@@ -20,6 +24,7 @@ import {
   DeepPartial,
   EntityData,
 } from "@mikro-orm/core"
+import { buildWhere } from "../utils/build-query"
 
 type InjectedDependencies = { manager: SqlEntityManager }
 
@@ -50,6 +55,7 @@ export class InventoryItemRepository extends AbstractBaseRepository<InventoryIte
       this.manager_) as SqlEntityManager
 
     const where = { deleted_at: null, ...options?.where }
+
     const findOptions_ = { ...options, where }
     findOptions_.options ??= {}
 
@@ -57,11 +63,20 @@ export class InventoryItemRepository extends AbstractBaseRepository<InventoryIte
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return await manager.findAndCount(
-      InventoryItem,
-      findOptions_.where as MikroQuery<InventoryItem>,
-      findOptions_.options as MikroOptions<InventoryItem>
+    return await this.getListQuery(
+      { ...options, where } as unknown as FindOptions<
+        InventoryItem & { q: string; location_id?: string | string[] }
+      >,
+      findOptions_.options as MikroOptions<InventoryItem>,
+      manager
     )
+
+    // return await queryBuilder.getResultAndCount()
+    // return await manager.findAndCount(
+    //   InventoryItem,
+    //   findOptions_.where as MikroQuery<InventoryItem>,
+    //   findOptions_.options as MikroOptions<InventoryItem>
+    // )
   }
 
   @InjectTransactionManager()
@@ -70,10 +85,6 @@ export class InventoryItemRepository extends AbstractBaseRepository<InventoryIte
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<InventoryItem[]> {
-    const [item] = data
-
-    ;(manager as SqlEntityManager).create(InventoryItem, item)
-
     const items = data.map((item) => {
       return (manager as SqlEntityManager).create(InventoryItem, item)
     })
@@ -142,5 +153,58 @@ export class InventoryItemRepository extends AbstractBaseRepository<InventoryIte
       { id: { $in: ids } },
       {}
     )
+  }
+
+  async getListQuery(
+    query:
+      | FindOptions<
+          InventoryItem & { q: string; location_id?: string | string[] }
+        >
+      | undefined,
+    options: MikroOptions<InventoryItem>,
+    manager: SqlEntityManager
+  ): Promise<[InventoryItem[], number]> {
+    query ??= { where: {} }
+
+    const { q, location_id, ...selector } = query.where
+
+    const whereStatements: any[] = []
+
+    if (location_id) {
+      const locationIds: string[] = Array.isArray(location_id)
+        ? location_id
+        : [location_id]
+
+      whereStatements.push({
+        inventory_levels: { location_id: { $in: locationIds } },
+      })
+    }
+
+    if (q) {
+      whereStatements.push({
+        $or: [
+          { sku: { $ilike: `%${q}%` } },
+          { description: { $ilike: `%${q}%` } },
+          { title: { $ilike: `%${q}%` } },
+        ],
+      })
+    } else {
+      Object.entries(selector).forEach(([k, v]) => {
+        whereStatements.push({ [k]: v })
+      })
+    }
+
+    if (!whereStatements.length) {
+      whereStatements.push({})
+    }
+
+    let where
+    if (whereStatements.length > 1) {
+      where = { $and: whereStatements }
+    } else {
+      where = whereStatements[0]
+    }
+
+    return await manager.findAndCount(InventoryItem, where, options)
   }
 }

@@ -26,6 +26,10 @@ export class Migration20230719071200 extends Migration {
     )
 
     this.addSql(
+      `alter table "inventory_item" add constraint "IDX_inventory_item_sku" unique ("sku");`
+    )
+
+    this.addSql(
       `create table "inventory_level" (
         "id" text not null, 
         "created_at" timestamptz not null, 
@@ -49,6 +53,11 @@ export class Migration20230719071200 extends Migration {
       `alter table "inventory_level" add constraint "IDX_inventory_level_item_id_location_id" unique ("inventory_item_id", "location_id");`
     )
 
+    this.addSql(
+      `alter table "inventory_level" add constraint "inventory_level_inventory_item_id_foreign" foreign key ("inventory_item_id") references "inventory_item" ("id");`
+      
+    )
+    
     this.addSql(
       `create table "reservation_item" (
         "id" text not null, 

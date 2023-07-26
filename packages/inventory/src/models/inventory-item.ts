@@ -4,14 +4,17 @@ import {
   Entity,
   Index,
   ManyToMany,
+  ManyToOne,
+  OneToMany,
   OptionalProps,
   PrimaryKey,
   Property,
   Unique,
 } from "@mikro-orm/core"
 
-import { generateEntityId } from "@medusajs/utils"
 import { BeforeUpdate } from "typeorm"
+import InventoryLevel from "./inventory-level"
+import { generateEntityId } from "@medusajs/utils"
 
 type OptionalFields = "requires_shipping" | "created_at" | "updated_at"
 @Entity({ tableName: "inventory_item" })
@@ -78,6 +81,11 @@ export class InventoryItem {
 
   @Property({ columnType: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
+
+  @OneToMany(() => InventoryLevel, (level) => level.inventory_item)
+  inventory_levels: Collection<InventoryLevel> = new Collection<InventoryLevel>(
+    this
+  )
 
   @BeforeCreate()
   private beforeInsert(): void {

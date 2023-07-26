@@ -40,7 +40,6 @@ describe("Inventory Items endpoints", () => {
   })
 
   beforeEach(async () => {
-    // create inventory item
     await adminSeeder(dbConnection)
 
     const api = useApi()

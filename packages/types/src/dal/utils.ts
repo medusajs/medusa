@@ -84,7 +84,7 @@ type FilterValue<T> =
 
 type PrevLimit = [never, 1, 2, 3]
 
-export type FilterQuery<T = any, Prev extends number = 3> = Prev extends never
+export type FilterQuery<T = any, Prev extends number = 4> = Prev extends never
   ? never
   : {
       [Key in keyof T]?: T[Key] extends
