@@ -179,10 +179,15 @@ function EditPricesTable(props: EditPricesTableProps) {
           [getKey(nextVariant, anchorCurrencyOrRegion)]: true,
         })
       } else {
-        if (anchorIndex === startIndex) {
-          endIndex = Math.min(endIndex + 1, variantIds.length - 1)
+        if (isCmd) {
+          startIndex = anchorIndex
+          endIndex = variantIds.length - 1
         } else {
-          startIndex = Math.min(startIndex + 1, variantIds.length - 1)
+          if (anchorIndex === startIndex) {
+            endIndex = Math.min(endIndex + 1, variantIds.length - 1)
+          } else {
+            startIndex = Math.min(startIndex + 1, variantIds.length - 1)
+          }
         }
 
         onSelectionRangeChange()
@@ -207,14 +212,19 @@ function EditPricesTable(props: EditPricesTableProps) {
           [getKey(nextVariant, anchorCurrencyOrRegion)]: true,
         })
       } else {
-        if (anchorIndex === startIndex) {
-          if (startIndex === endIndex) {
-            startIndex = Math.max(startIndex - 1, 0)
-          } else {
-            endIndex = Math.max(endIndex - 1, 0)
-          }
+        if (isCmd) {
+          endIndex = anchorIndex
+          startIndex = 0
         } else {
-          startIndex = Math.max(startIndex - 1, 0)
+          if (anchorIndex === startIndex) {
+            if (startIndex === endIndex) {
+              startIndex = Math.max(startIndex - 1, 0)
+            } else {
+              endIndex = Math.max(endIndex - 1, 0)
+            }
+          } else {
+            startIndex = Math.max(startIndex - 1, 0)
+          }
         }
 
         onSelectionRangeChange()
@@ -240,14 +250,19 @@ function EditPricesTable(props: EditPricesTableProps) {
           [getKey(anchorVariant, nextCol)]: true,
         })
       } else {
-        if (anchorIndexCol === startIndexCol) {
-          if (startIndexCol === endIndexCol) {
-            startIndexCol = Math.max(startIndexCol - 1, 0)
-          } else {
-            endIndexCol = Math.max(endIndexCol - 1, 0)
-          }
+        if (isCmd) {
+          endIndexCol = anchorIndexCol
+          startIndexCol = 0
         } else {
-          startIndexCol = Math.max(startIndexCol - 1, 0)
+          if (anchorIndexCol === startIndexCol) {
+            if (startIndexCol === endIndexCol) {
+              startIndexCol = Math.max(startIndexCol - 1, 0)
+            } else {
+              endIndexCol = Math.max(endIndexCol - 1, 0)
+            }
+          } else {
+            startIndexCol = Math.max(startIndexCol - 1, 0)
+          }
         }
 
         onSelectionRangeChange()
@@ -273,12 +288,16 @@ function EditPricesTable(props: EditPricesTableProps) {
           [getKey(anchorVariant, nextCol)]: true,
         })
       } else {
-        if (anchorIndexCol === startIndexCol) {
-          endIndexCol = Math.min(endIndexCol + 1, columns.length - 1)
+        if (isCmd) {
+          startIndexCol = anchorIndexCol
+          endIndexCol = columns.length - 1
         } else {
-          startIndexCol = Math.min(startIndexCol + 1, columns.length - 1)
+          if (anchorIndexCol === startIndexCol) {
+            endIndexCol = Math.min(endIndexCol + 1, columns.length - 1)
+          } else {
+            startIndexCol = Math.min(startIndexCol + 1, columns.length - 1)
+          }
         }
-
         onSelectionRangeChange()
       }
     }
@@ -770,7 +789,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                 })}
 
                 {props.regions.map((r, indexCol) => {
-                  indexCol = props.product.variants.length + indexCol
+                  indexCol = props.currencies.length + indexCol
                   return (
                     <CurrencyCell
                       key={variant.id + r}
