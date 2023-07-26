@@ -768,7 +768,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                 })}
 
                 {props.regions.map((r, indexCol) => {
-                  indexCol = props.product.variants.length + indexCol
+                  indexCol = props.product.variants.length + indexCol + 1
                   return (
                     <CurrencyCell
                       key={variant.id + r}
