@@ -78,6 +78,7 @@ function EditPricesTable(props: EditPricesTableProps) {
 
   const [isDragFill, setIsDragFill] = useState(false)
   const [isDrag, setIsDrag] = useState(false)
+  const [isCopy, setIsCopy] = useState(false)
   const [editedPrices, setEditedPrices] = useState<
     Record<string, number | undefined>
   >({})
@@ -134,6 +135,8 @@ function EditPricesTable(props: EditPricesTableProps) {
     // warning state updates in event handlers will be batched together so if there is another
     // `setSelectedCells` (or `resetSelection`) call in the same event handler, only last state will apply
     setSelectedCells({})
+
+    setIsCopy(false)
   }
 
   const moveAnchor = (
@@ -387,6 +390,7 @@ function EditPricesTable(props: EditPricesTableProps) {
     startIndexCol = anchorIndexCol
     endIndexCol = anchorIndexCol
 
+    setIsCopy(false)
     setSelectedCells({ [getKey(variantId, currencyCode || regionId)]: true })
     setIsDrag(true)
   }
@@ -519,6 +523,7 @@ function EditPricesTable(props: EditPricesTableProps) {
       }
 
       if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
+        setIsCopy(true)
         let ret = ""
         const variants = {}
         const columns = {}
@@ -758,6 +763,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                       onMouseCellClick={onMouseCellClick}
                       onDragFillStart={onDragFillStart}
                       onColumnOver={onColumnOver}
+                      isCopy={isCopy}
                       isAnchor={
                         anchorIndex === index && anchorIndexCol === indexCol
                       }
@@ -780,6 +786,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                       key={variant.id + r}
                       region={r!}
                       variant={variant}
+                      isCopy={isCopy}
                       isSelected={
                         selectedCells[getKey(variant.id, undefined, r)]
                       }
