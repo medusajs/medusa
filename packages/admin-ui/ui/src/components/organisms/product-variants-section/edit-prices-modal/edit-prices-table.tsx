@@ -2,11 +2,11 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import { useAdminRegions, useAdminStore } from "medusa-react"
 import { Product } from "@medusajs/client-types"
 
-import { getCurrencyPricesOnly, getRegionPricesOnly } from "./utils"
-import CurrencyCell from "./currency-cell"
+import { getCurrencyPricesOnly, getRegionPricesOnly, mod } from "./utils"
 import IconBuildingTax from "../../../fundamentals/icons/building-tax-icon"
 import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 import Tooltip from "../../../atoms/tooltip"
+import CurrencyCell from "./currency-cell"
 
 enum ArrowMove {
   UP,
@@ -20,10 +20,6 @@ type EditPricesTableProps = {
   currencies: string[]
   regions: string[]
   onPriceUpdate: (prices: Record<string, number | undefined>) => void
-}
-
-function mod(n, m) {
-  return ((n % m) + m) % m
 }
 
 /**

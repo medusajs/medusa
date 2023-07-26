@@ -71,3 +71,10 @@ export function getRegionPricesOnly(prices: MoneyAmount[]) {
     return !(price.price_list_id || price.min_quantity || price.max_quantity)
   })
 }
+
+/**
+ * Modulo operation
+ */
+export function mod(n: number, m: number) {
+  return ((n % m) + m) % m
+}
