@@ -72,7 +72,7 @@ export default async (req, res) => {
 
   order = cleanResponseData(order, req.allowedProperties)
 
-  res.json({ order: cleanResponseData(order, []) })
+  res.json({ order: order })
 }
 
 export class AdminGetOrdersOrderParams extends FindParams {}
