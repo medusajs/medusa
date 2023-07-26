@@ -6,6 +6,7 @@ import {
   MedusaError,
   isDefined,
   InjectTransactionManager,
+  InjectManager,
   MedusaContext
 } from "@medusajs/utils"
 
@@ -25,10 +26,11 @@ export default class ProductCategoryService<
     this.productCategoryRepository_ = productCategoryRepository
   }
 
+  @InjectManager("productCategoryRepository_")
   async retrieve(
     productCategoryId: string,
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
     if (!isDefined(productCategoryId)) {
       throw new MedusaError(
@@ -61,10 +63,11 @@ export default class ProductCategoryService<
     return productCategories[0] as TEntity
   }
 
+  @InjectManager("productCategoryRepository_")
   async list(
     filters: ProductTypes.FilterableProductCategoryProps = {},
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     const transformOptions = {
       includeDescendantsTree: filters?.include_descendants_tree || false,
@@ -84,10 +87,11 @@ export default class ProductCategoryService<
     )) as TEntity[]
   }
 
+  @InjectManager("productCategoryRepository_")
   async listAndCount(
     filters: ProductTypes.FilterableProductCategoryProps = {},
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     const transformOptions = {
       includeDescendantsTree: filters?.include_descendants_tree || false,
@@ -119,10 +123,23 @@ export default class ProductCategoryService<
   }
 
   @InjectTransactionManager(shouldForceTransaction, "productCategoryRepository_")
+  async update(
+    id: string,
+    data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TEntity> {
+    return (await (this.productCategoryRepository_ as ProductCategoryRepository).update(
+      id,
+      data,
+      sharedContext
+    )) as TEntity
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "productCategoryRepository_")
   async delete(
-    ids: string[],
+    id: string,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await this.productCategoryRepository_.delete(ids, sharedContext)
+    await this.productCategoryRepository_.delete(id, sharedContext)
   }
 }

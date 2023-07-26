@@ -18,7 +18,7 @@ type InjectedDependencies = {
 export default class ProductCollectionService<
   TEntity extends ProductCollection = ProductCollection
 > {
-  protected readonly productCollectionRepository_: DAL.TreeRepositoryService
+  protected readonly productCollectionRepository_: DAL.RepositoryService
 
   constructor({ productCollectionRepository }: InjectedDependencies) {
     this.productCollectionRepository_ = productCollectionRepository

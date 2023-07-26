@@ -95,9 +95,7 @@ const serializer = <
 }
 
 // TODO: move to utils package
-export abstract class AbstractBaseRepository<T = any>
-  implements DAL.RepositoryService<T>
-{
+class AbstractBase<T = any> {
   protected readonly manager_: SqlEntityManager
 
   protected constructor({ manager }) {
@@ -138,7 +136,12 @@ export abstract class AbstractBaseRepository<T = any>
   >(data: TData, options?: any): Promise<TResult> {
     return serializer<TData, TResult>(data, options)
   }
+}
 
+export abstract class AbstractBaseRepository<T = any>
+  extends AbstractBase
+  implements DAL.RepositoryService<T>
+{
   abstract find(options?: DAL.FindOptions<T>, context?: Context)
 
   abstract findAndCount(
@@ -195,7 +198,7 @@ export abstract class AbstractBaseRepository<T = any>
 
 // TODO: move to utils package
 export abstract class AbstractTreeRepositoryBase<T = any>
-  extends AbstractBaseRepository<T>
+  extends AbstractBase<T>
   implements DAL.TreeRepositoryService<T>
 {
   protected constructor({ manager }) {
@@ -216,6 +219,8 @@ export abstract class AbstractTreeRepositoryBase<T = any>
   ): Promise<[T[], number]>
 
   abstract create(data: unknown, context?: Context): Promise<T>
+
+  abstract delete(id: string, context?: Context): Promise<void>
 }
 
 // TODO: move to utils package
@@ -223,6 +228,7 @@ export abstract class AbstractTreeRepositoryBase<T = any>
  * Only used internally in order to be able to wrap in transaction from a
  * non identified repository
  */
+
 export class BaseRepository extends AbstractBaseRepository {
   constructor({ manager }) {
     // @ts-ignore
@@ -283,7 +289,7 @@ export class BaseTreeRepository extends AbstractTreeRepositoryBase {
     throw new Error("Method not implemented.")
   }
 
-  delete(ids: string[], context?: Context): Promise<void> {
+  delete(id: string, context?: Context): Promise<void> {
     throw new Error("Method not implemented.")
   }
 }

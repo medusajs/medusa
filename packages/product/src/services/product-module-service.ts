@@ -35,8 +35,10 @@ import {
   kebabCase,
   MedusaContext,
 } from "@medusajs/utils"
+
 import { shouldForceTransaction } from "../utils"
 import { joinerConfig } from "./../joiner-config"
+import { ProductCategoryServiceTypes } from "../types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -538,6 +540,42 @@ export default class ProductModuleService<
     )
 
     return JSON.parse(JSON.stringify(categories))
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async createCategory(
+    data: ProductCategoryServiceTypes.CreateProductCategoryDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const productCategory = await this.productCategoryService_.create(
+      data,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productCategory))
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async updateCategory(
+    categoryId: string,
+    data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const productCategory = await this.productCategoryService_.update(
+      categoryId,
+      data,
+      sharedContext
+    )
+
+    return JSON.parse(JSON.stringify(productCategory))
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async deleteCategory(
+    categoryId: string,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    await this.productCategoryService_.delete(categoryId, sharedContext)
   }
 
   @InjectManager("baseRepository_")
