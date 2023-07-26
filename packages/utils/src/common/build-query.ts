@@ -65,6 +65,7 @@ export function buildRelations(relationCollection: string[]): Relations {
  * @param collection
  */
 function buildRelationsOrSelect(collection: string[]): Selects | Relations {
+  collection = collection.sort()
   const output: Selects | Relations = {}
 
   for (const relation of collection) {

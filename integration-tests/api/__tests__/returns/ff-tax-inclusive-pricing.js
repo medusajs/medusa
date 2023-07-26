@@ -1,12 +1,15 @@
 const path = require("path")
 
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+  require("../../../environment-helpers/start-server-with-environment").default
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb } = require("../../../environment-helpers/use-db")
 
-const { simpleProductFactory, simpleOrderFactory } = require("../../factories")
-const adminSeeder = require("../../helpers/admin-seeder")
+const {
+  simpleProductFactory,
+  simpleOrderFactory,
+} = require("../../../factories")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 const createReturnableOrder = async (dbConnection, options) => {
   await simpleProductFactory(

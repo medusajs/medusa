@@ -1,10 +1,12 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../../helpers/use-db")
-const { setPort, useApi } = require("../../../../helpers/use-api")
+const {
+  bootstrapApp,
+} = require("../../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
+const { setPort, useApi } = require("../../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
@@ -12,8 +14,8 @@ const {
   simpleProductFactory,
   simpleOrderFactory,
   simpleRegionFactory,
-} = require("../../../factories")
-const { simpleSalesChannelFactory } = require("../../../../api/factories")
+} = require("../../../../factories")
+const { simpleSalesChannelFactory } = require("../../../../factories")
 const adminHeaders = { headers: { Authorization: "Bearer test_token" } }
 
 describe("Inventory Items endpoints", () => {

@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.2.2
+
+### Patch Changes
+
+- [#4540](https://github.com/medusajs/medusa/pull/4540) [`950a58169`](https://github.com/medusajs/medusa/commit/950a5816909b2038a5bee5d8e6912290e5c7c53b) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa-file-minio): default getUploadDescriptor to private
+
 ## 1.2.1
 
 ### Patch Changes

@@ -1,74 +1,84 @@
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { ProductCollection } from "@models"
+import { Product, ProductCollection } from "@models"
 import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import { deduplicateIfNecessary } from "../utils"
-import { DAL } from "@medusajs/types"
+import { Context, DAL } from "@medusajs/types"
+import { AbstractBaseRepository } from "./base"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 
-export class ProductCollectionRepository implements DAL.RepositoryService {
+export class ProductCollectionRepository extends AbstractBaseRepository<ProductCollection> {
   protected readonly manager_: SqlEntityManager
-  constructor({ manager }) {
-    this.manager_ = manager.fork()
+
+  constructor({ manager }: { manager: SqlEntityManager }) {
+    // @ts-ignore
+    super(...arguments)
+    this.manager_ = manager
   }
 
-  async find<T = ProductCollection>(
-    findOptions: DAL.FindOptions<T> = { where: {} },
-    context: { transaction?: any } = {}
-  ): Promise<T[]> {
-    // Spread is used to copy the options in case of manipulation to prevent side effects
+  async find(
+    findOptions: DAL.FindOptions<ProductCollection> = { where: {} },
+    context: Context = {}
+  ): Promise<ProductCollection[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const findOptions_ = { ...findOptions }
-
     findOptions_.options ??= {}
-    findOptions_.options.limit ??= 15
-
-    if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
-    }
-
-    if (context.transaction) {
-      Object.assign(findOptions_.options, { ctx: context.transaction })
-    }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return (await this.manager_.find(
+    return await manager.find(
       ProductCollection,
       findOptions_.where as MikroFilterQuery<ProductCollection>,
       findOptions_.options as MikroOptions<ProductCollection>
-    )) as unknown as T[]
+    )
   }
 
-  async findAndCount<T = ProductCollection>(
-    findOptions: DAL.FindOptions<T> = { where: {} },
-    context: { transaction?: any } = {}
-  ): Promise<[T[], number]> {
-    // Spread is used to copy the options in case of manipulation to prevent side effects
+  async findAndCount(
+    findOptions: DAL.FindOptions<ProductCollection> = { where: {} },
+    context: Context = {}
+  ): Promise<[ProductCollection[], number]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
     const findOptions_ = { ...findOptions }
-
     findOptions_.options ??= {}
-    findOptions_.options.limit ??= 15
-
-    if (findOptions_.options.populate) {
-      deduplicateIfNecessary(findOptions_.options.populate)
-    }
-
-    if (context.transaction) {
-      Object.assign(findOptions_.options, { ctx: context.transaction })
-    }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
     })
 
-    return (await this.manager_.findAndCount(
+    return await manager.findAndCount(
       ProductCollection,
       findOptions_.where as MikroFilterQuery<ProductCollection>,
       findOptions_.options as MikroOptions<ProductCollection>
-    )) as unknown as [T[], number]
+    )
+  }
+
+  @InjectTransactionManager()
+  async delete(
+    ids: string[],
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
+  ): Promise<void> {
+    await (manager as SqlEntityManager).nativeDelete(
+      Product,
+      { id: { $in: ids } },
+      {}
+    )
+  }
+
+  @InjectTransactionManager()
+  async create(
+    data: unknown[],
+    @MedusaContext()
+    { transactionManager: manager }: Context = {}
+  ): Promise<ProductCollection[]> {
+    throw new Error("Method not implemented.")
   }
 }

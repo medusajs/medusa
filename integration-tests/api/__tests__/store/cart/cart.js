@@ -9,12 +9,12 @@ const {
   MoneyAmount,
 } = require("@medusajs/medusa")
 
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
+const setupServer = require("../../../../environment-helpers/setup-server")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
 
-const cartSeeder = require("../../../helpers/cart-seeder")
-const swapSeeder = require("../../../helpers/swap-seeder")
+const cartSeeder = require("../../../../helpers/cart-seeder")
+const swapSeeder = require("../../../../helpers/swap-seeder")
 const {
   simpleCartFactory,
   simpleRegionFactory,
@@ -22,16 +22,16 @@ const {
   simpleShippingOptionFactory,
   simpleLineItemFactory,
   simpleSalesChannelFactory,
-} = require("../../../factories")
+} = require("../../../../factories")
 const {
   simpleDiscountFactory,
-} = require("../../../factories/simple-discount-factory")
+} = require("../../../../factories/simple-discount-factory")
 const {
   simpleCustomerFactory,
-} = require("../../../factories/simple-customer-factory")
+} = require("../../../../factories/simple-customer-factory")
 const {
   simpleCustomerGroupFactory,
-} = require("../../../factories/simple-customer-group-factory")
+} = require("../../../../factories/simple-customer-group-factory")
 
 jest.setTimeout(30000)
 
@@ -769,6 +769,9 @@ describe("/store/carts", () => {
           "/store/carts/test-cart-3/line-items/test-item3/",
           {
             quantity: 3,
+            metadata: {
+              another: "prop",
+            },
           },
           { withCredentials: true }
         )
@@ -782,6 +785,10 @@ describe("/store/carts", () => {
             variant_id: "test-variant-sale-cg",
             quantity: 3,
             adjustments: [],
+            metadata: {
+              "some-existing": "prop",
+              another: "prop",
+            },
           }),
         ])
       )

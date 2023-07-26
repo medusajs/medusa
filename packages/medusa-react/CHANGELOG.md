@@ -1,5 +1,24 @@
 # Change Log
 
+## 9.0.3
+
+### Patch Changes
+
+- [#4467](https://github.com/medusajs/medusa/pull/4467) [`3e6cee284`](https://github.com/medusajs/medusa/commit/3e6cee28469b5ce30687de5e5096266244f6b3a9) Thanks [@josetr](https://github.com/josetr)! - fix(medusa-react): add missing adminInventoryItemsKeys.lists() to inventory hooks
+
+- [#4538](https://github.com/medusajs/medusa/pull/4538) [`e3a856521`](https://github.com/medusajs/medusa/commit/e3a85652132c110e4dd81ae1120414121fbab0fd) Thanks [@josetr](https://github.com/josetr)! - fix(medusa-react): fix admin user mutation hooks invalidating wrong keys
+
+## 9.0.2
+
+### Patch Changes
+
+- [#4409](https://github.com/medusajs/medusa/pull/4409) [`fe25c8a91`](https://github.com/medusajs/medusa/commit/fe25c8a91f4462c9ac5a15594fa71155df48c1eb) Thanks [@pevey](https://github.com/pevey)! - feat(medusa-react,medusa-js): Allow custom headers
+
+- [#4441](https://github.com/medusajs/medusa/pull/4441) [`417debfe7`](https://github.com/medusajs/medusa/commit/417debfe7db6edd6722929fe0f905a63548a0c9e) Thanks [@josetr](https://github.com/josetr)! - fix(medusa-react): fix wrong admin reservations query key
+
+- Updated dependencies [[`fe25c8a91`](https://github.com/medusajs/medusa/commit/fe25c8a91f4462c9ac5a15594fa71155df48c1eb), [`708a55199`](https://github.com/medusajs/medusa/commit/708a55199aeb23f5a75fd240ddd10af2c95f3957)]:
+  - @medusajs/medusa-js@6.0.2
+
 ## 9.0.1
 
 ### Patch Changes

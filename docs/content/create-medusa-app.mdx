@@ -14,6 +14,7 @@ import OtherErrorsSection from "./troubleshooting/create-medusa-app-errors/_othe
 import EagainError from "./troubleshooting/create-medusa-app-errors/_eagain-error.md"
 import ConnectionErrorSection from './troubleshooting/database-errors/_connection-error.md'
 import FreshInstallationSection from './troubleshooting/awilix-resolution-error/_fresh-installation.md'
+import EaddrinuseSection from './troubleshooting/eaddrinuse.md'
 
 # Install Medusa with create-medusa-app
 
@@ -95,7 +96,7 @@ You’ll first be asked to enter the name of your project, which is used to crea
 
 ### (Optional) Step 2: Specify PostgreSQL credentials
 
-By default, this command will try to use the default PostgreSQL credentials to connect to your PostgreSQL server. If they don't work, you'll be prompted to enter your PostgreSQL database and passowrd. If they work, you can move ahead to the next step.
+By default, this command will try to use the default PostgreSQL credentials to connect to your PostgreSQL server. If they don't work, you'll be prompted to enter your PostgreSQL database and password. If they work, you can move ahead to the next step.
 
 These credentials will be used to create a database during this setup and configure your Medusa backend to connect to that database.
 
@@ -149,6 +150,10 @@ Based on what you're building, you can find a development path for you in the Re
 
 <Troubleshooting
   sections={[
+    {
+      title: 'Error: EADDRINUSE',
+      content: <EaddrinuseSection />
+    },
     {
       title: "EAGAIN error",
       content: <EagainError />

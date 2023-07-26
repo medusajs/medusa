@@ -1,5 +1,7 @@
 import {
+  AfterLoad,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   Index,
@@ -23,7 +25,7 @@ import { SalesChannel } from "./sales-channel"
 import { ShippingProfile } from "./shipping-profile"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import _ from "lodash"
-import { generateEntityId } from "../utils/generate-entity-id"
+import { generateEntityId } from "../utils"
 
 export enum ProductStatus {
   DRAFT = "draft",
@@ -92,13 +94,25 @@ export class Product extends SoftDeletableEntity {
   })
   categories: ProductCategory[]
 
-  @Index()
-  @Column()
   profile_id: string
 
-  @ManyToOne(() => ShippingProfile)
-  @JoinColumn({ name: "profile_id" })
   profile: ShippingProfile
+
+  @ManyToMany(() => ShippingProfile, {
+    cascade: ["remove", "soft-remove"],
+  })
+  @JoinTable({
+    name: "product_shipping_profile",
+    joinColumn: {
+      name: "product_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "profile_id",
+      referencedColumnName: "id",
+    },
+  })
+  profiles: ShippingProfile[]
 
   @Column({ type: "int", nullable: true })
   weight: number | null
@@ -184,6 +198,25 @@ export class Product extends SoftDeletableEntity {
     this.id = generateEntityId(this.id, "prod")
     if (!this.handle) {
       this.handle = _.kebabCase(this.title)
+    }
+
+    if (this.profile_id) {
+      this.profiles = [{ id: this.profile_id }] as ShippingProfile[]
+    }
+  }
+
+  @BeforeUpdate()
+  private beforeUpdate(): void {
+    if (this.profile_id) {
+      this.profiles = [{ id: this.profile_id }] as ShippingProfile[]
+    }
+  }
+
+  @AfterLoad()
+  private afterLoad(): void {
+    if (this.profiles) {
+      this.profile = this.profiles[this.profiles.length - 1]!
+      this.profile_id = this.profile?.id
     }
   }
 }
@@ -288,6 +321,12 @@ export class Product extends SoftDeletableEntity {
  *     description: Available if the relation `profile` is expanded.
  *     nullable: true
  *     $ref: "#/components/schemas/ShippingProfile"
+ *   profiles:
+ *     description: Available if the relation `profiles` is expanded.
+ *     nullable: true
+ *     type: array
+ *     items:
+ *       $ref: "#/components/schemas/ShippingProfile"
  *   weight:
  *     description: The weight of the Product Variant. May be used in shipping rate calculations.
  *     nullable: true

@@ -131,38 +131,44 @@ export default class ReservationItemService {
    */
   @InjectEntityManager()
   async create(
-    data: CreateReservationItemInput,
+    data: CreateReservationItemInput[],
     @MedusaContext() context: SharedContext = {}
-  ): Promise<ReservationItem> {
+  ): Promise<ReservationItem[]> {
     const manager = context.transactionManager!
     const reservationItemRepository = manager.getRepository(ReservationItem)
 
-    const reservationItem = reservationItemRepository.create({
-      inventory_item_id: data.inventory_item_id,
-      line_item_id: data.line_item_id,
-      location_id: data.location_id,
-      quantity: data.quantity,
-      metadata: data.metadata,
-      external_id: data.external_id,
-      description: data.description,
-      created_by: data.created_by,
-    })
+    const reservationItems = reservationItemRepository.create(
+      data.map((tc) => ({
+        inventory_item_id: tc.inventory_item_id,
+        line_item_id: tc.line_item_id,
+        location_id: tc.location_id,
+        quantity: tc.quantity,
+        metadata: tc.metadata,
+        external_id: tc.external_id,
+        description: tc.description,
+        created_by: tc.created_by,
+      }))
+    )
 
-    const [newReservationItem] = await Promise.all([
-      reservationItemRepository.save(reservationItem),
-      this.inventoryLevelService_.adjustReservedQuantity(
-        data.inventory_item_id,
-        data.location_id,
-        data.quantity,
-        context
+    const [newReservationItems] = await Promise.all([
+      reservationItemRepository.save(reservationItems),
+      ...data.map(
+        async (data) =>
+          // TODO make bulk
+          await this.inventoryLevelService_.adjustReservedQuantity(
+            data.inventory_item_id,
+            data.location_id,
+            data.quantity,
+            context
+          )
       ),
     ])
 
     await this.eventBusService_?.emit?.(ReservationItemService.Events.CREATED, {
-      id: newReservationItem.id,
+      ids: newReservationItems.map((i) => i.id),
     })
 
-    return newReservationItem
+    return newReservationItems
   }
 
   /**
@@ -244,24 +250,24 @@ export default class ReservationItemService {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
 
-    const itemsIds = Array.isArray(lineItemId) ? lineItemId : [lineItemId]
+    const lineItemIds = Array.isArray(lineItemId) ? lineItemId : [lineItemId]
 
-    const items = await this.list(
-      { line_item_id: itemsIds },
+    const reservationItems = await this.list(
+      { line_item_id: lineItemIds },
       undefined,
       context
     )
 
     const ops: Promise<unknown>[] = [
-      itemRepository.softDelete({ line_item_id: In(itemsIds) }),
+      itemRepository.softDelete({ line_item_id: In(lineItemIds) }),
     ]
 
-    for (const item of items) {
+    for (const reservation of reservationItems) {
       ops.push(
         this.inventoryLevelService_.adjustReservedQuantity(
-          item.inventory_item_id,
-          item.location_id,
-          item.quantity * -1,
+          reservation.inventory_item_id,
+          reservation.location_id,
+          reservation.quantity * -1,
           context
         )
       )
@@ -281,18 +287,15 @@ export default class ReservationItemService {
    */
   @InjectEntityManager()
   async deleteByLocationId(
-    locationId: string,
+    locationId: string | string[],
     @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     const manager = context.transactionManager!
     const itemRepository = manager.getRepository(ReservationItem)
 
-    await itemRepository
-      .createQueryBuilder("reservation_item")
-      .softDelete()
-      .where("location_id = :locationId", { locationId })
-      .andWhere("deleted_at IS NULL")
-      .execute()
+    const ids = Array.isArray(locationId) ? locationId : [locationId]
+
+    await itemRepository.softDelete({ location_id: In(ids) })
 
     await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
       location_id: locationId,
@@ -330,7 +333,7 @@ export default class ReservationItemService {
     await Promise.all(promises)
 
     await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
-      id: reservationItemId,
+      ids: reservationItemId,
     })
   }
 }

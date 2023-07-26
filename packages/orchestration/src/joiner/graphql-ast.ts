@@ -86,28 +86,29 @@ class GraphQLParser {
       if (selection.kind === "Field") {
         const fieldNode = selection as FieldNode
 
-        if (fieldNode.selectionSet) {
-          const entityName = parentName
-            ? `${parentName}.${fieldNode.name.value}`
-            : fieldNode.name.value
-
-          const nestedEntity: Entity = {
-            property: entityName.replace(`${mainService}.`, ""),
-            fields: fieldNode.selectionSet.selections.map(
-              (field) => (field as FieldNode).name.value
-            ),
-            args: this.parseArguments(fieldNode.arguments!),
-          }
-
-          entities.push(nestedEntity)
-          entities.push(
-            ...this.extractEntities(
-              fieldNode.selectionSet,
-              entityName,
-              mainService
-            )
-          )
+        if (!fieldNode.selectionSet) {
+          return
         }
+
+        const propName = fieldNode.name.value
+        const entityName = parentName ? `${parentName}.${propName}` : propName
+
+        const nestedEntity: Entity = {
+          property: entityName.replace(`${mainService}.`, ""),
+          fields: fieldNode.selectionSet.selections.map(
+            (field) => (field as FieldNode).name.value
+          ),
+          args: this.parseArguments(fieldNode.arguments!),
+        }
+
+        entities.push(nestedEntity)
+        entities.push(
+          ...this.extractEntities(
+            fieldNode.selectionSet,
+            entityName,
+            mainService
+          )
+        )
       }
     })
 
@@ -126,8 +127,9 @@ class GraphQLParser {
     const rootFieldNode = queryDefinition.selectionSet
       .selections[0] as FieldNode
 
+    const propName = rootFieldNode.name.value
     const remoteJoinConfig: RemoteJoinerQuery = {
-      service: rootFieldNode.name.value,
+      alias: propName,
       fields: [],
       expands: [],
     }
@@ -140,10 +142,11 @@ class GraphQLParser {
       remoteJoinConfig.fields = rootFieldNode.selectionSet.selections.map(
         (field) => (field as FieldNode).name.value
       )
+
       remoteJoinConfig.expands = this.extractEntities(
         rootFieldNode.selectionSet,
-        rootFieldNode.name.value,
-        rootFieldNode.name.value
+        propName,
+        propName
       )
     }
 
