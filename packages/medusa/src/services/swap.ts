@@ -584,10 +584,7 @@ class SwapService extends TransactionBaseService {
 
       const swap = await this.retrieve(swapId, {
         relations: [
-          "order",
-          "order.items",
-          "order.items.variant",
-          "order.items.variant.product",
+          "order.items.variant.product.profiles",
           "order.swaps",
           "order.swaps.additional_items",
           "order.discounts",
@@ -934,10 +931,8 @@ class SwapService extends TransactionBaseService {
         relations: [
           "payment",
           "shipping_address",
-          "additional_items",
           "additional_items.tax_lines",
-          "additional_items.variant",
-          "additional_items.variant.product",
+          "additional_items.variant.product.profiles",
           "shipping_methods",
           "shipping_methods.shipping_option",
           "shipping_methods.tax_lines",

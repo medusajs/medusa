@@ -6,7 +6,6 @@ import {
   MedusaContext,
 } from "@medusajs/utils"
 import { serialize } from "@mikro-orm/core"
-import { doNotForceTransaction } from "../utils"
 
 // TODO: Should we create a mikro orm specific package for this and the soft deletable decorator util?
 
@@ -28,28 +27,17 @@ async function transactionWrapper(
     return await task(transaction)
   }
 
-  const forkedManager = this.manager_.fork()
-
   const options = {}
+
+  if (transaction) {
+    Object.assign(options, { ctx: transaction })
+  }
+
   if (isolationLevel) {
     Object.assign(options, { isolationLevel })
   }
 
-  if (transaction) {
-    Object.assign(options, { ctx: transaction })
-    await forkedManager.begin(options)
-  } else {
-    await forkedManager.begin(options)
-  }
-
-  try {
-    const result = await task(forkedManager)
-    await forkedManager.commit()
-    return result
-  } catch (e) {
-    await forkedManager.rollback()
-    throw e
-  }
+  return await (this.manager_ as SqlEntityManager).transactional(task, options)
 }
 
 const updateDeletedAtRecursively = async <T extends object = any>(
@@ -86,16 +74,13 @@ const updateDeletedAtRecursively = async <T extends object = any>(
   }
 }
 
-const serializer = <
-  T extends object | object[],
-  TResult extends object | object[]
->(
-  data: T,
+const serializer = <TOutput extends object>(
+  data: any,
   options?: any
-): Promise<TResult> => {
+): Promise<TOutput> => {
   options ??= {}
   const result = serialize(data, options)
-  return Array.isArray(data) ? result : result[0]
+  return result as unknown as Promise<TOutput>
 }
 
 export abstract class AbstractBaseRepository<T = any>
@@ -122,11 +107,11 @@ export abstract class AbstractBaseRepository<T = any>
     return await transactionWrapper.apply(this, arguments)
   }
 
-  serialize<
-    TData extends object | object[] = object[],
-    TResult extends object | object[] = object[]
-  >(data: TData, options?: any): Promise<TResult> {
-    return serializer<TData, TResult>(data, options)
+  async serialize<TOutput extends object | object[]>(
+    data: any,
+    options?: any
+  ): Promise<TOutput> {
+    return await serializer<TOutput>(data, options)
   }
 
   abstract find(options?: DAL.FindOptions<T>, context?: Context)
@@ -213,13 +198,6 @@ export class BaseRepository extends AbstractBaseRepository {
   constructor({ manager }) {
     // @ts-ignore
     super(...arguments)
-  }
-
-  serialize<
-    TData extends object | object[] = object[],
-    TResult extends object | object[] = object[]
-  >(data: TData, options?: any): Promise<TResult> {
-    return serializer<TData, TResult>(data, options)
   }
 
   create(data: unknown[], context?: Context): Promise<any[]> {

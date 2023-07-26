@@ -1,4 +1,3 @@
-import partition from "lodash/partition"
 import {
   Brackets,
   In,
@@ -7,16 +6,18 @@ import {
   ObjectLiteral,
   WhereExpressionBuilder,
 } from "typeorm"
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
-import { dataSource } from "../loaders/database"
-import { MoneyAmount } from "../models"
 import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
 } from "../types/price-list"
+
+import { MoneyAmount } from "../models"
 import { ProductVariantPrice } from "../types/product-variant"
-import { isString } from "../utils"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
+import { dataSource } from "../loaders/database"
 import { groupBy } from "lodash"
+import { isString } from "../utils"
+import partition from "lodash/partition"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -316,12 +317,9 @@ export const MoneyAmountRepository = dataSource
             "cgc",
             "cgc.customer_group_id = cgroup.id"
           )
-          .andWhere(
-            "(cgc.customer_group_id is null OR cgc.customer_id = :customer_id)",
-            {
-              customer_id,
-            }
-          )
+          .andWhere("(cgroup.id is null OR cgc.customer_id = :customer_id)", {
+            customer_id,
+          })
       } else {
         qb.leftJoin("price_list.customer_groups", "cgroup").andWhere(
           "cgroup.id is null"

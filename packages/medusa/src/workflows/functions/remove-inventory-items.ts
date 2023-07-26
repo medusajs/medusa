@@ -15,12 +15,8 @@ export async function removeInventoryItems({
   const inventoryService = container.resolve("inventoryService")
   const context = { transactionManager: manager }
 
-  return await Promise.all(
-    data.map(async ({ inventoryItem }) => {
-      return await inventoryService!.deleteInventoryItem(
-        inventoryItem.id,
-        context
-      )
-    })
+  return await inventoryService!.deleteInventoryItem(
+    data.map(({ inventoryItem }) => inventoryItem.id),
+    context
   )
 }

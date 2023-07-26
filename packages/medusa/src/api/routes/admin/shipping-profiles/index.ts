@@ -41,8 +41,10 @@ export const defaultAdminShippingProfilesFields: (keyof ShippingProfile)[] = [
   "metadata",
 ]
 
-export const defaultAdminShippingProfilesRelations: (keyof ShippingProfile)[] =
-  ["products", "shipping_options"]
+export const defaultAdminShippingProfilesRelations: string[] = [
+  "products.profiles",
+  "shipping_options",
+]
 
 /**
  * @schema AdminDeleteShippingProfileRes

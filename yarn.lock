@@ -6343,6 +6343,7 @@ __metadata:
   dependencies:
     "@medusajs/medusa-cli": ^1.3.17
     "@medusajs/modules-sdk": ^1.8.8
+    "@medusajs/orchestration": ^0.0.2
     "@medusajs/types": ^1.8.11
     "@medusajs/utils": ^1.9.2
     "@types/express": ^4.17.17
@@ -6486,7 +6487,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/product@workspace:packages/product":
+"@medusajs/product@workspace:^, @medusajs/product@workspace:packages/product":
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/product"
   dependencies:
@@ -6556,6 +6557,24 @@ __metadata:
     cross-env: ^5.2.1
     express: ^4.18.2
     glob: ^7.1.6
+    jest: ^25.5.4
+    rimraf: ^5.0.1
+    ts-jest: ^25.5.1
+    typescript: ^4.4.4
+    ulid: ^2.3.0
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/workflows@workspace:packages/workflows":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/workflows@workspace:packages/workflows"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.8.8
+    "@medusajs/orchestration": ^0.0.2
+    "@medusajs/types": ^1.8.10
+    "@medusajs/utils": ^1.9.2
+    awilix: ^8.0.1
+    cross-env: ^5.2.1
     jest: ^25.5.4
     rimraf: ^5.0.1
     ts-jest: ^25.5.1
@@ -24942,6 +24961,7 @@ __metadata:
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/medusa": "workspace:*"
+    "@medusajs/product": "workspace:^"
     babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3

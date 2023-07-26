@@ -262,6 +262,12 @@ describe("/admin/products", () => {
           product_id: productData.id,
           sku: `test-product_filtering_by_variant_id-${i}`,
           title: `test-product_filtering_by_variant_id-${i}`,
+          options: [
+            {
+              option_id: "test-product_filtering_by_variant_id-option",
+              value: `Large-${i}`,
+            },
+          ],
         })
       }
 
