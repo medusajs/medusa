@@ -145,6 +145,7 @@ describe("Inventory Module", () => {
       expect(
         await stockLocationService.retrieve(loc.id, {
           relations: ["address"],
+          fields: ["id", "name", "address_id", "address.address_1"],
         })
       ).toEqual(
         expect.objectContaining({

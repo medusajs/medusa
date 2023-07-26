@@ -27,6 +27,7 @@ import {
   StockLocationRepostiory,
 } from "../repositories"
 import { shouldForceTransaction } from "../utils"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -273,17 +274,13 @@ export default class StockLocationService {
     updateData: UpdateStockLocationInput,
     @MedusaContext() context: Context = {}
   ): Promise<StockLocation> {
-    const item = await this.retrieve_(
-      stockLocationId,
-      { relations: [] },
-      context
-    )
+    const location = await this.retrieve_(stockLocationId, undefined, context)
 
     const { address, ...data } = updateData
 
     if (address) {
-      if (item.address_id) {
-        await this.updateAddress(item.address_id, address, context)
+      if (location.address_id) {
+        await this.updateAddress_(location.address_id, address, context)
       } else {
         const [addressResult] =
           await this.stockLocationAddressRepository_.create([address], context)
@@ -294,17 +291,20 @@ export default class StockLocationService {
     const { metadata } = data
 
     if (metadata) {
-      data.metadata = setMetadata(item, metadata)
+      data.metadata = setMetadata(location, metadata)
     }
 
     const [updatedLocation] = await this.stockLocationRepository_.update(
-      [{ item, update: data }],
+      [{ item: location, update: { ...data } }],
       context
     )
 
     await this.eventBusService_?.emit?.(StockLocationService.Events.UPDATED, {
       id: stockLocationId,
     })
+
+    await (context.transactionManager! as SqlEntityManager).flush()
+    ;(context.transactionManager! as SqlEntityManager).clear()
 
     return updatedLocation
   }
@@ -364,7 +364,7 @@ export default class StockLocationService {
       )
     }
 
-    const { metadata, ...fields } = address
+    const { metadata } = address
 
     let newMetadata
     if (metadata) {

@@ -86,11 +86,13 @@ export class StockLocationAddressRepository extends AbstractBaseRepository<Stock
   ): Promise<StockLocationAddress[]> {
     const manager = (transactionManager ?? this.manager_) as SqlEntityManager
 
-    const items = data.map(({ item, update }) => {
-      return manager.assign(item, update)
-    })
-
-    await manager.persistAndFlush(items)
+    const items = await Promise.all(
+      data.map(async ({ item, update }) => {
+        const item1 = manager.assign(item, update)
+        await manager.persistAndFlush(item1)
+        return item1
+      })
+    )
 
     return items
   }

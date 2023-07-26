@@ -83,11 +83,7 @@ export class StockLocationRepostiory extends AbstractBaseRepository<StockLocatio
     const manager = (transactionManager ?? this.manager_) as SqlEntityManager
 
     const items = data.map(({ item, update }) => {
-      return manager.assign<StockLocation>(item, update, {
-        onlyProperties: true,
-        mergeObjects: true,
-        updateNestedEntities: false,
-      })
+      return manager.assign<StockLocation>(item, update)
     })
 
     await (manager as SqlEntityManager).persistAndFlush(items)
