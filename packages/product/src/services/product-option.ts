@@ -30,6 +30,7 @@ export default class ProductOptionService<
       productOptionRepository as ProductOptionRepository
   }
 
+  @InjectManager("productOptionRepository_")
   async retrieve(
     productOptionId: string,
     config: FindConfig<ProductTypes.ProductOptionDTO> = {},
@@ -47,6 +48,7 @@ export default class ProductOptionService<
     })) as TEntity
   }
 
+  @InjectManager("productOptionRepository_")
   async list(
     filters: ProductTypes.FilterableProductOptionProps = {},
     config: FindConfig<ProductTypes.ProductOptionDTO> = {},
@@ -58,6 +60,7 @@ export default class ProductOptionService<
     )) as TEntity[]
   }
 
+  @InjectManager("productOptionRepository_")
   async listAndCount(
     filters: ProductTypes.FilterableProductOptionProps = {},
     config: FindConfig<ProductTypes.ProductOptionDTO> = {},

@@ -32,10 +32,11 @@ export default class ProductTagService<
     this.productTagRepository_ = productTagRepository
   }
 
+  @InjectManager("productTagRepository_")
   async retrieve(
     productTagId: string,
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
     return (await retrieveEntity<
       ProductTag,
@@ -61,10 +62,11 @@ export default class ProductTagService<
     )) as TEntity[]
   }
 
+  @InjectManager("productTagRepository_")
   async listAndCount(
     filters: ProductTypes.FilterableProductTagProps = {},
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     return (await this.productTagRepository_.findAndCount(
       this.buildQueryForList(filters, config),

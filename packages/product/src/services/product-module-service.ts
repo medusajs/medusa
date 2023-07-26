@@ -128,7 +128,7 @@ export default class ProductModuleService<
   async retrieve(
     productId: string,
     config: FindConfig<ProductTypes.ProductDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO> {
     const product = await this.productService_.retrieve(
       productId,
@@ -440,7 +440,7 @@ export default class ProductModuleService<
   async retrieveCollection(
     productCollectionId: string,
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductCollectionDTO> {
     const productCollection = await this.productCollectionService_.retrieve(
       productCollectionId,
@@ -455,7 +455,7 @@ export default class ProductModuleService<
   async listCollections(
     filters: ProductTypes.FilterableProductCollectionProps = {},
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductCollectionDTO[]> {
     const collections = await this.productCollectionService_.list(
       filters,
@@ -470,7 +470,7 @@ export default class ProductModuleService<
   async listAndCountCollections(
     filters: ProductTypes.FilterableProductCollectionProps = {},
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[ProductTypes.ProductCollectionDTO[], number]> {
     const collections = await this.productCollectionService_.listAndCount(
       filters,
@@ -522,7 +522,7 @@ export default class ProductModuleService<
   async retrieveCategory(
     productCategoryId: string,
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductCategoryDTO> {
     const productCategory = await this.productCategoryService_.retrieve(
       productCategoryId,
@@ -537,7 +537,7 @@ export default class ProductModuleService<
   async listCategories(
     filters: ProductTypes.FilterableProductCategoryProps = {},
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductCategoryDTO[]> {
     const categories = await this.productCategoryService_.list(
       filters,
@@ -588,7 +588,7 @@ export default class ProductModuleService<
   async listAndCountCategories(
     filters: ProductTypes.FilterableProductCategoryProps = {},
     config: FindConfig<ProductTypes.ProductCategoryDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[ProductTypes.ProductCategoryDTO[], number]> {
     const categories = await this.productCategoryService_.listAndCount(
       filters,
@@ -609,7 +609,7 @@ export default class ProductModuleService<
 
   async update(
     data: ProductTypes.UpdateProductDTO[],
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.update_(data, sharedContext)
 

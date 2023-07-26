@@ -4,6 +4,7 @@ import {
   retrieveEntity,
   InjectTransactionManager,
   MedusaContext,
+  InjectManager,
 } from "@medusajs/utils"
 
 import { shouldForceTransaction } from "../utils"
@@ -24,10 +25,11 @@ export default class ProductCollectionService<
     this.productCollectionRepository_ = productCollectionRepository
   }
 
+  @InjectManager("productCollectionRepository_")
   async retrieve(
     productCollectionId: string,
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
     return (await retrieveEntity<
       ProductCollection,
@@ -41,10 +43,11 @@ export default class ProductCollectionService<
     })) as TEntity
   }
 
+  @InjectManager("productCollectionRepository_")
   async list(
     filters: ProductTypes.FilterableProductCollectionProps = {},
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await this.productCollectionRepository_.find(
       this.buildListQueryOptions(filters, config),
@@ -52,10 +55,11 @@ export default class ProductCollectionService<
     )) as TEntity[]
   }
 
+  @InjectManager("productCollectionRepository_")
   async listAndCount(
     filters: ProductTypes.FilterableProductCollectionProps = {},
     config: FindConfig<ProductTypes.ProductCollectionDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     return (await this.productCollectionRepository_.findAndCount(
       this.buildListQueryOptions(filters, config),

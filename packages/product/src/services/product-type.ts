@@ -10,6 +10,7 @@ import {
 } from "@medusajs/types"
 import { ProductTypeRepository } from "@repositories"
 import {
+  InjectManager,
   InjectTransactionManager,
   MedusaContext,
   ModulesSdkUtils,
@@ -31,10 +32,11 @@ export default class ProductTypeService<
     this.productTypeRepository_ = productTypeRepository
   }
 
+  @InjectManager("productTypeRepository_")
   async retrieve(
     productTypeId: string,
     config: FindConfig<ProductTypes.ProductTypeDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
     return (await retrieveEntity<
       ProductType,
@@ -48,10 +50,11 @@ export default class ProductTypeService<
     })) as TEntity
   }
 
+  @InjectManager("productTypeRepository_")
   async list(
     filters: ProductTypes.FilterableProductTypeProps = {},
     config: FindConfig<ProductTypes.ProductTypeDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await this.productTypeRepository_.find(
       this.buildQueryForList(filters, config),
@@ -59,10 +62,11 @@ export default class ProductTypeService<
     )) as TEntity[]
   }
 
+  @InjectManager("productTypeRepository_")
   async listAndCount(
     filters: ProductTypes.FilterableProductTypeProps = {},
     config: FindConfig<ProductTypes.ProductTypeDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     return (await this.productTypeRepository_.findAndCount(
       this.buildQueryForList(filters, config),
