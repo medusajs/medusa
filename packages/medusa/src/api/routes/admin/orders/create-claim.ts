@@ -22,12 +22,16 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/claims
  * operationId: "PostOrdersOrderClaims"
  * summary: "Create a Claim"
- * description: "Creates a Claim."
+ * description: "Create a Claim for an order. If a return shipping method is specified, a return will also be created and associated with the claim. If the claim's type is `refund`,
+ *  the refund is processed as well."
+ * externalDocs:
+ *   description: How are claims created
+ *   url: https://docs.medusajs.com/modules/orders/claims#how-are-claims-created
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
- *   - (query) expand {string} Comma separated list of relations to include in the result.
- *   - (query) fields {string} Comma separated list of fields to include in the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -43,7 +47,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.createClaim(order_id, {
+ *       medusa.admin.orders.createClaim(orderId, {
  *         type: 'refund',
  *         claim_items: [
  *           {
@@ -58,9 +62,9 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/claims' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/claims' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "type": "refund",
  *           "claim_items": [
@@ -341,7 +345,7 @@ export default async (req, res) => {
  *             - production_failure
  *             - other
  *         tags:
- *           description: A list o tags to add to the Claim Item
+ *           description: A list of tags to add to the Claim Item
  *           type: array
  *           items:
  *             type: string
@@ -350,7 +354,7 @@ export default async (req, res) => {
  *           items:
  *             type: string
  *   return_shipping:
- *      description: Optional details for the Return Shipping Method, if the items are to be sent back.
+ *      description: Optional details for the Return Shipping Method, if the items are to be sent back. Providing this field will result in a return being created and associated with the claim.
  *      type: object
  *      properties:
  *        option_id:
@@ -360,7 +364,7 @@ export default async (req, res) => {
  *          type: integer
  *          description: The price to charge for the Shipping Method.
  *   additional_items:
- *      description: The new items to send to the Customer when the Claim type is Replace.
+ *      description: The new items to send to the Customer. This is only used if the claim's type is `replace`.
  *      type: array
  *      items:
  *        type: object
@@ -369,13 +373,13 @@ export default async (req, res) => {
  *          - quantity
  *        properties:
  *          variant_id:
- *            description: The ID of the Product Variant to ship.
+ *            description: The ID of the Product Variant.
  *            type: string
  *          quantity:
- *            description: The quantity of the Product Variant to ship.
+ *            description: The quantity of the Product Variant.
  *            type: integer
  *   shipping_methods:
- *      description: The Shipping Methods to send the additional Line Items with.
+ *      description: The Shipping Methods to send the additional Line Items with. This is only used if the claim's type is `replace`.
  *      type: array
  *      items:
  *         type: object
@@ -393,10 +397,10 @@ export default async (req, res) => {
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
  *   shipping_address:
- *      description: "An optional shipping address to send the claim to. Defaults to the parent order's shipping address"
+ *      description: "An optional shipping address to send the claimed items to. If not provided, the parent order's shipping address will be used."
  *      $ref: "#/components/schemas/AddressPayload"
  *   refund_amount:
- *      description: The amount to refund the Customer when the Claim type is `refund`.
+ *      description: The amount to refund the customer. This is used when the claim's type is `refund`.
  *      type: integer
  *   no_notification:
  *      description: If set to true no notification will be send related to this Claim.

@@ -21,7 +21,7 @@ export class ProductTag extends SoftDeletableEntity {
 /**
  * @schema ProductTag
  * title: "Product Tag"
- * description: "Product Tags can be added to Products for easy filtering and grouping."
+ * description: "A Product Tag can be added to Products for easy filtering and grouping."
  * type: object
  * required:
  *   - created_at

@@ -40,7 +40,7 @@ export class DiscountConditionProduct {
 /**
  * @schema DiscountConditionProduct
  * title: "Product Discount Condition"
- * description: "Associates a discount condition with a product"
+ * description: "This represents the association between a discount condition and a product"
  * type: object
  * required:
  *   - condition_id
@@ -58,11 +58,13 @@ export class DiscountConditionProduct {
  *     type: string
  *     example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   product:
- *     description: Available if the relation `product` is expanded.
+ *     description: The details of the product.
+ *     x-expandable: "product"
  *     nullable: true
  *     $ref: "#/components/schemas/Product"
  *   discount_condition:
- *     description: Available if the relation `discount_condition` is expanded.
+ *     description: The details of the discount condition.
+ *     x-expandable: "discount_condition"
  *     nullable: true
  *     $ref: "#/components/schemas/DiscountCondition"
  *   created_at:

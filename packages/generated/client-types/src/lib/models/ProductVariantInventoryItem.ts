@@ -6,7 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { ProductVariant } from "./ProductVariant"
 
 /**
- * Product Variant Inventory Items link variants with inventory items and denote the number of inventory items constituting a variant.
+ * A Product Variant Inventory Item links variants with inventory items and denotes the required quantity of the variant.
  */
 export interface ProductVariantInventoryItem {
   /**
@@ -22,11 +22,11 @@ export interface ProductVariantInventoryItem {
    */
   variant_id: string
   /**
-   * A ProductVariant object. Available if the relation `variant` is expanded.
+   * The details of the product variant.
    */
   variant?: ProductVariant | null
   /**
-   * The quantity of an inventory item required for one quantity of the variant.
+   * The quantity of an inventory item required for the variant.
    */
   required_quantity: number
   /**

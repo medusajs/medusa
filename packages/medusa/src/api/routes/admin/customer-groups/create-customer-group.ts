@@ -9,7 +9,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/customer-groups
  * operationId: "PostCustomerGroups"
  * summary: "Create a Customer Group"
- * description: "Creates a CustomerGroup."
+ * description: "Creates a Customer Group."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -26,7 +26,7 @@ import { validator } from "../../../../utils/validator"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.customerGroups.create({
- *         name: 'VIP'
+ *         name: "VIP"
  *       })
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
@@ -34,9 +34,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/customer-groups' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/customer-groups' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "VIP"
  *       }'
@@ -96,7 +96,7 @@ export default async (req: Request, res: Response) => {
  *     description: Name of the customer group
  *   metadata:
  *     type: object
- *     description: Metadata for the customer.
+ *     description: Metadata of the customer group.
  */
 export class AdminPostCustomerGroupsReq {
   @IsString()

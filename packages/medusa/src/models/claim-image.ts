@@ -37,7 +37,7 @@ export class ClaimImage extends SoftDeletableEntity {
 /**
  * @schema ClaimImage
  * title: "Claim Image"
- * description: "Represents photo documentation of a claim."
+ * description: "The details of an image attached to a claim."
  * type: object
  * required:
  *   - claim_item_id
@@ -56,8 +56,9 @@ export class ClaimImage extends SoftDeletableEntity {
  *     description: The ID of the claim item associated with the image
  *     type: string
  *   claim_item:
- *     description: A claim item object. Available if the relation `claim_item` is expanded.
+ *     description: The details of the claim item this image is associated with.
  *     nullable: true
+ *     x-expandable: "claim_item"
  *     $ref: "#/components/schemas/ClaimItem"
  *   url:
  *     description: The URL of the image

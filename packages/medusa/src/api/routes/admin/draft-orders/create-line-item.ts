@@ -19,7 +19,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/draft-orders/{id}/line-items
  * operationId: "PostDraftOrdersDraftOrderLineItems"
  * summary: "Create a Line Item"
- * description: "Creates a Line Item for the Draft Order"
+ * description: "Create a Line Item in the Draft Order."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Draft Order.
@@ -37,7 +37,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.draftOrders.addLineItem(draft_order_id, {
+ *       medusa.admin.draftOrders.addLineItem(draftOrderId, {
  *         quantity: 1
  *       })
  *       .then(({ draft_order }) => {
@@ -46,9 +46,9 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/draft-orders/{id}/line-items' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/draft-orders/{id}/line-items' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "quantity": 1
  *       }'
@@ -152,17 +152,17 @@ export default async (req, res) => {
  *   - quantity
  * properties:
  *   variant_id:
- *     description: The ID of the Product Variant to generate the Line Item from.
+ *     description: The ID of the Product Variant associated with the line item. If the line item is custom, the `variant_id` should be omitted.
  *     type: string
  *   unit_price:
- *     description: The potential custom price of the item.
+ *     description: The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.
  *     type: integer
  *   title:
- *     description: The potential custom title of the item.
+ *     description: The title of the line item if `variant_id` is not provided.
  *     type: string
  *     default: "Custom item"
  *   quantity:
- *     description: The quantity of the Line Item.
+ *     description: The quantity of the line item.
  *     type: integer
  *   metadata:
  *     description: The optional key-value map with additional details about the Line Item.

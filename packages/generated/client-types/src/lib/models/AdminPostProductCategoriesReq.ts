@@ -5,23 +5,23 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostProductCategoriesReq {
   /**
-   * The name to identify the Product Category by.
+   * The name of the product category
    */
   name: string
   /**
-   * An optional text field to describe the Product Category by.
+   * The description of the product category.
    */
   description?: string
   /**
-   * An optional handle to be used in slugs, if none is provided we will kebab-case the title.
+   * The handle of the product category. If none is provided, the kebab-case version of the name will be used. This field can be used as a slug in URLs.
    */
   handle?: string
   /**
-   * A flag to make product category an internal category for admins
+   * If set to `true`, the product category will only be available to admins.
    */
   is_internal?: boolean
   /**
-   * A flag to make product category visible/hidden in the store front
+   * If set to `false`, the product category will not be available in the storefront.
    */
   is_active?: boolean
   /**

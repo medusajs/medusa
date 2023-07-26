@@ -9,7 +9,7 @@ export interface AdminPostOrdersOrderSwapsSwapFulfillmentsReq {
    */
   metadata?: Record<string, any>
   /**
-   * If set to true no notification will be send related to this Claim.
+   * If set to `true`, no notification will be sent to the customer related to this swap.
    */
   no_notification?: boolean
 }

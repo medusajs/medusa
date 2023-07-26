@@ -7,11 +7,11 @@ import type { AddressPayload } from "./AddressPayload"
 
 export interface StorePostCartsCartReq {
   /**
-   * The id of the Region to create the Cart in.
+   * The ID of the Region to create the Cart in. Setting the cart's region can affect the pricing of the items in the cart as well as the used currency.
    */
   region_id?: string
   /**
-   * The 2 character ISO country code to create the Cart in.
+   * The 2 character ISO country code to create the Cart in. Setting this parameter will set the country code of the shipping address.
    */
   country_code?: string
   /**
@@ -19,7 +19,7 @@ export interface StorePostCartsCartReq {
    */
   email?: string
   /**
-   * The ID of the Sales channel to update the Cart with.
+   * The ID of the Sales channel to create the Cart in. The cart's sales channel affects which products can be added to the cart. If a product does not exist in the cart's sales channel, it cannot be added to the cart. If you add a publishable API key in the header of this request and specify a sales channel ID, the specified sales channel must be within the scope of the publishable API key's resources.
    */
   sales_channel_id?: string
   /**
@@ -27,7 +27,7 @@ export interface StorePostCartsCartReq {
    */
   billing_address?: AddressPayload | string
   /**
-   * The Address to be used for shipping.
+   * The Address to be used for shipping purposes.
    */
   shipping_address?: AddressPayload | string
   /**
@@ -35,7 +35,7 @@ export interface StorePostCartsCartReq {
    */
   gift_cards?: Array<{
     /**
-     * The code that a Gift Card is identified by.
+     * The code of a gift card.
      */
     code: string
   }>
@@ -44,7 +44,7 @@ export interface StorePostCartsCartReq {
    */
   discounts?: Array<{
     /**
-     * The code that a Discount is identified by.
+     * The code of the discount.
      */
     code: string
   }>
@@ -53,7 +53,7 @@ export interface StorePostCartsCartReq {
    */
   customer_id?: string
   /**
-   * An optional object to provide context to the Cart.
+   * An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`
    */
   context?: Record<string, any>
 }

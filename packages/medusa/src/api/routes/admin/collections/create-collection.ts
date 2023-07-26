@@ -8,7 +8,7 @@ import { defaultAdminCollectionsRelations } from "."
  * @oas [post] /admin/collections
  * operationId: "PostCollections"
  * summary: "Create a Collection"
- * description: "Creates a Product Collection."
+ * description: "Create a Product Collection."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -25,7 +25,7 @@ import { defaultAdminCollectionsRelations } from "."
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.collections.create({
- *         title: 'New Collection'
+ *         title: "New Collection"
  *       })
  *       .then(({ collection }) => {
  *         console.log(collection.id);
@@ -33,9 +33,9 @@ import { defaultAdminCollectionsRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/collections' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/collections' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "New Collection"
  *       }'
@@ -43,7 +43,7 @@ import { defaultAdminCollectionsRelations } from "."
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Collections
+ *   - Product Collections
  * responses:
  *  "200":
  *    description: OK
@@ -93,10 +93,10 @@ export default async (req: Request, res: Response) => {
  * properties:
  *   title:
  *     type: string
- *     description:  The title to identify the Collection by.
+ *     description: The title of the collection.
  *   handle:
  *     type: string
- *     description:  An optional handle to be used in slugs, if none is provided we will kebab-case the title.
+ *     description: An optional handle to be used in slugs. If none is provided, the kebab-case version of the title will be used.
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object

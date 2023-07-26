@@ -8,7 +8,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/shipping-profiles
  * operationId: "PostShippingProfiles"
  * summary: "Create a Shipping Profile"
- * description: "Creates a Shipping Profile"
+ * description: "Create a Shipping Profile."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -25,7 +25,7 @@ import { validator } from "../../../../utils/validator"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.shippingProfiles.create({
- *         name: 'Large Products'
+ *         name: "Large Products"
  *       })
  *       .then(({ shipping_profile }) => {
  *         console.log(shipping_profile.id);
@@ -33,9 +33,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/shipping-profiles' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/shipping-profiles' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "Large Products"
  *       }'

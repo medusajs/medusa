@@ -9,7 +9,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/users/{id}
  * operationId: "PostUsersUser"
  * summary: "Update a User"
- * description: "Updates a User"
+ * description: "Update an admin user's details."
  * parameters:
  *   - (path) id=* {string} The ID of the User.
  * x-authenticated: true
@@ -27,8 +27,8 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.users.update(user_id, {
- *         first_name: 'Marcellus'
+ *       medusa.admin.users.update(userId, {
+ *         first_name: "Marcellus"
  *       })
  *       .then(({ user }) => {
  *         console.log(user.id);
@@ -36,9 +36,9 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/users/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/users/{id}' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "first_name": "Marcellus"
  *       }'
@@ -88,17 +88,17 @@ export default async (req, res) => {
  * type: object
  * properties:
  *   first_name:
- *     description: "The name of the User."
+ *     description: "The first name of the User."
  *     type: string
  *   last_name:
- *     description: "The name of the User."
+ *     description: "The last name of the User."
  *     type: string
  *   role:
- *     description: "Userrole assigned to the user."
+ *     description: "The role assigned to the user. These roles don't provide any different privileges."
  *     type: string
  *     enum: [admin, member, developer]
  *   api_token:
- *     description: "The api token of the User."
+ *     description: "The API token of the User."
  *     type: string
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.

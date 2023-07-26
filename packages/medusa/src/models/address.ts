@@ -69,7 +69,7 @@ export class Address extends SoftDeletableEntity {
 /**
  * @schema Address
  * title: "Address"
- * description: "An address."
+ * description: "An address is used across the Medusa backend within other schemas and object types. For example, a customer's billing and shipping addresses both use the Address entity."
  * type: object
  * required:
  *   - address_1
@@ -141,7 +141,8 @@ export class Address extends SoftDeletableEntity {
  *      description: See a list of codes.
  *    example: st
  *  country:
- *    description: A country object. Available if the relation `country` is expanded.
+ *    description: A country object.
+ *    x-expandable: "country"
  *    nullable: true
  *    $ref: "#/components/schemas/Country"
  *  province:

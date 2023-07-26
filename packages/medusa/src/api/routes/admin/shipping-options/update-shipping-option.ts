@@ -21,7 +21,7 @@ import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
  * @oas [post] /admin/shipping-options/{id}
  * operationId: "PostShippingOptionsOption"
  * summary: "Update Shipping Option"
- * description: "Updates a Shipping Option"
+ * description: "Update a Shipping Option's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Shipping Option.
@@ -39,12 +39,12 @@ import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.shippingOptions.update(option_id, {
- *         name: 'PostFake',
+ *       medusa.admin.shippingOptions.update(optionId, {
+ *         name: "PostFake",
  *         requirements: [
  *           {
  *             id,
- *             type: 'max_subtotal',
+ *             type: "max_subtotal",
  *             amount: 1000
  *           }
  *         ]
@@ -55,9 +55,9 @@ import { UpdateShippingOptionInput } from "../../../../types/shipping-options"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/shipping-options/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/shipping-options/{id}' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "requirements": [
  *             {
@@ -138,10 +138,10 @@ class OptionRequirement {
  *     description: "The name of the Shipping Option"
  *     type: string
  *   amount:
- *     description: "The amount to charge for the Shipping Option."
+ *     description: "The amount to charge for the Shipping Option. If the `price_type` of the shipping option is `calculated`, this amount will not actually be used."
  *     type: integer
  *   admin_only:
- *     description: "If true, the option can be used for draft orders"
+ *     description: If set to `true`, the shipping option can only be used when creating draft orders.
  *     type: boolean
  *   metadata:
  *     description: "An optional set of key-value pairs with additional information."
@@ -156,7 +156,7 @@ class OptionRequirement {
  *         - amount
  *       properties:
  *         id:
- *           description: The ID of the requirement
+ *           description: The ID of an existing requirement. If an ID is passed, the existing requirement's details are updated. Otherwise, a new requirement is created.
  *           type: string
  *         type:
  *           description: The type of the requirement
@@ -168,7 +168,8 @@ class OptionRequirement {
  *           description: The amount to compare with.
  *           type: integer
  *   includes_tax:
- *     description: "[EXPERIMENTAL] Tax included in prices of shipping option"
+ *     description: "Tax included in prices of shipping option"
+ *     x-featureFlag: "tax_inclusive_pricing"
  *     type: boolean
  */
 export class AdminPostShippingOptionsOptionReq {

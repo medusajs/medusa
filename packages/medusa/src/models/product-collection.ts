@@ -35,7 +35,7 @@ export class ProductCollection extends SoftDeletableEntity {
 /**
  * @schema ProductCollection
  * title: "Product Collection"
- * description: "Product Collections represents a group of Products that are related."
+ * description: "A Product Collection allows grouping together products for promotional purposes. For example, an admin can create a Summer collection, add products to it, and showcase it on the storefront."
  * type: object
  * required:
  *   - created_at
@@ -60,8 +60,9 @@ export class ProductCollection extends SoftDeletableEntity {
  *     type: string
  *     example: summer-collection
  *   products:
- *     description: The Products contained in the Product Collection. Available if the relation `products` is expanded.
+ *     description: The details of the products that belong to this product collection.
  *     type: array
+ *     x-expandable: "products"
  *     items:
  *       $ref: "#/components/schemas/Product"
  *   created_at:

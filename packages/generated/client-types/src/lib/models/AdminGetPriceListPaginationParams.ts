@@ -5,47 +5,51 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetPriceListPaginationParams {
   /**
-   * The number of items to get
+   * Limit the number of price lists returned.
    */
   limit?: number
   /**
-   * The offset at which to get items
+   * The number of price lists to skip when retrieving the price lists.
    */
   offset?: number
   /**
-   * (Comma separated) Which fields should be expanded in each item of the result.
+   * Comma-separated relations that should be expanded in the returned price lists.
    */
   expand?: string
   /**
-   * field to order results by.
+   * Comma-separated fields that should be included in the returned price lists.
+   */
+  fields?: string
+  /**
+   * A price-list field to sort-order the retrieved price lists by.
    */
   order?: string
   /**
-   * ID to search for.
+   * Filter by ID
    */
   id?: string
   /**
-   * query to search in price list description, price list name, and customer group name fields.
+   * term to search price lists' description, name, and customer group's name.
    */
   q?: string
   /**
-   * Status to search for.
+   * Filter by status.
    */
   status?: Array<"active" | "draft">
   /**
-   * price list name to search for.
+   * Filter by name
    */
   name?: string
   /**
-   * Customer Group IDs to search for.
+   * Filter by customer-group IDs.
    */
   customer_groups?: Array<string>
   /**
-   * Type to search for.
+   * Filter by type.
    */
   type?: Array<"sale" | "override">
   /**
-   * Date comparison for when resulting price lists were created.
+   * Filter by a creation date range.
    */
   created_at?: {
     /**
@@ -66,7 +70,7 @@ export interface AdminGetPriceListPaginationParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting price lists were updated.
+   * Filter by an update date range.
    */
   updated_at?: {
     /**
@@ -87,7 +91,7 @@ export interface AdminGetPriceListPaginationParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting price lists were deleted.
+   * Filter by a deletion date range.
    */
   deleted_at?: {
     /**

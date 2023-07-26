@@ -5,23 +5,23 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetCurrenciesParams {
   /**
-   * Code of the currency to search for.
+   * filter by currency code.
    */
   code?: string
   /**
-   * Search for tax inclusive currencies.
+   * filter currencies by whether they include taxes or not.
    */
   includes_tax?: boolean
   /**
-   * order to retrieve products in.
+   * A field to sort order the retrieved currencies by.
    */
   order?: string
   /**
-   * How many products to skip in the result.
+   * The number of currencies to skip when retrieving the currencies.
    */
   offset?: number
   /**
-   * Limit the number of products returned.
+   * The number of currencies to return.
    */
   limit?: number
 }

@@ -5,51 +5,71 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StoreGetCustomersCustomerOrdersParams {
   /**
-   * Query used for searching orders.
+   * term to search orders' display ID, email, shipping address's first name, customer's first name, customer's last name, and customer's phone number.
    */
   q?: string
   /**
-   * Id of the order to search for.
+   * Filter by ID.
    */
   id?: string
   /**
-   * Status to search for.
+   * Filter by status.
    */
-  status?: Array<string>
+  status?: Array<
+    "pending" | "completed" | "archived" | "canceled" | "requires_action"
+  >
   /**
    * Fulfillment status to search for.
    */
-  fulfillment_status?: Array<string>
+  fulfillment_status?: Array<
+    | "not_fulfilled"
+    | "partially_fulfilled"
+    | "fulfilled"
+    | "partially_shipped"
+    | "shipped"
+    | "partially_returned"
+    | "returned"
+    | "canceled"
+    | "requires_action"
+  >
   /**
    * Payment status to search for.
    */
-  payment_status?: Array<string>
+  payment_status?: Array<
+    | "not_paid"
+    | "awaiting"
+    | "captured"
+    | "partially_refunded"
+    | "refunded"
+    | "canceled"
+    | "requires_action"
+  >
   /**
-   * Display id to search for.
+   * Filter by display ID.
    */
   display_id?: string
   /**
-   * to search for.
+   * Filter by cart ID.
    */
   cart_id?: string
   /**
-   * to search for.
+   * Filter by email.
    */
   email?: string
   /**
-   * to search for.
+   * Filter by region ID.
    */
   region_id?: string
   /**
-   * The 3 character ISO currency code to set prices based on.
+   * Filter by the 3 character ISO currency code of the order.
    */
   currency_code?: string
   /**
-   * to search for.
+   * Filter by tax rate.
    */
   tax_rate?: string
   /**
-   * Date comparison for when resulting collections were created.
+   * Filter by a creation date range.
    */
   created_at?: {
     /**
@@ -70,7 +90,7 @@ export interface StoreGetCustomersCustomerOrdersParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting collections were updated.
+   * Filter by an update date range.
    */
   updated_at?: {
     /**
@@ -91,7 +111,7 @@ export interface StoreGetCustomersCustomerOrdersParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting collections were canceled.
+   * Filter by a cancelation date range.
    */
   canceled_at?: {
     /**
@@ -112,19 +132,19 @@ export interface StoreGetCustomersCustomerOrdersParams {
     gte?: string
   }
   /**
-   * How many orders to return.
+   * Limit the number of orders returned.
    */
   limit?: number
   /**
-   * The offset in the resulting orders.
+   * The number of orders to skip when retrieving the orders.
    */
   offset?: number
   /**
-   * (Comma separated string) Which fields should be included in the resulting orders.
-   */
-  fields?: string
-  /**
-   * (Comma separated string) Which relations should be expanded in the resulting orders.
+   * Comma-separated relations that should be expanded in the returned orders.
    */
   expand?: string
+  /**
+   * Comma-separated fields that should be included in the returned orders.
+   */
+  fields?: string
 }

@@ -70,6 +70,7 @@ export const defaultStoreSwapFields: FindConfig<Swap>["select"] = [
  *   - swap
  * properties:
  *   swap:
+ *     description: "Swap details."
  *     $ref: "#/components/schemas/Swap"
  */
 export type StoreSwapsRes = {

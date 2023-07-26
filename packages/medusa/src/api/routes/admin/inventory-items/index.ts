@@ -170,6 +170,7 @@ export const defaultAdminInventoryItemRelations = []
  *   - inventory_item
  * properties:
  *   inventory_item:
+ *     description: Inventory Item details
  *     $ref: "#/components/schemas/InventoryItemDTO"
  */
 export type AdminInventoryItemsRes = {
@@ -209,6 +210,7 @@ export type AdminInventoryItemsDeleteRes = DeleteResponse
  * properties:
  *   inventory_items:
  *     type: array
+ *     description: an array of Inventory Item details
  *     items:
  *       $ref: "#/components/schemas/InventoryItemDTO"
  *   count:
@@ -216,7 +218,7 @@ export type AdminInventoryItemsDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of inventory items skipped when retrieving the inventory items.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -237,10 +239,12 @@ export type AdminInventoryItemsListRes = PaginatedResponse & {
  *     properties:
  *       location_levels:
  *         type: array
+ *         description: An array of location level details
  *         items:
  *           $ref: "#/components/schemas/InventoryLevelDTO"
  *       variants:
  *         type: array
+ *         description: An array of product variant details
  *         items:
  *           $ref: "#/components/schemas/ProductVariant"
  *       stocked_quantity:
@@ -268,6 +272,7 @@ export type DecoratedInventoryItemDTO = InventoryItemDTO & {
  * properties:
  *   inventory_items:
  *     type: array
+ *     description: an array of Inventory Item details
  *     items:
  *       $ref: "#/components/schemas/DecoratedInventoryItemDTO"
  *   count:
@@ -275,7 +280,7 @@ export type DecoratedInventoryItemDTO = InventoryItemDTO & {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of inventory items skipped when retrieving the inventory items.
  *   limit:
  *     type: integer
  *     description: The number of items per page

@@ -6,9 +6,11 @@ import { PaymentProvider } from "../../../../models"
 /**
  * @oas [get] /store/customers/me/payment-methods
  * operationId: GetCustomersCustomerPaymentMethods
- * summary: Get Payment Methods
- * description: "Retrieves a list of a Customer's saved payment methods. Payment methods are saved with Payment Providers and it is their responsibility to fetch saved methods."
+ * summary: Get Saved Payment Methods
+ * description: "Retrieve the logged-in customer's saved payment methods. This endpoint only works with payment providers created with the deprecated Payment Service interface.
+ *  The payment methods are saved using the Payment Service's third-party service, and not on the Medusa backend. So, they're retrieved from the third-party service."
  * x-authenticated: true
+ * deprecated: true
  * x-codegen:
  *   method: listPaymentMethods
  * x-codeSamples:
@@ -25,8 +27,8 @@ import { PaymentProvider } from "../../../../models"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/customers/me/payment-methods' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl 'https://medusa-url.com/store/customers/me/payment-methods' \
+ *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
  * tags:

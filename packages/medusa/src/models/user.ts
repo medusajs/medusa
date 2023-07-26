@@ -48,7 +48,7 @@ export class User extends SoftDeletableEntity {
 /**
  * @schema User
  * title: "User"
- * description: "Represents a User who can manage store settings."
+ * description: "A User is an administrator who can manage store settings and data."
  * type: object
  * required:
  *   - api_token

@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminDeleteDiscountsDiscountConditionsConditionBatchReq {
   /**
-   * The resources to be deleted from the discount condition
+   * The resources to be removed from the discount condition
    */
   resources: Array<{
     /**

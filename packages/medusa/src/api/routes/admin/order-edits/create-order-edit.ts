@@ -11,7 +11,7 @@ import {
  * @oas [post] /admin/order-edits
  * operationId: "PostOrderEdits"
  * summary: "Create an OrderEdit"
- * description: "Creates an OrderEdit."
+ * description: "Create an Order Edit."
  * requestBody:
  *   content:
  *     application/json:
@@ -27,16 +27,16 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.create({ order_id })
+ *       medusa.admin.orderEdits.create({ orderId })
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id)
  *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/order-edits' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/order-edits' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{ "order_id": "my_order_id", "internal_note": "my_optional_note" }'
  * security:
  *   - api_token: []
@@ -99,7 +99,7 @@ export default async (req: Request, res: Response) => {
  *     description: The ID of the order to create the edit for.
  *     type: string
  *   internal_note:
- *     description: An optional note to create for the order edit.
+ *     description: An optional note to associate with the order edit.
  *     type: string
  */
 export class AdminPostOrderEditsReq {

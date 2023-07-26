@@ -7,8 +7,8 @@ import { SalesChannelLocationService } from "../../../../services"
 /**
  * @oas [delete] /admin/sales-channels/{id}/stock-locations
  * operationId: "DeleteSalesChannelsSalesChannelStockLocation"
- * summary: "Remove a Stock Location Association"
- * description: "Removes a stock location from a Sales Channel."
+ * summary: "Remove Stock Location from Sales Channels."
+ * description: "Remove a stock location from a Sales Channel. This only removes the association between the stock location and the sales channel. It does not delete the stock location."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Sales Channel.
@@ -27,7 +27,7 @@ import { SalesChannelLocationService } from "../../../../services"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.salesChannels.removeLocation(salesChannelId, {
- *         location_id: 'loc_id'
+ *         location_id: "loc_id"
  *       })
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
@@ -35,9 +35,9 @@ import { SalesChannelLocationService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/sales-channels/{id}/stock-locations' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE 'https://medusa-url.com/admin/sales-channels/{id}/stock-locations' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "locaton_id": "loc_id"
  *       }'
