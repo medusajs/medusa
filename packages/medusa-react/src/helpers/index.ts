@@ -1,6 +1,6 @@
 import { ProductVariantInfo, RegionInfo } from "../types"
 import { isEmpty } from "../utils"
-import { currencies } from "@medusajs/medusa/packages/medusa/src/utils/currencies"
+import { currencies } from "@medusajs/medusa"
 
 type FormatVariantPriceParams = {
   variant: ProductVariantInfo
