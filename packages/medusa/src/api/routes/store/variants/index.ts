@@ -18,7 +18,7 @@ export default (app) => {
 
   route.get(
     "/",
-    withDefaultSalesChannel({}),
+    withDefaultSalesChannel(),
     transformStoreQuery(StoreGetVariantsParams, {
       defaultRelations: defaultStoreVariantRelations,
       allowedRelations: allowedStoreVariantRelations,
@@ -28,7 +28,7 @@ export default (app) => {
   )
   route.get(
     "/:id",
-    withDefaultSalesChannel({}),
+    withDefaultSalesChannel(),
     transformStoreQuery(StoreGetVariantsVariantParams, {
       defaultRelations: defaultStoreVariantRelations,
       allowedRelations: allowedStoreVariantRelations,
