@@ -524,18 +524,20 @@ function EditPricesTable(props: EditPricesTableProps) {
 
         ret = "\t" + Object.keys(columns).join("\t")
 
-        Object.keys(variants).forEach((k) => {
-          const variant = props.product.variants!.find((v) => v.id === k)
+        Object.keys(variants)
+          .sort((v1, v2) => variantIds.indexOf(v1) - variantIds.indexOf(v2))
+          .forEach((k) => {
+            const variant = props.product.variants!.find((v) => v.id === k)
 
-          ret += `\n${variant.title}\t`
-          Object.keys(columns).forEach((c) => {
-            const price = editedPrices[getKey(k, c)]
+            ret += `\n${variant.title}\t`
+            Object.keys(columns).forEach((c) => {
+              const price = editedPrices[getKey(k, c)]
 
-            ret += (!isNaN(price) ? price : "") + "\t"
+              ret += (!isNaN(price) ? price : "") + "\t"
+            })
+
+            ret = ret.slice(0, -1)
           })
-
-          ret = ret.slice(0, -1)
-        })
 
         navigator.clipboard.writeText(ret)
       }
