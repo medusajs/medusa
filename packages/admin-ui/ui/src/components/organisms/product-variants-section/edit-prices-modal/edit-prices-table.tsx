@@ -533,6 +533,8 @@ function EditPricesTable(props: EditPricesTableProps) {
 
             ret += (!isNaN(price) ? price : "") + "\t"
           })
+
+          ret = ret.slice(0, -1)
         })
 
         navigator.clipboard.writeText(ret)
