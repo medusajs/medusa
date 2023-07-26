@@ -38,6 +38,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     findOptions: DAL.FindOptions<Product> = { where: {} },
     context: Context = {}
   ): Promise<Product[]> {
+    // TODO: use the getter method (getActiveManager)
     const manager = (context.transactionManager ??
       this.manager_) as SqlEntityManager
 
@@ -89,6 +90,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     findOptions: DAL.FindOptions<Product> = { where: {} },
     context: Context = {}
   ): Promise<void> {
+    // TODO: use the getter method (getActiveManager)
     const manager = (context.transactionManager ??
       this.manager_) as SqlEntityManager
 
@@ -155,7 +157,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     let tagIds: string[] = []
     let collectionIds: string[] = []
     let typeIds: string[] = []
-
+    // TODO: use the getter method (getActiveManager)
     const manager = (context.transactionManager ??
       this.manager_) as SqlEntityManager
 
