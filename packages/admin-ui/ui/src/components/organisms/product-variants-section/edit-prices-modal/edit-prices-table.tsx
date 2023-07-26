@@ -559,7 +559,10 @@ function EditPricesTable(props: EditPricesTableProps) {
       const rows = paste.trim().split("\n")
 
       // single cell click -> determine from the content
-      if (startIndex === endIndex) {
+      if (
+        typeof anchorIndex === "number" &&
+        typeof anchorIndexCol === "number"
+      ) {
         const _edited = { ...editedPrices }
 
         for (let indx = 0; indx < rows.length; indx++) {
@@ -570,41 +573,18 @@ function EditPricesTable(props: EditPricesTableProps) {
           const r = rows[indx]
           const parts = r.split("\t")
 
-          if (parts.length === 1) {
-            // assume price only
-            const amount = parseFloat(parts[0])
+          for (let j = 0; j < columns.length; j++) {
+            if (j >= columns.length) {
+              break
+            }
 
+            const amount = parseFloat(parts[j])
             _edited[
-              getKey(variantIds[startIndex + indx], anchorCurrencyOrRegion)
+              getKey(variantIds[startIndex + indx], columns[startIndexCol + j])
             ] = !isNaN(amount) ? amount : undefined
           }
         }
 
-        setEditedPrices(_edited)
-      }
-
-      // range is selected, fill that range
-      if (startIndex < endIndex) {
-        const _edited = { ...editedPrices }
-        for (let i = startIndex!; i <= endIndex; i++) {
-          if (rows.length <= i) {
-            break
-          }
-
-          const r = rows[i]
-          const parts = r.split("\t")
-
-          // assume price only
-          if (parts.length === 1) {
-            const amount = parseFloat(parts[0])
-
-            _edited[getKey(variantIds[i], anchorCurrencyOrRegion)] = !isNaN(
-              amount
-            )
-              ? amount
-              : undefined
-          }
-        }
         setEditedPrices(_edited)
       }
     }
