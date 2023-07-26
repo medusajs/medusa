@@ -128,7 +128,7 @@ export const formatAmount = ({
 
 const convertToDecimal = (amount: number, region: RegionInfo) => {
   const divisor = 100;
-  const currencyInfo = currencies[region];
+  const currencyInfo = currencies[region.currency_code.toUpperCase()];
   if (currencyInfo) {
     divisor = 10 ** currencyInfo.decimal_digits;
   }
