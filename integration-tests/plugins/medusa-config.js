@@ -47,14 +47,14 @@ module.exports = {
     },
     productModuleService: {
       scope: "internal",
-      resources: "isolated",
+      resources: "shared",
       resolve: "@medusajs/product",
-      options: {
+      /* options: {
         database: {
           clientUrl: DB_URL,
           debug: false,
         },
-      },
+      },*/
     },
   },
 }

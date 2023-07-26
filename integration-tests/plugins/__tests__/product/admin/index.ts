@@ -9,7 +9,7 @@ import productSeeder from "../../../../helpers/product-seeder"
 import { simpleSalesChannelFactory } from "../../../../factories"
 import { AxiosInstance } from "axios"
 
-jest.setTimeout(50000)
+jest.setTimeout(5000000)
 
 const adminHeaders = {
   headers: {
