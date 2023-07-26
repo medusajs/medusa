@@ -36,8 +36,10 @@ export class StockLocationRepostiory extends AbstractBaseRepository<StockLocatio
     options?: FindOptions<StockLocation> | undefined,
     context: Context = {}
   ): Promise<[StockLocation[], number]> {
-    const manager = (context.transactionManager ??
+    let manager = (context.transactionManager ??
       this.manager_) as SqlEntityManager
+    // TODO: update it with the injectManager when its merged
+    manager = manager.fork()
 
     const findOptions_ = { ...options }
     findOptions_.options ??= {}
