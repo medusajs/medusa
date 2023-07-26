@@ -146,6 +146,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     return products
   }
 
+  @InjectTransactionManager()
   async update(
     data: WithRequiredProperty<ProductServiceTypes.UpdateProductDTO, "id">[],
     context: Context = {}

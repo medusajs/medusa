@@ -548,25 +548,25 @@ export default class ProductModuleService<
 
     const promises: Promise<any>[] = []
 
-    promises.push(
-      ...[...productVariantsToCreateMap].map(async ([productId, variants]) => {
-        return this.productVariantService_.create(
+    productVariantsToCreateMap.forEach((variants, productId) => {
+      promises.push(
+        this.productVariantService_.create(
           productByIdMap.get(productId)!,
           variants as unknown as ProductTypes.CreateProductVariantOnlyDTO[],
           sharedContext
         )
-      })
-    )
+      )
+    })
 
-    promises.push(
-      ...[...productVariantsToUpdateMap].map(async ([productId, variants]) => {
-        return this.productVariantService_.update(
+    productVariantsToUpdateMap.forEach((variants, productId) => {
+      promises.push(
+        this.productVariantService_.update(
           productByIdMap.get(productId)!,
           variants as unknown as ProductVariantServiceTypes.UpdateProductVariantDTO[],
           sharedContext
         )
-      })
-    )
+      )
+    })
 
     if (productVariantIdsToDelete.length) {
       promises.push(
@@ -581,7 +581,7 @@ export default class ProductModuleService<
 
   protected async upsertAndAssignImagesToProductData(
     productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
-    @MedusaContext() sharedContext: Context = {}
+    sharedContext: Context = {}
   ) {
     if (!productData.thumbnail && productData.images?.length) {
       productData.thumbnail = isString(productData.images[0])
@@ -601,7 +601,7 @@ export default class ProductModuleService<
 
   protected async upsertAndAssignProductTagsToProductData(
     productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
-    @MedusaContext() sharedContext: Context = {}
+    sharedContext: Context = {}
   ) {
     if (productData.tags?.length) {
       productData.tags = await this.productTagService_.upsert(
@@ -613,7 +613,7 @@ export default class ProductModuleService<
 
   protected async upsertAndAssignProductTypeToProductData(
     productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
-    @MedusaContext() sharedContext: Context = {}
+    sharedContext: Context = {}
   ) {
     if (isDefined(productData.type)) {
       const productType = (
