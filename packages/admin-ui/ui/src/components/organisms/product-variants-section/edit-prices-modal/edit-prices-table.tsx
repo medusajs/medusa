@@ -89,18 +89,6 @@ function EditPricesTable(props: EditPricesTableProps) {
     {}
   )
 
-  const getSelectedKeysCross = (rows, cols) => {
-    const ret = []
-
-    rows.forEach((r) =>
-      cols.forEach((c) => {
-        ret.push(getKey(r, c))
-      })
-    )
-
-    return ret
-  }
-
   const selectCell = (
     variantId: string,
     currencyCode?: string,
@@ -592,12 +580,12 @@ function EditPricesTable(props: EditPricesTableProps) {
       ) {
         const _edited = { ...editedPrices }
 
-        for (let indx = 0; indx < rows.length; indx++) {
-          if (indx >= variantIds.length) {
+        for (let i = 0; i < rows.length; i++) {
+          if (i >= variantIds.length) {
             break
           }
 
-          const r = rows[indx]
+          const r = rows[i]
           const parts = r.split("\t")
 
           for (let j = 0; j < columns.length; j++) {
@@ -607,7 +595,7 @@ function EditPricesTable(props: EditPricesTableProps) {
 
             const amount = parseFloat(parts[j])
             _edited[
-              getKey(variantIds[startIndex + indx], columns[startIndexCol + j])
+              getKey(variantIds[startIndex + i], columns[startIndexCol + j])
             ] = !isNaN(amount) ? amount : undefined
           }
         }
