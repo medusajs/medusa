@@ -40,7 +40,7 @@ export class Invite extends SoftDeletableEntity {
 /**
  * @schema Invite
  * title: "Invite"
- * description: "Represents an invite"
+ * description: "An invite is created when an admin user invites a new user to join the store's team. Once the invite is accepted, it's deleted."
  * type: object
  * required:
  *   - accepted
@@ -63,7 +63,7 @@ export class Invite extends SoftDeletableEntity {
  *     type: string
  *     format: email
  *   role:
- *     description: The user's role.
+ *     description: The user's role. These roles don't change the privileges of the user.
  *     nullable: true
  *     type: string
  *     enum:

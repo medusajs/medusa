@@ -8,12 +8,12 @@ import { FindParams } from "../../../../types/common"
  * @oas [post] /admin/stock-locations/{id}
  * operationId: "PostStockLocationsStockLocation"
  * summary: "Update a Stock Location"
- * description: "Updates a Stock Location."
+ * description: "Update a Stock Location's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Stock Location.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned stock location.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned stock location.
  * requestBody:
  *   content:
  *     application/json:
@@ -37,9 +37,9 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/stock-locations/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/stock-locations/{id}' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "Main Warehouse"
  *       }'

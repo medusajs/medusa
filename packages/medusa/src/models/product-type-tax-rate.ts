@@ -40,7 +40,7 @@ export class ProductTypeTaxRate {
 /**
  * @schema ProductTypeTaxRate
  * title: "Product Type Tax Rate"
- * description: "Associates a tax rate with a product type to indicate that the product type is taxed in a certain way"
+ * description: "This represents the association between a tax rate and a product type to indicate that the product type is taxed in a different way than the default."
  * type: object
  * required:
  *   - created_at
@@ -54,7 +54,8 @@ export class ProductTypeTaxRate {
  *     type: string
  *     example: ptyp_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   product_type:
- *     description: Available if the relation `product_type` is expanded.
+ *     description: The details of the product type.
+ *     x-expandable: "product_type"
  *     nullable: true
  *     $ref: "#/components/schemas/ProductType"
  *   rate_id:
@@ -62,7 +63,8 @@ export class ProductTypeTaxRate {
  *     type: string
  *     example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
  *   tax_rate:
- *     description: Available if the relation `tax_rate` is expanded.
+ *     description: The details of the tax rate.
+ *     x-expandable: "tax_rate"
  *     nullable: true
  *     $ref: "#/components/schemas/TaxRate"
  *   created_at:

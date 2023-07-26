@@ -8,6 +8,9 @@ import type { ProductOption } from "./ProductOption"
 import type { ProductVariant } from "./ProductVariant"
 
 export interface StoreProductsListRes {
+  /**
+   * An array of products details.
+   */
   products: Array<
     Merge<
       SetRelation<
@@ -27,7 +30,7 @@ export interface StoreProductsListRes {
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of products skipped when retrieving the products.
    */
   offset: number
   /**

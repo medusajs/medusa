@@ -37,7 +37,7 @@ export class SalesChannel extends SoftDeletableEntity {
 /**
  * @schema SalesChannel
  * title: "Sales Channel"
- * description: "A Sales Channel"
+ * description: "A Sales Channel is a method a business offers its products for purchase for the customers. For example, a Webshop can be a sales channel, and a mobile app can be another."
  * type: object
  * required:
  *   - created_at
@@ -66,8 +66,9 @@ export class SalesChannel extends SoftDeletableEntity {
  *    type: boolean
  *    default: false
  *  locations:
- *    description: The Stock Locations related to the sales channel. Available if the relation `locations` is expanded.
+ *    description: The details of the stock locations related to the sales channel.
  *    type: array
+ *    x-expandable: "locations"
  *    items:
  *      $ref: "#/components/schemas/SalesChannelLocation"
  *  created_at:

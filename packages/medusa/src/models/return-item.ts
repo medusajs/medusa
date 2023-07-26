@@ -50,7 +50,7 @@ export class ReturnItem {
 /**
  * @schema ReturnItem
  * title: "Return Item"
- * description: "Correlates a Line Item with a Return, keeping track of the quantity of the Line Item that will be returned."
+ * description: "A return item represents a line item in an order that is to be returned. It includes details related to the return and the reason behind it."
  * type: object
  * required:
  *   - is_requested
@@ -64,23 +64,25 @@ export class ReturnItem {
  *   - return_id
  * properties:
  *   return_id:
- *     description: The id of the Return that the Return Item belongs to.
+ *     description: The ID of the Return that the Return Item belongs to.
  *     type: string
  *     example: ret_01F0YET7XPCMF8RZ0Y151NZV2V
  *   item_id:
- *     description: The id of the Line Item that the Return Item references.
+ *     description: The ID of the Line Item that the Return Item references.
  *     type: string
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   return_order:
- *     description: Available if the relation `return_order` is expanded.
+ *     description: Details of the Return that the Return Item belongs to.
+ *     x-expandable: "return_order"
  *     nullable: true
  *     $ref: "#/components/schemas/Return"
  *   item:
- *     description: Available if the relation `item` is expanded.
+ *     description: The details of the line item in the original order to be returned.
+ *     x-expandable: "item"
  *     nullable: true
  *     $ref: "#/components/schemas/LineItem"
  *   quantity:
- *     description: The quantity of the Line Item that is included in the Return.
+ *     description: The quantity of the Line Item to be returned.
  *     type: integer
  *     example: 1
  *   is_requested:
@@ -103,7 +105,8 @@ export class ReturnItem {
  *     type: string
  *     example: rr_01G8X82GCCV2KSQHDBHSSAH5TQ
  *   reason:
- *     description: Available if the relation `reason` is expanded.
+ *     description: The details of the reason for returning the item.
+ *     x-expandable: "reason"
  *     nullable: true
  *     $ref: "#/components/schemas/ReturnReason"
  *   note:

@@ -4,7 +4,7 @@ import { EntityManager } from "typeorm"
  * @oas [delete] /admin/gift-cards/{id}
  * operationId: "DeleteGiftCardsGiftCard"
  * summary: "Delete a Gift Card"
- * description: "Deletes a Gift Card"
+ * description: "Delete a Gift Card. Once deleted, it can't be used by customers."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Gift Card to delete.
@@ -17,15 +17,15 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.giftCards.delete(gift_card_id)
+ *       medusa.admin.giftCards.delete(giftCardId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/gift-cards/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/gift-cards/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

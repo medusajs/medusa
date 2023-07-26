@@ -220,6 +220,7 @@ export type { AdminPostShippingProfilesProfileReq } from "./AdminPostShippingPro
 export type { AdminPostShippingProfilesReq } from "./AdminPostShippingProfilesReq"
 export type { AdminPostStockLocationsLocationReq } from "./AdminPostStockLocationsLocationReq"
 export type { AdminPostStockLocationsReq } from "./AdminPostStockLocationsReq"
+export type { AdminPostStockLocationsReqAddress } from "./AdminPostStockLocationsReqAddress"
 export type { AdminPostStoreReq } from "./AdminPostStoreReq"
 export type { AdminPostTaxRatesParams } from "./AdminPostTaxRatesParams"
 export type { AdminPostTaxRatesReq } from "./AdminPostTaxRatesReq"

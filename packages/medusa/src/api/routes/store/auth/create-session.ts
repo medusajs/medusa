@@ -10,7 +10,8 @@ import { defaultRelations } from "."
  * @oas [post] /store/auth
  * operationId: "PostAuth"
  * summary: "Customer Login"
- * description: "Logs a Customer in and authorizes them to view their details. Successful authentication will set a session cookie in the Customer's browser."
+ * description: "Log a customer in and includes the Cookie session in the response header. The cookie session can be used in subsequent requests to authenticate the customer.
+ * When using Medusa's JS or Medusa React clients, the cookie is automatically attached to subsequent requests."
  * requestBody:
  *   content:
  *     application/json:
@@ -25,8 +26,8 @@ import { defaultRelations } from "."
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.auth.authenticate({
- *         email: 'user@example.com',
- *         password: 'user@example.com'
+ *         email: "user@example.com",
+ *         password: "user@example.com"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
@@ -34,8 +35,8 @@ import { defaultRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/auth' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/store/auth' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com",
  *           "password": "supersecret"

@@ -6,7 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 export interface AdminPriceListDeleteBatchRes {
   ids: Array<string>
   /**
-   * The type of the object that was deleted.
+   * The type of the object that was deleted. A price is also named `money-amount`.
    */
   object: string
   /**

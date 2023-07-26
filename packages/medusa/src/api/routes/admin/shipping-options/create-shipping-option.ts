@@ -19,7 +19,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/shipping-options
  * operationId: "PostShippingOptions"
  * summary: "Create Shipping Option"
- * description: "Creates a Shipping Option"
+ * description: "Create a Shipping Option."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -36,12 +36,12 @@ import { validator } from "../../../../utils/validator"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.shippingOptions.create({
- *         name: 'PostFake',
- *         region_id: "saasf",
- *         provider_id: "manual",
+ *         name: "PostFake",
+ *         region_id,
+ *         provider_id,
  *         data: {
  *         },
- *         price_type: 'flat_rate'
+ *         price_type: "flat_rate"
  *       })
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
@@ -49,9 +49,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/shipping-options' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/shipping-options' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "PostFake",
  *           "region_id": "afasf",
@@ -144,13 +144,13 @@ class OptionRequirement {
  *     description: "The data needed for the Fulfillment Provider to handle shipping with this Shipping Option."
  *     type: object
  *   price_type:
- *     description: "The type of the Shipping Option price."
+ *     description: "The type of the Shipping Option price. `flat_rate` indicates fixed pricing, whereas `calculated` indicates that the price will be calculated each time by the fulfillment provider."
  *     type: string
  *     enum:
  *       - flat_rate
  *       - calculated
  *   amount:
- *     description: "The amount to charge for the Shipping Option."
+ *     description: "The amount to charge for the Shipping Option. If the `price_type` is set to `calculated`, this amount will not actually be used."
  *     type: integer
  *   requirements:
  *     description: "The requirements that must be satisfied for the Shipping Option to be available."
@@ -171,18 +171,19 @@ class OptionRequirement {
  *           description: The amount to compare with.
  *           type: integer
  *   is_return:
- *     description: Whether the Shipping Option defines a return shipment.
+ *     description: Whether the Shipping Option can be used for returns or during checkout.
  *     type: boolean
  *     default: false
  *   admin_only:
- *     description: If true, the option can be used for draft orders
+ *     description: If set to `true`, the shipping option can only be used when creating draft orders.
  *     type: boolean
  *     default: false
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.
  *     type: object
  *   includes_tax:
- *     description: "[EXPERIMENTAL] Tax included in prices of shipping option"
+ *     description: "Tax included in prices of shipping option"
+ *     x-featureFlag: "tax_inclusive_pricing"
  *     type: boolean
  */
 export class AdminPostShippingOptionsReq {

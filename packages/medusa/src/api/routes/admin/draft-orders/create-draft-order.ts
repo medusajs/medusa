@@ -31,7 +31,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/draft-orders
  * operationId: "PostDraftOrders"
  * summary: "Create a Draft Order"
- * description: "Creates a Draft Order"
+ * description: "Create a Draft Order. A draft order is not transformed into an order until payment is captured."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -48,7 +48,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.draftOrders.create({
- *         email: 'user@example.com',
+ *         email: "user@example.com",
  *         region_id,
  *         items: [
  *           {
@@ -67,9 +67,9 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/draft-orders' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/draft-orders' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com",
  *           "region_id": "{region_id}"
@@ -172,7 +172,7 @@ enum Status {
  *   - shipping_methods
  * properties:
  *   status:
- *     description: "The status of the draft order"
+ *     description: "The status of the draft order. The draft order's default status is `open`. It's changed to `completed` when its payment is marked as paid."
  *     type: string
  *     enum: [open, completed]
  *   email:
@@ -185,12 +185,12 @@ enum Status {
  *       - $ref: "#/components/schemas/AddressPayload"
  *       - type: string
  *   shipping_address:
- *     description: "The Address to be used for shipping."
+ *     description: "The Address to be used for shipping purposes."
  *     anyOf:
  *       - $ref: "#/components/schemas/AddressPayload"
  *       - type: string
  *   items:
- *     description: The Line Items that have been received.
+ *     description: The draft order's line items.
  *     type: array
  *     items:
  *       type: object
@@ -198,25 +198,25 @@ enum Status {
  *         - quantity
  *       properties:
  *         variant_id:
- *           description: The ID of the Product Variant to generate the Line Item from.
+ *           description: The ID of the Product Variant associated with the line item. If the line item is custom, the `variant_id` should be omitted.
  *           type: string
  *         unit_price:
- *           description: The potential custom price of the item.
+ *           description: The custom price of the line item. If a `variant_id` is supplied, the price provided here will override the variant's price.
  *           type: integer
  *         title:
- *           description: The potential custom title of the item.
+ *           description: The title of the line item if `variant_id` is not provided.
  *           type: string
  *         quantity:
- *           description: The quantity of the Line Item.
+ *           description: The quantity of the line item.
  *           type: integer
  *         metadata:
- *           description: The optional key-value map with additional details about the Line Item.
+ *           description: The optional key-value map with additional details about the line item.
  *           type: object
  *   region_id:
  *     description: The ID of the region for the draft order
  *     type: string
  *   discounts:
- *     description: The discounts to add on the draft order
+ *     description: The discounts to add to the draft order
  *     type: array
  *     items:
  *       type: object
@@ -227,10 +227,10 @@ enum Status {
  *           description: The code of the discount to apply
  *           type: string
  *   customer_id:
- *     description: The ID of the customer to add on the draft order
+ *     description: The ID of the customer this draft order is associated with.
  *     type: string
  *   no_notification_order:
- *     description: An optional flag passed to the resulting order to determine use of notifications.
+ *     description: An optional flag passed to the resulting order that indicates whether the customer should receive notifications about order updates.
  *     type: boolean
  *   shipping_methods:
  *     description: The shipping methods for the draft order
@@ -247,7 +247,7 @@ enum Status {
  *           description: The optional additional data needed for the shipping method
  *           type: object
  *         price:
- *           description: The potential custom price of the shipping
+ *           description: The price of the shipping method.
  *           type: integer
  *   metadata:
  *     description: The optional key-value map with additional details about the Draft Order.

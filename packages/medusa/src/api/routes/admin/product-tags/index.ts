@@ -42,6 +42,7 @@ export const defaultAdminProductTagsRelations = []
  * properties:
  *   product_tags:
  *     type: array
+ *     description: "An array of product tag details."
  *     items:
  *       $ref: "#/components/schemas/ProductTag"
  *   count:
@@ -49,7 +50,7 @@ export const defaultAdminProductTagsRelations = []
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of product tags skipped when retrieving the product tags.
  *   limit:
  *     type: integer
  *     description: The number of items per page

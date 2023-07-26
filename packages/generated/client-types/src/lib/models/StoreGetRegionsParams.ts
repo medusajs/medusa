@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StoreGetRegionsParams {
   /**
-   * How many regions to skip in the result.
+   * The number of regions to skip when retrieving the regions.
    */
   offset?: number
   /**
@@ -13,7 +13,7 @@ export interface StoreGetRegionsParams {
    */
   limit?: number
   /**
-   * Date comparison for when resulting regions were created.
+   * Filter by a creation date range.
    */
   created_at?: {
     /**
@@ -34,7 +34,7 @@ export interface StoreGetRegionsParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting regions were updated.
+   * Filter by an update date range.
    */
   updated_at?: {
     /**

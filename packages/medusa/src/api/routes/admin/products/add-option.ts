@@ -9,8 +9,8 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/products/{id}/options
  * operationId: "PostProductsProductOptions"
  * summary: "Add a Product Option"
+ * description: "Add a Product Option to a Product."
  * x-authenticated: true
- * description: "Adds a Product Option to a Product"
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
  * requestBody:
@@ -27,8 +27,8 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.products.addOption(product_id, {
- *         title: 'Size'
+ *       medusa.admin.products.addOption(productId, {
+ *         title: "Size"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
@@ -36,9 +36,9 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/products/{id}/options' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/products/{id}/options' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Size"
  *       }'
@@ -102,8 +102,9 @@ export default async (req, res) => {
  *   - title
  * properties:
  *   title:
- *     description: "The title the Product Option will be identified by i.e. \"Size\""
+ *     description: "The title the Product Option."
  *     type: string
+ *     example: "Size"
  */
 export class AdminPostProductsProductOptionsReq {
   @IsString()

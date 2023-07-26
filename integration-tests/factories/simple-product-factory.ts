@@ -7,8 +7,6 @@ import {
   ShippingProfileType,
   Store,
 } from "@medusajs/medusa"
-import faker from "faker"
-import { DataSource } from "typeorm"
 import {
   ProductVariantFactoryData,
   simpleProductVariantFactory,
@@ -17,6 +15,9 @@ import {
   SalesChannelFactoryData,
   simpleSalesChannelFactory,
 } from "./simple-sales-channel-factory"
+
+import { DataSource } from "typeorm"
+import faker from "faker"
 
 export type ProductFactoryData = {
   id?: string

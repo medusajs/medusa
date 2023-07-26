@@ -6,6 +6,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { PricedVariant } from "./PricedVariant"
 
 export interface AdminVariantsListRes {
+  /**
+   * An array of product variant details.
+   */
   variants: Array<
     SetRelation<PricedVariant, "options" | "prices" | "product" | "purchasable">
   >
@@ -14,7 +17,7 @@ export interface AdminVariantsListRes {
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of product variants skipped when retrieving the product variants.
    */
   offset: number
   /**

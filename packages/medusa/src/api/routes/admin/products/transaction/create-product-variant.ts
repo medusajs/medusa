@@ -5,7 +5,7 @@ import {
   TransactionPayload,
   TransactionState,
   TransactionStepsDefinition,
-} from "../../../../../utils/transaction"
+} from "@medusajs/orchestration"
 import { IInventoryService, InventoryItemDTO } from "@medusajs/types"
 import {
   ProductVariantInventoryService,

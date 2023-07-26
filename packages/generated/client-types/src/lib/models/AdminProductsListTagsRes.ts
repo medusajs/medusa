@@ -4,6 +4,9 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminProductsListTagsRes {
+  /**
+   * An array of product tags details.
+   */
   tags: Array<{
     /**
      * The ID of the tag.

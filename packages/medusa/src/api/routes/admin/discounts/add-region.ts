@@ -7,8 +7,8 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /admin/discounts/{id}/regions/{region_id}
  * operationId: "PostDiscountsDiscountRegionsRegion"
- * summary: "Add Region"
- * description: "Adds a Region to the list of Regions that a Discount can be used in."
+ * summary: "Add Region to Discount"
+ * description: "Add a Region to the list of Regions a Discount can be used in."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Discount.
@@ -22,15 +22,15 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.addRegion(discount_id, region_id)
+ *       medusa.admin.discounts.addRegion(discountId, regionId)
  *       .then(({ discount }) => {
  *         console.log(discount.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/discounts/{id}/regions/{region_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST 'https://medusa-url.com/admin/discounts/{id}/regions/{region_id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

@@ -8,7 +8,7 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  * @oas [post] /admin/reservations
  * operationId: "PostReservations"
  * summary: "Create a Reservation"
- * description: "Create a Reservation which can be associated with any resource as required."
+ * description: "Create a Reservation which can be associated with any resource, such as an order's line item."
  * x-authenticated: true
  * requestBody:
  *  content:
@@ -23,9 +23,9 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.reservations.create({
- *         line_item_id: 'item_123',
- *         location_id: 'loc_123',
- *         inventory_item_id: 'iitem_123',
+ *         line_item_id: "item_123",
+ *         location_id: "loc_123",
+ *         inventory_item_id: "iitem_123",
  *         quantity: 1
  *       })
  *       .then(({ reservation }) => {
@@ -34,9 +34,9 @@ import { validateUpdateReservationQuantity } from "./utils/validate-reservation-
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/reservations' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/reservations' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "line_item_id": "item_123",
  *           "location_id": "loc_123",
@@ -104,16 +104,16 @@ export default async (req, res) => {
  *   - quantity
  * properties:
  *   line_item_id:
- *     description: "The id of the location of the reservation"
+ *     description: "The ID of the line item of the reservation."
  *     type: string
  *   location_id:
- *     description: "The id of the location of the reservation"
+ *     description: "The ID of the location of the reservation."
  *     type: string
  *   inventory_item_id:
- *     description: "The id of the inventory item the reservation relates to"
+ *     description: "The ID of the inventory item the reservation is associated with."
  *     type: string
  *   quantity:
- *     description: "The id of the reservation item"
+ *     description: "The quantity to reserve."
  *     type: number
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.

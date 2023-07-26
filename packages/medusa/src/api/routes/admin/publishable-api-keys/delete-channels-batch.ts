@@ -9,11 +9,11 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 /**
  * @oas [delete] /admin/publishable-api-keys/{id}/sales-channels/batch
  * operationId: "DeletePublishableApiKeySalesChannelsChannelsBatch"
- * summary: "Delete SalesChannels"
- * description: "Remove a batch of sales channels from a publishable api key."
+ * summary: "Remove Sales Channels"
+ * description: "Remove a list of sales channels from a publishable API key. This doesn't delete the sales channels and only removes the association between them and the publishable API key."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Publishable Api Key.
+ *   - (path) id=* {string} The ID of the Publishable API Key.
  * requestBody:
  *   content:
  *     application/json:
@@ -31,7 +31,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *       medusa.admin.publishableApiKeys.deleteSalesChannelsBatch(publishableApiKeyId, {
  *         sales_channel_ids: [
  *           {
- *             id: channel_id
+ *             id: channelId
  *           }
  *         ]
  *       })
@@ -41,9 +41,9 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/publishable-api-keys/{pka_id}/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE 'https://medusa-url.com/admin/publishable-api-keys/{id}/batch' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "sales_channel_ids": [
  *             {
@@ -110,7 +110,7 @@ export default async (req: Request, res: Response): Promise<void> => {
  *   - sales_channel_ids
  * properties:
  *   sales_channel_ids:
- *     description: The IDs of the sales channels to delete from the publishable api key
+ *     description: The IDs of the sales channels to remove from the publishable API key
  *     type: array
  *     items:
  *       type: object

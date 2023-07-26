@@ -5,32 +5,32 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StorePostCartReq {
   /**
-   * The ID of the Region to create the Cart in.
+   * The ID of the Region to create the Cart in. Setting the cart's region can affect the pricing of the items in the cart as well as the used currency. If this parameter is not provided, the first region in the store is used by default.
    */
   region_id?: string
   /**
-   * [EXPERIMENTAL] The ID of the Sales channel to create the Cart in.
+   * The ID of the Sales channel to create the Cart in. The cart's sales channel affects which products can be added to the cart. If a product does not exist in the cart's sales channel, it cannot be added to the cart. If you add a publishable API key in the header of this request and specify a sales channel ID, the specified sales channel must be within the scope of the publishable API key's resources. If you add a publishable API key in the header of this request, you don't specify a sales channel ID, and the publishable API key is associated with one sales channel, that sales channel will be attached to the cart. If no sales channel is passed and no publishable API key header is passed or the publishable API key isn't associated with any sales channel, the cart will not be associated with any sales channel.
    */
   sales_channel_id?: string
   /**
-   * The 2 character ISO country code to create the Cart in.
+   * The 2 character ISO country code to create the Cart in. Setting this parameter will set the country code of the shipping address.
    */
   country_code?: string
   /**
-   * An optional array of `variant_id`, `quantity` pairs to generate Line Items from.
+   * An array of product variants to generate line items from.
    */
   items?: Array<{
     /**
-     * The id of the Product Variant to generate a Line Item from.
+     * The ID of the Product Variant.
      */
     variant_id: string
     /**
-     * The quantity of the Product Variant to add
+     * The quantity to add into the cart.
      */
     quantity: number
   }>
   /**
-   * An optional object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`
+   * An object to provide context to the Cart. The `context` field is automatically populated with `ip` and `user_agent`
    */
   context?: Record<string, any>
 }

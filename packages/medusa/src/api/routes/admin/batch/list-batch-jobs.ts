@@ -12,11 +12,11 @@ import { isDefined } from "medusa-core-utils"
  * @oas [get] /admin/batch-jobs
  * operationId: "GetBatchJobs"
  * summary: "List Batch Jobs"
- * description: "Retrieve a list of Batch Jobs."
+ * description: "Retrieve a list of Batch Jobs. The batch jobs can be filtered by fields such as `type` or `confirmed_at`. The batch jobs can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) limit=10 {integer} The number of batch jobs to return.
- *   - (query) offset=0 {integer} The number of batch jobs to skip before results.
+ *   - (query) limit=10 {integer} Limit the number of batch jobs returned.
+ *   - (query) offset=0 {integer} The number of batch jobs to skip when retrieving the batch jobs.
  *   - in: query
  *     name: id
  *     style: form
@@ -43,7 +43,7 @@ import { isDefined } from "medusa-core-utils"
  *     name: confirmed_at
  *     style: form
  *     explode: false
- *     description: Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.
+ *     description: Filter by a confirmation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -67,7 +67,7 @@ import { isDefined } from "medusa-core-utils"
  *     name: pre_processed_at
  *     style: form
  *     explode: false
- *     description: Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.
+ *     description: Filter by a pre-processing date range.
  *     schema:
  *       type: object
  *       properties:
@@ -91,7 +91,7 @@ import { isDefined } from "medusa-core-utils"
  *     name: completed_at
  *     style: form
  *     explode: false
- *     description: Date comparison for when resulting collections was completed, i.e. less than, greater than etc.
+ *     description: Filter by a completion date range.
  *     schema:
  *       type: object
  *       properties:
@@ -115,7 +115,7 @@ import { isDefined } from "medusa-core-utils"
  *     name: failed_at
  *     style: form
  *     explode: false
- *     description: Date comparison for when resulting collections was failed, i.e. less than, greater than etc.
+ *     description: Filter by a failure date range.
  *     schema:
  *       type: object
  *       properties:
@@ -139,7 +139,7 @@ import { isDefined } from "medusa-core-utils"
  *     name: canceled_at
  *     style: form
  *     explode: false
- *     description: Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.
+ *     description: Filter by a cancelation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -159,14 +159,14 @@ import { isDefined } from "medusa-core-utils"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
- *   - (query) order {string} Field used to order retrieved batch jobs
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
+ *   - (query) order {string} A batch-job field to sort-order the retrieved batch jobs by.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned batch jobs.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned batch jobs.
  *   - in: query
  *     name: created_at
  *     style: form
  *     explode: false
- *     description: Date comparison for when resulting collections was created, i.e. less than, greater than etc.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -190,7 +190,7 @@ import { isDefined } from "medusa-core-utils"
  *     name: updated_at
  *     style: form
  *     explode: false
- *     description: Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -222,13 +222,13 @@ import { isDefined } from "medusa-core-utils"
  *       // must be previously logged in or use api token
  *       medusa.admin.batchJobs.list()
  *       .then(({ batch_jobs, limit, offset, count }) => {
- *         console.log(batch_jobs.length);
- *       });
+ *         console.log(batch_jobs.length)
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/batch-jobs' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/batch-jobs' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

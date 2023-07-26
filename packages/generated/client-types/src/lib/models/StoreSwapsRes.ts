@@ -9,6 +9,9 @@ import type { Return } from "./Return"
 import type { Swap } from "./Swap"
 
 export interface StoreSwapsRes {
+  /**
+   * Swap details.
+   */
   swap: Merge<
     SetRelation<
       Swap,
