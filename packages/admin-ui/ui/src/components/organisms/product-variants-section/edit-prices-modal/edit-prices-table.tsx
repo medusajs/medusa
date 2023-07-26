@@ -152,7 +152,11 @@ function EditPricesTable(props: EditPricesTableProps) {
     setSelectedCells({})
   }
 
-  const moveAnchor = (direction: ArrowMove, isShift: boolean) => {
+  const moveAnchor = (
+    direction: ArrowMove,
+    isShift: boolean,
+    isCmd: boolean
+  ) => {
     if (!anchorIndex) {
       setSelectedCells({ [getKey(variantIds[0], columns[0])]: true })
     }
@@ -190,8 +194,8 @@ function EditPricesTable(props: EditPricesTableProps) {
         let ind = variantIds.findIndex((v) => v === anchorVariant)
         ind = mod(ind - 1, variantIds.length)
         const nextVariant = variantIds[ind]
-
         anchorVariant = nextVariant
+
         anchorIndex = ind
         startIndex = ind
         endIndex = ind
@@ -496,19 +500,19 @@ function EditPricesTable(props: EditPricesTableProps) {
       }
 
       if (e.keyCode === 38) {
-        moveAnchor(ArrowMove.UP, e.shiftKey)
+        moveAnchor(ArrowMove.UP, e.shiftKey, e.metaKey || e.ctrlKey)
       }
 
       if (e.keyCode === 40) {
-        moveAnchor(ArrowMove.DOWN, e.shiftKey)
+        moveAnchor(ArrowMove.DOWN, e.shiftKey, e.metaKey || e.ctrlKey)
       }
 
       if (e.keyCode === 37) {
-        moveAnchor(ArrowMove.LEFT, e.shiftKey)
+        moveAnchor(ArrowMove.LEFT, e.shiftKey, e.metaKey || e.ctrlKey)
       }
 
       if (e.keyCode === 39) {
-        moveAnchor(ArrowMove.RIGHT, e.shiftKey)
+        moveAnchor(ArrowMove.RIGHT, e.shiftKey, e.metaKey || e.ctrlKey)
       }
 
       if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
@@ -766,7 +770,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                 })}
 
                 {props.regions.map((r, indexCol) => {
-                  indexCol = props.product.variants.length + indexCol + 1
+                  indexCol = props.product.variants.length + indexCol
                   return (
                     <CurrencyCell
                       key={variant.id + r}
