@@ -139,6 +139,7 @@ export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
  *     - cart.items.tax_lines
  *     - cart.items.variant
  *     - cart.items.variant.product
+ *     - cart.items.variant.product.profiles
  *     - cart.region
  *     - cart.region.tax_rates
  *     - cart.shipping_address

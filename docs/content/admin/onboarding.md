@@ -2287,53 +2287,36 @@ The next step is to retrieve the current step of the onboarding flow from the Me
 
 In this section, you’ll implement the `TODO`s in the `OnboardingFlow` that require communicating with the backend.
 
-There are different ways you can consume custom backend endpoints. The Medusa React library provides a utility method `createCustomAdminHooks` that allows you to create a hook similar to those available by default in the library. You can then utilize these hooks to send requests to custom backend endpoints.
+There are different ways you can consume custom backend endpoints. The Medusa React library provides utility methods that allow you to create hooks similar to those available by default in the library. You can then utilize these hooks to send requests to custom backend endpoints.
 
-Create the file `src/admin/components/shared/hooks.tsx` that exports custom hooks for the custom endpoints you created in the previous step:
-
-```tsx title=src/admin/components/shared/hooks.tsx
-import { createCustomAdminHooks } from "medusa-react"
-
-const {
-  useAdminEntity: useAdminOnboardingState,
-  useAdminUpdateMutation: useAdminUpdateOnboardingStateMutation,
-} = createCustomAdminHooks("onboarding", "onboarding_state")
-
-export { 
-  useAdminOnboardingState,
-  useAdminUpdateOnboardingStateMutation,
-}
-```
-
-You can now use `useAdminOnboardingState` to retrieve the onboarding state from the backend, and `useAdminUpdateOnboardingStateMutation` to update the onboarding state in the backend.
-
-Learn more about Medusa React in [this documentation](../medusa-react/overview.md).
-
-Then, add the following imports at the top of `src/admin/widgets/onboarding-flow/onboarding-flow.tsx`:
+Add the following imports at the top of `src/admin/widgets/onboarding-flow/onboarding-flow.tsx`:
 
 ```tsx title=src/admin/widgets/onboarding-flow/onboarding-flow.tsx
 import {
-  useAdminOnboardingState,
-  useAdminUpdateOnboardingStateMutation,
-} from "../../components/shared/hooks"
+  useAdminCustomPost,
+  useAdminCustomQuery,
+} from "medusa-react"
 ```
 
 Next, add the following at the top of the `OnboardingFlow` component:
 
 ```tsx title=src/admin/widgets/onboarding-flow/onboarding-flow.tsx
 const OnboardingFlow = (props: any) => {
-  const { 
-    data,
-    isLoading,
-  } = useAdminOnboardingState<OnboardingStateRes>("")
-  const { mutate } = useAdminUpdateOnboardingStateMutation<
+  const QUERY_KEY = ["onboarding_state"]
+  const { data, isLoading } = useAdminCustomQuery<
+    undefined,
+    OnboardingStateRes
+  >("/onboarding", QUERY_KEY)
+  const { mutate } = useAdminCustomPost<
     AdminOnboardingUpdateStateReq,
     OnboardingStateRes
-  >("")
+  >("/onboarding", QUERY_KEY)
 
   // ...
 }
 ```
+
+Learn more about the available custom hooks such as `useAdminCustomPost` and `useAdminCustomQuery` in the [Medusa React documentation](../medusa-react/overview.mdx#custom-hooks).
 
 `data` now holds the current onboarding state from the backend, and `mutate` can be used to update the onboarding state in the backend.
 

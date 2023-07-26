@@ -825,25 +825,6 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
 
     return queryBuilder
   },*/
-
-  /**
-   * Upserts shipping profile for products
-   * @param productIds IDs of products to update
-   * @param shippingProfileId ID of shipping profile to assign to products
-   * @returns updated products
-   */
-  async upsertShippingProfile(
-    productIds: string[],
-    shippingProfileId: string
-  ): Promise<Product[]> {
-    await this.createQueryBuilder()
-      .update(Product)
-      .set({ profile_id: shippingProfileId })
-      .where({ id: In(productIds) })
-      .execute()
-
-    return await this.findByIds(productIds)
-  },
 })
 
 export default ProductRepository

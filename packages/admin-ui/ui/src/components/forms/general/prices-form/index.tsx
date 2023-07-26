@@ -36,7 +36,7 @@ type Props = {
 
 /**
  * Re-usable nested form used to submit pricing information for products and their variants.
- * Fetches store currencies and regions from the backend, and allows the user to specifcy both
+ * Fetches store currencies and regions from the backend, and allows the user to specify both
  * currency and region specific prices.
  * @example
  * <Pricing form={nestedForm(form, "prices")} />

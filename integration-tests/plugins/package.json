@@ -12,6 +12,7 @@
     "@medusajs/cache-inmemory": "workspace:*",
     "@medusajs/event-bus-local": "workspace:*",
     "@medusajs/medusa": "workspace:*",
+    "@medusajs/product": "workspace:^",
     "faker": "^5.5.3",
     "medusa-fulfillment-webshipper": "workspace:*",
     "medusa-interfaces": "workspace:*",

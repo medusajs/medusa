@@ -1,4 +1,4 @@
-import { IsInt } from "class-validator"
+import { IsInt, IsOptional } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
@@ -89,7 +89,7 @@ export default async (req, res) => {
         variant_id: existing.variant.id,
         region_id: cart.region_id,
         quantity: validated.quantity,
-        metadata: existing.metadata || {},
+        metadata: validated.metadata || {},
       }
 
       await cartService
@@ -124,8 +124,14 @@ export default async (req, res) => {
  *   quantity:
  *     type: number
  *     description: The quantity to set the Line Item to.
+ *   metadata:
+ *     type: object
+ *     description: An optional key-value map with additional details about the Line Item. If omitted, the metadata will remain unchanged."
  */
 export class StorePostCartsCartLineItemsItemReq {
   @IsInt()
   quantity: number
+
+  @IsOptional()
+  metadata?: Record<string, unknown> | undefined
 }

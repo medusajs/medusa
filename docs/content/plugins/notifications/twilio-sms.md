@@ -127,7 +127,7 @@ If you create an order now on your storefront, you should receive a message from
 
 :::tip
 
-If you don’t have a storefront set up yet, you can install the [Next.js starter storefront](../../starters/nextjs-medusa-starter.mdx).
+If you don’t have a storefront set up yet, you can install the [Next.js Starter Template](../../starters/nextjs-medusa-starter.mdx).
 
 :::
 
