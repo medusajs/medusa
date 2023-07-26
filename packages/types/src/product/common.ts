@@ -85,6 +85,26 @@ export interface ProductCategoryDTO {
   updated_at: string | Date
 }
 
+export interface CreateProductCategoryDTO {
+  name: string
+  handle?: string
+  is_active?: boolean
+  is_internal?: boolean
+  rank?: number
+  parent_category_id: string | null
+  metadata?: Record<string, unknown>
+}
+
+export interface UpdateProductCategoryDTO {
+  name?: string
+  handle?: string
+  is_active?: boolean
+  is_internal?: boolean
+  rank?: number
+  parent_category_id?: string | null
+  metadata?: Record<string, unknown>
+}
+
 export interface ProductTagDTO {
   id: string
   value: string
@@ -182,6 +202,7 @@ export interface FilterableProductVariantProps
 export interface FilterableProductCategoryProps
   extends BaseFilterable<FilterableProductCategoryProps> {
   id?: string | string[]
+  name?: string | string[]
   parent_category_id?: string | string[] | null
   handle?: string | string[]
   is_active?: boolean

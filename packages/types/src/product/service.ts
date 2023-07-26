@@ -3,9 +3,11 @@ import {
   CreateProductTagDTO,
   CreateProductTypeDTO,
   CreateProductOptionDTO,
+  CreateProductCategoryDTO,
   UpdateProductTagDTO,
   UpdateProductTypeDTO,
   UpdateProductOptionDTO,
+  UpdateProductCategoryDTO,
   FilterableProductCategoryProps,
   FilterableProductCollectionProps,
   FilterableProductProps,
@@ -212,6 +214,22 @@ export interface IProductModuleService {
     config?: FindConfig<ProductCategoryDTO>,
     sharedContext?: Context
   ): Promise<[ProductCategoryDTO[], number]>
+
+  createCategory(
+    data: CreateProductCategoryDTO,
+    sharedContext?: Context,
+  ): Promise<ProductCategoryDTO>
+
+  updateCategory(
+    categoryId: string,
+    data: UpdateProductCategoryDTO,
+    sharedContext?: Context,
+  ): Promise<ProductCategoryDTO>
+
+  deleteCategory(
+    categoryId: string,
+    sharedContext?: Context,
+  ): Promise<void>
 
   create(
     data: CreateProductDTO[],
