@@ -78,7 +78,7 @@ describe("Inventory Module", () => {
       )
     })
 
-    it.only("update", async () => {
+    it("update", async () => {
       const stockLocationService = appContainer.resolve("stockLocationService")
 
       const loc = await stockLocationService.create({
