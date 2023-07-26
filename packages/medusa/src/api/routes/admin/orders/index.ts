@@ -543,6 +543,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
  *     - items.tax_lines
  *     - items.variant
  *     - items.variant.product
+ *     - items.variant.product.profiles
  *     - refunds
  *     - region
  *     - shipping_methods
@@ -660,6 +661,7 @@ export type AdminOrdersRes = {
  *     - items.tax_lines
  *     - items.variant
  *     - items.variant.product
+ *     - items.variant.product.profiles
  *     - refunds
  *     - region
  *     - shipping_methods

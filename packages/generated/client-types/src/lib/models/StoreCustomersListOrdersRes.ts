@@ -9,6 +9,7 @@ import type { Fulfillment } from "./Fulfillment"
 import type { GiftCardTransaction } from "./GiftCardTransaction"
 import type { LineItem } from "./LineItem"
 import type { Order } from "./Order"
+import type { Product } from "./Product"
 import type { ProductVariant } from "./ProductVariant"
 import type { Region } from "./Region"
 import type { ShippingMethod } from "./ShippingMethod"
@@ -66,7 +67,12 @@ export interface StoreCustomersListOrdersRes {
               | "tax_lines"
             >,
             {
-              variant: SetRelation<ProductVariant, "product">
+              variant: Merge<
+                SetRelation<ProductVariant, "product">,
+                {
+                  product: SetRelation<Product, "profiles">
+                }
+              >
             }
           >
         >

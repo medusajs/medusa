@@ -17,15 +17,10 @@ export interface RepositoryService<T = any> {
     }
   ): Promise<any>
 
-  serialize<TData extends object, TResult extends object, TOptions = any>(
-    data: TData,
-    options?: TOptions
-  ): Promise<TResult>
-
-  serialize<TData extends object[], TResult extends object[], TOptions = any>(
-    data: TData[],
-    options?: TOptions
-  ): Promise<TResult>
+  serialize<TOutput extends object | object[]>(
+    data: any,
+    options?: any
+  ): Promise<TOutput>
 
   find(options?: FindOptions<T>, context?: Context): Promise<T[]>
 
@@ -38,6 +33,9 @@ export interface RepositoryService<T = any> {
   upsert?(data: any, context?: Context): Promise<T[]>
 
   create(data: unknown[], context?: Context): Promise<T[]>
+
+  // TODO: remove optionality when all the other repositories have an update
+  update?(data: unknown[], context?: Context): Promise<T[]>
 
   delete(ids: string[], context?: Context): Promise<void>
 

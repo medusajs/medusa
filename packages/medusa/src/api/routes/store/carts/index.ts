@@ -262,6 +262,7 @@ export const defaultStoreCartRelations = [
  *      - items
  *      - items.variant
  *      - items.variant.product
+ *      - items.variant.product.profiles
  *      - items.tax_lines
  *      - items.adjustments
  *      - gift_cards

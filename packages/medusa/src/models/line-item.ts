@@ -10,8 +10,7 @@ import {
 } from "typeorm"
 
 import { BaseEntity } from "../interfaces"
-import TaxInclusivePricingFeatureFlag
-  from "../loaders/feature-flags/tax-inclusive-pricing"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { generateEntityId } from "../utils"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
@@ -70,11 +69,13 @@ export class LineItem extends BaseEntity {
   @JoinColumn({ name: "claim_order_id" })
   claim_order: ClaimOrder
 
-  @OneToMany(() => LineItemTaxLine, (tl) => tl.item, { cascade: ["insert"] })
+  @OneToMany(() => LineItemTaxLine, (tl) => tl.item, {
+    cascade: ["insert", "remove"],
+  })
   tax_lines: LineItemTaxLine[]
 
   @OneToMany(() => LineItemAdjustment, (lia) => lia.item, {
-    cascade: ["insert"],
+    cascade: ["insert", "remove"],
   })
   adjustments: LineItemAdjustment[]
 

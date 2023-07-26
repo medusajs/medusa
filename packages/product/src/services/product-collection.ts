@@ -1,6 +1,7 @@
-import { ProductCollection } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import { ModulesSdkUtils, retrieveEntity } from "@medusajs/utils"
+
+import { ProductCollection } from "@models"
 
 type InjectedDependencies = {
   productCollectionRepository: DAL.RepositoryService

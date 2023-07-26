@@ -15,7 +15,7 @@ export const initialize = async (
   }
 ): Promise<IInventoryService> => {
   const serviceKey = Modules.INVENTORY
-  const loaded = await MedusaModule.bootstrap(
+  const loaded = await MedusaModule.bootstrap<IInventoryService>(
     serviceKey,
     "@medusajs/inventory",
     options as InternalModuleDeclaration | ExternalModuleDeclaration,
@@ -23,5 +23,5 @@ export const initialize = async (
     injectedDependencies
   )
 
-  return loaded[serviceKey] as IInventoryService
+  return loaded[serviceKey]
 }

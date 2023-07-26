@@ -1,10 +1,16 @@
-import { BeforeInsert, Column, Entity, OneToMany } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+} from "typeorm"
 
-import { DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, generateEntityId } from "../utils"
 import { Product } from "./product"
 import { ShippingOption } from "./shipping-option"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
+import { SoftDeletableEntity } from "../interfaces"
 
 export enum ShippingProfileType {
   DEFAULT = "default",
@@ -20,7 +26,18 @@ export class ShippingProfile extends SoftDeletableEntity {
   @DbAwareColumn({ type: "enum", enum: ShippingProfileType })
   type: ShippingProfileType
 
-  @OneToMany(() => Product, (product) => product.profile)
+  @ManyToMany(() => Product)
+  @JoinTable({
+    name: "product_shipping_profile",
+    joinColumn: {
+      name: "profile_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "product_id",
+      referencedColumnName: "id",
+    },
+  })
   products: Product[]
 
   @OneToMany(() => ShippingOption, (so) => so.profile)

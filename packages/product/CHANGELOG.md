@@ -1,5 +1,16 @@
 # @medusajs/product
 
+## 0.1.3
+
+### Patch Changes
+
+- [#4459](https://github.com/medusajs/medusa/pull/4459) [`befc2f1c8`](https://github.com/medusajs/medusa/commit/befc2f1c80b6aaeb3a5153f7fdeaa96cf832e46f) Thanks [@adrien2p](https://github.com/adrien2p)! - Feat(product): product module create - delete - soft delete - restore - create workflow
+
+- [#4459](https://github.com/medusajs/medusa/pull/4459) [`befc2f1c8`](https://github.com/medusajs/medusa/commit/befc2f1c80b6aaeb3a5153f7fdeaa96cf832e46f) Thanks [@adrien2p](https://github.com/adrien2p)! - chore: added collection methods for module and collection service
+
+- Updated dependencies [[`d184d23c6`](https://github.com/medusajs/medusa/commit/d184d23c6384d5f8bf52827826b62c6bef37f884), [`befc2f1c8`](https://github.com/medusajs/medusa/commit/befc2f1c80b6aaeb3a5153f7fdeaa96cf832e46f)]:
+  - @medusajs/types@1.8.11
+
 ## 0.1.2
 
 ### Patch Changes

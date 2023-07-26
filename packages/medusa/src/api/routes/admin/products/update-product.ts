@@ -1,6 +1,8 @@
-import { IInventoryService } from "@medusajs/types"
-import { MedusaError } from "@medusajs/utils"
-import { Type } from "class-transformer"
+import {
+  CreateProductVariantInput,
+  ProductVariantPricesUpdateReq,
+  UpdateProductVariantInput,
+} from "../../../../types/product-variant"
 import {
   IsArray,
   IsBoolean,
@@ -14,36 +16,35 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
-import { EntityManager } from "typeorm"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { ProductStatus, ProductVariant } from "../../../../models"
-import { ProductVariantRepository } from "../../../../repositories/product-variant"
 import {
   PricingService,
   ProductService,
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
-import { Logger } from "../../../../types/global"
 import {
   ProductProductCategoryReq,
   ProductSalesChannelReq,
   ProductTagReq,
   ProductTypeReq,
 } from "../../../../types/product"
-import {
-  CreateProductVariantInput,
-  ProductVariantPricesUpdateReq,
-  UpdateProductVariantInput,
-} from "../../../../types/product-variant"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { DistributedTransaction } from "../../../../utils/transaction"
-import { validator } from "../../../../utils/validator"
+import { ProductStatus, ProductVariant } from "../../../../models"
 import {
   createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+
+import { DistributedTransaction } from "@medusajs/orchestration"
+import { EntityManager } from "typeorm"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
+import { IInventoryService } from "@medusajs/types"
+import { Logger } from "../../../../types/global"
+import { MedusaError } from "@medusajs/utils"
+import { ProductVariantRepository } from "../../../../repositories/product-variant"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/products/{id}

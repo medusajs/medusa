@@ -1,3 +1,4 @@
+import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -11,7 +12,6 @@ import {
   Property,
   Unique,
 } from "@mikro-orm/core"
-import { generateEntityId } from "@medusajs/utils"
 import { Product } from "@models"
 import ProductOptionValue from "./product-option-value"
 import { SoftDeletable } from "../utils"
@@ -105,7 +105,7 @@ class ProductVariant {
   @Property({ columnType: "numeric", nullable: true, default: 0 })
   variant_rank?: number | null
 
-  @Property({ persist: false })
+  @Property({ columnType: "text", nullable: true })
   product_id!: string
 
   @Property({ onCreate: () => new Date(), columnType: "timestamptz" })

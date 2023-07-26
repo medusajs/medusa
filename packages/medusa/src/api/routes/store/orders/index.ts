@@ -168,6 +168,7 @@ export const allowedStoreOrdersFields = [
  *     - items.tax_lines
  *     - items.variant
  *     - items.variant.product
+ *     - items.variant.product.profiles
  *     - refunds
  *     - region
  *     - shipping_methods

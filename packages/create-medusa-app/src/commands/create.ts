@@ -30,9 +30,15 @@ export type CreateOptions = {
   seed?: boolean
   // commander passed --no-boilerplate as boilerplate
   boilerplate?: boolean
+  stable?: boolean
 }
 
-export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
+export default async ({
+  repoUrl = "",
+  seed,
+  boilerplate,
+  stable,
+}: CreateOptions) => {
   track("CREATE_CLI")
   if (repoUrl) {
     track("STARTER_SELECTED", { starter: repoUrl })
@@ -53,11 +59,14 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
   }
   const dbName = `medusa-${nanoid(4)}`
   let isProjectCreated = false
+  let isDbInitialized = false
   let printedMessage = false
 
   processManager.onTerminated(async () => {
     spinner.stop()
-    if (client) {
+    // prevent an error from occurring if
+    // client hasn't been declared yet
+    if (isDbInitialized && client) {
       await client.end()
     }
 
@@ -86,6 +95,7 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
 
   const projectName = await askForProjectName()
   const { client, dbConnectionString } = await getDbClientAndCredentials(dbName)
+  isDbInitialized = true
   const adminEmail = await askForAdminEmail(seed, boilerplate)
 
   logMessage({
@@ -107,6 +117,7 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
       repoUrl,
       abortController,
       spinner,
+      stable,
     })
   } catch {
     return
@@ -188,7 +199,9 @@ export default async ({ repoUrl = "", seed, boilerplate }: CreateOptions) => {
     resources: ["http://localhost:9000/health"],
   }).then(async () =>
     open(
-      inviteToken
+      stable
+        ? "http://localhost:9000/store/products"
+        : inviteToken
         ? `http://localhost:7001/invite?token=${inviteToken}&first_run=true`
         : "http://localhost:7001"
     )
