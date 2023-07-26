@@ -17,15 +17,10 @@ export interface RepositoryService<T = any> {
     }
   ): Promise<any>
 
-  serialize<TData extends object, TResult extends object, TOptions = any>(
-    data: TData,
-    options?: TOptions
-  ): Promise<TResult>
-
-  serialize<TData extends object[], TResult extends object[], TOptions = any>(
-    data: TData[],
-    options?: TOptions
-  ): Promise<TResult>
+  serialize<TOutput extends object | object[]>(
+    data: any,
+    options?: any
+  ): Promise<TOutput>
 
   find(options?: FindOptions<T>, context?: Context): Promise<T[]>
 
