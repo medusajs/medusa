@@ -197,19 +197,19 @@ function CurrencyCell(props: CurrencyCellProps) {
     <td
       onMouseOver={() => onColumnOver(currencyCode || region)}
       onMouseDown={onCellMouseDown}
-      className={clsx("relative cursor-pointer pr-2 pl-4", {
-        // "border-blue-100": isInRange && props.isInRangeCol,
-        border: !(isInRange && props.isInRangeCol),
+      className={clsx("relative cursor-pointer border pr-2 pl-4", {
         "bg-blue-100": isSelected && !isAnchor,
-        "border-l border-double border-blue-400":
-          props.isRangeStartCol && isInRange,
-        "border-r border-double border-blue-400":
-          props.isRangeEndCol && isInRange,
-        "border-t border-double border-blue-400":
-          isRangeStart && props.isInRangeCol,
-        "border-b border-double border-blue-400":
-          isRangeEnd && props.isInRangeCol,
       })}
+      style={{
+        borderTop:
+          isRangeStart && props.isInRangeCol ? "1px double #3B82F6" : "",
+        borderBottom:
+          isRangeEnd && props.isInRangeCol ? "1px double #3B82F6" : "",
+        borderLeft:
+          props.isRangeStartCol && isInRange ? "1px double #3B82F6" : "",
+        borderRight:
+          props.isRangeEndCol && isInRange ? "1px double #3B82F6" : "",
+      }}
     >
       <div className="flex">
         <span className="text-gray-400">{currencyMeta?.symbol_native}</span>
