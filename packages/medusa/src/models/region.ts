@@ -107,7 +107,7 @@ export class Region extends SoftDeletableEntity {
 /**
  * @schema Region
  * title: "Region"
- * description: "Regions hold settings for how Customers in a given geographical location shop. The is, for example, where currencies and tax rates are defined. A Region can consist of multiple countries to accomodate common shopping settings across countries."
+ * description: "A region holds settings specific to a geographical location, including the currency, tax rates, and fulfillment and payment providers. A Region can consist of multiple countries to accomodate common shopping settings across countries."
  * type: object
  * required:
  *   - automatic_taxes
@@ -132,14 +132,15 @@ export class Region extends SoftDeletableEntity {
  *     type: string
  *     example: EU
  *   currency_code:
- *     description: The 3 character currency code that the Region uses.
+ *     description: The 3 character currency code used in the region.
  *     type: string
  *     example: usd
  *     externalDocs:
  *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *       description: See a list of codes.
  *   currency:
- *     description: Available if the relation `currency` is expanded.
+ *     description: The details of the currency used in the region.
+ *     x-expandable: "currency"
  *     nullable: true
  *     $ref: "#/components/schemas/Currency"
  *   tax_rate:
@@ -147,8 +148,9 @@ export class Region extends SoftDeletableEntity {
  *     type: number
  *     example: 0
  *   tax_rates:
- *     description: The tax rates that are included in the Region. Available if the relation `tax_rates` is expanded.
+ *     description: The details of the tax rates used in the region, aside from the default rate.
  *     type: array
+ *     x-expandable: "tax_rates"
  *     items:
  *       $ref: "#/components/schemas/TaxRate"
  *   tax_code:
@@ -165,8 +167,9 @@ export class Region extends SoftDeletableEntity {
  *     type: boolean
  *     default: true
  *   countries:
- *     description: The countries that are included in the Region. Available if the relation `countries` is expanded.
+ *     description: The details of the countries included in this region.
  *     type: array
+ *     x-expandable: "countries"
  *     items:
  *       $ref: "#/components/schemas/Country"
  *   tax_provider_id:
@@ -175,22 +178,26 @@ export class Region extends SoftDeletableEntity {
  *     type: string
  *     example: null
  *   tax_provider:
- *     description: Available if the relation `tax_provider` is expanded.
+ *     description: The details of the tax provider used in the region.
+ *     x-expandable: "tax_provider"
  *     nullable: true
  *     $ref: "#/components/schemas/TaxProvider"
  *   payment_providers:
- *     description: The Payment Providers that can be used to process Payments in the Region. Available if the relation `payment_providers` is expanded.
+ *     description: The details of the payment providers that can be used to process payments in the region.
  *     type: array
+ *     x-expandable: "payment_providers"
  *     items:
  *       $ref: "#/components/schemas/PaymentProvider"
  *   fulfillment_providers:
- *     description: The Fulfillment Providers that can be used to fulfill orders in the Region. Available if the relation `fulfillment_providers` is expanded.
+ *     description: The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.
  *     type: array
+ *     x-expandable: "fulfillment_providers"
  *     items:
  *       $ref: "#/components/schemas/FulfillmentProvider"
  *   includes_tax:
- *     description: "[EXPERIMENTAL] Does the prices for the region include tax"
+ *     description: "Whether the prices for the region include tax"
  *     type: boolean
+ *     x-featureFlag: "tax_inclusive_pricing"
  *     default: false
  *   created_at:
  *     description: The date with timezone at which the resource was created.

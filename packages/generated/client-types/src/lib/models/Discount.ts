@@ -7,7 +7,7 @@ import type { DiscountRule } from "./DiscountRule"
 import type { Region } from "./Region"
 
 /**
- * Represents a discount that can be applied to a cart for promotional purposes.
+ * A discount can be applied to a cart for promotional purposes.
  */
 export interface Discount {
   /**
@@ -23,11 +23,11 @@ export interface Discount {
    */
   is_dynamic: boolean
   /**
-   * The Discount Rule that governs the behaviour of the Discount
+   * The ID of the discount rule that defines how the discount will be applied to a cart.
    */
   rule_id: string | null
   /**
-   * Available if the relation `rule` is expanded.
+   * The details of the discount rule that defines how the discount will be applied to a cart..
    */
   rule?: DiscountRule | null
   /**
@@ -39,7 +39,7 @@ export interface Discount {
    */
   parent_discount_id: string | null
   /**
-   * Available if the relation `parent_discount` is expanded.
+   * The details of the parent discount that this discount was created from.
    */
   parent_discount?: Discount | null
   /**
@@ -55,7 +55,7 @@ export interface Discount {
    */
   valid_duration: string | null
   /**
-   * The Regions in which the Discount can be used. Available if the relation `regions` is expanded.
+   * The details of the regions in which the Discount can be used.
    */
   regions?: Array<Region>
   /**

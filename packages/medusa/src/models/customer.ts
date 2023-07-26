@@ -82,7 +82,7 @@ export class Customer extends SoftDeletableEntity {
 /**
  * @schema Customer
  * title: "Customer"
- * description: "Represents a customer"
+ * description: "A customer can make purchases in your store and manage their profile."
  * type: object
  * required:
  *   - billing_address_id
@@ -121,12 +121,14 @@ export class Customer extends SoftDeletableEntity {
  *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
- *     description: Available if the relation `billing_address` is expanded.
+ *     description: The details of the billing address associated with the customer.
+ *     x-expandable: "billing_address"
  *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   shipping_addresses:
- *     description: Available if the relation `shipping_addresses` is expanded.
+ *     description: The details of the shipping addresses associated with the customer.
  *     type: array
+ *     x-expandable: "shipping_addresses"
  *     items:
  *       $ref: "#/components/schemas/Address"
  *   phone:
@@ -139,13 +141,15 @@ export class Customer extends SoftDeletableEntity {
  *     type: boolean
  *     default: false
  *   orders:
- *     description: Available if the relation `orders` is expanded.
+ *     description: The details of the orders this customer placed.
  *     type: array
+ *     x-expandable: "orders"
  *     items:
  *       $ref: "#/components/schemas/Order"
  *   groups:
- *     description: The customer groups the customer belongs to. Available if the relation `groups` is expanded.
+ *     description: The customer groups the customer belongs to.
  *     type: array
+ *     x-expandable: "groups"
  *     items:
  *       $ref: "#/components/schemas/CustomerGroup"
  *   created_at:

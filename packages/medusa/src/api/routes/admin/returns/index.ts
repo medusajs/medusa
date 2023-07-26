@@ -91,6 +91,7 @@ export const defaultReturnCancelFields = [...defaultAdminOrdersFields]
  *   - order
  * properties:
  *   order:
+ *     description: Order details.
  *     $ref: "#/components/schemas/Order"
  */
 export type AdminReturnsCancelRes = {
@@ -113,6 +114,7 @@ export type AdminReturnsCancelRes = {
  * properties:
  *   returns:
  *     type: array
+ *     description: An array of returns details.
  *     items:
  *       $ref: "#/components/schemas/Return"
  *   count:
@@ -120,7 +122,7 @@ export type AdminReturnsCancelRes = {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of returns skipped when retrieving the returns.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -140,6 +142,7 @@ export type AdminReturnsListRes = PaginatedResponse & {
  *   - return
  * properties:
  *   return:
+ *     description: Return details.
  *     $ref: "#/components/schemas/Return"
  */
 export type AdminReturnsRes = {

@@ -8,7 +8,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/sales-channels/{id}
  * operationId: "PostSalesChannelsSalesChannel"
  * summary: "Update a Sales Channel"
- * description: "Updates a Sales Channel."
+ * description: "Update a Sales Channel's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Sales Channel.
@@ -26,8 +26,8 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.salesChannels.update(sales_channel_id, {
- *         name: 'App'
+ *       medusa.admin.salesChannels.update(salesChannelId, {
+ *         name: "App"
  *       })
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
@@ -35,9 +35,9 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/sales-channels/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/sales-channels/{id}' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "App"
  *       }'
@@ -93,13 +93,13 @@ export default async (req: Request, res: Response) => {
  * properties:
  *   name:
  *     type: string
- *     description: Name of the sales channel.
+ *     description: The name of the sales channel
  *   description:
  *     type: string
- *     description:  Sales Channel description.
+ *     description:  The description of the sales channel.
  *   is_disabled:
  *     type: boolean
- *     description:  Indication of if the sales channel is active.
+ *     description: Whether the Sales Channel is disabled.
  */
 export class AdminPostSalesChannelsSalesChannelReq {
   @IsOptional()

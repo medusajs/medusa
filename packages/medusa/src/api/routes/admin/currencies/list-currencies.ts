@@ -10,14 +10,19 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  * @oas [get] /admin/currencies
  * operationId: "GetCurrencies"
  * summary: "List Currency"
- * description: "Retrieves a list of Currency"
+ * description: "Retrieve a list of currencies. The currencies can be filtered by fields such as `code`. The currencies can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) code {string} Code of the currency to search for.
- *   - (query) includes_tax {boolean} Search for tax inclusive currencies.
- *   - (query) order {string} order to retrieve products in.
- *   - (query) offset=0 {number} How many products to skip in the result.
- *   - (query) limit=20 {number} Limit the number of products returned.
+ *   - (query) code {string} filter by currency code.
+ *   - in: query
+ *     name: includes_tax
+ *     description: filter currencies by whether they include taxes or not.
+ *     schema:
+ *       type: boolean
+ *       x-featureFlag: "tax_inclusive_pricing"
+ *   - (query) order {string} A field to sort order the retrieved currencies by.
+ *   - (query) offset=0 {number} The number of currencies to skip when retrieving the currencies.
+ *   - (query) limit=20 {number} The number of currencies to return.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetCurrenciesParams
@@ -35,8 +40,8 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/currencies' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST 'https://medusa-url.com/admin/currencies' \
+ *       -H 'Authorization: Bearer {api_token}'
  * tags:
  *   - Currencies
  * responses:

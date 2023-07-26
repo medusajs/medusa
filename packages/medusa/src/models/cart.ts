@@ -1,7 +1,7 @@
 /**
  * @schema Cart
  * title: "Cart"
- * description: "Represents a user cart"
+ * description: "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim."
  * type: object
  * required:
  *   - billing_address_id
@@ -37,7 +37,8 @@
  *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
- *     description: Available if the relation `billing_address` is expanded.
+ *     description: The details of the billing address associated with the cart.
+ *     x-expandable: "billing_address"
  *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   shipping_address_id:
@@ -46,12 +47,14 @@
  *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
- *     description: Available if the relation `shipping_address` is expanded.
+ *     description: The details of the shipping address associated with the cart.
+ *     x-expandable: "shipping_address"
  *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   items:
- *     description: Available if the relation `items` is expanded.
+ *     description: The line items added to the cart.
  *     type: array
+ *     x-expandable: "items"
  *     items:
  *       $ref: "#/components/schemas/LineItem"
  *   region_id:
@@ -59,17 +62,20 @@
  *     type: string
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation `region` is expanded.
+ *     description: The details of the region associated with the cart.
+ *     x-expandable: "region"
  *     nullable: true
  *     $ref: "#/components/schemas/Region"
  *   discounts:
- *     description: Available if the relation `discounts` is expanded.
+ *     description: An array of details of all discounts applied to the cart.
  *     type: array
+ *     x-expandable: "discounts"
  *     items:
  *       $ref: "#/components/schemas/Discount"
  *   gift_cards:
- *     description: Available if the relation `gift_cards` is expanded.
+ *     description: An array of details of all gift cards applied to the cart.
  *     type: array
+ *     x-expandable: "gift_cards"
  *     items:
  *       $ref: "#/components/schemas/GiftCard"
  *   customer_id:
@@ -78,16 +84,19 @@
  *     type: string
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
- *     description: A customer object. Available if the relation `customer` is expanded.
+ *     description: The details of the customer the cart belongs to.
+ *     x-expandable: "customer"
  *     nullable: true
  *     $ref: "#/components/schemas/Customer"
  *   payment_session:
- *     description: The selected payment session in the cart.
+ *     description: The details of the selected payment session in the cart.
+ *     x-expandable: "payment_session"
  *     nullable: true
  *     $ref: "#/components/schemas/PaymentSession"
  *   payment_sessions:
- *     description: The payment sessions created on the cart.
+ *     description: The details of all payment sessions created on the cart.
  *     type: array
+ *     x-expandable: "payment_sessions"
  *     items:
  *       $ref: "#/components/schemas/PaymentSession"
  *   payment_id:
@@ -96,12 +105,14 @@
  *     type: string
  *     example: pay_01G8ZCC5W42ZNY842124G7P5R9
  *   payment:
- *     description: Available if the relation `payment` is expanded.
+ *     description: The details of the payment associated with the cart.
  *     nullable: true
+ *     x-expandable: "payment"
  *     $ref: "#/components/schemas/Payment"
  *   shipping_methods:
- *     description: The shipping methods added to the cart.
+ *     description: The details of the shipping methods added to the cart.
  *     type: array
+ *     x-expandable: "shipping_methods"
  *     items:
  *       $ref: "#/components/schemas/ShippingMethod"
  *   type:
@@ -144,8 +155,9 @@
  *     type: string
  *     example: null
  *   sales_channel:
- *     description: A sales channel object. Available if the relation `sales_channel` is expanded.
+ *     description: The details of the sales channel associated with the cart.
  *     nullable: true
+ *     x-expandable: "sales_channel"
  *     $ref: "#/components/schemas/SalesChannel"
  *   created_at:
  *     description: The date with timezone at which the resource was created.

@@ -80,6 +80,7 @@ export const defaultAdminCollectionsRelations = ["products.profiles"]
  * properties:
  *   collections:
  *      type: array
+ *      description: an array of collection details
  *      items:
  *        $ref: "#/components/schemas/ProductCollection"
  *   count:
@@ -87,7 +88,7 @@ export const defaultAdminCollectionsRelations = ["products.profiles"]
  *      description: The total number of items available
  *   offset:
  *      type: integer
- *      description: The number of items skipped before these items
+ *      description: The number of product collections skipped when retrieving the product collections.
  *   limit:
  *      type: integer
  *      description: The number of items per page
@@ -137,7 +138,7 @@ export type AdminCollectionsDeleteRes = DeleteResponse
  *     description: "The IDs of the products removed from the collection"
  *     type: array
  *     items:
- *       description: "The ID of a Product to add to the Product Collection."
+ *       description: "The ID of the Product removed from the Product Collection."
  *       type: string
  */
 export type AdminDeleteProductsFromCollectionRes = {
@@ -157,6 +158,7 @@ export type AdminDeleteProductsFromCollectionRes = {
  *   - collection
  * properties:
  *   collection:
+ *     type: "Product Collection details."
  *     $ref: "#/components/schemas/ProductCollection"
  */
 export type AdminCollectionsRes = {

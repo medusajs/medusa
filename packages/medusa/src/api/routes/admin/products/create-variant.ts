@@ -28,7 +28,7 @@ import { createVariantsTransaction } from "./transaction/create-product-variant"
  * @oas [post] /admin/products/{id}/variants
  * operationId: "PostProductsProductVariants"
  * summary: "Create a Product Variant"
- * description: "Creates a Product Variant. Each Product Variant must have a unique combination of Product Option Values."
+ * description: "Create a Product Variant associated with a Product. Each product variant must have a unique combination of Product Option values."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
@@ -46,8 +46,8 @@ import { createVariantsTransaction } from "./transaction/create-product-variant"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.products.createVariant(product_id, {
- *         title: 'Color',
+ *       medusa.admin.products.createVariant(productId, {
+ *         title: "Color",
  *         prices: [
  *           {
  *             amount: 1000,
@@ -57,20 +57,20 @@ import { createVariantsTransaction } from "./transaction/create-product-variant"
  *         options: [
  *           {
  *             option_id,
- *             value: 'S'
+ *             value: "S"
  *           }
  *         ],
  *         inventory_quantity: 100
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
- *       });
+ *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/products/{id}/variants' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/products/{id}/variants' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Color",
  *           "prices": [
@@ -173,88 +173,90 @@ class ProductVariantOptionReq {
  *   - options
  * properties:
  *   title:
- *     description: The title to identify the Product Variant by.
+ *     description: The title of the product variant.
  *     type: string
  *   sku:
- *     description: The unique SKU for the Product Variant.
+ *     description: The unique SKU of the product variant.
  *     type: string
  *   ean:
- *     description: The EAN number of the item.
+ *     description: The EAN number of the product variant.
  *     type: string
  *   upc:
- *     description: The UPC number of the item.
+ *     description: The UPC number of the product variant.
  *     type: string
  *   barcode:
- *     description: A generic GTIN field for the Product Variant.
+ *     description: A generic GTIN field of the product variant.
  *     type: string
  *   hs_code:
- *     description: The Harmonized System code for the Product Variant.
+ *     description: The Harmonized System code of the product variant.
  *     type: string
  *   inventory_quantity:
- *     description: The amount of stock kept for the Product Variant.
+ *     description: The amount of stock kept of the product variant.
  *     type: integer
  *     default: 0
  *   allow_backorder:
- *     description: Whether the Product Variant can be purchased when out of stock.
+ *     description: Whether the product variant can be purchased when out of stock.
  *     type: boolean
  *   manage_inventory:
- *     description: Whether Medusa should keep track of the inventory for this Product Variant.
+ *     description: Whether Medusa should keep track of the inventory of this product variant.
  *     type: boolean
  *     default: true
  *   weight:
- *     description: The wieght of the Product Variant.
+ *     description: The wieght of the product variant.
  *     type: number
  *   length:
- *     description: The length of the Product Variant.
+ *     description: The length of the product variant.
  *     type: number
  *   height:
- *     description: The height of the Product Variant.
+ *     description: The height of the product variant.
  *     type: number
  *   width:
- *     description: The width of the Product Variant.
+ *     description: The width of the product variant.
  *     type: number
  *   origin_country:
- *     description: The country of origin of the Product Variant.
+ *     description: The country of origin of the product variant.
  *     type: string
  *   mid_code:
- *     description: The Manufacturer Identification code for the Product Variant.
+ *     description: The Manufacturer Identification code of the product variant.
  *     type: string
  *   material:
- *     description: The material composition of the Product Variant.
+ *     description: The material composition of the product variant.
  *     type: string
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.
  *     type: object
  *   prices:
  *     type: array
+ *     description: An array of product variant prices. A product variant can have different prices for each region or currency code.
+ *     externalDocs:
+ *       url: https://docs.medusajs.com/modules/products/admin/manage-products#product-variant-prices
+ *       description: Product variant pricing.
  *     items:
  *       type: object
  *       required:
  *         - amount
  *       properties:
- *         id:
- *           description: The ID of the price.
- *           type: string
  *         region_id:
- *           description: The ID of the Region for which the price is used. Only required if currency_code is not provided.
+ *           description: The ID of the Region the price will be used in. This is only required if `currency_code` is not provided.
  *           type: string
  *         currency_code:
- *           description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+ *           description: The 3 character ISO currency code the price will be used in. This is only required if `region_id` is not provided.
  *           type: string
  *           externalDocs:
  *             url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *             description: See a list of codes.
  *         amount:
- *           description: The amount to charge for the Product Variant.
+ *           description: The price amount.
  *           type: integer
  *         min_quantity:
- *          description: The minimum quantity for which the price will be used.
+ *          description: The minimum quantity required to be added to the cart for the price to be used.
  *          type: integer
  *         max_quantity:
- *           description: The maximum quantity for which the price will be used.
+ *           description: The maximum quantity required to be added to the cart for the price to be used.
  *           type: integer
  *   options:
  *     type: array
+ *     description: An array of Product Option values that the variant corresponds to.
  *     items:
  *       type: object
  *       required:
@@ -262,10 +264,10 @@ class ProductVariantOptionReq {
  *         - value
  *       properties:
  *         option_id:
- *           description: The ID of the Product Option to set the value for.
+ *           description: The ID of the Product Option.
  *           type: string
  *         value:
- *           description: The value to give for the Product Option.
+ *           description: A value to give to the Product Option.
  *           type: string
  */
 export class AdminPostProductsProductVariantsReq {

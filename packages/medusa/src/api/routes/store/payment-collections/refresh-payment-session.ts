@@ -5,7 +5,7 @@ import { PaymentCollectionService } from "../../../../services"
  * @oas [post] /store/payment-collections/{id}/sessions/{session_id}
  * operationId: PostPaymentCollectionsPaymentCollectionPaymentSessionsSession
  * summary: "Refresh a Payment Session"
- * description: "Refreshes a Payment Session to ensure that it is in sync with the Payment Collection."
+ * description: "Refresh a Payment Session's data to ensure that it is in sync with the Payment Collection."
  * x-authenticated: false
  * parameters:
  *   - (path) id=* {string} The id of the PaymentCollection.
@@ -18,14 +18,14 @@ import { PaymentCollectionService } from "../../../../services"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.paymentCollections.refreshPaymentSession(payment_collection_id, session_id)
+ *       medusa.paymentCollections.refreshPaymentSession(paymentCollectionId, sessionId)
  *       .then(({ payment_session }) => {
  *         console.log(payment_session.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/{session_id}'
+ *       curl -X POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/{session_id}'
  * tags:
  *   - Payment Collections
  * responses:

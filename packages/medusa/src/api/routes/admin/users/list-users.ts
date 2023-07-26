@@ -4,7 +4,7 @@ import UserService from "../../../../services/user"
  * @oas [get] /admin/users
  * operationId: "GetUsers"
  * summary: "List Users"
- * description: "Retrieves all users."
+ * description: "Retrieve all admin users."
  * x-authenticated: true
  * x-codegen:
  *   method: list
@@ -22,8 +22,8 @@ import UserService from "../../../../services/user"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/users' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/users' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

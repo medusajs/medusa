@@ -52,7 +52,7 @@ export class DiscountRule extends SoftDeletableEntity {
 /**
  * @schema DiscountRule
  * title: "Discount Rule"
- * description: "Holds the rules that governs how a Discount is calculated when applied to a Cart."
+ * description: "A discount rule defines how a Discount is calculated when applied to a Cart."
  * type: object
  * required:
  *   - allocation
@@ -95,8 +95,9 @@ export class DiscountRule extends SoftDeletableEntity {
  *       - item
  *     example: total
  *   conditions:
- *     description: A set of conditions that can be used to limit when  the discount can be used. Available if the relation `conditions` is expanded.
+ *     description: The details of the discount conditions associated with the rule. They can be used to limit when the discount can be used.
  *     type: array
+ *     x-expandable: "conditions"
  *     items:
  *       $ref: "#/components/schemas/DiscountCondition"
  *   created_at:

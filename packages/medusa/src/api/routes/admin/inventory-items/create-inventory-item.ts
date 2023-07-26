@@ -15,11 +15,11 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/inventory-items
  * operationId: "PostInventoryItems"
  * summary: "Create an Inventory Item"
- * description: "Creates an Inventory Item."
+ * description: "Create an Inventory Item."
  * x-authenticated: true
  * parameters:
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned inventory item.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned inventory item.
  * requestBody:
  *   content:
  *     application/json:
@@ -36,7 +36,7 @@ import { validator } from "../../../../utils/validator"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.inventoryItems.create({
- *         variant_id: 'variant_123',
+ *         variant_id: "variant_123",
  *       })
  *       .then(({ inventory_item }) => {
  *         console.log(inventory_item.id);
@@ -44,9 +44,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/inventory-items' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/inventory-items' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "variant_id": "variant_123",
  *       }'
@@ -132,7 +132,7 @@ export default async (req, res) => {
  * type: object
  * properties:
  *   sku:
- *     description: The unique SKU for the Product Variant.
+ *     description: The unique SKU of the associated Product Variant.
  *     type: string
  *   ean:
  *     description: The EAN number of the item.
@@ -144,39 +144,39 @@ export default async (req, res) => {
  *     description: A generic GTIN field for the Product Variant.
  *     type: string
  *   hs_code:
- *     description: The Harmonized System code for the Product Variant.
+ *     description: The Harmonized System code of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.
  *     type: string
  *   inventory_quantity:
- *     description: The amount of stock kept for the Product Variant.
+ *     description: The amount of stock kept of the associated Product Variant.
  *     type: integer
  *     default: 0
  *   allow_backorder:
- *     description: Whether the Product Variant can be purchased when out of stock.
+ *     description: Whether the associated Product Variant can be purchased when out of stock.
  *     type: boolean
  *   manage_inventory:
- *     description: Whether Medusa should keep track of the inventory for this Product Variant.
+ *     description: Whether Medusa should keep track of the inventory for the associated Product Variant.
  *     type: boolean
  *     default: true
  *   weight:
- *     description: The wieght of the Product Variant.
+ *     description: The weight of the Inventory Item. May be used in shipping rate calculations.
  *     type: number
  *   length:
- *     description: The length of the Product Variant.
+ *     description: The length of the Inventory Item. May be used in shipping rate calculations.
  *     type: number
  *   height:
- *     description: The height of the Product Variant.
+ *     description: The height of the Inventory Item. May be used in shipping rate calculations.
  *     type: number
  *   width:
- *     description: The width of the Product Variant.
+ *     description: The width of the Inventory Item. May be used in shipping rate calculations.
  *     type: number
  *   origin_country:
- *     description: The country of origin of the Product Variant.
+ *     description: The country in which the Inventory Item was produced. May be used by Fulfillment Providers to pass customs information to shipping carriers.
  *     type: string
  *   mid_code:
- *     description: The Manufacturer Identification code for the Product Variant.
+ *     description: The Manufacturers Identification code that identifies the manufacturer of the Inventory Item. May be used by Fulfillment Providers to pass customs information to shipping carriers.
  *     type: string
  *   material:
- *     description: The material composition of the Product Variant.
+ *     description: The material and composition that the Inventory Item is made of, May be used by Fulfillment Providers to pass customs information to shipping carriers.
  *     type: string
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.

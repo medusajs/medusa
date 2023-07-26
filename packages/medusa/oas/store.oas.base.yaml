@@ -225,32 +225,107 @@ info:
     url: https://github.com/medusajs/medusa/blob/master/LICENSE
 tags:
   - name: Auth
-    description: Auth endpoints that allow authorization of customers and manages their
-      sessions.
+    description: |
+      Authentication endpoints allow customers to manage their session, such as login or log out.
+      When a customer is logged in, the cookie header is set indicating the customer's login session.
+    externalDocs:
+      description: How to implement customer profiles in your storefront
+      url: https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles
   - name: Carts
-    description: Cart endpoints that allow handling carts in Medusa.
-  - name: Collections
-    description: Collection endpoints that allow handling collections in Medusa.
+    description: |
+      A cart is a virtual shopping bag that customers can use to add items they want to purchase.
+      A cart is then used to checkout and place an order.
+    externalDocs:
+      description: How to implement cart functionality in your storefront
+      url: https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-cart
   - name: Customers
-    description: Customer endpoints that allow handling customers in Medusa.
+    description: |
+      A customer can register and manage their information such as addresses, orders, payment methods, and more.
+    externalDocs:
+      description: How to implement customer profiles in your storefront
+      url: https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles
   - name: Gift Cards
-    description: Gift Card endpoints that allow handling gift cards in Medusa.
+    description: |
+      Customers can use gift cards during checkout to deduct the gift card's balance from the checkout total.
+      The Gift Card endpoints allow retrieving a gift card's details by its code. A gift card can be applied to a cart using the Carts endpoints.
+    externalDocs:
+      description: How to use gift cards in a storefront
+      url: https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards
   - name: Orders
-    description: Order endpoints that allow handling orders in Medusa.
+    description: |
+      Orders are purchases made by customers, typically through a storefront.
+      Orders are placed and created using the Carts endpoints. The Orders endpoints allow retrieving and claiming orders.
+    externalDocs:
+      description: How to retrieve order details in a storefront
+      url: https://docs.medusajs.com/modules/orders/storefront/retrieve-order-details
+  - name: Order Edits
+    description: |
+      Order edits are changes made to items in an order such as adding, updating their quantity, or deleting them. Order edits are created by the admin.
+      A customer can review order edit requests created by an admin and confirm or decline them.
+    externalDocs:
+      description: How to handle order edits in a storefront
+      url: https://docs.medusajs.com/modules/orders/storefront/handle-order-edits
+  - name: Payment Collections
+    description: |
+      A payment collection is useful for managing additional payments, such as for Order Edits, or installment payments.
   - name: Products
-    description: Product endpoints that allow handling products in Medusa.
+    description: |
+      Products are saleable items in a store. This also includes [saleable gift cards](https://docs.medusajs.com/modules/gift-cards/storefront/use-gift-cards) in a store.
+      Using these endpoints, you can filter products by categories, collections, sales channels, and more.
+    externalDocs:
+      description: How to show products in a storefront
+      url: https://docs.medusajs.com/modules/products/storefront/show-products
   - name: Product Variants
-    description: Product Variant endpoints that allow handling product variants in Medusa.
+    description: |
+      Product variants are the actual salable item in your store. Each variant is a combination of the different option values available on the product.
+  - name: Product Categories
+    description: |
+      Products can be categoriezed into categories. A product can be associated more than one category.
+      Using these endpoints, you can list or retrieve a category's details and products.
+    externalDocs:
+      description: How to use product categories in a storefront
+      url: https://docs.medusajs.com/modules/products/storefront/use-categories
+  - name: Product Collections
+    description: |
+      A product collection is used to organize products for different purposes such as marketing or discount purposes. For example, you can create a Summer Collection.
+      Using these endpoints, you can list or retrieve a collection's details and products.
+  - name: Product Tags
+    description: |
+      Product tags are string values that can be used to filter products by.
+      Products can have more than one tag, and products can share tags.
+  - name: Product Types
+    description: |
+      Product types are string values that can be used to filter products by.
+      Products can have more than one tag, and products can share types.
   - name: Regions
-    description: Region endpoints that allow handling regions in Medusa.
-  - name: Return Reasons
-    description: Return Reason endpoints that allow handling return reasons in Medusa.
+    description: |
+      Regions are different countries or geographical regions that the commerce store serves customers in.
+      Customers can choose what region they're in, which can be used to change the prices shown based on the region and its currency.
+    externalDocs:
+      description: How to use regions in a storefront
+      url: https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions
   - name: Returns
-    description: Return endpoints that allow handling returns in Medusa.
+    description: |
+      A return can be created by a customer to return items in an order.
+    externalDocs:
+      description: How to create a return in a storefront
+      url: https://docs.medusajs.com/modules/orders/storefront/create-return
+  - name: Return Reasons
+    description: |
+      Return reasons are key-value pairs that are used to specify why an order return is being created.
   - name: Shipping Options
-    description: Shipping Option endpoints that allow handling shipping options in Medusa.
+    description: |
+      A shipping option is used to define the available shipping methods during checkout or when creating a return.
+    externalDocs:
+      description: Shipping Option architecture
+      url: https://docs.medusajs.com/modules/carts-and-checkout/shipping#shipping-option
   - name: Swaps
-    description: Swap endpoints that allow handling swaps in Medusa.
+    description: |
+      A swap is created by a customer or an admin to exchange an item with a new one.
+      Creating a swap implicitely includes creating a return for the item being exchanged.
+    externalDocs:
+      description: How to create a swap in a storefront
+      url: https://docs.medusajs.com/modules/orders/storefront/create-swap
 servers:
   - url: https://api.medusa-commerce.com
 paths: { }

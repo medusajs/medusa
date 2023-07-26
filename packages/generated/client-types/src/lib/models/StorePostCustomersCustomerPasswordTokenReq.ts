@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StorePostCustomersCustomerPasswordTokenReq {
   /**
-   * The email of the customer.
+   * The customer's email.
    */
   email: string
 }

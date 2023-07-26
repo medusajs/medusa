@@ -105,7 +105,7 @@ export class BatchJob extends SoftDeletableEntity {
 /**
  * @schema BatchJob
  * title: "Batch Job"
- * description: "A Batch Job."
+ * description: "A Batch Job indicates an asynchronus task stored in the Medusa backend. Its status determines whether it has been executed or not."
  * type: object
  * required:
  *   - canceled_at
@@ -153,7 +153,8 @@ export class BatchJob extends SoftDeletableEntity {
  *    type: string
  *    example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
  *  created_by_user:
- *    description: A user object. Available if the relation `created_by_user` is expanded.
+ *    description: The details of the user that created the batch job.
+ *    x-expandable: "created_by_user"
  *    nullable: true
  *    $ref: "#/components/schemas/User"
  *  context:

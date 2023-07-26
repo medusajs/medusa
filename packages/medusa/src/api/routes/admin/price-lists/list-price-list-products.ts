@@ -23,15 +23,15 @@ import { isDefined } from "medusa-core-utils"
  * @oas [get] /admin/price-lists/{id}/products
  * operationId: "GetPriceListsPriceListProducts"
  * summary: "List Products"
- * description: "Retrieves a list of Product that are part of a Price List"
+ * description: "Retrieve a price list's products. The products can be filtered by fields such as `q` or `status`. The products can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} ID of the price list.
- *   - (query) q {string} Query used for searching product title and description, variant title and sku, and collection title.
- *   - (query) id {string} ID of the product to search for.
+ *   - (query) q {string} term used to search products' title, description, product variant's title and sku, and product collection's title.
+ *   - (query) id {string} Filter by product ID
  *   - in: query
  *     name: status
- *     description: Product status to search for
+ *     description: Filter by product status
  *     style: form
  *     explode: false
  *     schema:
@@ -41,7 +41,7 @@ import { isDefined } from "medusa-core-utils"
  *         enum: [draft, proposed, published, rejected]
  *   - in: query
  *     name: collection_id
- *     description: Collection IDs to search for
+ *     description: Filter by product collection ID. Only products in the specified collections are retrieved.
  *     style: form
  *     explode: false
  *     schema:
@@ -50,22 +50,22 @@ import { isDefined } from "medusa-core-utils"
  *         type: string
  *   - in: query
  *     name: tags
- *     description: Tag IDs to search for
+ *     description: Filter by tag IDs. Only products having the specified tags are retrieved.
  *     style: form
  *     explode: false
  *     schema:
  *       type: array
  *       items:
  *         type: string
- *   - (query) title {string} product title to search for.
- *   - (query) description {string} product description to search for.
- *   - (query) handle {string} product handle to search for.
- *   - (query) is_giftcard {string} Search for giftcards using is_giftcard=true.
- *   - (query) type {string} to search for.
- *   - (query) order {string} field to sort results by.
+ *   - (query) title {string} Filter by title
+ *   - (query) description {string} Filter by description
+ *   - (query) handle {string} Filter by handle
+ *   - (query) is_giftcard {string} A boolean value to filter by whether the product is a gift card or not.
+ *   - (query) type {string} Filter product type.
+ *   - (query) order {string} A product field to sort-order the retrieved products by.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting products were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -87,7 +87,7 @@ import { isDefined } from "medusa-core-utils"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting products were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -109,7 +109,7 @@ import { isDefined } from "medusa-core-utils"
  *            format: date
  *   - in: query
  *     name: deleted_at
- *     description: Date comparison for when resulting products were deleted.
+ *     description: Filter by a deletion date range.
  *     schema:
  *       type: object
  *       properties:
@@ -129,10 +129,10 @@ import { isDefined } from "medusa-core-utils"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
- *   - (query) offset=0 {integer} How many products to skip in the result.
+ *   - (query) offset=0 {integer} The number of products to skip when retrieving the products.
  *   - (query) limit=50 {integer} Limit the number of products returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned products.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned products.
  * x-codegen:
  *   method: listProducts
  *   queryParams: AdminGetPriceListsPriceListProductsParams
@@ -143,15 +143,15 @@ import { isDefined } from "medusa-core-utils"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.priceLists.listProducts(price_list_id)
+ *       medusa.admin.priceLists.listProducts(priceListId)
  *       .then(({ products, limit, offset, count }) => {
  *         console.log(products.length);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/price-lists/{id}/products' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/price-lists/{id}/products' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

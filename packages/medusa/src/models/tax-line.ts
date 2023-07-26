@@ -19,7 +19,7 @@ export class TaxLine extends BaseEntity {
 /**
  * @schema TaxLine
  * title: "Tax Line"
- * description: "Line item that specifies an amount of tax to add to a line item."
+ * description: "A tax line represents the taxes amount applied to a line item."
  * type: object
  * required:
  *   - code

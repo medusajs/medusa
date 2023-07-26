@@ -23,7 +23,7 @@ export interface AdminGiftCardsListRes {
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of gift cards skipped when retrieving the gift cards.
    */
   offset: number
   /**

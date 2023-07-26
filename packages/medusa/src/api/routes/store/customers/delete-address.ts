@@ -7,7 +7,7 @@ import CustomerService from "../../../../services/customer"
  * @oas [delete] /store/customers/me/addresses/{address_id}
  * operationId: DeleteCustomersCustomerAddressesAddress
  * summary: Delete an Address
- * description: "Removes an Address from the Customer's saved addresses."
+ * description: "Delete an Address from the Customer's saved addresses."
  * x-authenticated: true
  * parameters:
  *   - (path) address_id=* {string} The id of the Address to remove.
@@ -20,15 +20,15 @@ import CustomerService from "../../../../services/customer"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged
- *       medusa.customers.addresses.deleteAddress(address_id)
+ *       medusa.customers.addresses.deleteAddress(addressId)
  *       .then(({ customer }) => {
  *         console.log(customer.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl -X DELETE 'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
+ *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
  * tags:

@@ -4,7 +4,7 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
- * Represents a User who can manage store settings.
+ * A User is an administrator who can manage store settings and data.
  */
 export interface User {
   /**

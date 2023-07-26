@@ -5,7 +5,7 @@ import { IFileService } from "../../../../interfaces"
  * @oas [post] /admin/uploads/protected
  * operationId: "PostUploadsProtected"
  * summary: "Protected File Upload"
- * description: "Uploads at least one file with ACL or a non-public bucket to the specific fileservice that is installed in Medusa."
+ * description: "Upload at least one file to an ACL or a non-public bucket. The file upload is handled by the file service installed on the Medusa backend."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -30,9 +30,9 @@ import { IFileService } from "../../../../interfaces"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/uploads/protected' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: image/jpeg' \
+ *       curl -X POST 'https://medusa-url.com/admin/uploads/protected' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: image/jpeg' \
  *       --form 'files=@"<FILE_PATH_1>"' \
  *       --form 'files=@"<FILE_PATH_1>"'
  * security:

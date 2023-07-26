@@ -15,12 +15,12 @@ import { validator } from "../../../../utils/validator"
  * @oas [get] /admin/draft-orders
  * operationId: "GetDraftOrders"
  * summary: "List Draft Orders"
- * description: "Retrieves an list of Draft Orders"
+ * description: "Retrieve an list of Draft Orders. The draft orders can be filtered by fields such as `q`. The draft orders can also paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) offset=0 {number} The number of items to skip before the results.
- *   - (query) limit=50 {number} Limit the number of items returned.
- *   - (query) q {string} a search term to search emails in carts associated with draft orders and display IDs of draft orders
+ *   - (query) offset=0 {number} The number of draft orders to skip when retrieving the draft orders.
+ *   - (query) limit=50 {number} Limit the number of draft orders returned.
+ *   - (query) q {string} a term to search draft orders' display IDs and emails in the draft order's cart
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetDraftOrdersParams
@@ -38,8 +38,8 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/draft-orders' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/draft-orders' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
