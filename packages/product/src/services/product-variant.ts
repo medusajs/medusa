@@ -1,5 +1,6 @@
 import { Product, ProductVariant } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
+import { ProductVariantRepository } from "@repositories"
 import {
   InjectTransactionManager,
   isString,
@@ -8,9 +9,9 @@ import {
   retrieveEntity,
 } from "@medusajs/utils"
 
+import { ProductVariantServiceTypes } from "../types/services"
 import ProductService from "./product"
 import { doNotForceTransaction } from "../utils"
-import { ProductVariantRepository } from "@repositories"
 
 type InjectedDependencies = {
   productVariantRepository: DAL.RepositoryService
@@ -91,7 +92,8 @@ export default class ProductVariantService<
 
     if (isString(productOrId)) {
       product = await this.productService_.retrieve(
-        productOrId as string,
+        productOrId,
+        {},
         sharedContext
       )
     }
@@ -111,5 +113,39 @@ export default class ProductVariantService<
     ).create(data_, {
       transactionManager: sharedContext.transactionManager,
     })) as TEntity[]
+  }
+
+  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  async update(
+    productOrId: TProduct | string,
+    data: ProductVariantServiceTypes.UpdateProductVariantDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TEntity[]> {
+    let product = productOrId as unknown as Product
+
+    if (isString(productOrId)) {
+      product = await this.productService_.retrieve(
+        productOrId,
+        {},
+        sharedContext
+      )
+    }
+
+    const variantsData = [...data]
+    variantsData.forEach((variant) => Object.assign(variant, { product }))
+
+    return await (this.productVariantRepository_ as ProductVariantRepository).update(variantsData, {
+      transactionManager: sharedContext.transactionManager,
+    }) as TEntity[]
+  }
+
+  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  async delete(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    return await this.productVariantRepository_.delete(ids, {
+      transactionManager: sharedContext.transactionManager,
+    })
   }
 }

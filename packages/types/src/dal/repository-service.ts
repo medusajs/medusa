@@ -34,6 +34,9 @@ export interface RepositoryService<T = any> {
 
   create(data: unknown[], context?: Context): Promise<T[]>
 
+  // TODO: remove optionality when all the other repositories have an update
+  update?(data: unknown[], context?: Context): Promise<T[]>
+
   delete(ids: string[], context?: Context): Promise<void>
 
   softDelete(ids: string[], context?: Context): Promise<T[]>

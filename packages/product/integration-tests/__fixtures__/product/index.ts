@@ -5,6 +5,7 @@ import {
   Product,
   ProductCategory,
   ProductCollection,
+  ProductType,
   ProductVariant,
 } from "@models"
 import ProductOption from "../../../src/models/product-option"
@@ -57,6 +58,22 @@ export async function createCollections(
   await manager.persistAndFlush(collections)
 
   return collections
+}
+
+export async function createTypes(
+  manager: SqlEntityManager,
+  typesData: {
+    id?: string
+    value: string
+  }[]
+) {
+  const types: any[] = typesData.map((typesData) => {
+    return manager.create(ProductType, typesData)
+  })
+
+  await manager.persistAndFlush(types)
+
+  return types
 }
 
 export async function createOptions(

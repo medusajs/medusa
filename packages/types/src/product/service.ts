@@ -1,5 +1,6 @@
 import {
   CreateProductDTO,
+  UpdateProductDTO,
   FilterableProductCategoryProps,
   FilterableProductCollectionProps,
   FilterableProductProps,
@@ -19,7 +20,11 @@ import { JoinerServiceConfig } from "../joiner"
 export interface IProductModuleService {
   __joinerConfig(): JoinerServiceConfig
 
-  retrieve(productId: string, sharedContext?: Context): Promise<ProductDTO>
+  retrieve(
+    productId: string,
+    config?: FindConfig<ProductDTO>,
+    sharedContext?: Context
+  ): Promise<ProductDTO>
 
   list(
     filters?: FilterableProductProps,
@@ -95,6 +100,11 @@ export interface IProductModuleService {
 
   create(
     data: CreateProductDTO[],
+    sharedContext?: Context
+  ): Promise<ProductDTO[]>
+
+  update(
+    data: UpdateProductDTO[],
     sharedContext?: Context
   ): Promise<ProductDTO[]>
 
