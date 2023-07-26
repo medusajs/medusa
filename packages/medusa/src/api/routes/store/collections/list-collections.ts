@@ -1,4 +1,10 @@
-import { IsArray, IsInt, IsOptional, ValidateNested } from "class-validator"
+import {
+  IsArray,
+  IsInt,
+  IsOptional,
+  ValidateNested,
+  IsString,
+} from "class-validator"
 
 import { DateComparisonOperator } from "../../../../types/common"
 import ProductCollectionService from "../../../../services/product-collection"
@@ -118,7 +124,17 @@ export default async (req, res) => {
   res.status(200).json({ collections, count, limit: take, offset: skip })
 }
 
-export class StoreGetCollectionsParams {
+export class FindParams {
+  @IsString()
+  @IsOptional()
+  expand?: string
+
+  @IsString()
+  @IsOptional()
+  fields?: string
+}
+
+export class StoreGetCollectionsParams extends FindParams {
   @IsOptional()
   @IsArray()
   handle?: string[]
