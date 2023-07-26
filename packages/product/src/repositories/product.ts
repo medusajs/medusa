@@ -149,7 +149,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
   @InjectTransactionManager()
   async update(
     data: WithRequiredProperty<ProductServiceTypes.UpdateProductDTO, "id">[],
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ): Promise<Product[]> {
     let categoryIds: string[] = []
     let tagIds: string[] = []

@@ -288,7 +288,7 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(categories))
   }
 
-  async create(data: ProductTypes.CreateProductDTO[], sharedContext?: Context) {
+  async create(data: ProductTypes.CreateProductDTO[], sharedContext?: Context): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.create_(data, sharedContext)
 
     return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
@@ -303,7 +303,6 @@ export default class ProductModuleService<
     const products = await this.update_(data, sharedContext)
 
     return this.baseRepository_.serialize<
-      TProduct[],
       ProductTypes.ProductDTO[]
     >(products, {
       populate: true,
