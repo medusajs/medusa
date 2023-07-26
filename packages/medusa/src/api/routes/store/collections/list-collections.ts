@@ -6,7 +6,7 @@ import {
   IsString,
 } from "class-validator"
 
-import { DateComparisonOperator } from "../../../../types/common"
+import { DateComparisonOperator, FindParams } from "../../../../types/common"
 import ProductCollectionService from "../../../../services/product-collection"
 import { Type } from "class-transformer"
 
@@ -122,16 +122,6 @@ export default async (req, res) => {
   )
 
   res.status(200).json({ collections, count, limit: take, offset: skip })
-}
-
-export class FindParams {
-  @IsString()
-  @IsOptional()
-  expand?: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
 }
 
 export class StoreGetCollectionsParams extends FindParams {
