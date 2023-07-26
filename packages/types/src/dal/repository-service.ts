@@ -21,10 +21,10 @@ interface BaseRepositoryService<T = any> {
 
   getActiveManager<TManager = unknown>(): TManager
 
-  serialize<TData extends object, TResult extends object, TOptions = any>(
-    data: TData,
-    options?: TOptions
-  ): Promise<TResult>
+  serialize<TOutput extends object | object[]>(
+    data: any,
+    options?: any
+  ): Promise<TOutput>
 }
 
 export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
@@ -39,6 +39,9 @@ export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
   upsert?(data: any, context?: Context): Promise<T[]>
 
   create(data: unknown[], context?: Context): Promise<T[]>
+
+  // TODO: remove optionality when all the other repositories have an update
+  update?(data: unknown[], context?: Context): Promise<T[]>
 
   delete(ids: string[], context?: Context): Promise<void>
 

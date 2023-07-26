@@ -82,16 +82,13 @@ const mikroOrmUpdateDeletedAtRecursively = async <T extends object = any>(
   }
 }
 
-const serializer = <
-  T extends object | object[],
-  TResult extends object | object[]
->(
-  data: T,
+const serializer = <TOutput extends object>(
+  data: any,
   options?: any
-): Promise<TResult> => {
+): Promise<TOutput> => {
   options ??= {}
   const result = serialize(data, options)
-  return Array.isArray(data) ? result : result[0]
+  return result as unknown as Promise<TOutput>
 }
 
 // TODO: move to utils package
@@ -130,11 +127,11 @@ class AbstractBase<T = any> {
     return await transactionWrapper.apply(this, arguments)
   }
 
-  serialize<
-    TData extends object | object[] = object[],
-    TResult extends object | object[] = object[]
-  >(data: TData, options?: any): Promise<TResult> {
-    return serializer<TData, TResult>(data, options)
+  async serialize<TOutput extends object | object[]>(
+    data: any,
+    options?: any
+  ): Promise<TOutput> {
+    return await serializer<TOutput>(data, options)
   }
 }
 
@@ -233,13 +230,6 @@ export class BaseRepository extends AbstractBaseRepository {
   constructor({ manager }) {
     // @ts-ignore
     super(...arguments)
-  }
-
-  serialize<
-    TData extends object | object[] = object[],
-    TResult extends object | object[] = object[]
-  >(data: TData, options?: any): Promise<TResult> {
-    return serializer<TData, TResult>(data, options)
   }
 
   create(data: unknown[], context?: Context): Promise<any[]> {

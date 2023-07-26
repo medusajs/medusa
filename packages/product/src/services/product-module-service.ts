@@ -26,7 +26,10 @@ import {
   JoinerServiceConfig,
   ProductTypes,
 } from "@medusajs/types"
+import { serialize } from "@mikro-orm/core"
+
 import ProductImageService from "./product-image"
+import { ProductServiceTypes, ProductVariantServiceTypes } from "../types/services"
 import {
   InjectManager,
   InjectTransactionManager,
@@ -34,6 +37,7 @@ import {
   isString,
   kebabCase,
   MedusaContext,
+  MedusaError,
 } from "@medusajs/utils"
 
 import { shouldForceTransaction } from "../utils"
@@ -123,10 +127,12 @@ export default class ProductModuleService<
   @InjectManager("baseRepository_")
   async retrieve(
     productId: string,
-    @MedusaContext() sharedContext: Context = {}
+    config: FindConfig<ProductTypes.ProductDTO> = {},
+    sharedContext?: Context
   ): Promise<ProductTypes.ProductDTO> {
     const product = await this.productService_.retrieve(
       productId,
+      config,
       sharedContext
     )
 
@@ -593,11 +599,21 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(categories))
   }
 
-  async create(data: ProductTypes.CreateProductDTO[], sharedContext?: Context) {
+  async create(data: ProductTypes.CreateProductDTO[], sharedContext?: Context): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.create_(data, sharedContext)
 
+    return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
+      populate: true,
+    })
+  }
+
+  async update(
+    data: ProductTypes.UpdateProductDTO[],
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductDTO[]> {
+    const products = await this.update_(data, sharedContext)
+
     return this.baseRepository_.serialize<
-      TProduct[],
       ProductTypes.ProductDTO[]
     >(products, {
       populate: true,
@@ -643,30 +659,9 @@ export default class ProductModuleService<
           productData.discountable = false
         }
 
-        if (productData.images?.length) {
-          productData.images = await this.productImageService_.upsert(
-            productData.images.map((image) =>
-              isString(image) ? image : image.url
-            ),
-            sharedContext
-          )
-        }
-
-        if (productData.tags?.length) {
-          productData.tags = await this.productTagService_.upsert(
-            productData.tags,
-            sharedContext
-          )
-        }
-
-        if (isDefined(productData.type)) {
-          productData.type_id = (
-            await this.productTypeService_.upsert(
-              [productData.type as ProductTypes.CreateProductTypeDTO],
-              sharedContext
-            )
-          )?.[0]!?.id
-        }
+        await this.upsertAndAssignImagesToProductData(productData, sharedContext)
+        await this.upsertAndAssignProductTagsToProductData(productData, sharedContext)
+        await this.upsertAndAssignProductTypeToProductData(productData, sharedContext)
 
         return productData as CreateProductOnlyDTO
       })
@@ -730,6 +725,223 @@ export default class ProductModuleService<
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  protected async update_(
+    data: ProductTypes.UpdateProductDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TProduct[]> {
+    const productIds = data.map(pd => pd.id)
+    const existingProductVariants = await this.productVariantService_.list(
+      { product_id: productIds },
+      {},
+      sharedContext
+    )
+
+    const existingProductVariantsMap = new Map<
+      string,
+      ProductVariant[]
+    >(
+      data.map((productData) => {
+        const productVariantsForProduct = existingProductVariants
+          .filter((variant) => variant.product_id === productData.id)
+
+        return [
+          productData.id,
+          productVariantsForProduct,
+        ]
+      })
+    )
+
+    const productVariantsMap = new Map<
+      string,
+      (ProductTypes.CreateProductVariantDTO | ProductTypes.UpdateProductVariantDTO)[]
+    >()
+
+    const productOptionsMap = new Map<
+      string,
+      ProductTypes.CreateProductOptionDTO[]
+    >()
+
+    const productsData = await Promise.all(
+      data.map(async (product) => {
+        const { variants, options, ...productData } = product
+
+        if (!isDefined(productData.id)) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Cannot update product without id`
+          )
+        }
+
+        productVariantsMap.set(productData.id, variants ?? [])
+        productOptionsMap.set(productData.id, options ?? [])
+
+        if (productData.is_giftcard) {
+          productData.discountable = false
+        }
+
+        await this.upsertAndAssignImagesToProductData(productData, sharedContext)
+        await this.upsertAndAssignProductTagsToProductData(productData, sharedContext)
+        await this.upsertAndAssignProductTypeToProductData(productData, sharedContext)
+
+        return productData as ProductServiceTypes.UpdateProductDTO
+      })
+    )
+
+    const products = await this.productService_.update(
+      productsData,
+      sharedContext
+    )
+
+    const productByIdMap = new Map<string, TProduct>(
+      products.map((product) => [product.id, product])
+    )
+
+    const productOptionsData = [...productOptionsMap]
+      .map(([id, options]) => options.map((option) => ({
+        ...option,
+        product: productByIdMap.get(id)!,
+      })))
+      .flat()
+
+    const productOptions = await this.productOptionService_.create(
+      productOptionsData,
+      sharedContext
+    )
+
+    const productVariantIdsToDelete: string[] = []
+    const productVariantsToCreateMap = new Map<
+      string,
+      ProductTypes.CreateProductVariantDTO[]
+    >()
+
+    const productVariantsToUpdateMap = new Map<
+      string,
+      ProductTypes.UpdateProductVariantDTO[]
+    >()
+
+    for (const [productId, variants] of productVariantsMap) {
+      const variantsToCreate: ProductTypes.CreateProductVariantDTO[] = []
+      const variantsToUpdate: ProductTypes.UpdateProductVariantDTO[] = []
+      const existingVariants = existingProductVariantsMap.get(productId)
+
+      variants.forEach((variant) => {
+        const isVariantIdDefined = ("id" in variant) && isDefined(variant.id)
+
+        if (isVariantIdDefined) {
+          variantsToUpdate.push(variant as ProductTypes.UpdateProductVariantDTO)
+        } else {
+          variantsToCreate.push(variant as ProductTypes.CreateProductVariantDTO)
+        }
+
+        const variantOptions = variant.options?.map((option, index) => {
+          const productOption = productOptions[index]
+          return {
+            option: productOption,
+            value: option.value,
+          }
+        })
+
+        if (variantOptions) {
+          variant.options = variantOptions
+        }
+      })
+
+      productVariantsToCreateMap.set(productId, variantsToCreate)
+      productVariantsToUpdateMap.set(productId, variantsToUpdate)
+
+      const variantsToUpdateIds = variantsToUpdate.map(v => v?.id) as string[]
+      const existingVariantIds = existingVariants?.map(v => v.id) || []
+      const variantsToUpdateSet = new Set(variantsToUpdateIds)
+
+      productVariantIdsToDelete.push(
+        ...new Set(
+          existingVariantIds.filter(x => !variantsToUpdateSet.has(x))
+        )
+      )
+    }
+
+    const promises: Promise<any>[] = []
+
+    productVariantsToCreateMap.forEach((variants, productId) => {
+      promises.push(
+        this.productVariantService_.create(
+          productByIdMap.get(productId)!,
+          variants as unknown as ProductTypes.CreateProductVariantOnlyDTO[],
+          sharedContext
+        )
+      )
+    })
+
+    productVariantsToUpdateMap.forEach((variants, productId) => {
+      promises.push(
+        this.productVariantService_.update(
+          productByIdMap.get(productId)!,
+          variants as unknown as ProductVariantServiceTypes.UpdateProductVariantDTO[],
+          sharedContext
+        )
+      )
+    })
+
+    if (productVariantIdsToDelete.length) {
+      promises.push(
+        this.productVariantService_.delete(productVariantIdsToDelete, sharedContext)
+      )
+    }
+
+    await Promise.all(promises)
+
+    return products
+  }
+
+  protected async upsertAndAssignImagesToProductData(
+    productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
+    sharedContext: Context = {}
+  ) {
+    if (!productData.thumbnail && productData.images?.length) {
+      productData.thumbnail = isString(productData.images[0])
+        ? (productData.images[0] as string)
+        : (productData.images[0] as { url: string }).url
+    }
+
+    if (productData.images?.length) {
+      productData.images = await this.productImageService_.upsert(
+        productData.images.map((image) =>
+          isString(image) ? image : image.url
+        ),
+        sharedContext
+      )
+    }
+  }
+
+  protected async upsertAndAssignProductTagsToProductData(
+    productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
+    sharedContext: Context = {}
+  ) {
+    if (productData.tags?.length) {
+      productData.tags = await this.productTagService_.upsert(
+        productData.tags,
+        sharedContext
+      )
+    }
+  }
+
+  protected async upsertAndAssignProductTypeToProductData(
+    productData: ProductTypes.CreateProductDTO | ProductTypes.UpdateProductDTO,
+    sharedContext: Context = {}
+  ) {
+    if (isDefined(productData.type)) {
+      const productType = (
+        await this.productTypeService_.upsert(
+          [productData.type],
+          sharedContext
+        )
+      )
+
+      productData.type_id = productType?.[0]?.id
+    }
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async delete(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
@@ -743,10 +955,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.softDelete_(productIds, sharedContext)
 
-    return this.baseRepository_.serialize<
-      TProduct[],
-      ProductTypes.ProductDTO[]
-    >(products, {
+    return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
       populate: true,
     })
   }
@@ -765,10 +974,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.restore_(productIds, sharedContext)
 
-    return this.baseRepository_.serialize<
-      TProduct[],
-      ProductTypes.ProductDTO[]
-    >(products, {
+    return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
       populate: true,
     })
   }
