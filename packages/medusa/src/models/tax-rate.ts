@@ -93,7 +93,7 @@ export class TaxRate extends BaseEntity {
 /**
  * @schema TaxRate
  * title: "Tax Rate"
- * description: "A Tax Rate can be used to associate a certain rate to charge on products within a given Region"
+ * description: "A Tax Rate can be used to define a custom rate to charge on specified products, product types, and shipping options within a given region."
  * type: object
  * required:
  *   - code
@@ -124,26 +124,30 @@ export class TaxRate extends BaseEntity {
  *     type: string
  *     example: Tax Example
  *   region_id:
- *     description: The id of the Region that the rate belongs to
+ *     description: The ID of the region that the rate belongs to.
  *     type: string
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation `region` is expanded.
+ *     description: The details of the region that the rate belongs to.
+ *     x-expandable: "region"
  *     nullable: true
  *     $ref: "#/components/schemas/Region"
  *   products:
- *     description: The products that belong to this tax rate. Available if the relation `products` is expanded.
+ *     description: The details of the products that belong to this tax rate.
  *     type: array
+ *     x-expandable: "products"
  *     items:
  *       $ref: "#/components/schemas/Product"
  *   product_types:
- *     description: The product types that belong to this tax rate. Available if the relation `product_types` is expanded.
+ *     description: The details of the product types that belong to this tax rate.
  *     type: array
+ *     x-expandable: "product_types"
  *     items:
  *       $ref: "#/components/schemas/ProductType"
  *   shipping_options:
+ *     description: The details of the shipping options that belong to this tax rate.
  *     type: array
- *     description: The shipping options that belong to this tax rate. Available if the relation `shipping_options` is expanded.
+ *     x-expandable: "shipping_options"
  *     items:
  *       $ref: "#/components/schemas/ShippingOption"
  *   product_count:

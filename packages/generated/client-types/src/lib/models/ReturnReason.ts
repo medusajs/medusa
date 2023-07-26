@@ -4,7 +4,7 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
- * A Reason for why a given product is returned. A Return Reason can be used on Return Items in order to indicate why a Line Item was returned.
+ * A Return Reason is a value defined by an admin. It can be used on Return Items in order to indicate why a Line Item was returned.
  */
 export interface ReturnReason {
   /**
@@ -28,11 +28,11 @@ export interface ReturnReason {
    */
   parent_return_reason_id: string | null
   /**
-   * Available if the relation `parent_return_reason` is expanded.
+   * The details of the parent reason.
    */
   parent_return_reason?: ReturnReason | null
   /**
-   * Available if the relation `return_reason_children` is expanded.
+   * The details of the child reasons.
    */
   return_reason_children?: ReturnReason
   /**

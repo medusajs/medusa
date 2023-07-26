@@ -40,7 +40,7 @@ export class ShippingTaxRate {
 /**
  * @schema ShippingTaxRate
  * title: "Shipping Tax Rate"
- * description: "Associates a tax rate with a shipping option to indicate that the shipping option is taxed in a certain way"
+ * description: "This represents the tax rates applied on a shipping option."
  * type: object
  * required:
  *   - created_at
@@ -50,19 +50,21 @@ export class ShippingTaxRate {
  *   - updated_at
  * properties:
  *   shipping_option_id:
- *     description: The ID of the Shipping Option
+ *     description: The ID of the shipping option.
  *     type: string
  *     example: so_01G1G5V27GYX4QXNARRQCW1N8T
  *   shipping_option:
- *     description: Available if the relation `shipping_option` is expanded.
+ *     description: The details of the shipping option.
+ *     x-expandable: "shipping_option"
  *     nullable: true
  *     $ref: "#/components/schemas/ShippingOption"
  *   rate_id:
- *     description: The ID of the Tax Rate
+ *     description: The ID of the associated tax rate.
  *     type: string
  *     example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
  *   tax_rate:
- *     description: Available if the relation `tax_rate` is expanded.
+ *     description: The details of the associated tax rate.
+ *     x-expandable: "tax_rate"
  *     nullable: true
  *     $ref: "#/components/schemas/TaxRate"
  *   created_at:

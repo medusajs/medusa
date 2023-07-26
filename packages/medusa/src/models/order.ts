@@ -270,7 +270,7 @@ export class Order extends BaseEntity {
 /**
  * @schema Order
  * title: "Order"
- * description: "Represents an order"
+ * description: "An order is a purchase made by a customer. It holds details about payment and fulfillment of the order. An order may also be created from a draft order, which is created by an admin user."
  * type: object
  * required:
  *   - billing_address_id
@@ -346,7 +346,8 @@ export class Order extends BaseEntity {
  *     type: string
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: A cart object. Available if the relation `cart` is expanded.
+ *     description: The details of the cart associated with the order.
+ *     x-expandable: "cart"
  *     nullable: true
  *     $ref: "#/components/schemas/Cart"
  *   customer_id:
@@ -354,7 +355,8 @@ export class Order extends BaseEntity {
  *     type: string
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
- *     description: A customer object. Available if the relation `customer` is expanded.
+ *     description: The details of the customer associated with the order.
+ *     x-expandable: "customer"
  *     nullable: true
  *     $ref: "#/components/schemas/Customer"
  *   email:
@@ -367,7 +369,8 @@ export class Order extends BaseEntity {
  *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
- *     description: Available if the relation `billing_address` is expanded.
+ *     description: The details of the billing address associated with the order.
+ *     x-expandable: "billing_address"
  *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   shipping_address_id:
@@ -376,15 +379,17 @@ export class Order extends BaseEntity {
  *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
- *     description: Available if the relation `shipping_address` is expanded.
+ *     description: The details of the shipping address associated with the order.
+ *     x-expandable: "shipping_address"
  *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   region_id:
- *     description: The region's ID
+ *     description: The ID of the region this order was created in.
  *     type: string
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation `region` is expanded.
+ *     description: The details of the region this order was created in.
+ *     x-expandable: "region"
  *     nullable: true
  *     $ref: "#/components/schemas/Region"
  *   currency_code:
@@ -395,7 +400,8 @@ export class Order extends BaseEntity {
  *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *       description: See a list of codes.
  *   currency:
- *     description: Available if the relation `currency` is expanded.
+ *     description: The details of the currency used in the order.
+ *     x-expandable: "currency"
  *     nullable: true
  *     $ref: "#/components/schemas/Currency"
  *   tax_rate:
@@ -404,72 +410,85 @@ export class Order extends BaseEntity {
  *     type: number
  *     example: 0
  *   discounts:
- *     description: The discounts used in the order. Available if the relation `discounts` is expanded.
+ *     description: The details of the discounts applied on the order.
  *     type: array
+ *     x-expandable: "discounts"
  *     items:
  *       $ref: "#/components/schemas/Discount"
  *   gift_cards:
- *     description: The gift cards used in the order. Available if the relation `gift_cards` is expanded.
+ *     description: The details of the gift card used in the order.
  *     type: array
+ *     x-expandable: "gift_cards"
  *     items:
  *       $ref: "#/components/schemas/GiftCard"
  *   shipping_methods:
- *     description: The shipping methods used in the order. Available if the relation `shipping_methods` is expanded.
+ *     description: The details of the shipping methods used in the order.
  *     type: array
+ *     x-expandable: "shipping_methods"
  *     items:
  *       $ref: "#/components/schemas/ShippingMethod"
  *   payments:
- *     description: The payments used in the order. Available if the relation `payments` is expanded.
+ *     description: The details of the payments used in the order.
  *     type: array
+ *     x-expandable: "payments"
  *     items:
  *       $ref: "#/components/schemas/Payment"
  *   fulfillments:
- *     description: The fulfillments used in the order. Available if the relation `fulfillments` is expanded.
+ *     description: The details of the fulfillments created for the order.
  *     type: array
+ *     x-expandable: "fulfillments"
  *     items:
  *       $ref: "#/components/schemas/Fulfillment"
  *   returns:
- *     description: The returns associated with the order. Available if the relation `returns` is expanded.
+ *     description: The details of the returns created for the order.
  *     type: array
+ *     x-expandable: "returns"
  *     items:
  *       $ref: "#/components/schemas/Return"
  *   claims:
- *     description: The claims associated with the order. Available if the relation `claims` is expanded.
+ *     description: The details of the claims created for the order.
  *     type: array
+ *     x-expandable: "claims"
  *     items:
  *       $ref: "#/components/schemas/ClaimOrder"
  *   refunds:
- *     description: The refunds associated with the order. Available if the relation `refunds` is expanded.
+ *     description: The details of the refunds created for the order.
  *     type: array
+ *     x-expandable: "refunds"
  *     items:
  *       $ref: "#/components/schemas/Refund"
  *   swaps:
- *     description: The swaps associated with the order. Available if the relation `swaps` is expanded.
+ *     description: The details of the swaps created for the order.
  *     type: array
+ *     x-expandable: "swaps"
  *     items:
  *       $ref: "#/components/schemas/Swap"
  *   draft_order_id:
- *     description: The ID of the draft order this order is associated with.
+ *     description: The ID of the draft order this order was created from.
  *     nullable: true
  *     type: string
  *     example: null
  *   draft_order:
- *     description: A draft order object. Available if the relation `draft_order` is expanded.
+ *     description: The details of the draft order this order was created from.
+ *     x-expandable: "draft_order"
  *     nullable: true
  *     $ref: "#/components/schemas/DraftOrder"
  *   items:
- *     description: The line items that belong to the order. Available if the relation `items` is expanded.
+ *     description: The details of the line items that belong to the order.
+ *     x-expandable: "items"
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/LineItem"
  *   edits:
- *     description: Order edits done on the order. Available if the relation `edits` is expanded.
+ *     description: The details of the order edits done on the order.
  *     type: array
+ *     x-expandable: "edits"
  *     items:
  *       $ref: "#/components/schemas/OrderEdit"
  *   gift_card_transactions:
- *     description: The gift card transactions used in the order. Available if the relation `gift_card_transactions` is expanded.
+ *     description: The gift card transactions made in the order.
  *     type: array
+ *     x-expandable: "gift_card_transactions"
  *     items:
  *       $ref: "#/components/schemas/GiftCardTransaction"
  *   canceled_at:
@@ -495,12 +514,13 @@ export class Order extends BaseEntity {
  *     type: string
  *     example: null
  *   sales_channel_id:
- *     description: The ID of the sales channel this order is associated with.
+ *     description: The ID of the sales channel this order belongs to.
  *     nullable: true
  *     type: string
  *     example: null
  *   sales_channel:
- *     description: A sales channel object. Available if the relation `sales_channel` is expanded.
+ *     description: The details of the sales channel this order belongs to.
+ *     x-expandable: "sales_channel"
  *     nullable: true
  *     $ref: "#/components/schemas/SalesChannel"
  *   shipping_total:
@@ -548,8 +568,9 @@ export class Order extends BaseEntity {
  *     type: integer
  *     example: 0
  *   returnable_items:
- *     description: The items that are returnable as part of the order, order swaps or order claims
+ *     description: The details of the line items that are returnable as part of the order, swaps, or claims
  *     type: array
+ *     x-expandable: "returnable_items"
  *     items:
  *       $ref: "#/components/schemas/LineItem"
  *   created_at:

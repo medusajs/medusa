@@ -32,7 +32,7 @@ export class LineItemTaxLine extends TaxLine {
 /**
  * @schema LineItemTaxLine
  * title: "Line Item Tax Line"
- * description: "Represents a Line Item Tax Line"
+ * description: "A Line Item Tax Line represents the taxes applied on a line item."
  * type: object
  * required:
  *   - code
@@ -66,7 +66,8 @@ export class LineItemTaxLine extends TaxLine {
  *     type: string
  *     example: item_01G8ZC9GWT6B2GP5FSXRXNFNGN
  *   item:
- *     description: Available if the relation `item` is expanded.
+ *     description: The details of the line item.
+ *     x-expandable: "item"
  *     nullable: true
  *     $ref: "#/components/schemas/LineItem"
  *   created_at:

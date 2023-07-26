@@ -99,20 +99,22 @@ export class GiftCard extends SoftDeletableEntity {
  *     type: integer
  *     example: 10
  *   region_id:
- *     description: The id of the Region in which the Gift Card is available.
+ *     description: The ID of the region this gift card is available in.
  *     type: string
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation `region` is expanded.
+ *     description: The details of the region this gift card is available in.
+ *     x-expandable: "region"
  *     nullable: true
  *     $ref: "#/components/schemas/Region"
  *   order_id:
- *     description: The id of the Order that the Gift Card was purchased in.
+ *     description: The ID of the order that the gift card was purchased in.
  *     nullable: true
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: An order object. Available if the relation `order` is expanded.
+ *     description: The details of the order that the gift card was purchased in.
+ *     x-expandable: "region"
  *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   is_disabled:

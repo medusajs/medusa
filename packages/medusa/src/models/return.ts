@@ -100,7 +100,7 @@ export class Return extends BaseEntity {
 /**
  * @schema Return
  * title: "Return"
- * description: "Return orders hold information about Line Items that a Customer wishes to send back, along with how the items will be returned. Returns can be used as part of a Swap."
+ * description: "A Return holds information about Line Items that a Customer wishes to send back, along with how the items will be returned. Returns can also be used as part of a Swap or a Claim."
  * type: object
  * required:
  *   - claim_order_id
@@ -132,39 +132,44 @@ export class Return extends BaseEntity {
  *       - canceled
  *     default: requested
  *   items:
- *     description: The Return Items that will be shipped back to the warehouse. Available if the relation `items` is expanded.
+ *     description: The details of the items that the customer is returning.
  *     type: array
+ *     x-expandable: "items"
  *     items:
  *       $ref: "#/components/schemas/ReturnItem"
  *   swap_id:
- *     description: The ID of the Swap that the Return is a part of.
+ *     description: The ID of the swap that the return may belong to.
  *     nullable: true
  *     type: string
  *     example: null
  *   swap:
- *     description: A swap object. Available if the relation `swap` is expanded.
+ *     description: The details of the swap that the return may belong to.
+ *     x-expandable: "swap"
  *     nullable: true
  *     $ref: "#/components/schemas/Swap"
  *   claim_order_id:
- *     description: The ID of the Claim that the Return is a part of.
+ *     description: The ID of the claim that the return may belong to.
  *     nullable: true
  *     type: string
  *     example: null
  *   claim_order:
- *     description: A claim order object. Available if the relation `claim_order` is expanded.
+ *     description: The details of the claim that the return may belong to.
+ *     x-expandable: "claim_order"
  *     nullable: true
  *     $ref: "#/components/schemas/ClaimOrder"
  *   order_id:
- *     description: The ID of the Order that the Return is made from.
+ *     description: The ID of the order that the return was created for.
  *     nullable: true
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: An order object. Available if the relation `order` is expanded.
+ *     description: The details of the order that the return was created for.
+ *     x-expandable: "order"
  *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   shipping_method:
- *     description: The Shipping Method that will be used to send the Return back. Can be null if the Customer facilitates the return shipment themselves. Available if the relation `shipping_method` is expanded.
+ *     description: The details of the Shipping Method that will be used to send the Return back. Can be null if the Customer will handle the return shipment themselves.
+ *     x-expandable: "shipping_method"
  *     nullable: true
  *     $ref: "#/components/schemas/ShippingMethod"
  *   shipping_data:
@@ -173,7 +178,7 @@ export class Return extends BaseEntity {
  *     type: object
  *     example: {}
  *   location_id:
- *     description: The id of the stock location the return will be added back.
+ *     description: The ID of the stock location the return will be added back.
  *     nullable: true
  *     type: string
  *     example: sloc_01G8TJSYT9M6AVS5N4EMNFS1EK
