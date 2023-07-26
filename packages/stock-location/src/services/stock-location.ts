@@ -232,13 +232,6 @@ export default class StockLocationService {
 
     delete data.address
 
-    const { metadata } = data
-    if (metadata) {
-      data.metadata = setMetadata(
-        data as { metadata: Record<string, unknown> },
-        metadata
-      )
-    }
     const [result] = await this.stockLocationRepository_.create([data], context)
 
     await this.eventBusService_?.emit?.(StockLocationService.Events.CREATED, {
@@ -299,10 +292,7 @@ export default class StockLocationService {
     const { metadata, ...fields } = data
 
     if (metadata) {
-      data.metadata = setMetadata(
-        data as { metadata: Record<string, unknown> | null },
-        metadata
-      )
+      data.metadata = setMetadata(item, metadata)
     }
 
     const [updatedLocation] = await this.stockLocationRepository_.update(

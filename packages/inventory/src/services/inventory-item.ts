@@ -19,6 +19,7 @@ import { InventoryItemRepository } from "../repositories"
 import { doNotForceTransaction } from "../utils"
 import { query } from "express"
 import { buildWhere } from "../utils/build-query"
+import { setMetadata } from "@medusajs/utils"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -162,7 +163,7 @@ export default class InventoryItemService {
     inventoryItemId: string,
     data: Omit<
       Partial<InventoryItem>,
-      "id" | "created_at" | "metadata" | "deleted_at" | "updated_at"
+      "id" | "created_at" | "deleted_at" | "updated_at"
     >,
     @MedusaContext() context: Context = {}
   ): Promise<InventoryItem> {
@@ -173,6 +174,12 @@ export default class InventoryItemService {
     })
 
     if (shouldUpdate) {
+      const { metadata } = data
+
+      if (metadata) {
+        data.metadata = setMetadata(item, metadata)
+      }
+
       await this.inventoryItemRepository_.update([{ item, update: data }], {
         transactionManager: context.transactionManager,
       })

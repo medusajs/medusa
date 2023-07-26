@@ -114,19 +114,22 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
   ): Promise<number> {
     const manager = (transactionManager ?? this.manager_) as SqlEntityManager
 
+    const builder1 = manager.createQueryBuilder(InventoryLevel, "il")
     const builder = manager.createQueryBuilder(InventoryLevel, "il")
 
-    const [result] = await builder
-      .select("SUM(il.quantity) as sum")
+    const a = builder1
+      .select("SUM(il.stocked_quantity) as sum")
       .where({
         $and: [
           { inventory_item_id: inventoryItemId },
           { location_id: { $in: locationIds } },
         ],
       })
-      .execute()
+      .getFormattedQuery()
 
-    return Number(result["sum"]) ?? 0
+    const res = await manager.execute(a)
+
+    return Number(res[0]["sum"]) ?? 0
   }
 
   @InjectTransactionManager()
@@ -141,7 +144,7 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
     const builder = manager.createQueryBuilder(InventoryLevel, "il")
 
     const [result] = await builder
-      .select("SUM(stocked_quantity - reserved_quantity) as sum")
+      .select("SUM(il.stocked_quantity - il.reserved_quantity) as sum")
       .where({
         $and: [
           { inventory_item_id: inventoryItemId },
@@ -165,7 +168,7 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
     const builder = manager.createQueryBuilder(InventoryLevel, "il")
 
     const [result] = await builder
-      .select("SUM(reserved_quantity) as sum")
+      .select("SUM(il.reserved_quantity) as sum")
       .where({
         $and: [
           { inventory_item_id: inventoryItemId },
@@ -174,7 +177,7 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
       })
       .execute()
 
-    return result["sum"] ?? 0
+    return Number(result["sum"]) ?? 0
   }
 
   @InjectTransactionManager()
@@ -187,10 +190,12 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
   ): Promise<void> {
     const manager = (transactionManager ?? this.manager_) as SqlEntityManager
 
-    const qb = manager.createQueryBuilder(InventoryLevel)
+    const qb = manager.createQueryBuilder(InventoryLevel, "il")
 
     await qb
-      .update({ reserved_quantity: qb.raw(`reserved_quantity + ${quantity}`) })
+      .update({
+        reserved_quantity: qb.raw(`il.reserved_quantity + ${quantity}`),
+      })
       .where({
         $and: [
           { inventory_item_id: inventoryItemId },

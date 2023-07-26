@@ -66,14 +66,13 @@ describe("Inventory Module", () => {
           width: 50,
           requires_shipping: true,
           metadata: { abc: 123 },
-          deleted_at: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         })
       )
     })
 
-    it.only("updateInventoryItem", async () => {
+    it("updateInventoryItem", async () => {
       const inventoryService = appContainer.resolve("inventoryService")
 
       const item = await inventoryService.createInventoryItem({
@@ -101,6 +100,7 @@ describe("Inventory Module", () => {
           weight: 500,
           metadata: {
             dce: 456,
+            abc: "",
           },
         }
       )
@@ -193,10 +193,8 @@ describe("Inventory Module", () => {
           incoming_quantity: 4,
           inventory_item_id: inventoryItem.id,
           location_id: "location_123",
-          metadata: null,
           reserved_quantity: 15,
           stocked_quantity: 50,
-          deleted_at: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         })
@@ -342,7 +340,7 @@ describe("Inventory Module", () => {
         } catch (e) {
           error = e
         }
-        expect(error.message).toEqual("manager.getRepository is not a function")
+        expect(error.message).toEqual("manager.findAndCount is not a function")
       })
 
       it("should pass along the correct context when doing a single update", async () => {
@@ -389,7 +387,7 @@ describe("Inventory Module", () => {
         } catch (e) {
           error = e
         }
-        expect(error.message).toEqual("manager.getRepository is not a function")
+        expect(error.message).toEqual("manager.findAndCount is not a function")
       })
     })
 

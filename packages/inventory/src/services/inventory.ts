@@ -728,12 +728,12 @@ export default class InventoryService implements IInventoryService {
     const updatedInventoryLevel = await this.inventoryLevelService_.update(
       inventoryLevel.id,
       {
-        stocked_quantity: inventoryLevel.stocked_quantity + adjustment,
+        stocked_quantity: Number(inventoryLevel.stocked_quantity) + adjustment,
       },
       context
     )
 
-    return { ...updatedInventoryLevel }
+    return updatedInventoryLevel
   }
 
   /**

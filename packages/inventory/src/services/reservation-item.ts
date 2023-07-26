@@ -155,6 +155,21 @@ export default class ReservationItemService {
       }
     )
 
+    await Promise.all([
+      ...newReservationItems.map(
+        async (data) =>
+          // TODO make bulk
+          await this.inventoryLevelService_.adjustReservedQuantity(
+            data.inventory_item_id,
+            data.location_id,
+            data.quantity,
+            {
+              transactionManager: context.transactionManager,
+            }
+          )
+      ),
+    ])
+
     await this.eventBusService_?.emit?.(ReservationItemService.Events.CREATED, {
       ids: newReservationItems.map((i) => i.id),
     })
@@ -216,9 +231,9 @@ export default class ReservationItemService {
       this.reservationItemRepository_.update([{ item, update: data }], context)
     )
 
-    const [, , reservationItems] = await Promise.all(ops)
-
-    const [updatedItem] = reservationItems as ReservationItem[]
+    const [[updatedItem]] = (await Promise.all(ops)).slice(
+      -1
+    ) as ReservationItem[][]
 
     await this.eventBusService_?.emit?.(ReservationItemService.Events.UPDATED, {
       id: updatedItem.id,
