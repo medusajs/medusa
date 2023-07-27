@@ -1,13 +1,19 @@
 post:
   operationId: PostOrdersClaimCancel
   summary: Cancel a Claim
-  description: Cancels a Claim
+  description: >-
+    Cancel a Claim and change its status. A claim can't be canceled if it has a
+    refund, if its fulfillments haven't been canceled, of if its associated
+    return hasn't been canceled.
   x-authenticated: true
+  externalDocs:
+    description: Canceling a claim
+    url: https://docs.medusajs.com/modules/orders/claims#cancel-a-claim
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Order.
+      description: The ID of the order the claim is associated with.
       schema:
         type: string
     - in: path
@@ -18,12 +24,12 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   x-codegen:

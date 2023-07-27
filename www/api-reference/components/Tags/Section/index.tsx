@@ -12,6 +12,7 @@ import type { MDXContentClientProps } from "../../MDXContent/Client"
 import TagPaths from "../Paths"
 import DividedLayout from "@/layouts/Divided"
 import LoadingProvider from "@/providers/loading"
+import type { LinkProps } from "../../MDXComponents/Link"
 
 export type TagSectionProps = {
   tag: OpenAPIV3.TagObject
@@ -20,6 +21,10 @@ export type TagSectionProps = {
 const Section = dynamic<SectionProps>(
   async () => import("../../Section")
 ) as React.FC<SectionProps>
+
+const Link = dynamic<LinkProps>(
+  async () => import("../../MDXComponents/Link")
+) as React.FC<LinkProps>
 
 const MDXContentClient = dynamic<MDXContentClientProps>(
   async () => import("../../MDXContent/Client"),
@@ -73,6 +78,11 @@ const TagSection = ({ tag }: TagSectionProps) => {
               <Section addToSidebar={false}>
                 <MDXContentClient content={tag.description} />
               </Section>
+            )}
+            {tag.externalDocs && (
+              <Link href={tag.externalDocs.url} target="_blank">
+                Related guide: {tag.externalDocs.description || "Read More"}
+              </Link>
             )}
           </>
         }

@@ -24,7 +24,11 @@ const TagOperationParametersDefault = ({
       )}
     >
       {name && (
-        <TagOperationParametersName name={name} isRequired={isRequired} />
+        <TagOperationParametersName
+          name={name}
+          isRequired={isRequired}
+          schema={schema}
+        />
       )}
       <TagOperationParametersDescription schema={schema} />
     </div>

@@ -1,17 +1,17 @@
 get:
   operationId: GetSwaps
   summary: List Swaps
-  description: Retrieves a list of Swaps.
+  description: Retrieve a list of Swaps. The swaps can be paginated.
   parameters:
     - in: query
       name: limit
-      description: The upper limit for the amount of responses returned.
+      description: Limit the number of swaps returned.
       schema:
         type: number
         default: '50'
     - in: query
       name: offset
-      description: The offset of the list returned.
+      description: The number of swaps to skip when retrieving the swaps.
       schema:
         type: number
         default: '0'

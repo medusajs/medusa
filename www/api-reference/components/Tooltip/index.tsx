@@ -7,6 +7,7 @@ export type TooltipProps = {
   text?: string
   tooltipClassName?: string
   html?: string
+  tooltipChildren?: React.ReactNode
 } & React.HTMLAttributes<HTMLSpanElement> &
   ITooltip
 
@@ -15,6 +16,7 @@ const Tooltip = ({
   tooltipClassName = "",
   children,
   html = "",
+  tooltipChildren,
   ...rest
 }: TooltipProps) => {
   const [elementId, setElementId] = useState<string | null>(null)
@@ -44,7 +46,9 @@ const Tooltip = ({
         className={tooltipClassName}
         wrapper="span"
         {...rest}
-      />
+      >
+        {tooltipChildren}
+      </ReactTooltip>
     </>
   )
 }

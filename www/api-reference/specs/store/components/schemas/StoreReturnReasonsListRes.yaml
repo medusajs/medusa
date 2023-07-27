@@ -9,5 +9,6 @@ required:
 properties:
   return_reasons:
     type: array
+    description: An array of return reasons details.
     items:
       $ref: ./ReturnReason.yaml

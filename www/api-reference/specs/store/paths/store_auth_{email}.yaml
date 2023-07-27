@@ -1,7 +1,7 @@
 get:
   operationId: GetAuthEmail
-  summary: Check if email exists
-  description: Checks if a Customer with the given email has signed up.
+  summary: Check if Email Exists
+  description: Check if there's a customer already registered with the provided email.
   parameters:
     - in: path
       name: email
@@ -9,7 +9,7 @@ get:
         type: string
         format: email
       required: true
-      description: The email to check if exists.
+      description: The email to check.
   x-codegen:
     method: exists
   x-codeSamples:

@@ -1,7 +1,7 @@
 get:
   operationId: GetCustomersCustomer
   summary: Get a Customer
-  description: Retrieves a Customer.
+  description: Retrieve the details of a customer.
   x-authenticated: true
   parameters:
     - in: path
@@ -12,12 +12,14 @@ get:
         type: string
     - in: query
       name: expand
-      description: (Comma separated) Which fields should be expanded in the customer.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        customer.
       schema:
         type: string
     - in: query
       name: fields
-      description: (Comma separated) Which fields should be included in the customer.
+      description: Comma-separated fields that should be included in the returned customer.
       schema:
         type: string
   x-codegen:
@@ -58,7 +60,7 @@ get:
 post:
   operationId: PostCustomersCustomer
   summary: Update a Customer
-  description: Updates a Customer.
+  description: Update a Customer's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -69,12 +71,16 @@ post:
         type: string
     - in: query
       name: expand
-      description: (Comma separated) Which fields should be expanded in each customer.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        customer.
       schema:
         type: string
     - in: query
       name: fields
-      description: (Comma separated) Which fields should be retrieved in each customer.
+      description: >-
+        Comma-separated fields that should be retrieved in the returned
+        customer.
       schema:
         type: string
   requestBody:

@@ -6,7 +6,7 @@ required:
 properties:
   application_name:
     type: string
-    description: Name of the application for the token to be generated for.
+    description: Name of the application for to generate the token for.
   state:
     type: string
     description: State of the application.

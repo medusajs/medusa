@@ -1,7 +1,7 @@
 get:
   operationId: GetPriceListsPriceList
   summary: Get a Price List
-  description: Retrieves a Price List.
+  description: Retrieve a Price List's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -48,7 +48,7 @@ get:
 post:
   operationId: PostPriceListsPriceListPriceList
   summary: Update a Price List
-  description: Updates a Price List
+  description: Update a Price List's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -100,13 +100,13 @@ post:
 delete:
   operationId: DeletePriceListsPriceList
   summary: Delete a Price List
-  description: Deletes a Price List
+  description: Delete a Price List and its associated prices.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Price List to delete.
+      description: The ID of the Price List.
       schema:
         type: string
   x-codegen:

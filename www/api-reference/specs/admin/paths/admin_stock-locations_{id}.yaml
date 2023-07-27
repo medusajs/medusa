@@ -1,7 +1,7 @@
 get:
   operationId: GetStockLocationsStockLocation
   summary: Get a Stock Location
-  description: Retrieves the Stock Location.
+  description: Retrieve a Stock Location's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -12,12 +12,16 @@ get:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the results.
+      description: >-
+        Comma-separated relations that should be expanded in the returned stock
+        location.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the results.
+      description: >-
+        Comma-separated fields that should be included in the returned stock
+        location.
       schema:
         type: string
   x-codegen:
@@ -47,7 +51,7 @@ get:
 post:
   operationId: PostStockLocationsStockLocation
   summary: Update a Stock Location
-  description: Updates a Stock Location.
+  description: Update a Stock Location's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -58,12 +62,16 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the results.
+      description: >-
+        Comma-separated relations that should be expanded in the returned stock
+        location.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the results.
+      description: >-
+        Comma-separated fields that should be included in the returned stock
+        location.
       schema:
         type: string
   requestBody:
@@ -109,13 +117,13 @@ post:
 delete:
   operationId: DeleteStockLocationsStockLocation
   summary: Delete a Stock Location
-  description: Delete a Stock Location
+  description: Delete a Stock Location.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Stock Location to delete.
+      description: The ID of the Stock Location.
       schema:
         type: string
   x-codeSamples:
@@ -138,18 +146,6 @@ delete:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              id:
-                type: string
-                description: The ID of the deleted Stock Location.
-              object:
-                type: string
-                description: The type of the object that was deleted.
-                format: stock_location
-              deleted:
-                type: boolean
-                description: Whether or not the Stock Location was deleted.
-                default: true
+            $ref: ../components/schemas/AdminStockLocationsDeleteRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml

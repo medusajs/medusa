@@ -9,9 +9,14 @@ import { serialize } from "next-mdx-remote/serialize"
 
 export type MDXContentClientProps = {
   content: any
+  className?: string
 } & Partial<MDXRemoteProps>
 
-const MDXContentClient = ({ content, ...props }: MDXContentClientProps) => {
+const MDXContentClient = ({
+  content,
+  className,
+  ...props
+}: MDXContentClientProps) => {
   const [parsedContent, setParsedContent] = useState<MDXRemoteSerializeResult>()
 
   useEffect(() => {
@@ -29,14 +34,14 @@ const MDXContentClient = ({ content, ...props }: MDXContentClientProps) => {
   }, [content, props.scope])
 
   return (
-    <>
+    <p className={className}>
       {parsedContent !== undefined && (
         <MDXRemote
           {...parsedContent}
           components={getCustomComponents((props.scope as ScopeType) || {})}
         />
       )}
-    </>
+    </p>
   )
 }
 

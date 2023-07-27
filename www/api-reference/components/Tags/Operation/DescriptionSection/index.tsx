@@ -5,6 +5,9 @@ import type { TagsOperationDescriptionSectionResponsesProps } from "./Responses"
 import dynamic from "next/dynamic"
 import TagsOperationDescriptionSectionParameters from "./Parameters"
 import MDXContentClient from "@/components/MDXContent/Client"
+import type { BadgeProps } from "../../../Badge"
+import type { TagsOperationFeatureFlagNoticeProps } from "../FeatureFlagNotice"
+import type { LinkProps } from "../../../MDXComponents/Link"
 
 const TagsOperationDescriptionSectionSecurity =
   dynamic<TagsOperationDescriptionSectionSecurityProps>(
@@ -21,6 +24,19 @@ const TagsOperationDescriptionSectionResponses =
     async () => import("./Responses")
   ) as React.FC<TagsOperationDescriptionSectionResponsesProps>
 
+const Link = dynamic<LinkProps>(
+  async () => import("../../../MDXComponents/Link")
+) as React.FC<LinkProps>
+
+const Badge = dynamic<BadgeProps>(
+  async () => import("../../../Badge")
+) as React.FC<BadgeProps>
+
+const TagsOperationFeatureFlagNotice =
+  dynamic<TagsOperationFeatureFlagNoticeProps>(
+    async () => import("../FeatureFlagNotice")
+  ) as React.FC<TagsOperationFeatureFlagNoticeProps>
+
 type TagsOperationDescriptionSectionProps = {
   operation: Operation
 }
@@ -29,10 +45,32 @@ const TagsOperationDescriptionSection = ({
 }: TagsOperationDescriptionSectionProps) => {
   return (
     <>
-      <h3>{operation.summary}</h3>
+      <h3>
+        {operation.summary}
+        {operation.deprecated && (
+          <Badge variant="orange" className="ml-0.5">
+            deprecated
+          </Badge>
+        )}
+        {operation["x-featureFlag"] && (
+          <TagsOperationFeatureFlagNotice
+            featureFlag={operation["x-featureFlag"]}
+            tooltipTextClassName="font-normal text-medusa-text-subtle dark:text-medusa-text-subtle-dark"
+            badgeClassName="ml-0.5"
+          />
+        )}
+      </h3>
       <div className="my-1">
         <MDXContentClient content={operation.description} />
       </div>
+      {operation.externalDocs && (
+        <>
+          Related guide:{" "}
+          <Link href={operation.externalDocs.url} target="_blank">
+            {operation.externalDocs.description || "Read More"}
+          </Link>
+        </>
+      )}
       {operation.security && (
         <TagsOperationDescriptionSectionSecurity
           security={operation.security}

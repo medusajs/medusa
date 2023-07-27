@@ -1,34 +1,42 @@
 get:
   operationId: GetProductsProductVariants
   summary: List a Product's Variants
-  description: Retrieves a list of the Product Variants associated with a Product.
+  description: >-
+    Retrieve a list of Product Variants associated with a Product. The variants
+    can be paginated.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: ID of the product to search for the variants.
+      description: ID of the product.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated string of the column to select.
+      description: >-
+        Comma-separated fields that should be included in the returned product
+        variants.
       schema:
         type: string
     - in: query
       name: expand
-      description: Comma separated string of the relations to include.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        product variants.
       schema:
         type: string
     - in: query
       name: offset
-      description: How many items to skip before the results.
+      description: >-
+        The number of product variants to skip when retrieving the product
+        variants.
       schema:
         type: integer
         default: 0
     - in: query
       name: limit
-      description: Limit the number of items returned.
+      description: Limit the number of product variants returned.
       schema:
         type: integer
         default: 100
@@ -68,8 +76,8 @@ post:
   operationId: PostProductsProductVariants
   summary: Create a Product Variant
   description: >-
-    Creates a Product Variant. Each Product Variant must have a unique
-    combination of Product Option Values.
+    Create a Product Variant associated with a Product. Each product variant
+    must have a unique combination of Product Option values.
   x-authenticated: true
   parameters:
     - in: path

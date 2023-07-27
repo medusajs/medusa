@@ -17,6 +17,7 @@ export type Operation = OpenAPIV3.OperationObject<{
   requestBody: RequestObject
   responses: ResponsesObject
   parameters: Parameter[]
+  "x-featureFlag"?: string
 }>
 
 export type RequestObject = OpenAPIV3.RequestBodyObject & {
@@ -84,6 +85,8 @@ export type SchemaObject = (ArraySchemaObject | NonArraySchemaObject) & {
     [media: string]: OpenAPIV3.ExampleObject
   }
   isRequired?: boolean
+  "x-featureFlag"?: string
+  "x-expandable"?: string
 }
 
 export type PropertiesObject = {

@@ -4,6 +4,7 @@ import type { SchemaObject } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import type { LinkProps } from "../../../../MDXComponents/Link"
+import capitalize from "../../../../../utils/capitalize"
 
 const InlineCode = dynamic<InlineCodeProps>(
   async () => import("../../../../InlineCode")
@@ -111,19 +112,15 @@ const TagOperationParametersDescription = ({
       {schema.description && (
         <>
           <br />
-          <MDXContentClient content={schema.description} />
+          <MDXContentClient
+            content={capitalize(schema.description)}
+            className={clsx(schema.externalDocs && "!mb-0 [&>*]:!mb-0")}
+          />
         </>
       )}
       {schema.externalDocs && (
-        <Link
-          href={schema.externalDocs.url}
-          className={clsx(
-            "text-medusa-text-base hover:text-medusa-text-subtle",
-            "dark:text-medusa-text-base-dark dark:hover:text-medusa-text-subtle-dark"
-          )}
-          target="_blank"
-        >
-          {schema.externalDocs.description || "Read More"}
+        <Link href={schema.externalDocs.url} target="_blank">
+          Related guide: {schema.externalDocs.description || "Read More"}
         </Link>
       )}
     </div>

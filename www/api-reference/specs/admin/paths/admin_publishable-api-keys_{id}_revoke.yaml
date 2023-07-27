@@ -1,12 +1,14 @@
 post:
   operationId: PostPublishableApiKeysPublishableApiKeyRevoke
-  summary: Revoke PublishableApiKey
-  description: Revokes a PublishableApiKey.
+  summary: Revoke a Publishable API Key
+  description: >-
+    Revoke a Publishable API Key. Revoking the publishable API Key can't be
+    undone, and the key can't be used in future requests.
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the PublishableApiKey.
+      description: The ID of the Publishable API Key.
       schema:
         type: string
   x-authenticated: true

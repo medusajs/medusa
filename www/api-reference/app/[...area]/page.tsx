@@ -6,6 +6,7 @@ import Section from "@/components/Section"
 import Tags from "@/components/Tags"
 import type { Area } from "@/types/openapi"
 import DividedLayout from "@/layouts/Divided"
+import capitalize from "../../utils/capitalize"
 
 type ReferencePageProps = {
   params: {
@@ -18,7 +19,7 @@ const ReferencePage = async ({ params: { area } }: ReferencePageProps) => {
     <AreaProvider area={area}>
       <div className="mt-3">
         <DividedLayout
-          mainContent={<h1>Medusa {capitalizeTitle(area[0])} API Reference</h1>}
+          mainContent={<h1>Medusa {capitalize(area[0])} API Reference</h1>}
           codeContent={<></>}
         />
         <DividedLayout
@@ -41,11 +42,7 @@ export default ReferencePage
 
 export function generateMetadata({ params: { area } }: ReferencePageProps) {
   return {
-    title: `Medusa ${capitalizeTitle(area[0])} API Reference`,
+    title: `Medusa ${capitalize(area[0])} API Reference`,
     description: `REST API reference for the Medusa ${area[0]} API. This reference includes code snippets and examples for Medusa JS Client and cURL.`,
   }
-}
-
-function capitalizeTitle(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
 }

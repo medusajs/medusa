@@ -20,6 +20,7 @@ required:
 properties:
   products:
     type: array
+    description: An array of products details.
     items:
       $ref: ./PricedProduct.yaml
   count:
@@ -27,7 +28,7 @@ properties:
     description: The total number of items available
   offset:
     type: integer
-    description: The number of items skipped before these items
+    description: The number of products skipped when retrieving the products.
   limit:
     type: integer
     description: The number of items per page
