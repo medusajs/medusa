@@ -21,6 +21,4 @@ export type FindOptions<T = any> = {
   options?: OptionsQuery<T, any>
 }
 
-export const SoftDeletableFilterKey = "softDeletable"
-
 export * from "./repository-service"
