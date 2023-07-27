@@ -1,4 +1,4 @@
-import { AwilixContainer } from "awilix"
+import { asValue, AwilixContainer } from "awilix"
 import {
   DataSource,
   DataSourceOptions,
@@ -7,7 +7,10 @@ import {
 } from "typeorm"
 import { ConfigModule } from "../types/global"
 import "../utils/naming-strategy"
-import { handlePostgresDatabaseError } from "@medusajs/utils"
+import {
+  handlePostgresDatabaseError,
+  PG_KNEX_CONNECTION_REGISTRATION_KEY,
+} from "@medusajs/utils"
 
 type Options = {
   configModule: ConfigModule
@@ -40,12 +43,17 @@ export default async ({
 }: Options): Promise<DataSource> => {
   const entities = container.resolve("db_entities")
 
+  const connectionString = configModule.projectConfig.database_url
+  const database = configModule.projectConfig.database_database
+  const extra: any = configModule.projectConfig.database_extra || {}
+  const schema = configModule.projectConfig.database_schema || "public"
+
   dataSource = new DataSource({
     type: "postgres",
-    url: configModule.projectConfig.database_url,
-    database: configModule.projectConfig.database_database,
-    extra: configModule.projectConfig.database_extra || {},
-    schema: configModule.projectConfig.database_schema,
+    url: connectionString,
+    database: database,
+    extra,
+    schema,
     entities,
     migrations: customOptions?.migrations,
     logging:
@@ -61,6 +69,31 @@ export default async ({
     await dataSource
       .query(`select * from migrations`)
       .catch(handlePostgresDatabaseError)
+  }
+
+  // Share a knex connection to be consumed by the shared modules
+  if (!container.hasRegistration(PG_KNEX_CONNECTION_REGISTRATION_KEY)) {
+    const pgConnection = require("knex")({
+      client: "pg",
+      searchPath: schema,
+      connection: {
+        connectionString: connectionString,
+        database: database,
+        ssl: extra?.ssl ?? false,
+        idle_in_transaction_session_timeout:
+          extra.idle_in_transaction_session_timeout ?? undefined, // prevent null to be passed
+      },
+      pool: {
+        min: 0,
+        max: extra.max,
+        idleTimeoutMillis: extra.idleTimeoutMillis ?? undefined, // prevent null to be passed
+      },
+    })
+
+    container.register(
+      PG_KNEX_CONNECTION_REGISTRATION_KEY,
+      asValue(pgConnection)
+    )
   }
 
   return dataSource

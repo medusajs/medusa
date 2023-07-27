@@ -47,9 +47,7 @@ function getDefaultDriverOptions(clientUrl: string) {
  */
 export function loadDatabaseConfig(
   moduleName: string,
-  options?:
-    | ModulesSdkTypes.ModuleServiceInitializeOptions
-    | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
+  options?: ModulesSdkTypes.ModuleServiceInitializeOptions
 ): ModulesSdkTypes.ModuleServiceInitializeOptions["database"] {
   const clientUrl = getEnv("POSTGRES_URL", moduleName)
 

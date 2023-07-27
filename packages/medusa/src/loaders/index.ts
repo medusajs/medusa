@@ -25,6 +25,7 @@ import subscribersLoader from "./subscribers"
 
 import { moduleLoader, registerModules } from "@medusajs/modules-sdk"
 import { createMedusaContainer } from "medusa-core-utils"
+import knexConnectionLoader from "./knex-connection"
 
 type Options = {
   directory: string
@@ -86,6 +87,8 @@ export default async ({
   strategiesLoader({ container, configModule, isTest })
   const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
   track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
+
+  await knexConnectionLoader({ container, configModule })
 
   const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
   track("MODULES_INIT_STARTED")

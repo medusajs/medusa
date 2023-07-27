@@ -74,9 +74,10 @@ export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
     isRequired: false,
     canOverride: true,
     isQueryable: true,
-    dependencies: [],
+    dependencies: ["eventBusService", "logger"],
     defaultModuleDeclaration: {
-      scope: MODULE_SCOPE.EXTERNAL,
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.SHARED,
     },
   },
 }

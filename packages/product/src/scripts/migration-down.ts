@@ -17,10 +17,7 @@ export async function revertMigration({
   options,
   logger,
 }: Pick<
-  LoaderOptions<
-    | ModulesSdkTypes.ModuleServiceInitializeOptions
-    | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
-  >,
+  LoaderOptions<ModulesSdkTypes.ModuleServiceInitializeOptions>,
   "options" | "logger"
 > = {}) {
   logger ??= console as unknown as Logger

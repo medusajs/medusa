@@ -8,7 +8,10 @@ import {
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
-import { createMedusaContainer } from "@medusajs/utils"
+import {
+  createMedusaContainer,
+  PG_KNEX_CONNECTION_REGISTRATION_KEY,
+} from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
 
 export async function loadInternalModule(
@@ -73,7 +76,12 @@ export async function loadInternalModule(
 
   const dependencies = resolution?.dependencies ?? []
   if (resources === MODULE_RESOURCE_TYPE.SHARED) {
-    dependencies.push("manager", "configModule")
+    dependencies.push(
+      "manager",
+      "configModule",
+      "logger",
+      PG_KNEX_CONNECTION_REGISTRATION_KEY
+    )
   }
 
   for (const dependency of dependencies) {

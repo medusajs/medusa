@@ -14,10 +14,7 @@ export async function run({
   path,
 }: Partial<
   Pick<
-    LoaderOptions<
-      | ModulesSdkTypes.ModuleServiceInitializeOptions
-      | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
-    >,
+    LoaderOptions<ModulesSdkTypes.ModuleServiceInitializeOptions>,
     "options" | "logger"
   >
 > & {

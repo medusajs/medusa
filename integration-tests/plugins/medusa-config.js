@@ -45,7 +45,7 @@ module.exports = {
       resolve: "@medusajs/cache-inmemory",
       options: { ttl: 5 },
     },
-    productModuleService: {
+    productService: {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/product",

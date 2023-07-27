@@ -6,13 +6,18 @@ import {
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
 } from "@medusajs/modules-sdk"
-import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
+import {
+  MedusaError,
+  ModulesSdkUtils,
+  PG_KNEX_CONNECTION_REGISTRATION_KEY,
+} from "@medusajs/utils"
 
 import { EntitySchema } from "@mikro-orm/core"
 
 import * as ProductModels from "@models"
 import { createConnection } from "../utils"
-import { ConfigModule, ModulesSdkTypes } from "@medusajs/types"
+import { ModulesSdkTypes } from "@medusajs/types"
+import { PostgreSqlDriver, SqlEntityManager } from "@mikro-orm/postgresql"
 
 export default async (
   {
@@ -24,35 +29,59 @@ export default async (
   >,
   moduleDeclaration?: InternalModuleDeclaration
 ): Promise<void> => {
-  if (
-    moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
-    moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
-  ) {
-    const { projectConfig } = container.resolve("configModule") as ConfigModule
-    options = {
-      database: {
-        clientUrl: projectConfig.database_url!,
-        driverOptions: projectConfig.database_extra!,
-        schema: projectConfig.database_schema!,
-      },
-    }
-  }
-
   const customManager = (
     options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   )?.manager
 
-  if (!customManager) {
-    const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)
-    await loadDefault({ database: dbData, container })
-  } else {
-    container.register({
-      manager: asValue(customManager),
+  if (
+    moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
+    moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
+  ) {
+    const sharedConnection = container.resolve(
+      PG_KNEX_CONNECTION_REGISTRATION_KEY,
+      {
+        allowUnregistered: true,
+      }
+    )
+    const logger =
+      container.resolve("logger", { allowUnregistered: true }) ?? console
+
+    if (!sharedConnection) {
+      logger?.warn(
+        "The Product module is setup to use a shared resources but no shared connection is present. A new connection will be created"
+      )
+    }
+
+    const manager = await loadDefault({
+      database: {
+        driverOptions: sharedConnection,
+        clientUrl: "none",
+      },
     })
+    container.register({
+      manager: asValue(manager),
+    })
+
+    return
   }
+
+  const dbConfig =
+    (!customManager &&
+      ModulesSdkUtils.loadDatabaseConfig(
+        "product",
+        options as ModulesSdkTypes.ModuleServiceInitializeOptions
+      )) ||
+    {}
+
+  const manager = await loadDefault({ database: dbConfig })
+  container.register({
+    manager: asValue(manager),
+  })
 }
 
-async function loadDefault({ database, container }) {
+async function loadDefault({
+  database,
+}): Promise<SqlEntityManager<PostgreSqlDriver>> {
   if (!database) {
     throw new MedusaError(
       MedusaError.Types.INVALID_ARGUMENT,
@@ -63,7 +92,5 @@ async function loadDefault({ database, container }) {
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
   const orm = await createConnection(database, entities)
 
-  container.register({
-    manager: asValue(orm.em.fork()),
-  })
+  return orm.em.fork()
 }
