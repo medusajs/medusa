@@ -2,15 +2,13 @@
 description: "In this document, you’ll learn about the directory structure of a Medusa backend. It’ll help you understand the purpose of each file and folder in your Medusa backend project."
 ---
 
-import Badge from "@site/src/components/Badge"
-
 # Medusa Backend Directory Structure
 
 In this document, you’ll learn about the directory structure of a Medusa backend. It’ll help you understand the purpose of each file and folder in your Medusa backend project.
 
 ## Note about Beta
 
-Files that have the beta tag are only available if you installed the Medusa backend using the `create-medusa-app` command.
+Files that have the beta label are only available if you installed the Medusa backend using the `create-medusa-app` command.
 
 ---
 
@@ -56,12 +54,9 @@ Since the Medusa backend is an NPM package, this file defines its information as
 
 Provides general information about the Medusa backend.
 
-<h3>
-  tsconfig.admin.json
-  <Badge variant="orange">beta</Badge>
-</h3>
+### tsconfig.admin.json (beta)
 
-Defines the TypeScript configurations that are used to transpile admin customization files. So, it only works for files under the [`src/admin` directory](#admin).
+Defines the TypeScript configurations that are used to transpile admin customization files. So, it only works for files under the [src/admin directory](#admin-beta).
 
 ### tsconfig.json
 
@@ -69,10 +64,7 @@ Defines the general TypeScript configurations used to transpile files from the `
 
 If you have the beta configuration files, they will extend the configurations in this file along with the configurations they each define.
 
-<h3>
-  tsconfig.server.json
-  <Badge variant="orange">beta</Badge>
-</h3>
+### tsconfig.server.json (beta)
 
 Defines the TypeScript configurations that are used to transpile Medusa backend customization files. It works for all files except for the files under the `src/admin` directory.
 
@@ -119,7 +111,7 @@ npm run seed
 
 This directory holds the transpiled Medusa backend customizations. This directory may not be available when you first install the Medusa backend. It’ll be available when you run the `build` command or start your Medusa backend with the `dev` command.
 
-The files under this directory are the files that are used in your Medusa backend. So, when you make any changes under `src`, make sure the changes are transpiled into the `dist` directory. If you’re using the `dev` or `@medusajs/medusa develop` commands, this is handled automatically whenever changes occur under the `src` directory.
+The files under this directory are the files that are used in your Medusa backend. So, when you make any changes under `src`, make sure the changes are transpiled into the `dist` directory. If you’re using the `dev` or `@medusajs/medusa-cli develop` commands, this is handled automatically whenever changes occur under the `src` directory.
 
 ### node_modules
 
@@ -141,10 +133,7 @@ Files under the `src` directory hold the Medusa backend and admin customizations
 
 If any of these directories are not available, you can create them yourself.
 
-<h3>
-  admin
-  <Badge variant="orange">beta</Badge>
-</h3>
+### admin (beta)
 
 This directory holds all Medusa admin customizations. The main subdirectories of this directory are:
 

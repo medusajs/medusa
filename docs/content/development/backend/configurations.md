@@ -463,5 +463,5 @@ The Medusa core package uses the [compression package provided by Express](https
 
 ## See Also
 
-- [Medusa backend directory structure](./directory-structure.mdx)
+- [Medusa backend directory structure](./directory-structure.md)
 - [Medusa architecture overview](../fundamentals/architecture-overview.md)
