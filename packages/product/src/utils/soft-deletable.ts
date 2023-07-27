@@ -1,7 +1,7 @@
 // TODO: Should we create a mikro orm specific package for this and the base repository?
 
 import { Filter } from "@mikro-orm/core"
-import { DAL } from "@medusajs/types"
+import { SoftDeletableFilterKey } from "@medusajs/utils"
 
 interface FilterArguments {
   withDeleted?: boolean
@@ -9,7 +9,7 @@ interface FilterArguments {
 
 export const SoftDeletable = (): ClassDecorator => {
   return Filter({
-    name: DAL.SoftDeletableFilterKey,
+    name: SoftDeletableFilterKey,
     cond: ({ withDeleted }: FilterArguments = {}) => {
       if (withDeleted) {
         return {}
