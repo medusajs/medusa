@@ -7,8 +7,6 @@ import {
   ShippingProfileType,
   Store,
 } from "@medusajs/medusa"
-import faker from "faker"
-import { DataSource } from "typeorm"
 import {
   ProductVariantFactoryData,
   simpleProductVariantFactory,
@@ -17,6 +15,9 @@ import {
   SalesChannelFactoryData,
   simpleSalesChannelFactory,
 } from "./simple-sales-channel-factory"
+
+import { DataSource } from "typeorm"
+import faker from "faker"
 
 export type ProductFactoryData = {
   id?: string
@@ -91,8 +92,11 @@ export const simpleProductFactory = async (
     discountable: !data.is_giftcard,
     tags: [] as ProductTag[],
     profile_id: data.is_giftcard ? gcProfile?.id : defaultProfile?.id,
+    profiles: [
+      { id: data.is_giftcard ? gcProfile?.id : defaultProfile?.id },
+    ] as ShippingProfile[],
     metadata: data.metadata || null,
-  } as Product
+  } as unknown as Product
 
   if (typeof data.tags !== "undefined") {
     for (let i = 0; i < data.tags.length; i++) {

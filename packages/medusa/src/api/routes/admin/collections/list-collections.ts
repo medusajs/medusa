@@ -9,18 +9,18 @@ import { Type } from "class-transformer"
  * @oas [get] /admin/collections
  * operationId: "GetCollections"
  * summary: "List Collections"
- * description: "Retrieve a list of Product Collection."
+ * description: "Retrieve a list of Product Collection. The product collections can be filtered by fields such as `handle` or `title`. The collections can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
  *   - (query) limit=10 {integer} The number of collections to return.
- *   - (query) offset=0 {integer} The number of collections to skip before the results.
- *   - (query) title {string} The title of collections to return.
- *   - (query) handle {string} The handle of collections to return.
- *   - (query) q {string} a search term to search titles and handles.
- *   - (query) discount_condition_id {string} The discount condition id on which to filter the product collections.
+ *   - (query) offset=0 {integer} The number of collections to skip when retrieving the collections.
+ *   - (query) title {string} Filter collections by their title.
+ *   - (query) handle {string} Filter collections by their handle.
+ *   - (query) q {string} a term to search collections by their title or handle.
+ *   - (query) discount_condition_id {string} Filter collections by a discount condition ID associated with them.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting collections were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -42,7 +42,7 @@ import { Type } from "class-transformer"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting collections were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -64,7 +64,7 @@ import { Type } from "class-transformer"
  *            format: date
  *   - in: query
  *     name: deleted_at
- *     description: Date comparison for when resulting collections were deleted.
+ *     description: Filter by a deletion date range.
  *     schema:
  *       type: object
  *       properties:
@@ -101,13 +101,13 @@ import { Type } from "class-transformer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/collections' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/collections' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Collections
+ *   - Product Collections
  * responses:
  *  "200":
  *    description: OK

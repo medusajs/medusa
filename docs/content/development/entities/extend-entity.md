@@ -108,8 +108,8 @@ npm run build
 
 Then, run the following command to migrate your changes to the database:
 
-```bash npm2yarn
-medusa migrations run
+```bash
+npx @medusajs/medusa-cli migrations run
 ```
 
 You should see that your migration was executed, which means your changes were reflected in the database schema.

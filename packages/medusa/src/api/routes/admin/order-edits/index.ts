@@ -140,6 +140,7 @@ export default (app) => {
  *   - order_edit
  * properties:
  *   order_edit:
+ *     description: "Order edit details"
  *     $ref: "#/components/schemas/OrderEdit"
  */
 export type AdminOrderEditsRes = {
@@ -192,6 +193,7 @@ export type AdminOrderEditsRes = {
  * properties:
  *   order_edits:
  *     type: array
+ *     description: "An array of order edit details"
  *     items:
  *       $ref: "#/components/schemas/OrderEdit"
  *   count:
@@ -199,7 +201,7 @@ export type AdminOrderEditsRes = {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of order edits skipped when retrieving the order edits.
  *   limit:
  *     type: integer
  *     description: The number of items per page

@@ -5,13 +5,13 @@ import { FindParams } from "../../../../types/common"
 /**
  * @oas [get] /admin/order-edits/{id}
  * operationId: "GetOrderEditsOrderEdit"
- * summary: "Get an OrderEdit"
- * description: "Retrieves a OrderEdit."
+ * summary: "Get an Order Edit"
+ * description: "Retrieve an Order Edit's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in each returned order edit.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order edit.
  * x-codegen:
  *   method: retrieve
  *   queryParams: GetOrderEditsOrderEditParams
@@ -29,8 +29,8 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/order-edits/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/order-edits/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

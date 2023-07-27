@@ -7,8 +7,9 @@ import { ProductCategoryService } from "../../../../services"
  * @oas [delete] /admin/product-categories/{id}
  * operationId: "DeleteProductCategoriesCategory"
  * summary: "Delete a Product Category"
- * description: "Deletes a Product Category."
+ * description: "Delete a Product Category. This does not delete associated products."
  * x-authenticated: true
+ * x-featureFlag: "product_categories"
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category
  * x-codegen:
@@ -27,8 +28,8 @@ import { ProductCategoryService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/product-categories/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/product-categories/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

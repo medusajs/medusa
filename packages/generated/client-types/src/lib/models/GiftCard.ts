@@ -27,19 +27,19 @@ export interface GiftCard {
    */
   balance: number
   /**
-   * The id of the Region in which the Gift Card is available.
+   * The ID of the region this gift card is available in.
    */
   region_id: string
   /**
-   * A region object. Available if the relation `region` is expanded.
+   * The details of the region this gift card is available in.
    */
   region?: Region | null
   /**
-   * The id of the Order that the Gift Card was purchased in.
+   * The ID of the order that the gift card was purchased in.
    */
   order_id: string | null
   /**
-   * An order object. Available if the relation `order` is expanded.
+   * The details of the order that the gift card was purchased in.
    */
   order?: Order | null
   /**

@@ -1,11 +1,11 @@
-import { FindConfig, DAL, Context } from "@medusajs/types"
+import { Context, DAL, FindConfig } from "@medusajs/types"
 import { MedusaError, isDefined, lowerCaseFirst } from "../common"
 import { buildQuery } from "./build-query"
 
 type RetrieveEntityParams<TDTO> = {
   id: string,
   entityName: string,
-  repository: DAL.TreeRepositoryService
+  repository: DAL.TreeRepositoryService | DAL.RepositoryService
   config: FindConfig<TDTO>
   sharedContext?: Context
 }

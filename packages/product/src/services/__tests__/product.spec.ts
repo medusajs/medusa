@@ -8,9 +8,10 @@ describe("Product service", function () {
   it("should retrieve a product", async function () {
     const productService = mockContainer.resolve("productService")
     const productRepository = mockContainer.resolve("productRepository")
-
     const productId = "existing-product"
+
     await productService.retrieve(productId)
+
     expect(productRepository.find).toHaveBeenCalledWith(
       {
         where: {
@@ -24,7 +25,7 @@ describe("Product service", function () {
           withDeleted: undefined,
         },
       },
-      undefined
+      expect.any(Object)
     )
   })
 
@@ -49,7 +50,7 @@ describe("Product service", function () {
           withDeleted: undefined,
         },
       },
-      undefined
+      expect.any(Object)
     )
 
     expect(err.message).toBe(
@@ -79,7 +80,7 @@ describe("Product service", function () {
           withDeleted: undefined,
         },
       },
-      undefined
+      expect.any(Object)
     )
   })
 
@@ -117,7 +118,7 @@ describe("Product service", function () {
           withDeleted: undefined,
         },
       },
-      undefined
+      expect.any(Object)
     )
   })
 
@@ -155,7 +156,7 @@ describe("Product service", function () {
           populate: ["tags"],
         },
       },
-      undefined
+      expect.any(Object)
     )
   })
 
@@ -193,7 +194,7 @@ describe("Product service", function () {
           populate: ["tags"],
         },
       },
-      undefined
+      expect.any(Object)
     )
   })
 })

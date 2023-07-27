@@ -1,16 +1,18 @@
-import { Product, ProductVariant } from "@models"
 import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import {
+  InjectManager,
   InjectTransactionManager,
-  isString,
   MedusaContext,
   ModulesSdkUtils,
+  isString,
   retrieveEntity,
 } from "@medusajs/utils"
-
-import ProductService from "./product"
-import { doNotForceTransaction } from "../utils"
+import { Product, ProductVariant } from "@models"
 import { ProductVariantRepository } from "@repositories"
+
+import { ProductVariantServiceTypes } from "../types/services"
+import { doNotForceTransaction } from "../utils"
+import ProductService from "./product"
 
 type InjectedDependencies = {
   productVariantRepository: DAL.RepositoryService
@@ -32,10 +34,11 @@ export default class ProductVariantService<
     this.productService_ = productService
   }
 
+  @InjectManager("productVariantRepository_")
   async retrieve(
     productVariantId: string,
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
     return (await retrieveEntity<
       ProductVariant,
@@ -49,10 +52,11 @@ export default class ProductVariantService<
     })) as TEntity
   }
 
+  @InjectManager("productVariantRepository_")
   async list(
     filters: ProductTypes.FilterableProductVariantProps = {},
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     const queryOptions = ModulesSdkUtils.buildQuery<ProductVariant>(
       filters,
@@ -65,10 +69,11 @@ export default class ProductVariantService<
     )) as TEntity[]
   }
 
+  @InjectManager("productVariantRepository_")
   async listAndCount(
     filters: ProductTypes.FilterableProductVariantProps = {},
     config: FindConfig<ProductTypes.ProductVariantDTO> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     const queryOptions = ModulesSdkUtils.buildQuery<ProductVariant>(
       filters,
@@ -91,7 +96,8 @@ export default class ProductVariantService<
 
     if (isString(productOrId)) {
       product = await this.productService_.retrieve(
-        productOrId as string,
+        productOrId,
+        {},
         sharedContext
       )
     }
@@ -111,5 +117,39 @@ export default class ProductVariantService<
     ).create(data_, {
       transactionManager: sharedContext.transactionManager,
     })) as TEntity[]
+  }
+
+  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  async update(
+    productOrId: TProduct | string,
+    data: ProductVariantServiceTypes.UpdateProductVariantDTO[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TEntity[]> {
+    let product = productOrId as unknown as Product
+
+    if (isString(productOrId)) {
+      product = await this.productService_.retrieve(
+        productOrId,
+        {},
+        sharedContext
+      )
+    }
+
+    const variantsData = [...data]
+    variantsData.forEach((variant) => Object.assign(variant, { product }))
+
+    return await (this.productVariantRepository_ as ProductVariantRepository).update(variantsData, {
+      transactionManager: sharedContext.transactionManager,
+    }) as TEntity[]
+  }
+
+  @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")
+  async delete(
+    ids: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<void> {
+    return await this.productVariantRepository_.delete(ids, {
+      transactionManager: sharedContext.transactionManager,
+    })
   }
 }

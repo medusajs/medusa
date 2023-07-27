@@ -1,17 +1,17 @@
-import { EventEmitter } from "events"
-import {
-  TransactionHandlerType,
-  TransactionStepsDefinition,
-  TransactionStepStatus,
-  TransactionState,
-  TransactionModel,
-} from "./types"
 import {
   DistributedTransaction,
   TransactionCheckpoint,
   TransactionPayload,
 } from "./distributed-transaction"
 import { TransactionStep, TransactionStepHandler } from "./transaction-step"
+import {
+  TransactionHandlerType,
+  TransactionState,
+  TransactionStepStatus,
+  TransactionStepsDefinition
+} from "./types"
+
+import { EventEmitter } from "events"
 
 export type TransactionFlow = {
   modelId: string

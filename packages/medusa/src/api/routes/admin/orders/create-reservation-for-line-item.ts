@@ -8,8 +8,8 @@ import {
 /**
  * @oas [post] /admin/orders/{id}/line-items/{line_item_id}/reserve
  * operationId: "PostOrdersOrderLineItemReservations"
- * summary: "Create a Reservation for a line item"
- * description: "Creates a Reservation for a line item at a specified location, optionally for a partial quantity."
+ * summary: "Create a Reservation"
+ * description: "Create a Reservation for a line item at a specified location, optionally for a partial quantity."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
@@ -23,9 +23,9 @@ import {
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/line-items/{line_item_id}/reserve' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/line-items/{line_item_id}/reserve' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "location_id": "loc_1"
  *       }'
@@ -103,7 +103,7 @@ export default async (req, res) => {
  * - location_id
  * properties:
  *   location_id:
- *     description: "The id of the location of the reservation"
+ *     description: "The ID of the location of the reservation"
  *     type: string
  *   quantity:
  *     description: "The quantity to reserve"

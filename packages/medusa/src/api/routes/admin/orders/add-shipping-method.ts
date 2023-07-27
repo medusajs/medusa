@@ -18,8 +18,8 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * description: "Adds a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced."
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
- *   - (query) expand {string} Comma separated list of relations to include in the result.
- *   - (query) fields {string} Comma separated list of fields to include in the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -36,7 +36,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.addShippingMethod(order_id, {
+ *       medusa.admin.orders.addShippingMethod(orderId, {
  *         price: 1000,
  *         option_id
  *       })
@@ -46,9 +46,9 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/shipping-methods' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/shipping-methods' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "price": 1000,
  *           "option_id": "{option_id}"
@@ -116,7 +116,7 @@ export default async (req, res) => {
  *     description: The ID of the Shipping Option to create the Shipping Method from.
  *   date:
  *     type: object
- *     description: The data required for the Shipping Option to create a Shipping Method. This will depend on the Fulfillment Provider.
+ *     description: The data required for the Shipping Option to create a Shipping Method. This depends on the Fulfillment Provider.
  */
 export class AdminPostOrdersOrderShippingMethodsReq {
   @IsInt()

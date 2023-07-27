@@ -1,7 +1,7 @@
 import { PaginatedResponse } from "@medusajs/types"
-import { Region } from "./../../../../"
 import { Router } from "express"
 import middlewares from "../../../middlewares"
+import { Region } from "./../../../../"
 
 const route = Router()
 
@@ -37,6 +37,7 @@ export const defaultRelations = [
  * properties:
  *   regions:
  *     type: array
+ *     description: "An array of regions details."
  *     items:
  *       $ref: "#/components/schemas/Region"
  *   count:
@@ -44,7 +45,7 @@ export const defaultRelations = [
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of regions skipped when retrieving the regions.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -69,6 +70,7 @@ export type StoreRegionsListRes = PaginatedResponse & {
  *   - region
  * properties:
  *   region:
+ *     description: "Region details."
  *     $ref: "#/components/schemas/Region"
  */
 export type StoreRegionsRes = {
@@ -77,3 +79,4 @@ export type StoreRegionsRes = {
 
 export * from "./get-region"
 export * from "./list-regions"
+

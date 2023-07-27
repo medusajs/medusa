@@ -1,6 +1,7 @@
 import { MedusaContainer } from "../common"
-import { Logger } from "../logger"
 import { RepositoryService } from "../dal"
+import { JoinerServiceConfig } from "../joiner"
+import { Logger } from "../logger"
 
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
@@ -67,6 +68,11 @@ export type ModuleDefinition = {
   defaultModuleDeclaration:
     | InternalModuleDeclaration
     | ExternalModuleDeclaration
+}
+
+export type LoadedModule = unknown & {
+  __joinerConfig: JoinerServiceConfig
+  __definition: ModuleDefinition
 }
 
 export type LoaderOptions<TOptions = Record<string, unknown>> = {

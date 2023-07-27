@@ -12,10 +12,7 @@ const {
   DiscountConditionOperator,
 } = require("@medusajs/medusa")
 const { IdMap } = require("medusa-test-utils")
-const {
-  simpleDiscountFactory,
-  simpleSalesChannelFactory,
-} = require("../../../factories")
+const { simpleDiscountFactory } = require("../../../factories")
 
 jest.setTimeout(30000)
 

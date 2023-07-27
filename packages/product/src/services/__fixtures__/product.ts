@@ -1,5 +1,5 @@
-import { asClass, asValue, createContainer } from "awilix"
 import { ProductService } from "@services"
+import { asClass, asValue, createContainer } from "awilix"
 
 export const nonExistingProductId = "non-existing-id"
 
@@ -15,6 +15,7 @@ mockContainer.register({
       return [{}]
     }),
     findAndCount: jest.fn().mockResolvedValue([[], 0]),
+    getFreshManager: jest.fn().mockResolvedValue({}),
   }),
   productService: asClass(ProductService),
 })

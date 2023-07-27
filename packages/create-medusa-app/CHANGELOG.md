@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.0.4
+
+### Patch Changes
+
+- [#4567](https://github.com/medusajs/medusa/pull/4567) [`15e87a810`](https://github.com/medusajs/medusa/commit/15e87a8100c9fe66f6d120423ef0351f4c657e7e) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(create-medusa-app): add `stable` option + add URI encoding to database string
+
+- Updated dependencies [[`131477faf`](https://github.com/medusajs/medusa/commit/131477faf0409c49d4aacf26ea591e33b2fa22fd)]:
+  - @medusajs/utils@1.9.3
+
 ## 1.0.3
 
 ### Patch Changes

@@ -1,4 +1,3 @@
-import { EntityManager, In } from "typeorm"
 import {
   ICacheService,
   IEventBusService,
@@ -9,16 +8,17 @@ import {
   ReservationItemDTO,
   ReserveQuantityContext,
 } from "@medusajs/types"
-import { LineItem, Product, ProductVariant } from "../models"
 import { MedusaError, isDefined } from "@medusajs/utils"
+import { EntityManager, In } from "typeorm"
+import { LineItem, Product, ProductVariant } from "../models"
 import { PricedProduct, PricedVariant } from "../types/pricing"
 
+import { TransactionBaseService } from "../interfaces"
 import { ProductVariantInventoryItem } from "../models/product-variant-inventory-item"
+import { getSetDifference } from "../utils/diff-set"
 import ProductVariantService from "./product-variant"
 import SalesChannelInventoryService from "./sales-channel-inventory"
 import SalesChannelLocationService from "./sales-channel-location"
-import { TransactionBaseService } from "../interfaces"
-import { getSetDifference } from "../utils/diff-set"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -303,9 +303,27 @@ class ProductVariantInventoryService extends TransactionBaseService {
     // Verify that variant exists
     const variants = await this.productVariantService_
       .withTransaction(this.activeManager_)
-      .list({
-        id: data.map((d) => d.variantId),
-      })
+      .list(
+        {
+          id: data.map((d) => d.variantId),
+        },
+        {
+          select: ["id"],
+        }
+      )
+
+    const foundVariantIds = new Set(variants.map((v) => v.id))
+    const requestedVariantIds = new Set(data.map((v) => v.variantId))
+    if (foundVariantIds.size !== requestedVariantIds.size) {
+      const difference = getSetDifference(requestedVariantIds, foundVariantIds)
+
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Variants not found for the following ids: ${[...difference].join(
+          ", "
+        )}`
+      )
+    }
 
     const foundVariantIds = new Set(variants.map((v) => v.id))
     const requestedVariantIds = new Set(data.map((v) => v.variantId))
