@@ -1,10 +1,9 @@
 import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
-import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
 
 import { omit } from "lodash"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { TaxRate } from "../../../.."
+import { FindParams } from "../../../../types/common"
 import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -14,24 +13,8 @@ import { validator } from "../../../../utils/validator"
  * summary: "Create a Tax Rate"
  * description: "Create a Tax Rate."
  * parameters:
- *   - in: query
- *     name: fields
- *     description: "Comma-separated fields that should be included in the returned tax rate."
- *     style: form
- *     explode: false
- *     schema:
- *       type: array
- *       items:
- *         type: string
- *   - in: query
- *     name: expand
- *     description: "Comma-separated relations that should be expanded in the returned tax rate."
- *     style: form
- *     explode: false
- *     schema:
- *       type: array
- *       items:
- *         type: string
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned tax rate.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned tax rate.
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -128,15 +111,9 @@ export default async (req, res) => {
     )
   }
 
-  const config = getRetrieveConfig(
-    query.fields as (keyof TaxRate)[],
-    query.expand
-  )
+  const rate = await rateService.retrieve(id, req.retrieveConfig)
 
-  const rate = await rateService.retrieve(id, config)
-  const data = pickByConfig(rate, config)
-
-  res.json({ tax_rate: data })
+  res.json({ tax_rate: rate })
 }
 
 /**
@@ -202,12 +179,4 @@ export class AdminPostTaxRatesReq {
   product_types?: string[]
 }
 
-export class AdminPostTaxRatesParams {
-  @IsArray()
-  @IsOptional()
-  expand?: string[]
-
-  @IsArray()
-  @IsOptional()
-  fields?: string[]
-}
+export class AdminPostTaxRatesParams extends FindParams { }

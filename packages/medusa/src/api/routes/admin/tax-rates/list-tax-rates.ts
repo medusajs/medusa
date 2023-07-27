@@ -1,10 +1,8 @@
-import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
-import { getListConfig, pickByConfig } from "./utils/get-query-config"
+import { IsNumber, IsOptional, IsString } from "class-validator"
 import { identity, omit, pickBy } from "lodash"
 
 import { IsType } from "../../../../utils/validators/is-type"
-import { NumericalComparisonOperator } from "../../../../types/common"
-import { TaxRate } from "../../../.."
+import { FindParams, NumericalComparisonOperator, extendedFindParamsMixin } from "../../../../types/common"
 import { TaxRateService } from "../../../../services"
 import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
@@ -53,24 +51,8 @@ import { validator } from "../../../../utils/validator"
  *              description: filter by rates greater than or equal to this number
  *   - (query) offset=0 {integer} The number of tax rates to skip when retrieving the tax rates.
  *   - (query) limit=50 {integer} Limit the number of tax rates returned.
- *   - in: query
- *     name: fields
- *     description: "Comma-separated fields that should be included in the returned tax rate."
- *     style: form
- *     explode: false
- *     schema:
- *       type: array
- *       items:
- *         type: string
- *   - in: query
- *     name: expand
- *     description: "Comma-separated relations that should be expanded in the returned tax rate."
- *     style: form
- *     explode: false
- *     schema:
- *       type: array
- *       items:
- *         type: string
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned tax rate.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned tax rate.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetTaxRatesParams
@@ -120,27 +102,18 @@ export default async (req, res) => {
 
   const rateService: TaxRateService = req.scope.resolve("taxRateService")
 
-  const listConfig = getListConfig()
-
-  const filterableFields = omit(value, [
-    "limit",
-    "offset",
-    "expand",
-    "fields",
-    "order",
-  ])
-
   const [rates, count] = await rateService.listAndCount(
-    pickBy(filterableFields, identity),
-    listConfig
+    req.filterableFields,
+    req.listConfig
   )
 
-  const data = pickByConfig<TaxRate>(rates, listConfig)
-
-  res.json({ tax_rates: data, count, offset: value.offset, limit: value.limit })
+  res.json({ tax_rates: rates, count, offset: value.offset, limit: value.limit })
 }
 
-export class AdminGetTaxRatesParams {
+export class AdminGetTaxRatesParams extends extendedFindParamsMixin({
+  offset: 0,
+  limit: 50,
+}) {
   @IsOptional()
   @IsType([String, [String]])
   region_id?: string | string[]
@@ -156,22 +129,4 @@ export class AdminGetTaxRatesParams {
   @IsType([NumericalComparisonOperator, Number])
   @IsOptional()
   rate?: number | NumericalComparisonOperator
-
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  offset? = 0
-
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  limit? = 50
-
-  @IsArray()
-  @IsOptional()
-  expand?: string[]
-
-  @IsArray()
-  @IsOptional()
-  fields?: string[]
 }

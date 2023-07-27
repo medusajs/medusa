@@ -1,8 +1,6 @@
-import { IsArray, IsOptional } from "class-validator"
-import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
-
+import { IsArray } from "class-validator"
 import { EntityManager } from "typeorm"
-import { TaxRate } from "../../../.."
+import { FindParams } from "../../../../types/common"
 import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -13,24 +11,8 @@ import { validator } from "../../../../utils/validator"
  * description: "Associates a Tax Rate with a list of Shipping Options."
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
- *   - in: query
- *     name: fields
- *     description: "Comma-separated fields that should be included in the returned tax rate."
- *     style: form
- *     explode: false
- *     schema:
- *       type: array
- *       items:
- *         type: string
- *   - in: query
- *     name: expand
- *     description: "Comma-separated relations that should be expanded in the returned tax rate."
- *     style: form
- *     explode: false
- *     schema:
- *       type: array
- *       items:
- *         type: string
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned tax rate.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned tax rate.
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -110,14 +92,9 @@ export default async (req, res) => {
       .addToShippingOption(req.params.id, value.shipping_options)
   })
 
-  const config = getRetrieveConfig(
-    query.fields as (keyof TaxRate)[],
-    query.expand
-  )
-  const rate = await rateService.retrieve(req.params.id, config)
-  const data = pickByConfig(rate, config)
+  const rate = await rateService.retrieve(req.params.id, req.retrieveConfig)
 
-  res.json({ tax_rate: data })
+  res.json({ tax_rate: rate })
 }
 
 /**
@@ -137,12 +114,4 @@ export class AdminPostTaxRatesTaxRateShippingOptionsReq {
   shipping_options: string[]
 }
 
-export class AdminPostTaxRatesTaxRateShippingOptionsParams {
-  @IsArray()
-  @IsOptional()
-  expand?: string[]
-
-  @IsArray()
-  @IsOptional()
-  fields?: string[]
-}
+export class AdminPostTaxRatesTaxRateShippingOptionsParams extends FindParams { }

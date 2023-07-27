@@ -63,7 +63,7 @@ describe("/admin/tax-rates", () => {
     const api = useApi()
 
     const response = await api.get(
-      `/admin/tax-rates?fields[]=rate&fields[]=product_count&fields[]=id&expand[]=products&rate[gt]=80`,
+      `/admin/tax-rates?fields=rate,product_count,id&expand=products&rate[gt]=80`,
       {
         headers: {
           authorization: "Bearer test_token",
@@ -126,7 +126,7 @@ describe("/admin/tax-rates", () => {
     const api = useApi()
 
     const response = await api.get(
-      `/admin/tax-rates/${tax_rates[0].id}?fields[]=id&fields[]=region_id`,
+      `/admin/tax-rates/${tax_rates[0].id}?fields=id,region_id`,
       {
         headers: {
           authorization: "Bearer test_token",
@@ -153,7 +153,7 @@ describe("/admin/tax-rates", () => {
     const api = useApi()
 
     const response = await api.post(
-      `/admin/tax-rates/${rate.id}/product-types/batch?fields[]=id&fields[]=region_id&fields[]=product_type_count&expand[]=product_types`,
+      `/admin/tax-rates/${rate.id}/product-types/batch?fields=id,region_id,product_type_count&expand=product_types`,
       {
         product_types: [product.type_id],
       },
@@ -185,7 +185,7 @@ describe("/admin/tax-rates", () => {
     const api = useApi()
 
     const response = await api.post(
-      `/admin/tax-rates/${rate.id}/product-types/batch?fields[]=id&fields[]=region_id&fields[]=product_type_count&expand[]=product_types`,
+      `/admin/tax-rates/${rate.id}/product-types/batch?fields=id,region_id,product_type_count&expand=product_types`,
       {
         product_types: products.map((product) => product.type_id),
       },
@@ -225,7 +225,7 @@ describe("/admin/tax-rates", () => {
 
     const response = await api
       .post(
-        `/admin/tax-rates/${rate.id}/products/batch?fields[]=id&fields[]=product_count&expand[]=products`,
+        `/admin/tax-rates/${rate.id}/products/batch?fields=id,product_count&expand=products`,
         {
           products: ["unknown_product_id"],
         },
@@ -254,7 +254,7 @@ describe("/admin/tax-rates", () => {
 
     const response = await api
       .post(
-        `/admin/tax-rates/unknown_rate/products/batch?fields[]=id&fields[]=product_count&expand[]=products`,
+        `/admin/tax-rates/unknown_rate/products/batch?fields=id,product_count&expand=products`,
         {
           products: products.map((product) => product.id),
         },
@@ -288,7 +288,7 @@ describe("/admin/tax-rates", () => {
 
     const response = await api
       .post(
-        `/admin/tax-rates/${rate.id}/shipping-options/batch?fields[]=id&fields[]=shipping_option_count&expand[]=shipping_options`,
+        `/admin/tax-rates/${rate.id}/shipping-options/batch?fields=shipping_option_count&expand=shipping_options`,
         {
           shipping_options: [option.id],
         },
@@ -324,7 +324,7 @@ describe("/admin/tax-rates", () => {
     const api = useApi()
 
     const response = await api.post(
-      `/admin/tax-rates/${rate.id}/shipping-options/batch?fields[]=id&fields[]=shipping_option_count&expand[]=shipping_options`,
+      `/admin/tax-rates/${rate.id}/shipping-options/batch?fields=id,shipping_option_count&expand=shipping_options`,
       {
         shipping_options: options.map((o) => o.id),
       },
@@ -355,7 +355,7 @@ describe("/admin/tax-rates", () => {
     const api = useApi()
 
     const response = await api.post(
-      `/admin/tax-rates/${rate.id}/products/batch?fields[]=id&fields[]=product_count&expand[]=products`,
+      `/admin/tax-rates/${rate.id}/products/batch?fields=id,product_count&expand=products`,
       {
         products: products.map((product) => product.id),
       },
@@ -490,7 +490,7 @@ describe("/admin/tax-rates", () => {
 
     const api = useApi()
     const response = await api.post(
-      `/admin/tax-rates?fields[]=product_count&expand[]=products`,
+      `/admin/tax-rates?fields=product_count&expand=products`,
       {
         name: "special",
         code: "tricks",

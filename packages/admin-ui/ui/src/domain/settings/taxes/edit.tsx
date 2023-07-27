@@ -11,7 +11,7 @@ const EditTaxRate = ({ taxRate, taxRateId, regionId, onDismiss }) => {
   const { isLoading, tax_rate } = useAdminTaxRate(
     taxRateId,
     {
-      expand: ["products", "product_types", "shipping_options"],
+      expand: "products,product_types,shipping_options",
     },
     {
       enabled: taxRate.type === "rate",

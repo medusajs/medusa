@@ -1,7 +1,4 @@
-import { IsArray, IsOptional } from "class-validator"
-import { getRetrieveConfig, pickByConfig } from "./utils/get-query-config"
-
-import { TaxRate } from "../../../.."
+import { FindParams } from "../../../../types/common"
 import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -12,24 +9,8 @@ import { validator } from "../../../../utils/validator"
  * description: "Retrieve a Tax Rate's details."
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
- *   - in: query
- *     name: fields
- *     description: "Comma-separated fields that should be included in the returned tax rate."
- *     style: form
- *     explode: false
- *     schema:
- *       type: array
- *       items:
- *         type: string
- *   - in: query
- *     name: expand
- *     description: "Comma-separated relations that should be expanded in the returned tax rate."
- *     style: form
- *     explode: false
- *     schema:
- *       type: array
- *       items:
- *         type: string
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned tax rate.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned tax rate.
  * x-authenticated: true
  * x-codegen:
  *   method: retrieve
@@ -79,22 +60,9 @@ export default async (req, res) => {
   const value = await validator(AdminGetTaxRatesTaxRateParams, req.query)
 
   const rateService: TaxRateService = req.scope.resolve("taxRateService")
-  const config = getRetrieveConfig(
-    value.fields as (keyof TaxRate)[],
-    value.expand
-  )
-  const rate = await rateService.retrieve(req.params.id, config)
-  const data = pickByConfig<TaxRate>(rate, config)
+  const rate = await rateService.retrieve(req.params.id, req.retrieveConfig)
 
-  res.json({ tax_rate: data })
+  res.json({ tax_rate: rate })
 }
 
-export class AdminGetTaxRatesTaxRateParams {
-  @IsArray()
-  @IsOptional()
-  expand?: string[]
-
-  @IsArray()
-  @IsOptional()
-  fields?: string[]
-}
+export class AdminGetTaxRatesTaxRateParams extends FindParams { }
