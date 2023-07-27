@@ -52,8 +52,6 @@ This section includes all configurations that belong to the `projectConfig` prop
 
 ### admin_cors and store_cors
 
-**Required?** No
-
 The Medusa backend’s endpoints are protected by Cross-Origin Resource Sharing (CORS). So, only allowed URLs or URLs matching a specified pattern can send requests to the backend’s endpoints.
 
 `admin_cors` is used to specify the accepted URLs or patterns for admin endpoints, and `store_cors` is used to specify the accepted URLs or patterns for store endpoints.
@@ -104,8 +102,6 @@ module.exports = {
 
 ### cookie_secret
 
-**Required?** No
-
 A string that is used to create cookie tokens. Although this configuration option is not required, it’s highly recommended to set it for better security. It’s also recommended to generate a random string.
 
 In a development environment, if this option is not set the default secret is `supersecret` However, in production, if this configuration is not set an error will be thrown and your backend will crash.
@@ -123,8 +119,6 @@ module.exports = {
 ```
 
 ### http_compression
-
-**Required?** No
 
 This configuration enables HTTP compression from the application layer. If you have access to the HTTP server, the recommended approach would be to enable it there. However, some platforms don't offer access to the HTTP layer and in those cases, this is a good alternative.
 
@@ -154,8 +148,6 @@ module.exports = {
 
 ### jwt_secret
 
-**Required?** No
-
 A string that is used to create authentication tokens. Although this configuration option is not required, it’s highly recommended to set it for better security. It’s also recommended to generate a random string.
 
 In a development environment, if this option is not set the default secret is `supersecret` However, in production, if this configuration is not set an error will be thrown and your backend will crash.
@@ -174,8 +166,6 @@ module.exports = {
 
 ### database_database
 
-**Required?** No
-
 The name of the database to connect to. If provided in `database_url`, then it’s not necessary to include it.
 
 Make sure to create the PostgreSQL database before using it. You can check how to create a database in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/sql-createdatabase.html).
@@ -191,8 +181,6 @@ module.exports = {
 ```
 
 ### database_extra
-
-**Required?** No
 
 An object that includes additional configurations to pass to the database connection. You can pass any configuration. One defined configuration to pass is `ssl` which enables support for TLS/SSL connections.
 
@@ -212,8 +200,6 @@ module.exports = {
 ```
 
 ### database_logging
-
-**Required?** No
 
 This configuration specifies what messages to log. Its value can be one of the following:
 
@@ -235,8 +221,6 @@ module.exports = {
 
 ### database_schema
 
-**Required?** No
-
 A string indicating the database schema to connect to. This is not necessary to provide if you’re using the default schema, which is `public`.
 
 ```js title=medusa-config.js
@@ -251,8 +235,6 @@ module.exports = {
 
 ### database_type
 
-**Required?** No
-
 A string indicating the type of database to connect to. At the moment, only `postgres` is accepted, which is also the default value.
 
 ```js title=medusa-config.js
@@ -266,8 +248,6 @@ module.exports = {
 ```
 
 ### database_url
-
-**Required?** No
 
 A string indicating the connection URL of the database. Typically, the connection URL would be set in an environment variable, and the variable would be referenced in `medusa-config.js`.
 
@@ -305,8 +285,6 @@ module.exports = {
 
 ### redis_url
 
-**Required?** No
-
 This configuration is used to specify the URL to connect to Redis. This is only used for scheduled jobs. If you omit this configuration, scheduled jobs will not work.
 
 :::note
@@ -337,8 +315,6 @@ module.exports = {
 
 ### redis_prefix
 
-**Required?** No
-
 The prefix set on all keys stored in Redis. The default value is `sess:`. If this configuration option is provided, it is prepended to `sess:`.
 
 ```js title=medusa-config.js
@@ -352,8 +328,6 @@ module.exports = {
 ```
 
 ### redis_options
-
-**Required?** No
 
 An object of options to pass ioredis. You can refer to [ioredis’s RedisOptions documentation](https://redis.github.io/ioredis/index.html#RedisOptions) for the list of available options.
 
@@ -370,8 +344,6 @@ module.exports = {
 ```
 
 ### session_options
-
-**Required?** No
 
 An object of options to pass to `express-session`. The object can have the following properties:
 
