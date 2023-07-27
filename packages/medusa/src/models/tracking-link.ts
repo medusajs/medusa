@@ -35,7 +35,7 @@ export class TrackingLink extends SoftDeletableEntity {
 /**
  * @schema TrackingLink
  * title: "Tracking Link"
- * description: "Tracking Link holds information about tracking numbers for a Fulfillment. Tracking Links can optionally contain a URL that can be visited to see the status of the shipment."
+ * description: "A tracking link holds information about tracking numbers for a Fulfillment. Tracking Links can optionally contain a URL that can be visited to see the status of the shipment. Typically, the tracking link is provided from the third-party service integrated through the used fulfillment provider."
  * type: object
  * required:
  *   - created_at
@@ -62,11 +62,12 @@ export class TrackingLink extends SoftDeletableEntity {
  *     type: string
  *     format: RH370168054CN
  *   fulfillment_id:
- *     description: The id of the Fulfillment that the Tracking Link references.
+ *     description: The ID of the fulfillment that the tracking link belongs to.
  *     type: string
  *     example: ful_01G8ZRTMQCA76TXNAT81KPJZRF
  *   fulfillment:
- *     description: Available if the relation `fulfillment` is expanded.
+ *     description: The details of the fulfillment that the tracking link belongs to.
+ *     x-expandable: "fulfillment"
  *     nullable: true
  *     $ref: "#/components/schemas/Fulfillment"
  *   idempotency_key:

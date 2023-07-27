@@ -13,7 +13,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/notifications/{id}/resend
  * operationId: "PostNotificationsNotificationResend"
  * summary: "Resend Notification"
- * description: "Resends a previously sent notifications, with the same data but optionally to a different address"
+ * description: "Resend a previously sent notifications, with the same data but optionally to a different address."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Notification
@@ -31,15 +31,15 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.notifications.resend(notification_id)
+ *       medusa.admin.notifications.resend(notificationId)
  *       .then(({ notification }) => {
  *         console.log(notification.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/notifications/{id}/resend' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST 'https://medusa-url.com/admin/notifications/{id}/resend' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -103,7 +103,7 @@ export default async (req, res) => {
  * type: object
  * properties:
  *   to:
- *     description: "A new address or user identifier that the Notification should be sent to"
+ *     description: "A new address or user identifier that the Notification should be sent to. If not provided, the previous `to` field of the notification will be used."
  *     type: string
  */
 export class AdminPostNotificationsNotificationResendReq {

@@ -5,7 +5,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [get] /store/orders/cart/{cart_id}
  * operationId: GetOrdersOrderCartId
  * summary: Get by Cart ID
- * description: "Retrieves an Order by the id of the Cart that was used to create the Order."
+ * description: "Retrieve an Order's details by the ID of the Cart that was used to create the Order."
  * parameters:
  *   - (path) cart_id=* {string} The ID of Cart.
  * x-codegen:
@@ -16,14 +16,14 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.orders.retrieveByCartId(cart_id)
+ *       medusa.orders.retrieveByCartId(cartId)
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/orders/cart/{id}'
+ *       curl 'https://medusa-url.com/store/orders/cart/{cart_id}'
  * tags:
  *   - Orders
  * responses:

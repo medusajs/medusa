@@ -13,22 +13,22 @@ import { validator } from "../../../../utils/validator"
  * @oas [get] /admin/tax-rates
  * operationId: "GetTaxRates"
  * summary: "List Tax Rates"
- * description: "Retrieves a list of TaxRates"
+ * description: "Retrieve a list of Tax Rates. The tax rates can be filtered by fields such as `name` or `rate`. The tax rates can also be paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) name {string} Name of tax rate to retrieve
+ *   - (query) name {string} Filter by name.
  *   - in: query
  *     name: region_id
  *     style: form
  *     explode: false
- *     description: Filter by Region ID
+ *     description: Filter by Region IDs
  *     schema:
  *       oneOf:
  *        - type: string
  *        - type: array
  *          items:
  *            type: string
- *   - (query) code {string} code to search for.
+ *   - (query) code {string} Filter by code.
  *   - in: query
  *     name: rate
  *     style: form
@@ -51,11 +51,11 @@ import { validator } from "../../../../utils/validator"
  *            gte:
  *              type: number
  *              description: filter by rates greater than or equal to this number
- *   - (query) offset=0 {integer} How many tax rates to skip before retrieving the result.
+ *   - (query) offset=0 {integer} The number of tax rates to skip when retrieving the tax rates.
  *   - (query) limit=50 {integer} Limit the number of tax rates returned.
  *   - in: query
  *     name: fields
- *     description: "Which fields should be included in each item."
+ *     description: "Comma-separated fields that should be included in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -64,7 +64,7 @@ import { validator } from "../../../../utils/validator"
  *         type: string
  *   - in: query
  *     name: expand
- *     description: "Which fields should be expanded and retrieved for each item."
+ *     description: "Comma-separated relations that should be expanded in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -88,8 +88,8 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/tax-rates' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/tax-rates' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

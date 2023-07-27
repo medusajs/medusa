@@ -11,7 +11,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  * @oas [post] /store/customers/me
  * operationId: PostCustomersCustomer
  * summary: Update Customer
- * description: "Updates a Customer's saved details."
+ * description: "Update the logged-in customer's details."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -28,7 +28,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged
  *       medusa.customers.update({
- *         first_name: 'Laury'
+ *         first_name: "Laury"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
@@ -36,9 +36,9 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers/me' \
- *       --header 'Cookie: connect.sid={sid}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/store/customers/me' \
+ *       -H 'Cookie: connect.sid={sid}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "first_name": "Laury"
  *       }'
@@ -92,29 +92,29 @@ export default async (req, res) => {
  * type: object
  * properties:
  *   first_name:
- *     description: "The Customer's first name."
+ *     description: "The customer's first name."
  *     type: string
  *   last_name:
- *     description: "The Customer's last name."
+ *     description: "The customer's last name."
  *     type: string
  *   billing_address:
- *     description: "The Address to be used for billing purposes."
+ *     description: "The address to be used for billing purposes."
  *     anyOf:
  *       - $ref: "#/components/schemas/AddressPayload"
  *         description: The full billing address object
  *       - type: string
  *         description: The ID of an existing billing address
  *   password:
- *     description: "The Customer's password."
+ *     description: "The customer's password."
  *     type: string
  *   phone:
- *     description: "The Customer's phone number."
+ *     description: "The customer's phone number."
  *     type: string
  *   email:
- *     description: "The email of the customer."
+ *     description: "The customer's email."
  *     type: string
  *   metadata:
- *     description: "Metadata about the customer."
+ *     description: "Additional custom data about the customer."
  *     type: object
  */
 export class StorePostCustomersCustomerReq {

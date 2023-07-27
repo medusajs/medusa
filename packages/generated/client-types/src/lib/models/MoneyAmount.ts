@@ -9,7 +9,7 @@ import type { ProductVariant } from "./ProductVariant"
 import type { Region } from "./Region"
 
 /**
- * Money Amounts represents an amount that a given Product Variant can be purcased for. Each Money Amount either has a Currency or Region associated with it to indicate the pricing in a given Currency or, for fully region-based pricing, the given price in a specific Region. If region-based pricing is used the amount will be in the currency defined for the Reigon.
+ * A Money Amount represent a price amount, for example, a product variant's price or a price in a price list. Each Money Amount either has a Currency or Region associated with it to indicate the pricing in a given Currency or, for fully region-based pricing, the given price in a specific Region. If region-based pricing is used, the amount will be in the currency defined for the Region.
  */
 export interface MoneyAmount {
   /**
@@ -17,11 +17,11 @@ export interface MoneyAmount {
    */
   id: string
   /**
-   * The 3 character currency code that the Money Amount is given in.
+   * The 3 character currency code that the money amount may belong to.
    */
   currency_code: string
   /**
-   * Available if the relation `currency` is expanded.
+   * The details of the currency that the money amount may belong to.
    */
   currency?: Currency | null
   /**
@@ -37,19 +37,19 @@ export interface MoneyAmount {
    */
   max_quantity: number | null
   /**
-   * The ID of the price list associated with the money amount
+   * The ID of the price list that the money amount may belong to.
    */
   price_list_id: string | null
   /**
-   * Available if the relation `price_list` is expanded.
+   * The details of the price list that the money amount may belong to.
    */
   price_list?: PriceList | null
   /**
-   * The id of the Product Variant contained in the Line Item.
+   * The ID of the Product Variant contained in the Line Item.
    */
   variant_id: string | null
   /**
-   * The Product Variant contained in the Line Item. Available if the relation `variant` is expanded.
+   * The details of the product variant that the money amount may belong to.
    */
   variant?: ProductVariant | null
   /**
@@ -57,7 +57,7 @@ export interface MoneyAmount {
    */
   region_id: string | null
   /**
-   * A region object. Available if the relation `region` is expanded.
+   * The details of the region that the money amount may belong to.
    */
   region?: Region | null
   /**

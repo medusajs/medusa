@@ -132,8 +132,8 @@ export class ClaimOrder extends SoftDeletableEntity {
 
 /**
  * @schema ClaimOrder
- * title: "Claim Order"
- * description: "Claim Orders represent a group of faulty or missing items. Each claim order consists of a subset of items associated with an original order, and can contain additional information about fulfillments and returns."
+ * title: "Claim"
+ * description: "A Claim represents a group of faulty or missing items. It consists of claim items that refer to items in the original order that should be replaced or refunded. It also includes details related to shipping and fulfillment."
  * type: object
  * required:
  *   - canceled_at
@@ -184,13 +184,15 @@ export class ClaimOrder extends SoftDeletableEntity {
  *       - requires_action
  *     default: not_fulfilled
  *   claim_items:
- *     description: The items that have been claimed
+ *     description: The details of the items that should be replaced or refunded.
  *     type: array
+ *     x-expandable: "claim_items"
  *     items:
  *       $ref: "#/components/schemas/ClaimItem"
  *   additional_items:
- *     description: Refers to the new items to be shipped when the claim order has the type `replace`
+ *     description: The details of the new items to be shipped when the claim's type is `replace`
  *     type: array
+ *     x-expandable: "additional_items"
  *     items:
  *       $ref: "#/components/schemas/LineItem"
  *   order_id:
@@ -198,11 +200,13 @@ export class ClaimOrder extends SoftDeletableEntity {
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: An order object. Available if the relation `order` is expanded.
+ *     description: The details of the order that this claim was created for.
+ *     x-expandable: "order"
  *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   return_order:
- *     description: A return object. Holds information about the return if the claim is to be returned. Available if the relation 'return_order' is expanded
+ *     description: The details of the return associated with the claim if the claim's type is `replace`.
+ *     x-expandable: "return_order"
  *     nullable: true
  *     $ref: "#/components/schemas/Return"
  *   shipping_address_id:
@@ -211,17 +215,20 @@ export class ClaimOrder extends SoftDeletableEntity {
  *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
- *     description: Available if the relation `shipping_address` is expanded.
+ *     description: The details of the address that new items should be shipped to.
+ *     x-expandable: "shipping_address"
  *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   shipping_methods:
- *     description: The shipping methods that the claim order will be shipped with.
+ *     description: The details of the shipping methods that the claim order will be shipped with.
  *     type: array
+ *     x-expandable: "shipping_methods"
  *     items:
  *       $ref: "#/components/schemas/ShippingMethod"
  *   fulfillments:
  *     description: The fulfillments of the new items to be shipped
  *     type: array
+ *     x-expandable: "fulfillments"
  *     items:
  *       $ref: "#/components/schemas/Fulfillment"
  *   refund_amount:

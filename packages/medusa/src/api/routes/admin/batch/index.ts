@@ -49,6 +49,7 @@ export default (app) => {
  *   - batch_job
  * properties:
  *   batch_job:
+ *     description: Batch job details.
  *     $ref: "#/components/schemas/BatchJob"
  */
 export type AdminBatchJobRes = {
@@ -66,6 +67,7 @@ export type AdminBatchJobRes = {
  * properties:
  *   batch_jobs:
  *      type: array
+ *      description: An array of batch job details.
  *      items:
  *        $ref: "#/components/schemas/BatchJob"
  *   count:
@@ -73,7 +75,7 @@ export type AdminBatchJobRes = {
  *      description: The total number of items available
  *   offset:
  *      type: integer
- *      description: The number of items skipped before these items
+ *      description: The number of batch jobs skipped when retrieving the batch jobs.
  *   limit:
  *      type: integer
  *      description: The number of items per page

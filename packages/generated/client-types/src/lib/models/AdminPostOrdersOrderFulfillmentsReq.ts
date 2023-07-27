@@ -9,7 +9,7 @@ export interface AdminPostOrdersOrderFulfillmentsReq {
    */
   items: Array<{
     /**
-     * The ID of Line Item to fulfill.
+     * The ID of the Line Item to fulfill.
      */
     item_id: string
     /**
@@ -18,7 +18,7 @@ export interface AdminPostOrdersOrderFulfillmentsReq {
     quantity: number
   }>
   /**
-   * If set to true no notification will be send related to this Swap.
+   * If set to `true`, no notification will be sent to the customer related to this fulfillment.
    */
   no_notification?: boolean
   /**

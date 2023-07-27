@@ -48,7 +48,7 @@ export class CustomShippingOption extends SoftDeletableEntity {
 /**
  * @schema CustomShippingOption
  * title: "Custom Shipping Option"
- * description: "Custom Shipping Options are 'overriden' Shipping Options. Store managers can attach a Custom Shipping Option to a cart in order to set a custom price for a particular Shipping Option"
+ * description: "Custom Shipping Options are overriden Shipping Options. Admins can attach a Custom Shipping Option to a cart in order to set a custom price for a particular Shipping Option."
  * type: object
  * required:
  *   - cart_id
@@ -73,7 +73,8 @@ export class CustomShippingOption extends SoftDeletableEntity {
  *     type: string
  *     example: so_01G1G5V27GYX4QXNARRQCW1N8T
  *   shipping_option:
- *     description: A shipping option object. Available if the relation `shipping_option` is expanded.
+ *     description: The details of the overriden shipping options.
+ *     x-expandable: "shipping_option"
  *     nullable: true
  *     $ref: "#/components/schemas/ShippingOption"
  *   cart_id:
@@ -82,7 +83,8 @@ export class CustomShippingOption extends SoftDeletableEntity {
  *     type: string
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: A cart object. Available if the relation `cart` is expanded.
+ *     description: The details of the cart this shipping option belongs to.
+ *     x-expandable: "cart"
  *     nullable: true
  *     $ref: "#/components/schemas/Cart"
  *   created_at:

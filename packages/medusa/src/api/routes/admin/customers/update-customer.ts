@@ -19,12 +19,12 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/customers/{id}
  * operationId: "PostCustomersCustomer"
  * summary: "Update a Customer"
- * description: "Updates a Customer."
+ * description: "Update a Customer's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Customer.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer.
- *   - (query) fields {string} (Comma separated) Which fields should be retrieved in each customer.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned customer.
+ *   - (query) fields {string} Comma-separated fields that should be retrieved in the returned customer.
  * requestBody:
  *   content:
  *     application/json:
@@ -39,8 +39,8 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.customers.update(customer_id, {
- *         first_name: 'Dolly'
+ *       medusa.admin.customers.update(customerId, {
+ *         first_name: "Dolly"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
@@ -48,9 +48,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/customers/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/customers/{id}' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "first_name": "Dolly"
  *       }'
@@ -147,6 +147,7 @@ class Group {
  *     format: password
  *   groups:
  *     type: array
+ *     description: A list of customer groups to which the customer belongs.
  *     items:
  *       type: object
  *       required:
@@ -155,7 +156,6 @@ class Group {
  *         id:
  *           description: The ID of a customer group
  *           type: string
- *     description: A list of customer groups to which the customer belongs.
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object

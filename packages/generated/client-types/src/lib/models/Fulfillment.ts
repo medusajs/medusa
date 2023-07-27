@@ -11,7 +11,7 @@ import type { Swap } from "./Swap"
 import type { TrackingLink } from "./TrackingLink"
 
 /**
- * Fulfillments are created once store operators can prepare the purchased goods. Fulfillments will eventually be shipped and hold information about how to track shipments. Fulfillments are created through a provider, which is typically an external shipping aggregator, shipping partner og 3PL, most plugins will have asynchronous communications with these providers through webhooks in order to automatically update and synchronize the state of Fulfillments.
+ * A Fulfillment is created once an admin can prepare the purchased goods. Fulfillments will eventually be shipped and hold information about how to track shipments. Fulfillments are created through a fulfillment provider, which typically integrates a third-party shipping service. Fulfillments can be associated with orders, claims, swaps, and returns.
  */
 export interface Fulfillment {
   /**
@@ -19,47 +19,47 @@ export interface Fulfillment {
    */
   id: string
   /**
-   * The id of the Claim that the Fulfillment belongs to.
+   * The ID of the Claim that the Fulfillment belongs to.
    */
   claim_order_id: string | null
   /**
-   * A claim order object. Available if the relation `claim_order` is expanded.
+   * The details of the claim that the fulfillment may belong to.
    */
   claim_order?: ClaimOrder | null
   /**
-   * The id of the Swap that the Fulfillment belongs to.
+   * The ID of the Swap that the Fulfillment belongs to.
    */
   swap_id: string | null
   /**
-   * A swap object. Available if the relation `swap` is expanded.
+   * The details of the swap that the fulfillment may belong to.
    */
   swap?: Swap | null
   /**
-   * The id of the Order that the Fulfillment belongs to.
+   * The ID of the Order that the Fulfillment belongs to.
    */
   order_id: string | null
   /**
-   * An order object. Available if the relation `order` is expanded.
+   * The details of the order that the fulfillment may belong to.
    */
   order?: Order | null
   /**
-   * The id of the Fulfillment Provider responsible for handling the fulfillment
+   * The ID of the Fulfillment Provider responsible for handling the fulfillment.
    */
   provider_id: string
   /**
-   * Available if the relation `provider` is expanded.
+   * The details of the fulfillment provider responsible for handling the fulfillment.
    */
   provider?: FulfillmentProvider | null
   /**
-   * The id of the stock location the fulfillment will be shipped from
+   * The ID of the stock location the fulfillment will be shipped from
    */
   location_id: string | null
   /**
-   * The Fulfillment Items in the Fulfillment - these hold information about how many of each Line Item has been fulfilled. Available if the relation `items` is expanded.
+   * The Fulfillment Items in the Fulfillment. These hold information about how many of each Line Item has been fulfilled.
    */
   items?: Array<FulfillmentItem>
   /**
-   * The Tracking Links that can be used to track the status of the Fulfillment, these will usually be provided by the Fulfillment Provider. Available if the relation `tracking_links` is expanded.
+   * The Tracking Links that can be used to track the status of the Fulfillment. These will usually be provided by the Fulfillment Provider.
    */
   tracking_links?: Array<TrackingLink>
   /**

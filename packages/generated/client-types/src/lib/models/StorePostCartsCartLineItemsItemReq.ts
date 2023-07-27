@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StorePostCartsCartLineItemsItemReq {
   /**
-   * The quantity to set the Line Item to.
+   * The quantity of the line item in the cart.
    */
   quantity: number
   /**

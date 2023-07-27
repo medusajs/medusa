@@ -5,7 +5,7 @@ import { buildQuery } from "./build-query"
 type RetrieveEntityParams<TDTO> = {
   id: string,
   entityName: string,
-  repository: DAL.TreeRepositoryService
+  repository: DAL.TreeRepositoryService | DAL.RepositoryService
   config: FindConfig<TDTO>
   sharedContext?: Context
 }
