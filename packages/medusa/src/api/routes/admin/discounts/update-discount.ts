@@ -200,6 +200,9 @@ export default async (req: Request, res: Response) => {
  *   metadata:
  *      description: An object containing metadata of the discount
  *      type: object
+ *      externalDocs:
+ *        description: "Learn about the metadata attribute, and how to delete and update it."
+ *        url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostDiscountsDiscountReq {
   @IsString()
