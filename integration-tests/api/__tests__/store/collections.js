@@ -87,4 +87,57 @@ describe("/store/collections", () => {
       })
     })
   })
+  describe("/store/collections?expand=products&fields=handle,name,description", () => {
+    beforeEach(async () => {
+      await productSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("lists collections with products relation expanded and allowed fields", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/store/collections?expand=products&fields=handle,name,description"
+      )
+
+      expect(response.data).toMatchSnapshot({
+        collections: [
+          {
+            id: "test-collection2",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            handle: expect.any(String),
+            name: expect.any(String),
+            description: expect.any(String),
+            products: expect.any(Array),
+          },
+          {
+            id: "test-collection1",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            handle: expect.any(String),
+            name: expect.any(String),
+            description: expect.any(String),
+            products: expect.any(Array),
+          },
+          {
+            id: "test-collection",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            handle: expect.any(String),
+            name: expect.any(String),
+            description: expect.any(String),
+            products: expect.any(Array),
+          },
+        ],
+        count: 3,
+        limit: 10,
+        offset: 0,
+      })
+    })
+  })
 })
