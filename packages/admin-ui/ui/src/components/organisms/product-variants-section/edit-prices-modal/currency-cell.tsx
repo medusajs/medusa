@@ -206,25 +206,25 @@ function CurrencyCell(props: CurrencyCellProps) {
         borderTop:
           isRangeStart && props.isInRangeCol
             ? props.isCopy
-              ? "2px dashed #3B82F6"
+              ? "1.5px dashed #3B82F6"
               : "1px double #3B82F6"
             : "",
         borderBottom:
           isRangeEnd && props.isInRangeCol
             ? props.isCopy
-              ? "2px dashed #3B82F6"
+              ? "1.5px dashed #3B82F6"
               : "1px double #3B82F6"
             : "",
         borderLeft:
           props.isRangeStartCol && isInRange
             ? props.isCopy
-              ? "2px dashed #3B82F6"
+              ? "1.5px dashed #3B82F6"
               : "1px double #3B82F6"
             : "",
         borderRight:
           props.isRangeEndCol && isInRange
             ? props.isCopy
-              ? "2px dashed #3B82F6"
+              ? "1.5px dashed #3B82F6"
               : "1px double #3B82F6"
             : "",
       }}
