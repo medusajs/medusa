@@ -36,6 +36,8 @@ It is recommended to use [Yarn](https://yarnpkg.com/getting-started/install) for
 
 ### 1. Install Medusa CLI
 
+  To install the Medusa backend, you need Medusa's CLI tool. You can install it globally or, alternatively, use it through npx with `npx @medusajs/medusa-cli <command>`.
+
    ```bash npm2yarn
    npm install @medusajs/medusa-cli -g
    ```
@@ -49,7 +51,7 @@ If you run into any errors while installing the CLI tool, check out the [trouble
 ### 2. Create a new Medusa project
 
    ```bash noReport
-   medusa new my-medusa-store
+   medusa new my-medusa-store # or npx @medusajs/medusa-cli new
    ```
    
    You'll then be asked to specify your PostgreSQL database credentials. You can choose "Continue" to use the default credentials shown in the terminal, choose "Change credentials" to specify your PostgreSQL credentails, or choose "Skip database setup" to create the database later.
@@ -70,7 +72,7 @@ Make sure your PostgreSQL server is running before you run the Medusa backend.
 
    ```bash noReport
    cd my-medusa-store
-   medusa develop
+   medusa develop # or npx @medusajs/medusa-cli develop
    ```
 
 After these three steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
@@ -119,6 +121,7 @@ For better testing, you can add demo data to your Medusa backend by running the 
 
 ```bash
 medusa seed --seed-file=data/seed.json
+# or npx @medusajs/medusa-cli seed --seed-file=data/seed.json
 ```
 
 ---
@@ -131,14 +134,14 @@ You can access `/health` to get health status of your backend.
 
 ## Next Steps
 
-<DocCardList colSize={6} items={[
+<DocCardList colSize={4} items={[
   {
     type: 'link',
-    href: '/development/fundamentals/architecture-overview',
-    label: 'Backend Architecture',
+    href: '/development/backend/directory-structure',
+    label: 'Directory Structure',
     customProps: {
-      icon: Icons['circle-stack-solid'],
-      description: 'Learn about the different resources that your Medusa backend is made of.'
+      icon: Icons['document-text-solid'],
+      description: 'Learn about the purpose of each file and directory in the Medusa backend.'
     }
   },
   {
@@ -148,6 +151,15 @@ You can access `/health` to get health status of your backend.
     customProps: {
       icon: Icons['tools-solid'],
       description: 'Learn about configuring your backend and loading environment variables.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/fundamentals/architecture-overview',
+    label: 'Backend Architecture',
+    customProps: {
+      icon: Icons['circle-stack-solid'],
+      description: 'Learn about the different resources that your Medusa backend is made of.'
     }
   }
 ]} />
