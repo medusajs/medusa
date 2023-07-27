@@ -108,7 +108,7 @@ export type ModuleExports = {
 
 export interface ModuleServiceInitializeOptions {
   database: {
-    clientUrl?: string
+    clientUrl: string
     schema?: string
     driverOptions?: Record<string, unknown>
     debug?: boolean
