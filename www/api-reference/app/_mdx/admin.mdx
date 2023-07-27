@@ -33,26 +33,64 @@ Use a user's API Token to send authenticated requests.
 
 #### How to Add API Token to a User
 
-At the moment, there's no direct way of adding an API Token for a user. The only way it can be done is through directly editing the database.
+You can use the Update User endpoint to add or update the user's API token:
 
-If you're using a PostgreSQL database, you can run the following commands in your command line to add API token:
+<CodeTabs 
+  tabs={[
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+// must be previously logged in or use api token
+medusa.admin.users.update(userId, {
+  api_token
+})
+.then(({ user }) => {
+  console.log(user.api_token)
+})`,
+        lang: `ts`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `import { useAdminUpdateUser } from "medusa-react"
 
-```bash
-psql -d <DB_NAME> -U <DB_USER>
-UPDATE public.user SET api_token='<API_TOKEN>' WHERE email='<USER_EMAIL>';
-```
+const UpdateUser = () => {
+  const updateUser = useAdminUpdateUser(userId)
+  // ...
 
-Where:
+  const handleUpdateUser = () => {
+    updateUser.mutate({
+      api_token
+    })
+  }
 
-- `<DB_NAME>` is the name of the database schema you use for the Medusa
-server.
-- `<DB_USER>` is the name of the user that has privileges over the
-database schema.
-- `<API_TOKEN>` is the API token you want to associate with the user.
-You can use [this tool to generate a random
-token](https://randomkeygen.com/).
-- `<USER_EMAIL>` is the email address of the admin user you want to have
-this API token.
+  // ...
+}
+
+export default UpdateUser`,
+        lang: `tsx`,
+      }
+    },
+    {
+      label: 'cURL',
+      value: 'curl',
+      code: {
+        source: `curl -L -X POST '<BACKEND_URL>/admin/users/<USER_ID>' \\
+-H 'Cookie: connect.sid={sid}' \\
+-H 'Content-Type: application/json' \\
+--data-raw '{
+    "api_token": "{api_token}"
+}'`,
+        lang: `bash`,
+      }
+    }
+  ]}
+/>
 
 
 #### How to Use the API Token
@@ -87,7 +125,7 @@ You can also pass it to client libraries:
       value: 'medusa-react',
       code: {
         source: `<MedusaProvider
-  apiKey='api_token}'
+  apiKey='{api_token}'
   //...
 >
   {/* ... */}
@@ -113,7 +151,7 @@ Use a cookie session to send authenticated requests.
 ### How to Obtain the Cookie Session
 
 
-If you're sending requests through a browser, using JS Client, or using
+If you're sending requests through a browser, using Medusa's JS and Medusa React clients, or using
 tools like Postman, the cookie session should be automatically set when
 the admin user is logged in.
 
@@ -157,6 +195,15 @@ curl 'https://medusa-url.com/admin/products' \
 
 
 Where `{sid}` is the value of `connect.sid` that you copied.
+
+If you're sending requests using JavaScript's Fetch API, you must pass the `credentials` option 
+with the value `include` to all the requests you're sending. For example:
+
+```js
+fetch(`<BACKEND_URL>/admin/products`, {
+  credentials: "include",
+})
+```
 
 <Feedback
   event="survey_api-ref"

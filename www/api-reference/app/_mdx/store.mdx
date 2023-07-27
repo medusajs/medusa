@@ -1,4 +1,5 @@
 import Feedback from "@/components/Feedback"
+import CodeTabs from "@/components/CodeTabs"
 
 This API reference includes Medusa's Store APIs, which are REST APIs exposed by the Medusa backend. They are typically used to create a storefront for your commerce store, such as a webshop or a commerce mobile app.
 
@@ -34,7 +35,7 @@ Use a cookie session to send authenticated requests.
 #### How to Obtain the Cookie Session
 
 
-If you're sending requests through a browser, using JS Client, or using
+If you're sending requests through a browser, using Medusa's JS and Medusa React clients, or using
 tools like Postman, the cookie session should be automatically set when
 the customer is logged in.
 
@@ -75,8 +76,16 @@ curl 'https://medusa-url.com/store/customers/me/orders' \
 -H 'Cookie: connect.sid={sid}'
 ```
 
-
 Where `{sid}` is the value of `connect.sid` that you copied.
+
+If you're sending requests using JavaScript's Fetch API, you must pass the `credentials` option 
+with the value `include` to all the requests you're sending. For example:
+
+```js
+fetch(`<BACKEND_URL>/admin/products`, {
+  credentials: "include",
+})
+```
 
 <Feedback
   event="survey_api-ref"
@@ -85,6 +94,146 @@ Where `{sid}` is the value of `connect.sid` that you copied.
     section: "authentication-cookie"
   }}
 />
+
+---
+
+## Publishable API Key
+
+Publishable API Keys allow you to send a request with a pre-defined scope. You can associate the
+publishable API key with one or more resources, such as sales channels, then include the publishable
+API key in the header of your requests.
+
+The Medusa backend will infer the scope of the current
+request based on the publishable API key. At the moment, publishable API keys only work with sales channels.
+
+It's highly recommended to create a publishable API key and pass it in the header of all your requests to the 
+store APIs.
+
+You can learn more about publishable API keys and how to use them in [this documentation](https://docs.medusajs.com/development/publishable-api-keys/).
+
+### How to Create a Publishable API Key
+
+You can create a publishable API key either using the [admin REST APIs](https://docs.medusajs.com/development/publishable-api-keys/admin/manage-publishable-api-keys),
+or using the [Medusa admin](https://docs.medusajs.com/user-guide/settings/publishable-api-keys).
+
+### How to Use a Publishable API Key
+
+You can pass the publishable API key in the header `x-publishable-api-key` in all your requests to the store APIs:
+
+```bash
+x-publishable-api-key: {your_publishable_api_key}
+```
+
+If you're using Medusa's JS or Medusa React clients, you can pass the publishable API key when you first
+initialize either clients. Then, the publishable API key will be automatically included in all your requests:
+
+<CodeTabs 
+  tabs={[
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `const medusa = new Medusa({
+  maxRetries: 3,
+  baseUrl: "https://api.example.com",
+  publishableApiKey,
+})`,
+        lang: `ts`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `import { MedusaProvider } from "medusa-react"
+
+// define query client...
+
+const App = () => {
+  return (
+    <MedusaProvider
+      queryClientProviderProps={{ client: queryClient }}
+      baseUrl="http://localhost:9000"
+      // ...
+      publishableApiKey={publishableApiKey}
+    >
+      <MyStorefront />
+    </MedusaProvider>
+  )
+}`,
+        lang: `tsx`,
+      }
+    },
+  ]}
+/>
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "authentication-cookie"
+  }}
+/>
+
+---
+
+## HTTP Compression
+
+If you've enabled HTTP Compression in your Medusa configurations, and you 
+want to disable it for some requests, you can pass the `x-no-compression`
+header in your requests:
+
+```bash
+x-no-compression: true
+```
+
+If you're using the Medusa JS Client, you can pass custom headers in the 
+last parameter of a method. For example:
+
+```ts
+medusa.products.list({}, {
+  "x-no-compression": true
+})
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length)
+})
+```
+
+You can also pass the header when you first initialize the Medusa client:
+
+```ts
+const medusa = new Medusa({
+  maxRetries: 3,
+  baseUrl: "https://api.example.com",
+  customHeaders: {
+    "x-no-compression": true
+  }
+})
+```
+
+For Medusa React, it's not possible to pass custom headers for a query or mutation, but
+you can pass the header to the `MedusaProvider` and it will be added to all subsequent requests:
+
+```tsx
+import { MedusaProvider } from "medusa-react"
+
+// define query client...
+
+const App = () => {
+  return (
+    <MedusaProvider
+      queryClientProviderProps={{ client: queryClient }}
+      baseUrl="http://localhost:9000"
+      // ...
+      customHeaders={{
+        "x-no-compression": true
+      }}
+    >
+      <MyStorefront />
+    </MedusaProvider>
+  )
+}
+```
 
 ---
 
