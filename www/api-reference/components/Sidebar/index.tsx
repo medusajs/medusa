@@ -33,7 +33,8 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
     >
       <ul
         className={clsx(
-          "sticky top-[57px] h-screen max-h-screen w-full list-none overflow-auto p-0"
+          "sticky top-[57px] h-screen max-h-screen w-full list-none overflow-auto p-0",
+          "pb-[57px]"
         )}
         id="sidebar"
       >
