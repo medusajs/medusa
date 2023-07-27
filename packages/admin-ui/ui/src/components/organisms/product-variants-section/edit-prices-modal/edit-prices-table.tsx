@@ -573,7 +573,7 @@ function EditPricesTable(props: EditPricesTableProps) {
         "text"
       )
 
-      const rows = paste.trim().split("\n")
+      const rows = paste.trimEnd().split("\n")
 
       // single cell click -> determine from the content
       if (
