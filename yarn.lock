@@ -6376,6 +6376,7 @@ __metadata:
     iso8601-duration: ^1.3.0
     jest: ^25.5.4
     jsonwebtoken: ^9.0.0
+    knex: ^2.5.1
     lodash: ^4.17.21
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
@@ -37846,7 +37847,6 @@ __metadata:
     husky: ^7.0.4
     import-from: ^3.0.0
     jest: ^26.6.3
-    knex: ^2.5.1
     lint-staged: ^11.2.6
     microbundle: ^0.13.3
     pg-god: ^1.0.12
