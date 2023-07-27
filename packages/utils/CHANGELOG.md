@@ -1,5 +1,11 @@
 # @medusajs/utils
 
+## 1.9.4
+
+### Patch Changes
+
+- [#4623](https://github.com/medusajs/medusa/pull/4623) [`107ae23a3`](https://github.com/medusajs/medusa/commit/107ae23a3f41ef0d676e9d03f53dafc7c1af6118) Thanks [@riqwan](https://github.com/riqwan)! - fix(utils, types, medusa-plugin-meilisearch, medusa-plugin-algolia): move SoftDeletableFilterKey, variantKeys, indexTypes from types to utils
+
 ## 1.9.3
 
 ### Patch Changes
