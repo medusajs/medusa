@@ -8,11 +8,11 @@ import { defaultRelations } from "."
  * @oas [get] /store/shipping-options
  * operationId: GetShippingOptions
  * summary: Get Shipping Options
- * description: "Retrieves a list of Shipping Options."
+ * description: "Retrieve a list of Shipping Options."
  * parameters:
- *   - (query) is_return {boolean} Whether return Shipping Options should be included. By default all Shipping Options are returned.
- *   - (query) product_ids {string} A comma separated list of Product ids to filter Shipping Options by.
- *   - (query) region_id {string} the Region to retrieve Shipping Options from.
+ *   - (query) is_return {boolean} Whether return shipping options should be included. By default, all shipping options are returned.
+ *   - (query) product_ids {string} "Comma-separated list of Product IDs to filter Shipping Options by. If provided, only shipping options that can be used with the provided products are retrieved."
+ *   - (query) region_id {string} "The ID of the region that the shipping options belong to. If not provided, all shipping options are retrieved."
  * x-codegen:
  *   method: list
  *   queryParams: StoreGetShippingOptionsParams
@@ -29,7 +29,7 @@ import { defaultRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/shipping-options'
+ *       curl 'https://medusa-url.com/store/shipping-options'
  * tags:
  *   - Shipping Options
  * responses:

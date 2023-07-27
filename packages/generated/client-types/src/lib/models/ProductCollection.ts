@@ -6,7 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { Product } from "./Product"
 
 /**
- * Product Collections represents a group of Products that are related.
+ * A Product Collection allows grouping together products for promotional purposes. For example, an admin can create a Summer collection, add products to it, and showcase it on the storefront.
  */
 export interface ProductCollection {
   /**
@@ -22,7 +22,7 @@ export interface ProductCollection {
    */
   handle: string | null
   /**
-   * The Products contained in the Product Collection. Available if the relation `products` is expanded.
+   * The details of the products that belong to this product collection.
    */
   products?: Array<Product>
   /**

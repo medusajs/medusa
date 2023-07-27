@@ -5,15 +5,15 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetGiftCardsParams {
   /**
-   * The number of items to skip before the results.
+   * The number of gift cards to skip when retrieving the gift cards.
    */
   offset?: number
   /**
-   * Limit the number of items returned.
+   * Limit the number of gift cards returned.
    */
   limit?: number
   /**
-   * a search term to search by code or display ID
+   * a term to search gift cards' code or display ID
    */
   q?: string
 }

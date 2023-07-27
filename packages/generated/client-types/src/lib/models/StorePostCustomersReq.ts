@@ -5,23 +5,23 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StorePostCustomersReq {
   /**
-   * The Customer's first name.
+   * The customer's first name.
    */
   first_name: string
   /**
-   * The Customer's last name.
+   * The customer's last name.
    */
   last_name: string
   /**
-   * The email of the customer.
+   * The customer's email.
    */
   email: string
   /**
-   * The Customer's password.
+   * The customer's password.
    */
   password: string
   /**
-   * The Customer's phone number.
+   * The customer's phone number.
    */
   phone?: string
 }

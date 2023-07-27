@@ -9,7 +9,7 @@ export interface AdminPostOrdersOrderClaimsClaimShipmentsReq {
    */
   fulfillment_id: string
   /**
-   * The tracking numbers for the shipment.
+   * An array of tracking numbers for the shipment.
    */
   tracking_numbers?: Array<string>
 }

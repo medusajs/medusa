@@ -101,6 +101,7 @@ export const defaultAdminRegionRelations = [
  *   - region
  * properties:
  *   region:
+ *     description: "Region details."
  *     $ref: "#/components/schemas/Region"
  */
 export class AdminRegionsRes {
@@ -127,6 +128,7 @@ export class AdminRegionsRes {
  * properties:
  *   regions:
  *     type: array
+ *     description: "An array of regions details."
  *     items:
  *       $ref: "#/components/schemas/Region"
  *   count:
@@ -134,7 +136,7 @@ export class AdminRegionsRes {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of regions skipped when retrieving the regions.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -178,6 +180,7 @@ export class FulfillmentOption {
  * properties:
  *   fulfillment_options:
  *     type: array
+ *     description: Fulfillment providers details.
  *     items:
  *       type: object
  *       required:

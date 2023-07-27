@@ -5,6 +5,7 @@ import {
   Product,
   ProductCategory,
   ProductCollection,
+  ProductType,
   ProductVariant,
 } from "@models"
 import ProductOption from "../../../src/models/product-option"
@@ -18,6 +19,24 @@ export async function createProductAndTags(
     title: string
     status: ProductTypes.ProductStatus
     tags?: { id: string; value: string }[]
+  }[]
+) {
+  const products: any[] = data.map((productData) => {
+    return manager.create(Product, productData)
+  })
+
+  await manager.persistAndFlush(products)
+
+  return products
+}
+
+export async function createProductAndTypes(
+  manager: SqlEntityManager,
+  data: {
+    id?: string
+    title: string
+    status: ProductTypes.ProductStatus
+    type?: { id: string; value: string }
   }[]
 ) {
   const products: any[] = data.map((productData) => {
@@ -57,6 +76,22 @@ export async function createCollections(
   await manager.persistAndFlush(collections)
 
   return collections
+}
+
+export async function createTypes(
+  manager: SqlEntityManager,
+  typesData: {
+    id?: string
+    value: string
+  }[]
+) {
+  const types: any[] = typesData.map((typesData) => {
+    return manager.create(ProductType, typesData)
+  })
+
+  await manager.persistAndFlush(types)
+
+  return types
 }
 
 export async function createOptions(

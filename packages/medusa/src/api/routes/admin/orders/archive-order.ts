@@ -7,12 +7,12 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/archive
  * operationId: "PostOrdersOrderArchive"
  * summary: "Archive Order"
- * description: "Archives the order with the given id."
+ * description: "Archive an order and change its status."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
- *   - (query) expand {string} Comma separated list of relations to include in the result.
- *   - (query) fields {string} Comma separated list of fields to include in the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * x-codegen:
  *   method: archive
  *   params: AdminPostOrdersOrderArchiveParams
@@ -23,15 +23,15 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.archive(order_id)
+ *       medusa.admin.orders.archive(orderId)
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/archive' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/archive' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

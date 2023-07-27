@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
  * @oas [delete] /admin/discounts/{id}
  * operationId: "DeleteDiscountsDiscount"
  * summary: "Delete a Discount"
- * description: "Deletes a Discount."
+ * description: "Delete a Discount. Deleting the discount will make it unavailable for customers to use."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Discount
@@ -18,15 +18,15 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.delete(discount_id)
+ *       medusa.admin.discounts.delete(discountId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/discounts/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/discounts/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostNotesNoteReq {
   /**
-   * The updated description of the Note.
+   * The description of the Note.
    */
   value: string
 }

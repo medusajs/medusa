@@ -8,6 +8,9 @@ import type { OrderEdit } from "./OrderEdit"
 import type { OrderItemChange } from "./OrderItemChange"
 
 export interface StoreOrderEditsRes {
+  /**
+   * Order edit details.
+   */
   order_edit: Merge<
     SetRelation<
       OrderEdit,

@@ -80,6 +80,7 @@ export type AdminDeleteShippingProfileRes = DeleteResponse
  *   - shipping_profile
  * properties:
  *   shipping_profile:
+ *     description: Shipping profile details.
  *     $ref: "#/components/schemas/ShippingProfile"
  */
 export type AdminShippingProfilesRes = {
@@ -94,6 +95,7 @@ export type AdminShippingProfilesRes = {
  * properties:
  *   shipping_profiles:
  *     type: array
+ *     description: An array of shipping profiles details.
  *     items:
  *       $ref: "#/components/schemas/ShippingProfile"
  */

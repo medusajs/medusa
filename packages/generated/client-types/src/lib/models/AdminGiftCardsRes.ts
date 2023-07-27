@@ -7,6 +7,9 @@ import type { GiftCard } from "./GiftCard"
 import type { Region } from "./Region"
 
 export interface AdminGiftCardsRes {
+  /**
+   * A gift card's details.
+   */
   gift_card: Merge<
     SetRelation<GiftCard, "order" | "region">,
     {

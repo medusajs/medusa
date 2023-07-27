@@ -215,6 +215,7 @@ export const allowedStoreOrdersFields = [
  *     - swaps.additional_items.total
  * properties:
  *   order:
+ *     description: "Order details."
  *     $ref: "#/components/schemas/Order"
  */
 export type StoreOrdersRes = {

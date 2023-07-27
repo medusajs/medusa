@@ -9,11 +9,11 @@ export interface AdminPostStoreReq {
    */
   name?: string
   /**
-   * A template for Swap links - use `{{cart_id}}` to insert the Swap Cart id
+   * A template for Swap links - use `{{cart_id}}` to insert the Swap Cart ID
    */
   swap_link_template?: string
   /**
-   * A template for payment links links - use `{{cart_id}}` to insert the Cart id
+   * A template for payment links - use `{{cart_id}}` to insert the Cart ID
    */
   payment_link_template?: string
   /**
@@ -21,11 +21,11 @@ export interface AdminPostStoreReq {
    */
   invite_link_template?: string
   /**
-   * The default currency code for the Store.
+   * The default currency code of the Store.
    */
   default_currency_code?: string
   /**
-   * Array of currencies in 2 character ISO code format.
+   * Array of available currencies in the store. Each currency is in 3 character ISO code format.
    */
   currencies?: Array<string>
   /**

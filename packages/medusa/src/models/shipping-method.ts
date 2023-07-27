@@ -107,7 +107,7 @@ export class ShippingMethod {
 /**
  * @schema ShippingMethod
  * title: "Shipping Method"
- * description: "Shipping Methods represent a way in which an Order or Return can be shipped. Shipping Methods are built from a Shipping Option, but may contain additional details, that can be necessary for the Fulfillment Provider to handle the shipment."
+ * description: "A Shipping Method represents a way in which an Order or Return can be shipped. Shipping Methods are created from a Shipping Option, but may contain additional details that can be necessary for the Fulfillment Provider to handle the shipment. If the shipping method is created for a return, it may be associated with a claim or a swap that the return is part of."
  * type: object
  * required:
  *   - cart_id
@@ -125,61 +125,68 @@ export class ShippingMethod {
  *     type: string
  *     example: sm_01F0YET7DR2E7CYVSDHM593QG2
  *   shipping_option_id:
- *     description: The id of the Shipping Option that the Shipping Method is built from.
+ *     description: The ID of the Shipping Option that the Shipping Method is built from.
  *     type: string
  *     example: so_01G1G5V27GYX4QXNARRQCW1N8T
  *   order_id:
- *     description: The id of the Order that the Shipping Method is used on.
+ *     description: The ID of the order that the shipping method is used in.
  *     nullable: true
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: An order object. Available if the relation `order` is expanded.
+ *     description: The details of the order that the shipping method is used in.
+ *     x-expandable: "order"
  *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   claim_order_id:
- *     description: The id of the Claim that the Shipping Method is used on.
+ *     description: The ID of the claim that the shipping method is used in.
  *     nullable: true
  *     type: string
  *     example: null
  *   claim_order:
- *     description: A claim order object. Available if the relation `claim_order` is expanded.
+ *     description: The details of the claim that the shipping method is used in.
+ *     x-expandable: "claim_order"
  *     nullable: true
  *     $ref: "#/components/schemas/ClaimOrder"
  *   cart_id:
- *     description: The id of the Cart that the Shipping Method is used on.
+ *     description: The ID of the cart that the shipping method is used in.
  *     nullable: true
  *     type: string
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: A cart object. Available if the relation `cart` is expanded.
+ *     description: The details of the cart that the shipping method is used in.
+ *     x-expandable: "cart"
  *     nullable: true
  *     $ref: "#/components/schemas/Cart"
  *   swap_id:
- *     description: The id of the Swap that the Shipping Method is used on.
+ *     description: The ID of the swap that the shipping method is used in.
  *     nullable: true
  *     type: string
  *     example: null
  *   swap:
- *     description: A swap object. Available if the relation `swap` is expanded.
+ *     description: The details of the swap that the shipping method is used in.
+ *     x-expandable: "swap"
  *     nullable: true
  *     $ref: "#/components/schemas/Swap"
  *   return_id:
- *     description: The id of the Return that the Shipping Method is used on.
+ *     description: The ID of the return that the shipping method is used in.
  *     nullable: true
  *     type: string
  *     example: null
  *   return_order:
- *     description: A return object. Available if the relation `return_order` is expanded.
+ *     description: The details of the return that the shipping method is used in.
+ *     x-expandable: "return_order"
  *     nullable: true
  *     $ref: "#/components/schemas/Return"
  *   shipping_option:
- *     description: Available if the relation `shipping_option` is expanded.
+ *     description: The details of the shipping option the method was created from.
+ *     x-expandable: "shipping_option"
  *     nullable: true
  *     $ref: "#/components/schemas/ShippingOption"
  *   tax_lines:
- *     description: Available if the relation `tax_lines` is expanded.
+ *     description: The details of the tax lines applied on the shipping method.
  *     type: array
+ *     x-expandable: "tax_lines"
  *     items:
  *       $ref: "#/components/schemas/ShippingMethodTaxLine"
  *   price:
@@ -191,8 +198,9 @@ export class ShippingMethod {
  *     type: object
  *     example: {}
  *   includes_tax:
- *     description: "[EXPERIMENTAL] Indicates if the shipping method price include tax"
+ *     description: "Whether the shipping method price include tax"
  *     type: boolean
+ *     x-featureFlag: "tax_inclusive_pricing"
  *     default: false
  *   subtotal:
  *     description: The subtotal of the shipping
