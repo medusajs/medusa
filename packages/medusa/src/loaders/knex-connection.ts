@@ -26,7 +26,7 @@ export default async ({ container, configModule }: Options): Promise<void> => {
       searchPath: schema,
       connection: {
         connectionString: connectionString,
-        database: database,
+        database,
         ssl: extra?.ssl ?? false,
         idle_in_transaction_session_timeout:
           extra.idle_in_transaction_session_timeout ?? undefined, // prevent null to be passed

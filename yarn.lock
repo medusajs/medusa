@@ -6376,7 +6376,7 @@ __metadata:
     iso8601-duration: ^1.3.0
     jest: ^25.5.4
     jsonwebtoken: ^9.0.0
-    knex: ^2.5.1
+    knex: 2.4.2
     lodash: ^4.17.21
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
@@ -29086,45 +29086,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"knex@npm:^2.5.1":
-  version: 2.5.1
-  resolution: "knex@npm:2.5.1"
-  dependencies:
-    colorette: 2.0.19
-    commander: ^10.0.0
-    debug: 4.3.4
-    escalade: ^3.1.1
-    esm: ^3.2.25
-    get-package-type: ^0.1.0
-    getopts: 2.3.0
-    interpret: ^2.2.0
-    lodash: ^4.17.21
-    pg-connection-string: 2.6.1
-    rechoir: ^0.8.0
-    resolve-from: ^5.0.0
-    tarn: ^3.0.2
-    tildify: 2.0.0
-  peerDependenciesMeta:
-    better-sqlite3:
-      optional: true
-    mysql:
-      optional: true
-    mysql2:
-      optional: true
-    pg:
-      optional: true
-    pg-native:
-      optional: true
-    sqlite3:
-      optional: true
-    tedious:
-      optional: true
-  bin:
-    knex: bin/cli.js
-  checksum: 33580641feaa93074bdc10e78f06382e5017d46a3cd22821c09057e7da303c35772add39a110fffe685c2f438a78751a0eb6f50aad1c4bdb032e8ec9b7879b69
-  languageName: node
-  linkType: hard
-
 "kuler@npm:^2.0.0":
   version: 2.0.0
   resolution: "kuler@npm:2.0.0"
@@ -34176,13 +34137,6 @@ __metadata:
   version: 2.5.0
   resolution: "pg-connection-string@npm:2.5.0"
   checksum: 4b1650132d8000d68864db774c4a99d98acf1cb90525045402b93d3b5a5f36500e5934c653598256cd86b3a310ba4639fbf1e8e1e04cefa46840838541b7626c
-  languageName: node
-  linkType: hard
-
-"pg-connection-string@npm:2.6.1":
-  version: 2.6.1
-  resolution: "pg-connection-string@npm:2.6.1"
-  checksum: e5a71a2da143b8dc17143a9db7737679b210643771aa678d3bc60c7bc70da11bbb8e2d531be91c8c4eddd6ac6046307811e793f5850b9ba595a11785c948a417
   languageName: node
   linkType: hard
 
