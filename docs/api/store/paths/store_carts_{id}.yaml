@@ -1,12 +1,12 @@
 get:
   operationId: GetCartsCart
   summary: Get a Cart
-  description: Retrieves a Cart.
+  description: Retrieve a Cart's details. This includes recalculating its totals.
   parameters:
     - in: path
       name: id
       required: true
-      description: The id of the Cart.
+      description: The ID of the Cart.
       schema:
         type: string
   x-codegen:
@@ -42,12 +42,15 @@ get:
 post:
   operationId: PostCartsCart
   summary: Update a Cart
-  description: Updates a Cart.
+  description: >-
+    Update a Cart's details. If the cart has payment sessions and the region was
+    not changed, the payment sessions are updated. The cart's totals are also
+    recalculated.
   parameters:
     - in: path
       name: id
       required: true
-      description: The id of the Cart.
+      description: The ID of the Cart.
       schema:
         type: string
   requestBody:

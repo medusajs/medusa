@@ -1,7 +1,11 @@
 post:
   operationId: PostStoreCurrenciesCode
   summary: Add a Currency Code
-  description: Adds a Currency Code to the available currencies.
+  description: >-
+    Add a Currency Code to the available currencies in a store. This does not
+    create new currencies, as currencies are defined within the Medusa backend.
+    To create a currency, you can create a migration that inserts the currency
+    into the database.
   x-authenticated: true
   parameters:
     - in: path
@@ -50,8 +54,11 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteStoreCurrenciesCode
-  summary: Delete a Currency Code
-  description: Removes a Currency Code from the available currencies.
+  summary: Remove a Currency
+  description: >-
+    Remove a Currency Code from the available currencies in a store. This does
+    not completely delete the currency and it can be added again later to the
+    store.
   x-authenticated: true
   parameters:
     - in: path

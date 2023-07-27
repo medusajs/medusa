@@ -1,27 +1,27 @@
 get:
   operationId: GetVariantsVariant
   summary: Get a Product variant
-  description: Retrieves a Product variant.
+  description: Retrieve a product variant's details.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the variant.
+      description: The ID of the product variant.
       schema:
         type: string
     - in: query
       name: expand
       description: >-
-        (Comma separated) Which fields should be expanded the order of the
-        result.
+        "Comma-separated relations that should be expanded in the returned
+        product variant."
       schema:
         type: string
     - in: query
       name: fields
       description: >-
-        (Comma separated) Which fields should be included the order of the
-        result.
+        "Comma-separated fields that should be included in the returned product
+        variant."
       schema:
         type: string
   x-codegen:

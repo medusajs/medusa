@@ -1,7 +1,9 @@
 post:
   operationId: PostBatchJobsBatchJobCancel
   summary: Cancel a Batch Job
-  description: Marks a batch job as canceled
+  description: >-
+    Mark a batch job as canceled. When a batch job is canceled, the processing
+    of the batch job doesn’t automatically stop.
   x-authenticated: true
   parameters:
     - in: path

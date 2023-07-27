@@ -1,28 +1,33 @@
 get:
   operationId: GetCustomerGroups
   summary: List Customer Groups
-  description: Retrieve a list of customer groups.
+  description: >-
+    Retrieve a list of customer groups. The customer groups can be filtered by
+    fields such as `name` or `id. The customer groups can also be sorted or
+    paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: q
-      description: Query used for searching customer group names.
+      description: term to search customer groups by name.
       schema:
         type: string
     - in: query
       name: offset
-      description: How many groups to skip in the result.
+      description: >-
+        The number of customer groups to skip when retrieving the customer
+        groups.
       schema:
         type: integer
         default: 0
     - in: query
       name: order
-      description: the field used to order the customer groups.
+      description: A field to sort order the retrieved customer groups by.
       schema:
         type: string
     - in: query
       name: discount_condition_id
-      description: The discount condition id on which to filter the customer groups.
+      description: Filter by discount condition ID.
       schema:
         type: string
     - in: query
@@ -35,7 +40,7 @@ get:
           - type: string
             description: customer group ID
           - type: array
-            description: multiple customer group IDs
+            description: an array of customer group IDs
             items:
               type: string
           - type: object
@@ -59,13 +64,13 @@ get:
       description: Filter by the customer group name
       schema:
         type: array
-        description: multiple customer group names
+        description: an array of customer group names
         items:
           type: string
           description: customer group name
     - in: query
       name: created_at
-      description: Date comparison for when resulting customer groups were created.
+      description: Filter by a creation date range.
       schema:
         type: object
         properties:
@@ -87,7 +92,7 @@ get:
             format: date
     - in: query
       name: updated_at
-      description: Date comparison for when resulting customer groups were updated.
+      description: Filter by an update date range.
       schema:
         type: object
         properties:
@@ -109,15 +114,15 @@ get:
             format: date
     - in: query
       name: limit
-      description: Limit the number of customer groups returned.
+      description: The number of customer groups to return.
       schema:
         type: integer
         default: 10
     - in: query
       name: expand
       description: >-
-        (Comma separated) Which fields should be expanded in each customer
-        groups of the result.
+        Comma-separated relations that should be expanded in the returned
+        customer groups.
       schema:
         type: string
   x-codegen:
@@ -159,7 +164,7 @@ get:
 post:
   operationId: PostCustomerGroups
   summary: Create a Customer Group
-  description: Creates a CustomerGroup.
+  description: Creates a Customer Group.
   x-authenticated: true
   requestBody:
     content:

@@ -1,7 +1,10 @@
 post:
   operationId: PostOrderEditsEditLineItems
   summary: Add a Line Item
-  description: Create an OrderEdit LineItem.
+  description: >-
+    Create a line item change in the order edit that indicates adding an item in
+    the original order. The item will not be added to the original order until
+    the order edit is confirmed.
   parameters:
     - in: path
       name: id

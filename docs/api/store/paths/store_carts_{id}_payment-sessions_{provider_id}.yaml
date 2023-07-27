@@ -1,18 +1,21 @@
 post:
   operationId: PostCartsCartPaymentSessionUpdate
   summary: Update a Payment Session
-  description: Updates a Payment Session with additional data.
+  description: >-
+    Update a Payment Session with additional data. This can be useful depending
+    on the payment provider used. All payment sessions are updated and cart
+    totals are recalculated afterwards.
   parameters:
     - in: path
       name: id
       required: true
-      description: The id of the Cart.
+      description: The ID of the Cart.
       schema:
         type: string
     - in: path
       name: provider_id
       required: true
-      description: The id of the payment provider.
+      description: The ID of the payment provider.
       schema:
         type: string
   requestBody:
@@ -55,19 +58,21 @@ post:
 delete:
   operationId: DeleteCartsCartPaymentSessionsSession
   summary: Delete a Payment Session
-  description: Deletes a Payment Session on a Cart. May be useful if a payment has failed.
+  description: >-
+    Delete a Payment Session in a Cart. May be useful if a payment has failed.
+    The totals will be recalculated.
   parameters:
     - in: path
       name: id
       required: true
-      description: The id of the Cart.
+      description: The ID of the Cart.
       schema:
         type: string
     - in: path
       name: provider_id
       required: true
       description: >-
-        The id of the Payment Provider used to create the Payment Session to be
+        The ID of the Payment Provider used to create the Payment Session to be
         deleted.
       schema:
         type: string

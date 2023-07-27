@@ -1,7 +1,12 @@
 post:
   operationId: PostInvitesInviteResend
   summary: Resend an Invite
-  description: Resends an Invite by triggering the 'invite' created event again
+  description: >-
+    Resend an Invite. This renews the expiry date by 7 days and generates a new
+    token for the invite. It also triggers the `invite.created` event, so if you
+    have a Notification Provider installed that handles this event, a
+    notification should be sent to the email associated with the invite to allow
+    them to accept the invite.
   x-authenticated: true
   parameters:
     - in: path

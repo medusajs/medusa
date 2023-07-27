@@ -1,9 +1,26 @@
 post:
   operationId: PostSwaps
   summary: Create a Swap
-  description: >-
-    Creates a Swap on an Order by providing some items to return along with some
-    items to send back
+  description: >
+    Create a Swap for an Order. This will also create a return and associate it
+    with the swap. If a return shipping option is specified, the return will
+    automatically be fulfilled.
+
+    To complete the swap, you must use the Complete Cart endpoint passing it the
+    ID of the swap's cart.
+
+
+    An idempotency key will be generated if none is provided in the header
+    `Idempotency-Key` and added to
+
+    the response. If an error occurs during swap creation or the request is
+    interrupted for any reason, the swap creation can be retried by passing the
+    idempotency
+
+    key in the `Idempotency-Key` header.
+  externalDocs:
+    description: How to create a swap
+    url: https://docs.medusajs.com/modules/orders/storefront/create-swap
   requestBody:
     content:
       application/json:

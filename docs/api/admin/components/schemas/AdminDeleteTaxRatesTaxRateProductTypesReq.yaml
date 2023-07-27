@@ -4,6 +4,8 @@ required:
 properties:
   product_types:
     type: array
-    description: The IDs of the types of products to remove association with this tax rate
+    description: >-
+      The IDs of the product types to remove their association with this tax
+      rate.
     items:
       type: string

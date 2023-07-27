@@ -1,13 +1,16 @@
 post:
   operationId: PostOrdersOrderClaimsClaimFulfillments
-  summary: Create Claim Fulfillment
-  description: Creates a Fulfillment for a Claim.
+  summary: Create a Claim Fulfillment
+  description: Create a Fulfillment for a Claim.
   x-authenticated: true
+  externalDocs:
+    description: Fulfill a claim
+    url: https://docs.medusajs.com/modules/orders/claims#fulfill-a-claim
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Order.
+      description: The ID of the Order the claim is associated with.
       schema:
         type: string
     - in: path
@@ -18,12 +21,12 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   requestBody:

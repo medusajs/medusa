@@ -1,13 +1,13 @@
 post:
   operationId: PostProductsToCollection
-  summary: Update Products
-  description: Updates products associated with a Product Collection
+  summary: Add Products to Collection
+  description: Add products to a product collection.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Collection.
+      description: The ID of the product collection.
       schema:
         type: string
   requestBody:
@@ -18,6 +18,11 @@ post:
   x-codegen:
     method: addProducts
   x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/admin_collections_{id}_products_batch/post.js
     - lang: Shell
       label: cURL
       source:
@@ -26,7 +31,7 @@ post:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Collections
+    - Product Collections
   responses:
     '200':
       description: OK
@@ -48,14 +53,16 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteProductsFromCollection
-  summary: Remove Product
-  description: Removes products associated with a Product Collection
+  summary: Remove Products from Collection
+  description: >-
+    Remove a list of products from a collection. This would not delete the
+    product, only the association between the product and the collection.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Collection.
+      description: The ID of the Product Collection.
       schema:
         type: string
   requestBody:
@@ -66,6 +73,11 @@ delete:
   x-codegen:
     method: removeProducts
   x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: >-
+          ../code_samples/JavaScript/admin_collections_{id}_products_batch/delete.js
     - lang: Shell
       label: cURL
       source:
@@ -74,7 +86,7 @@ delete:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Collections
+    - Product Collections
   responses:
     '200':
       description: OK

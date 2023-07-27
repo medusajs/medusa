@@ -2,9 +2,12 @@ post:
   operationId: PostOrdersOrderReturns
   summary: Request a Return
   description: >-
-    Requests a Return. If applicable a return label will be created and other
-    plugins notified.
+    Request and create a Return for items in an order. If the return shipping
+    method is specified, it will be automatically fulfilled.
   x-authenticated: true
+  externalDocs:
+    description: Return creation process
+    url: https://docs.medusajs.com/modules/orders/returns#returns-process
   parameters:
     - in: path
       name: id
@@ -14,12 +17,12 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   requestBody:

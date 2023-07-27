@@ -1,7 +1,12 @@
 post:
   operationId: PostCustomers
   summary: Create a Customer
-  description: Creates a Customer account.
+  description: >-
+    Register a new customer. This will also automatically authenticate the
+    customer and set their login session in the response Cookie header. The
+    cookie session can be used in subsequent requests to authenticate the
+    customer. When using Medusa's JS or Medusa React clients, the cookie is
+    automatically attached to subsequent requests.
   requestBody:
     content:
       application/json:

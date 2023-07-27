@@ -1,13 +1,13 @@
 get:
   operationId: GetVariantsVariantInventory
-  summary: Get inventory of Variant.
-  description: Returns the available inventory of a Variant.
+  summary: Get Variant's Inventory
+  description: Retrieve the available inventory of a Product Variant.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The Product Variant id to get inventory for.
+      description: The Product Variant ID.
       schema:
         type: string
   x-codegen:

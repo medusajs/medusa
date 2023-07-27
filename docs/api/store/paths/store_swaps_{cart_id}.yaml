@@ -1,7 +1,7 @@
 get:
   operationId: GetSwapsSwapCartId
   summary: Get by Cart ID
-  description: Retrieves a Swap by the id of the Cart used to confirm the Swap.
+  description: Retrieve a Swap's details by the ID of its cart.
   parameters:
     - in: path
       name: cart_id

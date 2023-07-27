@@ -1,72 +1,105 @@
 get:
   operationId: GetVariants
   summary: List Product Variants
-  description: Retrieves a list of Product Variants
+  description: >-
+    Retrieve a list of Product Variants. The product variant can be filtered by
+    fields such as `id` or `title`. The product variant can also be paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: id
-      description: A Product Variant id to filter by.
+      style: form
+      explode: false
+      description: Filter by product variant IDs.
       schema:
-        type: string
-    - in: query
-      name: ids
-      description: A comma separated list of Product Variant ids to filter by.
-      schema:
-        type: string
+        oneOf:
+          - type: string
+            description: A product variant ID.
+          - type: array
+            description: An array of product variant IDs.
+            items:
+              type: string
     - in: query
       name: expand
-      description: A comma separated list of Product Variant relations to load.
+      description: >-
+        "Comma-separated relations that should be expanded in the returned
+        product variants."
       schema:
         type: string
     - in: query
       name: fields
-      description: A comma separated list of Product Variant fields to include.
+      description: >-
+        "Comma-separated fields that should be included in the returned product
+        variants."
       schema:
         type: string
     - in: query
       name: offset
-      description: How many product variants to skip in the result.
+      description: >-
+        The number of product variants to skip when retrieving the product
+        variants.
       schema:
         type: number
         default: '0'
     - in: query
       name: limit
-      description: Maximum number of Product Variants to return.
+      description: Limit the number of product variants returned.
       schema:
         type: number
         default: '100'
     - in: query
       name: cart_id
-      description: The id of the cart to use for price selection.
+      style: form
+      explode: false
+      description: The ID of the cart to use for the price selection context.
       schema:
         type: string
     - in: query
       name: region_id
-      description: The id of the region to use for price selection.
+      style: form
+      explode: false
+      description: The ID of the region to use for the price selection context.
       schema:
         type: string
+        externalDocs:
+          description: Price selection context overview
+          url: >-
+            https://docs.medusajs.com/modules/price-lists/price-selection-strategy#context-object
     - in: query
       name: currency_code
-      description: The currency code to use for price selection.
+      style: form
+      explode: false
+      description: >-
+        The 3 character ISO currency code to use for the price selection
+        context.
       schema:
         type: string
+        externalDocs:
+          description: Price selection context overview
+          url: >-
+            https://docs.medusajs.com/modules/price-lists/price-selection-strategy#context-object
     - in: query
       name: customer_id
-      description: The id of the customer to use for price selection.
+      style: form
+      explode: false
+      description: The ID of the customer to use for the price selection context.
       schema:
         type: string
+        externalDocs:
+          description: Price selection context overview
+          url: >-
+            https://docs.medusajs.com/modules/price-lists/price-selection-strategy#context-object
     - in: query
       name: title
       style: form
       explode: false
-      description: product variant title to search for.
+      description: Filter by title.
       schema:
         oneOf:
           - type: string
-            description: a single title to search by
+            description: a single title to filter by
           - type: array
-            description: multiple titles to search by
+            description: multiple titles to filter by
             items:
               type: string
     - in: query
@@ -75,9 +108,9 @@ get:
       schema:
         oneOf:
           - type: number
-            description: a specific number to search by.
+            description: a specific number to filter by.
           - type: object
-            description: search using less and greater than comparisons.
+            description: filter using less and greater than comparisons.
             properties:
               lt:
                 type: number

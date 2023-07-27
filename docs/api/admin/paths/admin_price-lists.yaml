@@ -1,50 +1,59 @@
 get:
   operationId: GetPriceLists
   summary: List Price Lists
-  description: Retrieves a list of Price Lists.
+  description: >-
+    Retrieve a list of price lists. The price lists can be filtered by fields
+    such as `q` or `status`. The price lists can also be sorted or paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: limit
-      description: The number of items to get
+      description: Limit the number of price lists returned.
       schema:
         type: number
         default: '10'
     - in: query
       name: offset
-      description: The offset at which to get items
+      description: The number of price lists to skip when retrieving the price lists.
       schema:
         type: number
         default: '0'
     - in: query
       name: expand
       description: >-
-        (Comma separated) Which fields should be expanded in each item of the
-        result.
+        Comma-separated relations that should be expanded in the returned price
+        lists.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        Comma-separated fields that should be included in the returned price
+        lists.
       schema:
         type: string
     - in: query
       name: order
-      description: field to order results by.
+      description: A price-list field to sort-order the retrieved price lists by.
       schema:
         type: string
     - in: query
       name: id
-      description: ID to search for.
+      description: Filter by ID
       schema:
         type: string
     - in: query
       name: q
       description: >-
-        query to search in price list description, price list name, and customer
-        group name fields.
+        term to search price lists' description, name, and customer group's
+        name.
       schema:
         type: string
     - in: query
       name: status
       style: form
       explode: false
-      description: Status to search for.
+      description: Filter by status.
       schema:
         type: array
         items:
@@ -54,14 +63,14 @@ get:
             - draft
     - in: query
       name: name
-      description: price list name to search for.
+      description: Filter by name
       schema:
         type: string
     - in: query
       name: customer_groups
       style: form
       explode: false
-      description: Customer Group IDs to search for.
+      description: Filter by customer-group IDs.
       schema:
         type: array
         items:
@@ -70,7 +79,7 @@ get:
       name: type
       style: form
       explode: false
-      description: Type to search for.
+      description: Filter by type.
       schema:
         type: array
         items:
@@ -80,7 +89,7 @@ get:
             - override
     - in: query
       name: created_at
-      description: Date comparison for when resulting price lists were created.
+      description: Filter by a creation date range.
       schema:
         type: object
         properties:
@@ -102,7 +111,7 @@ get:
             format: date
     - in: query
       name: updated_at
-      description: Date comparison for when resulting price lists were updated.
+      description: Filter by an update date range.
       schema:
         type: object
         properties:
@@ -124,7 +133,7 @@ get:
             format: date
     - in: query
       name: deleted_at
-      description: Date comparison for when resulting price lists were deleted.
+      description: Filter by a deletion date range.
       schema:
         type: object
         properties:
@@ -183,7 +192,7 @@ get:
 post:
   operationId: PostPriceListsPriceList
   summary: Create a Price List
-  description: Creates a Price List
+  description: Create a Price List.
   x-authenticated: true
   requestBody:
     content:
