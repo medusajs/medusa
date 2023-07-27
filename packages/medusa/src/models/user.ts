@@ -67,7 +67,7 @@ export class User extends SoftDeletableEntity {
  *     type: string
  *     example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
  *   role:
- *     description: The user's role
+ *     description: The user's role. These roles don't provide any different privileges.
  *     type: string
  *     enum:
  *       - admin
