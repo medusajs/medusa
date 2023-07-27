@@ -5,9 +5,9 @@ import { defaultRelations } from "."
  * @oas [get] /store/regions/{id}
  * operationId: GetRegionsRegion
  * summary: Get a Region
- * description: "Retrieves a Region."
+ * description: "Retrieve a Region's details."
  * parameters:
- *   - (path) id=* {string} The id of the Region.
+ *   - (path) id=* {string} The ID of the Region.
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
@@ -16,14 +16,14 @@ import { defaultRelations } from "."
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.regions.retrieve(region_id)
+ *       medusa.regions.retrieve(regionId)
  *       .then(({ region }) => {
  *         console.log(region.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/regions/{id}'
+ *       curl 'https://medusa-url.com/store/regions/{id}'
  * tags:
  *   - Regions
  * responses:

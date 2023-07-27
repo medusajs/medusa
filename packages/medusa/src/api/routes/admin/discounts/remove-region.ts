@@ -8,7 +8,7 @@ import { EntityManager } from "typeorm"
  * operationId: "DeleteDiscountsDiscountRegionsRegion"
  * summary: "Remove Region"
  * x-authenticated: true
- * description: "Removes a Region from the list of Regions that a Discount can be used in."
+ * description: "Remove a Region from the list of Regions that a Discount can be used in. This does not delete a region, only the association between it and the discount."
  * parameters:
  *   - (path) id=* {string} The ID of the Discount.
  *   - (path) region_id=* {string} The ID of the Region.
@@ -21,15 +21,15 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.discounts.removeRegion(discount_id, region_id)
+ *       medusa.admin.discounts.removeRegion(discountId, regionId)
  *       .then(({ discount }) => {
  *         console.log(discount.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/discounts/{id}/regions/{region_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/discounts/{id}/regions/{region_id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

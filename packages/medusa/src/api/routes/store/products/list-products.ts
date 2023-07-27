@@ -27,14 +27,25 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  * @oas [get] /store/products
  * operationId: GetProducts
  * summary: List Products
- * description: "Retrieves a list of Products."
+ * description: |
+ *   Retrieves a list of products. The products can be filtered by fields such as `id` or `q`. The products can also be sorted or paginated.
+ *   This endpoint can also be used to retrieve a product by its handle.
+ *
+ *   For accurate and correct pricing of the products based on the customer's context, it's highly recommended to pass fields such as
+ *   `region_id`, `currency_code`, and `cart_id` when available.
+ *
+ *   Passing `sales_channel_id` ensures retrieving only products available in the specified sales channel.
+ *   You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
+ * externalDocs:
+ *   description: "How to retrieve a product by its handle"
+ *   url: "https://docs.medusajs.com/modules/products/storefront/show-products#retrieve-product-by-handle"
  * parameters:
- *   - (query) q {string} Query used for searching products by title, description, variant's title, variant's sku, and collection's title
+ *   - (query) q {string} term used to search products' title, description, variant's title, variant's sku, and collection's title.
  *   - in: query
  *     name: id
  *     style: form
  *     explode: false
- *     description: product IDs to search for.
+ *     description: Filter by IDs.
  *     schema:
  *       oneOf:
  *         - type: string
@@ -45,7 +56,8 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *     name: sales_channel_id
  *     style: form
  *     explode: false
- *     description: an array of sales channel IDs to filter the retrieved products by.
+ *     description: "Filter by sales channel IDs. When provided, only products available in the selected sales channels are retrieved. Alternatively, you can pass a
+ *      publishable API key in the request header and this will have the same effect."
  *     schema:
  *       type: array
  *       items:
@@ -54,7 +66,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *     name: collection_id
  *     style: form
  *     explode: false
- *     description: Collection IDs to search for
+ *     description: Filter by product collection IDs. When provided, only products that belong to the specified product collections are retrieved.
  *     schema:
  *       type: array
  *       items:
@@ -63,7 +75,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *     name: type_id
  *     style: form
  *     explode: false
- *     description: Type IDs to search for
+ *     description: Filter by product type IDs. When provided, only products that belong to the specified product types are retrieved.
  *     schema:
  *       type: array
  *       items:
@@ -72,18 +84,18 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *     name: tags
  *     style: form
  *     explode: false
- *     description: Tag IDs to search for
+ *     description: Filter by product tag IDs. When provided, only products that belong to the specified product tags are retrieved.
  *     schema:
  *       type: array
  *       items:
  *         type: string
- *   - (query) title {string} title to search for.
- *   - (query) description {string} description to search for.
- *   - (query) handle {string} handle to search for.
- *   - (query) is_giftcard {boolean} Search for giftcards using is_giftcard=true.
+ *   - (query) title {string} Filter by title.
+ *   - (query) description {string} Filter by description
+ *   - (query) handle {string} Filter by handle.
+ *   - (query) is_giftcard {boolean} Whether to retrieve regular products or gift-card products.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting products were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -105,7 +117,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting products were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -129,20 +141,37 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *     name: category_id
  *     style: form
  *     explode: false
- *     description: Category ids to filter by.
+ *     description: Filter by product category IDs. When provided, only products that belong to the specified product categories are retrieved.
  *     schema:
  *       type: array
+ *       x-featureFlag: "product_categories"
  *       items:
  *         type: string
- *   - (query) include_category_children {boolean} Include category children when filtering by category_id.
- *   - (query) offset=0 {integer} How many products to skip in the result.
+ *   - in: query
+ *     name: include_category_children
+ *     style: form
+ *     explode: false
+ *     description: Whether to include child product categories when filtering using the `category_id` field.
+ *     schema:
+ *       type: boolean
+ *       x-featureFlag: "product_categories"
+ *   - (query) offset=0 {integer} The number of products to skip when retrieving the products.
  *   - (query) limit=100 {integer} Limit the number of products returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
- *   - (query) order {string} the field used to order the products.
- *   - (query) cart_id {string} The id of the Cart to set prices based on.
- *   - (query) region_id {string} The id of the Region to set prices based on.
- *   - (query) currency_code {string} The currency code to use for price selection.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned products.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned products.
+ *   - (query) order {string} A product field to sort-order the retrieved products by.
+ *   - (query) cart_id {string} The ID of the cart. This is useful for accurate pricing based on the cart's context.
+ *   - (query) region_id {string} The ID of the region. This is useful for accurate pricing based on the selected region.
+ *   - in: query
+ *     name: currency_code
+ *     style: form
+ *     explode: false
+ *     description: A 3 character ISO currency code. This is useful for accurate pricing based on the selected currency.
+ *     schema:
+ *       type: string
+ *       externalDocs:
+ *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
+ *         description: See a list of codes.
  * x-codegen:
  *   method: list
  *   queryParams: StoreGetProductsParams
@@ -159,7 +188,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/products'
+ *       curl 'https://medusa-url.com/store/products'
  * tags:
  *   - Products
  * responses:

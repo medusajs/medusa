@@ -8,12 +8,13 @@ import { defaultAdminProductCategoryRelations } from "."
  * @oas [get] /admin/product-categories/{id}
  * operationId: "GetProductCategoriesCategory"
  * summary: "Get a Product Category"
- * description: "Retrieves a Product Category."
+ * description: "Retrieve a Product Category's details."
  * x-authenticated: true
+ * x-featureFlag: "product_categories"
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in the results.
- *   - (query) fields {string} (Comma separated) Which fields should be included in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned product category.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned product category.
  * x-codegen:
  *   method: retrieve
  *   queryParams: AdminGetProductCategoryParams
@@ -31,8 +32,8 @@ import { defaultAdminProductCategoryRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/product-categories/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/product-categories/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

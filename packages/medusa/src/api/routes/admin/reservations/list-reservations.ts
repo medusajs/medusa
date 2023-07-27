@@ -19,14 +19,14 @@ import { joinLineItems } from "./utils/join-line-items"
  * @oas [get] /admin/reservations
  * operationId: "GetReservations"
  * summary: "List Reservations"
- * description: "Retrieve a list of Reservations."
+ * description: "Retrieve a list of Reservations. The reservations can be filtered by fields such as `location_id` or `quantity`. The reservations can also be paginated."
  * x-authenticated: true
  * parameters:
  *   - in: query
  *     name: location_id
  *     style: form
  *     explode: false
- *     description: Location ids to search for.
+ *     description: Filter by location ID
  *     schema:
  *       type: array
  *       items:
@@ -35,7 +35,7 @@ import { joinLineItems } from "./utils/join-line-items"
  *     name: inventory_item_id
  *     style: form
  *     explode: false
- *     description: Inventory Item ids to search for.
+ *     description: Filter by inventory item ID.
  *     schema:
  *       type: array
  *       items:
@@ -44,7 +44,7 @@ import { joinLineItems } from "./utils/join-line-items"
  *     name: line_item_id
  *     style: form
  *     explode: false
- *     description: Line Item ids to search for.
+ *     description: Filter by line item ID.
  *     schema:
  *       type: array
  *       items:
@@ -69,10 +69,11 @@ import { joinLineItems } from "./utils/join-line-items"
  *           description: filter by reservation quantity greater than or equal to this number
  *   - in: query
  *     name: description
- *     description: A param for search reservation descriptions
+ *     description: Filter by description.
  *     schema:
  *       oneOf:
  *         - type: string
+ *           description: description value to filter by.
  *         - type: object
  *           properties:
  *             contains:
@@ -86,7 +87,7 @@ import { joinLineItems } from "./utils/join-line-items"
  *               description: filter by reservation description ending with search string.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting reservations were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -106,10 +107,10 @@ import { joinLineItems } from "./utils/join-line-items"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
- *   - (query) offset=0 {integer} How many Reservations to skip in the result.
- *   - (query) limit=20 {integer} Limit the number of Reservations returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in the product category.
- *   - (query) fields {string} (Comma separated) Which fields should be included in the product category.
+ *   - (query) offset=0 {integer} The number of reservations to skip when retrieving the reservations.
+ *   - (query) limit=20 {integer} Limit the number of reservations returned.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned reservations.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned reservations.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetReservationsParams
@@ -127,8 +128,8 @@ import { joinLineItems } from "./utils/join-line-items"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/product-categories' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/product-categories' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

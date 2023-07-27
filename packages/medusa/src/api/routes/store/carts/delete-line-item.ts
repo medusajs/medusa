@@ -7,10 +7,10 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [delete] /store/carts/{id}/line-items/{line_id}
  * operationId: DeleteCartsCartLineItemsItem
  * summary: Delete a Line Item
- * description: "Removes a Line Item from a Cart."
+ * description: "Delete a Line Item from a Cart. The payment sessions will be updated and the totals will be recalculated."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
- *   - (path) line_id=* {string} The id of the Line Item.
+ *   - (path) id=* {string} The ID of the Cart.
+ *   - (path) line_id=* {string} The ID of the Line Item.
  * x-codegen:
  *   method: deleteLineItem
  * x-codeSamples:
@@ -19,14 +19,14 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.lineItems.delete(cart_id, line_id)
+ *       medusa.carts.lineItems.delete(cartId, lineId)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}'
+ *       curl -X DELETE 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}'
  * tags:
  *   - Carts
  * responses:

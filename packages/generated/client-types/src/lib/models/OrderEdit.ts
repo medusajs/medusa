@@ -9,7 +9,7 @@ import type { OrderItemChange } from "./OrderItemChange"
 import type { PaymentCollection } from "./PaymentCollection"
 
 /**
- * Order edit keeps track of order items changes.
+ * Order edit allows modifying items in an order, such as adding, updating, or deleting items from the original order. Once the order edit is confirmed, the changes are reflected on the original order.
  */
 export interface OrderEdit {
   /**
@@ -21,11 +21,11 @@ export interface OrderEdit {
    */
   order_id: string
   /**
-   * Available if the relation `order` is expanded.
+   * The details of the order that this order edit was created for.
    */
   order?: Order | null
   /**
-   * Available if the relation `changes` is expanded.
+   * The details of all the changes on the original order's line items.
    */
   changes?: Array<OrderItemChange>
   /**
@@ -109,7 +109,7 @@ export interface OrderEdit {
    */
   status: "confirmed" | "declined" | "requested" | "created" | "canceled"
   /**
-   * Available if the relation `items` is expanded.
+   * The details of the cloned items from the original order with the new changes. Once the order edit is confirmed, these line items are associated with the original order.
    */
   items?: Array<LineItem>
   /**
@@ -117,7 +117,7 @@ export interface OrderEdit {
    */
   payment_collection_id: string | null
   /**
-   * Available if the relation `payment_collection` is expanded.
+   * The details of the payment collection used to authorize additional payment if necessary.
    */
   payment_collection?: PaymentCollection | null
   /**

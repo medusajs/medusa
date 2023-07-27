@@ -4,13 +4,23 @@ import {
   LoadStrategy,
   RequiredEntityData,
 } from "@mikro-orm/core"
-import { Product, ProductTag } from "@models"
-import { Context, CreateProductTagDTO, DAL } from "@medusajs/types"
-import { AbstractBaseRepository } from "./base"
+import { ProductTag } from "@models"
+import {
+  Context,
+  CreateProductTagDTO,
+  DAL,
+  UpdateProductTagDTO,
+  UpsertProductTagDTO,
+} from "@medusajs/types"
+import { BaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import {
+  InjectTransactionManager,
+  MedusaContext,
+  MedusaError,
+} from "@medusajs/utils"
 
-export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
+export class ProductTagRepository extends BaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -23,10 +33,9 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     findOptions: DAL.FindOptions<ProductTag> = { where: {} },
     context: Context = {}
   ): Promise<ProductTag[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
-
+    const manager = this.getActiveManager<SqlEntityManager>(context)
     const findOptions_ = { ...findOptions }
+
     findOptions_.options ??= {}
 
     Object.assign(findOptions_.options, {
@@ -44,8 +53,7 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
     findOptions: DAL.FindOptions<ProductTag> = { where: {} },
     context: Context = {}
   ): Promise<[ProductTag[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -62,13 +70,70 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
   }
 
   @InjectTransactionManager()
+  async create(
+    data: CreateProductTagDTO[],
+    @MedusaContext()
+    context: Context = {}
+  ): Promise<ProductTag[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
+    const productTags = data.map((tagData) => {
+      return manager.create(ProductTag, tagData)
+    })
+
+    await manager.persist(productTags)
+
+    return productTags
+  }
+
+  @InjectTransactionManager()
+  async update(
+    data: UpdateProductTagDTO[],
+    @MedusaContext()
+    context: Context = {}
+  ): Promise<ProductTag[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const tagIds = data.map((tagData) => tagData.id)
+    const existingTags = await this.find(
+      {
+        where: {
+          id: {
+            $in: tagIds,
+          },
+        },
+      },
+      context
+    )
+
+    const existingTagsMap = new Map(
+      existingTags.map<[string, ProductTag]>((tag) => [tag.id, tag])
+    )
+
+    const productTags = data.map((tagData) => {
+      const existingTag = existingTagsMap.get(tagData.id)
+
+      if (!existingTag) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `ProductTag with id "${tagData.id}" not found`
+        )
+      }
+
+      return manager.assign(existingTag, tagData)
+    })
+
+    await manager.persist(productTags)
+
+    return productTags
+  }
+
+  @InjectTransactionManager()
   async upsert(
-    tags: CreateProductTagDTO[],
+    tags: UpsertProductTagDTO[],
     @MedusaContext()
     context: Context = {}
   ): Promise<ProductTag[]> {
     const { transactionManager: manager } = context
-
     const tagsValues = tags.map((tag) => tag.value)
     const existingTags = await this.find(
       {
@@ -115,21 +180,10 @@ export class ProductTagRepository extends AbstractBaseRepository<ProductTag> {
   async delete(
     ids: string[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<void> {
-    await (manager as SqlEntityManager).nativeDelete(
-      Product,
-      { id: { $in: ids } },
-      {}
-    )
-  }
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
-  @InjectTransactionManager()
-  async create(
-    data: unknown[],
-    @MedusaContext()
-    { transactionManager: manager }: Context = {}
-  ): Promise<ProductTag[]> {
-    throw new Error("Method not implemented.")
+    await manager.nativeDelete(ProductTag, { id: { $in: ids } }, {})
   }
 }

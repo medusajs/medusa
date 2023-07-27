@@ -11,7 +11,7 @@ import {
   variantsData,
 } from "../../../__fixtures__/product/data"
 
-import { ProductDTO } from "@medusajs/types"
+import { ProductDTO, ProductTypes } from "@medusajs/types"
 import { ProductRepository } from "@repositories"
 import { ProductService } from "@services"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
@@ -27,6 +27,7 @@ describe("Product Service", () => {
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
   let products!: Product[]
+  let productOne: Product
   let variants!: ProductVariant[]
   let categories!: ProductCategory[]
 
@@ -45,6 +46,51 @@ describe("Product Service", () => {
 
   afterEach(async () => {
     await TestDatabase.clearDatabase()
+  })
+
+  describe("retrieve", () => {
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+      productOne = testManager.create(Product, {
+        id: "product-1",
+        title: "product 1",
+        status: ProductTypes.ProductStatus.PUBLISHED,
+      })
+
+      await testManager.persistAndFlush([productOne])
+    })
+
+    it("should throw an error when an id is not provided", async () => {
+      let error
+
+      try {
+        await service.retrieve(undefined as unknown as string)
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual('"productId" must be defined')
+    })
+
+    it("should throw an error when product with id does not exist", async () => {
+      let error
+
+      try {
+        await service.retrieve("does-not-exist")
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual('Product with id: does-not-exist was not found')
+    })
+
+    it("should return a product when product with an id exists", async () => {
+      const result = await service.retrieve(productOne.id)
+
+      expect(result).toEqual(expect.objectContaining({
+        id: productOne.id
+      }))
+    })
   })
 
   describe("create", function () {
@@ -84,6 +130,94 @@ describe("Product Service", () => {
           ]),
         })
       )
+    })
+  })
+
+  describe("update", function () {
+    let images: Image[] = []
+
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+      images = await createImages(testManager, ["image-1", "image-2"])
+
+      productOne = testManager.create(Product, {
+        id: "product-1",
+        title: "product 1",
+        status: ProductTypes.ProductStatus.PUBLISHED,
+      })
+
+      await testManager.persistAndFlush([productOne])
+    })
+
+    it("should update a product and its allowed relations", async () => {
+      const updateData = [{
+        id: productOne.id,
+        title: "update test 1",
+        images: images,
+        thumbnail: images[0].url,
+      }]
+
+      const products = await service.update(updateData)
+
+      expect(products.length).toEqual(1)
+
+      let result = await service.retrieve(productOne.id, {relations: ["images", "thumbnail"]})
+      let serialized = JSON.parse(JSON.stringify(result))
+
+      expect(serialized).toEqual(
+        expect.objectContaining({
+          id: productOne.id,
+          title: "update test 1",
+          thumbnail: images[0].url,
+          images: [
+            expect.objectContaining({
+              url: images[0].url,
+            }),
+            expect.objectContaining({
+              url: images[1].url,
+            }),
+          ],
+        })
+      )
+    })
+
+    it("should throw an error when id is not present", async () => {
+      let error
+      const updateData = [{
+        id: productOne.id,
+        title: "update test 1",
+      }, {
+        id: undefined as unknown as string,
+        title: "update test 2",
+      }]
+
+      try {
+        await service.update(updateData)
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual(`Product with id "undefined" not found`)
+
+      let result = await service.retrieve(productOne.id)
+
+      expect(result.title).not.toBe("update test 1")
+    })
+
+    it("should throw an error when product with id does not exist", async () => {
+      let error
+      const updateData = [{
+        id: "does-not-exist",
+        title: "update test 1",
+      }]
+
+      try {
+        await service.update(updateData)
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual(`Product with id "does-not-exist" not found`)
     })
   })
 

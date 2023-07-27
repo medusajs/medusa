@@ -22,7 +22,16 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /store/swaps
  * operationId: PostSwaps
  * summary: Create a Swap
- * description: "Creates a Swap on an Order by providing some items to return along with some items to send back"
+ * description: |
+ *   Create a Swap for an Order. This will also create a return and associate it with the swap. If a return shipping option is specified, the return will automatically be fulfilled.
+ *   To complete the swap, you must use the Complete Cart endpoint passing it the ID of the swap's cart.
+ *
+ *   An idempotency key will be generated if none is provided in the header `Idempotency-Key` and added to
+ *   the response. If an error occurs during swap creation or the request is interrupted for any reason, the swap creation can be retried by passing the idempotency
+ *   key in the `Idempotency-Key` header.
+ * externalDocs:
+ *   description: "How to create a swap"
+ *   url: "https://docs.medusajs.com/modules/orders/storefront/create-swap"
  * requestBody:
  *   content:
  *     application/json:
@@ -57,19 +66,19 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/swaps' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/store/swaps' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *           "order_id": "asfasf",
+ *           "order_id": "{order_id}",
  *           "return_items": [
  *             {
- *               "item_id": "asfas",
+ *               "item_id": "{item_id}",
  *               "quantity": 1
  *             }
  *           ],
  *           "additional_items": [
  *             {
- *               "variant_id": "asfas",
+ *               "variant_id": "{variant_id}",
  *               "quantity": 1
  *             }
  *           ]
@@ -301,13 +310,13 @@ class AdditionalItem {
  *         - quantity
  *       properties:
  *         item_id:
- *           description: The ID of the Line Item from the Order.
+ *           description: The ID of the order's line item to return.
  *           type: string
  *         quantity:
- *           description: The quantity to swap.
+ *           description: The quantity to return.
  *           type: integer
  *         reason_id:
- *           description: The ID of the reason of this return.
+ *           description: The ID of the reason of this return. Return reasons can be retrieved from the List Return Reasons endpoint.
  *           type: string
  *         note:
  *           description: The note to add to the item being swapped.
@@ -316,7 +325,7 @@ class AdditionalItem {
  *     type: string
  *     description: The ID of the Shipping Option to create the Shipping Method from.
  *   additional_items:
- *     description: "The items to exchange the returned items to."
+ *     description: "The items to exchange the returned items with."
  *     type: array
  *     items:
  *       type: object
@@ -325,10 +334,10 @@ class AdditionalItem {
  *         - quantity
  *       properties:
  *         variant_id:
- *           description: The ID of the Product Variant to send.
+ *           description: The ID of the Product Variant.
  *           type: string
  *         quantity:
- *           description: The quantity to send of the variant.
+ *           description: The quantity of the variant.
  *           type: integer
  */
 export class StorePostSwapsReq {

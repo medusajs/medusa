@@ -7,7 +7,7 @@ import type { Cart } from "./Cart"
 import type { ShippingOption } from "./ShippingOption"
 
 /**
- * Custom Shipping Options are 'overriden' Shipping Options. Store managers can attach a Custom Shipping Option to a cart in order to set a custom price for a particular Shipping Option
+ * Custom Shipping Options are overriden Shipping Options. Admins can attach a Custom Shipping Option to a cart in order to set a custom price for a particular Shipping Option.
  */
 export interface CustomShippingOption {
   /**
@@ -23,7 +23,7 @@ export interface CustomShippingOption {
    */
   shipping_option_id: string
   /**
-   * A shipping option object. Available if the relation `shipping_option` is expanded.
+   * The details of the overriden shipping options.
    */
   shipping_option?: ShippingOption | null
   /**
@@ -31,7 +31,7 @@ export interface CustomShippingOption {
    */
   cart_id: string | null
   /**
-   * A cart object. Available if the relation `cart` is expanded.
+   * The details of the cart this shipping option belongs to.
    */
   cart?: Cart | null
   /**

@@ -10,11 +10,12 @@ import { FindParams } from "../../../../types/common"
  * @oas [post] /admin/product-categories
  * operationId: "PostProductCategories"
  * summary: "Create a Product Category"
- * description: "Creates a Product Category."
+ * description: "Create a Product Category."
  * x-authenticated: true
+ * x-featureFlag: "product_categories"
  * parameters:
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in the results.
- *   - (query) fields {string} (Comma separated) Which fields should be retrieved in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned product category.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned product category.
  * requestBody:
  *   content:
  *     application/json:
@@ -39,9 +40,9 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/product-categories' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/product-categories' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "Skinny Jeans"
  *       }'
@@ -102,19 +103,19 @@ export default async (req: Request, res: Response) => {
  * properties:
  *   name:
  *     type: string
- *     description: The name to identify the Product Category by.
+ *     description: The name of the product category
  *   description:
  *     type: string
- *     description: An optional text field to describe the Product Category by.
+ *     description: The description of the product category.
  *   handle:
  *     type: string
- *     description: An optional handle to be used in slugs, if none is provided we will kebab-case the title.
+ *     description: The handle of the product category. If none is provided, the kebab-case version of the name will be used. This field can be used as a slug in URLs.
  *   is_internal:
  *     type: boolean
- *     description: A flag to make product category an internal category for admins
+ *     description: If set to `true`, the product category will only be available to admins.
  *   is_active:
  *     type: boolean
- *     description: A flag to make product category visible/hidden in the store front
+ *     description: If set to `false`, the product category will not be available in the storefront.
  *   parent_category_id:
  *     type: string
  *     description: The ID of the parent product category

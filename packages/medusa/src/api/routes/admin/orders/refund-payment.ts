@@ -15,12 +15,12 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/refund
  * operationId: "PostOrdersOrderRefunds"
  * summary: "Create a Refund"
- * description: "Issues a Refund."
+ * description: "Refund an amount for an order. The amount must be less than or equal the `refundable_amount` of the order."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
- *   - (query) expand {string} Comma separated list of relations to include in the result.
- *   - (query) fields {string} Comma separated list of fields to include in the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -36,9 +36,9 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.refundPayment(order_id, {
+ *       medusa.admin.orders.refundPayment(orderId, {
  *         amount: 1000,
- *         reason: 'Do not like it'
+ *         reason: "Do not like it"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
@@ -46,9 +46,9 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/adasda/refund' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/orders/adasda/refund' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "amount": 1000,
  *           "reason": "Do not like it"
@@ -109,7 +109,7 @@ export default async (req, res) => {
  *   - reason
  * properties:
  *   amount:
- *     description: The amount to refund.
+ *     description: The amount to refund. It should be less than or equal the `refundable_amount` of the order.
  *     type: integer
  *   reason:
  *     description: The reason for the Refund.
@@ -118,7 +118,7 @@ export default async (req, res) => {
  *     description: A note with additional details about the Refund.
  *     type: string
  *   no_notification:
- *     description: If set to true no notification will be send related to this Refund.
+ *     description: If set to `true`, no notification will be sent to the customer related to this Refund.
  *     type: boolean
  */
 export class AdminPostOrdersOrderRefundsReq {

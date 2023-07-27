@@ -6,5 +6,8 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { Currency } from "./Currency"
 
 export interface AdminCurrenciesRes {
+  /**
+   * Currency details.
+   */
   currency: Currency
 }

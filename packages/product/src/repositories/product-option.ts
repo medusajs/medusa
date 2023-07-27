@@ -7,7 +7,11 @@ import { Product, ProductOption } from "@models"
 import { Context, DAL, ProductTypes } from "@medusajs/types"
 import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import {
+  InjectTransactionManager,
+  MedusaContext,
+  MedusaError,
+} from "@medusajs/utils"
 
 export class ProductOptionRepository extends AbstractBaseRepository<ProductOption> {
   protected readonly manager_: SqlEntityManager
@@ -22,8 +26,7 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
     findOptions: DAL.FindOptions<ProductOption> = { where: {} },
     context: Context = {}
   ): Promise<ProductOption[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -43,8 +46,7 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
     findOptions: DAL.FindOptions<ProductOption> = { where: {} },
     context: Context = {}
   ): Promise<[ProductOption[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -64,10 +66,12 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
   async delete(
     ids: string[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<void> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
     await (manager as SqlEntityManager).nativeDelete(
-      Product,
+      ProductOption,
       { id: { $in: ids } },
       {}
     )
@@ -75,16 +79,81 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
 
   @InjectTransactionManager()
   async create(
-    data: (ProductTypes.CreateProductOptionDTO & { product: { id: string } })[],
+    data: ProductTypes.CreateProductOptionDTO[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<ProductOption[]> {
-    const options = data.map((option) => {
-      return (manager as SqlEntityManager).create(ProductOption, option)
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const productIds: string[] = []
+
+    data.forEach((d) => d.product_id && productIds.push(d.product_id))
+
+    const existingProducts = await manager.find(
+      Product,
+      { id: { $in: productIds } },
+    )
+
+    const existingProductsMap = new Map(
+      existingProducts.map<[string, Product]>((product) => [product.id, product])
+    )
+
+    const productOptions = data.map((optionData) => {
+      const productId = optionData.product_id
+
+      delete optionData.product_id
+
+      if (productId) {
+        const product = existingProductsMap.get(productId)
+
+        optionData.product = product
+      }
+
+      return manager.create(ProductOption, optionData)
     })
 
-    await (manager as SqlEntityManager).persist(options)
+    await manager.persist(productOptions)
 
-    return options
+    return productOptions
+  }
+
+  @InjectTransactionManager()
+  async update(
+    data: ProductTypes.UpdateProductOptionDTO[],
+    @MedusaContext()
+    context: Context = {}
+  ): Promise<ProductOption[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    const optionIds = data.map((optionData) => optionData.id)
+    const existingOptions = await this.find(
+      {
+        where: {
+          id: {
+            $in: optionIds,
+          },
+        },
+      },
+      context
+    )
+
+    const existingOptionsMap = new Map(
+      existingOptions.map<[string, ProductOption]>((option) => [option.id, option])
+    )
+
+    const productOptions = data.map((optionData) => {
+      const existingOption = existingOptionsMap.get(optionData.id)
+
+      if (!existingOption) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `ProductOption with id "${optionData.id}" not found`
+        )
+      }
+
+      return manager.assign(existingOption, optionData)
+    })
+
+    await manager.persist(productOptions)
+
+    return productOptions
   }
 }

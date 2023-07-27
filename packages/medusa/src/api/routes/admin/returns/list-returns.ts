@@ -11,10 +11,10 @@ import { validator } from "../../../../utils/validator"
  * @oas [get] /admin/returns
  * operationId: "GetReturns"
  * summary: "List Returns"
- * description: "Retrieves a list of Returns"
+ * description: "Retrieve a list of Returns. The returns can be paginated."
  * parameters:
- *   - (query) limit=50 {number} The upper limit for the amount of responses returned.
- *   - (query) offset=0 {number} The offset of the list returned.
+ *   - (query) limit=50 {number} Limit the number of Returns returned.
+ *   - (query) offset=0 {number} The number of Returns to skip when retrieving the Returns.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetReturnsParams
@@ -32,8 +32,8 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/returns' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/returns' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

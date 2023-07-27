@@ -135,6 +135,7 @@ export * from "./search"
  *   - product
  * properties:
  *   product:
+ *     description: "Product details."
  *     $ref: "#/components/schemas/PricedProduct"
  */
 export type StoreProductsRes = {
@@ -149,7 +150,7 @@ export type StoreProductsRes = {
  *       - hits
  *     properties:
  *       hits:
- *         description: Array of results. The format of the items depends on the search engine installed on the server.
+ *         description: "Array of search results. The format of the items depends on the search engine installed on the Medusa backend."
  *         type: array
  *   - type: object
  */
@@ -182,6 +183,7 @@ export type StorePostSearchRes = {
  * properties:
  *   products:
  *     type: array
+ *     description: "An array of products details."
  *     items:
  *       $ref: "#/components/schemas/PricedProduct"
  *   count:
@@ -189,7 +191,7 @@ export type StorePostSearchRes = {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of products skipped when retrieving the products.
  *   limit:
  *     type: integer
  *     description: The number of items per page

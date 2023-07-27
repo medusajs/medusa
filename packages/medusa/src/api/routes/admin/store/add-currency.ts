@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/store/currencies/{code}
  * operationId: "PostStoreCurrenciesCode"
  * summary: "Add a Currency Code"
- * description: "Adds a Currency Code to the available currencies."
+ * description: "Add a Currency Code to the available currencies in a store. This does not create new currencies, as currencies are defined within the Medusa backend. To create a currency, you can create a migration that inserts the currency into the database."
  * x-authenticated: true
  * parameters:
  *   - in: path
@@ -26,15 +26,15 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.store.addCurrency('eur')
+ *       medusa.admin.store.addCurrency("eur")
  *       .then(({ store }) => {
  *         console.log(store.currencies);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/store/currencies/eur' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST 'https://medusa-url.com/admin/store/currencies/{currency_code}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

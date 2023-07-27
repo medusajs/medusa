@@ -5,35 +5,35 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetProductTypesParams {
   /**
-   * The number of types to return.
+   * Limit the number of product types returned.
    */
   limit?: number
   /**
-   * The number of items to skip before the results.
+   * The number of product types to skip when retrieving the product types.
    */
   offset?: number
   /**
-   * The field to sort items by.
+   * A product type field to sort-order the retrieved product types by.
    */
   order?: string
   /**
-   * The discount condition id on which to filter the product types.
+   * Filter by the ID of a discount condition. Only product types that this discount condition is applied to will be retrieved.
    */
   discount_condition_id?: string
   /**
-   * The type values to search for
+   * Filter by value.
    */
   value?: Array<string>
   /**
-   * The type IDs to search for
+   * Filter by product type IDs.
    */
   id?: Array<string>
   /**
-   * A query string to search values for
+   * term to search product types' values.
    */
   q?: string
   /**
-   * Date comparison for when resulting product types were created.
+   * Filter by a creation date range.
    */
   created_at?: {
     /**
@@ -54,7 +54,7 @@ export interface AdminGetProductTypesParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting product types were updated.
+   * Filter by an update date range.
    */
   updated_at?: {
     /**

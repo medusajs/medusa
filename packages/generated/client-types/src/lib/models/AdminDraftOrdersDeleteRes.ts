@@ -13,7 +13,7 @@ export interface AdminDraftOrdersDeleteRes {
    */
   object: string
   /**
-   * Whether the draft order was deleted successfully or not.
+   * Whether the draft order was deleted successfully.
    */
   deleted: boolean
 }

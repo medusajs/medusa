@@ -32,6 +32,7 @@ export default (app) => {
  *   - customer
  * properties:
  *   customer:
+ *     description: "Customer details."
  *     $ref: "#/components/schemas/Customer"
  */
 export type AdminCustomersRes = {
@@ -49,6 +50,7 @@ export type AdminCustomersRes = {
  * properties:
  *   customers:
  *     type: array
+ *     description: "An array of customer details."
  *     items:
  *       $ref: "#/components/schemas/Customer"
  *   count:
@@ -56,7 +58,7 @@ export type AdminCustomersRes = {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of customers skipped when retrieving the customers.
  *   limit:
  *     type: integer
  *     description: The number of items per page

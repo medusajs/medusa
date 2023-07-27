@@ -8,7 +8,7 @@ import ReturnReasonService from "../../../../services/return-reason"
  * @oas [get] /store/return-reasons/{id}
  * operationId: "GetReturnReasonsReason"
  * summary: "Get a Return Reason"
- * description: "Retrieves a Return Reason."
+ * description: "Retrieve a Return Reason's details."
  * parameters:
  *   - (path) id=* {string} The id of the Return Reason.
  * x-codegen:
@@ -19,14 +19,14 @@ import ReturnReasonService from "../../../../services/return-reason"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.returnReasons.retrieve(reason_id)
+ *       medusa.returnReasons.retrieve(reasonId)
  *       .then(({ return_reason }) => {
  *         console.log(return_reason.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/return-reasons/{id}'
+ *       curl 'https://medusa-url.com/store/return-reasons/{id}'
  * tags:
  *   - Return Reasons
  * responses:

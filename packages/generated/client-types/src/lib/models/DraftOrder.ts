@@ -7,7 +7,7 @@ import type { Cart } from "./Cart"
 import type { Order } from "./Order"
 
 /**
- * Represents a draft order
+ * A draft order is created by an admin without direct involvement of the customer. Once its payment is marked as captured, it is transformed into an order.
  */
 export interface DraftOrder {
   /**
@@ -15,7 +15,7 @@ export interface DraftOrder {
    */
   id: string
   /**
-   * The status of the draft order
+   * The status of the draft order. It's changed to `completed` when it's transformed to an order.
    */
   status: "open" | "completed"
   /**
@@ -27,15 +27,15 @@ export interface DraftOrder {
    */
   cart_id: string | null
   /**
-   * A cart object. Available if the relation `cart` is expanded.
+   * The details of the cart associated with the draft order.
    */
   cart?: Cart | null
   /**
-   * The ID of the order associated with the draft order.
+   * The ID of the order created from the draft order when its payment is captured.
    */
   order_id: string | null
   /**
-   * An order object. Available if the relation `order` is expanded.
+   * The details of the order created from the draft order when its payment is captured.
    */
   order?: Order | null
   /**

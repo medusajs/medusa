@@ -170,6 +170,7 @@ export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
  *     description: Whether or not the items were deleted.
  *     default: true
  *   product:
+ *     description: Product details.
  *     $ref: "#/components/schemas/PricedProduct"
  */
 export type AdminProductsDeleteOptionRes = {
@@ -211,6 +212,7 @@ export type AdminProductsDeleteOptionRes = {
  *     description: Whether or not the items were deleted.
  *     default: true
  *   product:
+ *     description: Product details.
  *     $ref: "#/components/schemas/PricedProduct"
  */
 export type AdminProductsDeleteVariantRes = {
@@ -270,6 +272,7 @@ export type AdminProductsDeleteRes = {
  * properties:
  *   products:
  *     type: array
+ *     description: An array of products details.
  *     items:
  *       $ref: "#/components/schemas/PricedProduct"
  *   count:
@@ -277,7 +280,7 @@ export type AdminProductsDeleteRes = {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of products skipped when retrieving the products.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -297,6 +300,7 @@ export type AdminProductsListRes = PaginatedResponse & {
  * properties:
  *   variants:
  *     type: array
+ *     description: An array of product variants details.
  *     items:
  *       $ref: "#/components/schemas/ProductVariant"
  *   count:
@@ -304,7 +308,7 @@ export type AdminProductsListRes = PaginatedResponse & {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of product variants skipped when retrieving the product variants.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -321,6 +325,7 @@ export type AdminProductsListVariantsRes = PaginatedResponse & {
  * properties:
  *   types:
  *     type: array
+ *     description: An array of product types details.
  *     items:
  *       $ref: "#/components/schemas/ProductType"
  */
@@ -335,6 +340,7 @@ export type AdminProductsListTypesRes = {
  *   - tags
  * properties:
  *   tags:
+ *     description: An array of product tags details.
  *     type: array
  *     items:
  *       type: object
@@ -379,6 +385,7 @@ export type AdminProductsListTagsRes = {
  *   - product
  * properties:
  *   product:
+ *     description: Product details.
  *     $ref: "#/components/schemas/PricedProduct"
  */
 export type AdminProductsRes = {
