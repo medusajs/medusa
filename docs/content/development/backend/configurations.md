@@ -495,7 +495,7 @@ module.exports = {
 }
 ```
 
-Learn more about [Feature flags and how to toggle them](../feature-flags/).
+Learn more about [Feature flags and how to toggle them](../feature-flags/overview.mdx).
 
 :::note
 
