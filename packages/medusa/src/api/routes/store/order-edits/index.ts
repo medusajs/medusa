@@ -83,6 +83,7 @@ export default (app) => {
  *   - order_edit
  * properties:
  *   order_edit:
+ *     description: "Order edit details."
  *     $ref: "#/components/schemas/OrderEdit"
  */
 export type StoreOrderEditsRes = {

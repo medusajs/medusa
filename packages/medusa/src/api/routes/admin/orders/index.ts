@@ -592,6 +592,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
  *   - order
  * properties:
  *   order:
+ *     description: "Order details."
  *     $ref: "#/components/schemas/Order"
  */
 export type AdminOrdersRes = {
@@ -713,6 +714,7 @@ export type AdminOrdersRes = {
  * properties:
  *   orders:
  *     type: array
+ *     description: "An array of order details."
  *     items:
  *       $ref: "#/components/schemas/Order"
  *   count:
@@ -720,7 +722,7 @@ export type AdminOrdersRes = {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of orders skipped when retrieving the orders.
  *   limit:
  *     type: integer
  *     description: The number of items per page

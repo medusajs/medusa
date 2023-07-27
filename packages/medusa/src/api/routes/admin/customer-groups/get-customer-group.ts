@@ -7,12 +7,12 @@ import { FindParams } from "../../../../types/common"
  * @oas [get] /admin/customer-groups/{id}
  * operationId: "GetCustomerGroupsGroup"
  * summary: "Get a Customer Group"
- * description: "Retrieves a Customer Group."
+ * description: "Retrieve a Customer Group by its ID. You can expand the customer group's relations or select the fields that should be returned."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Customer Group.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in the customer group.
- *   - (query) fields {string} (Comma separated) Which fields should be included in the customer group.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned customer group.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned customer group.
  * x-codegen:
  *   method: retrieve
  *   queryParams: AdminGetCustomerGroupsGroupParams
@@ -23,15 +23,15 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.customerGroups.retrieve(customer_group_id)
+ *       medusa.admin.customerGroups.retrieve(customerGroupId)
  *       .then(({ customer_group }) => {
  *         console.log(customer_group.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/customer-groups/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/customer-groups/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

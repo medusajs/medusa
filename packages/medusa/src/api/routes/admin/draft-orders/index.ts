@@ -98,6 +98,7 @@ export const defaultAdminDraftOrdersFields: (keyof DraftOrder)[] = [
  *   - order
  * properties:
  *   order:
+ *     description: Order's details.
  *     $ref: "#/components/schemas/Order"
  */
 export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
@@ -169,6 +170,7 @@ export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
  *   - draft_order
  * properties:
  *   draft_order:
+ *     description: Draft order's details.
  *     $ref: "#/components/schemas/DraftOrder"
  */
 export type AdminDraftOrdersRes = {
@@ -192,7 +194,7 @@ export type AdminDraftOrdersRes = {
  *     default: draft-order
  *   deleted:
  *     type: boolean
- *     description: Whether the draft order was deleted successfully or not.
+ *     description: Whether the draft order was deleted successfully.
  *     default: true
  */
 export type AdminDraftOrdersDeleteRes = DeleteResponse
@@ -215,6 +217,7 @@ export type AdminDraftOrdersDeleteRes = DeleteResponse
  * properties:
  *   draft_orders:
  *     type: array
+ *     description: An array of draft order's details.
  *     items:
  *       $ref: "#/components/schemas/DraftOrder"
  *   count:
@@ -222,7 +225,7 @@ export type AdminDraftOrdersDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of draft orders skipped when retrieving the draft orders.
  *   limit:
  *     type: integer
  *     description: The number of items per page

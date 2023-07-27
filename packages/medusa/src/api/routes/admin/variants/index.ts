@@ -91,6 +91,7 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
  * properties:
  *   variants:
  *     type: array
+ *     description: "An array of product variant details."
  *     items:
  *       $ref: "#/components/schemas/PricedVariant"
  *   count:
@@ -98,7 +99,7 @@ export const defaultAdminVariantFields: (keyof ProductVariant)[] = [
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of product variants skipped when retrieving the product variants.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -120,6 +121,7 @@ export type AdminVariantsListRes = PaginatedResponse & {
  *   - variant
  * properties:
  *   variant:
+ *     description: "Product variant's details."
  *     $ref: "#/components/schemas/PricedVariant"
  */
 export type AdminVariantsRes = {

@@ -10,10 +10,10 @@ import { validator } from "../../../../utils/validator"
  * @oas [get] /admin/swaps
  * operationId: "GetSwaps"
  * summary: "List Swaps"
- * description: "Retrieves a list of Swaps."
+ * description: "Retrieve a list of Swaps. The swaps can be paginated."
  * parameters:
- *   - (query) limit=50 {number} The upper limit for the amount of responses returned.
- *   - (query) offset=0 {number} The offset of the list returned.
+ *   - (query) limit=50 {number} Limit the number of swaps returned.
+ *   - (query) offset=0 {number} The number of swaps to skip when retrieving the swaps.
  * x-authenticated: true
  * x-codegen:
  *   method: list
@@ -32,8 +32,8 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/swaps' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/swaps' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

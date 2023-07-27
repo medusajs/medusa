@@ -5,7 +5,7 @@ import CustomerService from "../../../../services/customer"
  * @oas [get] /store/customers/me
  * operationId: GetCustomersCustomer
  * summary: Get a Customer
- * description: "Retrieves a Customer - the Customer must be logged in to retrieve their details."
+ * description: "Retrieve the logged-in Customer's details."
  * x-authenticated: true
  * x-codegen:
  *   method: retrieve
@@ -23,8 +23,8 @@ import CustomerService from "../../../../services/customer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/customers/me' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl 'https://medusa-url.com/store/customers/me' \
+ *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
  * tags:

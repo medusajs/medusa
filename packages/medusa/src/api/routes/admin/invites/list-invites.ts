@@ -4,7 +4,7 @@ import InviteService from "../../../../services/invite"
  * @oas [get] /admin/invites
  * operationId: "GetInvites"
  * summary: "Lists Invites"
- * description: "Lists all Invites"
+ * description: "Retrieve a list of invites."
  * x-authenticated: true
  * x-codegen:
  *   method: list
@@ -22,8 +22,8 @@ import InviteService from "../../../../services/invite"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/invites' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/invites' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

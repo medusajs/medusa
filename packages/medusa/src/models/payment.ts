@@ -89,7 +89,7 @@ export class Payment extends BaseEntity {
 /**
  * @schema Payment
  * title: "Payment"
- * description: "Payments represent an amount authorized with a given payment method, Payments can be captured, canceled or refunded."
+ * description: "A payment is originally created from a payment session. Once a payment session is authorized, the payment is created to represent the authorized amount with a given payment method. Payments can be captured, canceled or refunded. Payments can be made towards orders, swaps, order edits, or other resources."
  * type: object
  * required:
  *   - amount
@@ -113,29 +113,32 @@ export class Payment extends BaseEntity {
  *     type: string
  *     example: pay_01G2SJNT6DEEWDFNAJ4XWDTHKE
  *   swap_id:
- *     description: The ID of the Swap that the Payment is used for.
+ *     description: The ID of the swap that this payment was potentially created for.
  *     nullable: true
  *     type: string
  *     example: null
  *   swap:
- *     description: A swap object. Available if the relation `swap` is expanded.
+ *     description: The details of the swap that this payment was potentially created for.
+ *     x-expandable: "swap"
  *     nullable: true
  *     $ref: "#/components/schemas/Swap"
  *   cart_id:
- *     description: The id of the Cart that the Payment Session is created for.
+ *     description: The ID of the cart that the payment session was potentially created for.
  *     nullable: true
  *     type: string
  *   cart:
- *     description: A cart object. Available if the relation `cart` is expanded.
+ *     description: The details of the cart that the payment session was potentially created for.
+ *     x-expandable: "cart"
  *     nullable: true
  *     $ref: "#/components/schemas/Cart"
  *   order_id:
- *     description: The ID of the Order that the Payment is used for.
+ *     description: The ID of the order that the payment session was potentially created for.
  *     nullable: true
  *     type: string
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: An order object. Available if the relation `order` is expanded.
+ *     description: The details of the order that the payment session was potentially created for.
+ *     x-expandable: "order"
  *     nullable: true
  *     $ref: "#/components/schemas/Order"
  *   amount:
@@ -143,14 +146,15 @@ export class Payment extends BaseEntity {
  *     type: integer
  *     example: 100
  *   currency_code:
- *     description: The 3 character ISO currency code that the Payment is completed in.
+ *     description: The 3 character ISO currency code of the payment.
  *     type: string
  *     example: usd
  *     externalDocs:
  *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *       description: See a list of codes.
  *   currency:
- *     description: Available if the relation `currency` is expanded.
+ *     description: The details of the currency of the payment.
+ *     x-expandable: "currency"
  *     nullable: true
  *     $ref: "#/components/schemas/Currency"
  *   amount_refunded:

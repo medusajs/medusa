@@ -21,7 +21,7 @@ export class Image extends SoftDeletableEntity {
 /**
  * @schema Image
  * title: "Image"
- * description: "Images holds a reference to a URL at which the image file can be found."
+ * description: "An Image is used to store details about uploaded images. Images are uploaded by the File Service, and the URL is provided by the File Service."
  * type: object
  * required:
  *   - created_at

@@ -7,14 +7,18 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 /**
  * @oas [post] /admin/orders/{id}/claims/{claim_id}/shipments
  * operationId: "PostOrdersOrderClaimsClaimShipments"
- * summary: "Create Claim Shipment"
- * description: "Registers a Claim Fulfillment as shipped."
+ * summary: "Ship a Claim's Fulfillment"
+ * description: "Mark a claim's fulfillment as shipped. This changes the claim's fulfillment status to either `shipped` or `partially_shipped`, depending on
+ *  whether all the items were shipped."
  * x-authenticated: true
+ * externalDocs:
+ *   description: Fulfill a claim
+ *   url: https://docs.medusajs.com/modules/orders/claims#fulfill-a-claim
  * parameters:
- *   - (path) id=* {string} The ID of the Order.
+ *   - (path) id=* {string} The ID of the Order the claim is associated with.
  *   - (path) claim_id=* {string} The ID of the Claim.
- *   - (query) expand {string} Comma separated list of relations to include in the result.
- *   - (query) fields {string} Comma separated list of fields to include in the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -30,7 +34,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.createClaimShipment(order_id, claim_id, {
+ *       medusa.admin.orders.createClaimShipment(orderId, claimId, {
  *         fulfillment_id
  *       })
  *       .then(({ order }) => {
@@ -39,9 +43,9 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/claims/{claim_id}/shipments' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/claims/{claim_id}/shipments' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "fulfillment_id": "{fulfillment_id}"
  *       }'
@@ -106,7 +110,7 @@ export default async (req, res) => {
  *     description: The ID of the Fulfillment.
  *     type: string
  *   tracking_numbers:
- *     description: The tracking numbers for the shipment.
+ *     description: An array of tracking numbers for the shipment.
  *     type: array
  *     items:
  *       type: string

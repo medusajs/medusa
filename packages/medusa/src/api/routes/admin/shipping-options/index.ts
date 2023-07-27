@@ -72,6 +72,7 @@ export const defaultRelations = ["region", "profile", "requirements"]
  * properties:
  *   shipping_options:
  *     type: array
+ *     description: "An array of shipping options details."
  *     items:
  *       $ref: "#/components/schemas/ShippingOption"
  *   count:
@@ -79,7 +80,7 @@ export const defaultRelations = ["region", "profile", "requirements"]
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of shipping options skipped when retrieving the shipping options.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -104,6 +105,7 @@ export type AdminShippingOptionsListRes = PaginatedResponse & {
  *   - shipping_option
  * properties:
  *   shipping_option:
+ *     description: "Shipping option details."
  *     $ref: "#/components/schemas/ShippingOption"
  */
 export type AdminShippingOptionsRes = {

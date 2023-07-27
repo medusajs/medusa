@@ -24,12 +24,15 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/fulfillment
  * operationId: "PostOrdersOrderFulfillments"
  * summary: "Create a Fulfillment"
- * description: "Creates a Fulfillment of an Order - will notify Fulfillment Providers to prepare a shipment."
+ * description: "Create a Fulfillment of an Order using the fulfillment provider."
  * x-authenticated: true
+ * externalDocs:
+ *   description: Fulfillments of orders
+ *   url: https://docs.medusajs.com/modules/orders/#fulfillments-in-orders
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
- *   - (query) expand {string} Comma separated list of relations to include in the result.
- *   - (query) fields {string} Comma separated list of fields to include in the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -45,7 +48,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.createFulfillment(order_id, {
+ *       medusa.admin.orders.createFulfillment(orderId, {
  *         items: [
  *           {
  *             item_id,
@@ -59,9 +62,9 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/fulfillment' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/fulfillment' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "items": [
  *             {
@@ -214,13 +217,13 @@ export const updateInventoryAndReservations = async (
  *         - quantity
  *       properties:
  *         item_id:
- *           description: The ID of Line Item to fulfill.
+ *           description: The ID of the Line Item to fulfill.
  *           type: string
  *         quantity:
  *           description: The quantity of the Line Item to fulfill.
  *           type: integer
  *   no_notification:
- *     description: If set to true no notification will be send related to this Swap.
+ *     description: If set to `true`, no notification will be sent to the customer related to this fulfillment.
  *     type: boolean
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.

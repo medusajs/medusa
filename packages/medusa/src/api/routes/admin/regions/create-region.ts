@@ -18,7 +18,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/regions
  * operationId: "PostRegions"
  * summary: "Create a Region"
- * description: "Creates a Region"
+ * description: "Create a Region."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -35,17 +35,17 @@ import { validator } from "../../../../utils/validator"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.regions.create({
- *         name: 'Europe',
- *         currency_code: 'eur',
+ *         name: "Europe",
+ *         currency_code: "eur",
  *         tax_rate: 0,
  *         payment_providers: [
- *           'manual'
+ *           "manual"
  *         ],
  *         fulfillment_providers: [
- *           'manual'
+ *           "manual"
  *         ],
  *         countries: [
- *           'DK'
+ *           "DK"
  *         ]
  *       })
  *       .then(({ region }) => {
@@ -54,9 +54,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/regions' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/regions' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "Europe",
  *           "currency_code": "eur",
@@ -132,35 +132,36 @@ export default async (req, res) => {
  *     description: "The name of the Region"
  *     type: string
  *   currency_code:
- *     description: "The 3 character ISO currency code to use for the Region."
+ *     description: "The 3 character ISO currency code to use in the Region."
  *     type: string
  *     externalDocs:
  *       url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *       description: See a list of codes.
  *   tax_code:
- *     description: "An optional tax code the Region."
+ *     description: "The tax code of the Region."
  *     type: string
  *   tax_rate:
- *     description: "The tax rate to use on Orders in the Region."
+ *     description: "The tax rate to use in the Region."
  *     type: number
  *   payment_providers:
- *     description: "A list of Payment Provider IDs that should be enabled for the Region"
+ *     description: "A list of Payment Provider IDs that can be used in the Region"
  *     type: array
  *     items:
  *       type: string
  *   fulfillment_providers:
- *     description: "A list of Fulfillment Provider IDs that should be enabled for the Region"
+ *     description: "A list of Fulfillment Provider IDs that can be used in the Region"
  *     type: array
  *     items:
  *       type: string
  *   countries:
- *     description: "A list of countries' 2 ISO Characters that should be included in the Region."
+ *     description: "A list of countries' 2 ISO characters that should be included in the Region."
  *     example: ["US"]
  *     type: array
  *     items:
  *       type: string
  *   includes_tax:
- *     description: "[EXPERIMENTAL] Tax included in prices of region"
+ *     x-featureFlag: "tax_inclusive_pricing"
+ *     description: "Whether taxes are included in the prices of the region."
  *     type: boolean
  */
 export class AdminPostRegionsReq {

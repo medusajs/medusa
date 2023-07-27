@@ -19,7 +19,7 @@ import {
  * @oas [post] /admin/shipping-profiles/{id}
  * operationId: "PostShippingProfilesProfile"
  * summary: "Update a Shipping Profile"
- * description: "Updates a Shipping Profile"
+ * description: "Update a Shipping Profile's details."
  * parameters:
  *   - (path) id=* {string} The ID of the Shipping Profile.
  * requestBody:
@@ -36,7 +36,7 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.shippingProfiles.update(shipping_profile_id, {
+ *       medusa.admin.shippingProfiles.update(shippingProfileId, {
  *         name: 'Large Products'
  *       })
  *       .then(({ shipping_profile }) => {
@@ -45,9 +45,9 @@ import {
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/shipping-profiles/{id} \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/shipping-profiles/{id} \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "Large Products"
  *       }'
@@ -118,10 +118,10 @@ export default async (req, res) => {
  *     type: string
  *     enum: [default, gift_card, custom]
  *   products:
- *     description: An optional array of product ids to associate with the Shipping Profile
+ *     description: product IDs to associate with the Shipping Profile
  *     type: array
  *   shipping_options:
- *     description: An optional array of shipping option ids to associate with the Shipping Profile
+ *     description: Shipping option IDs to associate with the Shipping Profile
  *     type: array
  */
 export class AdminPostShippingProfilesProfileReq {

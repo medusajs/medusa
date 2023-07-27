@@ -105,6 +105,7 @@ export const defaultAdminPriceListRelations = ["prices", "customer_groups"]
  *   - price_list
  * properties:
  *   price_list:
+ *     description: "Price List details."
  *     $ref: "#/components/schemas/PriceList"
  */
 export type AdminPriceListRes = {
@@ -123,10 +124,10 @@ export type AdminPriceListRes = {
  *     type: array
  *     items:
  *       type: string
- *       description: The IDs of the deleted Money Amounts (Prices).
+ *       description: The IDs of the deleted prices.
  *   object:
  *     type: string
- *     description: The type of the object that was deleted.
+ *     description: The type of the object that was deleted. A price is also named `money-amount`.
  *     default: money-amount
  *   deleted:
  *     type: boolean
@@ -149,12 +150,12 @@ export type AdminPriceListDeleteBatchRes = {
  * properties:
  *    ids:
  *     type: array
- *     description: The price ids that have been deleted.
+ *     description: The IDs of the deleted prices.
  *     items:
  *       type: string
  *    object:
  *      type: string
- *      description: The type of the object that was deleted.
+ *      description: The type of the object that was deleted. A price is also named `money-amount`.
  *      default: money-amount
  *    deleted:
  *      type: boolean
@@ -173,12 +174,12 @@ export type AdminPriceListDeleteProductPricesRes = AdminPriceListDeleteBatchRes
  * properties:
  *    ids:
  *     type: array
- *     description: The price ids that have been deleted.
+ *     description: The IDs of the deleted prices.
  *     items:
  *       type: string
  *    object:
  *      type: string
- *      description: The type of the object that was deleted.
+ *      description: The type of the object that was deleted. A price is also named `money-amount`.
  *      default: money-amount
  *    deleted:
  *      type: boolean
@@ -220,6 +221,7 @@ export type AdminPriceListDeleteRes = DeleteResponse
  * properties:
  *   price_lists:
  *    type: array
+ *    description: "An array of price lists details."
  *    items:
  *      $ref: "#/components/schemas/PriceList"
  *   count:
@@ -227,7 +229,7 @@ export type AdminPriceListDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of price lists skipped when retrieving the price lists.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -258,6 +260,7 @@ export type AdminPriceListsListRes = PaginatedResponse & {
  * properties:
  *   products:
  *     type: array
+ *     description: "An array of products details."
  *     items:
  *       $ref: "#/components/schemas/Product"
  *   count:
@@ -265,7 +268,7 @@ export type AdminPriceListsListRes = PaginatedResponse & {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of price lists skipped when retrieving the price lists.
  *   limit:
  *     type: integer
  *     description: The number of items per page

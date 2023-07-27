@@ -3,8 +3,8 @@ import CustomerService from "../../../../services/customer"
 /**
  * @oas [get] /store/auth/{email}
  * operationId: "GetAuthEmail"
- * summary: "Check if email exists"
- * description: "Checks if a Customer with the given email has signed up."
+ * summary: "Check if Email Exists"
+ * description: "Check if there's a customer already registered with the provided email."
  * parameters:
  *   - in: path
  *     name: email
@@ -12,7 +12,7 @@ import CustomerService from "../../../../services/customer"
  *       type: string
  *       format: email
  *     required: true
- *     description: The email to check if exists.
+ *     description: The email to check.
  * x-codegen:
  *   method: exists
  * x-codeSamples:
@@ -21,12 +21,11 @@ import CustomerService from "../../../../services/customer"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.auth.exists('user@example.com')
+ *       medusa.auth.exists("user@example.com")
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/auth/user@example.com' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl 'https://medusa-url.com/store/auth/user@example.com'
  * tags:
  *   - Auth
  * responses:

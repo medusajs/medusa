@@ -89,7 +89,7 @@ export class ShippingOption extends SoftDeletableEntity {
 /**
  * @schema ShippingOption
  * title: "Shipping Option"
- * description: "Shipping Options represent a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information."
+ * description: "A Shipping Option represents a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information."
  * type: object
  * required:
  *   - admin_only
@@ -116,27 +116,30 @@ export class ShippingOption extends SoftDeletableEntity {
  *     type: string
  *     example: PostFake Standard
  *   region_id:
- *     description: The region's ID
+ *     description: The ID of the region this shipping option can be used in.
  *     type: string
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation `region` is expanded.
+ *     description: The details of the region this shipping option can be used in.
+ *     x-expandable: "region"
  *     nullable: true
  *     $ref: "#/components/schemas/Region"
  *   profile_id:
- *     description: The ID of the Shipping Profile that the shipping option belongs to. Shipping Profiles have a set of defined Shipping Options that can be used to Fulfill a given set of Products.
+ *     description: The ID of the Shipping Profile that the shipping option belongs to.
  *     type: string
  *     example: sp_01G1G5V239ENSZ5MV4JAR737BM
  *   profile:
- *     description: Available if the relation `profile` is expanded.
+ *     description: The details of the shipping profile that the shipping option belongs to.
+ *     x-expandable: "profile"
  *     nullable: true
  *     $ref: "#/components/schemas/ShippingProfile"
  *   provider_id:
- *     description: The id of the Fulfillment Provider, that will be used to process Fulfillments from the Shipping Option.
+ *     description: The ID of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.
  *     type: string
  *     example: manual
  *   provider:
- *     description: Available if the relation `provider` is expanded.
+ *     description: The details of the fulfillment provider that will be used to later to process the shipping method created from this shipping option and its fulfillments.
+ *     x-expandable: "provider"
  *     nullable: true
  *     $ref: "#/components/schemas/FulfillmentProvider"
  *   price_type:
@@ -160,8 +163,9 @@ export class ShippingOption extends SoftDeletableEntity {
  *     type: boolean
  *     default: false
  *   requirements:
- *     description: The requirements that must be satisfied for the Shipping Option to be available for a Cart. Available if the relation `requirements` is expanded.
+ *     description: The details of the requirements that must be satisfied for the Shipping Option to be available for usage in a Cart.
  *     type: array
+ *     x-expandable: "requirements"
  *     items:
  *       $ref: "#/components/schemas/ShippingOptionRequirement"
  *   data:
@@ -169,8 +173,9 @@ export class ShippingOption extends SoftDeletableEntity {
  *     type: object
  *     example: {}
  *   includes_tax:
- *     description: "[EXPERIMENTAL] Does the shipping option price include tax"
+ *     description: "Whether the shipping option price include tax"
  *     type: boolean
+ *     x-featureFlag: "tax_inclusive_pricing"
  *     default: false
  *   created_at:
  *     description: The date with timezone at which the resource was created.

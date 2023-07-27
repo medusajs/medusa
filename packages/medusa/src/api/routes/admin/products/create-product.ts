@@ -49,7 +49,7 @@ import { validator } from "../../../../utils/validator"
  * operationId: "PostProducts"
  * summary: "Create a Product"
  * x-authenticated: true
- * description: "Creates a Product"
+ * description: "Create a new Product. This endpoint can also be used to create a gift card if the `is_giftcard` field is set to `true`."
  * requestBody:
  *   content:
  *     application/json:
@@ -65,7 +65,7 @@ import { validator } from "../../../../utils/validator"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.products.create({
- *         title: 'Shirt',
+ *         title: "Shirt",
  *         is_giftcard: false,
  *         discountable: true
  *       })
@@ -75,9 +75,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/products' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/products' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Shirt"
  *       }'
@@ -352,29 +352,29 @@ class ProductVariantReq {
  *     description: "The subtitle of the Product"
  *     type: string
  *   description:
- *     description: "A description of the Product."
+ *     description: "The description of the Product."
  *     type: string
  *   is_giftcard:
  *     description: A flag to indicate if the Product represents a Gift Card. Purchasing Products with this flag set to `true` will result in a Gift Card being created.
  *     type: boolean
  *     default: false
  *   discountable:
- *     description: A flag to indicate if discounts can be applied to the LineItems generated from this Product
+ *     description: A flag to indicate if discounts can be applied to the Line Items generated from this Product
  *     type: boolean
  *     default: true
  *   images:
- *     description: Images of the Product.
+ *     description: An array of images of the Product. Each value in the array is a URL to the image. You can use the upload endpoints to upload the image and obtain a URL.
  *     type: array
  *     items:
  *       type: string
  *   thumbnail:
- *     description: The thumbnail to use for the Product.
+ *     description: The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload endpoints to upload the thumbnail and obtain a URL.
  *     type: string
  *   handle:
- *     description: A unique handle to identify the Product by.
+ *     description: A unique handle to identify the Product by. If not provided, the kebab-case version of the product title will be used. This can be used as a slug in URLs.
  *     type: string
  *   status:
- *     description: The status of the product.
+ *     description: The status of the product. The product is shown to the customer only if its status is `published`.
  *     type: string
  *     enum: [draft, proposed, published, rejected]
  *     default: draft
@@ -385,16 +385,16 @@ class ProductVariantReq {
  *       - value
  *     properties:
  *       id:
- *         description: The ID of the Product Type.
+ *         description: The ID of an existing Product Type. If not provided, a new product type will be created.
  *         type: string
  *       value:
  *         description: The value of the Product Type.
  *         type: string
  *   collection_id:
- *     description: The ID of the Collection the Product should belong to.
+ *     description: The ID of the Product Collection the Product belongs to.
  *     type: string
  *   tags:
- *     description: Tags to associate the Product with.
+ *     description: Product Tags to associate the Product with.
  *     type: array
  *     items:
  *       type: object
@@ -402,13 +402,13 @@ class ProductVariantReq {
  *         - value
  *       properties:
  *         id:
- *           description: The ID of an existing Tag.
+ *           description: The ID of an existing Product Tag. If not provided, a new product tag will be created.
  *           type: string
  *         value:
- *           description: The value of the Tag, these will be upserted.
+ *           description: The value of the Tag. If the `id` is provided, the value of the existing tag will be updated.
  *           type: string
  *   sales_channels:
- *     description: "[EXPERIMENTAL] Sales channels to associate the Product with."
+ *     description: "Sales channels to associate the Product with."
  *     type: array
  *     items:
  *       type: object
@@ -419,7 +419,8 @@ class ProductVariantReq {
  *           description: The ID of an existing Sales channel.
  *           type: string
  *   categories:
- *     description: "Categories to add the Product to."
+ *     description: "Product categories to add the Product to."
+ *     x-featureFlag: "product_categories"
  *     type: array
  *     items:
  *       required:
@@ -429,7 +430,7 @@ class ProductVariantReq {
  *           description: The ID of a Product Category.
  *           type: string
  *   options:
- *     description: The Options that the Product should have. These define on which properties the Product's Product Variants will differ.
+ *     description: The Options that the Product should have. A new product option will be created for every item in the array.
  *     type: array
  *     items:
  *       type: object
@@ -437,10 +438,10 @@ class ProductVariantReq {
  *         - title
  *       properties:
  *         title:
- *           description: The title to identify the Product Option by.
+ *           description: The title of the Product Option.
  *           type: string
  *   variants:
- *     description: A list of Product Variants to create with the Product.
+ *     description: An array of Product Variants to create with the Product. Each product variant must have a unique combination of Product Option values.
  *     type: array
  *     items:
  *       type: object
@@ -448,10 +449,10 @@ class ProductVariantReq {
  *         - title
  *       properties:
  *         title:
- *           description: The title to identify the Product Variant by.
+ *           description: The title of the Product Variant.
  *           type: string
  *         sku:
- *           description: The unique SKU for the Product Variant.
+ *           description: The unique SKU of the Product Variant.
  *           type: string
  *         ean:
  *           description: The EAN number of the item.
@@ -460,20 +461,20 @@ class ProductVariantReq {
  *           description: The UPC number of the item.
  *           type: string
  *         barcode:
- *           description: A generic GTIN field for the Product Variant.
+ *           description: A generic GTIN field of the Product Variant.
  *           type: string
  *         hs_code:
- *           description: The Harmonized System code for the Product Variant.
+ *           description: The Harmonized System code of the Product Variant.
  *           type: string
  *         inventory_quantity:
- *           description: The amount of stock kept for the Product Variant.
+ *           description: The amount of stock kept of the Product Variant.
  *           type: integer
  *           default: 0
  *         allow_backorder:
  *           description: Whether the Product Variant can be purchased when out of stock.
  *           type: boolean
  *         manage_inventory:
- *           description: Whether Medusa should keep track of the inventory for this Product Variant.
+ *           description: Whether Medusa should keep track of the inventory of this Product Variant.
  *           type: boolean
  *         weight:
  *           description: The wieght of the Product Variant.
@@ -491,7 +492,7 @@ class ProductVariantReq {
  *           description: The country of origin of the Product Variant.
  *           type: string
  *         mid_code:
- *           description: The Manufacturer Identification code for the Product Variant.
+ *           description: The Manufacturer Identification code of the Product Variant.
  *           type: string
  *         material:
  *           description: The material composition of the Product Variant.
@@ -501,31 +502,39 @@ class ProductVariantReq {
  *           type: object
  *         prices:
  *           type: array
+ *           description: An array of product variant prices. A product variant can have different prices for each region or currency code.
+ *           externalDocs:
+ *             url: https://docs.medusajs.com/modules/products/admin/manage-products#product-variant-prices
+ *             description: Product variant pricing.
  *           items:
  *             type: object
  *             required:
  *               - amount
  *             properties:
  *               region_id:
- *                 description: The ID of the Region for which the price is used. Only required if currency_code is not provided.
+ *                 description: The ID of the Region the price will be used in. This is only required if `currency_code` is not provided.
  *                 type: string
  *               currency_code:
- *                 description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+ *                 description: The 3 character ISO currency code the price will be used in. This is only required if `region_id` is not provided.
  *                 type: string
  *                 externalDocs:
  *                   url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *                   description: See a list of codes.
  *               amount:
- *                 description: The amount to charge for the Product Variant.
+ *                 description: The price amount.
  *                 type: integer
  *               min_quantity:
- *                 description: The minimum quantity for which the price will be used.
+ *                 description: The minimum quantity required to be added to the cart for the price to be used.
  *                 type: integer
  *               max_quantity:
- *                 description: The maximum quantity for which the price will be used.
+ *                 description: The maximum quantity required to be added to the cart for the price to be used.
  *                 type: integer
  *         options:
  *           type: array
+ *           description: An array of Product Option values that the variant corresponds to. The option values should be added into the array in the same index as in the `options` field of the product.
+ *           externalDocs:
+ *             url: https://docs.medusajs.com/modules/products/admin/manage-products#create-a-product
+ *             description: Example of how to create a product with options and variants
  *           items:
  *             type: object
  *             required:
@@ -547,13 +556,13 @@ class ProductVariantReq {
  *     description: The width of the Product.
  *     type: number
  *   hs_code:
- *     description: The Harmonized System code for the Product Variant.
+ *     description: The Harmonized System code of the Product.
  *     type: string
  *   origin_country:
  *     description: The country of origin of the Product.
  *     type: string
  *   mid_code:
- *     description: The Manufacturer Identification code for the Product.
+ *     description: The Manufacturer Identification code of the Product.
  *     type: string
  *   material:
  *     description: The material composition of the Product.

@@ -8,13 +8,13 @@ import { FindParams } from "../../../../types/common"
  * @oas [post] /admin/inventory-items/{id}/location-levels/{location_id}
  * operationId: "PostInventoryItemsInventoryItemLocationLevelsLocationLevel"
  * summary: "Update an Inventory Level"
- * description: "Updates an Inventory Level for a given Inventory Item."
+ * description: "Update an Inventory Level's details for a given Inventory Item."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Inventory Item.
- *   - (path) location_id=* {string} The ID of the Location.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (path) id=* {string} The ID of the Inventory Item that the location is associated with.
+ *   - (path) location_id=* {string} The ID of the Location to update.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned inventory level.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned inventory level.
  * requestBody:
  *   content:
  *     application/json:
@@ -39,9 +39,9 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/inventory-items/{id}/location-levels/{location_id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/inventory-items/{id}/location-levels/{location_id}' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "stocked_quantity": 15
  *       }'

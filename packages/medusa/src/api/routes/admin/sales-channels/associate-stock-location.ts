@@ -11,7 +11,7 @@ import {
  * @oas [post] /admin/sales-channels/{id}/stock-locations
  * operationId: "PostSalesChannelsSalesChannelStockLocation"
  * summary: "Associate a Stock Location"
- * description: "Associates a stock location with a Sales Channel."
+ * description: "Associate a stock location with a Sales Channel."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Sales Channel.
@@ -30,7 +30,7 @@ import {
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.salesChannels.addLocation(salesChannelId, {
- *         location_id: 'loc_123'
+ *         location_id: "loc_123"
  *       })
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
@@ -38,9 +38,9 @@ import {
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/sales-channels/{id}/stock-locations' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/sales-channels/{id}/stock-locations' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "locaton_id": "loc_123"
  *       }'

@@ -44,6 +44,7 @@ export const defaultRelationsExtended = ["currencies", "default_currency"]
  *   - store
  * properties:
  *   store:
+ *     description: Store details.
  *     $ref: "#/components/schemas/ExtendedStoreDTO"
  */
 export type AdminExtendedStoresRes = {
@@ -57,6 +58,7 @@ export type AdminExtendedStoresRes = {
  *   - store
  * properties:
  *   store:
+ *     description: Store details.
  *     $ref: "#/components/schemas/Store"
  */
 export type AdminStoresRes = {
@@ -71,6 +73,7 @@ export type AdminStoresRes = {
  * properties:
  *   tax_providers:
  *     type: array
+ *     description: An array of tax providers details.
  *     items:
  *       $ref: "#/components/schemas/TaxProvider"
  */
@@ -86,6 +89,7 @@ export type AdminTaxProvidersList = {
  * properties:
  *   payment_providers:
  *     type: array
+ *     description: An array of payment providers details.
  *     items:
  *       $ref: "#/components/schemas/PaymentProvider"
  */

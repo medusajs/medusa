@@ -114,7 +114,7 @@ export class ProductVariant extends SoftDeletableEntity {
 /**
  * @schema ProductVariant
  * title: "Product Variant"
- * description: "Product Variants represent a Product with a specific set of Product Option configurations. The maximum number of Product Variants that a Product can have is given by the number of available Product Option combinations."
+ * description: "A Product Variant represents a Product with a specific set of Product Option configurations. The maximum number of Product Variants that a Product can have is given by the number of available Product Option combinations. A product must at least have one product variant."
  * type: object
  * required:
  *   - allow_backorder
@@ -149,16 +149,18 @@ export class ProductVariant extends SoftDeletableEntity {
  *     type: string
  *     example: Small
  *   product_id:
- *     description: The ID of the Product that the Product Variant belongs to.
+ *     description: The ID of the product that the product variant belongs to.
  *     type: string
  *     example: prod_01G1G5V2MBA328390B5AXJ610F
  *   product:
- *     description: A product object. Available if the relation `product` is expanded.
+ *     description: The details of the product that the product variant belongs to.
+ *     x-expandable: "product"
  *     nullable: true
  *     $ref: "#/components/schemas/Product"
  *   prices:
- *     description: The Money Amounts defined for the Product Variant. Each Money Amount represents a price in a given currency or a price in a specific Region. Available if the relation `prices` is expanded.
+ *     description: The details of the prices of the Product Variant, each represented as a Money Amount. Each Money Amount represents a price in a given currency or a specific Region.
  *     type: array
+ *     x-expandable: "prices"
  *     items:
  *       $ref: "#/components/schemas/MoneyAmount"
  *   sku:
@@ -239,13 +241,15 @@ export class ProductVariant extends SoftDeletableEntity {
  *     type: number
  *     example: null
  *   options:
- *     description: The Product Option Values specified for the Product Variant. Available if the relation `options` is expanded.
+ *     description: The details of the product options that this product variant defines values for.
  *     type: array
+ *     x-expandable: "options"
  *     items:
  *       $ref: "#/components/schemas/ProductOptionValue"
  *   inventory_items:
- *     description: The Inventory Items related to the product variant. Available if the relation `inventory_items` is expanded.
+ *     description: The details inventory items of the product variant.
  *     type: array
+ *     x-expandable: "inventory_items"
  *     items:
  *       $ref: "#/components/schemas/ProductVariantInventoryItem"
  *   created_at:
