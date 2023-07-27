@@ -9,7 +9,7 @@ import type { Order } from "./Order"
 import type { Swap } from "./Swap"
 
 /**
- * Payments represent an amount authorized with a given payment method, Payments can be captured, canceled or refunded.
+ * A payment is originally created from a payment session. Once a payment session is authorized, the payment is created to represent the authorized amount with a given payment method. Payments can be captured, canceled or refunded. Payments can be made towards orders, swaps, order edits, or other resources.
  */
 export interface Payment {
   /**
@@ -17,27 +17,27 @@ export interface Payment {
    */
   id: string
   /**
-   * The ID of the Swap that the Payment is used for.
+   * The ID of the swap that this payment was potentially created for.
    */
   swap_id: string | null
   /**
-   * A swap object. Available if the relation `swap` is expanded.
+   * The details of the swap that this payment was potentially created for.
    */
   swap?: Swap | null
   /**
-   * The id of the Cart that the Payment Session is created for.
+   * The ID of the cart that the payment session was potentially created for.
    */
   cart_id: string | null
   /**
-   * A cart object. Available if the relation `cart` is expanded.
+   * The details of the cart that the payment session was potentially created for.
    */
   cart?: Cart | null
   /**
-   * The ID of the Order that the Payment is used for.
+   * The ID of the order that the payment session was potentially created for.
    */
   order_id: string | null
   /**
-   * An order object. Available if the relation `order` is expanded.
+   * The details of the order that the payment session was potentially created for.
    */
   order?: Order | null
   /**
@@ -45,11 +45,11 @@ export interface Payment {
    */
   amount: number
   /**
-   * The 3 character ISO currency code that the Payment is completed in.
+   * The 3 character ISO currency code of the payment.
    */
   currency_code: string
   /**
-   * Available if the relation `currency` is expanded.
+   * The details of the currency of the payment.
    */
   currency?: Currency | null
   /**

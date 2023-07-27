@@ -140,11 +140,18 @@ const plugins = [
 ]
 ```
 
+
+:::caution
+
+If you have multiple storage plugins configured, the last plugin declared in the `medusa-config.js` file will be used.
+
+:::
+
 ### Add AWS Configurations
 
-You can pass AWS configurations in the plugin's options under the property `aws_config_object`. This property is an object that accepts [AWS Configurations](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html) as its properties.
+You can pass additional AWS configurations, such as `customUserAgent`, in the plugin's options under the property `aws_config_object`. This property is an object that accepts [AWS Configurations](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html) as its properties.
 
-For example, you can pass the `region`, `access_key_id` and `secret_access_key` in `aws_config_object`:
+For example:
 
 ```jsx title=medusa-config.js
 const plugins = [
@@ -155,23 +162,14 @@ const plugins = [
         s3_url: process.env.S3_URL,
         bucket: process.env.S3_BUCKET,
         aws_config_object: {
-          region: process.env.S3_REGION,
-          access_key_id: process.env.S3_ACCESS_KEY_ID,
-          secret_access_key: process.env.S3_SECRET_ACCESS_KEY,
+          customUserAgent: process.env.S3_CUSTOM_AGENT,
         },
     },
   },
 ]
 ```
 
-Make sure to define `S3_REGION`, `S3_ACCESS_KEY_ID`, and `S3_SECRET_ACCESS_KEY` in your environment variables first.
-
-
-:::caution
-
-If you have multiple storage plugins configured, the last plugin declared in the `medusa-config.js` file will be used.
-
-:::
+Make sure to define `S3_CUSTOM_AGENT` in your environment variables first.
 
 ---
 
@@ -213,13 +211,16 @@ module.exports = withStoreConfig({
   images: {
     domains: [
       // ...
-      "<BUCKET_NAME>.s3.amazonaws.com",
+      "<BUCKET_NAME>.s3.<REGION>.amazonaws.com",
     ],
   },
 })
 ```
 
-Where `<BUCKET_NAME>` is the name of the S3 bucket you’re using.
+Where:
+
+- `<BUCKET_NAME>` is the name of the S3 bucket you’re using
+- `<REGION>` is the region of the S3 bucket (for example, `eu-west-1`)
 
 ---
 

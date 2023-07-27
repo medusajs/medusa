@@ -9,7 +9,7 @@ import type { ProductOptionValue } from "./ProductOptionValue"
 import type { ProductVariantInventoryItem } from "./ProductVariantInventoryItem"
 
 /**
- * Product Variants represent a Product with a specific set of Product Option configurations. The maximum number of Product Variants that a Product can have is given by the number of available Product Option combinations.
+ * A Product Variant represents a Product with a specific set of Product Option configurations. The maximum number of Product Variants that a Product can have is given by the number of available Product Option combinations. A product must at least have one product variant.
  */
 export interface ProductVariant {
   /**
@@ -21,15 +21,15 @@ export interface ProductVariant {
    */
   title: string
   /**
-   * The ID of the Product that the Product Variant belongs to.
+   * The ID of the product that the product variant belongs to.
    */
   product_id: string
   /**
-   * A product object. Available if the relation `product` is expanded.
+   * The details of the product that the product variant belongs to.
    */
   product?: Product | null
   /**
-   * The Money Amounts defined for the Product Variant. Each Money Amount represents a price in a given currency or a price in a specific Region. Available if the relation `prices` is expanded.
+   * The details of the prices of the Product Variant, each represented as a Money Amount. Each Money Amount represents a price in a given currency or a specific Region.
    */
   prices?: Array<MoneyAmount>
   /**
@@ -97,11 +97,11 @@ export interface ProductVariant {
    */
   width: number | null
   /**
-   * The Product Option Values specified for the Product Variant. Available if the relation `options` is expanded.
+   * The details of the product options that this product variant defines values for.
    */
   options?: Array<ProductOptionValue>
   /**
-   * The Inventory Items related to the product variant. Available if the relation `inventory_items` is expanded.
+   * The details inventory items of the product variant.
    */
   inventory_items?: Array<ProductVariantInventoryItem>
   /**

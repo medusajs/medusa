@@ -108,8 +108,8 @@ npm run build
 
 Then, run the following command to migrate your changes to the database:
 
-```bash npm2yarn
-medusa migrations run
+```bash
+npx @medusajs/medusa-cli migrations run
 ```
 
 You should see that your migration was executed, which means your changes were reflected in the database schema.
@@ -119,6 +119,14 @@ You can now use your extended entity throughout your commerce application.
 ---
 
 ## Access Custom Attributes and Relations in Core Endpoints
+
+### Request Parameters
+
+In most cases, after you extend an entity to add new attributes, you'll likely need to pass these attributes to endpoints defined in the core. By default, this causes an error, as request parameters are validated to ensure only those that are defined are passed to the endpoint.
+
+To allow passing your custom attribute, you'll need to [extend the validator](../endpoints/extend-validator.md) of the endpoint.
+
+### Response Fields
 
 After you add custom attributes, you'll notice that these attributes aren't returned as part of the response fields of core endpoints. Core endpoints have a defined set of fields and relations that can be returned by default in requests.
 

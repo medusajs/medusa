@@ -7,6 +7,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Feedback from '@site/src/components/Feedback';
 import DocCard from '@theme/DocCard';
+import DocCardList from '@theme/DocCardList';
 import Icons from '@theme/Icon';
 import Troubleshooting from '@site/src/components/Troubleshooting'
 import TypeErrorSection from "./troubleshooting/create-medusa-app-errors/_typeerror.md"
@@ -14,6 +15,7 @@ import OtherErrorsSection from "./troubleshooting/create-medusa-app-errors/_othe
 import EagainError from "./troubleshooting/create-medusa-app-errors/_eagain-error.md"
 import ConnectionErrorSection from './troubleshooting/database-errors/_connection-error.md'
 import FreshInstallationSection from './troubleshooting/awilix-resolution-error/_fresh-installation.md'
+import EaddrinuseSection from './troubleshooting/eaddrinuse.md'
 
 # Install Medusa with create-medusa-app
 
@@ -133,15 +135,35 @@ Once you're logged in, you can start using Medusa! Try following the setup guide
 
 Based on what you're building, you can find a development path for you in the Recipes page.
 
-<DocCard item={{
-  type: 'link',
-  href: '/recipes',
-  label: 'Recipes',
-  customProps: {
-    icon: Icons['map'],
-    description: "Find learning paths based on what you're building"
-  }
-}} />
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/recipes',
+    label: 'Recipes',
+    customProps: {
+      icon: Icons['map'],
+      description: "Find learning paths based on what you're building"
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/overview',
+    label: 'Medusa Backend Basics',
+    customProps: {
+      icon: Icons['server-stack-solid'],
+      description: 'Learn all the basics of developing with the Medusa backend.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/overview',
+    label: 'Commerce Modules',
+    customProps: {
+      icon: Icons['puzzle-solid'],
+      description: 'Learn about the available commerce modules and features in the Medusa backend.'
+    }
+  },
+]} />
 
 ---
 
@@ -149,6 +171,10 @@ Based on what you're building, you can find a development path for you in the Re
 
 <Troubleshooting
   sections={[
+    {
+      title: 'Error: EADDRINUSE',
+      content: <EaddrinuseSection />
+    },
     {
       title: "EAGAIN error",
       content: <EagainError />

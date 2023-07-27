@@ -91,6 +91,42 @@ class HelloService extends TransactionBaseService {
 
 ---
 
+## Retrieve Medusa Configurations
+
+Within your service, you may need to access the Medusa configuration exported from `medusa-config.js`. To do that, you can access `configModule` using dependency injection.
+
+For example:
+
+```ts
+import {
+  ConfigModule,
+  TransactionBaseService,
+} from "@medusajs/medusa"
+
+type InjectedDependencies = {
+  configModule: ConfigModule
+}
+
+class HelloService extends TransactionBaseService {
+  protected readonly configModule_: ConfigModule
+
+  constructor(container: InjectedDependencies) {
+    super(container)
+    this.configModule_ = container.configModule
+  }
+
+  getConfigurations() {
+    return this.configModule_
+  }
+
+  // ...
+}
+
+export default HelloService
+```
+
+---
+
 ## Use a Service
 
 In this section, you'll learn how to use services throughout your Medusa backend. This includes both Medusa's services and your custom services.

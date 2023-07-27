@@ -70,6 +70,10 @@ DATABASE_URL=<YOUR_DATABASE_URL>
 
 Where `<YOUR_DATABASE_URL>` is the URL of your PostgreSQL database.
 
+#### Database User Privileges
+
+The database user that you use must have create privileges. If you're using the `postgres` superuser, then it should have these privileges by default. Otherwise, make sure to grant your user create priviliges. You can learn how to do that in [PostgreSQL's documentation](https://www.postgresql.org/docs/current/ddl-priv.html).
+
 ### Changing PostgreSQL Schema
 
 By default, the `public` schema is used in PostgreSQL. You can change it to use a custom schema by passing the `search_path` option in the database URL. For example:
@@ -459,6 +463,5 @@ The Medusa core package uses the [compression package provided by Express](https
 
 ## See Also
 
+- [Medusa backend directory structure](./directory-structure.md)
 - [Medusa architecture overview](../fundamentals/architecture-overview.md)
-- [Plugins](../plugins/overview.mdx)
-- [Modules](../modules/overview.mdx)

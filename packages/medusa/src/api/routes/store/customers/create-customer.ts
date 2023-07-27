@@ -11,7 +11,9 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /store/customers
  * operationId: PostCustomers
  * summary: Create a Customer
- * description: "Creates a Customer account."
+ * description: "Register a new customer. This will also automatically authenticate the customer and set their login session in the response Cookie header.
+ *  The cookie session can be used in subsequent requests to authenticate the customer.
+ *  When using Medusa's JS or Medusa React clients, the cookie is automatically attached to subsequent requests."
  * requestBody:
  *   content:
  *     application/json:
@@ -26,10 +28,10 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.customers.create({
- *         first_name: 'Alec',
- *         last_name: 'Reynolds',
- *         email: 'user@example.com',
- *         password: 'supersecret'
+ *         first_name: "Alec",
+ *         last_name: "Reynolds",
+ *         email: "user@example.com",
+ *         password: "supersecret"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
@@ -37,8 +39,8 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/store/customers' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "first_name": "Alec",
  *           "last_name": "Reynolds",
@@ -122,21 +124,21 @@ export default async (req, res) => {
  *   - password
  * properties:
  *   first_name:
- *     description: "The Customer's first name."
+ *     description: "The customer's first name."
  *     type: string
  *   last_name:
- *     description: "The Customer's last name."
+ *     description: "The customer's last name."
  *     type: string
  *   email:
- *     description: "The email of the customer."
+ *     description: "The customer's email."
  *     type: string
  *     format: email
  *   password:
- *     description: "The Customer's password."
+ *     description: "The customer's password."
  *     type: string
  *     format: password
  *   phone:
- *     description: "The Customer's phone number."
+ *     description: "The customer's phone number."
  *     type: string
  */
 export class StorePostCustomersReq {

@@ -1,8 +1,10 @@
-import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
-import { createConnection } from "../utils"
 import * as ProductModels from "@models"
+
+import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
+
 import { EntitySchema } from "@mikro-orm/core"
 import { ModulesSdkUtils } from "@medusajs/utils"
+import { createConnection } from "../utils"
 
 /**
  * This script is only valid for mikro orm managers. If a user provide a custom manager

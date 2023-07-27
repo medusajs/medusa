@@ -78,6 +78,7 @@ export const defaulPaymentCollectionRelations = [
  *   - payment_collection
  * properties:
  *   payment_collection:
+ *     description: Payment Collection details.
  *     $ref: "#/components/schemas/PaymentCollection"
  */
 export type AdminPaymentCollectionsRes = {

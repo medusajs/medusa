@@ -10,7 +10,7 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/currencies/{code}
  * operationId: "PostCurrenciesCurrency"
  * summary: "Update a Currency"
- * description: "Update a Currency"
+ * description: "Update a Currency's details."
  * x-authenticated: true
  * parameters:
  *   - (path) code=* {string} The code of the Currency.
@@ -37,9 +37,9 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/currencies/{code}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/currencies/{code}' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "includes_tax": true
  *       }'
@@ -74,7 +74,8 @@ export default async (req: ExtendedRequest<Currency>, res) => {
  * properties:
  *   includes_tax:
  *     type: boolean
- *     description: "[EXPERIMENTAL] Tax included in prices of currency."
+ *     x-featureFlag: "tax_inclusive_pricing"
+ *     description: "Tax included in prices of currency."
  */
 export class AdminPostCurrenciesCurrencyReq {
   @FeatureFlagDecorators(TaxInclusivePricingFeatureFlag.key, [

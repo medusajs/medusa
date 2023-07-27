@@ -7,7 +7,7 @@ import type { Product } from "./Product"
 import type { ProductOptionValue } from "./ProductOptionValue"
 
 /**
- * Product Options define properties that may vary between different variants of a Product. Common Product Options are "Size" and "Color", but Medusa doesn't limit what Product Options that can be defined.
+ * A Product Option defines properties that may vary between different variants of a Product. Common Product Options are "Size" and "Color". Admins are free to create any product options.
  */
 export interface ProductOption {
   /**
@@ -19,15 +19,15 @@ export interface ProductOption {
    */
   title: string
   /**
-   * The Product Option Values that are defined for the Product Option. Available if the relation `values` is expanded.
+   * The details of the values of the product option.
    */
   values?: Array<ProductOptionValue>
   /**
-   * The ID of the Product that the Product Option is defined for.
+   * The ID of the product that this product option belongs to.
    */
   product_id: string
   /**
-   * A product object. Available if the relation `product` is expanded.
+   * The details of the product that this product option belongs to.
    */
   product?: Product | null
   /**

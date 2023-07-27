@@ -8,22 +8,22 @@ import { Type } from "class-transformer"
  * @oas [get] /store/collections
  * operationId: "GetCollections"
  * summary: "List Collections"
- * description: "Retrieve a list of Product Collection."
+ * description: "Retrieve a list of product collections. The product collections can be filtered by fields such as `handle` or `created_at`. The product collections can also be paginated."
  * parameters:
- *   - (query) offset=0 {integer} The number of collections to skip before starting to collect the collections set
- *   - (query) limit=10 {integer} The number of collections to return
+ *   - (query) offset=0 {integer} The number of product collections to skip when retrieving the product collections.
+ *   - (query) limit=10 {integer} Limit the number of product collections returned.
  *   - in: query
  *     name: handle
  *     style: form
  *     explode: false
- *     description: Filter by the collection handle
+ *     description: Filter by handles
  *     schema:
  *       type: array
  *       items:
  *         type: string
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting collections were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -45,7 +45,7 @@ import { Type } from "class-transformer"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting collections were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -81,9 +81,9 @@ import { Type } from "class-transformer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/collections'
+ *       curl 'https://medusa-url.com/store/collections'
  * tags:
- *   - Collections
+ *   - Product Collections
  * responses:
  *  "200":
  *    description: OK

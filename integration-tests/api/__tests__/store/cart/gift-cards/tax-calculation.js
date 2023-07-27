@@ -1,8 +1,8 @@
 const startServerWithEnvironment =
-  require("../../../../../helpers/start-server-with-environment").default
+  require("../../../../../environment-helpers/start-server-with-environment").default
 const path = require("path")
-const { useApi } = require("../../../../../helpers/use-api")
-const { useDb } = require("../../../../../helpers/use-db")
+const { useApi } = require("../../../../../environment-helpers/use-api")
+const { useDb } = require("../../../../../environment-helpers/use-db")
 const { GiftCard } = require("@medusajs/medusa")
 
 const {
@@ -11,7 +11,7 @@ const {
   simpleCartFactory,
   simpleCustomerFactory,
   simpleGiftCardFactory,
-} = require("../../../../factories")
+} = require("../../../../../factories")
 
 jest.setTimeout(30000)
 

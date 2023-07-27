@@ -1,3 +1,4 @@
+import { generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -10,7 +11,6 @@ import {
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { generateEntityId } from "@medusajs/utils"
 import { Product } from "./index"
 import ProductOptionValue from "./product-option-value"
 import { SoftDeletable } from "../utils"
@@ -29,7 +29,7 @@ class ProductOption {
   @Property({ columnType: "text" })
   title: string
 
-  @Property({ persist: false })
+  @Property({ columnType: "text", nullable: true })
   product_id!: string
 
   @ManyToOne(() => Product, {

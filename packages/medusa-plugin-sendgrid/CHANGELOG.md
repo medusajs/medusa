@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.11
+
+### Patch Changes
+
+- [#4524](https://github.com/medusajs/medusa/pull/4524) [`fe6586e56`](https://github.com/medusajs/medusa/commit/fe6586e560ad20ec59df4727bb8a7f1f42072f4a) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-plugin-sendgrid): Use correct SendGrid client
+
 ## 1.3.10
 
 ### Patch Changes

@@ -11,7 +11,7 @@ import { useLocation } from "react-router-dom"
  */
 const DEFAULT_PAGE_SIZE = 15
 const defaultQueryProps = {
-  expand: "customer_groups,prices",
+  expand: "customer_groups",
   offset: 0,
   limit: DEFAULT_PAGE_SIZE,
 }

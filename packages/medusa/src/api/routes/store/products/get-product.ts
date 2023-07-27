@@ -14,19 +14,27 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [get] /store/products/{id}
  * operationId: GetProductsProduct
  * summary: Get a Product
- * description: "Retrieves a Product."
+ * description: |
+ *   Retrieve a Product's details. For accurate and correct pricing of the product based on the customer's context, it's highly recommended to pass fields such as
+ *   `region_id`, `currency_code`, and `cart_id` when available.
+ *
+ *   Passing `sales_channel_id` ensures retrieving only products available in the current sales channel.
+ *   You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
+ * externalDocs:
+ *   description: "How to pass product pricing parameters"
+ *   url: "https://docs.medusajs.com/modules/products/storefront/show-products#product-pricing-parameters"
  * parameters:
- *   - (path) id=* {string} The id of the Product.
- *   - (query) sales_channel_id {string} The sales channel used when fetching the product.
- *   - (query) cart_id {string} The ID of the customer's cart.
- *   - (query) region_id {string} The ID of the region the customer is using. This is helpful to ensure correct prices are retrieved for a region.
- *   - (query) fields {string} (Comma separated) Which fields should be included in the result.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
+ *   - (path) id=* {string} The ID of the Product.
+ *   - (query) sales_channel_id {string} The ID of the sales channel the customer is viewing the product from.
+ *   - (query) cart_id {string} The ID of the cart. This is useful for accurate pricing based on the cart's context.
+ *   - (query) region_id {string} The ID of the region. This is useful for accurate pricing based on the selected region.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned product.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned product.
  *   - in: query
  *     name: currency_code
  *     style: form
  *     explode: false
- *     description: The 3 character ISO currency code to set prices based on. This is helpful to ensure correct prices are retrieved for a currency.
+ *     description: A 3 character ISO currency code. This is useful for accurate pricing based on the selected currency.
  *     schema:
  *       type: string
  *       externalDocs:
@@ -41,14 +49,14 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.products.retrieve(product_id)
+ *       medusa.products.retrieve(productId)
  *       .then(({ product }) => {
  *         console.log(product.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/products/{id}'
+ *       curl 'https://medusa-url.com/store/products/{id}'
  * tags:
  *   - Products
  * responses:

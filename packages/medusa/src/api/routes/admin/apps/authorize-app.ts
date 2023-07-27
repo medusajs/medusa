@@ -7,7 +7,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/apps/authorizations
  * operationId: "PostApps"
  * summary: "Generate Token for App"
- * description: "Generates a token for an application."
+ * description: "Use an app's Oauth provider to generate and store a new token for authentication."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -20,9 +20,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/apps/authorizations' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/apps/authorizations' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "application_name": "example",
  *           "state": "ready",
@@ -74,7 +74,7 @@ export default async (req, res) => {
  * properties:
  *   application_name:
  *     type: string
- *     description:  Name of the application for the token to be generated for.
+ *     description: Name of the application for to generate the token for.
  *   state:
  *     type: string
  *     description: State of the application.

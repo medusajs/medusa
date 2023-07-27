@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostTaxRatesParams {
   /**
-   * Which fields should be included in the result.
+   * Comma-separated fields that should be included in the returned tax rate.
    */
   fields?: Array<string>
   /**
-   * Which fields should be expanded and retrieved in the result.
+   * Comma-separated relations that should be expanded in the returned tax rate.
    */
   expand?: Array<string>
 }

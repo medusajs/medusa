@@ -6,12 +6,12 @@ import { FindParams } from "../../../../types/common"
  * @oas [get] /admin/variants/{id}
  * operationId: "GetVariantsVariant"
  * summary: "Get a Product variant"
- * description: "Retrieves a Product variant."
+ * description: "Retrieve a product variant's details."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the variant.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded the order of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included the order of the result.
+ *   - (path) id=* {string} The ID of the product variant.
+ *   - (query) expand {string} "Comma-separated relations that should be expanded in the returned product variant."
+ *   - (query) fields {string} "Comma-separated fields that should be included in the returned product variant."
  * x-codegen:
  *   method: retrieve
  *   queryParams: AdminGetVariantParams
@@ -22,15 +22,15 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.variants.retrieve(product_id)
- *       .then(({ product }) => {
- *         console.log(product.id);
+ *       medusa.admin.variants.retrieve(variantId)
+ *       .then(({ variant }) => {
+ *         console.log(variant.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/variants/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/variants/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

@@ -6,11 +6,10 @@ import {
   MedusaContext,
 } from "@medusajs/utils"
 import { serialize } from "@mikro-orm/core"
-import { doNotForceTransaction } from "../utils"
 
-// TODO: Should we create a mikro orm specific package for this and the soft deletable decorator util?
+// TODO: move to utils package
 
-async function transactionWrapper(
+async function transactionWrapper<TManager = unknown>(
   this: any,
   task: (transactionManager: unknown) => Promise<any>,
   {
@@ -19,7 +18,7 @@ async function transactionWrapper(
     enableNestedTransactions = false,
   }: {
     isolationLevel?: string
-    transaction?: unknown
+    transaction?: TManager
     enableNestedTransactions?: boolean
   } = {}
 ): Promise<any> {
@@ -28,50 +27,47 @@ async function transactionWrapper(
     return await task(transaction)
   }
 
-  const forkedManager = this.manager_.fork()
-
   const options = {}
+
+  if (transaction) {
+    Object.assign(options, { ctx: transaction })
+  }
+
   if (isolationLevel) {
     Object.assign(options, { isolationLevel })
   }
 
-  if (transaction) {
-    Object.assign(options, { ctx: transaction })
-    await forkedManager.begin(options)
-  } else {
-    await forkedManager.begin(options)
-  }
-
-  try {
-    const result = await task(forkedManager)
-    await forkedManager.commit()
-    return result
-  } catch (e) {
-    await forkedManager.rollback()
-    throw e
-  }
+  return await (this.manager_ as SqlEntityManager).transactional(task, options)
 }
 
-const updateDeletedAtRecursively = async <T extends object = any>(
-  manager: SqlEntityManager,
+// TODO: move to utils package
+const mikroOrmUpdateDeletedAtRecursively = async <T extends object = any>(
+  manager: any,
   entities: T[],
   value: Date | null
 ) => {
-  for await (const entity of entities) {
+  for (const entity of entities) {
     if (!("deleted_at" in entity)) continue
+
     ;(entity as any).deleted_at = value
 
     const relations = manager
       .getDriver()
       .getMetadata()
-      .get(entities[0].constructor.name).relations
+      .get(entity.constructor.name).relations
 
     const relationsToCascade = relations.filter((relation) =>
       relation.cascade.includes("soft-remove" as any)
     )
 
     for (const relation of relationsToCascade) {
-      const relationEntities = (await entity[relation.name].init()).getItems({
+      let collectionRelation = entity[relation.name]
+
+      if (!collectionRelation.isInitialized()) {
+        await collectionRelation.init()
+      }
+
+      const relationEntities = await collectionRelation.getItems({
         filters: {
           [DAL.SoftDeletableFilterKey]: {
             withDeleted: true,
@@ -79,36 +75,45 @@ const updateDeletedAtRecursively = async <T extends object = any>(
         },
       })
 
-      await updateDeletedAtRecursively(manager, relationEntities, value)
+      await mikroOrmUpdateDeletedAtRecursively(manager, relationEntities, value)
     }
 
-    await manager.persist(entities)
+    await manager.persist(entity)
   }
 }
 
-const serializer = <
-  T extends object | object[],
-  TResult extends object | object[]
->(
-  data: T,
+const serializer = <TOutput extends object>(
+  data: any,
   options?: any
-): Promise<TResult> => {
+): Promise<TOutput> => {
   options ??= {}
   const result = serialize(data, options)
-  return Array.isArray(data) ? result : result[0]
+  return result as unknown as Promise<TOutput>
 }
 
-export abstract class AbstractBaseRepository<T = any>
-  implements DAL.RepositoryService<T>
-{
+// TODO: move to utils package
+class AbstractBase<T = any> {
   protected readonly manager_: SqlEntityManager
 
   protected constructor({ manager }) {
     this.manager_ = manager
   }
 
-  async transaction(
-    task: (transactionManager: unknown) => Promise<any>,
+  getFreshManager<TManager = unknown>(): TManager {
+    return (this.manager_.fork
+      ? this.manager_.fork()
+      : this.manager_) as unknown as TManager
+  }
+
+  getActiveManager<TManager = unknown>(
+    @MedusaContext()
+    { transactionManager, manager }: Context = {}
+  ): TManager {
+    return (transactionManager ?? manager ?? this.manager_) as TManager
+  }
+
+  async transaction<TManager = unknown>(
+    task: (transactionManager: TManager) => Promise<any>,
     {
       transaction,
       isolationLevel,
@@ -116,19 +121,24 @@ export abstract class AbstractBaseRepository<T = any>
     }: {
       isolationLevel?: string
       enableNestedTransactions?: boolean
-      transaction?: unknown
+      transaction?: TManager
     } = {}
   ): Promise<any> {
     return await transactionWrapper.apply(this, arguments)
   }
 
-  serialize<
-    TData extends object | object[] = object[],
-    TResult extends object | object[] = object[]
-  >(data: TData, options?: any): Promise<TResult> {
-    return serializer<TData, TResult>(data, options)
+  async serialize<TOutput extends object | object[]>(
+    data: any,
+    options?: any
+  ): Promise<TOutput> {
+    return await serializer<TOutput>(data, options)
   }
+}
 
+export abstract class AbstractBaseRepository<T = any>
+  extends AbstractBase
+  implements DAL.RepositoryService<T>
+{
   abstract find(options?: DAL.FindOptions<T>, context?: Context)
 
   abstract findAndCount(
@@ -147,9 +157,9 @@ export abstract class AbstractBaseRepository<T = any>
     { transactionManager: manager }: Context = {}
   ): Promise<T[]> {
     const entities = await this.find({ where: { id: { $in: ids } } as any })
-
     const date = new Date()
-    await updateDeletedAtRecursively(
+
+    await mikroOrmUpdateDeletedAtRecursively(
       manager as SqlEntityManager,
       entities,
       date
@@ -173,7 +183,7 @@ export abstract class AbstractBaseRepository<T = any>
 
     const entities = await this.find(query)
 
-    await updateDeletedAtRecursively(
+    await mikroOrmUpdateDeletedAtRecursively(
       manager as SqlEntityManager,
       entities,
       null
@@ -183,8 +193,9 @@ export abstract class AbstractBaseRepository<T = any>
   }
 }
 
+// TODO: move to utils package
 export abstract class AbstractTreeRepositoryBase<T = any>
-  extends AbstractBaseRepository<T>
+  extends AbstractBase<T>
   implements DAL.TreeRepositoryService<T>
 {
   protected constructor({ manager }) {
@@ -203,23 +214,22 @@ export abstract class AbstractTreeRepositoryBase<T = any>
     transformOptions?: RepositoryTransformOptions,
     context?: Context
   ): Promise<[T[], number]>
+
+  abstract create(data: unknown, context?: Context): Promise<T>
+
+  abstract delete(id: string, context?: Context): Promise<void>
 }
 
+// TODO: move to utils package
 /**
  * Only used internally in order to be able to wrap in transaction from a
  * non identified repository
  */
+
 export class BaseRepository extends AbstractBaseRepository {
   constructor({ manager }) {
     // @ts-ignore
     super(...arguments)
-  }
-
-  serialize<
-    TData extends object | object[] = object[],
-    TResult extends object | object[] = object[]
-  >(data: TData, options?: any): Promise<TResult> {
-    return serializer<TData, TResult>(data, options)
   }
 
   create(data: unknown[], context?: Context): Promise<any[]> {
@@ -238,6 +248,38 @@ export class BaseRepository extends AbstractBaseRepository {
     options?: DAL.FindOptions,
     context?: Context
   ): Promise<[any[], number]> {
+    throw new Error("Method not implemented.")
+  }
+}
+
+
+export class BaseTreeRepository extends AbstractTreeRepositoryBase {
+  constructor({ manager }) {
+    // @ts-ignore
+    super(...arguments)
+  }
+
+  find(
+    options?: DAL.FindOptions,
+    transformOptions?: RepositoryTransformOptions,
+    context?: Context
+  ): Promise<any[]> {
+    throw new Error("Method not implemented.")
+  }
+
+  findAndCount(
+    options?: DAL.FindOptions,
+    transformOptions?: RepositoryTransformOptions,
+    context?: Context
+  ): Promise<[any[], number]> {
+    throw new Error("Method not implemented.")
+  }
+
+  create(data: unknown, context?: Context): Promise<any> {
+    throw new Error("Method not implemented.")
+  }
+
+  delete(id: string, context?: Context): Promise<void> {
     throw new Error("Method not implemented.")
   }
 }

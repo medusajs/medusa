@@ -1,11 +1,11 @@
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 import { ProductCollection } from "@models"
-import { ProductCollectionService } from "@services"
 import { ProductCollectionRepository } from "@repositories"
+import { ProductCollectionService } from "@services"
 
-import { TestDatabase } from "../../../utils"
 import { createCollections } from "../../../__fixtures__/product"
+import { TestDatabase } from "../../../utils"
 
 jest.setTimeout(30000)
 
@@ -271,6 +271,92 @@ describe("Product collection Service", () => {
           products: []
         }
       )
+    })
+  })
+
+  describe("delete", () => {
+    const collectionId = "collection-1"
+    const collectionData = {
+      id: collectionId,
+      title: "collection 1",
+    }
+
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+
+      await createCollections(testManager, [collectionData])
+    })
+
+    it("should delete the product collection given an ID successfully", async () => {
+      await service.delete(
+        [collectionId],
+      )
+
+      const collections = await service.list({
+        id: collectionId
+      })
+
+      expect(collections).toHaveLength(0)
+    })
+  })
+
+  describe("update", () => {
+    const collectionId = "collection-1"
+    const collectionData = {
+      id: collectionId,
+      title: "collection 1",
+    }
+
+    beforeEach(async () => {
+      testManager = await TestDatabase.forkManager()
+
+      await createCollections(testManager, [collectionData])
+    })
+
+    it("should update the value of the collection successfully", async () => {
+      await service.update(
+        [{
+          id: collectionId,
+          title: "New Collection"
+        }]
+      )
+
+      const productCollection = await service.retrieve(collectionId)
+
+      expect(productCollection.title).toEqual("New Collection")
+    })
+
+    it("should throw an error when an id does not exist", async () => {
+      let error
+
+      try {
+        await service.update([
+        {
+          id: "does-not-exist",
+          title: "New Collection"
+        }
+      ])
+      } catch (e) {
+        error = e
+      }
+
+      expect(error.message).toEqual('ProductCollection with id "does-not-exist" not found')
+    })
+  })
+
+  describe("create", () => {
+    it("should create a collection successfully", async () => {
+      await service.create(
+        [{
+          title: "New Collection"
+        }]
+      )
+
+      const [productCollection] = await service.list({
+        title: "New Collection"
+      })
+
+      expect(productCollection.title).toEqual("New Collection")
     })
   })
 })

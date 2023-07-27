@@ -5,23 +5,23 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface GetPublishableApiKeysParams {
   /**
-   * Query used for searching publishable api keys by title.
+   * term to search publishable API keys' titles.
    */
   q?: string
   /**
-   * The number of items in the response
+   * Limit the number of publishable API keys returned.
    */
   limit?: number
   /**
-   * The offset of items in response
+   * The number of publishable API keys to skip when retrieving the publishable API keys.
    */
   offset?: number
   /**
-   * Comma separated list of relations to include in the results.
+   * Comma-separated relations that should be expanded in the returned publishable API keys.
    */
   expand?: string
   /**
-   * Comma separated list of fields to include in the results.
+   * Comma-separated fields that should be included in the returned publishable API keys.
    */
   fields?: string
 }

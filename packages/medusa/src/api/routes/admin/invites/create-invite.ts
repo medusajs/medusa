@@ -9,7 +9,8 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/invites
  * operationId: "PostInvites"
  * summary: "Create an Invite"
- * description: "Creates an Invite and triggers an 'invite' created event"
+ * description: "Create an Invite. This will generate a token associated with the invite and trigger an `invite.created` event. If you have a Notification Provider installed that handles this
+ *  event, a notification should be sent to the email associated with the invite to allow them to accept the invite."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -38,9 +39,9 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/invites' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/invites' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "user": "user@example.com",
  *           "role": "admin"
@@ -89,11 +90,11 @@ export default async (req, res) => {
  *   - role
  * properties:
  *   user:
- *     description: "The email for the user to be created."
+ *     description: "The email associated with the invite. Once the invite is accepted, the email will be associated with the created user."
  *     type: string
  *     format: email
  *   role:
- *     description: "The role of the user to be created."
+ *     description: "The role of the user to be created. This does not actually change the privileges of the user that is eventually created."
  *     type: string
  *     enum: [admin, member, developer]
  */
