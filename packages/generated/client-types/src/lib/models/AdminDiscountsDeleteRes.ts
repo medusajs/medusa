@@ -13,7 +13,7 @@ export interface AdminDiscountsDeleteRes {
    */
   object: string
   /**
-   * Whether the discount was deleted successfully or not.
+   * Whether the discount was deleted successfully.
    */
   deleted: boolean
 }

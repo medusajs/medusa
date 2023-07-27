@@ -5,19 +5,19 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StoreGetVariantsVariantParams {
   /**
-   * The id of the Cart to set prices based on.
-   */
-  cart_id?: string
-  /**
-   * A sales channel id for result configuration.
+   * The ID of the sales channel the customer is viewing the product variant from.
    */
   sales_channel_id?: string
   /**
-   * The id of the Region to set prices based on.
+   * The ID of the cart. This is useful for accurate pricing based on the cart's context.
+   */
+  cart_id?: string
+  /**
+   * The ID of the region. This is useful for accurate pricing based on the selected region.
    */
   region_id?: string
   /**
-   * The 3 character ISO currency code to set prices based on.
+   * A 3 character ISO currency code. This is useful for accurate pricing based on the selected currency.
    */
   currency_code?: string
 }

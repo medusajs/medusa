@@ -5,106 +5,108 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostProductsProductVariantsReq {
   /**
-   * The title to identify the Product Variant by.
+   * The title of the product variant.
    */
   title: string
   /**
-   * The unique SKU for the Product Variant.
+   * The unique SKU of the product variant.
    */
   sku?: string
   /**
-   * The EAN number of the item.
+   * The EAN number of the product variant.
    */
   ean?: string
   /**
-   * The UPC number of the item.
+   * The UPC number of the product variant.
    */
   upc?: string
   /**
-   * A generic GTIN field for the Product Variant.
+   * A generic GTIN field of the product variant.
    */
   barcode?: string
   /**
-   * The Harmonized System code for the Product Variant.
+   * The Harmonized System code of the product variant.
    */
   hs_code?: string
   /**
-   * The amount of stock kept for the Product Variant.
+   * The amount of stock kept of the product variant.
    */
   inventory_quantity?: number
   /**
-   * Whether the Product Variant can be purchased when out of stock.
+   * Whether the product variant can be purchased when out of stock.
    */
   allow_backorder?: boolean
   /**
-   * Whether Medusa should keep track of the inventory for this Product Variant.
+   * Whether Medusa should keep track of the inventory of this product variant.
    */
   manage_inventory?: boolean
   /**
-   * The wieght of the Product Variant.
+   * The wieght of the product variant.
    */
   weight?: number
   /**
-   * The length of the Product Variant.
+   * The length of the product variant.
    */
   length?: number
   /**
-   * The height of the Product Variant.
+   * The height of the product variant.
    */
   height?: number
   /**
-   * The width of the Product Variant.
+   * The width of the product variant.
    */
   width?: number
   /**
-   * The country of origin of the Product Variant.
+   * The country of origin of the product variant.
    */
   origin_country?: string
   /**
-   * The Manufacturer Identification code for the Product Variant.
+   * The Manufacturer Identification code of the product variant.
    */
   mid_code?: string
   /**
-   * The material composition of the Product Variant.
+   * The material composition of the product variant.
    */
   material?: string
   /**
    * An optional set of key-value pairs with additional information.
    */
   metadata?: Record<string, any>
+  /**
+   * An array of product variant prices. A product variant can have different prices for each region or currency code.
+   */
   prices: Array<{
     /**
-     * The ID of the price.
-     */
-    id?: string
-    /**
-     * The ID of the Region for which the price is used. Only required if currency_code is not provided.
+     * The ID of the Region the price will be used in. This is only required if `currency_code` is not provided.
      */
     region_id?: string
     /**
-     * The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+     * The 3 character ISO currency code the price will be used in. This is only required if `region_id` is not provided.
      */
     currency_code?: string
     /**
-     * The amount to charge for the Product Variant.
+     * The price amount.
      */
     amount: number
     /**
-     * The minimum quantity for which the price will be used.
+     * The minimum quantity required to be added to the cart for the price to be used.
      */
     min_quantity?: number
     /**
-     * The maximum quantity for which the price will be used.
+     * The maximum quantity required to be added to the cart for the price to be used.
      */
     max_quantity?: number
   }>
+  /**
+   * An array of Product Option values that the variant corresponds to.
+   */
   options: Array<{
     /**
-     * The ID of the Product Option to set the value for.
+     * The ID of the Product Option.
      */
     option_id: string
     /**
-     * The value to give for the Product Option.
+     * A value to give to the Product Option.
      */
     value: string
   }>

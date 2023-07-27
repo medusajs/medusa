@@ -11,15 +11,21 @@ import { defaultStoreCategoryScope } from "."
  * @oas [get] /store/product-categories
  * operationId: "GetProductCategories"
  * summary: "List Product Categories"
- * description: "Retrieve a list of product categories."
- * x-authenticated: false
+ * description: "Retrieve a list of product categories. The product categories can be filtered by fields such as `handle` or `q`. The product categories can also be paginated.
+ *  This endpoint can also be used to retrieve a product category by its handle."
+ * x-featureFlag: "product_categories"
+ * externalDocs:
+ *   description: "How to retrieve a product category by its handle"
+ *   url: "https://docs.medusajs.com/modules/products/storefront/use-categories#get-a-category-by-its-handle"
  * parameters:
- *   - (query) q {string} Query used for searching product category names or handles.
- *   - (query) handle {string} Query used for searching product category by handle.
- *   - (query) parent_category_id {string} Returns categories scoped by parent
- *   - (query) include_descendants_tree {boolean} Include all nested descendants of category
- *   - (query) offset=0 {integer} How many product categories to skip in the result.
+ *   - (query) q {string} term used to search product category's names and handles.
+ *   - (query) handle {string} Filter by handle.
+ *   - (query) parent_category_id {string} Filter by the ID of a parent category. Only children of the provided parent category are retrieved.
+ *   - (query) include_descendants_tree {boolean} Whether all nested categories inside a category should be retrieved.
+ *   - (query) offset=0 {integer} The number of product categories to skip when retrieving the product categories.
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned product categories.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned product categories.
  * x-codegen:
  *   method: list
  *   queryParams: StoreGetProductCategoriesParams
@@ -36,8 +42,8 @@ import { defaultStoreCategoryScope } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/product-categories' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/store/product-categories' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

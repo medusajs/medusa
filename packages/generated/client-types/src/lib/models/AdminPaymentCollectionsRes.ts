@@ -7,6 +7,9 @@ import type { PaymentCollection } from "./PaymentCollection"
 import type { Region } from "./Region"
 
 export interface AdminPaymentCollectionsRes {
+  /**
+   * Payment Collection details.
+   */
   payment_collection: Merge<
     SetRelation<PaymentCollection, "payment_sessions" | "payments" | "region">,
     {

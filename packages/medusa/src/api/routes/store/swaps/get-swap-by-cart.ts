@@ -5,7 +5,7 @@ import { defaultStoreSwapRelations } from "."
  * @oas [get] /store/swaps/{cart_id}
  * operationId: GetSwapsSwapCartId
  * summary: Get by Cart ID
- * description: "Retrieves a Swap by the id of the Cart used to confirm the Swap."
+ * description: "Retrieve a Swap's details by the ID of its cart."
  * parameters:
  *   - (path) cart_id {string} The id of the Cart
  * x-codegen:
@@ -16,14 +16,14 @@ import { defaultStoreSwapRelations } from "."
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.swaps.retrieveByCartId(cart_id)
+ *       medusa.swaps.retrieveByCartId(cartId)
  *       .then(({ swap }) => {
  *         console.log(swap.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/swaps/{cart_id}'
+ *       curl 'https://medusa-url.com/store/swaps/{cart_id}'
  * tags:
  *   - Swaps
  * responses:

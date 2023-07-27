@@ -5,15 +5,15 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetTaxRatesParams {
   /**
-   * Name of tax rate to retrieve
+   * Filter by name.
    */
   name?: string
   /**
-   * Filter by Region ID
+   * Filter by Region IDs
    */
   region_id?: string | Array<string>
   /**
-   * code to search for.
+   * Filter by code.
    */
   code?: string
   /**
@@ -40,7 +40,7 @@ export interface AdminGetTaxRatesParams {
         gte?: number
       }
   /**
-   * How many tax rates to skip before retrieving the result.
+   * The number of tax rates to skip when retrieving the tax rates.
    */
   offset?: number
   /**
@@ -48,11 +48,11 @@ export interface AdminGetTaxRatesParams {
    */
   limit?: number
   /**
-   * Which fields should be included in each item.
+   * Comma-separated fields that should be included in the returned tax rate.
    */
   fields?: Array<string>
   /**
-   * Which fields should be expanded and retrieved for each item.
+   * Comma-separated relations that should be expanded in the returned tax rate.
    */
   expand?: Array<string>
 }

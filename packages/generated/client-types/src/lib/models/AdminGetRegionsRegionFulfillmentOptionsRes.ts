@@ -4,6 +4,9 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetRegionsRegionFulfillmentOptionsRes {
+  /**
+   * Fulfillment providers details.
+   */
   fulfillment_options: Array<{
     /**
      * ID of the fulfillment provider

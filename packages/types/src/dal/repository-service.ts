@@ -7,21 +7,27 @@ import { Context } from "../shared-context"
  * This layer helps to separate the business logic (service layer) from accessing the
  * ORM directly and allows to switch to another ORM without changing the business logic.
  */
-export interface RepositoryService<T = any> {
-  transaction(
-    task: (transactionManager: unknown) => Promise<any>,
+interface BaseRepositoryService<T = any> {
+  transaction<TManager = unknown>(
+    task: (transactionManager: TManager) => Promise<any>,
     context?: {
       isolationLevel?: string
-      transaction?: unknown
+      transaction?: TManager
       enableNestedTransactions?: boolean
     }
   ): Promise<any>
+
+  getFreshManager<TManager = unknown>(): TManager
+
+  getActiveManager<TManager = unknown>(): TManager
 
   serialize<TOutput extends object | object[]>(
     data: any,
     options?: any
   ): Promise<TOutput>
+}
 
+export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
   find(options?: FindOptions<T>, context?: Context): Promise<T[]>
 
   findAndCount(
@@ -44,7 +50,7 @@ export interface RepositoryService<T = any> {
   restore(ids: string[], context?: Context): Promise<T[]>
 }
 
-export interface TreeRepositoryService<T = any> extends RepositoryService<T> {
+export interface TreeRepositoryService<T = any> extends BaseRepositoryService<T> {
   find(
     options?: FindOptions<T>,
     transformOptions?: RepositoryTransformOptions,
@@ -56,4 +62,8 @@ export interface TreeRepositoryService<T = any> extends RepositoryService<T> {
     transformOptions?: RepositoryTransformOptions,
     context?: Context
   ): Promise<[T[], number]>
+
+  create(data: unknown, context?: Context): Promise<T>
+
+  delete(id: string, context?: Context): Promise<void>
 }

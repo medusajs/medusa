@@ -6,7 +6,7 @@ import RegionService from "../../../../services/region"
  * @oas [get] /admin/regions/{id}
  * operationId: "GetRegionsRegion"
  * summary: "Get a Region"
- * description: "Retrieves a Region."
+ * description: "Retrieve a Region's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
@@ -19,15 +19,15 @@ import RegionService from "../../../../services/region"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.regions.retrieve(region_id)
+ *       medusa.admin.regions.retrieve(regionId)
  *       .then(({ region }) => {
  *         console.log(region.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/regions/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/regions/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

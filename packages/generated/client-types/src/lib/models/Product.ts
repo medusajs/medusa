@@ -14,7 +14,7 @@ import type { SalesChannel } from "./SalesChannel"
 import type { ShippingProfile } from "./ShippingProfile"
 
 /**
- * Products are a grouping of Product Variants that have common properties such as images and descriptions. Products can have multiple options which define the properties that Product Variants differ by.
+ * A product is a saleable item that holds general information such as name or description. It must include at least one Product Variant, where each product variant defines different options to purchase the product with (for example, different sizes or colors). The prices and inventory of the product are defined on the variant level.
  */
 export interface Product {
   /**
@@ -46,7 +46,7 @@ export interface Product {
    */
   status: "draft" | "proposed" | "published" | "rejected"
   /**
-   * Images of the Product. Available if the relation `images` is expanded.
+   * The details of the product's images.
    */
   images?: Array<Image>
   /**
@@ -54,23 +54,23 @@ export interface Product {
    */
   thumbnail: string | null
   /**
-   * The Product Options that are defined for the Product. Product Variants of the Product will have a unique combination of Product Option Values. Available if the relation `options` is expanded.
+   * The details of the Product Options that are defined for the Product. The product's variants will have a unique combination of values of the product's options.
    */
   options?: Array<ProductOption>
   /**
-   * The Product Variants that belong to the Product. Each will have a unique combination of Product Option Values. Available if the relation `variants` is expanded.
+   * The details of the Product Variants that belong to the Product. Each will have a unique combination of values of the product's options.
    */
   variants?: Array<ProductVariant>
   /**
-   * The product's associated categories. Available if the relation `categories` are expanded.
+   * The details of the product categories that this product belongs to.
    */
   categories?: Array<ProductCategory>
   /**
-   * The ID of the Shipping Profile that the Product belongs to. Shipping Profiles have a set of defined Shipping Options that can be used to Fulfill a given set of Products.
+   * The ID of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.
    */
   profile_id: string
   /**
-   * Available if the relation `profile` is expanded.
+   * The details of the shipping profile that the product belongs to. The shipping profile has a set of defined shipping options that can be used to fulfill the product.
    */
   profile?: ShippingProfile | null
   /**
@@ -110,23 +110,23 @@ export interface Product {
    */
   material: string | null
   /**
-   * The Product Collection that the Product belongs to
+   * The ID of the product collection that the product belongs to.
    */
   collection_id: string | null
   /**
-   * A product collection object. Available if the relation `collection` is expanded.
+   * The details of the product collection that the product belongs to.
    */
   collection?: ProductCollection | null
   /**
-   * The Product type that the Product belongs to
+   * The ID of the product type that the product belongs to.
    */
   type_id: string | null
   /**
-   * Available if the relation `type` is expanded.
+   * The details of the product type that the product belongs to.
    */
   type?: ProductType | null
   /**
-   * The Product Tags assigned to the Product. Available if the relation `tags` is expanded.
+   * The details of the product tags used in this product.
    */
   tags?: Array<ProductTag>
   /**
@@ -138,7 +138,7 @@ export interface Product {
    */
   external_id: string | null
   /**
-   * The sales channels the product is associated with. Available if the relation `sales_channels` is expanded.
+   * The details of the sales channels this product is available in.
    */
   sales_channels?: Array<SalesChannel>
   /**

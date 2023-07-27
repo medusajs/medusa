@@ -4,7 +4,7 @@ import { ProductService } from "../../../../services"
  * @oas [get] /admin/products/tag-usage
  * operationId: "GetProductsTagUsage"
  * summary: "List Tags Usage Number"
- * description: "Retrieves a list of Product Tags with how many times each is used."
+ * description: "Retrieve a list of Product Tags with how many times each is used in products."
  * x-authenticated: true
  * x-codegen:
  *   method: listTags
@@ -22,8 +22,8 @@ import { ProductService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/products/tag-usage' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/products/tag-usage' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

@@ -6,7 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { Product } from "./Product"
 
 /**
- * Represents a product category
+ * A product category can be used to categorize products into a hierarchy of categories.
  */
 export interface ProductCategory {
   /**
@@ -38,7 +38,7 @@ export interface ProductCategory {
    */
   rank?: number
   /**
-   * Available if the relation `category_children` are expanded.
+   * The details of the category's children.
    */
   category_children: Array<ProductCategory>
   /**
@@ -46,11 +46,11 @@ export interface ProductCategory {
    */
   parent_category_id: string | null
   /**
-   * A product category object. Available if the relation `parent_category` is expanded.
+   * The details of the parent of this category.
    */
   parent_category?: ProductCategory | null
   /**
-   * Products associated with category. Available if the relation `products` is expanded.
+   * The details of the products that belong to this category.
    */
   products?: Array<Product>
   /**

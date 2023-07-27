@@ -7,6 +7,9 @@ import type { Region } from "./Region"
 import type { ShippingOption } from "./ShippingOption"
 
 export interface AdminShippingOptionsListRes {
+  /**
+   * An array of shipping options details.
+   */
   shipping_options: Array<
     Merge<
       SetRelation<ShippingOption, "profile" | "region" | "requirements">,
@@ -23,7 +26,7 @@ export interface AdminShippingOptionsListRes {
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of shipping options skipped when retrieving the shipping options.
    */
   offset: number
   /**

@@ -8,7 +8,7 @@ import { PaymentCollectionService } from "../../../../services"
  * @oas [post] /store/payment-collections/{id}/sessions/batch
  * operationId: "PostPaymentCollectionsPaymentCollectionSessionsBatch"
  * summary: "Manage Payment Sessions"
- * description: "Manages Multiple Payment Sessions from Payment Collections."
+ * description: "Create, update, or delete a list of payment sessions of a Payment Collections. If a payment session is not provided in the `sessions` array, it's deleted."
  * x-authenticated: false
  * parameters:
  *   - (path) id=* {string} The ID of the Payment Collections.
@@ -29,36 +29,53 @@ import { PaymentCollectionService } from "../../../../services"
  *
  *       // Total amount = 10000
  *
- *       // Adding two new sessions
- *       medusa.paymentCollections.managePaymentSessionsBatch(payment_id, [
- *         {
- *           provider_id: "stripe",
- *           amount: 5000,
- *         },
- *         {
- *           provider_id: "manual",
- *           amount: 5000,
- *         },
- *       ])
+ *       // Example 1: Adding two new sessions
+ *       medusa.paymentCollections.managePaymentSessionsBatch(paymentId, {
+ *         sessions: [
+ *           {
+ *             provider_id: "stripe",
+ *             amount: 5000,
+ *           },
+ *           {
+ *             provider_id: "manual",
+ *             amount: 5000,
+ *           },
+ *         ]
+ *       })
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
  *       });
  *
- *       // Updating one session and removing the other
- *       medusa.paymentCollections.managePaymentSessionsBatch(payment_id, [
- *         {
- *           provider_id: "stripe",
- *           amount: 10000,
- *           session_id: "ps_123456"
- *         },
- *       ])
+ *       // Example 2: Updating one session and removing the other
+ *       medusa.paymentCollections.managePaymentSessionsBatch(paymentId, {
+ *         sessions: [
+ *           {
+ *             provider_id: "stripe",
+ *             amount: 10000,
+ *             session_id: "ps_123456"
+ *           },
+ *         ]
+ *       })
  *       .then(({ payment_collection }) => {
  *         console.log(payment_collection.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/batch'
+ *       curl -X POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/batch' \
+ *       -H 'Content-Type: application/json' \
+ *       --data-raw '{
+ *         "sessions": [
+ *           {
+ *             "provider_id": "stripe",
+ *             "amount": 5000
+ *           },
+ *           {
+ *             "provider_id": "manual",
+ *             "amount": 5000
+ *           }
+ *         ]
+ *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -126,7 +143,7 @@ export class StorePostPaymentCollectionsSessionsReq {
  *   - sessions
  * properties:
  *   sessions:
- *     description: "An array of payment sessions related to the Payment Collection. If the session_id is not provided, existing sessions not present will be deleted and the provided ones will be created."
+ *     description: "An array of payment sessions related to the Payment Collection. Existing sessions that are not added in this array will be deleted."
  *     type: array
  *     items:
  *       type: object
@@ -139,10 +156,10 @@ export class StorePostPaymentCollectionsSessionsReq {
  *           description: The ID of the Payment Provider.
  *         amount:
  *           type: integer
- *           description: "The amount ."
+ *           description: "The payment amount"
  *         session_id:
  *           type: string
- *           description: "The ID of the Payment Session to be updated."
+ *           description: "The ID of the Payment Session to be updated. If no ID is provided, a new payment session is created."
  */
 export class StorePostPaymentCollectionsBatchSessionsReq {
   @IsType([[StorePostPaymentCollectionsSessionsReq]])

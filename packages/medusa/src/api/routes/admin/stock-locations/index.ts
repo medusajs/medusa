@@ -116,6 +116,7 @@ export type AdminStockLocationsDeleteRes = DeleteResponse
  *   - stock_location
  * properties:
  *   stock_location:
+ *     description: "Stock location details."
  *     $ref: "#/components/schemas/StockLocationExpandedDTO"
  */
 export type AdminStockLocationsRes = {
@@ -140,7 +141,7 @@ export type AdminStockLocationsRes = {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of stock locations skipped when retrieving the stock locations.
  *   limit:
  *     type: integer
  *     description: The number of items per page

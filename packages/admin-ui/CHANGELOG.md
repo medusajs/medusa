@@ -1,5 +1,13 @@
 # @medusajs/admin-ui
 
+## 1.9.3
+
+### Patch Changes
+
+- [#4594](https://github.com/medusajs/medusa/pull/4594) [`aab890174`](https://github.com/medusajs/medusa/commit/aab890174dbe2c73d57e8a6f15e74f88b6ffa532) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Add missing SO relation
+
+- [#4536](https://github.com/medusajs/medusa/pull/4536) [`f561601bf`](https://github.com/medusajs/medusa/commit/f561601bf638be73ff0d0e55e28bd2192de8db32) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin): Exclude prices from PriceLists overview
+
 ## 1.9.2
 
 ### Patch Changes

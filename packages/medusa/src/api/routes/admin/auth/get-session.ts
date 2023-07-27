@@ -6,7 +6,7 @@ import _ from "lodash"
  * operationId: "GetAuth"
  * summary: "Get Current User"
  * x-authenticated: true
- * description: "Gets the currently logged in User."
+ * description: "Get the currently logged in user's details."
  * x-codegen:
  *   method: getSession
  * x-codeSamples:
@@ -23,8 +23,8 @@ import _ from "lodash"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/auth' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/auth' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostAppsReq {
   /**
-   * Name of the application for the token to be generated for.
+   * Name of the application for to generate the token for.
    */
   application_name: string
   /**

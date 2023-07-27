@@ -16,6 +16,9 @@ import type { ShippingMethod } from "./ShippingMethod"
 import type { Swap } from "./Swap"
 
 export interface StoreOrdersRes {
+  /**
+   * Order details.
+   */
   order: Merge<
     SetRelation<
       Order,

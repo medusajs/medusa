@@ -122,8 +122,8 @@ npm run build
 
 Then, run the `migration` command:
 
-```bash npm2yarn
-medusa migrations run
+```bash
+npx @medusajs/medusa-cli migrations run
 ```
 
 You should see that your migration have executed.

@@ -9,13 +9,13 @@ import { Type } from "class-transformer"
  * @oas [get] /admin/customer-groups
  * operationId: "GetCustomerGroups"
  * summary: "List Customer Groups"
- * description: "Retrieve a list of customer groups."
+ * description: "Retrieve a list of customer groups. The customer groups can be filtered by fields such as `name` or `id. The customer groups can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching customer group names.
- *   - (query) offset=0 {integer} How many groups to skip in the result.
- *   - (query) order {string} the field used to order the customer groups.
- *   - (query) discount_condition_id {string} The discount condition id on which to filter the customer groups.
+ *   - (query) q {string} term to search customer groups by name.
+ *   - (query) offset=0 {integer} The number of customer groups to skip when retrieving the customer groups.
+ *   - (query) order {string} A field to sort order the retrieved customer groups by.
+ *   - (query) discount_condition_id {string} Filter by discount condition ID.
  *   - in: query
  *     name: id
  *     style: form
@@ -26,7 +26,7 @@ import { Type } from "class-transformer"
  *         - type: string
  *           description: customer group ID
  *         - type: array
- *           description: multiple customer group IDs
+ *           description: an array of customer group IDs
  *           items:
  *             type: string
  *         - type: object
@@ -50,13 +50,13 @@ import { Type } from "class-transformer"
  *     description: Filter by the customer group name
  *     schema:
  *       type: array
- *       description: multiple customer group names
+ *       description: an array of customer group names
  *       items:
  *         type: string
  *         description: customer group name
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting customer groups were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -78,7 +78,7 @@ import { Type } from "class-transformer"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting customer groups were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -98,8 +98,8 @@ import { Type } from "class-transformer"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
- *   - (query) limit=10 {integer} Limit the number of customer groups returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer groups of the result.
+ *   - (query) limit=10 {integer} The number of customer groups to return.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned customer groups.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetCustomerGroupsParams
@@ -117,8 +117,8 @@ import { Type } from "class-transformer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/customer-groups' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/customer-groups' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

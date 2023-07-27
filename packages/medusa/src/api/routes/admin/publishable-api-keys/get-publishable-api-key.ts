@@ -5,10 +5,10 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 /**
  * @oas [get] /admin/publishable-api-keys/{id}
  * operationId: "GetPublishableApiKeysPublishableApiKey"
- * summary: "Get a PublishableApiKey"
- * description: "Retrieve the Publishable Api Key."
+ * summary: "Get a Publishable API Key"
+ * description: "Retrieve a publishable API key's details."
  * parameters:
- *   - (path) id=* {string} The ID of the PublishableApiKey.
+ *   - (path) id=* {string} The ID of the Publishable API Key.
  * x-authenticated: true
  * x-codegen:
  *   method: retrieve
@@ -26,8 +26,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/publishable-api-keys/{pka_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/publishable-api-keys/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

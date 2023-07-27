@@ -9,7 +9,8 @@ import { EntityManager } from "typeorm"
  * @oas [post] /admin/invites/accept
  * operationId: "PostInvitesInviteAccept"
  * summary: "Accept an Invite"
- * description: "Accepts an Invite and creates a corresponding user"
+ * description: "Accept an Invite. This will also delete the invite and create a new user that can log in and perform admin functionalities. The user will have the email associated with the invite, and the password
+ *  provided in the request body."
  * requestBody:
  *   content:
  *     application/json:
@@ -27,9 +28,9 @@ import { EntityManager } from "typeorm"
  *       medusa.admin.invites.accept({
  *         token,
  *         user: {
- *           first_name: 'Brigitte',
- *           last_name: 'Collier',
- *           password: 'supersecret'
+ *           first_name: "Brigitte",
+ *           last_name: "Collier",
+ *           password: "supersecret"
  *         }
  *       })
  *       .then(() => {
@@ -41,9 +42,9 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/invites/accept' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/invites/accept' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "token": "{token}",
  *           "user": {
@@ -107,10 +108,10 @@ export class AdminPostInvitesInviteAcceptUserReq {
  *   - user
  * properties:
  *   token:
- *     description: "The invite token provided by the admin."
+ *     description: "The token of the invite to accept. This is a unique token generated when the invite was created or resent."
  *     type: string
  *   user:
- *     description: "The User to create."
+ *     description: "The details of the user to create."
  *     type: object
  *     required:
  *       - first_name
@@ -124,7 +125,7 @@ export class AdminPostInvitesInviteAcceptUserReq {
  *         type: string
  *         description: the last name of the User
  *       password:
- *         description: The desired password for the User
+ *         description: The password for the User
  *         type: string
  *         format: password
  */
