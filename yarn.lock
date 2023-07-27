@@ -16517,13 +16517,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cd@npm:^0.3.3":
-  version: 0.3.3
-  resolution: "cd@npm:0.3.3"
-  checksum: 2f275cef4ba9106976ce1be532b1cba5e2da8268df5e42c7027090c16f3453256174afc039d02fb249d38cdabe9dd1270fc6c2855341df59f814c96aa16cfffb
-  languageName: node
-  linkType: hard
-
 "chai@npm:^4.3.7":
   version: 4.3.7
   resolution: "chai@npm:4.3.7"
@@ -30457,12 +30450,10 @@ __metadata:
     "@medusajs/medusa": ^1.12.3
     aws-sdk: ^2.983.0
     body-parser: ^1.19.0
-    cd: ^0.3.3
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
-    medusa-file-s3: ../medusa-file-s3
     medusa-test-utils: ^1.1.40
     rimraf: ^5.0.1
     typescript: ^4.9.5
@@ -30470,21 +30461,6 @@ __metadata:
     "@medusajs/medusa": ^1.12.0
   languageName: unknown
   linkType: soft
-
-"medusa-file-s3@file:../medusa-file-s3::locator=medusa-file-minio%40workspace%3Apackages%2Fmedusa-file-minio":
-  version: 1.2.1
-  resolution: "medusa-file-s3@file:../medusa-file-s3#../medusa-file-s3::hash=a07f20&locator=medusa-file-minio%40workspace%3Apackages%2Fmedusa-file-minio"
-  dependencies:
-    aws-sdk: ^2.983.0
-    body-parser: ^1.19.0
-    express: ^4.17.1
-    medusa-core-utils: ^1.2.0
-    medusa-test-utils: ^1.1.40
-  peerDependencies:
-    "@medusajs/medusa": ^1.12.0
-  checksum: 7b660f15d5a6ffffc24dea7a4b9856ba5d348dc5da609682ebc53360efc82314d71da876c1cc36dc7e4df85fa7a65c9849cfa67b7a8549e0c9b80bd1c56e87fc
-  languageName: node
-  linkType: hard
 
 "medusa-file-s3@workspace:packages/medusa-file-s3":
   version: 0.0.0-use.local
@@ -30498,6 +30474,7 @@ __metadata:
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     typescript: ^4.9.5
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
