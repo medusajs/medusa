@@ -11,8 +11,8 @@
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "test": "jest --passWithNoTests src",
-    "build": "rimraf dist && tsc --build",
-    "watch": "tsc --watch"
+    "build": "babel src --out-dir dist --ignore '**/__tests__','**/__mocks__'",
+    "watch": "babel -w src --out-dir dist --ignore '**/__tests__','**/__mocks__'"
   },
   "files": [
     "dist"
