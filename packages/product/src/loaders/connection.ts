@@ -12,7 +12,7 @@ import { EntitySchema } from "@mikro-orm/core"
 
 import * as ProductModels from "@models"
 import { createConnection } from "../utils"
-import { ModulesSdkTypes } from "@medusajs/types"
+import { ConfigModule, ModulesSdkTypes } from "@medusajs/types"
 
 export default async (
   {
@@ -28,7 +28,14 @@ export default async (
     moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
     moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
   ) {
-    return
+    const { projectConfig } = container.resolve("configModule") as ConfigModule
+    options = {
+      database: {
+        clientUrl: projectConfig.database_url!,
+        driverOptions: projectConfig.database_extra!,
+        schema: projectConfig.database_schema!,
+      },
+    }
   }
 
   const customManager = (

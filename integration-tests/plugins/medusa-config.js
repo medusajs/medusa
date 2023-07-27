@@ -49,12 +49,6 @@ module.exports = {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/product",
-      /* options: {
-        database: {
-          clientUrl: DB_URL,
-          debug: false,
-        },
-      },*/
     },
   },
 }
