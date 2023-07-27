@@ -10,6 +10,9 @@ import { PricingService } from "../../../../services"
  * operationId: "PostProductsProductMetadata"
  * summary: "Set Metadata"
  * description: "Set the metadata of a Product. It can be any key-value pair, which allows adding custom data to a product."
+ * externalDocs:
+ *   description: "Learn about the metadata attribute, and how to delete and update it."
+ *   url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product.

@@ -180,6 +180,9 @@ class StockLocationAddress {
  *     type: object
  *     description: An optional key-value map with additional details
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   address:
  *     description: A new stock location address to create and associate with the stock location. Only required if `address_id` is not provided.
  *     $ref: "#/components/schemas/StockLocationAddressInput"

@@ -7,6 +7,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Feedback from '@site/src/components/Feedback';
 import DocCard from '@theme/DocCard';
+import DocCardList from '@theme/DocCardList';
 import Icons from '@theme/Icon';
 import Troubleshooting from '@site/src/components/Troubleshooting'
 import TypeErrorSection from "./troubleshooting/create-medusa-app-errors/_typeerror.md"
@@ -134,15 +135,35 @@ Once you're logged in, you can start using Medusa! Try following the setup guide
 
 Based on what you're building, you can find a development path for you in the Recipes page.
 
-<DocCard item={{
-  type: 'link',
-  href: '/recipes',
-  label: 'Recipes',
-  customProps: {
-    icon: Icons['map'],
-    description: "Find learning paths based on what you're building"
-  }
-}} />
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/recipes',
+    label: 'Recipes',
+    customProps: {
+      icon: Icons['map'],
+      description: "Find learning paths based on what you're building"
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/overview',
+    label: 'Medusa Backend Basics',
+    customProps: {
+      icon: Icons['server-stack-solid'],
+      description: 'Learn all the basics of developing with the Medusa backend.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/overview',
+    label: 'Commerce Modules',
+    customProps: {
+      icon: Icons['puzzle-solid'],
+      description: 'Learn about the available commerce modules and features in the Medusa backend.'
+    }
+  },
+]} />
 
 ---
 

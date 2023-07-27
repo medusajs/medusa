@@ -97,6 +97,9 @@ export default async (req: Request, res: Response) => {
  *   metadata:
  *     type: object
  *     description: Metadata of the customer group.
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostCustomerGroupsReq {
   @IsString()

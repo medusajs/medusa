@@ -146,6 +146,9 @@ class OptionRequirement {
  *   metadata:
  *     description: "An optional set of key-value pairs with additional information."
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   requirements:
  *     description: "The requirements that must be satisfied for the Shipping Option to be available."
  *     type: array
