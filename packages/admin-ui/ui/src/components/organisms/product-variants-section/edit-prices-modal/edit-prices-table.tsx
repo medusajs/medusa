@@ -7,6 +7,7 @@ import IconBuildingTax from "../../../fundamentals/icons/building-tax-icon"
 import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 import Tooltip from "../../../atoms/tooltip"
 import CurrencyCell from "./currency-cell"
+import useNotification from "../../../../hooks/use-notification"
 
 enum ArrowMove {
   UP,
@@ -72,13 +73,14 @@ function EditPricesTable(props: EditPricesTableProps) {
     limit: 1000,
   })
 
+  const notification = useNotification()
+
   const initialPricesSet = useRef(false)
 
   const columns = [...props.currencies, ...props.regions]
 
   const [isDragFill, setIsDragFill] = useState(false)
   const [isDrag, setIsDrag] = useState(false)
-  const [isCopy, setIsCopy] = useState(false)
   const [editedPrices, setEditedPrices] = useState<
     Record<string, number | undefined>
   >({})
@@ -135,8 +137,6 @@ function EditPricesTable(props: EditPricesTableProps) {
     // warning state updates in event handlers will be batched together so if there is another
     // `setSelectedCells` (or `resetSelection`) call in the same event handler, only last state will apply
     setSelectedCells({})
-
-    setIsCopy(false)
   }
 
   const moveAnchor = (
@@ -390,7 +390,6 @@ function EditPricesTable(props: EditPricesTableProps) {
     startIndexCol = anchorIndexCol
     endIndexCol = anchorIndexCol
 
-    setIsCopy(false)
     setSelectedCells({ [getKey(variantId, currencyCode || regionId)]: true })
     setIsDrag(true)
   }
@@ -523,7 +522,6 @@ function EditPricesTable(props: EditPricesTableProps) {
       }
 
       if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
-        setIsCopy(true)
         let ret = ""
         const variants = {}
         const columns = {}
@@ -534,14 +532,23 @@ function EditPricesTable(props: EditPricesTableProps) {
           columns[c] = true
         })
 
-        // ret = "\t" + Object.keys(columns).join("\t")
+        ret =
+          "\t" +
+          Object.keys(columns)
+            .map((k) => {
+              if (k.startsWith("reg_")) {
+                return storeRegions?.find((r) => r.id === k)?.name || k
+              }
+              return k.toUpperCase()
+            })
+            .join("\t")
 
         Object.keys(variants)
           .sort((v1, v2) => variantIds.indexOf(v1) - variantIds.indexOf(v2))
           .forEach((k) => {
             const variant = props.product.variants!.find((v) => v.id === k)
 
-            // ret += `\n${variant.title}\t`
+            ret += `\n${variant.title}\t`
             Object.keys(columns).forEach((c) => {
               const price = editedPrices[getKey(k, c)]
 
@@ -549,10 +556,10 @@ function EditPricesTable(props: EditPricesTableProps) {
             })
 
             ret = ret.slice(0, -1)
-            ret += `\n`
           })
 
         navigator.clipboard.writeText(ret)
+        notification("Success", "Copied to clipboard", "success")
       }
 
       /**
@@ -573,7 +580,25 @@ function EditPricesTable(props: EditPricesTableProps) {
         "text"
       )
 
-      const rows = paste.trimEnd().split("\n")
+      const isText = (v: string) => {
+        return v !== "" && isNaN(Number(v))
+      }
+
+      const rows = paste
+        .trimEnd()
+        .split("\n")
+        .map((r) => r.split("\t"))
+
+      const hasFirstRowWithLabels = rows[0].some(isText)
+      const hasFirstColumnWithLabels = rows.map((r) => r[0]).some(isText)
+
+      if (hasFirstRowWithLabels) {
+        rows.shift()
+      }
+
+      if (hasFirstColumnWithLabels) {
+        rows.forEach((r) => r.shift())
+      }
 
       // single cell click -> determine from the content
       if (
@@ -587,8 +612,7 @@ function EditPricesTable(props: EditPricesTableProps) {
             break
           }
 
-          const r = rows[i]
-          const parts = r.split("\t")
+          const parts = rows[i]
 
           for (let j = 0; j < parts.length; j++) {
             if (j >= columns.length) {
@@ -596,6 +620,7 @@ function EditPricesTable(props: EditPricesTableProps) {
             }
 
             const amount = parseFloat(parts[j])
+
             _edited[
               getKey(variantIds[startIndex + i], columns[startIndexCol + j])
             ] = !isNaN(amount) ? amount : undefined
@@ -763,7 +788,6 @@ function EditPricesTable(props: EditPricesTableProps) {
                       onMouseCellClick={onMouseCellClick}
                       onDragFillStart={onDragFillStart}
                       onColumnOver={onColumnOver}
-                      isCopy={isCopy}
                       isAnchor={
                         anchorIndex === index && anchorIndexCol === indexCol
                       }
@@ -786,7 +810,6 @@ function EditPricesTable(props: EditPricesTableProps) {
                       key={variant.id + r}
                       region={r!}
                       variant={variant}
-                      isCopy={isCopy}
                       isSelected={
                         selectedCells[getKey(variant.id, undefined, r)]
                       }

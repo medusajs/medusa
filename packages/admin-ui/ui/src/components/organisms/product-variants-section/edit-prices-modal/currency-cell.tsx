@@ -33,8 +33,6 @@ type CurrencyCellProps = {
   isSelected?: boolean
   isAnchor?: boolean
 
-  isCopy: boolean
-
   isRangeStart: boolean
   isRangeEnd: boolean
   isInRange: boolean
@@ -204,29 +202,13 @@ function CurrencyCell(props: CurrencyCellProps) {
       })}
       style={{
         borderTop:
-          isRangeStart && props.isInRangeCol
-            ? props.isCopy
-              ? "1.5px dashed #3B82F6"
-              : "1px double #3B82F6"
-            : "",
+          isRangeStart && props.isInRangeCol ? "1px double #3B82F6" : "",
         borderBottom:
-          isRangeEnd && props.isInRangeCol
-            ? props.isCopy
-              ? "1.5px dashed #3B82F6"
-              : "1px double #3B82F6"
-            : "",
+          isRangeEnd && props.isInRangeCol ? "1px double #3B82F6" : "",
         borderLeft:
-          props.isRangeStartCol && isInRange
-            ? props.isCopy
-              ? "1.5px dashed #3B82F6"
-              : "1px double #3B82F6"
-            : "",
+          props.isRangeStartCol && isInRange ? "1px double #3B82F6" : "",
         borderRight:
-          props.isRangeEndCol && isInRange
-            ? props.isCopy
-              ? "1.5px dashed #3B82F6"
-              : "1px double #3B82F6"
-            : "",
+          props.isRangeEndCol && isInRange ? "1px double #3B82F6" : "",
       }}
     >
       <div className="flex">
