@@ -1,5 +1,19 @@
 # @medusajs/types
 
+## 1.9.0
+
+### Minor Changes
+
+- [#4553](https://github.com/medusajs/medusa/pull/4553) [`f12299deb`](https://github.com/medusajs/medusa/commit/f12299deb10baadab1505cd4ac353dd5d1c8fa7c) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Medusa workflows package
+
+### Patch Changes
+
+- [#4602](https://github.com/medusajs/medusa/pull/4602) [`585ebf245`](https://github.com/medusajs/medusa/commit/585ebf2454719ed36957ba798a189a45a5274c5a) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(product): Serialize typings
+
+- [#4535](https://github.com/medusajs/medusa/pull/4535) [`131477faf`](https://github.com/medusajs/medusa/commit/131477faf0409c49d4aacf26ea591e33b2fa22fd) Thanks [@riqwan](https://github.com/riqwan)! - feat(product,types,utils): Add tags, types, categories, collection and options CRUD to product module services
+
+- [#4504](https://github.com/medusajs/medusa/pull/4504) [`caea44ebf`](https://github.com/medusajs/medusa/commit/caea44ebfdf7393ace931ce2a9884105dadc4f8d) Thanks [@riqwan](https://github.com/riqwan)! - feat(product, types): added product module service update
+
 ## 1.8.11
 
 ### Patch Changes
