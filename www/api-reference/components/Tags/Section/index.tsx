@@ -80,9 +80,12 @@ const TagSection = ({ tag }: TagSectionProps) => {
               </Section>
             )}
             {tag.externalDocs && (
-              <Link href={tag.externalDocs.url} target="_blank">
-                Related guide: {tag.externalDocs.description || "Read More"}
-              </Link>
+              <>
+                Related guide:{" "}
+                <Link href={tag.externalDocs.url} target="_blank">
+                  {tag.externalDocs.description || "Read More"}
+                </Link>
+              </>
             )}
           </>
         }
