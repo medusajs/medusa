@@ -30,6 +30,24 @@ export async function createProductAndTags(
   return products
 }
 
+export async function createProductAndTypes(
+  manager: SqlEntityManager,
+  data: {
+    id?: string
+    title: string
+    status: ProductTypes.ProductStatus
+    type?: { id: string; value: string }
+  }[]
+) {
+  const products: any[] = data.map((productData) => {
+    return manager.create(Product, productData)
+  })
+
+  await manager.persistAndFlush(products)
+
+  return products
+}
+
 export async function createProductVariants(
   manager: SqlEntityManager,
   data: any[]

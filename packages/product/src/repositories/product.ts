@@ -38,9 +38,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     findOptions: DAL.FindOptions<Product> = { where: {} },
     context: Context = {}
   ): Promise<Product[]> {
-    // TODO: use the getter method (getActiveManager)
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -62,12 +60,10 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     findOptions: DAL.FindOptions<Product> = { where: {} },
     context: Context = {}
   ): Promise<[Product[], number]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
-
-    if (context.transactionManager) {
-      Object.assign(findOptions_.options, { ctx: context.transactionManager })
-    }
 
     Object.assign(findOptions_.options, {
       strategy: LoadStrategy.SELECT_IN,
@@ -75,7 +71,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
 
     await this.mutateNotInCategoriesConstraints(findOptions_)
 
-    return await this.manager_.findAndCount(
+    return await manager.findAndCount(
       Product,
       findOptions_.where as MikroFilterQuery<Product>,
       findOptions_.options as MikroOptions<Product>
@@ -90,9 +86,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     findOptions: DAL.FindOptions<Product> = { where: {} },
     context: Context = {}
   ): Promise<void> {
-    // TODO: use the getter method (getActiveManager)
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     if (findOptions.where.categories?.id?.["$nin"]) {
       const productsInCategories = await manager.find(

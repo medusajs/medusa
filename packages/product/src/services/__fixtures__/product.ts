@@ -15,6 +15,7 @@ mockContainer.register({
       return [{}]
     }),
     findAndCount: jest.fn().mockResolvedValue([[], 0]),
+    getFreshManager: jest.fn().mockResolvedValue({}),
   }),
   productService: asClass(ProductService),
 })
