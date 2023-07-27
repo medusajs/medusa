@@ -584,10 +584,7 @@ function EditPricesTable(props: EditPricesTableProps) {
         return v !== "" && isNaN(Number(v))
       }
 
-      const rows = paste
-        .trimEnd()
-        .split("\n")
-        .map((r) => r.split("\t"))
+      const rows = paste.split("\n").map((r) => r.split("\t"))
 
       const hasFirstRowWithLabels = rows[0].some(isText)
       const hasFirstColumnWithLabels = rows.map((r) => r[0]).some(isText)
