@@ -85,6 +85,26 @@ export interface ProductCategoryDTO {
   updated_at: string | Date
 }
 
+export interface CreateProductCategoryDTO {
+  name: string
+  handle?: string
+  is_active?: boolean
+  is_internal?: boolean
+  rank?: number
+  parent_category_id: string | null
+  metadata?: Record<string, unknown>
+}
+
+export interface UpdateProductCategoryDTO {
+  name?: string
+  handle?: string
+  is_active?: boolean
+  is_internal?: boolean
+  rank?: number
+  parent_category_id?: string | null
+  metadata?: Record<string, unknown>
+}
+
 export interface ProductTagDTO {
   id: string
   value: string
@@ -153,6 +173,19 @@ export interface FilterableProductTagProps
   value?: string
 }
 
+export interface FilterableProductTypeProps
+  extends BaseFilterable<FilterableProductTypeProps> {
+  id?: string | string[]
+  value?: string
+}
+
+export interface FilterableProductOptionProps
+  extends BaseFilterable<FilterableProductOptionProps> {
+  id?: string | string[]
+  title?: string
+  product_id?: string | string[]
+}
+
 export interface FilterableProductCollectionProps
   extends BaseFilterable<FilterableProductCollectionProps> {
   id?: string | string[]
@@ -170,6 +203,7 @@ export interface FilterableProductVariantProps
 export interface FilterableProductCategoryProps
   extends BaseFilterable<FilterableProductCategoryProps> {
   id?: string | string[]
+  name?: string | string[]
   parent_category_id?: string | string[] | null
   handle?: string | string[]
   is_active?: boolean
@@ -181,18 +215,63 @@ export interface FilterableProductCategoryProps
  * Write DTO (module API input)
  */
 
+export interface CreateProductCollectionDTO {
+  title: string
+  handle?: string
+  products?: ProductDTO[]
+  metadata?: Record<string, unknown>
+}
+
+export interface UpdateProductCollectionDTO {
+  id: string
+  value?: string
+  title?: string
+  handle?: string
+  products?: ProductDTO[]
+  metadata?: Record<string, unknown>
+}
+
 export interface CreateProductTypeDTO {
+  id?: string
+  value: string
+  metadata?: Record<string, unknown>
+}
+
+export interface UpsertProductTypeDTO {
   id?: string
   value: string
 }
 
+export interface UpdateProductTypeDTO {
+  id: string
+  value?: string
+  metadata?: Record<string, unknown>
+}
+
 export interface CreateProductTagDTO {
+  value: string
+}
+
+export interface UpsertProductTagDTO {
   id?: string
   value: string
+}
+
+export interface UpdateProductTagDTO {
+  id: string
+  value?: string
 }
 
 export interface CreateProductOptionDTO {
   title: string
+  product_id?: string
+  product?: Record<any, any>
+}
+
+export interface UpdateProductOptionDTO {
+  id: string
+  title?: string
+  product_id?: string
 }
 
 export interface CreateProductVariantOptionDTO {
@@ -368,6 +447,7 @@ export interface UpdateProductVariantOnlyDTO {
 }
 
 export interface CreateProductOptionOnlyDTO {
-  product: { id: string }
+  product_id?: string
+  product?: Record<any, any>
   title: string
 }

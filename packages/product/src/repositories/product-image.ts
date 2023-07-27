@@ -22,8 +22,7 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
     findOptions: DAL.FindOptions<Image> = { where: {} },
     context: Context = {}
   ): Promise<Image[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -43,8 +42,7 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
     findOptions: DAL.FindOptions<Image> = { where: {} },
     context: Context = {}
   ): Promise<[Image[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}

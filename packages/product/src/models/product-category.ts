@@ -50,10 +50,10 @@ class ProductCategory {
   rank?: number
 
   @Property({ columnType: "text", nullable: true })
-  parent_category_id?: string
+  parent_category_id?: string | null
 
   @ManyToOne(() => ProductCategory, { nullable: true })
-  parent_category: ProductCategory
+  parent_category?: ProductCategory
 
   @OneToMany({
     entity: () => ProductCategory,
@@ -62,14 +62,14 @@ class ProductCategory {
   category_children = new Collection<ProductCategory>(this)
 
   @Property({ onCreate: () => new Date(), columnType: "timestamptz" })
-  created_at: Date
+  created_at?: Date
 
   @Property({
     onCreate: () => new Date(),
     onUpdate: () => new Date(),
     columnType: "timestamptz",
   })
-  updated_at: Date
+  updated_at?: Date
 
   @ManyToMany(() => Product, (product) => product.categories)
   products = new Collection<Product>(this)
