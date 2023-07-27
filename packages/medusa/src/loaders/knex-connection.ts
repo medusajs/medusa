@@ -1,8 +1,8 @@
 import { asValue, AwilixContainer } from "awilix"
 import { DataSourceOptions } from "typeorm"
 import { ConfigModule } from "../types/global"
-import "../utils/naming-strategy"
 import { PG_KNEX_CONNECTION_REGISTRATION_KEY } from "@medusajs/utils"
+import { knex } from "knex"
 
 type Options = {
   configModule: ConfigModule
@@ -21,7 +21,7 @@ export default async ({ container, configModule }: Options): Promise<void> => {
 
   // Share a knex connection to be consumed by the shared modules
   if (!container.hasRegistration(PG_KNEX_CONNECTION_REGISTRATION_KEY)) {
-    const pgConnection = require("knex").knex({
+    const pgConnection = knex<any, any>({
       client: "pg",
       searchPath: schema,
       connection: {
