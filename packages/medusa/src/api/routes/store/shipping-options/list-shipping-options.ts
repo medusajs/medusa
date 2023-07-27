@@ -5,9 +5,12 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  * @oas [get] /store/shipping-options/{cart_id}
  * operationId: GetShippingOptionsCartId
  * summary: List for Cart
- * description: "Retrieves a list of Shipping Options available to a cart."
+ * description: "Retrieve a list of Shipping Options available for a cart."
+ * externalDocs:
+ *   description: "How to implement shipping step in checkout"
+ *   url: "https://docs.medusajs.com/modules/carts-and-checkout/storefront/implement-checkout-flow#shipping-step"
  * parameters:
- *   - (path) cart_id {string} The id of the Cart.
+ *   - (path) cart_id {string} The ID of the Cart.
  * x-codegen:
  *   method: listCartOptions
  * x-codeSamples:
@@ -16,14 +19,14 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.shippingOptions.listCartOptions(cart_id)
+ *       medusa.shippingOptions.listCartOptions(cartId)
  *       .then(({ shipping_options }) => {
  *         console.log(shipping_options.length);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/shipping-options/{cart_id}'
+ *       curl 'https://medusa-url.com/store/shipping-options/{cart_id}'
  * tags:
  *   - Shipping Options
  * responses:

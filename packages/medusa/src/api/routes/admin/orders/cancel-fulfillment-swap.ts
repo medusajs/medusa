@@ -13,14 +13,14 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersSwapFulfillmentsCancel"
  * summary: "Cancel Swap's Fulfilmment"
- * description: "Registers a Swap's Fulfillment as canceled."
+ * description: "Cancel a swap's fulfillment and change its status."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Order which the Swap relates to.
- *   - (path) swap_id=* {string} The ID of the Swap which the Fulfillment relates to.
- *   - (path) fulfillment_id=* {string} The ID of the Fulfillment.
- *   - (query) expand {string} Comma separated list of relations to include in the result.
- *   - (query) fields {string} Comma separated list of fields to include in the result.
+ *   - (path) id=* {string} The ID of the order the swap is associated with.
+ *   - (path) swap_id=* {string} The ID of the swap.
+ *   - (path) fulfillment_id=* {string} The ID of the fulfillment.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * x-codegen:
  *   method: cancelSwapFulfillment
  *   params: AdminPostOrdersSwapFulfillementsCancelParams
@@ -31,15 +31,15 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.cancelSwapFulfillment(order_id, swap_id, fulfillment_id)
+ *       medusa.admin.orders.cancelSwapFulfillment(orderId, swapId, fulfillmentId)
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

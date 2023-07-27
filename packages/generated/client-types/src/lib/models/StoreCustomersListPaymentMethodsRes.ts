@@ -4,9 +4,12 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StoreCustomersListPaymentMethodsRes {
+  /**
+   * An array of saved payment method details.
+   */
   payment_methods: Array<{
     /**
-     * The id of the Payment Provider where the payment method is saved.
+     * The ID of the Payment Provider where the payment method is saved.
      */
     provider_id: string
     /**

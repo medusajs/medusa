@@ -1159,13 +1159,18 @@ module.exports = {
       items: [
         {
           type: "doc",
+          id: "development/backend/prepare-environment",
+          label: "Prepare Environment",
+        },
+        {
+          type: "doc",
           id: "development/backend/install",
           label: "Backend Quickstart",
         },
         {
           type: "doc",
-          id: "development/backend/prepare-environment",
-          label: "Prepare Environment",
+          id: "development/backend/directory-structure",
+          label: "Directory Structure",
         },
         {
           type: "doc",

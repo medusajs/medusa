@@ -11,12 +11,12 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  * @oas [get] /admin/stock-locations/{id}
  * operationId: "GetStockLocationsStockLocation"
  * summary: "Get a Stock Location"
- * description: "Retrieves the Stock Location."
+ * description: "Retrieve a Stock Location's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Stock Location.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned stock location.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned stock location.
  * x-codegen:
  *   method: retrieve
  *   queryParams: AdminGetStockLocationsLocationParams
@@ -34,8 +34,8 @@ import { joinSalesChannels } from "./utils/join-sales-channels"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/stock-locations/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
+ *       curl 'https://medusa-url.com/admin/stock-locations/{id}' \
+ *       -H 'Authorization: Bearer {api_token}' \
  * security:
  *   - api_token: []
  *   - cookie_auth: []

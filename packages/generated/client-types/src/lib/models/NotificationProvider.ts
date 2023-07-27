@@ -4,15 +4,15 @@
 import { SetRelation, Merge } from "../core/ModelUtils"
 
 /**
- * Represents a notification provider plugin and holds its installation status.
+ * A notification provider represents a notification service installed in the Medusa backend, either through a plugin or backend customizations. It holds the notification service's installation status.
  */
 export interface NotificationProvider {
   /**
-   * The id of the notification provider as given by the plugin.
+   * The ID of the notification provider as given by the notification service.
    */
   id: string
   /**
-   * Whether the plugin is installed in the current version. Plugins that are no longer installed are not deleted by will have this field set to `false`.
+   * Whether the notification service is installed in the current version. If a notification service is no longer installed, the `is_installed` attribute is set to `false`.
    */
   is_installed: boolean
 }

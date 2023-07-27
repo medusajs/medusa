@@ -8,15 +8,11 @@ import MedusaCliTroubleshootingSection from '../../troubleshooting/cli-installat
 
 # Prepare Development Environment
 
-This document will guide you to prepare your development environment to efficiently and properly use Medusa.
+This document includes the installation instructions for the tools required to use and run Medusa.
 
-## Required Tools
+## Node.js
 
-To get your development environment ready you need to install the following tools:
-
-### Node.js
-
-Node.js is the environment that makes it possible for Medusa to run, so you must install Node.js on your computer to start Medusa development.
+Node.js is the environment that makes it possible for Medusa to run, so you must install Node.js on your machine to start Medusa development.
 
 :::caution
 
@@ -85,9 +81,9 @@ Make sure that you have Xcode command line tools installed; if not,  run the fol
 </TabItem>
 </Tabs>
 
-### Git
+## Git
 
-Medusa uses Git behind the scenes when you create a new project so you'll have to install it on your computer to get started.
+Medusa uses Git behind the scenes when you create a new project. So, you'll have to install it on your machine to get started.
 
 <Tabs groupId="operating-systems" queryString="os">
 <TabItem value="windows" label="Windows" default>
@@ -121,35 +117,9 @@ You can also check out [git’s guide](https://git-scm.com/download/mac) for mor
 </TabItem>
 </Tabs>
 
-### Medusa CLI
-
-The final installation required to get started with Medusa is the Medusa CLI. It is an NPM package you can install globally on your machine to get instant access to commands that help you manage and run your Medusa project.
-
-You can install Medusa’s CLI with the following command:
-
-```bash npm2yarn
-npm install @medusajs/medusa-cli -g
-```
-
-You can check that Medusa was installed by running the following command:
-
-```bash noReport
-medusa -v
-```
-
-#### Troubleshooting Installation
-
-<MedusaCliTroubleshootingSection />
-
-### PostgreSQL
+## PostgreSQL
 
 The Medusa backend uses PostgreSQL to store data of your commerce system.
-
-:::tip
-
-After installing PostgreSQL, check out the [Configure your Backend documentation](./configurations.md#postgresql-configurations) to learn how to configure PostgreSQL to work with Medusa.
-
-:::
 
 <Tabs groupId="operating-systems" queryString="os">
 <TabItem value="windows" label="Windows">
@@ -180,13 +150,28 @@ You can download PostgreSQL on your macOS using [the installer on their website]
 </TabItem>
 </Tabs>
 
+## (Optional) Medusa CLI
+
+Medusa provides a CLI tool that can aid your through your Medusa development. You can install it globally, or you can use it through `npx`.
+
+You can install Medusa’s CLI with the following command:
+
+```bash npm2yarn
+npm install @medusajs/medusa-cli -g
+```
+
+To confirm that the CLI tool was installed successfully, run the following command:
+
+```bash noReport
+medusa -v
+```
+
+### Troubleshooting Installation
+
+<MedusaCliTroubleshootingSection />
+
 ---
 
 ## Install Medusa Backend
 
-If you're not interested in installing the optional tools and want to get started with Medusa quickly, check out the [Medusa Backend Quickstart](./install.mdx).
-
-## See Also
-
-- [Install Medusa backend](./install.mdx)
-- [Configure the Medusa backend](./configurations.md)
+Once you're done installing the necessary tools in your environment, check out the [Medusa Backend Quickstart](./install.mdx) to install your Medusa backend.

@@ -7,11 +7,11 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 /**
  * @oas [post] /admin/publishable-api-key/{id}
  * operationId: "PostPublishableApiKysPublishableApiKey"
- * summary: "Update PublishableApiKey"
- * description: "Updates a PublishableApiKey."
+ * summary: "Update Publishable API Key"
+ * description: "Update a Publishable API Key's details."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the PublishableApiKey.
+ *   - (path) id=* {string} The ID of the Publishable API Key.
  * requestBody:
  *   content:
  *     application/json:
@@ -35,9 +35,9 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/publishable-api-key/{pka_id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/publishable-api-key/{id}' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "new title"
  *       }'
@@ -92,7 +92,7 @@ export default async (req: Request, res: Response) => {
  * type: object
  * properties:
  *   title:
- *     description: A title to update for the key.
+ *     description: The title of the Publishable API Key.
  *     type: string
  */
 export class AdminPostPublishableApiKeysPublishableApiKeyReq {

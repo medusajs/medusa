@@ -19,6 +19,9 @@ export interface AdminProductsDeleteOptionRes {
    * Whether or not the items were deleted.
    */
   deleted: boolean
+  /**
+   * Product details.
+   */
   product: Merge<
     SetRelation<
       PricedProduct,

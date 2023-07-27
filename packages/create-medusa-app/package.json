@@ -1,6 +1,6 @@
 {
   "name": "create-medusa-app",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Create a Medusa project using a single command.",
   "type": "module",
   "exports": "./dist/index.js",
@@ -13,7 +13,7 @@
     "prepare": "cross-env NODE_ENV=production yarn run build"
   },
   "dependencies": {
-    "@medusajs/utils": "^1.9.2",
+    "@medusajs/utils": "^1.9.3",
     "boxen": "^5",
     "chalk": "^5.2.0",
     "commander": "^10.0.1",

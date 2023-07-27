@@ -13,15 +13,15 @@ export interface StorePostSwapsReq {
    */
   return_items: Array<{
     /**
-     * The ID of the Line Item from the Order.
+     * The ID of the order's line item to return.
      */
     item_id: string
     /**
-     * The quantity to swap.
+     * The quantity to return.
      */
     quantity: number
     /**
-     * The ID of the reason of this return.
+     * The ID of the reason of this return. Return reasons can be retrieved from the List Return Reasons endpoint.
      */
     reason_id?: string
     /**
@@ -34,15 +34,15 @@ export interface StorePostSwapsReq {
    */
   return_shipping_option?: string
   /**
-   * The items to exchange the returned items to.
+   * The items to exchange the returned items with.
    */
   additional_items: Array<{
     /**
-     * The ID of the Product Variant to send.
+     * The ID of the Product Variant.
      */
     variant_id: string
     /**
-     * The quantity to send of the variant.
+     * The quantity of the variant.
      */
     quantity: number
   }>

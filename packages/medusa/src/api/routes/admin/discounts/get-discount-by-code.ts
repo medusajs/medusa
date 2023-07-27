@@ -6,12 +6,12 @@ import { FindParams } from "../../../../types/common"
  * @oas [get] /admin/discounts/code/{code}
  * operationId: "GetDiscountsDiscountCode"
  * summary: "Get Discount by Code"
- * description: "Retrieves a Discount by its discount code"
+ * description: "Retrieve a Discount's details by its discount code"
  * x-authenticated: true
  * parameters:
  *   - (path) code=* {string} The code of the Discount
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned discount.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned discount.
  * x-codegen:
  *   method: retrieveByCode
  *   queryParams: AdminGetDiscountsDiscountCodeParams
@@ -29,8 +29,8 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/discounts/code/{code}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/discounts/code/{code}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

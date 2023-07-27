@@ -10,12 +10,12 @@ import { isDefined } from "medusa-core-utils"
  * @oas [get] /admin/gift-cards
  * operationId: "GetGiftCards"
  * summary: "List Gift Cards"
- * description: "Retrieves a list of Gift Cards."
+ * description: "Retrieve a list of Gift Cards. The gift cards can be filtered by fields such as `q`. The gift cards can also paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) offset=0 {number} The number of items to skip before the results.
- *   - (query) limit=50 {number} Limit the number of items returned.
- *   - (query) q {string} a search term to search by code or display ID
+ *   - (query) offset=0 {number} The number of gift cards to skip when retrieving the gift cards.
+ *   - (query) limit=50 {number} Limit the number of gift cards returned.
+ *   - (query) q {string} a term to search gift cards' code or display ID
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetGiftCardsParams
@@ -33,8 +33,8 @@ import { isDefined } from "medusa-core-utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/gift-cards' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/gift-cards' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

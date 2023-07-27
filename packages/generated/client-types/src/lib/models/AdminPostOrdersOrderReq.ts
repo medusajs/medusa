@@ -9,43 +9,43 @@ import type { LineItem } from "./LineItem"
 
 export interface AdminPostOrdersOrderReq {
   /**
-   * the email for the order
+   * the email associated with the order
    */
   email?: string
   /**
-   * Billing address
+   * The order's billing address
    */
   billing_address?: AddressPayload
   /**
-   * Shipping address
+   * The order's shipping address
    */
   shipping_address?: AddressPayload
   /**
-   * The Line Items for the order
+   * The line items of the order
    */
   items?: Array<LineItem>
   /**
-   * ID of the region where the order belongs
+   * ID of the region that the order is associated with.
    */
   region?: string
   /**
-   * Discounts applied to the order
+   * The discounts applied to the order
    */
   discounts?: Array<Discount>
   /**
-   * ID of the customer
+   * The ID of the customer associated with the order.
    */
   customer_id?: string
   /**
-   * payment method chosen for the order
+   * The payment method chosen for the order.
    */
   payment_method?: {
     /**
-     * ID of the payment provider
+     * The ID of the payment provider.
      */
     provider_id?: string
     /**
-     * Data relevant for the given payment method
+     * Any data relevant for the given payment method.
      */
     data?: Record<string, any>
   }
@@ -66,7 +66,7 @@ export interface AdminPostOrdersOrderReq {
      */
     price?: number
     /**
-     * Data relevant to the specific shipping method.
+     * Any data relevant to the specific shipping method.
      */
     data?: Record<string, any>
     /**
@@ -75,7 +75,7 @@ export interface AdminPostOrdersOrderReq {
     items?: Array<LineItem>
   }
   /**
-   * A flag to indicate if no notifications should be emitted related to the updated order.
+   * If set to `true`, no notification will be sent to the customer related to this order.
    */
   no_notification?: boolean
 }

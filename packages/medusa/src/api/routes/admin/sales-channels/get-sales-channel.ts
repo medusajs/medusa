@@ -6,7 +6,7 @@ import { SalesChannelService } from "../../../../services"
  * @oas [get] /admin/sales-channels/{id}
  * operationId: "GetSalesChannelsSalesChannel"
  * summary: "Get a Sales Channel"
- * description: "Retrieves the sales channel."
+ * description: "Retrieve a sales channel's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Sales channel.
@@ -19,15 +19,15 @@ import { SalesChannelService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.salesChannels.retrieve(sales_channel_id)
+ *       medusa.admin.salesChannels.retrieve(salesChannelId)
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/sales-channels/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/sales-channels/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

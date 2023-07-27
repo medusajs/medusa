@@ -297,6 +297,7 @@ export const defaultStoreCartRelations = [
  *   - cart
  * properties:
  *   cart:
+ *     description: "Cart details."
  *     $ref: "#/components/schemas/Cart"
  */
 export type StoreCartsRes = {
@@ -312,7 +313,9 @@ export type StoreCartsRes = {
  * properties:
  *   type:
  *     type: string
- *     description: The type of the data property.
+ *     description: "The type of the data property. If the cart completion fails, type will be `cart` and the data object will be the cart's details.
+ *      If the cart completion is successful and the cart is used for checkout, type will be `order` and the data object will be the order's details.
+ *      If the cart completion is successful and the cart is used for swap creation, type will be `swap` and the data object will be the swap's details."
  *     enum: [order, cart, swap]
  *   data:
  *     type: object
@@ -328,7 +331,7 @@ export type StoreCartsRes = {
  *           - $ref: "#/components/schemas/Cart"
  *       - type: object
  *         allOf:
- *           - description: When cart is used for a swap and it has been completed successfully.
+ *           - description: Cart was used for a swap and it has been completed successfully.
  *           - $ref: "#/components/schemas/Swap"
  */
 export type StoreCompleteCartRes =

@@ -107,7 +107,7 @@ class Product {
     nullable: true,
     fieldName: "collection_id",
   })
-  collection!: ProductCollection
+  collection!: ProductCollection | null
 
   @Property({ columnType: "text", nullable: true })
   type_id!: string

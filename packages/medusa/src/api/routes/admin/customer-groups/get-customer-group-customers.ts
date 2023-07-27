@@ -8,14 +8,14 @@ import { Type } from "class-transformer"
  * @oas [get] /admin/customer-groups/{id}/customers
  * operationId: "GetCustomerGroupsGroupCustomers"
  * summary: "List Customers"
- * description: "Retrieves a list of customers in a customer group"
+ * description: "Retrieve a list of customers in a customer group. The customers can be filtered by the `q` field. The customers can also be paginated."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the customer group.
- *   - (query) limit=50 {integer} The number of items to return.
- *   - (query) offset=0 {integer} The items to skip before result.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer.
- *   - (query) q {string} a search term to search email, first_name, and last_name.
+ *   - (query) limit=50 {integer} The number of customers to return.
+ *   - (query) offset=0 {integer} The number of customers to skip when retrieving the customers.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned customers.
+ *   - (query) q {string} a term to search customers by email, first_name, and last_name.
  * x-codegen:
  *   method: listCustomers
  *   queryParams: AdminGetGroupsGroupCustomersParams
@@ -26,15 +26,15 @@ import { Type } from "class-transformer"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.customerGroups.listCustomers(customer_group_id)
+ *       medusa.admin.customerGroups.listCustomers(customerGroupId)
  *       .then(({ customers }) => {
  *         console.log(customers.length);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/customer-groups/{id}/customers' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/customer-groups/{id}/customers' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

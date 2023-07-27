@@ -5,11 +5,11 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 /**
  * @oas [delete] /admin/publishable-api-keys/{id}
  * operationId: "DeletePublishableApiKeysPublishableApiKey"
- * summary: "Delete PublishableApiKey"
- * description: "Deletes a PublishableApiKeys"
+ * summary: "Delete Publishable API Key"
+ * description: "Delete a Publishable API Key. Associated resources, such as sales channels, are not deleted."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the PublishableApiKeys to delete.
+ *   - (path) id=* {string} The ID of the Publishable API Key to delete.
  * x-codegen:
  *   method: delete
  * x-codeSamples:
@@ -26,8 +26,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/publishable-api-key/{pka_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/publishable-api-key/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

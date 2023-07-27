@@ -34,6 +34,7 @@ export const defaultRelations = ["orders", "orders.items", "shipping_addresses"]
  *   - customer
  * properties:
  *   customer:
+ *     description: "Customer's details."
  *     $ref: "#/components/schemas/Customer"
  */
 export type StoreAuthRes = {

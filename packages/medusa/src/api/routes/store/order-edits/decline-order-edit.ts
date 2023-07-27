@@ -10,8 +10,8 @@ import {
 /**
  * @oas [post] /store/order-edits/{id}/decline
  * operationId: "PostOrderEditsOrderEditDecline"
- * summary: "Decline an OrderEdit"
- * description: "Declines an OrderEdit."
+ * summary: "Decline an Order Edit"
+ * description: "Decline an Order Edit. The changes are not reflected on the original order."
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
  * requestBody:
@@ -27,14 +27,14 @@ import {
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.orderEdits.decline(order_edit_id)
+ *       medusa.orderEdits.decline(orderEditId)
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id);
  *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/order-edits/{id}/decline'
+ *       curl -X POST 'https://medusa-url.com/store/order-edits/{id}/decline'
  * tags:
  *   - Order Edits
  * responses:
@@ -88,7 +88,7 @@ export default async (req: Request, res: Response) => {
  * properties:
  *   declined_reason:
  *     type: string
- *     description: The reason for declining the OrderEdit.
+ *     description: The reason for declining the Order Edit.
  */
 export class StorePostOrderEditsOrderEditDecline {
   @IsOptional()

@@ -71,6 +71,7 @@ export const defaultAdminGiftCardRelations = ["region", "order"]
  *   - gift_card
  * properties:
  *   gift_card:
+ *     description: "A gift card's details."
  *     $ref: "#/components/schemas/GiftCard"
  */
 export type AdminGiftCardsRes = {
@@ -94,7 +95,7 @@ export type AdminGiftCardsRes = {
  *     default: gift-card
  *   deleted:
  *     type: boolean
- *     description: Whether the gift card was deleted successfully or not.
+ *     description: Whether the gift card was deleted successfully.
  *     default: true
  */
 export type AdminGiftCardsDeleteRes = DeleteResponse
@@ -125,7 +126,7 @@ export type AdminGiftCardsDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of gift cards skipped when retrieving the gift cards.
  *   limit:
  *     type: integer
  *     description: The number of items per page
