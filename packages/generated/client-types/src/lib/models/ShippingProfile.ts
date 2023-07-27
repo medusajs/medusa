@@ -7,7 +7,7 @@ import type { Product } from "./Product"
 import type { ShippingOption } from "./ShippingOption"
 
 /**
- * Shipping Profiles have a set of defined Shipping Options that can be used to fulfill a given set of Products.
+ * A Shipping Profile has a set of defined Shipping Options that can be used to fulfill a given set of Products. For example, gift cards are shipped differently than physical products, so a shipping profile with the type `gift_card` groups together the shipping options that can only be used for gift cards.
  */
 export interface ShippingProfile {
   /**
@@ -23,11 +23,11 @@ export interface ShippingProfile {
    */
   type: "default" | "gift_card" | "custom"
   /**
-   * The Products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.
+   * The details of the products that the Shipping Profile defines Shipping Options for. Available if the relation `products` is expanded.
    */
   products?: Array<Product>
   /**
-   * The Shipping Options that can be used to fulfill the Products in the Shipping Profile. Available if the relation `shipping_options` is expanded.
+   * The details of the shipping options that can be used to create shipping methods for the Products in the Shipping Profile.
    */
   shipping_options?: Array<ShippingOption>
   /**

@@ -63,6 +63,7 @@ export default (app) => {
  *   - reservation
  * properties:
  *   reservation:
+ *     description: Reservation details.
  *     $ref: "#/components/schemas/ReservationItemDTO"
  */
 export type AdminReservationsRes = {
@@ -77,10 +78,10 @@ export type AdminReservationsRes = {
  *   - type: object
  *     properties:
  *       line_item:
- *         description: optional line item
+ *         description: The line item associated with the reservation.
  *         $ref: "#/components/schemas/LineItem"
  *       inventory_item:
- *         description: inventory item from inventory module
+ *         description: The inventory item associated with the reservation.
  *         $ref: "#/components/schemas/InventoryItemDTO"
  */
 export type ExtendedReservationItem = ReservationItemDTO & {
@@ -99,6 +100,7 @@ export type ExtendedReservationItem = ReservationItemDTO & {
  * properties:
  *   reservations:
  *     type: array
+ *     description: An array of reservations details.
  *     items:
  *       $ref: "#/components/schemas/ExtendedReservationItem"
  *   count:
@@ -106,7 +108,7 @@ export type ExtendedReservationItem = ReservationItemDTO & {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of reservations skipped when retrieving the reservations.
  *   limit:
  *     type: integer
  *     description: The number of items per page

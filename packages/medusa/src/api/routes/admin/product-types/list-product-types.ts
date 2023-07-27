@@ -12,18 +12,18 @@ import ProductTypeService from "../../../../services/product-type"
  * @oas [get] /admin/product-types
  * operationId: "GetProductTypes"
  * summary: "List Product Types"
- * description: "Retrieve a list of Product Types."
+ * description: "Retrieve a list of product types. The product types can be filtered by fields such as `q` or `value`. The product types can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) limit=20 {integer} The number of types to return.
- *   - (query) offset=0 {integer} The number of items to skip before the results.
- *   - (query) order {string} The field to sort items by.
- *   - (query) discount_condition_id {string} The discount condition id on which to filter the product types.
+ *   - (query) limit=20 {integer} Limit the number of product types returned.
+ *   - (query) offset=0 {integer} The number of product types to skip when retrieving the product types.
+ *   - (query) order {string} A product type field to sort-order the retrieved product types by.
+ *   - (query) discount_condition_id {string} Filter by the ID of a discount condition. Only product types that this discount condition is applied to will be retrieved.
  *   - in: query
  *     name: value
  *     style: form
  *     explode: false
- *     description: The type values to search for
+ *     description: Filter by value.
  *     schema:
  *       type: array
  *       items:
@@ -32,15 +32,15 @@ import ProductTypeService from "../../../../services/product-type"
  *     name: id
  *     style: form
  *     explode: false
- *     description: The type IDs to search for
+ *     description: Filter by product type IDs.
  *     schema:
  *       type: array
  *       items:
  *         type: string
- *   - (query) q {string} A query string to search values for
+ *   - (query) q {string} term to search product types' values.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting product types were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -62,7 +62,7 @@ import ProductTypeService from "../../../../services/product-type"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting product types were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -99,8 +99,8 @@ import ProductTypeService from "../../../../services/product-type"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/product-types' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/product-types' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

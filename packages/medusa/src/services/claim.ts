@@ -430,7 +430,7 @@ export default class ClaimService extends TransactionBaseService {
               id: result.additional_items.map((i) => i.id),
             },
             {
-              relations: ["variant", "variant.product"],
+              relations: ["variant.product.profiles"],
             }
           )
 
@@ -525,10 +525,8 @@ export default class ClaimService extends TransactionBaseService {
       async (transactionManager: EntityManager) => {
         const claim = await this.retrieve(id, {
           relations: [
-            "additional_items",
             "additional_items.tax_lines",
-            "additional_items.variant",
-            "additional_items.variant.product",
+            "additional_items.variant.product.profiles",
             "shipping_methods",
             "shipping_methods.shipping_option",
             "shipping_methods.tax_lines",

@@ -290,23 +290,16 @@ class ShippingProfileService extends TransactionBaseService {
         this.shippingProfileRepository_
       )
 
-      let profile = await this.retrieve(profileId, {
-        relations: [
-          "products",
-          "products.profile",
-          "shipping_options",
-          "shipping_options.profile",
-        ],
-      })
+      const profile = await this.retrieve(profileId)
 
       const { metadata, products, shipping_options, ...rest } = update
 
       if (products) {
-        profile = await this.addProduct(profile.id, products)
+        await this.addProduct(profile.id, products)
       }
 
       if (shipping_options) {
-        profile = await this.addShippingOption(profile.id, shipping_options)
+        await this.addShippingOption(profile.id, shipping_options)
       }
 
       if (metadata) {
@@ -347,12 +340,22 @@ class ShippingProfileService extends TransactionBaseService {
   }
 
   /**
-   * Adds a product of an array of products to the profile.
+   * @deprecated use {@link addProducts} instead
+   */
+  async addProduct(
+    profileId: string,
+    productId: string | string[]
+  ): Promise<ShippingProfile> {
+    return await this.addProducts(profileId, productId)
+  }
+
+  /**
+   * Adds a product or an array of products to the profile.
    * @param profileId - the profile to add the products to.
    * @param productId - the ID of the product or multiple products to add.
    * @return the result of update
    */
-  async addProduct(
+  async addProducts(
     profileId: string,
     productId: string | string[]
   ): Promise<ShippingProfile> {
@@ -364,14 +367,27 @@ class ShippingProfileService extends TransactionBaseService {
         profileId
       )
 
-      return await this.retrieve(profileId, {
-        relations: [
-          "products",
-          "products.profile",
-          "shipping_options",
-          "shipping_options.profile",
-        ],
-      })
+      return await this.retrieve(profileId)
+    })
+  }
+
+  /**
+   * Removes a product or an array of products from the profile.
+   * @param profileId - the profile to add the products to.
+   * @param productId - the ID of the product or multiple products to add.
+   * @return the result of update
+   */
+  async removeProducts(
+    profileId: string | null,
+    productId: string | string[]
+  ): Promise<ShippingProfile | void> {
+    return await this.atomicPhase_(async (manager) => {
+      const productServiceTx = this.productService_.withTransaction(manager)
+
+      await productServiceTx.updateShippingProfile(
+        isString(productId) ? [productId] : productId,
+        null
+      )
     })
   }
 
@@ -396,12 +412,7 @@ class ShippingProfileService extends TransactionBaseService {
       )
 
       return await this.retrieve(profileId, {
-        relations: [
-          "products",
-          "products.profile",
-          "shipping_options",
-          "shipping_options.profile",
-        ],
+        relations: ["products.profiles", "shipping_options.profile"],
       })
     })
   }

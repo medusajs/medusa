@@ -1,6 +1,6 @@
-import { ProductServiceInitializeOptions } from "../../src/types"
+import { ModuleServiceInitializeOptions } from "@medusajs/types"
 
-export const databaseOptions: ProductServiceInitializeOptions["database"] = {
+export const databaseOptions: ModuleServiceInitializeOptions["database"] = {
   schema: "public",
   clientUrl: "medusa-products-test",
 }

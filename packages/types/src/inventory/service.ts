@@ -1,20 +1,20 @@
 import {
-  CreateInventoryItemInput,
-  CreateInventoryLevelInput,
-  CreateReservationItemInput,
-  FilterableInventoryItemProps,
-  FilterableInventoryLevelProps,
-  FilterableReservationItemProps,
-  InventoryItemDTO,
-  InventoryLevelDTO,
-  ReservationItemDTO,
-  UpdateInventoryLevelInput,
-  UpdateReservationItemInput,
+    CreateInventoryItemInput,
+    CreateInventoryLevelInput,
+    CreateReservationItemInput,
+    FilterableInventoryItemProps,
+    FilterableInventoryLevelProps,
+    FilterableReservationItemProps,
+    InventoryItemDTO,
+    InventoryLevelDTO,
+    ReservationItemDTO,
+    UpdateInventoryLevelInput,
+    UpdateReservationItemInput,
 } from "./common"
 
+import { SharedContext } from ".."
 import { FindConfig } from "../common"
 import { JoinerServiceConfig } from "../joiner"
-import { SharedContext } from ".."
 
 export interface IInventoryService {
   __joinerConfig(): JoinerServiceConfig
@@ -58,6 +58,7 @@ export interface IInventoryService {
     context?: SharedContext
   ): Promise<ReservationItemDTO>
 
+  // TODO make it bulk
   createReservationItems(
     input: CreateReservationItemInput[],
     context?: SharedContext

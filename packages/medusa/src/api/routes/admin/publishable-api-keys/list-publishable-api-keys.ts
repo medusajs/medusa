@@ -7,15 +7,15 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 /**
  * @oas [get] /admin/publishable-api-keys
  * operationId: "GetPublishableApiKeys"
- * summary: "List PublishableApiKeys"
- * description: "List PublishableApiKeys."
+ * summary: "List Publishable API keys"
+ * description: "Retrieve a list of publishable API keys. The publishable API keys can be filtered by fields such as `q`. The publishable API keys can also be paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching publishable api keys by title.
- *   - (query) limit=20 {number} The number of items in the response
- *   - (query) offset=0 {number} The offset of items in response
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) q {string} term to search publishable API keys' titles.
+ *   - (query) limit=20 {number} Limit the number of publishable API keys returned.
+ *   - (query) offset=0 {number} The number of publishable API keys to skip when retrieving the publishable API keys.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned publishable API keys.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned publishable API keys.
  * x-codegen:
  *   method: list
  *   queryParams: GetPublishableApiKeysParams
@@ -33,8 +33,8 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/publishable-api-keys' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/publishable-api-keys' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

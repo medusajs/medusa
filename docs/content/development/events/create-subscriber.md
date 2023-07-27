@@ -54,6 +54,39 @@ eventBusService.subscribe("order.placed", this.handleOrder, {
 
 ---
 
+## Retrieve Medusa Configurations
+
+Within your subscriber, you may need to access the Medusa configuration exported from `medusa-config.js`. To do that, you can access `configModule` using dependency injection.
+
+For example:
+
+```ts
+import { ConfigModule, EventBusService } from "@medusajs/medusa"
+
+type InjectedDependencies = {
+  eventBusService: EventBusService
+  configModule: ConfigModule
+}
+
+class OrderNotifierSubscriber {
+  protected readonly configModule_: ConfigModule
+  
+  constructor({
+    eventBusService,
+    configModule,
+  }: InjectedDependencies) {
+    this.configModule_ = configModule
+    eventBusService.subscribe("order.placed", this.handleOrder)
+  }
+
+  // ...
+}
+
+export default OrderNotifierSubscriber
+```
+
+---
+
 ## Using Services in Subscribers
 
 You can access any service through the dependencies injected to your subscriber’s constructor.

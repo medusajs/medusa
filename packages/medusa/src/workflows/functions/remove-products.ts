@@ -1,12 +1,13 @@
 import { MedusaContainer, ProductTypes } from "@medusajs/types"
 
-export async function createProducts({
+export async function removeProducts({
   container,
   data,
 }: {
   container: MedusaContainer
-  data: ProductTypes.CreateProductDTO[]
+  data: ProductTypes.ProductDTO[]
 }) {
-  const productModuleService = container.resolve("productModuleService")
-  return await productModuleService.create(data)
+  const productModuleService: ProductTypes.IProductModuleService =
+    container.resolve("productModuleService")
+  return await productModuleService.softDelete(data.map((p) => p.id))
 }

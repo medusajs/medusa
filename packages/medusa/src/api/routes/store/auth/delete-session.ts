@@ -2,7 +2,7 @@
  * @oas [delete] /store/auth
  * operationId: "DeleteAuth"
  * summary: "Customer Log out"
- * description: "Destroys a Customer's authenticated session."
+ * description: "Delete the current session for the logged in customer."
  * x-authenticated: true
  * x-codegen:
  *   method: deleteSession
@@ -10,8 +10,8 @@
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/store/auth' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl -X DELETE 'https://medusa-url.com/store/auth' \
+ *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
  * tags:

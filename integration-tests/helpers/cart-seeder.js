@@ -444,14 +444,16 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceList1)
 
-  await manager.insert(Product, {
+  const giftCardProduct = manager.create(Product, {
     id: "giftcard-product",
     title: "Giftcard",
     is_giftcard: true,
     discountable: false,
     profile_id: gcProfile.id,
+    profiles: [{ id: gcProfile.id }],
     options: [{ id: "denom", title: "Denomination" }],
   })
+  await manager.save(Product, giftCardProduct)
 
   await manager.insert(ProductVariant, {
     id: "giftcard-denom",
@@ -466,12 +468,14 @@ module.exports = async (dataSource, data = {}) => {
     ],
   })
 
-  await manager.insert(Product, {
+  const testProduct = manager.create(Product, {
     id: "test-product",
     title: "test product",
     profile_id: defaultProfile.id,
+    profiles: [{ id: defaultProfile.id }],
     options: [{ id: "test-option", title: "Size" }],
   })
+  await manager.save(Product, testProduct)
 
   await manager.insert(ProductVariant, {
     id: "test-variant-quantity",

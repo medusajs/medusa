@@ -5,19 +5,19 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StoreGetCollectionsParams {
   /**
-   * The number of collections to skip before starting to collect the collections set
+   * The number of product collections to skip when retrieving the product collections.
    */
   offset?: number
   /**
-   * The number of collections to return
+   * Limit the number of product collections returned.
    */
   limit?: number
   /**
-   * Filter by the collection handle
+   * Filter by handles
    */
   handle?: Array<string>
   /**
-   * Date comparison for when resulting collections were created.
+   * Filter by a creation date range.
    */
   created_at?: {
     /**
@@ -38,7 +38,7 @@ export interface StoreGetCollectionsParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting collections were updated.
+   * Filter by an update date range.
    */
   updated_at?: {
     /**

@@ -10,6 +10,7 @@ import type { Fulfillment } from "./Fulfillment"
 import type { GiftCardTransaction } from "./GiftCardTransaction"
 import type { LineItem } from "./LineItem"
 import type { Order } from "./Order"
+import type { Product } from "./Product"
 import type { ProductVariant } from "./ProductVariant"
 import type { Region } from "./Region"
 import type { Return } from "./Return"
@@ -18,6 +19,9 @@ import type { ShippingMethod } from "./ShippingMethod"
 import type { Swap } from "./Swap"
 
 export interface AdminOrdersListRes {
+  /**
+   * An array of order details.
+   */
   orders: Array<
     Merge<
       SetRelation<
@@ -112,7 +116,12 @@ export interface AdminOrdersListRes {
               | "variant"
             >,
             {
-              variant: SetRelation<ProductVariant, "product">
+              variant: Merge<
+                SetRelation<ProductVariant, "product">,
+                {
+                  product: SetRelation<Product, "profiles">
+                }
+              >
             }
           >
         >
@@ -162,7 +171,7 @@ export interface AdminOrdersListRes {
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of orders skipped when retrieving the orders.
    */
   offset: number
   /**

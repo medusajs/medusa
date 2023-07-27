@@ -4,7 +4,7 @@ import { OauthService } from "../../../../services"
  * @oas [get] /admin/apps
  * operationId: "GetApps"
  * summary: "List Applications"
- * description: "Retrieve a list of applications."
+ * description: "Retrieve a list of applications registered in the Medusa backend."
  * x-authenticated: true
  * x-codegen:
  *   method: list
@@ -12,8 +12,8 @@ import { OauthService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/apps' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/apps' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

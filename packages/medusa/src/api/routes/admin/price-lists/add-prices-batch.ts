@@ -11,11 +11,11 @@ import { EntityManager } from "typeorm"
 /**
  * @oas [post] /admin/price-lists/{id}/prices/batch
  * operationId: "PostPriceListsPriceListPricesBatch"
- * summary: "Update Prices"
- * description: "Batch update prices for a Price List"
+ * summary: "Add or Update Prices"
+ * description: "Add or update a list of prices in a Price List"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Price List to update prices for.
+ *   - (path) id=* {string} The ID of the Price List.
  * requestBody:
  *  content:
  *    application/json:
@@ -30,12 +30,12 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.priceLists.addPrices(price_list_id, {
+ *       medusa.admin.priceLists.addPrices(priceListId, {
  *         prices: [
  *           {
  *             amount: 1000,
  *             variant_id,
- *             currency_code: 'eur'
+ *             currency_code: "eur"
  *           }
  *         ]
  *       })
@@ -45,9 +45,9 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/price-lists/{id}/prices/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/price-lists/{id}/prices/batch' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "prices": [
  *             {
@@ -122,10 +122,10 @@ export default async (req, res) => {
  *           description: The ID of the price.
  *           type: string
  *         region_id:
- *           description: The ID of the Region for which the price is used. Only required if currecny_code is not provided.
+ *           description: The ID of the Region for which the price is used. This is only required if `currecny_code` is not provided.
  *           type: string
  *         currency_code:
- *           description: The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+ *           description: The 3 character ISO currency code for which the price will be used. This is only required if `region_id` is not provided.
  *           type: string
  *           externalDocs:
  *             url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
@@ -143,7 +143,7 @@ export default async (req, res) => {
  *           description: The maximum quantity for which the price will be used.
  *           type: integer
  *   override:
- *     description: "If true the prices will replace all existing prices associated with the Price List."
+ *     description: "If set to `true`, the prices will replace all existing prices associated with the Price List."
  *     type: boolean
  */
 export class AdminPostPriceListPricesPricesReq {

@@ -5,7 +5,7 @@ import { defaultRelations } from "."
  * @oas [get] /store/auth
  * operationId: "GetAuth"
  * summary: "Get Current Customer"
- * description: "Gets the currently logged in Customer."
+ * description: "Retrieve the currently logged in Customer's details."
  * x-authenticated: true
  * x-codegen:
  *   method: getSession
@@ -23,8 +23,8 @@ import { defaultRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/auth' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl 'https://medusa-url.com/store/auth' \
+ *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
  * tags:

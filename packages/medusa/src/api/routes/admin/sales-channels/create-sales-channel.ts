@@ -9,7 +9,7 @@ import SalesChannelService from "../../../../services/sales-channel"
  * @oas [post] /admin/sales-channels
  * operationId: "PostSalesChannels"
  * summary: "Create a Sales Channel"
- * description: "Creates a Sales Channel."
+ * description: "Create a Sales Channel."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -26,8 +26,8 @@ import SalesChannelService from "../../../../services/sales-channel"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.salesChannels.create({
- *         name: 'App',
- *         description: 'Mobile app'
+ *         name: "App",
+ *         description: "Mobile app"
  *       })
  *       .then(({ sales_channel }) => {
  *         console.log(sales_channel.id);
@@ -35,9 +35,9 @@ import SalesChannelService from "../../../../services/sales-channel"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/sales-channels' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/sales-channels' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "App"
  *       }'
@@ -96,7 +96,7 @@ export default async (req: Request, res: Response) => {
  *     description: The description of the Sales Channel
  *     type: string
  *   is_disabled:
- *     description: Whether the Sales Channel is disabled or not.
+ *     description: Whether the Sales Channel is disabled.
  *     type: boolean
  */
 export class AdminPostSalesChannelsReq {

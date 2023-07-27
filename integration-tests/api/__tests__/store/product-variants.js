@@ -225,6 +225,7 @@ describe("/store/variants", () => {
             {
               created_at: expect.any(String),
               updated_at: expect.any(String),
+              value: expect.any(String),
             },
           ],
           prices: [
@@ -361,6 +362,7 @@ describe("/store/variants", () => {
                 id: expect.any(String),
                 option_id: expect.any(String),
                 variant_id: expect.any(String),
+                value: expect.any(String),
               },
             ],
             prices: [

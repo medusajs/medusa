@@ -42,6 +42,7 @@ export default (app) => {
  *   - user
  * properties:
  *   user:
+ *     description: "User details."
  *     $ref: "#/components/schemas/User"
  */
 export type AdminUserRes = {
@@ -56,6 +57,7 @@ export type AdminUserRes = {
  * properties:
  *   users:
  *     type: array
+ *     description: "An array of users details."
  *     items:
  *       $ref: "#/components/schemas/User"
  */
