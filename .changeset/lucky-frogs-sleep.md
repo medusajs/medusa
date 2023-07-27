@@ -1,6 +1,8 @@
 ---
 "@medusajs/utils": patch
 "@medusajs/types": patch
+"medusa-plugin-meilisearch": patch
+"medusa-plugin-algolia": patch
 ---
 
-fix(utils, types): move SoftDeletableFilterKey from types to utils
+fix(utils, types, medusa-plugin-meilisearch, medusa-plugin-algolia): move SoftDeletableFilterKey, variantKeys, indexTypes from types to utils
