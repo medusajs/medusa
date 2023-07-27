@@ -23,7 +23,7 @@
   "scripts": {
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "test": "jest --passWithNoTests src",
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "watch": "tsc --watch"
   },
   "peerDependencies": {

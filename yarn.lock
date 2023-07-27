@@ -6152,6 +6152,7 @@ __metadata:
     "@medusajs/types": ^1.8.8
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6167,6 +6168,7 @@ __metadata:
     cross-env: ^5.2.1
     ioredis: ^5.3.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6195,6 +6197,7 @@ __metadata:
     "@medusajs/utils": ^1.9.2
     cross-env: ^5.2.1
     jest: ^25.5.2
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
     ulid: ^2.3.0
@@ -6214,6 +6217,7 @@ __metadata:
     ioredis: ^5.2.5
     jest: ^25.5.2
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6226,6 +6230,7 @@ __metadata:
     "@medusajs/medusa": ^1.12.0
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     typescript: ^4.9.5
   peerDependencies:
     medusa-interfaces: ^1.3.7
@@ -6242,6 +6247,7 @@ __metadata:
     awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typeorm: ^0.3.16
     typescript: ^4.4.4
@@ -6277,6 +6283,7 @@ __metadata:
     prompts: ^2.4.2
     regenerator-runtime: ^0.13.11
     resolve-cwd: ^3.0.0
+    rimraf: ^5.0.1
     semver: ^7.3.8
     stack-trace: ^0.0.10
     ts-jest: ^25.5.1
@@ -6395,6 +6402,7 @@ __metadata:
     reflect-metadata: ^0.1.13
     regenerator-runtime: ^0.13.11
     request-ip: ^2.1.3
+    rimraf: ^5.0.1
     scrypt-kdf: ^2.0.1
     supertest: ^4.0.2
     ts-jest: ^25.5.1
@@ -6422,6 +6430,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     resolve-cwd: ^3.0.0
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6482,6 +6491,7 @@ __metadata:
     cross-env: ^5.2.1
     graphql: ^16.6.0
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6528,6 +6538,7 @@ __metadata:
     awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typeorm: ^0.3.16
     typescript: ^4.4.4
@@ -6541,6 +6552,7 @@ __metadata:
     awilix: ^8.0.0
     cross-env: ^5.2.1
     ioredis: ^5.2.5
+    rimraf: ^5.0.1
     typeorm: ^0.3.16
     typescript: ^4.4.4
     winston: ^3.8.2
@@ -16502,6 +16514,13 @@ __metadata:
   version: 1.1.0
   resolution: "ccount@npm:1.1.0"
   checksum: 9ccfddfa45c8d6d01411b8e30d2ce03c55c33f32a69bdb84ee44d743427cdb01b03159954917023d0dac960c34973ba42626bb9fa883491ebb663a53a6713d43
+  languageName: node
+  linkType: hard
+
+"cd@npm:^0.3.3":
+  version: 0.3.3
+  resolution: "cd@npm:0.3.3"
+  checksum: 2f275cef4ba9106976ce1be532b1cba5e2da8268df5e42c7027090c16f3453256174afc039d02fb249d38cdabe9dd1270fc6c2855341df59f814c96aa16cfffb
   languageName: node
   linkType: hard
 
@@ -30399,6 +30418,7 @@ __metadata:
   dependencies:
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -30437,16 +30457,34 @@ __metadata:
     "@medusajs/medusa": ^1.12.3
     aws-sdk: ^2.983.0
     body-parser: ^1.19.0
+    cd: ^0.3.3
     cross-env: ^5.2.1
     express: ^4.17.1
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
+    medusa-file-s3: ../medusa-file-s3
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     typescript: ^4.9.5
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
   languageName: unknown
   linkType: soft
+
+"medusa-file-s3@file:../medusa-file-s3::locator=medusa-file-minio%40workspace%3Apackages%2Fmedusa-file-minio":
+  version: 1.2.1
+  resolution: "medusa-file-s3@file:../medusa-file-s3#../medusa-file-s3::hash=a07f20&locator=medusa-file-minio%40workspace%3Apackages%2Fmedusa-file-minio"
+  dependencies:
+    aws-sdk: ^2.983.0
+    body-parser: ^1.19.0
+    express: ^4.17.1
+    medusa-core-utils: ^1.2.0
+    medusa-test-utils: ^1.1.40
+  peerDependencies:
+    "@medusajs/medusa": ^1.12.0
+  checksum: 7b660f15d5a6ffffc24dea7a4b9856ba5d348dc5da609682ebc53360efc82314d71da876c1cc36dc7e4df85fa7a65c9849cfa67b7a8549e0c9b80bd1c56e87fc
+  languageName: node
+  linkType: hard
 
 "medusa-file-s3@workspace:packages/medusa-file-s3":
   version: 0.0.0-use.local
@@ -30564,6 +30602,7 @@ __metadata:
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -30667,6 +30706,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
+    rimraf: ^5.0.1
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
@@ -30685,6 +30725,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
+    rimraf: ^5.0.1
     stripe: ^11.10.0
     typescript: ^4.9.5
   peerDependencies:
@@ -30703,6 +30744,7 @@ __metadata:
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -30862,6 +30904,7 @@ __metadata:
     mailchimp-api-v3: ^1.14.0
     medusa-core-utils: ^1.2.0
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
@@ -30881,6 +30924,7 @@ __metadata:
     jest: ^25.5.4
     lodash: ^4.17.21
     meilisearch: ^0.32.3
+    rimraf: ^5.0.1
     typescript: ^4.9.5
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
