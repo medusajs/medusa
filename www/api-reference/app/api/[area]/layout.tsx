@@ -1,7 +1,7 @@
 import SidebarProvider from "@/providers/sidebar"
 import Sidebar from "@/components/Sidebar"
 import clsx from "clsx"
-import "../../css/globals.css"
+import "../../../css/globals.css"
 import BaseSpecsProvider from "@/providers/base-specs"
 import Navbar from "@/components/Navbar"
 import ColorModeProvider from "@/providers/color-mode"
