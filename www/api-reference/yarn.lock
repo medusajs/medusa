@@ -2486,6 +2486,7 @@ __metadata:
     clsx: ^2.0.0
     copy-text-to-clipboard: ^3.2.0
     eslint: 8.45.0
+    eslint-config-google: ^0.14.0
     eslint-config-next: 13.4.12
     json-schema: ^0.4.0
     json-stringify-pretty-compact: ^4.0.0
@@ -3424,6 +3425,15 @@ __metadata:
   version: 4.0.0
   resolution: "escape-string-regexp@npm:4.0.0"
   checksum: 9497d4dd307d845bd7f75180d8188bb17ea8c151c1edbf6b6717c100e104d629dc2dfb687686181b0f4b7d732c7dfdc4d5e7a8ff72de1b0ca283a75bbb3a9cd9
+  languageName: node
+  linkType: hard
+
+"eslint-config-google@npm:^0.14.0":
+  version: 0.14.0
+  resolution: "eslint-config-google@npm:0.14.0"
+  peerDependencies:
+    eslint: ">=5.16.0"
+  checksum: b714c8c45ab1743002f69aa419ad5b39bab00e89484f4e30c33f79f9de031349613f73c9dd4c3a10f40b89a3a43618d4be29df15ab3b96e761f2b705e7293345
   languageName: node
   linkType: hard
 
