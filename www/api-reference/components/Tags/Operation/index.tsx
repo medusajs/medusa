@@ -24,7 +24,6 @@ export type TagOperationProps = {
   endpointPath: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TagOperation = ({
   operation,
   method,

@@ -75,7 +75,7 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
 
   return (
     <div className={clsx("relative z-10 overflow-hidden", className)}>
-      {loading && <DividedLoading />}
+      {loading && <DividedLoading className="mt-[57px]" />}
       {Object.entries(paths).map(([endpointPath, operations], pathIndex) => (
         <div key={pathIndex}>
           {Object.entries(operations).map(
