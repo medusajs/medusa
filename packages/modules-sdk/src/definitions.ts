@@ -5,6 +5,7 @@ import {
 } from "@medusajs/types"
 
 export enum Modules {
+  LINK_MODULE = "linkModule",
   EVENT_BUS = "eventBus",
   STOCK_LOCATION = "stockLocationService",
   INVENTORY = "inventoryService",
@@ -13,6 +14,19 @@ export enum Modules {
 }
 
 export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
+  [Modules.LINK_MODULE]: {
+    key: Modules.LINK_MODULE,
+    registrationName: Modules.LINK_MODULE,
+    defaultPackage: false,
+    label: "DefaultLinkModule",
+    canOverride: true,
+    isRequired: false,
+    dependencies: ["logger"],
+    defaultModuleDeclaration: {
+      scope: MODULE_SCOPE.INTERNAL,
+      resources: MODULE_RESOURCE_TYPE.SHARED,
+    },
+  },
   [Modules.EVENT_BUS]: {
     key: Modules.EVENT_BUS,
     registrationName: "eventBusModuleService",
@@ -86,6 +100,7 @@ export const MODULE_DEFINITIONS: ModuleDefinition[] =
 
 export const MODULE_PACKAGE_NAMES = {
   [Modules.PRODUCT]: "@medusajs/product",
+  [Modules.LINK_MODULE]: "@medusajs/link-modules",
 }
 
 export default MODULE_DEFINITIONS

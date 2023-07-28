@@ -2,14 +2,15 @@ import {
   Constructor,
   InternalModuleDeclaration,
   Logger,
-  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  MedusaContainer,
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
-import { createMedusaContainer } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
+
+import { createMedusaContainer } from "@medusajs/utils"
 
 export async function loadInternalModule(
   container: MedusaContainer,

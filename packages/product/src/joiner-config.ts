@@ -1,9 +1,20 @@
+import { ModuleJoinerConfig } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
-import { JoinerServiceConfig } from "@medusajs/types"
 
-export const joinerConfig: JoinerServiceConfig = {
+export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRODUCT,
   primaryKeys: ["id", "handle"],
+  linkableKeys: [
+    "product_id",
+    "variant_id",
+    "product_handle",
+    "product_type_id",
+    "product_collection_id",
+    "product_category_id",
+    "product_tag_id",
+    "product_option_id",
+    "product_image_id",
+  ],
   alias: [
     {
       name: "product",

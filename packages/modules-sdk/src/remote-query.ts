@@ -2,6 +2,7 @@ import {
   JoinerRelationship,
   JoinerServiceConfig,
   LoadedModule,
+  ModuleJoinerConfig,
   RemoteExpandProperty,
 } from "@medusajs/types"
 
@@ -31,7 +32,7 @@ export class RemoteQuery {
       )
     }
 
-    const servicesConfig: JoinerServiceConfig[] = []
+    const servicesConfig: ModuleJoinerConfig[] = []
     for (const mod of modulesLoaded) {
       if (!mod.__definition.isQueryable) {
         continue
@@ -48,7 +49,7 @@ export class RemoteQuery {
     }
 
     this.remoteJoiner = new RemoteJoiner(
-      servicesConfig,
+      servicesConfig as JoinerServiceConfig[],
       remoteFetchData ?? this.remoteFetchData.bind(this)
     )
   }

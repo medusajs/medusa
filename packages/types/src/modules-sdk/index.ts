@@ -71,7 +71,7 @@ export type ModuleDefinition = {
 }
 
 export type LoadedModule = unknown & {
-  __joinerConfig: JoinerServiceConfig
+  __joinerConfig: ModuleJoinerConfig
   __definition: ModuleDefinition
 }
 
@@ -90,6 +90,17 @@ export type ModulesResponse = {
   module: string
   resolution: string | false
 }[]
+
+export type ModuleJoinerConfig = Omit<
+  JoinerServiceConfig,
+  "serviceName" | "primaryKeys"
+> & {
+  serviceName?: string
+  primaryKeys?: string[]
+  isLink?: boolean // If the module is a link module
+  linkableKeys?: string[] // Keys that can be used to link to other modules
+  isReadOnlyLink?: boolean // If true it expands a RemoteQuery property but doesn't have a pivot table
+}
 
 export type ModuleExports = {
   service: Constructor<any>

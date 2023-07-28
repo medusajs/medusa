@@ -5,6 +5,7 @@ import {
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
   ModuleExports,
+  ModuleJoinerConfig,
   ModuleResolution,
 } from "@medusajs/types"
 import {
@@ -36,6 +37,7 @@ declare global {
 type ModuleAlias = {
   key: string
   hash: string
+  isLink: boolean
   alias?: string
   main?: boolean
 }
@@ -202,10 +204,17 @@ export class MedusaModule {
       services[keyName] = container.resolve(registrationName)
       services[keyName].__definition = resolution.definition
 
+      let isLink = false
       if (resolution.definition.isQueryable) {
-        services[keyName].__joinerConfig = await services[
+        const joinerConfig: ModuleJoinerConfig = await services[
           keyName
         ].__joinerConfig()
+
+        services[keyName].__joinerConfig = joinerConfig
+
+        if (joinerConfig.isLink) {
+          isLink = true
+        }
       }
 
       MedusaModule.registerModule(keyName, {
@@ -213,6 +222,7 @@ export class MedusaModule {
         hash: hashKey,
         alias: modDeclaration.alias ?? hashKey,
         main: !!modDeclaration.main,
+        isLink,
       })
     }
 
