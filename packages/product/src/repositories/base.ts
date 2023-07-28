@@ -1,4 +1,5 @@
 import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
+import { SoftDeletableFilterKey } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
   buildQuery,
@@ -69,7 +70,7 @@ const mikroOrmUpdateDeletedAtRecursively = async <T extends object = any>(
 
       const relationEntities = await collectionRelation.getItems({
         filters: {
-          [DAL.SoftDeletableFilterKey]: {
+          [SoftDeletableFilterKey]: {
             withDeleted: true,
           },
         },
