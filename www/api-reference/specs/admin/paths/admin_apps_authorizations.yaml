@@ -21,7 +21,7 @@ post:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Apps Oauth
+    - Apps
   responses:
     '200':
       description: OK

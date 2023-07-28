@@ -152,7 +152,7 @@ get:
       source:
         $ref: ../code_samples/Shell/store_variants/get.sh
   tags:
-    - Product Variants
+    - Variants
   responses:
     '200':
       description: OK
