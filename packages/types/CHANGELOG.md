@@ -1,5 +1,15 @@
 # @medusajs/types
 
+## 1.10.0
+
+### Minor Changes
+
+- [`ce3f914e0`](https://github.com/medusajs/medusa/commit/ce3f914e01b0e2881182be230cf29d51ce711913) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add changeset with minor bump
+
+### Patch Changes
+
+- [#4623](https://github.com/medusajs/medusa/pull/4623) [`107ae23a3`](https://github.com/medusajs/medusa/commit/107ae23a3f41ef0d676e9d03f53dafc7c1af6118) Thanks [@riqwan](https://github.com/riqwan)! - fix(utils, types, medusa-plugin-meilisearch, medusa-plugin-algolia): move SoftDeletableFilterKey, variantKeys, indexTypes from types to utils
+
 ## 1.9.0
 
 ### Minor Changes

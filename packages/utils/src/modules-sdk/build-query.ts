@@ -1,5 +1,6 @@
-import { DAL, FindConfig, SoftDeletableFilterKey } from "@medusajs/types"
-import { deduplicate, isObject } from "../common"
+import { DAL, FindConfig } from "@medusajs/types"
+
+import { deduplicate, isObject, SoftDeletableFilterKey } from "../common"
 
 export function buildQuery<T = any, TDto = any>(
   filters: Record<string, any> = {},
