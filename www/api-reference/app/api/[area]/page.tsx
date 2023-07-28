@@ -19,7 +19,7 @@ const ReferencePage = async ({ params: { area } }: ReferencePageProps) => {
     <AreaProvider area={area}>
       <div className="mt-3">
         <DividedLayout
-          mainContent={<h1>Medusa {capitalize(area[0])} API Reference</h1>}
+          mainContent={<h1>Medusa {capitalize(area)} API Reference</h1>}
           codeContent={<></>}
         />
         <DividedLayout
@@ -42,7 +42,7 @@ export default ReferencePage
 
 export function generateMetadata({ params: { area } }: ReferencePageProps) {
   return {
-    title: `Medusa ${capitalize(area[0])} API Reference`,
-    description: `REST API reference for the Medusa ${area[0]} API. This reference includes code snippets and examples for Medusa JS Client and cURL.`,
+    title: `Medusa ${capitalize(area)} API Reference`,
+    description: `REST API reference for the Medusa ${area} API. This reference includes code snippets and examples for Medusa JS Client and cURL.`,
   }
 }
