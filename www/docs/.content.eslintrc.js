@@ -82,29 +82,26 @@ module.exports = {
     es6: true,
     node: true,
   },
-  ignorePatterns: [
-    "docs/content/references/**",
-    "docs/content/**/events-list.md",
-  ],
+  ignorePatterns: [],
   overrides: [
     {
-      files: ["docs/content/**/*.md", "docs/content/**/*.mdx"],
+      files: ["content/**/*.md", "content/**/*.mdx"],
       processor: "markdown/markdown",
     },
     {
       files: [
-        "docs/content/**/*.md/*.js",
-        "docs/content/**/*.mdx/*.js",
-        "docs/content/**/*.md/*.jsx",
-        "docs/content/**/*.mdx/*.jsx",
+        "content/**/*.md/*.js",
+        "content/**/*.mdx/*.js",
+        "content/**/*.md/*.jsx",
+        "content/**/*.mdx/*.jsx",
       ],
     },
     {
       files: [
-        "docs/content/**/*.md/*.ts",
-        "docs/content/**/*.mdx/*.ts",
-        "docs/content/**/*.md/*.tsx",
-        "docs/content/**/*.mdx/*.tsx",
+        "content/**/*.md/*.ts",
+        "content/**/*.mdx/*.ts",
+        "content/**/*.md/*.tsx",
+        "content/**/*.mdx/*.tsx",
       ],
       plugins: ["@typescript-eslint/eslint-plugin"],
       extends: ["plugin:@typescript-eslint/recommended"],

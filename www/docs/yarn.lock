@@ -5172,7 +5172,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4":
+"debug@npm:4, debug@npm:^4.0.0, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4":
   version: 4.3.4
   resolution: "debug@npm:4.3.4"
   dependencies:
@@ -5409,6 +5409,7 @@ __metadata:
     eslint: ^8.36.0
     eslint-config-google: ^0.14.0
     eslint-config-prettier: ^8.7.0
+    eslint-plugin-markdown: ^3.0.0
     eslint-plugin-prettier: ^4.2.1
     eslint-plugin-react: ^7.32.2
     file-loader: ^6.2.0
@@ -5845,6 +5846,17 @@ __metadata:
   bin:
     eslint-config-prettier: bin/cli.js
   checksum: 9e3bb602184b7ec59239d2f901b1594cd7cc59ff38c3ddcd812137817e50840f4d65d62b61c515c7eae86d85f8b6fb2ebda659a3f83b2f2c5da75feb15531508
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-markdown@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "eslint-plugin-markdown@npm:3.0.0"
+  dependencies:
+    mdast-util-from-markdown: ^0.8.5
+  peerDependencies:
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+  checksum: 3424fd97b6990cbed7be3764ae8bec7eae9bd1cc03cd76d8d1cf38e088a9777ed4491921e7e1a8d3a146361bcd935e5ed1b2bfd4fd623bcdafdb824bccfdd2b2
   languageName: node
   linkType: hard
 
@@ -8308,6 +8320,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mdast-util-from-markdown@npm:^0.8.5":
+  version: 0.8.5
+  resolution: "mdast-util-from-markdown@npm:0.8.5"
+  dependencies:
+    "@types/mdast": ^3.0.0
+    mdast-util-to-string: ^2.0.0
+    micromark: ~2.11.0
+    parse-entities: ^2.0.0
+    unist-util-stringify-position: ^2.0.0
+  checksum: 86e7589e574378817c180f10ab602db844b6b71b7b1769314947a02ef42ac5c1435f5163d02a975ae8cdab8b6e6176acbd9188da1848ddd5f0d5e09d0291c870
+  languageName: node
+  linkType: hard
+
 "mdast-util-to-hast@npm:10.0.1":
   version: 10.0.1
   resolution: "mdast-util-to-hast@npm:10.0.1"
@@ -8393,6 +8418,16 @@ __metadata:
   version: 1.1.2
   resolution: "methods@npm:1.1.2"
   checksum: bdf7cc72ff0a33e3eede03708c08983c4d7a173f91348b4b1e4f47d4cdbf734433ad971e7d1e8c77247d9e5cd8adb81ea4c67b0a2db526b758b2233d7814b8b2
+  languageName: node
+  linkType: hard
+
+"micromark@npm:~2.11.0":
+  version: 2.11.4
+  resolution: "micromark@npm:2.11.4"
+  dependencies:
+    debug: ^4.0.0
+    parse-entities: ^2.0.0
+  checksum: 67307cbacae621ab1eb23e333a5addc7600cf97d3b40cad22fc1c2d03d734d6d9cbc3f5a7e5d655a8c0862a949abe590ab7cfa96be366bfe09e239a94e6eea55
   languageName: node
   linkType: hard
 

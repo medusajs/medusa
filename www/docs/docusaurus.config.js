@@ -2,7 +2,6 @@
 require("dotenv").config()
 const path = require("path")
 const fs = require("fs")
-const docsPath = path.join(__dirname, "../../docs/content")
 const reverseSidebar = require("./src/utils/reverseSidebar")
 
 const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
@@ -162,7 +161,7 @@ const config = {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl:
             "https://github.com/medusajs/medusa/edit/develop/docs/content",
-          path: docsPath,
+          path: "content",
           routeBasePath: "/",
           remarkPlugins: [
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],

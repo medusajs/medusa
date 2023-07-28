@@ -52,7 +52,7 @@ jobs:
           fetch-depth: 0
 
       - name: Get Directories to Scan
-        working-directory: docs
+        working-directory: www/docs/vale
         run: ./get-files.sh
         id: directories
 
@@ -79,12 +79,12 @@ jobs:
           fetch-depth: 0
 
       - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: eslint-docs
+        working-directory: www/docs
+        run: yarn install
 
       - name: Run Eslint
-        run: yarn lint:docs
+        working-directory: www/docs
+        run: yarn lint:content
   
   code-eslint:
     runs-on: ubuntu-latest
