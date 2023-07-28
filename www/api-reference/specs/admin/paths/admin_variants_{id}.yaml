@@ -40,7 +40,7 @@ get:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Products
+    - Product Variants
   responses:
     '200':
       description: OK
