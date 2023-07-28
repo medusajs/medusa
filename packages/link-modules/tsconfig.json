@@ -20,7 +20,6 @@
     "baseUrl": ".",
     "resolveJsonModule": true,
     "paths": {
-      "@models": ["./src/models"],
       "@services": ["./src/services"],
       "@repositories": ["./src/repositories"]
     }

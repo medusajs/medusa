@@ -21,7 +21,7 @@ export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
     label: "DefaultLinkModule",
     canOverride: true,
     isRequired: false,
-    dependencies: ["logger"],
+    isQueryable: true,
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.INTERNAL,
       resources: MODULE_RESOURCE_TYPE.SHARED,

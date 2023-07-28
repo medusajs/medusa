@@ -8,101 +8,42 @@ import {
   Modules,
 } from "@medusajs/modules-sdk"
 import {
-  IProductModuleService,
   JoinerRelationship,
-  LoadedModule,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
-  ModuleDefinition,
   ModuleExports,
   ModuleJoinerConfig,
   ModulesSdkTypes,
 } from "@medusajs/types"
-import { kebabCase, lowerCaseFirst, toPascalCase } from "@medusajs/utils"
 
-import { EntitySchema } from "@mikro-orm/core"
 import { InitializeModuleInjectableDependencies } from "../types"
 import { composeLinkName } from "../utils"
+import { getLoaders } from "../loaders"
+import { getModuleService } from "@services"
+import { lowerCaseFirst } from "@medusajs/utils"
 
 //import { moduleDefinition } from "../module-definition"
 
-console.log(JSON.stringify(linkDefinitions, null, 2))
-
 type ILinkModule = {}
 
-function getLinkModuleInstance(serviceKey) {
-  return {
-    service: {} as any,
-    loaders: [] as any,
-  }
-}
-
-function getClass(...properties) {
-  return class {
-    constructor(...values) {
-      properties.forEach((name, idx) => {
-        this[name] = values[idx]
-      })
-    }
-  }
-}
-
-function generateEntity(
+function getLinkModuleInstance(
+  joinerConfig,
   primary: JoinerRelationship,
   foreign: JoinerRelationship
 ) {
-  const fieldNames = primary.foreignKey
-    .split(",")
-    .concat(foreign.foreignKey.split(","))
-
-  const fields = fieldNames.reduce((acc, curr) => {
-    acc[curr] = {
-      type: "string",
-      nullable: false,
-    }
-    return acc
-  }, {})
-
-  return new EntitySchema({
-    class: getClass(
-      ...fieldNames.concat("created_at", "updated_at", "deleted_at")
-    ) as any,
-    properties: {
-      ...fields,
-      created_at: {
-        type: "Date",
-        default: "CURRENT_TIMESTAMP",
-        nullable: false,
-      },
-      updated_at: {
-        type: "Date",
-        default: "CURRENT_TIMESTAMP",
-        nullable: false,
-      },
-      deleted_at: { type: "Date", nullable: true },
-    },
-    indexes: [
-      {
-        properties: primary.foreignKey.includes(",")
-          ? primary.foreignKey.split(",")
-          : primary.foreignKey,
-        name: "IDX_" + primary.foreignKey.split(",").join("_"),
-      },
-      {
-        properties: foreign.foreignKey.includes(",")
-          ? foreign.foreignKey.split(",")
-          : foreign.foreignKey,
-        name: "IDX_" + foreign.foreignKey.split(",").join("_"),
-      },
-    ],
-  })
+  return {
+    service: getModuleService(joinerConfig),
+    loaders: getLoaders({
+      joinerConfig,
+      primary,
+      foreign,
+    }),
+  }
 }
 
 export const initialize = async (
   options?:
     | ModulesSdkTypes.ModuleServiceInitializeOptions
-    | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
-    | ExternalModuleDeclaration,
+    | ExternalModuleDeclaration
+    | InternalModuleDeclaration,
   modulesDefinition?: ModuleJoinerConfig[],
   injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<ILinkModule> => {
@@ -127,14 +68,15 @@ export const initialize = async (
     }
 
     const [primary, foreign] = definition.relationships ?? []
-    const serviceKey =
+    const serviceKey = lowerCaseFirst(
       definition.serviceName ??
-      composeLinkName(
-        primary.serviceName,
-        primary.foreignKey,
-        foreign.serviceName,
-        foreign.foreignKey
-      )
+        composeLinkName(
+          primary.serviceName,
+          primary.foreignKey,
+          foreign.serviceName,
+          foreign.foreignKey
+        )
+    )
 
     if (modulesLoadedKeys.includes(serviceKey)) {
       continue
@@ -142,13 +84,30 @@ export const initialize = async (
       throw new Error(`Link module ${serviceKey} already exists.`)
     }
 
-    console.log(generateEntity(primary, foreign))
+    if (
+      !modulesLoadedKeys.includes(primary.serviceName) ||
+      !modulesLoadedKeys.includes(foreign.serviceName)
+    ) {
+      console.log(
+        "Missing module:",
+        primary.serviceName,
+        ":",
+        modulesLoadedKeys.includes(primary.serviceName),
+        foreign.serviceName,
+        ":",
+        modulesLoadedKeys.includes(foreign.serviceName)
+      )
+      //continue
+    }
 
-    /*
-    const moduleDefinition = getLinkModuleInstance(serviceKey) as ModuleExports
+    const moduleDefinition = getLinkModuleInstance(
+      definition,
+      primary,
+      foreign
+    ) as ModuleExports
 
     const loaded = await MedusaModule.bootstrap<ILinkModule>(
-      serviceKey,
+      Modules.LINK_MODULE,
       MODULE_PACKAGE_NAMES[Modules.LINK_MODULE],
       options as InternalModuleDeclaration | ExternalModuleDeclaration,
       moduleDefinition,
@@ -156,10 +115,7 @@ export const initialize = async (
     )
 
     allLinks[serviceKey] = Object.values(loaded)[0]
-    */
   }
 
   return allLinks
 }
-
-initialize()

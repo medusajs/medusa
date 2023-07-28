@@ -10,49 +10,50 @@ import { ModulesSdkTypes } from "@medusajs/types"
 import { asValue } from "awilix"
 import { createConnection } from "../utils"
 
-export default async (
-  {
-    options,
-    container,
-  }: LoaderOptions<
-    | ModulesSdkTypes.ModuleServiceInitializeOptions
-    | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
-  >,
-  moduleDeclaration?: InternalModuleDeclaration
-): Promise<void> => {
-  if (
-    moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
-    moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
-  ) {
-    return
+export function connectionLoader(entity) {
+  return async (
+    {
+      options,
+      container,
+    }: LoaderOptions<
+      | ModulesSdkTypes.ModuleServiceInitializeOptions
+      | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
+    >,
+    moduleDeclaration?: InternalModuleDeclaration
+  ): Promise<void> => {
+    if (
+      moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
+      moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
+    ) {
+      return
+    }
+
+    const customManager = (
+      options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
+    )?.manager
+
+    if (!customManager) {
+      const dbData = ModulesSdkUtils.loadDatabaseConfig("link_modules", options)
+      await loadDefault({ database: dbData, container, options })
+    } else {
+      container.register({
+        manager: asValue(customManager),
+      })
+    }
   }
 
-  const customManager = (
-    options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
-  )?.manager
+  async function loadDefault({ database, container, options }) {
+    if (!database) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_ARGUMENT,
+        `Database config is not present at module config "options.database"`
+      )
+    }
 
-  if (!customManager) {
-    const dbData = ModulesSdkUtils.loadDatabaseConfig("link_module", options)
-    await loadDefault({ database: dbData, container, options })
-  } else {
+    const orm = await createConnection(database, [entity])
+
     container.register({
-      manager: asValue(customManager),
+      manager: asValue(orm.em.fork()),
     })
   }
-}
-
-async function loadDefault({ database, container, options }) {
-  if (!database) {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_ARGUMENT,
-      `Database config is not present at module config "options.database"`
-    )
-  }
-
-  const entities = options.entities ?? []
-  const orm = await createConnection(database, entities)
-
-  container.register({
-    manager: asValue(orm.em.fork()),
-  })
 }

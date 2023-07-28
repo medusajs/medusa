@@ -40,9 +40,6 @@ export const ProductVariantInventoryItem: ModuleJoinerConfig = {
         foreignKey: "id",
         alias: "inventory_items",
         isList: true,
-        args: {
-          methodSuffix: "Variants",
-        },
       },
     },
     {

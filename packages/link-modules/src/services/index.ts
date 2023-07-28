@@ -1,2 +1,3 @@
-export { default as ProductService } from "./product"
-export { default as ProductModuleService } from "./link-module-service"
+export { default as PivotService } from "./pivot"
+export { default as LinkModuleService } from "./link-module-service"
+export * from "./dynamic-service-class"

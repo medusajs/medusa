@@ -38,13 +38,17 @@ export class RemoteQuery {
         continue
       }
 
-      if (this.modulesMap.has(mod.__definition.key)) {
+      const serviceName = mod.__joinerConfig.isLink
+        ? mod.__joinerConfig.serviceName!
+        : mod.__definition.key
+
+      if (this.modulesMap.has(serviceName)) {
         throw new Error(
-          `Duplicated instance of module ${mod.__definition.key} is not allowed.`
+          `Duplicated instance of module ${serviceName} is not allowed.`
         )
       }
 
-      this.modulesMap.set(mod.__definition.key, mod)
+      this.modulesMap.set(serviceName, mod)
       servicesConfig.push(mod.__joinerConfig)
     }
 

@@ -1,2 +1,2 @@
-export { BaseRepository } from "./base"
-export { ProductRepository } from "./product"
+export * from "./base"
+export { getPivotRepository } from "./pivot"

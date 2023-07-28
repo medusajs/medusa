@@ -1,46 +1,42 @@
-import { ProductService } from "@services"
-import { Product } from "@models"
+import { PivotService } from "@services"
 import {
   Context,
   DAL,
   FindConfig,
   InternalModuleDeclaration,
-  JoinerServiceConfig,
+  ModuleJoinerConfig,
   ProductTypes,
 } from "@medusajs/types"
 import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
 import { shouldForceTransaction } from "../utils"
-import { joinerConfig } from "../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  productService: ProductService<any>
+  pivotService: PivotService<any>
 }
 
-export default class ProductModuleService<TProduct extends Product = Product>
-  implements ProductTypes.IProductModuleService
-{
-  protected baseRepository_: DAL.RepositoryService
-  protected readonly productService_: ProductService<TProduct>
+export default class LinkModuleService<TPivot> {
+  baseRepository_: DAL.RepositoryService
+  readonly pivotService_: PivotService<TPivot>
 
   constructor(
-    { baseRepository, productService }: InjectedDependencies,
-    protected readonly moduleDeclaration: InternalModuleDeclaration
+    { baseRepository, pivotService }: InjectedDependencies,
+    readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
-    this.productService_ = productService
+    this.pivotService_ = pivotService
   }
 
-  __joinerConfig(): JoinerServiceConfig {
-    return joinerConfig
+  __joinerConfig(): ModuleJoinerConfig {
+    return {} as ModuleJoinerConfig
   }
 
   async list(
     filters: ProductTypes.FilterableProductProps = {},
-    config: FindConfig<ProductTypes.ProductDTO> = {},
+    config: FindConfig<unknown> = {},
     sharedContext?: Context
   ): Promise<ProductTypes.ProductDTO[]> {
-    const products = await this.productService_.list(
+    const products = await this.pivotService_.list(
       filters,
       config,
       sharedContext
@@ -51,10 +47,10 @@ export default class ProductModuleService<TProduct extends Product = Product>
 
   async listAndCount(
     filters: ProductTypes.FilterableProductProps = {},
-    config: FindConfig<ProductTypes.ProductDTO> = {},
+    config: FindConfig<unknown> = {},
     sharedContext?: Context
   ): Promise<[ProductTypes.ProductDTO[], number]> {
-    const [products, count] = await this.productService_.listAndCount(
+    const [products, count] = await this.pivotService_.listAndCount(
       filters,
       config,
       sharedContext
@@ -64,11 +60,8 @@ export default class ProductModuleService<TProduct extends Product = Product>
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  async create(
-    data: ProductTypes.CreateProductDTO[],
-    @MedusaContext() sharedContext: Context = {}
-  ) {
-    const links = await this.productService_.create(data, sharedContext)
+  async create(data: unknown[], @MedusaContext() sharedContext: Context = {}) {
+    const links = await this.pivotService_.create(data, sharedContext)
     return links
   }
 
@@ -77,22 +70,22 @@ export default class ProductModuleService<TProduct extends Product = Product>
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await this.productService_.delete(productIds, sharedContext)
+    await this.pivotService_.delete(productIds, sharedContext)
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async softDelete(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TProduct[]> {
-    return await this.productService_.softDelete(productIds, sharedContext)
+  ): Promise<TPivot[]> {
+    return await this.pivotService_.softDelete(productIds, sharedContext)
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async restore(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TProduct[]> {
-    return await this.productService_.restore(productIds, sharedContext)
+  ): Promise<TPivot[]> {
+    return await this.pivotService_.restore(productIds, sharedContext)
   }
 }
