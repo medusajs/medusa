@@ -7,6 +7,7 @@ import NavbarColorModeToggle from "./ColorModeToggle"
 import NavbarLogo from "./Logo"
 import SearchBar from "../SearchBar"
 import NavbarMenuButton from "./MenuButton"
+import getLinkWithBasePath from "../../utils/get-link-with-base-path"
 
 const Navbar = () => {
   return (
@@ -29,8 +30,8 @@ const Navbar = () => {
           href="https://docs.medusajs.com/user-guide"
           label="User Guide"
         />
-        <NavbarLink href="/store" label="Store API" />
-        <NavbarLink href="/admin" label="Admin API" />
+        <NavbarLink href={getLinkWithBasePath("/store")} label="Store API" />
+        <NavbarLink href={getLinkWithBasePath("/admin")} label="Admin API" />
         <span className="bg-medusa-border-strong dark:bg-medusa-border-strong-dark mx-1 h-[20px] w-[1px] align-middle"></span>
         <NavbarColorModeToggle />
         <NavbarIconButton>
