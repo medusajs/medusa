@@ -2,7 +2,12 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import { useAdminRegions, useAdminStore } from "medusa-react"
 import { Product } from "@medusajs/client-types"
 
-import { getCurrencyPricesOnly, getRegionPricesOnly, mod } from "./utils"
+import {
+  getCurrencyPricesOnly,
+  getRegionPricesOnly,
+  mod,
+  parseBufferData,
+} from "./utils"
 import IconBuildingTax from "../../../fundamentals/icons/building-tax-icon"
 import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 import Tooltip from "../../../atoms/tooltip"
@@ -580,14 +585,10 @@ function EditPricesTable(props: EditPricesTableProps) {
         "text"
       )
 
-      const isText = (v: string) => {
-        return v !== "" && isNaN(Number(v))
-      }
+      const { rows, hasFirstRowWithLabels, hasFirstColumnWithLabels } =
+        parseBufferData(paste)
 
-      const rows = paste.split("\n").map((r) => r.split("\t"))
-
-      const hasFirstRowWithLabels = rows[0].some(isText)
-      const hasFirstColumnWithLabels = rows.map((r) => r[0]).some(isText)
+      console.log(rows, { hasFirstColumnWithLabels, hasFirstRowWithLabels })
 
       if (hasFirstRowWithLabels) {
         rows.shift()
