@@ -32,7 +32,7 @@ export async function run({
 
   logger ??= console as unknown as Logger
 
-  const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)
+  const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)!
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
   const orm = await createConnection(dbData, entities)

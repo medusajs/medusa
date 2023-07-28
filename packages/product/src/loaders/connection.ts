@@ -23,6 +23,7 @@ export default async (
   {
     options,
     container,
+    logger,
   }: LoaderOptions<
     | ModulesSdkTypes.ModuleServiceInitializeOptions
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
@@ -44,11 +45,8 @@ export default async (
         allowUnregistered: true,
       }
     )
-    const logger =
-      container.resolve("logger", { allowUnregistered: true }) ?? console
-
     if (!sharedConnection) {
-      logger?.warn(
+      ;(logger ?? console)?.warn(
         "The Product module is setup to use a shared resources but no shared connection is present. A new connection will be created"
       )
     }

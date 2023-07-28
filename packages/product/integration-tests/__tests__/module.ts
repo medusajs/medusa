@@ -79,7 +79,7 @@ describe("Product module", function () {
     })
   })
 
-  describe("Using custom data access layer and connection", function () {
+  describe("Using custom data access layer and manager", function () {
     let module: IProductModuleService
 
     beforeEach(async () => {

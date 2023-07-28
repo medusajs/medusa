@@ -62,12 +62,12 @@ export function loadDatabaseConfig(
   }
 
   if (isModuleServiceInitializeOptions(options)) {
-    database.clientUrl = options.database.clientUrl ?? database.clientUrl
-    database.schema = options.database.schema ?? database.schema
+    database.clientUrl = options.database!.clientUrl ?? database.clientUrl
+    database.schema = options.database!.schema ?? database.schema
     database.driverOptions =
-      options.database.driverOptions ??
+      options.database!.driverOptions ??
       getDefaultDriverOptions(database.clientUrl)
-    database.debug = options.database.debug ?? database.debug
+    database.debug = options.database!.debug ?? database.debug
   }
 
   if (!database.clientUrl) {
@@ -76,5 +76,6 @@ export function loadDatabaseConfig(
       "No database clientUrl provided. Please provide the clientUrl through the PRODUCT_POSTGRES_URL or POSTGRES_URL environment variable or the options object in the initialize function."
     )
   }
+
   return database
 }
