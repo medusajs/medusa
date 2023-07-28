@@ -16,11 +16,11 @@ import {
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
 
-import { BaseRepository } from "./base"
-
-export class ProductTypeRepository extends BaseRepository {
+export class ProductTypeRepository extends ModulesSdkUtils.DAL
+  .MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {

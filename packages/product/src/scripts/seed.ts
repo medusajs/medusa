@@ -1,4 +1,3 @@
-import { createConnection } from "../utils"
 import * as ProductModels from "@models"
 import { Product, ProductCategory, ProductVariant } from "@models"
 import { EntitySchema } from "@mikro-orm/core"
@@ -38,7 +37,10 @@ export async function run({
   const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
-  const orm = await createConnection(dbData, entities)
+  const orm = await ModulesSdkUtils.DAL.mikroOrmCreateConnection(
+    dbData,
+    entities
+  )
   const manager = orm.em.fork()
 
   try {

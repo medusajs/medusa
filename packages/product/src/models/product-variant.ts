@@ -1,4 +1,4 @@
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId, ModulesSdkUtils } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -14,7 +14,6 @@ import {
 } from "@mikro-orm/core"
 import { Product } from "@models"
 import ProductOptionValue from "./product-option-value"
-import { SoftDeletable } from "../utils"
 
 type OptionalFields =
   | "created_at"
@@ -25,7 +24,7 @@ type OptionalFields =
   | "product_id"
 
 @Entity({ tableName: "product_variant" })
-@SoftDeletable()
+@ModulesSdkUtils.DAL.MikroOrmSoftDeletable()
 class ProductVariant {
   [OptionalProps]?: OptionalFields
 

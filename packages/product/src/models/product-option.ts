@@ -1,4 +1,4 @@
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId, ModulesSdkUtils } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -13,13 +13,12 @@ import {
 } from "@mikro-orm/core"
 import { Product } from "./index"
 import ProductOptionValue from "./product-option-value"
-import { SoftDeletable } from "../utils"
 
 type OptionalRelations = "values" | "product"
 type OptionalFields = "product_id"
 
 @Entity({ tableName: "product_option" })
-@SoftDeletable()
+@ModulesSdkUtils.DAL.MikroOrmSoftDeletable()
 class ProductOption {
   [OptionalProps]?: OptionalRelations | OptionalFields
 

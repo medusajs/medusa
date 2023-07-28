@@ -9,14 +9,13 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-import { generateEntityId } from "@medusajs/utils"
+import { generateEntityId, ModulesSdkUtils } from "@medusajs/utils"
 import Product from "./product"
-import { SoftDeletable } from "../utils"
 
 type OptionalRelations = "products"
 
 @Entity({ tableName: "image" })
-@SoftDeletable()
+@ModulesSdkUtils.DAL.MikroOrmSoftDeletable()
 class ProductImage {
   [OptionalProps]?: OptionalRelations
 

@@ -4,7 +4,6 @@ import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
 
 import { EntitySchema } from "@mikro-orm/core"
 import { ModulesSdkUtils } from "@medusajs/utils"
-import { createConnection } from "../utils"
 
 /**
  * This script is only valid for mikro orm managers. If a user provide a custom manager
@@ -28,7 +27,10 @@ export async function revertMigration({
   const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
-  const orm = await createConnection(dbData, entities)
+  const orm = await ModulesSdkUtils.DAL.mikroOrmCreateConnection(
+    dbData,
+    entities
+  )
 
   try {
     const migrator = orm.getMigrator()

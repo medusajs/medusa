@@ -1,13 +1,11 @@
-// TODO: Should we create a mikro orm specific package for this and the base repository?
-
-import { Filter } from "@mikro-orm/core"
-import { SoftDeletableFilterKey } from "@medusajs/utils"
+import { SoftDeletableFilterKey } from "../../../common"
 
 interface FilterArguments {
   withDeleted?: boolean
 }
 
-export const SoftDeletable = (): ClassDecorator => {
+export const MikroOrmSoftDeletable = (): ClassDecorator => {
+  const { Filter } = require("@mikro-orm/core")
   return Filter({
     name: SoftDeletableFilterKey,
     cond: ({ withDeleted }: FilterArguments = {}) => {

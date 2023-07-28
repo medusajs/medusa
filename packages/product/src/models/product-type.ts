@@ -6,11 +6,10 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-import { generateEntityId } from "@medusajs/utils"
-import { SoftDeletable } from "../utils"
+import { generateEntityId, ModulesSdkUtils } from "@medusajs/utils"
 
 @Entity({ tableName: "product_type" })
-@SoftDeletable()
+@ModulesSdkUtils.DAL.MikroOrmSoftDeletable()
 class ProductType {
   @PrimaryKey({ columnType: "text" })
   id!: string

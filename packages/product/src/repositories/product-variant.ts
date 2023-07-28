@@ -8,17 +8,16 @@ import { ProductVariant } from "@models"
 import { Context, DAL, WithRequiredProperty } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
-  MedusaError,
-  isDefined,
   InjectTransactionManager,
   MedusaContext,
+  MedusaError,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
 
 import { ProductVariantServiceTypes } from "../types/services"
-import { AbstractBaseRepository } from "./base"
-import { doNotForceTransaction } from "../utils"
 
-export class ProductVariantRepository extends AbstractBaseRepository<ProductVariant> {
+export class ProductVariantRepository extends ModulesSdkUtils.DAL
+  .MikroOrmAbstractBaseRepository<ProductVariant> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -96,14 +95,17 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
   }
 
   async update(
-    data: WithRequiredProperty<ProductVariantServiceTypes.UpdateProductVariantDTO, "id">[],
+    data: WithRequiredProperty<
+      ProductVariantServiceTypes.UpdateProductVariantDTO,
+      "id"
+    >[],
     context: Context = {}
   ): Promise<ProductVariant[]> {
     const manager = (context.transactionManager ??
       this.manager_) as SqlEntityManager
 
     const productVariantsToUpdate = await manager.find(ProductVariant, {
-      id: data.map((updateData) => updateData.id)
+      id: data.map((updateData) => updateData.id),
     })
 
     const productVariantsToUpdateMap = new Map<string, ProductVariant>(

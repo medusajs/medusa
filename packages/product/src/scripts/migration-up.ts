@@ -1,5 +1,4 @@
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
-import { createConnection } from "../utils"
 import * as ProductModels from "@models"
 import { EntitySchema } from "@mikro-orm/core"
 import { ModulesSdkUtils } from "@medusajs/utils"
@@ -26,7 +25,10 @@ export async function runMigrations({
   const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
-  const orm = await createConnection(dbData, entities)
+  const orm = await ModulesSdkUtils.DAL.mikroOrmCreateConnection(
+    dbData,
+    entities
+  )
 
   try {
     const migrator = orm.getMigrator()
