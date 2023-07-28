@@ -36,7 +36,7 @@ const Tags = () => {
 
   const { data } = useSWR<ExpandedDocument>(
     loadData && !baseSpecs
-      ? getLinkWithBasePath(`/api/base-specs?area=${area}&expand=${expand}`)
+      ? getLinkWithBasePath(`/base-specs?area=${area}&expand=${expand}`)
       : null,
     fetcher
   )

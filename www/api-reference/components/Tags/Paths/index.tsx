@@ -44,7 +44,7 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
     paths: PathsObject
   }>(
     !Object.keys(paths).length
-      ? getLinkWithBasePath(`/api/tag?tagName=${tagSlugName}&area=${area}`)
+      ? getLinkWithBasePath(`/tag?tagName=${tagSlugName}&area=${area}`)
       : null,
     fetcher
   )

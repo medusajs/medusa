@@ -2,19 +2,20 @@ import mdx from "@next/mdx"
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  trailingSlash: true,
   experimental: {
     serverActions: true,
   },
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "/admin",
-        permanent: true,
-      },
-    ]
+  async rewrites() {
+    return {
+      fallback: [
+        {
+          source: "/:path*",
+          destination: "https://docs.medusajs.com/:path*",
+        },
+      ],
+    }
   },
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH,
 }
 
 const withMDX = mdx({
