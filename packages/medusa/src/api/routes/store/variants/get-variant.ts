@@ -49,7 +49,7 @@ import { validator } from "../../../../utils/validator"
  *     source: |
  *       curl 'https://medusa-url.com/store/variants/{id}'
  * tags:
- *   - Variants
+ *   - Product Variants
  * responses:
  *   200:
  *     description: OK
