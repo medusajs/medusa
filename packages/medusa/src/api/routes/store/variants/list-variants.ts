@@ -108,7 +108,7 @@ import { validator } from "../../../../utils/validator"
  *     source: |
  *       curl 'https://medusa-url.com/store/variants'
  * tags:
- *   - Variants
+ *   - Product Variants
  * responses:
  *   200:
  *     description: OK
