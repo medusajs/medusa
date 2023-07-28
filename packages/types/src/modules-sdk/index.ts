@@ -108,7 +108,11 @@ export type ModuleExports = {
 
 export interface ModuleServiceInitializeOptions {
   database: {
-    clientUrl: string
+    /**
+     * Forces to use a shared knex connection
+     */
+    connection?: any
+    clientUrl?: string
     schema?: string
     driverOptions?: Record<string, unknown>
     debug?: boolean

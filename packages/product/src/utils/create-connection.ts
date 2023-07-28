@@ -5,15 +5,21 @@ export async function createConnection(
   database: ModuleServiceInitializeOptions["database"] & { connection?: any },
   entities: any[]
 ) {
-  const schema = database.schema || "public"
+  let schema = database.schema || "public"
 
   let driverOptions = database.driverOptions ?? {
     connection: { ssl: true },
   }
 
+  let clientUrl = database.clientUrl
+
   if (database.connection) {
     // Reuse already existing connection
+    // It is important that the knex package version is the same as the one used by MikroORM knex package
     driverOptions = database.connection
+    clientUrl =
+      database.connection.context.client.config.connection.connectionString
+    schema = database.connection.context.client.config.searchPath
   }
 
   return await MikroORM.init<PostgreSqlDriver>({
@@ -21,9 +27,9 @@ export async function createConnection(
     entities,
     debug: database.debug ?? process.env.NODE_ENV?.startsWith("dev") ?? false,
     baseDir: process.cwd(),
-    clientUrl: database.clientUrl,
+    clientUrl,
     schema,
-    driverOptions: driverOptions,
+    driverOptions,
     tsNode: process.env.APP_ENV === "development",
     type: "postgresql",
     migrations: {

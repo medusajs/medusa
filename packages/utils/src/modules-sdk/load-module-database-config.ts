@@ -47,7 +47,8 @@ function getDefaultDriverOptions(clientUrl: string) {
  */
 export function loadDatabaseConfig(
   moduleName: string,
-  options?: ModulesSdkTypes.ModuleServiceInitializeOptions
+  options?: ModulesSdkTypes.ModuleServiceInitializeOptions,
+  silent: boolean = false
 ): ModulesSdkTypes.ModuleServiceInitializeOptions["database"] {
   const clientUrl = getEnv("POSTGRES_URL", moduleName)
 
@@ -70,7 +71,7 @@ export function loadDatabaseConfig(
     database.debug = options.database!.debug ?? database.debug
   }
 
-  if (!database.clientUrl) {
+  if (!database.clientUrl && !silent) {
     throw new MedusaError(
       MedusaError.Types.INVALID_ARGUMENT,
       "No database clientUrl provided. Please provide the clientUrl through the PRODUCT_POSTGRES_URL or POSTGRES_URL environment variable or the options object in the initialize function."

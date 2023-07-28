@@ -10,6 +10,15 @@ import { productsData } from "../__fixtures__/product/data"
 import { DB_URL, TestDatabase } from "../utils"
 import { kebabCase } from "@medusajs/utils"
 import { IProductModuleService } from "@medusajs/types"
+import { knex } from "knex"
+
+const sharedPgConnection = knex<any, any>({
+  client: "pg",
+  searchPath: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+  connection: {
+    connectionString: DB_URL,
+  },
+})
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -42,6 +51,12 @@ describe("Product module", function () {
       expect(module).toBeDefined()
     })
 
+    it("should have a connection that is not the shared connection", async () => {
+      expect(
+        (module as any).baseRepository_.manager_.getConnection().client
+      ).not.toEqual(sharedPgConnection)
+    })
+
     it("should return a list of product", async () => {
       const products = await module.list()
       expect(products).toHaveLength(2)
@@ -69,6 +84,12 @@ describe("Product module", function () {
 
     it("should initialize", async () => {
       expect(module).toBeDefined()
+    })
+
+    it("should have a connection that is not the shared connection", async () => {
+      expect(
+        (module as any).baseRepository_.manager_.getConnection().client
+      ).not.toEqual(sharedPgConnection)
     })
 
     it("should return a list of product", async () => {
@@ -100,11 +121,46 @@ describe("Product module", function () {
       expect(module).toBeDefined()
     })
 
+    it("should have a connection that is not the shared connection", async () => {
+      expect(
+        (module as any).baseRepository_.manager_.getConnection().client
+      ).not.toEqual(sharedPgConnection)
+    })
+
     it("should return a list of product", async () => {
       const products = await module.list()
 
       expect(ProductRepository.prototype.find).toHaveBeenCalled()
       expect(products).toHaveLength(0)
+    })
+  })
+
+  describe("Using an existing connection", function () {
+    let module: IProductModuleService
+
+    beforeEach(async () => {
+      const testManager = await beforeEach_()
+      await createProductAndTags(testManager, productsData)
+
+      MedusaModule.clearInstances()
+
+      module = await initialize({
+        database: {
+          connection: sharedPgConnection,
+        },
+      })
+    })
+
+    afterEach(afterEach_)
+
+    it("should initialize and return a list of product", async () => {
+      expect(module).toBeDefined()
+    })
+
+    it("should have a connection that is the shared connection", async () => {
+      expect(
+        (module as any).baseRepository_.manager_.getConnection().client
+      ).toEqual(sharedPgConnection)
     })
   })
 

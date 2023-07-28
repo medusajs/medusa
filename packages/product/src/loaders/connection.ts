@@ -39,38 +39,32 @@ export default async (
     moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED &&
     !manager
   ) {
-    const sharedConnection = container.resolve(
-      PG_KNEX_CONNECTION_REGISTRATION_KEY,
-      {
-        allowUnregistered: true,
-      }
-    )
-    if (!sharedConnection) {
-      ;(logger ?? console)?.warn(
-        "The Product module is setup to use a shared resources but no shared connection is present. A new connection will be created"
-      )
+    return await loadShared({ container, logger })
+  }
+
+  /**
+   * Reuse an existing connection if it is passed in the options
+   */
+  let dbConfig
+  if (!manager) {
+    const shouldSwallowError = !!(
+      options as ModulesSdkTypes.ModuleServiceInitializeOptions
+    )?.database.connection
+    dbConfig = {
+      ...ModulesSdkUtils.loadDatabaseConfig(
+        "product",
+        (options ?? {}) as ModulesSdkTypes.ModuleServiceInitializeOptions,
+        shouldSwallowError
+      ),
+      connection: (options as ModulesSdkTypes.ModuleServiceInitializeOptions)
+        ?.database.connection,
     }
-
-    manager = await loadDefault({
-      database: {
-        driverOptions: sharedConnection,
-        clientUrl: "none",
-      },
-    })
-    container.register({
-      manager: asValue(manager),
-    })
-
-    return
   }
 
   manager ??= await loadDefault({
-    database:
-      ModulesSdkUtils.loadDatabaseConfig(
-        "product",
-        options as ModulesSdkTypes.ModuleServiceInitializeOptions
-      ) ?? {},
+    database: dbConfig,
   })
+
   container.register({
     manager: asValue(manager),
   })
@@ -90,4 +84,28 @@ async function loadDefault({
   const orm = await createConnection(database, entities)
 
   return orm.em.fork()
+}
+
+async function loadShared({ container, logger }) {
+  const sharedConnection = container.resolve(
+    PG_KNEX_CONNECTION_REGISTRATION_KEY,
+    {
+      allowUnregistered: true,
+    }
+  )
+  if (!sharedConnection) {
+    ;(logger ?? console)?.warn(
+      "The Product module is setup to use a shared resources but no shared connection is present. A new connection will be created"
+    )
+  }
+
+  const manager = await loadDefault({
+    database: {
+      connection: sharedConnection,
+      // clientUrl: "",
+    },
+  })
+  container.register({
+    manager: asValue(manager),
+  })
 }
