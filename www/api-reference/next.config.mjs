@@ -11,7 +11,7 @@ const nextConfig = {
       fallback: [
         {
           source: "/:path*",
-          destination: "https://docs.medusajs.com/:path*",
+          destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/:path*`,
         },
       ],
     }
