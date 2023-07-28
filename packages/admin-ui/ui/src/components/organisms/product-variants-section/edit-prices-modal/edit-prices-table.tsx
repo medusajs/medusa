@@ -603,19 +603,29 @@ function EditPricesTable(props: EditPricesTableProps) {
       ) {
         const _edited = { ...editedPrices }
 
-        for (let i = 0; i < rows.length; i++) {
+        // if only anchor is clicked past selected, if range is selected fill and repeat until selected area is filled
+        const iBoundary =
+          startIndex === endIndex ? rows.length - 1 : endIndex - startIndex
+
+        for (let i = 0; i <= iBoundary; i++) {
           if (i >= variantIds.length) {
             break
           }
 
-          const parts = rows[i]
+          const parts = rows[i % rows.length]
 
-          for (let j = 0; j < parts.length; j++) {
+          // if only anchor is clicked past selected, if range is selected fill and repeat until selected area is filled
+          const jBoundary =
+            startIndexCol === endIndexCol
+              ? parts.length - 1
+              : endIndexCol - startIndexCol
+
+          for (let j = 0; j <= jBoundary; j++) {
             if (j >= columns.length) {
               break
             }
 
-            const amount = parseFloat(parts[j])
+            const amount = parseFloat(parts[j % parts.length])
 
             _edited[
               getKey(variantIds[startIndex + i], columns[startIndexCol + j])
