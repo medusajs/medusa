@@ -16,7 +16,10 @@ const TagOperationCodeSectionRequestSamples = ({
         tabs={codeSamples.map((codeSample) => ({
           label: codeSample.label,
           value: slugify(codeSample.label),
-          code: codeSample,
+          code: {
+            ...codeSample,
+            collapsed: true,
+          },
         }))}
       />
     </>
