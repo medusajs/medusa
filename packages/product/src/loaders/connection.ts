@@ -29,13 +29,14 @@ export default async (
   >,
   moduleDeclaration?: InternalModuleDeclaration
 ): Promise<void> => {
-  const customManager = (
+  let manager = (
     options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   )?.manager
 
   if (
     moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
-    moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
+    moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED &&
+    !manager
   ) {
     const sharedConnection = container.resolve(
       PG_KNEX_CONNECTION_REGISTRATION_KEY,
@@ -52,7 +53,7 @@ export default async (
       )
     }
 
-    const manager = await loadDefault({
+    manager = await loadDefault({
       database: {
         driverOptions: sharedConnection,
         clientUrl: "none",
@@ -65,15 +66,13 @@ export default async (
     return
   }
 
-  const dbConfig =
-    (!customManager &&
+  manager ??= await loadDefault({
+    database:
       ModulesSdkUtils.loadDatabaseConfig(
         "product",
         options as ModulesSdkTypes.ModuleServiceInitializeOptions
-      )) ||
-    {}
-
-  const manager = await loadDefault({ database: dbConfig })
+      ) ?? {},
+  })
   container.register({
     manager: asValue(manager),
   })

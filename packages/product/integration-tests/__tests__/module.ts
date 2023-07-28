@@ -2,10 +2,12 @@ import { MedusaModule } from "@medusajs/modules-sdk"
 import { initialize } from "../../src"
 import * as CustomRepositories from "../__fixtures__/module"
 import { ProductRepository } from "../__fixtures__/module"
-import { createProductAndTags } from "../__fixtures__/product"
+import {
+  buildProductAndRelationsData,
+  createProductAndTags,
+} from "../__fixtures__/product"
 import { productsData } from "../__fixtures__/product/data"
 import { DB_URL, TestDatabase } from "../utils"
-import { buildProductAndRelationsData } from "../__fixtures__/product/data/create-product"
 import { kebabCase } from "@medusajs/utils"
 import { IProductModuleService } from "@medusajs/types"
 
