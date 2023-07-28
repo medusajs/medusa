@@ -8,6 +8,16 @@ const nextConfig = {
   },
   async rewrites() {
     return {
+      afterFiles: [
+        {
+          source: "/api/store",
+          destination: "/store",
+        },
+        {
+          source: "/api/admin",
+          destination: "/admin",
+        },
+      ],
       fallback: [
         {
           source: "/:path*",
