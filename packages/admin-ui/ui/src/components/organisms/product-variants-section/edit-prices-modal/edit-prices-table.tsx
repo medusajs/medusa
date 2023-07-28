@@ -588,8 +588,6 @@ function EditPricesTable(props: EditPricesTableProps) {
       const { rows, hasFirstRowWithLabels, hasFirstColumnWithLabels } =
         parseBufferData(paste)
 
-      console.log(rows, { hasFirstColumnWithLabels, hasFirstRowWithLabels })
-
       if (hasFirstRowWithLabels) {
         rows.shift()
       }
