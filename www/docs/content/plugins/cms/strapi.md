@@ -188,11 +188,11 @@ This plugin ensures a two-way sync between the Medusa backend and the Strapi bac
 
 ### Update Products on Strapi
 
-Try updating any products on Strapi by going to Content Manager → Products and choosing a product from the list. Then, make changes to the product and click Save. If you view the products on your backend now, either using the [REST APIs](/api/admin/#tag/Product/operation/GetProducts) or using [the Medusa Admin](../../user-guide/products/index.mdx), you’ll see that the product has been updated.
+Try updating any products on Strapi by going to Content Manager → Products and choosing a product from the list. Then, make changes to the product and click Save. If you view the products on your backend now, either using the [REST APIs](https://docs.medusajs.com/api/admin/#tag/Product/operation/GetProducts) or using [the Medusa Admin](../../user-guide/products/index.mdx), you’ll see that the product has been updated.
 
 ### Update Products on Medusa
 
-If you try to update products on Medusa either using the [REST APIs](/api/admin/#tag/Product/operation/PostProductsProduct) or using [the Medusa Admin](../../user-guide/products/manage.mdx), you’ll see that the product is also updated on Strapi.
+If you try to update products on Medusa either using the [REST APIs](https://docs.medusajs.com/api/admin/#tag/Product/operation/PostProductsProduct) or using [the Medusa Admin](../../user-guide/products/manage.mdx), you’ll see that the product is also updated on Strapi.
 
 ---
 

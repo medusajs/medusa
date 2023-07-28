@@ -55,12 +55,12 @@ export default function NotFound(): JSX.Element {
                     </a>
                   </li>
                   <li>
-                    <a href={useBaseUrl("/api/store")}>
+                    <a href="https://docs.medusajs.com/api/store">
                       Storefront REST API Reference
                     </a>
                   </li>
                   <li>
-                    <a href={useBaseUrl("/api/admin")}>
+                    <a href="https://docs.medusajs.com/api/admin">
                       Admin REST API Reference
                     </a>
                   </li>

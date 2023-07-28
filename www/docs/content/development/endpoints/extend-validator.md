@@ -80,4 +80,4 @@ npm run build
 npx @medusajs/medusa-cli develop
 ```
 
-Then, send a request to the endpoint you extended passing it your custom fields. To test out the example in this guide, send an [authenticated request](/api/admin#section/Authentication) to the [Create Product endpoint](https://docs.medusajs.com/api/admin#tag/Products/operation/PostProducts) and pass it the `custom_field` body parameter. The request should execute with no errors.
+Then, send a request to the endpoint you extended passing it your custom fields. To test out the example in this guide, send an [authenticated request](https://docs.medusajs.com/api/admin#section/Authentication) to the [Create Product endpoint](https://docs.medusajs.com/api/admin#tag/Products/operation/PostProducts) and pass it the `custom_field` body parameter. The request should execute with no errors.

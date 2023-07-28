@@ -85,7 +85,7 @@ Authentication can be achieved in two ways using the `medusa-js` client: either 
 
 API keys can only be used for admin functionality in Medusa since only users of the admin system have API keys. Refer to the [Configuration](#configuration) section to learn how to add the API key to requests.
 
-You can follow [this guide](/api/admin#section/Authentication/api_token) to learn how to create an API key for an admin user.
+You can follow [this guide](https://docs.medusajs.com/api/admin#section/Authentication/api_token) to learn how to create an API key for an admin user.
 
 ### Using cookies
 

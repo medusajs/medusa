@@ -125,4 +125,4 @@ Run your backend to test it out:
 npx @medusajs/medusa-cli develop
 ```
 
-Then, try out your strategy using any of the [Products](/api/store/#tag/Product) or [Carts](/api/store/#tag/Cart) endpoints which include retrieving product variants and line items respectively. You should then see the prices in the response based on your implemented strategy.
+Then, try out your strategy using any of the [Products](https://docs.medusajs.com/api/store/#tag/Product) or [Carts](https://docs.medusajs.com/api/store/#tag/Cart) endpoints which include retrieving product variants and line items respectively. You should then see the prices in the response based on your implemented strategy.

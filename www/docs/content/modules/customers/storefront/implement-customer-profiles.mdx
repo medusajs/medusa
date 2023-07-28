@@ -26,7 +26,7 @@ You want to implement the following features in a storefront:
 
 :::note
 
-You can use Medusa’s Store APIs to achieve more functionalities as well. Check out the [API reference](/api/store/#tag/Customer) to learn more.
+You can use Medusa’s Store APIs to achieve more functionalities as well. Check out the [API reference](https://docs.medusajs.com/api/store/#tag/Customer) to learn more.
 
 :::
 
@@ -58,7 +58,7 @@ If you follow the Medusa React code blocks, it's assumed you already have [Medus
 
 A customer can register with an email and a password to store and manage their data.
 
-You can register a new customer by sending a request to the [Create a Customer](/api/store/#tag/Customer/operation/PostCustomers) endpoint:
+You can register a new customer by sending a request to the [Create a Customer](https://docs.medusajs.com/api/store/#tag/Customer/operation/PostCustomers) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -135,12 +135,12 @@ fetch(`<BACKEND_URL>/store/customers`, {
 
 This request requires the following body parameters:
 
-- `email`: An email used to log in after registration. This email must be unique. You can check if an email is unique using the “[Check if email exists](/api/store/#tag/Auth/operation/GetAuthEmail)” endpoint.
+- `email`: An email used to log in after registration. This email must be unique. You can check if an email is unique using the “[Check if email exists](https://docs.medusajs.com/api/store/#tag/Auth/operation/GetAuthEmail)” endpoint.
 - `password`: A password used to log in after registration.
 - `first_name`: The customer’s first name.
 - `last_name`: The customer’s last name.
 
-This request also accepts optional body parameters, which you can check out in the [API reference](/api/store/#tag/Customer/operation/PostCustomers).
+This request also accepts optional body parameters, which you can check out in the [API reference](https://docs.medusajs.com/api/store/#tag/Customer/operation/PostCustomers).
 
 It returns the created customer object in the response.
 
@@ -150,7 +150,7 @@ It returns the created customer object in the response.
 
 A customer can log in to your store to manage their data and make purchases using their account.
 
-You can log in a customer into your store by sending a request to the [Customer Login](/api/store/#tag/Auth/operation/PostAuth) endpoint:
+You can log in a customer into your store by sending a request to the [Customer Login](https://docs.medusajs.com/api/store/#tag/Auth/operation/PostAuth) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -199,7 +199,7 @@ However, if you’re using the Fetch API, you must include the option `credentia
 
 ## Log out a Customer
 
-You can log out a customer by sending a request to the [Customer Logout](/api/store/#tag/Auth/operation/DeleteAuth) endpoint:
+You can log out a customer by sending a request to the [Customer Logout](https://docs.medusajs.com/api/store/#tag/Auth/operation/DeleteAuth) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -239,7 +239,7 @@ Customers might need to reset their password in case they forget it. To reset a 
 
 The customer must first enter their account’s email. Then, if an account with that email address exists, an email will be sent to that email address with a link that points the customer to step 2.
 
-You can request to reset a customer’s password by sending a request to the [Request Password Reset](/api/store/#tag/Customer/operation/PostCustomersCustomerPasswordToken) endpoint:
+You can request to reset a customer’s password by sending a request to the [Request Password Reset](https://docs.medusajs.com/api/store/#tag/Customer/operation/PostCustomersCustomerPasswordToken) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -295,7 +295,7 @@ If the customer doesn’t receive an email after this request, make sure that yo
 
 After the first step, the customer should receive an email with a link to a page in the storefront. This page should accept a `token` query parameter. Then, the customer should be prompted to enter their email and password.
 
-You can then reset the customer’s password to the new password they enter by sending a request to the [Reset Password](/api/store/#tag/Customer/operation/PostCustomersResetPassword) endpoint:
+You can then reset the customer’s password to the new password they enter by sending a request to the [Reset Password](https://docs.medusajs.com/api/store/#tag/Customer/operation/PostCustomersResetPassword) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -350,7 +350,7 @@ If successful, this request returns the customer object in the response.
 
 A logged-in customer can edit their info, such as their first name or email address.
 
-You can edit a customer’s info using the [Update Customer](/api/store/#tag/Customer/operation/PostCustomersCustomer) endpoint:
+You can edit a customer’s info using the [Update Customer](https://docs.medusajs.com/api/store/#tag/Customer/operation/PostCustomersCustomer) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -417,7 +417,7 @@ fetch(`<BACKEND_URL>/store/customers/me`, {
 </TabItem>
 </Tabs>
 
-This request accepts any of the customer’s details that should be updated as body parameters. In the example above, the `first_name` of the customer is updated. You can check out the [API reference](/api/store/#tag/Customer/operation/PostCustomersCustomer) for a full list of accepted body parameters.
+This request accepts any of the customer’s details that should be updated as body parameters. In the example above, the `first_name` of the customer is updated. You can check out the [API reference](https://docs.medusajs.com/api/store/#tag/Customer/operation/PostCustomersCustomer) for a full list of accepted body parameters.
 
 It returns in the response the updated customer object.
 
@@ -435,7 +435,7 @@ The customer object returned in the requests mentioned in this document include 
 
 ### Add a Shipping Address
 
-You can add a shipping address to a customer’s account by sending a request to the [Add a Shipping Address](/api/store/#tag/Customer/operation/PostCustomersCustomerAddresses) endpoint:
+You can add a shipping address to a customer’s account by sending a request to the [Add a Shipping Address](https://docs.medusajs.com/api/store/#tag/Customer/operation/PostCustomersCustomerAddresses) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -505,13 +505,13 @@ This request requires an `address` object as a body parameter. The `address` obj
 - `country_code`: The 2 character ISO code of the country in lower case.
 - `postal_code`: The postal code of the shipping address
 
-It also accepts other optional body parameters, which you can learn more about in the [API reference](/api/store/#tag/Customer/operation/PostCustomersCustomerAddresses).
+It also accepts other optional body parameters, which you can learn more about in the [API reference](https://docs.medusajs.com/api/store/#tag/Customer/operation/PostCustomersCustomerAddresses).
 
 This request returns the updated customer object in the response.
 
 ### Edit a Shipping Address
 
-You can edit a customer’s shipping address using the [Update a Shipping Address](/api/store/#tag/Customer/operation/PostCustomersCustomerAddressesAddress) endpoint:
+You can edit a customer’s shipping address using the [Update a Shipping Address](https://docs.medusajs.com/api/store/#tag/Customer/operation/PostCustomersCustomerAddressesAddress) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -550,13 +550,13 @@ fetch(`<BACKEND_URL>/store/customers/me/addresses/${addressId}`,
 </TabItem>
 </Tabs>
 
-This request requires the address’s ID as a path parameter. It accepts as a body parameter any of the address’s properties. In the example above, the `first_name` of the shipping address is updated. You can check the [API reference](/api/store/#tag/Customer/operation/PostCustomersCustomerAddressesAddress) for all the available body parameters.
+This request requires the address’s ID as a path parameter. It accepts as a body parameter any of the address’s properties. In the example above, the `first_name` of the shipping address is updated. You can check the [API reference](https://docs.medusajs.com/api/store/#tag/Customer/operation/PostCustomersCustomerAddressesAddress) for all the available body parameters.
 
 This request returns the updated customer object in the response.
 
 ### Delete a Shipping Address
 
-You can delete a shipping address by sending a request to the [Delete an Address](/api/store/#tag/Customer/operation/DeleteCustomersCustomerAddressesAddress) endpoint:
+You can delete a shipping address by sending a request to the [Delete an Address](https://docs.medusajs.com/api/store/#tag/Customer/operation/DeleteCustomersCustomerAddressesAddress) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -595,7 +595,7 @@ This request requires the address’s ID as a path parameter. It returns in the 
 
 Logged-in customers can see their orders along with the orders’ details.
 
-You can retrieve a customer’s orders by sending a request to the [List Orders](/api/store/#tag/Customer/operation/GetCustomersCustomerOrders) endpoint:
+You can retrieve a customer’s orders by sending a request to the [List Orders](https://docs.medusajs.com/api/store/#tag/Customer/operation/GetCustomersCustomerOrders) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -652,7 +652,7 @@ fetch(`<BACKEND_URL>/store/customers/me/orders`, {
 </TabItem>
 </Tabs>
 
-This request doesn’t require any path or query parameters. You can, however, send optional query parameters used for filters, pagination, and sorting. You can learn more in the [API reference](/api/store/#tag/Customer/operation/GetCustomersCustomerOrders).
+This request doesn’t require any path or query parameters. You can, however, send optional query parameters used for filters, pagination, and sorting. You can learn more in the [API reference](https://docs.medusajs.com/api/store/#tag/Customer/operation/GetCustomersCustomerOrders).
 
 It returns the following data in the response:
 
@@ -663,6 +663,6 @@ It returns the following data in the response:
 
 :::info
 
-You can learn more about pagination in the [API reference](/api/store/#section/Pagination).
+You can learn more about pagination in the [API reference](https://docs.medusajs.com/api/store/#section/Pagination).
 
 :::

@@ -88,14 +88,14 @@ const config = {
           position: "right",
         },
         {
-          href: "/api/store",
+          href: "https://docs.medusajs.com/api/store",
           label: "Store API",
           prependBaseUrlToHref: true,
           target: "_blank",
           position: "right",
         },
         {
-          href: "/api/admin",
+          href: "https://docs.medusajs.com/api/admin",
           label: "Admin API",
           prependBaseUrlToHref: true,
           target: "_blank",

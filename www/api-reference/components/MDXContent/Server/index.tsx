@@ -13,7 +13,6 @@ export type MDXContentServerProps = {
 const MDXContentServer = ({ content, ...props }: MDXContentServerProps) => {
   return (
     <>
-      {/* @ts-expect-error Async Server Component */}
       <MDXRemote
         source={content}
         components={getCustomComponents((props.scope as ScopeType) || {})}

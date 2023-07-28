@@ -400,7 +400,7 @@ Run your backend to test it out:
 npx @medusajs/medusa-cli develop
 ```
 
-Then, try uploading a file, for example, using the [Upload File endpoint](/api/admin#tag/Uploads/operation/PostUploads). The file should be uploaded based on the logic you’ve implemented.
+Then, try uploading a file, for example, using the [Upload File endpoint](https://docs.medusajs.com/api/admin#tag/Uploads/operation/PostUploads). The file should be uploaded based on the logic you’ve implemented.
 
 ### (Optional) Accessing the File
 

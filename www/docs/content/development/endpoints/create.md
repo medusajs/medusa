@@ -372,5 +372,5 @@ npm run build
 
 ## See Also
 
-- [Storefront API Reference](/api/store)
-- [Admin API Reference](/api/admin)
+- [Storefront API Reference](https://docs.medusajs.com/api/store)
+- [Admin API Reference](https://docs.medusajs.com/api/admin)
