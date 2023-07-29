@@ -77,9 +77,7 @@ export function generateEntity(
     },
     indexes: [
       {
-        properties: primary.foreignKey.includes(",")
-          ? primary.foreignKey.split(",")
-          : primary.foreignKey,
+        properties: primary.foreignKey.split(","),
         name:
           "IDX_" +
           primary.foreignKey.split(",").join("_") +
@@ -87,14 +85,16 @@ export function generateEntity(
           simpleHash(tableName),
       },
       {
-        properties: foreign.foreignKey.includes(",")
-          ? foreign.foreignKey.split(",")
-          : foreign.foreignKey,
+        properties: foreign.foreignKey.split(","),
         name:
           "IDX_" +
           foreign.foreignKey.split(",").join("_") +
           "_" +
           simpleHash(tableName),
+      },
+      {
+        properties: ["deleted_at"],
+        name: "IDX_deleted_at_" + simpleHash(tableName),
       },
     ],
   })

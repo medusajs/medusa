@@ -49,7 +49,7 @@ export const ProductVariantInventoryItem: ModuleJoinerConfig = {
         serviceName: LINKS.ProductVariantInventoryItem,
         primaryKey: "inventory_item_id",
         foreignKey: "id",
-        alias: "variant",
+        alias: "variant_link",
       },
     },
   ],
