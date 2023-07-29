@@ -113,6 +113,9 @@ export default async (req, res) => {
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   type:
  *     description: The type of the Shipping Profile
  *     type: string

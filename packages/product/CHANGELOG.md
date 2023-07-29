@@ -1,5 +1,22 @@
 # @medusajs/product
 
+## 0.1.4
+
+### Patch Changes
+
+- [#4602](https://github.com/medusajs/medusa/pull/4602) [`585ebf245`](https://github.com/medusajs/medusa/commit/585ebf2454719ed36957ba798a189a45a5274c5a) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(product): Serialize typings
+
+- [#4535](https://github.com/medusajs/medusa/pull/4535) [`131477faf`](https://github.com/medusajs/medusa/commit/131477faf0409c49d4aacf26ea591e33b2fa22fd) Thanks [@riqwan](https://github.com/riqwan)! - feat(product,types,utils): Add tags, types, categories, collection and options CRUD to product module services
+
+- [#4590](https://github.com/medusajs/medusa/pull/4590) [`a0a041e5c`](https://github.com/medusajs/medusa/commit/a0a041e5c9b8aa5a418f500ba17fca2bea53f728) Thanks [@riqwan](https://github.com/riqwan)! - fix(medusa): correct the type of initializer for modules
+
+- [#4504](https://github.com/medusajs/medusa/pull/4504) [`caea44ebf`](https://github.com/medusajs/medusa/commit/caea44ebfdf7393ace931ce2a9884105dadc4f8d) Thanks [@riqwan](https://github.com/riqwan)! - feat(product, types): added product module service update
+
+- Updated dependencies [[`585ebf245`](https://github.com/medusajs/medusa/commit/585ebf2454719ed36957ba798a189a45a5274c5a), [`131477faf`](https://github.com/medusajs/medusa/commit/131477faf0409c49d4aacf26ea591e33b2fa22fd), [`379c83933`](https://github.com/medusajs/medusa/commit/379c83933ed12a4ec712e7f3c9b0252e4a4601dd), [`caea44ebf`](https://github.com/medusajs/medusa/commit/caea44ebfdf7393ace931ce2a9884105dadc4f8d), [`f174bb6fa`](https://github.com/medusajs/medusa/commit/f174bb6fa1b105b39065478a67b6be0b968f707a), [`f12299deb`](https://github.com/medusajs/medusa/commit/f12299deb10baadab1505cd4ac353dd5d1c8fa7c)]:
+  - @medusajs/types@1.9.0
+  - @medusajs/utils@1.9.3
+  - @medusajs/modules-sdk@1.9.0
+
 ## 0.1.3
 
 ### Patch Changes

@@ -67,7 +67,7 @@ export class User extends SoftDeletableEntity {
  *     type: string
  *     example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
  *   role:
- *     description: The user's role
+ *     description: The user's role. These roles don't provide any different privileges.
  *     type: string
  *     enum:
  *       - admin
@@ -111,4 +111,7 @@ export class User extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

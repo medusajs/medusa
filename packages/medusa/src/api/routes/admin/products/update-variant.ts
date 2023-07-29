@@ -202,6 +202,9 @@ class ProductVariantOptionReq {
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   prices:
  *     type: array
  *     description: An array of product variant prices. A product variant can have different prices for each region or currency code.

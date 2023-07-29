@@ -259,6 +259,9 @@ export class ClaimOrder extends SoftDeletableEntity {
  *     nullable: true
  *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   no_notification:
  *     description: Flag for describing whether or not notifications related to this should be send.
  *     nullable: true

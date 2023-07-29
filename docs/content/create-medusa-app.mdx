@@ -7,10 +7,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import Feedback from '@site/src/components/Feedback';
 import DocCard from '@theme/DocCard';
+import DocCardList from '@theme/DocCardList';
 import Icons from '@theme/Icon';
 import Troubleshooting from '@site/src/components/Troubleshooting'
 import TypeErrorSection from "./troubleshooting/create-medusa-app-errors/_typeerror.md"
-import OtherErrorsSection from "./troubleshooting/create-medusa-app-errors/_other-errors.md"
+import OtherErrorsSection from "./troubleshooting/create-medusa-app-errors/_other-errors.mdx"
 import EagainError from "./troubleshooting/create-medusa-app-errors/_eagain-error.md"
 import ConnectionErrorSection from './troubleshooting/database-errors/_connection-error.md'
 import FreshInstallationSection from './troubleshooting/awilix-resolution-error/_fresh-installation.md'
@@ -28,10 +29,7 @@ Medusa is a toolkit for developers to create digital commerce applications. In i
 
 :::note
 
-`create-medusa-app` uses a beta version of the admin dashboard. If you want to use a stable Medusa setup, you can install the stable backend and the admin using the following guides:
-
-1. [Install Medusa backend](./development/backend/install.mdx)
-2. [Install admin package](./admin/quickstart.mdx)
+`create-medusa-app` uses a beta version of the Medusa backend and admin. If you want to use a stable Medusa setup, consider passing the `--stable` option to the command. However, when using this option, you'll have to [install the Medusa admin](./admin/quickstart.mdx) manually.
 
 :::
 
@@ -84,6 +82,7 @@ In your terminal, run the following command:
 <details>
   <summary>Available Options</summary>
 
+  - `--stable`: A flag that allows you to opt-out of the beta Medusa backend project. When using this option, the Medusa admin won't be installed.
   - `--repo-url <url>`: The repository URL to create the project from. By default it will be `https://github.com/medusajs/medusa-starter-default`.
   - `--seed`: A flag indicating whether the database should be seeded with demo data. By default, seeding is disabled.
   - `--no-boilerplate`: A flag that removes all files added for an enhanced onboarding experience (files under `src/admin`, `src/api`, etc...). This is helpful if you want to create a clean project, and is only recommended if you're familiar with Medusa.
@@ -117,6 +116,12 @@ After the above steps, the project setup will start which includes:
 
 ### Step 5: Log into admin dashboard
 
+:::note
+
+If you passed the `--stable` option, the `localhost:9000/store/products` endpoint will open in your browser instead.
+
+:::
+
 Once the project is prepared, the Medusa backend will start and the admin dashboard will be opened in your default browser. You'll then be asked to enter a password for the admin email you entered earlier, as well as other account information.
 
 Once you're logged in, you can start using Medusa! Try following the setup guide to create your first product and order.
@@ -134,15 +139,35 @@ Once you're logged in, you can start using Medusa! Try following the setup guide
 
 Based on what you're building, you can find a development path for you in the Recipes page.
 
-<DocCard item={{
-  type: 'link',
-  href: '/recipes',
-  label: 'Recipes',
-  customProps: {
-    icon: Icons['map'],
-    description: "Find learning paths based on what you're building"
-  }
-}} />
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/recipes',
+    label: 'Recipes',
+    customProps: {
+      icon: Icons['map'],
+      description: "Find learning paths based on what you're building"
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/overview',
+    label: 'Medusa Backend Basics',
+    customProps: {
+      icon: Icons['server-stack-solid'],
+      description: 'Learn all the basics of developing with the Medusa backend.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/modules/overview',
+    label: 'Commerce Modules',
+    customProps: {
+      icon: Icons['puzzle-solid'],
+      description: 'Learn about the available commerce modules and features in the Medusa backend.'
+    }
+  },
+]} />
 
 ---
 

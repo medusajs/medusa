@@ -212,6 +212,9 @@ enum Status {
  *         metadata:
  *           description: The optional key-value map with additional details about the line item.
  *           type: object
+ *           externalDocs:
+ *             description: "Learn about the metadata attribute, and how to delete and update it."
+ *             url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   region_id:
  *     description: The ID of the region for the draft order
  *     type: string
@@ -252,6 +255,9 @@ enum Status {
  *   metadata:
  *     description: The optional key-value map with additional details about the Draft Order.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostDraftOrdersReq {
   @IsEnum(Status)

@@ -1,16 +1,30 @@
 import {
   CreateProductDTO,
+  CreateProductTagDTO,
+  CreateProductTypeDTO,
+  CreateProductOptionDTO,
+  CreateProductCategoryDTO,
+  UpdateProductTagDTO,
+  UpdateProductTypeDTO,
+  UpdateProductOptionDTO,
+  UpdateProductCategoryDTO,
   UpdateProductDTO,
   FilterableProductCategoryProps,
   FilterableProductCollectionProps,
   FilterableProductProps,
   FilterableProductTagProps,
+  FilterableProductTypeProps,
+  FilterableProductOptionProps,
   FilterableProductVariantProps,
   ProductCategoryDTO,
   ProductCollectionDTO,
   ProductDTO,
   ProductTagDTO,
+  ProductTypeDTO,
+  ProductOptionDTO,
   ProductVariantDTO,
+  CreateProductCollectionDTO,
+  UpdateProductCollectionDTO,
 } from "./common"
 
 import { Context } from "../shared-context"
@@ -38,11 +52,104 @@ export interface IProductModuleService {
     sharedContext?: Context
   ): Promise<[ProductDTO[], number]>
 
+  retrieveTag(
+    tagId: string,
+    config?: FindConfig<ProductTagDTO>,
+    sharedContext?: Context
+  ): Promise<ProductTagDTO>
+
   listTags(
     filters?: FilterableProductTagProps,
     config?: FindConfig<ProductTagDTO>,
     sharedContext?: Context
   ): Promise<ProductTagDTO[]>
+
+  listAndCountTags(
+    filters?: FilterableProductTagProps,
+    config?: FindConfig<ProductTagDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductTagDTO[], number]>
+
+  createTags(
+    data: CreateProductTagDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductTagDTO[]>
+
+  updateTags(
+    data: UpdateProductTagDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductTagDTO[]>
+
+  deleteTags(
+    productTagIds: string[],
+    sharedContext?: Context,
+  ): Promise<void>
+
+  retrieveType(
+    typeId: string,
+    config?: FindConfig<ProductTypeDTO>,
+    sharedContext?: Context
+  ): Promise<ProductTypeDTO>
+
+  listTypes(
+    filters?: FilterableProductTypeProps,
+    config?: FindConfig<ProductTypeDTO>,
+    sharedContext?: Context
+  ): Promise<ProductTypeDTO[]>
+
+  listAndCountTypes(
+    filters?: FilterableProductTypeProps,
+    config?: FindConfig<ProductTypeDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductTypeDTO[], number]>
+
+  createTypes(
+    data: CreateProductTypeDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductTypeDTO[]>
+
+  updateTypes(
+    data: UpdateProductTypeDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductTypeDTO[]>
+
+  deleteTypes(
+    productTypeIds: string[],
+    sharedContext?: Context,
+  ): Promise<void>
+
+  retrieveOption(
+    optionId: string,
+    config?: FindConfig<ProductOptionDTO>,
+    sharedContext?: Context
+  ): Promise<ProductOptionDTO>
+
+  listOptions(
+    filters?: FilterableProductOptionProps,
+    config?: FindConfig<ProductOptionDTO>,
+    sharedContext?: Context
+  ): Promise<ProductOptionDTO[]>
+
+  listAndCountOptions(
+    filters?: FilterableProductOptionProps,
+    config?: FindConfig<ProductOptionDTO>,
+    sharedContext?: Context
+  ): Promise<[ProductOptionDTO[], number]>
+
+  createOptions(
+    data: CreateProductOptionDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductOptionDTO[]>
+
+  updateOptions(
+    data: UpdateProductOptionDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductOptionDTO[]>
+
+  deleteOptions(
+    productOptionIds: string[],
+    sharedContext?: Context,
+  ): Promise<void>
 
   retrieveVariant(
     productVariantId: string,
@@ -80,6 +187,21 @@ export interface IProductModuleService {
     sharedContext?: Context
   ): Promise<[ProductCollectionDTO[], number]>
 
+  createCollections(
+    data: CreateProductCollectionDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductCollectionDTO[]>
+
+  updateCollections(
+    data: UpdateProductCollectionDTO[],
+    sharedContext?: Context,
+  ): Promise<ProductCollectionDTO[]>
+
+  deleteCollections(
+    productCollectionIds: string[],
+    sharedContext?: Context,
+  ): Promise<void>
+
   retrieveCategory(
     productCategoryId: string,
     config?: FindConfig<ProductCategoryDTO>,
@@ -97,6 +219,22 @@ export interface IProductModuleService {
     config?: FindConfig<ProductCategoryDTO>,
     sharedContext?: Context
   ): Promise<[ProductCategoryDTO[], number]>
+
+  createCategory(
+    data: CreateProductCategoryDTO,
+    sharedContext?: Context,
+  ): Promise<ProductCategoryDTO>
+
+  updateCategory(
+    categoryId: string,
+    data: UpdateProductCategoryDTO,
+    sharedContext?: Context,
+  ): Promise<ProductCategoryDTO>
+
+  deleteCategory(
+    categoryId: string,
+    sharedContext?: Context,
+  ): Promise<void>
 
   create(
     data: CreateProductDTO[],
