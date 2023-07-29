@@ -433,24 +433,20 @@ export class RemoteJoiner {
         if (Array.isArray(item[field])) {
           item[relationship.alias] = item[field]
             .map((id) => {
-              if (
-                relationship.isList &&
-                !Array.isArray(relatedDataMap[id]) &&
-                relatedDataMap[id] !== undefined
-              ) {
-                relatedDataMap[id] = [relatedDataMap[id]]
+              if (relationship.isList && !Array.isArray(relatedDataMap[id])) {
+                relatedDataMap[id] =
+                  relatedDataMap[id] !== undefined ? [relatedDataMap[id]] : []
               }
 
               return relatedDataMap[id]
             })
             .filter((relatedItem) => relatedItem !== undefined)
         } else {
-          if (
-            relationship.isList &&
-            !Array.isArray(relatedDataMap[itemKey]) &&
-            relatedDataMap[itemKey] !== undefined
-          ) {
-            relatedDataMap[itemKey] = [relatedDataMap[itemKey]]
+          if (relationship.isList && !Array.isArray(relatedDataMap[itemKey])) {
+            relatedDataMap[itemKey] =
+              relatedDataMap[itemKey] !== undefined
+                ? [relatedDataMap[itemKey]]
+                : []
           }
 
           item[relationship.alias] = relatedDataMap[itemKey]
