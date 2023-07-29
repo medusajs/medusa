@@ -1,4 +1,5 @@
-import { JoinerServiceConfig } from "../joiner"
+import { JoinerRelationship, JoinerServiceConfig } from "../joiner"
+
 import { Logger } from "../logger"
 import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
@@ -93,13 +94,22 @@ export type ModulesResponse = {
 
 export type ModuleJoinerConfig = Omit<
   JoinerServiceConfig,
-  "serviceName" | "primaryKeys"
+  "serviceName" | "primaryKeys" | "relationships" | "extends"
 > & {
+  relationships?: ModuleJoinerRelationship[]
+  extends?: {
+    serviceName: string
+    relationship: ModuleJoinerRelationship
+  }[]
   serviceName?: string
   primaryKeys?: string[]
   isLink?: boolean // If the module is a link module
   linkableKeys?: string[] // Keys that can be used to link to other modules
   isReadOnlyLink?: boolean // If true it expands a RemoteQuery property but doesn't have a pivot table
+}
+
+export declare type ModuleJoinerRelationship = JoinerRelationship & {
+  deleteCascade?: boolean
 }
 
 export type ModuleExports = {

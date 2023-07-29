@@ -9,6 +9,7 @@ import {
 } from "@medusajs/modules-sdk"
 import {
   JoinerRelationship,
+  LoaderOptions,
   ModuleExports,
   ModuleJoinerConfig,
   ModulesSdkTypes,
@@ -17,6 +18,7 @@ import {
 import { InitializeModuleInjectableDependencies } from "../types"
 import { composeLinkName } from "../utils"
 import { getLoaders } from "../loaders"
+import { getMigration } from "../migration"
 import { getModuleService } from "@services"
 import { lowerCaseFirst } from "@medusajs/utils"
 
@@ -59,11 +61,12 @@ export const initialize = async (
   for (const definition of allLinksToLoad) {
     if (definition.relationships?.length !== 2 && !definition.isReadOnlyLink) {
       throw new Error(
-        `Link module ${definition.serviceName} must have exactly 2 relationships.`
+        `Link module ${definition.serviceName} must have 2 relationships.`
       )
     }
 
     if (definition.isReadOnlyLink) {
+      // TODO: register links that only exports a joiner extending other services
       continue
     }
 
@@ -118,4 +121,59 @@ export const initialize = async (
   }
 
   return allLinks
+}
+
+export async function runMigrations(
+  { options, logger }: Omit<LoaderOptions, "container">,
+  modulesDefinition?: ModuleJoinerConfig[]
+) {
+  const modulesLoadedKeys = MedusaModule.getLoadedModules().map(
+    (mod) => Object.keys(mod)[0]
+  )
+
+  const allLinksToLoad = Object.values(linkDefinitions).concat(
+    modulesDefinition ?? []
+  )
+
+  const allLinks = new Set<string>()
+  for (const definition of allLinksToLoad) {
+    if (definition.relationships?.length !== 2 && !definition.isReadOnlyLink) {
+      throw new Error(
+        `Link module ${definition.serviceName} must have 2 relationships.`
+      )
+    }
+
+    if (definition.isReadOnlyLink) {
+      continue
+    }
+
+    const [primary, foreign] = definition.relationships ?? []
+    const serviceKey = lowerCaseFirst(
+      definition.serviceName ??
+        composeLinkName(
+          primary.serviceName,
+          primary.foreignKey,
+          foreign.serviceName,
+          foreign.foreignKey
+        )
+    )
+
+    if (modulesLoadedKeys.includes(serviceKey)) {
+      continue
+    } else if (allLinks.has(serviceKey)) {
+      throw new Error(`Link module ${serviceKey} already exists.`)
+    }
+
+    allLinks.add(serviceKey)
+
+    if (
+      !modulesLoadedKeys.includes(primary.serviceName) ||
+      !modulesLoadedKeys.includes(foreign.serviceName)
+    ) {
+      //continue
+    }
+
+    const migrate = getMigration(serviceKey, primary, foreign)
+    await migrate({ options, logger })
+  }
 }

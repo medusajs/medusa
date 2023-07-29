@@ -29,6 +29,7 @@ export const ProductVariantInventoryItem: ModuleJoinerConfig = {
       primaryKey: "id",
       foreignKey: "inventory_item_id",
       alias: "inventory",
+      deleteCascade: true,
     },
   ],
   extends: [
