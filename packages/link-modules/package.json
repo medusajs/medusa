@@ -22,8 +22,8 @@
     "watch:test": "tsc --build tsconfig.spec.json --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
-    "test": "jest --passWithNoTests --runInBand --forceExit -- src/**/__tests__/**/*.ts",
-    "test:integration": "jest --passWithNoTests --runInBand --forceExit -- integration-tests/**/__tests__/**/*.ts"
+    "test": "jest --passWithNoTests",
+    "test:integration": "jest --passWithNoTests"
   },
   "devDependencies": {
     "cross-env": "^5.2.1",
