@@ -27,8 +27,8 @@
     "watch:test": "tsc --build tsconfig.spec.json --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "rimraf dist && tsc --build && tsc-alias -p tsconfig.json",
-    "test": "jest --runInBand --forceExit -- src/**/__tests__/**/*.ts",
-    "test:integration": "jest --runInBand --forceExit -- integration-tests/**/__tests__/**/*.ts"
+    "test": "jest --passWithNoTests --runInBand --forceExit -- src/**/__tests__/**/*.ts",
+    "test:integration": "jest --passWithNoTests --runInBand --forceExit -- integration-tests/**/__tests__/**/*.ts"
   },
   "devDependencies": {
     "@mikro-orm/cli": "5.7.12",
