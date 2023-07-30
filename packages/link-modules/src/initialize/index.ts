@@ -1,7 +1,6 @@
 import * as linkDefinitions from "../definitions"
 
 import {
-  ExternalModuleDeclaration,
   InternalModuleDeclaration,
   MODULE_PACKAGE_NAMES,
   MedusaModule,
@@ -9,10 +8,13 @@ import {
 } from "@medusajs/modules-sdk"
 import {
   JoinerRelationship,
+  LinkModuleDefinition,
   LoaderOptions,
+  MODULE_RESOURCE_TYPE,
+  MODULE_SCOPE,
   ModuleExports,
   ModuleJoinerConfig,
-  ModulesSdkTypes,
+  ModuleServiceInitializeOptions,
 } from "@medusajs/types"
 import { getModuleService, getReadOnlyModuleService } from "@services"
 import { lowerCaseFirst, simpleHash } from "@medusajs/utils"
@@ -42,10 +44,7 @@ function getLinkModuleInstance(
 }
 
 export const initialize = async (
-  options?:
-    | ModulesSdkTypes.ModuleServiceInitializeOptions
-    | ExternalModuleDeclaration
-    | InternalModuleDeclaration,
+  options?: ModuleServiceInitializeOptions | InternalModuleDeclaration,
   modulesDefinition?: ModuleJoinerConfig[],
   injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<ILinkModule> => {
@@ -106,16 +105,7 @@ export const initialize = async (
         !modulesLoadedKeys.includes(primary.serviceName) ||
         !modulesLoadedKeys.includes(foreign.serviceName)
       ) {
-        console.log(
-          "Missing module:",
-          primary.serviceName,
-          ":",
-          modulesLoadedKeys.includes(primary.serviceName),
-          foreign.serviceName,
-          ":",
-          modulesLoadedKeys.includes(foreign.serviceName)
-        )
-        //continue
+        continue
       }
     }
 
@@ -125,10 +115,19 @@ export const initialize = async (
       foreign
     ) as ModuleExports
 
-    const loaded = await MedusaModule.bootstrap<ILinkModule>(
-      Modules.LINK_MODULE,
-      MODULE_PACKAGE_NAMES[Modules.LINK_MODULE],
-      options as InternalModuleDeclaration | ExternalModuleDeclaration,
+    const linkModuleDefinition: LinkModuleDefinition = {
+      key: serviceKey,
+      registrationName: serviceKey,
+      label: serviceKey,
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.ISOLATED, // TODO: change it to SHARED
+      },
+    }
+
+    const loaded = await MedusaModule.bootstrapLink(
+      linkModuleDefinition,
+      options as InternalModuleDeclaration,
       moduleDefinition,
       injectedDependencies
     )

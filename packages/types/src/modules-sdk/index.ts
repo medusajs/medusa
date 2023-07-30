@@ -71,6 +71,14 @@ export type ModuleDefinition = {
     | ExternalModuleDeclaration
 }
 
+export type LinkModuleDefinition = {
+  key: string
+  registrationName: string
+  label: string
+  dependencies?: string[]
+  defaultModuleDeclaration: InternalModuleDeclaration
+}
+
 export type LoadedModule = unknown & {
   __joinerConfig: ModuleJoinerConfig
   __definition: ModuleDefinition

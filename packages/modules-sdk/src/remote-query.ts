@@ -38,9 +38,7 @@ export class RemoteQuery {
         continue
       }
 
-      const serviceName = mod.__joinerConfig.isLink
-        ? mod.__joinerConfig.serviceName!
-        : mod.__definition.key
+      const serviceName = mod.__definition.key
 
       if (this.modulesMap.has(serviceName)) {
         throw new Error(
