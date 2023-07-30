@@ -1,7 +1,7 @@
+import { JoinerRelationship, ModuleJoinerConfig } from "@medusajs/types"
 import { SoftDeletableFilterKey, simpleHash } from "@medusajs/utils"
 
 import { EntitySchema } from "@mikro-orm/core"
-import { JoinerRelationship } from "@medusajs/types"
 import { composeTableName } from "./compose-link-name"
 
 function getClass(...properties) {
@@ -19,6 +19,7 @@ interface FilterArguments {
 }
 
 export function generateEntity(
+  joinerConfig: ModuleJoinerConfig,
   primary: JoinerRelationship,
   foreign: JoinerRelationship
 ) {
@@ -26,12 +27,14 @@ export function generateEntity(
     .split(",")
     .concat(foreign.foreignKey.split(","))
 
-  const tableName = composeTableName(
-    primary.serviceName,
-    primary.foreignKey,
-    foreign.serviceName,
-    foreign.foreignKey
-  )
+  const tableName =
+    joinerConfig.tableName ??
+    composeTableName(
+      primary.serviceName,
+      primary.foreignKey,
+      foreign.serviceName,
+      foreign.foreignKey
+    )
 
   const fields = fieldNames.reduce((acc, curr) => {
     acc[curr] = {

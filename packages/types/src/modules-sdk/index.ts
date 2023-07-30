@@ -106,10 +106,11 @@ export type ModuleJoinerConfig = Omit<
   isLink?: boolean // If the module is a link module
   linkableKeys?: string[] // Keys that can be used to link to other modules
   isReadOnlyLink?: boolean // If true it expands a RemoteQuery property but doesn't have a pivot table
+  tableName?: string // Name of the pivot table. If not provided it is auto generated
 }
 
 export declare type ModuleJoinerRelationship = JoinerRelationship & {
-  deleteCascade?: boolean
+  deleteCascade?: boolean // If true, the link joiner will cascade deleting the relationship
 }
 
 export type ModuleExports = {

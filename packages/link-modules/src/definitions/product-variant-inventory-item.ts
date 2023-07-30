@@ -5,6 +5,7 @@ import { Modules } from "@medusajs/modules-sdk"
 export const ProductVariantInventoryItem: ModuleJoinerConfig = {
   serviceName: LINKS.ProductVariantInventoryItem,
   isLink: true,
+  tableName: "product_variant_inventory_item",
   alias: [
     {
       name: "product_variant_inventory_item",

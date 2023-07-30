@@ -8,3 +8,11 @@ export function getModuleService(joinerConfig: ModuleJoinerConfig) {
     }
   }
 }
+
+export function getReadOnlyModuleService(joinerConfig: ModuleJoinerConfig) {
+  return class Service {
+    __joinerConfig(): ModuleJoinerConfig {
+      return joinerConfig as ModuleJoinerConfig
+    }
+  }
+}

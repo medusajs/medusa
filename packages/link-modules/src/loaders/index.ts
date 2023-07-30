@@ -5,14 +5,18 @@ import { containerLoader } from "./container"
 import { generateEntity } from "../utils"
 
 export function getLoaders({
+  joinerConfig,
   primary,
   foreign,
-  joinerConfig,
 }: {
   joinerConfig: ModuleJoinerConfig
   primary: JoinerRelationship
   foreign: JoinerRelationship
 }) {
-  const entity = generateEntity(primary, foreign)
+  if (joinerConfig.isReadOnlyLink) {
+    return []
+  }
+
+  const entity = generateEntity(joinerConfig, primary, foreign)
   return [connectionLoader(entity), containerLoader(entity, joinerConfig)]
 }

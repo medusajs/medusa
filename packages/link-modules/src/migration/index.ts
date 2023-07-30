@@ -2,13 +2,16 @@ import {
   JoinerRelationship,
   LoaderOptions,
   Logger,
-  ModulesSdkTypes,
+  ModuleJoinerConfig,
+  ModuleServiceInitializeCustomDataLayerOptions,
+  ModuleServiceInitializeOptions,
 } from "@medusajs/types"
 import { createConnection, generateEntity } from "../utils"
 
 import { ModulesSdkUtils } from "@medusajs/utils"
 
 export function getMigration(
+  joinerConfig: ModuleJoinerConfig,
   serviceName: string,
   primary: JoinerRelationship,
   foreign: JoinerRelationship
@@ -18,28 +21,39 @@ export function getMigration(
     logger,
   }: Pick<
     LoaderOptions<
-      | ModulesSdkTypes.ModuleServiceInitializeOptions
-      | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
+      | ModuleServiceInitializeOptions
+      | ModuleServiceInitializeCustomDataLayerOptions
     >,
     "options" | "logger"
   > = {}) {
     logger ??= console as unknown as Logger
 
     const dbData = ModulesSdkUtils.loadDatabaseConfig("link_modules", options)
-    const entitity = generateEntity(primary, foreign)
+    const entity = generateEntity(joinerConfig, primary, foreign)
 
-    const orm = await createConnection(dbData, [entitity])
+    const orm = await createConnection(dbData, [entity])
 
+    const tableName = entity.meta.collection
+
+    let hasTable = false
     try {
-      const generator = orm.getSchemaGenerator()
+      await orm.em.getConnection().execute(`SELECT 1 FROM ${tableName} LIMIT 0`)
+      hasTable = true
+      logger.info(`Skipping "${tableName}" creation.`)
+    } catch {}
 
-      await generator.createSchema()
+    if (!hasTable) {
+      try {
+        const generator = orm.getSchemaGenerator()
 
-      logger.info(`Link module "${serviceName}" migration executed`)
-    } catch (error) {
-      logger.error(
-        `Link module "${serviceName}" migration failed to run - Error: ${error}`
-      )
+        await generator.createSchema()
+
+        logger.info(`Link module "${serviceName}" migration executed`)
+      } catch (error) {
+        logger.error(
+          `Link module "${serviceName}" migration failed to run - Error: ${error}`
+        )
+      }
     }
 
     await orm.close()

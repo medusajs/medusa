@@ -14,25 +14,25 @@ import {
   ModuleJoinerConfig,
   ModulesSdkTypes,
 } from "@medusajs/types"
+import { getModuleService, getReadOnlyModuleService } from "@services"
+import { lowerCaseFirst, simpleHash } from "@medusajs/utils"
 
 import { InitializeModuleInjectableDependencies } from "../types"
 import { composeLinkName } from "../utils"
 import { getLoaders } from "../loaders"
 import { getMigration } from "../migration"
-import { getModuleService } from "@services"
-import { lowerCaseFirst } from "@medusajs/utils"
-
-//import { moduleDefinition } from "../module-definition"
 
 type ILinkModule = {}
 
 function getLinkModuleInstance(
-  joinerConfig,
+  joinerConfig: ModuleJoinerConfig,
   primary: JoinerRelationship,
   foreign: JoinerRelationship
 ) {
   return {
-    service: getModuleService(joinerConfig),
+    service: joinerConfig.isReadOnlyLink
+      ? getReadOnlyModuleService(joinerConfig)
+      : getModuleService(joinerConfig),
     loaders: getLoaders({
       joinerConfig,
       primary,
@@ -58,49 +58,65 @@ export const initialize = async (
     modulesDefinition ?? []
   )
 
-  for (const definition of allLinksToLoad) {
+  for (const linkDefinition of allLinksToLoad) {
+    const definition = JSON.parse(JSON.stringify(linkDefinition))
+
     if (definition.relationships?.length !== 2 && !definition.isReadOnlyLink) {
       throw new Error(
         `Link module ${definition.serviceName} must have 2 relationships.`
       )
     }
 
-    if (definition.isReadOnlyLink) {
-      // TODO: register links that only exports a joiner extending other services
-      continue
-    }
-
     const [primary, foreign] = definition.relationships ?? []
-    const serviceKey = lowerCaseFirst(
-      definition.serviceName ??
-        composeLinkName(
-          primary.serviceName,
-          primary.foreignKey,
-          foreign.serviceName,
-          foreign.foreignKey
+    const serviceKey = !definition.isReadOnlyLink
+      ? lowerCaseFirst(
+          definition.serviceName ??
+            composeLinkName(
+              primary.serviceName,
+              primary.foreignKey,
+              foreign.serviceName,
+              foreign.foreignKey
+            )
         )
-    )
+      : simpleHash(JSON.stringify(definition.extends))
 
     if (modulesLoadedKeys.includes(serviceKey)) {
       continue
     } else if (serviceKey in allLinks) {
-      throw new Error(`Link module ${serviceKey} already exists.`)
+      throw new Error(`Link module ${serviceKey} already defined.`)
     }
 
-    if (
-      !modulesLoadedKeys.includes(primary.serviceName) ||
-      !modulesLoadedKeys.includes(foreign.serviceName)
-    ) {
-      console.log(
-        "Missing module:",
-        primary.serviceName,
-        ":",
-        modulesLoadedKeys.includes(primary.serviceName),
-        foreign.serviceName,
-        ":",
-        modulesLoadedKeys.includes(foreign.serviceName)
-      )
-      //continue
+    if (definition.isReadOnlyLink) {
+      const extended: any[] = []
+      for (const extension of definition.extends ?? []) {
+        if (
+          modulesLoadedKeys.includes(extension.serviceName) &&
+          modulesLoadedKeys.includes(extension.relationship.serviceName)
+        ) {
+          extended.push(extension)
+        }
+      }
+
+      definition.extends = extended
+      if (extended.length === 0) {
+        continue
+      }
+    } else {
+      if (
+        !modulesLoadedKeys.includes(primary.serviceName) ||
+        !modulesLoadedKeys.includes(foreign.serviceName)
+      ) {
+        console.log(
+          "Missing module:",
+          primary.serviceName,
+          ":",
+          modulesLoadedKeys.includes(primary.serviceName),
+          foreign.serviceName,
+          ":",
+          modulesLoadedKeys.includes(foreign.serviceName)
+        )
+        //continue
+      }
     }
 
     const moduleDefinition = getLinkModuleInstance(
@@ -117,7 +133,7 @@ export const initialize = async (
       injectedDependencies
     )
 
-    allLinks[serviceKey] = Object.values(loaded)[0]
+    allLinks[serviceKey as string] = Object.values(loaded)[0]
   }
 
   return allLinks
@@ -137,6 +153,10 @@ export async function runMigrations(
 
   const allLinks = new Set<string>()
   for (const definition of allLinksToLoad) {
+    if (definition.isReadOnlyLink) {
+      continue
+    }
+
     if (definition.relationships?.length !== 2 && !definition.isReadOnlyLink) {
       throw new Error(
         `Link module ${definition.serviceName} must have 2 relationships.`
@@ -173,7 +193,7 @@ export async function runMigrations(
       //continue
     }
 
-    const migrate = getMigration(serviceKey, primary, foreign)
+    const migrate = getMigration(definition, serviceKey, primary, foreign)
     await migrate({ options, logger })
   }
 }
