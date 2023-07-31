@@ -25,6 +25,8 @@ import {
   InternalModuleDeclaration,
   JoinerServiceConfig,
   ProductTypes,
+  IEventBusModuleService,
+  EmitData,
 } from "@medusajs/types"
 import { serialize } from "@mikro-orm/core"
 
@@ -54,6 +56,17 @@ type InjectedDependencies = {
   productImageService: ProductImageService<any>
   productTypeService: ProductTypeService<any>
   productOptionService: ProductOptionService<any>
+  eventBusService?: IEventBusModuleService
+}
+
+type ProductEvent = {
+  id: string
+}
+
+const ProductEvents = {
+  PRODUCT_UPDATED: "product.updated",
+  PRODUCT_CREATED: "product.created",
+  PRODUCT_DELETED: "product.deleted",
 }
 
 export default class ProductModuleService<
@@ -79,6 +92,7 @@ export default class ProductModuleService<
   protected readonly productImageService_: ProductImageService<TProductImage>
   protected readonly productTypeService_: ProductTypeService<TProductType>
   protected readonly productOptionService_: ProductOptionService<TProductOption>
+  protected readonly eventBusService_?: IEventBusModuleService
 
   constructor(
     {
@@ -91,6 +105,7 @@ export default class ProductModuleService<
       productImageService,
       productTypeService,
       productOptionService,
+      eventBusService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -103,6 +118,7 @@ export default class ProductModuleService<
     this.productImageService_ = productImageService
     this.productTypeService_ = productTypeService
     this.productOptionService_ = productOptionService
+    this.eventBusService_ = eventBusService
   }
 
   __joinerConfig(): JoinerServiceConfig {
@@ -601,10 +617,18 @@ export default class ProductModuleService<
 
   async create(data: ProductTypes.CreateProductDTO[], sharedContext?: Context): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.create_(data, sharedContext)
-
-    return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
+    const createdProducts = await this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
       populate: true,
     })
+
+    for (const product of createdProducts) {
+      await this.eventBusService_?.emit<ProductEvent>(
+        ProductEvents.PRODUCT_CREATED,
+        { id: product.id }
+      )
+    }
+
+    return createdProducts
   }
 
   async update(
@@ -613,11 +637,20 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.update_(data, sharedContext)
 
-    return this.baseRepository_.serialize<
+    const updatedProducts = await this.baseRepository_.serialize<
       ProductTypes.ProductDTO[]
     >(products, {
       populate: true,
     })
+
+    for (const product of updatedProducts) {
+      await this.eventBusService_?.emit<ProductEvent>(
+        ProductEvents.PRODUCT_UPDATED,
+        { id: product.id }
+      )
+    }
+
+    return updatedProducts
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
@@ -947,6 +980,13 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     await this.productService_.delete(productIds, sharedContext)
+
+    for (const productId of productIds) {
+      await this.eventBusService_?.emit<ProductEvent>(
+        ProductEvents.PRODUCT_DELETED,
+        { id: productId }
+      )
+    }
   }
 
   async softDelete(
@@ -955,9 +995,18 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.softDelete_(productIds, sharedContext)
 
-    return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
+    const softDeletedProducts = await this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
       populate: true,
     })
+
+    for (const product of softDeletedProducts) {
+      await this.eventBusService_?.emit<ProductEvent>(
+        ProductEvents.PRODUCT_DELETED,
+        { id: product.id }
+      )
+    }
+
+    return softDeletedProducts
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")

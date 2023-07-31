@@ -6,6 +6,7 @@ import { createProductAndTags } from "../__fixtures__/product"
 import { productsData } from "../__fixtures__/product/data"
 import { DB_URL, TestDatabase } from "../utils"
 import { buildProductAndRelationsData } from "../__fixtures__/product/data/create-product"
+import { EventBusService } from "../__fixtures__/event-bus"
 import { kebabCase } from "@medusajs/utils"
 import { IProductModuleService } from "@medusajs/types"
 
@@ -109,17 +110,21 @@ describe("Product module", function () {
   describe("create", function () {
     let module: IProductModuleService
     let images = ["image-1"]
+    let eventBus
 
     beforeEach(async () => {
       await beforeEach_()
 
       MedusaModule.clearInstances()
 
+      eventBus = new EventBusService()
       module = await initialize({
         database: {
           clientUrl: DB_URL,
           schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
         },
+      }, {
+        eventBusService: eventBus
       })
     })
 
@@ -134,7 +139,6 @@ describe("Product module", function () {
       const products = await module.create([data])
 
       expect(products).toHaveLength(1)
-
       expect(products[0].images).toHaveLength(1)
       expect(products[0].options).toHaveLength(1)
       expect(products[0].tags).toHaveLength(1)
@@ -200,22 +204,41 @@ describe("Product module", function () {
         })
       )
     })
+
+    it("should emit events through eventBus", async () => {
+      const eventBusSpy = jest.spyOn(eventBus, 'emit')
+      const data = buildProductAndRelationsData({
+        images,
+        thumbnail: images[0],
+      })
+
+      const products = await module.create([data])
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1);
+      expect(eventBusSpy).toHaveBeenCalledWith(expect.any(String), {
+        id: products[0].id
+      })
+    })
   })
 
   describe("softDelete", function () {
     let module: IProductModuleService
     let images = ["image-1"]
+    let eventBus
 
     beforeEach(async () => {
       await beforeEach_()
 
       MedusaModule.clearInstances()
 
+      eventBus = new EventBusService()
       module = await initialize({
         database: {
           clientUrl: DB_URL,
           schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
         },
+      }, {
+        eventBusService: eventBus
       })
     })
 
@@ -270,6 +293,22 @@ describe("Product module", function () {
       for (const option of variantsOptions) {
         expect(option.deleted_at).not.toBeNull()
       }
+    })
+
+    it("should emit events through eventBus", async () => {
+      const eventBusSpy = jest.spyOn(eventBus, 'emit')
+      const data = buildProductAndRelationsData({
+        images,
+        thumbnail: images[0],
+      })
+
+      const products = await module.create([data])
+
+      await module.softDelete([products[0].id])
+
+      expect(eventBusSpy).toHaveBeenCalledWith("product.deleted", {
+        id: products[0].id
+      })
     })
   })
 

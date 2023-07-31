@@ -7,6 +7,7 @@ import { DB_URL, TestDatabase } from "../../../utils"
 import { buildProductAndRelationsData } from "../../../__fixtures__/product/data/create-product"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import { createCollections, createTypes } from "../../../__fixtures__/product"
+import { EventBusService } from "../../../__fixtures__/event-bus"
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -32,6 +33,7 @@ describe("ProductModuleService products", function () {
     let productTypeOne: ProductType
     let productTypeTwo: ProductType
     let images = ["image-1"]
+    let eventBus
 
     const productCategoriesData = [{
       id: "test-1",
@@ -135,11 +137,14 @@ describe("ProductModuleService products", function () {
 
       MedusaModule.clearInstances()
 
+      eventBus = new EventBusService()
       module = await initialize({
         database: {
           clientUrl: DB_URL,
           schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
         },
+      }, {
+        eventBusService: eventBus
       })
     })
 
@@ -226,6 +231,25 @@ describe("ProductModuleService products", function () {
           ]),
         })
       )
+    })
+
+    it("should emit events through event bus", async () => {
+      const eventBusSpy = jest.spyOn(eventBus, 'emit')
+      const data = buildProductAndRelationsData({
+        images,
+        thumbnail: images[0],
+      })
+
+      const updateData = {
+        ...data,
+        id: productOne.id,
+        title: "updated title"
+      }
+
+      await module.update([updateData])
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1);
+      expect(eventBusSpy).toHaveBeenCalledWith(expect.any(String), expect.any(Object))
     })
 
     it("should add relationships to a product", async () => {
