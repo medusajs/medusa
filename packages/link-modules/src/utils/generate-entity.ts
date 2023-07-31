@@ -23,9 +23,7 @@ export function generateEntity(
   primary: JoinerRelationship,
   foreign: JoinerRelationship
 ) {
-  const fieldNames = primary.foreignKey
-    .split(",")
-    .concat(foreign.foreignKey.split(","))
+  const fieldNames = primary.foreignKey.split(",").concat(foreign.foreignKey)
 
   const tableName =
     joinerConfig.tableName ??
@@ -88,12 +86,8 @@ export function generateEntity(
           simpleHash(tableName),
       },
       {
-        properties: foreign.foreignKey.split(","),
-        name:
-          "IDX_" +
-          foreign.foreignKey.split(",").join("_") +
-          "_" +
-          simpleHash(tableName),
+        properties: foreign.foreignKey,
+        name: "IDX_" + foreign.foreignKey + "_" + simpleHash(tableName),
       },
       {
         properties: ["deleted_at"],

@@ -1,30 +1,41 @@
-import { PivotService } from "@services"
 import {
   Context,
   DAL,
   FindConfig,
+  ILinkModule,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
-  ProductTypes,
 } from "@medusajs/types"
 import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import { PivotService } from "@services"
 import { shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
   pivotService: PivotService<any>
+  primaryKey: string | string[]
+  foreignKey: string
 }
 
-export default class LinkModuleService<TPivot> {
-  baseRepository_: DAL.RepositoryService
-  readonly pivotService_: PivotService<TPivot>
+export default class LinkModuleService<TPivot> implements ILinkModule {
+  protected baseRepository_: DAL.RepositoryService
+  protected readonly pivotService_: PivotService<TPivot>
+  protected primaryKey_: string[]
+  protected foreignKey_: string
 
   constructor(
-    { baseRepository, pivotService }: InjectedDependencies,
+    {
+      baseRepository,
+      pivotService,
+      primaryKey,
+      foreignKey,
+    }: InjectedDependencies,
     readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
     this.pivotService_ = pivotService
+    this.primaryKey_ = !Array.isArray(primaryKey) ? [primaryKey] : primaryKey
+    this.foreignKey_ = foreignKey
   }
 
   __joinerConfig(): ModuleJoinerConfig {
@@ -32,10 +43,10 @@ export default class LinkModuleService<TPivot> {
   }
 
   async list(
-    filters: ProductTypes.FilterableProductProps = {},
+    filters: Record<string, unknown> = {},
     config: FindConfig<unknown> = {},
     sharedContext?: Context
-  ): Promise<ProductTypes.ProductDTO[]> {
+  ): Promise<unknown[]> {
     const products = await this.pivotService_.list(
       filters,
       config,
@@ -46,10 +57,10 @@ export default class LinkModuleService<TPivot> {
   }
 
   async listAndCount(
-    filters: ProductTypes.FilterableProductProps = {},
+    filters: Record<string, unknown> = {},
     config: FindConfig<unknown> = {},
     sharedContext?: Context
-  ): Promise<[ProductTypes.ProductDTO[], number]> {
+  ): Promise<[unknown[], number]> {
     const [products, count] = await this.pivotService_.listAndCount(
       filters,
       config,
@@ -61,6 +72,11 @@ export default class LinkModuleService<TPivot> {
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async create(data: unknown[], @MedusaContext() sharedContext: Context = {}) {
+    const filter = this.primaryKey_.map((key, index) => ({
+      [key]: primaryKeyData[index],
+    }))
+    filter[this.foreignKey_] = foreignKeyData
+
     const links = await this.pivotService_.create(data, sharedContext)
     return links
   }
@@ -69,8 +85,8 @@ export default class LinkModuleService<TPivot> {
   async delete(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<void> {
-    await this.pivotService_.delete(productIds, sharedContext)
+  ): Promise<unknown[]> {
+    return await this.pivotService_.delete(productIds, sharedContext)
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")

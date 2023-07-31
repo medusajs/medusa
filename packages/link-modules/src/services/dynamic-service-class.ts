@@ -1,9 +1,11 @@
+import { Constructor, ILinkModule, ModuleJoinerConfig } from "@medusajs/types"
 import { LinkModuleService } from "@services"
-import { ModuleJoinerConfig } from "@medusajs/types"
 
-export function getModuleService(joinerConfig: ModuleJoinerConfig) {
+export function getModuleService(
+  joinerConfig: ModuleJoinerConfig
+): Constructor<ILinkModule> {
   return class LinkService extends LinkModuleService<unknown> {
-    __joinerConfig(): ModuleJoinerConfig {
+    override __joinerConfig(): ModuleJoinerConfig {
       return joinerConfig as ModuleJoinerConfig
     }
   }

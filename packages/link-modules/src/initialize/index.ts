@@ -1,13 +1,6 @@
-import * as linkDefinitions from "../definitions"
-
+import { InternalModuleDeclaration, MedusaModule } from "@medusajs/modules-sdk"
 import {
-  InternalModuleDeclaration,
-  MODULE_PACKAGE_NAMES,
-  MedusaModule,
-  Modules,
-} from "@medusajs/modules-sdk"
-import {
-  JoinerRelationship,
+  ILinkModule,
   LinkModuleDefinition,
   LoaderOptions,
   MODULE_RESOURCE_TYPE,
@@ -16,38 +9,18 @@ import {
   ModuleJoinerConfig,
   ModuleServiceInitializeOptions,
 } from "@medusajs/types"
-import { getModuleService, getReadOnlyModuleService } from "@services"
 import { lowerCaseFirst, simpleHash } from "@medusajs/utils"
-
+import * as linkDefinitions from "../definitions"
+import { getMigration } from "../migration"
 import { InitializeModuleInjectableDependencies } from "../types"
 import { composeLinkName } from "../utils"
-import { getLoaders } from "../loaders"
-import { getMigration } from "../migration"
-
-type ILinkModule = {}
-
-function getLinkModuleInstance(
-  joinerConfig: ModuleJoinerConfig,
-  primary: JoinerRelationship,
-  foreign: JoinerRelationship
-) {
-  return {
-    service: joinerConfig.isReadOnlyLink
-      ? getReadOnlyModuleService(joinerConfig)
-      : getModuleService(joinerConfig),
-    loaders: getLoaders({
-      joinerConfig,
-      primary,
-      foreign,
-    }),
-  }
-}
+import { getLinkModuleDefinition } from "./module-definition"
 
 export const initialize = async (
   options?: ModuleServiceInitializeOptions | InternalModuleDeclaration,
   modulesDefinition?: ModuleJoinerConfig[],
   injectedDependencies?: InitializeModuleInjectableDependencies
-): Promise<ILinkModule> => {
+): Promise<{ [link: string]: ILinkModule }> => {
   const allLinks = {}
   const modulesLoadedKeys = MedusaModule.getLoadedModules().map(
     (mod) => Object.keys(mod)[0]
@@ -60,13 +33,16 @@ export const initialize = async (
   for (const linkDefinition of allLinksToLoad) {
     const definition = JSON.parse(JSON.stringify(linkDefinition))
 
+    const [primary, foreign] = definition.relationships ?? []
+
     if (definition.relationships?.length !== 2 && !definition.isReadOnlyLink) {
       throw new Error(
-        `Link module ${definition.serviceName} must have 2 relationships.`
+        `Link module ${definition.serviceName} can only link 2 modules.`
       )
+    } else if (foreign?.foreignKey?.split(",").length > 1) {
+      throw new Error(`Foreign key cannot be a composed key.`)
     }
 
-    const [primary, foreign] = definition.relationships ?? []
     const serviceKey = !definition.isReadOnlyLink
       ? lowerCaseFirst(
           definition.serviceName ??
@@ -109,7 +85,7 @@ export const initialize = async (
       }
     }
 
-    const moduleDefinition = getLinkModuleInstance(
+    const moduleDefinition = getLinkModuleDefinition(
       definition,
       primary,
       foreign

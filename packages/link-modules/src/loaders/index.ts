@@ -1,8 +1,12 @@
-import { JoinerRelationship, ModuleJoinerConfig } from "@medusajs/types"
+import {
+  JoinerRelationship,
+  ModuleJoinerConfig,
+  ModuleLoaderFunction,
+} from "@medusajs/types"
 
+import { generateEntity } from "../utils"
 import { connectionLoader } from "./connection"
 import { containerLoader } from "./container"
-import { generateEntity } from "../utils"
 
 export function getLoaders({
   joinerConfig,
@@ -12,7 +16,7 @@ export function getLoaders({
   joinerConfig: ModuleJoinerConfig
   primary: JoinerRelationship
   foreign: JoinerRelationship
-}) {
+}): ModuleLoaderFunction[] {
   if (joinerConfig.isReadOnlyLink) {
     return []
   }

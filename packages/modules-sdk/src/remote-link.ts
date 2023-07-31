@@ -19,6 +19,7 @@ type RemoteRelationship = ModuleJoinerRelationship & {
 
 export class RemoteLink {
   private modulesMap: Map<string, LoadedModule> = new Map()
+  private relationsPairs: Map<string, LoadedModule> = new Map()
   private relations: Map<string, Map<string, RemoteRelationship[]>> = new Map()
 
   constructor(modulesLoaded?: LoadedModule[]) {
@@ -48,6 +49,17 @@ export class RemoteLink {
       }
 
       if (joinerConfig.relationships?.length) {
+        if (joinerConfig.isLink) {
+          const [primary, foreign] = joinerConfig.relationships
+          const key = [
+            primary.serviceName,
+            primary.foreignKey,
+            foreign.serviceName,
+            foreign.foreignKey,
+          ].join("-")
+          this.relationsPairs.set(key, mod)
+        }
+
         for (const relationship of joinerConfig.relationships) {
           this.addRelationship(serviceName, {
             ...relationship,
@@ -93,6 +105,16 @@ export class RemoteLink {
     serviceMap.get(key)!.push(relationship)
   }
 
+  getLinkModule(
+    moduleA: string,
+    moduleAKey: string,
+    moduleB: string,
+    moduleBKey: string
+  ) {
+    const key = [moduleA, moduleAKey, moduleB, moduleBKey].join("-")
+    return this.relationsPairs.get(key)
+  }
+
   getRelationships(): Map<string, Map<string, RemoteRelationship[]>> {
     return this.relations
   }
@@ -128,8 +150,7 @@ export class RemoteLink {
       }
 
       for (const relationship of relationships) {
-        const { serviceName, deleteCascade, primaryKey, foreignKey } =
-          relationship
+        const { serviceName, deleteCascade } = relationship
 
         if (followCascade && !deleteCascade) {
           continue
@@ -146,6 +167,37 @@ export class RemoteLink {
     }
 
     return retrieve
+  }
+
+  async create(link: LinkDefinition | LinkDefinition[]) {
+    const allLinks = Array.isArray(link) ? link : [link]
+
+    const promises: Promise<void>[] = []
+    for (const rel of allLinks) {
+      const mods = Object.keys(rel)
+      if (mods.length > 2) {
+        throw new Error(`Only 2 modules can be linked.`)
+      }
+
+      const [moduleA, moduleB] = mods
+      const moduleAKey = Object.keys(rel[moduleA]).join(",")
+      const moduleBKey = Object.keys(rel[moduleB]).join(",")
+
+      const service = this.getLinkModule(
+        moduleA,
+        moduleAKey,
+        moduleB,
+        moduleBKey
+      )
+
+      if (!service) {
+        throw new Error(
+          `Link module to connect ${moduleA}[${moduleAKey}] and ${moduleB}[${moduleBKey}] was not found.`
+        )
+      }
+
+      promises.push(service.create(keys))
+    }
   }
 
   async deleteDependencies(
