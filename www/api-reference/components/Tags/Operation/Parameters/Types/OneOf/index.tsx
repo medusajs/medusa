@@ -44,6 +44,25 @@ const TagOperationParamatersOneOf = ({
 }: TagOperationParamatersOneOfProps) => {
   const [activeTab, setActiveTab] = useState<number>(0)
 
+  const getName = (item: SchemaObject): string => {
+    if (item.title) {
+      return item.title
+    }
+
+    if (item.anyOf || item.allOf) {
+      // return the name of any of the items
+      const name = item.anyOf
+        ? item.anyOf.find((i) => i.title !== undefined)?.title
+        : item.allOf?.find((i) => i.title !== undefined)?.title
+
+      if (name) {
+        return name
+      }
+    }
+
+    return item.type || ""
+  }
+
   const getContent = () => {
     return (
       <>
@@ -63,7 +82,7 @@ const TagOperationParamatersOneOf = ({
                 )}
                 onClick={() => setActiveTab(index)}
               >
-                {item.title || item.type}
+                {getName(item)}
               </li>
             ))}
           </ul>

@@ -47,6 +47,13 @@ const TagOperationParametersUnion = ({
     )
   }
 
+  if (!objectSchema.description) {
+    objectSchema.description = schema.anyOf
+      ? schema.anyOf.find((item) => item.description !== undefined)?.description
+      : schema.allOf?.find((item) => item.description !== undefined)
+          ?.description
+  }
+
   return (
     <TagOperationParametersObject
       schema={objectSchema}
