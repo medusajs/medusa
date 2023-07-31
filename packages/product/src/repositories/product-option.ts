@@ -5,15 +5,15 @@ import {
 } from "@mikro-orm/core"
 import { Product, ProductOption } from "@models"
 import { Context, DAL, ProductTypes } from "@medusajs/types"
-import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
+  DALUtils,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
 } from "@medusajs/utils"
 
-export class ProductOptionRepository extends AbstractBaseRepository<ProductOption> {
+export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseRepository<ProductOption> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -88,13 +88,15 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
 
     data.forEach((d) => d.product_id && productIds.push(d.product_id))
 
-    const existingProducts = await manager.find(
-      Product,
-      { id: { $in: productIds } },
-    )
+    const existingProducts = await manager.find(Product, {
+      id: { $in: productIds },
+    })
 
     const existingProductsMap = new Map(
-      existingProducts.map<[string, Product]>((product) => [product.id, product])
+      existingProducts.map<[string, Product]>((product) => [
+        product.id,
+        product,
+      ])
     )
 
     const productOptions = data.map((optionData) => {
@@ -136,7 +138,10 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
     )
 
     const existingOptionsMap = new Map(
-      existingOptions.map<[string, ProductOption]>((option) => [option.id, option])
+      existingOptions.map<[string, ProductOption]>((option) => [
+        option.id,
+        option,
+      ])
     )
 
     const productOptions = data.map((optionData) => {

@@ -3,6 +3,7 @@ import {
   Collection,
   Entity,
   Enum,
+  Filter,
   Index,
   ManyToMany,
   ManyToOne,
@@ -14,7 +15,7 @@ import {
 } from "@mikro-orm/core"
 
 import { ProductTypes } from "@medusajs/types"
-import { generateEntityId, kebabCase } from "@medusajs/utils"
+import { DALUtils, generateEntityId, kebabCase } from "@medusajs/utils"
 import ProductCategory from "./product-category"
 import ProductCollection from "./product-collection"
 import ProductOption from "./product-option"
@@ -22,7 +23,6 @@ import ProductTag from "./product-tag"
 import ProductType from "./product-type"
 import ProductVariant from "./product-variant"
 import ProductImage from "./product-image"
-import { SoftDeletable } from "../utils"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =
@@ -34,7 +34,7 @@ type OptionalFields =
   | "updated_at"
 
 @Entity({ tableName: "product" })
-@SoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class Product {
   [OptionalProps]?: OptionalRelations | OptionalFields
 
