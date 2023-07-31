@@ -1,16 +1,42 @@
 import { Modules } from "@medusajs/modules-sdk"
 import { JoinerServiceConfig } from "@medusajs/types"
-import { Product, ProductOption, ProductVariant } from "@models"
+import {
+  Product,
+  ProductCategory,
+  ProductCollection,
+  ProductOption,
+  ProductTag,
+  ProductType,
+  ProductVariant,
+} from "@models"
+import ProductImage from "./models/product-image"
 
 export const EntityNameToLinkableKeysMap = new Map([
   [Product.name, "product_id"],
   [ProductVariant.name, "variant_id"],
   [ProductOption.name, "product_option_id"],
+  [ProductType.name, "product_type_id"],
+  [ProductCategory.name, "product_category_id"],
+  [ProductCollection.name, "product_collection_id"],
+  [ProductTag.name, "product_tag_id"],
+  [ProductImage.name, "product_image_id"],
 ])
 
 export const joinerConfig: JoinerServiceConfig = {
   serviceName: Modules.PRODUCT,
   primaryKeys: ["id", "handle"],
+  // @ts-ignore
+  linkableKeys: [
+    "product_id",
+    "variant_id",
+    "product_handle",
+    "product_type_id",
+    "product_collection_id",
+    "product_category_id",
+    "product_tag_id",
+    "product_option_id",
+    "product_image_id",
+  ],
   alias: [
     {
       name: "product",
@@ -21,7 +47,7 @@ export const joinerConfig: JoinerServiceConfig = {
     {
       name: "variant",
       args: {
-        methodSuffix: "Variant",
+        methodSuffix: "Variants",
       },
     },
     {
@@ -33,7 +59,7 @@ export const joinerConfig: JoinerServiceConfig = {
     {
       name: "product_option",
       args: {
-        methodSuffix: "Option",
+        methodSuffix: "Options",
       },
     },
     {
@@ -45,7 +71,7 @@ export const joinerConfig: JoinerServiceConfig = {
     {
       name: "product_type",
       args: {
-        methodSuffix: "Type",
+        methodSuffix: "Types",
       },
     },
     {
@@ -57,7 +83,7 @@ export const joinerConfig: JoinerServiceConfig = {
     {
       name: "product_image",
       args: {
-        methodSuffix: "Image",
+        methodSuffix: "Images",
       },
     },
     {
@@ -69,7 +95,7 @@ export const joinerConfig: JoinerServiceConfig = {
     {
       name: "product_tag",
       args: {
-        methodSuffix: "Tag",
+        methodSuffix: "Tags",
       },
     },
     {
@@ -81,7 +107,7 @@ export const joinerConfig: JoinerServiceConfig = {
     {
       name: "product_collection",
       args: {
-        methodSuffix: "Collection",
+        methodSuffix: "Collections",
       },
     },
     {
@@ -93,7 +119,7 @@ export const joinerConfig: JoinerServiceConfig = {
     {
       name: "product_category",
       args: {
-        methodSuffix: "Category",
+        methodSuffix: "Categories",
       },
     },
     {
