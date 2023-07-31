@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "test": "jest --passWithNoTests src",
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "watch": "tsc --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build"
   },
@@ -30,6 +30,7 @@
     "@types/yargs": "^15.0.15",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
+    "rimraf": "^5.0.1",
     "ts-jest": "^25.5.1",
     "typescript": "^4.9.5"
   },
