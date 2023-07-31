@@ -17,6 +17,12 @@ An admin UI route is essentially a React Component created under the `src/admin/
 
 This guide explains how to create a new route in the admin dashboard with some examples.
 
+:::note
+
+If you want to create a page under the Settings page, please refer to [this documentation](./setting-pages.md) instead.
+
+:::
+
 ---
 
 ## Prerequisites
