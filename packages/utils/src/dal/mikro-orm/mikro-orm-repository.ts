@@ -7,7 +7,7 @@ import {
   transactionWrapper,
 } from "../utils"
 
-class MikroOrmAbstractBase<T = any> {
+class MikroOrmBase<T = any> {
   protected readonly manager_: any
 
   protected constructor({ manager }) {
@@ -48,7 +48,7 @@ class MikroOrmAbstractBase<T = any> {
 }
 
 export abstract class MikroOrmAbstractBaseRepository<T = any>
-  extends MikroOrmAbstractBase
+  extends MikroOrmBase
   implements DAL.RepositoryService<T>
 {
   abstract find(options?: DAL.FindOptions<T>, context?: Context)
@@ -59,6 +59,10 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
   ): Promise<[T[], number]>
 
   abstract create(data: unknown[], context?: Context): Promise<T[]>
+
+  update(data: unknown[], context?: Context): Promise<T[]> {
+    throw new Error("Method not implemented.")
+  }
 
   abstract delete(ids: string[], context?: Context): Promise<void>
 
@@ -98,7 +102,7 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
 }
 
 export abstract class MikroOrmAbstractTreeRepositoryBase<T = any>
-  extends MikroOrmAbstractBase<T>
+  extends MikroOrmBase<T>
   implements DAL.TreeRepositoryService<T>
 {
   protected constructor({ manager }) {
@@ -124,8 +128,11 @@ export abstract class MikroOrmAbstractTreeRepositoryBase<T = any>
 }
 
 /**
- * Only used internally in order to be able to wrap in transaction from a
- * non identified repository
+ * Priviliged extends of the abstract classes unless most of the methods can't be implemented
+ * in your repository. This base repository is also used to provide a base repository
+ * injection if needed to be able to use the common methods without being related to an entity.
+ * In this case, none of the method will be implemented except the manager and transaction
+ * related ones.
  */
 
 export class MikroOrmBaseRepository extends MikroOrmAbstractBaseRepository {
@@ -135,6 +142,10 @@ export class MikroOrmBaseRepository extends MikroOrmAbstractBaseRepository {
   }
 
   create(data: unknown[], context?: Context): Promise<any[]> {
+    throw new Error("Method not implemented.")
+  }
+
+  update(data: unknown[], context?: Context): Promise<any[]> {
     throw new Error("Method not implemented.")
   }
 

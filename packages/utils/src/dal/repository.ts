@@ -45,6 +45,8 @@ export abstract class AbstractBaseRepository<T = any>
 
   abstract create(data: unknown[], context?: Context): Promise<T[]>
 
+  abstract update(data: unknown[], context?: Context): Promise<T[]>
+
   abstract delete(ids: string[], context?: Context): Promise<void>
 
   abstract softDelete(ids: string[], context?: Context): Promise<T[]>
