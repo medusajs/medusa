@@ -22,6 +22,6 @@ Medusa also uses an [**Events Architecture**](../events/index.mdx) to trigger an
 
 Events can be handled using [**Subscribers**](../events/subscribers.mdx). Subscribers are TypeScript or JavaScript classes that add their methods as handlers for specific events. These handler methods are only executed when an event is triggered.
 
-You can create any of the resources in the backend’s architecture, such as entities, endpoints, services, and more, as part of your custom development without directly modifying the backend itself. The Medusa backend uses **loaders** to load the backend’s resources, as well as your custom resources and resources in [**Plugins**](../plugins/overview.mdx).
+You can create any of the resources in the backend’s architecture, such as entities, endpoints, services, and more, as part of your custom development without directly modifying the backend itself. The Medusa backend uses [**loaders**](../loaders/overview.mdx) to load the backend’s resources, as well as your custom resources and resources in [**Plugins**](../plugins/overview.mdx).
 
 You can package your customizations into Plugins to reuse them in different Medusa backends or publish them for others to use. You can also install existing plugins into your Medusa backend.
