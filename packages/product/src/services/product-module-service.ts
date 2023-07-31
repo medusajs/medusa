@@ -956,7 +956,6 @@ export default class ProductModuleService<
         sharedContext
       )
 
-      delete productData.type
       productData.type_id = productType?.[0]?.id
     }
   }
