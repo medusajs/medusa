@@ -7,6 +7,7 @@ import {
   MODULE_SCOPE,
 } from "@medusajs/modules-sdk"
 import {
+  DALUtils,
   MedusaError,
   ModulesSdkUtils,
   PG_KNEX_CONNECTION_REGISTRATION_KEY,
@@ -15,9 +16,8 @@ import {
 import { EntitySchema } from "@mikro-orm/core"
 
 import * as ProductModels from "@models"
-import { createConnection } from "../utils"
-import { ModulesSdkTypes } from "@medusajs/types"
 import { PostgreSqlDriver, SqlEntityManager } from "@mikro-orm/postgresql"
+import { ModulesSdkTypes } from "@medusajs/types"
 
 export default async (
   {
@@ -81,7 +81,7 @@ async function loadDefault({
   }
 
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
-  const orm = await createConnection(database, entities)
+  const orm = await DALUtils.mikroOrmCreateConnection(database, entities)
 
   return orm.em.fork()
 }

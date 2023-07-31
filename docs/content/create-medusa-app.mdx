@@ -21,17 +21,17 @@ import EaddrinuseSection from './troubleshooting/eaddrinuse.md'
 
 In this document, you’ll learn how to use create-medusa-app to set up a Medusa backend and an admin dashboard.
 
+:::tip
+
+`create-medusa-app` allows you to install and setup a Medusa backend project with minimal configurations. If you're more familiar with Medusa and you need to have more control over the configurations of the Medusa backend, please use the [backend quickstart instead](./development/backend/install.mdx).
+
+:::
+
 ## Overview
 
 Medusa is a toolkit for developers to create digital commerce applications. In its simplest form, Medusa is a Node.js backend with the core API, plugins, and modules installed through npm.
 
 `create-medusa-app` is a command that facilitates creating a Medusa ecosystem. It installs the Medusa backend and admin dashboard, along with the necessary configurations to run the backend.
-
-:::note
-
-`create-medusa-app` uses a beta version of the Medusa backend and admin. If you want to use a stable Medusa setup, consider passing the `--stable` option to the command. However, when using this option, you'll have to [install the Medusa admin](./admin/quickstart.mdx) manually.
-
-:::
 
 ---
 
@@ -41,7 +41,7 @@ Before you can install and use Medusa, you need the following tools installed on
 
 - [Node.js v16+](./development/backend/prepare-environment.mdx#nodejs)
 - [Git](./development/backend/prepare-environment.mdx#git)
-- [PostgreSQL](./development/backend/prepare-environment.mdx#postgresql)
+- [PostgreSQL](./development/backend/prepare-environment.mdx#postgresql). The PostgreSQL server should also be running during your installation process.
 
 ---
 
@@ -49,7 +49,7 @@ Before you can install and use Medusa, you need the following tools installed on
 
 :::note
 
-Make sure your PostgreSQL server is running before you run the command.
+`create-medusa-app` uses a beta version of the Medusa backend and admin. If you want to use a stable Medusa setup, consider passing the `--stable` option to the command. However, when using this option, you'll have to [install the Medusa admin](./admin/quickstart.mdx) manually.
 
 :::
 
