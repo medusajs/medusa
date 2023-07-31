@@ -75,9 +75,6 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
     const entities = await this.find({ where: { id: { $in: ids } } as any })
     const date = new Date()
 
-    // entityName -> [id1, id2, ...] Map
-    //const softDeletedEntitiesMap: { [entityName: string]: string[] } = {}
-
     await mikroOrmUpdateDeletedAtRecursively(manager, entities, date)
 
     const softDeletedEntitiesMap = getSoftDeletedCascadedEntitiesIdsMappedBy({
