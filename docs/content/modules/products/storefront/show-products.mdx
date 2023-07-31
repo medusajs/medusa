@@ -73,7 +73,6 @@ medusa.products.list()
 
 ```tsx
 import { useProducts } from "medusa-react"
-import { Product } from "@medusajs/medusa"
 
 const Products = () => {
   const { products, isLoading } = useProducts()
@@ -84,7 +83,7 @@ const Products = () => {
       {products && !products.length && <span>No Products</span>}
       {products && products.length > 0 && (
         <ul>
-          {products.map((product: Product) => (
+          {products.map((product) => (
             <li key={product.id}>{product.title}</li>
           ))}
         </ul>
