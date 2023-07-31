@@ -1,6 +1,7 @@
 import {
   BeforeCreate,
   Entity,
+  Filter,
   Index,
   PrimaryKey,
   Property,
@@ -9,7 +10,7 @@ import {
 import { DALUtils, generateEntityId } from "@medusajs/utils"
 
 @Entity({ tableName: "product_type" })
-@DALUtils.MikroOrmSoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductType {
   @PrimaryKey({ columnType: "text" })
   id!: string

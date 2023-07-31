@@ -1,21 +1,19 @@
-import { SoftDeletableFilterKey } from "../../dal"
+export const SoftDeletableFilterKey = "softDeletable"
 
 interface FilterArguments {
   withDeleted?: boolean
 }
 
-export const MikroOrmSoftDeletable = (): ClassDecorator => {
-  const { Filter } = require("@mikro-orm/core")
-  return Filter({
-    name: SoftDeletableFilterKey,
-    cond: ({ withDeleted }: FilterArguments = {}) => {
-      if (withDeleted) {
-        return {}
-      }
-      return {
-        deleted_at: null,
-      }
-    },
-    default: true,
-  })
+export const mikroOrmSoftDeletableFilterOptions = {
+  name: SoftDeletableFilterKey,
+  cond: ({ withDeleted }: FilterArguments = {}) => {
+    if (withDeleted) {
+      return {}
+    }
+    return {
+      deleted_at: null,
+    }
+  },
+  default: true,
+  args: false,
 }

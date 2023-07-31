@@ -4,6 +4,7 @@ import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
 import {
   mikroOrmSerializer,
   mikroOrmUpdateDeletedAtRecursively,
+  transactionWrapper,
 } from "../utils"
 
 class MikroOrmAbstractBase<T = any> {
@@ -28,18 +29,14 @@ class MikroOrmAbstractBase<T = any> {
 
   async transaction<TManager = unknown>(
     task: (transactionManager: TManager) => Promise<any>,
-    {
-      transaction,
-      isolationLevel,
-      enableNestedTransactions = false,
-    }: {
+    options: {
       isolationLevel?: string
       enableNestedTransactions?: boolean
       transaction?: TManager
     } = {}
   ): Promise<any> {
     // @ts-ignore
-    return await transactionWrapper.apply(this, arguments)
+    return await transactionWrapper.bind(this)(task, options)
   }
 
   async serialize<TOutput extends object | object[]>(

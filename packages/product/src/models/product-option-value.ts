@@ -1,6 +1,7 @@
 import {
   BeforeCreate,
   Entity,
+  Filter,
   Index,
   ManyToOne,
   OptionalProps,
@@ -20,7 +21,7 @@ type OptionalFields =
 type OptionalRelations = "product" | "option" | "variant"
 
 @Entity({ tableName: "product_option_value" })
-@DALUtils.MikroOrmSoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductOptionValue {
   [OptionalProps]?: OptionalFields | OptionalRelations
 

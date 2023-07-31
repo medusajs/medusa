@@ -4,6 +4,7 @@ import {
   Cascade,
   Collection,
   Entity,
+  Filter,
   Index,
   ManyToOne,
   OneToMany,
@@ -18,7 +19,7 @@ type OptionalRelations = "values" | "product"
 type OptionalFields = "product_id"
 
 @Entity({ tableName: "product_option" })
-@DALUtils.MikroOrmSoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductOption {
   [OptionalProps]?: OptionalRelations | OptionalFields
 

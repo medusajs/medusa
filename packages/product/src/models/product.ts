@@ -3,6 +3,7 @@ import {
   Collection,
   Entity,
   Enum,
+  Filter,
   Index,
   ManyToMany,
   ManyToOne,
@@ -33,7 +34,7 @@ type OptionalFields =
   | "updated_at"
 
 @Entity({ tableName: "product" })
-@DALUtils.MikroOrmSoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class Product {
   [OptionalProps]?: OptionalRelations | OptionalFields
 

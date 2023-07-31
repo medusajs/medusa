@@ -2,6 +2,7 @@ import {
   BeforeCreate,
   Collection,
   Entity,
+  Filter,
   Index,
   OneToMany,
   OptionalProps,
@@ -16,7 +17,7 @@ import Product from "./product"
 type OptionalRelations = "products"
 
 @Entity({ tableName: "product_collection" })
-@DALUtils.MikroOrmSoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductCollection {
   [OptionalProps]?: OptionalRelations
 

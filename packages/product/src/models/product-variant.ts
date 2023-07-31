@@ -4,6 +4,7 @@ import {
   Cascade,
   Collection,
   Entity,
+  Filter,
   Index,
   ManyToOne,
   OneToMany,
@@ -24,7 +25,7 @@ type OptionalFields =
   | "product_id"
 
 @Entity({ tableName: "product_variant" })
-@DALUtils.MikroOrmSoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductVariant {
   [OptionalProps]?: OptionalFields
 

@@ -30,7 +30,7 @@ export async function transactionWrapper<TManager = unknown>(
 
   const transactionMethod =
     this.manager_.transaction ?? this.manager_.transactional
-  return await transactionMethod(task, options)
+  return await transactionMethod.bind(this.manager_)(task, options)
 }
 
 export const mikroOrmUpdateDeletedAtRecursively = async <
