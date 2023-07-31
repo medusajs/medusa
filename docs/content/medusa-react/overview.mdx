@@ -80,6 +80,26 @@ In the example above, you wrap the `Storefront` component with the `MedusaProvid
 
 The `Storefront` component and its child components can now use hooks exposed by Medusa React.
 
+### Troubleshooting: Could not find a declaration file for module 'medusa-react'
+
+If you import `medusa-react` in your code and see the following TypeScript error:
+
+```bash
+Could not find a declaration file for module 'medusa-react'
+```
+
+Make sure to set `moduleResolution` in your `tsconfig.json` to `nodenext` or `node`:
+
+```json title=tsconfig.json
+{
+  "compilerOptions": {
+    "moduleResolution": "nodenext",
+    // ...
+  },
+  // ...
+}
+```
+
 ### MedusaProvider Optional Props
 
 You can also pass the following props to Medusa Provider:
