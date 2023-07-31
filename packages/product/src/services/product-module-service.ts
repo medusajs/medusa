@@ -59,16 +59,6 @@ type InjectedDependencies = {
   eventBusService?: IEventBusModuleService
 }
 
-type ProductEvent = {
-  id: string
-}
-
-const ProductEvents = {
-  PRODUCT_UPDATED: "product.updated",
-  PRODUCT_CREATED: "product.created",
-  PRODUCT_DELETED: "product.deleted",
-}
-
 export default class ProductModuleService<
   TProduct extends Product = Product,
   TProductVariant extends ProductVariant = ProductVariant,
@@ -622,8 +612,8 @@ export default class ProductModuleService<
     })
 
     for (const product of createdProducts) {
-      await this.eventBusService_?.emit<ProductEvent>(
-        ProductEvents.PRODUCT_CREATED,
+      await this.eventBusService_?.emit<ProductServiceTypes.ProductEventData>(
+        ProductServiceTypes.ProductEvents.PRODUCT_CREATED,
         { id: product.id }
       )
     }
@@ -644,8 +634,8 @@ export default class ProductModuleService<
     })
 
     for (const product of updatedProducts) {
-      await this.eventBusService_?.emit<ProductEvent>(
-        ProductEvents.PRODUCT_UPDATED,
+      await this.eventBusService_?.emit<ProductServiceTypes.ProductEventData>(
+        ProductServiceTypes.ProductEvents.PRODUCT_UPDATED,
         { id: product.id }
       )
     }
@@ -982,8 +972,8 @@ export default class ProductModuleService<
     await this.productService_.delete(productIds, sharedContext)
 
     for (const productId of productIds) {
-      await this.eventBusService_?.emit<ProductEvent>(
-        ProductEvents.PRODUCT_DELETED,
+      await this.eventBusService_?.emit<ProductServiceTypes.ProductEventData>(
+        ProductServiceTypes.ProductEvents.PRODUCT_DELETED,
         { id: productId }
       )
     }
@@ -1000,8 +990,8 @@ export default class ProductModuleService<
     })
 
     for (const product of softDeletedProducts) {
-      await this.eventBusService_?.emit<ProductEvent>(
-        ProductEvents.PRODUCT_DELETED,
+      await this.eventBusService_?.emit<ProductServiceTypes.ProductEventData>(
+        ProductServiceTypes.ProductEvents.PRODUCT_DELETED,
         { id: product.id }
       )
     }

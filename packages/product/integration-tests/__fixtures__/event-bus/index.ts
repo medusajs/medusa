@@ -1,5 +1,9 @@
-import { EmitData, EventBusTypes, Subscriber, IEventBusModuleService } from "@medusajs/types"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+import {
+  EmitData,
+  EventBusTypes,
+  Subscriber,
+  IEventBusModuleService
+} from "@medusajs/types"
 
 export class EventBusService implements IEventBusModuleService {
   async emit<T>(
@@ -23,10 +27,6 @@ export class EventBusService implements IEventBusModuleService {
     subscriber: Subscriber,
     context?: EventBusTypes.SubscriberContext
   ): this {
-    return this
-  }
-
-  withTransaction(transactionManager?: SqlEntityManager): this {
     return this
   }
 }
