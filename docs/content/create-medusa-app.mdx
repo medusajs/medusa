@@ -33,12 +33,6 @@ Medusa is a toolkit for developers to create digital commerce applications. In i
 
 `create-medusa-app` is a command that facilitates creating a Medusa ecosystem. It installs the Medusa backend and admin dashboard, along with the necessary configurations to run the backend.
 
-:::note
-
-`create-medusa-app` uses a beta version of the Medusa backend and admin. If you want to use a stable Medusa setup, consider passing the `--stable` option to the command. However, when using this option, you'll have to [install the Medusa admin](./admin/quickstart.mdx) manually.
-
-:::
-
 ---
 
 ## Prerequisites
@@ -47,7 +41,7 @@ Before you can install and use Medusa, you need the following tools installed on
 
 - [Node.js v16+](./development/backend/prepare-environment.mdx#nodejs)
 - [Git](./development/backend/prepare-environment.mdx#git)
-- [PostgreSQL](./development/backend/prepare-environment.mdx#postgresql)
+- [PostgreSQL](./development/backend/prepare-environment.mdx#postgresql). The PostgreSQL server should also be running during your installation process.
 
 ---
 
@@ -55,7 +49,7 @@ Before you can install and use Medusa, you need the following tools installed on
 
 :::note
 
-Make sure your PostgreSQL server is running before you run the command.
+`create-medusa-app` uses a beta version of the Medusa backend and admin. If you want to use a stable Medusa setup, consider passing the `--stable` option to the command. However, when using this option, you'll have to [install the Medusa admin](./admin/quickstart.mdx) manually.
 
 :::
 
