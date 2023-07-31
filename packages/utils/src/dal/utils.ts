@@ -1,4 +1,4 @@
-import { SoftDeletableFilterKey } from "../dal"
+import { isDefined, isObject } from "../common"
 
 export async function transactionWrapper<TManager = unknown>(
   this: any,
@@ -33,54 +33,60 @@ export async function transactionWrapper<TManager = unknown>(
   return await transactionMethod.bind(this.manager_)(task, options)
 }
 
-export const mikroOrmUpdateDeletedAtRecursively = async <
-  T extends object = any
->(
-  manager: any,
-  entities: T[],
-  value: Date | null
-) => {
+/**
+ * Can be used to create a new Object that collect the ids of all entities
+ * based on the columnLookup. This is useful when you want to soft delete entities and return
+ * an object where the keys are the entities name and the values are the ids of the entities
+ * that were soft deleted.
+ *
+ * @param entities
+ * @param columnLookup
+ * @param map
+ * @param getEntityName
+ */
+export function getSoftDeletedCascadedEntitiesIdsMappedBy({
+  entities,
+  columnLookup,
+  map,
+  getEntityName,
+}: {
+  entities: any[]
+  columnLookup: string
+  map?: Map<string, string[]>
+  getEntityName?: (entity: any) => string
+}) {
+  columnLookup ??= "id"
+  map ??= new Map<string, string[]>()
+  getEntityName ??= (entity) => entity.constructor.name
+
   for (const entity of entities) {
-    if (!("deleted_at" in entity)) continue
-    ;(entity as any).deleted_at = value
+    const entityName = getEntityName(entity)
+    const shouldSkip =
+      map.has(entityName) && map.get(entityName)!.includes(entity.id)
 
-    const relations = manager
-      .getDriver()
-      .getMetadata()
-      .get(entity.constructor.name).relations
-
-    const relationsToCascade = relations.filter((relation) =>
-      relation.cascade.includes("soft-remove" as any)
-    )
-
-    for (const relation of relationsToCascade) {
-      let collectionRelation = entity[relation.name]
-
-      if (!collectionRelation.isInitialized()) {
-        await collectionRelation.init()
-      }
-
-      const relationEntities = await collectionRelation.getItems({
-        filters: {
-          [SoftDeletableFilterKey]: {
-            withDeleted: true,
-          },
-        },
-      })
-
-      await mikroOrmUpdateDeletedAtRecursively(manager, relationEntities, value)
+    if (!entity.deleted_at || shouldSkip) {
+      continue
     }
 
-    await manager.persist(entity)
-  }
-}
+    const ids = map.get(entityName) ?? []
+    ids.push(entity.id)
+    map.set(entityName, ids)
 
-export const mikroOrmSerializer = async <TOutput extends object>(
-  data: any,
-  options?: any
-): Promise<TOutput> => {
-  options ??= {}
-  const { serialize } = await import("@mikro-orm/core")
-  const result = serialize(data, options)
-  return result as unknown as Promise<TOutput>
+    Object.values(entity).forEach((propValue: any) => {
+      if (
+        propValue != null &&
+        isDefined(propValue[0]) &&
+        isObject(propValue[0])
+      ) {
+        getSoftDeletedCascadedEntitiesIdsMappedBy({
+          entities: propValue,
+          columnLookup,
+          map,
+          getEntityName,
+        })
+      }
+    })
+  }
+
+  return Object.fromEntries(map)
 }

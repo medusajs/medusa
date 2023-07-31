@@ -2,10 +2,10 @@ import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
 import { MedusaContext } from "../../decorators"
 import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
 import {
-  mikroOrmSerializer,
-  mikroOrmUpdateDeletedAtRecursively,
+  getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
 } from "../utils"
+import { mikroOrmSerializer, mikroOrmUpdateDeletedAtRecursively } from "./utils"
 
 class MikroOrmBase<T = any> {
   protected readonly manager_: any
@@ -71,13 +71,21 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
     ids: string[],
     @MedusaContext()
     { transactionManager: manager }: Context = {}
-  ): Promise<T[]> {
+  ): Promise<[T[], Record<string, string[]>]> {
     const entities = await this.find({ where: { id: { $in: ids } } as any })
     const date = new Date()
 
+    // entityName -> [id1, id2, ...] Map
+    //const softDeletedEntitiesMap: { [entityName: string]: string[] } = {}
+
     await mikroOrmUpdateDeletedAtRecursively(manager, entities, date)
 
-    return entities
+    const softDeletedEntitiesMap = getSoftDeletedCascadedEntitiesIdsMappedBy({
+      entities,
+      columnLookup: "deleted_at",
+    })
+
+    return [entities, softDeletedEntitiesMap]
   }
 
   @InjectTransactionManager()
