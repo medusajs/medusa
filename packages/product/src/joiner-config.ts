@@ -25,18 +25,6 @@ export const EntityNameToLinkableKeysMap = new Map([
 export const joinerConfig: JoinerServiceConfig = {
   serviceName: Modules.PRODUCT,
   primaryKeys: ["id", "handle"],
-  // @ts-ignore
-  linkableKeys: [
-    "product_id",
-    "variant_id",
-    "product_handle",
-    "product_type_id",
-    "product_collection_id",
-    "product_category_id",
-    "product_tag_id",
-    "product_option_id",
-    "product_image_id",
-  ],
   alias: [
     {
       name: "product",
