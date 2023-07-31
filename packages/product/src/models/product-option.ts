@@ -1,9 +1,10 @@
-import { generateEntityId } from "@medusajs/utils"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
+  Filter,
   Index,
   ManyToOne,
   OneToMany,
@@ -13,13 +14,12 @@ import {
 } from "@mikro-orm/core"
 import { Product } from "./index"
 import ProductOptionValue from "./product-option-value"
-import { SoftDeletable } from "../utils"
 
 type OptionalRelations = "values" | "product"
 type OptionalFields = "product_id"
 
 @Entity({ tableName: "product_option" })
-@SoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductOption {
   [OptionalProps]?: OptionalRelations | OptionalFields
 

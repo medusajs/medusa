@@ -1,100 +1,14 @@
 import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
-import { SoftDeletableFilterKey } from "@medusajs/utils"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { MedusaContext } from "../../decorators"
+import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
 import {
-  buildQuery,
-  InjectTransactionManager,
-  MedusaContext,
-} from "@medusajs/utils"
-import { serialize } from "@mikro-orm/core"
+  mikroOrmSerializer,
+  mikroOrmUpdateDeletedAtRecursively,
+  transactionWrapper,
+} from "../utils"
 
-// TODO: move to utils package
-
-async function transactionWrapper<TManager = unknown>(
-  this: any,
-  task: (transactionManager: unknown) => Promise<any>,
-  {
-    transaction,
-    isolationLevel,
-    enableNestedTransactions = false,
-  }: {
-    isolationLevel?: string
-    transaction?: TManager
-    enableNestedTransactions?: boolean
-  } = {}
-): Promise<any> {
-  // Reuse the same transaction if it is already provided and nested transactions are disabled
-  if (!enableNestedTransactions && transaction) {
-    return await task(transaction)
-  }
-
-  const options = {}
-
-  if (transaction) {
-    Object.assign(options, { ctx: transaction })
-  }
-
-  if (isolationLevel) {
-    Object.assign(options, { isolationLevel })
-  }
-
-  return await (this.manager_ as SqlEntityManager).transactional(task, options)
-}
-
-// TODO: move to utils package
-const mikroOrmUpdateDeletedAtRecursively = async <T extends object = any>(
-  manager: any,
-  entities: T[],
-  value: Date | null
-) => {
-  for (const entity of entities) {
-    if (!("deleted_at" in entity)) continue
-
-    ;(entity as any).deleted_at = value
-
-    const relations = manager
-      .getDriver()
-      .getMetadata()
-      .get(entity.constructor.name).relations
-
-    const relationsToCascade = relations.filter((relation) =>
-      relation.cascade.includes("soft-remove" as any)
-    )
-
-    for (const relation of relationsToCascade) {
-      let collectionRelation = entity[relation.name]
-
-      if (!collectionRelation.isInitialized()) {
-        await collectionRelation.init()
-      }
-
-      const relationEntities = await collectionRelation.getItems({
-        filters: {
-          [SoftDeletableFilterKey]: {
-            withDeleted: true,
-          },
-        },
-      })
-
-      await mikroOrmUpdateDeletedAtRecursively(manager, relationEntities, value)
-    }
-
-    await manager.persist(entity)
-  }
-}
-
-const serializer = <TOutput extends object>(
-  data: any,
-  options?: any
-): Promise<TOutput> => {
-  options ??= {}
-  const result = serialize(data, options)
-  return result as unknown as Promise<TOutput>
-}
-
-// TODO: move to utils package
-class AbstractBase<T = any> {
-  protected readonly manager_: SqlEntityManager
+class MikroOrmBase<T = any> {
+  protected readonly manager_: any
 
   protected constructor({ manager }) {
     this.manager_ = manager
@@ -115,29 +29,26 @@ class AbstractBase<T = any> {
 
   async transaction<TManager = unknown>(
     task: (transactionManager: TManager) => Promise<any>,
-    {
-      transaction,
-      isolationLevel,
-      enableNestedTransactions = false,
-    }: {
+    options: {
       isolationLevel?: string
       enableNestedTransactions?: boolean
       transaction?: TManager
     } = {}
   ): Promise<any> {
-    return await transactionWrapper.apply(this, arguments)
+    // @ts-ignore
+    return await transactionWrapper.bind(this)(task, options)
   }
 
   async serialize<TOutput extends object | object[]>(
     data: any,
     options?: any
   ): Promise<TOutput> {
-    return await serializer<TOutput>(data, options)
+    return await mikroOrmSerializer<TOutput>(data, options)
   }
 }
 
-export abstract class AbstractBaseRepository<T = any>
-  extends AbstractBase
+export abstract class MikroOrmAbstractBaseRepository<T = any>
+  extends MikroOrmBase
   implements DAL.RepositoryService<T>
 {
   abstract find(options?: DAL.FindOptions<T>, context?: Context)
@@ -148,6 +59,10 @@ export abstract class AbstractBaseRepository<T = any>
   ): Promise<[T[], number]>
 
   abstract create(data: unknown[], context?: Context): Promise<T[]>
+
+  update(data: unknown[], context?: Context): Promise<T[]> {
+    throw new Error("Method not implemented.")
+  }
 
   abstract delete(ids: string[], context?: Context): Promise<void>
 
@@ -160,11 +75,7 @@ export abstract class AbstractBaseRepository<T = any>
     const entities = await this.find({ where: { id: { $in: ids } } as any })
     const date = new Date()
 
-    await mikroOrmUpdateDeletedAtRecursively(
-      manager as SqlEntityManager,
-      entities,
-      date
-    )
+    await mikroOrmUpdateDeletedAtRecursively(manager, entities, date)
 
     return entities
   }
@@ -173,7 +84,7 @@ export abstract class AbstractBaseRepository<T = any>
   async restore(
     ids: string[],
     @MedusaContext()
-    { transactionManager: manager }: Context<SqlEntityManager> = {}
+    { transactionManager: manager }: Context = {}
   ): Promise<T[]> {
     const query = buildQuery(
       { id: { $in: ids } },
@@ -184,19 +95,14 @@ export abstract class AbstractBaseRepository<T = any>
 
     const entities = await this.find(query)
 
-    await mikroOrmUpdateDeletedAtRecursively(
-      manager as SqlEntityManager,
-      entities,
-      null
-    )
+    await mikroOrmUpdateDeletedAtRecursively(manager, entities, null)
 
     return entities
   }
 }
 
-// TODO: move to utils package
-export abstract class AbstractTreeRepositoryBase<T = any>
-  extends AbstractBase<T>
+export abstract class MikroOrmAbstractTreeRepositoryBase<T = any>
+  extends MikroOrmBase<T>
   implements DAL.TreeRepositoryService<T>
 {
   protected constructor({ manager }) {
@@ -221,19 +127,25 @@ export abstract class AbstractTreeRepositoryBase<T = any>
   abstract delete(id: string, context?: Context): Promise<void>
 }
 
-// TODO: move to utils package
 /**
- * Only used internally in order to be able to wrap in transaction from a
- * non identified repository
+ * Priviliged extends of the abstract classes unless most of the methods can't be implemented
+ * in your repository. This base repository is also used to provide a base repository
+ * injection if needed to be able to use the common methods without being related to an entity.
+ * In this case, none of the method will be implemented except the manager and transaction
+ * related ones.
  */
 
-export class BaseRepository extends AbstractBaseRepository {
+export class MikroOrmBaseRepository extends MikroOrmAbstractBaseRepository {
   constructor({ manager }) {
     // @ts-ignore
     super(...arguments)
   }
 
   create(data: unknown[], context?: Context): Promise<any[]> {
+    throw new Error("Method not implemented.")
+  }
+
+  update(data: unknown[], context?: Context): Promise<any[]> {
     throw new Error("Method not implemented.")
   }
 
@@ -253,8 +165,7 @@ export class BaseRepository extends AbstractBaseRepository {
   }
 }
 
-
-export class BaseTreeRepository extends AbstractTreeRepositoryBase {
+export class MikroOrmBaseTreeRepository extends MikroOrmAbstractTreeRepositoryBase {
   constructor({ manager }) {
     // @ts-ignore
     super(...arguments)

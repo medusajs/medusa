@@ -1,4 +1,4 @@
-export { BaseRepository } from "./base"
+export { MikroOrmBaseRepository as BaseRepository } from "@medusajs/utils"
 export { ProductRepository } from "./product"
 export { ProductTagRepository } from "./product-tag"
 export { ProductVariantRepository } from "./product-variant"
