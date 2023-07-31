@@ -8,11 +8,11 @@ import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
+  DALUtils,
   InjectTransactionManager,
   isDefined,
   MedusaContext,
   MedusaError,
-  ModulesSdkUtils,
 } from "@medusajs/utils"
 
 import { ProductCategoryServiceTypes } from "../types"
@@ -30,8 +30,7 @@ export type ReorderConditions = {
 }
 
 export const tempReorderRank = 99999
-export class ProductCategoryRepository extends ModulesSdkUtils.DAL
-  .MikroOrmBaseTreeRepository {
+export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {

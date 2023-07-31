@@ -7,13 +7,12 @@ import { Context, DAL } from "@medusajs/types"
 import { Image, Product } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
+  DALUtils,
   InjectTransactionManager,
   MedusaContext,
-  ModulesSdkUtils,
 } from "@medusajs/utils"
 
-export class ProductImageRepository extends ModulesSdkUtils.DAL
-  .MikroOrmAbstractBaseRepository<Image> {
+export class ProductImageRepository extends DALUtils.MikroOrmAbstractBaseRepository<Image> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {

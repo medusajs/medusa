@@ -1,6 +1,6 @@
 import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
-import { MedusaContext } from "../../../decorators"
-import { buildQuery, InjectTransactionManager } from "../../index"
+import { MedusaContext } from "../../decorators"
+import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
 import {
   mikroOrmSerializer,
   mikroOrmUpdateDeletedAtRecursively,

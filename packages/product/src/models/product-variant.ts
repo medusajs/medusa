@@ -1,4 +1,4 @@
-import { generateEntityId, ModulesSdkUtils } from "@medusajs/utils"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
@@ -24,7 +24,7 @@ type OptionalFields =
   | "product_id"
 
 @Entity({ tableName: "product_variant" })
-@ModulesSdkUtils.DAL.MikroOrmSoftDeletable()
+@DALUtils.MikroOrmSoftDeletable()
 class ProductVariant {
   [OptionalProps]?: OptionalFields
 

@@ -10,13 +10,13 @@ import {
   Unique,
 } from "@mikro-orm/core"
 
-import { generateEntityId, kebabCase, ModulesSdkUtils } from "@medusajs/utils"
+import { DALUtils, generateEntityId, kebabCase } from "@medusajs/utils"
 import Product from "./product"
 
 type OptionalRelations = "products"
 
 @Entity({ tableName: "product_collection" })
-@ModulesSdkUtils.DAL.MikroOrmSoftDeletable()
+@DALUtils.MikroOrmSoftDeletable()
 class ProductCollection {
   [OptionalProps]?: OptionalRelations
 

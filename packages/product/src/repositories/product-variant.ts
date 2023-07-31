@@ -8,16 +8,15 @@ import { ProductVariant } from "@models"
 import { Context, DAL, WithRequiredProperty } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
+  DALUtils,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
-  ModulesSdkUtils,
 } from "@medusajs/utils"
 
 import { ProductVariantServiceTypes } from "../types/services"
 
-export class ProductVariantRepository extends ModulesSdkUtils.DAL
-  .MikroOrmAbstractBaseRepository<ProductVariant> {
+export class ProductVariantRepository extends DALUtils.MikroOrmAbstractBaseRepository<ProductVariant> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {

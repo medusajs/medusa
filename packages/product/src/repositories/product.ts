@@ -20,17 +20,16 @@ import {
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
+  DALUtils,
   InjectTransactionManager,
   isDefined,
   MedusaContext,
   MedusaError,
-  ModulesSdkUtils,
 } from "@medusajs/utils"
 
 import { ProductServiceTypes } from "../types/services"
 
-export class ProductRepository extends ModulesSdkUtils.DAL
-  .MikroOrmAbstractBaseRepository<Product> {
+export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<Product> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {

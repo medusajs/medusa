@@ -24,7 +24,7 @@ import {
 
 import { LoaderOptions } from "@medusajs/modules-sdk"
 import { asClass } from "awilix"
-import { lowerCaseFirst, ModulesSdkUtils } from "@medusajs/utils"
+import { DALUtils, lowerCaseFirst } from "@medusajs/utils"
 
 export default async ({
   container,
@@ -58,9 +58,7 @@ export default async ({
 
 function loadDefaultRepositories({ container }) {
   container.register({
-    baseRepository: asClass(
-      ModulesSdkUtils.DAL.MikroOrmBaseRepository
-    ).singleton(),
+    baseRepository: asClass(DALUtils.MikroOrmBaseRepository).singleton(),
     productImageRepository: asClass(ProductImageRepository).singleton(),
     productCategoryRepository: asClass(ProductCategoryRepository).singleton(),
     productCollectionRepository: asClass(

@@ -14,14 +14,13 @@ import {
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
+  DALUtils,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
-  ModulesSdkUtils,
 } from "@medusajs/utils"
 
-export class ProductTagRepository extends ModulesSdkUtils.DAL
-  .MikroOrmBaseRepository {
+export class ProductTagRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {

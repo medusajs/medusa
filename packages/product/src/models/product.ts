@@ -14,7 +14,7 @@ import {
 } from "@mikro-orm/core"
 
 import { ProductTypes } from "@medusajs/types"
-import { generateEntityId, kebabCase, ModulesSdkUtils } from "@medusajs/utils"
+import { DALUtils, generateEntityId, kebabCase } from "@medusajs/utils"
 import ProductCategory from "./product-category"
 import ProductCollection from "./product-collection"
 import ProductOption from "./product-option"
@@ -33,7 +33,7 @@ type OptionalFields =
   | "updated_at"
 
 @Entity({ tableName: "product" })
-@ModulesSdkUtils.DAL.MikroOrmSoftDeletable()
+@DALUtils.MikroOrmSoftDeletable()
 class Product {
   [OptionalProps]?: OptionalRelations | OptionalFields
 

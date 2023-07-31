@@ -1,5 +1,5 @@
 import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
-import { MedusaContext } from "../../decorators"
+import { MedusaContext } from "../decorators"
 
 class AbstractBase<T = any> {
   protected readonly manager_: any

@@ -1,4 +1,4 @@
-import { SoftDeletableFilterKey } from "../../common"
+import { SoftDeletableFilterKey } from "../dal"
 
 export async function transactionWrapper<TManager = unknown>(
   this: any,

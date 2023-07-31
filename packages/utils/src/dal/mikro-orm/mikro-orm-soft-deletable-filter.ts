@@ -1,4 +1,4 @@
-import { SoftDeletableFilterKey } from "../../../common"
+import { SoftDeletableFilterKey } from "../../dal"
 
 interface FilterArguments {
   withDeleted?: boolean

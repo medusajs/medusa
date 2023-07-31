@@ -8,7 +8,7 @@ import {
   Property,
 } from "@mikro-orm/core"
 import { ProductOption, ProductVariant } from "./index"
-import { generateEntityId, ModulesSdkUtils } from "@medusajs/utils"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 
 type OptionalFields =
   | "created_at"
@@ -20,7 +20,7 @@ type OptionalFields =
 type OptionalRelations = "product" | "option" | "variant"
 
 @Entity({ tableName: "product_option_value" })
-@ModulesSdkUtils.DAL.MikroOrmSoftDeletable()
+@DALUtils.MikroOrmSoftDeletable()
 class ProductOptionValue {
   [OptionalProps]?: OptionalFields | OptionalRelations
 

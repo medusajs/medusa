@@ -6,7 +6,7 @@ import {
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
 } from "@medusajs/modules-sdk"
-import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
+import { DALUtils, MedusaError, ModulesSdkUtils } from "@medusajs/utils"
 
 import { EntitySchema } from "@mikro-orm/core"
 
@@ -60,10 +60,7 @@ async function loadDefault({ database, container }) {
   }
 
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
-  const orm = await ModulesSdkUtils.DAL.mikroOrmCreateConnection(
-    database,
-    entities
-  )
+  const orm = await DALUtils.mikroOrmCreateConnection(database, entities)
 
   container.register({
     manager: asValue(orm.em.fork()),
