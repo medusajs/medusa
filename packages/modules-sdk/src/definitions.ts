@@ -74,7 +74,7 @@ export const ModulesDefinition: { [key: string]: ModuleDefinition } = {
     isRequired: false,
     canOverride: true,
     isQueryable: true,
-    dependencies: [],
+    dependencies: ["eventBusService"],
     defaultModuleDeclaration: {
       scope: MODULE_SCOPE.EXTERNAL,
     },
