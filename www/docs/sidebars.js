@@ -109,6 +109,11 @@ module.exports = {
         },
         {
           type: "doc",
+          label: "Admin Setting Pages",
+          id: "admin/setting-pages",
+        },
+        {
+          type: "doc",
           label: "Example: Create Onboarding",
           id: "admin/onboarding",
         },
