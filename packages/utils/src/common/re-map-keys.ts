@@ -1,3 +1,10 @@
+/**
+ * Re map the keys to another value depending on the provided remapMap.
+ * If the key is not in the remapMap, the key will be kept.
+ *
+ * @param object
+ * @param remapMap
+ */
 export function reMapKeys<T extends Record<any, any>>(
   object: T,
   remapMap: Map<string, string>
