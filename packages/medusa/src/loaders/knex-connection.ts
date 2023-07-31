@@ -1,7 +1,7 @@
 import { asValue, AwilixContainer } from "awilix"
 import { DataSourceOptions } from "typeorm"
 import { ConfigModule } from "../types/global"
-import { PG_KNEX_CONNECTION_REGISTRATION_KEY } from "@medusajs/utils"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 import { knex } from "knex"
 
 type Options = {
@@ -20,7 +20,11 @@ export default async ({ container, configModule }: Options): Promise<void> => {
   const schema = configModule.projectConfig.database_schema || "public"
 
   // Share a knex connection to be consumed by the shared modules
-  if (!container.hasRegistration(PG_KNEX_CONNECTION_REGISTRATION_KEY)) {
+  if (
+    !container.hasRegistration(
+      ContainerRegistrationKeys.PG_KNEX_CONNECTION_REGISTRATION_KEY
+    )
+  ) {
     const pgConnection = knex<any, any>({
       client: "pg",
       searchPath: schema,
@@ -39,7 +43,7 @@ export default async ({ container, configModule }: Options): Promise<void> => {
     })
 
     container.register(
-      PG_KNEX_CONNECTION_REGISTRATION_KEY,
+      ContainerRegistrationKeys.PG_KNEX_CONNECTION_REGISTRATION_KEY,
       asValue(pgConnection)
     )
   }

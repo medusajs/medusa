@@ -10,7 +10,7 @@ import {
   DALUtils,
   MedusaError,
   ModulesSdkUtils,
-  PG_KNEX_CONNECTION_REGISTRATION_KEY,
+  ContainerRegistrationKeys,
 } from "@medusajs/utils"
 
 import { EntitySchema } from "@mikro-orm/core"
@@ -88,7 +88,7 @@ async function loadDefault({
 
 async function loadShared({ container, logger }) {
   const sharedConnection = container.resolve(
-    PG_KNEX_CONNECTION_REGISTRATION_KEY,
+    ContainerRegistrationKeys.PG_KNEX_CONNECTION_REGISTRATION_KEY,
     {
       allowUnregistered: true,
     }
