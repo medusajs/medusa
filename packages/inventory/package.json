@@ -20,6 +20,7 @@
     "@medusajs/types": "^1.8.11",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
+    "rimraf": "^5.0.1",
     "ts-jest": "^25.5.1",
     "typescript": "^4.4.4"
   },
@@ -32,7 +33,7 @@
   "scripts": {
     "watch": "tsc --build --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "build": "tsc --build",
+    "build": "rimraf dist && tsc --build",
     "test": "jest --passWithNoTests"
   }
 }
