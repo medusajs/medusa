@@ -1,9 +1,9 @@
 import { isEmpty, isEqual } from "lodash"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomerService,
   CustomShippingOptionService,
+  CustomerService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -26,8 +26,8 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  Customer,
   CustomShippingOption,
+  Customer,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -46,9 +46,9 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
-  isCart,
   LineItemUpdate,
   LineItemValidateData,
+  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
