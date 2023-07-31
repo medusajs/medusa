@@ -1,5 +1,6 @@
 export enum Workflows {
   CreateProducts = "create-products",
+  AddShippingMethod = "add-shipping-method",
 }
 
 export enum InputAlias {

@@ -1,13 +1,13 @@
-import { InputAlias, Workflows } from "../definitions"
 import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
+import { InputAlias, Workflows } from "../../../definitions"
 import {
   createProducts as createProductsHandler,
   removeProducts,
-} from "../handlers"
-import { exportWorkflow, pipe } from "../helper"
+} from "../../../handlers"
+import { exportWorkflow, pipe } from "../../../helper"
 
 import { ProductTypes } from "@medusajs/types"
 
