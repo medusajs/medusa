@@ -6152,6 +6152,7 @@ __metadata:
     "@medusajs/types": ^1.8.8
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6167,6 +6168,7 @@ __metadata:
     cross-env: ^5.2.1
     ioredis: ^5.3.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6195,6 +6197,7 @@ __metadata:
     "@medusajs/utils": ^1.9.2
     cross-env: ^5.2.1
     jest: ^25.5.2
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
     ulid: ^2.3.0
@@ -6214,6 +6217,7 @@ __metadata:
     ioredis: ^5.2.5
     jest: ^25.5.2
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6226,6 +6230,7 @@ __metadata:
     "@medusajs/medusa": ^1.12.0
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     typescript: ^4.9.5
   peerDependencies:
     medusa-interfaces: ^1.3.7
@@ -6242,6 +6247,7 @@ __metadata:
     awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typeorm: ^0.3.16
     typescript: ^4.4.4
@@ -6277,6 +6283,7 @@ __metadata:
     prompts: ^2.4.2
     regenerator-runtime: ^0.13.11
     resolve-cwd: ^3.0.0
+    rimraf: ^5.0.1
     semver: ^7.3.8
     stack-trace: ^0.0.10
     ts-jest: ^25.5.1
@@ -6396,6 +6403,7 @@ __metadata:
     reflect-metadata: ^0.1.13
     regenerator-runtime: ^0.13.11
     request-ip: ^2.1.3
+    rimraf: ^5.0.1
     scrypt-kdf: ^2.0.1
     supertest: ^4.0.2
     ts-jest: ^25.5.1
@@ -6423,6 +6431,7 @@ __metadata:
     cross-env: ^5.2.1
     jest: ^25.5.4
     resolve-cwd: ^3.0.0
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6483,6 +6492,7 @@ __metadata:
     cross-env: ^5.2.1
     graphql: ^16.6.0
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6530,6 +6540,7 @@ __metadata:
     awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typeorm: ^0.3.16
     typescript: ^4.4.4
@@ -6543,6 +6554,7 @@ __metadata:
     awilix: ^8.0.0
     cross-env: ^5.2.1
     ioredis: ^5.2.5
+    rimraf: ^5.0.1
     typeorm: ^0.3.16
     typescript: ^4.4.4
     winston: ^3.8.2
@@ -30401,6 +30413,7 @@ __metadata:
   dependencies:
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -30444,6 +30457,7 @@ __metadata:
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     typescript: ^4.9.5
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
@@ -30462,6 +30476,7 @@ __metadata:
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     typescript: ^4.9.5
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
@@ -30566,6 +30581,7 @@ __metadata:
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -30669,6 +30685,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
+    rimraf: ^5.0.1
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
@@ -30687,6 +30704,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
+    rimraf: ^5.0.1
     stripe: ^11.10.0
     typescript: ^4.9.5
   peerDependencies:
@@ -30705,6 +30723,7 @@ __metadata:
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -30864,6 +30883,7 @@ __metadata:
     mailchimp-api-v3: ^1.14.0
     medusa-core-utils: ^1.2.0
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
@@ -30883,6 +30903,7 @@ __metadata:
     jest: ^25.5.4
     lodash: ^4.17.21
     meilisearch: ^0.32.3
+    rimraf: ^5.0.1
     typescript: ^4.9.5
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
