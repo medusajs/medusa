@@ -17,6 +17,12 @@ An admin UI route is essentially a React Component created under the `src/admin/
 
 This guide explains how to create a new route in the admin dashboard with some examples.
 
+:::note
+
+If you want to create a page under the Settings page, please refer to [this documentation](./setting-pages.md) instead.
+
+:::
+
 ---
 
 ## Prerequisites
@@ -150,6 +156,8 @@ const CustomPage = () => {
 export default CustomPage
 ```
 
+This will create an admin UI route at the path `/a/custom`, with its content being the content of the React component.
+
 ### Step 3: Test it Out
 
 To test your admin UI route, run the following command in the root directory of the Medusa backend project:
@@ -239,7 +247,9 @@ const CustomPage = () => {
 export default CustomPage
 ```
 
-### Routing Functionalities
+---
+
+## Routing Functionalities
 
 If you want to use routing functionalities such as linking to another page or navigating between pages, you can use `react-router-dom`'s utility hooks and functions.
 
@@ -316,7 +326,7 @@ const CustomPage = () => {
 export default CustomPage
 ```
 
-You can also use `medusa-react` to interact with custom endpoints using the [createCustomAdminHooks utility function](../medusa-react/overview.mdx#custom-hooks).
+You can also use `medusa-react` to interact with custom endpoints using [Custom Hooks utility functions](../medusa-react/overview.mdx#custom-hooks).
 
 ---
 
