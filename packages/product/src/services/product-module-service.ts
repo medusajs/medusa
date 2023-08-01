@@ -36,7 +36,8 @@ import { joinerConfig } from "./../joiner-config"
 import {
   ProductServiceTypes,
   ProductVariantServiceTypes,
-  ProductCategoryServiceTypes
+  ProductCategoryServiceTypes,
+  ProductCollectionServiceTypes,
 } from "../types"
 import {
   InjectManager,
@@ -499,6 +500,13 @@ export default class ProductModuleService<
       sharedContext
     )
 
+    for (const productCollection of productCollections) {
+      await this.eventBusService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
+        ProductCollectionServiceTypes.ProductCollectionEvents.COLLECTION_CREATED,
+        { id: productCollection.id }
+      )
+    }
+
     return JSON.parse(JSON.stringify(productCollections))
   }
 
@@ -512,6 +520,13 @@ export default class ProductModuleService<
       sharedContext
     )
 
+    for (const productCollection of productCollections) {
+      await this.eventBusService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
+        ProductCollectionServiceTypes.ProductCollectionEvents.COLLECTION_UPDATED,
+        { id: productCollection.id }
+      )
+    }
+
     return JSON.parse(JSON.stringify(productCollections))
   }
 
@@ -524,6 +539,13 @@ export default class ProductModuleService<
       productCollectionIds,
       sharedContext
     )
+
+    for (const productCollectionId of productCollectionIds) {
+      await this.eventBusService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
+        ProductCollectionServiceTypes.ProductCollectionEvents.COLLECTION_DELETED,
+        { id: productCollectionId }
+      )
+    }
   }
 
   @InjectManager("baseRepository_")
