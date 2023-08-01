@@ -140,12 +140,12 @@ function formatArrayDescription(schema?: SchemaObject) {
   const type =
     schema.type === "object"
       ? `objects ${schema.title ? `(${schema.title})` : ""}`
-      : `${schema.type}s`
+      : `${schema.type || "object"}s`
 
   return `Array of ${type}`
 }
 
 function formatUnionDescription(arr?: SchemaObject[]) {
-  const types = [...new Set(arr?.map((type) => type.type))]
+  const types = [...new Set(arr?.map((type) => type.type || "object"))]
   return <>{types.join(" or ")}</>
 }
