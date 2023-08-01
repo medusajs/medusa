@@ -44,7 +44,11 @@ import {
 } from "@medusajs/utils"
 
 import { shouldForceTransaction } from "../utils"
-import { EntityNameToLinkableKeysMap, joinerConfig } from "./../joiner-config"
+import {
+  EntityNameToLinkableKeysReMapperMap,
+  joinerConfig,
+  LinkableKeys,
+} from "./../joiner-config"
 import { ProductCategoryServiceTypes } from "../types"
 
 type InjectedDependencies = {
@@ -978,17 +982,20 @@ export default class ProductModuleService<
   async softDelete(
     productIds: string[],
     sharedContext: Context = {}
-  ): Promise<[ProductTypes.ProductDTO[], Record<string, string[]>]> {
+  ): Promise<
+    [
+      ProductTypes.ProductDTO[],
+      Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+    ]
+  > {
     let [products, cascadedEntitiesMap] = await this.softDelete_(
       productIds,
       sharedContext
     )
 
-    cascadedEntitiesMap = reMapKeysAndPick(
-      cascadedEntitiesMap,
-      EntityNameToLinkableKeysMap,
-      true
-    )
+    const remappedCascadedEntitiesMap = reMapKeysAndPick<
+      Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+    >(cascadedEntitiesMap, EntityNameToLinkableKeysReMapperMap, true)
 
     return [
       await this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(
@@ -997,7 +1004,7 @@ export default class ProductModuleService<
           populate: true,
         }
       ),
-      cascadedEntitiesMap,
+      remappedCascadedEntitiesMap,
     ]
   }
 

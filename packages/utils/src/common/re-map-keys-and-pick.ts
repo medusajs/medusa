@@ -1,6 +1,6 @@
-type RemapInputObject = Record<any, Record<string, any>[]>
+type RemapInputObject = Record<string, unknown[]>
 type RemapConfig = { newKey: string; getter: (object: any) => string }
-export type RemapKeyAndPickMap = Map<string, RemapConfig[]>
+export type RemapKeyAndPickMap<TKeys = string> = Map<TKeys, RemapConfig[]>
 
 /**
  * Create a new object with the keys remapped and the values picked from the original object based
@@ -10,15 +10,18 @@ export type RemapKeyAndPickMap = Map<string, RemapConfig[]>
  * @param remapMap
  * @param removeIfNotRemapped
  */
-export function reMapKeysAndPick<T extends RemapInputObject>(
+export function reMapKeysAndPick<
+  TResult = any,
+  T extends RemapInputObject = RemapInputObject
+>(
   object: T,
   remapMap: RemapKeyAndPickMap,
   removeIfNotRemapped = false
-): T {
+): TResult {
   const newObject: Record<string, any> = {}
 
   for (const key in object) {
-    const remapConfig = remapMap.get(key)!
+    const remapConfig = remapMap.get(key as string)!
 
     if (!remapConfig) {
       if (!removeIfNotRemapped) {
@@ -32,5 +35,5 @@ export function reMapKeysAndPick<T extends RemapInputObject>(
     })
   }
 
-  return newObject as T
+  return newObject as TResult
 }
