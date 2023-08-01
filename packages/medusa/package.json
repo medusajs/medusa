@@ -29,6 +29,7 @@
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "medusa-interfaces": "^1.3.7",
+    "rimraf": "^5.0.1",
     "supertest": "^4.0.2",
     "ts-jest": "^25.5.1",
     "typeorm": "^0.3.16",
@@ -37,7 +38,7 @@
   "scripts": {
     "watch": "tsc --build --watch",
     "prepare": "cross-env NODE_ENV=production yarn run build",
-    "build": "tsc --build",
+    "build": "rimraf dist && tsc --build",
     "serve": "node dist/app.js",
     "test": "jest"
   },
