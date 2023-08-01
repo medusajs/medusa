@@ -9,9 +9,9 @@ In this document, you’ll learn how to create endpoints in Medusa.
 
 ## Overview
 
-Custom endpoints are created under the `src/api` directory in your Medusa Backend. They're defined in a TypeScript or JavaScript file named `index` (for example, `index.ts`). This file should export a function that returns an Express router
+Custom endpoints are created under the `src/api` directory in your Medusa Backend. They're defined in a TypeScript or JavaScript file named `index` (for example, `index.ts`). This file should export a function that returns an Express router or an array of routes and middlewares.
 
-They're then transpiled into the `/dist/api` directory to be consumed.
+To consume the custom endpoints in your Medusa backend, you must transpile them with the `build` command before starting your backend.
 
 ---
 
