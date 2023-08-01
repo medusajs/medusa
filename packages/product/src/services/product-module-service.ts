@@ -31,7 +31,13 @@ import {
 import { serialize } from "@mikro-orm/core"
 
 import ProductImageService from "./product-image"
-import { ProductServiceTypes, ProductVariantServiceTypes } from "../types/services"
+import { shouldForceTransaction } from "../utils"
+import { joinerConfig } from "./../joiner-config"
+import {
+  ProductServiceTypes,
+  ProductVariantServiceTypes,
+  ProductCategoryServiceTypes
+} from "../types"
 import {
   InjectManager,
   InjectTransactionManager,
@@ -41,10 +47,6 @@ import {
   MedusaContext,
   MedusaError,
 } from "@medusajs/utils"
-
-import { shouldForceTransaction } from "../utils"
-import { joinerConfig } from "./../joiner-config"
-import { ProductCategoryServiceTypes } from "../types"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -564,6 +566,11 @@ export default class ProductModuleService<
       sharedContext
     )
 
+    await this.eventBusService_?.emit<ProductCategoryServiceTypes.ProductCategoryEventData>(
+      ProductCategoryServiceTypes.ProductCategoryEvents.CATEGORY_CREATED,
+      { id: productCategory.id }
+    )
+
     return JSON.parse(JSON.stringify(productCategory))
   }
 
@@ -579,6 +586,11 @@ export default class ProductModuleService<
       sharedContext
     )
 
+    await this.eventBusService_?.emit<ProductCategoryServiceTypes.ProductCategoryEventData>(
+      ProductCategoryServiceTypes.ProductCategoryEvents.CATEGORY_UPDATED,
+      { id: productCategory.id }
+    )
+
     return JSON.parse(JSON.stringify(productCategory))
   }
 
@@ -588,6 +600,11 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
     await this.productCategoryService_.delete(categoryId, sharedContext)
+
+    await this.eventBusService_?.emit<ProductCategoryServiceTypes.ProductCategoryEventData>(
+      ProductCategoryServiceTypes.ProductCategoryEvents.CATEGORY_DELETED,
+      { id: categoryId }
+    )
   }
 
   @InjectManager("baseRepository_")

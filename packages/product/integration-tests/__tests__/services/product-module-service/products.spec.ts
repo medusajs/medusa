@@ -17,6 +17,7 @@ const beforeEach_ = async () => {
 
 const afterEach_ = async () => {
   await TestDatabase.clearDatabase()
+  jest.clearAllMocks()
 }
 
 describe("ProductModuleService products", function () {
@@ -235,7 +236,7 @@ describe("ProductModuleService products", function () {
     })
 
     it("should emit events through event bus", async () => {
-      const eventBusSpy = jest.spyOn(eventBus, 'emit')
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
       const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],
@@ -249,8 +250,13 @@ describe("ProductModuleService products", function () {
 
       await module.update([updateData])
 
-      expect(eventBusSpy).toHaveBeenCalledTimes(1);
-      expect(eventBusSpy).toHaveBeenCalledWith(expect.any(String), expect.any(Object))
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith(
+        "product.updated",
+        {
+          id: productOne.id,
+        }
+      )
     })
 
     it("should add relationships to a product", async () => {
@@ -586,7 +592,7 @@ describe("ProductModuleService products", function () {
     })
 
     it("should emit events through eventBus", async () => {
-      const eventBusSpy = jest.spyOn(eventBus, 'emit')
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
       const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],
@@ -594,10 +600,13 @@ describe("ProductModuleService products", function () {
 
       const products = await module.create([data])
 
-      expect(eventBusSpy).toHaveBeenCalledTimes(1);
-      expect(eventBusSpy).toHaveBeenCalledWith(expect.any(String), {
-        id: products[0].id
-      })
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith(
+        "product.created",
+        {
+          id: products[0].id,
+        }
+      )
     })
   })
 
@@ -676,7 +685,7 @@ describe("ProductModuleService products", function () {
     })
 
     it("should emit events through eventBus", async () => {
-      const eventBusSpy = jest.spyOn(eventBus, 'emit')
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
       const data = buildProductAndRelationsData({
         images,
         thumbnail: images[0],
