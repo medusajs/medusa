@@ -1231,7 +1231,7 @@ Finally, to reflect the migration in the database, run the `build` and `migratio
 
 ```bash npm2yarn
 npm run build
-npx @medusajs/medusa-cli migrations run
+npx medusa migrations run
 ```
 
 You can learn more about migrations in [this guide](../development/entities/migrations/overview.mdx).
@@ -2390,7 +2390,7 @@ You’ve now implemented everything necessary for the onboarding flow! You can t
 
 ```bash npm2yarn
 npm run build
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
 
 If you open the admin at `localhost:7001` and log in, you’ll see the onboarding widget in the Products listing page. You can try using it and see your implementation in action!

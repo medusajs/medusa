@@ -48,7 +48,7 @@ It's also assumed you already have [used CartProvider higher in your component t
 
 ### Previous Steps
 
-This document assumes you’ve already taken care of the add-to-cart flow. So, you should have a [cart created](/api/store/#tag/Cart/operation/PostCart) for the customer with at least [one product in it](/api/store/#tag/Cart/operation/PostCartsCartLineItems).
+This document assumes you’ve already taken care of the add-to-cart flow. So, you should have a [cart created](./implement-cart.mdx#create-a-cart) and [associated with a logged-in or guest customer](./implement-cart.mdx#associate-a-logged-in-customer-with-the-cart). The cart should also have at least [one product in it](/api/store/#tag/Cart/operation/PostCartsCartLineItems).
 
 You can learn how to implement the cart flow using [this documentation](./implement-cart.mdx).
 
@@ -88,7 +88,7 @@ medusa.carts.update(cartId, {
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```ts
+```tsx
 import { useCart } from "medusa-react"
 
 const Cart = () => {
@@ -180,7 +180,6 @@ medusa.shippingOptions.listCartOptions(cartId)
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { ShippingOption } from "@medusajs/medusa"
 import { useCartShippingOptions } from "medusa-react"
 
 type Props = {
@@ -200,7 +199,7 @@ const ShippingOptions = ({ cartId }: Props) => {
       {shipping_options && (
         <ul>
           {shipping_options.map(
-            (shipping_option: ShippingOption) => (
+            (shipping_option) => (
               <li key={shipping_option.id}>
                 {shipping_option.name}
               </li>
@@ -252,7 +251,7 @@ medusa.carts.addShippingMethod(cartId, {
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```ts
+```tsx
 import { useAddShippingMethodToCart } from "medusa-react"
 // ...
 
@@ -325,7 +324,6 @@ medusa.carts.createPaymentSessions(cartId)
 <TabItem value="medusa-react" label="Medusa React">
 
 ```tsx
-import { PaymentSession } from "@medusajs/medusa"
 import { useCart } from "medusa-react"
 import { useEffect } from "react"
 
@@ -343,7 +341,7 @@ const PaymentProviders = () => {
       )}
       <ul>
         {cart?.payment_sessions.map(
-          (paymentSession: PaymentSession) => (
+          (paymentSession) => (
             <li key={paymentSession.id}>
               {paymentSession.provider_id}
             </li>
@@ -396,7 +394,7 @@ medusa.carts.setPaymentSession(cartId, {
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```ts
+```tsx
 import { useCart } from "medusa-react"
 
 const PaymentProviders = () => {
@@ -474,7 +472,7 @@ medusa.carts.updatePaymentSession(cartId, paymentProviderId, {
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```ts
+```tsx
 import { useUpdatePaymentSession, useCart } from "medusa-react"
 // ...
 
@@ -554,7 +552,7 @@ medusa.carts.complete(cartId)
 </TabItem>
 <TabItem value="medusa-react" label="Medusa React">
 
-```ts
+```tsx
 import { useCart } from "medusa-react"
 // ...
 
