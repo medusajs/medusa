@@ -22,7 +22,7 @@ The migration file must be inside the `src/migrations` directory. When you run t
 <details>
   <summary>Generating Migrations for Entities</summary>
 
-  You can alternatively use Typeorm's `generate` command to generate a Migration file from existing entity classes. As of v1.8, Medusa uses Typeorm v0.3.x. You have to create a [DataSource](https://typeorm.io/data-source) first before using the `migration:generate` command.
+  You can alternatively use Typeorm's `generate` command to generate a Migration file from existing entity classes. As of v1.8, Medusa uses Typeorm v0.3.x. So, you have to create a [DataSource](https://typeorm.io/data-source) first before using the `migration:generate` command.
 
   For example, create the file `datasource.js` in the root of your Medusa server with the following content:
 
@@ -62,7 +62,7 @@ The migration file must be inside the `src/migrations` directory. When you run t
   npx typeorm migration:generate -d datasource.js src/migrations/PostCreate
   ```
 
-  Where `PostCreate` is just an example of the name of the migration to generate. The migration will then be generated in `src/migrations/<TIMESTAMP>-PostCreate.ts`. You can then skip to step 3 of this guide.
+  Where `PostCreate` is just an example of the name of the migration to generate. The migration will then be generated in `src/migrations/<TIMESTAMP>-PostCreate.ts`. You can then skip to [step 3](#step-3-build-files) of this guide.
 </details>
 
 ---
@@ -71,7 +71,7 @@ The migration file must be inside the `src/migrations` directory. When you run t
 
 The migration file contains the necessary commands to create the database columns, foreign keys, and more.
 
-You can learn more about writing the migration file in You can learn more about writing migrations in [Typeorm’s Documentation](https://typeorm.io/migrations).
+You can learn more about writing the migration file in You can learn more about writing migrations in [Typeorm’s Documentation](https://typeorm.io/migrations#using-migration-api-to-write-migrations).
 
 ---
 
