@@ -59,7 +59,7 @@ type InjectedDependencies = {
   productImageService: ProductImageService<any>
   productTypeService: ProductTypeService<any>
   productOptionService: ProductOptionService<any>
-  eventBusService?: IEventBusModuleService
+  eventBusModuleService?: IEventBusModuleService
 }
 
 export default class ProductModuleService<
@@ -85,7 +85,7 @@ export default class ProductModuleService<
   protected readonly productImageService_: ProductImageService<TProductImage>
   protected readonly productTypeService_: ProductTypeService<TProductType>
   protected readonly productOptionService_: ProductOptionService<TProductOption>
-  protected readonly eventBusService_?: IEventBusModuleService
+  protected readonly eventBusModuleService_?: IEventBusModuleService
 
   constructor(
     {
@@ -98,7 +98,7 @@ export default class ProductModuleService<
       productImageService,
       productTypeService,
       productOptionService,
-      eventBusService,
+      eventBusModuleService,
     }: InjectedDependencies,
     protected readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -111,7 +111,7 @@ export default class ProductModuleService<
     this.productImageService_ = productImageService
     this.productTypeService_ = productTypeService
     this.productOptionService_ = productOptionService
-    this.eventBusService_ = eventBusService
+    this.eventBusModuleService_ = eventBusModuleService
   }
 
   __joinerConfig(): JoinerServiceConfig {
@@ -500,12 +500,12 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    for (const productCollection of productCollections) {
-      await this.eventBusService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
-        ProductCollectionServiceTypes.ProductCollectionEvents.COLLECTION_CREATED,
-        { id: productCollection.id }
-      )
-    }
+    await this.eventBusModuleService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
+      productCollections.map(({ id }) => ({
+        eventName: ProductCollectionServiceTypes.ProductCollectionEvents.COLLECTION_CREATED,
+        data: { id },
+      })
+    ))
 
     return JSON.parse(JSON.stringify(productCollections))
   }
@@ -520,12 +520,12 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    for (const productCollection of productCollections) {
-      await this.eventBusService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
-        ProductCollectionServiceTypes.ProductCollectionEvents.COLLECTION_UPDATED,
-        { id: productCollection.id }
-      )
-    }
+    await this.eventBusModuleService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
+      productCollections.map(({ id }) => ({
+        eventName: ProductCollectionServiceTypes.ProductCollectionEvents.COLLECTION_UPDATED,
+        data: { id },
+      })
+    ))
 
     return JSON.parse(JSON.stringify(productCollections))
   }
@@ -540,12 +540,12 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    for (const productCollectionId of productCollectionIds) {
-      await this.eventBusService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
-        ProductCollectionServiceTypes.ProductCollectionEvents.COLLECTION_DELETED,
-        { id: productCollectionId }
-      )
-    }
+    await this.eventBusModuleService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
+      productCollectionIds.map((id) => ({
+        eventName: ProductCollectionServiceTypes.ProductCollectionEvents.COLLECTION_DELETED,
+        data: { id },
+      })
+    ))
   }
 
   @InjectManager("baseRepository_")
@@ -588,7 +588,7 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusService_?.emit<ProductCategoryServiceTypes.ProductCategoryEventData>(
+    await this.eventBusModuleService_?.emit<ProductCategoryServiceTypes.ProductCategoryEventData>(
       ProductCategoryServiceTypes.ProductCategoryEvents.CATEGORY_CREATED,
       { id: productCategory.id }
     )
@@ -608,7 +608,7 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusService_?.emit<ProductCategoryServiceTypes.ProductCategoryEventData>(
+    await this.eventBusModuleService_?.emit<ProductCategoryServiceTypes.ProductCategoryEventData>(
       ProductCategoryServiceTypes.ProductCategoryEvents.CATEGORY_UPDATED,
       { id: productCategory.id }
     )
@@ -623,7 +623,7 @@ export default class ProductModuleService<
   ): Promise<void> {
     await this.productCategoryService_.delete(categoryId, sharedContext)
 
-    await this.eventBusService_?.emit<ProductCategoryServiceTypes.ProductCategoryEventData>(
+    await this.eventBusModuleService_?.emit<ProductCategoryServiceTypes.ProductCategoryEventData>(
       ProductCategoryServiceTypes.ProductCategoryEvents.CATEGORY_DELETED,
       { id: categoryId }
     )
@@ -650,12 +650,12 @@ export default class ProductModuleService<
       populate: true,
     })
 
-    for (const product of createdProducts) {
-      await this.eventBusService_?.emit<ProductServiceTypes.ProductEventData>(
-        ProductServiceTypes.ProductEvents.PRODUCT_CREATED,
-        { id: product.id }
-      )
-    }
+    await this.eventBusModuleService_?.emit<ProductServiceTypes.ProductEventData>(
+      createdProducts.map(({ id }) => ({
+        eventName: ProductServiceTypes.ProductEvents.PRODUCT_CREATED,
+        data: { id },
+      })
+    ))
 
     return createdProducts
   }
@@ -672,12 +672,12 @@ export default class ProductModuleService<
       populate: true,
     })
 
-    for (const product of updatedProducts) {
-      await this.eventBusService_?.emit<ProductServiceTypes.ProductEventData>(
-        ProductServiceTypes.ProductEvents.PRODUCT_UPDATED,
-        { id: product.id }
-      )
-    }
+    await this.eventBusModuleService_?.emit<ProductServiceTypes.ProductEventData>(
+      updatedProducts.map(({ id }) => ({
+        eventName: ProductServiceTypes.ProductEvents.PRODUCT_UPDATED,
+        data: { id },
+      })
+    ))
 
     return updatedProducts
   }
@@ -1010,12 +1010,12 @@ export default class ProductModuleService<
   ): Promise<void> {
     await this.productService_.delete(productIds, sharedContext)
 
-    for (const productId of productIds) {
-      await this.eventBusService_?.emit<ProductServiceTypes.ProductEventData>(
-        ProductServiceTypes.ProductEvents.PRODUCT_DELETED,
-        { id: productId }
-      )
-    }
+    await this.eventBusModuleService_?.emit<ProductServiceTypes.ProductEventData>(
+      productIds.map((id) => ({
+        eventName: ProductServiceTypes.ProductEvents.PRODUCT_DELETED,
+        data: { id },
+      })
+    ))
   }
 
   async softDelete(
@@ -1028,12 +1028,12 @@ export default class ProductModuleService<
       populate: true,
     })
 
-    for (const product of softDeletedProducts) {
-      await this.eventBusService_?.emit<ProductServiceTypes.ProductEventData>(
-        ProductServiceTypes.ProductEvents.PRODUCT_DELETED,
-        { id: product.id }
-      )
-    }
+    await this.eventBusModuleService_?.emit<ProductServiceTypes.ProductEventData>(
+      softDeletedProducts.map(({ id }) => ({
+        eventName: ProductServiceTypes.ProductEvents.PRODUCT_DELETED,
+        data: { id },
+      })
+    ))
 
     return softDeletedProducts
   }

@@ -146,7 +146,7 @@ describe("ProductModuleService products", function () {
           schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
         },
       }, {
-        eventBusService: eventBus
+        eventBusModuleService: eventBus
       })
     })
 
@@ -251,12 +251,10 @@ describe("ProductModuleService products", function () {
       await module.update([updateData])
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith(
-        "product.updated",
-        {
-          id: productOne.id,
-        }
-      )
+      expect(eventBusSpy).toHaveBeenCalledWith([{
+        eventName: "product.updated",
+        data: { id: productOne.id }
+      }])
     })
 
     it("should add relationships to a product", async () => {
@@ -510,7 +508,7 @@ describe("ProductModuleService products", function () {
           schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
         },
       }, {
-        eventBusService: eventBus
+        eventBusModuleService: eventBus
       })
     })
 
@@ -601,12 +599,10 @@ describe("ProductModuleService products", function () {
       const products = await module.create([data])
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith(
-        "product.created",
-        {
-          id: products[0].id,
-        }
-      )
+      expect(eventBusSpy).toHaveBeenCalledWith([{
+        eventName: "product.created",
+        data: { id: products[0].id }
+      }])
     })
   })
 
@@ -627,7 +623,7 @@ describe("ProductModuleService products", function () {
           schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
         },
       }, {
-        eventBusService: eventBus
+        eventBusModuleService: eventBus
       })
     })
 
@@ -695,9 +691,10 @@ describe("ProductModuleService products", function () {
 
       await module.softDelete([products[0].id])
 
-      expect(eventBusSpy).toHaveBeenCalledWith("product.deleted", {
-        id: products[0].id
-      })
+      expect(eventBusSpy).toHaveBeenCalledWith([{
+        eventName: "product.created",
+        data: { id: products[0].id }
+      }])
     })
   })
 

@@ -30,7 +30,7 @@ describe("ProductModuleService product categories", () => {
         schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
       },
     }, {
-      eventBusService: eventBus
+      eventBusModuleService: eventBus
     })
 
     testManager = await TestDatabase.forkManager()

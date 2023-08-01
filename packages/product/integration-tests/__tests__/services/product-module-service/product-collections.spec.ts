@@ -30,7 +30,7 @@ describe("ProductModuleService product collections", () => {
         schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
       },
     }, {
-      eventBusService: eventBus
+      eventBusModuleService: eventBus
     })
 
     testManager = await TestDatabase.forkManager()
@@ -275,17 +275,32 @@ describe("ProductModuleService product collections", () => {
       )
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith(
-        "product-collection.deleted",
-        {
-          id: collectionId
-        }
-      )
+      expect(eventBusSpy).toHaveBeenCalledWith([{
+        eventName: "product-collection.deleted",
+        data: { id: collectionId }
+      }])
     })
   })
 
   describe("updateCollections", () => {
     const collectionId = "test-1"
+
+    it("should emit events through event bus", async () => {
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+
+      await service.updateCollections(
+        [{
+          id: collectionId,
+          title: "New Collection"
+        }]
+      )
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith([{
+        eventName: "product-collection.updated",
+        data: { id: collectionId }
+      }])
+    })
 
     it("should update the value of the collection successfully", async () => {
       await service.updateCollections(
@@ -343,12 +358,10 @@ describe("ProductModuleService product collections", () => {
       )
 
       expect(eventBusSpy).toHaveBeenCalledTimes(1)
-      expect(eventBusSpy).toHaveBeenCalledWith(
-        "product-collection.created",
-        {
-          id: collections[0].id
-        }
-      )
+      expect(eventBusSpy).toHaveBeenCalledWith([{
+        eventName: "product-collection.created",
+        data: { id: collections[0].id }
+      }])
     })
   })
 })

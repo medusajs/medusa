@@ -3,7 +3,7 @@ export * from "./services"
 import { IEventBusModuleService } from "@medusajs/types"
 
 export type InitializeModuleInjectableDependencies = {
-  eventBusService?: IEventBusModuleService
+  eventBusModuleService?: IEventBusModuleService
 }
 
 export * from "./services"
