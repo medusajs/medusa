@@ -58,7 +58,7 @@ You can learn more about what decorators and column types you can use in [Typeor
 
 Additionally, you must create a migration for your entity. Migrations are used to update the database schema with new tables or changes to existing tables.
 
-You can learn more about Migrations, how to create or generate them, and how to run them in the [Migration documentation](./migrations/overview.mdx).
+You can learn more about Migrations, how to create or generate them, and how to run them in the [Migration documentation](./migrations/create.md).
 
 ---
 
@@ -110,11 +110,11 @@ You can learn about available Repository methods in [Typeorm's documentation](ht
 
 ---
 
-## Step 4: Run Migrations
+## (Optional) Step 4: Run Migrations
 
-Before you start using your entity, make sure to run the migrations that reflect the entity on your database schema.
+Before you start using your entity, make sure to run the migrations that reflect the entity on your database schema. If you've already ran migrations, you can skip this step.
 
-To do that, run the `build` command that transpiles your code:
+To run migrations, run the `build` command that transpiles your code:
 
 ```bash npm2yarn
 npm run build
@@ -130,7 +130,7 @@ You should see that your migration have executed.
 
 ---
 
-## Step 5: Use Your Entity
+## Example: Use Entity in Service
 
 You can access your custom entity data in the database in services or subscribers using the repository. For example, here’s a service that lists all posts:
 
@@ -170,7 +170,9 @@ This same usage of repositories can be done in other resources such as subscribe
 
 :::
 
-### Delete a Soft-Deletable Entity
+---
+
+## Delete a Soft-Deletable Entity
 
 To delete soft-deletable entities that extend the `SoftDeletableEntity` class, you can use the repository method `softDelete` method:
 
