@@ -360,7 +360,7 @@ The `productService` has a `count` method that returns a Promise. This Promi
 
 ## Building Files
 
-Custom endpoints must be transpiled and moved to the `dist` directory before you can start consuming them. When you run your backend using either the `medusa develop` or `npx @medusajs/medusa-cli develop` commands, it watches the files under `src` for any changes, then triggers the `build` command and restarts the server.
+Custom endpoints must be transpiled and moved to the `dist` directory before you can start consuming them. When you run your backend using either the `medusa develop` or `npx medusa develop` commands, it watches the files under `src` for any changes, then triggers the `build` command and restarts the server.
 
 The build isn't triggered though when the backend first starts running. So, make sure to run the `build` command before starting the backend:
 

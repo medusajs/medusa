@@ -306,7 +306,7 @@ npm run build
 Next, start your Medusa backend:
 
 ```bash npm2yarn
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
 
 Try now to place an order either using the [REST APIs](/api/store) or using the storefront.
