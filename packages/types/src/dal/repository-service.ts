@@ -52,7 +52,7 @@ export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
   softDelete(
     ids: string[],
     context?: Context
-  ): Promise<[T[], Record<string, string[]>]>
+  ): Promise<[T[], Record<string, unknown[]>]>
 
   restore(ids: string[], context?: Context): Promise<T[]>
 }

@@ -10,16 +10,47 @@ import {
   ProductVariant,
 } from "@models"
 import ProductImage from "./models/product-image"
+import { RemapKeyAndPickMap } from "@medusajs/utils"
 
-export const EntityNameToLinkableKeysMap = new Map([
-  [Product.name, "product_id"],
-  [ProductVariant.name, "variant_id"],
-  [ProductOption.name, "product_option_id"],
-  [ProductType.name, "product_type_id"],
-  [ProductCategory.name, "product_category_id"],
-  [ProductCollection.name, "product_collection_id"],
-  [ProductTag.name, "product_tag_id"],
-  [ProductImage.name, "product_image_id"],
+export const EntityNameToLinkableKeysMap: RemapKeyAndPickMap = new Map([
+  [
+    Product.name,
+    [
+      { newKey: "product_id", getter: (object) => object.id },
+      { newKey: "product_handle", getter: (object) => object.handle },
+    ],
+  ],
+  [
+    ProductVariant.name,
+    [
+      { newKey: "variant_id", getter: (object) => object.id },
+      { newKey: "variant_sku", getter: (object) => object.sku },
+    ],
+  ],
+  [
+    ProductOption.name,
+    [{ newKey: "product_option_id", getter: (object) => object.id }],
+  ],
+  [
+    ProductType.name,
+    [{ newKey: "product_type_id", getter: (object) => object.id }],
+  ],
+  [
+    ProductCategory.name,
+    [{ newKey: "product_category_id", getter: (object) => object.id }],
+  ],
+  [
+    ProductCollection.name,
+    [{ newKey: "product_collection_id", getter: (object) => object.id }],
+  ],
+  [
+    ProductTag.name,
+    [{ newKey: "product_tag_id", getter: (object) => object.id }],
+  ],
+  [
+    ProductImage.name,
+    [{ newKey: "product_image_id", getter: (object) => object.id }],
+  ],
 ])
 
 export const joinerConfig: JoinerServiceConfig = {

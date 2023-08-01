@@ -71,7 +71,7 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
     ids: string[],
     @MedusaContext()
     { transactionManager: manager }: Context = {}
-  ): Promise<[T[], Record<string, string[]>]> {
+  ): Promise<[T[], Record<string, unknown[]>]> {
     const entities = await this.find({ where: { id: { $in: ids } } as any })
     const date = new Date()
 
@@ -79,7 +79,6 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
 
     const softDeletedEntitiesMap = getSoftDeletedCascadedEntitiesIdsMappedBy({
       entities,
-      columnLookup: "deleted_at",
     })
 
     return [entities, softDeletedEntitiesMap]

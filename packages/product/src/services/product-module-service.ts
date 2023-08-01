@@ -40,7 +40,7 @@ import {
   kebabCase,
   MedusaContext,
   MedusaError,
-  reMapKeys,
+  reMapKeysAndPick,
 } from "@medusajs/utils"
 
 import { shouldForceTransaction } from "../utils"
@@ -984,9 +984,10 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    cascadedEntitiesMap = reMapKeys(
+    cascadedEntitiesMap = reMapKeysAndPick(
       cascadedEntitiesMap,
-      EntityNameToLinkableKeysMap
+      EntityNameToLinkableKeysMap,
+      true
     )
 
     return [
@@ -1004,7 +1005,7 @@ export default class ProductModuleService<
   protected async softDelete_(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TProduct[], Record<string, string[]>]> {
+  ): Promise<[TProduct[], Record<string, unknown[]>]> {
     return await this.productService_.softDelete(productIds, sharedContext)
   }
 

@@ -52,7 +52,7 @@ export abstract class AbstractBaseRepository<T = any>
   abstract softDelete(
     ids: string[],
     context?: Context
-  ): Promise<[T[], Record<string, string[]>]>
+  ): Promise<[T[], Record<string, unknown[]>]>
 
   abstract restore(ids: string[], context?: Context): Promise<T[]>
 

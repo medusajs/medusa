@@ -168,7 +168,7 @@ export default class ProductService<TEntity extends Product = Product> {
   async softDelete(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<[TEntity[], Record<string, string[]>]> {
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
     return await this.productRepository_.softDelete(productIds, {
       transactionManager: sharedContext.transactionManager,
     })

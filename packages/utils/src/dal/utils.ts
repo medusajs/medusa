@@ -1,4 +1,4 @@
-import { isDefined, isObject } from "../common"
+import { isObject } from "../common"
 
 export async function transactionWrapper<TManager = unknown>(
   this: any,
@@ -34,59 +34,51 @@ export async function transactionWrapper<TManager = unknown>(
 }
 
 /**
- * Can be used to create a new Object that collect the ids of all entities
+ * Can be used to create a new Object that collect the entities
  * based on the columnLookup. This is useful when you want to soft delete entities and return
- * an object where the keys are the entities name and the values are the ids of the entities
+ * an object where the keys are the entities name and the values are the entities
  * that were soft deleted.
  *
  * @param entities
- * @param columnLookup
- * @param map
+ * @param deletedEntitiesMap
  * @param getEntityName
  */
 export function getSoftDeletedCascadedEntitiesIdsMappedBy({
   entities,
-  columnLookup,
-  map,
+  deletedEntitiesMap,
   getEntityName,
 }: {
   entities: any[]
-  columnLookup: string
-  map?: Map<string, string[]>
+  deletedEntitiesMap?: Map<string, any[]>
   getEntityName?: (entity: any) => string
-}) {
-  columnLookup ??= "id"
-  map ??= new Map<string, string[]>()
+}): Record<string, any[]> {
+  deletedEntitiesMap ??= new Map<string, any[]>()
   getEntityName ??= (entity) => entity.constructor.name
 
   for (const entity of entities) {
     const entityName = getEntityName(entity)
-    const shouldSkip =
-      map.has(entityName) && map.get(entityName)!.includes(entity.id)
+    const shouldSkip = !!deletedEntitiesMap
+      .get(entityName)
+      ?.some((e) => e.id === entity.id)
 
     if (!entity.deleted_at || shouldSkip) {
       continue
     }
 
-    const ids = map.get(entityName) ?? []
-    ids.push(entity.id)
-    map.set(entityName, ids)
+    const values = deletedEntitiesMap.get(entityName) ?? []
+    values.push(entity)
+    deletedEntitiesMap.set(entityName, values)
 
     Object.values(entity).forEach((propValue: any) => {
-      if (
-        propValue != null &&
-        isDefined(propValue[0]) &&
-        isObject(propValue[0])
-      ) {
+      if (propValue != null && isObject(propValue[0])) {
         getSoftDeletedCascadedEntitiesIdsMappedBy({
           entities: propValue,
-          columnLookup,
-          map,
+          deletedEntitiesMap,
           getEntityName,
         })
       }
     })
   }
 
-  return Object.fromEntries(map)
+  return Object.fromEntries(deletedEntitiesMap)
 }
