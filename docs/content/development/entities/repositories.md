@@ -1,5 +1,5 @@
 ---
-description: 'In this document, you'll learn what repositories are, how to use them within your Medusa backend, and what are some of their common methods.'
+description: "In this document, you'll learn what repositories are, how to use them within your Medusa backend, and what are some of their common methods."
 ---
 
 # Repositories
