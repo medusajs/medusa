@@ -86,29 +86,29 @@ For example:
 <!-- eslint-disable max-len -->
 
 ```ts
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from "typeorm"
 
 export class AddAuthorsAndPosts1690876698954 implements MigrationInterface {
-  name = 'AddAuthorsAndPosts1690876698954'
+  name = "AddAuthorsAndPosts1690876698954"
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`CREATE TABLE "post" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "title" character varying NOT NULL, "author_id" character varying NOT NULL, "authorId" character varying, CONSTRAINT "PK_be5fda3aac270b134ff9c21cdee" PRIMARY KEY ("id"))`);
-    await queryRunner.query(`CREATE TABLE "author" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "name" character varying NOT NULL, "image" character varying, CONSTRAINT "PK_5a0e79799d372fe56f2f3fa6871" PRIMARY KEY ("id"))`);
-    await queryRunner.query(`ALTER TABLE "onboarding_state" ADD CONSTRAINT "PK_891b72628471aada55d7b8c9410" PRIMARY KEY ("id")`);
-    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "current_step" SET NOT NULL`);
-    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "is_complete" SET NOT NULL`);
-    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "product_id" SET NOT NULL`);
-    await queryRunner.query(`ALTER TABLE "post" ADD CONSTRAINT "FK_c6fb082a3114f35d0cc27c518e0" FOREIGN KEY ("authorId") REFERENCES "author"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+    await queryRunner.query(`CREATE TABLE "post" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "title" character varying NOT NULL, "author_id" character varying NOT NULL, "authorId" character varying, CONSTRAINT "PK_be5fda3aac270b134ff9c21cdee" PRIMARY KEY ("id"))`)
+    await queryRunner.query(`CREATE TABLE "author" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "name" character varying NOT NULL, "image" character varying, CONSTRAINT "PK_5a0e79799d372fe56f2f3fa6871" PRIMARY KEY ("id"))`)
+    await queryRunner.query(`ALTER TABLE "onboarding_state" ADD CONSTRAINT "PK_891b72628471aada55d7b8c9410" PRIMARY KEY ("id")`)
+    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "current_step" SET NOT NULL`)
+    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "is_complete" SET NOT NULL`)
+    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "product_id" SET NOT NULL`)
+    await queryRunner.query(`ALTER TABLE "post" ADD CONSTRAINT "FK_c6fb082a3114f35d0cc27c518e0" FOREIGN KEY ("authorId") REFERENCES "author"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`ALTER TABLE "post" DROP CONSTRAINT "FK_c6fb082a3114f35d0cc27c518e0"`);
-    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "product_id" DROP NOT NULL`);
-    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "is_complete" DROP NOT NULL`);
-    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "current_step" DROP NOT NULL`);
-    await queryRunner.query(`ALTER TABLE "onboarding_state" DROP CONSTRAINT "PK_891b72628471aada55d7b8c9410"`);
-    await queryRunner.query(`DROP TABLE "author"`);
-    await queryRunner.query(`DROP TABLE "post"`);
+    await queryRunner.query(`ALTER TABLE "post" DROP CONSTRAINT "FK_c6fb082a3114f35d0cc27c518e0"`)
+    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "product_id" DROP NOT NULL`)
+    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "is_complete" DROP NOT NULL`)
+    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "current_step" DROP NOT NULL`)
+    await queryRunner.query(`ALTER TABLE "onboarding_state" DROP CONSTRAINT "PK_891b72628471aada55d7b8c9410"`)
+    await queryRunner.query(`DROP TABLE "author"`)
+    await queryRunner.query(`DROP TABLE "post"`)
   }
 }
 ```
