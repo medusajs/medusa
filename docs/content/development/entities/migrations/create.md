@@ -13,7 +13,7 @@ There are two ways to create a migration file: create and write its content manu
 
 If you're creating a custom entity, then it's recommended to generate the migration file. However, if you're extending an entity from Medusa's core, then you should create and write the migration manually.
 
-### Option 1: Generating Migration File
+### Option 1: Generate Migration File
 
 :::warning
 
@@ -61,7 +61,11 @@ Finally, run the following command to generate a migration for your custom entit
 npx typeorm migration:generate -d datasource.js src/migrations/PostCreate
 ```
 
-Where `PostCreate` is just an example of the name of the migration to generate. The migration will then be generated at `src/migrations/<TIMESTAMP>-PostCreate.ts`. You can then continue to [step 2](#step-2-build-files) of this guide.
+This will generate the migration file in the path you specify, where `PostCreate` is just an example of the name of the migration to create. The migration file must be inside the `src/migrations` directory. When you run the build command, it will be transpiled into the `dist/migrations` directory.
+
+The `migrations run` command can only pick up migrations under the `dist/migrations` directory on a Medusa backend. This applies to migrations created in a Medusa backend, and not in a Medusa plugin. For plugins, check out the [Plugin's Structure section](../../plugins/create.mdx).
+
+You can now continue to [step 2](#step-2-build-files) of this guide.
 
 ### Option 2: Write Migration File
 
@@ -94,19 +98,11 @@ export class AddAuthorsAndPosts1690876698954 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`CREATE TABLE "post" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "title" character varying NOT NULL, "author_id" character varying NOT NULL, "authorId" character varying, CONSTRAINT "PK_be5fda3aac270b134ff9c21cdee" PRIMARY KEY ("id"))`)
     await queryRunner.query(`CREATE TABLE "author" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "name" character varying NOT NULL, "image" character varying, CONSTRAINT "PK_5a0e79799d372fe56f2f3fa6871" PRIMARY KEY ("id"))`)
-    await queryRunner.query(`ALTER TABLE "onboarding_state" ADD CONSTRAINT "PK_891b72628471aada55d7b8c9410" PRIMARY KEY ("id")`)
-    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "current_step" SET NOT NULL`)
-    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "is_complete" SET NOT NULL`)
-    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "product_id" SET NOT NULL`)
     await queryRunner.query(`ALTER TABLE "post" ADD CONSTRAINT "FK_c6fb082a3114f35d0cc27c518e0" FOREIGN KEY ("authorId") REFERENCES "author"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`ALTER TABLE "post" DROP CONSTRAINT "FK_c6fb082a3114f35d0cc27c518e0"`)
-    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "product_id" DROP NOT NULL`)
-    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "is_complete" DROP NOT NULL`)
-    await queryRunner.query(`ALTER TABLE "onboarding_state" ALTER COLUMN "current_step" DROP NOT NULL`)
-    await queryRunner.query(`ALTER TABLE "onboarding_state" DROP CONSTRAINT "PK_891b72628471aada55d7b8c9410"`)
     await queryRunner.query(`DROP TABLE "author"`)
     await queryRunner.query(`DROP TABLE "post"`)
   }
