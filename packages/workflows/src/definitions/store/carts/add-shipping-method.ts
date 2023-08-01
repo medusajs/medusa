@@ -1,11 +1,8 @@
-import {
-  Cart,
-  StorePostCartsCartShippingMethodReq
-} from "@medusajs/medusa"
+import { Cart, StorePostCartsCartShippingMethodReq } from "@medusajs/medusa"
 import {
   TransactionStepsDefinition,
   WorkflowHandler,
-  WorkflowManager
+  WorkflowManager,
 } from "@medusajs/orchestration"
 import { Workflows } from "../../../definitions"
 import { exportWorkflow } from "../../../helper"
@@ -15,33 +12,70 @@ export type AddShippingMethodWorkflowInputData = {
 } & StorePostCartsCartShippingMethodReq
 
 export enum AddShippingMethodWorkflowActions {
-  addShippingMethod = "addShippingMethod",
+  prepare = "prepare",
+  validateFulfillmentData = "validateFulfillmentData",
   validateLineItemShipping = "validateLineItemShipping",
+  getOptionPrice = "getOptionPrice",
+  createShippingMethod = "createShippingMethod",
+  cleanUpShippingMethods = "cleanUpShippingMethods",
   adjustFreeShipping = "adjustFreeShipping",
-  setPaymentSessions = "setPaymentSessions",
+  prepareUpdatedCart = "prepareUpdatedCart",
+  cleanUpPaymentSessions = "cleanUpPaymentSessions",
+  updatePaymentSessions = "updatePaymentSessions",
   result = "result",
 }
 
 export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
   next: {
-    // Create Shipping Method
-    action: AddShippingMethodWorkflowActions.addShippingMethod,
+    // retrieve cart + custom shipping options
+    action: AddShippingMethodWorkflowActions.prepare,
+    noCompensation: true,
     saveResponse: true,
     next: [
       {
-        // Ensure shipping is correct on Line Items
-        action: AddShippingMethodWorkflowActions.validateLineItemShipping,
+        // validate fulfillment data
+        action: AddShippingMethodWorkflowActions.validateFulfillmentData,
+        saveResponse: true,
       },
       {
-        // Ensure Discount applicability wrt. new Shipping Method
-        action: AddShippingMethodWorkflowActions.adjustFreeShipping,
+        // validate line item shipping
+        action: AddShippingMethodWorkflowActions.validateLineItemShipping,
         next: {
-          // Upsert Payment Sessions
-          action: AddShippingMethodWorkflowActions.setPaymentSessions,
-          // Retrieve Cart with totals
+          // get price of shipping option
+          action: AddShippingMethodWorkflowActions.getOptionPrice,
+          saveResponse: true,
           next: {
-            action: AddShippingMethodWorkflowActions.result,
+            // create the shipping method
+            action: AddShippingMethodWorkflowActions.createShippingMethod,
             noCompensation: true,
+            next: {
+              // delete other shipping methods with same profile id
+              action: AddShippingMethodWorkflowActions.cleanUpShippingMethods,
+              next: {
+                // adjust free shipping discount wrt new shipping method
+                action: AddShippingMethodWorkflowActions.adjustFreeShipping,
+                next: {
+                  // retrieve cart with updated totals
+                  action: AddShippingMethodWorkflowActions.prepareUpdatedCart,
+                  saveResponse: true,
+                  next: {
+                    // clean up payment sessions
+                    action:
+                      AddShippingMethodWorkflowActions.cleanUpPaymentSessions,
+                    next: {
+                      // update the payment sessions on the cart
+                      action:
+                        AddShippingMethodWorkflowActions.updatePaymentSessions,
+                      // retrieve cart with totals
+                      next: {
+                        action: AddShippingMethodWorkflowActions.result,
+                        noCompensation: true,
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -51,7 +85,14 @@ export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
 
 const handlers = new Map<AddShippingMethodWorkflowActions, WorkflowHandler>([
   [
-    AddShippingMethodWorkflowActions.addShippingMethod,
+    AddShippingMethodWorkflowActions.prepare,
+    {
+      invoke: {},
+      compensate: {},
+    },
+  ],
+  [
+    AddShippingMethodWorkflowActions.validateFulfillmentData,
     {
       invoke: {},
       compensate: {},
@@ -65,6 +106,27 @@ const handlers = new Map<AddShippingMethodWorkflowActions, WorkflowHandler>([
     },
   ],
   [
+    AddShippingMethodWorkflowActions.getOptionPrice,
+    {
+      invoke: {},
+      compensate: {},
+    },
+  ],
+  [
+    AddShippingMethodWorkflowActions.createShippingMethod,
+    {
+      invoke: {},
+      compensate: {},
+    },
+  ],
+  [
+    AddShippingMethodWorkflowActions.cleanUpShippingMethods,
+    {
+      invoke: {},
+      compensate: {},
+    },
+  ],
+  [
     AddShippingMethodWorkflowActions.adjustFreeShipping,
     {
       invoke: {},
@@ -72,7 +134,21 @@ const handlers = new Map<AddShippingMethodWorkflowActions, WorkflowHandler>([
     },
   ],
   [
-    AddShippingMethodWorkflowActions.setPaymentSessions,
+    AddShippingMethodWorkflowActions.prepareUpdatedCart,
+    {
+      invoke: {},
+      compensate: {},
+    },
+  ],
+  [
+    AddShippingMethodWorkflowActions.cleanUpPaymentSessions,
+    {
+      invoke: {},
+      compensate: {},
+    },
+  ],
+  [
+    AddShippingMethodWorkflowActions.updatePaymentSessions,
     {
       invoke: {},
       compensate: {},
@@ -94,5 +170,5 @@ WorkflowManager.register(
 
 export const addShippingMethod = exportWorkflow(
   Workflows.AddShippingMethod,
-  AddShippingMethodWorkflowActions.addShippingMethod
+  AddShippingMethodWorkflowActions.prepare
 )
