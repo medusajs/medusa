@@ -82,7 +82,7 @@ Other available options include:
 To test the module, run the following command to start the Medusa backend:
 
 ```bash npm2yarn
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
 
 If the module was installed successfully, you should see the following message in the logs:
