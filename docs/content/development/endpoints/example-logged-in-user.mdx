@@ -13,7 +13,7 @@ In this document, you’ll see an example of how you can use middlewares and end
 
 This guide showcases how to register the logged-in admin user, but you can apply the same steps if you want to register the current customer.
 
-This documentation does not explain the basics of [middlewares](./add-middleware.mdx) and [endpoints](./create.md). You can refer to their respective guides for more details about each.
+This documentation does not explain the basics of [middlewares](./add-middleware.mdx) and [endpoints](./create.mdx). You can refer to their respective guides for more details about each.
 
 ## Step 1: Create the Middleware
 
@@ -87,7 +87,7 @@ For endpoints that require Cross-Origin Resource Origin (CORS) options, such as 
 
 :::tip
 
-In the above code snippet, the `authenticate` middleware imported from `@medusajs/medusa` is used to ensure that the user is logged in first. If you're implementing this for middleware to register the logged-in customer, make sure to use the [customer's authenticate middleware](./create.md#protect-store-routes).
+In the above code snippet, the `authenticate` middleware imported from `@medusajs/medusa` is used to ensure that the user is logged in first. If you're implementing this for middleware to register the logged-in customer, make sure to use the [customer's authenticate middleware](./create.mdx#protect-store-routes).
 
 :::
 
