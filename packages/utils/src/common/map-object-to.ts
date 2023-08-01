@@ -1,23 +1,35 @@
 type RemapInputObject = Record<string, unknown[]>
-type RemapConfig = { newKey: string; getter: (object: any) => string }
-export type RemapKeyAndPickMap<TKeys = string> = Map<TKeys, RemapConfig[]>
+type RemapConfig = { mapTo: string; valueFrom: string }
+export type MapToConfig = {
+  [key: string]: RemapConfig[]
+}
 
 /**
  * Create a new object with the keys remapped and the values picked from the original object based
  * on the map config
  *
- * @param object
- * @param mapTo
- * @param removeIfNotRemapped
+ * @param object input object
+ * @param mapTo configuration to map the output object
+ * @param removeIfNotRemapped if true, the keys that are not remapped will be removed from the output object
+ * @param pick if provided, only the keys in the array will be picked from the output object
  */
 export function mapObjectTo<
   TResult = any,
   T extends RemapInputObject = RemapInputObject
->(object: T, mapTo: RemapKeyAndPickMap, removeIfNotRemapped = false): TResult {
+>(
+  object: T,
+  mapTo: MapToConfig,
+  {
+    removeIfNotRemapped,
+    pick,
+  }: { removeIfNotRemapped?: boolean; pick?: string[] } = {}
+): TResult {
+  removeIfNotRemapped ??= false
+
   const newObject: Record<string, any> = {}
 
   for (const key in object) {
-    const remapConfig = mapTo.get(key as string)!
+    const remapConfig = mapTo[key as string]!
 
     if (!remapConfig) {
       if (!removeIfNotRemapped) {
@@ -27,7 +39,13 @@ export function mapObjectTo<
     }
 
     remapConfig.forEach((config) => {
-      newObject[config.newKey] = object[key].map(config.getter).filter(Boolean)
+      if (pick?.length && !pick.includes(config.mapTo)) {
+        return
+      }
+
+      newObject[config.mapTo] = object[key]
+        .map((obj: any) => obj[config.valueFrom])
+        .filter(Boolean)
     })
   }
 

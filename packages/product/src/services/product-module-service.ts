@@ -45,7 +45,7 @@ import {
 
 import { shouldForceTransaction } from "../utils"
 import {
-  EntityNameToLinkableKeysMap,
+  entityNameToLinkableKeysMap,
   joinerConfig,
   LinkableKeys,
 } from "./../joiner-config"
@@ -979,34 +979,34 @@ export default class ProductModuleService<
     await this.productService_.delete(productIds, sharedContext)
   }
 
-  async softDelete(
+  async softDelete<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
     productIds: string[],
+    {
+      returnLinkableKeys,
+    }: { returnLinkableKeys?: TReturnableLinkableKeys[] } = {
+      returnLinkableKeys: [],
+    },
     sharedContext: Context = {}
-  ): Promise<
-    [
-      ProductTypes.ProductDTO[],
-      Record<Lowercase<keyof typeof LinkableKeys>, string[]>
-    ]
-  > {
-    let [products, cascadedEntitiesMap] = await this.softDelete_(
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    let [, cascadedEntitiesMap] = await this.softDelete_(
       productIds,
       sharedContext
     )
 
-    // TODO: Maybe this method should return cascadedEntitiesMap, and in the link we know which modules and linkable keys are exposed and we can do this little boy there.
-    const mappedCascadedEntitiesMap = mapObjectTo<
-      Record<Lowercase<keyof typeof LinkableKeys>, string[]>
-    >(cascadedEntitiesMap, EntityNameToLinkableKeysMap, true)
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys as string[],
+      })
+    }
 
-    return [
-      await this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(
-        products,
-        {
-          populate: true,
-        }
-      ),
-      mappedCascadedEntitiesMap,
-    ]
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")

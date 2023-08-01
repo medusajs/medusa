@@ -10,7 +10,7 @@ import {
   ProductVariant,
 } from "@models"
 import ProductImage from "./models/product-image"
-import { RemapKeyAndPickMap } from "@medusajs/utils"
+import { MapToConfig } from "@medusajs/utils"
 
 export enum LinkableKeys {
   PRODUCT_ID = "product_id",
@@ -25,80 +25,35 @@ export enum LinkableKeys {
   PRODUCT_IMAGE_ID = "product_image_id",
 }
 
-const buildEntityNameToLinkableKeysReMapperMap = (config: {
-  [entityName: string]: { newKey: string; pick: string }[]
-}) => {
-  const map = new Map(
-    Object.entries(config).map(([entityName, linkableKeysConfig]) => {
-      return [
-        entityName,
-        linkableKeysConfig.map(({ newKey, pick }) => ({
-          newKey,
-          getter: (object) => object[pick],
-        })),
-      ]
-    })
-  )
+export const entityNameToLinkableKeysMap: MapToConfig = {
+  [Product.name]: [
+    { mapTo: LinkableKeys.PRODUCT_ID, valueFrom: "id" },
+    {
+      mapTo: LinkableKeys.PRODUCT_HANDLE,
+      valueFrom: "handle",
+    },
+  ],
+  [ProductVariant.name]: [
+    { mapTo: LinkableKeys.VARIANT_ID, valueFrom: "id" },
+    { mapTo: LinkableKeys.VARIANT_SKU, valueFrom: "sku" },
+  ],
+  [ProductOption.name]: [
+    { mapTo: LinkableKeys.PRODUCT_OPTION_ID, valueFrom: "id" },
+  ],
+  [ProductType.name]: [
+    { mapTo: LinkableKeys.PRODUCT_TYPE_ID, valueFrom: "id" },
+  ],
+  [ProductCategory.name]: [
+    { mapTo: LinkableKeys.PRODUCT_CATEGORY_ID, valueFrom: "id" },
+  ],
+  [ProductCollection.name]: [
+    { mapTo: LinkableKeys.PRODUCT_COLLECTION_ID, valueFrom: "id" },
+  ],
+  [ProductTag.name]: [{ mapTo: LinkableKeys.PRODUCT_TAG_ID, valueFrom: "id" }],
+  [ProductImage.name]: [
+    { mapTo: LinkableKeys.PRODUCT_IMAGE_ID, valueFrom: "id" },
+  ],
 }
-
-// TODO: Would it be nice to have that has part of the joiner config. So that the link propagation of the cascade can then
-// do the mapping automatically like:
-//     const mappedCascadedEntitiesMap = mapObjectTo<
-//       Record<Lowercase<keyof typeof LinkableKeys>, string[]>
-//     >(cascadedEntitiesMap, EntityNameToLinkableKeysMap, true)
-export const EntityNameToLinkableKeysMap: RemapKeyAndPickMap = new Map([
-  [
-    Product.name,
-    [
-      { newKey: LinkableKeys.PRODUCT_ID, getter: (object) => object.id },
-      {
-        newKey: LinkableKeys.PRODUCT_HANDLE,
-        getter: (object) => object.handle,
-      },
-    ],
-  ],
-  [
-    ProductVariant.name,
-    [
-      { newKey: LinkableKeys.VARIANT_ID, getter: (object) => object.id },
-      { newKey: LinkableKeys.VARIANT_SKU, getter: (object) => object.sku },
-    ],
-  ],
-  [
-    ProductOption.name,
-    [{ newKey: LinkableKeys.PRODUCT_OPTION_ID, getter: (object) => object.id }],
-  ],
-  [
-    ProductType.name,
-    [{ newKey: LinkableKeys.PRODUCT_TYPE_ID, getter: (object) => object.id }],
-  ],
-  [
-    ProductCategory.name,
-    [
-      {
-        newKey: LinkableKeys.PRODUCT_CATEGORY_ID,
-        getter: (object) => object.id,
-      },
-    ],
-  ],
-  [
-    ProductCollection.name,
-    [
-      {
-        newKey: LinkableKeys.PRODUCT_COLLECTION_ID,
-        getter: (object) => object.id,
-      },
-    ],
-  ],
-  [
-    ProductTag.name,
-    [{ newKey: LinkableKeys.PRODUCT_TAG_ID, getter: (object) => object.id }],
-  ],
-  [
-    ProductImage.name,
-    [{ newKey: LinkableKeys.PRODUCT_IMAGE_ID, getter: (object) => object.id }],
-  ],
-])
 
 export const joinerConfig: JoinerServiceConfig = {
   serviceName: Modules.PRODUCT,

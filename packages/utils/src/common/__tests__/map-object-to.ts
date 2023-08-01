@@ -1,35 +1,26 @@
-import { mapObjectTo } from "../map-object-to"
+import { mapObjectTo, MapToConfig } from "../map-object-to"
+
+const input = {
+  a: [{ id: "1" }, { id: "2" }],
+  b: [{ id: "3" }, { id: "4", handle: "handle1" }],
+  c: [{ id: "5", sku: "sku1" }, { id: "6" }],
+}
+
+const mapToConfig: MapToConfig = {
+  a: [{ mapTo: "a.id", valueFrom: "id" }],
+  b: [
+    { mapTo: "b.id", valueFrom: "id" },
+    { mapTo: "b.handle", valueFrom: "handle" },
+  ],
+  c: [
+    { mapTo: "c.id", valueFrom: "id" },
+    { mapTo: "c.sku", valueFrom: "sku" },
+  ],
+}
 
 describe("mapObjectTo", function () {
   it("should return a new object with the keys remapped and the values picked from the original object based on the map config", function () {
-    const input = {
-      a: [{ id: "1" }, { id: "2" }],
-      b: [{ id: "3" }, { id: "4", handle: "handle1" }],
-      c: [{ id: "5", sku: "sku1" }, { id: "6" }],
-    }
-
-    const remapMap = new Map<
-      string,
-      { newKey: string; getter: (object: any) => string }[]
-    >([
-      ["a", [{ newKey: "a.id", getter: (o) => o.id }]],
-      [
-        "b",
-        [
-          { newKey: "b.id", getter: (o) => o.id },
-          { newKey: "b.handle", getter: (o) => o.handle },
-        ],
-      ],
-      [
-        "c",
-        [
-          { newKey: "c.id", getter: (o) => o.id },
-          { newKey: "c.sku", getter: (o) => o.sku },
-        ],
-      ],
-    ])
-
-    const remappedObject = mapObjectTo(input, remapMap)
+    const remappedObject = mapObjectTo(input, mapToConfig)
 
     expect(remappedObject).toEqual({
       "a.id": ["1", "2"],
@@ -37,6 +28,16 @@ describe("mapObjectTo", function () {
       "b.handle": ["handle1"],
       "c.id": ["5", "6"],
       "c.sku": ["sku1"],
+    })
+  })
+
+  it("should return a new object with only the picked properties", function () {
+    const remappedObject = mapObjectTo(input, mapToConfig, {
+      pick: ["a.id"],
+    })
+
+    expect(remappedObject).toEqual({
+      "a.id": ["1", "2"],
     })
   })
 })
