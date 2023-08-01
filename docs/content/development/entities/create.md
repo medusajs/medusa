@@ -123,7 +123,7 @@ npm run build
 Then, run the `migration` command:
 
 ```bash
-npx @medusajs/medusa-cli migrations run
+npx medusa migrations run
 ```
 
 You should see that your migration have executed.

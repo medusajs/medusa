@@ -12,7 +12,7 @@ password: supersecret
 Alternatively, you can create your own users using the Medusa CLI tool:
 
 ```bash
-npx @medusajs/medusa-cli user -e some@email.com -p somepassword
+npx medusa user -e some@email.com -p somepassword
 ```
 
 ---

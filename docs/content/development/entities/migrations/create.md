@@ -90,7 +90,7 @@ npm run build
 The last step is to run the migration with the command detailed earlier
 
 ```bash
-npx @medusajs/medusa-cli migrations run
+npx medusa migrations run
 ```
 
 If you check your database now you should see that the change defined by the migration has been applied successfully.
