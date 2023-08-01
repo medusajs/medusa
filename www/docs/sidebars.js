@@ -1250,6 +1250,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "development/entities/repositories",
+              label: "Use a Repository",
+            },
+            {
+              type: "doc",
               id: "development/entities/extend-entity",
               label: "Extend an Entity",
             },
