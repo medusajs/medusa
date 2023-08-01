@@ -13,7 +13,7 @@ In this document, you'll learn what Entities are in Medusa.
 
 Entities in medusa represent tables in the database as classes. An example of this would be the `Order` entity which represents the `order` table in the database. Entities provide a uniform way of defining and interacting with data retrieved from the database.
 
-Aside from the entities in the Medusa core package, you can also create your own entities to use in your Medusa backend. Custom entities are TypeScript or JavaScript files located in the `src/models` directory of your Medusa backend. These entities are then transpiled to the `dist/models` directory to be used during the backend's runtime.
+Aside from the entities in the Medusa core package, you can also create custom entities to use in your Medusa backend. Custom entities are TypeScript or JavaScript files located in the `src/models` directory of your Medusa backend. You then transpile these entities to be used during the backend's runtime using the `build` command, which moves them to the `dist/models` directory.
 
 Entities are TypeScript files and they are based on [Typeorm’s Entities](https://typeorm.io/entities) and use Typeorm decorators.
 
@@ -38,7 +38,7 @@ Some example use cases for the `metadata` attribute include:
 
 ### Add and Update Metadata
 
-You can add or update metadata entities either through the REST APIs or through create and update methods in the entity's respective service.
+You can add or update metadata entities either through the REST APIs or through create and update methods in the entity's respective [service](../services/overview.mdx).
 
 In the [admin REST APIs](/api/admin), you'll find that in create or update requests of some entities you can also set the `metadata`.
 
@@ -99,6 +99,9 @@ Developers can create custom entities in the Medusa backend, a plugin, or in a m
       description: 'Learn how to create migrations in Medusa.'
     }
   },
+]} />
+
+<DocCardList colSize={6} items={[
   {
     type: 'link',
     href: '/development/entities/extend-entity',
