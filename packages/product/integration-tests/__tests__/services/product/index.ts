@@ -476,8 +476,18 @@ describe("Product Service", () => {
       })
 
       const products = await service.create([data])
-      const [deleteProducts] = await service.softDelete(
-        products.map((p) => p.id)
+      await service.softDelete(products.map((p) => p.id))
+      const deleteProducts = await service.list(
+        { id: products.map((p) => p.id) },
+        {
+          relations: [
+            "variants",
+            "variants.options",
+            "options",
+            "options.values",
+          ],
+          withDeleted: true,
+        }
       )
 
       expect(deleteProducts).toHaveLength(1)

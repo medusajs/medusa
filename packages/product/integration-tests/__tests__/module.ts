@@ -229,7 +229,19 @@ describe("Product module", function () {
 
       const products = await module.create([data])
 
-      const [deletedProducts] = await module.softDelete([products[0].id])
+      await module.softDelete([products[0].id])
+      const deletedProducts = await module.list(
+        { id: products[0].id },
+        {
+          relations: [
+            "variants",
+            "variants.options",
+            "options",
+            "options.values",
+          ],
+          withDeleted: true,
+        }
+      )
 
       expect(deletedProducts).toHaveLength(1)
       expect(deletedProducts[0].deleted_at).not.toBeNull()
