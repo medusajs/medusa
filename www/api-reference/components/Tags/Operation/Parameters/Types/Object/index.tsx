@@ -42,7 +42,10 @@ const TagOperationParametersObject = ({
   isRequired,
   topLevel = false,
 }: TagOperationParametersObjectProps) => {
-  if (schema.type !== "object" || (!schema.properties && !name)) {
+  if (
+    (schema.type !== "object" && schema.type !== undefined) ||
+    (!schema.properties && !name)
+  ) {
     return <></>
   }
 

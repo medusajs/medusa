@@ -423,6 +423,7 @@ class ProductVariantReq {
  *     x-featureFlag: "product_categories"
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

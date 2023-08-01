@@ -78,22 +78,22 @@ const TagOperationParameters = ({
       )
     }
 
-    if (schemaObject.type === "object") {
-      return (
-        <TagOperationParametersObject
-          name={propertyName}
-          schema={schemaObject}
-          topLevel={topLevel}
-          isRequired={isRequired}
-        />
-      )
-    }
-
     if (schemaObject.type === "array") {
       return (
         <TagOperationParametersArray
           name={propertyName}
           schema={schemaObject}
+          isRequired={isRequired}
+        />
+      )
+    }
+
+    if (schemaObject.type === "object" || !schemaObject.type) {
+      return (
+        <TagOperationParametersObject
+          name={propertyName}
+          schema={schemaObject}
+          topLevel={topLevel}
           isRequired={isRequired}
         />
       )
