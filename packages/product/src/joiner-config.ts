@@ -25,7 +25,28 @@ export enum LinkableKeys {
   PRODUCT_IMAGE_ID = "product_image_id",
 }
 
-export const EntityNameToLinkableKeysReMapperMap: RemapKeyAndPickMap = new Map([
+const buildEntityNameToLinkableKeysReMapperMap = (config: {
+  [entityName: string]: { newKey: string; pick: string }[]
+}) => {
+  const map = new Map(
+    Object.entries(config).map(([entityName, linkableKeysConfig]) => {
+      return [
+        entityName,
+        linkableKeysConfig.map(({ newKey, pick }) => ({
+          newKey,
+          getter: (object) => object[pick],
+        })),
+      ]
+    })
+  )
+}
+
+// TODO: Would it be nice to have that has part of the joiner config. So that the link propagation of the cascade can then
+// do the mapping automatically like:
+//     const mappedCascadedEntitiesMap = mapObjectTo<
+//       Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+//     >(cascadedEntitiesMap, EntityNameToLinkableKeysMap, true)
+export const EntityNameToLinkableKeysMap: RemapKeyAndPickMap = new Map([
   [
     Product.name,
     [

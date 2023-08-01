@@ -1,6 +1,6 @@
-import { reMapKeysAndPick } from "../re-map-keys-and-pick"
+import { mapObjectTo } from "../map-object-to"
 
-describe("reMapKeysAndPick", function () {
+describe("mapObjectTo", function () {
   it("should return a new object with the keys remapped and the values picked from the original object based on the map config", function () {
     const input = {
       a: [{ id: "1" }, { id: "2" }],
@@ -29,7 +29,7 @@ describe("reMapKeysAndPick", function () {
       ],
     ])
 
-    const remappedObject = reMapKeysAndPick(input, remapMap)
+    const remappedObject = mapObjectTo(input, remapMap)
 
     expect(remappedObject).toEqual({
       "a.id": ["1", "2"],

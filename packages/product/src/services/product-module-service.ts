@@ -38,14 +38,14 @@ import {
   isDefined,
   isString,
   kebabCase,
+  mapObjectTo,
   MedusaContext,
   MedusaError,
-  reMapKeysAndPick,
 } from "@medusajs/utils"
 
 import { shouldForceTransaction } from "../utils"
 import {
-  EntityNameToLinkableKeysReMapperMap,
+  EntityNameToLinkableKeysMap,
   joinerConfig,
   LinkableKeys,
 } from "./../joiner-config"
@@ -993,9 +993,10 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    const remappedCascadedEntitiesMap = reMapKeysAndPick<
+    // TODO: Maybe this method should return cascadedEntitiesMap, and in the link we know which modules and linkable keys are exposed and we can do this little boy there.
+    const mappedCascadedEntitiesMap = mapObjectTo<
       Record<Lowercase<keyof typeof LinkableKeys>, string[]>
-    >(cascadedEntitiesMap, EntityNameToLinkableKeysReMapperMap, true)
+    >(cascadedEntitiesMap, EntityNameToLinkableKeysMap, true)
 
     return [
       await this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(
@@ -1004,7 +1005,7 @@ export default class ProductModuleService<
           populate: true,
         }
       ),
-      remappedCascadedEntitiesMap,
+      mappedCascadedEntitiesMap,
     ]
   }
 

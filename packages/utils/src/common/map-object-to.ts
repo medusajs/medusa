@@ -7,21 +7,17 @@ export type RemapKeyAndPickMap<TKeys = string> = Map<TKeys, RemapConfig[]>
  * on the map config
  *
  * @param object
- * @param remapMap
+ * @param mapTo
  * @param removeIfNotRemapped
  */
-export function reMapKeysAndPick<
+export function mapObjectTo<
   TResult = any,
   T extends RemapInputObject = RemapInputObject
->(
-  object: T,
-  remapMap: RemapKeyAndPickMap,
-  removeIfNotRemapped = false
-): TResult {
+>(object: T, mapTo: RemapKeyAndPickMap, removeIfNotRemapped = false): TResult {
   const newObject: Record<string, any> = {}
 
   for (const key in object) {
-    const remapConfig = remapMap.get(key as string)!
+    const remapConfig = mapTo.get(key as string)!
 
     if (!remapConfig) {
       if (!removeIfNotRemapped) {
