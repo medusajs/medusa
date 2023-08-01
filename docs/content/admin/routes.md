@@ -163,7 +163,7 @@ This will create an admin UI route at the path `/a/custom`, with its content bei
 To test your admin UI route, run the following command in the root directory of the Medusa backend project:
 
 ```bash npm2yarn
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
 
 This will build your admin and opens a window in your default browser to `localhost:7001`. After you log in, if you go to `localhost:7001/a/custom`, you’ll find the page you just created.
