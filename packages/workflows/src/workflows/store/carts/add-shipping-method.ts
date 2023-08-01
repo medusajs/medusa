@@ -1,14 +1,10 @@
-import {
-  Cart,
-  CartService,
-  StorePostCartsCartShippingMethodReq,
-} from "@medusajs/medusa"
+import { Cart, StorePostCartsCartShippingMethodReq } from "@medusajs/medusa"
 import {
   TransactionOrchestrator,
   TransactionState,
 } from "@medusajs/orchestration"
 import { MedusaContainer } from "@medusajs/types"
-import { MedusaError, isString } from "@medusajs/utils"
+import { MedusaError } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { ulid } from "ulid"
 import {
@@ -32,25 +28,10 @@ export async function addShippingMethodWorkflow(
   input: StorePostCartsCartShippingMethodReq,
   cartOrId: Cart | string
 ): Promise<Cart> {
-  const cartService = dependencies.container.resolve(
-    "cartService"
-  ) as CartService
-
-  const cart = !isString(cartOrId)
-    ? cartOrId
-    : await cartService.retrieveWithTotals(cartOrId, {
-        relations: [
-          "shipping_methods",
-          "shipping_methods.shipping_option",
-          "items.variant.product.profiles",
-          "payment_sessions",
-        ],
-      })
-
   const transaction = await addShippingMethodOrchestrator.beginTransaction(
     ulid(),
     addShippingMethodTransactionHandler(dependencies),
-    { ...input, cart }
+    { ...input, cart: cartOrId }
   )
 
   await addShippingMethodOrchestrator.resume(transaction)

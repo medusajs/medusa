@@ -2057,60 +2057,6 @@ class CartService extends TransactionBaseService {
     )
   }
 
-  async createShippingMethod(
-    cart: Cart,
-    optionId: string,
-    data: Record<string, unknown> = {}
-  ) {
-    return await this.atomicPhase_(
-      async (transactionManager: EntityManager) => {
-        const cartCustomShippingOptions =
-          await this.customShippingOptionService_
-            .withTransaction(transactionManager)
-            .list({ cart_id: cart.id })
-
-        const customShippingOption = this.findCustomShippingOption(
-          cartCustomShippingOptions,
-          optionId
-        )
-
-        const { shipping_methods } = cart
-
-        /**
-         * If we have a custom shipping option configured we want the price
-         * override to take effect and do not want `validateCartOption` to check
-         * if requirements are met, hence we are not passing the entire cart, but
-         * just the id.
-         */
-        const shippingMethodConfig = customShippingOption
-          ? { cart_id: cart.id, price: customShippingOption.price }
-          : { cart }
-
-        const shippingOptionServiceTx =
-          this.shippingOptionService_.withTransaction(transactionManager)
-        const newShippingMethod =
-          await shippingOptionServiceTx.createShippingMethod(
-            optionId,
-            data,
-            shippingMethodConfig
-          )
-
-        if (shipping_methods?.length) {
-          for (const shippingMethod of shipping_methods) {
-            if (
-              shippingMethod.shipping_option.profile_id ===
-              newShippingMethod.shipping_option.profile_id
-            ) {
-              await shippingOptionServiceTx.deleteShippingMethods(
-                shippingMethod
-              )
-            }
-          }
-        }
-      }
-    )
-  }
-
   /**
    * Adds the shipping method to the list of shipping methods associated with
    * the cart. Shipping Methods are the ways that an order is shipped, whereas a
@@ -2162,17 +2108,15 @@ class CartService extends TransactionBaseService {
           ? { cart_id: cart.id, price: customShippingOption.price }
           : { cart }
 
-        const shippingOptionServiceTx =
-          this.shippingOptionService_.withTransaction(transactionManager)
-        const newShippingMethod =
-          await shippingOptionServiceTx.createShippingMethod(
-            optionId,
-            data,
-            shippingMethodConfig
-          )
+        const newShippingMethod = await this.shippingOptionService_
+          .withTransaction(transactionManager)
+          .createShippingMethod(optionId, data, shippingMethodConfig)
 
         const methods = [newShippingMethod]
         if (shipping_methods?.length) {
+          const shippingOptionServiceTx =
+            this.shippingOptionService_.withTransaction(transactionManager)
+
           for (const shippingMethod of shipping_methods) {
             if (
               shippingMethod.shipping_option.profile_id ===
@@ -2181,6 +2125,8 @@ class CartService extends TransactionBaseService {
               await shippingOptionServiceTx.deleteShippingMethods(
                 shippingMethod
               )
+            } else {
+              methods.push(shippingMethod)
             }
           }
         }

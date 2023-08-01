@@ -35,14 +35,17 @@ export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
       {
         // validate fulfillment data
         action: AddShippingMethodWorkflowActions.validateFulfillmentData,
+        noCompensation: true,
         saveResponse: true,
       },
       {
         // validate line item shipping
         action: AddShippingMethodWorkflowActions.validateLineItemShipping,
+        noCompensation: true,
         next: {
           // get price of shipping option
           action: AddShippingMethodWorkflowActions.getOptionPrice,
+          noCompensation: true,
           saveResponse: true,
           next: {
             // create the shipping method
@@ -57,6 +60,7 @@ export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
                 next: {
                   // retrieve cart with updated totals
                   action: AddShippingMethodWorkflowActions.prepareUpdatedCart,
+                  noCompensation: true,
                   saveResponse: true,
                   next: {
                     // clean up payment sessions
@@ -88,35 +92,30 @@ const handlers = new Map<AddShippingMethodWorkflowActions, WorkflowHandler>([
     AddShippingMethodWorkflowActions.prepare,
     {
       invoke: {},
-      compensate: {},
     },
   ],
   [
     AddShippingMethodWorkflowActions.validateFulfillmentData,
     {
       invoke: {},
-      compensate: {},
     },
   ],
   [
     AddShippingMethodWorkflowActions.validateLineItemShipping,
     {
       invoke: {},
-      compensate: {},
     },
   ],
   [
     AddShippingMethodWorkflowActions.getOptionPrice,
     {
       invoke: {},
-      compensate: {},
     },
   ],
   [
     AddShippingMethodWorkflowActions.createShippingMethod,
     {
       invoke: {},
-      compensate: {},
     },
   ],
   [
@@ -137,7 +136,6 @@ const handlers = new Map<AddShippingMethodWorkflowActions, WorkflowHandler>([
     AddShippingMethodWorkflowActions.prepareUpdatedCart,
     {
       invoke: {},
-      compensate: {},
     },
   ],
   [
