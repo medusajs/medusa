@@ -125,7 +125,7 @@ npm run build
 Then, run the following command to start your backend:
 
 ```bash npm2yarn
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
 
 You should see your custom implementation working as expected.

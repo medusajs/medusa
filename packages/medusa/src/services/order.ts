@@ -1360,9 +1360,9 @@ class OrderService extends TransactionBaseService {
    * In a situation where the order has more than one shipping method,
    * we need to partition the order items, such that they can be sent
    * to their respective fulfillment provider.
-   * @param orderId - id of order to cancel.
+   * @param orderId - id of order to fulfil.
    * @param itemsToFulfill - items to fulfil.
-   * @param config - the config to cancel.
+   * @param config - the config to fulfil.
    * @return result of the update operation.
    */
   async createFulfillment(
