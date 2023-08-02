@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export type StorePostSearchRes = {
   /**
-   * Array of results. The format of the items depends on the search engine installed on the server.
+   * Array of search results. The format of the items depends on the search engine installed on the Medusa backend.
    */
   hits: any[]
 } & Record<string, any>

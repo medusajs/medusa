@@ -17,12 +17,13 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /admin/draft-orders/{id}/pay
- * summary: "Registers a Payment"
+ * summary: "Mark Paid"
  * operationId: "PostDraftOrdersDraftOrderRegisterPayment"
- * description: "Registers a payment for a Draft Order."
+ * description: "Capture the draft order's payment. This will also set the draft order's status to `completed` and create an Order from the draft order. The payment is captured through Medusa's system payment,
+ *  which is manual payment that isn't integrated with any third-party payment provider. It is assumed that the payment capturing is handled manually by the admin."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {String} The Draft Order id.
+ *   - (path) id=* {String} The Draft Order ID.
  * x-codegen:
  *   method: markPaid
  * x-codeSamples:
@@ -32,15 +33,15 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.draftOrders.markPaid(draft_order_id)
+ *       medusa.admin.draftOrders.markPaid(draftOrderId)
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/draft-orders/{id}/pay' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST 'https://medusa-url.com/admin/draft-orders/{id}/pay' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

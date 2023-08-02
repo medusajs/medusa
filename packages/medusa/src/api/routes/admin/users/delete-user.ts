@@ -5,7 +5,7 @@ import UserService from "../../../../services/user"
  * @oas [delete] /admin/users/{id}
  * operationId: "DeleteUsersUser"
  * summary: "Delete a User"
- * description: "Deletes a User"
+ * description: "Delete a User. Once deleted, the user will not be able to authenticate or perform admin functionalities."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the User.
@@ -18,15 +18,15 @@ import UserService from "../../../../services/user"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.users.delete(user_id)
+ *       medusa.admin.users.delete(userId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/users/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/users/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

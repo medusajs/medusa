@@ -5,7 +5,7 @@ import { EntityManager } from "typeorm"
  * @oas [delete] /admin/reservations/{id}
  * operationId: "DeleteReservationsReservation"
  * summary: "Delete a Reservation"
- * description: "Deletes a Reservation."
+ * description: "Delete a Reservation. Associated resources, such as the line item, will not be deleted."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Reservation to delete.
@@ -25,8 +25,8 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/reservations/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/reservations/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

@@ -477,6 +477,7 @@ class LineItemService extends TransactionBaseService {
   }
 
   /**
+   * @deprecated no the cascade on the entity takes care of it
    * Deletes a line item with the tax lines.
    * @param id - the id of the line item to delete
    * @return the result of the delete operation

@@ -9,7 +9,7 @@ import type { Region } from "./Region"
 import type { ShippingOption } from "./ShippingOption"
 
 /**
- * A Tax Rate can be used to associate a certain rate to charge on products within a given Region
+ * A Tax Rate can be used to define a custom rate to charge on specified products, product types, and shipping options within a given region.
  */
 export interface TaxRate {
   /**
@@ -29,23 +29,23 @@ export interface TaxRate {
    */
   name: string
   /**
-   * The id of the Region that the rate belongs to
+   * The ID of the region that the rate belongs to.
    */
   region_id: string
   /**
-   * A region object. Available if the relation `region` is expanded.
+   * The details of the region that the rate belongs to.
    */
   region?: Region | null
   /**
-   * The products that belong to this tax rate. Available if the relation `products` is expanded.
+   * The details of the products that belong to this tax rate.
    */
   products?: Array<Product>
   /**
-   * The product types that belong to this tax rate. Available if the relation `product_types` is expanded.
+   * The details of the product types that belong to this tax rate.
    */
   product_types?: Array<ProductType>
   /**
-   * The shipping options that belong to this tax rate. Available if the relation `shipping_options` is expanded.
+   * The details of the shipping options that belong to this tax rate.
    */
   shipping_options?: Array<ShippingOption>
   /**

@@ -4,7 +4,7 @@ import { PaymentProviderService } from "../../../../services"
  * @oas [get] /admin/store/payment-providers
  * operationId: "GetStorePaymentProviders"
  * summary: "List Payment Providers"
- * description: "Retrieves the configured Payment Providers"
+ * description: "Retrieve a list of available Payment Providers in a store."
  * x-authenticated: true
  * x-codegen:
  *   method: listPaymentProviders
@@ -22,8 +22,8 @@ import { PaymentProviderService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/store/payment-providers' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/store/payment-providers' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

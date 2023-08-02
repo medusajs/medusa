@@ -1,19 +1,19 @@
-import { Type } from "class-transformer"
 import { IsInt, IsOptional } from "class-validator"
 
-import { SwapService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { FindConfig } from "../../../../types/common"
 import { Swap } from "../../../../models"
+import { SwapService } from "../../../../services"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /admin/swaps
  * operationId: "GetSwaps"
  * summary: "List Swaps"
- * description: "Retrieves a list of Swaps."
+ * description: "Retrieve a list of Swaps. The swaps can be paginated."
  * parameters:
- *   - (query) limit=50 {number} The upper limit for the amount of responses returned.
- *   - (query) offset=0 {number} The offset of the list returned.
+ *   - (query) limit=50 {number} Limit the number of swaps returned.
+ *   - (query) offset=0 {number} The number of swaps to skip when retrieving the swaps.
  * x-authenticated: true
  * x-codegen:
  *   method: list
@@ -32,8 +32,8 @@ import { Swap } from "../../../../models"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/swaps' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/swaps' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -72,9 +72,11 @@ export default async (req, res) => {
     order: { created_at: "DESC" },
   }
 
-  const swaps = await swapService.list(selector, { ...listConfig })
+  const [swaps, count] = await swapService.listAndCount(selector, {
+    ...listConfig,
+  })
 
-  res.json({ swaps, count: swaps.length, offset, limit })
+  res.json({ swaps, count, offset, limit })
 }
 
 export class AdminGetSwapsParams {

@@ -17,23 +17,23 @@ npm run build
 3\. Run migrations:
 
 ```bash
-npx @medusajs/medusa-cli migrations run
+npx medusa migrations run
 ```
 
 4\. Create an admin user:
 
 ```bash
-npx @medusajs/medusa-cli user -e user@test.com -p supersecret
+npx medusa user -e user@test.com -p supersecret
 ```
 
 5\. Optionally seed the database:
 
 ```bash
-npx @medusajs/medusa-cli seed -f ./data/seed.json
+npx medusa seed -f ./data/seed.json
 ```
 
 6\. Start project:
 
 ```bash
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```

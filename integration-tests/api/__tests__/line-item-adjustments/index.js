@@ -1,13 +1,16 @@
 const path = require("path")
 const { LineItemAdjustment } = require("@medusajs/medusa")
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const cartSeeder = require("../../helpers/cart-seeder")
-const { simpleCartFactory, simpleLineItemFactory } = require("../../factories")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const cartSeeder = require("../../../helpers/cart-seeder")
+const {
+  simpleCartFactory,
+  simpleLineItemFactory,
+} = require("../../../factories")
 const {
   simpleDiscountFactory,
-} = require("../../factories/simple-discount-factory")
+} = require("../../../factories/simple-discount-factory")
 
 jest.setTimeout(30000)
 

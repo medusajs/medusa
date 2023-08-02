@@ -9,13 +9,13 @@ import { validator } from "../../../../utils/validator"
 /**
  * @oas [delete] /admin/tax-rates/{id}/products/batch
  * operationId: "DeleteTaxRatesTaxRateProducts"
- * summary: "Delete from Products"
- * description: "Removes a Tax Rate from a list of Products"
+ * summary: "Remove Products from Rate"
+ * description: "Remove products from a tax rate. This only removes the association between the products and the tax rate. It does not delete the products."
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
  *     name: fields
- *     description: "Which fields should be included in the result."
+ *     description: "Comma-separated fields that should be included in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -24,7 +24,7 @@ import { validator } from "../../../../utils/validator"
  *         type: string
  *   - in: query
  *     name: expand
- *     description: "Which fields should be expanded and retrieved in the result."
+ *     description: "Comma-separated relations that should be expanded in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -47,9 +47,9 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.taxRates.removeProducts(tax_rate_id, {
+ *       medusa.admin.taxRates.removeProducts(taxRateId, {
  *         products: [
- *           product_id
+ *           productId
  *         ]
  *       })
  *       .then(({ tax_rate }) => {
@@ -58,9 +58,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/tax-rates/{id}/products/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE 'https://medusa-url.com/admin/tax-rates/{id}/products/batch' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *          "products": [
  *            "{product_id}"
@@ -126,7 +126,7 @@ export default async (req, res) => {
  * properties:
  *   products:
  *     type: array
- *     description: "The IDs of the products to remove association with this tax rate"
+ *     description: "The IDs of the products to remove their association with this tax rate."
  *     items:
  *       type: string
  */

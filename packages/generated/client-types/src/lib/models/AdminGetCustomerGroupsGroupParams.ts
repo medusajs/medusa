@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetCustomerGroupsGroupParams {
   /**
-   * (Comma separated) Which fields should be expanded in the customer group.
+   * Comma-separated relations that should be expanded in the returned customer group.
    */
   expand?: string
   /**
-   * (Comma separated) Which fields should be included in the customer group.
+   * Comma-separated fields that should be included in the returned customer group.
    */
   fields?: string
 }

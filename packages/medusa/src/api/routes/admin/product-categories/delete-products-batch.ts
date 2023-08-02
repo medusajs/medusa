@@ -13,10 +13,11 @@ import { FindParams } from "../../../../types/common"
  * summary: "Remove Products from Category"
  * description: "Remove a list of products from a product category."
  * x-authenticated: true
+ * x-featureFlag: "product_categories"
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category.
- *   - (query) expand {string} (Comma separated) Category fields to be expanded in the response.
- *   - (query) fields {string} (Comma separated) Category fields to be retrieved in the response.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned product category.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned product category.
  * requestBody:
  *   content:
  *     application/json:
@@ -45,9 +46,9 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/product-categories/{id}/products/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE 'https://medusa-url.com/admin/product-categories/{id}/products/batch' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "product_ids": [
  *             {

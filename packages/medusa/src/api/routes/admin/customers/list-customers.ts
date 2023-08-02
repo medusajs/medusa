@@ -8,14 +8,22 @@ import customerController from "../../../../controllers/customers"
  * @oas [get] /admin/customers
  * operationId: "GetCustomers"
  * summary: "List Customers"
- * description: "Retrieves a list of Customers."
+ * description: "Retrieve a list of Customers. The customers can be filtered by fields such as `q` or `groups`. The customers can also be paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) limit=50 {integer} The number of items to return.
- *   - (query) offset=0 {integer} The items to skip before result.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer.
- *   - (query) q {string} a search term to search email, first_name, and last_name.
- *   - (query) groups[] {string} group IDs to search customers by.
+ *   - (query) limit=50 {integer} The number of customers to return.
+ *   - (query) offset=0 {integer} The number of customers to skip when retrieving the customers.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned customer.
+ *   - (query) q {string} term to search customers' email, first_name, and last_name fields.
+ *   - in: query
+ *     name: groups
+ *     style: form
+ *     explode: false
+ *     description: Filter by customer group IDs.
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetCustomersParams
@@ -33,8 +41,8 @@ import customerController from "../../../../controllers/customers"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/customers' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/customers' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

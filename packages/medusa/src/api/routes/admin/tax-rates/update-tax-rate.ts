@@ -12,12 +12,12 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/tax-rates/{id}
  * operationId: "PostTaxRatesTaxRate"
  * summary: "Update a Tax Rate"
- * description: "Updates a Tax Rate"
+ * description: "Update a Tax Rate's details."
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
  *     name: fields
- *     description: "Which fields should be included in the result."
+ *     description: "Comma-separated fields that should be included in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -26,7 +26,7 @@ import { validator } from "../../../../utils/validator"
  *         type: string
  *   - in: query
  *     name: expand
- *     description: "Which fields should be expanded and retrieved in the result."
+ *     description: "Comma-separated relations that should be expanded in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -49,8 +49,8 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.taxRates.update(tax_rate_id, {
- *         name: 'New Tax Rate'
+ *       medusa.admin.taxRates.update(taxRateId, {
+ *         name: "New Tax Rate"
  *       })
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
@@ -58,9 +58,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/tax-rates/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/tax-rates/{id}' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "New Tax Rate"
  *       }'
@@ -142,16 +142,16 @@ export default async (req, res) => {
  * properties:
  *   code:
  *     type: string
- *     description: "A code to identify the tax type by"
+ *     description: "The code of the tax rate."
  *   name:
  *     type: string
- *     description: "A human friendly name for the tax"
+ *     description: "The name of the tax rate."
  *   region_id:
  *     type: string
- *     description: "The ID of the Region that the rate belongs to"
+ *     description: "The ID of the Region that the tax rate belongs to."
  *   rate:
  *     type: number
- *     description: "The numeric rate to charge"
+ *     description: "The numeric rate to charge."
  *   products:
  *     type: array
  *     description: "The IDs of the products associated with this tax rate"
@@ -164,7 +164,7 @@ export default async (req, res) => {
  *       type: string
  *   product_types:
  *     type: array
- *     description: "The IDs of the types of products associated with this tax rate"
+ *     description: "The IDs of the types of product types associated with this tax rate"
  *     items:
  *       type: string
  */

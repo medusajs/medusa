@@ -3,7 +3,8 @@
  * operationId: "DeleteAuth"
  * summary: "User Logout"
  * x-authenticated: true
- * description: "Deletes the current session for the logged in user."
+ * description: "Delete the current session for the logged in user. This will only work if you're using Cookie session for authentication. If the API token is still passed in the header,
+ * the user is still authorized to perform admin functionalities in other endpoints."
  * x-codegen:
  *   method: deleteSession
  * x-codeSamples:
@@ -12,13 +13,13 @@
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       // must be previously logged in or use api token
+ *       // must be previously logged in
  *       medusa.admin.auth.deleteSession()
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/auth' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/auth' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

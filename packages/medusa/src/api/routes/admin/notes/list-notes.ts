@@ -10,11 +10,11 @@ import { validator } from "../../../../utils/validator"
  * operationId: "GetNotes"
  * summary: "List Notes"
  * x-authenticated: true
- * description: "Retrieves a list of notes"
+ * description: "Retrieve a list of notes. The notes can be filtered by fields such as `resource_id`. The notes can also be paginated."
  * parameters:
- *   - (query) limit=50 {number} The number of notes to get
- *   - (query) offset=0 {number} The offset at which to get notes
- *   - (query) resource_id {string} The ID which the notes belongs to
+ *   - (query) limit=50 {number} Limit the number of notes returned.
+ *   - (query) offset=0 {number} The number of notes to skip when retrieving the notes.
+ *   - (query) resource_id {string} Filter by resource ID
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetNotesParams
@@ -32,8 +32,8 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/notes' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/notes' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -69,7 +69,7 @@ export default async (req, res) => {
   }
 
   const noteService: NoteService = req.scope.resolve("noteService")
-  const notes = await noteService.list(selector, {
+  const [notes, count] = await noteService.listAndCount(selector, {
     take: validated.limit,
     skip: validated.offset,
     relations: ["author"],
@@ -77,7 +77,7 @@ export default async (req, res) => {
 
   res.status(200).json({
     notes,
-    count: notes.length,
+    count,
     offset: validated.offset,
     limit: validated.limit,
   })
