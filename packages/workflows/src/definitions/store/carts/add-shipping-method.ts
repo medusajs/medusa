@@ -1,15 +1,20 @@
-import { Cart, StorePostCartsCartShippingMethodReq } from "@medusajs/medusa"
 import {
   TransactionStepsDefinition,
-  WorkflowHandler,
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { Workflows } from "../../../definitions"
-import { exportWorkflow } from "../../../helper"
+import {
+  prepareCreateShippingMethodDataAlias,
+  prepareCreateShippingMethodWorkflowData,
+} from "../../../handlers/store/carts/prepare-create-shipping-method-data"
+import { updateLineItemShipping } from "../../../handlers/store/carts/update-line-item-shipping"
+import { validateShippingOptionForCart } from "../../../handlers/store/carts/validate-shipping-option-for-cart"
+import { exportWorkflow, pipe } from "../../../helper"
 
 export type AddShippingMethodWorkflowInputData = {
-  cart: Cart
-} & StorePostCartsCartShippingMethodReq
+  cart: any // Cart
+}
+// & StorePostCartsCartShippingMethodReq
 
 export enum AddShippingMethodWorkflowActions {
   prepare = "prepare",
@@ -87,32 +92,52 @@ export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
   },
 }
 
-const handlers = new Map<AddShippingMethodWorkflowActions, WorkflowHandler>([
+const handlers = new Map([
   [
     AddShippingMethodWorkflowActions.prepare,
     {
-      invoke: {},
+      invoke: prepareCreateShippingMethodWorkflowData,
     },
   ],
   [
+    // this uses data from prepare
     AddShippingMethodWorkflowActions.validateFulfillmentData,
     {
-      invoke: {},
+      invoke: pipe(
+        {
+          invoke: {
+            from: prepareCreateShippingMethodDataAlias,
+            alias: "validatedShippingOption",
+          },
+        },
+        validateShippingOptionForCart
+      ),
     },
   ],
   [
+    // this uses data from the validate fulfillment step
     AddShippingMethodWorkflowActions.validateLineItemShipping,
     {
-      invoke: {},
+      invoke: pipe(
+        {
+          invoke: {
+            from: "prepareCreateShippingMethodDataAlias",
+            alias: prepareCreateShippingMethodDataAlias,
+          },
+        },
+        updateLineItemShipping
+      ),
     },
   ],
   [
+    // this uses data from the validate step
     AddShippingMethodWorkflowActions.getOptionPrice,
     {
       invoke: {},
     },
   ],
   [
+    // this uses data from the validate fulfillment and price steps
     AddShippingMethodWorkflowActions.createShippingMethod,
     {
       invoke: {},

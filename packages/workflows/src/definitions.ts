@@ -12,4 +12,6 @@ export enum InputAlias {
 
   AttachedInventoryItems = "attachedInventoryItems",
   DetachedInventoryItems = "detachedInventoryItems",
+
+  Cart = "cart",
 }
