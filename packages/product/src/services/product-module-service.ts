@@ -26,10 +26,12 @@ import {
   JoinerServiceConfig,
   ProductTypes,
 } from "@medusajs/types"
-import { serialize } from "@mikro-orm/core"
 
 import ProductImageService from "./product-image"
-import { ProductServiceTypes, ProductVariantServiceTypes } from "../types/services"
+import {
+  ProductServiceTypes,
+  ProductVariantServiceTypes,
+} from "../types/services"
 import {
   InjectManager,
   InjectTransactionManager,
@@ -393,11 +395,12 @@ export default class ProductModuleService<
     config: FindConfig<ProductTypes.ProductOptionDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[ProductTypes.ProductOptionDTO[], number]> {
-    const [productOptions, count] = await this.productOptionService_.listAndCount(
-      filters,
-      config,
-      sharedContext
-    )
+    const [productOptions, count] =
+      await this.productOptionService_.listAndCount(
+        filters,
+        config,
+        sharedContext
+      )
 
     return [JSON.parse(JSON.stringify(productOptions)), count]
   }
@@ -599,7 +602,10 @@ export default class ProductModuleService<
     return JSON.parse(JSON.stringify(categories))
   }
 
-  async create(data: ProductTypes.CreateProductDTO[], sharedContext?: Context): Promise<ProductTypes.ProductDTO[]> {
+  async create(
+    data: ProductTypes.CreateProductDTO[],
+    sharedContext?: Context
+  ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.create_(data, sharedContext)
 
     return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
@@ -613,9 +619,7 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.update_(data, sharedContext)
 
-    return this.baseRepository_.serialize<
-      ProductTypes.ProductDTO[]
-    >(products, {
+    return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
       populate: true,
     })
   }
@@ -659,9 +663,18 @@ export default class ProductModuleService<
           productData.discountable = false
         }
 
-        await this.upsertAndAssignImagesToProductData(productData, sharedContext)
-        await this.upsertAndAssignProductTagsToProductData(productData, sharedContext)
-        await this.upsertAndAssignProductTypeToProductData(productData, sharedContext)
+        await this.upsertAndAssignImagesToProductData(
+          productData,
+          sharedContext
+        )
+        await this.upsertAndAssignProductTagsToProductData(
+          productData,
+          sharedContext
+        )
+        await this.upsertAndAssignProductTypeToProductData(
+          productData,
+          sharedContext
+        )
 
         return productData as CreateProductOnlyDTO
       })
@@ -679,7 +692,9 @@ export default class ProductModuleService<
     const productOptionsData = [...productOptionsMap]
       .map(([handle, options]) => {
         return options.map((option) => {
-          const productOptionsData: ProductTypes.CreateProductOptionOnlyDTO = { ...option }
+          const productOptionsData: ProductTypes.CreateProductOptionOnlyDTO = {
+            ...option,
+          }
           const product = productByHandleMap.get(handle)
           const productId = product?.id!
 
@@ -729,31 +744,29 @@ export default class ProductModuleService<
     data: ProductTypes.UpdateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TProduct[]> {
-    const productIds = data.map(pd => pd.id)
+    const productIds = data.map((pd) => pd.id)
     const existingProductVariants = await this.productVariantService_.list(
       { product_id: productIds },
       {},
       sharedContext
     )
 
-    const existingProductVariantsMap = new Map<
-      string,
-      ProductVariant[]
-    >(
+    const existingProductVariantsMap = new Map<string, ProductVariant[]>(
       data.map((productData) => {
-        const productVariantsForProduct = existingProductVariants
-          .filter((variant) => variant.product_id === productData.id)
+        const productVariantsForProduct = existingProductVariants.filter(
+          (variant) => variant.product_id === productData.id
+        )
 
-        return [
-          productData.id,
-          productVariantsForProduct,
-        ]
+        return [productData.id, productVariantsForProduct]
       })
     )
 
     const productVariantsMap = new Map<
       string,
-      (ProductTypes.CreateProductVariantDTO | ProductTypes.UpdateProductVariantDTO)[]
+      (
+        | ProductTypes.CreateProductVariantDTO
+        | ProductTypes.UpdateProductVariantDTO
+      )[]
     >()
 
     const productOptionsMap = new Map<
@@ -779,9 +792,18 @@ export default class ProductModuleService<
           productData.discountable = false
         }
 
-        await this.upsertAndAssignImagesToProductData(productData, sharedContext)
-        await this.upsertAndAssignProductTagsToProductData(productData, sharedContext)
-        await this.upsertAndAssignProductTypeToProductData(productData, sharedContext)
+        await this.upsertAndAssignImagesToProductData(
+          productData,
+          sharedContext
+        )
+        await this.upsertAndAssignProductTagsToProductData(
+          productData,
+          sharedContext
+        )
+        await this.upsertAndAssignProductTypeToProductData(
+          productData,
+          sharedContext
+        )
 
         return productData as ProductServiceTypes.UpdateProductDTO
       })
@@ -797,10 +819,12 @@ export default class ProductModuleService<
     )
 
     const productOptionsData = [...productOptionsMap]
-      .map(([id, options]) => options.map((option) => ({
-        ...option,
-        product: productByIdMap.get(id)!,
-      })))
+      .map(([id, options]) =>
+        options.map((option) => ({
+          ...option,
+          product: productByIdMap.get(id)!,
+        }))
+      )
       .flat()
 
     const productOptions = await this.productOptionService_.create(
@@ -825,7 +849,7 @@ export default class ProductModuleService<
       const existingVariants = existingProductVariantsMap.get(productId)
 
       variants.forEach((variant) => {
-        const isVariantIdDefined = ("id" in variant) && isDefined(variant.id)
+        const isVariantIdDefined = "id" in variant && isDefined(variant.id)
 
         if (isVariantIdDefined) {
           variantsToUpdate.push(variant as ProductTypes.UpdateProductVariantDTO)
@@ -849,13 +873,13 @@ export default class ProductModuleService<
       productVariantsToCreateMap.set(productId, variantsToCreate)
       productVariantsToUpdateMap.set(productId, variantsToUpdate)
 
-      const variantsToUpdateIds = variantsToUpdate.map(v => v?.id) as string[]
-      const existingVariantIds = existingVariants?.map(v => v.id) || []
+      const variantsToUpdateIds = variantsToUpdate.map((v) => v?.id) as string[]
+      const existingVariantIds = existingVariants?.map((v) => v.id) || []
       const variantsToUpdateSet = new Set(variantsToUpdateIds)
 
       productVariantIdsToDelete.push(
         ...new Set(
-          existingVariantIds.filter(x => !variantsToUpdateSet.has(x))
+          existingVariantIds.filter((x) => !variantsToUpdateSet.has(x))
         )
       )
     }
@@ -884,7 +908,10 @@ export default class ProductModuleService<
 
     if (productVariantIdsToDelete.length) {
       promises.push(
-        this.productVariantService_.delete(productVariantIdsToDelete, sharedContext)
+        this.productVariantService_.delete(
+          productVariantIdsToDelete,
+          sharedContext
+        )
       )
     }
 
@@ -930,14 +957,12 @@ export default class ProductModuleService<
     sharedContext: Context = {}
   ) {
     if (isDefined(productData.type)) {
-      const productType = (
-        await this.productTypeService_.upsert(
-          [productData.type],
-          sharedContext
-        )
+      const productType = await this.productTypeService_.upsert(
+        [productData.type],
+        sharedContext
       )
 
-      productData.type_id = productType?.[0]?.id
+      productData.type = productType?.[0] as ProductTypes.CreateProductTypeDTO
     }
   }
 

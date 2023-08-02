@@ -1,16 +1,22 @@
-import { IInventoryService, ProductTypes } from "@medusajs/types"
+import {
+  IInventoryService,
+  InventoryItemDTO,
+  ProductTypes,
+} from "@medusajs/types"
 
 import { InputAlias } from "../definitions"
-import { WorkflowArguments } from "../helper"
+import { PipelineHandlerResult, WorkflowArguments } from "../helper"
 
-export async function createInventoryItems({
+export async function createInventoryItems<
+  T = { variant: any; inventoryItem: InventoryItemDTO }[]
+>({
   container,
   data,
 }: WorkflowArguments & {
   data: {
     [InputAlias.Products]: ProductTypes.ProductDTO[]
   }
-}) {
+}): Promise<PipelineHandlerResult<T>> {
   const manager = container.resolve("manager")
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
@@ -27,7 +33,7 @@ export async function createInventoryItems({
     []
   )
 
-  const value = await Promise.all(
+  return (await Promise.all(
     variants.map(async (variant) => {
       if (!variant.manage_inventory) {
         return
@@ -50,10 +56,5 @@ export async function createInventoryItems({
 
       return { variant, inventoryItem }
     })
-  )
-
-  return {
-    alias: InputAlias.InventoryItems,
-    value,
-  }
+  )) as PipelineHandlerResult<T>
 }
