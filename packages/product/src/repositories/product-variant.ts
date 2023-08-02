@@ -4,14 +4,19 @@ import {
   LoadStrategy,
   RequiredEntityData,
 } from "@mikro-orm/core"
-import { Product, ProductVariant } from "@models"
-import { Context, DAL } from "@medusajs/types"
-import { AbstractBaseRepository } from "./base"
+import { ProductVariant } from "@models"
+import { Context, DAL, WithRequiredProperty } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
-import { doNotForceTransaction } from "../utils"
+import {
+  DALUtils,
+  InjectTransactionManager,
+  MedusaContext,
+  MedusaError,
+} from "@medusajs/utils"
 
-export class ProductVariantRepository extends AbstractBaseRepository<ProductVariant> {
+import { ProductVariantServiceTypes } from "../types/services"
+
+export class ProductVariantRepository extends DALUtils.MikroOrmAbstractBaseRepository<ProductVariant> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -24,8 +29,7 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     findOptions: DAL.FindOptions<ProductVariant> = { where: {} },
     context: Context = {}
   ): Promise<ProductVariant[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -45,8 +49,7 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     findOptions: DAL.FindOptions<ProductVariant> = { where: {} },
     context: Context = {}
   ): Promise<[ProductVariant[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -69,7 +72,7 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     { transactionManager: manager }: Context = {}
   ): Promise<void> {
     await (manager as SqlEntityManager).nativeDelete(
-      Product,
+      ProductVariant,
       { id: { $in: ids } },
       {}
     )
@@ -86,6 +89,42 @@ export class ProductVariantRepository extends AbstractBaseRepository<ProductVari
     })
 
     await (manager as SqlEntityManager).persist(variants)
+
+    return variants
+  }
+
+  async update(
+    data: WithRequiredProperty<
+      ProductVariantServiceTypes.UpdateProductVariantDTO,
+      "id"
+    >[],
+    context: Context = {}
+  ): Promise<ProductVariant[]> {
+    const manager = (context.transactionManager ??
+      this.manager_) as SqlEntityManager
+
+    const productVariantsToUpdate = await manager.find(ProductVariant, {
+      id: data.map((updateData) => updateData.id),
+    })
+
+    const productVariantsToUpdateMap = new Map<string, ProductVariant>(
+      productVariantsToUpdate.map((variant) => [variant.id, variant])
+    )
+
+    const variants = data.map((variantData) => {
+      const productVariant = productVariantsToUpdateMap.get(variantData.id)
+
+      if (!productVariant) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `ProductVariant with id "${variantData.id}" not found`
+        )
+      }
+
+      return manager.assign(productVariant, variantData)
+    })
+
+    await manager.persist(variants)
 
     return variants
   }

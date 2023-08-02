@@ -13,21 +13,21 @@ import { IsType } from "../../../../utils/validators/is-type"
  * @oas [get] /store/product-tags
  * operationId: "GetProductTags"
  * summary: "List Product Tags"
- * description: "Retrieve a list of Product Tags."
+ * description: "Retrieve a list of product tags. The product tags can be filtered by fields such as `id` or `q`. The product tags can also be sorted or paginated."
  * x-authenticated: true
  * x-codegen:
  *   method: list
  *   queryParams: StoreGetProductTagsParams
  * parameters:
- *   - (query) limit=20 {integer} The number of types to return.
- *   - (query) offset=0 {integer} The number of items to skip before the results.
- *   - (query) order {string} The field to sort items by.
- *   - (query) discount_condition_id {string} The discount condition id on which to filter the product tags.
+ *   - (query) limit=20 {integer} Limit the number of product tags returned.
+ *   - (query) offset=0 {integer} The number of product tags to skip when retrieving the product tags.
+ *   - (query) order {string} A product-tag field to sort-order the retrieved product tags by.
+ *   - (query) discount_condition_id {string} Filter by the ID of a discount condition. When provided, only tags that the discount condition applies for will be retrieved.
  *   - in: query
  *     name: value
  *     style: form
  *     explode: false
- *     description: The tag values to search for
+ *     description: Filter by tag values.
  *     schema:
  *       type: array
  *       items:
@@ -36,15 +36,15 @@ import { IsType } from "../../../../utils/validators/is-type"
  *     name: id
  *     style: form
  *     explode: false
- *     description: The tag IDs to search for
+ *     description: Filter by IDs.
  *     schema:
  *       type: array
  *       items:
  *         type: string
- *   - (query) q {string} A query string to search values for
+ *   - (query) q {string} term to search product tag's value.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting product tags were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -66,7 +66,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting product tags were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -99,7 +99,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/product-tags'
+ *       curl 'https://medusa-url.com/store/product-tags'
  * tags:
  *   - Product Tags
  * responses:

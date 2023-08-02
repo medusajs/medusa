@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostCollectionsReq {
   /**
-   * The title to identify the Collection by.
+   * The title of the collection.
    */
   title: string
   /**
-   * An optional handle to be used in slugs, if none is provided we will kebab-case the title.
+   * An optional handle to be used in slugs. If none is provided, the kebab-case version of the title will be used.
    */
   handle?: string
   /**

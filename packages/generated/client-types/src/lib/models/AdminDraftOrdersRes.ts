@@ -13,6 +13,9 @@ import type { Region } from "./Region"
 import type { ShippingMethod } from "./ShippingMethod"
 
 export interface AdminDraftOrdersRes {
+  /**
+   * Draft order's details.
+   */
   draft_order: Merge<
     SetRelation<DraftOrder, "order" | "cart">,
     {

@@ -1,6 +1,6 @@
-import { BaseRepository } from "../../src/repositories/base"
+import { DALUtils } from "@medusajs/utils"
 
-class CustomRepository extends BaseRepository {
+class CustomRepository extends DALUtils.MikroOrmBaseRepository {
   constructor({ manager }) {
     // @ts-ignore
     super(...arguments)

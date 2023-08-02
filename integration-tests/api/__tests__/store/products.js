@@ -212,18 +212,21 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(Object.keys(response.data.products[0])).toEqual([
-        // fields
-        "handle",
-        // relations
-        "variants",
-        "options",
-        "images",
-        "tags",
-        "collection",
-        "type",
-        "profiles",
-      ])
+      expect(Object.keys(response.data.products[0])).toHaveLength(8)
+      expect(Object.keys(response.data.products[0])).toEqual(
+        expect.arrayContaining([
+          // fields
+          "handle",
+          // relations
+          "variants",
+          "options",
+          "images",
+          "tags",
+          "collection",
+          "type",
+          "profiles",
+        ])
+      )
     })
 
     it("returns a list of ordered products by id ASC and filtered with free text search", async () => {

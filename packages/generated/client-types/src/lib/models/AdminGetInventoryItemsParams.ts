@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetInventoryItemsParams {
   /**
-   * How many inventory items to skip in the result.
+   * The number of inventory items to skip when retrieving the inventory items.
    */
   offset?: number
   /**
@@ -13,63 +13,63 @@ export interface AdminGetInventoryItemsParams {
    */
   limit?: number
   /**
-   * Comma separated list of relations to include in the results.
+   * Comma-separated relations that should be expanded in each returned inventory item.
    */
   expand?: string
   /**
-   * Comma separated list of fields to include in the results.
+   * Comma-separated fields that should be included in the returned inventory item.
    */
   fields?: string
   /**
-   * Query used for searching product inventory items and their properties.
+   * term to search inventory item's sku, title, and description.
    */
   q?: string
   /**
-   * Locations ids to search for.
+   * Filter by location IDs.
    */
   location_id?: Array<string>
   /**
-   * id to search for.
+   * Filter by the inventory ID
    */
-  id?: string
+  id?: string | Array<string>
   /**
-   * sku to search for.
+   * Filter by SKU
    */
   sku?: string
   /**
-   * origin_country to search for.
+   * Filter by origin country
    */
   origin_country?: string
   /**
-   * mid_code to search for.
+   * Filter by MID code
    */
   mid_code?: string
   /**
-   * material to search for.
+   * Filter by material
    */
   material?: string
   /**
-   * hs_code to search for.
+   * Filter by HS Code
    */
   hs_code?: string
   /**
-   * weight to search for.
+   * Filter by weight
    */
   weight?: string
   /**
-   * length to search for.
+   * Filter by length
    */
   length?: string
   /**
-   * height to search for.
+   * Filter by height
    */
   height?: string
   /**
-   * width to search for.
+   * Filter by width
    */
   width?: string
   /**
-   * requires_shipping to search for.
+   * Filter by whether the item requires shipping
    */
   requires_shipping?: string
 }

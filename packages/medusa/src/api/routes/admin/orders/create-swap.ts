@@ -27,12 +27,15 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [post] /admin/orders/{id}/swaps
  * operationId: "PostOrdersOrderSwaps"
  * summary: "Create a Swap"
- * description: "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously."
+ * description: "Create a Swap. This includes creating a return that is associated with the swap."
  * x-authenticated: true
+ * externalDocs:
+ *   description: How are swaps created
+ *   url: https://docs.medusajs.com/modules/orders/swaps#how-are-swaps-created
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded the order of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included the order of the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -48,7 +51,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.createSwap(order_id, {
+ *       medusa.admin.orders.createSwap(orderId, {
  *         return_items: [
  *           {
  *             item_id,
@@ -62,9 +65,9 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/swaps' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/swaps' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "return_items": [
  *             {
@@ -268,7 +271,7 @@ export default async (req, res) => {
  *   - return_items
  * properties:
  *   return_items:
- *     description: The Line Items to return as part of the Swap.
+ *     description: The Line Items to associate with the swap's return.
  *     type: array
  *     items:
  *       type: object
@@ -277,7 +280,7 @@ export default async (req, res) => {
  *         - quantity
  *       properties:
  *         item_id:
- *           description: The ID of the Line Item that will be claimed.
+ *           description: The ID of the Line Item that will be returned.
  *           type: string
  *         quantity:
  *           description: The number of items that will be returned
@@ -289,7 +292,7 @@ export default async (req, res) => {
  *           description: An optional note with information about the Return.
  *           type: string
  *   return_shipping:
- *     description: How the Swap will be returned.
+ *     description: The shipping method associated with the swap's return.
  *     type: object
  *     required:
  *       - option_id
@@ -310,13 +313,13 @@ export default async (req, res) => {
  *         - quantity
  *       properties:
  *         variant_id:
- *           description: The ID of the Product Variant to ship.
+ *           description: The ID of the Product Variant.
  *           type: string
  *         quantity:
- *           description: The quantity of the Product Variant to ship.
+ *           description: The quantity of the Product Variant.
  *           type: integer
  *   custom_shipping_options:
- *     description: The custom shipping options to potentially create a Shipping Method from.
+ *     description: An array of custom shipping options to potentially create a Shipping Method from to send the additional items.
  *     type: array
  *     items:
  *       type: object
@@ -325,16 +328,16 @@ export default async (req, res) => {
  *         - price
  *       properties:
  *         option_id:
- *           description: The ID of the Shipping Option to override with a custom price.
+ *           description: The ID of the Shipping Option.
  *           type: string
  *         price:
  *           description: The custom price of the Shipping Option.
  *           type: integer
  *   no_notification:
- *     description: If set to true no notification will be send related to this Swap.
+ *     description: If set to `true`, no notification will be sent to the customer related to this Swap.
  *     type: boolean
  *   allow_backorder:
- *     description: If true, swaps can be completed with items out of stock
+ *     description: If set to `true`, swaps can be completed with items out of stock
  *     type: boolean
  *     default: true
  */

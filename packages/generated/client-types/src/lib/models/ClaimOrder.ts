@@ -12,7 +12,7 @@ import type { Return } from "./Return"
 import type { ShippingMethod } from "./ShippingMethod"
 
 /**
- * Claim Orders represent a group of faulty or missing items. Each claim order consists of a subset of items associated with an original order, and can contain additional information about fulfillments and returns.
+ * A Claim represents a group of faulty or missing items. It consists of claim items that refer to items in the original order that should be replaced or refunded. It also includes details related to shipping and fulfillment.
  */
 export interface ClaimOrder {
   /**
@@ -41,11 +41,11 @@ export interface ClaimOrder {
     | "canceled"
     | "requires_action"
   /**
-   * The items that have been claimed
+   * The details of the items that should be replaced or refunded.
    */
   claim_items?: Array<ClaimItem>
   /**
-   * Refers to the new items to be shipped when the claim order has the type `replace`
+   * The details of the new items to be shipped when the claim's type is `replace`
    */
   additional_items?: Array<LineItem>
   /**
@@ -53,11 +53,11 @@ export interface ClaimOrder {
    */
   order_id: string
   /**
-   * An order object. Available if the relation `order` is expanded.
+   * The details of the order that this claim was created for.
    */
   order?: Order | null
   /**
-   * A return object. Holds information about the return if the claim is to be returned. Available if the relation 'return_order' is expanded
+   * The details of the return associated with the claim if the claim's type is `replace`.
    */
   return_order?: Return | null
   /**
@@ -65,11 +65,11 @@ export interface ClaimOrder {
    */
   shipping_address_id: string | null
   /**
-   * Available if the relation `shipping_address` is expanded.
+   * The details of the address that new items should be shipped to.
    */
   shipping_address?: Address | null
   /**
-   * The shipping methods that the claim order will be shipped with.
+   * The details of the shipping methods that the claim order will be shipped with.
    */
   shipping_methods?: Array<ShippingMethod>
   /**

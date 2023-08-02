@@ -20,7 +20,7 @@ export interface AdminDiscountsListRes {
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of discounts skipped when retrieving the discounts.
    */
   offset: number
   /**

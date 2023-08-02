@@ -1,5 +1,28 @@
 # Change Log
 
+## 1.13.0
+
+### Minor Changes
+
+- [`30e8bb275`](https://github.com/medusajs/medusa/commit/30e8bb2757e07ccb997c508c730a8d8ef8bcc5d1) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Add changeset with minor bump
+
+- [#4553](https://github.com/medusajs/medusa/pull/4553) [`f12299deb`](https://github.com/medusajs/medusa/commit/f12299deb10baadab1505cd4ac353dd5d1c8fa7c) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Medusa workflows package
+
+### Patch Changes
+
+- [#4600](https://github.com/medusajs/medusa/pull/4600) [`9129ca08a`](https://github.com/medusajs/medusa/commit/9129ca08a724f4e0c9e6a69b8bea9c0fb7b0f1b9) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Clean response data should takes the full path of sub relations
+
+- [#4595](https://github.com/medusajs/medusa/pull/4595) [`ae33f4825`](https://github.com/medusajs/medusa/commit/ae33f4825fc1a388813cde72de03a26c41b8b387) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa): Removing the line items should remove the tax lines as well
+
+- [#4578](https://github.com/medusajs/medusa/pull/4578) [`c9989529e`](https://github.com/medusajs/medusa/commit/c9989529ed8c347fefe10d57b3d23fa60aa35fe7) Thanks [@pKorsholm](https://github.com/pKorsholm)! - fix(medusa): update how price lists are filtered in price selection strategy
+
+- [#4609](https://github.com/medusajs/medusa/pull/4609) [`f18f1b9bf`](https://github.com/medusajs/medusa/commit/f18f1b9bfef897974ba034ce41cd64aa833e4767) Thanks [@zhangpengchen](https://github.com/zhangpengchen)! - feat(medusa): Expose error handler from middlewares
+
+- Updated dependencies [[`131477faf`](https://github.com/medusajs/medusa/commit/131477faf0409c49d4aacf26ea591e33b2fa22fd), [`379c83933`](https://github.com/medusajs/medusa/commit/379c83933ed12a4ec712e7f3c9b0252e4a4601dd), [`f174bb6fa`](https://github.com/medusajs/medusa/commit/f174bb6fa1b105b39065478a67b6be0b968f707a), [`f12299deb`](https://github.com/medusajs/medusa/commit/f12299deb10baadab1505cd4ac353dd5d1c8fa7c)]:
+  - @medusajs/utils@1.9.3
+  - @medusajs/modules-sdk@1.9.0
+  - @medusajs/orchestration@0.1.0
+
 ## 1.12.3
 
 ### Patch Changes
@@ -13,7 +36,7 @@
 - [#4472](https://github.com/medusajs/medusa/pull/4472) [`43427b889`](https://github.com/medusajs/medusa/commit/43427b8893baedd7abe7b38cf5360aa2d245293d) Thanks [@carlos-r-l-rodrigues](https://github.com/carlos-r-l-rodrigues)! - Transaction Orchestrator Flow Builder
 
 - [#4230](https://github.com/medusajs/medusa/pull/4230) [`2f283996f`](https://github.com/medusajs/medusa/commit/2f283996f80313b074b96c690bcd953c67665c1b) Thanks [@erikengervall](https://github.com/erikengervall)! - feat(medusa): Add `metadata` to `StorePostCartsCartLineItemsItemReq`
- 
+
 ## 1.12.2
 
 ### Patch Changes

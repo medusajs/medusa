@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetVariantParams {
   /**
-   * (Comma separated) Which fields should be expanded the order of the result.
+   * "Comma-separated relations that should be expanded in the returned product variant."
    */
   expand?: string
   /**
-   * (Comma separated) Which fields should be included the order of the result.
+   * "Comma-separated fields that should be included in the returned product variant."
    */
   fields?: string
 }

@@ -129,6 +129,7 @@ export type AdminTaxRatesDeleteRes = DeleteResponse
  * properties:
  *   tax_rates:
  *     type: array
+ *     description: "An array of tax rate details."
  *     items:
  *       $ref: "#/components/schemas/TaxRate"
  *   count:
@@ -136,7 +137,7 @@ export type AdminTaxRatesDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of tax rates to skip when retrieving the tax rates.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -152,6 +153,7 @@ export type AdminTaxRatesListRes = PaginatedResponse & {
  *   - tax_rate
  * properties:
  *   tax_rate:
+ *     description: "Tax rate details."
  *     $ref: "#/components/schemas/TaxRate"
  */
 export type AdminTaxRatesRes = {

@@ -20,20 +20,21 @@ import { DateComparisonOperator } from "../../../../types/common"
  * @oas [get] /store/customers/me/orders
  * operationId: GetCustomersCustomerOrders
  * summary: List Orders
- * description: "Retrieves a list of a Customer's Orders."
+ * description: "Retrieve a list of the logged-in Customer's Orders. The orders can be filtered by fields such as `status` or `fulfillment_status`. The orders can also be paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) q {string} Query used for searching orders.
- *   - (query) id {string} Id of the order to search for.
+ *   - (query) q {string} term to search orders' display ID, email, shipping address's first name, customer's first name, customer's last name, and customer's phone number.
+ *   - (query) id {string} Filter by ID.
  *   - in: query
  *     name: status
  *     style: form
  *     explode: false
- *     description: Status to search for.
+ *     description: Filter by status.
  *     schema:
  *         type: array
  *         items:
  *           type: string
+ *           enum: [pending, completed, archived, canceled, requires_action]
  *   - in: query
  *     name: fulfillment_status
  *     style: form
@@ -43,6 +44,7 @@ import { DateComparisonOperator } from "../../../../types/common"
  *         type: array
  *         items:
  *           type: string
+ *           enum: [not_fulfilled, partially_fulfilled, fulfilled, partially_shipped, shipped, partially_returned, returned, canceled, requires_action]
  *   - in: query
  *     name: payment_status
  *     style: form
@@ -52,24 +54,25 @@ import { DateComparisonOperator } from "../../../../types/common"
  *         type: array
  *         items:
  *           type: string
- *   - (query) display_id {string} Display id to search for.
- *   - (query) cart_id {string} to search for.
- *   - (query) email {string} to search for.
- *   - (query) region_id {string} to search for.
+ *           enum: [not_paid, awaiting, captured, partially_refunded, refunded, canceled, requires_action]
+ *   - (query) display_id {string} Filter by display ID.
+ *   - (query) cart_id {string} Filter by cart ID.
+ *   - (query) email {string} Filter by email.
+ *   - (query) region_id {string} Filter by region ID.
  *   - in: query
  *     name: currency_code
  *     style: form
  *     explode: false
- *     description: The 3 character ISO currency code to set prices based on.
+ *     description: Filter by the 3 character ISO currency code of the order.
  *     schema:
  *       type: string
  *       externalDocs:
  *         url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
  *         description: See a list of codes.
- *   - (query) tax_rate {string} to search for.
+ *   - (query) tax_rate {string} Filter by tax rate.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting collections were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -91,7 +94,7 @@ import { DateComparisonOperator } from "../../../../types/common"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting collections were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -113,7 +116,7 @@ import { DateComparisonOperator } from "../../../../types/common"
  *            format: date
  *   - in: query
  *     name: canceled_at
- *     description: Date comparison for when resulting collections were canceled.
+ *     description: Filter by a cancelation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -133,10 +136,10 @@ import { DateComparisonOperator } from "../../../../types/common"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
- *   - (query) limit=10 {integer} How many orders to return.
- *   - (query) offset=0 {integer} The offset in the resulting orders.
- *   - (query) fields {string} (Comma separated string) Which fields should be included in the resulting orders.
- *   - (query) expand {string} (Comma separated string) Which relations should be expanded in the resulting orders.
+ *   - (query) limit=10 {integer} Limit the number of orders returned.
+ *   - (query) offset=0 {integer} The number of orders to skip when retrieving the orders.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned orders.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned orders.
  * x-codegen:
  *   method: listOrders
  *   queryParams: StoreGetCustomersCustomerOrdersParams
@@ -154,8 +157,8 @@ import { DateComparisonOperator } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/customers/me/orders' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl 'https://medusa-url.com/store/customers/me/orders' \
+ *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
  * tags:

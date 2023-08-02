@@ -4,12 +4,12 @@ import PriceListService from "../../../../services/price-list"
 /**
  * @oas [delete] /admin/price-lists/{id}/products/{product_id}/prices
  * operationId: "DeletePriceListsPriceListProductsProductPrices"
- * summary: "Delete Product's Prices"
- * description: "Delete all the prices related to a specific product in a price list"
+ * summary: "Delete a Product's Prices"
+ * description: "Delete all the prices related to a specific product in a price list."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Price List that the Money Amounts that will be deleted belongs to.
- *   - (path) product_id=* {string} The ID of the product from which the money amount will be deleted.
+ *   - (path) id=* {string} The ID of the Price List.
+ *   - (path) product_id=* {string} The ID of the product from which the prices will be deleted.
  * x-codegen:
  *   method: deleteProductPrices
  * x-codeSamples:
@@ -19,15 +19,15 @@ import PriceListService from "../../../../services/price-list"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.priceLists.deleteProductPrices(price_list_id, product_id)
+ *       medusa.admin.priceLists.deleteProductPrices(priceListId, productId)
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids.length);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/price-lists/{id}/products/{product_id}/prices' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/price-lists/{id}/products/{product_id}/prices' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

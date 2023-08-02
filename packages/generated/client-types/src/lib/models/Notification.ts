@@ -7,7 +7,7 @@ import type { Customer } from "./Customer"
 import type { NotificationProvider } from "./NotificationProvider"
 
 /**
- * Notifications a communications sent via Notification Providers as a reaction to internal events such as `order.placed`. Notifications can be used to show a chronological timeline for communications sent to a Customer regarding an Order, and enables resends.
+ * A notification is an alert sent, typically to customers, using the installed Notification Provider as a reaction to internal events such as `order.placed`. Notifications can be resent.
  */
 export interface Notification {
   /**
@@ -27,15 +27,15 @@ export interface Notification {
    */
   resource_id: string
   /**
-   * The ID of the Customer that the Notification was sent to.
+   * The ID of the customer that this notification was sent to.
    */
   customer_id: string | null
   /**
-   * A customer object. Available if the relation `customer` is expanded.
+   * The details of the customer that this notification was sent to.
    */
   customer?: Customer | null
   /**
-   * The address that the Notification was sent to. This will usually be an email address, but represent other addresses such as a chat bot user id
+   * The address that the Notification was sent to. This will usually be an email address, but can represent other addresses such as a chat bot user ID.
    */
   to: string
   /**
@@ -47,19 +47,19 @@ export interface Notification {
    */
   parent_id: string | null
   /**
-   * Available if the relation `parent_notification` is expanded.
+   * The details of the parent notification.
    */
   parent_notification?: Notification | null
   /**
-   * The resends that have been completed after the original Notification. Available if the relation `resends` is expanded.
+   * The details of all resends of the notification.
    */
   resends?: Array<Notification>
   /**
-   * The id of the Notification Provider that handles the Notification.
+   * The ID of the notification provider used to send the notification.
    */
   provider_id: string | null
   /**
-   * Available if the relation `provider` is expanded.
+   * The notification provider used to send the notification.
    */
   provider?: NotificationProvider | null
   /**

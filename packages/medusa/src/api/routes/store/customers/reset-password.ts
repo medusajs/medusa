@@ -10,7 +10,11 @@ import { MedusaError } from "medusa-core-utils"
  * @oas [post] /store/customers/password-reset
  * operationId: PostCustomersResetPassword
  * summary: Reset Password
- * description: "Resets a Customer's password using a password token created by a previous /password-token request."
+ * description: "Reset a Customer's password using a password token created by a previous request to the Request Password Reset endpoint. If the password token expired,
+ *  you must create a new one."
+ * externalDocs:
+ *   description: "How to reset password"
+ *   url: "https://docs.medusajs.com/modules/customers/storefront/implement-customer-profiles#reset-password"
  * requestBody:
  *   content:
  *     application/json:
@@ -25,9 +29,9 @@ import { MedusaError } from "medusa-core-utils"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.customers.resetPassword({
- *         email: 'user@example.com',
- *         password: 'supersecret',
- *         token: 'supersecrettoken'
+ *         email: "user@example.com",
+ *         password: "supersecret",
+ *         token: "supersecrettoken"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
@@ -35,8 +39,8 @@ import { MedusaError } from "medusa-core-utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers/password-reset' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/store/customers/password-reset' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com",
  *           "password": "supersecret",
@@ -114,11 +118,11 @@ export default async (req, res) => {
  *   - token
  * properties:
  *   email:
- *     description: "The email of the customer."
+ *     description: "The customer's email."
  *     type: string
  *     format: email
  *   password:
- *     description: "The Customer's password."
+ *     description: "The customer's password."
  *     type: string
  *     format: password
  *   token:

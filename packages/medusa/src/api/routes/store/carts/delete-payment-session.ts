@@ -7,10 +7,10 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [delete] /store/carts/{id}/payment-sessions/{provider_id}
  * operationId: DeleteCartsCartPaymentSessionsSession
  * summary: "Delete a Payment Session"
- * description: "Deletes a Payment Session on a Cart. May be useful if a payment has failed."
+ * description: "Delete a Payment Session in a Cart. May be useful if a payment has failed. The totals will be recalculated."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
- *   - (path) provider_id=* {string} The id of the Payment Provider used to create the Payment Session to be deleted.
+ *   - (path) id=* {string} The ID of the Cart.
+ *   - (path) provider_id=* {string} The ID of the Payment Provider used to create the Payment Session to be deleted.
  * x-codegen:
  *   method: deletePaymentSession
  * x-codeSamples:
@@ -19,14 +19,14 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.deletePaymentSession(cart_id, 'manual')
+ *       medusa.carts.deletePaymentSession(cartId, "manual")
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual'
+ *       curl -X DELETE 'https://medusa-url.com/store/carts/{id}/payment-sessions/{provider_id}'
  * tags:
  *   - Carts
  * responses:

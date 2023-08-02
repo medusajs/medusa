@@ -33,6 +33,7 @@ export default (app) => {
  *   - user
  * properties:
  *   user:
+ *     description: User details.
  *     $ref: "#/components/schemas/User"
  */
 export type AdminAuthRes = {

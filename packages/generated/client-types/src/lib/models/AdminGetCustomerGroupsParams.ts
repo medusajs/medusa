@@ -5,19 +5,19 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetCustomerGroupsParams {
   /**
-   * Query used for searching customer group names.
+   * term to search customer groups by name.
    */
   q?: string
   /**
-   * How many groups to skip in the result.
+   * The number of customer groups to skip when retrieving the customer groups.
    */
   offset?: number
   /**
-   * the field used to order the customer groups.
+   * A field to sort order the retrieved customer groups by.
    */
   order?: string
   /**
-   * The discount condition id on which to filter the customer groups.
+   * Filter by discount condition ID.
    */
   discount_condition_id?: string
   /**
@@ -49,7 +49,7 @@ export interface AdminGetCustomerGroupsParams {
    */
   name?: Array<string>
   /**
-   * Date comparison for when resulting customer groups were created.
+   * Filter by a creation date range.
    */
   created_at?: {
     /**
@@ -70,7 +70,7 @@ export interface AdminGetCustomerGroupsParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting customer groups were updated.
+   * Filter by an update date range.
    */
   updated_at?: {
     /**
@@ -91,11 +91,11 @@ export interface AdminGetCustomerGroupsParams {
     gte?: string
   }
   /**
-   * Limit the number of customer groups returned.
+   * The number of customer groups to return.
    */
   limit?: number
   /**
-   * (Comma separated) Which fields should be expanded in each customer groups of the result.
+   * Comma-separated relations that should be expanded in the returned customer groups.
    */
   expand?: string
 }

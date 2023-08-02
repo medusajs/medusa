@@ -1,5 +1,17 @@
 # @medusajs/utils
 
+## 1.9.4
+
+### Patch Changes
+
+- [#4623](https://github.com/medusajs/medusa/pull/4623) [`107ae23a3`](https://github.com/medusajs/medusa/commit/107ae23a3f41ef0d676e9d03f53dafc7c1af6118) Thanks [@riqwan](https://github.com/riqwan)! - fix(utils, types, medusa-plugin-meilisearch, medusa-plugin-algolia): move SoftDeletableFilterKey, variantKeys, indexTypes from types to utils
+
+## 1.9.3
+
+### Patch Changes
+
+- [#4535](https://github.com/medusajs/medusa/pull/4535) [`131477faf`](https://github.com/medusajs/medusa/commit/131477faf0409c49d4aacf26ea591e33b2fa22fd) Thanks [@riqwan](https://github.com/riqwan)! - feat(product,types,utils): Add tags, types, categories, collection and options CRUD to product module services
+
 ## 1.9.2
 
 ### Patch Changes

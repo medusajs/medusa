@@ -6,6 +6,9 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { ProductCategory } from "./ProductCategory"
 
 export interface StoreGetProductCategoriesRes {
+  /**
+   * An array of product categories details.
+   */
   product_categories: Array<
     SetRelation<ProductCategory, "category_children" | "parent_category">
   >
@@ -14,7 +17,7 @@ export interface StoreGetProductCategoriesRes {
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of product categories skipped when retrieving the product categories.
    */
   offset: number
   /**

@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetBatchParams {
   /**
-   * The number of batch jobs to return.
+   * Limit the number of batch jobs returned.
    */
   limit?: number
   /**
-   * The number of batch jobs to skip before results.
+   * The number of batch jobs to skip when retrieving the batch jobs.
    */
   offset?: number
   /**
@@ -21,7 +21,7 @@ export interface AdminGetBatchParams {
    */
   type?: Array<string>
   /**
-   * Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.
+   * Filter by a confirmation date range.
    */
   confirmed_at?: {
     /**
@@ -42,7 +42,7 @@ export interface AdminGetBatchParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.
+   * Filter by a pre-processing date range.
    */
   pre_processed_at?: {
     /**
@@ -63,7 +63,7 @@ export interface AdminGetBatchParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting collections was completed, i.e. less than, greater than etc.
+   * Filter by a completion date range.
    */
   completed_at?: {
     /**
@@ -84,7 +84,7 @@ export interface AdminGetBatchParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting collections was failed, i.e. less than, greater than etc.
+   * Filter by a failure date range.
    */
   failed_at?: {
     /**
@@ -105,7 +105,7 @@ export interface AdminGetBatchParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.
+   * Filter by a cancelation date range.
    */
   canceled_at?: {
     /**
@@ -126,19 +126,19 @@ export interface AdminGetBatchParams {
     gte?: string
   }
   /**
-   * Field used to order retrieved batch jobs
+   * A batch-job field to sort-order the retrieved batch jobs by.
    */
   order?: string
   /**
-   * (Comma separated) Which fields should be expanded in each order of the result.
+   * Comma-separated relations that should be expanded in the returned batch jobs.
    */
   expand?: string
   /**
-   * (Comma separated) Which fields should be included in each order of the result.
+   * Comma-separated fields that should be included in the returned batch jobs.
    */
   fields?: string
   /**
-   * Date comparison for when resulting collections was created, i.e. less than, greater than etc.
+   * Filter by a creation date range.
    */
   created_at?: {
     /**
@@ -159,7 +159,7 @@ export interface AdminGetBatchParams {
     gte?: string
   }
   /**
-   * Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
+   * Filter by an update date range.
    */
   updated_at?: {
     /**
