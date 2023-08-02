@@ -176,6 +176,45 @@ When using the `develop` command, the admin dashboard will run in development mo
 
 ---
 
+## Route Props
+
+Every route receives props of the type `RouteProps`, which includes the `notify` prop. The `notify` prop is an object that includes the following attributes:
+
+- `success`: a function that can be used to show a success message.
+- `error`: a function that can be used to show an error message.
+- `warn`: a function that can be used to show a warning message.
+- `info`: a function that can be used to show an info message.
+
+For example:
+
+```tsx
+import { Post } from "../../../../../models/post"
+import PostForm from "../../../../components/post/form"
+import { RouteProps } from "@medusajs/admin-ui"
+
+const BlogPostCreatePage = ({
+  notify,
+}: RouteProps) => {
+  const onSuccess = (post: Post) => {
+    notify.success(
+      "Success",
+      `Post ${post.title} created successfully`
+    )
+  }
+
+  return (
+    <div>
+      <h1 className="text-xl mb-2">Create Post</h1>
+      <PostForm onSuccess={onSuccess} />
+    </div>
+  )
+}
+
+export default BlogPostCreatePage
+```
+
+---
+
 ## Show Route in Sidebar
 
 You can add your routes into the admin dashboard sidebar by exporting an object of type `RouteConfig` import from `@medusajs/admin` in the same route file.
@@ -325,6 +364,8 @@ const CustomPage = () => {
 
 export default CustomPage
 ```
+
+### Custom Endpoints
 
 You can also use `medusa-react` to interact with custom endpoints using [Custom Hooks utility functions](../medusa-react/overview.mdx#custom-hooks).
 
