@@ -130,7 +130,7 @@ For example, if you want the setting page to be available in the admin dashboard
 
 ### Step 2: Create React Component in File
 
-For an admin route to be valid, it must default export a React component. There are no restrictions on the content of the React component. It must also export a configuration object that indicates how the tab is shown on the Setting page.
+For a setting page to be valid, it must default export a React component. There are no restrictions on the content of the React component. It must also export a configuration object that indicates how the tab is shown on the Setting page.
 
 For example, you can create the file `src/admin/settings/custom/page.tsx` with the following content:
 
