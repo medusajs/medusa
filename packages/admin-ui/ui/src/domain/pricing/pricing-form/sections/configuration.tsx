@@ -165,7 +165,6 @@ const Configuration: React.FC<ConfigurationProps> = () => {
                       }
                     )}
                   >
-                    <>{console.log(customer_groups)}</>
                     <NextSelect
                       options={
                         customer_groups?.map((cg) => ({
