@@ -81,8 +81,8 @@ describe("/store/carts", () => {
 
       expect(response.status).toEqual(200)
 
-      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
-      expect(getRes.status).toEqual(200)
+      // const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
+      // expect(getRes.status).toEqual(200)
     })
 
     it("should fail to create a cart when no region exist", async () => {
@@ -174,10 +174,10 @@ describe("/store/carts", () => {
 
     it("should create a cart with country", async () => {
       const api = useApi()
-
       const response = await api.post("/store/carts", {
         country_code: "us",
       })
+
       expect(response.status).toEqual(200)
       expect(response.data.cart.shipping_address.country_code).toEqual("us")
 

@@ -198,8 +198,8 @@ class CartService extends TransactionBaseService {
     config: FindConfig<Cart> = {}
   ): Promise<Cart[]> {
     const cartRepo = this.activeManager_.withRepository(this.cartRepository_)
-
     const query = buildQuery(selector, config)
+
     return await cartRepo.find(query)
   }
 

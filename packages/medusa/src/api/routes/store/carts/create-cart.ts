@@ -7,9 +7,11 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { MedusaContainer } from "@medusajs/modules-sdk"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import reqIp from "request-ip"
 import { EntityManager } from "typeorm"
+import { createCart as createCartWorkflow } from "@medusajs/workflows"
 
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
@@ -75,6 +77,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
+  const entityManager: EntityManager = req.scope.resolve("manager")
   const validated = req.validatedBody as StorePostCartReq
 
   const reqContext = {
@@ -82,10 +85,31 @@ export default async (req, res) => {
     user_agent: req.get("user-agent"),
   }
 
+  // TODO: Change this to point to another module when its ready
+  const productModuleService = req.scope.resolve("productModuleService")
+
+  if (productModuleService) {
+    const cartWorkflow = await createCartWorkflow(req.scope as MedusaContainer)
+
+    const result = await cartWorkflow.run({
+      input: {
+        ...validated,
+        publishableApiKeyScopes: req.publishableApiKeyScopes,
+        context: {
+          ...reqContext,
+          ...validated.context,
+        },
+      },
+      resultFrom: 'retrieveCart'
+    })
+console.log("result - ", JSON.stringify(result, null, 2))
+// console.log("transaction - ", JSON.stringify(result.transaction, null, 2))
+    return res.status(200).json({ cart: cleanResponseData(result.result, []) })
+  }
+
   const lineItemService: LineItemService = req.scope.resolve("lineItemService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
-  const entityManager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   let regionId!: string
