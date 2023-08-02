@@ -34,9 +34,9 @@ export type PipelineHandlerResult<T = undefined> = T extends undefined
   ? WorkflowStepMiddlewareReturn | WorkflowStepMiddlewareReturn[]
   : T
 
-export type PipelineHandler<T = undefined> = (
+export type PipelineHandler<T extends any = undefined> = (
   args: WorkflowArguments
-) => Promise<PipelineHandlerResult<T>>
+) => PipelineHandlerResult<T> | Promise<PipelineHandlerResult<T>>
 
 export function pipe(
   input: PipelineInput,
