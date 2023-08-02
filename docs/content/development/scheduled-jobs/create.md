@@ -146,7 +146,7 @@ npm run build
 Then, run the following command to start your Medusa backend:
 
 ```bash npm2yarn
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
 
 If the scheduled job was registered successfully, you should see a message similar to this logged on your Medusa backend:

@@ -111,7 +111,7 @@ npm run seed
 
 This directory holds the transpiled Medusa backend customizations. This directory may not be available when you first install the Medusa backend. It’ll be available when you run the `build` command or start your Medusa backend with the `dev` command.
 
-The files under this directory are the files that are used in your Medusa backend. So, when you make any changes under `src`, make sure the changes are transpiled into the `dist` directory. If you’re using the `dev` or `@medusajs/medusa-cli develop` commands, this is handled automatically whenever changes occur under the `src` directory.
+The files under this directory are the files that are used in your Medusa backend. So, when you make any changes under `src`, make sure the changes are transpiled into the `dist` directory. If you’re using the `dev` or `medusa develop` commands, this is handled automatically whenever changes occur under the `src` directory.
 
 ### node_modules
 

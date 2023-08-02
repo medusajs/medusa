@@ -251,7 +251,7 @@ export const query = graphql`
 To test this out, run your Medusa backend by running this command in its directory:
 
 ```bash npm2yarn
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
 
 Then run the Gatsby storefront by running this command in its directory:

@@ -59,7 +59,7 @@ For example, if the value of the environment variable is set to `false`, but the
 As feature flags generally include adding new entities or making changes to entities in the database, you must run the migrations after enabling the feature flag:
 
 ```bash
-npx @medusajs/medusa-cli migrations run
+npx medusa migrations run
 ```
 
 :::info
