@@ -8,6 +8,7 @@ import productSeeder from "../../../../helpers/product-seeder"
 
 import { simpleSalesChannelFactory } from "../../../../factories"
 import { AxiosInstance } from "axios"
+import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 
 jest.setTimeout(50000)
 
@@ -43,7 +44,11 @@ describe("/admin/products", () => {
   })
 
   it("Should have loaded the product module", function () {
-    expect(medusaContainer.hasRegistration("productModuleService")).toBeTruthy()
+    const productRegistrationName =
+      ModulesDefinition[Modules.PRODUCT].registrationName
+    expect(
+      medusaContainer.hasRegistration(productRegistrationName)
+    ).toBeTruthy()
   })
 
   describe("POST /admin/products", () => {
