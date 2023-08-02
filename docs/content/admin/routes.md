@@ -326,6 +326,8 @@ const CustomPage = () => {
 export default CustomPage
 ```
 
+### Custom Endpoints
+
 You can also use `medusa-react` to interact with custom endpoints using [Custom Hooks utility functions](../medusa-react/overview.mdx#custom-hooks).
 
 ---
