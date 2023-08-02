@@ -64,7 +64,7 @@ This registers the in-memory cache module as the main cache service to use. You 
 To test the module, run the following command to start the Medusa backend:
 
 ```bash npm2yarn
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
 
 The backend should then start with no errors, indicating that the module was installed successfully.

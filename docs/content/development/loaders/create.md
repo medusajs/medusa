@@ -80,7 +80,7 @@ This section explains how to test out the loader if it’s created in the Medusa
 Run the following command to start the Medusa backend:
 
 ```bash npm2yarn
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
 
 Your loader script should run on the Medusa backend startup. If you logged a message in the console, similar to the example above, you should see it in the console.

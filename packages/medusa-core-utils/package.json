@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "tsc --build",
+    "build": "rimraf dist && tsc --build",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "watch": "tsc --watch"
   },
@@ -22,6 +22,7 @@
   "devDependencies": {
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
+    "rimraf": "^5.0.1",
     "ts-jest": "^25.5.1",
     "typescript": "^4.4.4"
   },

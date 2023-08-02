@@ -6,20 +6,20 @@ import {
 
 import { InputAlias } from "../definitions"
 
-type WorkflowStepReturn = {
+type WorkflowStepMiddlewareReturn = {
   alias: string
   value: any
 }
 
-type WorkflowStepInput = {
+type WorkflowStepMiddlewareInput = {
   from: string
   alias: string
 }
 
 interface PipelineInput {
   inputAlias?: InputAlias | string
-  invoke?: WorkflowStepInput | WorkflowStepInput[]
-  compensate?: WorkflowStepInput | WorkflowStepInput[]
+  invoke?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
+  compensate?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
 }
 
 export type WorkflowArguments = {
@@ -30,9 +30,13 @@ export type WorkflowArguments = {
   context: Context | SharedContext
 }
 
-export type PipelineHandler = (
+export type PipelineHandlerResult<T = undefined> = T extends undefined
+  ? WorkflowStepMiddlewareReturn | WorkflowStepMiddlewareReturn[]
+  : T
+
+export type PipelineHandler<T extends any = undefined> = (
   args: WorkflowArguments
-) => Promise<WorkflowStepReturn | WorkflowStepReturn[]>
+) => PipelineHandlerResult<T> | Promise<PipelineHandlerResult<T>>
 
 export function pipe(
   input: PipelineInput,

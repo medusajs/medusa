@@ -26,7 +26,6 @@ import {
   ModuleJoinerConfig,
   ProductTypes,
 } from "@medusajs/types"
-import { serialize } from "@mikro-orm/core"
 
 import ProductImageService from "./product-image"
 import {
@@ -963,7 +962,7 @@ export default class ProductModuleService<
         sharedContext
       )
 
-      productData.type_id = productType?.[0]?.id
+      productData.type = productType?.[0] as ProductTypes.CreateProductTypeDTO
     }
   }
 
