@@ -19,8 +19,8 @@ export function containerLoader(entity, joinerConfig) {
     const [primary, foreign] = joinerConfig.relationships!
 
     container.register({
-      primary: asValue(primary.split(",")),
-      foreign: asValue(foreign),
+      primaryKey: asValue(primary.foreignKey.split(",")),
+      foreignKey: asValue(foreign.foreignKey),
 
       linkModuleService: asClass(getModuleService(joinerConfig)).singleton(),
       pivotService: asClass(PivotService).singleton(),

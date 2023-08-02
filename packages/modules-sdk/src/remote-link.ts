@@ -248,66 +248,40 @@ export class RemoteLink {
     await Promise.all(promises)
   }
 
-  async deleteAllDependencies(deps, values) {
-    let deletedKeys = {}
-
-    const deletePromises = deps.map(async (dep) => {
-      const service: any = this.modulesMap.get(dep.serviceName)!
-      const deleteResult = await service.softDelete(dep.key, values[dep.key])
-      deletedKeys = { ...deletedKeys, ...deleteResult }
-
-      if (dep.next.length > 0) {
-        let nextValues = {}
-        for (let rel of dep.relationships) {
-          if (deletedKeys[rel.foreignKey]) {
-            nextValues[rel.foreignKey] = deletedKeys[rel.foreignKey]
-          }
-        }
-        const nextDeletedKeys = await this.deleteAllDependencies(
-          dep.next,
-          nextValues
-        )
-        deletedKeys = { ...deletedKeys, ...nextDeletedKeys }
-      }
-    })
-
-    await Promise.all(deletePromises)
-    return deletedKeys
-  }
-
   async remove(link: LinkDefinition | LinkDefinition[]): Promise<void> {
-    link = {
-      product: {
-        product_id: "prod_123",
-        variant_id: "var_123",
-      },
-    }
+    let removedIds: Record<string, Record<string, string[]>> = {}
 
-    const removedIds: Record<string, Record<string, string[]>> = {}
+    const isCascading: Record<string, boolean> = {}
+    const removeRecursively = async (toDelete: any[], input?) => {
+      if (input) {
+        removedIds = input
+      }
 
-    const allLinks = Array.isArray(link) ? link : [link]
-    for (const rel of allLinks) {
-      const serviceName = Object.keys(rel)[0]
+      for (const item of toDelete) {
+        const { relationships, next, serviceName: parentServiceName } = item
 
-      const keys = Object.keys(rel[serviceName])
-      const toBeDeleted = this.getAllRelationships(serviceName, keys)
+        for (const relationship of relationships) {
+          const details = next.find(
+            (rel) => rel.serviceName === relationship.serviceName
+          )
 
-      let isCascading: Record<string, boolean> = {}
-      await Promise.all(
-        toBeDeleted.map(async ({ relationship }) => {
-          const { serviceName, primaryKey, foreignKey } = relationship
+          const { serviceName, keys } = details
 
           if (!removedIds[serviceName]) {
             removedIds[serviceName] = {}
           }
 
-          const value = rel[serviceName][primaryKey]
-
           const service: ILinkModule = this.modulesMap.get(serviceName)!
-          const removedKeys = (await service.softDelete(value)) as Record<
-            string,
-            string[]
-          >
+          const filter = keys.reduce((acc: any, key: string) => {
+            if (removedIds[parentServiceName][key] === undefined) {
+              return acc
+            }
+
+            acc[key] = removedIds[parentServiceName][key]
+            return acc
+          }, {})
+
+          const removedKeys = await service.softDelete(filter)
 
           if (isCascading[serviceName]) {
             const [mainKey] = this.getLinkableKeys(service as LoadedLinkModule)
@@ -316,23 +290,37 @@ export class RemoteLink {
               mainKey
             ].concat(removedKeys[mainKey])
           } else {
-            for (const key in removedKeys) {
+            for (const key in removedKeys ?? {}) {
               if (!removedIds[serviceName][key]) {
                 removedIds[serviceName][key] = []
-              } else {
-                removedIds[serviceName][key] = removedIds[serviceName][
-                  key
-                ].concat(removedKeys[key])
               }
+
+              removedIds[serviceName][key] = removedIds[serviceName][
+                key
+              ].concat(removedKeys[key])
             }
           }
 
           if (!isCascading[serviceName]) {
             isCascading[serviceName] = true
           }
-        })
-      )
+        }
+
+        if (next?.length > 0) {
+          await removeRecursively(next)
+        }
+      }
     }
+
+    const allLinks = Array.isArray(link) ? link : [link]
+    await Promise.all(
+      allLinks.map(async (input) => {
+        const serviceName = Object.keys(input)[0]
+        const keys = Object.keys(input[serviceName])
+        const toBeDeleted = this.getAllRelationships(serviceName, keys)
+        await removeRecursively(toBeDeleted, input)
+      })
+    )
   }
 
   // TODO: restore, delete,
