@@ -15,7 +15,7 @@ Entities in medusa represent tables in the database as classes. An example of th
 
 Aside from the entities in the Medusa core package, you can also create custom entities to use in your Medusa backend. Custom entities are TypeScript or JavaScript files located in the `src/models` directory of your Medusa backend. You then transpile these entities to be used during the backend's runtime using the `build` command, which moves them to the `dist/models` directory.
 
-Entities are TypeScript files and they are based on [Typeorm’s Entities](https://typeorm.io/entities) and use Typeorm decorators.
+Entities are based on [Typeorm’s Entities](https://typeorm.io/entities) and use Typeorm decorators. Each entity also require a [repository](./repositories.md) to be created. A repository provides basic methods to access and manipulate the entity's data.
 
 ---
 
@@ -68,19 +68,11 @@ If you want to remove a property from the `metadata` object, you can pass the `m
 
 ---
 
-## What are Repositories
-
-Repositories provide generic helper methods for entities. For example, a `list` method to retrieve all entities with pagination, or `retrieve` to retrieve a single entity record.
-
-Repostories are [Typeorm repositories](https://typeorm.io/working-with-repository), so you can refer to Typeorm's documentation on all available methods.
-
----
-
 ## Custom Development
 
 Developers can create custom entities in the Medusa backend, a plugin, or in a module, then ensure it reflects in the database using a migration.
 
-<DocCardList colSize={6} items={[
+<DocCardList colSize={4} items={[
   {
     type: 'link',
     href: '/development/entities/create',
@@ -88,6 +80,15 @@ Developers can create custom entities in the Medusa backend, a plugin, or in a m
     customProps: {
       icon: Icons['academic-cap-solid'],
       description: 'Learn how to create an entity in Medusa.'
+    }
+  },
+  {
+    type: 'link',
+    href: '/development/entities/repositories',
+    label: 'Create a Repository',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to use a repository in Medusa.'
     }
   },
   {
