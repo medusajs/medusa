@@ -382,7 +382,8 @@ export default class ClaimService extends TransactionBaseService {
               lineItemServiceTx.generate(
                 i.variant_id,
                 order.region_id,
-                i.quantity
+                i.quantity,
+                { metadata: i.metadata }
               )
             )
           )

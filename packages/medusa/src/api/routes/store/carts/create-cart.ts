@@ -23,6 +23,7 @@ import { CartCreateProps } from "../../../../types/cart"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { FlagRouter } from "../../../../utils/flag-router"
+import { DbAwareColumn } from "../../../../utils"
 
 /**
  * @oas [post] /store/carts
@@ -152,6 +153,7 @@ export default async (req, res) => {
         return {
           variantId: item.variant_id,
           quantity: item.quantity,
+          metadata: item.metadata,
         }
       })
       const generatedLineItems: LineItem[] = await lineItemServiceTx.generate(
@@ -254,4 +256,7 @@ export class StorePostCartReq {
     IsOptional(),
   ])
   sales_channel_id?: string
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata?: Record<string, unknown>
 }

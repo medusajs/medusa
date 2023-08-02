@@ -321,7 +321,7 @@ class SwapService extends TransactionBaseService {
   async create(
     order: Order,
     returnItems: WithRequiredProperty<Partial<ReturnItem>, "item_id">[],
-    additionalItems?: Pick<LineItem, "variant_id" | "quantity">[],
+    additionalItems?: Pick<LineItem, "variant_id" | "quantity" | "metadata">[],
     returnShipping?: { option_id: string; price?: number },
     custom: {
       no_notification?: boolean
@@ -359,7 +359,7 @@ class SwapService extends TransactionBaseService {
 
       if (additionalItems) {
         newItems = await Promise.all(
-          additionalItems.map(async ({ variant_id, quantity }) => {
+          additionalItems.map(async ({ variant_id, quantity, metadata }) => {
             if (variant_id === null) {
               throw new MedusaError(
                 MedusaError.Types.INVALID_DATA,
@@ -367,7 +367,7 @@ class SwapService extends TransactionBaseService {
               )
             }
             return this.lineItemService_.withTransaction(manager).generate(
-              { variantId: variant_id, quantity },
+              { variantId: variant_id, quantity, metadata },
               {
                 region_id: order.region_id,
                 cart: order.cart,

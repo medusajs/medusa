@@ -46,6 +46,7 @@ export type CreateClaimItemInput = {
 type CreateClaimItemAdditionalItemInput = {
   variant_id: string
   quantity: number
+  metadata?: Record<string, unknown>
 }
 
 /* UPDATE INPUT */
