@@ -11,11 +11,11 @@ In this document, you’ll learn how to create a setting page in the admin.
 
 ## Overview
 
-The admin UI routes allow you to add new pages to the admin dashboard. However, they can’t be used to add a new tab under the Setting page.
+The [admin UI routes](./routes.md) allow you to add new pages to the admin dashboard. However, they can’t be used to add a new tab under the Setting page.
 
 To do that, you need to create an Admin setting page. The page will automatically be shown as a tab under the Setting page in the admin. The tab leads to the content of your custom page. 
 
-An admin UI route is essentially a React Component created under the `src/admin/settings` directory.
+A setting page is essentially a React Component created under the `src/admin/settings` directory.
 
 This guide explains how to create a new setting page in the admin dashboard with some examples.
 
