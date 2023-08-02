@@ -1,3 +1,4 @@
+import { InputAlias } from "../../../definitions"
 import { WorkflowArguments } from "../../../helper"
 
 type UpdateLineItemsShippingDTO = {
@@ -9,20 +10,22 @@ export async function updateLineItemShipping({
   container,
   context,
   data,
-}: WorkflowArguments & {
-  data: UpdateLineItemsShippingDTO
+}: Omit<WorkflowArguments, "data"> & {
+  data: { [InputAlias.LineItems]: UpdateLineItemsShippingDTO }
 }) {
   const { transactionManager: manager } = context
+
+  const dataToValidate = data[InputAlias.LineItems]
 
   const lineItemService = container
     .resolve("lineItemService")
     .withTransaction(manager)
 
   const items = await Promise.all(
-    data.items.map(async (item) => {
+    dataToValidate.items.map(async (item) => {
       return lineItemService.update(item.id, {
         has_shipping: lineItemService.validateLineItemShipping_(
-          data.methods,
+          dataToValidate.methods,
           item
         ),
       })
@@ -30,7 +33,6 @@ export async function updateLineItemShipping({
   )
 
   return {
-    alias: "updatedShippingOnLineItems",
-    value: items,
+    lineItems: items,
   }
 }

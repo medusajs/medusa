@@ -1,3 +1,4 @@
+import { InputAlias } from "../../../definitions"
 import { WorkflowArguments } from "../../../helper"
 
 type GetShippingOptionPriceDTO = {
@@ -18,23 +19,23 @@ export async function getShippingOptionPrice({
 }) {
   const { transactionManager: manager } = context
 
+  const methodData = data[InputAlias.ValidatedShippingOptionData]
+  const preparedData = data["preparedData"]
+
+  const { shippingMethodConfig: config, option, cart } = preparedData
+
   let methodPrice
-  if (typeof data.config.price === "number") {
-    methodPrice = data.config.price
+  if (typeof config.price === "number") {
+    methodPrice = config.price
   } else {
     const shippingOptionService = container
       .resolve("shippingOptionService")
       .withTransaction(manager)
 
-    methodPrice = await shippingOptionService.getPrice(
-      data.option,
-      data.data,
-      data.config.cart
-    )
+    methodPrice = await shippingOptionService.getPrice(option, methodData, cart)
   }
 
   return {
-    alias: "shippingOptionPrice",
-    value: methodPrice,
+    shippingOptionPrice: methodPrice,
   }
 }

@@ -1,6 +1,6 @@
 import { isDefined } from "@medusajs/utils"
+import { InputAlias } from "../../../definitions"
 import { WorkflowArguments } from "../../../helper"
-import { prepareCreateShippingMethodDataAlias } from "./prepare-create-shipping-method-data"
 
 type CreateShippingMethodDTO = {
   option: any // shipping option
@@ -14,7 +14,7 @@ export async function validateShippingOptionForCart({
   data,
 }: Omit<WorkflowArguments, "data"> & {
   data: {
-    [prepareCreateShippingMethodDataAlias]: CreateShippingMethodDTO
+    [InputAlias.ShippingOptionToValidate]: CreateShippingMethodDTO
   }
 }) {
   const { transactionManager: manager } = context
@@ -25,7 +25,7 @@ export async function validateShippingOptionForCart({
     .resolve("shippingOptionService")
     .withTransaction(manager)
 
-  const dataToValidate = data[prepareCreateShippingMethodDataAlias]
+  const dataToValidate = data[InputAlias.ShippingOptionToValidate]
 
   // Question: requirements are required on the shipping option, how do we ensure this? retrieve anew or throw?
 
@@ -44,7 +44,6 @@ export async function validateShippingOptionForCart({
   )
 
   return {
-    alias: "validatedShippingOption",
-    value: validatedData,
+    validatedShippingOptionData: validatedData,
   }
 }

@@ -2,12 +2,15 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { Workflows } from "../../../definitions"
-import {
-  prepareCreateShippingMethodDataAlias,
-  prepareCreateShippingMethodWorkflowData,
-} from "../../../handlers/store/carts/prepare-create-shipping-method-data"
+import { InputAlias, Workflows } from "../../../definitions"
+import { adjustFreeShipping } from "../../../handlers/store/carts/adjust-free-shipping"
+import { cleanUpPaymentSessions } from "../../../handlers/store/carts/clean-up-payment-sessions"
+import { cleanUpShippingMethods } from "../../../handlers/store/carts/clean-up-shipping-methods"
+import { getShippingOptionPrice } from "../../../handlers/store/carts/get-shipping-option-price"
+import { prepareAddShippingMethodToCartWorkflowData } from "../../../handlers/store/carts/prepare-add-shipping-method-to-cart-data"
+import { retrieveCart } from "../../../handlers/store/carts/retrieve-cart"
 import { updateLineItemShipping } from "../../../handlers/store/carts/update-line-item-shipping"
+import { updatePaymentSessions } from "../../../handlers/store/carts/update-payment-sessions"
 import { validateShippingOptionForCart } from "../../../handlers/store/carts/validate-shipping-option-for-cart"
 import { exportWorkflow, pipe } from "../../../helper"
 
@@ -21,10 +24,9 @@ export enum AddShippingMethodWorkflowActions {
   validateFulfillmentData = "validateFulfillmentData",
   validateLineItemShipping = "validateLineItemShipping",
   getOptionPrice = "getOptionPrice",
-  createShippingMethod = "createShippingMethod",
+  createShippingMethods = "createShippingMethods",
   cleanUpShippingMethods = "cleanUpShippingMethods",
   adjustFreeShipping = "adjustFreeShipping",
-  prepareUpdatedCart = "prepareUpdatedCart",
   cleanUpPaymentSessions = "cleanUpPaymentSessions",
   updatePaymentSessions = "updatePaymentSessions",
   result = "result",
@@ -54,7 +56,7 @@ export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
           saveResponse: true,
           next: {
             // create the shipping method
-            action: AddShippingMethodWorkflowActions.createShippingMethod,
+            action: AddShippingMethodWorkflowActions.createShippingMethods,
             noCompensation: true,
             next: {
               // delete other shipping methods with same profile id
@@ -63,23 +65,17 @@ export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
                 // adjust free shipping discount wrt new shipping method
                 action: AddShippingMethodWorkflowActions.adjustFreeShipping,
                 next: {
-                  // retrieve cart with updated totals
-                  action: AddShippingMethodWorkflowActions.prepareUpdatedCart,
-                  noCompensation: true,
-                  saveResponse: true,
+                  // clean up payment sessions
+                  action:
+                    AddShippingMethodWorkflowActions.cleanUpPaymentSessions,
                   next: {
-                    // clean up payment sessions
+                    // update the payment sessions on the cart
                     action:
-                      AddShippingMethodWorkflowActions.cleanUpPaymentSessions,
+                      AddShippingMethodWorkflowActions.updatePaymentSessions,
+                    // retrieve cart with totals
                     next: {
-                      // update the payment sessions on the cart
-                      action:
-                        AddShippingMethodWorkflowActions.updatePaymentSessions,
-                      // retrieve cart with totals
-                      next: {
-                        action: AddShippingMethodWorkflowActions.result,
-                        noCompensation: true,
-                      },
+                      action: AddShippingMethodWorkflowActions.result,
+                      noCompensation: true,
                     },
                   },
                 },
@@ -96,18 +92,17 @@ const handlers = new Map([
   [
     AddShippingMethodWorkflowActions.prepare,
     {
-      invoke: prepareCreateShippingMethodWorkflowData,
+      invoke: prepareAddShippingMethodToCartWorkflowData,
     },
   ],
   [
-    // this uses data from prepare
     AddShippingMethodWorkflowActions.validateFulfillmentData,
     {
       invoke: pipe(
         {
           invoke: {
-            from: prepareCreateShippingMethodDataAlias,
-            alias: "validatedShippingOption",
+            from: AddShippingMethodWorkflowActions.prepare,
+            alias: InputAlias.ShippingOptionToValidate,
           },
         },
         validateShippingOptionForCart
@@ -115,14 +110,13 @@ const handlers = new Map([
     },
   ],
   [
-    // this uses data from the validate fulfillment step
     AddShippingMethodWorkflowActions.validateLineItemShipping,
     {
       invoke: pipe(
         {
           invoke: {
-            from: "prepareCreateShippingMethodDataAlias",
-            alias: prepareCreateShippingMethodDataAlias,
+            from: AddShippingMethodWorkflowActions.prepare,
+            alias: InputAlias.LineItems,
           },
         },
         updateLineItemShipping
@@ -130,57 +124,123 @@ const handlers = new Map([
     },
   ],
   [
-    // this uses data from the validate step
     AddShippingMethodWorkflowActions.getOptionPrice,
     {
-      invoke: {},
+      invoke: pipe(
+        {
+          invoke: [
+            {
+              from: AddShippingMethodWorkflowActions.prepare,
+              alias: InputAlias.PreparedAddShippingMethodToCartData,
+            },
+            {
+              from: AddShippingMethodWorkflowActions.validateFulfillmentData,
+              alias: InputAlias.ValidatedShippingOptionData,
+            },
+          ],
+        },
+        getShippingOptionPrice
+      ),
     },
   ],
   [
-    // this uses data from the validate fulfillment and price steps
-    AddShippingMethodWorkflowActions.createShippingMethod,
+    AddShippingMethodWorkflowActions.createShippingMethods,
     {
-      invoke: {},
+      invoke: pipe(
+        {
+          invoke: [
+            {
+              from: AddShippingMethodWorkflowActions.prepare,
+              alias: InputAlias.PreparedAddShippingMethodToCartData,
+            },
+            {
+              from: AddShippingMethodWorkflowActions.validateFulfillmentData,
+              alias: InputAlias.ValidatedShippingOptionData,
+            },
+            {
+              from: AddShippingMethodWorkflowActions.getOptionPrice,
+              alias: InputAlias.ShippingOptionPrice,
+            },
+          ],
+        },
+        getShippingOptionPrice
+      ),
     },
   ],
   [
     AddShippingMethodWorkflowActions.cleanUpShippingMethods,
     {
-      invoke: {},
-      compensate: {},
+      invoke: pipe(
+        {
+          invoke: [
+            {
+              from: AddShippingMethodWorkflowActions.prepare,
+              alias: InputAlias.PreparedAddShippingMethodToCartData,
+            },
+            {
+              from: AddShippingMethodWorkflowActions.createShippingMethods,
+              alias: InputAlias.CreatedShippingMethods,
+            },
+          ],
+        },
+        cleanUpShippingMethods
+      ),
     },
   ],
   [
     AddShippingMethodWorkflowActions.adjustFreeShipping,
     {
-      invoke: {},
-      compensate: {},
-    },
-  ],
-  [
-    AddShippingMethodWorkflowActions.prepareUpdatedCart,
-    {
-      invoke: {},
+      invoke: pipe(
+        {
+          invoke: {
+            from: AddShippingMethodWorkflowActions.prepare,
+            alias: InputAlias.PreparedAddShippingMethodToCartData,
+          },
+        },
+        adjustFreeShipping
+      ),
     },
   ],
   [
     AddShippingMethodWorkflowActions.cleanUpPaymentSessions,
     {
-      invoke: {},
-      compensate: {},
+      invoke: pipe(
+        {
+          invoke: {
+            from: AddShippingMethodWorkflowActions.prepare,
+            alias: InputAlias.PreparedAddShippingMethodToCartData,
+          },
+        },
+        cleanUpPaymentSessions
+      ),
     },
   ],
   [
     AddShippingMethodWorkflowActions.updatePaymentSessions,
     {
-      invoke: {},
-      compensate: {},
+      invoke: pipe(
+        {
+          invoke: {
+            from: AddShippingMethodWorkflowActions.prepare,
+            alias: InputAlias.PreparedAddShippingMethodToCartData,
+          },
+        },
+        updatePaymentSessions
+      ),
     },
   ],
   [
     AddShippingMethodWorkflowActions.result,
     {
-      invoke: {},
+      invoke: pipe(
+        {
+          invoke: {
+            from: AddShippingMethodWorkflowActions.prepare,
+            alias: InputAlias.PreparedAddShippingMethodToCartData,
+          },
+        },
+        retrieveCart
+      ),
     },
   ],
 ])

@@ -1,5 +1,5 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
@@ -16,10 +16,7 @@ import { ShippingOptionRequirementRepository } from "../repositories/shipping-op
 import { FindConfig, Selector } from "../types/common"
 import {
   CreateShippingMethodDto,
-  CreateShippingOptionInput,
   ShippingMethodUpdate,
-  UpdateShippingOptionInput,
-  ValidatePriceTypeAndAmountInput,
 } from "../types/shipping-options"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
@@ -332,6 +329,73 @@ class ShippingOptionService extends TransactionBaseService {
         where: { id: created.id },
         relations: ["shipping_option"],
       })) as ShippingMethod
+    })
+  }
+
+  async createShippingMethods(
+    data: {
+      option: ShippingOption
+      data: Record<string, unknown>
+      config: CreateShippingMethodDto
+      price: number
+    }[]
+  ) {
+    return this.atomicPhase_(async (manager) => {
+      const methodsToCreate = data.map((methodData) => {
+        const { option, data, price, config } = methodData
+
+        const toCreate: Partial<ShippingMethod> = {
+          shipping_option_id: option.id,
+          data: data,
+          price: price,
+        }
+
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          )
+        ) {
+          if (typeof option.includes_tax !== "undefined") {
+            toCreate.includes_tax = option.includes_tax
+          }
+        }
+
+        if (config.order) {
+          toCreate.order_id = config.order.id
+        }
+
+        if (config.cart) {
+          toCreate.cart_id = config.cart.id
+        }
+
+        if (config.cart_id) {
+          toCreate.cart_id = config.cart_id
+        }
+
+        if (config.return_id) {
+          toCreate.return_id = config.return_id
+        }
+
+        if (config.order_id) {
+          toCreate.order_id = config.order_id
+        }
+
+        if (config.claim_order_id) {
+          toCreate.claim_order_id = config.claim_order_id
+        }
+
+        return manager.create(ShippingMethod, methodData)
+      })
+
+      const methodRepo = manager.withRepository(this.methodRepository_)
+      const created = await methodRepo.save(methodsToCreate)
+
+      return await methodRepo.find({
+        where: {
+          id: In(created.map((m) => m.id)),
+        },
+        relations: ["shipping_option"],
+      })
     })
   }
 

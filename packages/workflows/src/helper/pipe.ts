@@ -32,7 +32,7 @@ export type WorkflowArguments = {
 
 export type PipelineHandler = (
   args: WorkflowArguments
-) => Promise<WorkflowStepReturn | WorkflowStepReturn[]>
+) => Promise<any | WorkflowStepReturn | WorkflowStepReturn[]>
 
 export function pipe(
   input: PipelineInput,
@@ -53,38 +53,25 @@ export function pipe(
       compensate: compensate ?? {},
     }
 
-    // payload = { products: [] }
-
-    // inputAlias = "TEST"
-    // original.invoke = { from: "LOL", alias: "LOL2" }
-
     if (input.inputAlias) {
       Object.assign(original.invoke, { [input.inputAlias]: payload })
     }
-
-    // original.invoke = { "TEST": products, from: "LOL", alias: "LOL2" }
 
     for (const key in input) {
       if (!input[key]) {
         continue
       }
 
-      // key = "invoke"
-
       if (!Array.isArray(input[key])) {
         input[key] = [input[key]]
       }
 
       for (const action of input[key]) {
-        // action = "alias"
         if (action?.alias) {
           data[action.alias] = original[key][action.from]
-          // data = { LOL2: "LOL" }
         }
       }
     }
-    // data = { LOL2: "LOL" }
-    // payload =
 
     return functions.reduce(async (_, fn) => {
       const result = await fn({

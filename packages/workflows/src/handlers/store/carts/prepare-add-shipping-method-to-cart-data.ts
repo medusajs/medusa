@@ -1,9 +1,6 @@
 import { WorkflowArguments } from "../../../helper"
 
-export const prepareCreateShippingMethodDataAlias =
-  "prepareCreateShippingMethodData"
-
-export async function prepareCreateShippingMethodWorkflowData({
+export async function prepareAddShippingMethodToCartWorkflowData({
   container,
   context,
   data,
@@ -47,12 +44,9 @@ export async function prepareCreateShippingMethodWorkflowData({
   })
 
   return {
-    alias: "prepareCreateShippingMethodData",
-    value: {
-      config: shippingMethodConfig,
-      cart,
-      option,
-      data: data.data,
-    },
+    shippingMethodConfig,
+    cart,
+    option,
+    shippingMethodData: data.data,
   }
 }
