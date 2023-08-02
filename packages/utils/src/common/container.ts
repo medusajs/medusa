@@ -1,3 +1,3 @@
 export const ContainerRegistrationKeys = {
-  PG_KNEX_CONNECTION_REGISTRATION_KEY: "__pg_knex_connection__",
+  PG_CONNECTION: "__pg_connection__",
 }

@@ -9,8 +9,8 @@ import {
   ModuleResolution,
 } from "@medusajs/types"
 import {
-  createMedusaContainer,
   ContainerRegistrationKeys,
+  createMedusaContainer,
 } from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
 
@@ -80,7 +80,7 @@ export async function loadInternalModule(
       "manager",
       "configModule",
       "logger",
-      ContainerRegistrationKeys.PG_KNEX_CONNECTION_REGISTRATION_KEY
+      ContainerRegistrationKeys.PG_CONNECTION
     )
   }
 
