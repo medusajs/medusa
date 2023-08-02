@@ -1,12 +1,11 @@
 import { Context, DAL } from "@medusajs/types"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
-  buildQuery,
   InjectTransactionManager,
   MedusaContext,
-  SoftDeletableFilterKey,
+  buildQuery,
 } from "@medusajs/utils"
 import { serialize } from "@mikro-orm/core"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 async function transactionWrapper<TManager = unknown>(
   this: any,
@@ -105,10 +104,7 @@ class AbstractBase<T = any> {
   }
 }
 
-export abstract class AbstractBaseRepository<T = any>
-  extends AbstractBase
-  implements DAL.RepositoryService<T>
-{
+export abstract class AbstractBaseRepository<T = any> extends AbstractBase {
   abstract find(options?: DAL.FindOptions<T>, context?: Context)
 
   abstract findAndCount(
@@ -116,17 +112,19 @@ export abstract class AbstractBaseRepository<T = any>
     context?: Context
   ): Promise<[T[], number]>
 
-  abstract create(data: unknown[], context?: Context): Promise<T[]>
-
-  abstract delete(ids: string[], context?: Context): Promise<void>
-
   @InjectTransactionManager()
   async softDelete(
-    ids: string[],
+    data: any,
+    returnLinkableKeys?: string[],
     @MedusaContext()
     { transactionManager: manager }: Context = {}
-  ): Promise<T[]> {
-    const entities = await this.find({ where: { id: { $in: ids } } as any })
+  ): Promise<Record<string, string[]> | void> {
+    const filter = {}
+    for (const key in data) {
+      filter[key] = { $in: data[key] }
+    }
+
+    const entities = await this.find({ where: data })
     const date = new Date()
 
     await mikroOrmUpdateDeletedAt(manager as SqlEntityManager, entities, date)
@@ -136,16 +134,19 @@ export abstract class AbstractBaseRepository<T = any>
 
   @InjectTransactionManager()
   async restore(
-    ids: string[],
+    data: any,
+    returnLinkableKeys?: string[],
     @MedusaContext()
     { transactionManager: manager }: Context<SqlEntityManager> = {}
-  ): Promise<T[]> {
-    const query = buildQuery(
-      { id: { $in: ids } },
-      {
-        withDeleted: true,
-      }
-    )
+  ): Promise<Record<string, string[]> | void> {
+    const filter = {}
+    for (const key in data) {
+      filter[key] = { $in: data[key] }
+    }
+
+    const query = buildQuery(data, {
+      withDeleted: true,
+    })
 
     const entities = await this.find(query)
 
@@ -180,4 +181,3 @@ export class BaseRepository extends AbstractBaseRepository {
     throw new Error("Method not implemented.")
   }
 }
-

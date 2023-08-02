@@ -39,7 +39,10 @@ export const initialize = async (
       throw new Error(
         `Link module ${definition.serviceName} can only link 2 modules.`
       )
-    } else if (foreign?.foreignKey?.split(",").length > 1) {
+    } else if (
+      foreign?.foreignKey?.split(",").length > 1 &&
+      !definition.isReadOnlyLink
+    ) {
       throw new Error(`Foreign key cannot be a composed key.`)
     }
 

@@ -17,11 +17,23 @@ export interface ILinkModule {
     sharedContext?: Context
   ): Promise<[unknown[], number]>
 
-  create(data: unknown[], sharedContext?: Context): Promise<unknown[]>
+  create(
+    primaryKeyOrBulkData: string | string[] | [string | string[], string][],
+    foreignKeyData?: string,
+    sharedContext?: Context
+  ): Promise<unknown[]>
 
-  delete(productIds: string[], sharedContext?: Context): Promise<unknown[]>
+  delete(data: unknown | unknown[], sharedContext?: Context): Promise<unknown[]>
 
-  softDelete(productIds: string[], sharedContext?: Context): Promise<unknown[]>
+  softDelete(
+    data: unknown | unknown[],
+    { returnLinkableKeys }?: { returnLinkableKeys?: string[] },
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 
-  restore(productIds: string[], sharedContext?: Context): Promise<unknown[]>
+  restore(
+    data: unknown | unknown[],
+    { returnLinkableKeys }?: { returnLinkableKeys?: string[] },
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }

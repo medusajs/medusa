@@ -6,8 +6,8 @@ import {
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
 
-import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { AbstractBaseRepository } from "./base"
 
 export function getPivotRepository(model: EntitySchema) {
   return class PivotRepository extends AbstractBaseRepository {
@@ -65,14 +65,15 @@ export function getPivotRepository(model: EntitySchema) {
     }
 
     async delete(
-      ids: string[],
+      data: any,
       { transactionManager: manager }: Context = {}
     ): Promise<void> {
-      await (manager as SqlEntityManager).nativeDelete(
-        this.model_,
-        { id: { $in: ids } },
-        {}
-      )
+      const filter = {}
+      for (const key in data) {
+        filter[key] = { $in: data[key] }
+      }
+
+      await (manager as SqlEntityManager).nativeDelete(this.model_, data, {})
     }
 
     async create(
