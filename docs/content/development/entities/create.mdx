@@ -71,6 +71,7 @@ import {
   BeforeInsert, 
   Column, 
   Entity,
+  JoinColumn,
   ManyToOne, 
 } from "typeorm"
 import { BaseEntity } from "@medusajs/medusa"
@@ -86,6 +87,7 @@ export class Post extends BaseEntity {
   author_id: string
 
   @ManyToOne(() => Author, (author) => author.posts)
+  @JoinColumn({ name: "author_id" })
   author: Author
 
   @BeforeInsert()
