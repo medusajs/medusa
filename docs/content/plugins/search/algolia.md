@@ -274,7 +274,7 @@ const apiKey =
 export const searchClient = algoliasearch(appId, apiKey)
 
 export const SEARCH_INDEX_NAME =
-  process.env.NEXT_PUBLIC_INDEX_NAME || "products"
+  process.env.NEXT_PUBLIC_SEARCH_INDEX_NAME || "products"
 ```
 
 If you run your Next.js Starter Template now while the Medusa backend is running, the search functionality will be available in your storefront.
