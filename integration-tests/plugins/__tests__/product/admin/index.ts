@@ -21,11 +21,14 @@ describe("/admin/products", () => {
   let medusaProcess
   let dbConnection
   let express
+  let medusaContainer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd } as any)
-    const { app, port } = await bootstrapApp({ cwd })
+    const { app, port, container } = await bootstrapApp({ cwd })
+    medusaContainer = container
+
     setPort(port)
     express = app.listen(port, () => {
       process.send?.(port)
@@ -37,6 +40,10 @@ describe("/admin/products", () => {
     await db.shutdown()
 
     medusaProcess.kill()
+  })
+
+  it("Should have loaded the product module", function () {
+    expect(medusaContainer.hasRegistration("productModuleService")).toBeTruthy()
   })
 
   describe("POST /admin/products", () => {
