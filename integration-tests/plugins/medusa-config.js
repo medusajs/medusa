@@ -1,3 +1,4 @@
+const { Modules } = require("@medusajs/modules-sdk")
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
@@ -31,21 +32,21 @@ module.exports = {
     database_extra: { idle_in_transaction_session_timeout: 0 },
   },
   modules: {
-    stockLocationService: {
+    [Modules.STOCK_LOCATION]: {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/stock-location",
     },
-    inventoryService: {
+    [Modules.INVENTORY]: {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/inventory",
     },
-    cacheService: {
+    [Modules.CACHE]: {
       resolve: "@medusajs/cache-inmemory",
       options: { ttl: 5 },
     },
-    productModuleService: {
+    [Modules.PRODUCT]: {
       scope: "internal",
       resources: "shared",
       resolve: "@medusajs/product",
