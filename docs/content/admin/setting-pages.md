@@ -176,6 +176,51 @@ If you click on the tab, a new page will open with the content as defined in you
 
 ---
 
+## Setting Page Props
+
+Every route receives props of the type `RouteProps`, which includes the `notify` prop. The `notify` prop is an object that includes the following attributes:
+
+- `success`: a function that can be used to show a success message.
+- `error`: a function that can be used to show an error message.
+- `warn`: a function that can be used to show a warning message.
+- `info`: a function that can be used to show an info message.
+
+For example:
+
+```tsx title=src/admin/settings/custom/page.tsx
+import type { SettingConfig } from "@medusajs/admin"
+import type { SettingProps } from "@medusajs/admin-ui"
+
+const CustomSettingPage = ({
+  notify,
+}: SettingProps) => {
+
+  const handleClick = () => {
+    notify.success("Success", "You clicked the button")
+  }
+
+  return (
+    <div>
+      <h1>Custom Setting Page</h1>
+      <button onClick={handleClick}>
+        Click Me
+      </button>
+    </div>
+  )
+}
+
+export const config: SettingConfig = {
+  card: {
+    label: "Custom",
+    description: "Manage your custom settings",
+  },
+}
+
+export default CustomSettingPage
+```
+
+---
+
 ## Styling Setting Page
 
 Admin setting pages support [Tailwind CSS](https://tailwindcss.com/) by default.
