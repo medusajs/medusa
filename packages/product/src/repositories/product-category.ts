@@ -3,12 +3,17 @@ import {
   FindOptions as MikroOptions,
   LoadStrategy,
 } from "@mikro-orm/core"
-import { Product, ProductCategory } from "@models"
+import { ProductCategory } from "@models"
 import { Context, DAL, ProductCategoryTransformOptions } from "@medusajs/types"
 import groupBy from "lodash/groupBy"
-import { BaseTreeRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext, isDefined, MedusaError } from "@medusajs/utils"
+import {
+  DALUtils,
+  InjectTransactionManager,
+  isDefined,
+  MedusaContext,
+  MedusaError,
+} from "@medusajs/utils"
 
 import { ProductCategoryServiceTypes } from "../types"
 
@@ -25,7 +30,7 @@ export type ReorderConditions = {
 }
 
 export const tempReorderRank = 99999
-export class ProductCategoryRepository extends BaseTreeRepository {
+export class ProductCategoryRepository extends DALUtils.MikroOrmBaseTreeRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -209,12 +214,9 @@ export class ProductCategoryRepository extends BaseTreeRepository {
   ): Promise<ProductCategory> {
     const categoryData = { ...data }
     const manager = this.getActiveManager<SqlEntityManager>(sharedContext)
-    const siblings = await manager.find(
-      ProductCategory,
-      {
-        parent_category_id: categoryData?.parent_category_id || null
-      },
-    )
+    const siblings = await manager.find(ProductCategory, {
+      parent_category_id: categoryData?.parent_category_id || null,
+    })
 
     if (!isDefined(categoryData.rank)) {
       categoryData.rank = siblings.length
@@ -343,25 +345,19 @@ export class ProductCategoryRepository extends BaseTreeRepository {
 
     // The current sibling count will replace targetRank if
     // targetRank is greater than the count of siblings.
-    const siblingCount = await manager.count(
-      ProductCategory,
-      {
-        parent_category_id: targetParentId || null,
-        id: { $ne: targetCategoryId },
-      }
-    )
+    const siblingCount = await manager.count(ProductCategory, {
+      parent_category_id: targetParentId || null,
+      id: { $ne: targetCategoryId },
+    })
 
     // The category record that will be placed at the requested rank
     // We've temporarily placed it at a temporary rank that is
     // beyond a reasonable value (tempReorderRank)
-    const targetCategory = await manager.findOne(
-      ProductCategory,
-      {
-        id: targetCategoryId,
-        parent_category_id: targetParentId || null,
-        rank: tempReorderRank,
-      }
-    )
+    const targetCategory = await manager.findOne(ProductCategory, {
+      id: targetCategoryId,
+      parent_category_id: targetParentId || null,
+      rank: tempReorderRank,
+    })
 
     // If the targetRank is not present, or if targetRank is beyond the
     // rank of the last category, we set the rank as the last rank

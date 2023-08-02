@@ -1,23 +1,15 @@
 import { InputAlias } from "../definitions"
 import { ProductTypes } from "@medusajs/types"
-import { WorkflowArguments } from "../helper"
+import { PipelineHandlerResult, WorkflowArguments } from "../helper"
 
-export async function createProducts({
+export async function createProducts<T = ProductTypes.ProductDTO[]>({
   container,
   context,
   data,
 }: WorkflowArguments & {
   data: { [InputAlias.Products]: ProductTypes.CreateProductDTO[] }
-}) {
+}): Promise<PipelineHandlerResult<T>> {
   const productModuleService = container.resolve("productModuleService")
 
-  const value = await productModuleService.create(
-    data[InputAlias.Products],
-    context
-  )
-
-  return {
-    alias: InputAlias.Products,
-    value,
-  }
+  return await productModuleService.create(data[InputAlias.Products], context)
 }

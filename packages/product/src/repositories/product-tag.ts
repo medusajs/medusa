@@ -12,15 +12,15 @@ import {
   UpdateProductTagDTO,
   UpsertProductTagDTO,
 } from "@medusajs/types"
-import { BaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
+  DALUtils,
   InjectTransactionManager,
   MedusaContext,
   MedusaError,
 } from "@medusajs/utils"
 
-export class ProductTagRepository extends BaseRepository {
+export class ProductTagRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {

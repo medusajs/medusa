@@ -1,12 +1,13 @@
-import { MikroORM, PostgreSqlDriver } from "@mikro-orm/postgresql"
 import { ModuleServiceInitializeOptions } from "@medusajs/types"
 
-export async function createConnection(
+export async function mikroOrmCreateConnection(
   database: ModuleServiceInitializeOptions["database"],
   entities: any[]
 ) {
+  const { MikroORM } = await import("@mikro-orm/postgresql")
+
   const schema = database.schema || "public"
-  const orm = await MikroORM.init<PostgreSqlDriver>({
+  const orm = await MikroORM.init({
     discovery: { disableDynamicFileAccess: true },
     entities,
     debug: database.debug ?? process.env.NODE_ENV?.startsWith("dev") ?? false,

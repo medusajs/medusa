@@ -109,6 +109,11 @@ module.exports = {
         },
         {
           type: "doc",
+          label: "Admin Setting Pages",
+          id: "admin/setting-pages",
+        },
+        {
+          type: "doc",
           label: "Example: Create Onboarding",
           id: "admin/onboarding",
         },
@@ -1242,6 +1247,11 @@ module.exports = {
               type: "doc",
               id: "development/entities/create",
               label: "Create an Entity",
+            },
+            {
+              type: "doc",
+              id: "development/entities/repositories",
+              label: "Use a Repository",
             },
             {
               type: "doc",
