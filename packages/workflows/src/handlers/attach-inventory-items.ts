@@ -1,9 +1,10 @@
 import { InventoryItemDTO, ProductTypes } from "@medusajs/types"
 
 import { InputAlias } from "../definitions"
-import { WorkflowArguments } from "../helper"
+import { PipelineHandlerResult, WorkflowArguments } from "../helper"
+import { ProductVariantInventoryItem } from "@medusajs/medusa/src"
 
-export async function attachInventoryItems({
+export async function attachInventoryItems<T = ProductVariantInventoryItem[]>({
   container,
   data,
 }: WorkflowArguments & {
@@ -11,13 +12,13 @@ export async function attachInventoryItems({
     variant: ProductTypes.ProductVariantDTO
     [InputAlias.InventoryItems]: InventoryItemDTO
   }[]
-}) {
+}): Promise<PipelineHandlerResult<T>> {
   const manager = container.resolve("manager")
   const productVariantInventoryService = container
     .resolve("productVariantInventoryService")
     .withTransaction(manager)
 
-  const value = await Promise.all(
+  return (await Promise.all(
     data
       .filter((d) => d)
       .map(async ({ variant, [InputAlias.InventoryItems]: inventoryItem }) => {
@@ -26,10 +27,5 @@ export async function attachInventoryItems({
           inventoryItem.id
         )
       })
-  )
-
-  return {
-    alias: InputAlias.AttachedInventoryItems,
-    value,
-  }
+  )) as PipelineHandlerResult<T>
 }
