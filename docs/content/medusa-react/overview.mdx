@@ -334,9 +334,13 @@ const AuthorsBlogPosts = () => {
    return (
      <>
        {isLoading && <span>Loading...</span>}
-       {data && data.posts && <span>{data.posts.map((post, index) => (
-        <span key={index}>{post.title}</span>
-       ))}</span>}
+       {data && data.posts && (
+        <span>
+          {data.posts.map((post, index) => (
+            <span key={index}>{post.title}</span>
+          ))}
+        </span>
+       )}
      </>
    )
 }
