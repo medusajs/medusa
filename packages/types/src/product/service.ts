@@ -239,10 +239,11 @@ export interface IProductModuleService {
 
   delete(productIds: string[], sharedContext?: Context): Promise<void>
 
-  softDelete(
+  softDelete<TReturnableLinkableKeys extends string = string>(
     productIds: string[],
+    config?: { returnLinkableKeys?: TReturnableLinkableKeys[] },
     sharedContext?: Context
-  ): Promise<ProductDTO[]>
+  ): Promise<Record<string, string[]> | void>
 
   restore(productIds: string[], sharedContext?: Context): Promise<ProductDTO[]>
 }

@@ -6422,7 +6422,7 @@ __metadata:
     redis: ^3.0.2
     reflect-metadata: ^0.1.13
     regenerator-runtime: ^0.13.11
-    request-ip: ^2.1.3
+    request-ip: ^3.3.0
     rimraf: ^5.0.1
     scrypt-kdf: ^2.0.1
     supertest: ^4.0.2
@@ -25979,13 +25979,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is_js@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "is_js@npm:0.9.0"
-  checksum: 3d278fa0607bef6a7c2a109e3e28f6a5e8ac3c339f4cb813201e274070ba4e596cfd77a097902abdb8c0e06e434c9e306fdce3dd47b7417c0ce086cb2a4888b3
-  languageName: node
-  linkType: hard
-
 "isarray@npm:0.0.1":
   version: 0.0.1
   resolution: "isarray@npm:0.0.1"
@@ -37275,12 +37268,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"request-ip@npm:^2.1.3":
-  version: 2.2.0
-  resolution: "request-ip@npm:2.2.0"
-  dependencies:
-    is_js: ^0.9.0
-  checksum: a8e13ad1326deca2e7182ed655a03ce5a86d6afe5487271d4f01a31d2aea23c197727a94521e4a534a58f140f083da73a605e49512d52d7d68fe28a8e4332f23
+"request-ip@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "request-ip@npm:3.3.0"
+  checksum: 35ab5fcb29408cb72629b53207f00a443a60fe881ffb63e3b08a06c07dae3eee617522741bd0b035492153d6c9babe7f8d9f79c008d493d1e6638b0bd92cb02b
   languageName: node
   linkType: hard
 
