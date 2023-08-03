@@ -1,21 +1,20 @@
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
-import { CartDTO } from "../../types"
 
 enum Aliases {
-  Cart = "cart"
+  CreatedCart = "createdCart"
 }
 
 export async function removeCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<CartDTO> {
+}: WorkflowArguments): Promise<void> {
   const cartService = container.resolve("cartService")
   const entityManager = container.resolve("manager")
   const cartServiceTx = cartService.withTransaction(entityManager)
 
-  return await cartServiceTx.delete(
-    data[Aliases.Cart].id
+  await cartServiceTx.delete(
+    data[Aliases.CreatedCart].id
   )
 }
 

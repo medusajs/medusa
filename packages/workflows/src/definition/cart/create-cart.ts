@@ -45,7 +45,6 @@ const workflowSteps: TransactionStepsDefinition = {
         noCompensation: true,
         next: {
           action: CreateCartActions.createCart,
-          noCompensation: true,
           next: {
             action: CreateCartActions.attachLineItems,
             noCompensation: true,
@@ -117,6 +116,17 @@ const handlers = new Map([
           ],
         },
         cartHandlers.createCart
+      ),
+      compensate: pipe(
+        {
+          invoke: [
+            {
+              from: CreateCartActions.createCart,
+              alias: cartHandlers.removeCart.aliases.CreatedCart,
+            },
+          ],
+        },
+        cartHandlers.removeCart
       ),
     },
   ],
