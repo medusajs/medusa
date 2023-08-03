@@ -4,7 +4,9 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import {
+  createInventoryItems,
   createProducts as createProductsHandler,
+  removeInventoryItems,
   removeProducts,
 } from "../handlers"
 import { exportWorkflow, pipe } from "../helper"
@@ -182,6 +184,29 @@ const handlers = new Map([
           ],
         },
         detachSalesChannelFromProducts
+      ),
+    },
+  ],
+  [
+    Actions.createInventoryItems,
+    {
+      invoke: pipe(
+        {
+          invoke: {
+            from: Actions.createProducts,
+            alias: createInventoryItems.aliases.createInventoryItemsProducts,
+          },
+        },
+        createInventoryItems
+      ),
+      compensate: pipe(
+        {
+          invoke: {
+            from: Actions.createInventoryItems,
+            alias: removeInventoryItems.aliases.removeInventoryItemsItems,
+          },
+        },
+        removeInventoryItems
       ),
     },
   ],

@@ -1,26 +1,34 @@
 import { InventoryItemDTO } from "@medusajs/types"
+import { WorkflowArguments } from "../../helper"
 
-import { InputAlias } from "../../definitions"
-import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
-
-export async function removeInventoryItems<T = void[]>({
+export async function removeInventoryItems({
   container,
+  context,
   data,
-}: WorkflowArguments & {
+}: Omit<WorkflowArguments, "data"> & {
   data: {
-    [InputAlias.InventoryItems]: InventoryItemDTO
-  }[]
-}): Promise<PipelineHandlerResult<T>> {
-  const manager = container.resolve("manager")
-  const inventoryService = container.resolve("inventoryService")
-  const context = { transactionManager: manager }
+    removeInventoryItemsItems: { inventoryItem: InventoryItemDTO }[]
+  }
+}) {
+  const { manager } = context
+  const data_ = data.removeInventoryItemsItems
 
-  return (await Promise.all(
-    data.map(async ({ [InputAlias.InventoryItems]: inventoryItem }) => {
-      return await inventoryService!.deleteInventoryItem(
-        inventoryItem.id,
-        context
-      )
-    })
-  )) as PipelineHandlerResult<T>
+  const inventoryService = container.resolve("inventoryService")
+
+  if (!inventoryService) {
+    const logger = container.resolve("logger")
+    logger.warn(
+      `Inventory service not found. You should install the @medusajs/inventory package to use inventory. The 'removeInventoryItems' will be skipped.`
+    )
+    return
+  }
+
+  return await inventoryService!.deleteInventoryItem(
+    data_.map(({ inventoryItem }) => inventoryItem.id),
+    { transactionManager: manager }
+  )
+}
+
+removeInventoryItems.aliases = {
+  removeInventoryItemsItems: "removeInventoryItemsItems",
 }

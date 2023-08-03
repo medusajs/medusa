@@ -1,28 +1,28 @@
-import {
-  IInventoryService,
-  InventoryItemDTO,
-  ProductTypes,
-} from "@medusajs/types"
+import { IInventoryService, ProductTypes } from "@medusajs/types"
+import { WorkflowArguments } from "../../helper"
 
-import { InputAlias } from "../../definitions"
-import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
-
-export async function createInventoryItems<
-  T = { variant: any; inventoryItem: InventoryItemDTO }[]
->({
+export async function createInventoryItems({
   container,
+  context,
   data,
-}: WorkflowArguments & {
+}: Omit<WorkflowArguments, "data"> & {
   data: {
-    [InputAlias.Products]: ProductTypes.ProductDTO[]
+    createInventoryItemsProducts: ProductTypes.ProductDTO[]
   }
-}): Promise<PipelineHandlerResult<T>> {
-  const manager = container.resolve("manager")
+}) {
+  const products = data.createInventoryItemsProducts
+
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
-  const context = { transactionManager: manager }
 
-  const products = data[InputAlias.Products]
+  if (!inventoryService) {
+    const logger = container.resolve("logger")
+    logger.warn(
+      `Inventory service not found. You should install the @medusajs/inventory package to use inventory. The 'createInventoryItems' will be skipped.`
+    )
+    return
+  }
+
   const variants = products.reduce(
     (
       acc: ProductTypes.ProductVariantDTO[],
@@ -33,7 +33,7 @@ export async function createInventoryItems<
     []
   )
 
-  return (await Promise.all(
+  return await Promise.all(
     variants.map(async (variant) => {
       if (!variant.manage_inventory) {
         return
@@ -51,10 +51,17 @@ export async function createInventoryItems<
           height: variant.height!,
           width: variant.width!,
         },
-        context
+        {
+          transactionManager: (context.transactionManager ??
+            context.manager) as any,
+        }
       )
 
       return { variant, inventoryItem }
     })
-  )) as PipelineHandlerResult<T>
+  )
+}
+
+createInventoryItems.aliases = {
+  createInventoryItemsProducts: "createInventoryItemsProducts",
 }
