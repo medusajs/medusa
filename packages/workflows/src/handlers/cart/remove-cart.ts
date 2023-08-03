@@ -1,4 +1,4 @@
-import { InputAlias } from "../../definitions"
+import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
 export async function removeCart<T>({
@@ -11,6 +11,6 @@ export async function removeCart<T>({
   const cartServiceTx = cartService.withTransaction(entityManager)
 
   return await cartServiceTx.delete(
-    data[InputAlias.Cart].id
+    data[CartInputAlias.Cart].id
   )
 }

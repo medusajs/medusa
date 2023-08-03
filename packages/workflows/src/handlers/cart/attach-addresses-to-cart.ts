@@ -1,7 +1,7 @@
 import { isDefined } from "medusa-core-utils"
 import { MedusaError } from "@medusajs/utils"
 
-import { InputAlias } from "../../definitions"
+import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
 export async function attachAddressesToCart<T>({
@@ -11,13 +11,13 @@ export async function attachAddressesToCart<T>({
 }: WorkflowArguments): Promise<PipelineHandlerResult<T>> {
   const regionService = container.resolve("regionService")
   const addressRepository = container.resolve("addressRepository")
-  const shippingAddress = data[InputAlias.Cart].shipping_address
-  const shippingAddressId = data[InputAlias.Cart].shipping_address_id
-  const billingAddress = data[InputAlias.Cart].billing_address
-  const billingAddressId = data[InputAlias.Cart].billing_address_id
+  const shippingAddress = data[CartInputAlias.Cart].shipping_address
+  const shippingAddressId = data[CartInputAlias.Cart].shipping_address_id
+  const billingAddress = data[CartInputAlias.Cart].billing_address
+  const billingAddressId = data[CartInputAlias.Cart].billing_address_id
 
   const region = await regionService
-    .retrieve(data[InputAlias.Cart].region_id!, {
+    .retrieve(data[CartInputAlias.Cart].region_id!, {
       relations: ["countries"],
     })
 
@@ -25,7 +25,7 @@ export async function attachAddressesToCart<T>({
 
   if (!shippingAddress && !shippingAddressId) {
     if (region.countries.length === 1) {
-      data[InputAlias.Cart].shipping_address = addressRepository.create({
+      data[CartInputAlias.Cart].shipping_address = addressRepository.create({
         country_code: regionCountries[0],
       })
     }
@@ -54,7 +54,7 @@ export async function attachAddressesToCart<T>({
         )
       }
 
-      data[InputAlias.Cart].shipping_address_id = address.id
+      data[CartInputAlias.Cart].shipping_address_id = address.id
     }
   }
 
@@ -79,8 +79,8 @@ export async function attachAddressesToCart<T>({
       )
     }
 
-    data[InputAlias.Cart].billing_address_id = billingAddressId
+    data[CartInputAlias.Cart].billing_address_id = billingAddressId
   }
 
-  return data[InputAlias.Cart]
+  return data[CartInputAlias.Cart]
 }

@@ -1,4 +1,4 @@
-import { InputAlias } from "../../definitions"
+import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
 export async function prepareCart<T>({
@@ -7,5 +7,5 @@ export async function prepareCart<T>({
   data,
 }: WorkflowArguments): Promise<PipelineHandlerResult<T>> {
   // Do things to prepare the create input
-  return data[InputAlias.Cart]
+  return data[CartInputAlias.Cart]
 }

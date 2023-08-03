@@ -1,7 +1,7 @@
 import { validateEmail } from "@medusajs/utils"
 
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
-import { InputAlias } from "../../definitions"
+import { CartInputAlias } from "../../definition"
 
 export async function attachCustomerDetailsToCart<T>({
   container,
@@ -9,20 +9,21 @@ export async function attachCustomerDetailsToCart<T>({
   data,
 }: WorkflowArguments): Promise<PipelineHandlerResult<T>> {
   const customerService = container.resolve("customerService")
-  const customerId = data[InputAlias.Cart].customer_id
+  const entityManager = container.resolve("manager")
+  const customerId = data[CartInputAlias.Cart].customer_id
   const customerServiceTx = customerService
-    // .withTransaction(transactionManager)
+    .withTransaction(entityManager)
 
   if (customerId) {
     const customer = await customerServiceTx
       .retrieve(customerId)
       .catch(() => undefined)
 
-    data[InputAlias.Cart].customer_id = customer?.id
-    data[InputAlias.Cart].email = customer?.email
+    data[CartInputAlias.Cart].customer_id = customer?.id
+    data[CartInputAlias.Cart].email = customer?.email
   }
 
-  const customerEmail = data[InputAlias.Cart].email
+  const customerEmail = data[CartInputAlias.Cart].email
 
   if (customerEmail) {
     const validatedEmail = validateEmail(customerEmail)
@@ -35,8 +36,8 @@ export async function attachCustomerDetailsToCart<T>({
       customer = await customerServiceTx.create({ email: validatedEmail })
     }
 
-    data[InputAlias.Cart].customer_id = customer.id
-    data[InputAlias.Cart].email = customer.email
+    data[CartInputAlias.Cart].customer_id = customer.id
+    data[CartInputAlias.Cart].email = customer.email
   }
 
   return data['cart']

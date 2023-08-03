@@ -1,7 +1,7 @@
 import { isDefined } from "medusa-core-utils"
 import { MedusaError } from "@medusajs/utils"
 
-import { InputAlias } from "../../definitions"
+import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
 export async function attachSalesChannelToCart<T>({
@@ -10,12 +10,12 @@ export async function attachSalesChannelToCart<T>({
   data,
 }: WorkflowArguments): Promise<PipelineHandlerResult<T>> {
   let salesChannel
-  let salesChannelId = data[InputAlias.Cart].sales_channel_id
+  let salesChannelId = data[CartInputAlias.Cart].sales_channel_id
   const salesChannelService = container.resolve("salesChannelService")
   const storeService = container.resolve("storeService")
-  const publishableApiKeyScopes = data[InputAlias.Cart].publishableApiKeyScopes || {}
+  const publishableApiKeyScopes = data[CartInputAlias.Cart].publishableApiKeyScopes || {}
 
-  delete data[InputAlias.Cart].publishableApiKeyScopes
+  delete data[CartInputAlias.Cart].publishableApiKeyScopes
 
   if (
     !isDefined(salesChannelId) &&
@@ -49,7 +49,7 @@ export async function attachSalesChannelToCart<T>({
     )
   }
 
-  data[InputAlias.Cart].sales_channel_id = salesChannel?.id
+  data[CartInputAlias.Cart].sales_channel_id = salesChannel?.id
 
-  return data[InputAlias.Cart]
+  return data[CartInputAlias.Cart]
 }

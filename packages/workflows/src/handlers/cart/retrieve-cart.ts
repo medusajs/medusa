@@ -1,4 +1,4 @@
-import { InputAlias } from "../../definitions"
+import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
 // TODO: Figure out a way to handle duplication of this code
@@ -31,7 +31,7 @@ export async function retrieveCart<T>({
   const cartServiceTx = cartService.withTransaction(entityManager)
 
   return await cartServiceTx.retrieve(
-    data[InputAlias.Cart]?.id, {
+    data[CartInputAlias.Cart]?.id, {
       relations: defaultStoreCartRelations
     }
   )

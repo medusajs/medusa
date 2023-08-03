@@ -1,4 +1,4 @@
-import { InputAlias } from "../../definitions"
+import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
 export async function createCart<T>({
@@ -10,9 +10,9 @@ export async function createCart<T>({
   const entityManager = container.resolve("manager")
   const cartServiceTx = cartService.withTransaction(entityManager)
 
-  const cart = await cartServiceTx.create(data[InputAlias.Cart])
+  const cart = await cartServiceTx.create(data[CartInputAlias.Cart])
 
-  data[InputAlias.Cart].id = cart.id
+  data[CartInputAlias.Cart].id = cart.id
 
-  return data[InputAlias.Cart]
+  return data[CartInputAlias.Cart]
 }

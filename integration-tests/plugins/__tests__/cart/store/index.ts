@@ -81,8 +81,8 @@ describe("/store/carts", () => {
 
       expect(response.status).toEqual(200)
 
-      // const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
-      // expect(getRes.status).toEqual(200)
+      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
+      expect(getRes.status).toEqual(200)
     })
 
     it("should fail to create a cart when no region exist", async () => {

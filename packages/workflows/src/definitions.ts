@@ -10,9 +10,6 @@ export enum InputAlias {
   Products = "products",
   RemovedProducts = "removedProducts",
 
-  Cart = "cart",
-  RemovedCart = "removedCart",
-
   InventoryItems = "inventoryItems",
   RemovedInventoryItems = "removedInventoryItems",
 

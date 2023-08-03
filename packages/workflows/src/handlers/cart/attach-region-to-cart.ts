@@ -1,7 +1,7 @@
 import { isDefined } from "medusa-core-utils"
 import { MedusaError } from "@medusajs/utils"
 
-import { InputAlias } from "../../definitions"
+import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
 export async function attachRegionToCart<T>({
@@ -12,8 +12,8 @@ export async function attachRegionToCart<T>({
   let regionId
   const regionService = container.resolve("regionService")
 
-  if (isDefined(data[InputAlias.Cart].region_id)) {
-    regionId = data[InputAlias.Cart].region_id
+  if (isDefined(data[CartInputAlias.Cart].region_id)) {
+    regionId = data[CartInputAlias.Cart].region_id
   } else {
     const regions = await regionService.list({}, {})
 
@@ -27,7 +27,7 @@ export async function attachRegionToCart<T>({
     regionId = regions[0].id
   }
 
-  data[InputAlias.Cart].region_id = regionId
+  data[CartInputAlias.Cart].region_id = regionId
 
-  return data[InputAlias.Cart]
+  return data[CartInputAlias.Cart]
 }

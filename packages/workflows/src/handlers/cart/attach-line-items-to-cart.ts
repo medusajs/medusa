@@ -1,4 +1,4 @@
-import { InputAlias } from "../../definitions"
+import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
 export async function attachLineItemsToCart<T>({
@@ -9,11 +9,12 @@ export async function attachLineItemsToCart<T>({
   const featureFlagRouter = container.resolve("featureFlagRouter")
   const lineItemService = container.resolve("lineItemService")
   const cartService = container.resolve("cartService")
+  const entityManager = container.resolve("manager")
   const lineItemServiceTx = lineItemService
-    // .withTransaction(manager)
+    .withTransaction(entityManager)
   const cartServiceTx = cartService
-    // .withTransaction(manager)
-  const lineItems = data[InputAlias.Cart].items
+    .withTransaction(entityManager)
+  const lineItems = data[CartInputAlias.Cart].items
 
   if (lineItems?.length) {
     const generateInputData = lineItems.map((item) => ({
@@ -24,13 +25,13 @@ export async function attachLineItemsToCart<T>({
     const generatedLineItems = await lineItemServiceTx.generate(
       generateInputData,
       {
-        region_id: data[InputAlias.Cart].region_id,
-        customer_id: data[InputAlias.Cart].customer_id,
+        region_id: data[CartInputAlias.Cart].region_id,
+        customer_id: data[CartInputAlias.Cart].customer_id,
       }
     )
 
     await cartServiceTx.addOrUpdateLineItems(
-      data[InputAlias.Cart].id,
+      data[CartInputAlias.Cart].id,
       generatedLineItems,
       {
         validateSalesChannels:
