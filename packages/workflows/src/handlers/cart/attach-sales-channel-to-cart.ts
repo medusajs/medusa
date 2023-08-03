@@ -4,13 +4,18 @@ import { MedusaError } from "@medusajs/utils"
 import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
-export async function attachSalesChannelToCart<T>({
+type AttachSalesChannelDTO = {
+  sales_channel_id?: string
+}
+
+export async function attachSalesChannelToCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<PipelineHandlerResult<T>> {
+}: WorkflowArguments): Promise<AttachSalesChannelDTO> {
   let salesChannel
   let salesChannelId = data[CartInputAlias.Cart].sales_channel_id
+  const salesChannelDTO: AttachSalesChannelDTO = {}
   const salesChannelService = container.resolve("salesChannelService")
   const storeService = container.resolve("storeService")
   const publishableApiKeyScopes = data[CartInputAlias.Cart].publishableApiKeyScopes || {}
@@ -49,7 +54,7 @@ export async function attachSalesChannelToCart<T>({
     )
   }
 
-  data[CartInputAlias.Cart].sales_channel_id = salesChannel?.id
+  salesChannelDTO.sales_channel_id = salesChannel?.id
 
-  return data[CartInputAlias.Cart]
+  return salesChannelDTO
 }

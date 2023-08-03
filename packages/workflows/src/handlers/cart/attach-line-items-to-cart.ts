@@ -1,11 +1,11 @@
 import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
-export async function attachLineItemsToCart<T>({
+export async function attachLineItemsToCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<PipelineHandlerResult<T>> {
+}: WorkflowArguments): Promise<void> {
   const featureFlagRouter = container.resolve("featureFlagRouter")
   const lineItemService = container.resolve("lineItemService")
   const cartService = container.resolve("cartService")
@@ -39,6 +39,4 @@ export async function attachLineItemsToCart<T>({
       }
     )
   }
-
-  return lineItems
 }

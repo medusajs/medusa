@@ -1,5 +1,6 @@
 import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
+import { CartDTO } from "../../types"
 
 // TODO: Figure out a way to handle duplication of this code
 // TODO: Figure out a way to handle fields and expand query param.
@@ -21,11 +22,11 @@ export const defaultStoreCartRelations = [
   "discounts.rule",
 ]
 
-export async function retrieveCart<T>({
+export async function retrieveCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<PipelineHandlerResult<T>> {
+}: WorkflowArguments): Promise<CartDTO> {
   const cartService = container.resolve("cartService")
   const entityManager = container.resolve("manager")
   const cartServiceTx = cartService.withTransaction(entityManager)

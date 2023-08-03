@@ -4,12 +4,17 @@ import { MedusaError } from "@medusajs/utils"
 import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
-export async function attachRegionToCart<T>({
+type AttachRegionDTO = {
+  region_id?: string
+}
+
+export async function attachRegionToCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<PipelineHandlerResult<T>> {
+}: WorkflowArguments): Promise<AttachRegionDTO> {
   let regionId
+  const regionDTO: AttachRegionDTO = {}
   const regionService = container.resolve("regionService")
 
   if (isDefined(data[CartInputAlias.Cart].region_id)) {
@@ -27,7 +32,7 @@ export async function attachRegionToCart<T>({
     regionId = regions[0].id
   }
 
-  data[CartInputAlias.Cart].region_id = regionId
+  regionDTO.region_id = regionId
 
-  return data[CartInputAlias.Cart]
+  return regionDTO
 }

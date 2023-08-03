@@ -1,4 +1,5 @@
 export * from './attach-addresses-to-cart'
+export * from './attach-context-to-cart'
 export * from './attach-customer-details-to-cart'
 export * from './attach-line-items-to-cart'
 export * from './attach-region-to-cart'

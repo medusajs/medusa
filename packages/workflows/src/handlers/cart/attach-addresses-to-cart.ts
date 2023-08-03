@@ -2,22 +2,30 @@ import { isDefined } from "medusa-core-utils"
 import { MedusaError } from "@medusajs/utils"
 
 import { CartInputAlias } from "../../definition"
+import { AddressDTO } from "../../types"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
-export async function attachAddressesToCart<T>({
+type AttachAddressDTO = {
+  shipping_address?: AddressDTO
+  shipping_address_id?: string
+  billing_address_id?: string
+}
+
+export async function attachAddressesToCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<PipelineHandlerResult<T>> {
+}: WorkflowArguments): Promise<AttachAddressDTO> {
   const regionService = container.resolve("regionService")
   const addressRepository = container.resolve("addressRepository")
   const shippingAddress = data[CartInputAlias.Cart].shipping_address
   const shippingAddressId = data[CartInputAlias.Cart].shipping_address_id
   const billingAddress = data[CartInputAlias.Cart].billing_address
   const billingAddressId = data[CartInputAlias.Cart].billing_address_id
+  const addressesDTO: AttachAddressDTO = {}
 
   const region = await regionService
-    .retrieve(data[CartInputAlias.Cart].region_id!, {
+    .retrieve(data[CartInputAlias.CartRegion].region_id!, {
       relations: ["countries"],
     })
 
@@ -25,7 +33,7 @@ export async function attachAddressesToCart<T>({
 
   if (!shippingAddress && !shippingAddressId) {
     if (region.countries.length === 1) {
-      data[CartInputAlias.Cart].shipping_address = addressRepository.create({
+      addressesDTO.shipping_address = addressRepository.create({
         country_code: regionCountries[0],
       })
     }
@@ -54,7 +62,7 @@ export async function attachAddressesToCart<T>({
         )
       }
 
-      data[CartInputAlias.Cart].shipping_address_id = address.id
+      addressesDTO.shipping_address_id = address.id
     }
   }
 
@@ -79,8 +87,8 @@ export async function attachAddressesToCart<T>({
       )
     }
 
-    data[CartInputAlias.Cart].billing_address_id = billingAddressId
+    addressesDTO.billing_address_id = billingAddressId
   }
 
-  return data[CartInputAlias.Cart]
+  return addressesDTO
 }
