@@ -46,13 +46,12 @@ export default function RootLayout({
             <BaseSpecsProvider>
               <SidebarProvider>
                 <NavbarProvider>
-                  <div>
+                  <div className="max-w-xxl mx-auto w-full px-1.5">
                     <Navbar />
-                    <div className="xl:min-w-xl mx-auto flex w-full max-w-xl">
+                    <div className="flex">
                       <Sidebar />
-                      <main className="lg:w-api-ref-main relative w-full flex-1">
+                      <main className="lg:w-api-ref-main relative mt-7 w-full flex-1">
                         {children}
-                        <div className="bg-docs-bg-surface dark:bg-docs-bg-surface-dark w-api-ref-code absolute top-0 right-0 z-0 hidden h-full lg:block"></div>
                       </main>
                     </div>
                   </div>

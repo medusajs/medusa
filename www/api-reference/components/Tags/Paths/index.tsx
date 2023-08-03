@@ -74,8 +74,8 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
   }, [paths])
 
   return (
-    <div className={clsx("relative z-10 overflow-hidden", className)}>
-      {loading && <DividedLoading className="mt-[57px]" />}
+    <div className={clsx("relative", className)}>
+      {loading && <DividedLoading className="mt-7" />}
       {Object.entries(paths).map(([endpointPath, operations], pathIndex) => (
         <div key={pathIndex}>
           {Object.entries(operations).map(
@@ -86,6 +86,11 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
                 tag={tag}
                 key={`${pathIndex}-${operationIndex}`}
                 endpointPath={endpointPath}
+                className={clsx(
+                  ((pathIndex === 0 && operationIndex !== 0) ||
+                    pathIndex !== 0) &&
+                    "pt-7"
+                )}
               />
             )
           )}

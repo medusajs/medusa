@@ -1,3 +1,5 @@
+import Feedback from "@/components/Feedback"
+
 This API reference includes Medusa's Admin APIs, which are REST APIs exposed by the Medusa backend. They are typically used to perform admin functionalities or create an admin dashboard to access and manipulate your commerce store's data.
 
 All endpoints are prefixed with `/admin`. So, during development, the endpoints will be available under the path `http://localhost:9000/admin`. For production, replace `http://localhost:9000` with your Medusa backend URL.
@@ -9,3 +11,11 @@ There are different ways you can send requests to these endpoints, including:
 - Using cURL
 
 Aside from this API reference, check out the [Commerce Modules](https://docs.medusajs.com/modules/overview) section of the documentation for guides on how to use these APIs in different scenarios.
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "admin",
+    section: "introduction"
+  }}
+/>

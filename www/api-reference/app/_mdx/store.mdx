@@ -1,5 +1,8 @@
 import Feedback from "@/components/Feedback"
 import CodeTabs from "@/components/CodeTabs"
+import SectionContainer from "@/components/Section/Container"
+
+<SectionContainer noTopPadding={true}>
 
 This API reference includes Medusa's Store APIs, which are REST APIs exposed by the Medusa backend. They are typically used to create a storefront for your commerce store, such as a webshop or a commerce mobile app.
 
@@ -21,7 +24,9 @@ Aside from this API reference, check out the [Commerce Modules](https://docs.med
   }}
 />
 
----
+</SectionContainer>
+
+<SectionContainer>
 
 ## Authentication
 
@@ -95,7 +100,9 @@ fetch(`<BACKEND_URL>/admin/products`, {
   }}
 />
 
----
+</SectionContainer>
+
+<SectionContainer>
 
 ## Publishable API Key
 
@@ -175,7 +182,9 @@ const App = () => {
   }}
 />
 
----
+</SectionContainer>
+
+<SectionContainer>
 
 ## HTTP Compression
 
@@ -235,7 +244,9 @@ const App = () => {
 }
 ```
 
----
+</SectionContainer>
+
+<SectionContainer>
 
 ## Expanding Fields
 
@@ -301,7 +312,9 @@ relations like `collection`.
   }}
 />
 
----
+</SectionContainer>
+
+<SectionContainer>
 
 ## Selecting Fields
 
@@ -389,7 +402,9 @@ curl "http://localhost:9000/store/products?fields&expand"
   }}
 />
 
----
+</SectionContainer>
+
+<SectionContainer>
 
 ## Query Parameter Types
 
@@ -526,7 +541,9 @@ curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17&created_
   }}
 />
 
----
+</SectionContainer>
+
+<SectionContainer>
 
 ## Pagination
 
@@ -611,3 +628,5 @@ order.
     section: "pagination"
   }}
 />
+
+</SectionContainer>

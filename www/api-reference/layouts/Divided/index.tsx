@@ -18,23 +18,15 @@ const DividedLayout = ({
   return (
     <div
       className={clsx(
-        "flex w-full flex-col justify-between gap-1 lg:flex-row",
+        "flex w-full flex-col justify-between lg:flex-row lg:gap-4",
         className
       )}
     >
-      <div
-        className={clsx(
-          "lg:w-api-ref-content w-full px-1 lg:pl-2",
-          mainContentClassName
-        )}
-      >
+      <div className={clsx("w-full lg:w-1/2 lg:pl-4", mainContentClassName)}>
         {mainContent}
       </div>
       <div
-        className={clsx(
-          "lg:w-api-ref-code z-10 w-full px-1",
-          codeContentClassName
-        )}
+        className={clsx("z-10 w-full pr-1.5 lg:w-1/2", codeContentClassName)}
       >
         {codeContent}
       </div>

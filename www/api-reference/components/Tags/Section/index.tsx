@@ -69,7 +69,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
   }, [slugTagName])
 
   return (
-    <div className="min-h-screen pt-[57px]" id={slugTagName} ref={ref}>
+    <div className="min-h-screen pt-7" id={slugTagName} ref={ref}>
       <DividedLayout
         mainContent={
           <>

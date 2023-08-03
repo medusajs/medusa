@@ -6,6 +6,7 @@ import getSectionId from "@/utils/get-section-id"
 import clsx from "clsx"
 import { useEffect, useRef, useState } from "react"
 import checkElementVisibility from "../../utils/check-element-visibility"
+import SectionContent from "./Content"
 
 export type SectionProps = {
   addToSidebar?: boolean
@@ -29,7 +30,7 @@ const Section = ({
       headings.some((heading) => {
         if (
           checkElementVisibility(heading, document.body, {
-            topMargin: 57,
+            topMargin: 112,
           }) &&
           activePath !== heading.id
         ) {
@@ -87,7 +88,7 @@ const Section = ({
       className={clsx(
         "[&_pre]:dark:border-medusa-code-block-border [&_pre]:rounded [&_pre]:border [&_pre]:border-transparent",
         "[&_ul]:list-disc [&_ul]:px-1",
-        "[&_h2]:mt-0 [&_h2]:pt-[57px] [&_hr]:mt-[57px] [&_hr]:mb-0",
+        // "[&_h2]:mt-0 [&_h2]:pt-[57px] [&_hr]:mt-[57px] [&_hr]:mb-0",
         className
       )}
     >

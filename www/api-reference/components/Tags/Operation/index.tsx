@@ -12,6 +12,7 @@ import type { TagOperationCodeSectionProps } from "./CodeSection"
 import TagsOperationDescriptionSection from "./DescriptionSection"
 import DividedLayout from "@/layouts/Divided"
 import { useLoading } from "@/providers/loading"
+import SectionDivider from "../../Section/Divider"
 
 const TagOperationCodeSection = dynamic<TagOperationCodeSectionProps>(
   async () => import("./CodeSection")
@@ -22,12 +23,14 @@ export type TagOperationProps = {
   method?: string
   tag: OpenAPIV3.TagObject
   endpointPath: string
+  className?: string
 }
 
 const TagOperation = ({
   operation,
   method,
   endpointPath,
+  className,
 }: TagOperationProps) => {
   const { setActivePath } = useSidebar()
   const [show, setShow] = useState(false)
@@ -36,7 +39,7 @@ const TagOperation = ({
   const { loading, removeLoading } = useLoading()
   const { ref } = useInView({
     threshold: 0.3,
-    rootMargin: `57px 0px 0px 0px`,
+    rootMargin: `112px 0px 0px 0px`,
     onChange: (changedInView) => {
       if (changedInView) {
         if (!show) {
@@ -85,7 +88,7 @@ const TagOperation = ({
 
   return (
     <div
-      className={clsx("relative min-h-screen w-full pt-[57px]")}
+      className={clsx("relative min-h-screen w-full pb-7", className)}
       id={path}
       ref={setRefs}
     >
@@ -110,9 +113,9 @@ const TagOperation = ({
               endpointPath={endpointPath}
             />
           }
-          codeContentClassName="bg-docs-bg-surface dark:bg-docs-bg-surface-dark"
         />
       </div>
+      <SectionDivider />
     </div>
   )
 }
