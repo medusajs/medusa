@@ -14,7 +14,7 @@ jest.setTimeout(50000)
 
 const adminHeaders = {
   headers: {
-    Authorization: "Bearer test_token",
+    Authorization: "Token test_token",
   },
 }
 

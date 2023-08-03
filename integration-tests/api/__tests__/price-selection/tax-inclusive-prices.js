@@ -693,7 +693,7 @@ describe("tax inclusive prices", () => {
 
       const res = await api.get(`/admin/shipping-options`, {
         headers: {
-          Authorization: `Bearer test_token`,
+          Authorization: `Token test_token`,
         },
       })
 
