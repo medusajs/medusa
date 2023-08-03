@@ -172,7 +172,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async softDelete(
     data: any,
-    { returnLinkableKeys }: { returnLinkableKeys?: string[] },
+    { returnLinkableKeys }: { returnLinkableKeys?: string[] } = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<string, string[]> | void> {
     this.validateFields(data)
@@ -187,7 +187,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async restore(
     data: any,
-    { returnLinkableKeys }: { returnLinkableKeys?: string[] },
+    { returnLinkableKeys }: { returnLinkableKeys?: string[] } = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<Record<string, string[]> | void> {
     this.validateFields(data)

@@ -7,6 +7,10 @@ import {
 
 import { MedusaModule } from "./medusa-module"
 
+export type DeleteEntityInput = {
+  [moduleName: string]: { [linkableKey: string]: string[] }
+}
+
 type LinkDefinition = {
   [moduleName: string]: {
     [fieldName: string]: string
@@ -19,6 +23,16 @@ type RemoteRelationship = ModuleJoinerRelationship & {
 }
 
 type LoadedLinkModule = LoadedModule & ILinkModule
+type DeleteEntities = { [key: string]: string[] }
+type RemovedIds = {
+  [serviceName: string]: DeleteEntities
+}
+
+type LinkRemoveErrors = {
+  serviceName: string
+  args: any
+  error: Error
+}
 
 export class RemoteLink {
   private modulesMap: Map<string, LoadedLinkModule> = new Map()
@@ -64,6 +78,10 @@ export class RemoteLink {
         }
 
         for (const relationship of joinerConfig.relationships) {
+          if (joinerConfig.isLink && !relationship.deleteCascade) {
+            continue
+          }
+
           this.addRelationship(serviceName, {
             ...relationship,
             isPrimary: false,
@@ -122,81 +140,6 @@ export class RemoteLink {
     return this.relations
   }
 
-  private getAllRelationships(serviceName: string, keys: string[]) {
-    const readServices = new Set<string>()
-
-    const getRecursive = (
-      serviceName: string,
-      keys: string[],
-      followCascade: boolean = false
-    ) => {
-      let retrieve: any = {
-        serviceName,
-        keys,
-        relationships: [],
-        next: [],
-      }
-
-      keys.forEach((key) => {
-        const hash = serviceName + "-" + key
-        if (readServices.has(hash)) {
-          return
-        }
-        readServices.add(hash)
-
-        const serviceMap = this.relations.get(serviceName)
-        if (!serviceMap) {
-          throw new Error(`Service ${serviceName} does not exist.`)
-        }
-
-        const relatedServices = serviceMap.get(key)
-        if (!relatedServices) {
-          return
-        }
-
-        const service = this.modulesMap.get(serviceName)!
-
-        relatedServices.forEach((relationship) => {
-          const { serviceName } = relationship
-
-          retrieve.relationships.push(relationship)
-
-          if (followCascade) {
-            const relationships = service.__joinerConfig.relationships ?? []
-            for (const rel of relationships) {
-              if (!rel.deleteCascade) {
-                continue
-              }
-
-              const dep = this.modulesMap.get(rel.serviceName)!
-
-              const linkableKeys = dep.__joinerConfig.linkableKeys ?? []
-              const next = getRecursive(rel.serviceName, linkableKeys, true)
-              if (next) {
-                retrieve.next.push(next)
-              }
-            }
-          } else {
-            const next = getRecursive(serviceName, [key], true)
-            if (next) {
-              retrieve.next.push(next)
-            }
-          }
-        })
-      })
-
-      return retrieve
-    }
-
-    let result: any = []
-    const recursionResult = getRecursive(serviceName, keys)
-    if (recursionResult) {
-      result.push(recursionResult)
-    }
-
-    return result
-  }
-
   private getLinkableKeys(mod: LoadedLinkModule) {
     return mod.__joinerConfig.linkableKeys ?? []
   }
@@ -248,79 +191,150 @@ export class RemoteLink {
     await Promise.all(promises)
   }
 
-  async remove(link: LinkDefinition | LinkDefinition[]): Promise<void> {
-    let removedIds: Record<string, Record<string, string[]>> = {}
+  async remove(
+    removedServices: DeleteEntityInput
+  ): Promise<[LinkRemoveErrors[] | null, RemovedIds[]]> {
+    const removedIds: RemovedIds = {}
+    const processedIds: Record<string, Set<string>> = {}
 
-    const isCascading: Record<string, boolean> = {}
-    const removeRecursively = async (toDelete: any[], input?) => {
-      if (input) {
-        removedIds = input
+    const services = Object.keys(removedServices).map((serviceName) => {
+      const deleteKeys = {}
+
+      for (const field in removedServices[serviceName]) {
+        deleteKeys[field] = Array.isArray(removedServices[serviceName][field])
+          ? removedServices[serviceName][field]
+          : [removedServices[serviceName][field]]
       }
 
-      for (const item of toDelete) {
-        const { relationships, next, serviceName: parentServiceName } = item
+      return { serviceName, deleteKeys }
+    })
 
-        for (const relationship of relationships) {
-          const details = next.find(
-            (rel) => rel.serviceName === relationship.serviceName
-          )
+    const errors: LinkRemoveErrors[] = []
+    const cascadeDelete = async (
+      services: { serviceName: string; deleteKeys: DeleteEntities }[],
+      isCascading: boolean = false
+    ): Promise<RemovedIds[]> => {
+      if (errors.length) {
+        return []
+      }
 
-          const { serviceName, keys } = details
+      const removedIdsList: RemovedIds[] = []
 
-          if (!removedIds[serviceName]) {
-            removedIds[serviceName] = {}
+      const servicePromises = services.map(async (serviceInfo) => {
+        const serviceRelations = this.relations.get(serviceInfo.serviceName)!
+        const values = serviceInfo.deleteKeys
+
+        const deletePromises: Promise<void>[] = []
+
+        for (const field in values) {
+          const relatedServices = serviceRelations.get(field)
+
+          if (!relatedServices || !values[field]?.length) {
+            continue
           }
 
-          const service: ILinkModule = this.modulesMap.get(serviceName)!
-          const filter = keys.reduce((acc: any, key: string) => {
-            if (removedIds[parentServiceName][key] === undefined) {
-              return acc
-            }
+          const relatedServicesPromises = relatedServices.map(
+            async (relatedService) => {
+              const { serviceName, primaryKey } = relatedService
+              const processedHash = `${serviceName}-${primaryKey}`
 
-            acc[key] = removedIds[parentServiceName][key]
-            return acc
-          }, {})
-
-          const removedKeys = await service.softDelete(filter)
-
-          if (isCascading[serviceName]) {
-            const [mainKey] = this.getLinkableKeys(service as LoadedLinkModule)
-
-            removedIds[serviceName][mainKey] = removedIds[serviceName][
-              mainKey
-            ].concat(removedKeys[mainKey])
-          } else {
-            for (const key in removedKeys ?? {}) {
-              if (!removedIds[serviceName][key]) {
-                removedIds[serviceName][key] = []
+              if (!processedIds[processedHash]) {
+                processedIds[processedHash] = new Set()
               }
 
-              removedIds[serviceName][key] = removedIds[serviceName][
-                key
-              ].concat(removedKeys[key])
+              const unprocessedIds = values[field].filter(
+                (id) => !processedIds[processedHash].has(id)
+              )
+
+              if (!unprocessedIds.length) {
+                return
+              }
+
+              let cascadeDelKeys: DeleteEntities = {}
+              cascadeDelKeys[primaryKey] = unprocessedIds
+              const service: ILinkModule = this.modulesMap.get(serviceName)!
+
+              const returnFields = this.getLinkableKeys(
+                service as LoadedLinkModule
+              )
+
+              errors
+
+              let deletedEntities: Record<string, string[]>
+
+              try {
+                deletedEntities = (await service.softDelete(cascadeDelKeys, {
+                  returnLinkableKeys: returnFields,
+                })) as Record<string, string[]>
+              } catch (e) {
+                errors.push({
+                  serviceName,
+                  args: cascadeDelKeys,
+                  error: e,
+                })
+                return
+              }
+
+              if (Object.keys(deletedEntities).length === 0) {
+                return
+              }
+
+              if (!isCascading) {
+                removedIds[serviceName] = {
+                  ...deletedEntities,
+                }
+              } else {
+                const [mainKey] = returnFields
+
+                if (!removedIds[serviceName]) {
+                  removedIds[serviceName] = {}
+                }
+                if (!removedIds[serviceName][mainKey]) {
+                  removedIds[serviceName][mainKey] = []
+                }
+
+                removedIds[serviceName][mainKey] = removedIds[serviceName][
+                  mainKey
+                ].concat(deletedEntities[mainKey])
+              }
+
+              Object.keys(deletedEntities).forEach((key) => {
+                deletedEntities[key].forEach((id) => {
+                  const hash = `${serviceName}-${key}`
+                  if (!processedIds[hash]) {
+                    processedIds[hash] = new Set()
+                  }
+
+                  processedIds[hash].add(id)
+                })
+              })
+
+              await cascadeDelete(
+                [
+                  {
+                    serviceName: serviceName,
+                    deleteKeys: deletedEntities as DeleteEntities,
+                  },
+                ],
+                true
+              )
             }
-          }
+          )
 
-          if (!isCascading[serviceName]) {
-            isCascading[serviceName] = true
-          }
+          deletePromises.push(...relatedServicesPromises)
         }
 
-        if (next?.length > 0) {
-          await removeRecursively(next)
-        }
-      }
+        await Promise.all(deletePromises)
+        removedIdsList.push(removedIds)
+      })
+
+      await Promise.all(servicePromises)
+      return removedIdsList
     }
 
-    const allLinks = Array.isArray(link) ? link : [link]
-    await Promise.all(
-      allLinks.map(async (input) => {
-        const serviceName = Object.keys(input)[0]
-        const keys = Object.keys(input[serviceName])
-        const toBeDeleted = this.getAllRelationships(serviceName, keys)
-        await removeRecursively(toBeDeleted, input)
-      })
-    )
+    const result = await cascadeDelete(services)
+
+    return [errors.length ? errors : null, result]
   }
 
   // TODO: restore, delete,
