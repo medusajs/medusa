@@ -56,6 +56,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         resultFrom: defaultResult,
       }
     ) => {
+      resultFrom ??= defaultResult
       const transaction = await originalRun(
         context?.transactionId ?? ulid(),
         input,
