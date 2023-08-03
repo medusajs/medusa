@@ -13,7 +13,7 @@ const Loading = ({ className, count = 6, barClassName }: LoadingProps) => {
       bars.push(
         <span
           className={clsx(
-            " h-1 w-full rounded-full bg-[#d1d5db] dark:bg-[#504F57]",
+            "bg-medusa-bg-subtle-pressed dark:bg-medusa-bg-subtle-pressed-dark h-1 w-full rounded-full",
             barClassName
           )}
           key={i}

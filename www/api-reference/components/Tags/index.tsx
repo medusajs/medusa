@@ -81,6 +81,7 @@ const Tags = () => {
             title: tag.name,
             children: childItems,
             loaded: childItems.length > 0,
+            hasChildren: true,
           }
         }) || [],
         {

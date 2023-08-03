@@ -23,6 +23,7 @@ export type SidebarItemType = {
   children?: SidebarItemType[]
   loaded?: boolean
   isPathHref?: boolean
+  hasChildren?: boolean
 }
 
 type SidebarSectionItemsType = {
@@ -33,7 +34,7 @@ type SidebarContextType = {
   items: SidebarSectionItemsType
   activePath: string | null
   setActivePath: (path: string | null) => void
-  isItemActive: (item: SidebarItemType) => boolean
+  isItemActive: (item: SidebarItemType, checkChildren?: boolean) => boolean
   addItems: (
     item: SidebarItemType[],
     options?: {
@@ -64,7 +65,13 @@ type SidebarProviderProps = {
 
 const SidebarProvider = ({ children }: SidebarProviderProps) => {
   const [items, setItems] = useState<SidebarSectionItemsType>({
-    top: [],
+    top: [
+      {
+        title: "Introduction",
+        path: "",
+        loaded: true,
+      },
+    ],
     bottom: [],
     mobile: [
       {
@@ -93,7 +100,7 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       },
     ],
   })
-  const [activePath, setActivePath] = useState<string | null>(null)
+  const [activePath, setActivePath] = useState<string | null>("")
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
 
   const findItemInSection = (
@@ -210,10 +217,11 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
   }
 
   const isItemActive = useCallback(
-    (item: SidebarItemType): boolean => {
+    (item: SidebarItemType, checkChildren = false): boolean => {
       return (
         item.path === activePath ||
-        item.children?.some((childItem) => isItemActive(childItem)) ||
+        (checkChildren &&
+          item.children?.some((childItem) => isItemActive(childItem))) ||
         false
       )
     },
@@ -238,7 +246,7 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
 
     const handleScroll = () => {
       if (window.scrollY === 0) {
-        setActivePath(null)
+        setActivePath("")
         // can't use next router as it doesn't support
         // changing url without scrolling
         history.pushState({}, "", location.pathname)

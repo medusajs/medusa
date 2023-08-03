@@ -25,7 +25,7 @@ const TagOperationCodeSection = ({
   return (
     <div className={clsx("mt-2 flex flex-col gap-1 px-1", className)}>
       <div className="bg-medusa-bg-base dark:bg-medusa-bg-base-dark border-medusa-border-base dark:border-medusa-border-base-dark rounded border p-0.5">
-        <MethodLabel method={method} />
+        <MethodLabel method={method} className="mr-0.5" />
         <code>{endpointPath}</code>
       </div>
       {operation["x-codeSamples"] && (

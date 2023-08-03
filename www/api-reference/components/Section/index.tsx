@@ -22,6 +22,9 @@ const Section = ({
 
   useEffect(() => {
     const handleScroll = () => {
+      if (window.scrollY === 0) {
+        return
+      }
       const headings = [...(sectionRef.current?.querySelectorAll("h2") || [])]
       headings.some((heading) => {
         if (
@@ -61,7 +64,6 @@ const Section = ({
       })
       addItems(items, {
         section: SidebarItemSections.TOP,
-        indexPosition: 0,
       })
     }
 

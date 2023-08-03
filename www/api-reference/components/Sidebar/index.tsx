@@ -34,60 +34,28 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
       <ul
         className={clsx(
           "sticky top-[57px] h-screen max-h-screen w-full list-none overflow-auto p-0",
-          "pb-[57px]"
+          "px-1.5 pb-[57px] pt-1.5"
         )}
         id="sidebar"
       >
-        {!items.mobile.length && (
-          <div className="lg:hidden">
-            <Loading className="px-1" />
-            <hr />
-          </div>
-        )}
-        {items.mobile.map((item, index) => (
-          <SidebarItem
-            item={item}
-            key={index}
-            className={clsx(
-              "lg:hidden",
-              index === items.mobile.length - 1 &&
-                "border-medusa-border-base dark:border-medusa-border-base-dark border-0 border-b border-solid"
-            )}
-          />
-        ))}
-        {!items.top.length && (
-          <>
-            <Loading className="px-1" />
-            <hr />
-          </>
-        )}
-        {items.top.map((item, index) => (
-          <SidebarItem
-            item={item}
-            key={index}
-            className={clsx(
-              index === items.top.length - 1 &&
-                "border-medusa-border-base dark:border-medusa-border-base-dark border-0 border-b border-solid"
-            )}
-          />
-        ))}
-        {!items.bottom.length && (
-          <>
-            <Loading className="px-1" />
-          </>
-        )}
-        {items.bottom.length > 0 && (
-          <li
-            className={clsx(
-              "text-label-x-small-plus px-[20px] pt-1 pb-[6px] uppercase"
-            )}
-          >
-            Endpoints
-          </li>
-        )}
-        {items.bottom.map((item, index) => (
-          <SidebarItem item={item} key={index} />
-        ))}
+        <div className="mb-1.5 lg:hidden">
+          {!items.mobile.length && <Loading className="px-0" />}
+          {items.mobile.map((item, index) => (
+            <SidebarItem item={item} key={index} />
+          ))}
+        </div>
+        <div className="mb-1.5">
+          {!items.top.length && <Loading className="px-0" />}
+          {items.top.map((item, index) => (
+            <SidebarItem item={item} key={index} />
+          ))}
+        </div>
+        <div className="mb-1.5">
+          {!items.bottom.length && <Loading className="px-0" />}
+          {items.bottom.map((item, index) => (
+            <SidebarItem item={item} key={index} />
+          ))}
+        </div>
       </ul>
     </aside>
   )
