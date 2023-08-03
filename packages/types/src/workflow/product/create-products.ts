@@ -24,7 +24,7 @@ export interface ProductOptionReq {
   title: string
 }
 
-export interface ProductVariantPricesReq {
+export interface ProductVariantPricesCreateReq {
   id?: string
   region_id?: string
   currency_code?: string
@@ -58,7 +58,7 @@ export interface ProductVariantReq {
   material?: string
   metadata?: Record<string, unknown>
 
-  prices?: ProductVariantPricesReq[]
+  prices?: ProductVariantPricesCreateReq[]
   options?: ProductVariantOptionReq[]
 }
 

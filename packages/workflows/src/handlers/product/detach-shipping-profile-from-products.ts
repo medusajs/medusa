@@ -4,26 +4,22 @@ import { WorkflowArguments } from "../../helper"
 type ProductHandle = string
 type ShippingProfileId = string
 
-export const DetachShippingProfileToProductsInputAlias =
-  "detachShippingProfileToProductsInputData"
-
 export async function detachShippingProfileFromProducts({
   container,
   context,
   data,
 }: WorkflowArguments & {
   data: {
-    detachShippingProfileToProductsInputData: {
+    input: {
       productsHandleShippingProfileIdMap: Map<ProductHandle, ShippingProfileId>
     }
-    detachShippingProfileToProductsProducts: ProductTypes.ProductDTO[]
+    products: ProductTypes.ProductDTO[]
   }
 }): Promise<void> {
   const { manager } = context
   const productsHandleShippingProfileIdMap =
-    data.detachShippingProfileToProductsInputData
-      .productsHandleShippingProfileIdMap
-  const products = data.detachShippingProfileToProductsProducts
+    data.input.productsHandleShippingProfileIdMap
+  const products = data.products
 
   const shippingProfileService = container.resolve("shippingProfileService")
   const shippingProfileServiceTx =
@@ -52,8 +48,6 @@ export async function detachShippingProfileFromProducts({
 }
 
 detachShippingProfileFromProducts.aliases = {
-  detachShippingProfileToProductsInputData:
-    "detachShippingProfileToProductsInputData",
-  detachShippingProfileToProductsProducts:
-    "detachShippingProfileToProductsProducts",
+  input: "inout",
+  products: "products",
 }

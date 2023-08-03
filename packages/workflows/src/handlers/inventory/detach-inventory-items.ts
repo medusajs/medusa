@@ -7,7 +7,7 @@ export async function detachInventoryItems({
   data,
 }: Omit<WorkflowArguments, "data"> & {
   data: {
-    detachInventoryItemsData: {
+    inventoryItems: {
       variant: ProductTypes.ProductVariantDTO
       inventoryItem: InventoryItemDTO
     }[]
@@ -19,7 +19,7 @@ export async function detachInventoryItems({
     .resolve("productVariantInventoryService")
     .withTransaction(manager)
 
-  const data_ = data.detachInventoryItemsData
+  const data_ = data.inventoryItems
 
   if (!data_?.length) {
     return
@@ -36,5 +36,5 @@ export async function detachInventoryItems({
 }
 
 detachInventoryItems.aliases = {
-  detachInventoryItemsData: "detachInventoryItemsData",
+  inventoryItems: "inventoryItems",
 }

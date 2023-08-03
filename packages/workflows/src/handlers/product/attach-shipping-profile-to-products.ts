@@ -10,18 +10,17 @@ export async function attachShippingProfileToProducts({
   data,
 }: WorkflowArguments & {
   data: {
-    attachShippingProfileToProductsInputData: {
+    input: {
       productsHandleShippingProfileIdMap: Map<ProductHandle, ShippingProfileId>
     }
-    attachShippingProfileToProductsProducts: ProductTypes.ProductDTO[]
+    products: ProductTypes.ProductDTO[]
   }
 }): Promise<void> {
   const { manager } = context
 
   const productsHandleShippingProfileIdMap =
-    data.attachShippingProfileToProductsInputData
-      .productsHandleShippingProfileIdMap
-  const products = data.attachShippingProfileToProductsProducts
+    data.input.productsHandleShippingProfileIdMap
+  const products = data.products
 
   const shippingProfileService = container.resolve("shippingProfileService")
   const shippingProfileServiceTx =
@@ -47,8 +46,6 @@ export async function attachShippingProfileToProducts({
 }
 
 attachShippingProfileToProducts.aliases = {
-  attachShippingProfileToProductsInputData:
-    "attachShippingProfileToProductsInputData",
-  attachShippingProfileToProductsProducts:
-    "attachShippingProfileToProductsProducts",
+  input: "input",
+  products: "products",
 }

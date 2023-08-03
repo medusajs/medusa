@@ -7,10 +7,10 @@ export async function createInventoryItems({
   data,
 }: Omit<WorkflowArguments, "data"> & {
   data: {
-    createInventoryItemsProducts: ProductTypes.ProductDTO[]
+    products: ProductTypes.ProductDTO[]
   }
 }) {
-  const products = data.createInventoryItemsProducts
+  const products = data.products
 
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
@@ -63,5 +63,5 @@ export async function createInventoryItems({
 }
 
 createInventoryItems.aliases = {
-  createInventoryItemsProducts: "createInventoryItemsProducts",
+  products: "products",
 }

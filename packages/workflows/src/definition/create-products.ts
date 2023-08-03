@@ -13,12 +13,15 @@ import {
 import { exportWorkflow, pipe } from "../helper"
 
 import { ProductTypes } from "@medusajs/types"
-import { createProductsPrepareData } from "../handlers/pipes/create-products-prepare-data"
+import { createProductsPrepareData } from "../handlers/middlewares/create-products-prepare-data"
 import { attachShippingProfileToProducts } from "../handlers/product/attach-shipping-profile-to-products"
 import { detachShippingProfileFromProducts } from "../handlers/product/detach-shipping-profile-from-products"
 import { attachSalesChannelToProducts } from "../handlers/product/attach-sales-channel-to-products"
 import { detachSalesChannelFromProducts } from "../handlers/product/detach-sales-channel-from-products"
 import { detachInventoryItems } from "../handlers/inventory/detach-inventory-items"
+import { updateProductsVariantsPrices } from "../handlers/product/update-products-variants-prices"
+import { createProductsPrepareCreatePricesCompensation } from "../handlers/middlewares/create-products-prepare-create-prices-compensation"
+import { retrieveProducts } from "../handlers/product/retrieve-products"
 
 export enum Actions {
   prepare = "prepare",
@@ -87,7 +90,7 @@ const handlers = new Map([
         {
           invoke: {
             from: Actions.prepare,
-            alias: createProductsHandler.aliases.createProductsInput,
+            alias: createProductsHandler.aliases.input,
           },
         },
         createProductsHandler
@@ -96,7 +99,7 @@ const handlers = new Map([
         {
           invoke: {
             from: Actions.createProducts,
-            alias: removeProducts.aliases.removeProductsProducts,
+            alias: removeProducts.aliases.products,
           },
         },
         removeProducts
@@ -110,16 +113,12 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: Actions.createProducts,
-              alias:
-                attachShippingProfileToProducts.aliases
-                  .attachShippingProfileToProductsInputData,
+              from: Actions.prepare,
+              alias: attachShippingProfileToProducts.aliases.input,
             },
             {
               from: Actions.createProducts,
-              alias:
-                attachShippingProfileToProducts.aliases
-                  .attachShippingProfileToProductsProducts,
+              alias: attachShippingProfileToProducts.aliases.products,
             },
           ],
         },
@@ -129,16 +128,12 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: Actions.createProducts,
-              alias:
-                detachShippingProfileFromProducts.aliases
-                  .detachShippingProfileToProductsInputData,
+              from: Actions.prepare,
+              alias: detachShippingProfileFromProducts.aliases.input,
             },
             {
               from: Actions.createProducts,
-              alias:
-                detachShippingProfileFromProducts.aliases
-                  .detachShippingProfileToProductsProducts,
+              alias: detachShippingProfileFromProducts.aliases.products,
             },
           ],
         },
@@ -153,16 +148,12 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: Actions.createProducts,
-              alias:
-                detachShippingProfileFromProducts.aliases
-                  .detachShippingProfileToProductsInputData,
+              from: Actions.prepare,
+              alias: attachSalesChannelToProducts.aliases.input,
             },
             {
               from: Actions.createProducts,
-              alias:
-                detachShippingProfileFromProducts.aliases
-                  .detachShippingProfileToProductsProducts,
+              alias: attachSalesChannelToProducts.aliases.products,
             },
           ],
         },
@@ -172,16 +163,12 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: Actions.createProducts,
-              alias:
-                detachShippingProfileFromProducts.aliases
-                  .detachShippingProfileToProductsInputData,
+              from: Actions.prepare,
+              alias: detachSalesChannelFromProducts.aliases.input,
             },
             {
               from: Actions.createProducts,
-              alias:
-                detachShippingProfileFromProducts.aliases
-                  .detachShippingProfileToProductsProducts,
+              alias: detachSalesChannelFromProducts.aliases.products,
             },
           ],
         },
@@ -196,7 +183,7 @@ const handlers = new Map([
         {
           invoke: {
             from: Actions.createProducts,
-            alias: createInventoryItems.aliases.createInventoryItemsProducts,
+            alias: createInventoryItems.aliases.products,
           },
         },
         createInventoryItems
@@ -205,7 +192,7 @@ const handlers = new Map([
         {
           invoke: {
             from: Actions.createInventoryItems,
-            alias: removeInventoryItems.aliases.removeInventoryItemsItems,
+            alias: removeInventoryItems.aliases.inventoryItems,
           },
         },
         removeInventoryItems
@@ -219,7 +206,7 @@ const handlers = new Map([
         {
           invoke: {
             from: Actions.createInventoryItems,
-            alias: attachInventoryItems.aliases.attachInventoryItemsData,
+            alias: attachInventoryItems.aliases.inventoryItems,
           },
         },
         attachInventoryItems
@@ -228,10 +215,67 @@ const handlers = new Map([
         {
           invoke: {
             from: Actions.createInventoryItems,
-            alias: detachInventoryItems.aliases.detachInventoryItemsData,
+            alias: detachInventoryItems.aliases.inventoryItems,
           },
         },
         detachInventoryItems
+      ),
+    },
+  ],
+  [
+    Actions.createPrices,
+    {
+      invoke: pipe(
+        {
+          invoke: [
+            {
+              from: Actions.prepare,
+              alias: updateProductsVariantsPrices.aliases.input,
+            },
+            {
+              from: Actions.createProducts,
+              alias: updateProductsVariantsPrices.aliases.products,
+            },
+          ],
+        },
+        updateProductsVariantsPrices
+      ),
+      compensate: pipe(
+        {
+          invoke: [
+            {
+              from: Actions.prepare,
+              alias: updateProductsVariantsPrices.aliases.input,
+            },
+            {
+              from: Actions.createProducts,
+              alias: updateProductsVariantsPrices.aliases.products,
+            },
+          ],
+        },
+        createProductsPrepareCreatePricesCompensation,
+        updateProductsVariantsPrices
+      ),
+    },
+  ],
+  [
+    Actions.result,
+    {
+      invoke: pipe(
+        {
+          inputAlias: InputAlias.ProductsInputData,
+          invoke: [
+            {
+              from: InputAlias.ProductsInputData,
+              alias: retrieveProducts.aliases.inputData,
+            },
+            {
+              from: Actions.createProducts,
+              alias: retrieveProducts.aliases.products,
+            },
+          ],
+        },
+        retrieveProducts
       ),
     },
   ],

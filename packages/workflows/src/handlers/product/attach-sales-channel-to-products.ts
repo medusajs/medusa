@@ -10,16 +10,16 @@ export async function attachSalesChannelToProducts({
   data,
 }: WorkflowArguments & {
   data: {
-    attachSalesChannelToProductsInputData: {
+    input: {
       productsHandleSalesChannelsMap: Map<ProductHandle, SalesChannelId[]>
     }
-    attachSalesChannelToProductsProducts: ProductTypes.ProductDTO[]
+    products: ProductTypes.ProductDTO[]
   }
 }): Promise<void> {
   const { manager } = context
   const productsHandleSalesChannelsMap =
-    data.attachSalesChannelToProductsInputData.productsHandleSalesChannelsMap
-  const products = data.attachSalesChannelToProductsProducts
+    data.input.productsHandleSalesChannelsMap
+  const products = data.products
 
   const salesChannelService = container.resolve("salesChannelService")
   const salesChannelServiceTx = salesChannelService.withTransaction(manager)
@@ -49,7 +49,6 @@ export async function attachSalesChannelToProducts({
 }
 
 attachSalesChannelToProducts.aliases = {
-  attachSalesChannelToProductsInputData:
-    "attachSalesChannelToProductsInputData",
-  attachSalesChannelToProductsProducts: "attachSalesChannelToProductsProducts",
+  input: "input",
+  products: "products",
 }

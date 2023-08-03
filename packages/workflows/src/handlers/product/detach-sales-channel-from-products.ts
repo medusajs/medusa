@@ -4,25 +4,22 @@ import { WorkflowArguments } from "../../helper"
 type ProductHandle = string
 type SalesChannelId = string
 
-export const DetachSalesChannelToProductsInputAlias =
-  "detachSalesChannelToProducts"
-
 export async function detachSalesChannelFromProducts({
   container,
   context,
   data,
 }: WorkflowArguments & {
   data: {
-    detachSalesChannelToProductsInputData: {
+    input: {
       productsHandleSalesChannelsMap: Map<ProductHandle, SalesChannelId[]>
     }
-    detachSalesChannelToProductsProducts: ProductTypes.ProductDTO[]
+    products: ProductTypes.ProductDTO[]
   }
 }): Promise<void> {
   const { manager } = context
   const productsHandleSalesChannelsMap =
-    data.detachSalesChannelToProductsInputData.productsHandleSalesChannelsMap
-  const products = data.detachSalesChannelToProductsProducts
+    data.input.productsHandleSalesChannelsMap
+  const products = data.products
 
   const salesChannelService = container.resolve("salesChannelService")
   const salesChannelServiceTx = salesChannelService.withTransaction(manager)
@@ -52,7 +49,6 @@ export async function detachSalesChannelFromProducts({
 }
 
 detachSalesChannelFromProducts.aliases = {
-  detachSalesChannelToProductsInputData:
-    "detachSalesChannelToProductsInputData",
-  detachSalesChannelToProductsProducts: "detachSalesChannelToProductsProducts",
+  input: "input",
+  products: "products",
 }

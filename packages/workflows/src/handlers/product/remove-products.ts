@@ -8,10 +8,10 @@ export async function removeProducts({
   data,
 }: Omit<WorkflowArguments, "data"> & {
   data: {
-    removeProductsProducts: ProductTypes.ProductDTO[]
+    products: ProductTypes.ProductDTO[]
   }
 }): Promise<void> {
-  const data_ = data.removeProductsProducts
+  const data_ = data.products
   if (!data_.length) {
     return
   }
@@ -23,5 +23,5 @@ export async function removeProducts({
 }
 
 removeProducts.aliases = {
-  removeProductsProducts: "removeProductsProducts",
+  products: "products",
 }

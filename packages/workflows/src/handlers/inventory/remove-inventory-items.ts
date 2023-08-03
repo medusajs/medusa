@@ -7,11 +7,11 @@ export async function removeInventoryItems({
   data,
 }: Omit<WorkflowArguments, "data"> & {
   data: {
-    removeInventoryItemsItems: { inventoryItem: InventoryItemDTO }[]
+    inventoryItems: { inventoryItem: InventoryItemDTO }[]
   }
 }) {
   const { manager } = context
-  const data_ = data.removeInventoryItemsItems
+  const data_ = data.inventoryItems
 
   const inventoryService = container.resolve("inventoryService")
 
@@ -30,5 +30,5 @@ export async function removeInventoryItems({
 }
 
 removeInventoryItems.aliases = {
-  removeInventoryItemsItems: "removeInventoryItemsItems",
+  inventoryItems: "inventoryItems",
 }

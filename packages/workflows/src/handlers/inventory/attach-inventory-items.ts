@@ -7,7 +7,7 @@ export async function attachInventoryItems({
   data,
 }: Omit<WorkflowArguments, "data"> & {
   data: {
-    attachInventoryItemsData: {
+    inventoryItems: {
       variant: ProductTypes.ProductVariantDTO
       inventoryItem: InventoryItemDTO
     }[]
@@ -19,7 +19,7 @@ export async function attachInventoryItems({
     .resolve("productVariantInventoryService")
     .withTransaction(manager)
 
-  const data_ = data.attachInventoryItemsData
+  const data_ = data.inventoryItems
 
   if (!data_?.length) {
     return
@@ -34,5 +34,5 @@ export async function attachInventoryItems({
 }
 
 attachInventoryItems.aliases = {
-  attachInventoryItemsData: "attachInventoryItemsData",
+  inventoryItems: "inventoryItems",
 }
