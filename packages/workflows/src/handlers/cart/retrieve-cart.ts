@@ -31,7 +31,7 @@ export async function retrieveCart<T>({
   const cartServiceTx = cartService.withTransaction(entityManager)
 
   return await cartServiceTx.retrieve(
-    data[CartInputAlias.Cart]?.id, {
+    data[CartInputAlias.Cart].id, {
       relations: defaultStoreCartRelations
     }
   )

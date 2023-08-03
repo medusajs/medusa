@@ -14,7 +14,7 @@ export async function attachLineItemsToCart<T>({
     .withTransaction(entityManager)
   const cartServiceTx = cartService
     .withTransaction(entityManager)
-  const lineItems = data[CartInputAlias.Cart].items
+  let lineItems = data[CartInputAlias.Cart].items
 
   if (lineItems?.length) {
     const generateInputData = lineItems.map((item) => ({
@@ -22,25 +22,23 @@ export async function attachLineItemsToCart<T>({
       quantity: item.quantity,
     }))
 
-    const generatedLineItems = await lineItemServiceTx.generate(
+    lineItems = await lineItemServiceTx.generate(
       generateInputData,
       {
-        region_id: data[CartInputAlias.Cart].region_id,
-        customer_id: data[CartInputAlias.Cart].customer_id,
+        region_id: data[CartInputAlias.CreatedCart].region_id,
+        customer_id: data[CartInputAlias.CreatedCart].customer_id,
       }
     )
 
     await cartServiceTx.addOrUpdateLineItems(
-      data[CartInputAlias.Cart].id,
-      generatedLineItems,
+      data[CartInputAlias.CreatedCart].id,
+      lineItems,
       {
         validateSalesChannels:
           featureFlagRouter.isFeatureEnabled("sales_channels"),
       }
     )
-
-    data['cart'].items = generatedLineItems
   }
 
-  return data['cart']
+  return lineItems
 }

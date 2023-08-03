@@ -91,7 +91,7 @@ export default async (req, res) => {
   if (productModuleService) {
     const cartWorkflow = await createCartWorkflow(req.scope as MedusaContainer)
 
-    const result = await cartWorkflow.run({
+    const { result } = await cartWorkflow.run({
       input: {
         ...validated,
         publishableApiKeyScopes: req.publishableApiKeyScopes,
@@ -102,9 +102,8 @@ export default async (req, res) => {
       },
       resultFrom: 'retrieveCart'
     })
-console.log("result - ", JSON.stringify(result, null, 2))
-// console.log("transaction - ", JSON.stringify(result.transaction, null, 2))
-    return res.status(200).json({ cart: cleanResponseData(result.result, []) })
+
+    return res.status(200).json({ cart: cleanResponseData(result, []) })
   }
 
   const lineItemService: LineItemService = req.scope.resolve("lineItemService")

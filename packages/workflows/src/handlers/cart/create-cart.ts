@@ -10,9 +10,5 @@ export async function createCart<T>({
   const entityManager = container.resolve("manager")
   const cartServiceTx = cartService.withTransaction(entityManager)
 
-  const cart = await cartServiceTx.create(data[CartInputAlias.Cart])
-
-  data[CartInputAlias.Cart].id = cart.id
-
-  return data[CartInputAlias.Cart]
+  return await cartServiceTx.create(data[CartInputAlias.Cart])
 }
