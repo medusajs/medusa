@@ -43,7 +43,7 @@ module.exports = {
 Run the following command to reflect schema changes into your database:
 
 ```bash
-npx @medusajs/medusa-cli migrations run
+npx medusa migrations run
 ```
 
 ### Step 4: Run Migration Script
@@ -83,7 +83,7 @@ module.exports = {
 Run the following command to reflect schema changes into your database:
 
 ```bash
-npx @medusajs/medusa-cli migrations run
+npx medusa migrations run
 ```
 
 ### Step 4: Run Migration Script

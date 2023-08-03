@@ -1,6 +1,7 @@
 import { Image, Product, ProductCategory, ProductVariant } from "@models"
 import {
   assignCategoriesToProduct,
+  buildProductOnlyData,
   createImages,
   createProductAndTags,
   createProductVariants,
@@ -16,7 +17,6 @@ import { ProductRepository } from "@repositories"
 import { ProductService } from "@services"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { TestDatabase } from "../../../utils"
-import { buildProductOnlyData } from "../../../__fixtures__/product/data/create-product"
 import { createProductCategories } from "../../../__fixtures__/product-category"
 import { kebabCase } from "@medusajs/utils"
 
@@ -81,15 +81,19 @@ describe("Product Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual('Product with id: does-not-exist was not found')
+      expect(error.message).toEqual(
+        "Product with id: does-not-exist was not found"
+      )
     })
 
     it("should return a product when product with an id exists", async () => {
       const result = await service.retrieve(productOne.id)
 
-      expect(result).toEqual(expect.objectContaining({
-        id: productOne.id
-      }))
+      expect(result).toEqual(
+        expect.objectContaining({
+          id: productOne.id,
+        })
+      )
     })
   })
 
@@ -150,18 +154,22 @@ describe("Product Service", () => {
     })
 
     it("should update a product and its allowed relations", async () => {
-      const updateData = [{
-        id: productOne.id,
-        title: "update test 1",
-        images: images,
-        thumbnail: images[0].url,
-      }]
+      const updateData = [
+        {
+          id: productOne.id,
+          title: "update test 1",
+          images: images,
+          thumbnail: images[0].url,
+        },
+      ]
 
       const products = await service.update(updateData)
 
       expect(products.length).toEqual(1)
 
-      let result = await service.retrieve(productOne.id, {relations: ["images", "thumbnail"]})
+      let result = await service.retrieve(productOne.id, {
+        relations: ["images", "thumbnail"],
+      })
       let serialized = JSON.parse(JSON.stringify(result))
 
       expect(serialized).toEqual(
@@ -183,13 +191,16 @@ describe("Product Service", () => {
 
     it("should throw an error when id is not present", async () => {
       let error
-      const updateData = [{
-        id: productOne.id,
-        title: "update test 1",
-      }, {
-        id: undefined as unknown as string,
-        title: "update test 2",
-      }]
+      const updateData = [
+        {
+          id: productOne.id,
+          title: "update test 1",
+        },
+        {
+          id: undefined as unknown as string,
+          title: "update test 2",
+        },
+      ]
 
       try {
         await service.update(updateData)
@@ -206,10 +217,12 @@ describe("Product Service", () => {
 
     it("should throw an error when product with id does not exist", async () => {
       let error
-      const updateData = [{
-        id: "does-not-exist",
-        title: "update test 1",
-      }]
+      const updateData = [
+        {
+          id: "does-not-exist",
+          title: "update test 1",
+        },
+      ]
 
       try {
         await service.update(updateData)
@@ -217,13 +230,14 @@ describe("Product Service", () => {
         error = e
       }
 
-      expect(error.message).toEqual(`Product with id "does-not-exist" not found`)
+      expect(error.message).toEqual(
+        `Product with id "does-not-exist" not found`
+      )
     })
   })
 
   describe("list", () => {
     describe("soft deleted", function () {
-      let deletedProduct
       let product
 
       beforeEach(async () => {
@@ -232,7 +246,7 @@ describe("Product Service", () => {
         const products = await createProductAndTags(testManager, productsData)
 
         product = products[1]
-        deletedProduct = await service.softDelete([products[0].id])
+        await service.softDelete([products[0].id])
       })
 
       it("should list all products that are not deleted", async () => {
@@ -462,7 +476,19 @@ describe("Product Service", () => {
       })
 
       const products = await service.create([data])
-      const deleteProducts = await service.softDelete(products.map((p) => p.id))
+      await service.softDelete(products.map((p) => p.id))
+      const deleteProducts = await service.list(
+        { id: products.map((p) => p.id) },
+        {
+          relations: [
+            "variants",
+            "variants.options",
+            "options",
+            "options.values",
+          ],
+          withDeleted: true,
+        }
+      )
 
       expect(deleteProducts).toHaveLength(1)
       expect(deleteProducts[0].deleted_at).not.toBeNull()

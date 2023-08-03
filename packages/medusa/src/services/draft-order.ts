@@ -334,6 +334,7 @@ class DraftOrderService extends TransactionBaseService {
             allow_discounts: false,
             unit_price: price,
             quantity: item.quantity,
+            metadata: item.metadata,
           })
         })
 
