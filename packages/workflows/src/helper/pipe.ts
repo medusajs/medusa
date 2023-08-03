@@ -5,6 +5,7 @@ import {
 } from "@medusajs/orchestration"
 
 import { InputAlias } from "../definitions"
+import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 
 type WorkflowStepMiddlewareReturn = {
   alias: string
@@ -20,6 +21,38 @@ interface PipelineInput {
   inputAlias?: InputAlias | string
   invoke?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
   compensate?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
+  onComplete?: PipelineHandler
+}
+
+/**
+ * Event emitter handler helper to be used on complete as part of a pipe
+ *
+ * @example
+ * pipe({
+ *   onComplete: emitEventHandler("order.completed", async (data) => ([data.order.id]))
+ * })
+ *
+ * @param eventName
+ * @param fn
+ * @param options
+ */
+const emitEventHandler = (
+  eventName: string,
+  fn: (data) => Promise<unknown[]>,
+  options?: Record<string, unknown>
+) => {
+  return async ({ container, data }: WorkflowArguments) => {
+    const eventBusModule = container.resolve(
+      ModulesDefinition[Modules.EVENT_BUS].registrationName
+    )
+
+    let dataToEmits = await fn(data)
+    dataToEmits = Array.isArray(dataToEmits) ? dataToEmits : [dataToEmits]
+
+    return await eventBusModule.emit(
+      dataToEmits.map((d) => ({ data: d, eventName, options }))
+    )
+  }
 }
 
 export type WorkflowArguments = {
