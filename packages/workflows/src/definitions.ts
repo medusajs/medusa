@@ -15,6 +15,8 @@ export enum InputAlias {
 
   Cart = "cart",
 
+  AddShippingMethodInputData = "addShippingMethodInputData",
+
   LineItems = "lineItems",
   ShippingOptionToValidate = "shippingOptionToValidate",
   ValidatedShippingOptionData = "validatedShippingOptionData",

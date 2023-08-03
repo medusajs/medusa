@@ -37,13 +37,11 @@ export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
     // retrieve cart + custom shipping options
     action: AddShippingMethodWorkflowActions.prepare,
     noCompensation: true,
-    saveResponse: true,
     next: [
       {
         // validate fulfillment data
         action: AddShippingMethodWorkflowActions.validateFulfillmentData,
         noCompensation: true,
-        saveResponse: true,
       },
       {
         // validate line item shipping
@@ -61,21 +59,26 @@ export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
             next: {
               // delete other shipping methods with same profile id
               action: AddShippingMethodWorkflowActions.cleanUpShippingMethods,
+              saveResponse: false,
               next: {
                 // adjust free shipping discount wrt new shipping method
                 action: AddShippingMethodWorkflowActions.adjustFreeShipping,
+                saveResponse: false,
                 next: {
                   // clean up payment sessions
                   action:
                     AddShippingMethodWorkflowActions.cleanUpPaymentSessions,
+                  saveResponse: false,
                   next: {
                     // update the payment sessions on the cart
                     action:
                       AddShippingMethodWorkflowActions.updatePaymentSessions,
+                    saveResponse: false,
                     // retrieve cart with totals
                     next: {
                       action: AddShippingMethodWorkflowActions.result,
                       noCompensation: true,
+                      saveResponse: false,
                     },
                   },
                 },
@@ -92,7 +95,16 @@ const handlers = new Map([
   [
     AddShippingMethodWorkflowActions.prepare,
     {
-      invoke: prepareAddShippingMethodToCartWorkflowData,
+      invoke: pipe(
+        {
+          inputAlias: InputAlias.AddShippingMethodInputData,
+          invoke: {
+            from: InputAlias.AddShippingMethodInputData,
+            alias: InputAlias.AddShippingMethodInputData,
+          },
+        },
+        prepareAddShippingMethodToCartWorkflowData
+      ),
     },
   ],
   [
