@@ -1,5 +1,4 @@
 import type { CodeBlockProps } from "@/components/CodeBlock"
-import CodeTabs from "@/components/CodeTabs"
 import type { ExampleObject, ResponseObject } from "@/types/openapi"
 import type { JSONSchema7 } from "json-schema"
 import stringify from "json-stringify-pretty-compact"
@@ -23,9 +22,6 @@ const TagsOperationCodeSectionResponsesSample = ({
   const [selectedExample, setSelectedExample] = useState<
     ExampleObject | undefined
   >()
-  const lang = response.content
-    ? getLanguageFromMedia(Object.keys(response.content)[0])
-    : ""
 
   const initExamples = () => {
     if (!response.content) {
@@ -45,9 +41,6 @@ const TagsOperationCodeSectionResponsesSample = ({
           content: stringify(example.value, {
             maxLength: 50,
           }),
-          contentSchema: stringify(contentSchema.schema, {
-            maxLength: 50,
-          }),
         })
       })
     } else if (contentSchema.example) {
@@ -55,9 +48,6 @@ const TagsOperationCodeSectionResponsesSample = ({
         title: "",
         value: "",
         content: stringify(contentSchema.example, {
-          maxLength: 50,
-        }),
-        contentSchema: stringify(contentSchema.schema, {
           maxLength: 50,
         }),
       })
@@ -80,9 +70,6 @@ const TagsOperationCodeSectionResponsesSample = ({
         title: "",
         value: "",
         content: contentSample,
-        contentSchema: stringify(contentSchema.schema, {
-          maxLength: 50,
-        }),
       })
     }
 
@@ -121,36 +108,12 @@ const TagsOperationCodeSectionResponsesSample = ({
               ))}
             </select>
           )}
-          {selectedExample?.contentSchema && (
-            <CodeTabs
-              tabs={[
-                {
-                  label: "Example Response",
-                  value: "example",
-                  code: {
-                    source: selectedExample.content,
-                    lang: lang,
-                    collapsed: true,
-                  },
-                },
-                {
-                  label: "Response Schema",
-                  value: "schema",
-                  code: {
-                    source: selectedExample.contentSchema,
-                    lang: lang,
-                    collapsed: true,
-                  },
-                },
-              ]}
-              className="mt-1"
-            />
-          )}
-          {selectedExample && !selectedExample.contentSchema && (
+          {selectedExample && (
             <CodeBlock
               source={selectedExample.content}
               lang={getLanguageFromMedia(Object.keys(response.content)[0])}
               collapsed={true}
+              className="my-1"
             />
           )}
           {!selectedExample && <>Empty Response</>}
