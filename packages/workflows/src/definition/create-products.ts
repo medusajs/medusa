@@ -267,10 +267,9 @@ const handlers = new Map([
     {
       invoke: pipe(
         {
-          inputAlias: InputAlias.ProductsInputData,
           invoke: [
             {
-              from: InputAlias.ProductsInputData,
+              from: Actions.prepare,
               alias: ProductHandlers.listProducts.aliases.input,
             },
             {

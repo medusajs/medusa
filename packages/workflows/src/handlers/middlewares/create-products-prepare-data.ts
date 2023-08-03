@@ -31,6 +31,10 @@ export type CreateProductsPreparedData = {
     ProductHandle,
     VariantIndexAndPrices[]
   >
+  listConfig: {
+    select: string[]
+    relations: string[]
+  }
 }
 
 export async function createProductsPrepareData({
@@ -149,6 +153,7 @@ export async function createProductsPrepareData({
     productsHandleShippingProfileIdMap,
     productsHandleSalesChannelsMap,
     productsHandleVariantsIndexPricesMap,
+    listConfig: data_[0].listConfig,
   }
 }
 

@@ -146,9 +146,7 @@ export default async (req, res) => {
     ] as WorkflowTypes.ProductWorkflow.CreateProductInputDTO[]
 
     const { result: products } = await createProductWorkflow.run({
-      input:
-        // eslint-disable-next-line max-len
-        validated as unknown as WorkflowTypes.ProductWorkflow.CreateProductInputDTO[],
+      input,
       context: {
         manager: entityManager,
       },
