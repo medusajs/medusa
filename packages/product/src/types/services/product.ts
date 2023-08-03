@@ -1,9 +1,4 @@
-export enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
-}
+import { ProductUtils } from "@medusajs/utils"
 
 export interface UpdateProductDTO {
   id: string
@@ -15,7 +10,7 @@ export interface UpdateProductDTO {
   images?: { id?: string; url: string }[]
   thumbnail?: string
   handle?: string
-  status?: ProductStatus
+  status?: ProductUtils.ProductStatus
   collection_id?: string
   width?: number
   height?: number

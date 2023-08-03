@@ -1,6 +1,12 @@
 import { BaseFilterable } from "../dal"
 import { OperatorMap } from "../dal/utils"
-import { ProductUtils } from "@medusajs/utils"
+
+export enum ProductStatus {
+  DRAFT = "draft",
+  PROPOSED = "proposed",
+  PUBLISHED = "published",
+  REJECTED = "rejected",
+}
 
 /**
  * DTO in and out of the module (module API)
@@ -14,7 +20,7 @@ export interface ProductDTO {
   subtitle?: string | null
   description?: string | null
   is_giftcard: boolean
-  status: ProductUtils.ProductStatus
+  status: ProductStatus
   thumbnail?: string | null
   weight?: number | null
   length?: number | null
@@ -324,7 +330,7 @@ export interface CreateProductDTO {
   images?: string[] | { id?: string; url: string }[]
   thumbnail?: string
   handle?: string
-  status?: ProductUtils.ProductStatus
+  status?: ProductStatus
   type?: CreateProductTypeDTO
   type_id?: string
   collection_id?: string
@@ -353,7 +359,7 @@ export interface UpdateProductDTO {
   images?: string[] | { id?: string; url: string }[]
   thumbnail?: string
   handle?: string
-  status?: ProductUtils.ProductStatus
+  status?: ProductStatus
   type?: CreateProductTypeDTO
   type_id?: string | null
   collection_id?: string | null
@@ -381,7 +387,7 @@ export interface CreateProductOnlyDTO {
   images?: { id?: string; url: string }[]
   thumbnail?: string
   handle?: string
-  status?: ProductUtils.ProductStatus
+  status?: ProductStatus
   collection_id?: string
   width?: number
   height?: number

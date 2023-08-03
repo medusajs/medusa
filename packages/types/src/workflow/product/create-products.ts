@@ -1,6 +1,6 @@
-import { ProductUtils } from "@medusajs/utils"
-
 // TODO: this file, should we re think the naming
+
+import { ProductStatus } from "../../product"
 
 export interface ProductTypeReq {
   id?: string
@@ -71,7 +71,7 @@ export interface AdminPostProductsReq {
   images?: string[]
   thumbnail?: string
   handle?: string
-  status?: ProductUtils.ProductStatus
+  status?: ProductStatus
   type?: ProductTypeReq
   collection_id?: string
   tags?: ProductTagReq[]
