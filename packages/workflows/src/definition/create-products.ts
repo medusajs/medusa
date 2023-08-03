@@ -96,7 +96,7 @@ const handlers = new Map([
         {
           invoke: {
             from: Actions.createProducts,
-            alias: removeProducts.aliases.removeProductsInputAlias,
+            alias: removeProducts.aliases.removeProductsProducts,
           },
         },
         removeProducts
