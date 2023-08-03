@@ -4,7 +4,7 @@ import { WorkflowArguments } from "../../helper"
 type ProductHandle = string
 type VariantIndexAndPrices = {
   index: number
-  prices: WorkflowTypes.ProductWorkflow.ProductVariantPricesCreateReq[]
+  prices: WorkflowTypes.ProductWorkflow.CreateProductVariantPricesInputDTO[]
 }
 
 export async function createProductsPrepareCreatePricesCompensation({

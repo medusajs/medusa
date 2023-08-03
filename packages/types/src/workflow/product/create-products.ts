@@ -1,30 +1,28 @@
-// TODO: this file, should we re think the naming
-
 import { ProductStatus } from "../../product"
 
-export interface ProductTypeReq {
+export interface CreateProductTypeInputDTO {
   id?: string
   value: string
 }
 
-export interface ProductTagReq {
+export interface CreateProductTagInputDTO {
   id?: string
   value: string
 }
 
-export interface ProductSalesChannelReq {
+export interface CreateProductSalesChannelInputDTO {
   id: string
 }
 
-export interface ProductProductCategoryReq {
+export interface CraeteProductProductCategoryInputDTO {
   id: string
 }
 
-export interface ProductOptionReq {
+export interface CreateProductOptionInputDTO {
   title: string
 }
 
-export interface ProductVariantPricesCreateReq {
+export interface CreateProductVariantPricesInputDTO {
   id?: string
   region_id?: string
   currency_code?: string
@@ -33,12 +31,12 @@ export interface ProductVariantPricesCreateReq {
   max_quantity?: number
 }
 
-export interface ProductVariantOptionReq {
+export interface CraeteProductVariantOptionInputDTO {
   value: string
   option_id: string
 }
 
-export interface ProductVariantReq {
+export interface CreateProductVariantInputDTO {
   id?: string
   title?: string
   sku?: string
@@ -58,11 +56,11 @@ export interface ProductVariantReq {
   material?: string
   metadata?: Record<string, unknown>
 
-  prices?: ProductVariantPricesCreateReq[]
-  options?: ProductVariantOptionReq[]
+  prices?: CreateProductVariantPricesInputDTO[]
+  options?: CraeteProductVariantOptionInputDTO[]
 }
 
-export interface AdminPostProductsReq {
+export interface CreateProductInputDTO {
   title: string
   subtitle?: string
   description?: string
@@ -72,13 +70,13 @@ export interface AdminPostProductsReq {
   thumbnail?: string
   handle?: string
   status?: ProductStatus
-  type?: ProductTypeReq
+  type?: CreateProductTypeInputDTO
   collection_id?: string
-  tags?: ProductTagReq[]
-  sales_channels?: ProductSalesChannelReq[]
-  categories?: ProductProductCategoryReq[]
-  options?: ProductOptionReq[]
-  variants?: ProductVariantReq[]
+  tags?: CreateProductTagInputDTO[]
+  sales_channels?: CreateProductSalesChannelInputDTO[]
+  categories?: CraeteProductProductCategoryInputDTO[]
+  options?: CreateProductOptionInputDTO[]
+  variants?: CreateProductVariantInputDTO[]
   weight?: number
   length?: number
   height?: number

@@ -7,7 +7,7 @@ import {
 import { WorkflowArguments } from "../../helper"
 
 type CreateProductsInputData =
-  WorkflowTypes.ProductWorkflow.AdminPostProductsReq[]
+  WorkflowTypes.ProductWorkflow.CreateProductInputDTO[]
 
 type ShippingProfileId = string
 type SalesChannelId = string

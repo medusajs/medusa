@@ -12,7 +12,7 @@ import {
 } from "../handlers"
 import { exportWorkflow, pipe } from "../helper"
 
-import { ProductTypes } from "@medusajs/types"
+import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import { createProductsPrepareData } from "../handlers/middlewares/create-products-prepare-data"
 import { attachShippingProfileToProducts } from "../handlers/product/attach-shipping-profile-to-products"
 import { detachShippingProfileFromProducts } from "../handlers/product/detach-shipping-profile-from-products"
@@ -284,6 +284,6 @@ const handlers = new Map([
 WorkflowManager.register(Workflows.CreateProducts, workflowSteps, handlers)
 
 export const createProducts = exportWorkflow<
-  ProductTypes.CreateProductDTO[],
+  WorkflowTypes.ProductWorkflow.CreateProductInputDTO[],
   ProductTypes.ProductDTO[]
 >(Workflows.CreateProducts, Actions.createProducts)
