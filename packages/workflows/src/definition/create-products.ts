@@ -10,18 +10,68 @@ import {
 import { exportWorkflow, pipe } from "../helper"
 
 import { ProductTypes } from "@medusajs/types"
+import { createProductsPrepareData } from "../handlers/pipes/create-products-prepare-data"
 
-enum Actions {
+export enum Actions {
+  prepare = "prepare",
   createProducts = "createProducts",
+  attachToSalesChannel = "attachToSalesChannel",
+  attachShippingProfile = "attachShippingProfile",
+  createPrices = "createPrices",
+  createInventoryItems = "createInventoryItems",
+  attachInventoryItems = "attachInventoryItems",
+  result = "result",
 }
 
-const workflowSteps: TransactionStepsDefinition = {
+export const workflowSteps: TransactionStepsDefinition = {
   next: {
-    action: Actions.createProducts,
+    action: Actions.prepare,
+    noCompensation: true,
+    next: {
+      action: Actions.createProducts,
+      next: [
+        {
+          action: Actions.attachShippingProfile,
+          saveResponse: false,
+        },
+        {
+          action: Actions.attachToSalesChannel,
+          saveResponse: false,
+        },
+        {
+          action: Actions.createPrices,
+          next: {
+            action: Actions.createInventoryItems,
+            next: {
+              action: Actions.attachInventoryItems,
+              next: {
+                action: Actions.result,
+                noCompensation: true,
+              },
+            },
+          },
+        },
+      ],
+    },
   },
 }
 
 const handlers = new Map([
+  [
+    Actions.prepare,
+    {
+      invoke: pipe(
+        {
+          inputAlias: InputAlias.ProductsInputData,
+          invoke: {
+            from: InputAlias.ProductsInputData,
+            alias: InputAlias.ProductsInputData,
+          },
+        },
+        createProductsPrepareData
+      ),
+    },
+  ],
   [
     Actions.createProducts,
     {

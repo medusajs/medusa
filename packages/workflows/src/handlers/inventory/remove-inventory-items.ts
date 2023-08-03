@@ -1,7 +1,7 @@
 import { InventoryItemDTO } from "@medusajs/types"
 
-import { InputAlias } from "../definitions"
-import { PipelineHandlerResult, WorkflowArguments } from "../helper"
+import { InputAlias } from "../../definitions"
+import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
 export async function removeInventoryItems<T = void[]>({
   container,

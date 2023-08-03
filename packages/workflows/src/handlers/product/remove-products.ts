@@ -1,6 +1,6 @@
-import { InputAlias } from "../definitions"
+import { InputAlias } from "../../definitions"
 import { ProductTypes } from "@medusajs/types"
-import { PipelineHandlerResult, WorkflowArguments } from "../helper"
+import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
 export async function removeProducts<T = any>({
   container,

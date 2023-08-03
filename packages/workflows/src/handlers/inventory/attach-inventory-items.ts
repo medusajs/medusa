@@ -1,10 +1,9 @@
 import { InventoryItemDTO, ProductTypes } from "@medusajs/types"
 
-import { InputAlias } from "../definitions"
-import { PipelineHandlerResult, WorkflowArguments } from "../helper"
-import { ProductVariantInventoryItem } from "@medusajs/medusa/src"
+import { InputAlias } from "../../definitions"
+import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
-export async function attachInventoryItems<T = ProductVariantInventoryItem[]>({
+export async function attachInventoryItems<T = any[]>({
   container,
   data,
 }: WorkflowArguments & {

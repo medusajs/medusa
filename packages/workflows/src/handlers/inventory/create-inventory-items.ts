@@ -4,8 +4,8 @@ import {
   ProductTypes,
 } from "@medusajs/types"
 
-import { InputAlias } from "../definitions"
-import { PipelineHandlerResult, WorkflowArguments } from "../helper"
+import { InputAlias } from "../../definitions"
+import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
 export async function createInventoryItems<
   T = { variant: any; inventoryItem: InventoryItemDTO }[]

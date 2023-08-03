@@ -3,7 +3,6 @@ import {
   Context,
   DAL,
   FindConfig,
-  ProductStatus,
   ProductTypes,
   WithRequiredProperty,
 } from "@medusajs/types"
@@ -14,6 +13,7 @@ import {
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  ProductUtils,
 } from "@medusajs/utils"
 import { ProductRepository } from "@repositories"
 
@@ -124,7 +124,7 @@ export default class ProductService<TEntity extends Product = Product> {
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     data.forEach((product) => {
-      product.status ??= ProductStatus.DRAFT
+      product.status ??= ProductUtils.ProductStatus.DRAFT
     })
 
     return (await (this.productRepository_ as ProductRepository).create(
