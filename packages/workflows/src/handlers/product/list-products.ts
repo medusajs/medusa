@@ -1,7 +1,7 @@
 import { ProductTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
-export async function retrieveProducts({
+export async function listProducts({
   container,
   context,
   data,
@@ -45,7 +45,7 @@ export async function retrieveProducts({
     .setProductPrices([rawProduct])
 }
 
-retrieveProducts.aliases = {
+listProducts.aliases = {
   products: "products",
   inputData: "payload",
 }

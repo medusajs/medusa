@@ -21,7 +21,7 @@ import { detachSalesChannelFromProducts } from "../handlers/product/detach-sales
 import { detachInventoryItems } from "../handlers/inventory/detach-inventory-items"
 import { updateProductsVariantsPrices } from "../handlers/product/update-products-variants-prices"
 import { createProductsPrepareCreatePricesCompensation } from "../handlers/middlewares/create-products-prepare-create-prices-compensation"
-import { retrieveProducts } from "../handlers/product/retrieve-products"
+import { listProducts } from "../handlers/product/list-products"
 
 export enum Actions {
   prepare = "prepare",
@@ -267,15 +267,15 @@ const handlers = new Map([
           invoke: [
             {
               from: InputAlias.ProductsInputData,
-              alias: retrieveProducts.aliases.inputData,
+              alias: listProducts.aliases.inputData,
             },
             {
               from: Actions.createProducts,
-              alias: retrieveProducts.aliases.products,
+              alias: listProducts.aliases.products,
             },
           ],
         },
-        retrieveProducts
+        listProducts
       ),
     },
   ],
