@@ -18,12 +18,13 @@ const NavbarColorModeToggle = () => {
   const { colorMode, toggleColorMode } = useColorMode()
 
   return (
-    <NavbarIconButton
-      className={clsx("ml-1 mr-[12px]")}
-      onClick={() => toggleColorMode()}
-    >
-      {colorMode === "light" && <IconLightMode />}
-      {colorMode === "dark" && <IconDarkMode />}
+    <NavbarIconButton onClick={() => toggleColorMode()}>
+      {colorMode === "light" && (
+        <IconLightMode iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+      )}
+      {colorMode === "dark" && (
+        <IconDarkMode iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+      )}
     </NavbarIconButton>
   )
 }

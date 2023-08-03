@@ -155,13 +155,16 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
   @apply text-medusa-text-base dark:text-medusa-text-base-dark;
 }
 .DocSearch-Button {
-  @apply w-full !h-full !rounded lg:!border lg:!border-solid lg:!border-medusa-border-base lg:dark:!border-medusa-border-base-dark border-0;
-  @apply lg:!bg-medusa-bg-field lg:dark:!bg-medusa-bg-field-dark !bg-transparent;
-  @apply lg:hover:!bg-medusa-bg-field-hover lg:dark:hover:!bg-medusa-bg-field-hover-dark;
-  @apply !py-[6px] !pl-0.5 relative;
-  @apply hover:!border-medusa-border-base hover:dark:!border-medusa-border-base-dark;
-  @apply active:!border-medusa-border-base active:dark:!border-medusa-border-base-dark;
-  @apply focus:!border-medusa-border-base focus:dark:!border-medusa-border-base-dark;
+  @apply w-full !h-full !rounded lg:!border lg:!border-solid lg:!border-medusa-border-loud-muted lg:dark:!border-medusa-border-base-dark border-0;
+  @apply lg:!bg-medusa-bg-subtle lg:dark:!bg-medusa-bg-base-dark !bg-transparent;
+  @apply lg:hover:!bg-medusa-bg-subtle-hover lg:dark:hover:!bg-medusa-bg-subtle-hover-dark;
+  @apply lg:disabled:!bg-medusa-bg-disabled lg:dark:disabled:!bg-medusa-bg-disabled-dark;
+  @apply !py-[5px] !px-0.5 relative ml-0;
+  @apply hover:!border-medusa-border-loud-muted hover:dark:!border-medusa-border-loud-muted-dark;
+  @apply active:!border-medusa-border-interactive active:dark:!border-medusa-border-interactive-dark;
+  @apply focus:!border-medusa-border-interactive focus:dark:!border-medusa-border-interactive-dark;
+  @apply disabled:!border-medusa-border-base disabled:dark:!border-medusa-border-base-dark;
+  @apply lg:!shadow-button-secondary lg:dark:!shadow-button-secondary-dark;
 }
 
 .DocSearch-Container {
@@ -178,7 +181,7 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 }
 
 .DocSearch-Button-Placeholder {
-  @apply text-medusa-text-muted dark:text-medusa-text-muted-dark;
+  @apply text-medusa-fg-muted dark:text-medusa-fg-muted-dark;
   @apply !pl-0.5 !text-label-small lg:!block !hidden;
 }
 
@@ -187,8 +190,8 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 }
 
 .DocSearch-Button-Key {
-  @apply !shadow-none !rounded-md !text-label-x-small-plus !font-base align-middle !p-[2px];
-  @apply !border !border-solid !border-medusa-border-strong dark:!border-medusa-border-strong-dark;
+  @apply !shadow-none !rounded-md !text-label-x-small-plus !font-base align-middle !p-[4px];
+  @apply !border !border-solid !border-medusa-tag-neutral-border dark:!border-medusa-tag-neutral-border-dark;
   @apply [&span]:hidden [&:not(:last-child)]:!mr-[4px] last:!mr-0;
 }
 
@@ -205,8 +208,8 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
   --docsearch-modal-background: theme(colors.medusa.bg.base.DEFAULT) !important;
   --docsearch-modal-shadow: theme(boxShadow.modal) !important;
   --docsearch-container-background: theme(colors.medusa.bg.overlay.DEFAULT) !important;
-  --docsearch-key-gradient: theme(colors.medusa.bg.component.DEFAULT) !important;
-  --docsearch-muted-color: theme(colors.medusa.text.subtle.DEFAULT) !important;
+  --docsearch-key-gradient: theme(colors.medusa.tag.neutral.bg.DEFAULT) !important;
+  --docsearch-muted-color: theme(colors.medusa.tag.neutral.text.DEFAULT) !important;
   --docsearch-spacing: 12px theme(spacing[1.5]) !important;
   --docsearch-highlight-color: theme(colors.medusa.text.muted.DEFAULT) !important;
   --docsearch-text-color: theme(colors.medusa.text.base.DEFAULT) !important;
@@ -222,7 +225,7 @@ html[data-theme="dark"] {
   --docsearch-modal-background: theme(colors.medusa.bg.base.dark) !important;
   --docsearch-modal-shadow: theme(boxShadow.modal-dark) !important;
   --docsearch-container-background: theme(colors.medusa.bg.overlay.dark) !important;
-  --docsearch-key-gradient: theme(colors.medusa.bg.component.dark) !important;
-  --docsearch-muted-color: theme(colors.medusa.text.subtle.dark) !important;
+  --docsearch-key-gradient: theme(colors.medusa.tag.neutral.bg.dark) !important;
+  --docsearch-muted-color: theme(colors.medusa.tag.neutral.text.dark) !important;
   --docsearch-highlight-color: theme(colors.medusa.text.muted.dark) !important;
 }

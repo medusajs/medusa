@@ -182,16 +182,22 @@
 @layer components {
   .btn-primary {
     @apply inline-flex flex-row justify-center items-center;
-    @apply py-[6px] px-[12px] rounded cursor-pointer;
+    @apply py-[5px] px-[12px] rounded cursor-pointer;
     @apply bg-button-neutral dark:bg-button-neutral-dark;
-    @apply hover:!bg-no-image hover:bg-medusa-button-neutral-hover dark:hover:bg-medusa-button-neutral-hover-dark hover:no-underline;
-    @apply active:!bg-no-image active:bg-medusa-button-neutral-pressed dark:active:bg-medusa-button-neutral-pressed-dark;
-    @apply focus:shadow-focus dark:focus:shadow-focus-dark;
-    @apply disabled:!bg-no-image disabled:bg-medusa-button-disabled dark:disabled:bg-medusa-button-disabled-dark;
-    @apply disabled:cursor-not-allowed;
-    @apply border border-solid border-medusa-border-neutral-buttons dark:border-medusa-border-neutral-buttons-dark;
-    @apply text-label-small-plus text-medusa-text-base dark:text-medusa-text-base-dark;
-    @apply hover:text-medusa-text-base dark:hover:text-medusa-text-base-dark;
+    @apply hover:bg-button-neutral-hover dark:hover:!bg-no-image dark:hover:bg-medusa-button-neutral-hover-dark hover:no-underline;
+    @apply active:bg-button-neutral-pressed dark:active:!bg-no-image dark:active:bg-medusa-button-neutral-pressed-dark;
+    @apply focus:shadow-button-secondary dark:focus:shadow-button-secondary-dark;
+    @apply disabled:!bg-no-image disabled:bg-medusa-bg-disabled dark:disabled:bg-medusa-bg-disabled-dark;
+    @apply disabled:cursor-not-allowed transition-all;
+    @apply border border-solid border-medusa-border-loud-muted dark:border-medusa-border-loud-muted-dark;
+    @apply text-label-small-plus text-medusa-fg-base dark:text-medusa-fg-base-dark;
+    @apply shadow-button-secondary dark:shadow-button-secondary-dark;
+    @apply focus:shadow-button-secondary-focus dark:focus:shadow-button-secondary-focus-dark;
+    @apply active:shadow-button-secondary-focus dark:active:shadow-button-secondary-focus-dark;
+  }
+
+  .btn-primary-icon {
+    @apply !p-[4px];
   }
 
   .btn-inverted {

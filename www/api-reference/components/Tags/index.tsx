@@ -13,6 +13,7 @@ import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
 import getSectionId from "@/utils/get-section-id"
 import { ExpandedDocument } from "@/types/openapi"
 import getTagChildSidebarItems from "@/utils/get-tag-child-sidebar-items"
+import { useNavbar } from "@/providers/navbar"
 
 const TagSection = dynamic<TagSectionProps>(
   async () => import("./Section")
@@ -33,6 +34,7 @@ const Tags = () => {
   const { baseSpecs, setBaseSpecs } = useBaseSpecs()
   const { addItems } = useSidebar()
   const { area } = useArea()
+  const { activeItem, setActiveItem } = useNavbar()
 
   const { data } = useSWR<ExpandedDocument>(
     loadData && !baseSpecs
@@ -44,6 +46,12 @@ const Tags = () => {
   useEffect(() => {
     setExpand(getCurrentTag())
   }, [])
+
+  useEffect(() => {
+    if (activeItem !== area) {
+      setActiveItem(area)
+    }
+  }, [activeItem, setActiveItem, area])
 
   useEffect(() => {
     setLoadData(true)

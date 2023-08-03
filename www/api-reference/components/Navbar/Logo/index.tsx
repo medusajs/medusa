@@ -11,11 +11,13 @@ const NavbarLogo = () => {
     <Link href={`/`} className="flex-1">
       <Image
         src={
-          colorMode === "light" ? "/images/logo.png" : "/images/logo-dark.png"
+          colorMode === "light"
+            ? "/images/logo-icon.png"
+            : "/images/logo-icon-dark.png"
         }
         alt="Medusa Logo"
         height={20}
-        width={83}
+        width={20}
         className="align-middle"
       />
     </Link>
