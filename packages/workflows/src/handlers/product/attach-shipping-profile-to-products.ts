@@ -1,36 +1,35 @@
 import { ProductTypes } from "@medusajs/types"
-import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "../../helper"
 
 type ProductHandle = string
 type ShippingProfileId = string
 
-export const AttachShippingProfileToProductsInputAlias =
-  "attachShippingProfileToProductsInputData"
-
-export async function attachShippingProfileToProducts<T = void>({
+export async function attachShippingProfileToProducts({
   container,
   context,
   data,
 }: WorkflowArguments & {
   data: {
-    [AttachShippingProfileToProductsInputAlias]: {
+    attachShippingProfileToProductsInputData: {
       productsHandleShippingProfileIdMap: Map<ProductHandle, ShippingProfileId>
-      products: ProductTypes.ProductDTO[]
     }
+    attachShippingProfileToProductsProducts: ProductTypes.ProductDTO[]
   }
-}): Promise<PipelineHandlerResult<T>> {
+}): Promise<void> {
   const { manager } = context
-  data = data[AttachShippingProfileToProductsInputAlias]
+
+  const productsHandleShippingProfileIdMap =
+    data.attachShippingProfileToProductsInputData
+      .productsHandleShippingProfileIdMap
+  const products = data.attachShippingProfileToProductsProducts
 
   const shippingProfileService = container.resolve("shippingProfileService")
   const shippingProfileServiceTx =
     shippingProfileService.withTransaction(manager)
 
   const profileIdProductIdsMap = new Map<ShippingProfileId, ProductHandle[]>()
-  data.products.forEach((product) => {
-    const profileId = data.productsHandleShippingProfileIdMap.get(
-      product.handle!
-    )
+  products.forEach((product) => {
+    const profileId = productsHandleShippingProfileIdMap.get(product.handle!)
     if (profileId) {
       const productIds = profileIdProductIdsMap.get(profileId) || []
       productIds.push(product.id)
@@ -45,6 +44,11 @@ export async function attachShippingProfileToProducts<T = void>({
       }
     )
   )
+}
 
-  return void 0 as unknown as PipelineHandlerResult<T>
+attachShippingProfileToProducts.aliases = {
+  attachShippingProfileToProductsInputData:
+    "attachShippingProfileToProductsInputData",
+  attachShippingProfileToProductsProducts:
+    "attachShippingProfileToProductsProducts",
 }

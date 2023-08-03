@@ -1,5 +1,5 @@
 import { ProductTypes } from "@medusajs/types"
-import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "../../helper"
 
 type ProductHandle = string
 type SalesChannelId = string
@@ -7,29 +7,29 @@ type SalesChannelId = string
 export const DetachSalesChannelToProductsInputAlias =
   "detachSalesChannelToProducts"
 
-export async function detachSalesChannelFromProducts<T = void>({
+export async function detachSalesChannelFromProducts({
   container,
   context,
   data,
 }: WorkflowArguments & {
   data: {
-    [DetachSalesChannelToProductsInputAlias]: {
+    detachSalesChannelToProductsInputData: {
       productsHandleSalesChannelsMap: Map<ProductHandle, SalesChannelId[]>
-      products: ProductTypes.ProductDTO[]
     }
+    detachSalesChannelToProductsProducts: ProductTypes.ProductDTO[]
   }
-}): Promise<PipelineHandlerResult<T>> {
+}): Promise<void> {
   const { manager } = context
-  data = data[DetachSalesChannelToProductsInputAlias]
+  const productsHandleSalesChannelsMap =
+    data.detachSalesChannelToProductsInputData.productsHandleSalesChannelsMap
+  const products = data.detachSalesChannelToProductsProducts
 
   const salesChannelService = container.resolve("salesChannelService")
   const salesChannelServiceTx = salesChannelService.withTransaction(manager)
 
   const salesChannelIdProductIdsMap = new Map<ProductHandle, SalesChannelId[]>()
-  data.products.forEach((product) => {
-    const salesChannelIds = data.productsHandleSalesChannelsMap.get(
-      product.handle!
-    )
+  products.forEach((product) => {
+    const salesChannelIds = productsHandleSalesChannelsMap.get(product.handle!)
     if (salesChannelIds) {
       salesChannelIds.forEach((salesChannelId) => {
         const productIds = salesChannelIdProductIdsMap.get(salesChannelId) || []
@@ -49,6 +49,10 @@ export async function detachSalesChannelFromProducts<T = void>({
       }
     )
   )
+}
 
-  return void 0 as unknown as PipelineHandlerResult<T>
+detachSalesChannelFromProducts.aliases = {
+  detachSalesChannelToProductsInputData:
+    "detachSalesChannelToProductsInputData",
+  detachSalesChannelToProductsProducts: "detachSalesChannelToProductsProducts",
 }

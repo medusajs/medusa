@@ -4,8 +4,7 @@ import {
   kebabCase,
   ShippingProfileUtils,
 } from "@medusajs/utils"
-import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
-import { InputAlias } from "../../definitions"
+import { WorkflowArguments } from "../../helper"
 
 type CreateProductsInputData =
   WorkflowTypes.ProductWorkflow.AdminPostProductsReq[]
@@ -34,18 +33,15 @@ export type CreateProductsPreparedData = {
   >
 }
 
-export async function createProductsPrepareData<
-  T = CreateProductsPreparedData
->({
+export async function createProductsPrepareData({
   container,
   context,
   data,
 }: WorkflowArguments & {
-  data: { [InputAlias.ProductsInputData]: CreateProductsInputData[] }
-}): Promise<PipelineHandlerResult<T>> {
+  data: { input: CreateProductsInputData[] }
+}): Promise<CreateProductsPreparedData> {
   const { manager } = context
-
-  data = data[InputAlias.ProductsInputData]
+  let data_ = data.input
 
   const shippingProfileService = container
     .resolve("shippingProfileService")
@@ -93,7 +89,7 @@ export async function createProductsPrepareData<
     VariantIndexAndPrices[]
   >()
 
-  for (const product of data) {
+  for (const product of data_) {
     product.handle ??= kebabCase(product.title)
 
     if (product.is_giftcard) {
@@ -143,15 +139,19 @@ export async function createProductsPrepareData<
     }
   }
 
-  data = data.map((productData) => {
+  data_ = data_.map((productData) => {
     delete productData.sales_channels
     return productData
   })
 
   return {
-    products: data as ProductTypes.CreateProductDTO[],
+    products: data_ as ProductTypes.CreateProductDTO[],
     productsHandleShippingProfileIdMap,
     productsHandleSalesChannelsMap,
     productsHandleVariantsIndexPricesMap,
-  } as unknown as PipelineHandlerResult<T>
+  }
+}
+
+createProductsPrepareData.aliases = {
+  input: "input",
 }

@@ -1,35 +1,32 @@
 import { ProductTypes } from "@medusajs/types"
-import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "../../helper"
 
 type ProductHandle = string
 type SalesChannelId = string
 
-export const AttachSalesChannelToProductsInputAlias =
-  "attachSalesChannelToProducts"
-
-export async function attachSalesChannelToProducts<T = void>({
+export async function attachSalesChannelToProducts({
   container,
   context,
   data,
 }: WorkflowArguments & {
   data: {
-    [AttachSalesChannelToProductsInputAlias]: {
+    attachSalesChannelToProductsInputData: {
       productsHandleSalesChannelsMap: Map<ProductHandle, SalesChannelId[]>
-      products: ProductTypes.ProductDTO[]
     }
+    attachSalesChannelToProductsProducts: ProductTypes.ProductDTO[]
   }
-}): Promise<PipelineHandlerResult<T>> {
+}): Promise<void> {
   const { manager } = context
-  data = data[AttachSalesChannelToProductsInputAlias]
+  const productsHandleSalesChannelsMap =
+    data.attachSalesChannelToProductsInputData.productsHandleSalesChannelsMap
+  const products = data.attachSalesChannelToProductsProducts
 
   const salesChannelService = container.resolve("salesChannelService")
   const salesChannelServiceTx = salesChannelService.withTransaction(manager)
 
   const salesChannelIdProductIdsMap = new Map<ProductHandle, SalesChannelId[]>()
-  data.products.forEach((product) => {
-    const salesChannelIds = data.productsHandleSalesChannelsMap.get(
-      product.handle!
-    )
+  products.forEach((product) => {
+    const salesChannelIds = productsHandleSalesChannelsMap.get(product.handle!)
     if (salesChannelIds) {
       salesChannelIds.forEach((salesChannelId) => {
         const productIds = salesChannelIdProductIdsMap.get(salesChannelId) || []
@@ -49,6 +46,10 @@ export async function attachSalesChannelToProducts<T = void>({
       }
     )
   )
+}
 
-  return void 0 as unknown as PipelineHandlerResult<T>
+attachSalesChannelToProducts.aliases = {
+  attachSalesChannelToProductsInputData:
+    "attachSalesChannelToProductsInputData",
+  attachSalesChannelToProductsProducts: "attachSalesChannelToProductsProducts",
 }

@@ -1,21 +1,27 @@
 import { ProductTypes } from "@medusajs/types"
-import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "../../helper"
 
-export const RemoveProductsInputAlias = "removeProducts"
+export const removeProductsInputAlias = "removeProducts"
 
-export async function removeProducts<T = void>({
+export async function removeProducts({
   container,
   data,
-}: WorkflowArguments & {
+}: Omit<WorkflowArguments, "data"> & {
   data: {
-    [RemoveProductsInputAlias]: ProductTypes.ProductDTO[]
+    removeProducts: ProductTypes.ProductDTO[]
   }
-}): Promise<PipelineHandlerResult<T>> {
-  data = data[RemoveProductsInputAlias]
+}): Promise<void> {
+  const data_ = data.removeProducts
+  if (!data_.length) {
+    return
+  }
 
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve("productModuleService")
 
-  await productModuleService.softDelete(data.map((p) => p.id))
-  return void 0 as unknown as PipelineHandlerResult<T>
+  await productModuleService.softDelete(data_.map((p) => p.id))
+}
+
+removeProducts.aliases = {
+  removeProductsInputAlias: "removeProducts",
 }

@@ -1,5 +1,5 @@
 import { ProductTypes } from "@medusajs/types"
-import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "../../helper"
 
 type ProductHandle = string
 type ShippingProfileId = string
@@ -7,30 +7,31 @@ type ShippingProfileId = string
 export const DetachShippingProfileToProductsInputAlias =
   "detachShippingProfileToProductsInputData"
 
-export async function detachShippingProfileFromProducts<T = void>({
+export async function detachShippingProfileFromProducts({
   container,
   context,
   data,
 }: WorkflowArguments & {
   data: {
-    [DetachShippingProfileToProductsInputAlias]: {
+    detachShippingProfileToProductsInputData: {
       productsHandleShippingProfileIdMap: Map<ProductHandle, ShippingProfileId>
-      products: ProductTypes.ProductDTO[]
     }
+    detachShippingProfileToProductsProducts: ProductTypes.ProductDTO[]
   }
-}): Promise<PipelineHandlerResult<T>> {
+}): Promise<void> {
   const { manager } = context
-  data = data[DetachShippingProfileToProductsInputAlias]
+  const productsHandleShippingProfileIdMap =
+    data.detachShippingProfileToProductsInputData
+      .productsHandleShippingProfileIdMap
+  const products = data.detachShippingProfileToProductsProducts
 
   const shippingProfileService = container.resolve("shippingProfileService")
   const shippingProfileServiceTx =
     shippingProfileService.withTransaction(manager)
 
   const profileIdProductIdsMap = new Map<ShippingProfileId, ProductHandle[]>()
-  data.products.forEach((product) => {
-    const profileId = data.productsHandleShippingProfileIdMap.get(
-      product.handle!
-    )
+  products.forEach((product) => {
+    const profileId = productsHandleShippingProfileIdMap.get(product.handle!)
     if (profileId) {
       const productIds = profileIdProductIdsMap.get(profileId) || []
       productIds.push(product.id)
@@ -48,6 +49,11 @@ export async function detachShippingProfileFromProducts<T = void>({
       }
     )
   )
+}
 
-  return void 0 as unknown as PipelineHandlerResult<T>
+detachShippingProfileFromProducts.aliases = {
+  detachShippingProfileToProductsInputData:
+    "detachShippingProfileToProductsInputData",
+  detachShippingProfileToProductsProducts:
+    "detachShippingProfileToProductsProducts",
 }

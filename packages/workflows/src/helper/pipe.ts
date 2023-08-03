@@ -30,17 +30,15 @@ export type WorkflowArguments = {
   context: Context | SharedContext
 }
 
-export type PipelineHandlerResult<T = undefined> = T extends undefined
+export type PipelineHandler<T extends any = undefined> = (
+  args: WorkflowArguments
+) => T extends undefined
   ? WorkflowStepMiddlewareReturn | WorkflowStepMiddlewareReturn[]
   : T
 
-export type PipelineHandler<T extends any = undefined> = (
-  args: WorkflowArguments
-) => PipelineHandlerResult<T> | Promise<PipelineHandlerResult<T>>
-
-export function pipe(
+export function pipe<T = undefined>(
   input: PipelineInput,
-  ...functions: PipelineHandler[]
+  ...functions: PipelineHandler<T>[]
 ): WorkflowStepHandler {
   return async ({
     container,
@@ -92,8 +90,10 @@ export function pipe(
             data[action.alias] = action.value
           }
         }
-      } else if (result?.alias) {
-        data[result.alias] = result.value
+      } else if ((result as WorkflowStepMiddlewareReturn)?.alias) {
+        data[(result as WorkflowStepMiddlewareReturn).alias] = (
+          result as WorkflowStepMiddlewareReturn
+        ).value
       }
 
       return result
