@@ -1,6 +1,13 @@
-import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 import { CartDTO } from "../../types"
+
+enum Aliases {
+  Cart = "cart",
+  CartAddresses = "cartAddresses",
+  CartCustomer = "cartCustomer",
+  CartRegion = "cartRegion",
+  CartContext = "cartContext"
+}
 
 export async function createCart({
   container,
@@ -10,12 +17,14 @@ export async function createCart({
   const cartService = container.resolve("cartService")
   const entityManager = container.resolve("manager")
   const cartServiceTx = cartService.withTransaction(entityManager)
-console.log("data - ", data)
+
   return await cartServiceTx.create({
-    ...data[CartInputAlias.Cart],
-    ...data[CartInputAlias.CartAddresses],
-    ...data[CartInputAlias.CartCustomer],
-    ...data[CartInputAlias.CartRegion],
-    ...data[CartInputAlias.CartContext],
+    ...data[Aliases.Cart],
+    ...data[Aliases.CartAddresses],
+    ...data[Aliases.CartCustomer],
+    ...data[Aliases.CartRegion],
+    ...data[Aliases.CartContext],
   })
 }
+
+createCart.aliases = Aliases

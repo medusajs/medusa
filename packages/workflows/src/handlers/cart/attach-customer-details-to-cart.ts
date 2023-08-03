@@ -1,11 +1,14 @@
 import { validateEmail } from "@medusajs/utils"
 
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
-import { CartInputAlias } from "../../definition"
 
 type AttachCustomerDetailsDTO = {
   customer_id?: string
   email?: string
+}
+
+enum Aliases {
+  Cart = "cart",
 }
 
 export async function attachCustomerDetailsToCart({
@@ -16,7 +19,7 @@ export async function attachCustomerDetailsToCart({
   const customerDTO: AttachCustomerDetailsDTO = {}
   const customerService = container.resolve("customerService")
   const entityManager = container.resolve("manager")
-  const customerId = data[CartInputAlias.Cart].customer_id
+  const customerId = data[Aliases.Cart].customer_id
   const customerServiceTx = customerService
     .withTransaction(entityManager)
 
@@ -29,7 +32,7 @@ export async function attachCustomerDetailsToCart({
     customerDTO.email = customer?.email
   }
 
-  const customerEmail = data[CartInputAlias.Cart].email
+  const customerEmail = data[Aliases.Cart].email
 
   if (customerEmail) {
     const validatedEmail = validateEmail(customerEmail)
@@ -48,3 +51,5 @@ export async function attachCustomerDetailsToCart({
 
   return customerDTO
 }
+
+attachCustomerDetailsToCart.aliases = Aliases

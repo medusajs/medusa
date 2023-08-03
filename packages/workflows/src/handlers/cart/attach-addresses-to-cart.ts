@@ -1,7 +1,6 @@
 import { isDefined } from "medusa-core-utils"
 import { MedusaError } from "@medusajs/utils"
 
-import { CartInputAlias } from "../../definition"
 import { AddressDTO } from "../../types"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
@@ -11,6 +10,11 @@ type AttachAddressDTO = {
   billing_address_id?: string
 }
 
+enum Aliases {
+  Cart = "cart",
+  CartRegion = "cartRegion",
+}
+
 export async function attachAddressesToCart({
   container,
   context,
@@ -18,14 +22,14 @@ export async function attachAddressesToCart({
 }: WorkflowArguments): Promise<AttachAddressDTO> {
   const regionService = container.resolve("regionService")
   const addressRepository = container.resolve("addressRepository")
-  const shippingAddress = data[CartInputAlias.Cart].shipping_address
-  const shippingAddressId = data[CartInputAlias.Cart].shipping_address_id
-  const billingAddress = data[CartInputAlias.Cart].billing_address
-  const billingAddressId = data[CartInputAlias.Cart].billing_address_id
+  const shippingAddress = data[Aliases.Cart].shipping_address
+  const shippingAddressId = data[Aliases.Cart].shipping_address_id
+  const billingAddress = data[Aliases.Cart].billing_address
+  const billingAddressId = data[Aliases.Cart].billing_address_id
   const addressesDTO: AttachAddressDTO = {}
 
   const region = await regionService
-    .retrieve(data[CartInputAlias.CartRegion].region_id!, {
+    .retrieve(data[Aliases.CartRegion].region_id!, {
       relations: ["countries"],
     })
 
@@ -92,3 +96,5 @@ export async function attachAddressesToCart({
 
   return addressesDTO
 }
+
+attachAddressesToCart.aliases = Aliases

@@ -1,6 +1,9 @@
-import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 import { CartDTO } from "../../types"
+
+enum Aliases {
+  Cart = "cart"
+}
 
 export async function removeCart({
   container,
@@ -12,6 +15,8 @@ export async function removeCart({
   const cartServiceTx = cartService.withTransaction(entityManager)
 
   return await cartServiceTx.delete(
-    data[CartInputAlias.Cart].id
+    data[Aliases.Cart].id
   )
 }
+
+removeCart.aliases = Aliases

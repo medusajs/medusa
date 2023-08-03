@@ -9,12 +9,6 @@ import { cartHandlers } from "../../handlers"
 
 export enum CartInputAlias {
   Cart = "cart",
-  CartAddresses = "cartAddresses",
-  CartRegion = "cartRegion",
-  CartCustomer = "cartCustomer",
-  CartContext = "cartContext",
-  CartSalesChannel = "cartSalesChannel",
-  CreatedCart = "createdCart"
 }
 
 enum CreateCartActions {
@@ -66,11 +60,12 @@ const workflowSteps: TransactionStepsDefinition = {
   ]
 }
 
+const workflowAlias = "cart"
 const workflowInput = {
-  inputAlias: CartInputAlias.Cart,
+  inputAlias: workflowAlias,
   invoke: {
-    from: CartInputAlias.Cart,
-    alias: CartInputAlias.Cart,
+    from: workflowAlias,
+    alias: workflowAlias,
   },
 }
 
@@ -101,23 +96,23 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.attachRegion,
-              alias: CartInputAlias.Cart,
+              alias: cartHandlers.createCart.aliases.Cart,
             },
             {
               from: CreateCartActions.attachRegion,
-              alias: CartInputAlias.CartRegion,
+              alias: cartHandlers.createCart.aliases.CartRegion,
             },
             {
               from: CreateCartActions.attachContext,
-              alias: CartInputAlias.CartContext,
+              alias: cartHandlers.createCart.aliases.CartContext,
             },
             {
               from: CreateCartActions.attachCustomerDetails,
-              alias: CartInputAlias.CartCustomer,
+              alias: cartHandlers.createCart.aliases.CartCustomer,
             },
             {
               from: CreateCartActions.attachAddresses,
-              alias: CartInputAlias.CartAddresses,
+              alias: cartHandlers.createCart.aliases.CartAddresses,
             },
           ],
         },
@@ -134,7 +129,7 @@ const handlers = new Map([
             workflowInput.invoke,
             {
               from: CreateCartActions.attachRegion,
-              alias: CartInputAlias.CartRegion,
+              alias: cartHandlers.attachAddressesToCart.aliases.CartRegion,
             },
         ]
         },
@@ -168,7 +163,7 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.createCart,
-              alias: CartInputAlias.CreatedCart,
+              alias: cartHandlers.attachLineItemsToCart.aliases.CreatedCart,
             },
             workflowInput.invoke
           ],
@@ -184,7 +179,7 @@ const handlers = new Map([
         {
           invoke: {
             from: CreateCartActions.createCart,
-            alias: CartInputAlias.Cart,
+            alias: cartHandlers.retrieveCart.aliases.CreatedCart,
           },
         },
         cartHandlers.retrieveCart

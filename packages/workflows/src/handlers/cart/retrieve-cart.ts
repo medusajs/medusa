@@ -1,4 +1,3 @@
-import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 import { CartDTO } from "../../types"
 
@@ -22,6 +21,10 @@ export const defaultStoreCartRelations = [
   "discounts.rule",
 ]
 
+enum Aliases {
+  CreatedCart = "createdCart"
+}
+
 export async function retrieveCart({
   container,
   context,
@@ -32,8 +35,10 @@ export async function retrieveCart({
   const cartServiceTx = cartService.withTransaction(entityManager)
 
   return await cartServiceTx.retrieve(
-    data[CartInputAlias.Cart].id, {
+    data[Aliases.CreatedCart].id, {
       relations: defaultStoreCartRelations
     }
   )
 }
+
+retrieveCart.aliases = Aliases

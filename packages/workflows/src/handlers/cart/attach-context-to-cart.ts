@@ -1,8 +1,11 @@
-import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
 
 type AttachContextDTO = {
   context?: Record<any, any>
+}
+
+enum Aliases {
+  Cart = "cart"
 }
 
 export async function attachContextToCart({
@@ -11,8 +14,10 @@ export async function attachContextToCart({
   data,
 }: WorkflowArguments): Promise<AttachContextDTO> {
   const contextDTO: AttachContextDTO = {
-    context: data[CartInputAlias.Cart].context
+    context: data[Aliases.Cart].context
   }
 
   return contextDTO
 }
+
+attachContextToCart.aliases = Aliases

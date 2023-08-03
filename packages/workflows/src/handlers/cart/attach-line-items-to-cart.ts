@@ -1,5 +1,9 @@
-import { CartInputAlias } from "../../definition"
 import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
+
+enum Aliases {
+  Cart = "cart",
+  CreatedCart = "createdCart",
+}
 
 export async function attachLineItemsToCart({
   container,
@@ -14,7 +18,7 @@ export async function attachLineItemsToCart({
     .withTransaction(entityManager)
   const cartServiceTx = cartService
     .withTransaction(entityManager)
-  let lineItems = data[CartInputAlias.Cart].items
+  let lineItems = data[Aliases.Cart].items
 
   if (lineItems?.length) {
     const generateInputData = lineItems.map((item) => ({
@@ -25,13 +29,13 @@ export async function attachLineItemsToCart({
     lineItems = await lineItemServiceTx.generate(
       generateInputData,
       {
-        region_id: data[CartInputAlias.CreatedCart].region_id,
-        customer_id: data[CartInputAlias.CreatedCart].customer_id,
+        region_id: data[Aliases.CreatedCart].region_id,
+        customer_id: data[Aliases.CreatedCart].customer_id,
       }
     )
 
     await cartServiceTx.addOrUpdateLineItems(
-      data[CartInputAlias.CreatedCart].id,
+      data[Aliases.CreatedCart].id,
       lineItems,
       {
         validateSalesChannels:
@@ -40,3 +44,5 @@ export async function attachLineItemsToCart({
     )
   }
 }
+
+attachLineItemsToCart.aliases = Aliases
