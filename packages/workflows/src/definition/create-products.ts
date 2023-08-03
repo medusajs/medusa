@@ -3,25 +3,14 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import {
-  attachInventoryItems,
-  createInventoryItems,
-  createProducts as createProductsHandler,
-  removeInventoryItems,
-  removeProducts,
-} from "../handlers"
 import { exportWorkflow, pipe } from "../helper"
 
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
-import { createProductsPrepareData } from "../handlers/middlewares/create-products-prepare-data"
-import { attachShippingProfileToProducts } from "../handlers/product/attach-shipping-profile-to-products"
-import { detachShippingProfileFromProducts } from "../handlers/product/detach-shipping-profile-from-products"
-import { attachSalesChannelToProducts } from "../handlers/product/attach-sales-channel-to-products"
-import { detachSalesChannelFromProducts } from "../handlers/product/detach-sales-channel-from-products"
-import { detachInventoryItems } from "../handlers/inventory/detach-inventory-items"
-import { updateProductsVariantsPrices } from "../handlers/product/update-products-variants-prices"
-import { createProductsPrepareCreatePricesCompensation } from "../handlers/middlewares/create-products-prepare-create-prices-compensation"
-import { listProducts } from "../handlers/product/list-products"
+import {
+  InventoryHandlers,
+  MiddlewaresHandlers,
+  ProductHandlers,
+} from "../handlers"
 
 export enum Actions {
   prepare = "prepare",
@@ -67,6 +56,7 @@ export const workflowSteps: TransactionStepsDefinition = {
   },
 }
 
+let MiddlewaresHandler
 const handlers = new Map([
   [
     Actions.prepare,
@@ -76,10 +66,10 @@ const handlers = new Map([
           inputAlias: InputAlias.ProductsInputData,
           invoke: {
             from: InputAlias.ProductsInputData,
-            alias: createProductsPrepareData.aliases.input,
+            alias: MiddlewaresHandlers.createProductsPrepareData.aliases.input,
           },
         },
-        createProductsPrepareData
+        MiddlewaresHandlers.createProductsPrepareData
       ),
     },
   ],
@@ -90,19 +80,19 @@ const handlers = new Map([
         {
           invoke: {
             from: Actions.prepare,
-            alias: createProductsHandler.aliases.input,
+            alias: ProductHandlers.createProducts.aliases.input,
           },
         },
-        createProductsHandler
+        ProductHandlers.createProducts
       ),
       compensate: pipe(
         {
           invoke: {
             from: Actions.createProducts,
-            alias: removeProducts.aliases.products,
+            alias: ProductHandlers.removeProducts.aliases.products,
           },
         },
-        removeProducts
+        ProductHandlers.removeProducts
       ),
     },
   ],
@@ -114,30 +104,36 @@ const handlers = new Map([
           invoke: [
             {
               from: Actions.prepare,
-              alias: attachShippingProfileToProducts.aliases.input,
+              alias:
+                ProductHandlers.attachShippingProfileToProducts.aliases.input,
             },
             {
               from: Actions.createProducts,
-              alias: attachShippingProfileToProducts.aliases.products,
+              alias:
+                ProductHandlers.attachShippingProfileToProducts.aliases
+                  .products,
             },
           ],
         },
-        attachShippingProfileToProducts
+        ProductHandlers.attachShippingProfileToProducts
       ),
       compensate: pipe(
         {
           invoke: [
             {
               from: Actions.prepare,
-              alias: detachShippingProfileFromProducts.aliases.input,
+              alias:
+                ProductHandlers.detachShippingProfileFromProducts.aliases.input,
             },
             {
               from: Actions.createProducts,
-              alias: detachShippingProfileFromProducts.aliases.products,
+              alias:
+                ProductHandlers.detachShippingProfileFromProducts.aliases
+                  .products,
             },
           ],
         },
-        detachShippingProfileFromProducts
+        ProductHandlers.detachShippingProfileFromProducts
       ),
     },
   ],
@@ -149,30 +145,33 @@ const handlers = new Map([
           invoke: [
             {
               from: Actions.prepare,
-              alias: attachSalesChannelToProducts.aliases.input,
+              alias: ProductHandlers.attachSalesChannelToProducts.aliases.input,
             },
             {
               from: Actions.createProducts,
-              alias: attachSalesChannelToProducts.aliases.products,
+              alias:
+                ProductHandlers.attachSalesChannelToProducts.aliases.products,
             },
           ],
         },
-        attachSalesChannelToProducts
+        ProductHandlers.attachSalesChannelToProducts
       ),
       compensate: pipe(
         {
           invoke: [
             {
               from: Actions.prepare,
-              alias: detachSalesChannelFromProducts.aliases.input,
+              alias:
+                ProductHandlers.detachSalesChannelFromProducts.aliases.input,
             },
             {
               from: Actions.createProducts,
-              alias: detachSalesChannelFromProducts.aliases.products,
+              alias:
+                ProductHandlers.detachSalesChannelFromProducts.aliases.products,
             },
           ],
         },
-        detachSalesChannelFromProducts
+        ProductHandlers.detachSalesChannelFromProducts
       ),
     },
   ],
@@ -183,19 +182,20 @@ const handlers = new Map([
         {
           invoke: {
             from: Actions.createProducts,
-            alias: createInventoryItems.aliases.products,
+            alias: InventoryHandlers.createInventoryItems.aliases.products,
           },
         },
-        createInventoryItems
+        InventoryHandlers.createInventoryItems
       ),
       compensate: pipe(
         {
           invoke: {
             from: Actions.createInventoryItems,
-            alias: removeInventoryItems.aliases.inventoryItems,
+            alias:
+              InventoryHandlers.removeInventoryItems.aliases.inventoryItems,
           },
         },
-        removeInventoryItems
+        InventoryHandlers.removeInventoryItems
       ),
     },
   ],
@@ -206,19 +206,21 @@ const handlers = new Map([
         {
           invoke: {
             from: Actions.createInventoryItems,
-            alias: attachInventoryItems.aliases.inventoryItems,
+            alias:
+              InventoryHandlers.attachInventoryItems.aliases.inventoryItems,
           },
         },
-        attachInventoryItems
+        InventoryHandlers.attachInventoryItems
       ),
       compensate: pipe(
         {
           invoke: {
             from: Actions.createInventoryItems,
-            alias: detachInventoryItems.aliases.inventoryItems,
+            alias:
+              InventoryHandlers.detachInventoryItems.aliases.inventoryItems,
           },
         },
-        detachInventoryItems
+        InventoryHandlers.detachInventoryItems
       ),
     },
   ],
@@ -230,31 +232,33 @@ const handlers = new Map([
           invoke: [
             {
               from: Actions.prepare,
-              alias: updateProductsVariantsPrices.aliases.input,
+              alias: ProductHandlers.updateProductsVariantsPrices.aliases.input,
             },
             {
               from: Actions.createProducts,
-              alias: updateProductsVariantsPrices.aliases.products,
+              alias:
+                ProductHandlers.updateProductsVariantsPrices.aliases.products,
             },
           ],
         },
-        updateProductsVariantsPrices
+        ProductHandlers.updateProductsVariantsPrices
       ),
       compensate: pipe(
         {
           invoke: [
             {
               from: Actions.prepare,
-              alias: updateProductsVariantsPrices.aliases.input,
+              alias: ProductHandlers.updateProductsVariantsPrices.aliases.input,
             },
             {
               from: Actions.createProducts,
-              alias: updateProductsVariantsPrices.aliases.products,
+              alias:
+                ProductHandlers.updateProductsVariantsPrices.aliases.products,
             },
           ],
         },
-        createProductsPrepareCreatePricesCompensation,
-        updateProductsVariantsPrices
+        MiddlewaresHandlers.createProductsPrepareCreatePricesCompensation,
+        ProductHandlers.updateProductsVariantsPrices
       ),
     },
   ],
@@ -267,15 +271,15 @@ const handlers = new Map([
           invoke: [
             {
               from: InputAlias.ProductsInputData,
-              alias: listProducts.aliases.inputData,
+              alias: ProductHandlers.listProducts.aliases.input,
             },
             {
               from: Actions.createProducts,
-              alias: listProducts.aliases.products,
+              alias: ProductHandlers.listProducts.aliases.products,
             },
           ],
         },
-        listProducts
+        ProductHandlers.listProducts
       ),
     },
   ],

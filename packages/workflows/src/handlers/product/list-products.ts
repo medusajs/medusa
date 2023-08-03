@@ -47,5 +47,5 @@ export async function listProducts({
 
 listProducts.aliases = {
   products: "products",
-  inputData: "payload",
+  input: "payload",
 }
