@@ -1,13 +1,21 @@
+import { WorkflowTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../../helper"
+
+type AddShippingMethodInputData =
+  WorkflowTypes.CartTypes.AddShippingMethodToCartDTO
+
+const AddShippingMethodInputDataAlias = "addShippingMethodInputData"
 
 export async function prepareAddShippingMethodToCartWorkflowData({
   container,
   context,
   data,
 }: Omit<WorkflowArguments, "data"> & {
-  data: { cart_id: string; option_id: string; data: Record<string, unknown> }
+  data: { [AddShippingMethodInputDataAlias]: AddShippingMethodInputData }
 }) {
   const { transactionManager: manager } = context
+
+  const data_ = data[AddShippingMethodInputDataAlias]
 
   const cartService = container.resolve("cartService").withTransaction(manager)
   const shippingOptionService = container
@@ -17,7 +25,7 @@ export async function prepareAddShippingMethodToCartWorkflowData({
     .resolve("customShippingOptionService")
     .withTransaction(manager)
 
-  const cart = await cartService.retrieveWithTotals(data.cart_id, {
+  const cart = await cartService.retrieveWithTotals(data_.cart_id, {
     relations: [
       "shipping_methods",
       "shipping_methods.shipping_option",
@@ -27,19 +35,19 @@ export async function prepareAddShippingMethodToCartWorkflowData({
   })
 
   const options = await customShippingOptionService.list({
-    cart_id: data.cart_id,
+    cart_id: data_.cart_id,
   })
 
   const customShippingOption = cartService.findCustomShippingOption(
     options,
-    data.option_id
+    data_.option_id
   )
 
   const shippingMethodConfig = customShippingOption
     ? { cart_id: cart.id, price: customShippingOption.price }
     : { cart }
 
-  const option = await shippingOptionService.retrieve(data.option_id, {
+  const option = await shippingOptionService.retrieve(data_.option_id, {
     relations: ["requirements"],
   })
 
@@ -47,6 +55,10 @@ export async function prepareAddShippingMethodToCartWorkflowData({
     shippingMethodConfig,
     cart,
     option,
-    shippingMethodData: data.data,
+    shippingMethodData: data_.data,
   }
+}
+
+prepareAddShippingMethodToCartWorkflowData.aliases = {
+  AddShippingMethodInputDataAlias: AddShippingMethodInputDataAlias,
 }

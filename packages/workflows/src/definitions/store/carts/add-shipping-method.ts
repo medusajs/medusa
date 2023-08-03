@@ -14,11 +14,6 @@ import { updatePaymentSessions } from "../../../handlers/store/carts/update-paym
 import { validateShippingOptionForCart } from "../../../handlers/store/carts/validate-shipping-option-for-cart"
 import { exportWorkflow, pipe } from "../../../helper"
 
-export type AddShippingMethodWorkflowInputData = {
-  cart: any // Cart
-}
-// & StorePostCartsCartShippingMethodReq
-
 export enum AddShippingMethodWorkflowActions {
   prepare = "prepare",
   validateFulfillmentData = "validateFulfillmentData",
@@ -97,10 +92,15 @@ const handlers = new Map([
     {
       invoke: pipe(
         {
-          inputAlias: InputAlias.AddShippingMethodInputData,
+          inputAlias:
+            prepareAddShippingMethodToCartWorkflowData.aliases
+              .AddShippingMethodInputDataAlias,
           invoke: {
-            from: InputAlias.AddShippingMethodInputData,
-            alias: InputAlias.AddShippingMethodInputData,
+            from: prepareAddShippingMethodToCartWorkflowData.aliases
+              .AddShippingMethodInputDataAlias,
+            alias:
+              prepareAddShippingMethodToCartWorkflowData.aliases
+                .AddShippingMethodInputDataAlias,
           },
         },
         prepareAddShippingMethodToCartWorkflowData

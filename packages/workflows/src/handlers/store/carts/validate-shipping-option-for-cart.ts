@@ -1,12 +1,13 @@
+import { WorkflowTypes } from "@medusajs/types"
 import { isDefined } from "@medusajs/utils"
 import { InputAlias } from "../../../definitions"
 import { WorkflowArguments } from "../../../helper"
 
-type CreateShippingMethodDTO = {
-  option: any // shipping option
-  cart: any // cart
-  data: Record<string, unknown>
-}
+type ValidateShippingOptionForCartInputData =
+  WorkflowTypes.CartTypes.ValidateShippingOptionForCartDTO
+
+const ValidateShippingOptionForCartInputDataAlias =
+  "alidateShippingOptionForCartInputData"
 
 export async function validateShippingOptionForCart({
   container,
@@ -14,7 +15,8 @@ export async function validateShippingOptionForCart({
   data,
 }: Omit<WorkflowArguments, "data"> & {
   data: {
-    [InputAlias.ShippingOptionToValidate]: CreateShippingMethodDTO
+    // eslint-disable-next-line max-len
+    [InputAlias.ShippingOptionToValidate]: ValidateShippingOptionForCartInputData
   }
 }) {
   const { transactionManager: manager } = context
@@ -26,8 +28,6 @@ export async function validateShippingOptionForCart({
     .withTransaction(manager)
 
   const dataToValidate = data[InputAlias.ShippingOptionToValidate]
-
-  // Question: requirements are required on the shipping option, how do we ensure this? retrieve anew or throw?
 
   if (isDefined(dataToValidate.cart)) {
     // expects the cart from the preparation step
@@ -46,4 +46,9 @@ export async function validateShippingOptionForCart({
   return {
     validatedShippingOptionData: validatedData,
   }
+}
+
+validateShippingOptionForCart.aliases = {
+  ValidateShippingOptionForCartInputDataAlias:
+    ValidateShippingOptionForCartInputDataAlias,
 }
