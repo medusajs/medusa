@@ -104,7 +104,7 @@ export async function bundle() {
             ? settings
                 .map(
                   (r, i) => `{
-                Component: Route${i},
+                Component: Setting${i},
                 config: { path: "${r.path}", type: "setting", ...settingConfig${i} }
             }`
                 )
