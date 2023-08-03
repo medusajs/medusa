@@ -4,6 +4,7 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import {
+  attachInventoryItems,
   createInventoryItems,
   createProducts as createProductsHandler,
   removeInventoryItems,
@@ -17,6 +18,7 @@ import { attachShippingProfileToProducts } from "../handlers/product/attach-ship
 import { detachShippingProfileFromProducts } from "../handlers/product/detach-shipping-profile-from-products"
 import { attachSalesChannelToProducts } from "../handlers/product/attach-sales-channel-to-products"
 import { detachSalesChannelFromProducts } from "../handlers/product/detach-sales-channel-from-products"
+import { detachInventoryItems } from "../handlers/inventory/detach-inventory-items"
 
 export enum Actions {
   prepare = "prepare",
@@ -207,6 +209,29 @@ const handlers = new Map([
           },
         },
         removeInventoryItems
+      ),
+    },
+  ],
+  [
+    Actions.attachInventoryItems,
+    {
+      invoke: pipe(
+        {
+          invoke: {
+            from: Actions.createInventoryItems,
+            alias: attachInventoryItems.aliases.attachInventoryItemsData,
+          },
+        },
+        attachInventoryItems
+      ),
+      compensate: pipe(
+        {
+          invoke: {
+            from: Actions.createInventoryItems,
+            alias: detachInventoryItems.aliases.detachInventoryItemsData,
+          },
+        },
+        detachInventoryItems
       ),
     },
   ],

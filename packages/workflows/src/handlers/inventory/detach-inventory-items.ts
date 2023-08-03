@@ -1,13 +1,13 @@
 import { InventoryItemDTO, ProductTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
-export async function attachInventoryItems({
+export async function detachInventoryItems({
   container,
   context,
   data,
 }: Omit<WorkflowArguments, "data"> & {
   data: {
-    attachInventoryItemsData: {
+    detachInventoryItemsData: {
       variant: ProductTypes.ProductVariantDTO
       inventoryItem: InventoryItemDTO
     }[]
@@ -19,20 +19,22 @@ export async function attachInventoryItems({
     .resolve("productVariantInventoryService")
     .withTransaction(manager)
 
-  const data_ = data.attachInventoryItemsData
+  const data_ = data.detachInventoryItemsData
 
   if (!data_?.length) {
     return
   }
 
-  const inventoryData = data_.map(({ variant, inventoryItem }) => ({
-    variantId: variant.id,
-    inventoryItemId: inventoryItem.id,
-  }))
-
-  return await productVariantInventoryService.attachInventoryItem(inventoryData)
+  return await Promise.all(
+    data_.map(async ({ variant, inventoryItem }) => {
+      return await productVariantInventoryService.detachInventoryItem(
+        inventoryItem.id,
+        variant.id
+      )
+    })
+  )
 }
 
-attachInventoryItems.aliases = {
-  attachInventoryItemsData: "attachInventoryItemsData",
+detachInventoryItems.aliases = {
+  detachInventoryItemsData: "detachInventoryItemsData",
 }
