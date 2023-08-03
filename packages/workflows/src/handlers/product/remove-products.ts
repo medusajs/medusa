@@ -1,5 +1,6 @@
 import { ProductTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
+import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 
 export const removeProductsInputAlias = "removeProducts"
 
@@ -15,7 +16,7 @@ export async function removeProducts({
   }
 
   const productModuleService: ProductTypes.IProductModuleService =
-    container.resolve("productModuleService")
+    container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
   await productModuleService.softDelete(data_.map((p) => p.id))
 }

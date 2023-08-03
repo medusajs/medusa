@@ -73,7 +73,6 @@ export interface CreateProductInputDTO {
   type?: CreateProductTypeInputDTO
   collection_id?: string
   tags?: CreateProductTagInputDTO[]
-  sales_channels?: CreateProductSalesChannelInputDTO[]
   categories?: CraeteProductProductCategoryInputDTO[]
   options?: CreateProductOptionInputDTO[]
   variants?: CreateProductVariantInputDTO[]
@@ -86,4 +85,10 @@ export interface CreateProductInputDTO {
   mid_code?: string
   material?: string
   metadata?: Record<string, unknown>
+
+  sales_channels?: CreateProductSalesChannelInputDTO[]
+  listConfig: {
+    select: string[]
+    relations: string[]
+  }
 }

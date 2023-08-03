@@ -1,5 +1,6 @@
 import { ProductTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
+import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 
 export async function createProducts({
   container,
@@ -10,7 +11,7 @@ export async function createProducts({
   const data_ = data.input.products
 
   const productModuleService: ProductTypes.IProductModuleService =
-    container.resolve("productModuleService")
+    container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
   return await productModuleService.create(data_)
 }

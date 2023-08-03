@@ -36,13 +36,13 @@ import { DistributedTransaction } from "@medusajs/orchestration"
 import { EntityManager } from "typeorm"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 import { FlagRouter } from "../../../../utils/flag-router"
-import { IInventoryService } from "@medusajs/types"
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 import { Logger } from "../../../../types/global"
 import { ProductStatus } from "../../../../models"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { Type } from "class-transformer"
-import { createProductsWorkflow } from "../../../../workflows/admin/create-products"
-import { validator } from "../../../../utils/validator"
+import { validator } from "../../../../utils"
+import { createProducts } from "@medusajs/workflows"
 
 /**
  * @oas [post] /admin/products
@@ -133,13 +133,26 @@ export default async (req, res) => {
   const productModuleService = req.scope.resolve("productModuleService")
 
   if (productModuleService) {
-    const products = await createProductsWorkflow(
+    const createProductWorkflow = createProducts(req.scope)
+
+    const input = [
       {
-        container: req.scope,
+        ...validated,
+        listConfig: {
+          select: defaultAdminProductFields,
+          relations: defaultAdminProductRelations,
+        },
+      },
+    ] as WorkflowTypes.ProductWorkflow.CreateProductInputDTO[]
+
+    const { result: products } = await createProductWorkflow.run({
+      input:
+        // eslint-disable-next-line max-len
+        validated as unknown as WorkflowTypes.ProductWorkflow.CreateProductInputDTO[],
+      context: {
         manager: entityManager,
       },
-      [validated]
-    )
+    })
 
     return res.json({ product: products[0] })
   }

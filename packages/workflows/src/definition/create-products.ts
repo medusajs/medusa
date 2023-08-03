@@ -290,4 +290,4 @@ WorkflowManager.register(Workflows.CreateProducts, workflowSteps, handlers)
 export const createProducts = exportWorkflow<
   WorkflowTypes.ProductWorkflow.CreateProductInputDTO[],
   ProductTypes.ProductDTO[]
->(Workflows.CreateProducts, Actions.createProducts)
+>(Workflows.CreateProducts, Actions.result)
