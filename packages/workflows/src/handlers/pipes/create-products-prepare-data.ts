@@ -45,6 +45,8 @@ export async function createProductsPrepareData<
 }): Promise<PipelineHandlerResult<T>> {
   const { manager } = context
 
+  data = data[InputAlias.ProductsInputData]
+
   const shippingProfileService = container
     .resolve("shippingProfileService")
     .withTransaction(manager)

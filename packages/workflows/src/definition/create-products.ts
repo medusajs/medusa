@@ -6,11 +6,25 @@ import {
 import {
   createProducts as createProductsHandler,
   removeProducts,
+  RemoveProductsInputAlias,
 } from "../handlers"
-import { exportWorkflow, pipe } from "../helper"
+import { exportWorkflow, pipe, WorkflowArguments } from "../helper"
 
 import { ProductTypes } from "@medusajs/types"
 import { createProductsPrepareData } from "../handlers/pipes/create-products-prepare-data"
+import {
+  attachShippingProfileToProducts,
+  AttachShippingProfileToProductsInputAlias,
+} from "../handlers/product/attach-shipping-profile-to-products"
+import { detachShippingProfileFromProducts } from "../handlers/product/detach-shipping-profile-from-products"
+import {
+  attachSalesChannelToProducts,
+  AttachSalesChannelToProductsInputAlias,
+} from "../handlers/product/attach-sales-channel-to-products"
+import {
+  detachSalesChannelFromProducts,
+  DetachSalesChannelToProductsInputAlias,
+} from "../handlers/product/detach-sales-channel-from-products"
 
 export enum Actions {
   prepare = "prepare",
@@ -77,10 +91,9 @@ const handlers = new Map([
     {
       invoke: pipe(
         {
-          inputAlias: InputAlias.Products,
           invoke: {
-            from: InputAlias.Products,
-            alias: InputAlias.Products,
+            from: Actions.prepare,
+            alias: createProductsHandler.aliases.CreateProductsInputAlias,
           },
         },
         createProductsHandler
@@ -89,10 +102,57 @@ const handlers = new Map([
         {
           invoke: {
             from: Actions.createProducts,
+            alias: RemoveProductsInputAlias,
+          },
+        },
+        ({ data }: WorkflowArguments & {}) => {},
+        removeProducts
+      ),
+    },
+  ],
+  [
+    Actions.attachShippingProfile,
+    {
+      invoke: pipe(
+        {
+          invoke: {
+            from: Actions.prepare,
+            alias: AttachShippingProfileToProductsInputAlias,
+          },
+        },
+        attachShippingProfileToProducts
+      ),
+      compensate: pipe(
+        {
+          invoke: {
+            from: Actions.createProducts,
             alias: InputAlias.Products,
           },
         },
-        removeProducts
+        detachShippingProfileFromProducts
+      ),
+    },
+  ],
+  [
+    Actions.attachToSalesChannel,
+    {
+      invoke: pipe(
+        {
+          invoke: {
+            from: Actions.prepare,
+            alias: AttachSalesChannelToProductsInputAlias,
+          },
+        },
+        attachSalesChannelToProducts
+      ),
+      compensate: pipe(
+        {
+          invoke: {
+            from: Actions.createProducts,
+            alias: DetachSalesChannelToProductsInputAlias,
+          },
+        },
+        detachSalesChannelFromProducts
       ),
     },
   ],
