@@ -37,9 +37,9 @@ export async function createProductsPrepareData({
   container,
   context,
   data,
-}: WorkflowArguments & {
-  data: { input: CreateProductsInputData[] }
-}): Promise<CreateProductsPreparedData> {
+}: WorkflowArguments<{
+  input: CreateProductsInputData
+}>): Promise<CreateProductsPreparedData> {
   const { manager } = context
   let data_ = data.input
 
@@ -120,7 +120,7 @@ export async function createProductsPrepareData({
 
     if (product.variants) {
       const hasPrices = product.variants.some((variant) => {
-        return variant.prices.length > 0
+        return (variant.prices?.length ?? 0) > 0
       })
 
       if (hasPrices) {
@@ -130,7 +130,7 @@ export async function createProductsPrepareData({
         product.variants.forEach((variant, index) => {
           items.push({
             index,
-            prices: variant.prices,
+            prices: variant.prices!,
           })
         })
 

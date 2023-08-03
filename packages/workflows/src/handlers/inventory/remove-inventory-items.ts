@@ -5,11 +5,9 @@ export async function removeInventoryItems({
   container,
   context,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: {
-    inventoryItems: { inventoryItem: InventoryItemDTO }[]
-  }
-}) {
+}: WorkflowArguments<{
+  inventoryItems: { inventoryItem: InventoryItemDTO }[]
+}>) {
   const { manager } = context
   const data_ = data.inventoryItems
 

@@ -4,11 +4,9 @@ import { WorkflowArguments } from "../../helper"
 export async function createProducts({
   container,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: {
-    input: { products: ProductTypes.CreateProductDTO[] }
-  }
-}): Promise<ProductTypes.ProductDTO[]> {
+}: WorkflowArguments<{
+  input: { products: ProductTypes.CreateProductDTO[] }
+}>): Promise<ProductTypes.ProductDTO[]> {
   const data_ = data.input.products
 
   const productModuleService: ProductTypes.IProductModuleService =

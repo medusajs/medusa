@@ -6,11 +6,9 @@ export const removeProductsInputAlias = "removeProducts"
 export async function removeProducts({
   container,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: {
-    products: ProductTypes.ProductDTO[]
-  }
-}): Promise<void> {
+}: WorkflowArguments<{
+  products: ProductTypes.ProductDTO[]
+}>): Promise<void> {
   const data_ = data.products
   if (!data_.length) {
     return

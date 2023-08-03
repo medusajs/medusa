@@ -5,14 +5,12 @@ export async function attachInventoryItems({
   container,
   context,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: {
-    inventoryItems: {
-      variant: ProductTypes.ProductVariantDTO
-      inventoryItem: InventoryItemDTO
-    }[]
-  }
-}) {
+}: WorkflowArguments<{
+  inventoryItems: {
+    variant: ProductTypes.ProductVariantDTO
+    inventoryItem: InventoryItemDTO
+  }[]
+}>) {
   const { manager } = context
 
   const productVariantInventoryService = container

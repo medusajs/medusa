@@ -12,17 +12,15 @@ export async function updateProductsVariantsPrices({
   container,
   context,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: {
-    input: {
-      productsHandleVariantsIndexPricesMap: Map<
-        ProductHandle,
-        VariantIndexAndPrices[]
-      >
-    }
-    products: ProductTypes.ProductDTO[]
+}: WorkflowArguments<{
+  input: {
+    productsHandleVariantsIndexPricesMap: Map<
+      ProductHandle,
+      VariantIndexAndPrices[]
+    >
   }
-}) {
+  products: ProductTypes.ProductDTO[]
+}>) {
   const { manager } = context
   const products = data.products
   const productsHandleVariantsIndexPricesMap =

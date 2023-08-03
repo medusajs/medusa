@@ -5,11 +5,9 @@ export async function createInventoryItems({
   container,
   context,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: {
-    products: ProductTypes.ProductDTO[]
-  }
-}) {
+}: WorkflowArguments<{
+  products: ProductTypes.ProductDTO[]
+}>) {
   const products = data.products
 
   const inventoryService: IInventoryService =

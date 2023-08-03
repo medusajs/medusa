@@ -8,14 +8,12 @@ export async function attachSalesChannelToProducts({
   container,
   context,
   data,
-}: WorkflowArguments & {
-  data: {
-    input: {
-      productsHandleSalesChannelsMap: Map<ProductHandle, SalesChannelId[]>
-    }
-    products: ProductTypes.ProductDTO[]
+}: WorkflowArguments<{
+  input: {
+    productsHandleSalesChannelsMap: Map<ProductHandle, SalesChannelId[]>
   }
-}): Promise<void> {
+  products: ProductTypes.ProductDTO[]
+}>): Promise<void> {
   const { manager } = context
   const productsHandleSalesChannelsMap =
     data.input.productsHandleSalesChannelsMap

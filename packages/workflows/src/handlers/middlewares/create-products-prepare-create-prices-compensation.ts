@@ -9,16 +9,14 @@ type VariantIndexAndPrices = {
 
 export async function createProductsPrepareCreatePricesCompensation({
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: {
-    updateProductsVariantsPricesInputData: {
-      productsHandleVariantsIndexPricesMap: Map<
-        ProductHandle,
-        VariantIndexAndPrices[]
-      >
-    }
+}: WorkflowArguments<{
+  updateProductsVariantsPricesInputData: {
+    productsHandleVariantsIndexPricesMap: Map<
+      ProductHandle,
+      VariantIndexAndPrices[]
+    >
   }
-}) {
+}>) {
   const productsHandleVariantsIndexPricesMap =
     data.updateProductsVariantsPricesInputData
       .productsHandleVariantsIndexPricesMap

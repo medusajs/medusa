@@ -5,24 +5,22 @@ export async function retrieveProducts({
   container,
   context,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: {
-    products: ProductTypes.ProductDTO[]
-    payload: {
-      retrieveProductsConfig: {
-        select: string[]
-        relations: string[]
-      }
+}: WorkflowArguments<{
+  products: ProductTypes.ProductDTO[]
+  payload: {
+    retrieveProductsConfig: {
+      select: string[]
+      relations: string[]
     }
   }
-}): Promise<ProductTypes.ProductDTO[]> {
+}>): Promise<ProductTypes.ProductDTO[]> {
   const { manager } = context
 
   const products = data.products
   const retrieveProductsConfig = data.payload.retrieveProductsConfig
 
-  const productService = container.resolve("productService") as ProductService
-  const pricingService = container.resolve("pricingService") as PricingService
+  const productService = container.resolve("productService")
+  const pricingService = container.resolve("pricingService")
 
   const config = {}
   let shouldUseConfig = false
