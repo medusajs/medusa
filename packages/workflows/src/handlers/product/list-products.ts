@@ -8,7 +8,7 @@ export async function listProducts({
 }: WorkflowArguments<{
   products: ProductTypes.ProductDTO[]
   payload: {
-    retrieveProductsConfig: {
+    listConfig: {
       select: string[]
       relations: string[]
     }
@@ -17,7 +17,7 @@ export async function listProducts({
   const { manager } = context
 
   const products = data.products
-  const retrieveProductsConfig = data.payload.retrieveProductsConfig
+  const listConfig = data.payload.listConfig
 
   const productService = container.resolve("productService")
   const pricingService = container.resolve("pricingService")
@@ -25,15 +25,14 @@ export async function listProducts({
   const config = {}
   let shouldUseConfig = false
 
-  if (retrieveProductsConfig.select) {
-    shouldUseConfig = !!retrieveProductsConfig.select.length
-    Object.assign(config, { select: retrieveProductsConfig.select })
+  if (listConfig.select) {
+    shouldUseConfig = !!listConfig.select.length
+    Object.assign(config, { select: listConfig.select })
   }
 
-  if (retrieveProductsConfig.relations) {
-    shouldUseConfig =
-      shouldUseConfig || !!retrieveProductsConfig.relations.length
-    Object.assign(config, { relations: retrieveProductsConfig.relations })
+  if (listConfig.relations) {
+    shouldUseConfig = shouldUseConfig || !!listConfig.relations.length
+    Object.assign(config, { relations: listConfig.relations })
   }
 
   const rawProduct = await productService
