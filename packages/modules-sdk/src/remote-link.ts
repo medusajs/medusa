@@ -10,6 +10,7 @@ import { MedusaModule } from "./medusa-module"
 export type DeleteEntityInput = {
   [moduleName: string]: { [linkableKey: string]: string[] }
 }
+export type RestoreEntityInput = DeleteEntityInput
 
 type LinkDefinition = {
   [moduleName: string]: {
@@ -27,8 +28,9 @@ type DeleteEntities = { [key: string]: string[] }
 type RemovedIds = {
   [serviceName: string]: DeleteEntities
 }
+type RestoredIds = RemovedIds
 
-type LinkRemoveErrors = {
+type CascadeError = {
   serviceName: string
   args: any
   error: Error
@@ -144,56 +146,10 @@ export class RemoteLink {
     return mod.__joinerConfig.linkableKeys ?? []
   }
 
-  async create(link: LinkDefinition | LinkDefinition[]): Promise<void> {
-    const allLinks = Array.isArray(link) ? link : [link]
-    const serviceLinks = new Map<string, [string | string[], string][]>()
-
-    for (const rel of allLinks) {
-      const mods = Object.keys(rel)
-      if (mods.length > 2) {
-        throw new Error(`Only two modules can be linked.`)
-      }
-
-      const [moduleA, moduleB] = mods
-      const pk = Object.keys(rel[moduleA])
-      const moduleAKey = pk.join(",")
-      const moduleBKey = Object.keys(rel[moduleB]).join(",")
-
-      const service = this.getLinkModule(
-        moduleA,
-        moduleAKey,
-        moduleB,
-        moduleBKey
-      )
-
-      if (!service) {
-        throw new Error(
-          `Module to link ${moduleA}[${moduleAKey}] and ${moduleB}[${moduleBKey}] was not found.`
-        )
-      } else if (!serviceLinks.has(service.__definition.key)) {
-        serviceLinks.set(service.__definition.key, [])
-      }
-
-      const pkValue =
-        pk.length === 1 ? rel[moduleA][pk[0]] : pk.map((k) => rel[moduleA][k])
-
-      serviceLinks
-        .get(service.__definition.key)
-        ?.push([pkValue, rel[moduleB][moduleBKey]])
-    }
-
-    const promises: Promise<unknown[]>[] = []
-    for (const [serviceName, links] of serviceLinks) {
-      const service = this.modulesMap.get(serviceName)!
-      promises.push(service.create(links))
-    }
-
-    await Promise.all(promises)
-  }
-
-  async remove(
-    removedServices: DeleteEntityInput
-  ): Promise<[LinkRemoveErrors[] | null, RemovedIds[]]> {
+  private async executeCascade(
+    removedServices: DeleteEntityInput,
+    method: "softDelete" | "restore"
+  ): Promise<[CascadeError[] | null, RemovedIds[]]> {
     const removedIds: RemovedIds = {}
     const processedIds: Record<string, Set<string>> = {}
 
@@ -209,8 +165,8 @@ export class RemoteLink {
       return { serviceName, deleteKeys }
     })
 
-    const errors: LinkRemoveErrors[] = []
-    const cascadeDelete = async (
+    const errors: CascadeError[] = []
+    const cascade = async (
       services: { serviceName: string; deleteKeys: DeleteEntities }[],
       isCascading: boolean = false
     ): Promise<RemovedIds[]> => {
@@ -263,7 +219,7 @@ export class RemoteLink {
               let deletedEntities: Record<string, string[]>
 
               try {
-                deletedEntities = (await service.softDelete(cascadeDelKeys, {
+                deletedEntities = (await service[method](cascadeDelKeys, {
                   returnLinkableKeys: returnFields,
                 })) as Record<string, string[]>
               } catch (e) {
@@ -309,7 +265,7 @@ export class RemoteLink {
                 })
               })
 
-              await cascadeDelete(
+              await cascade(
                 [
                   {
                     serviceName: serviceName,
@@ -332,10 +288,67 @@ export class RemoteLink {
       return removedIdsList
     }
 
-    const result = await cascadeDelete(services)
+    const result = await cascade(services)
 
     return [errors.length ? errors : null, result]
   }
 
-  // TODO: restore, delete,
+  async create(link: LinkDefinition | LinkDefinition[]): Promise<void> {
+    const allLinks = Array.isArray(link) ? link : [link]
+    const serviceLinks = new Map<string, [string | string[], string][]>()
+
+    for (const rel of allLinks) {
+      const mods = Object.keys(rel)
+      if (mods.length > 2) {
+        throw new Error(`Only two modules can be linked.`)
+      }
+
+      const [moduleA, moduleB] = mods
+      const pk = Object.keys(rel[moduleA])
+      const moduleAKey = pk.join(",")
+      const moduleBKey = Object.keys(rel[moduleB]).join(",")
+
+      const service = this.getLinkModule(
+        moduleA,
+        moduleAKey,
+        moduleB,
+        moduleBKey
+      )
+
+      if (!service) {
+        throw new Error(
+          `Module to link ${moduleA}[${moduleAKey}] and ${moduleB}[${moduleBKey}] was not found.`
+        )
+      } else if (!serviceLinks.has(service.__definition.key)) {
+        serviceLinks.set(service.__definition.key, [])
+      }
+
+      const pkValue =
+        pk.length === 1 ? rel[moduleA][pk[0]] : pk.map((k) => rel[moduleA][k])
+
+      serviceLinks
+        .get(service.__definition.key)
+        ?.push([pkValue, rel[moduleB][moduleBKey]])
+    }
+
+    const promises: Promise<unknown[]>[] = []
+    for (const [serviceName, links] of serviceLinks) {
+      const service = this.modulesMap.get(serviceName)!
+      promises.push(service.create(links))
+    }
+
+    await Promise.all(promises)
+  }
+
+  async remove(
+    removedServices: DeleteEntityInput
+  ): Promise<[CascadeError[] | null, RemovedIds[]]> {
+    return await this.executeCascade(removedServices, "softDelete")
+  }
+
+  async restore(
+    removedServices: DeleteEntityInput
+  ): Promise<[CascadeError[] | null, RestoredIds[]]> {
+    return await this.executeCascade(removedServices, "restore")
+  }
 }
