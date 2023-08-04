@@ -135,15 +135,15 @@ export default async (req, res) => {
   if (productModuleService) {
     const createProductWorkflow = createProducts(req.scope)
 
-    const input = [
-      {
-        ...validated,
-        listConfig: {
-          select: defaultAdminProductFields,
-          relations: defaultAdminProductRelations,
-        },
+    const input = {
+      products:
+        // eslint-disable-next-line max-len
+        validated as unknown as WorkflowTypes.ProductWorkflow.CreateProductInputDTO[],
+      listConfig: {
+        select: defaultAdminProductFields,
+        relations: defaultAdminProductRelations,
       },
-    ] as WorkflowTypes.ProductWorkflow.CreateProductInputDTO[]
+    } as unknown as WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO
 
     const { result: products } = await createProductWorkflow.run({
       input,

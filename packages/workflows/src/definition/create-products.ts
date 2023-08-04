@@ -286,6 +286,6 @@ const handlers = new Map([
 WorkflowManager.register(Workflows.CreateProducts, workflowSteps, handlers)
 
 export const createProducts = exportWorkflow<
-  WorkflowTypes.ProductWorkflow.CreateProductInputDTO[],
+  WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO,
   ProductTypes.ProductDTO[]
 >(Workflows.CreateProducts, Actions.result)
