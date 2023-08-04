@@ -1,4 +1,4 @@
-import { WorkflowTypes } from "@medusajs/types"
+import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 type ProductHandle = string
@@ -10,16 +10,15 @@ type VariantIndexAndPrices = {
 export async function createProductsPrepareCreatePricesCompensation({
   data,
 }: WorkflowArguments<{
-  updateProductsVariantsPricesInputData: {
-    productsHandleVariantsIndexPricesMap: Map<
-      ProductHandle,
-      VariantIndexAndPrices[]
-    >
-  }
+  productsHandleVariantsIndexPricesMap: Map<
+    ProductHandle,
+    VariantIndexAndPrices[]
+  >
+  products: ProductTypes.ProductDTO[]
 }>) {
   const productsHandleVariantsIndexPricesMap =
-    data.updateProductsVariantsPricesInputData
-      .productsHandleVariantsIndexPricesMap
+    data.productsHandleVariantsIndexPricesMap
+  const products = data.products
 
   const updatedProductsHandleVariantsIndexPricesMap = new Map()
   productsHandleVariantsIndexPricesMap.forEach((items, productHandle) => {
@@ -37,13 +36,15 @@ export async function createProductsPrepareCreatePricesCompensation({
   })
 
   return {
-    alias:
-      createProductsPrepareCreatePricesCompensation.aliases
-        .productsHandleVariantsIndexPricesMap,
-    value: updatedProductsHandleVariantsIndexPricesMap,
+    alias: "",
+    value: {
+      productsHandleVariantsIndexPricesMap:
+        updatedProductsHandleVariantsIndexPricesMap,
+      products,
+    },
   }
 }
 
 createProductsPrepareCreatePricesCompensation.aliases = {
-  productsHandleVariantsIndexPricesMap: "productsHandleVariantsIndexPricesMap",
+  payload: "payload",
 }

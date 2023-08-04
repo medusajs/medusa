@@ -7,17 +7,15 @@ export async function listProducts({
   data,
 }: WorkflowArguments<{
   products: ProductTypes.ProductDTO[]
-  payload: {
-    listConfig: {
-      select: string[]
-      relations: string[]
-    }
+  listConfig: {
+    select: string[]
+    relations: string[]
   }
 }>): Promise<ProductTypes.ProductDTO[]> {
   const { manager } = context
 
   const products = data.products
-  const listConfig = data.payload.listConfig
+  const listConfig = data.listConfig
 
   const productService = container.resolve("productService")
   const pricingService = container.resolve("pricingService")
@@ -46,5 +44,4 @@ export async function listProducts({
 
 listProducts.aliases = {
   products: "products",
-  input: "payload",
 }

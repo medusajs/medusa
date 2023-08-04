@@ -17,16 +17,16 @@ export async function attachInventoryItems({
     .resolve("productVariantInventoryService")
     .withTransaction(manager)
 
-  const data_ = data.inventoryItems
-
-  if (!data_?.length) {
+  if (!data?.inventoryItems.length) {
     return
   }
 
-  const inventoryData = data_.map(({ variant, inventoryItem }) => ({
-    variantId: variant.id,
-    inventoryItemId: inventoryItem.id,
-  }))
+  const inventoryData = data.inventoryItems.map(
+    ({ variant, inventoryItem }) => ({
+      variantId: variant.id,
+      inventoryItemId: inventoryItem.id,
+    })
+  )
 
   return await productVariantInventoryService.attachInventoryItem(inventoryData)
 }

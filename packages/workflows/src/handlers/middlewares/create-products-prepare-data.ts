@@ -35,11 +35,9 @@ export async function createProductsPrepareData({
   container,
   context,
   data,
-}: WorkflowArguments<{
-  input: WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO
-}>): Promise<CreateProductsPreparedData> {
+}: WorkflowArguments<WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO>): Promise<CreateProductsPreparedData> {
   const { manager } = context
-  let products = data.input.products
+  let products = data.products
 
   const shippingProfileService = container
     .resolve("shippingProfileService")
@@ -147,10 +145,10 @@ export async function createProductsPrepareData({
     productsHandleShippingProfileIdMap,
     productsHandleSalesChannelsMap,
     productsHandleVariantsIndexPricesMap,
-    listConfig: data.input.config.listConfig,
+    listConfig: data.config.listConfig,
   }
 }
 
 createProductsPrepareData.aliases = {
-  input: "input",
+  payload: "payload",
 }

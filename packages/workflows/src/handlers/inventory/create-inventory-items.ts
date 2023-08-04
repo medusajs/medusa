@@ -1,5 +1,14 @@
-import { IInventoryService, ProductTypes } from "@medusajs/types"
+import {
+  IInventoryService,
+  InventoryItemDTO,
+  ProductTypes,
+} from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
+
+type Result = {
+  variant: ProductTypes.ProductVariantDTO
+  inventoryItem: InventoryItemDTO
+}[]
 
 export async function createInventoryItems({
   container,
@@ -7,9 +16,7 @@ export async function createInventoryItems({
   data,
 }: WorkflowArguments<{
   products: ProductTypes.ProductDTO[]
-}>) {
-  const products = data.products
-
+}>): Promise<Result | void> {
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
 
@@ -18,10 +25,10 @@ export async function createInventoryItems({
     logger.warn(
       `Inventory service not found. You should install the @medusajs/inventory package to use inventory. The 'createInventoryItems' will be skipped.`
     )
-    return
+    return void 0
   }
 
-  const variants = products.reduce(
+  const variants = data.products.reduce(
     (
       acc: ProductTypes.ProductVariantDTO[],
       product: ProductTypes.ProductDTO
@@ -31,7 +38,7 @@ export async function createInventoryItems({
     []
   )
 
-  return await Promise.all(
+  const result = await Promise.all(
     variants.map(async (variant) => {
       if (!variant.manage_inventory) {
         return
@@ -58,6 +65,8 @@ export async function createInventoryItems({
       return { variant, inventoryItem }
     })
   )
+
+  return result.filter(Boolean) as Result
 }
 
 createInventoryItems.aliases = {

@@ -6,9 +6,9 @@ export async function createProducts({
   container,
   data,
 }: WorkflowArguments<{
-  input: { products: ProductTypes.CreateProductDTO[] }
+  products: ProductTypes.CreateProductDTO[]
 }>): Promise<ProductTypes.ProductDTO[]> {
-  const data_ = data.input.products
+  const data_ = data.products
 
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
@@ -17,5 +17,5 @@ export async function createProducts({
 }
 
 createProducts.aliases = {
-  input: "input",
+  payload: "payload",
 }

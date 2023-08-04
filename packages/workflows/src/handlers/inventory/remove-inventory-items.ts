@@ -9,8 +9,6 @@ export async function removeInventoryItems({
   inventoryItems: { inventoryItem: InventoryItemDTO }[]
 }>) {
   const { manager } = context
-  const data_ = data.inventoryItems
-
   const inventoryService = container.resolve("inventoryService")
 
   if (!inventoryService) {
@@ -22,7 +20,7 @@ export async function removeInventoryItems({
   }
 
   return await inventoryService!.deleteInventoryItem(
-    data_.map(({ inventoryItem }) => inventoryItem.id),
+    data.inventoryItems.map(({ inventoryItem }) => inventoryItem.id),
     { transactionManager: manager }
   )
 }

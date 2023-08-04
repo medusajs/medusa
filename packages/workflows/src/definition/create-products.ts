@@ -11,6 +11,7 @@ import {
   MiddlewaresHandlers,
   ProductHandlers,
 } from "../handlers"
+import { aggregateData } from "../helper/aggregate"
 
 export enum Actions {
   prepare = "prepare",
@@ -65,9 +66,9 @@ const handlers = new Map([
           inputAlias: InputAlias.ProductsInputData,
           invoke: {
             from: InputAlias.ProductsInputData,
-            alias: MiddlewaresHandlers.createProductsPrepareData.aliases.input,
           },
         },
+        aggregateData(),
         MiddlewaresHandlers.createProductsPrepareData
       ),
     },
@@ -79,9 +80,9 @@ const handlers = new Map([
         {
           invoke: {
             from: Actions.prepare,
-            alias: ProductHandlers.createProducts.aliases.input,
           },
         },
+        aggregateData(),
         ProductHandlers.createProducts
       ),
       compensate: pipe(
@@ -91,6 +92,7 @@ const handlers = new Map([
             alias: ProductHandlers.removeProducts.aliases.products,
           },
         },
+        aggregateData(),
         ProductHandlers.removeProducts
       ),
     },
@@ -103,8 +105,6 @@ const handlers = new Map([
           invoke: [
             {
               from: Actions.prepare,
-              alias:
-                ProductHandlers.attachShippingProfileToProducts.aliases.input,
             },
             {
               from: Actions.createProducts,
@@ -114,6 +114,7 @@ const handlers = new Map([
             },
           ],
         },
+        aggregateData(),
         ProductHandlers.attachShippingProfileToProducts
       ),
       compensate: pipe(
@@ -121,8 +122,6 @@ const handlers = new Map([
           invoke: [
             {
               from: Actions.prepare,
-              alias:
-                ProductHandlers.detachShippingProfileFromProducts.aliases.input,
             },
             {
               from: Actions.createProducts,
@@ -132,6 +131,7 @@ const handlers = new Map([
             },
           ],
         },
+        aggregateData(),
         ProductHandlers.detachShippingProfileFromProducts
       ),
     },
@@ -144,7 +144,6 @@ const handlers = new Map([
           invoke: [
             {
               from: Actions.prepare,
-              alias: ProductHandlers.attachSalesChannelToProducts.aliases.input,
             },
             {
               from: Actions.createProducts,
@@ -153,6 +152,7 @@ const handlers = new Map([
             },
           ],
         },
+        aggregateData(),
         ProductHandlers.attachSalesChannelToProducts
       ),
       compensate: pipe(
@@ -160,8 +160,6 @@ const handlers = new Map([
           invoke: [
             {
               from: Actions.prepare,
-              alias:
-                ProductHandlers.detachSalesChannelFromProducts.aliases.input,
             },
             {
               from: Actions.createProducts,
@@ -170,6 +168,7 @@ const handlers = new Map([
             },
           ],
         },
+        aggregateData(),
         ProductHandlers.detachSalesChannelFromProducts
       ),
     },
@@ -184,6 +183,7 @@ const handlers = new Map([
             alias: InventoryHandlers.createInventoryItems.aliases.products,
           },
         },
+        aggregateData(),
         InventoryHandlers.createInventoryItems
       ),
       compensate: pipe(
@@ -194,6 +194,7 @@ const handlers = new Map([
               InventoryHandlers.removeInventoryItems.aliases.inventoryItems,
           },
         },
+        aggregateData(),
         InventoryHandlers.removeInventoryItems
       ),
     },
@@ -209,6 +210,7 @@ const handlers = new Map([
               InventoryHandlers.attachInventoryItems.aliases.inventoryItems,
           },
         },
+        aggregateData(),
         InventoryHandlers.attachInventoryItems
       ),
       compensate: pipe(
@@ -219,6 +221,7 @@ const handlers = new Map([
               InventoryHandlers.detachInventoryItems.aliases.inventoryItems,
           },
         },
+        aggregateData(),
         InventoryHandlers.detachInventoryItems
       ),
     },
@@ -231,7 +234,6 @@ const handlers = new Map([
           invoke: [
             {
               from: Actions.prepare,
-              alias: ProductHandlers.updateProductsVariantsPrices.aliases.input,
             },
             {
               from: Actions.createProducts,
@@ -240,6 +242,7 @@ const handlers = new Map([
             },
           ],
         },
+        aggregateData(),
         ProductHandlers.updateProductsVariantsPrices
       ),
       compensate: pipe(
@@ -247,7 +250,6 @@ const handlers = new Map([
           invoke: [
             {
               from: Actions.prepare,
-              alias: ProductHandlers.updateProductsVariantsPrices.aliases.input,
             },
             {
               from: Actions.createProducts,
@@ -256,6 +258,7 @@ const handlers = new Map([
             },
           ],
         },
+        aggregateData(),
         MiddlewaresHandlers.createProductsPrepareCreatePricesCompensation,
         ProductHandlers.updateProductsVariantsPrices
       ),
@@ -269,7 +272,6 @@ const handlers = new Map([
           invoke: [
             {
               from: Actions.prepare,
-              alias: ProductHandlers.listProducts.aliases.input,
             },
             {
               from: Actions.createProducts,
@@ -277,6 +279,7 @@ const handlers = new Map([
             },
           ],
         },
+        aggregateData(),
         ProductHandlers.listProducts
       ),
     },

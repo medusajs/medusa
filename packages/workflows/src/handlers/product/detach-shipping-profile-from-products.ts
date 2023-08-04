@@ -9,14 +9,12 @@ export async function detachShippingProfileFromProducts({
   context,
   data,
 }: WorkflowArguments<{
-  input: {
-    productsHandleShippingProfileIdMap: Map<ProductHandle, ShippingProfileId>
-  }
+  productsHandleShippingProfileIdMap: Map<ProductHandle, ShippingProfileId>
   products: ProductTypes.ProductDTO[]
 }>): Promise<void> {
   const { manager } = context
   const productsHandleShippingProfileIdMap =
-    data.input.productsHandleShippingProfileIdMap
+    data.productsHandleShippingProfileIdMap
   const products = data.products
 
   const shippingProfileService = container.resolve("shippingProfileService")
@@ -46,6 +44,5 @@ export async function detachShippingProfileFromProducts({
 }
 
 detachShippingProfileFromProducts.aliases = {
-  input: "inout",
   products: "products",
 }
