@@ -36,10 +36,21 @@ export type PipelineHandler<T extends any = undefined> = (
   ? Promise<WorkflowStepMiddlewareReturn | WorkflowStepMiddlewareReturn[]>
   : T
 
-export function pipe<T = undefined>(
-  input: PipelineInput,
-  ...functions: [...PipelineHandler[], PipelineHandler<T>]
+export function pipe<T>(
+  ...functionsAndInput:
+    | [
+        PipelineInput | PipelineHandler | PipelineHandler<T>,
+        ...([...PipelineHandler[], PipelineHandler<T>] | [])
+      ]
 ): WorkflowStepHandler {
+  const input = (
+    "function" === typeof functionsAndInput[0] ? {} : functionsAndInput.shift()
+  ) as PipelineInput
+  const functions = functionsAndInput as (
+    | PipelineHandler
+    | PipelineHandler<T>
+  )[]
+
   return async ({
     container,
     payload,

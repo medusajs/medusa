@@ -56,7 +56,6 @@ export const workflowSteps: TransactionStepsDefinition = {
   },
 }
 
-let MiddlewaresHandler
 const handlers = new Map([
   [
     Actions.prepare,

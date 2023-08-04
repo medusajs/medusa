@@ -92,3 +92,13 @@ export interface CreateProductInputDTO {
     relations: string[]
   }
 }
+
+export interface CreateProductsWorkflowInputDTO {
+  products: CreateProductInputDTO[]
+  config: {
+    listConfig: {
+      select: string[]
+      relations: string[]
+    }
+  }
+}
