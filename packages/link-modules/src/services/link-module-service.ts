@@ -7,10 +7,13 @@ import {
   ModuleJoinerConfig,
 } from "@medusajs/types"
 import {
+  InjectManager,
   InjectTransactionManager,
+  MapToConfig,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
+  mapObjectTo,
 } from "@medusajs/utils"
 import { PivotService } from "@services"
 import { shouldForceTransaction } from "../utils"
@@ -84,10 +87,11 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     }
   }
 
+  @InjectManager("baseRepository_")
   async retrieve(
     primaryKeyData: string | string[],
     foreignKeyData: string,
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<unknown> {
     const filter = this.buildData(primaryKeyData, foreignKeyData)
     const queryOptions = ModulesSdkUtils.buildQuery<unknown>(filter)
@@ -107,10 +111,11 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     return entry[0]
   }
 
+  @InjectManager("baseRepository_")
   async list(
     filters: Record<string, unknown> = {},
     config: FindConfig<unknown> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<unknown[]> {
     const products = await this.pivotService_.list(
       filters,
@@ -121,10 +126,11 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     return JSON.parse(JSON.stringify(products))
   }
 
+  @InjectManager("baseRepository_")
   async listAndCount(
     filters: Record<string, unknown> = {},
     config: FindConfig<unknown> = {},
-    sharedContext?: Context
+    @MedusaContext() sharedContext: Context = {}
   ): Promise<[unknown[], number]> {
     const [products, count] = await this.pivotService_.listAndCount(
       filters,
@@ -169,33 +175,58 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     return await this.pivotService_.delete(data, sharedContext)
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async softDelete(
     data: any,
-    { returnLinkableKeys }: { returnLinkableKeys?: string[] } = {},
-    @MedusaContext() sharedContext: Context = {}
-  ): Promise<Record<string, string[]> | void> {
-    this.validateFields(data)
+    { returnLinkableKeys }: { returnLinkableKeys?: string[] } = {
+      returnLinkableKeys: [],
+    },
+    sharedContext: Context = {}
+  ): Promise<[unknown[], Record<string, unknown[]>]> {
+    let [, cascadedEntitiesMap] = await this.softDelete_(data, sharedContext)
 
-    return await this.pivotService_.softDelete(
-      data,
-      returnLinkableKeys,
-      sharedContext
-    )
+    const pk = this.primaryKey_.join(",")
+    const entityNameToLinkableKeysMap: MapToConfig = {
+      PivotModel: [
+        { mapTo: pk, valueFrom: pk },
+        { mapTo: this.foreignKey_, valueFrom: this.foreignKey_ },
+      ],
+    }
+
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<Record<string, string[]>>(
+        cascadedEntitiesMap,
+        entityNameToLinkableKeysMap,
+        {
+          pick: returnLinkableKeys as string[],
+        }
+      )
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  async restore(
+  protected async softDelete_(
     data: any,
-    { returnLinkableKeys }: { returnLinkableKeys?: string[] } = {},
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<Record<string, string[]> | void> {
-    this.validateFields(data)
+  ): Promise<[string[], Record<string, string[]>]> {
+    return await this.pivotService_.softDelete(data, sharedContext)
+  }
 
-    return await this.pivotService_.restore(
-      data,
-      returnLinkableKeys,
-      sharedContext
-    )
+  async restore(data: any, sharedContext: Context = {}): Promise<string[]> {
+    const rows = await this.restore_(data, sharedContext)
+
+    return this.baseRepository_.serialize(rows, {
+      populate: true,
+    })
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async restore_(
+    productIds: string[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<string[]> {
+    return await this.pivotService_.restore(productIds, sharedContext)
   }
 }

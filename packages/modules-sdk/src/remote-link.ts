@@ -221,12 +221,14 @@ export class RemoteLink {
               try {
                 deletedEntities = (await service[method](cascadeDelKeys, {
                   returnLinkableKeys: returnFields,
-                })) as Record<string, string[]>
-              } catch (e) {
+                })) as unknown as Record<string, string[]>
+              } catch (error) {
                 errors.push({
                   serviceName,
                   args: cascadeDelKeys,
-                  error: e,
+                  error: JSON.parse(
+                    JSON.stringify(error, Object.getOwnPropertyNames(error))
+                  ),
                 })
                 return
               }

@@ -13,7 +13,7 @@ import {
 import ProductImage from "./models/product-image"
 
 export enum LinkableKeys {
-  PRODUCT_ID = "product_id",
+  PRODUCT_ID = "product_id", // Main service ID must the first
   PRODUCT_HANDLE = "product_handle",
   VARIANT_ID = "variant_id",
   VARIANT_SKU = "variant_sku",
@@ -58,17 +58,7 @@ export const entityNameToLinkableKeysMap: MapToConfig = {
 export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRODUCT,
   primaryKeys: ["id", "handle"],
-  linkableKeys: [
-    "product_id",
-    "variant_id",
-    "product_handle",
-    "product_type_id",
-    "product_collection_id",
-    "product_category_id",
-    "product_tag_id",
-    "product_option_id",
-    "product_image_id",
-  ],
+  linkableKeys: Object.values(LinkableKeys),
   alias: [
     {
       name: "product",

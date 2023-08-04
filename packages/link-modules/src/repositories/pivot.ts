@@ -1,4 +1,4 @@
-import { Context, DAL } from "@medusajs/types"
+import { Context, FindOptions } from "@medusajs/types"
 import {
   EntitySchema,
   LoadStrategy,
@@ -6,11 +6,11 @@ import {
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
 
+import { MikroOrmAbstractBaseRepository } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { AbstractBaseRepository } from "./base"
 
 export function getPivotRepository(model: EntitySchema) {
-  return class PivotRepository extends AbstractBaseRepository {
+  return class PivotRepository extends MikroOrmAbstractBaseRepository<EntitySchema> {
     readonly manager_: SqlEntityManager
     readonly model_: EntitySchema
 
@@ -22,7 +22,7 @@ export function getPivotRepository(model: EntitySchema) {
     }
 
     async find(
-      findOptions: DAL.FindOptions<unknown> = { where: {} },
+      findOptions: FindOptions<unknown> = { where: {} },
       context: Context = {}
     ): Promise<unknown[]> {
       const manager = (context.transactionManager ??
@@ -43,9 +43,9 @@ export function getPivotRepository(model: EntitySchema) {
     }
 
     async findAndCount(
-      findOptions: DAL.FindOptions<unknown> = { where: {} },
+      findOptions: FindOptions<EntitySchema<unknown>> = { where: {} },
       context: Context = {}
-    ): Promise<[unknown[], number]> {
+    ): Promise<[EntitySchema<unknown>[], number]> {
       const findOptions_ = { ...findOptions }
       findOptions_.options ??= {}
 
@@ -57,11 +57,11 @@ export function getPivotRepository(model: EntitySchema) {
         strategy: LoadStrategy.SELECT_IN,
       })
 
-      return await this.manager_.findAndCount(
+      return (await this.manager_.findAndCount(
         this.model_,
         findOptions_.where as MikroFilterQuery<unknown>,
         findOptions_.options as MikroOptions<any>
-      )
+      )) as [EntitySchema<unknown, never>[], number]
     }
 
     async delete(
@@ -77,9 +77,9 @@ export function getPivotRepository(model: EntitySchema) {
     }
 
     async create(
-      data: unknown[],
+      data: EntitySchema<unknown>[],
       { transactionManager: manager }: Context = {}
-    ): Promise<unknown[]> {
+    ): Promise<EntitySchema<unknown>[]> {
       const links = data.map((link: any) => {
         return (manager as SqlEntityManager).create(this.model_, link)
       })

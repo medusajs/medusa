@@ -1,12 +1,13 @@
 import {
-  ProductCategoryService,
-  ProductCollectionService,
-  ProductOptionService,
-  ProductService,
-  ProductTagService,
-  ProductTypeService,
-  ProductVariantService,
-} from "@services"
+  Context,
+  CreateProductOnlyDTO,
+  DAL,
+  FindConfig,
+  IEventBusModuleService,
+  InternalModuleDeclaration,
+  ModuleJoinerConfig,
+  ProductTypes,
+} from "@medusajs/types"
 import {
   Image,
   Product,
@@ -18,15 +19,14 @@ import {
   ProductVariant,
 } from "@models"
 import {
-  Context,
-  CreateProductOnlyDTO,
-  DAL,
-  FindConfig,
-  InternalModuleDeclaration,
-  ModuleJoinerConfig,
-  ProductTypes,
-  IEventBusModuleService,
-} from "@medusajs/types"
+  ProductCategoryService,
+  ProductCollectionService,
+  ProductOptionService,
+  ProductService,
+  ProductTagService,
+  ProductTypeService,
+  ProductVariantService,
+} from "@services"
 
 import ProductImageService from "./product-image"
 

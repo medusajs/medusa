@@ -1,6 +1,11 @@
-import { Context, DAL, RepositoryTransformOptions } from "@medusajs/types"
+import {
+  Context,
+  DAL,
+  FilterQuery,
+  RepositoryTransformOptions,
+} from "@medusajs/types"
 import { MedusaContext } from "../../decorators"
-import { buildQuery, InjectTransactionManager } from "../../modules-sdk"
+import { InjectTransactionManager, buildQuery } from "../../modules-sdk"
 import {
   getSoftDeletedCascadedEntitiesIdsMappedBy,
   transactionWrapper,
@@ -68,11 +73,21 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
 
   @InjectTransactionManager()
   async softDelete(
-    ids: string[],
+    idsOrFilter: string[] | FilterQuery,
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<[T[], Record<string, unknown[]>]> {
-    const entities = await this.find({ where: { id: { $in: ids } } as any })
+    const isArray = Array.isArray(idsOrFilter)
+    const filter =
+      isArray || typeof idsOrFilter === "string"
+        ? {
+            id: {
+              $in: isArray ? idsOrFilter : [idsOrFilter],
+            },
+          }
+        : idsOrFilter
+
+    const entities = await this.find({ where: filter as any })
     const date = new Date()
 
     await mikroOrmUpdateDeletedAtRecursively(manager, entities, date)
@@ -86,16 +101,23 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
 
   @InjectTransactionManager()
   async restore(
-    ids: string[],
+    idsOrFilter: string[] | FilterQuery,
     @MedusaContext()
     { transactionManager: manager }: Context = {}
   ): Promise<T[]> {
-    const query = buildQuery(
-      { id: { $in: ids } },
-      {
-        withDeleted: true,
-      }
-    )
+    const isArray = Array.isArray(idsOrFilter)
+    const filter =
+      isArray || typeof idsOrFilter === "string"
+        ? {
+            id: {
+              $in: isArray ? idsOrFilter : [idsOrFilter],
+            },
+          }
+        : idsOrFilter
+
+    const query = buildQuery(filter, {
+      withDeleted: true,
+    })
 
     const entities = await this.find(query)
 
