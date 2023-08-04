@@ -26,18 +26,31 @@ import {
   JoinerServiceConfig,
   ProductTypes,
   IEventBusModuleService,
-  EmitData,
 } from "@medusajs/types"
 
 import ProductImageService from "./product-image"
 import { shouldForceTransaction } from "../utils"
 import { joinerConfig } from "./../joiner-config"
+
 import {
-  ProductServiceTypes,
-  ProductVariantServiceTypes,
-  ProductCategoryServiceTypes,
-  ProductCollectionServiceTypes,
-} from "../types"
+  CreateProductCategoryDTO,
+  ProductCategoryEventData,
+  ProductCategoryEvents,
+  UpdateProductCategoryDTO,
+} from "../types/services/product-category"
+
+import { UpdateProductVariantDTO } from "../types/services/product-variant"
+
+import {
+  ProductCollectionEventData,
+  ProductCollectionEvents,
+} from "../types/services/product-collection"
+
+import {
+  ProductEventData,
+  ProductEvents,
+  UpdateProductDTO,
+} from "../types/services/product"
 
 import {
   InjectManager,
@@ -79,8 +92,11 @@ export default class ProductModuleService<
     TProductVariant,
     TProduct
   >
+
+  // eslint-disable-next-line max-len
   protected readonly productCategoryService_: ProductCategoryService<TProductCategory>
   protected readonly productTagService_: ProductTagService<TProductTag>
+  // eslint-disable-next-line max-len
   protected readonly productCollectionService_: ProductCollectionService<TProductCollection>
   protected readonly productImageService_: ProductImageService<TProductImage>
   protected readonly productTypeService_: ProductTypeService<TProductType>
@@ -501,12 +517,12 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
+    await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
       productCollections.map(({ id }) => ({
-        eventName: ProductCollectionServiceTypes.ProductCollectionEvents.COLLECTION_CREATED,
+        eventName: ProductCollectionEvents.COLLECTION_CREATED,
         data: { id },
-      })
-    ))
+      }))
+    )
 
     return JSON.parse(JSON.stringify(productCollections))
   }
@@ -521,12 +537,12 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
+    await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
       productCollections.map(({ id }) => ({
-        eventName: ProductCollectionServiceTypes.ProductCollectionEvents.COLLECTION_UPDATED,
+        eventName: ProductCollectionEvents.COLLECTION_UPDATED,
         data: { id },
-      })
-    ))
+      }))
+    )
 
     return JSON.parse(JSON.stringify(productCollections))
   }
@@ -541,12 +557,12 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCollectionServiceTypes.ProductCollectionEventData>(
+    await this.eventBusModuleService_?.emit<ProductCollectionEventData>(
       productCollectionIds.map((id) => ({
-        eventName: ProductCollectionServiceTypes.ProductCollectionEvents.COLLECTION_DELETED,
+        eventName: ProductCollectionEvents.COLLECTION_DELETED,
         data: { id },
-      })
-    ))
+      }))
+    )
   }
 
   @InjectManager("baseRepository_")
@@ -581,7 +597,7 @@ export default class ProductModuleService<
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async createCategory(
-    data: ProductCategoryServiceTypes.CreateProductCategoryDTO,
+    data: CreateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
   ) {
     const productCategory = await this.productCategoryService_.create(
@@ -589,8 +605,8 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCategoryServiceTypes.ProductCategoryEventData>(
-      ProductCategoryServiceTypes.ProductCategoryEvents.CATEGORY_CREATED,
+    await this.eventBusModuleService_?.emit<ProductCategoryEventData>(
+      ProductCategoryEvents.CATEGORY_CREATED,
       { id: productCategory.id }
     )
 
@@ -600,7 +616,7 @@ export default class ProductModuleService<
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async updateCategory(
     categoryId: string,
-    data: ProductCategoryServiceTypes.UpdateProductCategoryDTO,
+    data: UpdateProductCategoryDTO,
     @MedusaContext() sharedContext: Context = {}
   ) {
     const productCategory = await this.productCategoryService_.update(
@@ -609,8 +625,8 @@ export default class ProductModuleService<
       sharedContext
     )
 
-    await this.eventBusModuleService_?.emit<ProductCategoryServiceTypes.ProductCategoryEventData>(
-      ProductCategoryServiceTypes.ProductCategoryEvents.CATEGORY_UPDATED,
+    await this.eventBusModuleService_?.emit<ProductCategoryEventData>(
+      ProductCategoryEvents.CATEGORY_UPDATED,
       { id: productCategory.id }
     )
 
@@ -624,8 +640,8 @@ export default class ProductModuleService<
   ): Promise<void> {
     await this.productCategoryService_.delete(categoryId, sharedContext)
 
-    await this.eventBusModuleService_?.emit<ProductCategoryServiceTypes.ProductCategoryEventData>(
-      ProductCategoryServiceTypes.ProductCategoryEvents.CATEGORY_DELETED,
+    await this.eventBusModuleService_?.emit<ProductCategoryEventData>(
+      ProductCategoryEvents.CATEGORY_DELETED,
       { id: categoryId }
     )
   }
@@ -650,16 +666,18 @@ export default class ProductModuleService<
     sharedContext?: Context
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.create_(data, sharedContext)
-    const createdProducts = await this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
+    const createdProducts = await this.baseRepository_.serialize<
+      ProductTypes.ProductDTO[]
+    >(products, {
       populate: true,
     })
 
-    await this.eventBusModuleService_?.emit<ProductServiceTypes.ProductEventData>(
+    await this.eventBusModuleService_?.emit<ProductEventData>(
       createdProducts.map(({ id }) => ({
-        eventName: ProductServiceTypes.ProductEvents.PRODUCT_CREATED,
+        eventName: ProductEvents.PRODUCT_CREATED,
         data: { id },
-      })
-    ))
+      }))
+    )
 
     return createdProducts
   }
@@ -669,20 +687,19 @@ export default class ProductModuleService<
     @MedusaContext() sharedContext: Context = {}
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.update_(data, sharedContext)
-      
-    const updatedProducts = await this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(
-      products,
-      {
-        populate: true,
-      }
-    )
 
-    await this.eventBusModuleService_?.emit<ProductServiceTypes.ProductEventData>(
+    const updatedProducts = await this.baseRepository_.serialize<
+      ProductTypes.ProductDTO[]
+    >(products, {
+      populate: true,
+    })
+
+    await this.eventBusModuleService_?.emit<ProductEventData>(
       updatedProducts.map(({ id }) => ({
-        eventName: ProductServiceTypes.ProductEvents.PRODUCT_UPDATED,
+        eventName: ProductEvents.PRODUCT_UPDATED,
         data: { id },
-      })
-    ))
+      }))
+    )
 
     return updatedProducts
   }
@@ -759,7 +776,7 @@ export default class ProductModuleService<
             ...option,
           }
           const product = productByHandleMap.get(handle)
-          const productId = product?.id!
+          const productId = product?.id
 
           if (productId) {
             productOptionsData.product_id = productId
@@ -868,7 +885,7 @@ export default class ProductModuleService<
           sharedContext
         )
 
-        return productData as ProductServiceTypes.UpdateProductDTO
+        return productData as UpdateProductDTO
       })
     )
 
@@ -963,7 +980,7 @@ export default class ProductModuleService<
       promises.push(
         this.productVariantService_.update(
           productByIdMap.get(productId)!,
-          variants as unknown as ProductVariantServiceTypes.UpdateProductVariantDTO[],
+          variants as unknown as UpdateProductVariantDTO[],
           sharedContext
         )
       )
@@ -995,9 +1012,13 @@ export default class ProductModuleService<
 
     if (productData.images?.length) {
       productData.images = await this.productImageService_.upsert(
-        productData.images.map((image) =>
-          isString(image) ? image : image.url
-        ),
+        productData.images.map((image) => {
+          if (isString(image)) {
+            return image
+          } else {
+            return image.url
+          }
+        }),
         sharedContext
       )
     }
@@ -1036,12 +1057,12 @@ export default class ProductModuleService<
   ): Promise<void> {
     await this.productService_.delete(productIds, sharedContext)
 
-    await this.eventBusModuleService_?.emit<ProductServiceTypes.ProductEventData>(
+    await this.eventBusModuleService_?.emit<ProductEventData>(
       productIds.map((id) => ({
-        eventName: ProductServiceTypes.ProductEvents.PRODUCT_DELETED,
+        eventName: ProductEvents.PRODUCT_DELETED,
         data: { id },
-      })
-    ))
+      }))
+    )
   }
 
   async softDelete(
@@ -1050,16 +1071,18 @@ export default class ProductModuleService<
   ): Promise<ProductTypes.ProductDTO[]> {
     const products = await this.softDelete_(productIds, sharedContext)
 
-    const softDeletedProducts = await this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
+    const softDeletedProducts = await this.baseRepository_.serialize<
+      ProductTypes.ProductDTO[]
+    >(products, {
       populate: true,
     })
 
-    await this.eventBusModuleService_?.emit<ProductServiceTypes.ProductEventData>(
+    await this.eventBusModuleService_?.emit<ProductEventData>(
       softDeletedProducts.map(({ id }) => ({
-        eventName: ProductServiceTypes.ProductEvents.PRODUCT_DELETED,
+        eventName: ProductEvents.PRODUCT_DELETED,
         data: { id },
-      })
-    ))
+      }))
+    )
 
     return softDeletedProducts
   }
