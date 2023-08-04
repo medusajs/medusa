@@ -1,16 +1,18 @@
+import { asValue } from "awilix"
+
 import {
   InternalModuleDeclaration,
   LoaderOptions,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
 } from "@medusajs/modules-sdk"
-import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
+import { DALUtils, MedusaError, ModulesSdkUtils } from "@medusajs/utils"
 
-import { ModulesSdkTypes } from "@medusajs/types"
-import { asValue } from "awilix"
-import { createConnection } from "../utils"
+import { EntitySchema } from "@mikro-orm/core"
 
-export function connectionLoader(entity) {
+import { ConfigModule, ModulesSdkTypes } from "@medusajs/types"
+
+export function connectionLoader(entity: EntitySchema) {
   return async (
     {
       options,
@@ -25,7 +27,16 @@ export function connectionLoader(entity) {
       moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
       moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
     ) {
-      return
+      const { projectConfig } = container.resolve(
+        "configModule"
+      ) as ConfigModule
+      options = {
+        database: {
+          clientUrl: projectConfig.database_url!,
+          driverOptions: projectConfig.database_extra!,
+          schema: projectConfig.database_schema!,
+        },
+      }
     }
 
     const customManager = (
@@ -34,7 +45,7 @@ export function connectionLoader(entity) {
 
     if (!customManager) {
       const dbData = ModulesSdkUtils.loadDatabaseConfig("link_modules", options)
-      await loadDefault({ database: dbData, container, options })
+      await loadDefault({ database: dbData, container })
     } else {
       container.register({
         manager: asValue(customManager),
@@ -42,7 +53,7 @@ export function connectionLoader(entity) {
     }
   }
 
-  async function loadDefault({ database, container, options }) {
+  async function loadDefault({ database, container }) {
     if (!database) {
       throw new MedusaError(
         MedusaError.Types.INVALID_ARGUMENT,
@@ -50,7 +61,7 @@ export function connectionLoader(entity) {
       )
     }
 
-    const orm = await createConnection(database, [entity])
+    const orm = await DALUtils.mikroOrmCreateConnection(database, [entity])
 
     container.register({
       manager: asValue(orm.em.fork()),
