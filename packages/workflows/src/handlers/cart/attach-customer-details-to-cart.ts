@@ -7,6 +7,13 @@ type AttachCustomerDetailsDTO = {
   email?: string
 }
 
+type HandlerInputData = {
+  cart: {
+    customer_id?: string
+    email?: string
+  }
+}
+
 enum Aliases {
   Cart = "cart",
 }
@@ -15,7 +22,7 @@ export async function attachCustomerDetailsToCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<AttachCustomerDetailsDTO> {
+}: WorkflowArguments<HandlerInputData>): Promise<AttachCustomerDetailsDTO> {
   const customerDTO: AttachCustomerDetailsDTO = {}
   const customerService = container.resolve("customerService")
   const entityManager = container.resolve("manager")

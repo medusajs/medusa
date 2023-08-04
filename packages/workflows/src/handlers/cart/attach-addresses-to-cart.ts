@@ -5,8 +5,16 @@ import { WorkflowArguments } from "../../helper"
 
 type AttachAddressDTO = {
   shipping_address?: AddressDTO
+  billing_address?: AddressDTO
   shipping_address_id?: string
   billing_address_id?: string
+}
+
+type HandlerInputData = {
+  cart: AttachAddressDTO
+  cartRegion: {
+    region_id: string
+  }
 }
 
 enum Aliases {
@@ -18,7 +26,7 @@ export async function attachAddressesToCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<AttachAddressDTO> {
+}: WorkflowArguments<HandlerInputData>): Promise<AttachAddressDTO> {
   const regionService = container.resolve("regionService")
   const addressRepository = container.resolve("addressRepository")
   const shippingAddress = data[Aliases.Cart].shipping_address

@@ -8,11 +8,17 @@ enum Aliases {
   Cart = "cart"
 }
 
+type HandlerInputData = {
+  cart: {
+    context?: Record<any, any>
+  }
+}
+
 export async function attachContextToCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<AttachContextDTO> {
+}: WorkflowArguments<HandlerInputData>): Promise<AttachContextDTO> {
   const contextDTO: AttachContextDTO = {
     context: data[Aliases.Cart].context
   }

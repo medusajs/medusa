@@ -90,7 +90,6 @@ export default async (req, res) => {
 
   if (productModuleService) {
     const cartWorkflow = await createCartWorkflow(req.scope as MedusaContainer)
-
     const { result, errors } = await cartWorkflow.run({
       input: {
         ...validated,
@@ -100,9 +99,10 @@ export default async (req, res) => {
           ...validated.context,
         },
       },
-      resultFrom: 'retrieveCart'
+      resultFrom: 'retrieveCart',
+      throwOnError: false,
     })
-// console.log("errors - ", errors)
+console.log("result - ", result)
     return res.status(200).json({ cart: cleanResponseData(result, []) })
   }
 
