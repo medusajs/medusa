@@ -145,7 +145,7 @@ export async function createProductsPrepareData({
     productsHandleShippingProfileIdMap,
     productsHandleSalesChannelsMap,
     productsHandleVariantsIndexPricesMap,
-    listConfig: data.config.listConfig,
+    listConfig: data.config?.listConfig,
   }
 }
 
