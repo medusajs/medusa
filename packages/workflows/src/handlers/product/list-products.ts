@@ -1,4 +1,4 @@
-import { ProductTypes } from "@medusajs/types"
+import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 export async function listProducts({
@@ -7,15 +7,12 @@ export async function listProducts({
   data,
 }: WorkflowArguments<{
   products: ProductTypes.ProductDTO[]
-  listConfig: {
-    select: string[]
-    relations: string[]
-  }
+  config?: WorkflowTypes.CommonWorkflow.WorkflowInputConfig
 }>): Promise<ProductTypes.ProductDTO[]> {
   const { manager } = context
 
   const products = data.products
-  const listConfig = data.listConfig
+  const listConfig = data.config?.listConfig ?? {}
 
   const productService = container.resolve("productService")
   const pricingService = container.resolve("pricingService")

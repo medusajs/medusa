@@ -28,7 +28,7 @@ export type CreateProductsPreparedData = {
     ProductHandle,
     VariantIndexAndPrices[]
   >
-  listConfig: WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO["config"]["listConfig"]
+  config?: WorkflowTypes.CommonWorkflow.WorkflowInputConfig
 }
 
 export async function createProductsPrepareData({
@@ -145,7 +145,7 @@ export async function createProductsPrepareData({
     productsHandleShippingProfileIdMap,
     productsHandleSalesChannelsMap,
     productsHandleVariantsIndexPricesMap,
-    listConfig: data.config?.listConfig,
+    config: data.config,
   }
 }
 
