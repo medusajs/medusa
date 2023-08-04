@@ -1,4 +1,4 @@
-import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "../../helper"
 import { CartDTO } from "../../types"
 
 // TODO: Figure out a way to handle duplication of this code

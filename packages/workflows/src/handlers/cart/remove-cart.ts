@@ -1,4 +1,4 @@
-import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "../../helper"
 
 enum Aliases {
   CreatedCart = "createdCart"

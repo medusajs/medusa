@@ -1,6 +1,6 @@
 import { validateEmail } from "@medusajs/utils"
 
-import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "../../helper"
 
 type AttachCustomerDetailsDTO = {
   customer_id?: string

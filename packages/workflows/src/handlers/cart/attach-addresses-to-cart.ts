@@ -1,8 +1,7 @@
-import { isDefined } from "medusa-core-utils"
 import { MedusaError } from "@medusajs/utils"
 
 import { AddressDTO } from "../../types"
-import { PipelineHandlerResult, WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "../../helper"
 
 type AttachAddressDTO = {
   shipping_address?: AddressDTO
