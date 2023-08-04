@@ -1,6 +1,6 @@
-import { LINKS } from "../links"
-import { ModuleJoinerConfig } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
+import { ModuleJoinerConfig } from "@medusajs/types"
+import { LINKS } from "../links"
 
 export const ProductVariantInventoryItem: ModuleJoinerConfig = {
   serviceName: LINKS.ProductVariantInventoryItem,
@@ -14,7 +14,7 @@ export const ProductVariantInventoryItem: ModuleJoinerConfig = {
       name: "product_variant_inventory_items",
     },
   ],
-  primaryKeys: ["id", "variant_id", "inventory_item_id"],
+  primaryKeys: ["variant_id", "inventory_item_id"],
   relationships: [
     {
       serviceName: Modules.PRODUCT,

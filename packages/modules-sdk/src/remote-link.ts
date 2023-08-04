@@ -5,6 +5,7 @@ import {
   ModuleJoinerRelationship,
 } from "@medusajs/types"
 
+import { toPascalCase } from "@medusajs/utils"
 import { MedusaModule } from "./medusa-module"
 
 export type DeleteEntityInput = {
@@ -32,6 +33,7 @@ type RestoredIds = RemovedIds
 
 type CascadeError = {
   serviceName: string
+  method: String
   args: any
   error: Error
 }
@@ -143,14 +145,17 @@ export class RemoteLink {
   }
 
   private getLinkableKeys(mod: LoadedLinkModule) {
-    return mod.__joinerConfig.linkableKeys ?? []
+    return (
+      mod.__joinerConfig.linkableKeys ?? mod.__joinerConfig.primaryKeys ?? []
+    )
   }
 
   private async executeCascade(
     removedServices: DeleteEntityInput,
     method: "softDelete" | "restore"
-  ): Promise<[CascadeError[] | null, RemovedIds[]]> {
+  ): Promise<[CascadeError[] | null, RemovedIds]> {
     const removedIds: RemovedIds = {}
+    const returnIdsList: RemovedIds = {}
     const processedIds: Record<string, Set<string>> = {}
 
     const services = Object.keys(removedServices).map((serviceName) => {
@@ -169,12 +174,10 @@ export class RemoteLink {
     const cascade = async (
       services: { serviceName: string; deleteKeys: DeleteEntities }[],
       isCascading: boolean = false
-    ): Promise<RemovedIds[]> => {
+    ): Promise<RemovedIds> => {
       if (errors.length) {
-        return []
+        return returnIdsList
       }
-
-      const removedIdsList: RemovedIds[] = []
 
       const servicePromises = services.map(async (serviceInfo) => {
         const serviceRelations = this.relations.get(serviceInfo.serviceName)!
@@ -191,7 +194,7 @@ export class RemoteLink {
 
           const relatedServicesPromises = relatedServices.map(
             async (relatedService) => {
-              const { serviceName, primaryKey } = relatedService
+              const { serviceName, primaryKey, args } = relatedService
               const processedHash = `${serviceName}-${primaryKey}`
 
               if (!processedIds[processedHash]) {
@@ -206,6 +209,10 @@ export class RemoteLink {
                 return
               }
 
+              unprocessedIds.forEach((id) => {
+                processedIds[processedHash].add(id)
+              })
+
               let cascadeDelKeys: DeleteEntities = {}
               cascadeDelKeys[primaryKey] = unprocessedIds
               const service: ILinkModule = this.modulesMap.get(serviceName)!
@@ -219,12 +226,17 @@ export class RemoteLink {
               let deletedEntities: Record<string, string[]>
 
               try {
+                if (args?.methodSuffix) {
+                  method += toPascalCase(args.methodSuffix)
+                }
+
                 deletedEntities = (await service[method](cascadeDelKeys, {
                   returnLinkableKeys: returnFields,
                 })) as unknown as Record<string, string[]>
               } catch (error) {
                 errors.push({
                   serviceName,
+                  method,
                   args: cascadeDelKeys,
                   error: JSON.parse(
                     JSON.stringify(error, Object.getOwnPropertyNames(error))
@@ -237,23 +249,31 @@ export class RemoteLink {
                 return
               }
 
+              removedIds[serviceName] = {
+                ...deletedEntities,
+              }
+
               if (!isCascading) {
-                removedIds[serviceName] = {
+                returnIdsList[serviceName] = {
                   ...deletedEntities,
                 }
               } else {
                 const [mainKey] = returnFields
 
-                if (!removedIds[serviceName]) {
-                  removedIds[serviceName] = {}
+                if (!returnIdsList[serviceName]) {
+                  returnIdsList[serviceName] = {}
                 }
-                if (!removedIds[serviceName][mainKey]) {
-                  removedIds[serviceName][mainKey] = []
+                if (!returnIdsList[serviceName][mainKey]) {
+                  returnIdsList[serviceName][mainKey] = []
                 }
 
-                removedIds[serviceName][mainKey] = removedIds[serviceName][
-                  mainKey
-                ].concat(deletedEntities[mainKey])
+                returnIdsList[serviceName][mainKey] = [
+                  ...new Set(
+                    returnIdsList[serviceName][mainKey].concat(
+                      deletedEntities[mainKey]
+                    )
+                  ),
+                ]
               }
 
               Object.keys(deletedEntities).forEach((key) => {
@@ -283,11 +303,10 @@ export class RemoteLink {
         }
 
         await Promise.all(deletePromises)
-        removedIdsList.push(removedIds)
       })
 
       await Promise.all(servicePromises)
-      return removedIdsList
+      return returnIdsList
     }
 
     const result = await cascade(services)
@@ -344,13 +363,13 @@ export class RemoteLink {
 
   async remove(
     removedServices: DeleteEntityInput
-  ): Promise<[CascadeError[] | null, RemovedIds[]]> {
+  ): Promise<[CascadeError[] | null, RemovedIds]> {
     return await this.executeCascade(removedServices, "softDelete")
   }
 
   async restore(
     removedServices: DeleteEntityInput
-  ): Promise<[CascadeError[] | null, RestoredIds[]]> {
+  ): Promise<[CascadeError[] | null, RestoredIds]> {
     return await this.executeCascade(removedServices, "restore")
   }
 }
