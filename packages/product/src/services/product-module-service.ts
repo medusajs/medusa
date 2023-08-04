@@ -29,8 +29,6 @@ import {
 } from "@medusajs/types"
 
 import ProductImageService from "./product-image"
-import { shouldForceTransaction } from "../utils"
-import { joinerConfig } from "./../joiner-config"
 
 import {
   CreateProductCategoryDTO,
@@ -58,9 +56,17 @@ import {
   isDefined,
   isString,
   kebabCase,
+  mapObjectTo,
   MedusaContext,
   MedusaError,
 } from "@medusajs/utils"
+
+import { shouldForceTransaction } from "../utils"
+import {
+  entityNameToLinkableKeysMap,
+  joinerConfig,
+  LinkableKeys,
+} from "./../joiner-config"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -1042,7 +1048,7 @@ export default class ProductModuleService<
   ) {
     if (isDefined(productData.type)) {
       const productType = await this.productTypeService_.upsert(
-        [productData.type],
+        [productData.type!],
         sharedContext
       )
 
@@ -1065,11 +1071,23 @@ export default class ProductModuleService<
     )
   }
 
-  async softDelete(
+  async softDelete<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
     productIds: string[],
+    {
+      returnLinkableKeys,
+    }: { returnLinkableKeys?: TReturnableLinkableKeys[] } = {
+      returnLinkableKeys: [],
+    },
     sharedContext: Context = {}
-  ): Promise<ProductTypes.ProductDTO[]> {
-    const products = await this.softDelete_(productIds, sharedContext)
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    let [products, cascadedEntitiesMap] = await this.softDelete_(
+      productIds,
+      sharedContext
+    )
 
     const softDeletedProducts = await this.baseRepository_.serialize<
       ProductTypes.ProductDTO[]
@@ -1084,14 +1102,23 @@ export default class ProductModuleService<
       }))
     )
 
-    return softDeletedProducts
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys as string[],
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   protected async softDelete_(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TProduct[]> {
+  ): Promise<[TProduct[], Record<string, unknown[]>]> {
     return await this.productService_.softDelete(productIds, sharedContext)
   }
 
