@@ -230,7 +230,6 @@ describe("Product module", function () {
       const products = await module.create([data])
 
       await module.softDelete([products[0].id])
-
       const deletedProducts = await module.list(
         { id: products[0].id },
         {

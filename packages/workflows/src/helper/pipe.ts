@@ -22,27 +22,23 @@ interface PipelineInput {
   compensate?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
 }
 
-export type WorkflowArguments = {
+export type WorkflowArguments<T = any> = {
   container: MedusaContainer
   payload: unknown
-  data: any
+  data: T
   metadata: TransactionMetadata
   context: Context | SharedContext
 }
 
-export type PipelineHandlerResult<T = undefined> = T extends undefined
-  ? WorkflowStepMiddlewareReturn | WorkflowStepMiddlewareReturn[]
-  : T
-
 export type PipelineHandler<T extends any = undefined> = (
   args: WorkflowArguments
 ) => T extends undefined
-  ? WorkflowStepMiddlewareReturn | WorkflowStepMiddlewareReturn[]
+  ? Promise<WorkflowStepMiddlewareReturn | WorkflowStepMiddlewareReturn[]>
   : T
 
 export function pipe<T = undefined>(
   input: PipelineInput,
-  ...functions: PipelineHandler<T>[]
+  ...functions: [...PipelineHandler[], PipelineHandler<T>]
 ): WorkflowStepHandler {
   return async ({
     container,

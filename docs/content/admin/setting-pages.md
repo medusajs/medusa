@@ -11,11 +11,11 @@ In this document, you’ll learn how to create a setting page in the admin.
 
 ## Overview
 
-The admin UI routes allow you to add new pages to the admin dashboard. However, they can’t be used to add a new tab under the Setting page.
+The [admin UI routes](./routes.md) allow you to add new pages to the admin dashboard. However, they can’t be used to add a new tab under the Setting page.
 
 To do that, you need to create an Admin setting page. The page will automatically be shown as a tab under the Setting page in the admin. The tab leads to the content of your custom page. 
 
-An admin UI route is essentially a React Component created under the `src/admin/settings` directory.
+A setting page is essentially a React Component created under the `src/admin/settings` directory.
 
 This guide explains how to create a new setting page in the admin dashboard with some examples.
 
@@ -130,7 +130,7 @@ For example, if you want the setting page to be available in the admin dashboard
 
 ### Step 2: Create React Component in File
 
-For an admin route to be valid, it must default export a React component. There are no restrictions on the content of the React component. It must also export a configuration object that indicates how the tab is shown on the Setting page.
+For a setting page to be valid, it must default export a React component. There are no restrictions on the content of the React component. It must also export a configuration object that indicates how the tab is shown on the Setting page.
 
 For example, you can create the file `src/admin/settings/custom/page.tsx` with the following content:
 
@@ -173,6 +173,51 @@ npx medusa develop
 This will build your admin and opens a window in your default browser to `localhost:7001`. After you log in, go to `localhost:7001/a/settings`. You’ll find a new tab available under a new Extensions section.
 
 If you click on the tab, a new page will open with the content as defined in your React component.
+
+---
+
+## Setting Page Props
+
+Every route receives props of the type `RouteProps`, which includes the `notify` prop. The `notify` prop is an object that includes the following attributes:
+
+- `success`: a function that can be used to show a success message.
+- `error`: a function that can be used to show an error message.
+- `warn`: a function that can be used to show a warning message.
+- `info`: a function that can be used to show an info message.
+
+For example:
+
+```tsx title=src/admin/settings/custom/page.tsx
+import type { SettingConfig } from "@medusajs/admin"
+import type { SettingProps } from "@medusajs/admin-ui"
+
+const CustomSettingPage = ({
+  notify,
+}: SettingProps) => {
+
+  const handleClick = () => {
+    notify.success("Success", "You clicked the button")
+  }
+
+  return (
+    <div>
+      <h1>Custom Setting Page</h1>
+      <button onClick={handleClick}>
+        Click Me
+      </button>
+    </div>
+  )
+}
+
+export const config: SettingConfig = {
+  card: {
+    label: "Custom",
+    description: "Manage your custom settings",
+  },
+}
+
+export default CustomSettingPage
+```
 
 ---
 
@@ -294,6 +339,8 @@ export const config: SettingConfig = {
 
 export default CustomSettingPage
 ```
+
+### Custom Endpoints
 
 You can also use `medusa-react` to interact with custom endpoints using [Custom Hooks utility functions](../medusa-react/overview.mdx#custom-hooks).
 

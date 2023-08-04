@@ -270,7 +270,7 @@ type AdminBlogPostRes = {
 const BlogPost = () => {
   const { id } = useParams() 
 
-  const { data: { post }, isLoading } = useAdminCustomQuery<
+  const { data, isLoading } = useAdminCustomQuery<
     AdminBlogPostQuery,
     AdminBlogPostRes
   >(
@@ -284,7 +284,7 @@ const BlogPost = () => {
   return (
     <>
       {isLoading && <span>Loading...</span>}
-      {post && <span>{post.title}</span>}
+      {data && data.post && <span>{data.post.title}</span>}
     </>
   )
 }
@@ -320,7 +320,7 @@ type AdminBlogPostsQuery = {
 const AuthorsBlogPosts = () => {
   const { id } = useParams() 
 
-  const { data: { posts }, isLoading } = useAdminCustomQuery<
+  const { data, isLoading } = useAdminCustomQuery<
     AdminBlogPostsQuery, AdminBlogPostsRes
   >(
     `/blog/posts`,  // path
@@ -334,9 +334,13 @@ const AuthorsBlogPosts = () => {
    return (
      <>
        {isLoading && <span>Loading...</span>}
-       {posts && <span>{posts.map((post, index) => (
-        <span key={index}>{post.title}</span>
-       ))}</span>}
+       {data && data.posts && (
+        <span>
+          {data.posts.map((post, index) => (
+            <span key={index}>{post.title}</span>
+          ))}
+        </span>
+       )}
      </>
    )
 }
@@ -427,10 +431,10 @@ export default CreateBlogPost
 
 #### useAdminCustomDelete
 
-The `useAdminCustomDelete` utility hook can be used to send a `DELETE` request to a custom endpoint in your Medusa backend. It's a generic function, so you can pass a type for the request body if you're using TypeScript in your development:
+The `useAdminCustomDelete` utility hook can be used to send a `DELETE` request to a custom endpoint in your Medusa backend. It's a generic function, so you can pass a type for the expected response if you're using TypeScript in your development:
 
 ```ts
-useAdminCustomPost<RequestType, ResponseType>
+useAdminCustomDelete<ResponseType>
 ```
 
 The hook accepts the following parameters:
