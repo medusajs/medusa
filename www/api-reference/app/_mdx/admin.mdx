@@ -22,6 +22,7 @@ Aside from this API reference, check out the [Commerce Modules](https://docs.med
     area: "admin",
     section: "introduction"
   }}
+  sectionTitle="Introduction"
 />
 
 </SectionContainer>
@@ -147,6 +148,7 @@ You can also pass it to client libraries:
     area: "admin",
     section: "authentication-api-key"
   }}
+  sectionTitle="Authentication - API Token"
 />
 
 ### Cookie Session ID
@@ -216,6 +218,78 @@ fetch(`<BACKEND_URL>/admin/products`, {
     area: "admin",
     section: "authentication-cookie"
   }}
+  sectionTitle="Authentication - Cookie Session ID"
+/>
+
+</SectionContainer>
+
+<SectionContainer>
+
+## HTTP Compression
+
+If you've enabled HTTP Compression in your Medusa configurations, and you 
+want to disable it for some requests, you can pass the `x-no-compression`
+header in your requests:
+
+```bash
+x-no-compression: true
+```
+
+If you're using the Medusa JS Client, you can pass custom headers in the 
+last parameter of a method. For example:
+
+```ts
+medusa.products.list({}, {
+  "x-no-compression": true
+})
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length)
+})
+```
+
+You can also pass the header when you first initialize the Medusa client:
+
+```ts
+const medusa = new Medusa({
+  maxRetries: 3,
+  baseUrl: "https://api.example.com",
+  customHeaders: {
+    "x-no-compression": true
+  }
+})
+```
+
+For Medusa React, it's not possible to pass custom headers for a query or mutation, but
+you can pass the header to the `MedusaProvider` and it will be added to all subsequent requests:
+
+```tsx
+import { MedusaProvider } from "medusa-react"
+
+// define query client...
+
+const App = () => {
+  return (
+    <MedusaProvider
+      queryClientProviderProps={{ client: queryClient }}
+      baseUrl="http://localhost:9000"
+      // ...
+      customHeaders={{
+        "x-no-compression": true
+      }}
+    >
+      <MyStorefront />
+    </MedusaProvider>
+  )
+}
+```
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "admin",
+    section: "http-compression"
+  }}
+  sectionTitle="HTTP Compression"
 />
 
 </SectionContainer>
@@ -288,6 +362,7 @@ relations like `collection`.
     area: "admin",
     section: "expand"
   }}
+  sectionTitle="Expanding Fields"
 />
 
 </SectionContainer>
@@ -383,6 +458,7 @@ curl "http://localhost:9000/admin/products?fields&expand" \
     area: "admin",
     section: "select-fields"
   }}
+  sectionTitle="Selecting Fields"
 />
 
 ---
@@ -530,6 +606,7 @@ curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17&created_
     area: "admin",
     section: "query-parameters"
   }}
+  sectionTitle="Query Parameter Types"
 />
 
 </SectionContainer>
@@ -614,6 +691,7 @@ order.
     area: "admin",
     section: "pagination"
   }}
+  sectionTitle="Pagination"
 />
 
 </SectionContainer>

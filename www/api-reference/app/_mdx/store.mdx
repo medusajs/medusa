@@ -22,6 +22,7 @@ Aside from this API reference, check out the [Commerce Modules](https://docs.med
     area: "store",
     section: "introduction"
   }}
+  sectionTitle="Introduction"
 />
 
 </SectionContainer>
@@ -98,6 +99,7 @@ fetch(`<BACKEND_URL>/admin/products`, {
     area: "store",
     section: "authentication-cookie"
   }}
+  sectionTitle="Authentication - Cookie Session ID"
 />
 
 </SectionContainer>
@@ -178,8 +180,9 @@ const App = () => {
   event="survey_api-ref"
   extraData={{
     area: "store",
-    section: "authentication-cookie"
+    section: "publishable-api-key"
   }}
+  sectionTitle="Publishable API Key"
 />
 
 </SectionContainer>
@@ -243,6 +246,15 @@ const App = () => {
   )
 }
 ```
+
+<Feedback
+  event="survey_api-ref"
+  extraData={{
+    area: "store",
+    section: "http-compression"
+  }}
+  sectionTitle="HTTP Compression"
+/>
 
 </SectionContainer>
 
@@ -310,6 +322,7 @@ relations like `collection`.
     area: "store",
     section: "expand"
   }}
+  sectionTitle="Expanding Fields"
 />
 
 </SectionContainer>
@@ -400,6 +413,7 @@ curl "http://localhost:9000/store/products?fields&expand"
     area: "store",
     section: "select-fields"
   }}
+  sectionTitle="Selecting Fields"
 />
 
 </SectionContainer>
@@ -539,6 +553,7 @@ curl -g "http://localhost:9000/store/products?created_at[lt]=2023-02-17&created_
     area: "store",
     section: "query-parameters"
   }}
+  sectionTitle="Query Parameter Types"
 />
 
 </SectionContainer>
@@ -627,6 +642,7 @@ order.
     area: "store",
     section: "pagination"
   }}
+  sectionTitle="Pagination"
 />
 
 </SectionContainer>

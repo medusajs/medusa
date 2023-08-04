@@ -33,6 +33,7 @@ type SidebarSectionItemsType = {
 type SidebarContextType = {
   items: SidebarSectionItemsType
   activePath: string | null
+  getActiveItem: () => SidebarItemType | undefined
   setActivePath: (path: string | null) => void
   isItemActive: (item: SidebarItemType, checkChildren?: boolean) => boolean
   addItems: (
@@ -103,19 +104,34 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
   const [activePath, setActivePath] = useState<string | null>("")
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
 
-  const findItemInSection = (
-    section: SidebarItemType[],
-    itemPath: string,
-    checkChildren = true
-  ): SidebarItemType | undefined => {
-    return section.find(
-      (item) =>
-        item.path === itemPath ||
-        (checkChildren &&
-          item.children &&
-          findItemInSection(item.children, itemPath))
+  const findItemInSection = useCallback(
+    (
+      section: SidebarItemType[],
+      itemPath: string,
+      checkChildren = true
+    ): SidebarItemType | undefined => {
+      return section.find(
+        (item) =>
+          item.path === itemPath ||
+          (checkChildren &&
+            item.children &&
+            findItemInSection(item.children, itemPath))
+      )
+    },
+    []
+  )
+
+  const getActiveItem = useCallback(() => {
+    if (activePath === null) {
+      return undefined
+    }
+
+    return (
+      findItemInSection(items.mobile, activePath) ||
+      findItemInSection(items.top, activePath) ||
+      findItemInSection(items.bottom, activePath)
     )
-  }
+  }, [activePath, items, findItemInSection])
 
   const isPathInSidebar = (path: string, section: SidebarItemSections) => {
     const selectedSection =
@@ -272,6 +288,7 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
         sidebarOpen,
         setSidebarOpen,
         isSidebarEmpty,
+        getActiveItem,
       }}
     >
       {children}

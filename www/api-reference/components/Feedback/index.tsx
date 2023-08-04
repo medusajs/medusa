@@ -6,6 +6,9 @@ import Solutions from "./Solutions/index"
 import Button from "../Button"
 import { ExtraData, useAnalytics } from "@/providers/analytics"
 import { usePathname } from "next/navigation"
+import Link from "next/link"
+import { useArea } from "../../providers/area"
+import { useSidebar } from "../../providers/sidebar"
 
 type FeedbackProps = {
   event: string
@@ -19,6 +22,7 @@ type FeedbackProps = {
   showPossibleSolutions?: boolean
   className?: string
   extraData?: ExtraData
+  sectionTitle?: string
 } & React.HTMLAttributes<HTMLDivElement>
 
 const Feedback: React.FC<FeedbackProps> = ({
@@ -33,6 +37,7 @@ const Feedback: React.FC<FeedbackProps> = ({
   showPossibleSolutions = true,
   className = "",
   extraData = {},
+  sectionTitle = "",
 }) => {
   const [showForm, setShowForm] = useState(false)
   const [submittedFeedback, setSubmittedFeedback] = useState(false)
@@ -50,6 +55,7 @@ const Feedback: React.FC<FeedbackProps> = ({
 
   const pathname = usePathname()
   const { loaded, track } = useAnalytics()
+  const { area } = useArea()
 
   function handleFeedback(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     if (!loaded) {
@@ -135,6 +141,14 @@ const Feedback: React.FC<FeedbackProps> = ({
                 >
                   {negativeBtn}
                 </Button>
+                <Link
+                  href={`https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml&title=API%20Ref%28${area}%29%3A%20Issue%20in%20${encodeURI(
+                    sectionTitle
+                  )}`}
+                  className="btn-primary"
+                >
+                  Report Issue
+                </Link>
               </div>
             )}
             {showForm && !submittedFeedback && (

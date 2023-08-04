@@ -8,6 +8,8 @@ import MDXContentClient from "@/components/MDXContent/Client"
 import type { BadgeProps } from "../../../Badge"
 import type { TagsOperationFeatureFlagNoticeProps } from "../FeatureFlagNotice"
 import type { LinkProps } from "../../../MDXComponents/Link"
+import Feedback from "../../../Feedback"
+import { useArea } from "../../../../providers/area"
 
 const TagsOperationDescriptionSectionSecurity =
   dynamic<TagsOperationDescriptionSectionSecurityProps>(
@@ -43,6 +45,8 @@ type TagsOperationDescriptionSectionProps = {
 const TagsOperationDescriptionSection = ({
   operation,
 }: TagsOperationDescriptionSectionProps) => {
+  const { area } = useArea()
+
   return (
     <>
       <h3>
@@ -63,6 +67,15 @@ const TagsOperationDescriptionSection = ({
       <div className="my-1">
         <MDXContentClient content={operation.description} />
       </div>
+      <Feedback
+        event="survey_api-ref"
+        extraData={{
+          area,
+          section: operation.summary,
+        }}
+        sectionTitle={operation.summary}
+        className="mb-1"
+      />
       {operation.externalDocs && (
         <>
           Related guide:{" "}
