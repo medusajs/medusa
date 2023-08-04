@@ -16,7 +16,10 @@ import { ShippingOptionRequirementRepository } from "../repositories/shipping-op
 import { FindConfig, Selector } from "../types/common"
 import {
   CreateShippingMethodDto,
+  CreateShippingOptionInput,
   ShippingMethodUpdate,
+  UpdateShippingOptionInput,
+  ValidatePriceTypeAndAmountInput,
 } from "../types/shipping-options"
 import { buildQuery, isString, setMetadata } from "../utils"
 import { FlagRouter } from "../utils/flag-router"
@@ -840,6 +843,33 @@ class ShippingOptionService extends TransactionBaseService {
     if (option.price_type === "calculated") {
       return this.providerService_.calculatePrice(option, data, cart)
     }
+    return option.amount as number
+  }
+
+  /**
+   * Returns the amount to be paid for a shipping method. Will ask the
+   * fulfillment provider to calculate the price if the shipping option has the
+   * price type "calculated".
+   * @param {ShippingOption} option - the shipping option to retrieve the price
+   *   for.
+   * @param {ShippingData} data - the shipping data to retrieve the price.
+   * @param {Cart | Order} cart - the context in which the price should be
+   *   retrieved.
+   * @return {Promise<Number>} the price of the shipping option.
+   */
+  async getPrice(
+    option: ShippingOption,
+    data: Record<string, unknown>,
+    config: CreateShippingMethodDto
+  ): Promise<number> {
+    if (typeof config.price === "number") {
+      return config.price
+    }
+
+    if (option.price_type === "calculated") {
+      return this.providerService_.calculatePrice(option, data, config.cart)
+    }
+
     return option.amount as number
   }
 }

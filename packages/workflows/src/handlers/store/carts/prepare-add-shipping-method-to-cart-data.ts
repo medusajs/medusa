@@ -11,7 +11,7 @@ export async function prepareAddShippingMethodToCartWorkflowData({
 }: WorkflowArguments<{
   input: AddShippingMethodInputData
 }>) {
-  const { transactionManager: manager } = context
+  const { manager } = context
 
   const data_ = data.input
 

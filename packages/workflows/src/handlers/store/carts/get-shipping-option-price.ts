@@ -5,21 +5,15 @@ export async function getShippingOptionPrice({
   context,
   data,
 }: WorkflowArguments<{
-  input: {
-    cart: any
+  getOptionPriceData: {
     shippingOption: any
+    shippingOptionData: any
+    config: any
   }
-  shippingOptionData: Record<string, unknown>
 }>) {
   const { transactionManager: manager } = context
 
-  const { cart, shippingOption } = data.input
-  const { shippingOptionData } = data
-
-  // let methodPrice
-  // if (typeof config.price === "number") {
-  //   methodPrice = config.price
-  // } else {
+  const { shippingOption, config, shippingOptionData } = data.getOptionPriceData
 
   const shippingOptionService = container
     .resolve("shippingOptionService")
@@ -28,7 +22,7 @@ export async function getShippingOptionPrice({
   const methodPrice = await shippingOptionService.getPrice(
     shippingOption,
     shippingOptionData,
-    cart
+    config
   )
 
   return {

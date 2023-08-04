@@ -15,7 +15,7 @@ export async function cleanUpShippingMethods({
   const { cart } = data.input
   const { createdShippingMethods } = data
 
-  const deletedMethods: any = []
+  const deletedShippingMethods: any = []
 
   if (!cart.shipping_methods?.length) {
     return []
@@ -34,12 +34,12 @@ export async function cleanUpShippingMethods({
       )
     ) {
       await shippingOptionServiceTx.deleteShippingMethods(shippingMethod)
-      deletedMethods.push(shippingMethod)
+      deletedShippingMethods.push(shippingMethod)
     }
   }
 
   return {
-    deletedMethods,
+    deletedShippingMethods,
   }
 }
 

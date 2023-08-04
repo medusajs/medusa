@@ -9,6 +9,8 @@ import { cleanUpShippingMethods } from "../../../handlers/store/carts/clean-up-s
 import { createShippingMethods } from "../../../handlers/store/carts/create-shipping-methods"
 import { getShippingOptionPrice } from "../../../handlers/store/carts/get-shipping-option-price"
 import { prepareAddShippingMethodToCartWorkflowData } from "../../../handlers/store/carts/prepare-add-shipping-method-to-cart-data"
+import { prepareGetShippingOptionPriceData } from "../../../handlers/store/carts/prepare-get-shipping-option-price-data"
+import { restoreShippingMethods } from "../../../handlers/store/carts/restore-shipping-methods"
 import { retrieveCart } from "../../../handlers/store/carts/retrieve-cart"
 import { ensureCorrectLineItemShipping } from "../../../handlers/store/carts/update-line-item-shipping"
 import { updatePaymentSessions } from "../../../handlers/store/carts/update-payment-sessions"
@@ -136,6 +138,7 @@ const handlers = new Map([
             },
           ],
         },
+        prepareGetShippingOptionPriceData,
         getShippingOptionPrice
       ),
     },
@@ -176,11 +179,26 @@ const handlers = new Map([
             },
             {
               from: AddShippingMethodWorkflowActions.createShippingMethods,
-              alias: "createdShippingMethods"
+              alias: "createdShippingMethods",
             },
           ],
         },
         cleanUpShippingMethods
+      ),
+      compensate: pipe(
+        {
+          invoke: [
+            {
+              from: AddShippingMethodWorkflowActions.prepare,
+              alias: "input",
+            },
+            {
+              from: AddShippingMethodWorkflowActions.cleanUpShippingMethods,
+              alias: "deletedShippingMethods",
+            },
+          ],
+        },
+        restoreShippingMethods
       ),
     },
   ],
@@ -250,5 +268,5 @@ WorkflowManager.register(
 
 export const addShippingMethod = exportWorkflow(
   Workflows.AddShippingMethod,
-  AddShippingMethodWorkflowActions.prepare
+  AddShippingMethodWorkflowActions.result
 )

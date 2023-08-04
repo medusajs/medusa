@@ -1,8 +1,4 @@
-import { WorkflowTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../../helper"
-
-type CreateShippingMethodsInputData =
-  WorkflowTypes.CartTypes.CreateShippingMethodsDTO
 
 export async function createShippingMethods({
   container,
@@ -10,7 +6,6 @@ export async function createShippingMethods({
   data,
 }: WorkflowArguments<{
   input: {
-    cart: any
     shippingOption: any
     shippingMethodConfig: any
   }
@@ -20,7 +15,7 @@ export async function createShippingMethods({
   const { transactionManager: manager } = context
 
   const { price, shippingOptionData } = data
-  const { shippingOption, cart, shippingMethodConfig } = data.input
+  const { shippingOption, shippingMethodConfig } = data.input
 
   const toCreate = [
     {
