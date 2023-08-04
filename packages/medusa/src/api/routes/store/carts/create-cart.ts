@@ -99,10 +99,22 @@ export default async (req, res) => {
           ...validated.context,
         },
       },
-      resultFrom: 'retrieveCart',
+      resultFrom: "retrieveCart",
       throwOnError: false,
     })
-console.log("result - ", result)
+
+    // thought: if an error occurs on the invoke level, it'll stop the invoke flow
+    // and begin the compensation flow. If another error shows up on the compensate level,
+    // it doesn't make sense to throw that error since the user won't be able to do anything about it.
+    // In these cases, we probably need to silently issue a notification to the developers that this has happened.
+    if (Array.isArray(errors)) {
+      const error = errors.find((error) => error.handlerType === "invoke")
+
+      if (isDefined(error)) {
+        throw error.error
+      }
+    }
+
     return res.status(200).json({ cart: cleanResponseData(result, []) })
   }
 
