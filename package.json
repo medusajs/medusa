@@ -97,7 +97,6 @@
     "@changesets/changelog-github": "^0.4.8",
     "@changesets/cli": "^2.26.0",
     "@linear/sdk": "^1.22.0",
-    "@medusajs/workflows": "workspace:^",
     "@octokit/core": "^4.0.5",
     "global": "^4.4.0",
     "import-from": "^3.0.0"

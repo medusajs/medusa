@@ -6353,7 +6353,6 @@ __metadata:
     "@medusajs/orchestration": ^0.1.0
     "@medusajs/types": ^1.9.0
     "@medusajs/utils": ^1.9.3
-    "@medusajs/workflows": "workspace:^"
     "@types/express": ^4.17.17
     "@types/ioredis": ^4.28.10
     "@types/jsonwebtoken": ^8.5.9
@@ -6578,7 +6577,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows@workspace:^, @medusajs/workflows@workspace:packages/workflows":
+"@medusajs/workflows@workspace:packages/workflows":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows@workspace:packages/workflows"
   dependencies:
@@ -37791,7 +37790,6 @@ __metadata:
     "@changesets/changelog-github": ^0.4.8
     "@changesets/cli": ^2.26.0
     "@linear/sdk": ^1.22.0
-    "@medusajs/workflows": "workspace:^"
     "@octokit/core": ^4.0.5
     "@typescript-eslint/eslint-plugin": ^5.53.0
     "@typescript-eslint/parser": ^5.53.0
