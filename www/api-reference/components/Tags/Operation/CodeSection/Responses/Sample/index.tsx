@@ -4,7 +4,7 @@ import type { JSONSchema7 } from "json-schema"
 import stringify from "json-stringify-pretty-compact"
 import dynamic from "next/dynamic"
 import { sample } from "openapi-sampler"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 const CodeBlock = dynamic<CodeBlockProps>(
   async () => import("../../../../../CodeBlock")
@@ -23,7 +23,7 @@ const TagsOperationCodeSectionResponsesSample = ({
     ExampleObject | undefined
   >()
 
-  const initExamples = () => {
+  const initExamples = useCallback(() => {
     if (!response.content) {
       return []
     }
@@ -74,13 +74,13 @@ const TagsOperationCodeSectionResponsesSample = ({
     }
 
     return tempExamples
-  }
+  }, [response.content])
 
   useEffect(() => {
     const tempExamples = initExamples()
     setExamples(tempExamples)
     setSelectedExample(tempExamples[0])
-  }, [])
+  }, [initExamples])
 
   return (
     <>
