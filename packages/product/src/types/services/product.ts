@@ -1,5 +1,15 @@
 import { ProductStatus, ProductCategoryDTO } from "@medusajs/types"
 
+export type ProductEventData = {
+  id: string
+}
+
+export enum ProductEvents {
+  PRODUCT_UPDATED = "product.updated",
+  PRODUCT_CREATED = "product.created",
+  PRODUCT_DELETED = "product.deleted",
+}
+
 export interface UpdateProductDTO {
   id: string
   title?: string
