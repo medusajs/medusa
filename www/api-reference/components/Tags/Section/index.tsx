@@ -13,6 +13,9 @@ import TagPaths from "../Paths"
 import DividedLayout from "@/layouts/Divided"
 import LoadingProvider from "@/providers/loading"
 import type { LinkProps } from "../../MDXComponents/Link"
+import SectionContainer from "../../Section/Container"
+import Feedback from "../../Feedback"
+import { useArea } from "../../../providers/area"
 
 export type TagSectionProps = {
   tag: OpenAPIV3.TagObject
@@ -37,6 +40,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
   const { setActivePath } = useSidebar()
   const [loadPaths, setLoadPaths] = useState(false)
   const slugTagName = getSectionId([tag.name])
+  const { area } = useArea()
   const { ref } = useInView({
     threshold: 0.5,
     onChange: (inView) => {
@@ -69,10 +73,10 @@ const TagSection = ({ tag }: TagSectionProps) => {
   }, [slugTagName])
 
   return (
-    <div className="min-h-screen pt-7" id={slugTagName} ref={ref}>
+    <div className="min-h-screen" id={slugTagName} ref={ref}>
       <DividedLayout
         mainContent={
-          <>
+          <SectionContainer>
             <h2>{tag.name}</h2>
             {tag.description && (
               <Section addToSidebar={false}>
@@ -87,7 +91,15 @@ const TagSection = ({ tag }: TagSectionProps) => {
                 </Link>
               </>
             )}
-          </>
+            <Feedback
+              event="survey_api-ref"
+              extraData={{
+                area,
+                section: tag.name,
+              }}
+              sectionTitle={tag.name}
+            />
+          </SectionContainer>
         }
         codeContent={<></>}
       />

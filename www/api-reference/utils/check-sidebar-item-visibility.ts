@@ -1,5 +1,3 @@
-import checkElementVisibility from "./check-element-visibility"
-
 export default function checkSidebarItemVisibility(
   item: Element,
   options?: {
@@ -11,5 +9,13 @@ export default function checkSidebarItemVisibility(
     return false
   }
 
-  return checkElementVisibility(item, sidebar, options)
+  const { topMargin = 0 } = options || {}
+  const sidebarBoundingRect = sidebar.getBoundingClientRect()
+  const activeItemBoundingRect = item.getBoundingClientRect()
+
+  return (
+    activeItemBoundingRect.top >= topMargin &&
+    activeItemBoundingRect.top - sidebarBoundingRect.height + topMargin < 0 &&
+    activeItemBoundingRect.bottom > 0
+  )
 }

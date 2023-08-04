@@ -32,7 +32,9 @@ const SidebarItem = ({ item, nested = false, className }: SidebarItemProps) => {
         })
       ) {
         // scroll to element
-        ref.current.scrollIntoView()
+        ref.current.scrollIntoView({
+          block: "center",
+        })
       }
     }
     if (active) {

@@ -39,7 +39,7 @@ const TagOperation = ({
   const { loading, removeLoading } = useLoading()
   const { ref } = useInView({
     threshold: 0.3,
-    rootMargin: `112px 0px 0px 0px`,
+    rootMargin: `112px 0px 112px 0px`,
     onChange: (changedInView) => {
       if (changedInView) {
         if (!show) {

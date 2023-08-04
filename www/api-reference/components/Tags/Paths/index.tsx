@@ -86,11 +86,7 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
                 tag={tag}
                 key={`${pathIndex}-${operationIndex}`}
                 endpointPath={endpointPath}
-                className={clsx(
-                  ((pathIndex === 0 && operationIndex !== 0) ||
-                    pathIndex !== 0) &&
-                    "pt-7"
-                )}
+                className={clsx("pt-7")}
               />
             )
           )}

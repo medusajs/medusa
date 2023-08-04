@@ -4,9 +4,8 @@ import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
 import type { SidebarItemType } from "@/providers/sidebar"
 import getSectionId from "@/utils/get-section-id"
 import clsx from "clsx"
-import { useEffect, useRef, useState } from "react"
-import checkElementVisibility from "../../utils/check-element-visibility"
-import SectionContent from "./Content"
+import { useCallback, useEffect, useRef, useState } from "react"
+import checkElementInViewport from "../../utils/check-element-in-viewport"
 
 export type SectionProps = {
   addToSidebar?: boolean
@@ -20,31 +19,35 @@ const Section = ({
   const sectionRef = useRef<HTMLDivElement>(null)
   const { activePath, setActivePath, addItems } = useSidebar()
   const [scannedHeading, setScannedHeading] = useState(false)
+  const [finishedInitialScroll, setFinishedInitialScroll] = useState(false)
+
+  const handleScroll = useCallback(() => {
+    if (!finishedInitialScroll) {
+      setFinishedInitialScroll(true)
+      return
+    }
+    if (window.scrollY === 0) {
+      return
+    }
+    const headings = [...(sectionRef.current?.querySelectorAll("h2") || [])]
+    headings.some((heading) => {
+      if (
+        checkElementInViewport(heading.parentElement || heading, 40) &&
+        activePath !== heading.id
+      ) {
+        // can't use next router as it doesn't support
+        // changing url without scrolling
+        history.pushState({}, "", `#${heading.id}`)
+        setActivePath(heading.id)
+
+        return true
+      }
+
+      return false
+    })
+  }, [finishedInitialScroll, activePath, setActivePath])
 
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY === 0) {
-        return
-      }
-      const headings = [...(sectionRef.current?.querySelectorAll("h2") || [])]
-      headings.some((heading) => {
-        if (
-          checkElementVisibility(heading, document.body, {
-            topMargin: 112,
-          }) &&
-          activePath !== heading.id
-        ) {
-          // can't use next router as it doesn't support
-          // changing url without scrolling
-          history.pushState({}, "", `#${heading.id}`)
-          setActivePath(heading.id)
-
-          return true
-        }
-
-        return false
-      })
-    }
     if (sectionRef.current && addToSidebar && !scannedHeading) {
       setScannedHeading(true)
       const headings = [...sectionRef.current.querySelectorAll("h2")]
@@ -80,6 +83,7 @@ const Section = ({
     scannedHeading,
     activePath,
     setActivePath,
+    handleScroll,
   ])
 
   return (
@@ -88,7 +92,7 @@ const Section = ({
       className={clsx(
         "[&_pre]:dark:border-medusa-code-block-border [&_pre]:rounded [&_pre]:border [&_pre]:border-transparent",
         "[&_ul]:list-disc [&_ul]:px-1",
-        // "[&_h2]:mt-0 [&_h2]:pt-[57px] [&_hr]:mt-[57px] [&_hr]:mb-0",
+        "[&_h2]:pt-7",
         className
       )}
     >

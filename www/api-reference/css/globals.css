@@ -4,23 +4,23 @@
 
 @layer base {
   h1 {
-    @apply text-h1 mb-0.5;
+    @apply text-h1 mb-1;
   }
   
   h2 {
-    @apply text-h2 mb-0.5 mt-2;
+    @apply text-h2 mb-1;
   }
   
   h3 {
-    @apply text-h3 mb-0.5 mt-2;
+    @apply text-h3 mb-0.5;
   }
   
   h4 {
-    @apply text-h4 mb-0.5 mt-2;
+    @apply text-h4 mb-0.5;
   }
   
   h1, h2, h3, h4 {
-    @apply text-medusa-text-base dark:text-medusa-text-base-dark;
+    @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
   }
   
   hr {
@@ -28,7 +28,7 @@
   }
   
   p, ul, ol {
-    @apply mb-1;
+    @apply mb-1.5;
   }
 
   html {

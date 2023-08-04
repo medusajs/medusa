@@ -8,7 +8,7 @@ import { ExtraData, useAnalytics } from "@/providers/analytics"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { useArea } from "../../providers/area"
-import { useSidebar } from "../../providers/sidebar"
+import clsx from "clsx"
 
 type FeedbackProps = {
   event: string
@@ -102,7 +102,7 @@ const Feedback: React.FC<FeedbackProps> = ({
   }
 
   return (
-    <div className={`py-2 ${className}`}>
+    <div className={clsx("mt-3", className)}>
       <SwitchTransition mode="out-in">
         <CSSTransition
           key={

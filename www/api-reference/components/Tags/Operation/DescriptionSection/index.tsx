@@ -49,7 +49,7 @@ const TagsOperationDescriptionSection = ({
 
   return (
     <>
-      <h3>
+      <h2>
         {operation.summary}
         {operation.deprecated && (
           <Badge variant="orange" className="ml-0.5">
@@ -63,7 +63,7 @@ const TagsOperationDescriptionSection = ({
             badgeClassName="ml-0.5"
           />
         )}
-      </h3>
+      </h2>
       <div className="my-1">
         <MDXContentClient content={operation.description} />
       </div>
@@ -74,7 +74,7 @@ const TagsOperationDescriptionSection = ({
           section: operation.summary,
         }}
         sectionTitle={operation.summary}
-        className="mb-1"
+        className="mb-3"
       />
       {operation.externalDocs && (
         <>

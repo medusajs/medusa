@@ -30,9 +30,9 @@ const InlineCode = (props: InlineCodeProps) => {
           <code
             {...props}
             className={clsx(
-              "border-medusa-border-base dark:border-medusa-border-base-dark border border-solid",
-              "text-medusa-text-subtle dark:text-medusa-text-subtle-dark leading-6",
-              "bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark font-monospace text-body-regular rounded py-[1px] px-0.5",
+              "border-medusa-tag-neutral-border dark:border-medusa-tag-neutral-border-dark border",
+              "text-medusa-tag-neutral-text dark:text-medusa-tag-neutral-text-dark",
+              "bg-medusa-tag-neutral-bg dark:bg-medusa-tag-neutral-bg-dark font-monospace text-code-label rounded py-0 px-[6px]",
               props.className
             )}
           />

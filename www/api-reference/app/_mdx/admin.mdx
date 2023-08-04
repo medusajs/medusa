@@ -27,7 +27,7 @@ Aside from this API reference, check out the [Commerce Modules](https://docs.med
 
 </SectionContainer>
 
-<SectionContainer>
+<SectionContainer noTopPadding={true}>
 
 ## Authentication
 
@@ -149,6 +149,7 @@ You can also pass it to client libraries:
     section: "authentication-api-key"
   }}
   sectionTitle="Authentication - API Token"
+  className="mb-3"
 />
 
 ### Cookie Session ID
@@ -223,7 +224,7 @@ fetch(`<BACKEND_URL>/admin/products`, {
 
 </SectionContainer>
 
-<SectionContainer>
+<SectionContainer noTopPadding={true}>
 
 ## HTTP Compression
 
@@ -294,7 +295,7 @@ const App = () => {
 
 </SectionContainer>
 
-<SectionContainer>
+<SectionContainer noTopPadding={true}>
 
 ## Expanding Fields
 
@@ -367,7 +368,7 @@ relations like `collection`.
 
 </SectionContainer>
 
-<SectionContainer>
+<SectionContainer noTopPadding={true}>
 
 ## Selecting Fields
 
@@ -461,7 +462,9 @@ curl "http://localhost:9000/admin/products?fields&expand" \
   sectionTitle="Selecting Fields"
 />
 
----
+</SectionContainer>
+
+<SectionContainer noTopPadding={true}>
 
 ## Query Parameter Types
 
@@ -611,7 +614,7 @@ curl -g "http://localhost:9000/admin/products?created_at[lt]=2023-02-17&created_
 
 </SectionContainer>
 
-<SectionContainer>
+<SectionContainer noTopPadding={true}>
 
 ## Pagination
 
