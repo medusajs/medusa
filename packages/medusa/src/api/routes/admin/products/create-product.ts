@@ -136,14 +136,16 @@ export default async (req, res) => {
     const createProductWorkflow = createProducts(req.scope)
 
     const input = {
-      products:
-        // eslint-disable-next-line max-len
-        validated as unknown as WorkflowTypes.ProductWorkflow.CreateProductInputDTO[],
-      listConfig: {
-        select: defaultAdminProductFields,
-        relations: defaultAdminProductRelations,
+      products: [
+        validated,
+      ] as WorkflowTypes.ProductWorkflow.CreateProductInputDTO[],
+      config: {
+        listConfig: {
+          select: defaultAdminProductFields,
+          relations: defaultAdminProductRelations,
+        },
       },
-    } as unknown as WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO
+    }
 
     const { result: products } = await createProductWorkflow.run({
       input,
