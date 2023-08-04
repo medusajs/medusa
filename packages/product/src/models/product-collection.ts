@@ -2,6 +2,7 @@ import {
   BeforeCreate,
   Collection,
   Entity,
+  Filter,
   Index,
   OneToMany,
   OptionalProps,
@@ -10,14 +11,13 @@ import {
   Unique,
 } from "@mikro-orm/core"
 
-import { generateEntityId, kebabCase } from "@medusajs/utils"
+import { DALUtils, generateEntityId, kebabCase } from "@medusajs/utils"
 import Product from "./product"
-import { SoftDeletable } from "../utils"
 
 type OptionalRelations = "products"
 
 @Entity({ tableName: "product_collection" })
-@SoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductCollection {
   [OptionalProps]?: OptionalRelations
 

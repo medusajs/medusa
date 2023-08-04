@@ -1,4 +1,4 @@
-import { InventoryItemDTO, MedusaContainer } from "@medusajs/types"
+import { InventoryItemDTO } from "@medusajs/types"
 
 import { InputAlias } from "../definitions"
 import { WorkflowArguments } from "../helper"
@@ -15,7 +15,7 @@ export async function removeInventoryItems({
   const inventoryService = container.resolve("inventoryService")
   const context = { transactionManager: manager }
 
-  const value = await Promise.all(
+  return await Promise.all(
     data.map(async ({ [InputAlias.InventoryItems]: inventoryItem }) => {
       return await inventoryService!.deleteInventoryItem(
         inventoryItem.id,
@@ -23,9 +23,4 @@ export async function removeInventoryItems({
       )
     })
   )
-
-  return {
-    alias: InputAlias.RemovedInventoryItems,
-    value,
-  }
 }

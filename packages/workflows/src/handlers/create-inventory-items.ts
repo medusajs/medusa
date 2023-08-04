@@ -1,4 +1,8 @@
-import { IInventoryService, ProductTypes } from "@medusajs/types"
+import {
+  IInventoryService,
+  InventoryItemDTO,
+  ProductTypes,
+} from "@medusajs/types"
 
 import { InputAlias } from "../definitions"
 import { WorkflowArguments } from "../helper"
@@ -10,7 +14,7 @@ export async function createInventoryItems({
   data: {
     [InputAlias.Products]: ProductTypes.ProductDTO[]
   }
-}) {
+}): Promise<{ variant: any; inventoryItem: InventoryItemDTO }[]> {
   const manager = container.resolve("manager")
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
@@ -27,7 +31,7 @@ export async function createInventoryItems({
     []
   )
 
-  const value = await Promise.all(
+  return await Promise.all(
     variants.map(async (variant) => {
       if (!variant.manage_inventory) {
         return
@@ -51,9 +55,4 @@ export async function createInventoryItems({
       return { variant, inventoryItem }
     })
   )
-
-  return {
-    alias: InputAlias.InventoryItems,
-    value,
-  }
 }

@@ -248,7 +248,7 @@ You can also add any necessary options to the module.
 Then, to test the module, run the Medusa backend which also runs your module:
 
 ```bash npm2yarn
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
 
 ---

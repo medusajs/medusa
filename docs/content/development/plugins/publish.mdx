@@ -16,7 +16,7 @@ If you haven't created a plugin yet, please check [this guide to learn how to cr
 
 ---
 
-## Prepare the Plugin
+## Prepare Plugin
 
 ### package.json Checklist
 
@@ -46,55 +46,41 @@ Before publishing your plugin, make sure you've set the following fields in your
 <Tabs groupId="plugin-preference">
   <TabItem value="without-admin" label="Without Admin Customizations" default>
 
-  Make sure you add the `publish` command to your `scripts` field and make the following change to the `build` command:
+  Make sure you add the `publish` script to your `scripts` field:
 
   ```json title=package.json
   "scripts": {
     // other scripts...
-    "build": "cross-env npm run clean && tsc",
+    "build": "cross-env npm run clean && tsc -p tsconfig.json",
     "prepare": "cross-env NODE_ENV=production npm run build"
   }
   ```
 
-  The `build` command ensures that the plugin's built files are placed as explained in the [plugin structure](./create.mdx#plugin-structure) section of the Create Plugin documentation.
+  The `build` script ensures that the plugin's built files are placed as explained in the [plugin structure](./create.mdx#plugin-structure) section of the Create Plugin documentation.
 
-  The `prepare` command facilitates your publishing process. You would typically run this script before publishing your plugin.
-
-  This new script requires installing the package `cross-env` as a development dependency:
-
-  ```bash npm2yarn
-  npm install --save-dev cross-env
-  ```
+  The `prepare` script facilitates your publishing process. You would typically run this script before publishing your plugin.
 
   </TabItem>
   <TabItem value="with-admin" label="With Admin Customizations">
 
   First, make sure to change `tsconfig` files as recommended in the [create guide](./create.mdx#changes-for-admin-plugins).
 
-  Then, add the `publish` command to your `scripts` field and make the following change to the `build` command:
+  Then, add the following `prepare` and `build` scripts to your `scripts`
 
   ```json title=package.json
   "scripts": {
     // other scripts...
-    "build": "tsc -p ./tsconfig.server.json && medusa-admin bundle",
-    "prepare": "cross-env NODE_ENV=production npm run build"
+    "build:server": "cross-env npm run clean && tsc -p tsconfig.json",
+    "prepare": "cross-env NODE_ENV=production npm run build:server && medusa-admin bundle"
   }
   ```
 
-  The `build` command ensures that the plugin's built files are placed as explained in the [plugin structure](./create.mdx#plugin-structure) section of the Create Plugin documentation, and bundles the admin customizations.
-
-  The `prepare` command facilitates your publishing process. You would typically run this script before publishing your plugin.
-
-  This new script requires installing the package `cross-env` as a development dependency:
-
-  ```bash npm2yarn
-  npm install --save-dev cross-env
-  ```
+  The `build:server` script builds the resources of the backend for development and ensures they are placed as explained in the [plugin structure](./create.mdx#plugin-structure) section of the Create Plugin documentation.
+  
+  The `prepare` script creates a production build of both backend and admin resources.
 
   </TabItem>
 </Tabs>
-
-### 
 
 ### Plugin Structure
 
@@ -125,6 +111,8 @@ src
 .prettierrc
 build
 .cache
+.yarn
+uploads
 
 # These are files that are included in a
 # Medusa project and can be removed from a
@@ -143,7 +131,7 @@ This section explains how to publish your plugin to NPM.
 
 Before you publish a plugin, you must [create an account on NPM](https://www.npmjs.com/signup).
 
-### Run Prepare Command
+### Step 1: Run Prepare Command
 
 Before you publish or update your plugin, make sure to run the `prepare` command [defined earlier](#packagejson-checklist):
 
@@ -151,37 +139,35 @@ Before you publish or update your plugin, make sure to run the `prepare` command
 npm run prepare
 ```
 
-### Login
+### Step 2: Publish Plugin Package
 
-In your terminal, log in with your NPM account:
-
-```bash
-npm login
-```
-
-You’ll be asked to enter your NPM email and password.
-
-### Publish Plugin Package
-
-Once you’re logged in, you can publish your package with the following command:
+You can publish your package with the following command:
 
 ```bash
 npm publish
 ```
 
+If you haven't logged in before with your NPM account, you'll be asked to login first.
+
 Your package is then published on NPM and everyone can use it and install it.
 
-### Install Plugin
+---
 
-To install your published plugin, you can run the following command on any Medusa backend project:
+## Install Plugin
+
+To install your published plugin, run the following command on any Medusa backend project:
 
 ```bash npm2yarn
 npm install medusa-plugin-custom
 ```
 
-### Update Plugin
+Where `medusa-plugin-custom` is your plugin's package name.
 
-To update your plugin at a later point, you can run the following command to change the NPM version:
+---
+
+## Update Plugin
+
+If you make changes to your plugin and you want to publish those changes, run the following command to change the NPM version:
 
 ```bash
 npm version <type>

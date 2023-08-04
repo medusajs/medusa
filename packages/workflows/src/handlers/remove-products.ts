@@ -11,12 +11,7 @@ export async function removeProducts({
   }
 }) {
   const productModuleService = container.resolve("productModuleService")
-  const value = await productModuleService.softDelete(
+  return await productModuleService.softDelete(
     data[InputAlias.Products].map((p) => p.id)
   )
-
-  return {
-    alias: InputAlias.RemovedProducts,
-    value,
-  }
 }

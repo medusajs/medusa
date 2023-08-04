@@ -1,16 +1,16 @@
 import {
   BeforeCreate,
   Entity,
+  Filter,
   Index,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
 
-import { generateEntityId } from "@medusajs/utils"
-import { SoftDeletable } from "../utils"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 
 @Entity({ tableName: "product_type" })
-@SoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductType {
   @PrimaryKey({ columnType: "text" })
   id!: string

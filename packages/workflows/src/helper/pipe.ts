@@ -6,37 +6,39 @@ import {
 
 import { InputAlias } from "../definitions"
 
-type WorkflowStepReturn = {
+type WorkflowStepMiddlewareReturn = {
   alias: string
   value: any
 }
 
-type WorkflowStepInput = {
+type WorkflowStepMiddlewareInput = {
   from: string
   alias: string
 }
 
 interface PipelineInput {
   inputAlias?: InputAlias | string
-  invoke?: WorkflowStepInput | WorkflowStepInput[]
-  compensate?: WorkflowStepInput | WorkflowStepInput[]
+  invoke?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
+  compensate?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
 }
 
-export type WorkflowArguments = {
+export type WorkflowArguments<T = any> = {
   container: MedusaContainer
   payload: unknown
-  data: any
+  data: T
   metadata: TransactionMetadata
   context: Context | SharedContext
 }
 
-export type PipelineHandler = (
+export type PipelineHandler<T extends any = undefined> = (
   args: WorkflowArguments
-) => Promise<WorkflowStepReturn | WorkflowStepReturn[]>
+) => T extends undefined
+  ? Promise<WorkflowStepMiddlewareReturn | WorkflowStepMiddlewareReturn[]>
+  : T
 
-export function pipe(
+export function pipe<T = undefined>(
   input: PipelineInput,
-  ...functions: PipelineHandler[]
+  ...functions: [...PipelineHandler[], PipelineHandler<T>]
 ): WorkflowStepHandler {
   return async ({
     container,
@@ -88,8 +90,10 @@ export function pipe(
             data[action.alias] = action.value
           }
         }
-      } else if (result?.alias) {
-        data[result.alias] = result.value
+      } else if ((result as WorkflowStepMiddlewareReturn)?.alias) {
+        data[(result as WorkflowStepMiddlewareReturn).alias] = (
+          result as WorkflowStepMiddlewareReturn
+        ).value
       }
 
       return result

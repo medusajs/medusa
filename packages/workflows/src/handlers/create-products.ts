@@ -8,16 +8,8 @@ export async function createProducts({
   data,
 }: WorkflowArguments & {
   data: { [InputAlias.Products]: ProductTypes.CreateProductDTO[] }
-}) {
+}): Promise<ProductTypes.ProductDTO[]> {
   const productModuleService = container.resolve("productModuleService")
 
-  const value = await productModuleService.create(
-    data[InputAlias.Products],
-    context
-  )
-
-  return {
-    alias: InputAlias.Products,
-    value,
-  }
+  return await productModuleService.create(data[InputAlias.Products], context)
 }
