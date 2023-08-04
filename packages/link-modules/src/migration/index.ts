@@ -6,9 +6,9 @@ import {
   ModuleServiceInitializeCustomDataLayerOptions,
   ModuleServiceInitializeOptions,
 } from "@medusajs/types"
-import { createConnection, generateEntity } from "../utils"
+import { generateEntity } from "../utils"
 
-import { ModulesSdkUtils } from "@medusajs/utils"
+import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 
 export function getMigration(
   joinerConfig: ModuleJoinerConfig,
@@ -31,7 +31,7 @@ export function getMigration(
     const dbData = ModulesSdkUtils.loadDatabaseConfig("link_modules", options)
     const entity = generateEntity(joinerConfig, primary, foreign)
 
-    const orm = await createConnection(dbData, [entity])
+    const orm = await DALUtils.mikroOrmCreateConnection(dbData, [entity])
 
     const tableName = entity.meta.collection
 
