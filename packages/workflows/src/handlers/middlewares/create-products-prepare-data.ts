@@ -1,7 +1,6 @@
 import { InputAlias } from "../../definitions"
-import { PipelineHandlerResult } from "../../helper"
 
-export function createProductsPrepareData({ data }): PipelineHandlerResult {
+export function createProductsPrepareData({ data }) {
   return {
     alias: InputAlias.Products as string,
     value: [{}],

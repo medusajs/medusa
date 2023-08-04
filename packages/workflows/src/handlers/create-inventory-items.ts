@@ -5,18 +5,16 @@ import {
 } from "@medusajs/types"
 
 import { InputAlias } from "../definitions"
-import { PipelineHandlerResult, WorkflowArguments } from "../helper"
+import { WorkflowArguments } from "../helper"
 
-export async function createInventoryItems<
-  T = { variant: any; inventoryItem: InventoryItemDTO }[]
->({
+export async function createInventoryItems({
   container,
   data,
 }: WorkflowArguments & {
   data: {
     [InputAlias.Products]: ProductTypes.ProductDTO[]
   }
-}): Promise<PipelineHandlerResult<T>> {
+}): Promise<{ variant: any; inventoryItem: InventoryItemDTO }[]> {
   const manager = container.resolve("manager")
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
@@ -33,7 +31,7 @@ export async function createInventoryItems<
     []
   )
 
-  return (await Promise.all(
+  return await Promise.all(
     variants.map(async (variant) => {
       if (!variant.manage_inventory) {
         return
@@ -56,5 +54,5 @@ export async function createInventoryItems<
 
       return { variant, inventoryItem }
     })
-  )) as PipelineHandlerResult<T>
+  )
 }
