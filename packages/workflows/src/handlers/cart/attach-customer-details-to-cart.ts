@@ -27,8 +27,7 @@ export async function attachCustomerDetailsToCart({
   const customerService = container.resolve("customerService")
   const entityManager = container.resolve("manager")
   const customerId = data[Aliases.Cart].customer_id
-  const customerServiceTx = customerService
-    .withTransaction(entityManager)
+  const customerServiceTx = customerService.withTransaction(entityManager)
 
   if (customerId) {
     const customer = await customerServiceTx

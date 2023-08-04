@@ -1,10 +1,19 @@
-import { isDefined } from "medusa-core-utils"
 import { MedusaError } from "@medusajs/utils"
+import { isDefined } from "medusa-core-utils"
 
 import { WorkflowArguments } from "../../helper"
 
 type AttachSalesChannelDTO = {
   sales_channel_id?: string
+}
+
+type HandlerInputData = {
+  cart: {
+    sales_channel_id?: string
+    publishableApiKeyScopes?: {
+      sales_channel_ids?: string[]
+    }
+  }
 }
 
 enum Aliases {
@@ -15,13 +24,14 @@ export async function attachSalesChannelToCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<AttachSalesChannelDTO> {
+}: WorkflowArguments<HandlerInputData>): Promise<AttachSalesChannelDTO> {
   let salesChannel
   let salesChannelId = data[Aliases.Cart].sales_channel_id
   const salesChannelDTO: AttachSalesChannelDTO = {}
   const salesChannelService = container.resolve("salesChannelService")
   const storeService = container.resolve("storeService")
-  const publishableApiKeyScopes = data[Aliases.Cart].publishableApiKeyScopes || {}
+  const publishableApiKeyScopes =
+    data[Aliases.Cart].publishableApiKeyScopes || {}
 
   delete data[Aliases.Cart].publishableApiKeyScopes
 
@@ -40,8 +50,7 @@ export async function attachSalesChannelToCart({
   }
 
   if (isDefined(salesChannelId)) {
-    salesChannel = await salesChannelService
-      .retrieve(salesChannelId)
+    salesChannel = await salesChannelService.retrieve(salesChannelId)
   } else {
     salesChannel = (
       await storeService.retrieve({

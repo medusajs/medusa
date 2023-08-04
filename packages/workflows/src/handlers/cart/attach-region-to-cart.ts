@@ -1,10 +1,16 @@
-import { isDefined } from "medusa-core-utils"
 import { MedusaError } from "@medusajs/utils"
+import { isDefined } from "medusa-core-utils"
 
 import { WorkflowArguments } from "../../helper"
 
 type AttachRegionDTO = {
   region_id?: string
+}
+
+type HandlerInputData = {
+  cart: {
+    region_id: string
+  }
 }
 
 enum Aliases {
@@ -15,7 +21,7 @@ export async function attachRegionToCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<AttachRegionDTO> {
+}: WorkflowArguments<HandlerInputData>): Promise<AttachRegionDTO> {
   let regionId
   const regionDTO: AttachRegionDTO = {}
   const regionService = container.resolve("regionService")

@@ -4,8 +4,8 @@ import {
 } from "@medusajs/orchestration"
 
 import { Workflows } from "../../definitions"
-import { exportWorkflow, pipe } from "../../helper"
 import { cartHandlers } from "../../handlers"
+import { exportWorkflow, pipe } from "../../helper"
 
 export enum CartInputAlias {
   Cart = "cart",
@@ -20,7 +20,8 @@ enum CreateCartActions {
   attachSalesChannel = "attachSalesChannel",
   createCart = "createCart",
   removeCart = "removeCart",
-  retrieveCart = "retrieveCart"
+  retrieveCart = "retrieveCart",
+  removeAddresses = "removeAddresses",
 }
 
 const workflowSteps: TransactionStepsDefinition = {
@@ -42,7 +43,6 @@ const workflowSteps: TransactionStepsDefinition = {
       noCompensation: true,
       next: {
         action: CreateCartActions.attachAddresses,
-        noCompensation: true,
         next: {
           action: CreateCartActions.createCart,
           next: {
@@ -51,12 +51,12 @@ const workflowSteps: TransactionStepsDefinition = {
             next: {
               action: CreateCartActions.retrieveCart,
               noCompensation: true,
-            }
-          }
-        }
-      }
-    }
-  ]
+            },
+          },
+        },
+      },
+    },
+  ],
 }
 
 const workflowAlias = "cart"
@@ -72,19 +72,13 @@ const handlers = new Map([
   [
     CreateCartActions.attachRegion,
     {
-      invoke: pipe(
-        workflowInput,
-        cartHandlers.attachRegionToCart
-      ),
+      invoke: pipe(workflowInput, cartHandlers.attachRegionToCart),
     },
   ],
   [
     CreateCartActions.attachSalesChannel,
     {
-      invoke: pipe(
-        workflowInput,
-        cartHandlers.attachSalesChannelToCart
-      ),
+      invoke: pipe(workflowInput, cartHandlers.attachSalesChannelToCart),
     },
   ],
   [
@@ -141,28 +135,31 @@ const handlers = new Map([
               from: CreateCartActions.attachRegion,
               alias: cartHandlers.attachAddressesToCart.aliases.CartRegion,
             },
-        ]
+          ],
         },
-        cartHandlers.attachAddressesToCart,
+        cartHandlers.attachAddressesToCart
+      ),
+      compensate: pipe(
+        {
+          invoke: {
+            from: CreateCartActions.removeAddresses,
+            alias: cartHandlers.removeAddresses.aliases.CartAddresses,
+          },
+        },
+        cartHandlers.removeCart
       ),
     },
   ],
   [
     CreateCartActions.attachCustomerDetails,
     {
-      invoke: pipe(
-        workflowInput,
-        cartHandlers.attachCustomerDetailsToCart
-      ),
+      invoke: pipe(workflowInput, cartHandlers.attachCustomerDetailsToCart),
     },
   ],
   [
     CreateCartActions.attachContext,
     {
-      invoke: pipe(
-        workflowInput,
-        cartHandlers.attachContextToCart
-      ),
+      invoke: pipe(workflowInput, cartHandlers.attachContextToCart),
     },
   ],
   [
@@ -175,7 +172,7 @@ const handlers = new Map([
               from: CreateCartActions.createCart,
               alias: cartHandlers.attachLineItemsToCart.aliases.CreatedCart,
             },
-            workflowInput.invoke
+            workflowInput.invoke,
           ],
         },
         cartHandlers.attachLineItemsToCart

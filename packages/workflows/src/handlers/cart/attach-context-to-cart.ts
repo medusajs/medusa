@@ -5,7 +5,7 @@ type AttachContextDTO = {
 }
 
 enum Aliases {
-  Cart = "cart"
+  Cart = "cart",
 }
 
 type HandlerInputData = {
@@ -20,7 +20,7 @@ export async function attachContextToCart({
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<AttachContextDTO> {
   const contextDTO: AttachContextDTO = {
-    context: data[Aliases.Cart].context
+    context: data[Aliases.Cart].context,
   }
 
   return contextDTO

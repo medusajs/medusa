@@ -21,24 +21,28 @@ export const defaultStoreCartRelations = [
   "discounts.rule",
 ]
 
+type HandlerInputData = {
+  cart: {
+    id?: string
+  }
+}
+
 enum Aliases {
-  CreatedCart = "createdCart"
+  CreatedCart = "createdCart",
 }
 
 export async function retrieveCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<CartDTO> {
+}: WorkflowArguments<HandlerInputData>): Promise<CartDTO> {
   const cartService = container.resolve("cartService")
   const entityManager = container.resolve("manager")
   const cartServiceTx = cartService.withTransaction(entityManager)
 
-  return await cartServiceTx.retrieve(
-    data[Aliases.CreatedCart].id, {
-      relations: defaultStoreCartRelations
-    }
-  )
+  return await cartServiceTx.retrieve(data[Aliases.CreatedCart].id, {
+    relations: defaultStoreCartRelations,
+  })
 }
 
 retrieveCart.aliases = Aliases

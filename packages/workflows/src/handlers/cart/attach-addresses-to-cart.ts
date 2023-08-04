@@ -1,19 +1,20 @@
 import { MedusaError } from "@medusajs/utils"
 
-import { AddressDTO } from "../../types"
 import { WorkflowArguments } from "../../helper"
+import { AddressDTO } from "../../types"
 
 type AttachAddressDTO = {
-  shipping_address?: AddressDTO
-  billing_address?: AddressDTO
   shipping_address_id?: string
   billing_address_id?: string
 }
 
 type HandlerInputData = {
-  cart: AttachAddressDTO
+  cart: AttachAddressDTO & {
+    billing_address?: AddressDTO
+    shipping_address?: AddressDTO
+  }
   cartRegion: {
-    region_id: string
+    region_id?: string
   }
 }
 
@@ -35,18 +36,22 @@ export async function attachAddressesToCart({
   const billingAddressId = data[Aliases.Cart].billing_address_id
   const addressesDTO: AttachAddressDTO = {}
 
-  const region = await regionService
-    .retrieve(data[Aliases.CartRegion].region_id!, {
+  const region = await regionService.retrieve(
+    data[Aliases.CartRegion].region_id,
+    {
       relations: ["countries"],
-    })
+    }
+  )
 
   const regionCountries = region.countries.map(({ iso_2 }) => iso_2)
 
   if (!shippingAddress && !shippingAddressId) {
     if (region.countries.length === 1) {
-      addressesDTO.shipping_address = addressRepository.create({
+      const shippingAddress = addressRepository.create({
         country_code: regionCountries[0],
       })
+
+      addressesDTO.shipping_address_id = shippingAddress?.id
     }
   } else {
     if (shippingAddress) {
@@ -91,7 +96,10 @@ export async function attachAddressesToCart({
       where: { id: billingAddressId },
     })
 
-    if (address?.country_code && !regionCountries.includes(address.country_code)) {
+    if (
+      address?.country_code &&
+      !regionCountries.includes(address.country_code)
+    ) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
         "Billing country not in region"

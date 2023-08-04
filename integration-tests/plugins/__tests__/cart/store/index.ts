@@ -1,9 +1,9 @@
+import { MoneyAmount, PriceList, Region } from "@medusajs/medusa"
 import path from "path"
-import { Region, PriceList, MoneyAmount } from "@medusajs/medusa"
 
 import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import { setPort, useApi } from "../../../../environment-helpers/use-api"
 import setupServer from "../../../../environment-helpers/setup-server"
+import { setPort, useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
 

@@ -6,14 +6,31 @@ enum Aliases {
   CartAddresses = "cartAddresses",
   CartCustomer = "cartCustomer",
   CartRegion = "cartRegion",
-  CartContext = "cartContext"
+  CartContext = "cartContext",
+}
+
+type HandlerInputData = {
+  cart: {
+    metadata?: Record<any, any>
+  }
+  cartAddresses: {
+    shipping_address_id: string
+    billing_address_id: string
+  }
+  cartCustomer: {
+    customer_id?: string
+    email?: string
+  }
+  cartRegion: {
+    region_id: string
+  }
 }
 
 export async function createCart({
   container,
   context,
   data,
-}: WorkflowArguments): Promise<CartDTO> {
+}: WorkflowArguments<HandlerInputData>): Promise<CartDTO> {
   const cartService = container.resolve("cartService")
   const entityManager = container.resolve("manager")
   const cartServiceTx = cartService.withTransaction(entityManager)
