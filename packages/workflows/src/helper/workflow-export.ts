@@ -1,15 +1,15 @@
-import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
   DistributedTransaction,
   LocalWorkflow,
   TransactionState,
   TransactionStepError,
 } from "@medusajs/orchestration"
+import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 
-import { EOL } from "os"
 import { MedusaModule } from "@medusajs/modules-sdk"
-import { Workflows } from "../definitions"
+import { EOL } from "os"
 import { ulid } from "ulid"
+import { Workflows } from "../definitions"
 
 export type FlowRunOptions<TData = unknown> = {
   input?: TData
@@ -26,7 +26,8 @@ export type WorkflowResult<TResult = unknown> = {
 
 export const exportWorkflow = <TData = unknown, TResult = unknown>(
   workflowId: Workflows,
-  defaultResult?: string
+  defaultResult?: string,
+  dataPreparation?: (data: TData) => Promise<unknown>
 ) => {
   return function <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
@@ -58,6 +59,22 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
     ) => {
       resultFrom ??= defaultResult
       throwOnError ??= true
+
+      if (typeof dataPreparation === "function") {
+        try {
+          const copyInput = JSON.parse(JSON.stringify(input))
+          input = await dataPreparation(copyInput as TData)
+        } catch (err) {
+          if (throwOnError) {
+            throw new Error(
+              `Data preparation failed: ${err.message}${EOL}${err.stack}`
+            )
+          }
+          return {
+            errors: [err],
+          }
+        }
+      }
 
       const transaction = await originalRun(
         context?.transactionId ?? ulid(),
