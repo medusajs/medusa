@@ -22,11 +22,19 @@ const DividedLayout = ({
         className
       )}
     >
-      <div className={clsx("w-full lg:w-1/2 lg:pl-4", mainContentClassName)}>
+      <div
+        className={clsx(
+          "w-full flex-shrink-0 flex-grow-0 basis-full lg:w-[calc(50%-32px)] lg:basis-[calc(50%-32px)] lg:pl-4",
+          mainContentClassName
+        )}
+      >
         {mainContent}
       </div>
       <div
-        className={clsx("z-10 w-full pr-1.5 lg:w-1/2", codeContentClassName)}
+        className={clsx(
+          "w-full flex-shrink-0 flex-grow-0 basis-full pr-1.5 lg:w-[calc(50%-32px)] lg:basis-[calc(50%-32px)]",
+          codeContentClassName
+        )}
       >
         {codeContent}
       </div>

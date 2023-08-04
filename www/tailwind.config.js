@@ -743,7 +743,8 @@ module.exports = {
         // TODO remove if not used
         "primary-gradient":
           "linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%, #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%)",
-        "code-fade": "linear-gradient(90deg, #15171800, #151718 24px)",
+        "code-fade": "linear-gradient(90deg, #11182700, #111827 24px)",
+        "code-fade-dark": "linear-gradient(90deg, #1C1C1F00, #1C1C1F 24px)",
       },
       screens: {
         xs: "576px",

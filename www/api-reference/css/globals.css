@@ -218,6 +218,5 @@
   }
 }
 
-@import url('./code-theme.css');
 @import url('./tooltip.css');
 @import url('./docsearch.css');
