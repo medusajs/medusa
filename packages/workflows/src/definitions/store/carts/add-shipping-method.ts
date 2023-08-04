@@ -9,6 +9,7 @@ import { cleanUpShippingMethods } from "../../../handlers/store/carts/clean-up-s
 import { createShippingMethods } from "../../../handlers/store/carts/create-shipping-methods"
 import { getShippingOptionPrice } from "../../../handlers/store/carts/get-shipping-option-price"
 import { prepareAddShippingMethodToCartWorkflowData } from "../../../handlers/store/carts/prepare-add-shipping-method-to-cart-data"
+import { prepareShippingMethodsForCreate } from "../../../handlers/store/carts/prepare-create-shipping-method-data"
 import { prepareGetShippingOptionPriceData } from "../../../handlers/store/carts/prepare-get-shipping-option-price-data"
 import { restoreShippingMethods } from "../../../handlers/store/carts/restore-shipping-methods"
 import { retrieveCart } from "../../../handlers/store/carts/retrieve-cart"
@@ -163,6 +164,7 @@ const handlers = new Map([
             },
           ],
         },
+        prepareShippingMethodsForCreate,
         createShippingMethods
       ),
     },
@@ -214,12 +216,54 @@ const handlers = new Map([
         },
         adjustFreeShippingOnCart
       ),
+      compensate: pipe(
+        {
+          invoke: [
+            {
+              from: AddShippingMethodWorkflowActions.prepare,
+              alias: "input",
+            },
+          ],
+        },
+        // Required relations
+        // "discounts",
+        // "discounts.rule",
+        // "shipping_methods",
+        // "shipping_methods.shipping_option",
+        retrieveCart,
+        adjustFreeShippingOnCart
+      ),
     },
   ],
   [
     AddShippingMethodWorkflowActions.cleanUpPaymentSessions,
     {
       invoke: pipe(
+        {
+          invoke: {
+            from: AddShippingMethodWorkflowActions.prepare,
+            alias: "input",
+          },
+        },
+        // Required relations
+        // "items.variant.product.profiles",
+        // "items.adjustments",
+        // "discounts",
+        // "discounts.rule",
+        // "gift_cards",
+        // "shipping_methods",
+        // "shipping_methods.shipping_option",
+        // "billing_address",
+        // "shipping_address",
+        // "region",
+        // "region.tax_rates",
+        // "region.payment_providers",
+        // "payment_sessions",
+        // "customer",
+        retrieveCart,
+        cleanUpPaymentSessions
+      ),
+      compensate: pipe(
         {
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
@@ -240,6 +284,22 @@ const handlers = new Map([
             alias: "input",
           },
         },
+        // Required relations
+        // "items.variant.product.profiles",
+        // "items.adjustments",
+        // "discounts",
+        // "discounts.rule",
+        // "gift_cards",
+        // "shipping_methods",
+        // "shipping_methods.shipping_option",
+        // "billing_address",
+        // "shipping_address",
+        // "region",
+        // "region.tax_rates",
+        // "region.payment_providers",
+        // "payment_sessions",
+        // "customer",
+        retrieveCart,
         updatePaymentSessions
       ),
     },

@@ -12,7 +12,6 @@ export async function restoreShippingMethods({
 }>) {
   const { manager } = context
 
-  const { cart } = data.input
   const { deletedShippingMethods } = data
 
   if (deletedShippingMethods?.length) {
@@ -23,20 +22,24 @@ export async function restoreShippingMethods({
     .resolve("shippingOptionService")
     .withTransaction(manager)
 
-  const toCreate = deletedShippingMethods.map((method) => ({
-    id: method.id,
-    option: method.option,
-    data: method.data,
-    price: method.price,
-    // config: shippingMethodConfig,
-  }))
+  const toCreate = deletedShippingMethods.map((method) => {
+    const config = {
+      ...method,
+    }
+    return {
+      option: method.shipping_option,
+      data: method.data,
+      price: method.price,
+      config,
+    }
+  })
 
-  const createdMethods = await shippingOptionServiceTx.createdShippingMethods(
+  const createdMethods = await shippingOptionServiceTx.createShippingMethods(
     toCreate
   )
 
   return {
-    createdMethods,
+    restoredShippingMethods: createdMethods,
   }
 }
 

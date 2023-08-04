@@ -12,7 +12,7 @@ export async function retrieveCart({
   const { transactionManager: manager } = context
 
   const { input } = data
-  
+
   const cartId =
     typeof input.cartOrCartId === "string"
       ? input.cartOrCartId
@@ -26,6 +26,7 @@ export async function retrieveCart({
   })
 
   return {
-    cart: cartWithTotals,
+    alias: "cart",
+    value: cartWithTotals,
   }
 }

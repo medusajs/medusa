@@ -15,20 +15,13 @@ export async function adjustFreeShippingOnCart({
 
   const cartService = container.resolve("cartService").withTransaction(manager)
 
-  const cartWithTotals = await cartService.retrieveWithTotals(cart.id, {
-    relations: [
-      "discounts",
-      "discounts.rule",
-      "shipping_methods",
-      "shipping_methods.shipping_option",
-    ],
-  })
+  // Required relations
+  // "discounts",
+  // "discounts.rule",
+  // "shipping_methods",
+  // "shipping_methods.shipping_option",
 
-  if (
-    cartWithTotals.discounts.some(({ rule }) => rule.type === "free_shipping")
-  ) {
-    await cartService.adjustFreeShipping_(cartWithTotals, true)
-  }
+  await cartService.adjustFreeShipping(cart, true)
 }
 
 adjustFreeShippingOnCart.aliases = {

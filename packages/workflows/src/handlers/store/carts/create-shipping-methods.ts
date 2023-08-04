@@ -8,14 +8,14 @@ export async function createShippingMethods({
   input: {
     shippingOption: any
     shippingMethodConfig: any
+    price: number
+    shippingOptionData: Record<string, unknown>
   }
-  price: number
-  shippingOptionData: Record<string, unknown>
 }>) {
   const { transactionManager: manager } = context
 
-  const { price, shippingOptionData } = data
-  const { shippingOption, shippingMethodConfig } = data.input
+  const { price, shippingOptionData, shippingOption, shippingMethodConfig } =
+    data.input
 
   const toCreate = [
     {
@@ -38,7 +38,8 @@ export async function createShippingMethods({
 }
 
 createShippingMethods.aliases = {
-  input: "input",
+  shippingOption: "shippingOption",
+  shippingMethodConfig: "shippingMethodConfig",
   price: "price",
   shippingOptionData: "shippingOptionData",
 }

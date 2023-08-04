@@ -986,6 +986,10 @@ class CartService extends TransactionBaseService {
     )
   }
 
+  async adjustFreeShipping(cart: Cart, shouldAdd: boolean) {
+    await this.adjustFreeShipping_(cart, shouldAdd)
+  }
+
   /**
    * Ensures shipping total on cart is correct in regards to a potential free
    * shipping discount
@@ -999,6 +1003,10 @@ class CartService extends TransactionBaseService {
     cart: Cart,
     shouldAdd: boolean
   ): Promise<void> {
+    if (!cart.discounts.some(({ rule }) => rule.type === "free_shipping")) {
+      return
+    }
+
     if (cart.shipping_methods?.length) {
       const shippingMethodRepository = this.activeManager_.withRepository(
         this.shippingMethodRepository_

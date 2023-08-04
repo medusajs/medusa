@@ -1,29 +1,33 @@
 import { WorkflowArguments } from "../../../helper"
-export async function prepareGetShippingOptionPriceData({
+
+export async function prepareShippingMethodsForCreate({
   container,
   context,
   data,
 }: WorkflowArguments<{
   input: {
     shippingOption: any
-    config
+    shippingMethodConfig: any
   }
+  price: number
   shippingOptionData: Record<string, unknown>
 }>) {
-  const { shippingOption, config } = data.input
-  const { shippingOptionData } = data
+  const { price, shippingOptionData } = data
+  const { shippingOption, shippingMethodConfig } = data.input
 
   return {
-    alias: "getOptionPriceData",
+    alias: "input",
     value: {
       shippingOption,
+      price,
+      shippingMethodConfig,
       shippingOptionData,
-      config,
     },
   }
 }
 
-prepareGetShippingOptionPriceData.aliases = {
+prepareShippingMethodsForCreate.aliases = {
   input: "input",
+  price: "price",
   shippingOptionData: "shippingOptionData",
 }

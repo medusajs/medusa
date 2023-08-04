@@ -2,9 +2,10 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { exportWorkflow, pipe } from "../helper"
 
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
+import { InputAlias, Workflows } from "../../../definitions"
+import { exportWorkflow, pipe } from "../../../helper"
 import {
   InventoryHandlers,
   MiddlewaresHandlers,
