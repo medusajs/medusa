@@ -1,19 +1,21 @@
 import { WorkflowArguments } from "../../../helper"
 
-export async function adjustFreeShipping({
+export async function adjustFreeShippingOnCart({
   container,
   context,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: any
-}) {
+}: WorkflowArguments<{
+  input: {
+    cart: any
+  }
+}>) {
   const { transactionManager: manager } = context
 
-  const preparedData = data["preparedData"]
+  const { cart } = data.input
 
   const cartService = container.resolve("cartService").withTransaction(manager)
 
-  const cart = await cartService.retrieveWithTotals(preparedData.cart.id, {
+  const cartWithTotals = await cartService.retrieveWithTotals(cart.id, {
     relations: [
       "discounts",
       "discounts.rule",
@@ -22,7 +24,13 @@ export async function adjustFreeShipping({
     ],
   })
 
-  if (cart.discounts.some(({ rule }) => rule.type === "free_shipping")) {
-    await cartService.adjustFreeShipping_(cart, true)
+  if (
+    cartWithTotals.discounts.some(({ rule }) => rule.type === "free_shipping")
+  ) {
+    await cartService.adjustFreeShipping_(cartWithTotals, true)
   }
+}
+
+adjustFreeShippingOnCart.aliases = {
+  input: "input",
 }

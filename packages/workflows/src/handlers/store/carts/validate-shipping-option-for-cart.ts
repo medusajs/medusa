@@ -1,24 +1,17 @@
 import { WorkflowTypes } from "@medusajs/types"
 import { isDefined } from "@medusajs/utils"
-import { InputAlias } from "../../../definitions"
 import { WorkflowArguments } from "../../../helper"
 
 type ValidateShippingOptionForCartInputData =
   WorkflowTypes.CartTypes.ValidateShippingOptionForCartDTO
 
-const ValidateShippingOptionForCartInputDataAlias =
-  "alidateShippingOptionForCartInputData"
-
 export async function validateShippingOptionForCart({
   container,
   context,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: {
-    // eslint-disable-next-line max-len
-    [InputAlias.ShippingOptionToValidate]: ValidateShippingOptionForCartInputData
-  }
-}) {
+}: WorkflowArguments<{
+  dataToValidate: ValidateShippingOptionForCartInputData
+}>) {
   const { transactionManager: manager } = context
 
   const fulfillmentProvider = container.resolve("fulfillmentProviderService")
@@ -27,7 +20,7 @@ export async function validateShippingOptionForCart({
     .resolve("shippingOptionService")
     .withTransaction(manager)
 
-  const dataToValidate = data[InputAlias.ShippingOptionToValidate]
+  const dataToValidate = data.dataToValidate
 
   if (isDefined(dataToValidate.cart)) {
     // expects the cart from the preparation step
@@ -49,6 +42,5 @@ export async function validateShippingOptionForCart({
 }
 
 validateShippingOptionForCart.aliases = {
-  ValidateShippingOptionForCartInputDataAlias:
-    ValidateShippingOptionForCartInputDataAlias,
+  dataToValidate: "dataToValidate",
 }

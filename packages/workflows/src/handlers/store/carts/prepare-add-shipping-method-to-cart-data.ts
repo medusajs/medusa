@@ -4,18 +4,16 @@ import { WorkflowArguments } from "../../../helper"
 type AddShippingMethodInputData =
   WorkflowTypes.CartTypes.AddShippingMethodToCartDTO
 
-const AddShippingMethodInputDataAlias = "addShippingMethodInputData"
-
 export async function prepareAddShippingMethodToCartWorkflowData({
   container,
   context,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: { [AddShippingMethodInputDataAlias]: AddShippingMethodInputData }
-}) {
+}: WorkflowArguments<{
+  input: AddShippingMethodInputData
+}>) {
   const { transactionManager: manager } = context
 
-  const data_ = data[AddShippingMethodInputDataAlias]
+  const data_ = data.input
 
   const cartService = container.resolve("cartService").withTransaction(manager)
   const shippingOptionService = container
@@ -54,11 +52,11 @@ export async function prepareAddShippingMethodToCartWorkflowData({
   return {
     shippingMethodConfig,
     cart,
-    option,
+    shippingOption: option,
     shippingMethodData: data_.data,
   }
 }
 
 prepareAddShippingMethodToCartWorkflowData.aliases = {
-  AddShippingMethodInputDataAlias: AddShippingMethodInputDataAlias,
+  input: "input",
 }

@@ -4,21 +4,28 @@ export async function retrieveCart({
   container,
   context,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: any
-}) {
+}: WorkflowArguments<{
+  input: {
+    cartOrCartId: any
+  }
+}>) {
   const { transactionManager: manager } = context
 
-  const preparedData = data["preparedData"]
+  const { input } = data
+  
+  const cartId =
+    typeof input.cartOrCartId === "string"
+      ? input.cartOrCartId
+      : input.cartOrCartId.id
 
   const cartService = container.resolve("cartService").withTransaction(manager)
 
-  const cart = await cartService.retrieveWithTotals(preparedData.cart.id, {
+  const cartWithTotals = await cartService.retrieveWithTotals(cartId, {
     select: [], // defaultStoreCartFields,
     relations: [], // defaultStoreCartRelations,
   })
 
   return {
-    cart,
+    cart: cartWithTotals,
   }
 }

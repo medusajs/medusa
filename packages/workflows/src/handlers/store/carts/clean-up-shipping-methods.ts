@@ -1,34 +1,49 @@
-import { InputAlias } from "../../../definitions"
 import { WorkflowArguments } from "../../../helper"
 
 export async function cleanUpShippingMethods({
   container,
   context,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: any
-}) {
+}: WorkflowArguments<{
+  input: {
+    cart: any
+  }
+  createdShippingMethods: any[]
+}>) {
   const { transactionManager: manager } = context
 
-  const created = data[InputAlias.CreatedShippingMethods]
-  const { cart } = data["preparedData"]
+  const { cart } = data.input
+  const { createdShippingMethods } = data
 
-  const methods = created
-  if (cart.shipping_methods?.length) {
-    const shippingOptionServiceTx = container
-      .resolve("shippingOptionService")
-      .withTransaction(manager)
+  const deletedMethods: any = []
 
-    for (const shippingMethod of cart.shipping_methods) {
-      if (
-        methods.some(
-          (m) =>
-            m.shipping_option.profile_id ===
-            shippingMethod.shipping_option.profile_id
-        )
-      ) {
-        await shippingOptionServiceTx.deleteShippingMethods(shippingMethod)
-      }
+  if (!cart.shipping_methods?.length) {
+    return []
+  }
+
+  const shippingOptionServiceTx = container
+    .resolve("shippingOptionService")
+    .withTransaction(manager)
+
+  for (const shippingMethod of cart.shipping_methods) {
+    if (
+      createdShippingMethods.some(
+        (m) =>
+          m.shipping_option.profile_id ===
+          shippingMethod.shipping_option.profile_id
+      )
+    ) {
+      await shippingOptionServiceTx.deleteShippingMethods(shippingMethod)
+      deletedMethods.push(shippingMethod)
     }
   }
+
+  return {
+    deletedMethods,
+  }
+}
+
+cleanUpShippingMethods.aliases = {
+  input: "input",
+  createdShippingMethods: "createdShippingMethods",
 }

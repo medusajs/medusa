@@ -2,14 +2,15 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { InputAlias, Workflows } from "../../../definitions"
-import { adjustFreeShipping } from "../../../handlers/store/carts/adjust-free-shipping"
+import { Workflows } from "../../../definitions"
+import { adjustFreeShippingOnCart } from "../../../handlers/store/carts/adjust-free-shipping"
 import { cleanUpPaymentSessions } from "../../../handlers/store/carts/clean-up-payment-sessions"
 import { cleanUpShippingMethods } from "../../../handlers/store/carts/clean-up-shipping-methods"
+import { createShippingMethods } from "../../../handlers/store/carts/create-shipping-methods"
 import { getShippingOptionPrice } from "../../../handlers/store/carts/get-shipping-option-price"
 import { prepareAddShippingMethodToCartWorkflowData } from "../../../handlers/store/carts/prepare-add-shipping-method-to-cart-data"
 import { retrieveCart } from "../../../handlers/store/carts/retrieve-cart"
-import { updateLineItemShipping } from "../../../handlers/store/carts/update-line-item-shipping"
+import { ensureCorrectLineItemShipping } from "../../../handlers/store/carts/update-line-item-shipping"
 import { updatePaymentSessions } from "../../../handlers/store/carts/update-payment-sessions"
 import { validateShippingOptionForCart } from "../../../handlers/store/carts/validate-shipping-option-for-cart"
 import { exportWorkflow, pipe } from "../../../helper"
@@ -29,51 +30,40 @@ export enum AddShippingMethodWorkflowActions {
 
 export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
   next: {
-    // retrieve cart + custom shipping options
     action: AddShippingMethodWorkflowActions.prepare,
     noCompensation: true,
     next: [
       {
-        // validate fulfillment data
         action: AddShippingMethodWorkflowActions.validateFulfillmentData,
         noCompensation: true,
       },
       {
-        // validate line item shipping
         action: AddShippingMethodWorkflowActions.validateLineItemShipping,
         noCompensation: true,
+        saveResponse: false,
         next: {
-          // get price of shipping option
           action: AddShippingMethodWorkflowActions.getOptionPrice,
           noCompensation: true,
-          saveResponse: true,
           next: {
-            // create the shipping method
             action: AddShippingMethodWorkflowActions.createShippingMethods,
             noCompensation: true,
             next: {
-              // delete other shipping methods with same profile id
               action: AddShippingMethodWorkflowActions.cleanUpShippingMethods,
               saveResponse: false,
               next: {
-                // adjust free shipping discount wrt new shipping method
                 action: AddShippingMethodWorkflowActions.adjustFreeShipping,
                 saveResponse: false,
                 next: {
-                  // clean up payment sessions
                   action:
                     AddShippingMethodWorkflowActions.cleanUpPaymentSessions,
                   saveResponse: false,
                   next: {
-                    // update the payment sessions on the cart
                     action:
                       AddShippingMethodWorkflowActions.updatePaymentSessions,
                     saveResponse: false,
-                    // retrieve cart with totals
                     next: {
                       action: AddShippingMethodWorkflowActions.result,
                       noCompensation: true,
-                      saveResponse: false,
                     },
                   },
                 },
@@ -92,15 +82,10 @@ const handlers = new Map([
     {
       invoke: pipe(
         {
-          inputAlias:
-            prepareAddShippingMethodToCartWorkflowData.aliases
-              .AddShippingMethodInputDataAlias,
+          inputAlias: "input",
           invoke: {
-            from: prepareAddShippingMethodToCartWorkflowData.aliases
-              .AddShippingMethodInputDataAlias,
-            alias:
-              prepareAddShippingMethodToCartWorkflowData.aliases
-                .AddShippingMethodInputDataAlias,
+            from: "input",
+            alias: "input",
           },
         },
         prepareAddShippingMethodToCartWorkflowData
@@ -114,7 +99,7 @@ const handlers = new Map([
         {
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
-            alias: InputAlias.ShippingOptionToValidate,
+            alias: "dataToValidate",
           },
         },
         validateShippingOptionForCart
@@ -128,10 +113,10 @@ const handlers = new Map([
         {
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
-            alias: InputAlias.LineItems,
+            alias: "lineItems",
           },
         },
-        updateLineItemShipping
+        ensureCorrectLineItemShipping
       ),
     },
   ],
@@ -143,11 +128,11 @@ const handlers = new Map([
           invoke: [
             {
               from: AddShippingMethodWorkflowActions.prepare,
-              alias: InputAlias.PreparedAddShippingMethodToCartData,
+              alias: "input",
             },
             {
               from: AddShippingMethodWorkflowActions.validateFulfillmentData,
-              alias: InputAlias.ValidatedShippingOptionData,
+              alias: "shippingOptionData",
             },
           ],
         },
@@ -163,19 +148,19 @@ const handlers = new Map([
           invoke: [
             {
               from: AddShippingMethodWorkflowActions.prepare,
-              alias: InputAlias.PreparedAddShippingMethodToCartData,
+              alias: "input",
             },
             {
               from: AddShippingMethodWorkflowActions.validateFulfillmentData,
-              alias: InputAlias.ValidatedShippingOptionData,
+              alias: "shippingOptionData",
             },
             {
               from: AddShippingMethodWorkflowActions.getOptionPrice,
-              alias: InputAlias.ShippingOptionPrice,
+              alias: "price",
             },
           ],
         },
-        getShippingOptionPrice
+        createShippingMethods
       ),
     },
   ],
@@ -187,11 +172,11 @@ const handlers = new Map([
           invoke: [
             {
               from: AddShippingMethodWorkflowActions.prepare,
-              alias: InputAlias.PreparedAddShippingMethodToCartData,
+              alias: "input",
             },
             {
               from: AddShippingMethodWorkflowActions.createShippingMethods,
-              alias: InputAlias.CreatedShippingMethods,
+              alias: "createdShippingMethods"
             },
           ],
         },
@@ -206,10 +191,10 @@ const handlers = new Map([
         {
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
-            alias: InputAlias.PreparedAddShippingMethodToCartData,
+            alias: "input",
           },
         },
-        adjustFreeShipping
+        adjustFreeShippingOnCart
       ),
     },
   ],
@@ -220,7 +205,7 @@ const handlers = new Map([
         {
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
-            alias: InputAlias.PreparedAddShippingMethodToCartData,
+            alias: "input",
           },
         },
         cleanUpPaymentSessions
@@ -234,7 +219,7 @@ const handlers = new Map([
         {
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
-            alias: InputAlias.PreparedAddShippingMethodToCartData,
+            alias: "input",
           },
         },
         updatePaymentSessions
@@ -248,7 +233,7 @@ const handlers = new Map([
         {
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
-            alias: InputAlias.PreparedAddShippingMethodToCartData,
+            alias: "input",
           },
         },
         retrieveCart

@@ -1,41 +1,42 @@
-import { InputAlias } from "../../../definitions"
 import { WorkflowArguments } from "../../../helper"
-
-type GetShippingOptionPriceDTO = {
-  option: any // Shipping Option
-  data: any // Validated shipping option data
-  config: {
-    price: number | undefined
-    cart: any
-  } // Shipping option config e.g. cart
-}
 
 export async function getShippingOptionPrice({
   container,
   context,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: GetShippingOptionPriceDTO
-}) {
+}: WorkflowArguments<{
+  input: {
+    cart: any
+    shippingOption: any
+  }
+  shippingOptionData: Record<string, unknown>
+}>) {
   const { transactionManager: manager } = context
 
-  const methodData = data[InputAlias.ValidatedShippingOptionData]
-  const preparedData = data["preparedData"]
+  const { cart, shippingOption } = data.input
+  const { shippingOptionData } = data
 
-  const { shippingMethodConfig: config, option, cart } = preparedData
+  // let methodPrice
+  // if (typeof config.price === "number") {
+  //   methodPrice = config.price
+  // } else {
 
-  let methodPrice
-  if (typeof config.price === "number") {
-    methodPrice = config.price
-  } else {
-    const shippingOptionService = container
-      .resolve("shippingOptionService")
-      .withTransaction(manager)
+  const shippingOptionService = container
+    .resolve("shippingOptionService")
+    .withTransaction(manager)
 
-    methodPrice = await shippingOptionService.getPrice(option, methodData, cart)
-  }
+  const methodPrice = await shippingOptionService.getPrice(
+    shippingOption,
+    shippingOptionData,
+    cart
+  )
 
   return {
     shippingOptionPrice: methodPrice,
   }
+}
+
+getShippingOptionPrice.aliases = {
+  input: "input",
+  shippingOptionData: "shippingOptionData",
 }

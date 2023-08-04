@@ -1773,8 +1773,33 @@ class CartService extends TransactionBaseService {
     )
   }
 
-  async cleanUpPaymentSessions(cart: Cart) {
+  async cleanUpPaymentSessions(cartOrId: Cart | string) {
     return this.atomicPhase_(async (manager) => {
+      const cartId = typeof cartOrId === `string` ? cartOrId : cartOrId.id
+
+      const cart = await this.retrieveWithTotals(
+        cartId,
+        {
+          relations: [
+            "items.variant.product.profiles",
+            "items.adjustments",
+            "discounts",
+            "discounts.rule",
+            "gift_cards",
+            "shipping_methods",
+            "shipping_methods.shipping_option",
+            "billing_address",
+            "shipping_address",
+            "region",
+            "region.tax_rates",
+            "region.payment_providers",
+            "payment_sessions",
+            "customer",
+          ],
+        },
+        { force_taxes: true }
+      )
+
       const psRepo = manager.withRepository(this.paymentSessionRepository_)
 
       const paymentProviderServiceTx =
@@ -1851,8 +1876,33 @@ class CartService extends TransactionBaseService {
     })
   }
 
-  async selectAndCreatePaymentSessions(cart: Cart) {
+  async selectAndCreatePaymentSessions(cartOrId: Cart | string) {
     return this.atomicPhase_(async (manager) => {
+      const cartId = typeof cartOrId === `string` ? cartOrId : cartOrId.id
+
+      const cart = await this.retrieveWithTotals(
+        cartId,
+        {
+          relations: [
+            "items.variant.product.profiles",
+            "items.adjustments",
+            "discounts",
+            "discounts.rule",
+            "gift_cards",
+            "shipping_methods",
+            "shipping_methods.shipping_option",
+            "billing_address",
+            "shipping_address",
+            "region",
+            "region.tax_rates",
+            "region.payment_providers",
+            "payment_sessions",
+            "customer",
+          ],
+        },
+        { force_taxes: true }
+      )
+
       const psRepo = manager.withRepository(this.paymentSessionRepository_)
 
       const { region, total } = cart

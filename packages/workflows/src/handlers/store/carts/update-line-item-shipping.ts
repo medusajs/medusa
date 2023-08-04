@@ -1,31 +1,27 @@
-import { InputAlias } from "../../../definitions"
+import { WorkflowTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../../helper"
 
-type UpdateLineItemsShippingDTO = {
-  items: any // line items
-  methods: any // shipping methods to validate against
-}
+type UpdateLineItemsShippingInputData =
+  WorkflowTypes.CartTypes.EnsureCorrectLineItemShippingDTO
 
-export async function updateLineItemShipping({
+export async function ensureCorrectLineItemShipping({
   container,
   context,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: { [InputAlias.LineItems]: UpdateLineItemsShippingDTO }
-}) {
+}: WorkflowArguments<{ lineItems: UpdateLineItemsShippingInputData }>) {
   const { transactionManager: manager } = context
 
-  const dataToValidate = data[InputAlias.LineItems]
+  const data_ = data.lineItems
 
   const lineItemService = container
     .resolve("lineItemService")
     .withTransaction(manager)
 
   const items = await Promise.all(
-    dataToValidate.items.map(async (item) => {
+    data_.items.map(async (item) => {
       return lineItemService.update(item.id, {
         has_shipping: lineItemService.validateLineItemShipping_(
-          dataToValidate.methods,
+          data_.methods,
           item
         ),
       })
@@ -35,4 +31,8 @@ export async function updateLineItemShipping({
   return {
     lineItems: items,
   }
+}
+
+ensureCorrectLineItemShipping.aliases = {
+  lineItems: "lineItems",
 }

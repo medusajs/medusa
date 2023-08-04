@@ -1,25 +1,33 @@
-import { InputAlias } from "../../../definitions"
+import { WorkflowTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../../helper"
+
+type CreateShippingMethodsInputData =
+  WorkflowTypes.CartTypes.CreateShippingMethodsDTO
 
 export async function createShippingMethods({
   container,
   context,
   data,
-}: Omit<WorkflowArguments, "data"> & {
-  data: any
-}) {
+}: WorkflowArguments<{
+  input: {
+    cart: any
+    shippingOption: any
+    shippingMethodConfig: any
+  }
+  price: number
+  shippingOptionData: Record<string, unknown>
+}>) {
   const { transactionManager: manager } = context
 
-  const methodData = data[InputAlias.ValidatedShippingOptionData]
-  const preparedData = data["preparedData"]
-  const optionPrice = data[InputAlias.ShippingOptionPrice]
+  const { price, shippingOptionData } = data
+  const { shippingOption, cart, shippingMethodConfig } = data.input
 
   const toCreate = [
     {
-      option: preparedData.option,
-      data: methodData,
-      config: preparedData.shippingMethodConfig,
-      price: optionPrice,
+      option: shippingOption,
+      data: shippingOptionData,
+      price,
+      config: shippingMethodConfig,
     },
   ]
 
@@ -30,6 +38,12 @@ export async function createShippingMethods({
     .createShippingMethods(toCreate)
 
   return {
-    created,
+    createdShippingMethods: created,
   }
+}
+
+createShippingMethods.aliases = {
+  input: "input",
+  price: "price",
+  shippingOptionData: "shippingOptionData",
 }
