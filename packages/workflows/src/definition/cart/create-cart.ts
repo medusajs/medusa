@@ -139,15 +139,6 @@ const handlers = new Map([
         },
         cartHandlers.attachAddressesToCart
       ),
-      compensate: pipe(
-        {
-          invoke: {
-            from: CreateCartActions.removeAddresses,
-            alias: cartHandlers.removeAddresses.aliases.CartAddresses,
-          },
-        },
-        cartHandlers.removeCart
-      ),
     },
   ],
   [
