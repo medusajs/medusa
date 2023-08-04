@@ -12,11 +12,15 @@ export enum Modules {
   PRODUCT = "productService",
 }
 
+export enum ModuleRegistrationName {
+  EVENT_BUS = "eventBusModuleService"
+}
+
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
   {
     [Modules.EVENT_BUS]: {
       key: Modules.EVENT_BUS,
-      registrationName: "eventBusModuleService",
+      registrationName: ModuleRegistrationName.EVENT_BUS,
       defaultPackage: "@medusajs/event-bus-local",
       label: "EventBusModuleService",
       canOverride: true,
@@ -75,7 +79,7 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       isRequired: false,
       canOverride: true,
       isQueryable: true,
-      dependencies: [],
+      dependencies: [ModuleRegistrationName.EVENT_BUS],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.EXTERNAL,
       },
