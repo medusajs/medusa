@@ -9,17 +9,17 @@ export async function prepareShippingMethodsForCreate({
     shippingOption: any
     shippingMethodConfig: any
   }
-  price: number
+  shippingOptionPrice: number
   shippingOptionData: Record<string, unknown>
 }>) {
-  const { price, shippingOptionData } = data
+  const { shippingOptionPrice, shippingOptionData } = data
   const { shippingOption, shippingMethodConfig } = data.input
 
   return {
     alias: "input",
     value: {
       shippingOption,
-      price,
+      shippingOptionPrice,
       shippingMethodConfig,
       shippingOptionData,
     },

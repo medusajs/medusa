@@ -10,21 +10,19 @@ export async function detachInventoryItems({
     variant: ProductTypes.ProductVariantDTO
     inventoryItem: InventoryItemDTO
   }[]
-}>) {
+}>): Promise<void> {
   const { manager } = context
 
   const productVariantInventoryService = container
     .resolve("productVariantInventoryService")
     .withTransaction(manager)
 
-  const data_ = data.inventoryItems
-
-  if (!data_?.length) {
+  if (!data?.inventoryItems.length) {
     return
   }
 
-  return await Promise.all(
-    data_.map(async ({ variant, inventoryItem }) => {
+  await Promise.all(
+    data.inventoryItems.map(async ({ variant, inventoryItem }) => {
       return await productVariantInventoryService.detachInventoryItem(
         inventoryItem.id,
         variant.id

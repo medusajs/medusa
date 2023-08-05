@@ -6,23 +6,30 @@ export async function retrieveCart({
   data,
 }: WorkflowArguments<{
   input: {
-    cartOrCartId: any
+    cart: any
   }
 }>) {
-  const { transactionManager: manager } = context
+  const { manager } = context
 
   const { input } = data
 
-  const cartId =
-    typeof input.cartOrCartId === "string"
-      ? input.cartOrCartId
-      : input.cartOrCartId.id
-
   const cartService = container.resolve("cartService").withTransaction(manager)
 
-  const cartWithTotals = await cartService.retrieveWithTotals(cartId, {
-    select: [], // defaultStoreCartFields,
-    relations: [], // defaultStoreCartRelations,
+  const cartWithTotals = await cartService.retrieveWithTotals(input.cart.id, {
+    relations: [
+      "items.variant.product.profiles",
+      "items.adjustments",
+      "discounts.rule",
+      "gift_cards",
+      "shipping_methods.shipping_option",
+      "billing_address",
+      "shipping_address",
+      "region",
+      "region.tax_rates",
+      "region.payment_providers",
+      "payment_sessions",
+      "customer",
+    ],
   })
 
   return {

@@ -1,4 +1,4 @@
-import { ProductTypes } from "@medusajs/types"
+import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 export async function listProducts({
@@ -7,17 +7,12 @@ export async function listProducts({
   data,
 }: WorkflowArguments<{
   products: ProductTypes.ProductDTO[]
-  payload: {
-    retrieveProductsConfig: {
-      select: string[]
-      relations: string[]
-    }
-  }
+  config?: WorkflowTypes.CommonWorkflow.WorkflowInputConfig
 }>): Promise<ProductTypes.ProductDTO[]> {
   const { manager } = context
 
   const products = data.products
-  const retrieveProductsConfig = data.payload.retrieveProductsConfig
+  const listConfig = data.config?.listConfig ?? {}
 
   const productService = container.resolve("productService")
   const pricingService = container.resolve("pricingService")
@@ -25,15 +20,14 @@ export async function listProducts({
   const config = {}
   let shouldUseConfig = false
 
-  if (retrieveProductsConfig.select) {
-    shouldUseConfig = !!retrieveProductsConfig.select.length
-    Object.assign(config, { select: retrieveProductsConfig.select })
+  if (listConfig.select) {
+    shouldUseConfig = !!listConfig.select.length
+    Object.assign(config, { select: listConfig.select })
   }
 
-  if (retrieveProductsConfig.relations) {
-    shouldUseConfig =
-      shouldUseConfig || !!retrieveProductsConfig.relations.length
-    Object.assign(config, { relations: retrieveProductsConfig.relations })
+  if (listConfig.relations) {
+    shouldUseConfig = shouldUseConfig || !!listConfig.relations.length
+    Object.assign(config, { relations: listConfig.relations })
   }
 
   const rawProduct = await productService
@@ -47,5 +41,4 @@ export async function listProducts({
 
 listProducts.aliases = {
   products: "products",
-  input: "payload",
 }

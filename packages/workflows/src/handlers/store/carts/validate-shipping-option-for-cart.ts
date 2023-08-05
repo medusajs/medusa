@@ -10,9 +10,13 @@ export async function validateShippingOptionForCart({
   context,
   data,
 }: WorkflowArguments<{
-  dataToValidate: ValidateShippingOptionForCartInputData
+  dataToValidate: {
+    shippingOption: any
+    shippingMethodData: any
+    cart?: any
+  }
 }>) {
-  const { transactionManager: manager } = context
+  const { manager } = context
 
   const fulfillmentProvider = container.resolve("fulfillmentProviderService")
 
@@ -23,22 +27,20 @@ export async function validateShippingOptionForCart({
   const dataToValidate = data.dataToValidate
 
   if (isDefined(dataToValidate.cart)) {
-    // expects the cart from the preparation step
     await shippingOptionService.validateCartOption(
-      dataToValidate.option,
+      dataToValidate.shippingOption,
       dataToValidate.cart
     )
   }
 
-  const validatedData = await fulfillmentProvider.validateFulfillmentData(
-    dataToValidate.option,
-    dataToValidate.data,
-    dataToValidate.cart || {}
-  )
+  const validatedShippingOptionData =
+    await fulfillmentProvider.validateFulfillmentData(
+      dataToValidate.shippingOption,
+      dataToValidate.shippingMethodData,
+      dataToValidate.cart || {}
+    )
 
-  return {
-    validatedShippingOptionData: validatedData,
-  }
+  return validatedShippingOptionData
 }
 
 validateShippingOptionForCart.aliases = {

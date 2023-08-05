@@ -8,38 +8,42 @@ export async function createShippingMethods({
   input: {
     shippingOption: any
     shippingMethodConfig: any
-    price: number
+    shippingOptionPrice: any
     shippingOptionData: Record<string, unknown>
   }
 }>) {
-  const { transactionManager: manager } = context
+  const { manager } = context
 
-  const { price, shippingOptionData, shippingOption, shippingMethodConfig } =
-    data.input
+  const {
+    shippingOptionPrice,
+    shippingOptionData,
+    shippingOption,
+    shippingMethodConfig,
+  } = data.input
 
   const toCreate = [
     {
       option: shippingOption,
       data: shippingOptionData,
-      price,
+      price: shippingOptionPrice.price,
       config: shippingMethodConfig,
     },
   ]
 
-  const shippingMethodService = container.resolve("shippingMethodService")
+  const shippingOptionService = container.resolve("shippingOptionService")
 
-  const created = await shippingMethodService
-    .withTransction(manager)
+  console.log("To create", toCreate)
+
+  const shippingMethods = await shippingOptionService
+    .withTransaction(manager)
     .createShippingMethods(toCreate)
 
-  return {
-    createdShippingMethods: created,
-  }
+  return shippingMethods
 }
 
 createShippingMethods.aliases = {
   shippingOption: "shippingOption",
   shippingMethodConfig: "shippingMethodConfig",
-  price: "price",
+  shippingOptionPrice: "shippingOptionPrice",
   shippingOptionData: "shippingOptionData",
 }

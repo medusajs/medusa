@@ -8,20 +8,24 @@ export async function ensureCorrectLineItemShipping({
   container,
   context,
   data,
-}: WorkflowArguments<{ lineItems: UpdateLineItemsShippingInputData }>) {
-  const { transactionManager: manager } = context
+}: WorkflowArguments<{
+  input: {
+    cart: any
+  }
+}>) {
+  const { manager } = context
 
-  const data_ = data.lineItems
+  const { cart } = data.input
 
   const lineItemService = container
     .resolve("lineItemService")
     .withTransaction(manager)
 
   const items = await Promise.all(
-    data_.items.map(async (item) => {
+    cart.items.map(async (item) => {
       return lineItemService.update(item.id, {
         has_shipping: lineItemService.validateLineItemShipping_(
-          data_.methods,
+          cart.methods,
           item
         ),
       })
@@ -34,5 +38,5 @@ export async function ensureCorrectLineItemShipping({
 }
 
 ensureCorrectLineItemShipping.aliases = {
-  lineItems: "lineItems",
+  cart: "cart",
 }

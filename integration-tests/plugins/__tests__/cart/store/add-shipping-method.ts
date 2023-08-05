@@ -1,11 +1,11 @@
 import path from "path"
 import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import { setPort, useApi } from "../../../../environment-helpers/use-api"
+import { setPort } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
+import { addShippingMethod } from "@medusajs/workflows"
 
 import { Cart, CustomShippingOption } from "@medusajs/medusa"
-import { AxiosInstance } from "axios"
 import cartSeeder from "../../../../helpers/cart-seeder"
 
 jest.setTimeout(5000000)
@@ -40,7 +40,6 @@ describe("/store/carts", () => {
     medusaProcess.kill()
   })
 
-  
   beforeEach(async () => {
     await cartSeeder(dbConnection)
     const manager = dbConnection.manager
@@ -73,95 +72,108 @@ describe("/store/carts", () => {
     await doAfterEach()
   })
 
-  it("adds a normal shipping method to cart", async () => {
-    const api = useApi()! as AxiosInstance
+  it("should add a shipping method to cart", async () => {
+    const manager = medusaContainer.resolve("manager")
 
-    const cartWithShippingMethod = await api.post(
-      "/store/carts/test-cart/shipping-methods",
-      {
-        option_id: "test-option",
+    const createProductWorkflow = addShippingMethod(medusaContainer)
+
+    const input = {
+      cart_id: "test-cart",
+      option_id: "test-option",
+      data: {},
+    }
+
+    const { result } = await createProductWorkflow.run({
+      input,
+      context: {
+        manager,
       },
-      { withCredentials: true }
-    )
+    })
 
-    expect(cartWithShippingMethod.data.cart.shipping_methods).toContainEqual(
+    const value = result!.value
+
+    expect(value.shipping_methods).toContainEqual(
       expect.objectContaining({ shipping_option_id: "test-option" })
     )
-    expect(cartWithShippingMethod.status).toEqual(200)
   })
 
-//   it("given a cart with custom options and a shipping option already belonging to said cart, then it should add a shipping method based on the given custom shipping option", async () => {
-//     const shippingOptionId = "test-option"
+  // it("should add a shipping method based on the existing custom shipping option", async () => {
+  //   const shippingOptionId = "test-option"
+  //   const cartId = "test-cart-with-cso"
 
-//     const api = useApi()! as AxiosInstance
+  //   const manager = medusaContainer.resolve("manager")
 
-//     const cartWithCustomShippingMethod = await api
-//       .post(
-//         "/store/carts/test-cart-with-cso/shipping-methods",
-//         {
-//           option_id: shippingOptionId,
-//         },
-//         { withCredentials: true }
-//       )
-//       .catch((err) => err.response)
+  //   const createProductWorkflow = addShippingMethod(medusaContainer)
 
-//     expect(
-//       cartWithCustomShippingMethod.data.cart.shipping_methods
-//     ).toContainEqual(
-//       expect.objectContaining({
-//         shipping_option_id: shippingOptionId,
-//         price: 5,
-//       })
-//     )
-//     expect(cartWithCustomShippingMethod.status).toEqual(200)
-//   })
+  //   const input = {
+  //     cart_id: cartId,
+  //     option_id: shippingOptionId,
+  //     data: {}
+  //   }
 
-//   it("given a cart with custom options and an option id not corresponding to any custom shipping option, then it should throw an invalid error", async () => {
-//     const api = useApi()! as AxiosInstance
+  //   const { result } = await createProductWorkflow.run({
+  //     input,
+  //     context: {
+  //       manager,
+  //     },
+  //   })
 
-//     try {
-//       await api.post(
-//         "/store/carts/test-cart-with-cso/shipping-methods",
-//         {
-//           option_id: "orphan-so",
-//         },
-//         { withCredentials: true }
-//       )
-//     } catch (err) {
-//       expect(err.response.status).toEqual(400)
-//       expect(err.response.data.message).toEqual("Wrong shipping option")
-//     }
-//   })
+  //   const value = result!.value
 
-//   it("adds no more than 1 shipping method per shipping profile", async () => {
-//     const api = useApi()! as AxiosInstance
-    
-//     const addShippingMethod = async (option_id) => {
-//       return await api.post(
-//         "/store/carts/test-cart/shipping-methods",
-//         {
-//           option_id,
-//         },
-//         { withCredentials: true }
-//       )
-//     }
+  //   expect(value.shipping_methods).toContainEqual(
+  //     expect.objectContaining({
+  //       shipping_option_id: shippingOptionId,
+  //       price: 5,
+  //     })
+  //   )
+  // })
 
-//     await addShippingMethod("test-option")
-//     const cartWithAnotherShippingMethod = await addShippingMethod(
-//       "test-option-2"
-//     )
+  //   it("given a cart with custom options and an option id not corresponding to any custom shipping option, then it should throw an invalid error", async () => {
+  //     const api = useApi()! as AxiosInstance
 
-//     expect(
-//       cartWithAnotherShippingMethod.data.cart.shipping_methods.length
-//     ).toEqual(1)
-//     expect(
-//       cartWithAnotherShippingMethod.data.cart.shipping_methods
-//     ).toContainEqual(
-//       expect.objectContaining({
-//         shipping_option_id: "test-option-2",
-//         price: 500,
-//       })
-//     )
-//     expect(cartWithAnotherShippingMethod.status).toEqual(200)
-//   })
+  //     try {
+  //       await api.post(
+  //         "/store/carts/test-cart-with-cso/shipping-methods",
+  //         {
+  //           option_id: "orphan-so",
+  //         },
+  //         { withCredentials: true }
+  //       )
+  //     } catch (err) {
+  //       expect(err.response.status).toEqual(400)
+  //       expect(err.response.data.message).toEqual("Wrong shipping option")
+  //     }
+  //   })
+
+  //   it("adds no more than 1 shipping method per shipping profile", async () => {
+  //     const api = useApi()! as AxiosInstance
+
+  //     const addShippingMethod = async (option_id) => {
+  //       return await api.post(
+  //         "/store/carts/test-cart/shipping-methods",
+  //         {
+  //           option_id,
+  //         },
+  //         { withCredentials: true }
+  //       )
+  //     }
+
+  //     await addShippingMethod("test-option")
+  //     const cartWithAnotherShippingMethod = await addShippingMethod(
+  //       "test-option-2"
+  //     )
+
+  //     expect(
+  //       cartWithAnotherShippingMethod.data.cart.shipping_methods.length
+  //     ).toEqual(1)
+  //     expect(
+  //       cartWithAnotherShippingMethod.data.cart.shipping_methods
+  //     ).toContainEqual(
+  //       expect.objectContaining({
+  //         shipping_option_id: "test-option-2",
+  //         price: 500,
+  //       })
+  //     )
+  //     expect(cartWithAnotherShippingMethod.status).toEqual(200)
+  //   })
 })

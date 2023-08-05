@@ -8,12 +8,13 @@ export async function getShippingOptionPrice({
   getOptionPriceData: {
     shippingOption: any
     shippingOptionData: any
-    config: any
+    shippingMethodConfig: any
   }
 }>) {
-  const { transactionManager: manager } = context
+  const { manager } = context
 
-  const { shippingOption, config, shippingOptionData } = data.getOptionPriceData
+  const { shippingOption, shippingMethodConfig, shippingOptionData } =
+    data.getOptionPriceData
 
   const shippingOptionService = container
     .resolve("shippingOptionService")
@@ -22,12 +23,10 @@ export async function getShippingOptionPrice({
   const methodPrice = await shippingOptionService.getPrice(
     shippingOption,
     shippingOptionData,
-    config
+    shippingMethodConfig
   )
 
-  return {
-    shippingOptionPrice: methodPrice,
-  }
+  return { price: methodPrice }
 }
 
 getShippingOptionPrice.aliases = {

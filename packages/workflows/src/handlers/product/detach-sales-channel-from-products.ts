@@ -9,14 +9,11 @@ export async function detachSalesChannelFromProducts({
   context,
   data,
 }: WorkflowArguments<{
-  input: {
-    productsHandleSalesChannelsMap: Map<ProductHandle, SalesChannelId[]>
-  }
+  productsHandleSalesChannelsMap: Map<ProductHandle, SalesChannelId[]>
   products: ProductTypes.ProductDTO[]
 }>): Promise<void> {
   const { manager } = context
-  const productsHandleSalesChannelsMap =
-    data.input.productsHandleSalesChannelsMap
+  const productsHandleSalesChannelsMap = data.productsHandleSalesChannelsMap
   const products = data.products
 
   const salesChannelService = container.resolve("salesChannelService")
@@ -47,6 +44,5 @@ export async function detachSalesChannelFromProducts({
 }
 
 detachSalesChannelFromProducts.aliases = {
-  input: "input",
   products: "products",
 }

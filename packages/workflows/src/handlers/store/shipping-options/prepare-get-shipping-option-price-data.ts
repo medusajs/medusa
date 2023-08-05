@@ -6,11 +6,11 @@ export async function prepareGetShippingOptionPriceData({
 }: WorkflowArguments<{
   input: {
     shippingOption: any
-    config
+    shippingMethodConfig
   }
   shippingOptionData: Record<string, unknown>
 }>) {
-  const { shippingOption, config } = data.input
+  const { shippingOption, shippingMethodConfig } = data.input
   const { shippingOptionData } = data
 
   return {
@@ -18,7 +18,7 @@ export async function prepareGetShippingOptionPriceData({
     value: {
       shippingOption,
       shippingOptionData,
-      config,
+      shippingMethodConfig,
     },
   }
 }

@@ -1,7 +1,7 @@
 export interface AddShippingMethodToCartDTO {
   cart_id: string
   option_id: string
-  data: Record<string, unknown>
+  data?: Record<string, unknown>
 }
 
 export interface ValidateShippingOptionForCartDTO {

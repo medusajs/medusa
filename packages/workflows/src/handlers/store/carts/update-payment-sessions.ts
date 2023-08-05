@@ -9,7 +9,7 @@ export async function updatePaymentSessions({
     cart: any
   }
 }>) {
-  const { transactionManager: manager } = context
+  const { manager } = context
 
   const { cart } = data.input
 

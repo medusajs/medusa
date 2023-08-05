@@ -387,7 +387,7 @@ class ShippingOptionService extends TransactionBaseService {
           toCreate.claim_order_id = config.claim_order_id
         }
 
-        return manager.create(ShippingMethod, methodData)
+        return manager.create(ShippingMethod, toCreate)
       })
 
       const methodRepo = manager.withRepository(this.methodRepository_)
@@ -862,7 +862,7 @@ class ShippingOptionService extends TransactionBaseService {
     data: Record<string, unknown>,
     config: CreateShippingMethodDto
   ): Promise<number> {
-    if (typeof config.price === "number") {
+    if (typeof config?.price === "number") {
       return config.price
     }
 

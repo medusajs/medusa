@@ -1,15 +1,15 @@
-import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
   DistributedTransaction,
   LocalWorkflow,
   TransactionState,
   TransactionStepError,
 } from "@medusajs/orchestration"
+import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 
-import { EOL } from "os"
 import { MedusaModule } from "@medusajs/modules-sdk"
-import { Workflows } from "../definitions"
+import { EOL } from "os"
 import { ulid } from "ulid"
+import { Workflows } from "../workflows"
 
 export type FlowRunOptions<TData = unknown> = {
   input?: TData
@@ -28,7 +28,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
   workflowId: Workflows,
   defaultResult?: string
 ) => {
-  return function <TDataOverride = undefined, TResultOverride = undefined>(
+  return function <TDataOverride = undefined, TResultOverride = undefined> (
     container?: LoadedModule[] | MedusaContainer
   ): Omit<LocalWorkflow, "run"> & {
     run: (
@@ -56,6 +56,9 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         resultFrom: defaultResult,
       }
     ) => {
+      resultFrom ??= defaultResult
+      throwOnError ??= true
+
       const transaction = await originalRun(
         context?.transactionId ?? ulid(),
         input,

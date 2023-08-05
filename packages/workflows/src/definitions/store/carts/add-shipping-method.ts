@@ -2,21 +2,23 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { Workflows } from "../../../definitions"
+import { AddShippingMethodToCartDTO } from "@medusajs/types/dist/workflow/cart"
 import { adjustFreeShippingOnCart } from "../../../handlers/store/carts/adjust-free-shipping"
 import { cleanUpPaymentSessions } from "../../../handlers/store/carts/clean-up-payment-sessions"
-import { cleanUpShippingMethods } from "../../../handlers/store/carts/clean-up-shipping-methods"
-import { createShippingMethods } from "../../../handlers/store/carts/create-shipping-methods"
-import { getShippingOptionPrice } from "../../../handlers/store/carts/get-shipping-option-price"
 import { prepareAddShippingMethodToCartWorkflowData } from "../../../handlers/store/carts/prepare-add-shipping-method-to-cart-data"
-import { prepareShippingMethodsForCreate } from "../../../handlers/store/carts/prepare-create-shipping-method-data"
-import { prepareGetShippingOptionPriceData } from "../../../handlers/store/carts/prepare-get-shipping-option-price-data"
-import { restoreShippingMethods } from "../../../handlers/store/carts/restore-shipping-methods"
 import { retrieveCart } from "../../../handlers/store/carts/retrieve-cart"
 import { ensureCorrectLineItemShipping } from "../../../handlers/store/carts/update-line-item-shipping"
 import { updatePaymentSessions } from "../../../handlers/store/carts/update-payment-sessions"
 import { validateShippingOptionForCart } from "../../../handlers/store/carts/validate-shipping-option-for-cart"
+import { createShippingMethods } from "../../../handlers/store/shipping-methods/create-shipping-methods"
+import { deleteShippingMethods } from "../../../handlers/store/shipping-methods/delete-shipping-methods"
+import { prepareShippingMethodsForCreate } from "../../../handlers/store/shipping-methods/prepare-create-shipping-methods-data"
+import { prepareDeleteShippingMethodsData } from "../../../handlers/store/shipping-methods/prepare-delete-shipping-methods-data"
+import { restoreShippingMethods } from "../../../handlers/store/shipping-methods/restore-shipping-methods"
+import { getShippingOptionPrice } from "../../../handlers/store/shipping-options/get-shipping-option-price"
+import { prepareGetShippingOptionPriceData } from "../../../handlers/store/shipping-options/prepare-get-shipping-option-price-data"
 import { exportWorkflow, pipe } from "../../../helper"
+import { Workflows } from "../../../workflows"
 
 export enum AddShippingMethodWorkflowActions {
   prepare = "prepare",
@@ -116,7 +118,7 @@ const handlers = new Map([
         {
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
-            alias: "lineItems",
+            alias: "input",
           },
         },
         ensureCorrectLineItemShipping
@@ -160,7 +162,7 @@ const handlers = new Map([
             },
             {
               from: AddShippingMethodWorkflowActions.getOptionPrice,
-              alias: "price",
+              alias: "shippingOptionPrice",
             },
           ],
         },
@@ -181,11 +183,12 @@ const handlers = new Map([
             },
             {
               from: AddShippingMethodWorkflowActions.createShippingMethods,
-              alias: "createdShippingMethods",
+              alias: "shippingMethods",
             },
           ],
         },
-        cleanUpShippingMethods
+        prepareDeleteShippingMethodsData,
+        deleteShippingMethods
       ),
       compensate: pipe(
         {
@@ -225,11 +228,6 @@ const handlers = new Map([
             },
           ],
         },
-        // Required relations
-        // "discounts",
-        // "discounts.rule",
-        // "shipping_methods",
-        // "shipping_methods.shipping_option",
         retrieveCart,
         adjustFreeShippingOnCart
       ),
@@ -245,21 +243,6 @@ const handlers = new Map([
             alias: "input",
           },
         },
-        // Required relations
-        // "items.variant.product.profiles",
-        // "items.adjustments",
-        // "discounts",
-        // "discounts.rule",
-        // "gift_cards",
-        // "shipping_methods",
-        // "shipping_methods.shipping_option",
-        // "billing_address",
-        // "shipping_address",
-        // "region",
-        // "region.tax_rates",
-        // "region.payment_providers",
-        // "payment_sessions",
-        // "customer",
         retrieveCart,
         cleanUpPaymentSessions
       ),
@@ -284,21 +267,6 @@ const handlers = new Map([
             alias: "input",
           },
         },
-        // Required relations
-        // "items.variant.product.profiles",
-        // "items.adjustments",
-        // "discounts",
-        // "discounts.rule",
-        // "gift_cards",
-        // "shipping_methods",
-        // "shipping_methods.shipping_option",
-        // "billing_address",
-        // "shipping_address",
-        // "region",
-        // "region.tax_rates",
-        // "region.payment_providers",
-        // "payment_sessions",
-        // "customer",
         retrieveCart,
         updatePaymentSessions
       ),
@@ -326,7 +294,9 @@ WorkflowManager.register(
   handlers
 )
 
-export const addShippingMethod = exportWorkflow(
-  Workflows.AddShippingMethod,
-  AddShippingMethodWorkflowActions.result
-)
+export const addShippingMethod = exportWorkflow<
+  AddShippingMethodToCartDTO,
+  {
+    value: any
+  }
+>(Workflows.AddShippingMethod, AddShippingMethodWorkflowActions.result)

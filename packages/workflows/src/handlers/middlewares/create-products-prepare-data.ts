@@ -6,9 +6,6 @@ import {
 } from "@medusajs/utils"
 import { WorkflowArguments } from "../../helper"
 
-type CreateProductsInputData =
-  WorkflowTypes.ProductWorkflow.CreateProductInputDTO[]
-
 type ShippingProfileId = string
 type SalesChannelId = string
 type ProductHandle = string
@@ -31,17 +28,16 @@ export type CreateProductsPreparedData = {
     ProductHandle,
     VariantIndexAndPrices[]
   >
+  config?: WorkflowTypes.CommonWorkflow.WorkflowInputConfig
 }
 
 export async function createProductsPrepareData({
   container,
   context,
   data,
-}: WorkflowArguments<{
-  input: CreateProductsInputData
-}>): Promise<CreateProductsPreparedData> {
+}: WorkflowArguments<WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO>): Promise<CreateProductsPreparedData> {
   const { manager } = context
-  let data_ = data.input
+  let products = data.products
 
   const shippingProfileService = container
     .resolve("shippingProfileService")
@@ -89,7 +85,7 @@ export async function createProductsPrepareData({
     VariantIndexAndPrices[]
   >()
 
-  for (const product of data_) {
+  for (const product of products) {
     product.handle ??= kebabCase(product.title)
 
     if (product.is_giftcard) {
@@ -139,19 +135,20 @@ export async function createProductsPrepareData({
     }
   }
 
-  data_ = data_.map((productData) => {
+  products = products.map((productData) => {
     delete productData.sales_channels
     return productData
   })
 
   return {
-    products: data_ as ProductTypes.CreateProductDTO[],
+    products: products as ProductTypes.CreateProductDTO[],
     productsHandleShippingProfileIdMap,
     productsHandleSalesChannelsMap,
     productsHandleVariantsIndexPricesMap,
+    config: data.config,
   }
 }
 
 createProductsPrepareData.aliases = {
-  input: "input",
+  payload: "payload",
 }

@@ -13,18 +13,16 @@ export async function updateProductsVariantsPrices({
   context,
   data,
 }: WorkflowArguments<{
-  input: {
-    productsHandleVariantsIndexPricesMap: Map<
-      ProductHandle,
-      VariantIndexAndPrices[]
-    >
-  }
+  productsHandleVariantsIndexPricesMap: Map<
+    ProductHandle,
+    VariantIndexAndPrices[]
+  >
   products: ProductTypes.ProductDTO[]
 }>) {
   const { manager } = context
   const products = data.products
   const productsHandleVariantsIndexPricesMap =
-    data.input.productsHandleVariantsIndexPricesMap
+    data.productsHandleVariantsIndexPricesMap
 
   const productVariantService = container.resolve("productVariantService")
   const productVariantServiceTx = productVariantService.withTransaction(manager)
@@ -58,6 +56,5 @@ export async function updateProductsVariantsPrices({
 }
 
 updateProductsVariantsPrices.aliases = {
-  input: "input",
   products: "products",
 }
