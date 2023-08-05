@@ -2,6 +2,8 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
+import { exportWorkflow, pipe } from "../../../helper"
+import { InputAlias, Workflows } from "../../../workflows"
 
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import {
@@ -9,9 +11,7 @@ import {
   MiddlewaresHandlers,
   ProductHandlers,
 } from "../../../handlers"
-import { exportWorkflow, pipe } from "../../../helper"
 import { aggregateData } from "../../../helper/aggregate"
-import { InputAlias, Workflows } from "../../../workflows"
 
 export enum Actions {
   prepare = "prepare",
