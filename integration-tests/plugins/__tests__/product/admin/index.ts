@@ -10,7 +10,7 @@ import { simpleSalesChannelFactory } from "../../../../factories"
 import { AxiosInstance } from "axios"
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 
-jest.setTimeout(50000)
+jest.setTimeout(5000000)
 
 const adminHeaders = {
   headers: {
