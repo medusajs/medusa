@@ -1,11 +1,11 @@
 import glob from "glob"
 import path from "path"
 
+import { FlagRouter, objectFromStringPath } from "@medusajs/utils"
 import { isDefined } from "medusa-core-utils"
 import { trackFeatureFlag } from "medusa-telemetry"
 import { FlagSettings } from "../../types/feature-flags"
 import { Logger } from "../../types/global"
-import { FlagRouter } from "../../utils/flag-router"
 
 const isTruthy = (val: string | boolean | undefined): boolean => {
   if (typeof val === "string") {
@@ -17,7 +17,9 @@ const isTruthy = (val: string | boolean | undefined): boolean => {
 export const featureFlagRouter = new FlagRouter({})
 
 export default (
-  configModule: { featureFlags?: Record<string, string | boolean> } = {},
+  configModule: {
+    featureFlags?: Record<string, string | boolean | Record<string, boolean>>
+  } = {},
   logger?: Logger,
   flagDirectory?: string
 ): FlagRouter => {
@@ -28,24 +30,47 @@ export default (
     ignore: ["**/index.js", "**/index.ts", "**/*.d.ts"],
   })
 
-  const flagConfig: Record<string, boolean> = {}
+  
+
+  const flagConfig: Record<string, boolean | Record<string, boolean>> = {}
   for (const flag of supportedFlags) {
     const flagSettings: FlagSettings = require(flag).default
     if (!flagSettings) {
       continue
     }
 
+    console.log("Flag settings: ", flagSettings)
+
     flagConfig[flagSettings.key] = isTruthy(flagSettings.default_val)
 
     let from
     if (isDefined(process.env[flagSettings.env_key])) {
       from = "environment"
-      flagConfig[flagSettings.key] = isTruthy(process.env[flagSettings.env_key])
+      const envVal = process.env[flagSettings.env_key]
+
+      // MEDUSA_FF_WORKFLOWS=createProducts,deleteProducts
+      if (envVal && envVal.split(",").length > 1) {
+        flagConfig[flagSettings.key] = objectFromStringPath(envVal.split(","))
+      } else {
+        // MEDUSA_FF_ANALYTICS="true"
+        flagConfig[flagSettings.key] = isTruthy(
+          process.env[flagSettings.env_key]
+        )
+      }
     } else if (isDefined(projectConfigFlags[flagSettings.key])) {
       from = "project config"
-      flagConfig[flagSettings.key] = isTruthy(
-        projectConfigFlags[flagSettings.key]
-      )
+
+      // featureFlags: { workflows: { createProducts: true } }
+      if (typeof projectConfigFlags[flagSettings.key] === `object`) {
+        flagConfig[flagSettings.key] = projectConfigFlags[
+          flagSettings.key
+        ] as Record<string, boolean>
+      } else {
+        // featureFlags: { analytics: "true" | true }
+        flagConfig[flagSettings.key] = isTruthy(
+          projectConfigFlags[flagSettings.key] as string | boolean
+        )
+      }
     }
 
     if (logger && from) {
