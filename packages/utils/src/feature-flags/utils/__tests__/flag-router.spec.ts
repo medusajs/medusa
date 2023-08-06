@@ -82,6 +82,52 @@ describe("FlagRouter", function () {
     expect(isEnabled).toEqual(true)
   })
 
+  it("should check if nested flag is enabled using top-level access", async function () {
+    const flagRouter = new FlagRouter({
+      [workflows.key]: {
+        createCart: true,
+      },
+    })
+
+    const isEnabled = flagRouter.isFeatureEnabled(workflows.key)
+
+    expect(isEnabled).toEqual(true)
+  })
+
+  it("should return true if top-level is enabled using nested-level access", async function () {
+    const flagRouter = new FlagRouter({
+      [workflows.key]: true,
+    })
+
+    const isEnabled = flagRouter.isFeatureEnabled({
+      [workflows.key]: "createCart",
+    })
+
+    expect(isEnabled).toEqual(true)
+  })
+
+  it("should return false if flag is disabled using top-level access", async function () {
+    const flagRouter = new FlagRouter({
+      [workflows.key]: false,
+    })
+
+    const isEnabled = flagRouter.isFeatureEnabled(workflows.key)
+
+    expect(isEnabled).toEqual(false)
+  })
+
+  it("should return false if nested flag is disabled", async function () {
+    const flagRouter = new FlagRouter({
+      [workflows.key]: {
+        createCart: false,
+      },
+    })
+
+    const isEnabled = flagRouter.isFeatureEnabled({ workflows: "createCart" })
+
+    expect(isEnabled).toEqual(false)
+  })
+
   it("should initialize with both types of flags", async function () {
     const flagRouter = new FlagRouter({
       [workflows.key]: {
