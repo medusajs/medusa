@@ -136,29 +136,35 @@ export default async (req, res) => {
     workflows: Workflows.CreateProducts,
   })
 
-  if (productModuleService && isWorkflowEnabled) {
-    const createProductWorkflow = createProducts(req.scope)
+  if (isWorkflowEnabled) {
+    if (productModuleService) {
+      const createProductWorkflow = createProducts(req.scope)
 
-    const input = {
-      products: [
-        validated,
-      ] as WorkflowTypes.ProductWorkflow.CreateProductInputDTO[],
-      config: {
-        listConfig: {
-          select: defaultAdminProductFields,
-          relations: defaultAdminProductRelations,
+      const input = {
+        products: [
+          validated,
+        ] as WorkflowTypes.ProductWorkflow.CreateProductInputDTO[],
+        config: {
+          listConfig: {
+            select: defaultAdminProductFields,
+            relations: defaultAdminProductRelations,
+          },
         },
-      },
+      }
+
+      const { result: products } = await createProductWorkflow.run({
+        input,
+        context: {
+          manager: entityManager,
+        },
+      })
+
+      return res.json({ product: products[0] })
+    } else {
+      logger.warn(
+        `Cannot run ${Workflows.CreateProducts} workflow without '@medusajs/product' installed`
+      )
     }
-
-    const { result: products } = await createProductWorkflow.run({
-      input,
-      context: {
-        manager: entityManager,
-      },
-    })
-
-    return res.json({ product: products[0] })
   }
 
   const product = await entityManager.transaction(async (manager) => {
