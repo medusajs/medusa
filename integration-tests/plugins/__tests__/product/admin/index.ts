@@ -52,12 +52,8 @@ describe("/admin/products", () => {
     ).toBeTruthy()
   })
 
-  it.only("Should have enabled workflows feature flag", function () {
+  it("Should have enabled workflows feature flag", function () {
     const flagRouter = medusaContainer.resolve("featureFlagRouter")
-
-    const flags = flagRouter.listFlags()
-
-    console.log("Flags: ", flags)
 
     const workflowsFlag = flagRouter.isFeatureEnabled({
       workflows: Workflows.CreateProducts,

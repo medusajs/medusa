@@ -30,16 +30,12 @@ export default (
     ignore: ["**/index.js", "**/index.ts", "**/*.d.ts"],
   })
 
-  
-
   const flagConfig: Record<string, boolean | Record<string, boolean>> = {}
   for (const flag of supportedFlags) {
     const flagSettings: FlagSettings = require(flag).default
     if (!flagSettings) {
       continue
     }
-
-    console.log("Flag settings: ", flagSettings)
 
     flagConfig[flagSettings.key] = isTruthy(flagSettings.default_val)
 
