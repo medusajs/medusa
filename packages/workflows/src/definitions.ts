@@ -8,6 +8,7 @@ export enum Workflows {
 
 export enum InputAlias {
   Products = "products",
+  ProductsInputData = "productsInputData",
   RemovedProducts = "removedProducts",
 
   InventoryItems = "inventoryItems",
