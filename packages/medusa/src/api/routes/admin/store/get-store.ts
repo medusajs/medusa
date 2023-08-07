@@ -1,12 +1,12 @@
 import { ModulesHelper } from "@medusajs/modules-sdk"
+import { FlagRouter } from "@medusajs/utils"
 import { defaultRelationsExtended } from "."
 import {
-  FulfillmentProviderService,
-  PaymentProviderService,
-  StoreService,
+    FulfillmentProviderService,
+    PaymentProviderService,
+    StoreService,
 } from "../../../../services"
 import { ExtendedStoreDTO } from "../../../../types/store"
-import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
  * @oas [get] /admin/store

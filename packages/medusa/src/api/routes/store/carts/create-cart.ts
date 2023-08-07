@@ -1,28 +1,28 @@
 import { Type } from "class-transformer"
 import {
-  IsArray,
-  IsInt,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  ValidateNested,
+    IsArray,
+    IsInt,
+    IsNotEmpty,
+    IsOptional,
+    IsString,
+    ValidateNested,
 } from "class-validator"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import reqIp from "request-ip"
 import { EntityManager } from "typeorm"
 
+import { FlagRouter } from "@medusajs/utils"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { Cart, LineItem } from "../../../../models"
 import {
-  CartService,
-  LineItemService,
-  RegionService,
+    CartService,
+    LineItemService,
+    RegionService,
 } from "../../../../services"
 import { CartCreateProps } from "../../../../types/cart"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
  * @oas [post] /store/carts

@@ -1,31 +1,31 @@
-import {
-  BaseFulfillmentService,
-  BaseNotificationService,
-  BasePaymentService,
-} from "medusa-interfaces"
-import { currencies } from "../utils/currencies"
-import { countries } from "../utils/countries"
+import { FlagRouter } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
-import { Logger } from "../types/global"
+import {
+    BaseFulfillmentService,
+    BaseNotificationService,
+    BasePaymentService,
+} from "medusa-interfaces"
 import { EntityManager } from "typeorm"
-import { CountryRepository } from "../repositories/country"
 import {
-  FulfillmentProviderService,
-  NotificationService,
-  PaymentProviderService,
-  SalesChannelService,
-  ShippingProfileService,
-  StoreService,
-  TaxProviderService,
-} from "../services"
-import { CurrencyRepository } from "../repositories/currency"
-import { FlagRouter } from "../utils/flag-router"
-import SalesChannelFeatureFlag from "./feature-flags/sales-channels"
-import {
-  AbstractPaymentProcessor,
-  AbstractPaymentService,
-  AbstractTaxService,
+    AbstractPaymentProcessor,
+    AbstractPaymentService,
+    AbstractTaxService,
 } from "../interfaces"
+import { CountryRepository } from "../repositories/country"
+import { CurrencyRepository } from "../repositories/currency"
+import {
+    FulfillmentProviderService,
+    NotificationService,
+    PaymentProviderService,
+    SalesChannelService,
+    ShippingProfileService,
+    StoreService,
+    TaxProviderService,
+} from "../services"
+import { Logger } from "../types/global"
+import { countries } from "../utils/countries"
+import { currencies } from "../utils/currencies"
+import SalesChannelFeatureFlag from "./feature-flags/sales-channels"
 
 const silentResolution = <T>(
   container: AwilixContainer,

@@ -1,7 +1,7 @@
+import { FlagRouter } from "@medusajs/utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
 import { Currency } from "../../models"
-import { FlagRouter } from "../../utils/flag-router"
 import CurrencyService from "../currency"
 import EventBusService from "../event-bus"
 
