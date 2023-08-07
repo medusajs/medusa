@@ -1,15 +1,17 @@
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
+type HandlerInput = {
+  productIds: string[]
+  config?: WorkflowTypes.CommonWorkflow.WorkflowInputConfig
+}
+
 export async function listProducts({
   container,
   context,
   data,
-}: WorkflowArguments<{
-  productIds: string[]
-  config?: WorkflowTypes.CommonWorkflow.WorkflowInputConfig
-  // TODO: should return product DTO or priced product but needs to be created in the types package
-}>): Promise<ProductTypes.ProductDTO[]> {
+}: // TODO: should return product DTO or priced product but needs to be created in the types package
+WorkflowArguments<HandlerInput>): Promise<ProductTypes.ProductDTO[]> {
   const { manager } = context
 
   const productIds = data.productIds

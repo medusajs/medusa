@@ -3,15 +3,16 @@ import { WorkflowArguments } from "../../helper"
 type ProductHandle = string
 type ShippingProfileId = string
 type PartialProduct = { handle: string; id: string }
+type HandlerInput = {
+  productsHandleShippingProfileIdMap: Map<ProductHandle, ShippingProfileId>
+  products: PartialProduct[]
+}
 
 export async function detachShippingProfileFromProducts({
   container,
   context,
   data,
-}: WorkflowArguments<{
-  productsHandleShippingProfileIdMap: Map<ProductHandle, ShippingProfileId>
-  products: PartialProduct[]
-}>): Promise<void> {
+}: WorkflowArguments<HandlerInput>): Promise<void> {
   const { manager } = context
   const productsHandleShippingProfileIdMap =
     data.productsHandleShippingProfileIdMap
