@@ -1,6 +1,6 @@
 import Medusa from "@medusajs/medusa-js"
 const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
-medusa.carts.updatePaymentSession(cart_id, 'manual', {
+medusa.carts.updatePaymentSession(cartId, "manual", {
   data: {
 
   }

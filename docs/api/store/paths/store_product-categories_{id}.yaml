@@ -1,8 +1,8 @@
 get:
   operationId: GetProductCategoriesCategory
   summary: Get a Product Category
-  description: Retrieves a Product Category.
-  x-authenticated: false
+  description: Retrieve a Product Category's details.
+  x-featureFlag: product_categories
   parameters:
     - in: path
       name: id
@@ -11,17 +11,17 @@ get:
       schema:
         type: string
     - in: query
-      name: expand
+      name: fields
       description: >-
-        (Comma separated) Which fields should be expanded in each product
+        Comma-separated fields that should be expanded in the returned product
         category.
       schema:
         type: string
     - in: query
-      name: fields
+      name: expand
       description: >-
-        (Comma separated) Which fields should be retrieved in each product
-        category.
+        Comma-separated relations that should be expanded in the returned
+        product category.
       schema:
         type: string
   x-codegen:

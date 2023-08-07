@@ -1,9 +1,9 @@
 post:
   operationId: PostUploads
-  summary: Upload files
+  summary: Upload Files
   description: >-
-    Uploads at least one file to the specific fileservice that is installed in
-    Medusa.
+    Upload at least one file to a public bucket or storage. The file upload is
+    handled by the file service installed on the Medusa backend.
   x-authenticated: true
   requestBody:
     content:
@@ -50,7 +50,9 @@ post:
 delete:
   operationId: DeleteUploads
   summary: Delete an Uploaded File
-  description: Removes an uploaded file using the installed fileservice
+  description: >-
+    Delete an uploaded file from storage. The file is deleted using the
+    installed file service on the Medusa backend.
   x-authenticated: true
   requestBody:
     content:

@@ -2,8 +2,8 @@ post:
   operationId: PostUploadsProtected
   summary: Protected File Upload
   description: >-
-    Uploads at least one file with ACL or a non-public bucket to the specific
-    fileservice that is installed in Medusa.
+    Upload at least one file to an ACL or a non-public bucket. The file upload
+    is handled by the file service installed on the Medusa backend.
   x-authenticated: true
   requestBody:
     content:

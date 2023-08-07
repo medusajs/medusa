@@ -1,7 +1,7 @@
 get:
   operationId: GetOrderEditsOrderEdit
-  summary: Get an OrderEdit
-  description: Retrieves a OrderEdit.
+  summary: Get an Order Edit
+  description: Retrieve an Order Edit's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -12,12 +12,16 @@ get:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the results.
+      description: >-
+        Comma-separated relations that should be expanded in each returned order
+        edit.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the results.
+      description: >-
+        Comma-separated fields that should be included in the returned order
+        edit.
       schema:
         type: string
   x-codegen:
@@ -58,8 +62,8 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostOrderEditsOrderEdit
-  summary: Update an OrderEdit
-  description: Updates a OrderEdit.
+  summary: Update an Order Edit
+  description: Updates an Order Edit's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -111,7 +115,9 @@ post:
 delete:
   operationId: DeleteOrderEditsOrderEdit
   summary: Delete an Order Edit
-  description: Delete an Order Edit
+  description: >-
+    Delete an Order Edit. Only order edits that have the status `created` can be
+    deleted.
   x-authenticated: true
   parameters:
     - in: path

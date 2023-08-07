@@ -1,7 +1,7 @@
 get:
   operationId: GetReturnReasonsReason
   summary: Get a Return Reason
-  description: Retrieves a Return Reason.
+  description: Retrieve a Return Reason's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -48,7 +48,7 @@ get:
 post:
   operationId: PostReturnReasonsReason
   summary: Update a Return Reason
-  description: Updates a Return Reason
+  description: Update a Return Reason's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -100,7 +100,7 @@ post:
 delete:
   operationId: DeleteReturnReason
   summary: Delete a Return Reason
-  description: Deletes a return reason.
+  description: Delete a return reason.
   x-authenticated: true
   parameters:
     - in: path

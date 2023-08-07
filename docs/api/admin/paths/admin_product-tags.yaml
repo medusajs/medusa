@@ -1,57 +1,61 @@
 get:
   operationId: GetProductTags
   summary: List Product Tags
-  description: Retrieve a list of Product Tags.
+  description: >-
+    Retrieve a list of product tags. The product tags can be filtered by fields
+    such as `q` or `value`. The product tags can also be sorted or paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: limit
-      description: The number of tags to return.
+      description: Limit the number of product tags returned.
       schema:
         type: integer
         default: 10
     - in: query
       name: offset
-      description: The number of items to skip before the results.
+      description: The number of product tags to skip when retrieving the product tags.
       schema:
         type: integer
         default: 0
     - in: query
       name: order
-      description: The field to sort items by.
+      description: A product tag field to sort-order the retrieved product tags by.
       schema:
         type: string
     - in: query
       name: discount_condition_id
-      description: The discount condition id on which to filter the tags.
+      description: >-
+        Filter by the ID of a discount condition. Only product tags that this
+        discount condition is applied to will be retrieved.
       schema:
         type: string
     - in: query
       name: value
       style: form
       explode: false
-      description: The tag values to search for
+      description: Filter by tag value.
       schema:
         type: array
         items:
           type: string
     - in: query
       name: q
-      description: A query string to search values for
+      description: term to search product tags' values.
       schema:
         type: string
     - in: query
       name: id
       style: form
       explode: false
-      description: The tag IDs to search for
+      description: Filter by tag IDs.
       schema:
         type: array
         items:
           type: string
     - in: query
       name: created_at
-      description: Date comparison for when resulting product tags were created.
+      description: Filter by a creation date range.
       schema:
         type: object
         properties:
@@ -73,7 +77,7 @@ get:
             format: date
     - in: query
       name: updated_at
-      description: Date comparison for when resulting product tags were updated.
+      description: Filter by an update date range.
       schema:
         type: object
         properties:

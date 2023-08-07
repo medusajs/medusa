@@ -28,4 +28,5 @@ properties:
     description: Whether or not the items were deleted.
     default: true
   product:
+    description: Product details.
     $ref: ./PricedProduct.yaml

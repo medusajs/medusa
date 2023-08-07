@@ -12,4 +12,5 @@ required:
   - region
 properties:
   region:
+    description: Region details.
     $ref: ./Region.yaml

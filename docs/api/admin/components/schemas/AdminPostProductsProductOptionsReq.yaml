@@ -3,5 +3,6 @@ required:
   - title
 properties:
   title:
-    description: The title the Product Option will be identified by i.e. "Size"
+    description: The title the Product Option.
     type: string
+    example: Size

@@ -1,7 +1,7 @@
 delete:
   operationId: DeleteInvitesInvite
   summary: Delete an Invite
-  description: Deletes an Invite
+  description: Delete an Invite. Only invites that weren't accepted can be deleted.
   x-authenticated: true
   parameters:
     - in: path

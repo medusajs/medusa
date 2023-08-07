@@ -1,8 +1,8 @@
 post:
   operationId: PostProductsProductOptions
   summary: Add a Product Option
+  description: Add a Product Option to a Product.
   x-authenticated: true
-  description: Adds a Product Option to a Product
   parameters:
     - in: path
       name: id

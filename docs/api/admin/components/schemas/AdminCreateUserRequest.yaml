@@ -4,23 +4,25 @@ required:
   - password
 properties:
   email:
-    description: The Users email.
+    description: The User's email.
     type: string
     format: email
   first_name:
-    description: The name of the User.
+    description: The first name of the User.
     type: string
   last_name:
-    description: The name of the User.
+    description: The last name of the User.
     type: string
   role:
-    description: Userrole assigned to the user.
+    description: >-
+      The role assigned to the user. These roles don't provide any different
+      privileges.
     type: string
     enum:
       - admin
       - member
       - developer
   password:
-    description: The Users password.
+    description: The User's password.
     type: string
     format: password
