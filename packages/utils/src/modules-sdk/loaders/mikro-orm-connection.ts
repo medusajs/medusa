@@ -15,12 +15,11 @@ export async function mikroOrmConnectionLoader({
   container,
   options,
   moduleDeclaration,
-  logger,
   entities,
 }: {
   entities: any[]
   container: MedusaContainer
-  options:
+  options?:
     | ModulesSdkTypes.ModuleServiceInitializeOptions
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   moduleDeclaration?: ModulesSdkTypes.InternalModuleDeclaration
