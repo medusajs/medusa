@@ -1,4 +1,3 @@
-import { ProductTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 type ProductHandle = string
@@ -10,7 +9,7 @@ export async function detachShippingProfileFromProducts({
   data,
 }: WorkflowArguments<{
   productsHandleShippingProfileIdMap: Map<ProductHandle, ShippingProfileId>
-  products: ProductTypes.ProductDTO[]
+  products: { handle: string; id: string }[]
 }>): Promise<void> {
   const { manager } = context
   const productsHandleShippingProfileIdMap =
