@@ -8,5 +8,6 @@ required:
 properties:
   shipping_options:
     type: array
+    description: An array of shipping options details.
     items:
       $ref: ./PricedShippingOption.yaml

@@ -2,23 +2,25 @@ get:
   operationId: GetNotes
   summary: List Notes
   x-authenticated: true
-  description: Retrieves a list of notes
+  description: >-
+    Retrieve a list of notes. The notes can be filtered by fields such as
+    `resource_id`. The notes can also be paginated.
   parameters:
     - in: query
       name: limit
-      description: The number of notes to get
+      description: Limit the number of notes returned.
       schema:
         type: number
         default: '50'
     - in: query
       name: offset
-      description: The offset at which to get notes
+      description: The number of notes to skip when retrieving the notes.
       schema:
         type: number
         default: '0'
     - in: query
       name: resource_id
-      description: The ID which the notes belongs to
+      description: Filter by resource ID
       schema:
         type: string
   x-codegen:
@@ -59,8 +61,8 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostNotes
-  summary: Creates a Note
-  description: Creates a Note which can be associated with any resource as required.
+  summary: Create a Note
+  description: Create a Note which can be associated with any resource.
   x-authenticated: true
   requestBody:
     content:

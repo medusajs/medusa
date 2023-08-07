@@ -34,7 +34,8 @@ import {
 
 import { DistributedTransaction } from "@medusajs/orchestration"
 import { IInventoryService, WorkflowTypes } from "@medusajs/types"
-import { createProducts } from "@medusajs/workflows"
+import { FlagRouter } from "@medusajs/utils"
+import { Workflows, createProducts } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
@@ -42,7 +43,6 @@ import { ProductStatus } from "../../../../models"
 import { Logger } from "../../../../types/global"
 import { validator } from "../../../../utils"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
  * @oas [post] /admin/products
@@ -132,7 +132,17 @@ export default async (req, res) => {
   const entityManager: EntityManager = req.scope.resolve("manager")
   const productModuleService = req.scope.resolve("productModuleService")
 
-  if (productModuleService) {
+  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
+    workflows: Workflows.CreateProducts,
+  })
+
+  if (isWorkflowEnabled && !productModuleService) {
+    logger.warn(
+      `Cannot run ${Workflows.CreateProducts} workflow without '@medusajs/product' installed`
+    )
+  }
+
+  if (isWorkflowEnabled && !!productModuleService) {
     const createProductWorkflow = createProducts(req.scope)
 
     const input = {

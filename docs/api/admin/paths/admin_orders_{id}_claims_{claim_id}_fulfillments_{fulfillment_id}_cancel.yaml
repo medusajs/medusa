@@ -1,35 +1,35 @@
 post:
   operationId: PostOrdersClaimFulfillmentsCancel
-  summary: Cancel Claim Fulfillment
-  description: Registers a claim's fulfillment as canceled.
+  summary: Cancel Claim's Fulfillment
+  description: Cancel a claim's fulfillment and change its status.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Order which the Claim relates to.
+      description: The ID of the order the claim is associated with.
       schema:
         type: string
     - in: path
       name: claim_id
       required: true
-      description: The ID of the Claim which the Fulfillment relates to.
+      description: The ID of the claim.
       schema:
         type: string
     - in: path
       name: fulfillment_id
       required: true
-      description: The ID of the Fulfillment.
+      description: The ID of the fulfillment.
       schema:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   x-codegen:

@@ -2,8 +2,8 @@ post:
   operationId: PostOrdersOrderCancel
   summary: Cancel an Order
   description: >-
-    Registers an Order as canceled. This triggers a flow that will cancel any
-    created Fulfillments and Payments, may fail if the Payment or Fulfillment
+    Cancel an order and change its status. This will also cancel any associated
+    Fulfillments and Payments, and it may fail if the Payment or Fulfillment
     Provider is unable to cancel the Payment/Fulfillment.
   x-authenticated: true
   parameters:
@@ -15,12 +15,12 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   x-codegen:

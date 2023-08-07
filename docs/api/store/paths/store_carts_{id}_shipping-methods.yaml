@@ -1,7 +1,9 @@
 post:
   operationId: PostCartsCartShippingMethod
-  description: Adds a Shipping Method to the Cart.
-  summary: Add a Shipping Method
+  summary: Add Shipping Method
+  description: >-
+    Add a Shipping Method to the Cart. The validation of the `data` field is
+    handled by the fulfillment provider of the chosen shipping option.
   parameters:
     - in: path
       name: id

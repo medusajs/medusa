@@ -2,10 +2,10 @@ type: object
 properties:
   name:
     type: string
-    description: Name of the sales channel.
+    description: The name of the sales channel
   description:
     type: string
-    description: Sales Channel description.
+    description: The description of the sales channel.
   is_disabled:
     type: boolean
-    description: Indication of if the sales channel is active.
+    description: Whether the Sales Channel is disabled.

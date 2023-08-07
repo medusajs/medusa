@@ -38,4 +38,5 @@ required:
   - order_edit
 properties:
   order_edit:
+    description: Order edit details
     $ref: ./OrderEdit.yaml

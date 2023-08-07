@@ -1,7 +1,7 @@
 get:
   operationId: GetGiftCardsGiftCard
   summary: Get a Gift Card
-  description: Retrieves a Gift Card.
+  description: Retrieve a Gift Card's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -48,9 +48,7 @@ get:
 post:
   operationId: PostGiftCardsGiftCard
   summary: Update a Gift Card
-  description: >-
-    Update a Gift Card that can redeemed by its unique code. The Gift Card is
-    only valid within 1 region.
+  description: Update a Gift Card's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -102,7 +100,7 @@ post:
 delete:
   operationId: DeleteGiftCardsGiftCard
   summary: Delete a Gift Card
-  description: Deletes a Gift Card
+  description: Delete a Gift Card. Once deleted, it can't be used by customers.
   x-authenticated: true
   parameters:
     - in: path

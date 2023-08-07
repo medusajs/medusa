@@ -12,4 +12,5 @@ required:
   - shipping_option
 properties:
   shipping_option:
+    description: Shipping option details.
     $ref: ./ShippingOption.yaml

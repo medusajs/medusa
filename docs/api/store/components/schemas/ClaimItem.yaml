@@ -1,7 +1,7 @@
 title: Claim Item
 description: >-
-  Represents a claimed item along with information about the reasons for the
-  claim.
+  A claim item is an item created as part of a claim. It references an item in
+  the order that should be exchanged or refunded.
 type: object
 required:
   - claim_order_id
@@ -21,15 +21,17 @@ properties:
     type: string
     example: citm_01G8ZH853Y6TFXWPG5EYE81X63
   images:
-    description: Available if the relation `images` is expanded.
+    description: The claim images that are attached to the claim item.
     type: array
+    x-expandable: images
     items:
       $ref: ./ClaimImage.yaml
   claim_order_id:
     description: The ID of the claim this item is associated with.
     type: string
   claim_order:
-    description: A claim order object. Available if the relation `claim_order` is expanded.
+    description: The details of the claim this item belongs to.
+    x-expandable: claim_order
     nullable: true
     type: object
   item_id:
@@ -37,7 +39,10 @@ properties:
     type: string
     example: item_01G8ZM25TN49YV9EQBE2NC27KC
   item:
-    description: Available if the relation `item` is expanded.
+    description: >-
+      The details of the line item in the original order that this claim item
+      refers to.
+    x-expandable: item
     nullable: true
     $ref: ./LineItem.yaml
   variant_id:
@@ -45,7 +50,10 @@ properties:
     type: string
     example: variant_01G1G5V2MRX2V3PVSR2WXYPFB6
   variant:
-    description: A variant object. Available if the relation `variant` is expanded.
+    description: >-
+      The details of the product variant to potentially replace the item in the
+      original order.
+    x-expandable: variant
     nullable: true
     $ref: ./ProductVariant.yaml
   reason:
@@ -68,10 +76,9 @@ properties:
     type: integer
     example: 1
   tags:
-    description: >-
-      User defined tags for easy filtering and grouping. Available if the
-      relation 'tags' is expanded.
+    description: User defined tags for easy filtering and grouping.
     type: array
+    x-expandable: tags
     items:
       $ref: ./ClaimTag.yaml
   created_at:
@@ -93,3 +100,7 @@ properties:
     type: object
     example:
       car: white
+    externalDocs:
+      description: Learn about the metadata attribute, and how to delete and update it.
+      url: >-
+        https://docs.medusajs.com/development/entities/overview#metadata-attribute

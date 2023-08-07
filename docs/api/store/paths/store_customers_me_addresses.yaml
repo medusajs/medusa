@@ -1,7 +1,7 @@
 post:
   operationId: PostCustomersCustomerAddresses
   summary: Add a Shipping Address
-  description: Adds a Shipping Address to a Customer's saved addresses.
+  description: Add a Shipping Address to a Customer's saved addresses.
   x-authenticated: true
   requestBody:
     content:

@@ -1,18 +1,21 @@
 delete:
   operationId: DeleteCartsCartDiscountsDiscount
-  description: Removes a Discount from a Cart.
   summary: Remove Discount
+  description: >-
+    Remove a Discount from a Cart. This only removes the application of the
+    discount, and not completely delete it. The totals will be re-calculated and
+    the payment sessions will be refreshed after the removal.
   parameters:
     - in: path
       name: id
       required: true
-      description: The id of the Cart.
+      description: The ID of the Cart.
       schema:
         type: string
     - in: path
       name: code
       required: true
-      description: The unique Discount code.
+      description: The unique discount code.
       schema:
         type: string
   x-codegen:

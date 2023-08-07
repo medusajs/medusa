@@ -1,10 +1,11 @@
 post:
   operationId: PostOrdersOrderFulfillments
   summary: Create a Fulfillment
-  description: >-
-    Creates a Fulfillment of an Order - will notify Fulfillment Providers to
-    prepare a shipment.
+  description: Create a Fulfillment of an Order using the fulfillment provider.
   x-authenticated: true
+  externalDocs:
+    description: Fulfillments of orders
+    url: https://docs.medusajs.com/modules/orders/#fulfillments-in-orders
   parameters:
     - in: path
       name: id
@@ -14,12 +15,12 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   requestBody:

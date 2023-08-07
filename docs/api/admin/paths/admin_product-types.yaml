@@ -1,36 +1,41 @@
 get:
   operationId: GetProductTypes
   summary: List Product Types
-  description: Retrieve a list of Product Types.
+  description: >-
+    Retrieve a list of product types. The product types can be filtered by
+    fields such as `q` or `value`. The product types can also be sorted or
+    paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: limit
-      description: The number of types to return.
+      description: Limit the number of product types returned.
       schema:
         type: integer
         default: 20
     - in: query
       name: offset
-      description: The number of items to skip before the results.
+      description: The number of product types to skip when retrieving the product types.
       schema:
         type: integer
         default: 0
     - in: query
       name: order
-      description: The field to sort items by.
+      description: A product type field to sort-order the retrieved product types by.
       schema:
         type: string
     - in: query
       name: discount_condition_id
-      description: The discount condition id on which to filter the product types.
+      description: >-
+        Filter by the ID of a discount condition. Only product types that this
+        discount condition is applied to will be retrieved.
       schema:
         type: string
     - in: query
       name: value
       style: form
       explode: false
-      description: The type values to search for
+      description: Filter by value.
       schema:
         type: array
         items:
@@ -39,19 +44,19 @@ get:
       name: id
       style: form
       explode: false
-      description: The type IDs to search for
+      description: Filter by product type IDs.
       schema:
         type: array
         items:
           type: string
     - in: query
       name: q
-      description: A query string to search values for
+      description: term to search product types' values.
       schema:
         type: string
     - in: query
       name: created_at
-      description: Date comparison for when resulting product types were created.
+      description: Filter by a creation date range.
       schema:
         type: object
         properties:
@@ -73,7 +78,7 @@ get:
             format: date
     - in: query
       name: updated_at
-      description: Date comparison for when resulting product types were updated.
+      description: Filter by an update date range.
       schema:
         type: object
         properties:
