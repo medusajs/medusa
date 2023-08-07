@@ -22,9 +22,10 @@ export async function findRegion({
   context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<RegionDTO> {
+  const regionService = container.resolve("regionService")
+
   let regionId: string
   const regionDTO: RegionDTO = {}
-  const regionService = container.resolve("regionService")
 
   if (isDefined(data[Aliases.Region].region_id)) {
     regionId = data[Aliases.Region].region_id

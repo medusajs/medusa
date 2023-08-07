@@ -1,7 +1,7 @@
+import { AddressDTO } from "@medusajs/types"
 import { MedusaError } from "@medusajs/utils"
 
 import { WorkflowArguments } from "../../helper"
-import { AddressDTO } from "../../types"
 
 type AddressesDTO = {
   shipping_address_id?: string
@@ -30,6 +30,7 @@ export async function findOrCreateAddresses({
 }: WorkflowArguments<HandlerInputData>): Promise<AddressesDTO> {
   const regionService = container.resolve("regionService")
   const addressRepository = container.resolve("addressRepository")
+
   const shippingAddress = data[Aliases.Addresses].shipping_address
   const shippingAddressId = data[Aliases.Addresses].shipping_address_id
   const billingAddress = data[Aliases.Addresses].billing_address

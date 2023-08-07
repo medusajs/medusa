@@ -1,4 +1,3 @@
-// TODO: These should be moved into the modules domain when we have them.
 export type AddressDTO = {
   id?: string
   address_1: string

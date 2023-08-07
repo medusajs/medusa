@@ -84,7 +84,6 @@ export default async (req, res) => {
   const entityManager: EntityManager = req.scope.resolve("manager")
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const validated = req.validatedBody as StorePostCartReq
-  const productModuleService = req.scope.resolve("productModuleService")
   const logger: Logger = req.scope.resolve("logger")
 
   const reqContext = {
@@ -96,38 +95,32 @@ export default async (req, res) => {
     workflows: Workflows.CreateCart,
   })
 
-  if (isWorkflowEnabled && !productModuleService) {
-    logger.warn(
-      `Cannot run ${Workflows.CreateCart} workflow without '@medusajs/product' installed`
-    )
-  }
-
-  if (productModuleService) {
+  if (isWorkflowEnabled) {
     const cartWorkflow = createCartWorkflow(req.scope as MedusaContainer)
-    const { result, errors } = await cartWorkflow.run({
-      input: {
-        ...validated,
-        publishableApiKeyScopes: req.publishableApiKeyScopes,
-        context: {
-          ...reqContext,
-          ...validated.context,
-        },
-        config: {
-          retrieveConfig: {
-            select: defaultStoreCartFields,
-            relations: defaultStoreCartRelations,
-          },
+    const input = {
+      ...validated,
+      publishableApiKeyScopes: req.publishableApiKeyScopes,
+      context: {
+        ...reqContext,
+        ...validated.context,
+      },
+      config: {
+        retrieveConfig: {
+          select: defaultStoreCartFields,
+          relations: defaultStoreCartRelations,
         },
       },
-      resultFrom: "retrieveCart",
+    }
+    const { result, errors } = await cartWorkflow.run({
+      input,
+      context: {
+        manager: entityManager,
+      },
       throwOnError: false,
     })
 
-    // thought: if an error occurs on the invoke level, it'll stop the invoke flow
-    // and begin the compensation flow. If another error shows up on the compensate level,
-    // it doesn't make sense to throw that error since the user won't be able to do anything about it.
-    // In these cases, we probably need to silently issue a notification to the developers that this has happened.
     if (Array.isArray(errors)) {
+      // TODO: Remove this when errors are only coming from invoke
       const error = errors.find((error) => error.handlerType === "invoke")
 
       if (isDefined(error)) {

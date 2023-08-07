@@ -60,6 +60,7 @@ const workflowSteps: TransactionStepsDefinition = {
       noCompensation: true,
       next: {
         action: CreateCartActions.findOrCreateAddresses,
+        noCompensation: true,
         next: {
           action: CreateCartActions.createCart,
           next: {
@@ -234,4 +235,4 @@ type CreateCartWorkflowOutput = Record<any, any>
 export const createCart = exportWorkflow<
   CreateCartWorkflowInput,
   CreateCartWorkflowOutput
->(Workflows.CreateCart, CreateCartActions.createCart)
+>(Workflows.CreateCart, CreateCartActions.retrieveCart)

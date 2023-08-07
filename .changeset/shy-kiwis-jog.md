@@ -1,6 +1,7 @@
 ---
 "@medusajs/workflows": patch
 "@medusajs/medusa": patch
+"@medusajs/types": patch
 ---
 
-feat(medusa,workflows) Create cart workflow
+feat(medusa,workflows,types) Create cart workflow

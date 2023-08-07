@@ -23,11 +23,13 @@ export async function findOrCreateCustomer({
   context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<CustomerDTO> {
-  const customerDTO: CustomerDTO = {}
+  const { manager } = context
+
   const customerService = container.resolve("customerService")
-  const entityManager = container.resolve("manager")
+
+  const customerDTO: CustomerDTO = {}
   const customerId = data[Aliases.Customer].customer_id
-  const customerServiceTx = customerService.withTransaction(entityManager)
+  const customerServiceTx = customerService.withTransaction(manager)
 
   if (customerId) {
     const customer = await customerServiceTx

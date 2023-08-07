@@ -25,11 +25,12 @@ export async function findSalesChannel({
   context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<AttachSalesChannelDTO> {
-  let salesChannel
-  let salesChannelId = data[Aliases.SalesChannel].sales_channel_id
-  const salesChannelDTO: AttachSalesChannelDTO = {}
   const salesChannelService = container.resolve("salesChannelService")
   const storeService = container.resolve("storeService")
+
+  let salesChannelId = data[Aliases.SalesChannel].sales_channel_id
+  let salesChannel
+  const salesChannelDTO: AttachSalesChannelDTO = {}
   const publishableApiKeyScopes =
     data[Aliases.SalesChannel].publishableApiKeyScopes || {}
 

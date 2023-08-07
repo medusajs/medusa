@@ -1,5 +1,5 @@
+import { CartDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
-import { CartDTO } from "../../types"
 
 enum Aliases {
   SalesChannel = "SalesChannel",
@@ -38,9 +38,10 @@ export async function createCart({
   context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<HandlerOutputData> {
+  const { manager } = context
+
   const cartService = container.resolve("cartService")
-  const entityManager = container.resolve("manager")
-  const cartServiceTx = cartService.withTransaction(entityManager)
+  const cartServiceTx = cartService.withTransaction(manager)
 
   const cart = await cartServiceTx.create({
     ...data[Aliases.SalesChannel],

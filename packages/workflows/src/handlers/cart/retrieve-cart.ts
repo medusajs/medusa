@@ -1,5 +1,5 @@
+import { CartDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
-import { CartDTO } from "../../types"
 
 type HandlerInputData = {
   cart: {
@@ -23,16 +23,16 @@ export async function retrieveCart({
   context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<CartDTO> {
-  const cartService = container.resolve("cartService")
-  const entityManager = container.resolve("manager")
-  const cartServiceTx = cartService.withTransaction(entityManager)
-  const cart = data[Aliases.Cart]
-  const config = data[Aliases.Config].retrieveConfig
+  const { manager } = context
 
-  const retrieved = await cartServiceTx.retrieve(cart.id, {
-    relations: config.relations,
-    select: config.select,
-  })
+  const cartService = container.resolve("cartService")
+
+  const cartServiceTx = cartService.withTransaction(manager)
+
+  const retrieved = await cartServiceTx.retrieve(
+    data[Aliases.Cart].id,
+    data[Aliases.Config].retrieveConfig
+  )
 
   return retrieved
 }
