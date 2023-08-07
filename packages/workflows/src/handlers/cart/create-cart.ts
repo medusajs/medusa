@@ -2,6 +2,7 @@ import { WorkflowArguments } from "../../helper"
 import { CartDTO } from "../../types"
 
 enum Aliases {
+  SalesChannel = "SalesChannel",
   Addresses = "addresses",
   Customer = "customer",
   Region = "region",
@@ -9,6 +10,9 @@ enum Aliases {
 }
 
 type HandlerInputData = {
+  sales_channel: {
+    sales_channel_id?: string
+  }
   addresses: {
     shipping_address_id: string
     billing_address_id: string
@@ -39,6 +43,7 @@ export async function createCart({
   const cartServiceTx = cartService.withTransaction(entityManager)
 
   const cart = await cartServiceTx.create({
+    ...data[Aliases.SalesChannel],
     ...data[Aliases.Addresses],
     ...data[Aliases.Customer],
     ...data[Aliases.Region],

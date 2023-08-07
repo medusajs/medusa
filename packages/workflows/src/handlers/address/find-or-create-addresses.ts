@@ -9,7 +9,7 @@ type AddressesDTO = {
 }
 
 type HandlerInputData = {
-  cart: AddressesDTO & {
+  addresses: AddressesDTO & {
     billing_address?: AddressDTO
     shipping_address?: AddressDTO
   }

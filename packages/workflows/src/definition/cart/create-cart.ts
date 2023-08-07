@@ -4,15 +4,22 @@ import {
 } from "@medusajs/orchestration"
 
 import { Workflows } from "../../definitions"
-import { CartHandlers } from "../../handlers"
+import {
+  AddressHandlers,
+  CartHandlers,
+  CommonHandlers,
+  CustomerHandlers,
+  RegionHandlers,
+  SalesChannelHandlers,
+} from "../../handlers"
 import { aggregateData, exportWorkflow, pipe } from "../../helper"
 
 enum CreateCartActions {
-  attachConfig = "attachConfig",
-  attachContext = "attachContext",
+  setConfig = "setConfig",
+  setContext = "setContext",
   attachLineItems = "attachLineItems",
-  attachRegion = "attachRegion",
-  attachSalesChannel = "attachSalesChannel",
+  findRegion = "findRegion",
+  findSalesChannel = "findSalesChannel",
   createCart = "createCart",
   findOrCreateAddresses = "findOrCreateAddresses",
   findOrCreateCustomer = "findOrCreateCustomer",
@@ -33,7 +40,7 @@ const getWorkflowInput = (alias = workflowAlias) => ({
 const workflowSteps: TransactionStepsDefinition = {
   next: [
     {
-      action: CreateCartActions.attachConfig,
+      action: CreateCartActions.setConfig,
       noCompensation: true,
     },
     {
@@ -41,15 +48,15 @@ const workflowSteps: TransactionStepsDefinition = {
       noCompensation: true,
     },
     {
-      action: CreateCartActions.attachSalesChannel,
+      action: CreateCartActions.findSalesChannel,
       noCompensation: true,
     },
     {
-      action: CreateCartActions.attachContext,
+      action: CreateCartActions.setContext,
       noCompensation: true,
     },
     {
-      action: CreateCartActions.attachRegion,
+      action: CreateCartActions.findRegion,
       noCompensation: true,
       next: {
         action: CreateCartActions.findOrCreateAddresses,
@@ -71,12 +78,12 @@ const workflowSteps: TransactionStepsDefinition = {
 
 const handlers = new Map([
   [
-    CreateCartActions.attachConfig,
+    CreateCartActions.setConfig,
     {
       invoke: pipe(
-        getWorkflowInput(CartHandlers.attachConfig.aliases.Config),
+        getWorkflowInput(CommonHandlers.setConfig.aliases.Config),
         aggregateData(),
-        CartHandlers.attachConfig
+        CommonHandlers.setConfig
       ),
     },
   ],
@@ -84,35 +91,39 @@ const handlers = new Map([
     CreateCartActions.findOrCreateCustomer,
     {
       invoke: pipe(
-        getWorkflowInput(CartHandlers.findOrCreateCustomer.aliases.Customer),
-        CartHandlers.findOrCreateCustomer
+        getWorkflowInput(
+          CustomerHandlers.findOrCreateCustomer.aliases.Customer
+        ),
+        CustomerHandlers.findOrCreateCustomer
       ),
     },
   ],
   [
-    CreateCartActions.attachSalesChannel,
+    CreateCartActions.findSalesChannel,
     {
       invoke: pipe(
-        getWorkflowInput(CartHandlers.attachSalesChannel.aliases.SalesChannel),
-        CartHandlers.attachSalesChannel
+        getWorkflowInput(
+          SalesChannelHandlers.findSalesChannel.aliases.SalesChannel
+        ),
+        SalesChannelHandlers.findSalesChannel
       ),
     },
   ],
   [
-    CreateCartActions.attachContext,
+    CreateCartActions.setContext,
     {
       invoke: pipe(
-        getWorkflowInput(CartHandlers.attachContext.aliases.Context),
-        CartHandlers.attachContext
+        getWorkflowInput(CommonHandlers.setContext.aliases.Context),
+        CommonHandlers.setContext
       ),
     },
   ],
   [
-    CreateCartActions.attachRegion,
+    CreateCartActions.findRegion,
     {
       invoke: pipe(
-        getWorkflowInput(CartHandlers.attachRegion.aliases.Region),
-        CartHandlers.attachRegion
+        getWorkflowInput(RegionHandlers.findRegion.aliases.Region),
+        RegionHandlers.findRegion
       ),
     },
   ],
@@ -123,15 +134,15 @@ const handlers = new Map([
         {
           invoke: [
             getWorkflowInput(
-              CartHandlers.findOrCreateAddresses.aliases.Addresses
+              AddressHandlers.findOrCreateAddresses.aliases.Addresses
             ).invoke,
             {
-              from: CreateCartActions.attachRegion,
-              alias: CartHandlers.findOrCreateAddresses.aliases.Region,
+              from: CreateCartActions.findRegion,
+              alias: AddressHandlers.findOrCreateAddresses.aliases.Region,
             },
           ],
         },
-        CartHandlers.findOrCreateAddresses
+        AddressHandlers.findOrCreateAddresses
       ),
     },
   ],
@@ -142,11 +153,11 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: CreateCartActions.attachRegion,
+              from: CreateCartActions.findRegion,
               alias: CartHandlers.createCart.aliases.Region,
             },
             {
-              from: CreateCartActions.attachContext,
+              from: CreateCartActions.setContext,
               alias: CartHandlers.createCart.aliases.Context,
             },
             {
@@ -200,8 +211,8 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: CreateCartActions.attachConfig,
-              alias: CartHandlers.attachConfig.aliases.Config,
+              from: CreateCartActions.setConfig,
+              alias: CommonHandlers.setConfig.aliases.Config,
             },
             {
               from: CreateCartActions.createCart,

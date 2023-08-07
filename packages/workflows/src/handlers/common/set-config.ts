@@ -20,7 +20,7 @@ type HandlerInputData = {
   }
 }
 
-export async function attachConfig({
+export async function setConfig({
   container,
   context,
   data,
@@ -30,4 +30,4 @@ export async function attachConfig({
   }
 }
 
-attachConfig.aliases = Aliases
+setConfig.aliases = Aliases

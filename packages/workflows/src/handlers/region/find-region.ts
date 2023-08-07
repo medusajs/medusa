@@ -17,7 +17,7 @@ enum Aliases {
   Region = "region",
 }
 
-export async function attachRegion({
+export async function findRegion({
   container,
   context,
   data,
@@ -46,4 +46,4 @@ export async function attachRegion({
   return regionDTO
 }
 
-attachRegion.aliases = Aliases
+findRegion.aliases = Aliases

@@ -14,7 +14,7 @@ type HandlerInputData = {
   }
 }
 
-export async function attachContext({
+export async function setContext({
   container,
   context,
   data,
@@ -26,4 +26,4 @@ export async function attachContext({
   return contextDTO
 }
 
-attachContext.aliases = Aliases
+setContext.aliases = Aliases

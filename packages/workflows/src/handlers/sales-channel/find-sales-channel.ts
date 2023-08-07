@@ -20,7 +20,7 @@ enum Aliases {
   SalesChannel = "sales_channel",
 }
 
-export async function attachSalesChannel({
+export async function findSalesChannel({
   container,
   context,
   data,
@@ -71,4 +71,4 @@ export async function attachSalesChannel({
   return salesChannelDTO
 }
 
-attachSalesChannel.aliases = Aliases
+findSalesChannel.aliases = Aliases
