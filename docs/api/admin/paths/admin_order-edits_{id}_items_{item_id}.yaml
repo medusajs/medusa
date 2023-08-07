@@ -1,19 +1,23 @@
 post:
   operationId: PostOrderEditsEditLineItemsLineItem
   summary: Upsert Line Item Change
-  description: Create or update the order edit change holding the line item changes
+  description: >-
+    Create or update a line item change in the order edit that indicates
+    addition, deletion, or update of a line item into an original order. Line
+    item changes are only reflected on the original order after the order edit
+    is confirmed.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Order Edit to update.
+      description: The ID of the Order Edit.
       schema:
         type: string
     - in: path
       name: item_id
       required: true
-      description: The ID of the order edit item to update.
+      description: The ID of the line item in the original order.
       schema:
         type: string
   requestBody:
@@ -60,20 +64,23 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteOrderEditsOrderEditLineItemsLineItem
-  summary: Delete a Line Item
-  description: Delete line items from an order edit and create change item
+  summary: Delete Line Item
+  description: >-
+    Create a line item change in the order edit that indicates deleting an item
+    in the original order. The item in the original order will not be deleted
+    until the order edit is confirmed.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Order Edit to delete from.
+      description: The ID of the Order Edit.
       schema:
         type: string
     - in: path
       name: item_id
       required: true
-      description: The ID of the order edit item to delete from order.
+      description: The ID of line item in the original order.
       schema:
         type: string
   x-codegen:

@@ -1,7 +1,13 @@
 post:
   operationId: PostOrdersOrderClaims
   summary: Create a Claim
-  description: Creates a Claim.
+  description: >-
+    Create a Claim for an order. If a return shipping method is specified, a
+    return will also be created and associated with the claim. If the claim's
+    type is `refund`, the refund is processed as well.
+  externalDocs:
+    description: How are claims created
+    url: https://docs.medusajs.com/modules/orders/claims#how-are-claims-created
   x-authenticated: true
   parameters:
     - in: path
@@ -12,12 +18,12 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   requestBody:

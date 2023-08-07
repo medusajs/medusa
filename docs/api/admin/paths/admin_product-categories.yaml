@@ -1,42 +1,50 @@
 get:
   operationId: GetProductCategories
   summary: List Product Categories
-  description: Retrieve a list of product categories.
+  description: >-
+    Retrieve a list of product categories. The product categories can be
+    filtered by fields such as `q` or `handle`. The product categories can also
+    be paginated.
   x-authenticated: true
+  x-featureFlag: product_categories
   parameters:
     - in: query
       name: q
-      description: Query used for searching product category names or handles.
+      description: term to search product categories' names and handles.
       schema:
         type: string
     - in: query
       name: handle
-      description: Query used for searching product category by handle.
+      description: Filter by handle.
       schema:
         type: string
     - in: query
       name: is_internal
-      description: Search for only internal categories.
+      description: Filter by whether the category is internal or not.
       schema:
         type: boolean
     - in: query
       name: is_active
-      description: Search for only active categories
+      description: Filter by whether the category is active or not.
       schema:
         type: boolean
     - in: query
       name: include_descendants_tree
-      description: Include all nested descendants of category
+      description: >-
+        If set to `true`, all nested descendants of a category are included in
+        the response.
       schema:
         type: boolean
     - in: query
       name: parent_category_id
-      description: Returns categories scoped by parent
+      description: Filter by the ID of a parent category.
       schema:
         type: string
     - in: query
       name: offset
-      description: How many product categories to skip in the result.
+      description: >-
+        The number of product categories to skip when retrieving the product
+        categories.
       schema:
         type: integer
         default: 0
@@ -49,15 +57,15 @@ get:
     - in: query
       name: expand
       description: >-
-        (Comma separated) Which fields should be expanded in the product
-        category.
+        Comma-separated relations that should be expanded in the returned
+        product categories.
       schema:
         type: string
     - in: query
       name: fields
       description: >-
-        (Comma separated) Which fields should be included in the product
-        category.
+        Comma-separated fields that should be included in the returned product
+        categories.
       schema:
         type: string
   x-codegen:
@@ -99,17 +107,22 @@ get:
 post:
   operationId: PostProductCategories
   summary: Create a Product Category
-  description: Creates a Product Category.
+  description: Create a Product Category.
   x-authenticated: true
+  x-featureFlag: product_categories
   parameters:
     - in: query
       name: expand
-      description: (Comma separated) Which fields should be expanded in the results.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        product category.
       schema:
         type: string
     - in: query
       name: fields
-      description: (Comma separated) Which fields should be retrieved in the results.
+      description: >-
+        Comma-separated fields that should be included in the returned product
+        category.
       schema:
         type: string
   requestBody:

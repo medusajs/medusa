@@ -1,7 +1,7 @@
 get:
   operationId: GetRegionsRegionFulfillmentOptions
   summary: List Fulfillment Options
-  description: Gathers all the fulfillment options available to in the Region.
+  description: Retrieve a list of fulfillment options available in a Region.
   x-authenticated: true
   parameters:
     - in: path

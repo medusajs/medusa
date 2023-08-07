@@ -5,7 +5,9 @@ required:
 properties:
   type:
     type: string
-    description: The type of batch job to start.
+    description: >-
+      The type of batch job to start, which is defined by the `batchType`
+      property of the associated batch job strategy.
     example: product-export
   context:
     type: object
@@ -29,6 +31,6 @@ properties:
   dry_run:
     type: boolean
     description: >-
-      Set a batch job in dry_run mode to get some information on what will be
-      done without applying any modifications.
+      Set a batch job in dry_run mode, which would delay executing the batch job
+      until it's confirmed.
     default: false

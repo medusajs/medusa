@@ -1,34 +1,43 @@
 get:
   operationId: GetPublishableApiKeys
-  summary: List PublishableApiKeys
-  description: List PublishableApiKeys.
+  summary: List Publishable API keys
+  description: >-
+    Retrieve a list of publishable API keys. The publishable API keys can be
+    filtered by fields such as `q`. The publishable API keys can also be
+    paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: q
-      description: Query used for searching publishable api keys by title.
+      description: term to search publishable API keys' titles.
       schema:
         type: string
     - in: query
       name: limit
-      description: The number of items in the response
+      description: Limit the number of publishable API keys returned.
       schema:
         type: number
         default: '20'
     - in: query
       name: offset
-      description: The offset of items in response
+      description: >-
+        The number of publishable API keys to skip when retrieving the
+        publishable API keys.
       schema:
         type: number
         default: '0'
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the results.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        publishable API keys.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the results.
+      description: >-
+        Comma-separated fields that should be included in the returned
+        publishable API keys.
       schema:
         type: string
   x-codegen:
@@ -69,8 +78,8 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostPublishableApiKeys
-  summary: Create PublishableApiKey
-  description: Creates a PublishableApiKey.
+  summary: Create Publishable API Key
+  description: Creates a Publishable API Key.
   requestBody:
     content:
       application/json:

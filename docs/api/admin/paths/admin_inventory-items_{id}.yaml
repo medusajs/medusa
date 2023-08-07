@@ -1,7 +1,7 @@
 get:
   operationId: GetInventoryItemsInventoryItem
   summary: Get an Inventory Item
-  description: Retrieves an Inventory Item.
+  description: Retrieve an Inventory Item's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -12,12 +12,16 @@ get:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the results.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        inventory item.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the results.
+      description: >-
+        Comma-separated fields that should be included in the returned inventory
+        item.
       schema:
         type: string
   x-codegen:
@@ -59,7 +63,7 @@ get:
 post:
   operationId: PostInventoryItemsInventoryItem
   summary: Update an Inventory Item
-  description: Updates an Inventory Item.
+  description: Update an Inventory Item's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -70,12 +74,16 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the results.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        inventory level.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the results.
+      description: >-
+        Comma-separated fields that should be included in the returned inventory
+        level.
       schema:
         type: string
   requestBody:
@@ -122,7 +130,9 @@ post:
 delete:
   operationId: DeleteInventoryItemsInventoryItem
   summary: Delete an Inventory Item
-  description: Delete an Inventory Item
+  description: >-
+    Delete an Inventory Item. This does not delete the associated product
+    variant.
   x-authenticated: true
   parameters:
     - in: path
