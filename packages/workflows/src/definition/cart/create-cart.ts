@@ -7,10 +7,6 @@ import { Workflows } from "../../definitions"
 import { CartHandlers } from "../../handlers"
 import { exportWorkflow, pipe } from "../../helper"
 
-export enum CartInputAlias {
-  Cart = "cart",
-}
-
 enum CreateCartActions {
   attachAddresses = "attachAddresses",
   attachContext = "attachContext",

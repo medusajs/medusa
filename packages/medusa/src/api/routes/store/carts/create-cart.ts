@@ -1,5 +1,8 @@
 import { MedusaContainer } from "@medusajs/modules-sdk"
-import { createCart as createCartWorkflow } from "@medusajs/workflows"
+import {
+  Workflows,
+  createCart as createCartWorkflow,
+} from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -78,15 +81,24 @@ import { FlagRouter } from "../../../../utils/flag-router"
  */
 export default async (req, res) => {
   const entityManager: EntityManager = req.scope.resolve("manager")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const validated = req.validatedBody as StorePostCartReq
+  const productModuleService = req.scope.resolve("productModuleService")
 
   const reqContext = {
     ip: reqIp.getClientIp(req),
     user_agent: req.get("user-agent"),
   }
 
-  // TODO: Change this to point to another module when its ready
-  const productModuleService = req.scope.resolve("productModuleService")
+  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
+    workflows: Workflows.CreateCart,
+  })
+
+  if (isWorkflowEnabled && !productModuleService) {
+    logger.warn(
+      `Cannot run ${Workflows.CreateCart} workflow without '@medusajs/product' installed`
+    )
+  }
 
   if (productModuleService) {
     const cartWorkflow = createCartWorkflow(req.scope as MedusaContainer)
@@ -127,7 +139,6 @@ export default async (req, res) => {
   const lineItemService: LineItemService = req.scope.resolve("lineItemService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   let regionId!: string
   if (isDefined(validated.region_id)) {
