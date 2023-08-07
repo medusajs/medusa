@@ -80,20 +80,20 @@ const handlers = new Map([
     },
   ],
   [
-    CreateCartActions.findOrCreateCustomer,
-    {
-      invoke: pipe(
-        getWorkflowInput(CartHandlers.findOrCreateCustomer.aliases.Customer),
-        CartHandlers.findOrCreateCustomer
-      ),
-    },
-  ],
-  [
     CreateCartActions.attachSalesChannel,
     {
       invoke: pipe(
         getWorkflowInput(CartHandlers.attachSalesChannel.aliases.SalesChannel),
         CartHandlers.attachSalesChannel
+      ),
+    },
+  ],
+  [
+    CreateCartActions.findOrCreateCustomer,
+    {
+      invoke: pipe(
+        getWorkflowInput(CartHandlers.findOrCreateCustomer.aliases.Customer),
+        CartHandlers.findOrCreateCustomer
       ),
     },
   ],
