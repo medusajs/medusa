@@ -30,10 +30,17 @@ export async function mikroOrmConnectionLoader({
     options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   )?.manager
 
+  // Custom manager provided
+  if (manager) {
+    container.register({
+      manager: asValue(manager),
+    })
+    return
+  }
+
   if (
     moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
-    moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED &&
-    !manager
+    moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
   ) {
     return await loadShared({ container, logger })
   }
@@ -42,19 +49,17 @@ export async function mikroOrmConnectionLoader({
    * Reuse an existing connection if it is passed in the options
    */
   let dbConfig
-  if (!manager) {
-    const shouldSwallowError = !!(
-      options as ModulesSdkTypes.ModuleServiceInitializeOptions
-    )?.database.connection
-    dbConfig = {
-      ...loadDatabaseConfig(
-        "product",
-        (options ?? {}) as ModulesSdkTypes.ModuleServiceInitializeOptions,
-        shouldSwallowError
-      ),
-      connection: (options as ModulesSdkTypes.ModuleServiceInitializeOptions)
-        ?.database.connection,
-    }
+  const shouldSwallowError = !!(
+    options as ModulesSdkTypes.ModuleServiceInitializeOptions
+  )?.database.connection
+  dbConfig = {
+    ...loadDatabaseConfig(
+      "product",
+      (options ?? {}) as ModulesSdkTypes.ModuleServiceInitializeOptions,
+      shouldSwallowError
+    ),
+    connection: (options as ModulesSdkTypes.ModuleServiceInitializeOptions)
+      ?.database.connection,
   }
 
   manager ??= await loadDefault({
@@ -98,7 +103,6 @@ async function loadShared({ container, logger }) {
   const manager = await loadDefault({
     database: {
       connection: sharedConnection,
-      // clientUrl: "",
     },
   })
   container.register({
