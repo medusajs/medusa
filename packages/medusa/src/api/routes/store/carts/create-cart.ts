@@ -16,6 +16,7 @@ import { MedusaError, isDefined } from "medusa-core-utils"
 import reqIp from "request-ip"
 import { EntityManager } from "typeorm"
 
+import { Logger } from "@medusajs/types"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { Cart, LineItem } from "../../../../models"
@@ -50,6 +51,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
+import { resolve } from 'path';
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.carts.create()
  *       .then(({ cart }) => {
@@ -84,6 +86,7 @@ export default async (req, res) => {
   const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const validated = req.validatedBody as StorePostCartReq
   const productModuleService = req.scope.resolve("productModuleService")
+  const logger: Logger = req.scope.resolve("logger")
 
   const reqContext = {
     ip: reqIp.getClientIp(req),
