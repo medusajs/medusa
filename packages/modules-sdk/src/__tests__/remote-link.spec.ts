@@ -16,6 +16,10 @@ const allModules = [
   InventoryStockLocationLink,
 ]
 describe("Remote Link", function () {
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+
   it("Should get all loaded modules and compose their relationships", async function () {
     const remoteLink = new RemoteLink(allModules as any)
 
@@ -83,13 +87,13 @@ describe("Remote Link", function () {
     )
   })
 
-  it.only("Should call the correct link module to create relation between 2 keys", async function () {
+  it("Should call the correct link module to create relation between 2 keys", async function () {
     const remoteLink = new RemoteLink(allModules as any)
 
     await remoteLink.create([
       {
         productService: {
-          variant_id: "prod_123",
+          variant_id: "var_123",
         },
         inventoryService: {
           inventory_item_id: "inv_123",
@@ -97,7 +101,7 @@ describe("Remote Link", function () {
       },
       {
         productService: {
-          variant_id: "prod_abc",
+          variant_id: "var_abc",
         },
         inventoryService: {
           inventory_item_id: "inv_abc",
@@ -105,7 +109,7 @@ describe("Remote Link", function () {
       },
       {
         inventoryService: {
-          inventory_item_id: "inv_abc",
+          inventory_level_id: "ilev_123",
         },
         stockLocationService: {
           stock_location_id: "loc_123",
@@ -114,11 +118,101 @@ describe("Remote Link", function () {
     ])
 
     expect(ProductInventoryLinkModule.create).toBeCalledWith([
-      ["prod_123", "inv_123"],
-      ["prod_abc", "inv_abc"],
+      ["var_123", "inv_123"],
+      ["var_abc", "inv_abc"],
     ])
     expect(InventoryStockLocationLink.create).toBeCalledWith([
-      ["inv_abc", "loc_123"],
+      ["ilev_123", "loc_123"],
     ])
+  })
+
+  it("Should call remove in cascade all the modules involved in the link", async function () {
+    const remoteLink = new RemoteLink(allModules as any)
+
+    ProductInventoryLinkModule.softDelete.mockImplementation(() => {
+      return [
+        [{}], // rows,
+        {
+          variant_id: ["var_123"],
+          inventory_item_id: ["inv_123"],
+        },
+      ]
+    })
+
+    ProductModule.softDelete.mockImplementation(() => {
+      return [
+        [{}], // rows,
+        {
+          product_id: ["prod_123", "prod_abc"],
+          variant_id: ["var_123", "var_abc"],
+        },
+      ]
+    })
+
+    InventoryModule.softDelete.mockImplementation(() => {
+      return [
+        [{}], // rows,
+        {
+          inventory_item_id: ["inv_123"],
+          inventory_level_id: ["ilev_123"],
+        },
+      ]
+    })
+
+    InventoryStockLocationLink.softDelete.mockImplementation(() => {
+      return [
+        [{}], // rows,
+        {
+          inventory_level_id: ["ilev_123"],
+          stock_location_id: ["loc_123"],
+        },
+      ]
+    })
+
+    await remoteLink.remove({
+      productService: {
+        variant_id: "var_123",
+      },
+    })
+
+    expect(ProductInventoryLinkModule.softDelete).toBeCalledTimes(2)
+    expect(ProductModule.softDelete).toBeCalledTimes(1)
+    expect(InventoryModule.softDelete).toBeCalledTimes(1)
+    expect(InventoryStockLocationLink.softDelete).toBeCalledTimes(1)
+
+    expect(ProductInventoryLinkModule.softDelete).toHaveBeenNthCalledWith(
+      1,
+      { variant_id: ["var_123"] },
+      { returnLinkableKeys: ["variant_id", "inventory_item_id"] }
+    )
+
+    expect(ProductInventoryLinkModule.softDelete).toHaveBeenNthCalledWith(
+      2,
+      { variant_id: ["var_abc"] },
+      { returnLinkableKeys: ["variant_id", "inventory_item_id"] }
+    )
+
+    expect(ProductModule.softDelete).toBeCalledWith(
+      { id: ["var_123"] },
+      { returnLinkableKeys: ["product_id", "variant_id"] }
+    )
+
+    expect(InventoryModule.softDelete).toBeCalledWith(
+      { id: ["inv_123"] },
+      {
+        returnLinkableKeys: [
+          "inventory_item_id",
+          "inventory_level_id",
+          "reservation_item_id",
+        ],
+      }
+    )
+
+    expect(InventoryStockLocationLink.softDelete).toBeCalledWith(
+      {
+        inventory_level_id: ["ilev_123"],
+      },
+      { returnLinkableKeys: ["inventory_level_id", "stock_location_id"] }
+    )
   })
 })

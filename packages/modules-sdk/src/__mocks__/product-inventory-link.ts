@@ -71,5 +71,5 @@ export const ProductInventoryLinkModule = {
       foreignKeyData?: string
     ) => {}
   ),
-  delete: jest.fn(() => {}),
+  softDelete: jest.fn(() => {}),
 }

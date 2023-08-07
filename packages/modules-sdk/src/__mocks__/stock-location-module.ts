@@ -19,4 +19,6 @@ export const StockLocationModule = {
     linkableKeys: ["stock_location_id"],
     alias: [],
   },
+
+  softDelete: jest.fn(() => {}),
 }

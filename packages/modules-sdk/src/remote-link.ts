@@ -9,7 +9,7 @@ import { toPascalCase } from "@medusajs/utils"
 import { MedusaModule } from "./medusa-module"
 
 export type DeleteEntityInput = {
-  [moduleName: string]: { [linkableKey: string]: string[] }
+  [moduleName: string]: { [linkableKey: string]: string | string[] }
 }
 export type RestoreEntityInput = DeleteEntityInput
 
@@ -80,7 +80,6 @@ export class RemoteLink {
           ].join("-")
           this.relationsPairs.set(key, mod as unknown as LoadedLinkModule)
         }
-
         for (const relationship of joinerConfig.relationships) {
           if (joinerConfig.isLink && !relationship.deleteCascade) {
             continue
@@ -181,6 +180,11 @@ export class RemoteLink {
 
       const servicePromises = services.map(async (serviceInfo) => {
         const serviceRelations = this.relations.get(serviceInfo.serviceName)!
+
+        if (!serviceRelations) {
+          return
+        }
+
         const values = serviceInfo.deleteKeys
 
         const deletePromises: Promise<void>[] = []
@@ -221,18 +225,18 @@ export class RemoteLink {
                 service as LoadedLinkModule
               )
 
-              errors
-
-              let deletedEntities: Record<string, string[]>
+              let deletedEntities: Record<string, string[]> = {}
 
               try {
                 if (args?.methodSuffix) {
                   method += toPascalCase(args.methodSuffix)
                 }
 
-                deletedEntities = (await service[method](cascadeDelKeys, {
+                const [_, removed] = await service[method](cascadeDelKeys, {
                   returnLinkableKeys: returnFields,
-                })) as unknown as Record<string, string[]>
+                })
+
+                deletedEntities = removed as Record<string, string[]>
               } catch (error) {
                 errors.push({
                   serviceName,

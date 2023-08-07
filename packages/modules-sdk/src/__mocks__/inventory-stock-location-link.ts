@@ -17,19 +17,19 @@ export const InventoryStockLocationLink = {
     isLink: true,
     alias: [
       {
-        name: "inventory_item_stock_location",
+        name: "inventory_level_stock_location",
       },
       {
-        name: "inventory_item_stock_locations",
+        name: "inventory_level_stock_locations",
       },
     ],
-    primaryKeys: ["inventory_item_id", "stock_location_id"],
+    primaryKeys: ["inventory_level_id", "stock_location_id"],
     relationships: [
       {
         serviceName: "inventoryService",
         primaryKey: "id",
-        foreignKey: "inventory_item_id",
-        alias: "inventory_item",
+        foreignKey: "inventory_level_id",
+        alias: "inventory_level",
         args: {},
       },
       {
@@ -44,7 +44,7 @@ export const InventoryStockLocationLink = {
         serviceName: "inventoryService",
         relationship: {
           serviceName: "inventoryStockLocationLink",
-          primaryKey: "inventory_item_id",
+          primaryKey: "inventory_level_id",
           foreignKey: "id",
           alias: "inventory_location_items",
         },
@@ -67,5 +67,5 @@ export const InventoryStockLocationLink = {
       foreignKeyData?: string
     ) => {}
   ),
-  delete: jest.fn(() => {}),
+  softDelete: jest.fn(() => {}),
 }

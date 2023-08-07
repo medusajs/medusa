@@ -20,9 +20,5 @@ export const ProductModule = {
     alias: [],
   },
 
-  delete: jest.fn((ids) => {
-    return {
-      product_id: ids,
-    }
-  }),
+  softDelete: jest.fn(() => {}),
 }
