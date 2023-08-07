@@ -40,7 +40,10 @@ const Tags = () => {
     loadData && !baseSpecs
       ? getLinkWithBasePath(`/base-specs?area=${area}&expand=${expand}`)
       : null,
-    fetcher
+    fetcher,
+    {
+      errorRetryInterval: 2000,
+    }
   )
 
   useEffect(() => {

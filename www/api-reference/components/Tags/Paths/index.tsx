@@ -46,7 +46,10 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
     !Object.keys(paths).length
       ? getLinkWithBasePath(`/tag?tagName=${tagSlugName}&area=${area}`)
       : null,
-    fetcher
+    fetcher,
+    {
+      errorRetryInterval: 2000,
+    }
   )
 
   paths = data?.paths || paths
