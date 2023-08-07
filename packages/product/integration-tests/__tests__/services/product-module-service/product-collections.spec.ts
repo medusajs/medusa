@@ -6,6 +6,7 @@ import { ProductTypes } from "@medusajs/types"
 import { initialize } from "../../../../src"
 import { DB_URL, TestDatabase } from "../../../utils"
 import { createCollections } from "../../../__fixtures__/product"
+import { EventBusService } from "../../../__fixtures__/event-bus"
 
 describe("ProductModuleService product collections", () => {
   let service: IProductModuleService
@@ -16,16 +17,20 @@ describe("ProductModuleService product collections", () => {
   let productCollectionOne: ProductCollection
   let productCollectionTwo: ProductCollection
   let productCollections: ProductCollection[]
+  let eventBus
 
   beforeEach(async () => {
     await TestDatabase.setupDatabase()
     repositoryManager = await TestDatabase.forkManager()
+    eventBus = new EventBusService()
 
     service = await initialize({
       database: {
         clientUrl: DB_URL,
         schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
       },
+    }, {
+      eventBusModuleService: eventBus
     })
 
     testManager = await TestDatabase.forkManager()
@@ -65,6 +70,7 @@ describe("ProductModuleService product collections", () => {
 
   afterEach(async () => {
     await TestDatabase.clearDatabase()
+    jest.clearAllMocks()
   })
 
   describe("listCollections", () => {
@@ -261,10 +267,40 @@ describe("ProductModuleService product collections", () => {
 
       expect(collections).toHaveLength(0)
     })
+
+    it("should emit events through event bus", async () => {
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+      await service.deleteCollections(
+        [collectionId],
+      )
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith([{
+        eventName: "product-collection.deleted",
+        data: { id: collectionId }
+      }])
+    })
   })
 
   describe("updateCollections", () => {
     const collectionId = "test-1"
+
+    it("should emit events through event bus", async () => {
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+
+      await service.updateCollections(
+        [{
+          id: collectionId,
+          title: "New Collection"
+        }]
+      )
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith([{
+        eventName: "product-collection.updated",
+        data: { id: collectionId }
+      }])
+    })
 
     it("should update the value of the collection successfully", async () => {
       await service.updateCollections(
@@ -310,6 +346,22 @@ describe("ProductModuleService product collections", () => {
       })
 
       expect(productCollection.title).toEqual("New Collection")
+    })
+
+    it("should emit events through event bus", async () => {
+      const eventBusSpy = jest.spyOn(EventBusService.prototype, 'emit')
+
+      const collections = await service.createCollections(
+        [{
+          title: "New Collection"
+        }]
+      )
+
+      expect(eventBusSpy).toHaveBeenCalledTimes(1)
+      expect(eventBusSpy).toHaveBeenCalledWith([{
+        eventName: "product-collection.created",
+        data: { id: collections[0].id }
+      }])
     })
   })
 })

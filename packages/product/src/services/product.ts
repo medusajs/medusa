@@ -3,17 +3,17 @@ import {
   Context,
   DAL,
   FindConfig,
-  ProductStatus,
   ProductTypes,
   WithRequiredProperty,
 } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
+  isDefined,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
-  isDefined,
+  ProductUtils,
 } from "@medusajs/utils"
 import { ProductRepository } from "@repositories"
 
@@ -44,9 +44,12 @@ export default class ProductService<TEntity extends Product = Product> {
       )
     }
 
-    const queryOptions = ModulesSdkUtils.buildQuery<Product>({
-      id: productId,
-    }, config)
+    const queryOptions = ModulesSdkUtils.buildQuery<Product>(
+      {
+        id: productId,
+      },
+      config
+    )
 
     const product = await this.productRepository_.find(
       queryOptions,
@@ -121,7 +124,7 @@ export default class ProductService<TEntity extends Product = Product> {
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     data.forEach((product) => {
-      product.status ??= ProductStatus.DRAFT
+      product.status ??= ProductUtils.ProductStatus.DRAFT
     })
 
     return (await (this.productRepository_ as ProductRepository).create(
@@ -140,7 +143,7 @@ export default class ProductService<TEntity extends Product = Product> {
     data: ProductServiceTypes.UpdateProductDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return await (this.productRepository_ as ProductRepository).update(
+    return (await (this.productRepository_ as ProductRepository).update(
       data as WithRequiredProperty<
         ProductServiceTypes.UpdateProductDTO,
         "id"
@@ -148,7 +151,7 @@ export default class ProductService<TEntity extends Product = Product> {
       {
         transactionManager: sharedContext.transactionManager,
       }
-    ) as TEntity[]
+    )) as TEntity[]
   }
 
   @InjectTransactionManager(doNotForceTransaction, "productRepository_")
@@ -165,7 +168,7 @@ export default class ProductService<TEntity extends Product = Product> {
   async softDelete(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
     return await this.productRepository_.softDelete(productIds, {
       transactionManager: sharedContext.transactionManager,
     })

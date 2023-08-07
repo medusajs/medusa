@@ -6,37 +6,41 @@ import {
 
 import { InputAlias } from "../definitions"
 
-type WorkflowStepReturn = {
-  alias: string
+export type WorkflowStepMiddlewareReturn = {
+  alias?: string
   value: any
 }
 
-type WorkflowStepInput = {
+export type WorkflowStepMiddlewareInput = {
   from: string
-  alias: string
+  alias?: string
 }
 
 interface PipelineInput {
   inputAlias?: InputAlias | string
-  invoke?: WorkflowStepInput | WorkflowStepInput[]
-  compensate?: WorkflowStepInput | WorkflowStepInput[]
+  invoke?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
+  compensate?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
 }
 
-export type WorkflowArguments = {
+export type WorkflowArguments<T = any> = {
   container: MedusaContainer
   payload: unknown
-  data: any
+  data: T
   metadata: TransactionMetadata
   context: Context | SharedContext
 }
 
-export type PipelineHandler = (
+export type PipelineHandler<T extends any = undefined> = (
   args: WorkflowArguments
-) => Promise<WorkflowStepReturn | WorkflowStepReturn[]>
+) => Promise<
+  T extends undefined
+    ? WorkflowStepMiddlewareReturn | WorkflowStepMiddlewareReturn[]
+    : T
+>
 
-export function pipe(
+export function pipe<T>(
   input: PipelineInput,
-  ...functions: PipelineHandler[]
+  ...functions: [...PipelineHandler[], PipelineHandler<T>]
 ): WorkflowStepHandler {
   return async ({
     container,
@@ -46,7 +50,7 @@ export function pipe(
     metadata,
     context,
   }) => {
-    const data = {}
+    let data = {}
 
     const original = {
       invoke: invoke ?? {},
@@ -58,7 +62,7 @@ export function pipe(
     }
 
     for (const key in input) {
-      if (!input[key]) {
+      if (!input[key] || key === "inputAlias") {
         continue
       }
 
@@ -67,13 +71,16 @@ export function pipe(
       }
 
       for (const action of input[key]) {
-        if (action?.alias) {
+        if (action.alias) {
           data[action.alias] = original[key][action.from]
+        } else {
+          data[action.from] = original[key][action.from]
         }
       }
     }
 
-    return functions.reduce(async (_, fn) => {
+    let finalResult
+    for (const fn of functions) {
       let result = await fn({
         container,
         payload,
@@ -88,11 +95,22 @@ export function pipe(
             data[action.alias] = action.value
           }
         }
-      } else if (result?.alias) {
-        data[result.alias] = result.value
+      } else if (
+        result &&
+        "alias" in (result as WorkflowStepMiddlewareReturn)
+      ) {
+        if ((result as WorkflowStepMiddlewareReturn).alias) {
+          data[(result as WorkflowStepMiddlewareReturn).alias!] = (
+            result as WorkflowStepMiddlewareReturn
+          ).value
+        } else {
+          data = (result as WorkflowStepMiddlewareReturn).value
+        }
       }
 
-      return result
-    }, {})
+      finalResult = result
+    }
+
+    return finalResult
   }
 }

@@ -425,7 +425,7 @@ export interface CreateProductVariantOnlyDTO {
 }
 
 export interface UpdateProductVariantOnlyDTO {
-  id: string,
+  id: string
   title?: string
   sku?: string
   barcode?: string
