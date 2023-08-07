@@ -1,5 +1,17 @@
 # @medusajs/modules-sdk
 
+## 1.9.1
+
+### Patch Changes
+
+- [#4674](https://github.com/medusajs/medusa/pull/4674) [`4b80ba8a3`](https://github.com/medusajs/medusa/commit/4b80ba8a356806da3c92634e40e8946da25e35ee) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(product, integration-tests): Fix integration tests
+
+- [#4654](https://github.com/medusajs/medusa/pull/4654) [`8af55aed8`](https://github.com/medusajs/medusa/commit/8af55aed87da7252c7c261175bc98331466a0da8) Thanks [@riqwan](https://github.com/riqwan)! - feat(product,types): added event bus events for products
+
+- Updated dependencies [[`8af55aed8`](https://github.com/medusajs/medusa/commit/8af55aed87da7252c7c261175bc98331466a0da8), [`5c60aad17`](https://github.com/medusajs/medusa/commit/5c60aad177a99574ffff5ebdc02ce9dc86ef9af9), [`4073b7313`](https://github.com/medusajs/medusa/commit/4073b73130c874dc7d2240726224a01b7b19b1a1)]:
+  - @medusajs/types@1.10.1
+  - @medusajs/utils@1.9.5
+
 ## 1.9.0
 
 ### Minor Changes
