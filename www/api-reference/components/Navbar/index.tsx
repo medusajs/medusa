@@ -1,13 +1,11 @@
 import clsx from "clsx"
 import Link from "next/link"
 import NavbarLink from "./Link"
-import NavbarIconButton from "./IconButton"
 import NavbarColorModeToggle from "./ColorModeToggle"
 import NavbarLogo from "./Logo"
 import SearchBar from "../SearchBar"
 import NavbarMenuButton from "./MenuButton"
 import getLinkWithBasePath from "../../utils/get-link-with-base-path"
-import IconSidebar from "../Icons/Sidebar"
 
 const Navbar = () => {
   return (
@@ -47,10 +45,7 @@ const Navbar = () => {
           <div className="lg:w-[240px] [&>*]:flex-1">
             <SearchBar />
           </div>
-          {/* TODO add functionality */}
-          <NavbarIconButton>
-            <IconSidebar iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
-          </NavbarIconButton>
+          {/* <NavbarSidebarButton /> */}
           <NavbarColorModeToggle />
           <Link href="#" className="btn-primary">
             Feedback

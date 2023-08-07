@@ -19,7 +19,7 @@ export type SidebarItemProps = {
 
 const SidebarItem = ({ item, nested = false, className }: SidebarItemProps) => {
   const [showLoading, setShowLoading] = useState(false)
-  const { isItemActive, setActivePath, setSidebarOpen } = useSidebar()
+  const { isItemActive, setActivePath, setMobileSidebarOpen: setSidebarOpen } = useSidebar()
   const active = isItemActive(item, nested)
   const collapsed = !isItemActive(item, true)
   const ref = useRef<HTMLLIElement>(null)

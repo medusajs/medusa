@@ -34,14 +34,14 @@ const MDXContentClient = ({
   }, [content, props.scope])
 
   return (
-    <p className={className}>
+    <div className={className}>
       {parsedContent !== undefined && (
         <MDXRemote
           {...parsedContent}
           components={getCustomComponents((props.scope as ScopeType) || {})}
         />
       )}
-    </p>
+    </div>
   )
 }
 

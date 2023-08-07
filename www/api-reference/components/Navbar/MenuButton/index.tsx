@@ -5,7 +5,7 @@ import NavbarIconButton from "../IconButton"
 import { useSidebar } from "@/providers/sidebar"
 
 const NavbarMenuButton = () => {
-  const { items, sidebarOpen, setSidebarOpen } = useSidebar()
+  const { items, mobileSidebarOpen: sidebarOpen, setMobileSidebarOpen: setSidebarOpen } = useSidebar()
 
   return (
     <NavbarIconButton

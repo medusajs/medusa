@@ -53,9 +53,11 @@ type SidebarContextType = {
     itemPath: string,
     checkChildren?: boolean
   ) => SidebarItemType | undefined
-  sidebarOpen: boolean
-  setSidebarOpen: (value: boolean) => void
+  mobileSidebarOpen: boolean
+  setMobileSidebarOpen: (value: boolean) => void
   isSidebarEmpty: () => boolean
+  desktopSidebarOpen: boolean
+  setDesktopSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const SidebarContext = createContext<SidebarContextType | null>(null)
@@ -102,7 +104,8 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
     ],
   })
   const [activePath, setActivePath] = useState<string | null>("")
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false)
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false)
+  const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true)
 
   const findItemInSection = useCallback(
     (
@@ -285,10 +288,12 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
         setActivePath,
         isItemActive,
         findItemInSection,
-        sidebarOpen,
-        setSidebarOpen,
+        mobileSidebarOpen,
+        setMobileSidebarOpen,
         isSidebarEmpty,
         getActiveItem,
+        desktopSidebarOpen,
+        setDesktopSidebarOpen,
       }}
     >
       {children}

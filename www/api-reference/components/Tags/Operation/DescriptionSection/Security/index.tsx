@@ -66,10 +66,10 @@ const TagsOperationDescriptionSectionSecurity = ({
       </span>
       <span className="w-2/3">
         {security.map((security, index) => (
-          <>
+          <span key={index}>
             {index !== 0 && " or "}
             {getSecuritySchema(Object.keys(security)[0])?.["x-displayName"]}
-          </>
+          </span>
         ))}
       </span>
     </div>

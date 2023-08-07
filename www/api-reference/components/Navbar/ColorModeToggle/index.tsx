@@ -2,7 +2,6 @@
 
 import { useColorMode } from "@/providers/color-mode"
 import NavbarIconButton from "../IconButton"
-import clsx from "clsx"
 import type IconProps from "@/components/Icons/types"
 import dynamic from "next/dynamic"
 
