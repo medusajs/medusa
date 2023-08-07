@@ -66,15 +66,44 @@ const workflowInput = {
 
 const handlers = new Map([
   [
-    CreateCartActions.attachRegion,
+    CreateCartActions.attachCustomerDetails,
     {
-      invoke: pipe(workflowInput, CartHandlers.attachRegionToCart),
+      invoke: pipe(workflowInput, CartHandlers.attachCustomerDetailsToCart),
     },
   ],
   [
     CreateCartActions.attachSalesChannel,
     {
       invoke: pipe(workflowInput, CartHandlers.attachSalesChannelToCart),
+    },
+  ],
+  [
+    CreateCartActions.attachContext,
+    {
+      invoke: pipe(workflowInput, CartHandlers.attachContextToCart),
+    },
+  ],
+  [
+    CreateCartActions.attachRegion,
+    {
+      invoke: pipe(workflowInput, CartHandlers.attachRegionToCart),
+    },
+  ],
+  [
+    CreateCartActions.attachAddresses,
+    {
+      invoke: pipe(
+        {
+          invoke: [
+            workflowInput.invoke,
+            {
+              from: CreateCartActions.attachRegion,
+              alias: CartHandlers.attachAddressesToCart.aliases.CartRegion,
+            },
+          ],
+        },
+        CartHandlers.attachAddressesToCart
+      ),
     },
   ],
   [
@@ -115,35 +144,6 @@ const handlers = new Map([
         },
         CartHandlers.removeCart
       ),
-    },
-  ],
-  [
-    CreateCartActions.attachAddresses,
-    {
-      invoke: pipe(
-        {
-          invoke: [
-            workflowInput.invoke,
-            {
-              from: CreateCartActions.attachRegion,
-              alias: CartHandlers.attachAddressesToCart.aliases.CartRegion,
-            },
-          ],
-        },
-        CartHandlers.attachAddressesToCart
-      ),
-    },
-  ],
-  [
-    CreateCartActions.attachCustomerDetails,
-    {
-      invoke: pipe(workflowInput, CartHandlers.attachCustomerDetailsToCart),
-    },
-  ],
-  [
-    CreateCartActions.attachContext,
-    {
-      invoke: pipe(workflowInput, CartHandlers.attachContextToCart),
     },
   ],
   [
