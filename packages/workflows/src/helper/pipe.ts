@@ -7,14 +7,14 @@ import { Context, MedusaContainer, SharedContext } from "@medusajs/types"
 import { DistributedTransaction } from "@medusajs/orchestration"
 import { InputAlias } from "../definitions"
 
-type WorkflowStepMiddlewareReturn = {
-  alias: string
+export type WorkflowStepMiddlewareReturn = {
+  alias?: string
   value: any
 }
 
-type WorkflowStepMiddlewareInput = {
+export type WorkflowStepMiddlewareInput = {
   from: string
-  alias: string
+  alias?: string
 }
 
 interface PipelineInput {
@@ -43,11 +43,13 @@ export type WorkflowOnCompleteArguments<T = any> = {
 
 export type PipelineHandler<T extends any = undefined> = (
   args: WorkflowArguments
-) => T extends undefined
-  ? Promise<WorkflowStepMiddlewareReturn | WorkflowStepMiddlewareReturn[]>
-  : T
+) => Promise<
+  T extends undefined
+    ? WorkflowStepMiddlewareReturn | WorkflowStepMiddlewareReturn[]
+    : T
+>
 
-export function pipe<T = undefined>(
+export function pipe<T>(
   input: PipelineInput,
   ...functions: [...PipelineHandler[], PipelineHandler<T>]
 ): WorkflowStepHandler {
@@ -60,7 +62,7 @@ export function pipe<T = undefined>(
     transaction,
     context,
   }) => {
-    const data = {}
+    let data = {}
 
     const original = {
       invoke: invoke ?? {},
@@ -82,13 +84,16 @@ export function pipe<T = undefined>(
       }
 
       for (const action of input[key]) {
-        if (action?.alias) {
+        if (action.alias) {
           data[action.alias] = original[key][action.from]
+        } else {
+          data[action.from] = original[key][action.from]
         }
       }
     }
 
-    const response = functions.reduce(async (_, fn) => {
+    let finalResult
+    for (const fn of functions) {
       let result = await fn({
         container,
         payload,
@@ -103,14 +108,21 @@ export function pipe<T = undefined>(
             data[action.alias] = action.value
           }
         }
-      } else if ((result as WorkflowStepMiddlewareReturn)?.alias) {
-        data[(result as WorkflowStepMiddlewareReturn).alias] = (
-          result as WorkflowStepMiddlewareReturn
-        ).value
+      } else if (
+        result &&
+        "alias" in (result as WorkflowStepMiddlewareReturn)
+      ) {
+        if ((result as WorkflowStepMiddlewareReturn).alias) {
+          data[(result as WorkflowStepMiddlewareReturn).alias!] = (
+            result as WorkflowStepMiddlewareReturn
+          ).value
+        } else {
+          data = (result as WorkflowStepMiddlewareReturn).value
+        }
       }
 
-      return result
-    }, {})
+      finalResult = result
+    }
 
     if (typeof input.onComplete === "function") {
       const dataCopy = JSON.parse(JSON.stringify(data))
@@ -124,6 +136,6 @@ export function pipe<T = undefined>(
       })
     }
 
-    return response
+    return finalResult
   }
 }
