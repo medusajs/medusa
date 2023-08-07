@@ -5,7 +5,7 @@ import {
 
 import { Workflows } from "../../definitions"
 import { CartHandlers } from "../../handlers"
-import { exportWorkflow, pipe } from "../../helper"
+import { aggregateData, exportWorkflow, pipe } from "../../helper"
 
 enum CreateCartActions {
   attachConfig = "attachConfig",
@@ -75,16 +75,8 @@ const handlers = new Map([
     {
       invoke: pipe(
         getWorkflowInput(CartHandlers.attachConfig.aliases.Config),
+        aggregateData(),
         CartHandlers.attachConfig
-      ),
-    },
-  ],
-  [
-    CreateCartActions.attachSalesChannel,
-    {
-      invoke: pipe(
-        getWorkflowInput(CartHandlers.attachSalesChannel.aliases.SalesChannel),
-        CartHandlers.attachSalesChannel
       ),
     },
   ],
@@ -94,6 +86,15 @@ const handlers = new Map([
       invoke: pipe(
         getWorkflowInput(CartHandlers.findOrCreateCustomer.aliases.Customer),
         CartHandlers.findOrCreateCustomer
+      ),
+    },
+  ],
+  [
+    CreateCartActions.attachSalesChannel,
+    {
+      invoke: pipe(
+        getWorkflowInput(CartHandlers.attachSalesChannel.aliases.SalesChannel),
+        CartHandlers.attachSalesChannel
       ),
     },
   ],
