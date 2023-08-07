@@ -1,17 +1,18 @@
-import { ProductTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 type ProductHandle = string
 type ShippingProfileId = string
+type PartialProduct = { handle: string; id: string }
+type handlerInput = {
+  productsHandleShippingProfileIdMap: Map<ProductHandle, ShippingProfileId>
+  products: PartialProduct[]
+}
 
 export async function attachShippingProfileToProducts({
   container,
   context,
   data,
-}: WorkflowArguments<{
-  productsHandleShippingProfileIdMap: Map<ProductHandle, ShippingProfileId>
-  products: ProductTypes.ProductDTO[]
-}>): Promise<void> {
+}: WorkflowArguments<handlerInput>): Promise<void> {
   const { manager } = context
 
   const productsHandleShippingProfileIdMap =
