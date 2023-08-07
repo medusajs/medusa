@@ -1,7 +1,7 @@
 get:
   operationId: GetSwapsSwap
   summary: Get a Swap
-  description: Retrieves a Swap.
+  description: Retrieve a Swap's details.
   x-authenticated: true
   parameters:
     - in: path

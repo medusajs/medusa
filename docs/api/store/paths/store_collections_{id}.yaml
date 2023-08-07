@@ -1,7 +1,7 @@
 get:
   operationId: GetCollectionsCollection
   summary: Get a Collection
-  description: Retrieves a Product Collection.
+  description: Retrieve a Product Collection's details.
   parameters:
     - in: path
       name: id
@@ -21,7 +21,7 @@ get:
       source:
         $ref: ../code_samples/Shell/store_collections_{id}/get.sh
   tags:
-    - Collections
+    - Product Collections
   responses:
     '200':
       description: OK

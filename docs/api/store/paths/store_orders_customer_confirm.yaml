@@ -1,9 +1,12 @@
 post:
   operationId: PostOrdersCustomerOrderClaimsCustomerOrderClaimAccept
-  summary: Verify an Order Claim
+  summary: Verify Order Claim
   description: >-
-    Verifies the claim order token provided to the customer upon request of
-    order ownership
+    Verify the claim order token provided to the customer when they request
+    ownership of an order.
+  externalDocs:
+    description: How to implement claim-order flow in a storefront
+    url: https://docs.medusajs.com/modules/orders/storefront/implement-claim-order
   requestBody:
     content:
       application/json:

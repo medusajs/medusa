@@ -3,7 +3,7 @@ required:
   - sales_channel_ids
 properties:
   sales_channel_ids:
-    description: The IDs of the sales channels to add to the publishable api key
+    description: The IDs of the sales channels to add to the publishable API key
     type: array
     items:
       type: object

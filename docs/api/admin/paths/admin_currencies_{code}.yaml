@@ -1,7 +1,7 @@
 post:
   operationId: PostCurrenciesCurrency
   summary: Update a Currency
-  description: Update a Currency
+  description: Update a Currency's details.
   x-authenticated: true
   parameters:
     - in: path

@@ -3,7 +3,7 @@ import { AllocationType, DiscountRuleType } from "@medusajs/medusa"
 const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 // must be previously logged in or use api token
 medusa.admin.discounts.create({
-  code: 'TEST',
+  code: "TEST",
   rule: {
     type: DiscountRuleType.FIXED,
     value: 10,

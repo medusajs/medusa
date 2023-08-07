@@ -2,7 +2,7 @@ get:
   operationId: GetAuth
   summary: Get Current User
   x-authenticated: true
-  description: Gets the currently logged in User.
+  description: Get the currently logged in user's details.
   x-codegen:
     method: getSession
   x-codeSamples:
@@ -42,23 +42,16 @@ post:
   operationId: PostAuth
   summary: User Login
   x-authenticated: false
-  description: Logs a User in and authorizes them to manage Store settings.
-  parameters: []
+  description: >-
+    Log a User in and includes the Cookie session in the response header. The
+    cookie session can be used in subsequent requests to authorize the user to
+    perform admin functionalities. When using Medusa's JS or Medusa React
+    clients, the cookie is automatically attached to subsequent requests.
   requestBody:
     content:
       application/json:
         schema:
-          type: object
-          required:
-            - email
-            - password
-          properties:
-            email:
-              type: string
-              description: The User's email.
-            password:
-              type: string
-              description: The User's password.
+          $ref: ../components/schemas/AdminPostAuthReq.yaml
   x-codegen:
     method: createSession
   x-codeSamples:
@@ -95,7 +88,11 @@ delete:
   operationId: DeleteAuth
   summary: User Logout
   x-authenticated: true
-  description: Deletes the current session for the logged in user.
+  description: >-
+    Delete the current session for the logged in user. This will only work if
+    you're using Cookie session for authentication. If the API token is still
+    passed in the header, the user is still authorized to perform admin
+    functionalities in other endpoints.
   x-codegen:
     method: deleteSession
   x-codeSamples:

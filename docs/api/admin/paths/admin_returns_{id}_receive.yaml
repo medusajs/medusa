@@ -2,8 +2,8 @@ post:
   operationId: PostReturnsReturnReceive
   summary: Receive a Return
   description: >-
-    Registers a Return as received. Updates statuses on Orders and Swaps
-    accordingly.
+    Mark a Return as received. This also updates the status of associated order,
+    claim, or swap accordingly.
   parameters:
     - in: path
       name: id

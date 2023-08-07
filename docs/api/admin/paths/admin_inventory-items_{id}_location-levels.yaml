@@ -1,32 +1,39 @@
 get:
   operationId: GetInventoryItemsInventoryItemLocationLevels
-  summary: List Inventory Levels
-  description: Lists inventory levels of an inventory item.
+  summary: List Inventory Level
+  description: >-
+    Retrieve a list of inventory levels of an inventory item. The inventory
+    levels can be filtered by fields such as `location_id`. The inventory levels
+    can also be paginated.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Inventory Item.
+      description: The ID of the Inventory Item the locations are associated with.
       schema:
         type: string
     - in: query
       name: location_id
       style: form
       explode: false
-      description: Locations ids to search for.
+      description: Filter by location IDs.
       schema:
         type: array
         items:
           type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the results.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        inventory levels.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the results.
+      description: >-
+        Comma-separated fields that should be included in the returned inventory
+        levels.
       schema:
         type: string
   x-codegen:
@@ -70,7 +77,7 @@ get:
 post:
   operationId: PostInventoryItemsInventoryItemLocationLevels
   summary: Create an Inventory Level
-  description: Creates an Inventory Level for a given Inventory Item.
+  description: Create an Inventory Level for a given Inventory Item.
   x-authenticated: true
   parameters:
     - in: path
@@ -81,12 +88,16 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the results.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        inventory item.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the results.
+      description: >-
+        Comma-separated fields that should be included in the returned inventory
+        item.
       schema:
         type: string
   requestBody:

@@ -3,7 +3,7 @@ required:
   - return_items
 properties:
   return_items:
-    description: The Line Items to return as part of the Swap.
+    description: The Line Items to associate with the swap's return.
     type: array
     items:
       type: object
@@ -12,7 +12,7 @@ properties:
         - quantity
       properties:
         item_id:
-          description: The ID of the Line Item that will be claimed.
+          description: The ID of the Line Item that will be returned.
           type: string
         quantity:
           description: The number of items that will be returned
@@ -24,7 +24,7 @@ properties:
           description: An optional note with information about the Return.
           type: string
   return_shipping:
-    description: How the Swap will be returned.
+    description: The shipping method associated with the swap's return.
     type: object
     required:
       - option_id
@@ -45,13 +45,15 @@ properties:
         - quantity
       properties:
         variant_id:
-          description: The ID of the Product Variant to ship.
+          description: The ID of the Product Variant.
           type: string
         quantity:
-          description: The quantity of the Product Variant to ship.
+          description: The quantity of the Product Variant.
           type: integer
   custom_shipping_options:
-    description: The custom shipping options to potentially create a Shipping Method from.
+    description: >-
+      An array of custom shipping options to potentially create a Shipping
+      Method from to send the additional items.
     type: array
     items:
       type: object
@@ -60,15 +62,17 @@ properties:
         - price
       properties:
         option_id:
-          description: The ID of the Shipping Option to override with a custom price.
+          description: The ID of the Shipping Option.
           type: string
         price:
           description: The custom price of the Shipping Option.
           type: integer
   no_notification:
-    description: If set to true no notification will be send related to this Swap.
+    description: >-
+      If set to `true`, no notification will be sent to the customer related to
+      this Swap.
     type: boolean
   allow_backorder:
-    description: If true, swaps can be completed with items out of stock
+    description: If set to `true`, swaps can be completed with items out of stock
     type: boolean
     default: true

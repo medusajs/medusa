@@ -13,4 +13,4 @@ properties:
     type: object
     description: >-
       The data required for the Shipping Option to create a Shipping Method.
-      This will depend on the Fulfillment Provider.
+      This depends on the Fulfillment Provider.
