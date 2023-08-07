@@ -8,8 +8,6 @@ import {
 import { asValue } from "awilix"
 import { PostgreSqlDriver, SqlEntityManager } from "@mikro-orm/postgresql"
 import { ContainerRegistrationKeys, MedusaError } from "../../common"
-import * as ProductModels from "@medusajs/product/dist/models"
-import { EntitySchema } from "@mikro-orm/core"
 import { loadDatabaseConfig } from "../load-module-database-config"
 import { mikroOrmCreateConnection } from "../../dal"
 
@@ -18,7 +16,9 @@ export async function mikroOrmConnectionLoader({
   options,
   moduleDeclaration,
   logger,
+  entities,
 }: {
+  entities: any[]
   container: MedusaContainer
   options:
     | ModulesSdkTypes.ModuleServiceInitializeOptions
@@ -42,7 +42,7 @@ export async function mikroOrmConnectionLoader({
     moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
     moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
   ) {
-    return await loadShared({ container, logger })
+    return await loadShared({ container, entities })
   }
 
   /**
@@ -64,6 +64,7 @@ export async function mikroOrmConnectionLoader({
 
   manager ??= await loadDefault({
     database: dbConfig,
+    entities,
   })
 
   container.register({
@@ -73,6 +74,7 @@ export async function mikroOrmConnectionLoader({
 
 async function loadDefault({
   database,
+  entities,
 }): Promise<SqlEntityManager<PostgreSqlDriver>> {
   if (!database) {
     throw new MedusaError(
@@ -81,13 +83,12 @@ async function loadDefault({
     )
   }
 
-  const entities = Object.values(ProductModels) as unknown as EntitySchema[]
   const orm = await mikroOrmCreateConnection(database, entities)
 
   return orm.em.fork()
 }
 
-async function loadShared({ container, logger }) {
+async function loadShared({ container, entities }) {
   const sharedConnection = container.resolve(
     ContainerRegistrationKeys.PG_CONNECTION,
     {
@@ -101,6 +102,7 @@ async function loadShared({ container, logger }) {
   }
 
   const manager = await loadDefault({
+    entities,
     database: {
       connection: sharedConnection,
     },
