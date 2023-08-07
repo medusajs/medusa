@@ -14,8 +14,12 @@ import {
   Unique,
 } from "@mikro-orm/core"
 
-import { ProductTypes } from "@medusajs/types"
-import { DALUtils, generateEntityId, kebabCase } from "@medusajs/utils"
+import {
+  DALUtils,
+  generateEntityId,
+  kebabCase,
+  ProductUtils,
+} from "@medusajs/utils"
 import ProductCategory from "./product-category"
 import ProductCollection from "./product-collection"
 import ProductOption from "./product-option"
@@ -60,8 +64,8 @@ class Product {
   @Property({ columnType: "boolean", default: false })
   is_giftcard!: boolean
 
-  @Enum(() => ProductTypes.ProductStatus)
-  status!: ProductTypes.ProductStatus
+  @Enum(() => ProductUtils.ProductStatus)
+  status!: ProductUtils.ProductStatus
 
   @Property({ columnType: "text", nullable: true })
   thumbnail?: string | null

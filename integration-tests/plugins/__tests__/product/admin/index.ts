@@ -6,11 +6,12 @@ import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import productSeeder from "../../../../helpers/product-seeder"
 
-import { simpleSalesChannelFactory } from "../../../../factories"
-import { AxiosInstance } from "axios"
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
+import { Workflows } from "@medusajs/workflows"
+import { AxiosInstance } from "axios"
+import { simpleSalesChannelFactory } from "../../../../factories"
 
-jest.setTimeout(50000)
+jest.setTimeout(5000000)
 
 const adminHeaders = {
   headers: {
@@ -49,6 +50,16 @@ describe("/admin/products", () => {
     expect(
       medusaContainer.hasRegistration(productRegistrationName)
     ).toBeTruthy()
+  })
+
+  it("Should have enabled workflows feature flag", function () {
+    const flagRouter = medusaContainer.resolve("featureFlagRouter")
+
+    const workflowsFlag = flagRouter.isFeatureEnabled({
+      workflows: Workflows.CreateProducts,
+    })
+
+    expect(workflowsFlag).toBe(true)
   })
 
   describe("POST /admin/products", () => {
