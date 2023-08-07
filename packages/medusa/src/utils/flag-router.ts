@@ -26,6 +26,11 @@ export class FlagRouter implements FeatureFlagTypes.IFlagRouter {
 
     if (isObject(flag)) {
       const [nestedFlag, value] = Object.entries(flag)[0]
+
+      if (typeof this.flags[nestedFlag] === "boolean") {
+        return this.flags[nestedFlag] as boolean
+      }
+
       return !!this.flags[nestedFlag]?.[value]
     }
 
