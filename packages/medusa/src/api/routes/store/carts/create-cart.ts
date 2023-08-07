@@ -51,7 +51,6 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *     label: JS Client
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
-import { resolve } from 'path';
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.carts.create()
  *       .then(({ cart }) => {
