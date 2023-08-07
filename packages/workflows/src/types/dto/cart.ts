@@ -1,4 +1,4 @@
-// TODO: Move this to an appropriate place
+// TODO: These should be moved into the modules domain when we have them.
 export type CartDTO = {
   id?: string
   email?: string
