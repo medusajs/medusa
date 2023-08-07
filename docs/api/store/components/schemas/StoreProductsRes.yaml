@@ -17,4 +17,5 @@ required:
   - product
 properties:
   product:
+    description: Product details.
     $ref: ./PricedProduct.yaml

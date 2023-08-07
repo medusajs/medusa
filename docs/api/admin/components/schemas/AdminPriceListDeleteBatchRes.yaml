@@ -8,10 +8,12 @@ properties:
     type: array
     items:
       type: string
-      description: The IDs of the deleted Money Amounts (Prices).
+      description: The IDs of the deleted prices.
   object:
     type: string
-    description: The type of the object that was deleted.
+    description: >-
+      The type of the object that was deleted. A price is also named
+      `money-amount`.
     default: money-amount
   deleted:
     type: boolean

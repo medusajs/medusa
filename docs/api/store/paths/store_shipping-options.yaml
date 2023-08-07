@@ -1,23 +1,28 @@
 get:
   operationId: GetShippingOptions
   summary: Get Shipping Options
-  description: Retrieves a list of Shipping Options.
+  description: Retrieve a list of Shipping Options.
   parameters:
     - in: query
       name: is_return
       description: >-
-        Whether return Shipping Options should be included. By default all
-        Shipping Options are returned.
+        Whether return shipping options should be included. By default, all
+        shipping options are returned.
       schema:
         type: boolean
     - in: query
       name: product_ids
-      description: A comma separated list of Product ids to filter Shipping Options by.
+      description: >-
+        "Comma-separated list of Product IDs to filter Shipping Options by. If
+        provided, only shipping options that can be used with the provided
+        products are retrieved."
       schema:
         type: string
     - in: query
       name: region_id
-      description: the Region to retrieve Shipping Options from.
+      description: >-
+        "The ID of the region that the shipping options belong to. If not
+        provided, all shipping options are retrieved."
       schema:
         type: string
   x-codegen:

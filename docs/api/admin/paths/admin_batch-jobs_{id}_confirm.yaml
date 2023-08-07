@@ -1,7 +1,10 @@
 post:
   operationId: PostBatchJobsBatchJobConfirmProcessing
   summary: Confirm a Batch Job
-  description: Confirms that a previously requested batch job should be executed.
+  description: >-
+    When a batch job is created, it is not executed automatically if `dry_run`
+    is set to `true`. This endpoint confirms that the batch job should be
+    executed.
   x-authenticated: true
   parameters:
     - in: path

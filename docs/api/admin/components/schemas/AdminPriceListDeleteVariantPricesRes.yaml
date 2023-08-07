@@ -6,12 +6,14 @@ required:
 properties:
   ids:
     type: array
-    description: The price ids that have been deleted.
+    description: The IDs of the deleted prices.
     items:
       type: string
   object:
     type: string
-    description: The type of the object that was deleted.
+    description: >-
+      The type of the object that was deleted. A price is also named
+      `money-amount`.
     default: money-amount
   deleted:
     type: boolean

@@ -1,7 +1,10 @@
 title: Shipping Profile
 description: >-
-  Shipping Profiles have a set of defined Shipping Options that can be used to
-  fulfill a given set of Products.
+  A Shipping Profile has a set of defined Shipping Options that can be used to
+  fulfill a given set of Products. For example, gift cards are shipped
+  differently than physical products, so a shipping profile with the type
+  `gift_card` groups together the shipping options that can only be used for
+  gift cards.
 type: object
 required:
   - created_at
@@ -34,17 +37,18 @@ properties:
     example: default
   products:
     description: >-
-      The Products that the Shipping Profile defines Shipping Options for.
-      Available if the relation `products` is expanded.
+      The details of the products that the Shipping Profile defines Shipping
+      Options for. Available if the relation `products` is expanded.
     type: array
+    x-expandable: products
     items:
       type: object
   shipping_options:
     description: >-
-      The Shipping Options that can be used to fulfill the Products in the
-      Shipping Profile. Available if the relation `shipping_options` is
-      expanded.
+      The details of the shipping options that can be used to create shipping
+      methods for the Products in the Shipping Profile.
     type: array
+    x-expandable: shipping_options
     items:
       type: object
   created_at:
@@ -66,3 +70,7 @@ properties:
     type: object
     example:
       car: white
+    externalDocs:
+      description: Learn about the metadata attribute, and how to delete and update it.
+      url: >-
+        https://docs.medusajs.com/development/entities/overview#metadata-attribute

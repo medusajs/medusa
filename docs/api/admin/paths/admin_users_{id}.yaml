@@ -1,7 +1,7 @@
 get:
   operationId: GetUsersUser
   summary: Get a User
-  description: Retrieves a User.
+  description: Retrieve an admin user's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -48,7 +48,7 @@ get:
 post:
   operationId: PostUsersUser
   summary: Update a User
-  description: Updates a User
+  description: Update an admin user's details.
   parameters:
     - in: path
       name: id
@@ -100,7 +100,9 @@ post:
 delete:
   operationId: DeleteUsersUser
   summary: Delete a User
-  description: Deletes a User
+  description: >-
+    Delete a User. Once deleted, the user will not be able to authenticate or
+    perform admin functionalities.
   x-authenticated: true
   parameters:
     - in: path

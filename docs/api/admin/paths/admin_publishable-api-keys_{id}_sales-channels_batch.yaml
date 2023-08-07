@@ -1,7 +1,7 @@
 post:
   operationId: PostPublishableApiKeySalesChannelsChannelsBatch
-  summary: Add SalesChannels
-  description: Assign a batch of sales channels to a publishable api key.
+  summary: Add Sales Channels
+  description: Assign a list of sales channels to a publishable API key.
   x-authenticated: true
   parameters:
     - in: path
@@ -55,14 +55,17 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeletePublishableApiKeySalesChannelsChannelsBatch
-  summary: Delete SalesChannels
-  description: Remove a batch of sales channels from a publishable api key.
+  summary: Remove Sales Channels
+  description: >-
+    Remove a list of sales channels from a publishable API key. This doesn't
+    delete the sales channels and only removes the association between them and
+    the publishable API key.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Publishable Api Key.
+      description: The ID of the Publishable API Key.
       schema:
         type: string
   requestBody:

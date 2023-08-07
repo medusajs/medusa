@@ -1,41 +1,59 @@
 get:
   operationId: GetProductsProduct
   summary: Get a Product
-  description: Retrieves a Product.
+  description: >
+    Retrieve a Product's details. For accurate and correct pricing of the
+    product based on the customer's context, it's highly recommended to pass
+    fields such as
+
+    `region_id`, `currency_code`, and `cart_id` when available.
+
+
+    Passing `sales_channel_id` ensures retrieving only products available in the
+    current sales channel.
+
+    You can alternatively use a publishable API key in the request header
+    instead of passing a `sales_channel_id`.
+  externalDocs:
+    description: How to pass product pricing parameters
+    url: >-
+      https://docs.medusajs.com/modules/products/storefront/show-products#product-pricing-parameters
   parameters:
     - in: path
       name: id
       required: true
-      description: The id of the Product.
+      description: The ID of the Product.
       schema:
         type: string
     - in: query
       name: sales_channel_id
-      description: The sales channel used when fetching the product.
+      description: The ID of the sales channel the customer is viewing the product from.
       schema:
         type: string
     - in: query
       name: cart_id
-      description: The ID of the customer's cart.
+      description: >-
+        The ID of the cart. This is useful for accurate pricing based on the
+        cart's context.
       schema:
         type: string
     - in: query
       name: region_id
       description: >-
-        The ID of the region the customer is using. This is helpful to ensure
-        correct prices are retrieved for a region.
-      schema:
-        type: string
-    - in: query
-      name: fields
-      description: (Comma separated) Which fields should be included in the result.
+        The ID of the region. This is useful for accurate pricing based on the
+        selected region.
       schema:
         type: string
     - in: query
       name: expand
       description: >-
-        (Comma separated) Which fields should be expanded in each product of the
-        result.
+        Comma-separated relations that should be expanded in the returned
+        product.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: Comma-separated fields that should be included in the returned product.
       schema:
         type: string
     - in: query
@@ -43,8 +61,8 @@ get:
       style: form
       explode: false
       description: >-
-        The 3 character ISO currency code to set prices based on. This is
-        helpful to ensure correct prices are retrieved for a currency.
+        A 3 character ISO currency code. This is useful for accurate pricing
+        based on the selected currency.
       schema:
         type: string
         externalDocs:

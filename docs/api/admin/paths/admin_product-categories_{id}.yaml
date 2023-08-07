@@ -1,8 +1,9 @@
 get:
   operationId: GetProductCategoriesCategory
   summary: Get a Product Category
-  description: Retrieves a Product Category.
+  description: Retrieve a Product Category's details.
   x-authenticated: true
+  x-featureFlag: product_categories
   parameters:
     - in: path
       name: id
@@ -12,12 +13,16 @@ get:
         type: string
     - in: query
       name: expand
-      description: (Comma separated) Which fields should be expanded in the results.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        product category.
       schema:
         type: string
     - in: query
       name: fields
-      description: (Comma separated) Which fields should be included in the results.
+      description: >-
+        Comma-separated fields that should be included in the returned product
+        category.
       schema:
         type: string
   x-codegen:
@@ -61,6 +66,7 @@ post:
   summary: Update a Product Category
   description: Updates a Product Category.
   x-authenticated: true
+  x-featureFlag: product_categories
   parameters:
     - in: path
       name: id
@@ -126,8 +132,9 @@ post:
 delete:
   operationId: DeleteProductCategoriesCategory
   summary: Delete a Product Category
-  description: Deletes a Product Category.
+  description: Delete a Product Category. This does not delete associated products.
   x-authenticated: true
+  x-featureFlag: product_categories
   parameters:
     - in: path
       name: id
