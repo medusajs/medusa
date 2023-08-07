@@ -87,10 +87,7 @@ const handlers = new Map([
       invoke: pipe(
         {
           invoke: [
-            {
-              from: CreateCartActions.attachRegion,
-              alias: cartHandlers.createCart.aliases.Cart,
-            },
+            workflowInput.invoke,
             {
               from: CreateCartActions.attachRegion,
               alias: cartHandlers.createCart.aliases.CartRegion,

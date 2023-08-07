@@ -6,7 +6,9 @@ enum Aliases {
 
 type HandlerInputData = {
   createdCart: {
-    id?: string
+    cart: {
+      id: string
+    }
   }
 }
 
@@ -18,8 +20,9 @@ export async function removeCart({
   const cartService = container.resolve("cartService")
   const entityManager = container.resolve("manager")
   const cartServiceTx = cartService.withTransaction(entityManager)
+  const cart = data[Aliases.CreatedCart].cart
 
-  await cartServiceTx.delete(data[Aliases.CreatedCart].id)
+  await cartServiceTx.delete(cart.id)
 }
 
 removeCart.aliases = Aliases

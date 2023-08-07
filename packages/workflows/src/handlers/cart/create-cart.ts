@@ -11,7 +11,7 @@ enum Aliases {
 
 type HandlerInputData = {
   cart: {
-    metadata?: Record<any, any>
+    config?: Record<any, any>
   }
   cartAddresses: {
     shipping_address_id: string
@@ -26,22 +26,35 @@ type HandlerInputData = {
   }
 }
 
+type HandlerOutputData = {
+  cart: CartDTO
+  config: Record<any, any>
+}
+
 export async function createCart({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInputData>): Promise<CartDTO> {
+}: WorkflowArguments<HandlerInputData>): Promise<HandlerOutputData> {
   const cartService = container.resolve("cartService")
   const entityManager = container.resolve("manager")
   const cartServiceTx = cartService.withTransaction(entityManager)
+  const config = data[Aliases.Cart].config || {}
 
-  return await cartServiceTx.create({
+  delete data[Aliases.Cart].config
+
+  const cart = await cartServiceTx.create({
     ...data[Aliases.Cart],
     ...data[Aliases.CartAddresses],
     ...data[Aliases.CartCustomer],
     ...data[Aliases.CartRegion],
     ...data[Aliases.CartContext],
   })
+
+  return {
+    cart,
+    config,
+  }
 }
 
 createCart.aliases = Aliases

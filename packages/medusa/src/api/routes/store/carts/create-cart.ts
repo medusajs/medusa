@@ -89,7 +89,7 @@ export default async (req, res) => {
   const productModuleService = req.scope.resolve("productModuleService")
 
   if (productModuleService) {
-    const cartWorkflow = await createCartWorkflow(req.scope as MedusaContainer)
+    const cartWorkflow = createCartWorkflow(req.scope as MedusaContainer)
     const { result, errors } = await cartWorkflow.run({
       input: {
         ...validated,
@@ -97,6 +97,12 @@ export default async (req, res) => {
         context: {
           ...reqContext,
           ...validated.context,
+        },
+        config: {
+          retrieveConfig: {
+            select: defaultStoreCartFields,
+            relations: defaultStoreCartRelations,
+          },
         },
       },
       resultFrom: "retrieveCart",

@@ -5,9 +5,11 @@ type HandlerInputData = {
     items?: Record<any, any>[]
   }
   createdCart: {
-    id: string
-    customer_id: string
-    region_id: string
+    cart: {
+      id: string
+      customer_id: string
+      region_id: string
+    }
   }
 }
 
@@ -28,6 +30,7 @@ export async function attachLineItemsToCart({
   const lineItemServiceTx = lineItemService.withTransaction(entityManager)
   const cartServiceTx = cartService.withTransaction(entityManager)
   let lineItems = data[Aliases.Cart].items
+  const cart = data[Aliases.CreatedCart].cart
 
   if (lineItems?.length) {
     const generateInputData = lineItems.map((item) => ({
@@ -36,18 +39,14 @@ export async function attachLineItemsToCart({
     }))
 
     lineItems = await lineItemServiceTx.generate(generateInputData, {
-      region_id: data[Aliases.CreatedCart].region_id,
-      customer_id: data[Aliases.CreatedCart].customer_id,
+      region_id: cart.region_id,
+      customer_id: cart.customer_id,
     })
 
-    await cartServiceTx.addOrUpdateLineItems(
-      data[Aliases.CreatedCart].id,
-      lineItems,
-      {
-        validateSalesChannels:
-          featureFlagRouter.isFeatureEnabled("sales_channels"),
-      }
-    )
+    await cartServiceTx.addOrUpdateLineItems(cart.id, lineItems, {
+      validateSalesChannels:
+        featureFlagRouter.isFeatureEnabled("sales_channels"),
+    })
   }
 }
 
