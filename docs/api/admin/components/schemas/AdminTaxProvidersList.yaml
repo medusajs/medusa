@@ -4,5 +4,6 @@ required:
 properties:
   tax_providers:
     type: array
+    description: An array of tax providers details.
     items:
       $ref: ./TaxProvider.yaml

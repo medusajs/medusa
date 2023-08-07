@@ -1,7 +1,7 @@
 get:
   operationId: GetReturnReasons
   summary: List Return Reasons
-  description: Retrieves a list of Return Reasons.
+  description: Retrieve a list of Return Reasons.
   x-authenticated: true
   x-codegen:
     method: list
@@ -41,7 +41,7 @@ get:
 post:
   operationId: PostReturnReasons
   summary: Create a Return Reason
-  description: Creates a Return Reason
+  description: Create a Return Reason.
   x-authenticated: true
   requestBody:
     content:

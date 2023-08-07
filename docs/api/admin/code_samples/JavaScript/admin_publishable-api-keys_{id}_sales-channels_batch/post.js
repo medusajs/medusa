@@ -4,7 +4,7 @@ const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 medusa.admin.publishableApiKeys.addSalesChannelsBatch(publishableApiKeyId, {
   sales_channel_ids: [
     {
-      id: channel_id
+      id: channelId
     }
   ]
 })

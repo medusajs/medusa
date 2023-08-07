@@ -1,8 +1,14 @@
 post:
   operationId: PostOrdersOrderSwapsSwapShipments
-  summary: Create Swap Shipment
-  description: Registers a Swap Fulfillment as shipped.
+  summary: Ship a Swap's Fulfillment
+  description: >-
+    RMark a swap's fulfillment as shipped. This changes the swap's fulfillment
+    status to either `shipped` or `partially_shipped`, depending on whether all
+    the items were shipped.
   x-authenticated: true
+  externalDocs:
+    description: Handling swap fulfillments
+    url: https://docs.medusajs.com/modules/orders/swaps#handling-swap-fulfillment
   parameters:
     - in: path
       name: id
@@ -18,12 +24,12 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   requestBody:

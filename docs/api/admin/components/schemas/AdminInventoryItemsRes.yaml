@@ -3,4 +3,5 @@ required:
   - inventory_item
 properties:
   inventory_item:
+    description: Inventory Item details
     $ref: ./InventoryItemDTO.yaml

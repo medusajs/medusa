@@ -4,11 +4,11 @@ required:
   - stocked_quantity
 properties:
   location_id:
-    description: the item location ID
+    description: the ID of the stock location
     type: string
   stocked_quantity:
-    description: the stock quantity of an inventory item at the given location ID
+    description: the stock quantity of the inventory item at this location
     type: number
   incoming_quantity:
-    description: the incoming stock quantity of an inventory item at the given location ID
+    description: the incoming stock quantity of the inventory item at this location
     type: number

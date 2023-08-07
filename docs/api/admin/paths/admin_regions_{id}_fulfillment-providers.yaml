@@ -1,7 +1,7 @@
 post:
   operationId: PostRegionsRegionFulfillmentProviders
   summary: Add Fulfillment Provider
-  description: Adds a Fulfillment Provider to a Region
+  description: Add a Fulfillment Provider to the list of fulfullment providers in a Region.
   x-authenticated: true
   parameters:
     - in: path

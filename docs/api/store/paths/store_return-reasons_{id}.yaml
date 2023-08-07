@@ -1,7 +1,7 @@
 get:
   operationId: GetReturnReasonsReason
   summary: Get a Return Reason
-  description: Retrieves a Return Reason.
+  description: Retrieve a Return Reason's details.
   parameters:
     - in: path
       name: id

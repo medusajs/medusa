@@ -1,13 +1,15 @@
 post:
   operationId: PostPaymentCollectionsPaymentCollectionAuthorize
   summary: Mark Authorized
-  description: Sets the status of PaymentCollection as Authorized.
+  description: >-
+    Set the status of a Payment Collection as `authorized`. This will also
+    change the `authorized_amount` of the payment collection.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the PaymentCollection.
+      description: The ID of the Payment Collection.
       schema:
         type: string
   x-codegen:

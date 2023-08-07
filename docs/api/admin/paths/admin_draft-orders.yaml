@@ -1,26 +1,28 @@
 get:
   operationId: GetDraftOrders
   summary: List Draft Orders
-  description: Retrieves an list of Draft Orders
+  description: >-
+    Retrieve an list of Draft Orders. The draft orders can be filtered by fields
+    such as `q`. The draft orders can also paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: offset
-      description: The number of items to skip before the results.
+      description: The number of draft orders to skip when retrieving the draft orders.
       schema:
         type: number
         default: '0'
     - in: query
       name: limit
-      description: Limit the number of items returned.
+      description: Limit the number of draft orders returned.
       schema:
         type: number
         default: '50'
     - in: query
       name: q
       description: >-
-        a search term to search emails in carts associated with draft orders and
-        display IDs of draft orders
+        a term to search draft orders' display IDs and emails in the draft
+        order's cart
       schema:
         type: string
   x-codegen:
@@ -62,7 +64,9 @@ get:
 post:
   operationId: PostDraftOrders
   summary: Create a Draft Order
-  description: Creates a Draft Order
+  description: >-
+    Create a Draft Order. A draft order is not transformed into an order until
+    payment is captured.
   x-authenticated: true
   requestBody:
     content:

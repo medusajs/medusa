@@ -1,22 +1,22 @@
 get:
   operationId: GetOrdersOrder
   summary: Get an Order
-  description: Retrieves an Order
+  description: Retrieve an Order's details.
   parameters:
     - in: path
       name: id
       required: true
-      description: The id of the Order.
+      description: The ID of the Order.
       schema:
         type: string
     - in: query
       name: fields
-      description: (Comma separated) Which fields should be included in the result.
+      description: Comma-separated fields that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: expand
-      description: (Comma separated) Which fields should be expanded in the result.
+      description: Comma-separated relations that should be included in the returned order.
       schema:
         type: string
   x-codegen:

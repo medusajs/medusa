@@ -1,7 +1,7 @@
 post:
   operationId: PostSalesChannelsSalesChannelStockLocation
   summary: Associate a Stock Location
-  description: Associates a stock location with a Sales Channel.
+  description: Associate a stock location with a Sales Channel.
   x-authenticated: true
   parameters:
     - in: path
@@ -55,8 +55,11 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteSalesChannelsSalesChannelStockLocation
-  summary: Remove a Stock Location Association
-  description: Removes a stock location from a Sales Channel.
+  summary: Remove Stock Location from Sales Channels.
+  description: >-
+    Remove a stock location from a Sales Channel. This only removes the
+    association between the stock location and the sales channel. It does not
+    delete the stock location.
   x-authenticated: true
   parameters:
     - in: path

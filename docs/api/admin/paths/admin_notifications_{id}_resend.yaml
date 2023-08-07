@@ -2,8 +2,8 @@ post:
   operationId: PostNotificationsNotificationResend
   summary: Resend Notification
   description: >-
-    Resends a previously sent notifications, with the same data but optionally
-    to a different address
+    Resend a previously sent notifications, with the same data but optionally to
+    a different address.
   x-authenticated: true
   parameters:
     - in: path

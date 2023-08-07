@@ -1,7 +1,7 @@
 get:
   operationId: GetPaymentCollectionsPaymentCollection
   summary: Get a PaymentCollection
-  description: Get a Payment Collection
+  description: Retrieve a Payment Collection's details.
   x-authenticated: false
   parameters:
     - in: path
@@ -11,13 +11,17 @@ get:
       schema:
         type: string
     - in: query
-      name: expand
-      description: Comma separated list of relations to include in the results.
+      name: fields
+      description: >-
+        Comma-separated fields that should be expanded in the returned payment
+        collection.
       schema:
         type: string
     - in: query
-      name: fields
-      description: Comma separated list of fields to include in the results.
+      name: expand
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        payment collection.
       schema:
         type: string
   x-codegen:
