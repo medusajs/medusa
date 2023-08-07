@@ -1,14 +1,12 @@
 import { WorkflowArguments } from "../../helper"
 
 enum Aliases {
-  CreatedCart = "createdCart",
+  Cart = "cart",
 }
 
 type HandlerInputData = {
-  createdCart: {
-    cart: {
-      id: string
-    }
+  cart: {
+    id: string
   }
 }
 
@@ -20,7 +18,7 @@ export async function removeCart({
   const cartService = container.resolve("cartService")
   const entityManager = container.resolve("manager")
   const cartServiceTx = cartService.withTransaction(entityManager)
-  const cart = data[Aliases.CreatedCart].cart
+  const cart = data[Aliases.Cart]
 
   await cartServiceTx.delete(cart.id)
 }

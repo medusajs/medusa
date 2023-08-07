@@ -165,7 +165,7 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.createCart,
-              alias: CartHandlers.removeCart.aliases.CreatedCart,
+              alias: CartHandlers.removeCart.aliases.Cart,
             },
           ],
         },
