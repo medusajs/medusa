@@ -1,7 +1,8 @@
 import { asValue, AwilixContainer } from "awilix"
 import { ConfigModule } from "../types/global"
 import { ContainerRegistrationKeys } from "@medusajs/utils"
-import { Client, ClientConfig } from "pg"
+import { ClientConfig } from "pg"
+import knex from "knex"
 
 type Options = {
   configModule: ConfigModule
@@ -23,8 +24,11 @@ export default async ({ container, configModule }: Options): Promise<void> => {
       idle_in_transaction_session_timeout:
         extra.idle_in_transaction_session_timeout ?? undefined, // prevent null to be passed
     }
-    const pgConnection = await new Client(config).connect() // or any other method to create your connection here
-    /* const pgConnection = knex<any, any>({
+
+    // TODO: see later if it is possible to use the same connection with multiple pool config using this shared connection across the modules
+    // const pgConnection = await new Client(config).connect() // or any other method to create your connection here
+
+    const pgConnection = knex<any, any>({
       client: "pg",
       searchPath: schema,
       connection: {
@@ -39,7 +43,7 @@ export default async ({ container, configModule }: Options): Promise<void> => {
         max: extra.max,
         idleTimeoutMillis: extra.idleTimeoutMillis ?? undefined, // prevent null to be passed
       },
-    })*/
+    })
 
     container.register(
       ContainerRegistrationKeys.PG_CONNECTION,
