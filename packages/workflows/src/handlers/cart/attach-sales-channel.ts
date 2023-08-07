@@ -8,7 +8,7 @@ type AttachSalesChannelDTO = {
 }
 
 type HandlerInputData = {
-  cart: {
+  sales_channel: {
     sales_channel_id?: string
     publishableApiKeyScopes?: {
       sales_channel_ids?: string[]
@@ -17,23 +17,23 @@ type HandlerInputData = {
 }
 
 enum Aliases {
-  Cart = "cart",
+  SalesChannel = "sales_channel",
 }
 
-export async function attachSalesChannelToCart({
+export async function attachSalesChannel({
   container,
   context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<AttachSalesChannelDTO> {
   let salesChannel
-  let salesChannelId = data[Aliases.Cart].sales_channel_id
+  let salesChannelId = data[Aliases.SalesChannel].sales_channel_id
   const salesChannelDTO: AttachSalesChannelDTO = {}
   const salesChannelService = container.resolve("salesChannelService")
   const storeService = container.resolve("storeService")
   const publishableApiKeyScopes =
-    data[Aliases.Cart].publishableApiKeyScopes || {}
+    data[Aliases.SalesChannel].publishableApiKeyScopes || {}
 
-  delete data[Aliases.Cart].publishableApiKeyScopes
+  delete data[Aliases.SalesChannel].publishableApiKeyScopes
 
   if (
     !isDefined(salesChannelId) &&
@@ -71,4 +71,4 @@ export async function attachSalesChannelToCart({
   return salesChannelDTO
 }
 
-attachSalesChannelToCart.aliases = Aliases
+attachSalesChannel.aliases = Aliases

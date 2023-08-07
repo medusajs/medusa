@@ -3,45 +3,42 @@ import { MedusaError } from "@medusajs/utils"
 import { WorkflowArguments } from "../../helper"
 import { AddressDTO } from "../../types"
 
-type AttachAddressDTO = {
+type AddressesDTO = {
   shipping_address_id?: string
   billing_address_id?: string
 }
 
 type HandlerInputData = {
-  cart: AttachAddressDTO & {
+  cart: AddressesDTO & {
     billing_address?: AddressDTO
     shipping_address?: AddressDTO
   }
-  cartRegion: {
+  region: {
     region_id?: string
   }
 }
 
 enum Aliases {
-  Cart = "cart",
-  CartRegion = "cartRegion",
+  Addresses = "addresses",
+  Region = "region",
 }
 
-export async function attachAddressesToCart({
+export async function findOrCreateAddresses({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInputData>): Promise<AttachAddressDTO> {
+}: WorkflowArguments<HandlerInputData>): Promise<AddressesDTO> {
   const regionService = container.resolve("regionService")
   const addressRepository = container.resolve("addressRepository")
-  const shippingAddress = data[Aliases.Cart].shipping_address
-  const shippingAddressId = data[Aliases.Cart].shipping_address_id
-  const billingAddress = data[Aliases.Cart].billing_address
-  const billingAddressId = data[Aliases.Cart].billing_address_id
-  const addressesDTO: AttachAddressDTO = {}
+  const shippingAddress = data[Aliases.Addresses].shipping_address
+  const shippingAddressId = data[Aliases.Addresses].shipping_address_id
+  const billingAddress = data[Aliases.Addresses].billing_address
+  const billingAddressId = data[Aliases.Addresses].billing_address_id
+  const addressesDTO: AddressesDTO = {}
 
-  const region = await regionService.retrieve(
-    data[Aliases.CartRegion].region_id,
-    {
-      relations: ["countries"],
-    }
-  )
+  const region = await regionService.retrieve(data[Aliases.Region].region_id, {
+    relations: ["countries"],
+  })
 
   const regionCountries = region.countries.map(({ iso_2 }) => iso_2)
 
@@ -112,4 +109,4 @@ export async function attachAddressesToCart({
   return addressesDTO
 }
 
-attachAddressesToCart.aliases = Aliases
+findOrCreateAddresses.aliases = Aliases

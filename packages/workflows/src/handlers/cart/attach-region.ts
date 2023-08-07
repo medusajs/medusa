@@ -3,31 +3,31 @@ import { isDefined } from "medusa-core-utils"
 
 import { WorkflowArguments } from "../../helper"
 
-type AttachRegionDTO = {
+type RegionDTO = {
   region_id?: string
 }
 
 type HandlerInputData = {
-  cart: {
+  region: {
     region_id: string
   }
 }
 
 enum Aliases {
-  Cart = "cart",
+  Region = "region",
 }
 
-export async function attachRegionToCart({
+export async function attachRegion({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInputData>): Promise<AttachRegionDTO> {
-  let regionId
-  const regionDTO: AttachRegionDTO = {}
+}: WorkflowArguments<HandlerInputData>): Promise<RegionDTO> {
+  let regionId: string
+  const regionDTO: RegionDTO = {}
   const regionService = container.resolve("regionService")
 
-  if (isDefined(data[Aliases.Cart].region_id)) {
-    regionId = data[Aliases.Cart].region_id
+  if (isDefined(data[Aliases.Region].region_id)) {
+    regionId = data[Aliases.Region].region_id
   } else {
     const regions = await regionService.list({}, {})
 
@@ -46,4 +46,4 @@ export async function attachRegionToCart({
   return regionDTO
 }
 
-attachRegionToCart.aliases = Aliases
+attachRegion.aliases = Aliases

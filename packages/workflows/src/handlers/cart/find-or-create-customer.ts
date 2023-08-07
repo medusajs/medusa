@@ -2,31 +2,31 @@ import { validateEmail } from "@medusajs/utils"
 
 import { WorkflowArguments } from "../../helper"
 
-type AttachCustomerDetailsDTO = {
+type CustomerDTO = {
   customer_id?: string
   email?: string
 }
 
 type HandlerInputData = {
-  cart: {
+  customer: {
     customer_id?: string
     email?: string
   }
 }
 
 enum Aliases {
-  Cart = "cart",
+  Customer = "customer",
 }
 
-export async function attachCustomerDetailsToCart({
+export async function findOrCreateCustomer({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInputData>): Promise<AttachCustomerDetailsDTO> {
-  const customerDTO: AttachCustomerDetailsDTO = {}
+}: WorkflowArguments<HandlerInputData>): Promise<CustomerDTO> {
+  const customerDTO: CustomerDTO = {}
   const customerService = container.resolve("customerService")
   const entityManager = container.resolve("manager")
-  const customerId = data[Aliases.Cart].customer_id
+  const customerId = data[Aliases.Customer].customer_id
   const customerServiceTx = customerService.withTransaction(entityManager)
 
   if (customerId) {
@@ -38,7 +38,7 @@ export async function attachCustomerDetailsToCart({
     customerDTO.email = customer?.email
   }
 
-  const customerEmail = data[Aliases.Cart].email
+  const customerEmail = data[Aliases.Customer].email
 
   if (customerEmail) {
     const validatedEmail = validateEmail(customerEmail)
@@ -58,4 +58,4 @@ export async function attachCustomerDetailsToCart({
   return customerDTO
 }
 
-attachCustomerDetailsToCart.aliases = Aliases
+findOrCreateCustomer.aliases = Aliases

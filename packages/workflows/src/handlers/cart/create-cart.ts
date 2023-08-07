@@ -2,33 +2,31 @@ import { WorkflowArguments } from "../../helper"
 import { CartDTO } from "../../types"
 
 enum Aliases {
-  Cart = "cart",
-  CartAddresses = "cartAddresses",
-  CartCustomer = "cartCustomer",
-  CartRegion = "cartRegion",
-  CartContext = "cartContext",
+  Addresses = "addresses",
+  Customer = "customer",
+  Region = "region",
+  Context = "context",
 }
 
 type HandlerInputData = {
-  cart: {
-    config?: Record<any, any>
-  }
-  cartAddresses: {
+  addresses: {
     shipping_address_id: string
     billing_address_id: string
   }
-  cartCustomer: {
+  customer: {
     customer_id?: string
     email?: string
   }
-  cartRegion: {
+  region: {
     region_id: string
+  }
+  context: {
+    context: Record<any, any>
   }
 }
 
 type HandlerOutputData = {
   cart: CartDTO
-  config: Record<any, any>
 }
 
 export async function createCart({
@@ -39,22 +37,15 @@ export async function createCart({
   const cartService = container.resolve("cartService")
   const entityManager = container.resolve("manager")
   const cartServiceTx = cartService.withTransaction(entityManager)
-  const config = data[Aliases.Cart].config || {}
-
-  delete data[Aliases.Cart].config
 
   const cart = await cartServiceTx.create({
-    ...data[Aliases.Cart],
-    ...data[Aliases.CartAddresses],
-    ...data[Aliases.CartCustomer],
-    ...data[Aliases.CartRegion],
-    ...data[Aliases.CartContext],
+    ...data[Aliases.Addresses],
+    ...data[Aliases.Customer],
+    ...data[Aliases.Region],
+    ...data[Aliases.Context],
   })
 
-  return {
-    cart,
-    config,
-  }
+  return cart
 }
 
 createCart.aliases = Aliases

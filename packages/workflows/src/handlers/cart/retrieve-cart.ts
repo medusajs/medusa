@@ -3,12 +3,19 @@ import { CartDTO } from "../../types"
 
 type HandlerInputData = {
   cart: {
-    id?: string
+    id: string
+  }
+  config: {
+    retrieveConfig: {
+      select: string[]
+      relations: string[]
+    }
   }
 }
 
 enum Aliases {
-  CreatedCart = "createdCart",
+  Cart = "cart",
+  Config = "config",
 }
 
 export async function retrieveCart({
@@ -19,15 +26,15 @@ export async function retrieveCart({
   const cartService = container.resolve("cartService")
   const entityManager = container.resolve("manager")
   const cartServiceTx = cartService.withTransaction(entityManager)
-  const cart = data[Aliases.CreatedCart].cart
-  const config = data[Aliases.CreatedCart].config
-  const relations = config.retrieveConfig?.relations || []
-  const fields = config.retrieveConfig?.fields || []
+  const cart = data[Aliases.Cart]
+  const config = data[Aliases.Config].retrieveConfig
 
-  return await cartServiceTx.retrieve(cart.id, {
-    relations,
-    fields,
+  const retrieved = await cartServiceTx.retrieve(cart.id, {
+    relations: config.relations,
+    select: config.select,
   })
+
+  return retrieved
 }
 
 retrieveCart.aliases = Aliases

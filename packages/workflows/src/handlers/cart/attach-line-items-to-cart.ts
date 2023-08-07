@@ -1,21 +1,19 @@
 import { WorkflowArguments } from "../../helper"
 
 type HandlerInputData = {
-  cart: {
+  line_items: {
     items?: Record<any, any>[]
   }
-  createdCart: {
-    cart: {
-      id: string
-      customer_id: string
-      region_id: string
-    }
+  cart: {
+    id: string
+    customer_id: string
+    region_id: string
   }
 }
 
 enum Aliases {
+  LineItems = "line_items",
   Cart = "cart",
-  CreatedCart = "createdCart",
 }
 
 export async function attachLineItemsToCart({
@@ -29,8 +27,8 @@ export async function attachLineItemsToCart({
   const entityManager = container.resolve("manager")
   const lineItemServiceTx = lineItemService.withTransaction(entityManager)
   const cartServiceTx = cartService.withTransaction(entityManager)
-  let lineItems = data[Aliases.Cart].items
-  const cart = data[Aliases.CreatedCart].cart
+  let lineItems = data[Aliases.LineItems].items
+  const cart = data[Aliases.Cart]
 
   if (lineItems?.length) {
     const generateInputData = lineItems.map((item) => ({
