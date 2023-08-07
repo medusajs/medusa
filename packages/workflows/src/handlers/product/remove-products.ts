@@ -5,7 +5,7 @@ import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 export async function removeProducts({
   container,
   data,
-}: WorkflowArguments<{ products: ProductTypes.ProductDTO[] }>): Promise<void> {
+}: WorkflowArguments<{ products: { id: string }[] }>): Promise<void> {
   if (!data.products.length) {
     return
   }
