@@ -1,17 +1,17 @@
 get:
   operationId: GetReturns
   summary: List Returns
-  description: Retrieves a list of Returns
+  description: Retrieve a list of Returns. The returns can be paginated.
   parameters:
     - in: query
       name: limit
-      description: The upper limit for the amount of responses returned.
+      description: Limit the number of Returns returned.
       schema:
         type: number
         default: '50'
     - in: query
       name: offset
-      description: The offset of the list returned.
+      description: The number of Returns to skip when retrieving the Returns.
       schema:
         type: number
         default: '0'

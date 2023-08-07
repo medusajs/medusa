@@ -3,5 +3,5 @@ required:
   - provider_id
 properties:
   provider_id:
-    description: The ID of the Payment Provider to add.
+    description: The ID of the Payment Provider.
     type: string

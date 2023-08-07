@@ -1,27 +1,30 @@
 get:
   operationId: GetStockLocations
   summary: List Stock Locations
-  description: Retrieves a list of stock locations
+  description: >-
+    Retrieve a list of stock locations. The stock locations can be filtered by
+    fields such as `name` or `created_at`. The stock locations can also be
+    sorted or paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: id
-      description: ID of the stock location
+      description: Filter by ID.
       schema:
         type: string
     - in: query
       name: name
-      description: Name of the stock location
+      description: Filter by name.
       schema:
         type: string
     - in: query
       name: order
-      description: The field to order the results by.
+      description: A stock-location field to sort-order the retrieved stock locations by.
       schema:
         type: string
     - in: query
       name: created_at
-      description: Date comparison for when resulting collections were created.
+      description: Filter by a creation date range.
       schema:
         type: object
         properties:
@@ -43,7 +46,7 @@ get:
             format: date
     - in: query
       name: updated_at
-      description: Date comparison for when resulting collections were updated.
+      description: Filter by an update date range.
       schema:
         type: object
         properties:
@@ -65,7 +68,7 @@ get:
             format: date
     - in: query
       name: deleted_at
-      description: Date comparison for when resulting collections were deleted.
+      description: Filter by a deletion date range.
       schema:
         type: object
         properties:
@@ -87,7 +90,9 @@ get:
             format: date
     - in: query
       name: offset
-      description: How many stock locations to skip in the result.
+      description: >-
+        The number of stock locations to skip when retrieving the stock
+        locations.
       schema:
         type: integer
         default: 0
@@ -100,15 +105,15 @@ get:
     - in: query
       name: expand
       description: >-
-        (Comma separated) Which fields should be expanded in each stock location
-        of the result.
+        Comma-separated relations that should be expanded in the returned stock
+        locations.
       schema:
         type: string
     - in: query
       name: fields
       description: >-
-        (Comma separated) Which fields should be included in each stock location
-        of the result.
+        Comma-separated fields that should be included in the returned stock
+        locations.
       schema:
         type: string
   x-codegen:
@@ -150,17 +155,21 @@ get:
 post:
   operationId: PostStockLocations
   summary: Create a Stock Location
-  description: Creates a Stock Location.
+  description: Create a Stock Location.
   x-authenticated: true
   parameters:
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the results.
+      description: >-
+        Comma-separated relations that should be expanded in the returned stock
+        location.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the results.
+      description: >-
+        Comma-separated fields that should be included in the returned stock
+        location.
       schema:
         type: string
   requestBody:

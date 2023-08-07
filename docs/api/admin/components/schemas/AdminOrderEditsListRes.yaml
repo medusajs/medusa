@@ -42,6 +42,7 @@ required:
 properties:
   order_edits:
     type: array
+    description: An array of order edit details
     items:
       $ref: ./OrderEdit.yaml
   count:
@@ -49,7 +50,7 @@ properties:
     description: The total number of items available
   offset:
     type: integer
-    description: The number of items skipped before these items
+    description: The number of order edits skipped when retrieving the order edits.
   limit:
     type: integer
     description: The number of items per page

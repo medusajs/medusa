@@ -1,2 +1,2 @@
-curl --location --request GET 'https://medusa-url.com/admin/publishable-api-keys' \
---header 'Authorization: Bearer {api_token}'
+curl 'https://medusa-url.com/admin/publishable-api-keys' \
+-H 'Authorization: Bearer {api_token}'

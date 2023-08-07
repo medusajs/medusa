@@ -1,7 +1,7 @@
 get:
   operationId: GetDiscountsDiscountCode
   summary: Get Discount by Code
-  description: Retrieves a Discount by its discount code
+  description: Retrieve a Discount's details by its discount code
   x-authenticated: true
   parameters:
     - in: path
@@ -12,12 +12,14 @@ get:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the results.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        discount.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the results.
+      description: Comma-separated fields that should be included in the returned discount.
       schema:
         type: string
   x-codegen:

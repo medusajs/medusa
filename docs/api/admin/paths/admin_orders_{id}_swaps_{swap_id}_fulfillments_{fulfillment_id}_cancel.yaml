@@ -1,35 +1,35 @@
 post:
   operationId: PostOrdersSwapFulfillmentsCancel
   summary: Cancel Swap's Fulfilmment
-  description: Registers a Swap's Fulfillment as canceled.
+  description: Cancel a swap's fulfillment and change its status.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Order which the Swap relates to.
+      description: The ID of the order the swap is associated with.
       schema:
         type: string
     - in: path
       name: swap_id
       required: true
-      description: The ID of the Swap which the Fulfillment relates to.
+      description: The ID of the swap.
       schema:
         type: string
     - in: path
       name: fulfillment_id
       required: true
-      description: The ID of the Fulfillment.
+      description: The ID of the fulfillment.
       schema:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   x-codegen:

@@ -1,1 +1,1 @@
-curl --location --request GET 'https://medusa-url.com/store/regions/{id}'
+curl 'https://medusa-url.com/store/regions/{id}'
