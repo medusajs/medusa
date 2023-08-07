@@ -281,7 +281,7 @@ const handlers = new Map([
         },
         async ({ data }) => {
           return {
-            alias: ProductHandlers.listProducts.aliases.productIds,
+            alias: ProductHandlers.listProducts.aliases.ids,
             value: data.products.map((product) => product.id),
           }
         },

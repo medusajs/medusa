@@ -2,7 +2,7 @@ import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 type HandlerInput = {
-  productIds: string[]
+  ids: string[]
   config?: WorkflowTypes.CommonWorkflow.WorkflowInputConfig
 }
 
@@ -14,7 +14,7 @@ export async function listProducts({
 WorkflowArguments<HandlerInput>): Promise<ProductTypes.ProductDTO[]> {
   const { manager } = context
 
-  const productIds = data.productIds
+  const productIds = data.ids
   const listConfig = data.config?.listConfig ?? {}
 
   const productService = container.resolve("productService")
@@ -43,5 +43,5 @@ WorkflowArguments<HandlerInput>): Promise<ProductTypes.ProductDTO[]> {
 }
 
 listProducts.aliases = {
-  productIds: "productIds",
+  ids: "ids",
 }
