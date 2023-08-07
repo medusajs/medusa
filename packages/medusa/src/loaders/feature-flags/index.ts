@@ -1,9 +1,13 @@
+import {
+  FlagRouter,
+  isObject,
+  isString,
+  objectFromStringPath,
+} from "@medusajs/utils"
 import glob from "glob"
-import path from "path"
-
-import { FlagRouter, objectFromStringPath } from "@medusajs/utils"
 import { isDefined } from "medusa-core-utils"
 import { trackFeatureFlag } from "medusa-telemetry"
+import path from "path"
 import { FlagSettings } from "../../types/feature-flags"
 import { Logger } from "../../types/global"
 
@@ -44,28 +48,28 @@ export default (
       from = "environment"
       const envVal = process.env[flagSettings.env_key]
 
+      // MEDUSA_FF_ANALYTICS="true"
+      flagConfig[flagSettings.key] = isTruthy(process.env[flagSettings.env_key])
+
+      const parsedFromEnv = isString(envVal) ? envVal.split(",") : []
+
       // MEDUSA_FF_WORKFLOWS=createProducts,deleteProducts
-      if (envVal && envVal.split(",").length > 1) {
-        flagConfig[flagSettings.key] = objectFromStringPath(envVal.split(","))
-      } else {
-        // MEDUSA_FF_ANALYTICS="true"
-        flagConfig[flagSettings.key] = isTruthy(
-          process.env[flagSettings.env_key]
-        )
+      if (parsedFromEnv.length > 1) {
+        flagConfig[flagSettings.key] = objectFromStringPath(parsedFromEnv)
       }
     } else if (isDefined(projectConfigFlags[flagSettings.key])) {
       from = "project config"
 
+      // featureFlags: { analytics: "true" | true }
+      flagConfig[flagSettings.key] = isTruthy(
+        projectConfigFlags[flagSettings.key] as string | boolean
+      )
+
       // featureFlags: { workflows: { createProducts: true } }
-      if (typeof projectConfigFlags[flagSettings.key] === `object`) {
+      if (isObject(projectConfigFlags[flagSettings.key])) {
         flagConfig[flagSettings.key] = projectConfigFlags[
           flagSettings.key
         ] as Record<string, boolean>
-      } else {
-        // featureFlags: { analytics: "true" | true }
-        flagConfig[flagSettings.key] = isTruthy(
-          projectConfigFlags[flagSettings.key] as string | boolean
-        )
       }
     }
 

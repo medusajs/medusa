@@ -42,33 +42,34 @@
  * }
  * @param collection
  */
-export function objectFromStringPath(collection: string[]): Record<string, any> {
-    collection = collection.sort()
-    const output: Record<string, any> = {}
-  
-    for (const relation of collection) {
-      if (relation.indexOf(".") > -1) {
-        const nestedRelations = relation.split(".")
-  
-        let parent = output
-  
-        while (nestedRelations.length > 1) {
-          const nestedRelation = nestedRelations.shift() as string
-          parent = parent[nestedRelation] = (
-            parent[nestedRelation] !== true &&
-            typeof parent[nestedRelation] === "object"
-              ? parent[nestedRelation]
-              : {}
-          )
-        }
-  
-        parent[nestedRelations[0]] = true
-  
-        continue
+export function objectFromStringPath(
+  collection: string[]
+): Record<string, any> {
+  collection = collection.sort()
+  const output: Record<string, any> = {}
+
+  for (const relation of collection) {
+    if (relation.indexOf(".") > -1) {
+      const nestedRelations = relation.split(".")
+
+      let parent = output
+
+      while (nestedRelations.length > 1) {
+        const nestedRelation = nestedRelations.shift() as string
+        parent = parent[nestedRelation] =
+          parent[nestedRelation] !== true &&
+          typeof parent[nestedRelation] === "object"
+            ? parent[nestedRelation]
+            : {}
       }
-  
-      output[relation] = output[relation] ?? true
+
+      parent[nestedRelations[0]] = true
+
+      continue
     }
-  
-    return output
+
+    output[relation] = output[relation] ?? true
   }
+
+  return output
+}

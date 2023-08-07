@@ -1,7 +1,8 @@
 import { FeatureFlagTypes } from "@medusajs/types"
+import { isObject, isString } from "@medusajs/utils"
 
 export class FlagRouter implements FeatureFlagTypes.IFlagRouter {
-  private flags: Record<string, boolean | Record<string, boolean>> = {}
+  private readonly flags: Record<string, boolean | Record<string, boolean>> = {}
 
   constructor(flags: Record<string, boolean | Record<string, boolean>>) {
     this.flags = flags
@@ -19,13 +20,16 @@ export class FlagRouter implements FeatureFlagTypes.IFlagRouter {
    * @return {boolean} - Whether the flag is enabled or not
    */
   public isFeatureEnabled(flag: string | Record<string, string>): boolean {
-    if (typeof flag === `string`) {
+    if (isString(flag)) {
       return !!this.flags[flag]
     }
 
-    const [nestedFlag, value] = Object.entries(flag)[0]
+    if (isObject(flag)) {
+      const [nestedFlag, value] = Object.entries(flag)[0]
+      return !!this.flags[nestedFlag]?.[value]
+    }
 
-    return !!this.flags[nestedFlag]?.[value]
+    throw Error("Flag must be a string or an object")
   }
 
   /**
@@ -42,7 +46,7 @@ export class FlagRouter implements FeatureFlagTypes.IFlagRouter {
     key: string,
     value: boolean | { [key: string]: boolean }
   ): void {
-    if (typeof value === `object`) {
+    if (isObject(value)) {
       const existing = this.flags[key]
 
       if (!existing) {
