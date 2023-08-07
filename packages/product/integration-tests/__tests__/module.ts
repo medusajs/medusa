@@ -6,8 +6,9 @@ import { createProductAndTags } from "../__fixtures__/product"
 import { productsData } from "../__fixtures__/product/data"
 import { DB_URL, TestDatabase } from "../utils"
 import { buildProductAndRelationsData } from "../__fixtures__/product/data/create-product"
-import { kebabCase } from "@medusajs/utils"
+
 import { IProductModuleService } from "@medusajs/types"
+import { kebabCase } from "@medusajs/utils"
 
 const beforeEach_ = async () => {
   await TestDatabase.setupDatabase()
@@ -230,7 +231,6 @@ describe("Product module", function () {
       const products = await module.create([data])
 
       await module.softDelete([products[0].id])
-
       const deletedProducts = await module.list(
         { id: products[0].id },
         {

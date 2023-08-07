@@ -12,7 +12,7 @@ In this document, you’ll learn about the different resources you need and the 
 
 ## Overview
 
-Although Medusa provides a Next.js Starter Template, you have full freedom in how you choose to build your storefront. This includes anything from what framework you choose to what functionalities you choose to include.
+Although Medusa provides a [Next.js Starter Template](../starters/nextjs-medusa-starter.mdx), you have full freedom in how you choose to build your storefront. This includes anything from what framework you choose to what functionalities you choose to include.
 
 This guide provides a roadmap that can guide you into how you can build your own storefront, regardless of what tools you’re using.
 
@@ -36,11 +36,11 @@ In the store how-to guides that are available throughout the documentation, you�
 
 Your Medusa backend uses Cross-Origin Resource Sharing (CORS) to ensure that only the hosts you specify can access your backend’s resources. Make sure to set your Medusa backend’s `store_cors` option to your storefront’s URL.
 
-During development, its value would typically be something like `localhost:8000` or any other port you’re using. For production, its value would be the public URL of the storefront. To make the development process easier, you can manage that using environment variables.
+During development, its value would typically be something like `localhost:8000` or any other port you’re using for your storefront project. For production, its value would be the public URL of the storefront. To make the development process easier, you can manage that using environment variables.
 
 <DocCard item={{
   type: 'link',
-  href: '/development/backend/configurations#storefront-cors',
+  href: '/development/backend/configurations#admin_cors-and-store_cors',
   label: 'Set store_cors in Configurations',
   customProps: {
     icon: Icons['academic-cap-solid'],
@@ -50,9 +50,13 @@ During development, its value would typically be something like `localhost:8000`
 
 ### Creating a Publishable API Key
 
-Publishable API Keys are used to scope API requests to defined resources.
+Publishable API Keys are used to scope API requests to defined resources, such as sales channels. By using a publishable API key in your request, you avoid the need to pass the sales channel(s) of your storefront in every request, which can be error-prone.
 
-For example, you can create a publishable API key and associate it with one or more sales channels. Then, when you pass the publishable API key to the List Products endpoint, only products associated with that sales channel will be retrieved.
+Also, when you're using Medusa's JS or React clients, you can pass the publishable API key when you first initialize the clients and it will be appended to all requests you send.
+
+For example, you can create a publishable API key and associate it with one or more sales channels. Then, when you pass the publishable API key in the header of the request to the List Products endpoint, only products associated with that sales channel will be retrieved. The alternative would be to pass the sales channels as query parameters to the request.
+
+There are two ways to create a publishable API Key: either using the admin dashboard, which requires the admin plugin to be installed on your Medusa backend, or using the Admin REST APIs.
 
 <DocCardList colSize={6} items={[
   {
@@ -75,6 +79,8 @@ For example, you can create a publishable API key and associate it with one or m
   },
 ]} />
 
+After creating the publishable API key and associating it with sales channels, you can pass it in the header of your requests to Store API endpoints.
+
 <DocCard item={{
   type: 'link',
   href: '/development/publishable-api-keys/storefront/use-in-requests',
@@ -94,6 +100,8 @@ This section will briefly touch upon some of the basic functionalities that are 
 ### Regions Selection
 
 Regions allow businesses to serve customers globally. On a storefront, the customer should be able to select their region.
+
+Changing the region may also change the currency, pricing, discounts, and available shipping and payment options based on the store's configurations.
 
 <DocCard item={{
   type: 'link',
@@ -127,7 +135,7 @@ Customers should be able to add products to cart and go through the checkout flo
   {
     type: 'link',
     href: '/modules/carts-and-checkout/storefront/implement-cart',
-    label: 'Implement Cart Functionalities',
+    label: 'Step 1: Implement Cart Functionalities',
     customProps: {
       icon: Icons['academic-cap-solid'],
       html: 'Learn how to implement the cart functionalities in your storefront.',
@@ -136,7 +144,7 @@ Customers should be able to add products to cart and go through the checkout flo
   {
     type: 'link',
     href: '/modules/carts-and-checkout/storefront/implement-checkout-flow',
-    label: 'Implement Checkout Flow',
+    label: 'Step 2: Implement Checkout Flow',
     customProps: {
       icon: Icons['academic-cap-solid'],
       html: 'Learn how to implement the checkout flow in your storefront.',

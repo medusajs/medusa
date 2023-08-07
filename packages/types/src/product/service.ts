@@ -1,30 +1,30 @@
 import {
+  CreateProductCategoryDTO,
+  CreateProductCollectionDTO,
   CreateProductDTO,
+  CreateProductOptionDTO,
   CreateProductTagDTO,
   CreateProductTypeDTO,
-  CreateProductOptionDTO,
-  CreateProductCategoryDTO,
-  UpdateProductTagDTO,
-  UpdateProductTypeDTO,
-  UpdateProductOptionDTO,
-  UpdateProductCategoryDTO,
-  UpdateProductDTO,
   FilterableProductCategoryProps,
   FilterableProductCollectionProps,
+  FilterableProductOptionProps,
   FilterableProductProps,
   FilterableProductTagProps,
   FilterableProductTypeProps,
-  FilterableProductOptionProps,
   FilterableProductVariantProps,
   ProductCategoryDTO,
   ProductCollectionDTO,
   ProductDTO,
+  ProductOptionDTO,
   ProductTagDTO,
   ProductTypeDTO,
-  ProductOptionDTO,
   ProductVariantDTO,
-  CreateProductCollectionDTO,
+  UpdateProductCategoryDTO,
   UpdateProductCollectionDTO,
+  UpdateProductDTO,
+  UpdateProductOptionDTO,
+  UpdateProductTagDTO,
+  UpdateProductTypeDTO,
 } from "./common"
 
 import { Context } from "../shared-context"
@@ -72,18 +72,15 @@ export interface IProductModuleService {
 
   createTags(
     data: CreateProductTagDTO[],
-    sharedContext?: Context,
+    sharedContext?: Context
   ): Promise<ProductTagDTO[]>
 
   updateTags(
     data: UpdateProductTagDTO[],
-    sharedContext?: Context,
+    sharedContext?: Context
   ): Promise<ProductTagDTO[]>
 
-  deleteTags(
-    productTagIds: string[],
-    sharedContext?: Context,
-  ): Promise<void>
+  deleteTags(productTagIds: string[], sharedContext?: Context): Promise<void>
 
   retrieveType(
     typeId: string,
@@ -105,18 +102,15 @@ export interface IProductModuleService {
 
   createTypes(
     data: CreateProductTypeDTO[],
-    sharedContext?: Context,
+    sharedContext?: Context
   ): Promise<ProductTypeDTO[]>
 
   updateTypes(
     data: UpdateProductTypeDTO[],
-    sharedContext?: Context,
+    sharedContext?: Context
   ): Promise<ProductTypeDTO[]>
 
-  deleteTypes(
-    productTypeIds: string[],
-    sharedContext?: Context,
-  ): Promise<void>
+  deleteTypes(productTypeIds: string[], sharedContext?: Context): Promise<void>
 
   retrieveOption(
     optionId: string,
@@ -138,17 +132,17 @@ export interface IProductModuleService {
 
   createOptions(
     data: CreateProductOptionDTO[],
-    sharedContext?: Context,
+    sharedContext?: Context
   ): Promise<ProductOptionDTO[]>
 
   updateOptions(
     data: UpdateProductOptionDTO[],
-    sharedContext?: Context,
+    sharedContext?: Context
   ): Promise<ProductOptionDTO[]>
 
   deleteOptions(
     productOptionIds: string[],
-    sharedContext?: Context,
+    sharedContext?: Context
   ): Promise<void>
 
   retrieveVariant(
@@ -189,17 +183,17 @@ export interface IProductModuleService {
 
   createCollections(
     data: CreateProductCollectionDTO[],
-    sharedContext?: Context,
+    sharedContext?: Context
   ): Promise<ProductCollectionDTO[]>
 
   updateCollections(
     data: UpdateProductCollectionDTO[],
-    sharedContext?: Context,
+    sharedContext?: Context
   ): Promise<ProductCollectionDTO[]>
 
   deleteCollections(
     productCollectionIds: string[],
-    sharedContext?: Context,
+    sharedContext?: Context
   ): Promise<void>
 
   retrieveCategory(
@@ -222,19 +216,16 @@ export interface IProductModuleService {
 
   createCategory(
     data: CreateProductCategoryDTO,
-    sharedContext?: Context,
+    sharedContext?: Context
   ): Promise<ProductCategoryDTO>
 
   updateCategory(
     categoryId: string,
     data: UpdateProductCategoryDTO,
-    sharedContext?: Context,
+    sharedContext?: Context
   ): Promise<ProductCategoryDTO>
 
-  deleteCategory(
-    categoryId: string,
-    sharedContext?: Context,
-  ): Promise<void>
+  deleteCategory(categoryId: string, sharedContext?: Context): Promise<void>
 
   create(
     data: CreateProductDTO[],
@@ -248,10 +239,11 @@ export interface IProductModuleService {
 
   delete(productIds: string[], sharedContext?: Context): Promise<void>
 
-  softDelete(
+  softDelete<TReturnableLinkableKeys extends string = string>(
     productIds: string[],
+    config?: { returnLinkableKeys?: TReturnableLinkableKeys[] },
     sharedContext?: Context
-  ): Promise<ProductDTO[]>
+  ): Promise<Record<string, string[]> | void>
 
   restore(productIds: string[], sharedContext?: Context): Promise<ProductDTO[]>
 }

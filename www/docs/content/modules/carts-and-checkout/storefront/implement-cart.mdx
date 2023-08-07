@@ -214,12 +214,16 @@ if (id) {
 <TabItem value="medusa-react" label="Medusa React" default>
 
 ```tsx
-import { useGetCart } from "medusa-react"
+import { useCart } from "medusa-react"
 
 const Cart = () => {
-  const { cart, isLoading } = useGetCart(cart_id)
-  
-  // ...
+  const { cart } = useCart()
+
+  return (
+    <div>
+      Items in Cart: {cart?.items.length || 0}
+    </div>
+  )
 }
 
 export default Cart

@@ -1,8 +1,4 @@
 import {
-  CreateProductVariantInput,
-  ProductVariantPricesCreateReq,
-} from "../../../../types/product-variant"
-import {
   IsArray,
   IsBoolean,
   IsEnum,
@@ -12,6 +8,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   PricingService,
   ProductService,
@@ -27,22 +24,25 @@ import {
   ProductTypeReq,
 } from "../../../../types/product"
 import {
+  CreateProductVariantInput,
+  ProductVariantPricesCreateReq,
+} from "../../../../types/product-variant"
+import {
   createVariantsTransaction,
   revertVariantTransaction,
 } from "./transaction/create-product-variant"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
 import { DistributedTransaction } from "@medusajs/orchestration"
-import { EntityManager } from "typeorm"
-import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { FlagRouter } from "../../../../utils/flag-router"
-import { IInventoryService } from "@medusajs/types"
-import { Logger } from "../../../../types/global"
-import { ProductStatus } from "../../../../models"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
+import { FlagRouter } from "@medusajs/utils"
+import { Workflows, createProducts } from "@medusajs/workflows"
 import { Type } from "class-transformer"
-import { createProductsWorkflow } from "../../../../workflows/admin/create-products"
-import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { ProductStatus } from "../../../../models"
+import { Logger } from "../../../../types/global"
+import { validator } from "../../../../utils"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 
 /**
  * @oas [post] /admin/products
@@ -132,14 +132,37 @@ export default async (req, res) => {
   const entityManager: EntityManager = req.scope.resolve("manager")
   const productModuleService = req.scope.resolve("productModuleService")
 
-  if (productModuleService) {
-    const products = await createProductsWorkflow(
-      {
-        container: req.scope,
+  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
+    workflows: Workflows.CreateProducts,
+  })
+
+  if (isWorkflowEnabled && !productModuleService) {
+    logger.warn(
+      `Cannot run ${Workflows.CreateProducts} workflow without '@medusajs/product' installed`
+    )
+  }
+
+  if (isWorkflowEnabled && !!productModuleService) {
+    const createProductWorkflow = createProducts(req.scope)
+
+    const input = {
+      products: [
+        validated,
+      ] as WorkflowTypes.ProductWorkflow.CreateProductInputDTO[],
+      config: {
+        listConfig: {
+          select: defaultAdminProductFields,
+          relations: defaultAdminProductRelations,
+        },
+      },
+    }
+
+    const { result: products } = await createProductWorkflow.run({
+      input,
+      context: {
         manager: entityManager,
       },
-      [validated]
-    )
+    })
 
     return res.json({ product: products[0] })
   }

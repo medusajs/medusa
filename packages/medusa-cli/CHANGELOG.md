@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.3.18
+
+### Patch Changes
+
+- [#4696](https://github.com/medusajs/medusa/pull/4696) [`03fb0479c`](https://github.com/medusajs/medusa/commit/03fb0479c0c5389d2569d622b6bec188fcee0ad6) Thanks [@pevey](https://github.com/pevey)! - Feat/allow logging to file
+
+- Updated dependencies [[`5c60aad17`](https://github.com/medusajs/medusa/commit/5c60aad177a99574ffff5ebdc02ce9dc86ef9af9), [`4073b7313`](https://github.com/medusajs/medusa/commit/4073b73130c874dc7d2240726224a01b7b19b1a1)]:
+  - @medusajs/utils@1.9.5
+
 ## 1.3.17
 
 ### Patch Changes

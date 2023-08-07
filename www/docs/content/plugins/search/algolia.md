@@ -194,7 +194,7 @@ const plugins = [
 Run your Medusa backend with the following command:
 
 ```bash npm2yarn
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
 
 The quickest way to test that the integration is working is by sending a `POST` request to `/store/products/search`. This endpoint accepts a `q` body parameter of the query to search for and returns in the result the products that match this query.
@@ -274,7 +274,7 @@ const apiKey =
 export const searchClient = algoliasearch(appId, apiKey)
 
 export const SEARCH_INDEX_NAME =
-  process.env.NEXT_PUBLIC_INDEX_NAME || "products"
+  process.env.NEXT_PUBLIC_SEARCH_INDEX_NAME || "products"
 ```
 
 If you run your Next.js Starter Template now while the Medusa backend is running, the search functionality will be available in your storefront.
