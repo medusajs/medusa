@@ -2,6 +2,7 @@ import { WorkflowArguments } from "../../helper"
 
 type ProductHandle = string
 type ShippingProfileId = string
+type PartialProduct = { handle: string; id: string }
 
 export async function attachShippingProfileToProducts({
   container,
@@ -9,7 +10,7 @@ export async function attachShippingProfileToProducts({
   data,
 }: WorkflowArguments<{
   productsHandleShippingProfileIdMap: Map<ProductHandle, ShippingProfileId>
-  products: { handle: string; id: string }[]
+  products: PartialProduct[]
 }>): Promise<void> {
   const { manager } = context
 
