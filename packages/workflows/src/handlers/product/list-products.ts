@@ -6,12 +6,13 @@ export async function listProducts({
   context,
   data,
 }: WorkflowArguments<{
-  products: ProductTypes.ProductDTO[]
+  productIds: string[]
   config?: WorkflowTypes.CommonWorkflow.WorkflowInputConfig
+  // TODO: should return product DTO or priced product but needs to be created in the types package
 }>): Promise<ProductTypes.ProductDTO[]> {
   const { manager } = context
 
-  const products = data.products
+  const productIds = data.productIds
   const listConfig = data.config?.listConfig ?? {}
 
   const productService = container.resolve("productService")
@@ -30,15 +31,15 @@ export async function listProducts({
     Object.assign(config, { relations: listConfig.relations })
   }
 
-  const rawProduct = await productService
+  const rawProducts = await productService
     .withTransaction(manager as any)
-    .retrieve(products[0].id, shouldUseConfig ? config : undefined)
+    .list({ id: productIds }, shouldUseConfig ? config : undefined)
 
   return await pricingService
     .withTransaction(manager as any)
-    .setProductPrices([rawProduct])
+    .setProductPrices(rawProducts)
 }
 
 listProducts.aliases = {
-  products: "products",
+  productIds: "productIds",
 }

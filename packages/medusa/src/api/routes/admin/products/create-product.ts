@@ -252,11 +252,11 @@ export default async (req, res) => {
         relations: defaultAdminProductRelations,
       })
 
-    const [product] = await pricingService
+    const [products] = await pricingService
       .withTransaction(manager)
       .setProductPrices([rawProduct])
 
-    return product
+    return products[0]
   })
 
   res.json({ product })

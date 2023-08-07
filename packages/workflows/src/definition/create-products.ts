@@ -275,9 +275,15 @@ const handlers = new Map([
             },
             {
               from: Actions.createProducts,
-              alias: ProductHandlers.listProducts.aliases.products,
+              alias: "products",
             },
           ],
+        },
+        async ({ data }) => {
+          return {
+            alias: ProductHandlers.listProducts.aliases.productIds,
+            value: data.products.map((product) => product.id),
+          }
         },
         aggregateData(),
         ProductHandlers.listProducts
