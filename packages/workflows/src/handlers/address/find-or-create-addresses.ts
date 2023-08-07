@@ -25,7 +25,6 @@ enum Aliases {
 
 export async function findOrCreateAddresses({
   container,
-  context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<AddressesDTO> {
   const regionService = container.resolve("regionService")

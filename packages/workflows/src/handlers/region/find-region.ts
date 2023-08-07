@@ -19,7 +19,6 @@ enum Aliases {
 
 export async function findRegion({
   container,
-  context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<RegionDTO> {
   const regionService = container.resolve("regionService")

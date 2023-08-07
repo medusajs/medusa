@@ -22,7 +22,6 @@ enum Aliases {
 
 export async function findSalesChannel({
   container,
-  context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<AttachSalesChannelDTO> {
   const salesChannelService = container.resolve("salesChannelService")

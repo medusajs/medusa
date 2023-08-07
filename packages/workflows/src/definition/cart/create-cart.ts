@@ -2,6 +2,7 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
+import { CartWorkflow } from "@medusajs/types"
 
 import { Workflows } from "../../definitions"
 import {
@@ -229,10 +230,9 @@ const handlers = new Map([
 
 WorkflowManager.register(Workflows.CreateCart, workflowSteps, handlers)
 
-type CreateCartWorkflowInput = Record<any, any>
 type CreateCartWorkflowOutput = Record<any, any>
 
 export const createCart = exportWorkflow<
-  CreateCartWorkflowInput,
+  CartWorkflow.CreateCartInputDTO,
   CreateCartWorkflowOutput
 >(Workflows.CreateCart, CreateCartActions.retrieveCart)

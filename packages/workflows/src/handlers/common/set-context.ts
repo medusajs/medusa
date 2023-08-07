@@ -15,8 +15,6 @@ type HandlerInputData = {
 }
 
 export async function setContext({
-  container,
-  context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<ContextDTO> {
   const contextDTO: ContextDTO = {

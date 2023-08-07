@@ -21,8 +21,6 @@ type HandlerInputData = {
 }
 
 export async function setConfig({
-  container,
-  context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<ConfigDTO> {
   return {
