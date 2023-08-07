@@ -1,4 +1,4 @@
-import { ProductStatus, ProductCategoryDTO } from "@medusajs/types"
+import { ProductUtils } from "@medusajs/utils"
 
 export type ProductEventData = {
   id: string
@@ -20,7 +20,7 @@ export interface UpdateProductDTO {
   images?: { id?: string; url: string }[]
   thumbnail?: string
   handle?: string
-  status?: ProductStatus
+  status?: ProductUtils.ProductStatus
   collection_id?: string
   width?: number
   height?: number

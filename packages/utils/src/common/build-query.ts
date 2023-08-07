@@ -1,5 +1,8 @@
 // Those utils are used in a typeorm context and we can't be sure that they can be used elsewhere
 
+import { objectFromStringPath } from "./object-from-string-path"
+
+
 type Order = {
   [key: string]: "ASC" | "DESC" | Order
 }
@@ -20,79 +23,8 @@ export function buildRelations(relationCollection: string[]): Relations {
   return buildRelationsOrSelect(relationCollection)
 }
 
-/**
- * Convert a collection of dot string into a nested object
- * @example
- * input: [
- *    order,
- *    order.items,
- *    order.swaps,
- *    order.swaps.additional_items,
- *    order.discounts,
- *    order.discounts.rule,
- *    order.claims,
- *    order.claims.additional_items,
- *    additional_items,
- *    additional_items.variant,
- *    return_order,
- *    return_order.items,
- *    return_order.shipping_method,
- *    return_order.shipping_method.tax_lines
- * ]
- * output: {
- *   "order": {
- *     "items": true,
- *     "swaps": {
- *       "additional_items": true
- *     },
- *     "discounts": {
- *       "rule": true
- *     },
- *     "claims": {
- *       "additional_items": true
- *     }
- *   },
- *   "additional_items": {
- *     "variant": true
- *   },
- *   "return_order": {
- *     "items": true,
- *     "shipping_method": {
- *       "tax_lines": true
- *     }
- *   }
- * }
- * @param collection
- */
 function buildRelationsOrSelect(collection: string[]): Selects | Relations {
-  collection = collection.sort()
-  const output: Selects | Relations = {}
-
-  for (const relation of collection) {
-    if (relation.indexOf(".") > -1) {
-      const nestedRelations = relation.split(".")
-
-      let parent = output
-
-      while (nestedRelations.length > 1) {
-        const nestedRelation = nestedRelations.shift() as string
-        parent = parent[nestedRelation] = (
-          parent[nestedRelation] !== true &&
-          typeof parent[nestedRelation] === "object"
-            ? parent[nestedRelation]
-            : {}
-        ) as Selects | Relations
-      }
-
-      parent[nestedRelations[0]] = true
-
-      continue
-    }
-
-    output[relation] = output[relation] ?? true
-  }
-
-  return output
+  return objectFromStringPath(collection)
 }
 
 /**
