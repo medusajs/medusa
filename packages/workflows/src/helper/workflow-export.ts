@@ -25,12 +25,22 @@ export type WorkflowResult<TResult = unknown> = {
   result: TResult
 }
 
+export type WorkflowDataPreparationArguments<TData = any> = {
+  data: TData
+  container: MedusaContainer
+  context: Context
+}
+
 export const exportWorkflow = <TData = unknown, TResult = unknown>(
   workflowId: Workflows,
   defaultResult?: string,
-  dataPreparation?: (data: TData) => Promise<unknown>
+  dataPreparation?: ({
+    data,
+    container,
+    context,
+  }: WorkflowDataPreparationArguments) => Promise<unknown>
 ) => {
-  return function <TDataOverride = undefined, TResultOverride = undefined> (
+  return function <TDataOverride = undefined, TResultOverride = undefined>(
     container?: LoadedModule[] | MedusaContainer
   ): Omit<LocalWorkflow, "run"> & {
     run: (
@@ -64,7 +74,11 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
       if (typeof dataPreparation === "function") {
         try {
           const copyInput = JSON.parse(JSON.stringify(input))
-          input = await dataPreparation(copyInput as TData)
+          input = await dataPreparation({
+            data: copyInput,
+            container,
+            context,
+          } as WorkflowDataPreparationArguments<TData>)
         } catch (err) {
           if (throwOnError) {
             throw new Error(

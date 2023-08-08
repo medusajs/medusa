@@ -34,42 +34,37 @@ export enum AddShippingMethodWorkflowActions {
 }
 
 export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
-  next: {
-    action: AddShippingMethodWorkflowActions.prepare,
-    noCompensation: true,
-    next: [
-      {
-        action: AddShippingMethodWorkflowActions.validateFulfillmentData,
+  next: [
+    {
+      action: AddShippingMethodWorkflowActions.validateFulfillmentData,
+      noCompensation: true,
+    },
+    {
+      action: AddShippingMethodWorkflowActions.validateLineItemShipping,
+      noCompensation: true,
+      saveResponse: false,
+      next: {
+        action: AddShippingMethodWorkflowActions.getOptionPrice,
         noCompensation: true,
-      },
-      {
-        action: AddShippingMethodWorkflowActions.validateLineItemShipping,
-        noCompensation: true,
-        saveResponse: false,
         next: {
-          action: AddShippingMethodWorkflowActions.getOptionPrice,
+          action: AddShippingMethodWorkflowActions.createShippingMethods,
           noCompensation: true,
           next: {
-            action: AddShippingMethodWorkflowActions.createShippingMethods,
-            noCompensation: true,
+            action: AddShippingMethodWorkflowActions.cleanUpShippingMethods,
+            saveResponse: false,
             next: {
-              action: AddShippingMethodWorkflowActions.cleanUpShippingMethods,
+              action: AddShippingMethodWorkflowActions.adjustFreeShipping,
               saveResponse: false,
               next: {
-                action: AddShippingMethodWorkflowActions.adjustFreeShipping,
+                action: AddShippingMethodWorkflowActions.cleanUpPaymentSessions,
                 saveResponse: false,
                 next: {
                   action:
-                    AddShippingMethodWorkflowActions.cleanUpPaymentSessions,
+                    AddShippingMethodWorkflowActions.updatePaymentSessions,
                   saveResponse: false,
                   next: {
-                    action:
-                      AddShippingMethodWorkflowActions.updatePaymentSessions,
-                    saveResponse: false,
-                    next: {
-                      action: AddShippingMethodWorkflowActions.result,
-                      noCompensation: true,
-                    },
+                    action: AddShippingMethodWorkflowActions.result,
+                    noCompensation: true,
                   },
                 },
               },
@@ -77,33 +72,19 @@ export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
           },
         },
       },
-    ],
-  },
+    },
+  ],
 }
 
 const handlers = new Map([
   [
-    AddShippingMethodWorkflowActions.prepare,
+    AddShippingMethodWorkflowActions.validateFulfillmentData,
     {
       invoke: pipe(
         {
           inputAlias: "input",
           invoke: {
             from: "input",
-            alias: "input",
-          },
-        },
-        prepareAddShippingMethodToCartWorkflowData
-      ),
-    },
-  ],
-  [
-    AddShippingMethodWorkflowActions.validateFulfillmentData,
-    {
-      invoke: pipe(
-        {
-          invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
             alias: "dataToValidate",
           },
         },
@@ -117,7 +98,7 @@ const handlers = new Map([
       invoke: pipe(
         {
           invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
+            from: "input",
             alias: "input",
           },
         },
@@ -132,7 +113,7 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: AddShippingMethodWorkflowActions.prepare,
+              from: "input",
               alias: "input",
             },
             {
@@ -153,7 +134,7 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: AddShippingMethodWorkflowActions.prepare,
+              from: "input",
               alias: "input",
             },
             {
@@ -178,7 +159,7 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: AddShippingMethodWorkflowActions.prepare,
+              from: "input",
               alias: "input",
             },
             {
@@ -194,7 +175,7 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: AddShippingMethodWorkflowActions.prepare,
+              from: "input",
               alias: "input",
             },
             {
@@ -213,7 +194,7 @@ const handlers = new Map([
       invoke: pipe(
         {
           invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
+            from: "input",
             alias: "input",
           },
         },
@@ -223,7 +204,7 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: AddShippingMethodWorkflowActions.prepare,
+              from: "input",
               alias: "input",
             },
           ],
@@ -239,7 +220,7 @@ const handlers = new Map([
       invoke: pipe(
         {
           invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
+            from: "input",
             alias: "input",
           },
         },
@@ -249,7 +230,7 @@ const handlers = new Map([
       compensate: pipe(
         {
           invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
+            from: "input",
             alias: "input",
           },
         },
@@ -263,7 +244,7 @@ const handlers = new Map([
       invoke: pipe(
         {
           invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
+            from: "input",
             alias: "input",
           },
         },
@@ -278,7 +259,7 @@ const handlers = new Map([
       invoke: pipe(
         {
           invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
+            from: "input",
             alias: "input",
           },
         },
@@ -299,4 +280,8 @@ export const addShippingMethod = exportWorkflow<
   {
     value: any
   }
->(Workflows.AddShippingMethod, AddShippingMethodWorkflowActions.result)
+>(
+  Workflows.AddShippingMethod,
+  AddShippingMethodWorkflowActions.result,
+  prepareAddShippingMethodToCartWorkflowData
+)

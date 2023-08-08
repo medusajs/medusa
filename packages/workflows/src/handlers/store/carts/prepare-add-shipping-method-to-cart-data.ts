@@ -1,5 +1,5 @@
 import { WorkflowTypes } from "@medusajs/types"
-import { WorkflowArguments } from "../../../helper"
+import { WorkflowDataPreparationArguments } from "../../../helper"
 
 type AddShippingMethodInputData =
   WorkflowTypes.CartWorkflow.AddShippingMethodToCartDTO
@@ -8,12 +8,10 @@ export async function prepareAddShippingMethodToCartWorkflowData({
   container,
   context,
   data,
-}: WorkflowArguments<{
-  input: AddShippingMethodInputData
-}>) {
+}: WorkflowDataPreparationArguments<AddShippingMethodInputData>) {
   const { manager } = context
 
-  const data_ = data.input
+  const data_ = data
 
   const cartService = container.resolve("cartService").withTransaction(manager)
   const shippingOptionService = container
