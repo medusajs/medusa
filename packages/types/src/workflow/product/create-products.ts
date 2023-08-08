@@ -88,10 +88,6 @@ export interface CreateProductInputDTO {
   metadata?: Record<string, unknown>
 
   sales_channels?: CreateProductSalesChannelInputDTO[]
-  listConfig: {
-    select: string[]
-    relations: string[]
-  }
 }
 
 export interface CreateProductsWorkflowInputDTO {
