@@ -798,10 +798,10 @@ class CartService extends TransactionBaseService {
         const existingItems = await lineItemServiceTx.list(
           {
             cart_id: cart.id,
-            variant_id: In([items.map((item) => item.variant_id)]),
+            variant_id: In(items.map((item) => item.variant_id)),
             should_merge: true,
           },
-          { select: ["id", "metadata", "quantity"] }
+          { select: ["id", "metadata", "quantity", "variant_id"] }
         )
 
         const existingItemsVariantMap = new Map()
