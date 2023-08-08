@@ -1,8 +1,14 @@
 post:
   operationId: PostOrdersOrderShipment
-  summary: Create a Shipment
-  description: Registers a Fulfillment as shipped.
+  summary: Ship a Fulfillment
+  description: >-
+    Mark a fulfillment as shipped. This changes the order's fulfillment status
+    to either `shipped` or `partially_shipped`, depending on whether all the
+    items were shipped.
   x-authenticated: true
+  externalDocs:
+    description: Fulfillments of orders
+    url: https://docs.medusajs.com/modules/orders/#fulfillments-in-orders
   parameters:
     - in: path
       name: id
@@ -12,12 +18,12 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   requestBody:

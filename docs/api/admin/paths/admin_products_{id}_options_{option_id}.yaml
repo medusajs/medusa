@@ -1,7 +1,7 @@
 post:
   operationId: PostProductsProductOptionsOption
   summary: Update a Product Option
-  description: Updates a Product Option
+  description: Update a Product Option's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -61,9 +61,8 @@ delete:
   operationId: DeleteProductsProductOptionsOption
   summary: Delete a Product Option
   description: >-
-    Deletes a Product Option. Before a Product Option can be deleted all Option
-    Values for the Product Option must be the same. You may, for example, have
-    to delete some of your variants prior to deleting the Product Option
+    Delete a Product Option. If there are product variants that use this product
+    option, they must be deleted before deleting the product option.
   x-authenticated: true
   parameters:
     - in: path

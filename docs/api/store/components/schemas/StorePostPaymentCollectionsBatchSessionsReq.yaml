@@ -4,9 +4,8 @@ required:
 properties:
   sessions:
     description: >-
-      An array of payment sessions related to the Payment Collection. If the
-      session_id is not provided, existing sessions not present will be deleted
-      and the provided ones will be created.
+      An array of payment sessions related to the Payment Collection. Existing
+      sessions that are not added in this array will be deleted.
     type: array
     items:
       type: object
@@ -19,7 +18,9 @@ properties:
           description: The ID of the Payment Provider.
         amount:
           type: integer
-          description: The amount .
+          description: The payment amount
         session_id:
           type: string
-          description: The ID of the Payment Session to be updated.
+          description: >-
+            The ID of the Payment Session to be updated. If no ID is provided, a
+            new payment session is created.

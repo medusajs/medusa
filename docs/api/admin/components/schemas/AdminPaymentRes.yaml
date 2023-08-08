@@ -3,4 +3,5 @@ required:
   - payment
 properties:
   payment:
+    description: Payment details
     $ref: ./Payment.yaml

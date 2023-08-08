@@ -4,5 +4,6 @@ required:
 properties:
   apps:
     type: array
+    description: An array of app details.
     items:
       $ref: ./OAuth.yaml

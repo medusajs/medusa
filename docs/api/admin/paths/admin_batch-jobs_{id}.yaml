@@ -1,7 +1,7 @@
 get:
   operationId: GetBatchJobsBatchJob
   summary: Get a Batch Job
-  description: Retrieves a Batch Job.
+  description: Retrieve the details of a batch job.
   x-authenticated: true
   parameters:
     - in: path

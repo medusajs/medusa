@@ -16,6 +16,7 @@ required:
 properties:
   shipping_options:
     type: array
+    description: An array of shipping options details.
     items:
       $ref: ./ShippingOption.yaml
   count:
@@ -23,7 +24,9 @@ properties:
     description: The total number of items available
   offset:
     type: integer
-    description: The number of items skipped before these items
+    description: >-
+      The number of shipping options skipped when retrieving the shipping
+      options.
   limit:
     type: integer
     description: The number of items per page

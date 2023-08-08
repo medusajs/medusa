@@ -1,14 +1,16 @@
 get:
   operationId: GetReservations
   summary: List Reservations
-  description: Retrieve a list of Reservations.
+  description: >-
+    Retrieve a list of Reservations. The reservations can be filtered by fields
+    such as `location_id` or `quantity`. The reservations can also be paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: location_id
       style: form
       explode: false
-      description: Location ids to search for.
+      description: Filter by location ID
       schema:
         type: array
         items:
@@ -17,7 +19,7 @@ get:
       name: inventory_item_id
       style: form
       explode: false
-      description: Inventory Item ids to search for.
+      description: Filter by inventory item ID.
       schema:
         type: array
         items:
@@ -26,7 +28,7 @@ get:
       name: line_item_id
       style: form
       explode: false
-      description: Line Item ids to search for.
+      description: Filter by line item ID.
       schema:
         type: array
         items:
@@ -53,10 +55,11 @@ get:
               number
     - in: query
       name: description
-      description: A param for search reservation descriptions
+      description: Filter by description.
       schema:
         oneOf:
           - type: string
+            description: description value to filter by.
           - type: object
             properties:
               contains:
@@ -70,7 +73,7 @@ get:
                 description: filter by reservation description ending with search string.
     - in: query
       name: created_at
-      description: Date comparison for when resulting reservations were created.
+      description: Filter by a creation date range.
       schema:
         type: object
         properties:
@@ -92,28 +95,28 @@ get:
             format: date
     - in: query
       name: offset
-      description: How many Reservations to skip in the result.
+      description: The number of reservations to skip when retrieving the reservations.
       schema:
         type: integer
         default: 0
     - in: query
       name: limit
-      description: Limit the number of Reservations returned.
+      description: Limit the number of reservations returned.
       schema:
         type: integer
         default: 20
     - in: query
       name: expand
       description: >-
-        (Comma separated) Which fields should be expanded in the product
-        category.
+        Comma-separated relations that should be expanded in the returned
+        reservations.
       schema:
         type: string
     - in: query
       name: fields
       description: >-
-        (Comma separated) Which fields should be included in the product
-        category.
+        Comma-separated fields that should be included in the returned
+        reservations.
       schema:
         type: string
   x-codegen:
@@ -155,7 +158,9 @@ get:
 post:
   operationId: PostReservations
   summary: Create a Reservation
-  description: Create a Reservation which can be associated with any resource as required.
+  description: >-
+    Create a Reservation which can be associated with any resource, such as an
+    order's line item.
   x-authenticated: true
   requestBody:
     content:

@@ -1,3 +1,8 @@
+import { MedusaContainer } from "@medusajs/modules-sdk"
+import {
+  Workflows,
+  createCart as createCartWorkflow,
+} from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -7,10 +12,11 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import reqIp from "request-ip"
 import { EntityManager } from "typeorm"
 
+import { Logger } from "@medusajs/types"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { Cart, LineItem } from "../../../../models"
@@ -75,18 +81,56 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *     $ref: "#/components/responses/500_error"
  */
 export default async (req, res) => {
+  const entityManager: EntityManager = req.scope.resolve("manager")
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
   const validated = req.validatedBody as StorePostCartReq
+  const logger: Logger = req.scope.resolve("logger")
 
   const reqContext = {
     ip: reqIp.getClientIp(req),
     user_agent: req.get("user-agent"),
   }
 
+  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
+    workflows: Workflows.CreateCart,
+  })
+
+  if (isWorkflowEnabled) {
+    const cartWorkflow = createCartWorkflow(req.scope as MedusaContainer)
+    const input = {
+      ...validated,
+      publishableApiKeyScopes: req.publishableApiKeyScopes,
+      context: {
+        ...reqContext,
+        ...validated.context,
+      },
+      config: {
+        retrieveConfig: {
+          select: defaultStoreCartFields,
+          relations: defaultStoreCartRelations,
+        },
+      },
+    }
+    const { result, errors } = await cartWorkflow.run({
+      input,
+      context: {
+        manager: entityManager,
+      },
+      throwOnError: false,
+    })
+
+    if (Array.isArray(errors)) {
+      if (isDefined(errors[0])) {
+        throw errors[0].error
+      }
+    }
+
+    return res.status(200).json({ cart: cleanResponseData(result, []) })
+  }
+
   const lineItemService: LineItemService = req.scope.resolve("lineItemService")
   const cartService: CartService = req.scope.resolve("cartService")
   const regionService: RegionService = req.scope.resolve("regionService")
-  const entityManager: EntityManager = req.scope.resolve("manager")
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
   let regionId!: string
   if (isDefined(validated.region_id)) {
