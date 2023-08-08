@@ -120,11 +120,8 @@ export default async (req, res) => {
     })
 
     if (Array.isArray(errors)) {
-      // TODO: Remove this when errors are only coming from invoke
-      const error = errors.find((error) => error.handlerType === "invoke")
-
-      if (isDefined(error)) {
-        throw error.error
+      if (isDefined(errors[0])) {
+        throw errors[0].error
       }
     }
 
