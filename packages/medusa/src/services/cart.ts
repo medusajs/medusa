@@ -1,9 +1,9 @@
 import { isEmpty, isEqual } from "lodash"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomerService,
   CustomShippingOptionService,
+  CustomerService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -26,8 +26,8 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  Customer,
   CustomShippingOption,
+  Customer,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -46,9 +46,9 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
-  isCart,
   LineItemUpdate,
   LineItemValidateData,
+  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -480,7 +480,11 @@ class CartService extends TransactionBaseService {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
-          relations: ["items.variant.product.profiles", "payment_sessions"],
+          relations: [
+            "items.variant.product.profiles",
+            "payment_sessions",
+            "shipping_methods",
+          ],
         })
 
         const lineItem = cart.items.find((item) => item.id === lineItemId)
@@ -488,7 +492,6 @@ class CartService extends TransactionBaseService {
           return cart
         }
 
-        // Remove shipping methods if they are not needed
         if (cart.shipping_methods?.length) {
           await this.shippingOptionService_
             .withTransaction(transactionManager)
@@ -620,7 +623,10 @@ class CartService extends TransactionBaseService {
 
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        let cart = await this.retrieve(cartId, { select })
+        let cart = await this.retrieve(cartId, {
+          select,
+          relations: ["shipping_methods"],
+        })
 
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
           if (config.validateSalesChannels) {
@@ -709,6 +715,12 @@ class CartService extends TransactionBaseService {
             }
             throw err
           })
+
+        if (cart.shipping_methods?.length) {
+          await this.shippingOptionService_
+            .withTransaction(transactionManager)
+            .deleteShippingMethods(cart.shipping_methods)
+        }
 
         cart = await this.retrieve(cart.id, {
           relations: [
@@ -920,6 +932,18 @@ class CartService extends TransactionBaseService {
   ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
+        const select: (keyof Cart)[] = ["id"]
+        if (
+          this.featureFlagRouter_.isFeatureEnabled(SalesChannelFeatureFlag.key)
+        ) {
+          select.push("sales_channel_id")
+        }
+
+        const cart = await this.retrieve(cartId, {
+          select: select,
+          relations: ["shipping_methods"],
+        })
+
         const lineItem = await this.lineItemService_.retrieve(lineItemId, {
           select: ["id", "quantity", "variant_id", "cart_id"],
         })
@@ -934,17 +958,6 @@ class CartService extends TransactionBaseService {
 
         if (lineItemUpdate.quantity) {
           if (lineItem.variant_id) {
-            const select: (keyof Cart)[] = ["id"]
-            if (
-              this.featureFlagRouter_.isFeatureEnabled(
-                SalesChannelFeatureFlag.key
-              )
-            ) {
-              select.push("sales_channel_id")
-            }
-
-            const cart = await this.retrieve(cartId, { select: select })
-
             const hasInventory =
               await this.productVariantInventoryService_.confirmInventory(
                 lineItem.variant_id,
@@ -959,6 +972,12 @@ class CartService extends TransactionBaseService {
               )
             }
           }
+        }
+
+        if (cart.shipping_methods?.length) {
+          await this.shippingOptionService_
+            .withTransaction(transactionManager)
+            .deleteShippingMethods(cart.shipping_methods)
         }
 
         await this.lineItemService_
