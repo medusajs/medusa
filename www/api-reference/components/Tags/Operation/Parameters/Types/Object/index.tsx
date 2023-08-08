@@ -49,13 +49,13 @@ const TagOperationParametersObject = ({
     return <></>
   }
 
-  const getPropertyDescriptionElm = (className?: string) => {
+  const getPropertyDescriptionElm = (expandable = false) => {
     return (
       <TagOperationParametersDefault
         name={name}
         schema={schema}
         isRequired={isRequired}
-        className={className}
+        expandable={expandable}
       />
     )
   }
@@ -119,7 +119,7 @@ const TagOperationParametersObject = ({
   }
 
   return (
-    <Details summaryContent={getPropertyDescriptionElm()}>
+    <Details summaryContent={getPropertyDescriptionElm(true)}>
       {getPropertyParameterElms(true)}
     </Details>
   )

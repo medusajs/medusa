@@ -8,6 +8,7 @@ export type TagOperationParametersDefaultProps = {
   schema: SchemaObject
   isRequired?: boolean
   className?: string
+  expandable?: boolean
 }
 
 const TagOperationParametersDefault = ({
@@ -15,11 +16,14 @@ const TagOperationParametersDefault = ({
   schema,
   isRequired,
   className,
+  expandable = false,
 }: TagOperationParametersDefaultProps) => {
   return (
     <div
       className={clsx(
-        "my-0.5 inline-flex w-[calc(100%-16px)] justify-between",
+        "my-0.5 inline-flex justify-between",
+        expandable && "w-[calc(100%-16px)]",
+        !expandable && "w-full pl-1",
         className
       )}
     >

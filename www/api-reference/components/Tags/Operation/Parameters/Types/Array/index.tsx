@@ -63,6 +63,7 @@ const TagOperationParametersArray = ({
           name={name}
           schema={schema}
           isRequired={isRequired}
+          expandable={true}
         />
       }
     >

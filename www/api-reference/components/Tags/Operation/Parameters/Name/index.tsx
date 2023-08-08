@@ -70,7 +70,9 @@ const TagOperationParametersName = ({
       {isRequired && (
         <>
           <br />
-          <span className="text-medusa-tag-red-text text-[11px]">required</span>
+          <span className="text-medusa-tag-red-text text-compact-x-small">
+            required
+          </span>
         </>
       )}
     </span>

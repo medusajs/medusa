@@ -22,14 +22,20 @@ const Section = ({
   const [finishedInitialScroll, setFinishedInitialScroll] = useState(false)
 
   const handleScroll = useCallback(() => {
+    const headings = [...(sectionRef.current?.querySelectorAll("h2") || [])]
     if (!finishedInitialScroll) {
+      headings.some((heading) => {
+        if (heading.id === location.hash.replace("#", "")) {
+          heading.scrollIntoView()
+          return true
+        }
+      })
       setFinishedInitialScroll(true)
       return
     }
     if (window.scrollY === 0) {
       return
     }
-    const headings = [...(sectionRef.current?.querySelectorAll("h2") || [])]
     headings.some((heading) => {
       if (
         checkElementInViewport(heading.parentElement || heading, 40) &&
@@ -70,12 +76,6 @@ const Section = ({
         section: SidebarItemSections.TOP,
       })
     }
-
-    window.addEventListener("scroll", handleScroll)
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
   }, [
     sectionRef,
     addToSidebar,
@@ -83,20 +83,31 @@ const Section = ({
     scannedHeading,
     activePath,
     setActivePath,
-    handleScroll,
   ])
 
   useEffect(() => {
-    if (activePath && sectionRef.current && !finishedInitialScroll) {
-      const headings = [...sectionRef.current.querySelectorAll("h2")]
-      headings.some((heading) => {
-        if (heading.id === activePath && !checkElementInViewport(heading, 50)) {
-          heading.scrollIntoView()
-          return true
-        }
-      })
+    if (addToSidebar) {
+      handleScroll()
+
+      window.addEventListener("scroll", handleScroll)
+
+      return () => {
+        window.removeEventListener("scroll", handleScroll)
+      }
     }
-  }, [activePath])
+  }, [handleScroll])
+
+  // useEffect(() => {
+  //   if (activePath && sectionRef.current) {
+  //     const headings = [...sectionRef.current.querySelectorAll("h2")]
+  //     headings.some((heading) => {
+  //       if (heading.id === activePath && !checkElementInViewport(heading, 50)) {
+  //         heading.scrollIntoView()
+  //         return true
+  //       }
+  //     })
+  //   }
+  // }, [activePath])
 
   return (
     <div
