@@ -104,7 +104,7 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
     idsOrFilter: string[] | FilterQuery,
     @MedusaContext()
     { transactionManager: manager }: Context = {}
-  ): Promise<T[]> {
+  ): Promise<[T[], Record<string, unknown[]>]> {
     const isArray = Array.isArray(idsOrFilter)
     const filter =
       isArray || typeof idsOrFilter === "string"
@@ -123,7 +123,12 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
 
     await mikroOrmUpdateDeletedAtRecursively(manager, entities, null)
 
-    return entities
+    const softDeletedEntitiesMap = getSoftDeletedCascadedEntitiesIdsMappedBy({
+      entities,
+      restored: true,
+    })
+
+    return [entities, softDeletedEntitiesMap]
   }
 }
 

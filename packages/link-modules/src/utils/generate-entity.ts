@@ -1,5 +1,5 @@
 import { JoinerRelationship, ModuleJoinerConfig } from "@medusajs/types"
-import { SoftDeletableFilterKey, simpleHash } from "@medusajs/utils"
+import { mikroOrmSoftDeletableFilterOptions, simpleHash } from "@medusajs/utils"
 
 import { EntitySchema } from "@mikro-orm/core"
 import { composeTableName } from "./compose-link-name"
@@ -63,18 +63,7 @@ export function generateEntity(
       deleted_at: { type: "Date", nullable: true },
     },
     filters: {
-      notDeleted: {
-        name: SoftDeletableFilterKey,
-        cond: ({ withDeleted }: FilterArguments = {}) => {
-          if (withDeleted) {
-            return {}
-          }
-          return {
-            deleted_at: null,
-          }
-        },
-        default: true,
-      },
+      notDeleted: mikroOrmSoftDeletableFilterOptions,
     },
     indexes: [
       {

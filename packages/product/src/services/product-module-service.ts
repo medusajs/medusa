@@ -1084,7 +1084,7 @@ export default class ProductModuleService<
     },
     sharedContext: Context = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
-    let [products, cascadedEntitiesMap] = await this.softDelete_(
+    const [products, cascadedEntitiesMap] = await this.softDelete_(
       productIds,
       sharedContext
     )
@@ -1122,22 +1122,41 @@ export default class ProductModuleService<
     return await this.productService_.softDelete(productIds, sharedContext)
   }
 
-  async restore(
+  async restore<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
     productIds: string[],
+    {
+      returnLinkableKeys,
+    }: { returnLinkableKeys?: TReturnableLinkableKeys[] } = {
+      returnLinkableKeys: [],
+    },
     sharedContext: Context = {}
-  ): Promise<ProductTypes.ProductDTO[]> {
-    const products = await this.restore_(productIds, sharedContext)
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    const [_, cascadedEntitiesMap] = await this.restore_(
+      productIds,
+      sharedContext
+    )
 
-    return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
-      populate: true,
-    })
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys as string[],
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async restore_(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TProduct[]> {
+  ): Promise<[TProduct[], Record<string, unknown[]>]> {
     return await this.productService_.restore(productIds, sharedContext)
   }
 }

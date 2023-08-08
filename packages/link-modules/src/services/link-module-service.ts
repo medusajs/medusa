@@ -214,19 +214,42 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     return await this.pivotService_.softDelete(data, sharedContext)
   }
 
-  async restore(data: any, sharedContext: Context = {}): Promise<string[]> {
-    const rows = await this.restore_(data, sharedContext)
+  async restore(
+    data: any,
+    { returnLinkableKeys }: { returnLinkableKeys?: string[] } = {
+      returnLinkableKeys: [],
+    },
+    sharedContext: Context = {}
+  ): Promise<[unknown[], Record<string, unknown[]>]> {
+    let [, cascadedEntitiesMap] = await this.restore_(data, sharedContext)
 
-    return this.baseRepository_.serialize(rows, {
-      populate: true,
-    })
+    const pk = this.primaryKey_.join(",")
+    const entityNameToLinkableKeysMap: MapToConfig = {
+      PivotModel: [
+        { mapTo: pk, valueFrom: pk },
+        { mapTo: this.foreignKey_, valueFrom: this.foreignKey_ },
+      ],
+    }
+
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      mappedCascadedEntitiesMap = mapObjectTo<Record<string, string[]>>(
+        cascadedEntitiesMap,
+        entityNameToLinkableKeysMap,
+        {
+          pick: returnLinkableKeys as string[],
+        }
+      )
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async restore_(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<string[]> {
+  ): Promise<[string[], Record<string, string[]>]> {
     return await this.pivotService_.restore(productIds, sharedContext)
   }
 }

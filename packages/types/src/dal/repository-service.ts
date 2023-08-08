@@ -1,6 +1,6 @@
-import { FindOptions } from "./index"
 import { RepositoryTransformOptions } from "../common"
 import { Context } from "../shared-context"
+import { FindOptions } from "./index"
 
 /**
  * Data access layer (DAL) interface to implements for any repository service.
@@ -54,7 +54,10 @@ export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
     context?: Context
   ): Promise<[T[], Record<string, unknown[]>]>
 
-  restore(ids: string[], context?: Context): Promise<T[]>
+  restore(
+    ids: string[],
+    context?: Context
+  ): Promise<[T[], Record<string, unknown[]>]>
 }
 
 export interface TreeRepositoryService<T = any>

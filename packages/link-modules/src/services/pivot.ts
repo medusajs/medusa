@@ -80,7 +80,7 @@ export default class PivotService<TEntity> {
   async restore(
     data: unknown,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<string[]> {
+  ): Promise<[string[], Record<string, string[]>]> {
     return await this.pivotRepository_.restore(data, {
       transactionManager: sharedContext.transactionManager,
     })
