@@ -1,5 +1,9 @@
 export enum Workflows {
+  // Product workflows
   CreateProducts = "create-products",
+
+  // Cart workflows
+  CreateCart = "create-cart",
 }
 
 export enum InputAlias {
