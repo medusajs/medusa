@@ -138,7 +138,11 @@ export type ModuleExports = {
 
 export interface ModuleServiceInitializeOptions {
   database: {
-    clientUrl: string
+    /**
+     * Forces to use a shared knex connection
+     */
+    connection?: any
+    clientUrl?: string
     schema?: string
     driverOptions?: Record<string, unknown>
     debug?: boolean
@@ -147,5 +151,7 @@ export interface ModuleServiceInitializeOptions {
 
 export type ModuleServiceInitializeCustomDataLayerOptions = {
   manager?: any
-  repositories?: { [key: string]: Constructor<RepositoryService> }
+  repositories?: {
+    [key: string]: Constructor<RepositoryService>
+  }
 }

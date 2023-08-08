@@ -14,7 +14,8 @@ export const initialize = async (
   options?:
     | ModulesSdkTypes.ModuleServiceInitializeOptions
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
-    | ExternalModuleDeclaration,
+    | ExternalModuleDeclaration
+    | InternalModuleDeclaration,
   injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<IProductModuleService> => {
   const serviceKey = Modules.PRODUCT
