@@ -1,17 +1,20 @@
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
+type HandlerInput = {
+  ids: string[]
+  config?: WorkflowTypes.CommonWorkflow.WorkflowInputConfig
+}
+
 export async function listProducts({
   container,
   context,
   data,
-}: WorkflowArguments<{
-  products: ProductTypes.ProductDTO[]
-  config?: WorkflowTypes.CommonWorkflow.WorkflowInputConfig
-}>): Promise<ProductTypes.ProductDTO[]> {
+}: // TODO: should return product DTO or priced product but needs to be created in the types package
+WorkflowArguments<HandlerInput>): Promise<ProductTypes.ProductDTO[]> {
   const { manager } = context
 
-  const products = data.products
+  const productIds = data.ids
   const listConfig = data.config?.listConfig ?? {}
 
   const productService = container.resolve("productService")
@@ -30,15 +33,15 @@ export async function listProducts({
     Object.assign(config, { relations: listConfig.relations })
   }
 
-  const rawProduct = await productService
+  const rawProducts = await productService
     .withTransaction(manager as any)
-    .retrieve(products[0].id, shouldUseConfig ? config : undefined)
+    .list({ id: productIds }, shouldUseConfig ? config : undefined)
 
   return await pricingService
     .withTransaction(manager as any)
-    .setProductPrices([rawProduct])
+    .setProductPrices(rawProducts)
 }
 
 listProducts.aliases = {
-  products: "products",
+  ids: "ids",
 }

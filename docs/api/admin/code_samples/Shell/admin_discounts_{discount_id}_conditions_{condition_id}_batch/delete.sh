@@ -1,6 +1,6 @@
-curl --location --request DELETE 'https://medusa-url.com/admin/discounts/{id}/conditions/{condition_id}/batch' \
---header 'Authorization: Bearer {api_token}' \
---header 'Content-Type: application/json' \
+curl -X DELETE 'https://medusa-url.com/admin/discounts/{id}/conditions/{condition_id}/batch' \
+-H 'Authorization: Bearer {api_token}' \
+-H 'Content-Type: application/json' \
 --data-raw '{
     "resources": [{ "id": "item_id" }]
 }'

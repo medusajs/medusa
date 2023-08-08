@@ -1,7 +1,7 @@
 post:
   operationId: PostSalesChannelsChannelProductsBatch
-  summary: Add Products
-  description: Assign a batch of product to a sales channel.
+  summary: Add Products to Sales Channel
+  description: Add a list of products to a sales channel.
   x-authenticated: true
   parameters:
     - in: path
@@ -54,8 +54,11 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteSalesChannelsChannelProductsBatch
-  summary: Delete Products
-  description: Remove a list of products from a sales channel.
+  summary: Remove Products from Sales Channel
+  description: >-
+    Remove a list of products from a sales channel. This does not delete the
+    product. It only removes the association between the product and the sales
+    channel.
   x-authenticated: true
   parameters:
     - in: path

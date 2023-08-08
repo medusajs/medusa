@@ -1,7 +1,9 @@
 get:
   operationId: GetPriceListsPriceListProducts
   summary: List Products
-  description: Retrieves a list of Product that are part of a Price List
+  description: >-
+    Retrieve a price list's products. The products can be filtered by fields
+    such as `q` or `status`. The products can also be sorted or paginated.
   x-authenticated: true
   parameters:
     - in: path
@@ -13,18 +15,18 @@ get:
     - in: query
       name: q
       description: >-
-        Query used for searching product title and description, variant title
-        and sku, and collection title.
+        term used to search products' title, description, product variant's
+        title and sku, and product collection's title.
       schema:
         type: string
     - in: query
       name: id
-      description: ID of the product to search for.
+      description: Filter by product ID
       schema:
         type: string
     - in: query
       name: status
-      description: Product status to search for
+      description: Filter by product status
       style: form
       explode: false
       schema:
@@ -38,7 +40,9 @@ get:
             - rejected
     - in: query
       name: collection_id
-      description: Collection IDs to search for
+      description: >-
+        Filter by product collection ID. Only products in the specified
+        collections are retrieved.
       style: form
       explode: false
       schema:
@@ -47,7 +51,9 @@ get:
           type: string
     - in: query
       name: tags
-      description: Tag IDs to search for
+      description: >-
+        Filter by tag IDs. Only products having the specified tags are
+        retrieved.
       style: form
       explode: false
       schema:
@@ -56,37 +62,37 @@ get:
           type: string
     - in: query
       name: title
-      description: product title to search for.
+      description: Filter by title
       schema:
         type: string
     - in: query
       name: description
-      description: product description to search for.
+      description: Filter by description
       schema:
         type: string
     - in: query
       name: handle
-      description: product handle to search for.
+      description: Filter by handle
       schema:
         type: string
     - in: query
       name: is_giftcard
-      description: Search for giftcards using is_giftcard=true.
+      description: A boolean value to filter by whether the product is a gift card or not.
       schema:
         type: string
     - in: query
       name: type
-      description: to search for.
+      description: Filter product type.
       schema:
         type: string
     - in: query
       name: order
-      description: field to sort results by.
+      description: A product field to sort-order the retrieved products by.
       schema:
         type: string
     - in: query
       name: created_at
-      description: Date comparison for when resulting products were created.
+      description: Filter by a creation date range.
       schema:
         type: object
         properties:
@@ -108,7 +114,7 @@ get:
             format: date
     - in: query
       name: updated_at
-      description: Date comparison for when resulting products were updated.
+      description: Filter by an update date range.
       schema:
         type: object
         properties:
@@ -130,7 +136,7 @@ get:
             format: date
     - in: query
       name: deleted_at
-      description: Date comparison for when resulting products were deleted.
+      description: Filter by a deletion date range.
       schema:
         type: object
         properties:
@@ -152,7 +158,7 @@ get:
             format: date
     - in: query
       name: offset
-      description: How many products to skip in the result.
+      description: The number of products to skip when retrieving the products.
       schema:
         type: integer
         default: 0
@@ -165,15 +171,13 @@ get:
     - in: query
       name: expand
       description: >-
-        (Comma separated) Which fields should be expanded in each product of the
-        result.
+        Comma-separated relations that should be expanded in the returned
+        products.
       schema:
         type: string
     - in: query
       name: fields
-      description: >-
-        (Comma separated) Which fields should be included in each product of the
-        result.
+      description: Comma-separated fields that should be included in the returned products.
       schema:
         type: string
   x-codegen:

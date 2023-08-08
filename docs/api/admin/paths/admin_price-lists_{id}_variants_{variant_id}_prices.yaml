@@ -1,21 +1,19 @@
 delete:
   operationId: DeletePriceListsPriceListVariantsVariantPrices
-  summary: Delete Variant's Prices
+  summary: Delete a Variant's Prices
   description: Delete all the prices related to a specific variant in a price list
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: >-
-        The ID of the Price List that the Money Amounts that will be deleted
-        belongs to.
+      description: The ID of the Price List.
       schema:
         type: string
     - in: path
       name: variant_id
       required: true
-      description: The ID of the variant from which the money amount will be deleted.
+      description: The ID of the variant.
       schema:
         type: string
   x-codegen:

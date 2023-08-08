@@ -4,6 +4,8 @@ required:
 properties:
   shipping_options:
     type: array
-    description: The IDs of the shipping options to remove association with this tax rate
+    description: >-
+      The IDs of the shipping options to remove their association with this tax
+      rate.
     items:
       type: string

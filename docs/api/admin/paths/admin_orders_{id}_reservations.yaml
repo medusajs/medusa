@@ -1,7 +1,7 @@
 get:
   operationId: GetOrdersOrderReservations
-  summary: Get reservations of an Order
-  description: Retrieves reservations of an Order
+  summary: Get Order Reservations
+  description: Retrieve the list of reservations of an Order
   x-authenticated: true
   parameters:
     - in: path
@@ -12,7 +12,7 @@ get:
         type: string
     - in: query
       name: offset
-      description: How many reservations to skip before the results.
+      description: The number of reservations to skip when retrieving the reservations.
       schema:
         type: integer
         default: 0

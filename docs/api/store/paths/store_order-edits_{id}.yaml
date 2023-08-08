@@ -1,7 +1,7 @@
 get:
   operationId: GetOrderEditsOrderEdit
-  summary: Retrieve an OrderEdit
-  description: Retrieves a OrderEdit.
+  summary: Retrieve an Order Edit
+  description: Retrieve an Order Edit's details.
   parameters:
     - in: path
       name: id

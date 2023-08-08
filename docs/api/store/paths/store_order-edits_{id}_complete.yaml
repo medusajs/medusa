@@ -1,7 +1,13 @@
 post:
   operationId: PostOrderEditsOrderEditComplete
-  summary: Completes an OrderEdit
-  description: Completes an OrderEdit.
+  summary: Complete an Order Edit
+  description: >-
+    Complete an Order Edit and reflect its changes on the original order. Any
+    additional payment required must be authorized first using the Payment
+    Collection endpoints.
+  externalDocs:
+    description: How to handle order edits in a storefront
+    url: https://docs.medusajs.com/modules/orders/storefront/handle-order-edits
   parameters:
     - in: path
       name: id

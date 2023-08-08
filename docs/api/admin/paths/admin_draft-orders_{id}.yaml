@@ -1,7 +1,7 @@
 get:
   operationId: GetDraftOrdersDraftOrder
   summary: Get a Draft Order
-  description: Retrieves a Draft Order.
+  description: Retrieve a Draft Order's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -48,7 +48,7 @@ get:
 post:
   operationId: PostDraftOrdersDraftOrder
   summary: Update a Draft Order
-  description: Updates a Draft Order.
+  description: Update a Draft Order's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -100,7 +100,7 @@ post:
 delete:
   operationId: DeleteDraftOrdersDraftOrder
   summary: Delete a Draft Order
-  description: Deletes a Draft Order
+  description: Delete a Draft Order
   x-authenticated: true
   parameters:
     - in: path

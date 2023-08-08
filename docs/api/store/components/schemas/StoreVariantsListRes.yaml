@@ -12,5 +12,6 @@ required:
 properties:
   variants:
     type: array
+    description: An array of product variant descriptions.
     items:
       $ref: ./PricedVariant.yaml

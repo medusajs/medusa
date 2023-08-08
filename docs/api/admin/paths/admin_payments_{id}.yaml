@@ -1,7 +1,7 @@
 get:
   operationId: GetPaymentsPayment
   summary: Get Payment details
-  description: Retrieves the Payment details
+  description: Retrieve a Payment's details.
   x-authenticated: true
   parameters:
     - in: path

@@ -1,23 +1,27 @@
 get:
   operationId: GetPaymentCollectionsPaymentCollection
-  summary: Get a PaymentCollection
-  description: Retrieves a PaymentCollection.
+  summary: Get a Payment Collection
+  description: Retrieve a Payment Collection's details.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the PaymentCollection.
+      description: The ID of the Payment Collection.
       schema:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the results.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        payment collection.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the results.
+      description: >-
+        Comma-separated fields that should be included in the returned payment
+        collection.
       schema:
         type: string
   x-codegen:
@@ -58,14 +62,14 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostPaymentCollectionsPaymentCollection
-  summary: Update PaymentCollection
-  description: Updates a PaymentCollection.
+  summary: Update Payment Collection
+  description: Update a Payment Collection's details.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the PaymentCollection.
+      description: The ID of the Payment Collection.
       schema:
         type: string
   requestBody:
@@ -110,14 +114,16 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeletePaymentCollectionsPaymentCollection
-  summary: Del a PaymentCollection
-  description: Deletes a Payment Collection
+  summary: Delete a Payment Collection
+  description: >-
+    Delete a Payment Collection. Only payment collections with the statuses
+    `canceled` or `not_paid` can be deleted.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Payment Collection to delete.
+      description: The ID of the Payment Collection.
       schema:
         type: string
   x-codegen:

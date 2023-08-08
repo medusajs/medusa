@@ -1,8 +1,9 @@
 post:
   operationId: PostProductCategoriesCategoryProductsBatch
   summary: Add Products to a Category
-  description: Assign a batch of products to a product category.
+  description: Add a list of products to a product category.
   x-authenticated: true
+  x-featureFlag: product_categories
   parameters:
     - in: path
       name: id
@@ -12,12 +13,16 @@ post:
         type: string
     - in: query
       name: expand
-      description: (Comma separated) Category fields to be expanded in the response.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        product category.
       schema:
         type: string
     - in: query
       name: fields
-      description: (Comma separated) Category fields to be retrieved in the response.
+      description: >-
+        Comma-separated fields that should be included in the returned product
+        category.
       schema:
         type: string
   requestBody:
@@ -69,6 +74,7 @@ delete:
   summary: Remove Products from Category
   description: Remove a list of products from a product category.
   x-authenticated: true
+  x-featureFlag: product_categories
   parameters:
     - in: path
       name: id
@@ -78,12 +84,16 @@ delete:
         type: string
     - in: query
       name: expand
-      description: (Comma separated) Category fields to be expanded in the response.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        product category.
       schema:
         type: string
     - in: query
       name: fields
-      description: (Comma separated) Category fields to be retrieved in the response.
+      description: >-
+        Comma-separated fields that should be included in the returned product
+        category.
       schema:
         type: string
   requestBody:

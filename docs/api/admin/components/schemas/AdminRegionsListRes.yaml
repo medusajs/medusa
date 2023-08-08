@@ -16,6 +16,7 @@ required:
 properties:
   regions:
     type: array
+    description: An array of regions details.
     items:
       $ref: ./Region.yaml
   count:
@@ -23,7 +24,7 @@ properties:
     description: The total number of items available
   offset:
     type: integer
-    description: The number of items skipped before these items
+    description: The number of regions skipped when retrieving the regions.
   limit:
     type: integer
     description: The number of items per page

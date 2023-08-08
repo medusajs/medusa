@@ -1,13 +1,13 @@
 get:
   operationId: GetReservationsReservation
   summary: Get a Reservation
-  description: Retrieves a single reservation using its ID
+  description: Retrieve a reservation's details.'
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the reservation to retrieve.
+      description: The ID of the reservation.
       schema:
         type: string
   x-codeSamples:
@@ -46,13 +46,13 @@ get:
 post:
   operationId: PostReservationsReservation
   summary: Update a Reservation
-  description: Updates a Reservation which can be associated with any resource as required.
+  description: Update a Reservation's details.'
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Reservation to update.
+      description: The ID of the Reservation.
       schema:
         type: string
   requestBody:
@@ -96,7 +96,9 @@ post:
 delete:
   operationId: DeleteReservationsReservation
   summary: Delete a Reservation
-  description: Deletes a Reservation.
+  description: >-
+    Delete a Reservation. Associated resources, such as the line item, will not
+    be deleted.
   x-authenticated: true
   parameters:
     - in: path
