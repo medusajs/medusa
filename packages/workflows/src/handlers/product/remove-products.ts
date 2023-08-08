@@ -2,10 +2,12 @@ import { ProductTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 
+type HandlerInput = { products: { id: string }[] }
+
 export async function removeProducts({
   container,
   data,
-}: WorkflowArguments<{ products: ProductTypes.ProductDTO[] }>): Promise<void> {
+}: WorkflowArguments<HandlerInput>): Promise<void> {
   if (!data.products.length) {
     return
   }

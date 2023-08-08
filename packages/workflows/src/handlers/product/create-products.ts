@@ -2,12 +2,14 @@ import { ProductTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
 
+type HandlerInput = {
+  products: ProductTypes.CreateProductDTO[]
+}
+
 export async function createProducts({
   container,
   data,
-}: WorkflowArguments<{
-  products: ProductTypes.CreateProductDTO[]
-}>): Promise<ProductTypes.ProductDTO[]> {
+}: WorkflowArguments<HandlerInput>): Promise<ProductTypes.ProductDTO[]> {
   const data_ = data.products
 
   const productModuleService: ProductTypes.IProductModuleService =

@@ -1,22 +1,26 @@
+import {
+    buildRelations,
+    buildSelects, FlagRouter, objectToStringPath
+} from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import { ProductVariantService, SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
-  Product,
-  ProductCategory,
-  ProductOption,
-  ProductTag,
-  ProductType,
-  ProductVariant,
-  SalesChannel,
-  ShippingProfile,
+    Product,
+    ProductCategory,
+    ProductOption,
+    ProductTag,
+    ProductType,
+    ProductVariant,
+    SalesChannel,
+    ShippingProfile,
 } from "../models"
 import { ImageRepository } from "../repositories/image"
 import {
-  FindWithoutRelationsOptions,
-  ProductRepository,
+    FindWithoutRelationsOptions,
+    ProductRepository,
 } from "../repositories/product"
 import { ProductCategoryRepository } from "../repositories/product-category"
 import { ProductOptionRepository } from "../repositories/product-option"
@@ -25,21 +29,15 @@ import { ProductTypeRepository } from "../repositories/product-type"
 import { ProductVariantRepository } from "../repositories/product-variant"
 import { Selector } from "../types/common"
 import {
-  CreateProductInput,
-  FilterableProductProps,
-  FindProductConfig,
-  ProductOptionInput,
-  ProductSelector,
-  UpdateProductInput,
+    CreateProductInput,
+    FilterableProductProps,
+    FindProductConfig,
+    ProductOptionInput,
+    ProductSelector,
+    UpdateProductInput,
 } from "../types/product"
 import { buildQuery, isString, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
-import {
-  buildRelations,
-  buildSelects,
-  objectToStringPath,
-} from "@medusajs/utils"
 
 type InjectedDependencies = {
   manager: EntityManager

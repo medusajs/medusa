@@ -1,4 +1,4 @@
-import { FlagRouter } from "../../utils/flag-router"
+import { FlagRouter } from "@medusajs/utils"
 import PriceSelectionStrategy from "../price-selection"
 import { cacheServiceMock } from "../../services/__mocks__/cache"
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
