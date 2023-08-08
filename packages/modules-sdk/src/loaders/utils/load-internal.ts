@@ -77,9 +77,9 @@ export async function loadInternalModule(
   const dependencies = resolution?.dependencies ?? []
   if (resources === MODULE_RESOURCE_TYPE.SHARED) {
     dependencies.push(
-      "manager",
-      "configModule",
-      "logger",
+      ContainerRegistrationKeys.MANAGER,
+      ContainerRegistrationKeys.CONFIG_MODULE,
+      ContainerRegistrationKeys.LOGGER,
       ContainerRegistrationKeys.PG_CONNECTION
     )
   }
