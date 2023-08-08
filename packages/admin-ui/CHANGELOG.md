@@ -1,5 +1,11 @@
 # @medusajs/admin-ui
 
+## 1.9.4
+
+### Patch Changes
+
+- [#4670](https://github.com/medusajs/medusa/pull/4670) [`bb534e045`](https://github.com/medusajs/medusa/commit/bb534e0453d3d27e4d5afee120d969f927e8f004) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(admin-ui): Customer Groups in Pricing + TIP
+
 ## 1.9.3
 
 ### Patch Changes

@@ -1,7 +1,10 @@
 post:
   operationId: PostProductsSearch
   summary: Search Products
-  description: Run a search query on products using the search engine installed on Medusa
+  description: >-
+    Run a search query on products using the search service installed on the
+    Medusa backend. The searching is handled through the search service, so the
+    returned data's format depends on the search service you're using.
   requestBody:
     content:
       application/json:

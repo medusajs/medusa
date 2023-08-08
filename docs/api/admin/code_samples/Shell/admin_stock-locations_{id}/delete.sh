@@ -1,2 +1,2 @@
-curl --location --request DELETE 'https://medusa-url.com/admin/stock-locations/{id}' \
---header 'Authorization: Bearer {api_token}'
+curl -X DELETE 'https://medusa-url.com/admin/stock-locations/{id}' \
+-H 'Authorization: Bearer {api_token}'

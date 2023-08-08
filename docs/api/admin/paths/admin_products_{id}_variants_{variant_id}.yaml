@@ -1,7 +1,7 @@
 post:
   operationId: PostProductsProductVariantsVariant
   summary: Update a Product Variant
-  description: Update a Product Variant.
+  description: Update a Product Variant's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -62,7 +62,7 @@ post:
 delete:
   operationId: DeleteProductsProductVariantsVariant
   summary: Delete a Product Variant
-  description: Deletes a Product Variant.
+  description: Delete a Product Variant.
   x-authenticated: true
   parameters:
     - in: path

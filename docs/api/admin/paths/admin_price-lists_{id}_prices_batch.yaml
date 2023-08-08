@@ -1,13 +1,13 @@
 post:
   operationId: PostPriceListsPriceListPricesBatch
-  summary: Update Prices
-  description: Batch update prices for a Price List
+  summary: Add or Update Prices
+  description: Add or update a list of prices in a Price List
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Price List to update prices for.
+      description: The ID of the Price List.
       schema:
         type: string
   requestBody:
@@ -53,15 +53,13 @@ post:
 delete:
   operationId: DeletePriceListsPriceListPricesBatch
   summary: Delete Prices
-  description: Batch delete prices that belong to a Price List
+  description: Delete a list of prices in a Price List
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: >-
-        The ID of the Price List that the Money Amounts (Prices) that will be
-        deleted belongs to.
+      description: The ID of the Price List
       schema:
         type: string
   requestBody:

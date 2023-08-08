@@ -1,18 +1,20 @@
 get:
   operationId: GetBatchJobs
   summary: List Batch Jobs
-  description: Retrieve a list of Batch Jobs.
+  description: >-
+    Retrieve a list of Batch Jobs. The batch jobs can be filtered by fields such
+    as `type` or `confirmed_at`. The batch jobs can also be sorted or paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: limit
-      description: The number of batch jobs to return.
+      description: Limit the number of batch jobs returned.
       schema:
         type: integer
         default: 10
     - in: query
       name: offset
-      description: The number of batch jobs to skip before results.
+      description: The number of batch jobs to skip when retrieving the batch jobs.
       schema:
         type: integer
         default: 0
@@ -42,9 +44,7 @@ get:
       name: confirmed_at
       style: form
       explode: false
-      description: >-
-        Date comparison for when resulting collections was confirmed, i.e. less
-        than, greater than etc.
+      description: Filter by a confirmation date range.
       schema:
         type: object
         properties:
@@ -68,9 +68,7 @@ get:
       name: pre_processed_at
       style: form
       explode: false
-      description: >-
-        Date comparison for when resulting collections was pre processed, i.e.
-        less than, greater than etc.
+      description: Filter by a pre-processing date range.
       schema:
         type: object
         properties:
@@ -94,9 +92,7 @@ get:
       name: completed_at
       style: form
       explode: false
-      description: >-
-        Date comparison for when resulting collections was completed, i.e. less
-        than, greater than etc.
+      description: Filter by a completion date range.
       schema:
         type: object
         properties:
@@ -120,9 +116,7 @@ get:
       name: failed_at
       style: form
       explode: false
-      description: >-
-        Date comparison for when resulting collections was failed, i.e. less
-        than, greater than etc.
+      description: Filter by a failure date range.
       schema:
         type: object
         properties:
@@ -146,9 +140,7 @@ get:
       name: canceled_at
       style: form
       explode: false
-      description: >-
-        Date comparison for when resulting collections was canceled, i.e. less
-        than, greater than etc.
+      description: Filter by a cancelation date range.
       schema:
         type: object
         properties:
@@ -170,30 +162,28 @@ get:
             format: date
     - in: query
       name: order
-      description: Field used to order retrieved batch jobs
+      description: A batch-job field to sort-order the retrieved batch jobs by.
       schema:
         type: string
     - in: query
       name: expand
       description: >-
-        (Comma separated) Which fields should be expanded in each order of the
-        result.
+        Comma-separated relations that should be expanded in the returned batch
+        jobs.
       schema:
         type: string
     - in: query
       name: fields
       description: >-
-        (Comma separated) Which fields should be included in each order of the
-        result.
+        Comma-separated fields that should be included in the returned batch
+        jobs.
       schema:
         type: string
     - in: query
       name: created_at
       style: form
       explode: false
-      description: >-
-        Date comparison for when resulting collections was created, i.e. less
-        than, greater than etc.
+      description: Filter by a creation date range.
       schema:
         type: object
         properties:
@@ -217,9 +207,7 @@ get:
       name: updated_at
       style: form
       explode: false
-      description: >-
-        Date comparison for when resulting collections was updated, i.e. less
-        than, greater than etc.
+      description: Filter by an update date range.
       schema:
         type: object
         properties:
@@ -278,7 +266,13 @@ get:
 post:
   operationId: PostBatchJobs
   summary: Create a Batch Job
-  description: Creates a Batch Job.
+  description: >-
+    Create a Batch Job to be executed asynchronously in the Medusa backend. If
+    `dry_run` is set to `true`, the batch job will not be executed until the it
+    is confirmed, which can be done using the Confirm Batch Job endpoint.
+  externalDocs:
+    description: How to create a batch job
+    url: https://docs.medusajs.com/development/batch-jobs/create#create-batch-job
   x-authenticated: true
   requestBody:
     content:

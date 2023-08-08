@@ -1,1 +1,1 @@
-curl --location --request GET 'https://medusa-url.com/store/product-tags'
+curl 'https://medusa-url.com/store/product-tags'

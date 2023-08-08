@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/modules-sdk",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "SDK for medusa modules",
   "main": "dist/index.js",
   "repository": {
@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "@medusajs/orchestration": "^0.1.0",
-    "@medusajs/types": "^1.9.0",
-    "@medusajs/utils": "^1.9.3",
+    "@medusajs/types": "^1.10.1",
+    "@medusajs/utils": "^1.9.5",
     "awilix": "^8.0.0",
     "resolve-cwd": "^3.0.0"
   },

@@ -7,6 +7,7 @@ required:
 properties:
   customer_groups:
     type: array
+    description: An array of customer group details.
     items:
       $ref: ./CustomerGroup.yaml
   count:
@@ -14,7 +15,7 @@ properties:
     description: The total number of items available
   offset:
     type: integer
-    description: The number of items skipped before these items
+    description: The number of customer groups skipped when retrieving the customer groups.
   limit:
     type: integer
     description: The number of items per page

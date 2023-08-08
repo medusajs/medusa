@@ -51,4 +51,5 @@ required:
   - order
 properties:
   order:
+    description: Order details.
     $ref: ./Order.yaml

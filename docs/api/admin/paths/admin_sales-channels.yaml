@@ -1,37 +1,40 @@
 get:
   operationId: GetSalesChannels
   summary: List Sales Channels
-  description: Retrieves a list of sales channels
+  description: >-
+    Retrieve a list of sales channels. The sales channels can be filtered by
+    fields such as `q` or `name`. The sales channels can also be sorted or
+    paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: id
-      description: ID of the sales channel
+      description: Filter by a sales channel ID.
       schema:
         type: string
     - in: query
       name: name
-      description: Name of the sales channel
+      description: Filter by name.
       schema:
         type: string
     - in: query
       name: description
-      description: Description of the sales channel
+      description: Filter by description.
       schema:
         type: string
     - in: query
       name: q
-      description: Query used for searching sales channels' names and descriptions.
+      description: term used to search sales channels' names and descriptions.
       schema:
         type: string
     - in: query
       name: order
-      description: The field to order the results by.
+      description: A sales-channel field to sort-order the retrieved sales channels by.
       schema:
         type: string
     - in: query
       name: created_at
-      description: Date comparison for when resulting collections were created.
+      description: Filter by a creation date range.
       schema:
         type: object
         properties:
@@ -53,7 +56,7 @@ get:
             format: date
     - in: query
       name: updated_at
-      description: Date comparison for when resulting collections were updated.
+      description: Filter by an update date range.
       schema:
         type: object
         properties:
@@ -75,7 +78,7 @@ get:
             format: date
     - in: query
       name: deleted_at
-      description: Date comparison for when resulting collections were deleted.
+      description: Filter by a deletion date range.
       schema:
         type: object
         properties:
@@ -97,7 +100,7 @@ get:
             format: date
     - in: query
       name: offset
-      description: How many sales channels to skip in the result.
+      description: The number of sales channels to skip when retrieving the sales channels.
       schema:
         type: integer
         default: 0
@@ -110,15 +113,15 @@ get:
     - in: query
       name: expand
       description: >-
-        (Comma separated) Which fields should be expanded in each sales channel
-        of the result.
+        Comma-separated relations that should be expanded in the returned sales
+        channels.
       schema:
         type: string
     - in: query
       name: fields
       description: >-
-        (Comma separated) Which fields should be included in each sales channel
-        of the result.
+        Comma-separated fields that should be included in the returned sales
+        channels.
       schema:
         type: string
   x-codegen:
@@ -160,7 +163,7 @@ get:
 post:
   operationId: PostSalesChannels
   summary: Create a Sales Channel
-  description: Creates a Sales Channel.
+  description: Create a Sales Channel.
   x-authenticated: true
   requestBody:
     content:

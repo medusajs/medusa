@@ -1,13 +1,13 @@
 post:
   operationId: PostPublishableApiKysPublishableApiKey
-  summary: Update PublishableApiKey
-  description: Updates a PublishableApiKey.
+  summary: Update Publishable API Key
+  description: Update a Publishable API Key's details.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the PublishableApiKey.
+      description: The ID of the Publishable API Key.
       schema:
         type: string
   requestBody:

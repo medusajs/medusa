@@ -1,7 +1,7 @@
 get:
   operationId: GetOrdersOrder
   summary: Get an Order
-  description: Retrieves an Order
+  description: Retrieve an Order's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -12,12 +12,12 @@ get:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the results.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the results.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   x-codegen:
@@ -59,7 +59,7 @@ get:
 post:
   operationId: PostOrdersOrder
   summary: Update an Order
-  description: Updates and order
+  description: Update and order's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -70,12 +70,12 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   requestBody:

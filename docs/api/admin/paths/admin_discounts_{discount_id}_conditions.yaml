@@ -2,29 +2,29 @@ post:
   operationId: PostDiscountsDiscountConditions
   summary: Create a Condition
   description: >-
-    Creates a DiscountCondition. Only one of `products`, `product_types`,
+    Create a Discount Condition. Only one of `products`, `product_types`,
     `product_collections`, `product_tags`, and `customer_groups` should be
-    provided.
+    provided, based on the type of discount condition. For example, if the
+    discount condition's type is `products`, the `products` field should be
+    provided in the request body.
   x-authenticated: true
   parameters:
     - in: path
       name: discount_id
       required: true
-      description: The ID of the Product.
+      description: The ID of the discount.
       schema:
         type: string
     - in: query
       name: expand
       description: >-
-        (Comma separated) Which fields should be expanded in each product of the
-        result.
+        Comma-separated relations that should be expanded in the returned
+        discount.
       schema:
         type: string
     - in: query
       name: fields
-      description: >-
-        (Comma separated) Which fields should be included in each product of the
-        result.
+      description: Comma-separated fields that should be included in the returned discount.
       schema:
         type: string
   requestBody:
