@@ -1,3 +1,4 @@
+import { FlagRouter } from "@medusajs/utils"
 import jwt from "jsonwebtoken"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
@@ -8,12 +9,11 @@ import { User } from "../models"
 import { UserRepository } from "../repositories/user"
 import { FindConfig } from "../types/common"
 import {
-  CreateUserInput,
-  FilterableUserProps,
-  UpdateUserInput,
+    CreateUserInput,
+    FilterableUserProps,
+    UpdateUserInput,
 } from "../types/user"
 import { buildQuery, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 import AnalyticsConfigService from "./analytics-config"
 import EventBusService from "./event-bus"
@@ -85,16 +85,16 @@ class UserService extends TransactionBaseService {
     const userRepo = this.activeManager_.withRepository(this.userRepository_)
     const query = buildQuery({ id: userId }, config)
 
-    const user = await userRepo.findOne(query)
+    const users = await userRepo.find(query)
 
-    if (!user) {
+    if (!users.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `User with id: ${userId} was not found`
       )
     }
 
-    return user
+    return users[0]
   }
 
   /**

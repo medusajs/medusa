@@ -1,19 +1,21 @@
 get:
   operationId: GetTaxRates
   summary: List Tax Rates
-  description: Retrieves a list of TaxRates
+  description: >-
+    Retrieve a list of Tax Rates. The tax rates can be filtered by fields such
+    as `name` or `rate`. The tax rates can also be paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: name
-      description: Name of tax rate to retrieve
+      description: Filter by name.
       schema:
         type: string
     - in: query
       name: region_id
       style: form
       explode: false
-      description: Filter by Region ID
+      description: Filter by Region IDs
       schema:
         oneOf:
           - type: string
@@ -22,7 +24,7 @@ get:
               type: string
     - in: query
       name: code
-      description: code to search for.
+      description: Filter by code.
       schema:
         type: string
     - in: query
@@ -49,7 +51,7 @@ get:
                 description: filter by rates greater than or equal to this number
     - in: query
       name: offset
-      description: How many tax rates to skip before retrieving the result.
+      description: The number of tax rates to skip when retrieving the tax rates.
       schema:
         type: integer
         default: 0
@@ -61,7 +63,7 @@ get:
         default: 50
     - in: query
       name: fields
-      description: Which fields should be included in each item.
+      description: Comma-separated fields that should be included in the returned tax rate.
       style: form
       explode: false
       schema:
@@ -70,7 +72,9 @@ get:
           type: string
     - in: query
       name: expand
-      description: Which fields should be expanded and retrieved for each item.
+      description: >-
+        Comma-separated relations that should be expanded in the returned tax
+        rate.
       style: form
       explode: false
       schema:
@@ -116,11 +120,11 @@ get:
 post:
   operationId: PostTaxRates
   summary: Create a Tax Rate
-  description: Creates a Tax Rate
+  description: Create a Tax Rate.
   parameters:
     - in: query
       name: fields
-      description: Which fields should be included in the result.
+      description: Comma-separated fields that should be included in the returned tax rate.
       style: form
       explode: false
       schema:
@@ -129,7 +133,9 @@ post:
           type: string
     - in: query
       name: expand
-      description: Which fields should be expanded and retrieved in the result.
+      description: >-
+        Comma-separated relations that should be expanded in the returned tax
+        rate.
       style: form
       explode: false
       schema:

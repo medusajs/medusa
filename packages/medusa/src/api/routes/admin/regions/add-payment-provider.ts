@@ -10,7 +10,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/regions/{id}/payment-providers
  * operationId: "PostRegionsRegionPaymentProviders"
  * summary: "Add Payment Provider"
- * description: "Adds a Payment Provider to a Region"
+ * description: "Add a Payment Provider to the list of payment providers in a Region."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
@@ -28,8 +28,8 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.regions.addPaymentProvider(region_id, {
- *         provider_id: 'manual'
+ *       medusa.admin.regions.addPaymentProvider(regionId, {
+ *         provider_id: "manual"
  *       })
  *       .then(({ region }) => {
  *         console.log(region.id);
@@ -37,9 +37,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/regions/{id}/payment-providers' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/regions/{id}/payment-providers' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "provider_id": "manual"
  *       }'
@@ -97,7 +97,7 @@ export default async (req, res) => {
  *   - provider_id
  * properties:
  *   provider_id:
- *     description: "The ID of the Payment Provider to add."
+ *     description: "The ID of the Payment Provider."
  *     type: string
  */
 export class AdminPostRegionsRegionPaymentProvidersReq {

@@ -6,9 +6,9 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  * @oas [get] /store/carts/{id}
  * operationId: "GetCartsCart"
  * summary: "Get a Cart"
- * description: "Retrieves a Cart."
+ * description: "Retrieve a Cart's details. This includes recalculating its totals."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
+ *   - (path) id=* {string} The ID of the Cart.
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
@@ -17,14 +17,14 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.retrieve(cart_id)
+ *       medusa.carts.retrieve(cartId)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/carts/{id}'
+ *       curl 'https://medusa-url.com/store/carts/{id}'
  * tags:
  *   - Carts
  * responses:

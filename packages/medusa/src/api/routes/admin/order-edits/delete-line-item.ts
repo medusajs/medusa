@@ -9,12 +9,13 @@ import {
 /**
  * @oas [delete] /admin/order-edits/{id}/items/{item_id}
  * operationId: "DeleteOrderEditsOrderEditLineItemsLineItem"
- * summary: "Delete a Line Item"
- * description: "Delete line items from an order edit and create change item"
+ * summary: "Delete Line Item"
+ * description: "Create a line item change in the order edit that indicates deleting an item in the original order. The item in the original order will not be deleted until the order edit is
+ *  confirmed."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Order Edit to delete from.
- *   - (path) item_id=* {string} The ID of the order edit item to delete from order.
+ *   - (path) id=* {string} The ID of the Order Edit.
+ *   - (path) item_id=* {string} The ID of line item in the original order.
  * x-codegen:
  *   method: removeLineItem
  * x-codeSamples:
@@ -24,15 +25,15 @@ import {
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orderEdits.removeLineItem(order_edit_id, line_item_id)
+ *       medusa.admin.orderEdits.removeLineItem(orderEditId, lineItemId)
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id)
  *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/order-edits/{id}/items/{item_id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

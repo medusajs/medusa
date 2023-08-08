@@ -7,7 +7,7 @@ import { ProductVariantInventoryService } from "../../../../services"
  * @oas [delete] /admin/inventory-items/{id}
  * operationId: "DeleteInventoryItemsInventoryItem"
  * summary: "Delete an Inventory Item"
- * description: "Delete an Inventory Item"
+ * description: "Delete an Inventory Item. This does not delete the associated product variant."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item to delete.
@@ -27,8 +27,8 @@ import { ProductVariantInventoryService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/inventory-items/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/inventory-items/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

@@ -11,12 +11,12 @@ export const initialize = async (
   options?: EventBusRedisModuleOptions | ExternalModuleDeclaration
 ): Promise<IEventBusService> => {
   const serviceKey = Modules.EVENT_BUS
-  const loaded = await MedusaModule.bootstrap(
+  const loaded = await MedusaModule.bootstrap<IEventBusService>(
     serviceKey,
     "@medusajs/event-bus-redis",
     options as InternalModuleDeclaration | ExternalModuleDeclaration,
     undefined
   )
 
-  return loaded[serviceKey] as IEventBusService
+  return loaded[serviceKey]
 }

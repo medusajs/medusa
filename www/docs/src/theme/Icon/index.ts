@@ -42,6 +42,7 @@ import IconCurrencyDollarSolid from "./CurrencyDollarSolid"
 import IconDarkMode from "./DarkMode"
 import IconDiscord from "./Discord"
 import IconDocumentText from "./DocumentText"
+import IconDocumentTextSolid from "./DocumentTextSolid"
 import IconExclamationCircleSolid from "./ExclamationCircleSolid"
 import IconExternalLink from "./ExternalLink"
 import IconFlyingBox from "./FlyingBox"
@@ -144,6 +145,7 @@ export default {
   "dark-mode": IconDarkMode,
   discord: IconDiscord,
   "document-text": IconDocumentText,
+  "document-text-solid": IconDocumentTextSolid,
   "exclamation-circle-solid": IconExclamationCircleSolid,
   "external-link": IconExternalLink,
   "flying-box": IconFlyingBox,

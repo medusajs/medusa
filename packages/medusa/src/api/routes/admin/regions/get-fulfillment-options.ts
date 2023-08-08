@@ -6,7 +6,7 @@ import RegionService from "../../../../services/region"
  * @oas [get] /admin/regions/{id}/fulfillment-options
  * operationId: "GetRegionsRegionFulfillmentOptions"
  * summary: "List Fulfillment Options"
- * description: "Gathers all the fulfillment options available to in the Region."
+ * description: "Retrieve a list of fulfillment options available in a Region."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
@@ -19,15 +19,15 @@ import RegionService from "../../../../services/region"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.regions.retrieveFulfillmentOptions(region_id)
+ *       medusa.admin.regions.retrieveFulfillmentOptions(regionId)
  *       .then(({ fulfillment_options }) => {
  *         console.log(fulfillment_options.length);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/regions/{id}/fulfillment-options' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/regions/{id}/fulfillment-options' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

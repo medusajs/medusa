@@ -1,7 +1,7 @@
 get:
   operationId: GetShippingProfilesProfile
   summary: Get a Shipping Profile
-  description: Retrieves a Shipping Profile.
+  description: Retrieve a Shipping Profile's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -48,7 +48,7 @@ get:
 post:
   operationId: PostShippingProfilesProfile
   summary: Update a Shipping Profile
-  description: Updates a Shipping Profile
+  description: Update a Shipping Profile's details.
   parameters:
     - in: path
       name: id
@@ -99,7 +99,7 @@ post:
 delete:
   operationId: DeleteShippingProfilesProfile
   summary: Delete a Shipping Profile
-  description: Deletes a Shipping Profile.
+  description: Delete a Shipping Profile. Associated shipping options are deleted as well.
   x-authenticated: true
   parameters:
     - in: path

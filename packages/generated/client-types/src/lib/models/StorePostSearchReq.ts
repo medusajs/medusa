@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StorePostSearchReq {
   /**
-   * The query to run the search with.
+   * The search query.
    */
   q?: string
   /**
-   * How many products to skip in the result.
+   * The number of products to skip when retrieving the products.
    */
   offset?: number
   /**
@@ -17,7 +17,7 @@ export interface StorePostSearchReq {
    */
   limit?: number
   /**
-   * Filter based on the search engine.
+   * Pass filters based on the search service.
    */
   filter?: any
 }

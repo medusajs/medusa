@@ -13,7 +13,7 @@ import type { Return } from "./Return"
 import type { ShippingMethod } from "./ShippingMethod"
 
 /**
- * Swaps can be created when a Customer wishes to exchange Products that they have purchased to different Products. Swaps consist of a Return of previously purchased Products and a Fulfillment of new Products, the amount paid for the Products being returned will be used towards payment for the new Products. In the case where the amount paid for the the Products being returned exceed the amount to be paid for the new Products, a Refund will be issued for the difference.
+ * A swap can be created when a Customer wishes to exchange Products that they have purchased with different Products. It consists of a Return of previously purchased Products and a Fulfillment of new Products. It also includes information on any additional payment or refund required based on the difference between the exchanged products.
  */
 export interface Swap {
   /**
@@ -44,31 +44,31 @@ export interface Swap {
     | "refunded"
     | "requires_action"
   /**
-   * The ID of the Order where the Line Items to be returned where purchased.
+   * The ID of the order that the swap belongs to.
    */
   order_id: string
   /**
-   * An order object. Available if the relation `order` is expanded.
+   * The details of the order that the swap belongs to.
    */
   order?: Order | null
   /**
-   * The new Line Items to ship to the Customer. Available if the relation `additional_items` is expanded.
+   * The details of the new products to send to the customer, represented as line items.
    */
   additional_items?: Array<LineItem>
   /**
-   * A return order object. The Return that is issued for the return part of the Swap. Available if the relation `return_order` is expanded.
+   * The details of the return that belongs to the swap, which holds the details on the items being returned.
    */
   return_order?: Return | null
   /**
-   * The Fulfillments used to send the new Line Items. Available if the relation `fulfillments` is expanded.
+   * The details of the fulfillments that are used to send the new items to the customer.
    */
   fulfillments?: Array<Fulfillment>
   /**
-   * The Payment authorized when the Swap requires an additional amount to be charged from the Customer. Available if the relation `payment` is expanded.
+   * The details of the additional payment authorized by the customer when `difference_due` is positive.
    */
   payment?: Payment | null
   /**
-   * The difference that is paid or refunded as a result of the Swap. May be negative when the amount paid for the returned items exceed the total of the new Products.
+   * The difference amount between the order’s original total and the new total imposed by the swap. If its value is negative, a refund must be issues to the customer. If it's positive, additional payment must be authorized by the customer. Otherwise, no payment processing is required.
    */
   difference_due: number | null
   /**
@@ -76,19 +76,19 @@ export interface Swap {
    */
   shipping_address_id: string | null
   /**
-   * Available if the relation `shipping_address` is expanded.
+   * The details of the shipping address that the new items should be sent to.
    */
   shipping_address?: Address | null
   /**
-   * The Shipping Methods used to fulfill the additional items purchased. Available if the relation `shipping_methods` is expanded.
+   * The details of the shipping methods used to fulfill the additional items purchased.
    */
   shipping_methods?: Array<ShippingMethod>
   /**
-   * The id of the Cart that the Customer will use to confirm the Swap.
+   * The ID of the cart that the customer uses to complete the swap.
    */
   cart_id: string | null
   /**
-   * A cart object. Available if the relation `cart` is expanded.
+   * The details of the cart that the customer uses to complete the swap.
    */
   cart?: Cart | null
   /**

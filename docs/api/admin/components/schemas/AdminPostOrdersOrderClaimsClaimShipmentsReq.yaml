@@ -6,7 +6,7 @@ properties:
     description: The ID of the Fulfillment.
     type: string
   tracking_numbers:
-    description: The tracking numbers for the shipment.
+    description: An array of tracking numbers for the shipment.
     type: array
     items:
       type: string

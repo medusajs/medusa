@@ -9,7 +9,8 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /store/products/search
  * operationId: PostProductsSearch
  * summary: Search Products
- * description: "Run a search query on products using the search engine installed on Medusa"
+ * description: "Run a search query on products using the search service installed on the Medusa backend. The searching is handled through the search service, so the returned data's
+ *  format depends on the search service you're using."
  * requestBody:
  *   content:
  *     application/json:
@@ -24,7 +25,7 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.products.search({
- *         q: 'Shirt'
+ *         q: "Shirt"
  *       })
  *       .then(({ hits }) => {
  *         console.log(hits.length);
@@ -32,8 +33,8 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/products/search' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/store/products/search' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "q": "Shirt"
  *       }'
@@ -85,15 +86,15 @@ export default async (req, res) => {
  * properties:
  *  q:
  *    type: string
- *    description: The query to run the search with.
+ *    description: The search query.
  *  offset:
  *    type: number
- *    description: How many products to skip in the result.
+ *    description: The number of products to skip when retrieving the products.
  *  limit:
  *    type: number
  *    description: Limit the number of products returned.
  *  filter:
- *    description: Filter based on the search engine.
+ *    description: Pass filters based on the search service.
  */
 export class StorePostSearchReq {
   @IsOptional()

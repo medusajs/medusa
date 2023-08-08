@@ -4,5 +4,6 @@ required:
 properties:
   payment_providers:
     type: array
+    description: An array of payment providers details.
     items:
       $ref: ./PaymentProvider.yaml

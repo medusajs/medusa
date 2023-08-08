@@ -1,17 +1,15 @@
 import {
   BeforeCreate,
   Entity,
+  Filter,
   Index,
   ManyToOne,
   OptionalProps,
   PrimaryKey,
   Property,
 } from "@mikro-orm/core"
-import { generateEntityId } from "@medusajs/utils"
-
-import ProductOption from "./product-option"
-import { ProductVariant } from "./index"
-import { SoftDeletable } from "../utils"
+import { ProductOption, ProductVariant } from "./index"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 
 type OptionalFields =
   | "created_at"
@@ -23,7 +21,7 @@ type OptionalFields =
 type OptionalRelations = "product" | "option" | "variant"
 
 @Entity({ tableName: "product_option_value" })
-@SoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductOptionValue {
   [OptionalProps]?: OptionalFields | OptionalRelations
 
@@ -33,7 +31,7 @@ class ProductOptionValue {
   @Property({ columnType: "text" })
   value: string
 
-  @Property({ persist: false })
+  @Property({ columnType: "text", nullable: true })
   option_id!: string
 
   @ManyToOne(() => ProductOption, {
@@ -42,7 +40,7 @@ class ProductOptionValue {
   })
   option: ProductOption
 
-  @Property({ persist: false })
+  @Property({ columnType: "text", nullable: true })
   variant_id!: string
 
   @ManyToOne(() => ProductVariant, {

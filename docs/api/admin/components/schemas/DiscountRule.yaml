@@ -1,7 +1,5 @@
 title: Discount Rule
-description: >-
-  Holds the rules that governs how a Discount is calculated when applied to a
-  Cart.
+description: A discount rule defines how a Discount is calculated when applied to a Cart.
 type: object
 required:
   - allocation
@@ -50,9 +48,10 @@ properties:
     example: total
   conditions:
     description: >-
-      A set of conditions that can be used to limit when  the discount can be
-      used. Available if the relation `conditions` is expanded.
+      The details of the discount conditions associated with the rule. They can
+      be used to limit when the discount can be used.
     type: array
+    x-expandable: conditions
     items:
       type: object
   created_at:
@@ -74,3 +73,7 @@ properties:
     type: object
     example:
       car: white
+    externalDocs:
+      description: Learn about the metadata attribute, and how to delete and update it.
+      url: >-
+        https://docs.medusajs.com/development/entities/overview#metadata-attribute

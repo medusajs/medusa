@@ -8,8 +8,14 @@ import { TokenEvents } from "../../../../types/token"
 /**
  * @oas [post] /store/orders/batch/customer/token
  * operationId: "PostOrdersCustomerOrderClaim"
- * summary: "Claim an Order"
- * description: "Sends an email to emails registered to orders provided with link to transfer order ownership"
+ * summary: "Claim Order"
+ * description: "Allow the logged-in customer to claim ownership of one or more orders. This generates a token that can be used later on to verify the claim using the endpoint Verify Order Claim.
+ *  This also emits the event `order-update-token.created`. So, if you have a notification provider installed that handles this event and sends the customer a notification, such as an email,
+ *  the customer should receive instructions on how to finalize their claim ownership."
+ * externalDocs:
+ *   description: "How to implement claim-order flow in a storefront"
+ *   url: "https://docs.medusajs.com/modules/orders/storefront/implement-claim-order"
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
@@ -24,8 +30,8 @@ import { TokenEvents } from "../../../../types/token"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.orders.claimOrders({
- *         display_ids,
+ *       medusa.orders.requestCustomerOrders({
+ *         order_ids,
  *       })
  *       .then(() => {
  *         // successful
@@ -36,10 +42,10 @@ import { TokenEvents } from "../../../../types/token"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/batch/customer/token' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/store/batch/customer/token' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *           "display_ids": ["id"],
+ *           "order_ids": ["id"],
  *       }'
  * security:
  *   - api_token: []
@@ -124,7 +130,7 @@ export default async (req, res) => {
  *   - order_ids
  * properties:
  *   order_ids:
- *     description: "The ids of the orders to claim"
+ *     description: "The ID of the orders to claim"
  *     type: array
  *     items:
  *      type: string

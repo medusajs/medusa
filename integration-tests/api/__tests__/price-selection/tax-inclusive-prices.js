@@ -2,9 +2,9 @@ const { Currency, Region } = require("@medusajs/medusa")
 const path = require("path")
 
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+  require("../../../environment-helpers/start-server-with-environment").default
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb } = require("../../../environment-helpers/use-db")
 const {
   simpleProductFactory,
   simpleRegionFactory,
@@ -12,10 +12,10 @@ const {
   simpleProductTaxRateFactory,
   simpleShippingOptionFactory,
   simpleShippingTaxRateFactory,
-} = require("../../factories")
+} = require("../../../factories")
 
-const adminSeeder = require("../../helpers/admin-seeder")
-const promotionsSeeder = require("../../helpers/price-selection-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const promotionsSeeder = require("../../../helpers/price-selection-seeder")
 
 jest.setTimeout(30000)
 

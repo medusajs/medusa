@@ -1,19 +1,22 @@
 get:
   operationId: GetCollections
   summary: List Collections
-  description: Retrieve a list of Product Collection.
+  description: >-
+    Retrieve a list of product collections. The product collections can be
+    filtered by fields such as `handle` or `created_at`. The product collections
+    can also be paginated.
   parameters:
     - in: query
       name: offset
       description: >-
-        The number of collections to skip before starting to collect the
-        collections set
+        The number of product collections to skip when retrieving the product
+        collections.
       schema:
         type: integer
         default: 0
     - in: query
       name: limit
-      description: The number of collections to return
+      description: Limit the number of product collections returned.
       schema:
         type: integer
         default: 10
@@ -21,14 +24,14 @@ get:
       name: handle
       style: form
       explode: false
-      description: Filter by the collection handle
+      description: Filter by handles
       schema:
         type: array
         items:
           type: string
     - in: query
       name: created_at
-      description: Date comparison for when resulting collections were created.
+      description: Filter by a creation date range.
       schema:
         type: object
         properties:
@@ -50,7 +53,7 @@ get:
             format: date
     - in: query
       name: updated_at
-      description: Date comparison for when resulting collections were updated.
+      description: Filter by an update date range.
       schema:
         type: object
         properties:
@@ -83,7 +86,7 @@ get:
       source:
         $ref: ../code_samples/Shell/store_collections/get.sh
   tags:
-    - Collections
+    - Product Collections
   responses:
     '200':
       description: OK

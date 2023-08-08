@@ -3,6 +3,7 @@ import {
   Collection,
   Entity,
   Enum,
+  Filter,
   Index,
   ManyToMany,
   ManyToOne,
@@ -13,8 +14,12 @@ import {
   Unique,
 } from "@mikro-orm/core"
 
-import { ProductTypes } from "@medusajs/types"
-import { generateEntityId, kebabCase } from "@medusajs/utils"
+import {
+  DALUtils,
+  generateEntityId,
+  kebabCase,
+  ProductUtils,
+} from "@medusajs/utils"
 import ProductCategory from "./product-category"
 import ProductCollection from "./product-collection"
 import ProductOption from "./product-option"
@@ -22,7 +27,6 @@ import ProductTag from "./product-tag"
 import ProductType from "./product-type"
 import ProductVariant from "./product-variant"
 import ProductImage from "./product-image"
-import { SoftDeletable } from "../utils"
 
 type OptionalRelations = "collection" | "type"
 type OptionalFields =
@@ -34,7 +38,7 @@ type OptionalFields =
   | "updated_at"
 
 @Entity({ tableName: "product" })
-@SoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class Product {
   [OptionalProps]?: OptionalRelations | OptionalFields
 
@@ -60,8 +64,8 @@ class Product {
   @Property({ columnType: "boolean", default: false })
   is_giftcard!: boolean
 
-  @Enum(() => ProductTypes.ProductStatus)
-  status!: ProductTypes.ProductStatus
+  @Enum(() => ProductUtils.ProductStatus)
+  status!: ProductUtils.ProductStatus
 
   @Property({ columnType: "text", nullable: true })
   thumbnail?: string | null
@@ -100,16 +104,16 @@ class Product {
   @Property({ columnType: "text", nullable: true })
   material?: string | null
 
-  @Property({ persist: false })
+  @Property({ columnType: "text", nullable: true })
   collection_id!: string
 
   @ManyToOne(() => ProductCollection, {
     nullable: true,
     fieldName: "collection_id",
   })
-  collection!: ProductCollection
+  collection!: ProductCollection | null
 
-  @Property({ persist: false })
+  @Property({ columnType: "text", nullable: true })
   type_id!: string
 
   @ManyToOne(() => ProductType, {
@@ -132,6 +136,8 @@ class Product {
     pivotTable: "product_images",
     index: "IDX_product_image_id",
     cascade: ["soft-remove"] as any,
+    joinColumn: "product_id",
+    inverseJoinColumn: "image_id",
   })
   images = new Collection<ProductImage>(this)
 

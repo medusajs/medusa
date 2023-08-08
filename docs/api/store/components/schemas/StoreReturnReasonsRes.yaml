@@ -8,4 +8,5 @@ required:
   - return_reason
 properties:
   return_reason:
+    description: Return reason details.
     $ref: ./ReturnReason.yaml

@@ -9,7 +9,7 @@ export interface AdminPostCustomerGroupsGroupReq {
    */
   name?: string
   /**
-   * Metadata for the customer.
+   * Metadata of the customer group.
    */
   metadata?: Record<string, any>
 }

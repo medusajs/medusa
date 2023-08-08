@@ -41,7 +41,7 @@ const FormHeader = (props: PriceListFormProps & { onClose?: () => void }) => {
   const onPublish = (values: CreatePriceListFormValues) => {
     const data = mapFormValuesToCreatePriceList(values, PriceListStatus.ACTIVE)
     if (isFeatureEnabled("tax_inclusive_pricing")) {
-      data.includes_tax = values.includes_tax
+      data.includes_tax = !!values.includes_tax
     }
     createPriceList.mutate(data, {
       onSuccess: ({ price_list }) => {

@@ -6,7 +6,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { ShippingMethod } from "./ShippingMethod"
 
 /**
- * Shipping Method Tax Line
+ * A Shipping Method Tax Line represents the taxes applied on a shipping method in a cart.
  */
 export interface ShippingMethodTaxLine {
   /**
@@ -30,7 +30,7 @@ export interface ShippingMethodTaxLine {
    */
   shipping_method_id: string
   /**
-   * Available if the relation `shipping_method` is expanded.
+   * The details of the associated shipping method.
    */
   shipping_method?: ShippingMethod | null
   /**

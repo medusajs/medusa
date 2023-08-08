@@ -7,7 +7,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  * @oas [delete] /admin/collections/{id}
  * operationId: "DeleteCollectionsCollection"
  * summary: "Delete a Collection"
- * description: "Deletes a Product Collection."
+ * description: "Delete a Product Collection. This does not delete associated products."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Collection.
@@ -20,20 +20,20 @@ import ProductCollectionService from "../../../../services/product-collection"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.collections.delete(collection_id)
+ *       medusa.admin.collections.delete(collectionId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/collections/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/collections/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Collections
+ *   - Product Collections
  * responses:
  *  "200":
  *    description: OK

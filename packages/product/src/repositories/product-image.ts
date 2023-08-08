@@ -5,11 +5,14 @@ import {
 } from "@mikro-orm/core"
 import { Context, DAL } from "@medusajs/types"
 import { Image, Product } from "@models"
-import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import {
+  DALUtils,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/utils"
 
-export class ProductImageRepository extends AbstractBaseRepository<Image> {
+export class ProductImageRepository extends DALUtils.MikroOrmAbstractBaseRepository<Image> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -22,8 +25,7 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
     findOptions: DAL.FindOptions<Image> = { where: {} },
     context: Context = {}
   ): Promise<Image[]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}
@@ -43,8 +45,7 @@ export class ProductImageRepository extends AbstractBaseRepository<Image> {
     findOptions: DAL.FindOptions<Image> = { where: {} },
     context: Context = {}
   ): Promise<[Image[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...findOptions }
     findOptions_.options ??= {}

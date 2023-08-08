@@ -8,6 +8,9 @@ import type { DiscountRule } from "./DiscountRule"
 import type { Region } from "./Region"
 
 export interface AdminDiscountsRes {
+  /**
+   * Discount details.
+   */
   discount: Merge<
     SetRelation<Discount, "parent_discount" | "regions" | "rule">,
     {

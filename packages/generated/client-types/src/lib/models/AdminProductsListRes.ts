@@ -7,6 +7,9 @@ import type { PricedProduct } from "./PricedProduct"
 import type { ProductVariant } from "./ProductVariant"
 
 export interface AdminProductsListRes {
+  /**
+   * An array of products details.
+   */
   products: Array<
     Merge<
       SetRelation<
@@ -25,7 +28,7 @@ export interface AdminProductsListRes {
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of products skipped when retrieving the products.
    */
   offset: number
   /**

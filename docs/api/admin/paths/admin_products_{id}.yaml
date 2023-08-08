@@ -1,7 +1,7 @@
 get:
   operationId: GetProductsProduct
   summary: Get a Product
-  description: Retrieves a Product.
+  description: Retrieve a Product's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -48,7 +48,7 @@ get:
 post:
   operationId: PostProductsProduct
   summary: Update a Product
-  description: Updates a Product
+  description: Update a Product's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -100,7 +100,7 @@ post:
 delete:
   operationId: DeleteProductsProduct
   summary: Delete a Product
-  description: Deletes a Product and it's associated Product Variants.
+  description: Delete a Product and its associated product variants and options.
   x-authenticated: true
   parameters:
     - in: path

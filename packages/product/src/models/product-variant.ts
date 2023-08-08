@@ -1,8 +1,10 @@
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 import {
   BeforeCreate,
   Cascade,
   Collection,
   Entity,
+  Filter,
   Index,
   ManyToOne,
   OneToMany,
@@ -11,10 +13,8 @@ import {
   Property,
   Unique,
 } from "@mikro-orm/core"
-import { generateEntityId } from "@medusajs/utils"
 import { Product } from "@models"
 import ProductOptionValue from "./product-option-value"
-import { SoftDeletable } from "../utils"
 
 type OptionalFields =
   | "created_at"
@@ -25,7 +25,7 @@ type OptionalFields =
   | "product_id"
 
 @Entity({ tableName: "product_variant" })
-@SoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductVariant {
   [OptionalProps]?: OptionalFields
 
@@ -105,7 +105,7 @@ class ProductVariant {
   @Property({ columnType: "numeric", nullable: true, default: 0 })
   variant_rank?: number | null
 
-  @Property({ persist: false })
+  @Property({ columnType: "text", nullable: true })
   product_id!: string
 
   @Property({ onCreate: () => new Date(), columnType: "timestamptz" })

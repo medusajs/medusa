@@ -49,7 +49,7 @@ export class ShippingOptionRequirement {
 /**
  * @schema ShippingOptionRequirement
  * title: "Shipping Option Requirement"
- * description: "A requirement that a Cart must satisfy for the Shipping Option to be available to the Cart."
+ * description: "A shipping option requirement defines conditions that a Cart must satisfy for the Shipping Option to be available for usage in the Cart."
  * type: object
  * required:
  *   - amount
@@ -63,11 +63,12 @@ export class ShippingOptionRequirement {
  *     type: string
  *     example: sor_01G1G5V29AB4CTNDRFSRWSRKWD
  *   shipping_option_id:
- *     description: The id of the Shipping Option that the hipping option requirement belongs to
+ *     description: The ID of the shipping option that the requirements belong to.
  *     type: string
  *     example: so_01G1G5V27GYX4QXNARRQCW1N8T
  *   shipping_option:
- *     description: Available if the relation `shipping_option` is expanded.
+ *     description: The details of the shipping option that the requirements belong to.
+ *     x-expandable: "shipping_option"
  *     nullable: true
  *     $ref: "#/components/schemas/ShippingOption"
  *   type:

@@ -5,7 +5,7 @@ import NoteService from "../../../../services/note"
  * @oas [delete] /admin/notes/{id}
  * operationId: "DeleteNotesNote"
  * summary: "Delete a Note"
- * description: "Deletes a Note."
+ * description: "Delete a Note."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Note to delete.
@@ -18,15 +18,15 @@ import NoteService from "../../../../services/note"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.notes.delete(note_id)
+ *       medusa.admin.notes.delete(noteId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/notes/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/notes/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

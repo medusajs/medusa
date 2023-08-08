@@ -7,26 +7,27 @@ import { Context } from "../shared-context"
  * This layer helps to separate the business logic (service layer) from accessing the
  * ORM directly and allows to switch to another ORM without changing the business logic.
  */
-export interface RepositoryService<T = any> {
-  transaction(
-    task: (transactionManager: unknown) => Promise<any>,
+interface BaseRepositoryService<T = any> {
+  transaction<TManager = unknown>(
+    task: (transactionManager: TManager) => Promise<any>,
     context?: {
       isolationLevel?: string
-      transaction?: unknown
+      transaction?: TManager
       enableNestedTransactions?: boolean
     }
   ): Promise<any>
 
-  serialize<TData extends object, TResult extends object, TOptions = any>(
-    data: TData,
-    options?: TOptions
-  ): Promise<TResult>
+  getFreshManager<TManager = unknown>(): TManager
 
-  serialize<TData extends object[], TResult extends object[], TOptions = any>(
-    data: TData[],
-    options?: TOptions
-  ): Promise<TResult>
+  getActiveManager<TManager = unknown>(): TManager
 
+  serialize<TOutput extends object | object[]>(
+    data: any,
+    options?: any
+  ): Promise<TOutput>
+}
+
+export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
   find(options?: FindOptions<T>, context?: Context): Promise<T[]>
 
   findAndCount(
@@ -34,19 +35,30 @@ export interface RepositoryService<T = any> {
     context?: Context
   ): Promise<[T[], number]>
 
-  // Only required for some repositories
-  upsert?(data: any, context?: Context): Promise<T[]>
-
   create(data: unknown[], context?: Context): Promise<T[]>
+
+  update(data: unknown[], context?: Context): Promise<T[]>
 
   delete(ids: string[], context?: Context): Promise<void>
 
-  softDelete(ids: string[], context?: Context): Promise<T[]>
+  /**
+   * Soft delete entities and cascade to related entities if configured.
+   *
+   * @param ids
+   * @param context
+   *
+   * @returns [T[], Record<string, string[]>] the second value being the map of the entity names and ids that were soft deleted
+   */
+  softDelete(
+    ids: string[],
+    context?: Context
+  ): Promise<[T[], Record<string, unknown[]>]>
 
   restore(ids: string[], context?: Context): Promise<T[]>
 }
 
-export interface TreeRepositoryService<T = any> extends RepositoryService<T> {
+export interface TreeRepositoryService<T = any>
+  extends BaseRepositoryService<T> {
   find(
     options?: FindOptions<T>,
     transformOptions?: RepositoryTransformOptions,
@@ -58,4 +70,8 @@ export interface TreeRepositoryService<T = any> extends RepositoryService<T> {
     transformOptions?: RepositoryTransformOptions,
     context?: Context
   ): Promise<[T[], number]>
+
+  create(data: unknown, context?: Context): Promise<T>
+
+  delete(id: string, context?: Context): Promise<void>
 }

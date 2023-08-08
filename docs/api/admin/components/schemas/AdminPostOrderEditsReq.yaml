@@ -6,5 +6,5 @@ properties:
     description: The ID of the order to create the edit for.
     type: string
   internal_note:
-    description: An optional note to create for the order edit.
+    description: An optional note to associate with the order edit.
     type: string

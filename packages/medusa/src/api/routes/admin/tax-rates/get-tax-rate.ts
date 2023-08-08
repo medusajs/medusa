@@ -9,12 +9,12 @@ import { validator } from "../../../../utils/validator"
  * @oas [get] /admin/tax-rates/{id}
  * operationId: "GetTaxRatesTaxRate"
  * summary: "Get a Tax Rate"
- * description: "Retrieves a TaxRate"
+ * description: "Retrieve a Tax Rate's details."
  * parameters:
  *   - (path) id=* {string} ID of the tax rate.
  *   - in: query
  *     name: fields
- *     description: "Which fields should be included in the result."
+ *     description: "Comma-separated fields that should be included in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -23,7 +23,7 @@ import { validator } from "../../../../utils/validator"
  *         type: string
  *   - in: query
  *     name: expand
- *     description: "Which fields should be expanded and retrieved in the result."
+ *     description: "Comma-separated relations that should be expanded in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -41,15 +41,15 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.taxRates.retrieve(tax_rate_id)
+ *       medusa.admin.taxRates.retrieve(taxRateId)
  *       .then(({ tax_rate }) => {
  *         console.log(tax_rate.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/tax-rates/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/tax-rates/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

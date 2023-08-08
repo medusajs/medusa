@@ -9,4 +9,5 @@ required:
   - variant
 properties:
   variant:
+    description: Product variant's details.
     $ref: ./PricedVariant.yaml
