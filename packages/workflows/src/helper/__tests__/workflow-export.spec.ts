@@ -1,8 +1,11 @@
-import { LocalWorkflow } from "@medusajs/orchestration"
 import { exportWorkflow } from "../workflow-export"
 
 jest.mock("@medusajs/orchestration", () => {
   return {
+    TransactionHandlerType: {
+      INVOKE: "invoke",
+      COMPENSATE: "compensate",
+    },
     TransactionState: {
       FAILED: "failed",
       REVERTED: "reverted",
@@ -35,9 +38,7 @@ describe("Export Workflow", function () {
       return data
     })
 
-    let a: LocalWorkflow
-
-    const work = exportWorkflow("id" as any, "result", prepare)
+    const work = exportWorkflow("id" as any, "result_step", prepare)
 
     const wfHandler = work()
 
@@ -47,7 +48,6 @@ describe("Export Workflow", function () {
 
     const { result } = await wfHandler.run({
       input,
-      resultFrom: "result_step",
     })
 
     expect(input).toEqual({
