@@ -1,8 +1,4 @@
-import { WorkflowTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../../helper"
-
-type UpdateLineItemsShippingInputData =
-  WorkflowTypes.CartTypes.EnsureCorrectLineItemShippingDTO
 
 export async function ensureCorrectLineItemShipping({
   container,

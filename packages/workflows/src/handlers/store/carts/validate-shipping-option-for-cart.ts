@@ -1,9 +1,5 @@
-import { WorkflowTypes } from "@medusajs/types"
 import { isDefined } from "@medusajs/utils"
 import { WorkflowArguments } from "../../../helper"
-
-type ValidateShippingOptionForCartInputData =
-  WorkflowTypes.CartTypes.ValidateShippingOptionForCartDTO
 
 export async function validateShippingOptionForCart({
   container,

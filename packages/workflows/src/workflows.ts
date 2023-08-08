@@ -1,5 +1,6 @@
 export enum Workflows {
   CreateProducts = "create-products",
+  CreateCart = "create-cart",
   AddShippingMethod = "add-shipping-method",
 }
 

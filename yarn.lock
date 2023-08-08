@@ -6578,7 +6578,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows@^0.1.1, @medusajs/workflows@workspace:packages/workflows":
+"@medusajs/workflows@^0.1.1, @medusajs/workflows@workspace:^, @medusajs/workflows@workspace:packages/workflows":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows@workspace:packages/workflows"
   dependencies:

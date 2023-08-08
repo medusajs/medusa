@@ -1,3 +1,4 @@
+import { FlagRouter } from "@medusajs/utils"
 import { isEmpty, isEqual } from "lodash"
 import { MedusaError, isDefined } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
@@ -58,7 +59,6 @@ import {
 } from "../types/common"
 import { PaymentSessionInput } from "../types/payment"
 import { buildQuery, isString, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 
 type InjectedDependencies = {

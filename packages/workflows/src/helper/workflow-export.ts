@@ -1,6 +1,7 @@
 import {
   DistributedTransaction,
   LocalWorkflow,
+  TransactionHandlerType,
   TransactionState,
   TransactionStepError,
 } from "@medusajs/orchestration"
@@ -26,7 +27,8 @@ export type WorkflowResult<TResult = unknown> = {
 
 export const exportWorkflow = <TData = unknown, TResult = unknown>(
   workflowId: Workflows,
-  defaultResult?: string
+  defaultResult?: string,
+  dataPreparation?: (data: TData) => Promise<unknown>
 ) => {
   return function <TDataOverride = undefined, TResultOverride = undefined> (
     container?: LoadedModule[] | MedusaContainer
@@ -59,13 +61,29 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
       resultFrom ??= defaultResult
       throwOnError ??= true
 
+      if (typeof dataPreparation === "function") {
+        try {
+          const copyInput = JSON.parse(JSON.stringify(input))
+          input = await dataPreparation(copyInput as TData)
+        } catch (err) {
+          if (throwOnError) {
+            throw new Error(
+              `Data preparation failed: ${err.message}${EOL}${err.stack}`
+            )
+          }
+          return {
+            errors: [err],
+          }
+        }
+      }
+
       const transaction = await originalRun(
         context?.transactionId ?? ulid(),
         input,
         context
       )
 
-      const errors = transaction.getErrors()
+      const errors = transaction.getErrors(TransactionHandlerType.INVOKE)
 
       const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
       if (failedStatus.includes(transaction.getState()) && throwOnError) {

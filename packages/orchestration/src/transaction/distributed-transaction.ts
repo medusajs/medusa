@@ -1,4 +1,6 @@
+import { isDefined } from "@medusajs/utils"
 import { TransactionFlow } from "./transaction-orchestrator"
+import { TransactionStepHandler } from "./transaction-step"
 import { TransactionHandlerType, TransactionState } from "./types"
 
 /**
@@ -78,11 +80,7 @@ export class DistributedTransaction {
 
   constructor(
     private flow: TransactionFlow,
-    public handler: (
-      actionId: string,
-      handlerType: TransactionHandlerType,
-      payload: TransactionPayload
-    ) => Promise<unknown>,
+    public handler: TransactionStepHandler,
     public payload?: any,
     errors?: TransactionStepError[],
     context?: TransactionContext
@@ -108,8 +106,12 @@ export class DistributedTransaction {
     return this.context
   }
 
-  public getErrors() {
-    return this.errors
+  public getErrors(handlerType?: TransactionHandlerType) {
+    if (!isDefined(handlerType)) {
+      return this.errors
+    }
+
+    return this.errors.filter((error) => error.handlerType === handlerType)
   }
 
   public addError(

@@ -1,4 +1,5 @@
 import {
+  DistributedTransaction,
   TransactionHandlerType,
   TransactionOrchestrator,
   TransactionPayload,
@@ -857,5 +858,33 @@ describe("Transaction Orchestrator", () => {
     expect(mocks.two).toBeCalledTimes(1)
     expect(mocks.oneCompensate).toBeCalledTimes(1)
     expect(mocks.twoCompensate).toBeCalledTimes(1)
+  })
+
+  it("Should receive the current transaction as reference in the handler", async () => {
+    let transactionInHandler
+
+    async function handler(
+      actionId: string,
+      functionHandlerType: TransactionHandlerType,
+      payload: TransactionPayload,
+      transaction?: DistributedTransaction
+    ) {
+      transactionInHandler = transaction
+    }
+
+    const strategy = new TransactionOrchestrator("transaction-name", {
+      next: {
+        action: "firstMethod",
+      },
+    })
+
+    const transaction = await strategy.beginTransaction(
+      "transaction_id_123",
+      handler
+    )
+
+    await strategy.resume(transaction)
+
+    expect(transaction).toBe(transactionInHandler)
   })
 })

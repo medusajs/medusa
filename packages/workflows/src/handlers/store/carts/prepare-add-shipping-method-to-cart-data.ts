@@ -2,7 +2,7 @@ import { WorkflowTypes } from "@medusajs/types"
 import { WorkflowArguments } from "../../../helper"
 
 type AddShippingMethodInputData =
-  WorkflowTypes.CartTypes.AddShippingMethodToCartDTO
+  WorkflowTypes.CartWorkflow.AddShippingMethodToCartDTO
 
 export async function prepareAddShippingMethodToCartWorkflowData({
   container,

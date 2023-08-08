@@ -4,6 +4,7 @@ import {
 } from "@medusajs/orchestration"
 import { Context, MedusaContainer, SharedContext } from "@medusajs/types"
 
+import { DistributedTransaction } from "@medusajs/orchestration"
 import { InputAlias } from "../workflows"
 
 export type WorkflowStepMiddlewareReturn = {
@@ -20,6 +21,7 @@ interface PipelineInput {
   inputAlias?: InputAlias | string
   invoke?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
   compensate?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
+  onComplete?: (args: WorkflowOnCompleteArguments) => {}
 }
 
 export type WorkflowArguments<T = any> = {
@@ -27,6 +29,15 @@ export type WorkflowArguments<T = any> = {
   payload: unknown
   data: T
   metadata: TransactionMetadata
+  context: Context | SharedContext
+}
+
+export type WorkflowOnCompleteArguments<T = any> = {
+  container: MedusaContainer
+  payload: unknown
+  data: T
+  metadata: TransactionMetadata
+  transaction: DistributedTransaction
   context: Context | SharedContext
 }
 
@@ -48,6 +59,7 @@ export function pipe<T>(
     invoke,
     compensate,
     metadata,
+    transaction,
     context,
   }) => {
     let data = {}
@@ -61,8 +73,9 @@ export function pipe<T>(
       Object.assign(original.invoke, { [input.inputAlias]: payload })
     }
 
-    for (const key in input) {
-      if (!input[key] || key === "inputAlias") {
+    const dataKeys = ["invoke", "compensate"]
+    for (const key of dataKeys) {
+      if (!input[key]) {
         continue
       }
 
@@ -109,6 +122,18 @@ export function pipe<T>(
       }
 
       finalResult = result
+    }
+
+    if (typeof input.onComplete === "function") {
+      const dataCopy = JSON.parse(JSON.stringify(data))
+      await input.onComplete({
+        container,
+        payload,
+        data: dataCopy,
+        metadata,
+        transaction,
+        context: context as Context,
+      })
     }
 
     return finalResult

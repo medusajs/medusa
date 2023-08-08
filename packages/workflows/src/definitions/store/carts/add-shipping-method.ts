@@ -2,7 +2,7 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { AddShippingMethodToCartDTO } from "@medusajs/types/dist/workflow/cart"
+import { WorkflowTypes } from "@medusajs/types"
 import { adjustFreeShippingOnCart } from "../../../handlers/store/carts/adjust-free-shipping"
 import { cleanUpPaymentSessions } from "../../../handlers/store/carts/clean-up-payment-sessions"
 import { prepareAddShippingMethodToCartWorkflowData } from "../../../handlers/store/carts/prepare-add-shipping-method-to-cart-data"
@@ -295,7 +295,7 @@ WorkflowManager.register(
 )
 
 export const addShippingMethod = exportWorkflow<
-  AddShippingMethodToCartDTO,
+  WorkflowTypes.CartWorkflow.AddShippingMethodToCartDTO,
   {
     value: any
   }
