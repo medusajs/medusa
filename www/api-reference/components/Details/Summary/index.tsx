@@ -25,8 +25,9 @@ const DetailsSummary = ({
     <summary
       className={clsx(
         "border-medusa-border-base dark:border-medusa-border-base-dark border-y",
-        "flex items-center justify-between py-[12px] marker:content-none",
+        "flex items-center justify-between py-[12px]",
         expandable && "cursor-pointer",
+        "no-marker",
         className
       )}
     >
