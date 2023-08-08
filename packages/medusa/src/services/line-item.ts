@@ -485,10 +485,6 @@ class LineItemService extends TransactionBaseService {
   async deleteWithTaxLines(id: string): Promise<LineItem | undefined | null> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const lineItemRepository = transactionManager.withRepository(
-          this.lineItemRepository_
-        )
-
         await this.taxProviderService_
           .withTransaction(transactionManager)
           .clearLineItemsTaxLines([id])
