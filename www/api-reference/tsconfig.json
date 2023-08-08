@@ -39,7 +39,7 @@
     "**/*.js",
     ".next/types/**/*.ts",
     "next.config.mjs"
-  ],
+, "app/api/algolia/route.mjs"  ],
   "exclude": [
     "node_modules",
     "public",

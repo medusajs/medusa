@@ -5,7 +5,6 @@ import path from "path"
 import getPathsOfTag from "../../../utils/get-paths-of-tag"
 import getSectionId from "../../../utils/get-section-id"
 import { NextResponse } from "next/server"
-import got from "got"
 import { JSDOM } from "jsdom"
 import capitalize from "../../../utils/capitalize"
 
@@ -22,17 +21,7 @@ export async function GET() {
   const indices: Record<string, any>[] = []
   for (const area of ["store", "admin"]) {
     // find and parse static headers from pages
-    const pageContent = (
-      await got(getUrl(area), {
-        https: {
-          rejectUnauthorized: false,
-        },
-      })
-    ).body
-    const dom = new JSDOM(pageContent, {
-      resources: "usable",
-      includeNodeLocations: true,
-    })
+    const dom = await JSDOM.fromURL(getUrl(area))
     const headers = dom.window.document.querySelectorAll("h2")
     headers.forEach((header) => {
       if (!header.textContent) {
