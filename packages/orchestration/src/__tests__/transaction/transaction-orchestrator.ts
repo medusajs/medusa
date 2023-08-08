@@ -787,6 +787,88 @@ describe("Transaction Orchestrator", () => {
     expect(resumedTransaction.getState()).toBe(TransactionState.REVERTED)
   })
 
+  it("Should hold the status REVERTED if the steps failed and the compensation succeed and has some no compensations step set", async () => {
+    const mocks = {
+      one: jest.fn().mockImplementation((payload) => {
+        return
+      }),
+      compensateOne: jest.fn().mockImplementation((payload) => {
+        return
+      }),
+      two: jest.fn().mockImplementation((payload) => {
+        return
+      }),
+      compensateTwo: jest.fn().mockImplementation((payload) => {
+        return
+      }),
+      three: jest.fn().mockImplementation((payload) => {
+        throw new Error("Third step error")
+      }),
+    }
+
+    async function handler(
+      actionId: string,
+      functionHandlerType: TransactionHandlerType,
+      payload: TransactionPayload
+    ) {
+      const command = {
+        firstMethod: {
+          [TransactionHandlerType.INVOKE]: () => {
+            mocks.one(payload)
+          },
+          [TransactionHandlerType.COMPENSATE]: () => {
+            mocks.compensateOne(payload)
+          },
+        },
+        secondMethod: {
+          [TransactionHandlerType.INVOKE]: () => {
+            mocks.two(payload)
+          },
+          [TransactionHandlerType.COMPENSATE]: () => {
+            mocks.compensateTwo(payload)
+          },
+        },
+        thirdMethod: {
+          [TransactionHandlerType.INVOKE]: () => {
+            mocks.three(payload)
+          },
+        },
+      }
+
+      return command[actionId][functionHandlerType](payload)
+    }
+
+    const flow: TransactionStepsDefinition = {
+      next: {
+        action: "firstMethod",
+        next: {
+          action: "secondMethod",
+          next: {
+            action: "thirdMethod",
+            noCompensation: true,
+          },
+        },
+      },
+    }
+
+    const strategy = new TransactionOrchestrator("transaction-name", flow)
+
+    const transaction = await strategy.beginTransaction(
+      "transaction_id_123",
+      handler
+    )
+
+    await strategy.resume(transaction)
+
+    expect(mocks.one).toBeCalledTimes(1)
+    expect(mocks.compensateOne).toBeCalledTimes(1)
+    expect(mocks.two).toBeCalledTimes(1)
+    expect(mocks.compensateTwo).toBeCalledTimes(1)
+    expect(mocks.three).toBeCalledTimes(1)
+
+    expect(transaction.getState()).toBe(TransactionState.REVERTED)
+  })
+
   it("Should revert a transaction when .cancelTransaction() is called", async () => {
     const mocks = {
       one: jest.fn().mockImplementation((payload) => {

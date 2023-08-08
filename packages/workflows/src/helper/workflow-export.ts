@@ -1,7 +1,6 @@
 import {
   DistributedTransaction,
   LocalWorkflow,
-  TransactionHandlerType,
   TransactionState,
   TransactionStepError,
 } from "@medusajs/orchestration"
@@ -83,7 +82,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         context
       )
 
-      const errors = transaction.getErrors(TransactionHandlerType.INVOKE)
+      const errors = transaction.getErrors()
 
       const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
       if (failedStatus.includes(transaction.getState()) && throwOnError) {

@@ -42,7 +42,9 @@ describe("CreateProduct workflow", function () {
           },
           async function failStep({ data }) {
             throw new Error(
-              `Failed to create product with title: ${data.title}`
+              `Failed to create products with title: ${data.products
+                .map((p) => p.title)
+                .join(",")}`
             )
           }
         ),
@@ -95,6 +97,27 @@ describe("CreateProduct workflow", function () {
       throwOnError: false,
     })
 
-    console.error(errors)
+    expect(errors).toEqual([
+      {
+        action: "fail_step",
+        handlerType: "invoke",
+        error: new Error(
+          `Failed to create products with title: ${input.products[0].title}`
+        ),
+      },
+    ])
+
+    expect(transaction.getState()).toEqual("reverted")
+
+    for (const step of transaction.getFlow().steps) {
+      if (step.definition.action === "fail_step") {
+        expect(step.invoke.state).toEqual("failed")
+        expect(step.compensate.state).toEqual("reverted")
+        continue
+      }
+
+      expect(step.invoke.state).toEqual("done")
+      expect(step.compensate.state).toEqual("reverted")
+    }
   })
 })
