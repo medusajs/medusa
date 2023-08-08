@@ -45,4 +45,44 @@ describe("Pipe", function () {
     expect(result).toBeDefined()
     expect(result).toEqual(output)
   })
+
+  it("should execute onComplete function if available but the output result shouldn't change", async function () {
+    const payload = { input: "input" }
+    const output = { test: "test" }
+    const invoke = {
+      input: payload,
+    }
+
+    const onComplete = jest.fn(async ({ data }) => {
+      data.__changed = true
+
+      return
+    })
+
+    const handler = jest.fn().mockImplementation(async () => output)
+    const input = {
+      inputAlias: "payload",
+      invoke: [
+        {
+          from: "payload",
+          alias: "input",
+        },
+      ],
+      onComplete,
+    }
+
+    const result = await pipe(input, handler)({ invoke, payload } as any)
+
+    expect(handler).toHaveBeenCalled()
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: {
+          input: payload,
+        },
+      })
+    )
+
+    expect(onComplete).toHaveBeenCalled()
+    expect(result).toEqual(output)
+  })
 })
