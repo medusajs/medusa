@@ -37,7 +37,7 @@ const MDXContentClient = dynamic<MDXContentClientProps>(
 ) as React.FC<MDXContentClientProps>
 
 const TagSection = ({ tag }: TagSectionProps) => {
-  const { setActivePath } = useSidebar()
+  const { activePath, setActivePath } = useSidebar()
   const [loadPaths, setLoadPaths] = useState(false)
   const slugTagName = getSectionId([tag.name])
   const { area } = useArea()
@@ -71,6 +71,15 @@ const TagSection = ({ tag }: TagSectionProps) => {
       }
     }
   }, [slugTagName])
+
+  useEffect(() => {
+    if (activePath) {
+      const activePathArr = activePath.split("_")
+      if (activePathArr.length > 1 && activePathArr[0] === slugTagName) {
+        setLoadPaths(true)
+      }
+    }
+  }, [activePath, slugTagName])
 
   return (
     <div className="min-h-screen" id={slugTagName} ref={ref}>

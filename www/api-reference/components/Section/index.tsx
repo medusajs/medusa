@@ -86,6 +86,18 @@ const Section = ({
     handleScroll,
   ])
 
+  useEffect(() => {
+    if (activePath && sectionRef.current) {
+      const headings = [...sectionRef.current.querySelectorAll("h2")]
+      headings.some((heading) => {
+        if (heading.id === activePath) {
+          heading.scrollIntoView()
+          return true
+        }
+      })
+    }
+  }, [activePath])
+
   return (
     <div
       ref={sectionRef}

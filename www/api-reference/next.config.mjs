@@ -15,6 +15,11 @@ const nextConfig = {
       ],
     }
   },
+  webpack: (config) => {
+    config.ignoreWarnings = [{ module: /node_modules\/keyv\/src\/index\.js/ }]
+
+    return config
+  },
 }
 
 const withMDX = mdx({

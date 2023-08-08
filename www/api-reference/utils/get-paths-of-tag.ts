@@ -35,8 +35,6 @@ export default async function getPathsOfTag(
     })
   )
 
-  // console.log(documents)
-
   // filter out operations not related to the passed tag
   documents = documents.filter((document) =>
     Object.values(document).some((operation) => {

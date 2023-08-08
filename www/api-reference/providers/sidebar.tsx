@@ -272,10 +272,19 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       }
     }
 
+    const handleHashChange = () => {
+      const currentPath = location.hash.replace("#", "")
+      if (currentPath !== activePath) {
+        setActivePath(currentPath)
+      }
+    }
+
     window.addEventListener("scroll", handleScroll)
+    window.addEventListener("hashchange", handleHashChange)
 
     return () => {
       window.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("hashchange", handleHashChange)
     }
   }, [])
 
