@@ -168,7 +168,7 @@ export async function runMigrations(
       !modulesLoadedKeys.includes(primary.serviceName) ||
       !modulesLoadedKeys.includes(foreign.serviceName)
     ) {
-      //continue
+      continue
     }
 
     const migrate = getMigration(definition, serviceKey, primary, foreign)
