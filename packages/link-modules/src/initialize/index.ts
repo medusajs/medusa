@@ -118,7 +118,10 @@ export const initialize = async (
 }
 
 export async function runMigrations(
-  { options, logger }: Omit<LoaderOptions, "container">,
+  {
+    options,
+    logger,
+  }: Omit<LoaderOptions<ModuleServiceInitializeOptions>, "container">,
   modulesDefinition?: ModuleJoinerConfig[]
 ) {
   const modulesLoadedKeys = MedusaModule.getLoadedModules().map(

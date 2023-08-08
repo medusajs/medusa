@@ -3,7 +3,6 @@ import {
   LoaderOptions,
   Logger,
   ModuleJoinerConfig,
-  ModuleServiceInitializeCustomDataLayerOptions,
   ModuleServiceInitializeOptions,
 } from "@medusajs/types"
 import { generateEntity } from "../utils"
@@ -16,16 +15,15 @@ export function getMigration(
   primary: JoinerRelationship,
   foreign: JoinerRelationship
 ) {
-  return async function runMigrations({
-    options,
-    logger,
-  }: Pick<
-    LoaderOptions<
-      | ModuleServiceInitializeOptions
-      | ModuleServiceInitializeCustomDataLayerOptions
-    >,
-    "options" | "logger"
-  > = {}) {
+  return async function runMigrations(
+    {
+      options,
+      logger,
+    }: Pick<
+      LoaderOptions<ModuleServiceInitializeOptions>,
+      "options" | "logger"
+    > = {} as any
+  ) {
     logger ??= console as unknown as Logger
 
     const dbData = ModulesSdkUtils.loadDatabaseConfig("link_modules", options)
