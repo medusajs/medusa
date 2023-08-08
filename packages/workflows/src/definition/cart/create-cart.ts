@@ -233,6 +233,6 @@ WorkflowManager.register(Workflows.CreateCart, workflowSteps, handlers)
 type CreateCartWorkflowOutput = Record<any, any>
 
 export const createCart = exportWorkflow<
-  CartWorkflow.CreateCartInputDTO,
+  CartWorkflow.CreateCartWorkflowInputDTO,
   CreateCartWorkflowOutput
 >(Workflows.CreateCart, CreateCartActions.retrieveCart)
