@@ -1,7 +1,7 @@
 post:
   operationId: PostOrderEditsOrderEditDecline
-  summary: Decline an OrderEdit
-  description: Declines an OrderEdit.
+  summary: Decline an Order Edit
+  description: Decline an Order Edit. The changes are not reflected on the original order.
   parameters:
     - in: path
       name: id

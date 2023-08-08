@@ -35,6 +35,7 @@ x-expanded-relations:
     - items.tax_lines
     - items.variant
     - items.variant.product
+    - items.variant.product.profiles
     - refunds
     - region
     - shipping_address
@@ -88,13 +89,14 @@ required:
 properties:
   orders:
     type: array
+    description: An array of orders details.
     items:
       $ref: ./Order.yaml
   count:
     description: The total number of items available
     type: integer
   offset:
-    description: The number of items skipped before these items
+    description: The number of orders skipped when retrieving the orders.
     type: integer
   limit:
     description: The number of items per page

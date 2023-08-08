@@ -4,4 +4,4 @@ required:
 properties:
   value:
     type: string
-    description: The updated description of the Note.
+    description: The description of the Note.

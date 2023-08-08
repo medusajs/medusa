@@ -1,9 +1,9 @@
 import Medusa from "@medusajs/medusa-js"
 const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 // must be previously logged in or use api token
-medusa.admin.taxRates.addShippingOptions(tax_rate_id, {
+medusa.admin.taxRates.addShippingOptions(taxRateId, {
   shipping_options: [
-    shipping_option_id
+    shippingOptionId
   ]
 })
 .then(({ tax_rate }) => {

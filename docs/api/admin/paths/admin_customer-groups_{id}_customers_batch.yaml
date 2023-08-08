@@ -1,7 +1,7 @@
 post:
   operationId: PostCustomerGroupsGroupCustomersBatch
-  summary: Add Customers
-  description: Adds a list of customers, represented by id's, to a customer group.
+  summary: Add Customers to Group
+  description: Add a list of customers to a customer group.
   x-authenticated: true
   parameters:
     - in: path
@@ -55,8 +55,10 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteCustomerGroupsGroupCustomerBatch
-  summary: Remove Customers
-  description: Removes a list of customers, represented by id's, from a customer group.
+  summary: Remove Customers from Group
+  description: >-
+    Remove a list of customers from a customer group. This doesn't delete the
+    customer, only the association between the customer and the customer group.
   x-authenticated: true
   parameters:
     - in: path

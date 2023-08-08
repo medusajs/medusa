@@ -3,6 +3,7 @@ required:
   - tags
 properties:
   tags:
+    description: An array of product tags details.
     type: array
     items:
       type: object

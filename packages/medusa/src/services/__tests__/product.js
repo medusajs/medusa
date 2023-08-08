@@ -1,6 +1,6 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import ProductService from "../product"
-import { FlagRouter } from "../../utils/flag-router"
+import { FlagRouter } from "@medusajs/utils"
 
 const eventBusService = {
   emit: jest.fn(),

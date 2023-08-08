@@ -1,7 +1,9 @@
 get:
   operationId: GetCollectionsCollection
   summary: Get a Collection
-  description: Retrieves a Product Collection.
+  description: >-
+    Retrieve a Product Collection by its ID. The products associated with it are
+    expanded and returned as well.
   x-authenticated: true
   parameters:
     - in: path
@@ -25,7 +27,7 @@ get:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Collections
+    - Product Collections
   responses:
     '200':
       description: OK
@@ -48,7 +50,7 @@ get:
 post:
   operationId: PostCollectionsCollection
   summary: Update a Collection
-  description: Updates a Product Collection.
+  description: Update a Product Collection's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -77,7 +79,7 @@ post:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Collections
+    - Product Collections
   responses:
     '200':
       description: OK
@@ -100,7 +102,7 @@ post:
 delete:
   operationId: DeleteCollectionsCollection
   summary: Delete a Collection
-  description: Deletes a Product Collection.
+  description: Delete a Product Collection. This does not delete associated products.
   x-authenticated: true
   parameters:
     - in: path
@@ -124,7 +126,7 @@ delete:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Collections
+    - Product Collections
   responses:
     '200':
       description: OK

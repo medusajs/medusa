@@ -2,8 +2,8 @@ post:
   operationId: PostPaymentCollectionsPaymentCollectionPaymentSessionsSession
   summary: Refresh a Payment Session
   description: >-
-    Refreshes a Payment Session to ensure that it is in sync with the Payment
-    Collection.
+    Refresh a Payment Session's data to ensure that it is in sync with the
+    Payment Collection.
   x-authenticated: false
   parameters:
     - in: path

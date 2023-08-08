@@ -3,14 +3,13 @@ import {
   TransactionCheckpoint,
   TransactionPayload,
 } from "./distributed-transaction"
+import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 import {
   TransactionHandlerType,
-  TransactionModel,
   TransactionState,
   TransactionStepStatus,
   TransactionStepsDefinition,
 } from "./types"
-import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 
 import { EventEmitter } from "events"
 
@@ -366,7 +365,7 @@ export class TransactionOrchestrator extends EventEmitter {
       if (!step.definition.async) {
         execution.push(
           transaction
-            .handler(step.definition.action + "", type, payload)
+            .handler(step.definition.action + "", type, payload, transaction)
             .then(async (response) => {
               await TransactionOrchestrator.setStepSuccess(
                 transaction,
@@ -387,7 +386,7 @@ export class TransactionOrchestrator extends EventEmitter {
         execution.push(
           transaction.saveCheckpoint().then(async () =>
             transaction
-              .handler(step.definition.action + "", type, payload)
+              .handler(step.definition.action + "", type, payload, transaction)
               .catch(async (error) => {
                 await TransactionOrchestrator.setStepFailure(
                   transaction,

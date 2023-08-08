@@ -3,4 +3,5 @@ required:
   - sales_channel
 properties:
   sales_channel:
+    description: Sales Channel's details.
     $ref: ./SalesChannel.yaml

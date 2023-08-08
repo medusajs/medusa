@@ -2,14 +2,15 @@ post:
   operationId: PostDiscountsDiscountDynamicCodes
   summary: Create a Dynamic Code
   description: >-
-    Creates a dynamic unique code that can map to a parent Discount. This is
-    useful if you want to automatically generate codes with the same behaviour.
+    Create a dynamic unique code that can map to a parent Discount. This is
+    useful if you want to automatically generate codes with the same rules and
+    conditions.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Discount to create the dynamic code from."
+      description: The ID of the Discount to create the dynamic code for."
       schema:
         type: string
   requestBody:

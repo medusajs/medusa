@@ -1,32 +1,44 @@
 get:
   operationId: GetProductCategories
   summary: List Product Categories
-  description: Retrieve a list of product categories.
-  x-authenticated: false
+  description: >-
+    Retrieve a list of product categories. The product categories can be
+    filtered by fields such as `handle` or `q`. The product categories can also
+    be paginated. This endpoint can also be used to retrieve a product category
+    by its handle.
+  x-featureFlag: product_categories
+  externalDocs:
+    description: How to retrieve a product category by its handle
+    url: >-
+      https://docs.medusajs.com/modules/products/storefront/use-categories#get-a-category-by-its-handle
   parameters:
     - in: query
       name: q
-      description: Query used for searching product category names or handles.
+      description: term used to search product category's names and handles.
       schema:
         type: string
     - in: query
       name: handle
-      description: Query used for searching product category by handle.
+      description: Filter by handle.
       schema:
         type: string
     - in: query
       name: parent_category_id
-      description: Returns categories scoped by parent
+      description: >-
+        Filter by the ID of a parent category. Only children of the provided
+        parent category are retrieved.
       schema:
         type: string
     - in: query
       name: include_descendants_tree
-      description: Include all nested descendants of category
+      description: Whether all nested categories inside a category should be retrieved.
       schema:
         type: boolean
     - in: query
       name: offset
-      description: How many product categories to skip in the result.
+      description: >-
+        The number of product categories to skip when retrieving the product
+        categories.
       schema:
         type: integer
         default: 0
@@ -36,6 +48,20 @@ get:
       schema:
         type: integer
         default: 100
+    - in: query
+      name: expand
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        product categories.
+      schema:
+        type: string
+    - in: query
+      name: fields
+      description: >-
+        Comma-separated fields that should be included in the returned product
+        categories.
+      schema:
+        type: string
   x-codegen:
     method: list
     queryParams: StoreGetProductCategoriesParams

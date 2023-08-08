@@ -1,15 +1,19 @@
-import { TransactionPayload } from "./distributed-transaction"
 import {
-  TransactionStepsDefinition,
-  TransactionStepStatus,
-  TransactionState,
+  DistributedTransaction,
+  TransactionPayload,
+} from "./distributed-transaction"
+import {
   TransactionHandlerType,
+  TransactionState,
+  TransactionStepStatus,
+  TransactionStepsDefinition,
 } from "./types"
 
 export type TransactionStepHandler = (
   actionId: string,
   handlerType: TransactionHandlerType,
-  payload: TransactionPayload
+  payload: TransactionPayload,
+  transaction?: DistributedTransaction
 ) => Promise<unknown>
 
 /**

@@ -1,10 +1,10 @@
+import { FlagRouter } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
 import { EntityManager } from "typeorm"
 import { Cart } from "../../../../../../models"
 import { CartService, LineItemService } from "../../../../../../services"
 import { WithRequiredProperty } from "../../../../../../types/common"
 import { IdempotencyCallbackResult } from "../../../../../../types/idempotency-key"
-import { FlagRouter } from "../../../../../../utils/flag-router"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "../../index"
 
 export const CreateLineItemSteps = {

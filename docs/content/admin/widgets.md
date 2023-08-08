@@ -1103,35 +1103,6 @@ Open `localhost:7001` in your browser and log in. Then, go to the details page o
 
 Try making any changes to the component. The development server will hot-reload and your widget will be updated immediately.
 
-### Styling your Widget
-
-Admin Widgets support [Tailwind CSS](https://tailwindcss.com/) out of the box.
-
-For example, you can update the widget you created earlier to use Tailwind CSS classes:
-
-<!-- eslint-disable max-len -->
-
-```tsx title=src/admin/widgets/product-widget.tsx
-import type { 
-  WidgetConfig,
-} from "@medusajs/admin"
-
-const ProductWidget = () => {
-  return (
-    <div 
-      className="bg-white p-8 border border-gray-200 rounded-lg">
-      <h1>Product Widget</h1>
-    </div>
-  )
-}
-
-export const config: WidgetConfig = {
-  zone: "product.details.after",
-}
-
-export default ProductWidget
-```
-
 ### Widget Props
 
 Every widget receives props of the type `WidgetProps`, which includes the `notify` prop. The `notify` prop is an object that includes the following attributes:
@@ -1179,7 +1150,40 @@ export const config: WidgetConfig = {
 export default ProductWidget
 ```
 
-### Routing Functionalities
+---
+
+## Styling your Widget
+
+Admin Widgets support [Tailwind CSS](https://tailwindcss.com/) out of the box.
+
+For example, you can update the widget you created earlier to use Tailwind CSS classes:
+
+<!-- eslint-disable max-len -->
+
+```tsx title=src/admin/widgets/product-widget.tsx
+import type { 
+  WidgetConfig,
+} from "@medusajs/admin"
+
+const ProductWidget = () => {
+  return (
+    <div 
+      className="bg-white p-8 border border-gray-200 rounded-lg">
+      <h1>Product Widget</h1>
+    </div>
+  )
+}
+
+export const config: WidgetConfig = {
+  zone: "product.details.after",
+}
+
+export default ProductWidget
+```
+
+---
+
+## Routing Functionalities
 
 If you want to navigate to other pages, link to other pages, or use other routing functionalities, you can use [react-router-dom](https://reactrouter.com/en/main) package.
 
@@ -1224,7 +1228,9 @@ export default ProductWidget
 
 View [react-router-dom’s documentation](https://reactrouter.com/en/main) for other available components and hooks.
 
-### Querying and Mutating Data
+---
+
+## Querying and Mutating Data
 
 You will most likely need to interact with the Medusa backend  from your Widgets. To do so, you can utilize the Medusa React package. It contains a collection of queries and mutation built on `@tanstack/react-query` that lets you interact with the Medusa backend.
 
@@ -1272,6 +1278,8 @@ export const config: WidgetConfig = {
 
 export default ProductWidget
 ```
+
+### Custom Endpoints
 
 You can also use `medusa-react` to interact with custom endpoints using the [createCustomAdminHooks utility function](../medusa-react/overview.mdx#custom-hooks).
 

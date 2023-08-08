@@ -1,8 +1,17 @@
 allOf:
   - $ref: ./InventoryItemDTO.yaml
   - type: object
-    required:
-      - available_quantity
     properties:
-      available_quantity:
-        type: number
+      location_levels:
+        type: array
+        description: The inventory's location levels.
+        items:
+          allOf:
+            - $ref: ./InventoryItemDTO.yaml
+            - type: object
+              required:
+                - available_quantity
+              properties:
+                available_quantity:
+                  description: The available quantity in the inventory location.
+                  type: number

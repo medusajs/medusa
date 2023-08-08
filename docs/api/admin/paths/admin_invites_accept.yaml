@@ -1,7 +1,11 @@
 post:
   operationId: PostInvitesInviteAccept
   summary: Accept an Invite
-  description: Accepts an Invite and creates a corresponding user
+  description: >-
+    Accept an Invite. This will also delete the invite and create a new user
+    that can log in and perform admin functionalities. The user will have the
+    email associated with the invite, and the password provided in the request
+    body.
   requestBody:
     content:
       application/json:
