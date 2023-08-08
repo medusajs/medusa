@@ -17,6 +17,7 @@ import reqIp from "request-ip"
 import { EntityManager } from "typeorm"
 
 import { Logger } from "@medusajs/types"
+import { FlagRouter } from "@medusajs/utils"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { Cart, LineItem } from "../../../../models"
@@ -28,7 +29,6 @@ import {
 import { CartCreateProps } from "../../../../types/cart"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
  * @oas [post] /store/carts
