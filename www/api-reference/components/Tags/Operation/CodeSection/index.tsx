@@ -25,7 +25,7 @@ const TagOperationCodeSection = ({
   className,
 }: TagOperationCodeSectionProps) => {
   return (
-    <div className={clsx("mt-2 flex flex-col gap-2 px-1", className)}>
+    <div className={clsx("mt-2 flex flex-col gap-2", className)}>
       <div
         className={clsx(
           "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark border-medusa-border-base dark:border-medusa-border-base-dark rounded-lg border py-0.5 px-[12px]",
