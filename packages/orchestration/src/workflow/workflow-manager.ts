@@ -1,5 +1,6 @@
 import { Context, MedusaContainer } from "@medusajs/types"
 import {
+  DistributedTransaction,
   OrchestratorBuilder,
   TransactionHandlerType,
   TransactionMetadata,
@@ -35,6 +36,7 @@ export type WorkflowStepHandler = (args: {
   invoke: { [actions: string]: unknown }
   compensate: { [actions: string]: unknown }
   metadata: TransactionMetadata
+  transaction: DistributedTransaction
   context?: Context
 }) => unknown
 
@@ -136,7 +138,8 @@ export class WorkflowManager {
       return async (
         actionId: string,
         handlerType: TransactionHandlerType,
-        payload?: any
+        payload?: any,
+        transaction?: DistributedTransaction
       ) => {
         const command = handlers.get(actionId)
 
@@ -157,6 +160,7 @@ export class WorkflowManager {
           invoke,
           compensate,
           metadata,
+          transaction: transaction as DistributedTransaction,
           context,
         })
       }
