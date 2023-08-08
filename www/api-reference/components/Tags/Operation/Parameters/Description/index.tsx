@@ -74,7 +74,7 @@ const TagOperationParametersDescription = ({
       )
   }
   return (
-    <div className={clsx("w-2/3 break-words pb-0.5 pl-0.5")}>
+    <div className={clsx("w-2/3 break-words pb-0.5")}>
       {typeDescription}
       {schema.default !== undefined && (
         <>

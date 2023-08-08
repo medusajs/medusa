@@ -111,7 +111,7 @@ const TagOperationParametersObject = ({
   }
 
   if (!schema.properties) {
-    return getPropertyDescriptionElm("pl-1.5")
+    return getPropertyDescriptionElm()
   }
 
   if (topLevel) {

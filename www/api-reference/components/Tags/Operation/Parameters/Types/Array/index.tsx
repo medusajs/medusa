@@ -52,7 +52,6 @@ const TagOperationParametersArray = ({
         name={name}
         schema={schema}
         isRequired={isRequired}
-        className="pl-1.5"
       />
     )
   }

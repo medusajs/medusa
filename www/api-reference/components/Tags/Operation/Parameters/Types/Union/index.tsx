@@ -42,7 +42,6 @@ const TagOperationParametersUnion = ({
         schema={schema}
         name={name}
         isRequired={isRequired}
-        className="pl-1.5"
       />
     )
   }
