@@ -90,7 +90,7 @@ const Section = ({
     if (activePath && sectionRef.current) {
       const headings = [...sectionRef.current.querySelectorAll("h2")]
       headings.some((heading) => {
-        if (heading.id === activePath) {
+        if (heading.id === activePath && !checkElementInViewport(heading, 50)) {
           heading.scrollIntoView()
           return true
         }

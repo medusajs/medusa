@@ -23,6 +23,7 @@ type FeedbackProps = {
   className?: string
   extraData?: ExtraData
   sectionTitle?: string
+  vertical?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 const Feedback: React.FC<FeedbackProps> = ({
@@ -38,6 +39,7 @@ const Feedback: React.FC<FeedbackProps> = ({
   className = "",
   extraData = {},
   sectionTitle = "",
+  vertical = false,
 }) => {
   const [showForm, setShowForm] = useState(false)
   const [submittedFeedback, setSubmittedFeedback] = useState(false)
@@ -125,35 +127,35 @@ const Feedback: React.FC<FeedbackProps> = ({
           <>
             {!showForm && !submittedFeedback && (
               <div
-                className="flex flex-row items-center"
+                className={clsx(
+                  "flex",
+                  !vertical && "flex-row items-center",
+                  vertical && "flex-col justify-center gap-1"
+                )}
                 ref={inlineFeedbackRef}
               >
-                <span className="text-body-regular mr-1.5">{question}</span>
-                <Button
-                  onClick={handleFeedback}
-                  className="positive mr-0.5 w-fit last:mr-0"
-                >
-                  {positiveBtn}
-                </Button>
-                <Button
-                  onClick={handleFeedback}
-                  className="mr-0.5 w-fit last:mr-0"
-                >
-                  {negativeBtn}
-                </Button>
-                <Link
-                  href={`https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml&title=API%20Ref%28${area}%29%3A%20Issue%20in%20${encodeURI(
-                    sectionTitle
-                  )}`}
-                  className="btn-primary"
-                >
-                  Report Issue
-                </Link>
+                <span className="text-text-medium mr-1.5">{question}</span>
+                <div className={clsx("flex flex-row items-center gap-0.5")}>
+                  <Button onClick={handleFeedback} className="positive w-fit">
+                    {positiveBtn}
+                  </Button>
+                  <Button onClick={handleFeedback} className="w-fit">
+                    {negativeBtn}
+                  </Button>
+                  <Link
+                    href={`https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml&title=API%20Ref%28${area}%29%3A%20Issue%20in%20${encodeURI(
+                      sectionTitle
+                    )}`}
+                    className="btn-primary"
+                  >
+                    Report Issue
+                  </Link>
+                </div>
               </div>
             )}
             {showForm && !submittedFeedback && (
-              <div className="flex flex-col" ref={inlineQuestionRef}>
-                <span className="mb-1">
+              <div className="flex flex-col gap-1" ref={inlineQuestionRef}>
+                <span>
                   {positiveFeedback ? positiveQuestion : negativeQuestion}
                 </span>
                 <textarea
@@ -165,7 +167,7 @@ const Feedback: React.FC<FeedbackProps> = ({
                 <Button
                   onClick={submitFeedback}
                   disabled={loading}
-                  className="mt-1 w-fit"
+                  className="w-fit"
                 >
                   {submitBtn}
                 </Button>

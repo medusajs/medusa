@@ -10,7 +10,7 @@ const TagOperationCodeSectionRequestSamples = ({
   codeSamples,
 }: TagOperationCodeSectionRequestSamplesProps) => {
   return (
-    <>
+    <div>
       <h3>Request samples</h3>
       <CodeTabs
         tabs={codeSamples.map((codeSample) => ({
@@ -19,10 +19,12 @@ const TagOperationCodeSectionRequestSamples = ({
           code: {
             ...codeSample,
             collapsed: true,
+            className: "!mb-0",
           },
         }))}
+        className="mt-2 !mb-0"
       />
-    </>
+    </div>
   )
 }
 

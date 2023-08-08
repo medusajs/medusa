@@ -1,7 +1,6 @@
-import React from "react"
-import IconProps from "../types"
+import type IconProps from "../types"
 
-const IconBarsThree = ({ iconColorClassName, ...props }: IconProps) => {
+const IconPlusMini = ({ iconColorClassName, ...props }: IconProps) => {
   return (
     <svg
       width={props.width || 20}
@@ -12,7 +11,7 @@ const IconBarsThree = ({ iconColorClassName, ...props }: IconProps) => {
       {...props}
     >
       <path
-        d="M3.125 5.00006H16.875M3.125 10H16.875M3.125 15.0001H16.875"
+        d="M10.5 5V15M15.5 10H5.5"
         className={
           iconColorClassName ||
           "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle"
@@ -25,4 +24,4 @@ const IconBarsThree = ({ iconColorClassName, ...props }: IconProps) => {
   )
 }
 
-export default IconBarsThree
+export default IconPlusMini

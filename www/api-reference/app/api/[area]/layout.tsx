@@ -37,7 +37,7 @@ export default function RootLayout({
         className={clsx(
           inter.variable,
           robotoMono.variable,
-          "bg-docs-bg dark:bg-docs-bg-dark font-base text-body-regular h-full w-full",
+          "bg-docs-bg dark:bg-docs-bg-dark font-base text-medium h-full w-full",
           "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark"
         )}
       >

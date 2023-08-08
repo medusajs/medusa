@@ -2,6 +2,7 @@ import type { Operation } from "@/types/openapi"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import type { TagsOperationCodeSectionResponsesSampleProps } from "./Sample"
+import Badge from "../../../../Badge"
 
 const TagsOperationCodeSectionResponsesSample =
   dynamic<TagsOperationCodeSectionResponsesSampleProps>(
@@ -24,22 +25,14 @@ const TagsOperationCodeSectionResponses = ({
   }
 
   return (
-    <>
-      <h3>
-        Response{" "}
-        <span
-          className={clsx(
-            "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",
-            "border-medusa-tag-green-border dark:border-medusa-tag-green-border-dark w-[min-content] rounded border p-0.5",
-            "text-label-small"
-          )}
-        >
-          {responseCode}
-        </span>
-      </h3>
+    <div>
+      <div className="mb-0.5 flex items-center gap-0.5">
+        <h3 className="mb-0">Response </h3>
+        <Badge variant="green">{responseCode}</Badge>
+      </div>
 
       <TagsOperationCodeSectionResponsesSample response={response} />
-    </>
+    </div>
   )
 }
 

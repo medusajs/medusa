@@ -74,7 +74,8 @@ const TagsOperationDescriptionSection = ({
           section: operation.summary,
         }}
         sectionTitle={operation.summary}
-        className="mb-3"
+        className="!my-2"
+        vertical={true}
       />
       {operation.externalDocs && (
         <>

@@ -1,4 +1,4 @@
-import { Suspense, useState } from "react"
+import { Suspense, cloneElement, useState } from "react"
 import Loading from "../Loading"
 
 export type DetailsProps = {
@@ -30,7 +30,10 @@ const Details = ({
       {...props}
     >
       {summaryContent && <summary>{summaryContent}</summary>}
-      {summaryElm}
+      {summaryElm &&
+        cloneElement(summaryElm as React.ReactElement, {
+          open,
+        })}
       {open && <Suspense fallback={<Loading />}>{children}</Suspense>}
     </details>
   )

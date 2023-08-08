@@ -12,27 +12,30 @@ const TagOperationParameters = dynamic<TagOperationParametersProps>(
 ) as React.FC<TagOperationParametersProps>
 
 type TagsOperationParametersSectionProps = {
-  header: string
-  subheader?: string
+  header?: string
+  contentType?: string
   schema: SchemaObject
 }
 
 const TagsOperationParametersSection = ({
   header,
-  subheader,
+  contentType,
   schema,
 }: TagsOperationParametersSectionProps) => {
   return (
     <>
-      <div
-        className={clsx(
-          "border-medusa-border-base dark:border-medusa-border-base-dark border-b border-solid",
-          "mb-1"
-        )}
-      >
-        <span className={clsx("uppercase")}>{header}:</span>{" "}
-        {subheader && <span>{subheader}</span>}
-      </div>
+      {header && (
+        <h3
+          className={clsx(!contentType && "my-2", contentType && "mt-2 mb-0")}
+        >
+          {header}
+        </h3>
+      )}
+      {contentType && (
+        <span className={clsx("mb-2 inline-block")}>
+          Content type: {contentType}
+        </span>
+      )}
       <TagOperationParameters schemaObject={schema} topLevel={true} />
     </>
   )

@@ -806,6 +806,105 @@ module.exports = {
             fontWeight: "500",
           },
         ],
+        "compact-large-plus": [
+          "16px",
+          {
+            lineHeight: "20px",
+            fontWeight: "500"
+          }
+        ],
+        "compact-large": [
+          "16px",
+          {
+            lineHeight: "20px",
+            fontWeight: "400"
+          }
+        ],
+        "compact-medium-plus": [
+          "14px",
+          {
+            lineHeight: "20px",
+            fontWeight: "500"
+          }
+        ],
+        "compact-medium": [
+          "14px",
+          {
+            lineHeight: "20px",
+            fontWeight: "400"
+          }
+        ],
+        "compact-small-plus": [
+          "13px",
+          {
+            lineHeight: "20px",
+            fontWeight: "500"
+          }
+        ],
+        "compact-small": [
+          "13px",
+          {
+            lineHeight: "20px",
+            fontWeight: "400"
+          }
+        ],
+        "compact-x-small-plus": [
+          "12px",
+          {
+            lineHeight: "20px",
+            fontWeight: "500"
+          }
+        ],
+        "compact-x-small": [
+          "12px",
+          {
+            lineHeight: "20px",
+            fontWeight: "400"
+          }
+        ],
+        "x-large-plus": [
+          "18px",
+          {
+            lineHeight: "32px",
+            fontWeight: "500"
+          }
+        ],
+        "x-large": [
+          "18px",
+          {
+            lineHeight: "32px",
+            fontWeight: "400"
+          }
+        ],
+        "large-plus": [
+          "16px",
+          {
+            lineHeight: "28px",
+            fontWeight: "500"
+          }
+        ],
+        "large": [
+          "16px",
+          {
+            lineHeight: "28px",
+            fontWeight: "400"
+          }
+        ],
+        "medium-plus": [
+          "14px",
+          {
+            lineHeight: "24px",
+            fontWeight: "500"
+          }
+        ],
+        "medium": [
+          "14px",
+          {
+            lineHeight: "24px",
+            fontWeight: "400"
+          }
+        ],
+        // TODO remove once changed in docs
         "body-x-large-plus": [
           "18px",
           {

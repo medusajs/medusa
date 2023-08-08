@@ -91,9 +91,12 @@ const TagOperationParametersDescription = ({
         <>
           <br />
           <span>
-            Enum:
+            Enum:{" "}
             {schema.enum.map((value, index) => (
-              <InlineCode key={index}>{JSON.stringify(value)}</InlineCode>
+              <>
+                {index !== 0 && <>, </>}
+                <InlineCode key={index}>{JSON.stringify(value)}</InlineCode>
+              </>
             ))}
           </span>
         </>
@@ -114,7 +117,7 @@ const TagOperationParametersDescription = ({
           <br />
           <MDXContentClient
             content={capitalize(schema.description)}
-            className={clsx(schema.externalDocs && "!mb-0 [&>*]:!mb-0")}
+            className={clsx("!mb-0 [&>*]:!mb-0")}
           />
         </>
       )}

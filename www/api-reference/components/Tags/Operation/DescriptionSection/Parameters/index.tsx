@@ -1,5 +1,5 @@
 import type { Parameter, SchemaObject } from "@/types/openapi"
-import TagsOperationParametersSection from "../../Parameters/Section"
+import TagOperationParameters from "../../Parameters"
 
 export type TagsOperationDescriptionSectionParametersProps = {
   parameters: Parameter[]
@@ -43,16 +43,26 @@ const TagsOperationDescriptionSectionParameters = ({
   return (
     <>
       {Object.values(pathParameters.properties).length > 0 && (
-        <TagsOperationParametersSection
-          header="Path Parameters"
-          schema={pathParameters}
-        />
+        <>
+          <h3 className="border-medusa-border-base dark:border-medusa-border-base-dark border-b py-1.5">
+            Path Parameters
+          </h3>
+          <TagOperationParameters
+            schemaObject={pathParameters}
+            topLevel={true}
+          />
+        </>
       )}
       {Object.values(queryParameters.properties).length > 0 && (
-        <TagsOperationParametersSection
-          header="Query Parameters"
-          schema={queryParameters}
-        />
+        <>
+          <h3 className="border-medusa-border-base dark:border-medusa-border-base-dark border-b py-1.5">
+            Query Parameters
+          </h3>
+          <TagOperationParameters
+            schemaObject={queryParameters}
+            topLevel={true}
+          />
+        </>
       )}
     </>
   )

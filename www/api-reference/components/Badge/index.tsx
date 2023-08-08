@@ -12,6 +12,7 @@ export type BadgeProps = {
     | "green-dark"
     | "blue"
     | "blue-dark"
+    | "red"
 } & React.HTMLAttributes<HTMLSpanElement>
 
 const Badge: React.FC<BadgeProps> = ({ className, variant, children }) => {
@@ -35,6 +36,8 @@ const Badge: React.FC<BadgeProps> = ({ className, variant, children }) => {
           "bg-medusa-tag-blue-bg dark:bg-medusa-tag-blue-bg-dark text-medusa-tag-blue-text dark:text-medusa-tag-blue-text-dark border-medusa-tag-blue-border dark:border-medusa-tag-blue-border-dark",
         variant === "blue-dark" &&
           "bg-medusa-tag-blue-bg-dark text-medusa-tag-blue-text-dark border-medusa-tag-blue-border-dark",
+        variant === "red" &&
+          "bg-medusa-tag-red-bg dark:bg-medusa-tag-red-bg-dark text-medusa-tag-red-text dark:text-medusa-tag-red-text-dark border-medusa-tag-red-border dark:border-medusa-tag-red-border-dark",
         "badge",
         className
       )}

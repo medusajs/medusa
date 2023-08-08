@@ -86,10 +86,7 @@ const TagsOperationCodeSectionResponsesSample = ({
     <>
       <div className={className}>
         {response.content && (
-          <fieldset className="border-medusa-border-base dark:border-medusa-border-base-dark rounded border p-0.5">
-            <legend>Content type</legend>
-            <span>{Object.keys(response.content)[0]}</span>
-          </fieldset>
+          <span>Content type: {Object.keys(response.content)[0]}</span>
         )}
         <div>
           {examples.length > 1 && (
@@ -113,7 +110,7 @@ const TagsOperationCodeSectionResponsesSample = ({
               source={selectedExample.content}
               lang={getLanguageFromMedia(Object.keys(response.content)[0])}
               collapsed={true}
-              className="my-1"
+              className="mt-2 mb-0"
             />
           )}
           {!selectedExample && <>Empty Response</>}

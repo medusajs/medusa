@@ -15,7 +15,7 @@ const IconMedusa = ({ iconColorClassName, ...props }: IconProps) => {
         fill="#030712"
         className={
           iconColorClassName ||
-          "fill-medusa-icon-subtle dark:fill-medusa-icon-subtle"
+          "fill-medusa-fg-subtle dark:fill-medusa-fg-subtle"
         }
       />
     </svg>

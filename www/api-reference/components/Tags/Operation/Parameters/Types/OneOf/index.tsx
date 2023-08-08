@@ -68,7 +68,7 @@ const TagOperationParamatersOneOf = ({
       <>
         <div className={clsx("flex items-center gap-1")}>
           <span className="my-2 inline-block pl-1.5">One of</span>
-          <ul className="flex list-none gap-1">
+          <ul className="mb-0 flex list-none gap-1">
             {schema.oneOf?.map((item, index) => (
               <li
                 key={index}

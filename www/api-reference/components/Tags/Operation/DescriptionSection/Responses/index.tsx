@@ -1,7 +1,9 @@
 import type { ResponsesObject } from "@/types/openapi"
 import clsx from "clsx"
 import Details from "@/components/Details"
-import TagsOperationParametersSection from "../../Parameters/Section"
+import DetailsSummary from "../../../../Details/Summary"
+import Badge from "../../../../Badge"
+import TagOperationParameters from "../../Parameters"
 
 export type TagsOperationDescriptionSectionResponsesProps = {
   responses: ResponsesObject
@@ -10,68 +12,77 @@ export type TagsOperationDescriptionSectionResponsesProps = {
 const TagsOperationDescriptionSectionResponses = ({
   responses,
 }: TagsOperationDescriptionSectionResponsesProps) => {
-  const getHeaderClasses = (code: string): string => {
-    return clsx(
-      "mb-1 rounded-sm py-0.5 px-1",
-      code.match(/20[0-9]/) &&
-        "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark",
-      !code.match(/20[0-9]/) &&
-        "bg-medusa-tag-red-bg dark:bg-medusa-tag-red-bg-dark text-medusa-tag-red-text dark:text-medusa-tag-red-text-dark"
-    )
-  }
-
   return (
     <>
-      <h4>Responses</h4>
-      {Object.entries(responses).map(([code, response], index) => {
-        return (
-          <div key={code}>
-            {response.content && (
-              <>
-                {(code === "200" || code === "201") && (
-                  <>
-                    <div className={getHeaderClasses(code)}>
-                      {code} {response.description}
-                    </div>
-                    <TagsOperationParametersSection
-                      header="Response Schema"
-                      subheader={Object.keys(response.content)[0]}
-                      schema={
-                        response.content[Object.keys(response.content)[0]]
-                          .schema
+      <h3 className="my-1.5">Responses</h3>
+      <div
+        className={clsx("[&>details:not(:first-of-type)>summary]:border-t-0")}
+      >
+        {Object.entries(responses).map(([code, response], index) => {
+          return (
+            <>
+              {response.content && (
+                <>
+                  {(code === "200" || code === "201") && (
+                    <>
+                      <DetailsSummary
+                        title={`${code} ${response.description}`}
+                        subtitle={Object.keys(response.content)[0]}
+                        badge={<Badge variant="green">Success</Badge>}
+                        expandable={false}
+                      />
+                      <TagOperationParameters
+                        schemaObject={
+                          response.content[Object.keys(response.content)[0]]
+                            .schema
+                        }
+                        topLevel={true}
+                      />
+                    </>
+                  )}
+                  {code !== "200" && code !== "201" && (
+                    <Details
+                      summaryElm={
+                        <DetailsSummary
+                          title={`${code} ${response.description}`}
+                          subtitle={Object.keys(response.content)[0]}
+                          badge={<Badge variant="red">Error</Badge>}
+                          open={index === 0}
+                        />
                       }
-                    />
-                  </>
-                )}
-                {code !== "200" && code !== "201" && (
-                  <Details
-                    summaryElm={
-                      <summary className={getHeaderClasses(code)}>
-                        {code} {response.description}
-                      </summary>
-                    }
-                    openInitial={index === 0}
-                  >
-                    <TagsOperationParametersSection
-                      header="Response Schema"
-                      subheader={Object.keys(response.content)[0]}
-                      schema={
-                        response.content[Object.keys(response.content)[0]]
-                          .schema
+                      openInitial={index === 0}
+                    >
+                      <TagOperationParameters
+                        schemaObject={
+                          response.content[Object.keys(response.content)[0]]
+                            .schema
+                        }
+                        topLevel={true}
+                      />
+                    </Details>
+                  )}
+                </>
+              )}
+              {!response.content && (
+                <DetailsSummary
+                  title={`${code} ${response.description}`}
+                  subtitle={"Empty response"}
+                  badge={
+                    <Badge
+                      variant={
+                        code === "200" || code === "201" ? "green" : "red"
                       }
-                    />
-                  </Details>
-                )}
-              </>
-            )}
-            {!response.content && (
-              <div className={getHeaderClasses(code)}>
-                {code} {response.description}
-              </div>
-            )}
-          </div>
-        )
-      })}
+                    >
+                      {code === "200" || code === "201" ? "Success" : "Error"}
+                    </Badge>
+                  }
+                  expandable={false}
+                />
+              )}
+            </>
+          )
+        })}
+      </div>
     </>
   )
 }

@@ -22,7 +22,7 @@ const IconChevronRightMini = ({
         strokeLinejoin="round"
         className={
           iconColorClassName ||
-          "stroke-medusa-icon-subtle dark:stroke-medusa-icon-subtle-dark"
+          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle-dark"
         }
       />
     </svg>
