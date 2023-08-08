@@ -1,41 +1,42 @@
+import { FlagRouter } from "@medusajs/utils"
 import { isEmpty, isEqual } from "lodash"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomerService,
-  CustomShippingOptionService,
-  DiscountService,
-  EventBusService,
-  GiftCardService,
-  LineItemAdjustmentService,
-  LineItemService,
-  NewTotalsService,
-  PaymentProviderService,
-  ProductService,
-  ProductVariantInventoryService,
-  ProductVariantService,
-  RegionService,
-  SalesChannelService,
-  ShippingOptionService,
-  StoreService,
-  TaxProviderService,
-  TotalsService,
+    CustomShippingOptionService,
+    CustomerService,
+    DiscountService,
+    EventBusService,
+    GiftCardService,
+    LineItemAdjustmentService,
+    LineItemService,
+    NewTotalsService,
+    PaymentProviderService,
+    ProductService,
+    ProductVariantInventoryService,
+    ProductVariantService,
+    RegionService,
+    SalesChannelService,
+    ShippingOptionService,
+    StoreService,
+    TaxProviderService,
+    TotalsService,
 } from "."
 import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
-  Address,
-  Cart,
-  Customer,
-  CustomShippingOption,
-  Discount,
-  DiscountRule,
-  DiscountRuleType,
-  LineItem,
-  PaymentSession,
-  PaymentSessionStatus,
-  SalesChannel,
-  ShippingMethod,
+    Address,
+    Cart,
+    CustomShippingOption,
+    Customer,
+    Discount,
+    DiscountRule,
+    DiscountRuleType,
+    LineItem,
+    PaymentSession,
+    PaymentSessionStatus,
+    SalesChannel,
+    ShippingMethod,
 } from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
@@ -43,22 +44,21 @@ import { LineItemRepository } from "../repositories/line-item"
 import { PaymentSessionRepository } from "../repositories/payment-session"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import {
-  CartCreateProps,
-  CartUpdateProps,
-  FilterableCartProps,
-  isCart,
-  LineItemUpdate,
-  LineItemValidateData,
+    CartCreateProps,
+    CartUpdateProps,
+    FilterableCartProps,
+    LineItemUpdate,
+    LineItemValidateData,
+    isCart,
 } from "../types/cart"
 import {
-  AddressPayload,
-  FindConfig,
-  TotalField,
-  WithRequiredProperty,
+    AddressPayload,
+    FindConfig,
+    TotalField,
+    WithRequiredProperty,
 } from "../types/common"
 import { PaymentSessionInput } from "../types/payment"
 import { buildQuery, isString, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import { validateEmail } from "../utils/is-email"
 
 type InjectedDependencies = {

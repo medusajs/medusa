@@ -1,10 +1,10 @@
-import OrderExportStrategy from "../../../batch-jobs/order/export"
+import { FlagRouter } from "@medusajs/utils"
 import { IdMap, MockManager } from "medusa-test-utils"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { User } from "../../../../models"
 import { BatchJobStatus } from "../../../../types/batch-job"
 import { ordersToExport } from "../../../__fixtures__/order-export-data"
-import { FlagRouter } from "../../../../utils/flag-router";
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
+import OrderExportStrategy from "../../../batch-jobs/order/export"
 
 const orderServiceMock = {
   withTransaction: function (): any {

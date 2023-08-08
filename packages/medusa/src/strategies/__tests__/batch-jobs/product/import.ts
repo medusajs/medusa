@@ -4,16 +4,16 @@ import { EntityManager } from "typeorm"
 import { FileService } from "medusa-interfaces"
 import { IdMap, MockManager } from "medusa-test-utils"
 
+import { FlagRouter } from "@medusajs/utils"
 import { User } from "../../../../models"
 import {
-  BatchJobService,
-  ProductService,
-  ProductVariantService,
-  RegionService,
-  ShippingProfileService,
+    BatchJobService,
+    ProductService,
+    ProductVariantService,
+    RegionService,
+    ShippingProfileService,
 } from "../../../../services"
 import { BatchJobStatus } from "../../../../types/batch-job"
-import { FlagRouter } from "../../../../utils/flag-router"
 import ProductImportStrategy from "../../../batch-jobs/product/import"
 import { ProductImportInjectedProps } from "../../../batch-jobs/product/types"
 
