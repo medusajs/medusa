@@ -6,6 +6,7 @@ import getSectionId from "@/utils/get-section-id"
 import clsx from "clsx"
 import { useCallback, useEffect, useRef, useState } from "react"
 import checkElementInViewport from "../../utils/check-element-in-viewport"
+import { useBaseSpecs } from "../../providers/base-specs"
 
 export type SectionProps = {
   addToSidebar?: boolean
@@ -19,18 +20,17 @@ const Section = ({
   const sectionRef = useRef<HTMLDivElement>(null)
   const { activePath, setActivePath, addItems } = useSidebar()
   const [scannedHeading, setScannedHeading] = useState(false)
-  const [finishedInitialScroll, setFinishedInitialScroll] = useState(false)
+  const { baseSpecs } = useBaseSpecs()
 
   const handleScroll = useCallback(() => {
     const headings = [...(sectionRef.current?.querySelectorAll("h2") || [])]
-    if (!finishedInitialScroll) {
+    if (!baseSpecs) {
       headings.some((heading) => {
-        if (heading.id === location.hash.replace("#", "")) {
+        if (heading.id === (activePath || location.hash.replace("#", ""))) {
           heading.scrollIntoView()
           return true
         }
       })
-      setFinishedInitialScroll(true)
       return
     }
     if (window.scrollY === 0) {
@@ -51,7 +51,7 @@ const Section = ({
 
       return false
     })
-  }, [finishedInitialScroll, activePath, setActivePath])
+  }, [baseSpecs, activePath, setActivePath])
 
   useEffect(() => {
     if (sectionRef.current && addToSidebar && !scannedHeading) {
@@ -86,6 +86,21 @@ const Section = ({
   ])
 
   useEffect(() => {
+    if ("scrollRestoration" in history) {
+      // disable scroll on refresh
+      history.scrollRestoration = "manual"
+    }
+
+    const headings = [...(sectionRef.current?.querySelectorAll("h2") || [])]
+    headings.some((heading) => {
+      if (heading.id === (activePath || location.hash.replace("#", ""))) {
+        heading.scrollIntoView()
+        return true
+      }
+    })
+  }, [])
+
+  useEffect(() => {
     if (addToSidebar) {
       handleScroll()
 
@@ -96,18 +111,6 @@ const Section = ({
       }
     }
   }, [handleScroll])
-
-  // useEffect(() => {
-  //   if (activePath && sectionRef.current) {
-  //     const headings = [...sectionRef.current.querySelectorAll("h2")]
-  //     headings.some((heading) => {
-  //       if (heading.id === activePath && !checkElementInViewport(heading, 50)) {
-  //         heading.scrollIntoView()
-  //         return true
-  //       }
-  //     })
-  //   }
-  // }, [activePath])
 
   return (
     <div
