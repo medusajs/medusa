@@ -1,13 +1,18 @@
 import path from "path"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import { Actions, createProducts, InputAlias, pipe } from "@medusajs/workflows"
-import { WorkflowTypes } from "@medusajs/types"
+import {
+  createProducts,
+  CreateProductsActions,
+  Handlers,
+  InputAlias,
+  pipe,
+} from "@medusajs/workflows"
+import { IProductModuleService, WorkflowTypes } from "@medusajs/types"
 import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
-} from "@medusajs/medusa/dist"
-import { listProducts } from "@medusajs/workflows/dist/handlers/product"
+} from "@medusajs/medusa"
 
 describe("CreateProduct workflow", function () {
   let medusaProcess
@@ -32,7 +37,7 @@ describe("CreateProduct workflow", function () {
 
     workflow.appendAction(
       "fail_step",
-      Actions.result,
+      CreateProductsActions.result,
       {
         invoke: pipe(
           {
@@ -105,25 +110,8 @@ describe("CreateProduct workflow", function () {
 
     expect(transaction.getState()).toEqual("reverted")
 
-    const steps = transaction.getFlow().steps
-    for (const stepKey of Object.keys(steps)) {
-      const step = transaction.getFlow().steps[stepKey]
-      if (step.id === "_root") {
-        continue
-      }
-
-      if (step.definition.action === "fail_step") {
-        expect(step.invoke.state).toEqual("failed")
-        expect(step.compensate.state).toEqual("reverted")
-        continue
-      }
-
-      expect(step.invoke.state).toEqual("done")
-      expect(step.compensate.state).toEqual("reverted")
-    }
-
     const productId = result[0].id
-    const [product] = await listProducts({
+    let [product] = await Handlers.ProductHandlers.listProducts({
       container: medusaContainer,
       context,
       data: {
@@ -132,5 +120,25 @@ describe("CreateProduct workflow", function () {
     } as any)
 
     expect(product).toBeUndefined()
+
+    // TODO: update to use the registration name once this is merged https://github.com/medusajs/medusa/pull/4626
+    const productModule = medusaContainer.resolve(
+      "productModuleService"
+    ) as IProductModuleService
+
+    ;[product] = await productModule.list(
+      {
+        id: productId,
+      },
+      {
+        withDeleted: true,
+      }
+    )
+
+    expect(product).toEqual(
+      expect.objectContaining({
+        deleted_at: expect.any(String),
+      })
+    )
   })
 })

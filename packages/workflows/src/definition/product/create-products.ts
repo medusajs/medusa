@@ -13,7 +13,7 @@ import {
 } from "../../handlers"
 import { aggregateData } from "../../helper/aggregate"
 
-export enum Actions {
+export enum CreateProductsActions {
   prepare = "prepare",
   createProducts = "createProducts",
   attachToSalesChannel = "attachToSalesChannel",
@@ -26,27 +26,27 @@ export enum Actions {
 
 export const workflowSteps: TransactionStepsDefinition = {
   next: {
-    action: Actions.prepare,
+    action: CreateProductsActions.prepare,
     noCompensation: true,
     next: {
-      action: Actions.createProducts,
+      action: CreateProductsActions.createProducts,
       next: [
         {
-          action: Actions.attachShippingProfile,
+          action: CreateProductsActions.attachShippingProfile,
           saveResponse: false,
         },
         {
-          action: Actions.attachToSalesChannel,
+          action: CreateProductsActions.attachToSalesChannel,
           saveResponse: false,
         },
         {
-          action: Actions.createPrices,
+          action: CreateProductsActions.createPrices,
           next: {
-            action: Actions.createInventoryItems,
+            action: CreateProductsActions.createInventoryItems,
             next: {
-              action: Actions.attachInventoryItems,
+              action: CreateProductsActions.attachInventoryItems,
               next: {
-                action: Actions.result,
+                action: CreateProductsActions.result,
                 noCompensation: true,
               },
             },
@@ -59,7 +59,7 @@ export const workflowSteps: TransactionStepsDefinition = {
 
 const handlers = new Map([
   [
-    Actions.prepare,
+    CreateProductsActions.prepare,
     {
       invoke: pipe(
         {
@@ -69,17 +69,17 @@ const handlers = new Map([
           },
         },
         aggregateData(),
-        MiddlewaresHandlers.createProductsPrepareData
+        ProductHandlers.createProductsPrepareData
       ),
     },
   ],
   [
-    Actions.createProducts,
+    CreateProductsActions.createProducts,
     {
       invoke: pipe(
         {
           invoke: {
-            from: Actions.prepare,
+            from: CreateProductsActions.prepare,
           },
         },
         aggregateData(),
@@ -88,7 +88,7 @@ const handlers = new Map([
       compensate: pipe(
         {
           invoke: {
-            from: Actions.createProducts,
+            from: CreateProductsActions.createProducts,
             alias: ProductHandlers.removeProducts.aliases.products,
           },
         },
@@ -98,16 +98,16 @@ const handlers = new Map([
     },
   ],
   [
-    Actions.attachShippingProfile,
+    CreateProductsActions.attachShippingProfile,
     {
       invoke: pipe(
         {
           invoke: [
             {
-              from: Actions.prepare,
+              from: CreateProductsActions.prepare,
             },
             {
-              from: Actions.createProducts,
+              from: CreateProductsActions.createProducts,
               alias:
                 ProductHandlers.attachShippingProfileToProducts.aliases
                   .products,
@@ -121,10 +121,10 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: Actions.prepare,
+              from: CreateProductsActions.prepare,
             },
             {
-              from: Actions.createProducts,
+              from: CreateProductsActions.createProducts,
               alias:
                 ProductHandlers.detachShippingProfileFromProducts.aliases
                   .products,
@@ -137,16 +137,16 @@ const handlers = new Map([
     },
   ],
   [
-    Actions.attachToSalesChannel,
+    CreateProductsActions.attachToSalesChannel,
     {
       invoke: pipe(
         {
           invoke: [
             {
-              from: Actions.prepare,
+              from: CreateProductsActions.prepare,
             },
             {
-              from: Actions.createProducts,
+              from: CreateProductsActions.createProducts,
               alias:
                 ProductHandlers.attachSalesChannelToProducts.aliases.products,
             },
@@ -159,10 +159,10 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: Actions.prepare,
+              from: CreateProductsActions.prepare,
             },
             {
-              from: Actions.createProducts,
+              from: CreateProductsActions.createProducts,
               alias:
                 ProductHandlers.detachSalesChannelFromProducts.aliases.products,
             },
@@ -174,12 +174,12 @@ const handlers = new Map([
     },
   ],
   [
-    Actions.createInventoryItems,
+    CreateProductsActions.createInventoryItems,
     {
       invoke: pipe(
         {
           invoke: {
-            from: Actions.createProducts,
+            from: CreateProductsActions.createProducts,
             alias: InventoryHandlers.createInventoryItems.aliases.products,
           },
         },
@@ -189,7 +189,7 @@ const handlers = new Map([
       compensate: pipe(
         {
           invoke: {
-            from: Actions.createInventoryItems,
+            from: CreateProductsActions.createInventoryItems,
             alias:
               InventoryHandlers.removeInventoryItems.aliases.inventoryItems,
           },
@@ -200,12 +200,12 @@ const handlers = new Map([
     },
   ],
   [
-    Actions.attachInventoryItems,
+    CreateProductsActions.attachInventoryItems,
     {
       invoke: pipe(
         {
           invoke: {
-            from: Actions.createInventoryItems,
+            from: CreateProductsActions.createInventoryItems,
             alias:
               InventoryHandlers.attachInventoryItems.aliases.inventoryItems,
           },
@@ -216,7 +216,7 @@ const handlers = new Map([
       compensate: pipe(
         {
           invoke: {
-            from: Actions.createInventoryItems,
+            from: CreateProductsActions.createInventoryItems,
             alias:
               InventoryHandlers.detachInventoryItems.aliases.inventoryItems,
           },
@@ -227,16 +227,16 @@ const handlers = new Map([
     },
   ],
   [
-    Actions.createPrices,
+    CreateProductsActions.createPrices,
     {
       invoke: pipe(
         {
           invoke: [
             {
-              from: Actions.prepare,
+              from: CreateProductsActions.prepare,
             },
             {
-              from: Actions.createProducts,
+              from: CreateProductsActions.createProducts,
               alias:
                 ProductHandlers.updateProductsVariantsPrices.aliases.products,
             },
@@ -249,10 +249,10 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: Actions.prepare,
+              from: CreateProductsActions.prepare,
             },
             {
-              from: Actions.createProducts,
+              from: CreateProductsActions.createProducts,
               alias:
                 ProductHandlers.updateProductsVariantsPrices.aliases.products,
             },
@@ -265,16 +265,16 @@ const handlers = new Map([
     },
   ],
   [
-    Actions.result,
+    CreateProductsActions.result,
     {
       invoke: pipe(
         {
           invoke: [
             {
-              from: Actions.prepare,
+              from: CreateProductsActions.prepare,
             },
             {
-              from: Actions.createProducts,
+              from: CreateProductsActions.createProducts,
               alias: "products",
             },
           ],
@@ -297,4 +297,4 @@ WorkflowManager.register(Workflows.CreateProducts, workflowSteps, handlers)
 export const createProducts = exportWorkflow<
   WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO,
   ProductTypes.ProductDTO[]
->(Workflows.CreateProducts, Actions.result)
+>(Workflows.CreateProducts, CreateProductsActions.result)
