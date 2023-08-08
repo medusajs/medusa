@@ -87,7 +87,7 @@ const Section = ({
   ])
 
   useEffect(() => {
-    if (activePath && sectionRef.current) {
+    if (activePath && sectionRef.current && !finishedInitialScroll) {
       const headings = [...sectionRef.current.querySelectorAll("h2")]
       headings.some((heading) => {
         if (heading.id === activePath && !checkElementInViewport(heading, 50)) {
