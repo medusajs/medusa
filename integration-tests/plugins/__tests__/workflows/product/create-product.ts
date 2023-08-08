@@ -7,6 +7,7 @@ import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "@medusajs/medusa/dist"
+import { listProducts } from "@medusajs/workflows/dist/handlers/product"
 
 describe("CreateProduct workflow", function () {
   let medusaProcess
@@ -40,12 +41,8 @@ describe("CreateProduct workflow", function () {
               from: InputAlias.ProductsInputData,
             },
           },
-          async function failStep({ data }) {
-            throw new Error(
-              `Failed to create products with title: ${data.products
-                .map((p) => p.title)
-                .join(",")}`
-            )
+          async function failStep() {
+            throw new Error(`Failed to create products`)
           }
         ),
       },
@@ -89,11 +86,12 @@ describe("CreateProduct workflow", function () {
       }
 
     const manager = medusaContainer.resolve("manager")
+    const context = {
+      manager,
+    }
     const { result, errors, transaction } = await workflow.run({
       input,
-      context: {
-        manager,
-      },
+      context,
       throwOnError: false,
     })
 
@@ -101,15 +99,19 @@ describe("CreateProduct workflow", function () {
       {
         action: "fail_step",
         handlerType: "invoke",
-        error: new Error(
-          `Failed to create products with title: ${input.products[0].title}`
-        ),
+        error: new Error(`Failed to create products`),
       },
     ])
 
     expect(transaction.getState()).toEqual("reverted")
 
-    for (const step of transaction.getFlow().steps) {
+    const steps = transaction.getFlow().steps
+    for (const stepKey of Object.keys(steps)) {
+      const step = transaction.getFlow().steps[stepKey]
+      if (step.id === "_root") {
+        continue
+      }
+
       if (step.definition.action === "fail_step") {
         expect(step.invoke.state).toEqual("failed")
         expect(step.compensate.state).toEqual("reverted")
@@ -119,5 +121,16 @@ describe("CreateProduct workflow", function () {
       expect(step.invoke.state).toEqual("done")
       expect(step.compensate.state).toEqual("reverted")
     }
+
+    const productId = result[0].id
+    const [product] = await listProducts({
+      container: medusaContainer,
+      context,
+      data: {
+        ids: [productId],
+      },
+    } as any)
+
+    expect(product).toBeUndefined()
   })
 })
