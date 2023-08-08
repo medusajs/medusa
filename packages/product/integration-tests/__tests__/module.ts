@@ -1,7 +1,6 @@
 import { MedusaModule } from "@medusajs/modules-sdk"
 import { initialize } from "../../src"
 import * as CustomRepositories from "../__fixtures__/module"
-import { ProductRepository } from "../__fixtures__/module"
 import {
   buildProductAndRelationsData,
   createProductAndTags,
@@ -11,6 +10,7 @@ import { DB_URL, TestDatabase } from "../utils"
 import { kebabCase } from "@medusajs/utils"
 import { IProductModuleService } from "@medusajs/types"
 import { knex } from "knex"
+import { EventBusService } from "../__fixtures__/event-bus"
 
 const sharedPgConnection = knex<any, any>({
   client: "pg",
@@ -30,6 +30,8 @@ const afterEach_ = async () => {
 }
 
 describe("Product module", function () {
+  const eventBus = new EventBusService()
+
   describe("Using built-in data access layer", function () {
     let module: IProductModuleService
 
@@ -37,12 +39,17 @@ describe("Product module", function () {
       const testManager = await beforeEach_()
       await createProductAndTags(testManager, productsData)
 
-      module = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      module = await initialize(
+        {
+          database: {
+            clientUrl: DB_URL,
+            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+          },
         },
-      })
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)
@@ -64,20 +71,25 @@ describe("Product module", function () {
   })
 
   describe("Using custom data access layer", function () {
-    let module: IProductModuleService
+    let module
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
 
       await createProductAndTags(testManager, productsData)
 
-      module = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      module = await initialize(
+        {
+          database: {
+            clientUrl: DB_URL,
+            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+          },
+          repositories: CustomRepositories,
         },
-        repositories: CustomRepositories,
-      })
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)
@@ -95,13 +107,13 @@ describe("Product module", function () {
     it("should return a list of product", async () => {
       const products = await module.list()
 
-      expect(ProductRepository.prototype.find).toHaveBeenCalled()
+      expect(module.productService_.productRepository_.find).toHaveBeenCalled()
       expect(products).toHaveLength(0)
     })
   })
 
   describe("Using custom data access layer and manager", function () {
-    let module: IProductModuleService
+    let module
 
     beforeEach(async () => {
       const testManager = await beforeEach_()
@@ -109,10 +121,15 @@ describe("Product module", function () {
 
       MedusaModule.clearInstances()
 
-      module = await initialize({
-        manager: testManager,
-        repositories: CustomRepositories,
-      })
+      module = await initialize(
+        {
+          manager: testManager,
+          repositories: CustomRepositories,
+        },
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)
@@ -130,7 +147,7 @@ describe("Product module", function () {
     it("should return a list of product", async () => {
       const products = await module.list()
 
-      expect(ProductRepository.prototype.find).toHaveBeenCalled()
+      expect(module.productService_.productRepository_.find).toHaveBeenCalled()
       expect(products).toHaveLength(0)
     })
   })
@@ -144,11 +161,16 @@ describe("Product module", function () {
 
       MedusaModule.clearInstances()
 
-      module = await initialize({
-        database: {
-          connection: sharedPgConnection,
+      module = await initialize(
+        {
+          database: {
+            connection: sharedPgConnection,
+          },
         },
-      })
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)
@@ -173,12 +195,17 @@ describe("Product module", function () {
 
       MedusaModule.clearInstances()
 
-      module = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      module = await initialize(
+        {
+          database: {
+            clientUrl: DB_URL,
+            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+          },
         },
-      })
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)
@@ -269,12 +296,17 @@ describe("Product module", function () {
 
       MedusaModule.clearInstances()
 
-      module = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      module = await initialize(
+        {
+          database: {
+            clientUrl: DB_URL,
+            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+          },
         },
-      })
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)
@@ -339,12 +371,17 @@ describe("Product module", function () {
 
       MedusaModule.clearInstances()
 
-      module = await initialize({
-        database: {
-          clientUrl: DB_URL,
-          schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+      module = await initialize(
+        {
+          database: {
+            clientUrl: DB_URL,
+            schema: process.env.MEDUSA_PRODUCT_DB_SCHEMA,
+          },
         },
-      })
+        {
+          eventBusModuleService: eventBus,
+        }
+      )
     })
 
     afterEach(afterEach_)

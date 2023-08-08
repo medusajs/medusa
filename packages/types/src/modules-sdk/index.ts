@@ -121,5 +121,7 @@ export interface ModuleServiceInitializeOptions {
 
 export type ModuleServiceInitializeCustomDataLayerOptions = {
   manager?: any
-  repositories?: { [key: string]: Constructor<RepositoryService> }
+  repositories?: {
+    [key: string]: Constructor<RepositoryService>
+  }
 }
