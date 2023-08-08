@@ -11,4 +11,5 @@ required:
   - payment_collection
 properties:
   payment_collection:
+    description: Payment collection's details.
     $ref: ./PaymentCollection.yaml

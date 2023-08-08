@@ -4,6 +4,7 @@ required:
 properties:
   fulfillment_options:
     type: array
+    description: Fulfillment providers details.
     items:
       type: object
       required:

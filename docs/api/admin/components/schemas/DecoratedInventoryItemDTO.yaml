@@ -8,10 +8,12 @@ allOf:
     properties:
       location_levels:
         type: array
+        description: An array of location level details
         items:
           $ref: ./InventoryLevelDTO.yaml
       variants:
         type: array
+        description: An array of product variant details
         items:
           $ref: ./ProductVariant.yaml
       stocked_quantity:

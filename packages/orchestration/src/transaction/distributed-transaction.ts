@@ -1,3 +1,4 @@
+import { isDefined } from "@medusajs/utils"
 import { TransactionFlow } from "./transaction-orchestrator"
 import { TransactionStepHandler } from "./transaction-step"
 import { TransactionHandlerType, TransactionState } from "./types"
@@ -105,8 +106,12 @@ export class DistributedTransaction {
     return this.context
   }
 
-  public getErrors() {
-    return this.errors
+  public getErrors(handlerType?: TransactionHandlerType) {
+    if (!isDefined(handlerType)) {
+      return this.errors
+    }
+
+    return this.errors.filter((error) => error.handlerType === handlerType)
   }
 
   public addError(

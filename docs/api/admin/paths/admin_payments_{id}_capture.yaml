@@ -1,7 +1,7 @@
 post:
   operationId: PostPaymentsPaymentCapture
   summary: Capture a Payment
-  description: Captures a Payment.
+  description: Capture a Payment.
   x-authenticated: true
   parameters:
     - in: path

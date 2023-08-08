@@ -1,24 +1,26 @@
 get:
   operationId: GetGiftCards
   summary: List Gift Cards
-  description: Retrieves a list of Gift Cards.
+  description: >-
+    Retrieve a list of Gift Cards. The gift cards can be filtered by fields such
+    as `q`. The gift cards can also paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: offset
-      description: The number of items to skip before the results.
+      description: The number of gift cards to skip when retrieving the gift cards.
       schema:
         type: number
         default: '0'
     - in: query
       name: limit
-      description: Limit the number of items returned.
+      description: Limit the number of gift cards returned.
       schema:
         type: number
         default: '50'
     - in: query
       name: q
-      description: a search term to search by code or display ID
+      description: a term to search gift cards' code or display ID
       schema:
         type: string
   x-codegen:
@@ -61,7 +63,7 @@ post:
   operationId: PostGiftCards
   summary: Create a Gift Card
   description: >-
-    Creates a Gift Card that can redeemed by its unique code. The Gift Card is
+    Create a Gift Card that can redeemed by its unique code. The Gift Card is
     only valid within 1 region.
   x-authenticated: true
   requestBody:

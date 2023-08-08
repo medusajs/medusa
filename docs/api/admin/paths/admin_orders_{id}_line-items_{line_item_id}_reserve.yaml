@@ -1,9 +1,9 @@
 post:
   operationId: PostOrdersOrderLineItemReservations
-  summary: Create a Reservation for a line item
+  summary: Create a Reservation
   description: >-
-    Creates a Reservation for a line item at a specified location, optionally
-    for a partial quantity.
+    Create a Reservation for a line item at a specified location, optionally for
+    a partial quantity.
   x-authenticated: true
   parameters:
     - in: path

@@ -1,11 +1,14 @@
 get:
   operationId: GetCustomersCustomerPaymentMethods
-  summary: Get Payment Methods
+  summary: Get Saved Payment Methods
   description: >-
-    Retrieves a list of a Customer's saved payment methods. Payment methods are
-    saved with Payment Providers and it is their responsibility to fetch saved
-    methods.
+    Retrieve the logged-in customer's saved payment methods. This endpoint only
+    works with payment providers created with the deprecated Payment Service
+    interface. The payment methods are saved using the Payment Service's
+    third-party service, and not on the Medusa backend. So, they're retrieved
+    from the third-party service.
   x-authenticated: true
+  deprecated: true
   x-codegen:
     method: listPaymentMethods
   x-codeSamples:

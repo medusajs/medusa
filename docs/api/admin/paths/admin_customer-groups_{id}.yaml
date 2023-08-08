@@ -1,7 +1,9 @@
 get:
   operationId: GetCustomerGroupsGroup
   summary: Get a Customer Group
-  description: Retrieves a Customer Group.
+  description: >-
+    Retrieve a Customer Group by its ID. You can expand the customer group's
+    relations or select the fields that should be returned.
   x-authenticated: true
   parameters:
     - in: path
@@ -12,12 +14,16 @@ get:
         type: string
     - in: query
       name: expand
-      description: (Comma separated) Which fields should be expanded in the customer group.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        customer group.
       schema:
         type: string
     - in: query
       name: fields
-      description: (Comma separated) Which fields should be included in the customer group.
+      description: >-
+        Comma-separated fields that should be included in the returned customer
+        group.
       schema:
         type: string
   x-codegen:
@@ -59,7 +65,7 @@ get:
 post:
   operationId: PostCustomerGroupsGroup
   summary: Update a Customer Group
-  description: Update a CustomerGroup.
+  description: Update a Customer Group's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -111,7 +117,9 @@ post:
 delete:
   operationId: DeleteCustomerGroupsCustomerGroup
   summary: Delete a Customer Group
-  description: Deletes a CustomerGroup.
+  description: >-
+    Delete a customer group. This doesn't delete the customers associated with
+    the customer group.
   x-authenticated: true
   parameters:
     - in: path

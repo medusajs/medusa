@@ -1,9 +1,9 @@
 import Medusa from "@medusajs/medusa-js"
 const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
 // must be previously logged in or use api token
-medusa.admin.taxRates.removeProducts(tax_rate_id, {
+medusa.admin.taxRates.removeProducts(taxRateId, {
   products: [
-    product_id
+    productId
   ]
 })
 .then(({ tax_rate }) => {

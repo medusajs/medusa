@@ -1,7 +1,7 @@
 get:
   operationId: GetShippingProfiles
   summary: List Shipping Profiles
-  description: Retrieves a list of Shipping Profile.
+  description: Retrieve a list of Shipping Profiles.
   x-authenticated: true
   x-codegen:
     method: list
@@ -41,7 +41,7 @@ get:
 post:
   operationId: PostShippingProfiles
   summary: Create a Shipping Profile
-  description: Creates a Shipping Profile
+  description: Create a Shipping Profile.
   x-authenticated: true
   requestBody:
     content:

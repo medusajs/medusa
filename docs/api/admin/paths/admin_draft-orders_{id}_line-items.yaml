@@ -1,7 +1,7 @@
 post:
   operationId: PostDraftOrdersDraftOrderLineItems
   summary: Create a Line Item
-  description: Creates a Line Item for the Draft Order
+  description: Create a Line Item in the Draft Order.
   x-authenticated: true
   parameters:
     - in: path

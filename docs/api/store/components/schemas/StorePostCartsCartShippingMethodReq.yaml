@@ -4,10 +4,10 @@ required:
 properties:
   option_id:
     type: string
-    description: ID of the shipping option to create the method from
+    description: ID of the shipping option to create the method from.
   data:
     type: object
     description: >-
       Used to hold any data that the shipping method may need to process the
-      fulfillment of the order. Look at the documentation for your installed
-      fulfillment providers to find out what to send.
+      fulfillment of the order. This depends on the fulfillment provider you're
+      using.
