@@ -1,8 +1,9 @@
 export * from "./services"
 
-import { IEventBusModuleService } from "@medusajs/types"
+import { IEventBusModuleService, Logger } from "@medusajs/types"
 
 export type InitializeModuleInjectableDependencies = {
+  logger?: Logger
   eventBusModuleService?: IEventBusModuleService
 }
 
