@@ -1,2 +1,2 @@
-export * from "./create-products"
 export * from "./cart"
+export * as ProductWorkflow from "./product"

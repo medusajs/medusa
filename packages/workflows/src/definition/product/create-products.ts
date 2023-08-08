@@ -1,17 +1,17 @@
-import { InputAlias, Workflows } from "../definitions"
+import { InputAlias, Workflows } from "../../definitions"
 import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { exportWorkflow, pipe } from "../helper"
+import { exportWorkflow, pipe } from "../../helper"
 
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import {
   InventoryHandlers,
   MiddlewaresHandlers,
   ProductHandlers,
-} from "../handlers"
-import { aggregateData } from "../helper/aggregate"
+} from "../../handlers"
+import { aggregateData } from "../../helper/aggregate"
 
 export enum Actions {
   prepare = "prepare",
