@@ -1,15 +1,16 @@
-import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 import {
   DistributedTransaction,
   LocalWorkflow,
+  TransactionHandlerType,
   TransactionState,
   TransactionStepError,
 } from "@medusajs/orchestration"
+import { Context, LoadedModule, MedusaContainer } from "@medusajs/types"
 
-import { EOL } from "os"
 import { MedusaModule } from "@medusajs/modules-sdk"
-import { Workflows } from "../definitions"
+import { EOL } from "os"
 import { ulid } from "ulid"
+import { Workflows } from "../definitions"
 
 export type FlowRunOptions<TData = unknown> = {
   input?: TData
@@ -65,7 +66,7 @@ export const exportWorkflow = <TData = unknown, TResult = unknown>(
         context
       )
 
-      const errors = transaction.getErrors()
+      const errors = transaction.getErrors(TransactionHandlerType.INVOKE)
 
       const failedStatus = [TransactionState.FAILED, TransactionState.REVERTED]
       if (failedStatus.includes(transaction.getState()) && throwOnError) {
