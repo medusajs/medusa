@@ -13,18 +13,14 @@ import {
   UpsertProductTagDTO,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import {
-  DALUtils,
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-} from "@medusajs/utils"
+import { DALUtils, MedusaError } from "@medusajs/utils"
 
 export class ProductTagRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
     this.manager_ = manager
   }
@@ -69,10 +65,8 @@ export class ProductTagRepository extends DALUtils.MikroOrmBaseRepository {
     )
   }
 
-  @InjectTransactionManager()
   async create(
     data: CreateProductTagDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductTag[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -81,15 +75,13 @@ export class ProductTagRepository extends DALUtils.MikroOrmBaseRepository {
       return manager.create(ProductTag, tagData)
     })
 
-    await manager.persist(productTags)
+    manager.persist(productTags)
 
     return productTags
   }
 
-  @InjectTransactionManager()
   async update(
     data: UpdateProductTagDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductTag[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -122,18 +114,16 @@ export class ProductTagRepository extends DALUtils.MikroOrmBaseRepository {
       return manager.assign(existingTag, tagData)
     })
 
-    await manager.persist(productTags)
+    manager.persist(productTags)
 
     return productTags
   }
 
-  @InjectTransactionManager()
   async upsert(
     tags: UpsertProductTagDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductTag[]> {
-    const { transactionManager: manager } = context
+    const manager = this.getActiveManager<SqlEntityManager>(context)
     const tagsValues = tags.map((tag) => tag.value)
     const existingTags = await this.find(
       {
@@ -169,19 +159,14 @@ export class ProductTagRepository extends DALUtils.MikroOrmBaseRepository {
         newTags.push((manager as SqlEntityManager).create(ProductTag, tag))
       })
 
-      await (manager as SqlEntityManager).persist(newTags)
+      manager.persist(newTags)
       upsertedTags.push(...newTags)
     }
 
     return upsertedTags
   }
 
-  @InjectTransactionManager()
-  async delete(
-    ids: string[],
-    @MedusaContext()
-    context: Context = {}
-  ): Promise<void> {
+  async delete(ids: string[], context: Context = {}): Promise<void> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     await manager.nativeDelete(ProductTag, { id: { $in: ids } }, {})

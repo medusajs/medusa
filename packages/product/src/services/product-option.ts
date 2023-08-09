@@ -1,10 +1,5 @@
 import { ProductOption } from "@models"
-import {
-  Context,
-  DAL,
-  FindConfig,
-  ProductTypes,
-} from "@medusajs/types"
+import { Context, DAL, FindConfig, ProductTypes } from "@medusajs/types"
 import { ProductOptionRepository } from "@repositories"
 import {
   InjectTransactionManager,
@@ -36,10 +31,7 @@ export default class ProductOptionService<
     config: FindConfig<ProductTypes.ProductOptionDTO> = {},
     @MedusaContext() sharedContext?: Context
   ): Promise<TEntity> {
-    return (await retrieveEntity<
-      ProductOption,
-      ProductTypes.ProductOptionDTO
-    >({
+    return (await retrieveEntity<ProductOption, ProductTypes.ProductOptionDTO>({
       id: productOptionId,
       entityName: ProductOption.name,
       repository: this.productOptionRepository_,
@@ -74,9 +66,12 @@ export default class ProductOptionService<
 
   private buildQueryForList(
     filters: ProductTypes.FilterableProductOptionProps = {},
-    config: FindConfig<ProductTypes.ProductOptionDTO> = {},
+    config: FindConfig<ProductTypes.ProductOptionDTO> = {}
   ) {
-    const queryOptions = ModulesSdkUtils.buildQuery<ProductOption>(filters, config)
+    const queryOptions = ModulesSdkUtils.buildQuery<ProductOption>(
+      filters,
+      config
+    )
 
     if (filters.title) {
       queryOptions.where["title"] = { $ilike: filters.title }
@@ -102,10 +97,9 @@ export default class ProductOptionService<
     data: ProductTypes.UpdateProductOptionDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return (await (this.productOptionRepository_ as ProductOptionRepository).update(
-      data,
-      sharedContext
-    )) as TEntity[]
+    return (await (
+      this.productOptionRepository_ as ProductOptionRepository
+    ).update(data, sharedContext)) as TEntity[]
   }
 
   @InjectTransactionManager(doNotForceTransaction, "productOptionRepository_")
