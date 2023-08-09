@@ -92,6 +92,7 @@ export function pipe<T>(
       }
     }
 
+    // Apply the aggregator just before the last handler
     functions.splice(functions.length - 2, 0, aggregateData())
 
     let finalResult
