@@ -16,7 +16,6 @@ const allModules = [
   InventoryStockLocationLink,
 ]
 describe("Remote Link", function () {
-
   it("Should get all loaded modules and compose their relationships", async function () {
     const remoteLink = new RemoteLink(allModules as any)
 
@@ -127,43 +126,31 @@ describe("Remote Link", function () {
     const remoteLink = new RemoteLink(allModules as any)
 
     ProductInventoryLinkModule.softDelete.mockImplementation(() => {
-      return [
-        [{}], // rows,
-        {
-          variant_id: ["var_123"],
-          inventory_item_id: ["inv_123"],
-        },
-      ]
+      return {
+        variant_id: ["var_123"],
+        inventory_item_id: ["inv_123"],
+      }
     })
 
     ProductModule.softDelete.mockImplementation(() => {
-      return [
-        [{}], // rows,
-        {
-          product_id: ["prod_123", "prod_abc"],
-          variant_id: ["var_123", "var_abc"],
-        },
-      ]
+      return {
+        product_id: ["prod_123", "prod_abc"],
+        variant_id: ["var_123", "var_abc"],
+      }
     })
 
     InventoryModule.softDelete.mockImplementation(() => {
-      return [
-        [{}], // rows,
-        {
-          inventory_item_id: ["inv_123"],
-          inventory_level_id: ["ilev_123"],
-        },
-      ]
+      return {
+        inventory_item_id: ["inv_123"],
+        inventory_level_id: ["ilev_123"],
+      }
     })
 
     InventoryStockLocationLink.softDelete.mockImplementation(() => {
-      return [
-        [{}], // rows,
-        {
-          inventory_level_id: ["ilev_123"],
-          stock_location_id: ["loc_123"],
-        },
-      ]
+      return {
+        inventory_level_id: ["ilev_123"],
+        stock_location_id: ["loc_123"],
+      }
     })
 
     await remoteLink.remove({
