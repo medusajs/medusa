@@ -62,7 +62,7 @@ const CodeBlock = ({
             >
               <code
                 className={clsx(
-                  "text-code-body font-monospace table min-w-full print:whitespace-pre-wrap pb-1.5",
+                  "text-code-body font-monospace table min-w-full pb-1.5 print:whitespace-pre-wrap",
                   tokens.length > 1 && "pt-1 pr-1",
                   tokens.length <= 1 && "py-0.5 px-1"
                 )}
