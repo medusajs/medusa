@@ -14,10 +14,6 @@ function getClass(...properties) {
   }
 }
 
-interface FilterArguments {
-  withDeleted?: boolean
-}
-
 export function generateEntity(
   joinerConfig: ModuleJoinerConfig,
   primary: JoinerRelationship,

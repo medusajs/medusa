@@ -6,14 +6,14 @@ export interface ILinkModule {
   __joinerConfig(): ModuleJoinerConfig
 
   list(
-    filters: Record<string, unknown>,
-    config: FindConfig<unknown>,
+    filters?: Record<string, unknown>,
+    config?: FindConfig<unknown>,
     sharedContext?: Context
   ): Promise<unknown[]>
 
   listAndCount(
-    filters: Record<string, unknown>,
-    config: FindConfig<unknown>,
+    filters?: Record<string, unknown>,
+    config?: FindConfig<unknown>,
     sharedContext?: Context
   ): Promise<[unknown[], number]>
 

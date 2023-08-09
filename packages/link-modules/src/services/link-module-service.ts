@@ -117,13 +117,9 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     config: FindConfig<unknown> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<unknown[]> {
-    const products = await this.pivotService_.list(
-      filters,
-      config,
-      sharedContext
-    )
+    const rows = await this.pivotService_.list(filters, config, sharedContext)
 
-    return JSON.parse(JSON.stringify(products))
+    return JSON.parse(JSON.stringify(rows))
   }
 
   @InjectManager("baseRepository_")
@@ -132,13 +128,13 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     config: FindConfig<unknown> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[unknown[], number]> {
-    const [products, count] = await this.pivotService_.listAndCount(
+    const [rows, count] = await this.pivotService_.listAndCount(
       filters,
       config,
       sharedContext
     )
 
-    return [JSON.parse(JSON.stringify(products)), count]
+    return [JSON.parse(JSON.stringify(rows)), count]
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
@@ -247,9 +243,9 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async restore_(
-    productIds: string[],
+    data: any,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[string[], Record<string, string[]>]> {
-    return await this.pivotService_.restore(productIds, sharedContext)
+    return await this.pivotService_.restore(data, sharedContext)
   }
 }

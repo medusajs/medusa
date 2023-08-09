@@ -16,9 +16,6 @@ const allModules = [
   InventoryStockLocationLink,
 ]
 describe("Remote Link", function () {
-  afterEach(() => {
-    jest.resetAllMocks()
-  })
 
   it("Should get all loaded modules and compose their relationships", async function () {
     const remoteLink = new RemoteLink(allModules as any)

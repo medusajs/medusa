@@ -4,6 +4,7 @@ import {
   FilterQuery,
   RepositoryTransformOptions,
 } from "@medusajs/types"
+import { isString } from "../../common"
 import { MedusaContext } from "../../decorators"
 import { InjectTransactionManager, buildQuery } from "../../modules-sdk"
 import {
@@ -79,7 +80,7 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
   ): Promise<[T[], Record<string, unknown[]>]> {
     const isArray = Array.isArray(idsOrFilter)
     const filter =
-      isArray || typeof idsOrFilter === "string"
+      isArray || isString(idsOrFilter)
         ? {
             id: {
               $in: isArray ? idsOrFilter : [idsOrFilter],
@@ -107,7 +108,7 @@ export abstract class MikroOrmAbstractBaseRepository<T = any>
   ): Promise<[T[], Record<string, unknown[]>]> {
     const isArray = Array.isArray(idsOrFilter)
     const filter =
-      isArray || typeof idsOrFilter === "string"
+      isArray || isString(idsOrFilter)
         ? {
             id: {
               $in: isArray ? idsOrFilter : [idsOrFilter],

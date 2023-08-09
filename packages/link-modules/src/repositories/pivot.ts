@@ -10,7 +10,7 @@ import { MikroOrmAbstractBaseRepository } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export function getPivotRepository(model: EntitySchema) {
-  return class PivotRepository extends MikroOrmAbstractBaseRepository<EntitySchema> {
+  return class PivotRepository extends MikroOrmAbstractBaseRepository<object> {
     readonly manager_: SqlEntityManager
     readonly model_: EntitySchema
 
@@ -25,8 +25,7 @@ export function getPivotRepository(model: EntitySchema) {
       findOptions: FindOptions<unknown> = { where: {} },
       context: Context = {}
     ): Promise<unknown[]> {
-      const manager = (context.transactionManager ??
-        this.manager_) as SqlEntityManager
+      const manager = this.getActiveManager<SqlEntityManager>(context)
 
       const findOptions_ = { ...findOptions }
       findOptions_.options ??= {}
@@ -43,48 +42,45 @@ export function getPivotRepository(model: EntitySchema) {
     }
 
     async findAndCount(
-      findOptions: FindOptions<EntitySchema<unknown>> = { where: {} },
+      findOptions: FindOptions<object> = { where: {} },
       context: Context = {}
-    ): Promise<[EntitySchema<unknown>[], number]> {
+    ): Promise<[object[], number]> {
+      const manager = this.getActiveManager<SqlEntityManager>(context)
+
       const findOptions_ = { ...findOptions }
       findOptions_.options ??= {}
-
-      if (context.transactionManager) {
-        Object.assign(findOptions_.options, { ctx: context.transactionManager })
-      }
 
       Object.assign(findOptions_.options, {
         strategy: LoadStrategy.SELECT_IN,
       })
 
-      return (await this.manager_.findAndCount(
+      return await manager.findAndCount(
         this.model_,
         findOptions_.where as MikroFilterQuery<unknown>,
         findOptions_.options as MikroOptions<any>
-      )) as [EntitySchema<unknown, never>[], number]
+      )
     }
 
-    async delete(
-      data: any,
-      { transactionManager: manager }: Context = {}
-    ): Promise<void> {
+    async delete(data: any, context: Context = {}): Promise<void> {
       const filter = {}
       for (const key in data) {
-        filter[key] = { $in: data[key] }
+        filter[key] = {
+          $in: Array.isArray(data[key]) ? data[key] : [data[key]],
+        }
       }
 
-      await (manager as SqlEntityManager).nativeDelete(this.model_, data, {})
+      const manager = this.getActiveManager<SqlEntityManager>(context)
+      await manager.nativeDelete(this.model_, data, {})
     }
 
-    async create(
-      data: EntitySchema<unknown>[],
-      { transactionManager: manager }: Context = {}
-    ): Promise<EntitySchema<unknown>[]> {
+    async create(data: object[], context: Context = {}): Promise<object[]> {
+      const manager = this.getActiveManager<SqlEntityManager>(context)
+
       const links = data.map((link: any) => {
-        return (manager as SqlEntityManager).create(this.model_, link)
+        return manager.create(this.model_, link)
       })
 
-      await (manager as SqlEntityManager).persist(links)
+      await manager.persist(links)
 
       return links
     }
