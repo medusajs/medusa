@@ -80,7 +80,7 @@ export function getPivotRepository(model: EntitySchema) {
         return manager.create(this.model_, link)
       })
 
-      await manager.persist(links)
+      await manager.upsertMany(this.model_, links)
 
       return links
     }

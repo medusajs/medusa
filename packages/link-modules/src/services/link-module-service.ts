@@ -51,7 +51,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
   }
 
   private buildData(primaryKeyData: string | string[], foreignKeyData: string) {
-    if (primaryKeyData && Array.isArray(this.primaryKey_)) {
+    if (this.primaryKey_.length > 1) {
       if (
         !Array.isArray(primaryKeyData) ||
         primaryKeyData.length !== this.primaryKey_.length
@@ -63,12 +63,11 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
       }
     }
 
-    const filter = this.primaryKey_.map((key, index) => ({
-      [key]: primaryKeyData[index],
-    }))
-
-    filter[this.foreignKey_] = foreignKeyData
-    return filter
+    const pk = this.primaryKey_.join(",")
+    return {
+      [pk]: primaryKeyData,
+      [this.foreignKey_]: foreignKeyData,
+    }
   }
 
   private isValidFieldName(name: string) {

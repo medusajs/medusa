@@ -318,7 +318,7 @@ export class RemoteLink {
     return [errors.length ? errors : null, result]
   }
 
-  async create(link: LinkDefinition | LinkDefinition[]): Promise<void> {
+  async create(link: LinkDefinition | LinkDefinition[]): Promise<unknown[]> {
     const allLinks = Array.isArray(link) ? link : [link]
     const serviceLinks = new Map<string, [string | string[], string][]>()
 
@@ -362,7 +362,8 @@ export class RemoteLink {
       promises.push(service.create(links))
     }
 
-    await Promise.all(promises)
+    const created = await Promise.all(promises)
+    return created.flat()
   }
 
   async remove(
