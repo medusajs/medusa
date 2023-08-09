@@ -232,7 +232,7 @@ export class RemoteLink {
                   method += toPascalCase(args.methodSuffix)
                 }
 
-                const [_, removed] = await service[method](cascadeDelKeys, {
+                const removed = await service[method](cascadeDelKeys, {
                   returnLinkableKeys: returnFields,
                 })
 

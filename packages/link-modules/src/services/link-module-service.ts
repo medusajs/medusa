@@ -178,7 +178,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
       returnLinkableKeys: [],
     },
     sharedContext: Context = {}
-  ): Promise<[unknown[], Record<string, unknown[]>]> {
+  ): Promise<Record<string, unknown[]> | void> {
     let [, cascadedEntitiesMap] = await this.softDelete_(data, sharedContext)
 
     const pk = this.primaryKey_.join(",")
@@ -217,7 +217,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
       returnLinkableKeys: [],
     },
     sharedContext: Context = {}
-  ): Promise<[unknown[], Record<string, unknown[]>]> {
+  ): Promise<Record<string, unknown[]> | void> {
     let [, cascadedEntitiesMap] = await this.restore_(data, sharedContext)
 
     const pk = this.primaryKey_.join(",")

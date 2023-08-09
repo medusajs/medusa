@@ -29,11 +29,11 @@ export interface ILinkModule {
     data: unknown | unknown[],
     { returnLinkableKeys }?: { returnLinkableKeys?: string[] },
     sharedContext?: Context
-  ): Promise<[unknown[], Record<string, unknown[]> | void]>
+  ): Promise<Record<string, unknown[]> | void>
 
   restore(
     data: unknown | unknown[],
     { returnLinkableKeys }?: { returnLinkableKeys?: string[] },
     sharedContext?: Context
-  ): Promise<[unknown[], Record<string, unknown[]> | void]>
+  ): Promise<Record<string, unknown[]> | void>
 }
