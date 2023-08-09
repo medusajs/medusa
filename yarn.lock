@@ -255,33 +255,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/cli@npm:^7.12.10":
-  version: 7.19.3
-  resolution: "@babel/cli@npm:7.19.3"
-  dependencies:
-    "@jridgewell/trace-mapping": ^0.3.8
-    "@nicolo-ribaudo/chokidar-2": 2.1.8-no-fsevents.3
-    chokidar: ^3.4.0
-    commander: ^4.0.1
-    convert-source-map: ^1.1.0
-    fs-readdir-recursive: ^1.1.0
-    glob: ^7.2.0
-    make-dir: ^2.1.0
-    slash: ^2.0.0
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  dependenciesMeta:
-    "@nicolo-ribaudo/chokidar-2":
-      optional: true
-    chokidar:
-      optional: true
-  bin:
-    babel: ./bin/babel.js
-    babel-external-helpers: ./bin/babel-external-helpers.js
-  checksum: e996aa6a1cde07555ef83782d5809049e6ebecb16884e94acad6eea9a7f6323f6303ee74004a31b29b5ead257ad697f33650b6983e4e9fb14ef1f2908ea5c0a1
-  languageName: node
-  linkType: hard
-
 "@babel/cli@npm:^7.14.3, @babel/cli@npm:^7.15.4, @babel/cli@npm:^7.7.5":
   version: 7.18.6
   resolution: "@babel/cli@npm:7.18.6"
@@ -967,24 +940,6 @@ __metadata:
     chalk: ^2.0.0
     js-tokens: ^4.0.0
   checksum: a6a6928d25099ef04c337fcbb829fab8059bb67d31ac37212efd611bdbe247d0e71a5096c4524272cb56399f40251fac57c025e42d3bc924db0183a6435a60ac
-  languageName: node
-  linkType: hard
-
-"@babel/node@npm:^7.12.10":
-  version: 7.20.5
-  resolution: "@babel/node@npm:7.20.5"
-  dependencies:
-    "@babel/register": ^7.18.9
-    commander: ^4.0.1
-    core-js: ^3.26.0
-    node-environment-flags: ^1.0.5
-    regenerator-runtime: ^0.13.11
-    v8flags: ^3.1.1
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  bin:
-    babel-node: ./bin/babel-node.js
-  checksum: 83a0203b3f62b7a584d9177678d6a7d8e2a343f1bf9891b28155314b740140bd5560aca4848f54bd2c35446190c3af35898bdec98323a38035465ddb65863e54
   languageName: node
   linkType: hard
 
@@ -2573,21 +2528,6 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0
   checksum: a7cb4300c8e470898586aa0ce10552ed4a8bf990550ec6f34d352432d67eb366e81f214db484de38373e87092c5c0d0428070211b3148b6a31a05f908cde28cb
-  languageName: node
-  linkType: hard
-
-"@babel/register@npm:^7.18.9":
-  version: 7.18.9
-  resolution: "@babel/register@npm:7.18.9"
-  dependencies:
-    clone-deep: ^4.0.1
-    find-cache-dir: ^2.0.0
-    make-dir: ^2.1.0
-    pirates: ^4.0.5
-    source-map-support: ^0.5.16
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: b19c1445adf202732a2e0d554749257da22e56f0fc159709200d962413fbd4e7bd1d684222e60c08a2b8ad8fe511d8699fbc978d92816953fc9cbb6cbcc40d63
   languageName: node
   linkType: hard
 
@@ -4572,6 +4512,15 @@ __metadata:
     node-notifier:
       optional: true
   checksum: e4b3e0de48614b2c339083b9159f00a024839984bd89b9afa4cfff4c38f6ce485c2009f2efa1c1e3bb3b87386288bc15798c6aebb7937d7820e8048d75461a4d
+  languageName: node
+  linkType: hard
+
+"@jest/create-cache-key-function@npm:^27.4.2":
+  version: 27.5.1
+  resolution: "@jest/create-cache-key-function@npm:27.5.1"
+  dependencies:
+    "@jest/types": ^27.5.1
+  checksum: 1890ac93fad852e0a98c31de1e5f2c548974aefd36e838d27b70834dda1654a153ed6a52258447ebacfd47463e9bdb83750631bee827797c7b9973c083998a96
   languageName: node
   linkType: hard
 
@@ -11249,6 +11198,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@swc/jest@npm:^0.2.28":
+  version: 0.2.28
+  resolution: "@swc/jest@npm:0.2.28"
+  dependencies:
+    "@jest/create-cache-key-function": ^27.4.2
+    jsonc-parser: ^3.2.0
+  peerDependencies:
+    "@swc/core": "*"
+  checksum: 63e6d009ff506d03b3c0169432b8f442c52d8b0e3c70914e27945e41f7fa73fca50588050d223a7aca3f9f8200397859f80f9c73fb619b1e5eff7f3aa196a4f3
+  languageName: node
+  linkType: hard
+
 "@szmarczak/http-timer@npm:^1.1.2":
   version: 1.1.2
   resolution: "@szmarczak/http-timer@npm:1.1.2"
@@ -15436,7 +15397,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-preset-medusa-package@*, babel-preset-medusa-package@^1.0.0, babel-preset-medusa-package@^1.1.19, babel-preset-medusa-package@workspace:packages/babel-preset-medusa-package":
+"babel-preset-medusa-package@^1.0.0, babel-preset-medusa-package@^1.1.19, babel-preset-medusa-package@workspace:packages/babel-preset-medusa-package":
   version: 0.0.0-use.local
   resolution: "babel-preset-medusa-package@workspace:packages/babel-preset-medusa-package"
   dependencies:
@@ -17738,13 +17699,6 @@ __metadata:
   version: 3.23.4
   resolution: "core-js@npm:3.23.4"
   checksum: 08e85e495f4d99df899978413dfd2e5e13233e64f9918cd8baa7fb30d82992ef9e0c6d47f7d5c25f581d9d6e7446dcb878d0c167e01344ffe6c20ab62d4bdd4c
-  languageName: node
-  linkType: hard
-
-"core-js@npm:^3.26.0":
-  version: 3.26.1
-  resolution: "core-js@npm:3.26.1"
-  checksum: 82d36c6f54fc0349998fa7fc67d200ba272f1cd1674c6786dc17f9d259d6555fc05662044528eae73ad6e90f71d503ab5c060ad4745492ef804308209f9aec13
   languageName: node
   linkType: hard
 
@@ -23522,7 +23476,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^7.0.0, glob@npm:^7.1.1, glob@npm:^7.1.2, glob@npm:^7.1.3, glob@npm:^7.1.4, glob@npm:^7.1.6, glob@npm:^7.2.0, glob@npm:^7.2.3":
+"glob@npm:^7.0.0, glob@npm:^7.1.1, glob@npm:^7.1.2, glob@npm:^7.1.3, glob@npm:^7.1.4, glob@npm:^7.1.6, glob@npm:^7.2.3":
   version: 7.2.3
   resolution: "glob@npm:7.2.3"
   dependencies:
@@ -24954,6 +24908,7 @@ __metadata:
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/medusa": "workspace:*"
+    "@swc/jest": ^0.2.28
     faker: ^5.5.3
     jest: ^26.6.3
     jest-environment-node: 26.6.2
@@ -24973,6 +24928,7 @@ __metadata:
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/product": "workspace:^"
+    "@swc/jest": ^0.2.28
     faker: ^5.5.3
     jest: ^26.6.3
     jest-environment-node: 26.6.2
@@ -24990,11 +24946,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "integration-tests-repositories@workspace:integration-tests/repositories"
   dependencies:
-    "@babel/cli": ^7.12.10
-    "@babel/core": ^7.12.10
-    "@babel/node": ^7.12.10
     "@medusajs/medusa": "workspace:*"
-    babel-preset-medusa-package: "*"
+    "@swc/jest": ^0.2.28
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-interfaces: "workspace:*"

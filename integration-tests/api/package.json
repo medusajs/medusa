@@ -18,6 +18,7 @@
     "typeorm": "^0.3.16"
   },
   "devDependencies": {
+    "@swc/jest": "^0.2.28",
     "jest": "^26.6.3",
     "jest-environment-node": "26.6.2",
     "ts-jest": "^26.5.6",
