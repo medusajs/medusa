@@ -42,7 +42,7 @@ video {
 }
 
 .theme-code-block {
-  @apply tw-border tw-border-solid tw-border-medusa-code-block-border;
+  @apply tw-border tw-border-solid tw-border-medusa-code-border dark:tw-border-medusa-code-border-dark;
 }
 
 .markdown p + .card-wrapper {
@@ -79,12 +79,12 @@ video {
 }
 
 [class*=codeLineNumber] {
-  @apply tw-text-medusa-code-text-muted !tw-pl-0;
+  @apply tw-text-medusa-code-text-subtle dark:tw-text-medusa-code-text-subtle-dark !tw-pl-0;
 }
 
 .prism-code {
-  @apply xs:tw-max-w-[90%] xs:after:tw-content-[''] xs:after:tw-rounded xs:after:tw-absolute;
-  @apply xs:after:tw-right-0 xs:after:tw-top-0 xs:after:tw-w-[calc(10%+24px)] xs:after:tw-h-full xs:after:tw-bg-code-fade;
+  @apply xs:tw-max-w-[90%] tw-text-code-body [&_*]:tw-text-code-body xs:after:tw-content-[''] xs:after:tw-rounded xs:after:tw-absolute;
+  @apply xs:after:tw-right-0 xs:after:tw-top-0 xs:after:tw-w-[calc(10%+24px)] xs:after:tw-h-full xs:after:tw-bg-code-fade dark:xs:after:tw-bg-code-fade-dark;
 }
 
 .prism-code:not(:hover)::-webkit-scrollbar-thumb,
@@ -163,6 +163,10 @@ details summary {
 
 .reference-table .theme-code-block span {
   @apply !tw-max-w-full !tw-break-words !tw-whitespace-break-spaces;
+}
+
+.theme-code-block {
+  @apply !tw-bg-medusa-code-bg-base dark:!tw-bg-medusa-code-bg-base-dark
 }
 
 .reference-table .code-block-numbering {

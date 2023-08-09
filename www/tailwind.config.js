@@ -607,6 +607,7 @@ module.exports = {
               },
               // TODO remove once changed in docs
               muted: "#697177",
+              highlight: "#102A4C"
             },
             icon: {
               DEFAULT: "#6B7280",
@@ -647,7 +648,6 @@ module.exports = {
               },
               title: "#787F85",
             },
-            "text-highlight": "#102A4C",
           },
           // TODO remove if not used
           support: {
@@ -741,6 +741,8 @@ module.exports = {
         "button-danger-hover": "linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.00) 100%)",
         "button-danger-pressed": "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.16) 100%)",
         // TODO remove if not used
+        "docs-button-neutral": "linear-gradient(180deg, #FFF 30.10%, #F8F9FA 100%)",
+        "docs-button-neutral-dark": "linear-gradient(180deg, #2E2E32 0%, #28282C 32.67%)",
         "primary-gradient":
           "linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%, #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%)",
         "code-fade": "linear-gradient(90deg, #11182700, #111827 24px)",
@@ -904,6 +906,20 @@ module.exports = {
             fontWeight: "400"
           }
         ],
+        "code-label": [
+          "13px",
+          {
+            lineHeight: "20px",
+            fontWeight: "400",
+          },
+        ],
+        "code-body": [
+          "13px",
+          {
+            lineHeight: "24px",
+            fontWeight: "400",
+          },
+        ],
         // TODO remove once changed in docs
         "body-x-large-plus": [
           "18px",
@@ -1000,20 +1016,6 @@ module.exports = {
           "12px",
           {
             lineHeight: "20px",
-            fontWeight: "400",
-          },
-        ],
-        "code-label": [
-          "13px",
-          {
-            lineHeight: "20px",
-            fontWeight: "400",
-          },
-        ],
-        "code-body": [
-          "13px",
-          {
-            lineHeight: "24px",
             fontWeight: "400",
           },
         ],

@@ -186,7 +186,7 @@ export default function Admonition(props: Props): JSX.Element {
           className={clsx(
             "tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark",
             "tw-text-body-regular tw-flex-1 [&>*:last-child]:tw-mb-0",
-            "[&>p>code]:tw-px-0.5 [&>p>code]:tw-text-[14px]"
+            "[&>p>code]:tw-px-0.5 [&>p>code]:tw-text-code-label"
           )}
         >
           {children}

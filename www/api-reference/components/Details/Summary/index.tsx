@@ -10,7 +10,7 @@ type DetailsSummaryProps = {
   open?: boolean
   className?: string
   titleClassName?: string
-}
+} & React.HTMLAttributes<HTMLElement>
 
 const DetailsSummary = ({
   title,
@@ -20,6 +20,7 @@ const DetailsSummary = ({
   open = false,
   className,
   titleClassName,
+  ...rest
 }: DetailsSummaryProps) => {
   return (
     <summary
@@ -30,6 +31,7 @@ const DetailsSummary = ({
         "no-marker",
         className
       )}
+      {...rest}
     >
       <span className="flex flex-col gap-[4px]">
         <span

@@ -46,9 +46,9 @@ export default function RootLayout({
             <BaseSpecsProvider>
               <SidebarProvider>
                 <NavbarProvider>
-                  <div className="max-w-xxl mx-auto w-full px-1.5">
+                  <div className="w-full">
                     <Navbar />
-                    <div className="flex">
+                    <div className="max-w-xxl mx-auto w-full px-1.5 flex">
                       <Sidebar />
                       <main className="lg:w-api-ref-main relative mt-7 w-full flex-1">
                         {children}

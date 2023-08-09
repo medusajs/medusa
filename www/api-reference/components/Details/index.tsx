@@ -1,5 +1,7 @@
-import { Suspense, cloneElement, useState } from "react"
+import { Suspense, cloneElement, useEffect, useRef, useState } from "react"
 import Loading from "../Loading"
+import clsx from "clsx"
+import { CSSTransition } from "react-transition-group"
 
 export type DetailsProps = {
   openInitial?: boolean
@@ -15,26 +17,68 @@ const Details = ({
   ...props
 }: DetailsProps) => {
   const [open, setOpen] = useState(openInitial)
+  const [showContent, setShowContent] = useState(openInitial)
+  const ref = useRef<HTMLDetailsElement>(null)
+
+  const handleToggle = () => {
+    if (open) {
+      setShowContent(false)
+    } else {
+      setOpen(true)
+      setShowContent(true)
+    }
+  }
 
   return (
     <details
+      {...props}
+      ref={ref}
       open={open}
+      onClick={(event) => {
+        event.preventDefault()
+      }}
       onToggle={(event) => {
         // this is to avoid event propagation
         // when details are nested, which is a bug
         // in react. Learn more here:
         // https://github.com/facebook/react/issues/22718
         event.stopPropagation()
-        setOpen(!open)
       }}
-      {...props}
+      className={clsx(
+        "overflow-hidden [&>summary]:z-[400] [&>summary]:relative",
+        props.className
+      )}
     >
-      {summaryContent && <summary>{summaryContent}</summary>}
+      {summaryContent && <summary onClick={handleToggle} className="cursor-pointer">{summaryContent}</summary>}
       {summaryElm &&
         cloneElement(summaryElm as React.ReactElement, {
           open,
+          onClick: handleToggle
         })}
-      {open && <Suspense fallback={<Loading />}>{children}</Suspense>}
+      <CSSTransition
+        unmountOnExit
+        in={showContent}
+        timeout={150}
+        onEnter={(node: HTMLElement) => {
+          node.classList.add(
+            "!mb-2",
+            "!mt-0",
+            "translate-y-1",
+            "transition-transform",
+          )
+        }}
+        onExit={(node: HTMLElement) => {
+          node.classList.add(
+            "transition-transform",
+            "!-translate-y-1",
+          )
+          setTimeout(() => {
+            setOpen(false)
+          }, 100)
+        }}
+      >
+        <Suspense fallback={<Loading className="!mb-2 !mt-0" />}>{children}</Suspense>
+      </CSSTransition>
     </details>
   )
 }

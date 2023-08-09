@@ -163,7 +163,7 @@
   }
   
   .animate-fadeOut {
-    animation: fadeOut 100ms;
+    animation: fadeOut 300ms;
   }
   
   .animate-slideInLeft {

@@ -119,12 +119,12 @@ export default function CodeBlockString({
                       target="_blank"
                       className={clsx(
                         "tw-bg-transparent tw-border-none tw-p-[4px] tw-cursor-pointer tw-rounded",
-                        "hover:tw-bg-medusa-code-tab-hover [&:not(:first-child)]:tw-ml-0.5",
+                        "hover:tw-bg-medusa-code-bg-base dark:hover:tw-bg-medusa-code-bg-base-dark [&:not(:first-child)]:tw-ml-0.5",
                         "tw-inline-flex tw-justify-center tw-items-center tw-invisible xs:tw-visible"
                       )}
                       rel="noreferrer"
                     >
-                      <IconAlert iconColorClassName="tw-fill-medusa-code-block-action" />
+                      <IconAlert iconColorClassName="tw-fill-medusa-code-icon dark:tw-fill-medusa-code-icon-dark" />
                     </a>
                   </Tooltip>
                 )}
@@ -135,7 +135,7 @@ export default function CodeBlockString({
                     )}
                     text={code}
                   >
-                    <IconCopy iconColorClassName="tw-fill-medusa-code-block-action" />
+                    <IconCopy iconColorClassName="tw-fill-medusa-code-icon dark:tw-fill-medusa-code-icon-dark" />
                   </CopyButton>
                 )}
               </div>

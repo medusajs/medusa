@@ -98,10 +98,10 @@
   }
 
   .code-header {
-    @apply tw-py-[12px] tw-px-1 tw-bg-medusa-code-tabs-bg tw-text-medusa-code-text-subtle;
+    @apply tw-py-[12px] tw-px-1 tw-bg-medusa-code-bg-header dark:tw-bg-medusa-code-bg-header-dark tw-text-medusa-code-text-subtle dark:tw-text-medusa-code-text-subtle;
     @apply tw-flex tw-justify-between tw-items-center;
     @apply tw-rounded-tl tw-rounded-tr tw-rounded-br-none tw-rounded-bl-none tw-border-b-0;
-    @apply tw-border tw-border-solid tw-border-medusa-code-block-border tw-border-b-0;
+    @apply tw-border tw-border-solid tw-border-medusa-code-border dark:tw-border-medusa-code-border-dark tw-border-b-0;
   }
 
   .no-scrollbar::-webkit-scrollbar {
@@ -115,7 +115,7 @@
   .btn-primary {
     @apply tw-inline-flex tw-flex-row tw-justify-center tw-items-center;
     @apply tw-py-[6px] tw-px-[12px] tw-rounded tw-cursor-pointer;
-    @apply tw-bg-button-neutral dark:tw-bg-button-neutral-dark;
+    @apply tw-bg-docs-button-neutral dark:tw-bg-docs-button-neutral-dark;
     @apply hover:!tw-bg-no-image hover:tw-bg-medusa-button-neutral-hover dark:hover:tw-bg-medusa-button-neutral-hover-dark hover:tw-no-underline;
     @apply active:!tw-bg-no-image active:tw-bg-medusa-button-neutral-pressed dark:active:tw-bg-medusa-button-neutral-pressed-dark;
     @apply focus:tw-shadow-focus dark:focus:tw-shadow-focus-dark;
@@ -138,7 +138,7 @@
   }
 
   .navbar-action-icon-item {
-    @apply tw-bg-button-neutral dark:tw-bg-button-neutral-dark hover:!tw-bg-no-image active:!tw-bg-no-image hover:tw-bg-medusa-button-neutral-hover dark:hover:tw-bg-medusa-button-neutral-hover-dark;
+    @apply tw-bg-docs-button-neutral dark:tw-bg-docs-button-neutral-dark hover:!tw-bg-no-image active:!tw-bg-no-image hover:tw-bg-medusa-button-neutral-hover dark:hover:tw-bg-medusa-button-neutral-hover-dark;
     @apply active:tw-bg-medusa-button-neutral-pressed dark:active:tw-bg-medusa-button-neutral-pressed-dark;
     @apply focus:tw-shadow-focus dark:focus:tw-shadow-focus-dark;
     @apply tw-border tw-border-solid tw-border-medusa-border-neutral-buttons dark:tw-border-medusa-border-neutral-buttons-dark tw-rounded;
@@ -160,7 +160,6 @@
 
 @import url('./_docusaurus.css');
 @import url('./components/docsearch.css');
-@import url('./components/redocly.css');
 @import url('./components/sidebar.css');
 @import url('./components/toc.css');
 @import url('./components/tooltip.css');

@@ -109,7 +109,7 @@ function TabList({
         {isCodeTabs && (
           <span
             className={clsx(
-              "xs:tw-absolute xs:tw-border xs:tw-border-solid xs:tw-border-medusa-code-tab-border xs:tw-bg-medusa-code-tab-bg xs:tw-transition-all xs:tw-duration-200 xs:tw-ease-ease xs:tw-top-0 xs:tw-z-[1] xs:tw-rounded-full"
+              "xs:tw-absolute xs:tw-border xs:tw-border-solid xs:tw-border-medusa-code-border dark:xs:tw-border-medusa-code-border-dark xs:tw-bg-medusa-code-bg-header dark:xs:tw-bg-medusa-code-bg-header-dark xs:tw-transition-all xs:tw-duration-200 xs:tw-ease-ease xs:tw-top-0 xs:tw-z-[1] xs:tw-rounded-full"
             )}
             ref={codeTabSelectorRef}
           ></span>
@@ -137,14 +137,15 @@ function TabList({
               {...attributes}
               className={clsx(
                 isCodeTabs &&
-                  "tw-text-medusa-code-tab-text tw-text-label-small-plus tw-py-[4px] tw-border tw-border-solid tw-border-transparent tw-whitespace-nowrap tw-rounded-full [&:not(:first-child)]:tw-ml-[4px]",
-                "!tw-mt-0 hover:!tw-bg-medusa-code-tab-hover tw-cursor-pointer",
+                  "tw-text-compact-small-plus tw-py-[4px] tw-border tw-border-solid tw-border-transparent tw-whitespace-nowrap tw-rounded-full [&:not(:first-child)]:tw-ml-[4px]",
+                "!tw-mt-0 hover:!tw-bg-medusa-code-bg-base dark:hover:!tw-bg-medusa-code-bg-base-dark tw-cursor-pointer",
                 attributes?.className,
                 isCodeTabs &&
                   "tw-z-[2] tw-flex tw-justify-center tw-items-center",
+                isCodeTabs && selectedValue !== value && "tw-text-medusa-code-text-subtle dark:tw-text-medusa-code-text-subtle-dark",
                 isCodeTabs &&
                   selectedValue === value &&
-                  "tw-text-medusa-code-tab-text-active tw-border tw-border-solid tw-border-medusa-code-tab-border tw-bg-medusa-code-tab-bg xs:tw-border-none xs:tw-bg-transparent",
+                  "tw-text-medusa-code-text-base dark:tw-text-medusa-code-text-base-dark tw-border tw-border-solid tw-border-medusa-code-border dark:tw-border-medusa-code-border-dark tw-bg-medusa-code-bg-base dark:tw-bg-medusa-code-bg-base-dark xs:tw-border-none xs:tw-bg-transparent",
                 !isCodeTabs &&
                   "tw-border-0 tw-border-b-[3px] tw-rounded tw-inline-flex tw-p-1 tw-transition-[background-color] tw-duration-200 tw-ease-ease",
                 !isCodeTabs &&
@@ -167,7 +168,7 @@ function TabList({
       {isCodeTabs && (
         <span
           className={clsx(
-            "tw-text-label-small-plus tw-text-medusa-code-tab-title tw-hidden xs:tw-block"
+            "tw-text-label-small-plus tw-text-medusa-code-text-subtle dark:tw-text-medusa-code-text-subtle-dark tw-hidden xs:tw-block"
           )}
         >
           {codeTitle}

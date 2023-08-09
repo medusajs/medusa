@@ -22,7 +22,7 @@ const CodeTabs = ({ tabs, className }: CodeTabsProps) => {
       <ul
         className={clsx(
           "bg-medusa-code-bg-header dark:bg-medusa-code-bg-header-dark flex !list-none rounded-t py-[12px] px-1",
-          "dark:border-medusa-code-block-border border border-b-0 border-transparent",
+          "border-medusa-code-border dark:border-medusa-code-border-dark border border-b-0 border-transparent",
           "mb-0"
         )}
       >
@@ -30,10 +30,10 @@ const CodeTabs = ({ tabs, className }: CodeTabsProps) => {
           <li key={index}>
             <button
               className={clsx(
-                "text-label-small-plus rounded-full py-[4px] px-[12px]",
-                selectedTab.value !== tab.value && "text-medusa-code-tab-text",
+                "text-compact-small-plus rounded-full py-[4px] px-[12px]",
+                selectedTab.value !== tab.value && "text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark",
                 selectedTab.value === tab.value &&
-                  "text-medusa-code-tab-text-active bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark",
+                  "text-medusa-code-text-base dark:text-medusa-code-text-base-dark bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark",
                 selectedTab.value === tab.value &&
                   "border-medusa-code-border dark:border-medusa-code-border-dark border",
                 "hover:bg-medusa-code-bg-base dark:hover:bg-medusa-code-bg-base"

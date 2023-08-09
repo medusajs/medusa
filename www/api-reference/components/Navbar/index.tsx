@@ -17,7 +17,7 @@ const Navbar = () => {
     >
       <div
         className={clsx(
-          "h-navbar max-w-xxl sticky top-0 mx-auto flex w-full justify-between py-[12px] px-1.5"
+          "h-navbar max-w-xxl sticky top-0 mx-auto flex w-full justify-between py-[12px] px-3"
         )}
       >
         <div className="flex w-full items-center gap-1.5 lg:w-auto">

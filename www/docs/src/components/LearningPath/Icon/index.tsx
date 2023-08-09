@@ -14,7 +14,7 @@ const LearningPathIcon: React.FC<LearningPathIconProps> = ({
   return (
     <div
       className={clsx(
-        "tw-rounded-full tw-shadow-card-rest dark:tw-shadow-card-rest-dark tw-w-3 tw-h-3 tw-bg-button-neutral dark:tw-bg-button-neutral-dark",
+        "tw-rounded-full tw-shadow-card-rest dark:tw-shadow-card-rest-dark tw-w-3 tw-h-3 tw-bg-docs-button-neutral dark:tw-bg-docs-button-neutral-dark",
         "tw-flex tw-justify-center tw-items-center tw-flex-none",
         className
       )}
