@@ -9,7 +9,7 @@ module.exports = {
     },
   },
   transform: {
-    "^.+\\.[jt]s?$": "@swc/jest",
+    "^.+\\.[jt]s?$": "ts-jest",
   },
   name: "api",
   testEnvironment: `node`,
