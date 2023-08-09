@@ -4,7 +4,7 @@ process.chdir(__dirname)
 module.exports = {
   globals: {
     "ts-jest": {
-      tsConfig: "tsconfig.spec.json",
+      tsconfig: "tsconfig.spec.json",
       isolatedModules: process.env.ISOLATED_MODULES,
     },
   },
@@ -24,7 +24,17 @@ module.exports = {
     `__testfixtures__`,
     `.cache`,
   ],
-  transformIgnorePatterns: [`/dist`],
+  transformIgnorePatterns: [
+    `/dist`,
+    "src/",
+    `/examples/`,
+    `/www/`,
+    `/dist/`,
+    `/node_modules/`,
+    `__tests__/fixtures`,
+    `__testfixtures__`,
+    `.cache`,
+  ],
   setupFiles: ["../setup-env.js"],
   setupFilesAfterEnv: ["../setup.js"],
   globalSetup: "../globalSetup.js",

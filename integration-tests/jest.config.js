@@ -5,6 +5,11 @@ const pkgs = glob
   .map((p) => p.replace(__dirname, `<rootDir>/integration-tests`))
 
 module.exports = {
+  globals: {
+    "ts-jest": {
+      isolatedModules: process.env.ISOLATED_MODULES,
+    },
+  },
   testEnvironment: `node`,
   testTimeout: 10000,
   globalSetup: "<rootDir>/integration-tests/globalSetup.js",
@@ -25,7 +30,20 @@ module.exports = {
     `__testfixtures__`,
     `.cache`,
   ],
-  transform: { "^.+\\.[jt]s$": `<rootDir>/jest-transformer.js` },
+  transformIgnorePatterns: [
+    `/dist`,
+    "src/",
+    `/examples/`,
+    `/www/`,
+    `/dist/`,
+    `/node_modules/`,
+    `__tests__/fixtures`,
+    `__testfixtures__`,
+    "factories",
+    "helpers",
+    `.cache`,
+  ],
+  transform: { "^.+\\.[jt]s$": `ts-jest` },
   setupFiles: ["<rootDir>/integration-tests/setup-env.js"],
   setupFilesAfterEnv: ["<rootDir>/integration-tests/setup.js"],
 }
