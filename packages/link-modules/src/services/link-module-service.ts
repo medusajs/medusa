@@ -158,7 +158,8 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     }
 
     const links = await this.pivotService_.create(data, sharedContext)
-    return links
+
+    return await this.baseRepository_.serialize<object[]>(links)
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
@@ -168,7 +169,8 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
   ): Promise<unknown[]> {
     this.validateFields(data)
 
-    return await this.pivotService_.delete(data, sharedContext)
+    const removed = await this.pivotService_.delete(data, sharedContext)
+    return await this.baseRepository_.serialize<object[]>(removed)
   }
 
   async softDelete(

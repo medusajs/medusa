@@ -100,7 +100,7 @@ export const initialize = async (
       label: serviceKey,
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.SHARED,
+        resources: MODULE_RESOURCE_TYPE.ISOLATED,
       },
     }
 

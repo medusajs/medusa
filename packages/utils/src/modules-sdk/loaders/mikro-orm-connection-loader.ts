@@ -5,11 +5,11 @@ import {
   MODULE_SCOPE,
   ModulesSdkTypes,
 } from "@medusajs/types"
-import { asValue } from "awilix"
 import { PostgreSqlDriver, SqlEntityManager } from "@mikro-orm/postgresql"
+import { asValue } from "awilix"
 import { ContainerRegistrationKeys, MedusaError } from "../../common"
-import { loadDatabaseConfig } from "../load-module-database-config"
 import { mikroOrmCreateConnection } from "../../dal"
+import { loadDatabaseConfig } from "../load-module-database-config"
 
 export async function mikroOrmConnectionLoader({
   container,
@@ -50,7 +50,7 @@ export async function mikroOrmConnectionLoader({
   let dbConfig
   const shouldSwallowError = !!(
     options as ModulesSdkTypes.ModuleServiceInitializeOptions
-  )?.database.connection
+  )?.database?.connection
   dbConfig = {
     ...loadDatabaseConfig(
       "product",
@@ -58,7 +58,7 @@ export async function mikroOrmConnectionLoader({
       shouldSwallowError
     ),
     connection: (options as ModulesSdkTypes.ModuleServiceInitializeOptions)
-      ?.database.connection,
+      ?.database?.connection,
   }
 
   manager ??= await loadDefault({
@@ -96,7 +96,7 @@ async function loadShared({ container, entities }) {
   )
   if (!sharedConnection) {
     throw new Error(
-      "The module is setup to use a shared resources but no shared connection is present. A new connection will be created"
+      "The module is setup to use a shared resources but no shared connection is present."
     )
   }
 

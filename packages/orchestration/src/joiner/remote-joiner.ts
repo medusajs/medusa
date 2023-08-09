@@ -2,13 +2,14 @@ import {
   JoinerRelationship,
   JoinerServiceConfig,
   JoinerServiceConfigAlias,
+  ModuleJoinerConfig,
   RemoteExpandProperty,
   RemoteJoinerQuery,
   RemoteNestedExpands,
 } from "@medusajs/types"
 
-import GraphQLParser from "./graphql-ast"
 import { isDefined } from "@medusajs/utils"
+import GraphQLParser from "./graphql-ast"
 
 const BASE_PATH = "_root"
 export class RemoteJoiner {
@@ -85,7 +86,7 @@ export class RemoteJoiner {
   }
 
   constructor(
-    private serviceConfigs: JoinerServiceConfig[],
+    private serviceConfigs: ModuleJoinerConfig[],
     private remoteFetchData: (
       expand: RemoteExpandProperty,
       keyField: string,
@@ -113,10 +114,10 @@ export class RemoteJoiner {
     this.remoteFetchData = remoteFetchData
   }
 
-  private buildReferences(serviceConfigs: JoinerServiceConfig[]) {
+  private buildReferences(serviceConfigs: ModuleJoinerConfig[]) {
     const expandedRelationships: Map<string, JoinerRelationship[]> = new Map()
     for (const service of serviceConfigs) {
-      if (this.serviceConfigCache.has(service.serviceName)) {
+      if (this.serviceConfigCache.has(service.serviceName!)) {
         throw new Error(`Service "${service.serviceName}" is already defined.`)
       }
 
@@ -125,10 +126,11 @@ export class RemoteJoiner {
       }
 
       // add aliases
-      const isReadOnlyDefinition = service.serviceName === undefined
+      const isReadOnlyDefinition =
+        service.serviceName === undefined || service.isReadOnlyLink
       if (!isReadOnlyDefinition) {
         if (!service.alias) {
-          service.alias = [{ name: service.serviceName.toLowerCase() }]
+          service.alias = [{ name: service.serviceName!.toLowerCase() }]
         } else if (!Array.isArray(service.alias)) {
           service.alias = [service.alias]
         }
@@ -151,7 +153,7 @@ export class RemoteJoiner {
             alias: alias.name,
             foreignKey: alias.name + "_id",
             primaryKey: "id",
-            serviceName: service.serviceName,
+            serviceName: service.serviceName!,
             args,
           })
           this.cacheServiceConfig(serviceConfigs, undefined, alias.name)

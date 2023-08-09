@@ -216,10 +216,6 @@ export class MedusaModule {
         ].__joinerConfig()
 
         services[keyName].__joinerConfig = joinerConfig
-
-        if (joinerConfig.isLink) {
-          throw new Error("Use MedusaModule.bootstrapLink for Link Modules")
-        }
       }
 
       MedusaModule.registerModule(keyName, {
