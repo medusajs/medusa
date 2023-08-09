@@ -65,6 +65,8 @@ jobs:
 
       - name: Run unit tests
         run: yarn test
+        env:
+          ISOLATED_MODULES: true
 
   integration-tests-packages:
     needs: setup
@@ -128,6 +130,7 @@ jobs:
           DB_PASSWORD: postgres
           DB_USERNAME: postgres
           SPLIT: ${{ steps['split-tests'].outputs['split'] }}
+          ISOLATED_MODULES: true
 
   integration-tests-api:
     needs: setup
@@ -190,6 +193,7 @@ jobs:
         env:
           DB_PASSWORD: postgres
           SPLIT: ${{ steps['split-tests'].outputs['split'] }}
+          ISOLATED_MODULES: true
 
   integration-tests-plugins:
     needs: setup
@@ -242,6 +246,7 @@ jobs:
         run: yarn test:integration:plugins
         env:
           DB_PASSWORD: postgres
+          ISOLATED_MODULES: true
 
   integration-tests-repositories:
     needs: setup
@@ -291,3 +296,4 @@ jobs:
         run: yarn test:integration:repositories
         env:
           DB_PASSWORD: postgres
+          ISOLATED_MODULES: true
