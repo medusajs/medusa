@@ -97,9 +97,8 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     const entry = await this.pivotService_.list(queryOptions, {}, sharedContext)
 
     if (!entry?.length) {
-      const errMessage = filter.reduce((acc, curr) => {
-        return `${acc} ${Object.keys(curr)[0]}[${Object.values(curr)[0]}]`
-      }, "")
+      const pk = this.primaryKey_.join(",")
+      const errMessage = `${pk}[${primaryKeyData}] and ${this.foreignKey_}[${foreignKeyData}]`
 
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
