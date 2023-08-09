@@ -24,13 +24,15 @@ export async function retrieveCart({
 }: WorkflowArguments<HandlerInputData>) {
   const { manager } = context
 
+  console.log("data", data)
+
   const cartService = container.resolve("cartService")
 
   const cartServiceTx = cartService.withTransaction(manager)
 
   const retrieved = await cartServiceTx.retrieve(
     data[Aliases.Cart].id,
-    data[Aliases.Config].retrieveConfig
+    data[Aliases.Config]?.retrieveConfig ?? {}
   )
 
   return retrieved

@@ -5,8 +5,10 @@ export function setRetrieveConfig(config) {
     return {
       alias: "config",
       value: {
-        select: config.select,
-        relations: config.relations,
+        retrieveConfig: {
+          select: config.select,
+          relations: config.relations,
+        },
       },
     }
   }

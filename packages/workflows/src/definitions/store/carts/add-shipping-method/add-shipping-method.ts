@@ -2,26 +2,20 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { WorkflowTypes } from "@medusajs/types"
-import {
-  defaultStoreCartFields,
-  defaultStoreCartRelations,
-} from "@medusajs/utils"
+import { CartDTO, WorkflowTypes } from "@medusajs/types"
 import {
   CartHandlers,
   ShippingMethodHandlers,
   ShippingOptionHandlers,
 } from "../../../../handlers"
-import { exportWorkflow, pipe } from "../../../../helper"
+import { aggregateData, exportWorkflow, pipe } from "../../../../helper"
 import { Workflows } from "../../../../workflows"
 import { prepareAddShippingMethodToCartWorkflowData } from "./prepare-add-shipping-method-to-cart-data"
-import { prepareShippingMethodsForCreate } from "./prepare-create-shipping-methods-data"
 import { prepareDeleteShippingMethodsData } from "./prepare-delete-shipping-methods-data"
-import { prepareGetShippingOptionPriceData } from "./prepare-get-shipping-option-price-data"
 import { setRetrieveConfig } from "./set-retrieve-config"
 
 export enum AddShippingMethodWorkflowActions {
-  prepare = "prepare",
+  prepare = "input",
   validateFulfillmentData = "validateFulfillmentData",
   validateLineItemShipping = "validateLineItemShipping",
   getOptionPrice = "getOptionPrice",
@@ -82,12 +76,12 @@ const handlers = new Map([
     {
       invoke: pipe(
         {
-          inputAlias: "input",
+          inputAlias: AddShippingMethodWorkflowActions.prepare,
           invoke: {
-            from: "input",
-            alias: "dataToValidate",
+            from: AddShippingMethodWorkflowActions.prepare,
           },
         },
+        aggregateData(),
         CartHandlers.validateShippingOptionForCart
       ),
     },
@@ -98,10 +92,10 @@ const handlers = new Map([
       invoke: pipe(
         {
           invoke: {
-            from: "input",
-            alias: "input",
+            from: AddShippingMethodWorkflowActions.prepare,
           },
         },
+        aggregateData(),
         CartHandlers.ensureCorrectLineItemShipping
       ),
     },
@@ -113,8 +107,7 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: "input",
-              alias: "input",
+              from: AddShippingMethodWorkflowActions.prepare,
             },
             {
               from: AddShippingMethodWorkflowActions.validateFulfillmentData,
@@ -122,7 +115,7 @@ const handlers = new Map([
             },
           ],
         },
-        prepareGetShippingOptionPriceData,
+        aggregateData(),
         ShippingOptionHandlers.getShippingOptionPrice
       ),
     },
@@ -134,20 +127,17 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: "input",
-              alias: "input",
+              from: AddShippingMethodWorkflowActions.prepare,
             },
             {
               from: AddShippingMethodWorkflowActions.validateFulfillmentData,
-              alias: "shippingOptionData",
             },
             {
               from: AddShippingMethodWorkflowActions.getOptionPrice,
-              alias: "shippingOptionPrice",
             },
           ],
         },
-        prepareShippingMethodsForCreate,
+        aggregateData(),
         ShippingMethodHandlers.createShippingMethods
       ),
     },
@@ -159,7 +149,7 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: "input",
+              from: AddShippingMethodWorkflowActions.prepare,
               alias: "input",
             },
             {
@@ -175,7 +165,7 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: "input",
+              from: AddShippingMethodWorkflowActions.prepare,
               alias: "input",
             },
             {
@@ -194,10 +184,10 @@ const handlers = new Map([
       invoke: pipe(
         {
           invoke: {
-            from: "input",
-            alias: "input",
+            from: AddShippingMethodWorkflowActions.prepare,
           },
         },
+        aggregateData(),
         setRetrieveConfig({
           relations: [
             "discounts",
@@ -213,11 +203,11 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: "input",
-              alias: "cart",
+              from: AddShippingMethodWorkflowActions.prepare,
             },
           ],
         },
+        aggregateData(),
         setRetrieveConfig({
           relations: [
             "discounts",
@@ -237,10 +227,10 @@ const handlers = new Map([
       invoke: pipe(
         {
           invoke: {
-            from: "input",
-            alias: "cart",
+            from: AddShippingMethodWorkflowActions.prepare,
           },
         },
+        aggregateData(),
         setRetrieveConfig({
           relations: [
             "items.variant.product.profiles",
@@ -263,7 +253,7 @@ const handlers = new Map([
       compensate: pipe(
         {
           invoke: {
-            from: "input",
+            from: AddShippingMethodWorkflowActions.prepare,
             alias: "input",
           },
         },
@@ -277,10 +267,10 @@ const handlers = new Map([
       invoke: pipe(
         {
           invoke: {
-            from: "input",
-            alias: "cart",
+            from: AddShippingMethodWorkflowActions.prepare,
           },
         },
+        aggregateData(),
         setRetrieveConfig({
           relations: [
             "items.variant.product.profiles",
@@ -308,14 +298,10 @@ const handlers = new Map([
       invoke: pipe(
         {
           invoke: {
-            from: "input",
-            alias: "input",
+            from: AddShippingMethodWorkflowActions.prepare,
           },
         },
-        setRetrieveConfig({
-          relations: defaultStoreCartRelations,
-          select: defaultStoreCartFields,
-        }),
+        aggregateData(),
         CartHandlers.retrieveCart
       ),
     },
@@ -331,7 +317,7 @@ WorkflowManager.register(
 export const addShippingMethod = exportWorkflow<
   WorkflowTypes.CartWorkflow.AddShippingMethodToCartDTO,
   {
-    value: any
+    cart: CartDTO
   }
 >(
   Workflows.AddShippingMethod,

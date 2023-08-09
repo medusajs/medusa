@@ -1,38 +1,37 @@
+import { ShippingOptionDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
+
+type HandlerInput = {
+  shippingOption: ShippingOptionDTO
+  shippingMethodData: Record<string, unknown>
+  shippingMethodConfig: Record<string, unknown>
+  shippingOptionPrice: number
+}
 
 export async function createShippingMethods({
   container,
   context,
   data,
-}: WorkflowArguments<{
-  input: {
-    shippingOption: any
-    shippingMethodConfig: any
-    shippingOptionPrice: any
-    shippingOptionData: Record<string, unknown>
-  }
-}>) {
+}: WorkflowArguments<HandlerInput>) {
   const { manager } = context
 
   const {
     shippingOptionPrice,
-    shippingOptionData,
+    shippingMethodData,
     shippingOption,
     shippingMethodConfig,
-  } = data.input
+  } = data
 
   const toCreate = [
     {
       option: shippingOption,
-      data: shippingOptionData,
-      price: shippingOptionPrice.price,
+      data: shippingMethodData,
+      price: shippingOptionPrice,
       config: shippingMethodConfig,
     },
   ]
 
   const shippingOptionService = container.resolve("shippingOptionService")
-
-  console.log("To create", toCreate)
 
   const shippingMethods = await shippingOptionService
     .withTransaction(manager)

@@ -1,17 +1,17 @@
-import { WorkflowArguments } from "../../helper"
+import { WorkflowArguments } from "../../helper";
+
+type HandlerInput = {
+  cart: any
+}
 
 export async function ensureCorrectLineItemShipping({
   container,
   context,
   data,
-}: WorkflowArguments<{
-  input: {
-    cart: any
-  }
-}>) {
+}: WorkflowArguments<HandlerInput>) {
   const { manager } = context
 
-  const { cart } = data.input
+  const { cart } = data
 
   const lineItemService = container
     .resolve("lineItemService")
@@ -21,7 +21,7 @@ export async function ensureCorrectLineItemShipping({
     cart.items.map(async (item) => {
       return lineItemService.update(item.id, {
         has_shipping: lineItemService.validateLineItemShipping_(
-          cart.methods,
+          cart.shipping_methods,
           item
         ),
       })

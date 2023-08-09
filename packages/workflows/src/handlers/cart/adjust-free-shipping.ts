@@ -5,13 +5,11 @@ export async function adjustFreeShippingOnCart({
   context,
   data,
 }: WorkflowArguments<{
-  input: {
-    cart: any
-  }
+  cart: any
 }>) {
   const { manager } = context
 
-  const { cart } = data.input
+  const { cart } = data
 
   const cartService = container.resolve("cartService").withTransaction(manager)
 
@@ -19,5 +17,5 @@ export async function adjustFreeShippingOnCart({
 }
 
 adjustFreeShippingOnCart.aliases = {
-  input: "input",
+  cart: "cart",
 }

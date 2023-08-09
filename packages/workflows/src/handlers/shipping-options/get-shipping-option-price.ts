@@ -1,20 +1,20 @@
+import { ShippingOptionDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
+
+type HandlerInput = {
+  shippingOption: ShippingOptionDTO
+  shippingMethodData: Record<string, unknown>
+  shippingMethodConfig: Record<string, unknown>
+}
 
 export async function getShippingOptionPrice({
   container,
   context,
   data,
-}: WorkflowArguments<{
-  getOptionPriceData: {
-    shippingOption: any
-    shippingOptionData: any
-    shippingMethodConfig: any
-  }
-}>) {
+}: WorkflowArguments<HandlerInput>) {
   const { manager } = context
 
-  const { shippingOption, shippingMethodConfig, shippingOptionData } =
-    data.getOptionPriceData
+  const { shippingOption, shippingMethodConfig, shippingMethodData } = data
 
   const shippingOptionService = container
     .resolve("shippingOptionService")
@@ -22,14 +22,15 @@ export async function getShippingOptionPrice({
 
   const methodPrice = await shippingOptionService.getPrice(
     shippingOption,
-    shippingOptionData,
+    shippingMethodData,
     shippingMethodConfig
   )
 
-  return { price: methodPrice }
+  return { shippingOptionPrice: methodPrice }
 }
 
 getShippingOptionPrice.aliases = {
-  input: "input",
-  shippingOptionData: "shippingOptionData",
+  shippingMethodData: "shippingMethodData",
+  shippingMethodConfig: "shippingMethodConfig",
+  shippingOption: "shippingOption",
 }

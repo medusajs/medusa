@@ -1,17 +1,18 @@
+import { CartDTO, ShippingOptionDTO } from "@medusajs/types"
 import { isDefined } from "@medusajs/utils"
 import { WorkflowArguments } from "../../helper"
+
+type HandlerInput = {
+  shippingOption: ShippingOptionDTO
+  shippingMethodData: Record<string, unknown>
+  cart: CartDTO
+}
 
 export async function validateShippingOptionForCart({
   container,
   context,
   data,
-}: WorkflowArguments<{
-  dataToValidate: {
-    shippingOption: any
-    shippingMethodData: any
-    cart?: any
-  }
-}>) {
+}: WorkflowArguments<HandlerInput>) {
   const { manager } = context
 
   const fulfillmentProvider = container.resolve("fulfillmentProviderService")
@@ -20,25 +21,26 @@ export async function validateShippingOptionForCart({
     .resolve("shippingOptionService")
     .withTransaction(manager)
 
-  const dataToValidate = data.dataToValidate
+  const { shippingOption, cart, shippingMethodData } = data
 
-  if (isDefined(dataToValidate.cart)) {
-    await shippingOptionService.validateCartOption(
-      dataToValidate.shippingOption,
-      dataToValidate.cart
-    )
+  if (isDefined(cart)) {
+    await shippingOptionService.validateCartOption(shippingOption, cart)
   }
 
   const validatedShippingOptionData =
     await fulfillmentProvider.validateFulfillmentData(
-      dataToValidate.shippingOption,
-      dataToValidate.shippingMethodData,
-      dataToValidate.cart || {}
+      shippingOption,
+      shippingMethodData,
+      cart || {}
     )
 
-  return validatedShippingOptionData
+  return {
+    validatedData: validatedShippingOptionData,
+  }
 }
 
 validateShippingOptionForCart.aliases = {
-  dataToValidate: "dataToValidate",
+  shippingOption: "shippingOption",
+  shippingMethodData: "shippingMethodData",
+  cart: "cart",
 }

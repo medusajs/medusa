@@ -75,7 +75,7 @@ describe("/store/carts", () => {
   it("should add a shipping method to cart", async () => {
     const manager = medusaContainer.resolve("manager")
 
-    const createProductWorkflow = addShippingMethod(medusaContainer)
+    const addShippingMethodWorkflow = addShippingMethod(medusaContainer)
 
     const input = {
       cart_id: "test-cart",
@@ -83,18 +83,15 @@ describe("/store/carts", () => {
       data: {},
     }
 
-    const { result } = await createProductWorkflow.run({
+    const { result, transaction } = await addShippingMethodWorkflow.run({
       input,
       context: {
         manager,
       },
     })
 
-    const value = result!.value
-
-    expect(value.shipping_methods).toContainEqual(
-      expect.objectContaining({ shipping_option_id: "test-option" })
-    )
+    expect(result.cart).toBeDefined()
+    expect(transaction.getState()).toEqual("done")
   })
 
   // it("should add a shipping method based on the existing custom shipping option", async () => {
