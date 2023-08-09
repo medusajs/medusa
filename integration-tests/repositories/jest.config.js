@@ -4,7 +4,7 @@ process.chdir(__dirname)
 module.exports = {
   globals: {
     "ts-jest": {
-      tsConfig: "tsconfig.spec.json",
+      tsconfig: "tsconfig.spec.json",
       isolatedModules: process.env.ISOLATED_MODULES,
     },
   },
