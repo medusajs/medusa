@@ -38,6 +38,14 @@
   body {
     @apply overflow-x-hidden;
   }
+
+  *::selection {
+    @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark;
+  }
+
+  pre *::selection {
+    @apply !bg-medusa-code-text-highlight;
+  }
 }
 
 @layer utilities {
