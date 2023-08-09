@@ -93,7 +93,10 @@ export function pipe<T>(
     }
 
     // Apply the aggregator just before the last handler
-    functions.splice(functions.length - 2, 0, aggregateData())
+    if (functions.length) {
+      const handler = functions.pop()!
+      functions.push(aggregateData(), handler)
+    }
 
     let finalResult
     for (const fn of functions) {
