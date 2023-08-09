@@ -3,7 +3,7 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { aggregateData, exportWorkflow, pipe } from "../../helper"
+import { exportWorkflow, pipe } from "../../helper"
 
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import {
@@ -62,7 +62,6 @@ const handlers = new Map([
             from: InputAlias.ProductsInputData,
           },
         },
-        aggregateData(),
         ProductHandlers.createProductsPrepareData
       ),
     },
@@ -76,7 +75,6 @@ const handlers = new Map([
             from: CreateProductsActions.prepare,
           },
         },
-        aggregateData(),
         ProductHandlers.createProducts
       ),
       compensate: pipe(
@@ -86,7 +84,6 @@ const handlers = new Map([
             alias: ProductHandlers.removeProducts.aliases.products,
           },
         },
-        aggregateData(),
         ProductHandlers.removeProducts
       ),
     },
@@ -108,7 +105,6 @@ const handlers = new Map([
             },
           ],
         },
-        aggregateData(),
         ProductHandlers.attachShippingProfileToProducts
       ),
       compensate: pipe(
@@ -125,7 +121,6 @@ const handlers = new Map([
             },
           ],
         },
-        aggregateData(),
         ProductHandlers.detachShippingProfileFromProducts
       ),
     },
@@ -146,7 +141,6 @@ const handlers = new Map([
             },
           ],
         },
-        aggregateData(),
         ProductHandlers.attachSalesChannelToProducts
       ),
       compensate: pipe(
@@ -162,7 +156,6 @@ const handlers = new Map([
             },
           ],
         },
-        aggregateData(),
         ProductHandlers.detachSalesChannelFromProducts
       ),
     },
@@ -177,7 +170,6 @@ const handlers = new Map([
             alias: InventoryHandlers.createInventoryItems.aliases.products,
           },
         },
-        aggregateData(),
         InventoryHandlers.createInventoryItems
       ),
       compensate: pipe(
@@ -188,7 +180,6 @@ const handlers = new Map([
               InventoryHandlers.removeInventoryItems.aliases.inventoryItems,
           },
         },
-        aggregateData(),
         InventoryHandlers.removeInventoryItems
       ),
     },
@@ -204,7 +195,6 @@ const handlers = new Map([
               InventoryHandlers.attachInventoryItems.aliases.inventoryItems,
           },
         },
-        aggregateData(),
         InventoryHandlers.attachInventoryItems
       ),
       compensate: pipe(
@@ -215,7 +205,6 @@ const handlers = new Map([
               InventoryHandlers.detachInventoryItems.aliases.inventoryItems,
           },
         },
-        aggregateData(),
         InventoryHandlers.detachInventoryItems
       ),
     },
@@ -236,7 +225,6 @@ const handlers = new Map([
             },
           ],
         },
-        aggregateData(),
         ProductHandlers.updateProductsVariantsPrices
       ),
       compensate: pipe(
@@ -252,7 +240,6 @@ const handlers = new Map([
             },
           ],
         },
-        aggregateData(),
         MiddlewaresHandlers.createProductsPrepareCreatePricesCompensation,
         ProductHandlers.updateProductsVariantsPrices
       ),

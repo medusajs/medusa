@@ -1,11 +1,11 @@
 import {
+  DistributedTransaction,
   TransactionMetadata,
   WorkflowStepHandler,
 } from "@medusajs/orchestration"
 import { Context, MedusaContainer, SharedContext } from "@medusajs/types"
-
-import { DistributedTransaction } from "@medusajs/orchestration"
 import { InputAlias } from "../definitions"
+import { aggregateData } from "./aggregate"
 
 export type WorkflowStepMiddlewareReturn = {
   alias?: string
@@ -91,6 +91,8 @@ export function pipe<T>(
         }
       }
     }
+
+    functions.splice(functions.length - 2, 0, aggregateData())
 
     let finalResult
     for (const fn of functions) {

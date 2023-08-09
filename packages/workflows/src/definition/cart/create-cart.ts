@@ -13,7 +13,7 @@ import {
   RegionHandlers,
   SalesChannelHandlers,
 } from "../../handlers"
-import { aggregateData, exportWorkflow, pipe } from "../../helper"
+import { exportWorkflow, pipe } from "../../helper"
 
 enum CreateCartActions {
   setConfig = "setConfig",
@@ -84,7 +84,6 @@ const handlers = new Map([
     {
       invoke: pipe(
         getWorkflowInput(CommonHandlers.setConfig.aliases.Config),
-        aggregateData(),
         CommonHandlers.setConfig
       ),
     },
