@@ -3,7 +3,7 @@ import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { exportWorkflow, pipe } from "../../helper"
+import { aggregateData, exportWorkflow, pipe } from "../../helper"
 
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import {
@@ -11,7 +11,6 @@ import {
   MiddlewaresHandlers,
   ProductHandlers,
 } from "../../handlers"
-import { aggregateData } from "../../helper/aggregate"
 
 export enum CreateProductsActions {
   prepare = "prepare",
@@ -21,7 +20,6 @@ export enum CreateProductsActions {
   createPrices = "createPrices",
   createInventoryItems = "createInventoryItems",
   attachInventoryItems = "attachInventoryItems",
-  result = "result",
 }
 
 export const workflowSteps: TransactionStepsDefinition = {
@@ -45,10 +43,6 @@ export const workflowSteps: TransactionStepsDefinition = {
             action: CreateProductsActions.createInventoryItems,
             next: {
               action: CreateProductsActions.attachInventoryItems,
-              next: {
-                action: CreateProductsActions.result,
-                noCompensation: true,
-              },
             },
           },
         },
@@ -264,32 +258,6 @@ const handlers = new Map([
       ),
     },
   ],
-  [
-    CreateProductsActions.result,
-    {
-      invoke: pipe(
-        {
-          invoke: [
-            {
-              from: CreateProductsActions.prepare,
-            },
-            {
-              from: CreateProductsActions.createProducts,
-              alias: "products",
-            },
-          ],
-        },
-        async ({ data }) => {
-          return {
-            alias: ProductHandlers.listProducts.aliases.ids,
-            value: data.products.map((product) => product.id),
-          }
-        },
-        aggregateData(),
-        ProductHandlers.listProducts
-      ),
-    },
-  ],
 ])
 
 WorkflowManager.register(Workflows.CreateProducts, workflowSteps, handlers)
@@ -297,4 +265,4 @@ WorkflowManager.register(Workflows.CreateProducts, workflowSteps, handlers)
 export const createProducts = exportWorkflow<
   WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO,
   ProductTypes.ProductDTO[]
->(Workflows.CreateProducts, CreateProductsActions.result)
+>(Workflows.CreateProducts, CreateProductsActions.createProducts)

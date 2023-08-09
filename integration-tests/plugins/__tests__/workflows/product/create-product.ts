@@ -5,7 +5,6 @@ import {
   createProducts,
   CreateProductsActions,
   Handlers,
-  InputAlias,
   pipe,
 } from "@medusajs/workflows"
 import { IProductModuleService, WorkflowTypes } from "@medusajs/types"
@@ -37,19 +36,11 @@ describe("CreateProduct workflow", function () {
 
     workflow.appendAction(
       "fail_step",
-      CreateProductsActions.result,
+      CreateProductsActions.attachInventoryItems,
       {
-        invoke: pipe(
-          {
-            inputAlias: InputAlias.ProductsInputData,
-            invoke: {
-              from: InputAlias.ProductsInputData,
-            },
-          },
-          async function failStep() {
-            throw new Error(`Failed to create products`)
-          }
-        ),
+        invoke: pipe({}, async function failStep() {
+          throw new Error(`Failed to create products`)
+        }),
       },
       {
         noCompensation: true,
@@ -110,81 +101,6 @@ describe("CreateProduct workflow", function () {
     ])
 
     expect(transaction.getState()).toEqual("reverted")
-
-    // TODO
-    // Investigate why the following does not work and jest hands
-    // and end up having memory leak issues
-
-    // tried with individual expect statements as well
-    // tried string instead of enum for the keys
-    // tried with only one object tested inside
-    // tried with only one property
-    // and so on...
-
-    // the only thing that works was expect(invoke).toEqual(expect.objectContaining({}))
-
-    /*const { invoke } = transaction.getContext()
-    expect(invoke).toEqual(
-      expect.objectContaining({
-        [CreateProductsActions.prepare]: {
-          products: [
-            expect.objectContaining({
-              title: input.products[0].title,
-              type: input.products[0].type,
-              tags: input.products[0].tags,
-              subtitle: input.products[0].subtitle,
-              variants: input.products[0].variants,
-              options: input.products[0].options,
-              handle: kebabCase(input.products[0].title),
-            }),
-          ],
-          productsHandleSalesChannelsMap: expect.any(Object),
-          productsHandleVariantsIndexPricesMap: expect.any(Object),
-          config: input.config,
-        },
-        [CreateProductsActions.createProducts]: expect.objectContaining({
-          id: expect.any(String),
-          title: input.products[0].title,
-          type: {
-            id: expect.any(String),
-          },
-          variants: [
-            expect.objectContaining({
-              id: expect.any(String),
-            }),
-          ],
-          options: [
-            expect.objectContaining({
-              id: expect.any(String),
-            }),
-          ],
-          tags: [
-            expect.objectContaining({
-              id: expect.any(String),
-            }),
-          ],
-        }),
-        [CreateProductsActions.createPrices]: undefined,
-        [CreateProductsActions.createInventoryItems]: [
-          {
-            variant: expect.objectContaining({
-              id: expect.any(String),
-            }),
-            inventoryItem: expect.objectContaining({
-              id: expect.any(String),
-            }),
-          },
-        ],
-        [CreateProductsActions.attachInventoryItems]: [
-          expect.objectContaining({
-            inventory_item_id: expect.any(String),
-            variant_id: expect.any(String),
-            required_quantity: 1,
-            id: expect.any(String),
-          }),
-        ],
-      })
-    )*/
 
     expect(result).toHaveLength(1)
     expect(result[0]).toEqual(
