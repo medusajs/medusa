@@ -4,6 +4,7 @@ import Details from "@/components/Details"
 import DetailsSummary from "../../../../Details/Summary"
 import Badge from "../../../../Badge"
 import TagOperationParameters from "../../Parameters"
+import { Fragment } from "react"
 
 export type TagsOperationDescriptionSectionResponsesProps = {
   responses: ResponsesObject
@@ -20,7 +21,7 @@ const TagsOperationDescriptionSectionResponses = ({
       >
         {Object.entries(responses).map(([code, response], index) => {
           return (
-            <>
+            <Fragment key={index}>
               {response.content && (
                 <>
                   {(code === "200" || code === "201") && (
@@ -79,7 +80,7 @@ const TagsOperationDescriptionSectionResponses = ({
                   expandable={false}
                 />
               )}
-            </>
+            </Fragment>
           )
         })}
       </div>

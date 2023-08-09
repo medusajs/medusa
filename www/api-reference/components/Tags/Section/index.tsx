@@ -88,8 +88,13 @@ const TagSection = ({ tag }: TagSectionProps) => {
           <SectionContainer>
             <h2>{tag.name}</h2>
             {tag.description && (
-              <Section addToSidebar={false}>
-                <MDXContentClient content={tag.description} />
+              <Section>
+                <MDXContentClient
+                  content={tag.description}
+                  scope={{
+                    addToSidebar: false,
+                  }}
+                />
               </Section>
             )}
             {tag.externalDocs && (

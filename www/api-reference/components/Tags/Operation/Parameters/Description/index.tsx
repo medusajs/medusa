@@ -118,6 +118,9 @@ const TagOperationParametersDescription = ({
           <MDXContentClient
             content={capitalize(schema.description)}
             className={clsx("!mb-0 [&>*]:!mb-0")}
+            scope={{
+              addToSidebar: false,
+            }}
           />
         </>
       )}

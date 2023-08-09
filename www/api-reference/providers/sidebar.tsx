@@ -7,6 +7,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useReducer,
   useState,
 } from "react"
 
@@ -54,7 +55,7 @@ type SidebarContextType = {
     checkChildren?: boolean
   ) => SidebarItemType | undefined
   mobileSidebarOpen: boolean
-  setMobileSidebarOpen: (value: boolean) => void
+  setMobileSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
   isSidebarEmpty: () => boolean
   desktopSidebarOpen: boolean
   setDesktopSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -66,8 +67,68 @@ type SidebarProviderProps = {
   children?: ReactNode
 }
 
+type ActionOptionsType = {
+  section?: SidebarItemSections
+  parent?: {
+    path: string
+    changeLoaded?: boolean
+  }
+  indexPosition?: number
+  ignoreExisting?: boolean
+}
+
+type ActionType = {
+  type: "add" | "update"
+  items: SidebarItemType[]
+  options?: ActionOptionsType
+}
+
+const reducer = (
+  state: SidebarSectionItemsType,
+  { type, items, options }: ActionType
+) => {
+  const {
+    section = SidebarItemSections.TOP,
+    parent,
+    indexPosition,
+  } = options || {}
+
+  switch (type) {
+    case "add":
+      return {
+        ...state,
+        [section]:
+          indexPosition !== undefined
+            ? [
+                ...state[section].slice(0, indexPosition),
+                ...items,
+                ...state[section].slice(indexPosition),
+              ]
+            : [...state[section], ...items],
+      }
+      break
+    case "update":
+      // find item index
+      return {
+        ...state,
+        [section]: state[section].map((i) => {
+          if (i.path === parent?.path) {
+            return {
+              ...i,
+              children: [...(i.children || []), ...items],
+              loaded: parent.changeLoaded ? true : i.loaded,
+            }
+          }
+          return i
+        }),
+      }
+    default:
+      return state
+  }
+}
+
 const SidebarProvider = ({ children }: SidebarProviderProps) => {
-  const [items, setItems] = useState<SidebarSectionItemsType>({
+  const [items, dispatch] = useReducer(reducer, {
     top: [
       {
         title: "Introduction",
@@ -142,27 +203,27 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
     return findItemInSection(selectedSection, path) !== undefined
   }
 
-  const setSectionItems = (
-    newItems: SidebarItemType[],
-    section: SidebarItemSections
-  ) => {
-    if (section === SidebarItemSections.TOP) {
-      setItems({
-        ...items,
-        top: newItems,
-      })
-    } else if (section === SidebarItemSections.BOTTOM) {
-      setItems({
-        ...items,
-        bottom: newItems,
-      })
-    } else if (section === SidebarItemSections.MOBILE) {
-      setItems({
-        ...items,
-        mobile: newItems,
-      })
-    }
-  }
+  // const setSectionItems = (
+  //   newItems: SidebarItemType[],
+  //   section: SidebarItemSections
+  // ) => {
+  //   if (section === SidebarItemSections.TOP) {
+  //     setItems({
+  //       ...items,
+  //       top: newItems,
+  //     })
+  //   } else if (section === SidebarItemSections.BOTTOM) {
+  //     setItems({
+  //       ...items,
+  //       bottom: newItems,
+  //     })
+  //   } else if (section === SidebarItemSections.MOBILE) {
+  //     setItems({
+  //       ...items,
+  //       mobile: newItems,
+  //     })
+  //   }
+  // }
 
   const addItems = (
     newItems: SidebarItemType[],
@@ -179,7 +240,6 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
     const {
       section = SidebarItemSections.TOP,
       parent,
-      indexPosition,
       ignoreExisting = false,
     } = options || {}
 
@@ -191,48 +251,52 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       return
     }
 
-    const oldItems =
-      section === SidebarItemSections.TOP
-        ? items.top
-        : SidebarItemSections.BOTTOM
-        ? items.bottom
-        : items.mobile
+    dispatch({
+      type: parent ? "update" : "add",
+      items: newItems,
+      options,
+    })
 
-    if (!parent && !indexPosition && indexPosition !== 0) {
-      setSectionItems([...oldItems, ...newItems], section)
-      return
-    }
+    // if (!parent && !indexPosition && indexPosition !== 0) {
+    //   dispatch({
+    //     type: "add",
+    //     items: newItems,
+    //     options,
+    //   })
+    //   // setSectionItems([...oldItems, ...newItems], section)
+    //   return
+    // }
 
-    if (parent) {
-      // find parent index
-      setSectionItems(
-        oldItems.map((i) => {
-          if (i.path === parent.path) {
-            return {
-              ...i,
-              children: [...(i.children || []), ...newItems],
-              loaded: parent.changeLoaded ? true : i.loaded,
-            }
-          } else {
-            return i
-          }
-        }),
-        section
-      )
-      return
-    }
+    // if (parent) {
+    //   // find parent index
+    //   setSectionItems(
+    //     oldItems.map((i) => {
+    //       if (i.path === parent.path) {
+    //         return {
+    //           ...i,
+    //           children: [...(i.children || []), ...newItems],
+    //           loaded: parent.changeLoaded ? true : i.loaded,
+    //         }
+    //       } else {
+    //         return i
+    //       }
+    //     }),
+    //     section
+    //   )
+    //   return
+    // }
 
-    if (indexPosition || indexPosition === 0) {
-      // add item at specified index
-      setSectionItems(
-        [
-          ...oldItems.slice(0, indexPosition),
-          ...newItems,
-          ...oldItems.slice(indexPosition),
-        ],
-        section
-      )
-    }
+    // if (indexPosition || indexPosition === 0) {
+    //   // add item at specified index
+    //   setSectionItems(
+    //     [
+    //       ...oldItems.slice(0, indexPosition),
+    //       ...newItems,
+    //       ...oldItems.slice(indexPosition),
+    //     ],
+    //     section
+    //   )
+    // }
   }
 
   const isItemActive = useCallback(
