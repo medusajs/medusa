@@ -34,6 +34,7 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      ISOLATED_MODULES: true
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
@@ -71,6 +72,7 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      ISOLATED_MODULES: true
 
     services:
       redis:
@@ -133,6 +135,7 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      ISOLATED_MODULES: true
 
     services:
       redis:
@@ -194,6 +197,7 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      ISOLATED_MODULES: true
 
     services:
       postgres:
@@ -245,6 +249,7 @@ jobs:
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+      ISOLATED_MODULES: true
 
     services:
       postgres:

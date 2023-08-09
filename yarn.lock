@@ -24951,19 +24951,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "integration-tests-api@workspace:integration-tests/api"
   dependencies:
-    "@babel/cli": ^7.12.10
-    "@babel/core": ^7.12.10
-    "@babel/node": ^7.12.10
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/medusa": "workspace:*"
-    babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
     jest-environment-node: 26.6.2
     medusa-interfaces: "workspace:*"
     pg: ^8.11.0
+    ts-jest: ^26.5.6
     typeorm: ^0.3.16
+    typescript: ^5.1.6
   languageName: unknown
   linkType: soft
 
@@ -24971,14 +24969,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "integration-tests-plugins@workspace:integration-tests/plugins"
   dependencies:
-    "@babel/cli": ^7.12.10
-    "@babel/core": ^7.12.10
-    "@babel/node": ^7.12.10
     "@medusajs/cache-inmemory": "workspace:*"
     "@medusajs/event-bus-local": "workspace:*"
     "@medusajs/medusa": "workspace:*"
     "@medusajs/product": "workspace:^"
-    babel-preset-medusa-package: "*"
     faker: ^5.5.3
     jest: ^26.6.3
     jest-environment-node: 26.6.2
@@ -24986,7 +24980,9 @@ __metadata:
     medusa-interfaces: "workspace:*"
     medusa-plugin-sendgrid: "workspace:*"
     pg: ^8.11.0
+    ts-jest: ^26.5.6
     typeorm: ^0.3.16
+    typescript: ^5.1.6
   languageName: unknown
   linkType: soft
 
@@ -25003,7 +24999,9 @@ __metadata:
     jest-environment-node: 26.6.2
     medusa-interfaces: "workspace:*"
     pg: ^8.11.0
+    ts-jest: ^26.5.6
     typeorm: ^0.3.16
+    typescript: ^5.1.6
   languageName: unknown
   linkType: soft
 
@@ -41640,6 +41638,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^5.1.6":
+  version: 5.1.6
+  resolution: "typescript@npm:5.1.6"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 45ac28e2df8365fd28dac42f5d62edfe69a7203d5ec646732cadc04065331f34f9078f81f150fde42ed9754eed6fa3b06a8f3523c40b821e557b727f1992e025
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@4.9.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.3#~builtin<compat/typescript>, typescript@patch:typescript@^4.9.5#~builtin<compat/typescript>":
   version: 4.9.5
   resolution: "typescript@patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=7ad353"
@@ -41667,6 +41675,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: db16dd188048c172051825c7e6eea3e6bf577020625e5635fb8265d22683897d9ed7579b41a3a3e961fba5728c58e324d52041e9ca21d0dfc4bafa8bcf8e7a4b
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@^5.1.6#~builtin<compat/typescript>":
+  version: 5.1.6
+  resolution: "typescript@patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=7ad353"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: c134abcd9fc5c393db30498db18d8e89453efae14e11a39c1adb6238138d4c152472e497499b8a67b0c87ca6eafcb26b0eb02f962f240c233c2e0ad3785f8742
   languageName: node
   linkType: hard
 

@@ -1,9 +1,20 @@
+// API
 process.chdir(__dirname)
 
 module.exports = {
+  globals: {
+    "ts-jest": {
+      tsConfig: "tsconfig.spec.json",
+      isolatedModules: process.env.ISOLATED_MODULES,
+    },
+  },
+  transform: {
+    "^.+\\.[jt]s?$": "ts-jest",
+  },
   name: "Plugins",
   testEnvironment: `node`,
   rootDir: "./",
+  testTimeout: 10000,
   testPathIgnorePatterns: [
     `/examples/`,
     `/www/`,
@@ -14,7 +25,6 @@ module.exports = {
     `.cache`,
   ],
   transformIgnorePatterns: [`/dist`],
-  transform: { "^.+\\.[jt]s$": `../../jest-transformer.js` },
   setupFiles: ["../setup-env.js"],
   setupFilesAfterEnv: ["../setup.js"],
   globalSetup: "../globalSetup.js",

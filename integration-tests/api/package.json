@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "test:integration": "jest --silent=false --maxWorkers=50% --bail --detectOpenHandles --forceExit",
-    "build": "babel src -d dist --extensions \".ts,.js\""
+    "build": "tsc --build"
   },
   "dependencies": {
     "@medusajs/cache-inmemory": "workspace:*",
@@ -18,11 +18,9 @@
     "typeorm": "^0.3.16"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.12.10",
-    "@babel/node": "^7.12.10",
-    "babel-preset-medusa-package": "*",
     "jest": "^26.6.3",
-    "jest-environment-node": "26.6.2"
+    "jest-environment-node": "26.6.2",
+    "ts-jest": "^26.5.6",
+    "typescript": "^5.1.6"
   }
 }
