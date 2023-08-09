@@ -74,9 +74,9 @@ export class DistributedTransaction {
   public modelId: string
   public transactionId: string
 
-  private errors: TransactionStepError[] = []
+  private readonly errors: TransactionStepError[] = []
 
-  private context: TransactionContext = new TransactionContext()
+  private readonly context: TransactionContext = new TransactionContext()
 
   constructor(
     private flow: TransactionFlow,
