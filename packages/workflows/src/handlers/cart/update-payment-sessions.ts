@@ -1,6 +1,6 @@
-import { WorkflowArguments } from "../../../helper"
+import { WorkflowArguments } from "../../helper"
 
-export async function cleanUpPaymentSessions({
+export async function updatePaymentSessions({
   container,
   context,
   data,
@@ -14,10 +14,9 @@ export async function cleanUpPaymentSessions({
   const { cart } = data.input
 
   const cartService = container.resolve("cartService").withTransaction(manager)
-
-  await cartService.cleanUpPaymentSessions(cart.id)
+  await cartService.selectAndCreatePaymentSessions(cart)
 }
 
-cleanUpPaymentSessions.aliases = {
+updatePaymentSessions.aliases = {
   input: "input",
 }

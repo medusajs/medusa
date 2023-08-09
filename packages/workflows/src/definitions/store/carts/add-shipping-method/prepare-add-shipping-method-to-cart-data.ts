@@ -1,5 +1,5 @@
 import { WorkflowTypes } from "@medusajs/types"
-import { WorkflowDataPreparationArguments } from "../../../helper"
+import { WorkflowDataPreparationArguments } from "../../../../helper"
 
 type AddShippingMethodInputData =
   WorkflowTypes.CartWorkflow.AddShippingMethodToCartDTO

@@ -3,22 +3,22 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { WorkflowTypes } from "@medusajs/types"
-import { adjustFreeShippingOnCart } from "../../../handlers/store/carts/adjust-free-shipping"
-import { cleanUpPaymentSessions } from "../../../handlers/store/carts/clean-up-payment-sessions"
-import { prepareAddShippingMethodToCartWorkflowData } from "../../../handlers/store/carts/prepare-add-shipping-method-to-cart-data"
-import { retrieveCart } from "../../../handlers/store/carts/retrieve-cart"
-import { ensureCorrectLineItemShipping } from "../../../handlers/store/carts/update-line-item-shipping"
-import { updatePaymentSessions } from "../../../handlers/store/carts/update-payment-sessions"
-import { validateShippingOptionForCart } from "../../../handlers/store/carts/validate-shipping-option-for-cart"
-import { createShippingMethods } from "../../../handlers/store/shipping-methods/create-shipping-methods"
-import { deleteShippingMethods } from "../../../handlers/store/shipping-methods/delete-shipping-methods"
-import { prepareShippingMethodsForCreate } from "../../../handlers/store/shipping-methods/prepare-create-shipping-methods-data"
-import { prepareDeleteShippingMethodsData } from "../../../handlers/store/shipping-methods/prepare-delete-shipping-methods-data"
-import { restoreShippingMethods } from "../../../handlers/store/shipping-methods/restore-shipping-methods"
-import { getShippingOptionPrice } from "../../../handlers/store/shipping-options/get-shipping-option-price"
-import { prepareGetShippingOptionPriceData } from "../../../handlers/store/shipping-options/prepare-get-shipping-option-price-data"
-import { exportWorkflow, pipe } from "../../../helper"
-import { Workflows } from "../../../workflows"
+import {
+  defaultStoreCartFields,
+  defaultStoreCartRelations,
+} from "@medusajs/utils"
+import {
+  CartHandlers,
+  ShippingMethodHandlers,
+  ShippingOptionHandlers,
+} from "../../../../handlers"
+import { exportWorkflow, pipe } from "../../../../helper"
+import { Workflows } from "../../../../workflows"
+import { prepareAddShippingMethodToCartWorkflowData } from "./prepare-add-shipping-method-to-cart-data"
+import { prepareShippingMethodsForCreate } from "./prepare-create-shipping-methods-data"
+import { prepareDeleteShippingMethodsData } from "./prepare-delete-shipping-methods-data"
+import { prepareGetShippingOptionPriceData } from "./prepare-get-shipping-option-price-data"
+import { setRetrieveConfig } from "./set-retrieve-config"
 
 export enum AddShippingMethodWorkflowActions {
   prepare = "prepare",
@@ -88,7 +88,7 @@ const handlers = new Map([
             alias: "dataToValidate",
           },
         },
-        validateShippingOptionForCart
+        CartHandlers.validateShippingOptionForCart
       ),
     },
   ],
@@ -102,7 +102,7 @@ const handlers = new Map([
             alias: "input",
           },
         },
-        ensureCorrectLineItemShipping
+        CartHandlers.ensureCorrectLineItemShipping
       ),
     },
   ],
@@ -123,7 +123,7 @@ const handlers = new Map([
           ],
         },
         prepareGetShippingOptionPriceData,
-        getShippingOptionPrice
+        ShippingOptionHandlers.getShippingOptionPrice
       ),
     },
   ],
@@ -148,7 +148,7 @@ const handlers = new Map([
           ],
         },
         prepareShippingMethodsForCreate,
-        createShippingMethods
+        ShippingMethodHandlers.createShippingMethods
       ),
     },
   ],
@@ -169,7 +169,7 @@ const handlers = new Map([
           ],
         },
         prepareDeleteShippingMethodsData,
-        deleteShippingMethods
+        ShippingMethodHandlers.deleteShippingMethods
       ),
       compensate: pipe(
         {
@@ -184,7 +184,7 @@ const handlers = new Map([
             },
           ],
         },
-        restoreShippingMethods
+        ShippingMethodHandlers.restoreShippingMethods
       ),
     },
   ],
@@ -198,19 +198,36 @@ const handlers = new Map([
             alias: "input",
           },
         },
-        adjustFreeShippingOnCart
+        setRetrieveConfig({
+          relations: [
+            "discounts",
+            "discounts.rule",
+            "shipping_methods",
+            "shipping_methods.shipping_option",
+          ],
+        }),
+        CartHandlers.retrieveCart,
+        CartHandlers.adjustFreeShippingOnCart
       ),
       compensate: pipe(
         {
           invoke: [
             {
               from: "input",
-              alias: "input",
+              alias: "cart",
             },
           ],
         },
-        retrieveCart,
-        adjustFreeShippingOnCart
+        setRetrieveConfig({
+          relations: [
+            "discounts",
+            "discounts.rule",
+            "shipping_methods",
+            "shipping_methods.shipping_option",
+          ],
+        }),
+        CartHandlers.retrieveCart,
+        CartHandlers.adjustFreeShippingOnCart
       ),
     },
   ],
@@ -221,11 +238,27 @@ const handlers = new Map([
         {
           invoke: {
             from: "input",
-            alias: "input",
+            alias: "cart",
           },
         },
-        retrieveCart,
-        cleanUpPaymentSessions
+        setRetrieveConfig({
+          relations: [
+            "items.variant.product.profiles",
+            "items.adjustments",
+            "discounts.rule",
+            "gift_cards",
+            "shipping_methods.shipping_option",
+            "billing_address",
+            "shipping_address",
+            "region",
+            "region.tax_rates",
+            "region.payment_providers",
+            "payment_sessions",
+            "customer",
+          ],
+        }),
+        CartHandlers.retrieveCart,
+        CartHandlers.cleanUpPaymentSessions
       ),
       compensate: pipe(
         {
@@ -234,7 +267,7 @@ const handlers = new Map([
             alias: "input",
           },
         },
-        cleanUpPaymentSessions
+        CartHandlers.cleanUpPaymentSessions
       ),
     },
   ],
@@ -245,11 +278,27 @@ const handlers = new Map([
         {
           invoke: {
             from: "input",
-            alias: "input",
+            alias: "cart",
           },
         },
-        retrieveCart,
-        updatePaymentSessions
+        setRetrieveConfig({
+          relations: [
+            "items.variant.product.profiles",
+            "items.adjustments",
+            "discounts.rule",
+            "gift_cards",
+            "shipping_methods.shipping_option",
+            "billing_address",
+            "shipping_address",
+            "region",
+            "region.tax_rates",
+            "region.payment_providers",
+            "payment_sessions",
+            "customer",
+          ],
+        }),
+        CartHandlers.retrieveCart,
+        CartHandlers.updatePaymentSessions
       ),
     },
   ],
@@ -263,7 +312,11 @@ const handlers = new Map([
             alias: "input",
           },
         },
-        retrieveCart
+        setRetrieveConfig({
+          relations: defaultStoreCartRelations,
+          select: defaultStoreCartFields,
+        }),
+        CartHandlers.retrieveCart
       ),
     },
   ],

@@ -1,4 +1,3 @@
-import { CartDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 type HandlerInputData = {
@@ -22,7 +21,7 @@ export async function retrieveCart({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInputData>): Promise<CartDTO> {
+}: WorkflowArguments<HandlerInputData>) {
   const { manager } = context
 
   const cartService = container.resolve("cartService")

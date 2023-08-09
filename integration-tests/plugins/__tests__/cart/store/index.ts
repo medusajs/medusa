@@ -22,7 +22,7 @@ describe("/store/carts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
     const { app, port } = await bootstrapApp({ cwd })
     setPort(port)
     express = app.listen(port, () => {
@@ -81,7 +81,7 @@ describe("/store/carts", () => {
 
       expect(response.status).toEqual(200)
 
-      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
+      const getRes = await api.get(`/store/carts/${response.data.cart.id}`)
       expect(getRes.status).toEqual(200)
     })
 
@@ -168,7 +168,7 @@ describe("/store/carts", () => {
         ])
       )
 
-      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
+      const getRes = await api.get(`/store/carts/${response.data.cart.id}`)
       expect(getRes.status).toEqual(200)
     })
 
@@ -181,7 +181,7 @@ describe("/store/carts", () => {
       expect(response.status).toEqual(200)
       expect(response.data.cart.shipping_address.country_code).toEqual("us")
 
-      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
+      const getRes = await api.get(`/store/carts/${response.data.cart.id}`)
       expect(getRes.status).toEqual(200)
     })
 
@@ -196,7 +196,7 @@ describe("/store/carts", () => {
 
       expect(response.status).toEqual(200)
 
-      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
+      const getRes = await api.get(`/store/carts/${response.data.cart.id}`)
       expect(getRes.status).toEqual(200)
 
       const cart = getRes.data.cart

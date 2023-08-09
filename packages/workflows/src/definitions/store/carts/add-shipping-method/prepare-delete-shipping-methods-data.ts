@@ -1,4 +1,4 @@
-import { WorkflowArguments } from "../../../helper"
+import { WorkflowArguments } from "../../../../helper"
 
 export async function prepareDeleteShippingMethodsData({
   container,
@@ -16,8 +16,6 @@ export async function prepareDeleteShippingMethodsData({
   if (!cart.shipping_methods?.length) {
     return []
   }
-
-  console.log("Before delte", shippingMethods)
 
   const toDelete: any[] = []
 
