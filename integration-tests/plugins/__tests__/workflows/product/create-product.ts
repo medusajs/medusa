@@ -8,10 +8,7 @@ import {
   pipe,
 } from "@medusajs/workflows"
 import { IProductModuleService, WorkflowTypes } from "@medusajs/types"
-import {
-  defaultAdminProductFields,
-  defaultAdminProductRelations,
-} from "@medusajs/medusa"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
 
 describe("CreateProduct workflow", function () {
   let medusaProcess
@@ -73,12 +70,6 @@ describe("CreateProduct workflow", function () {
             ],
           },
         ],
-        config: {
-          listConfig: {
-            select: defaultAdminProductFields,
-            relations: defaultAdminProductRelations,
-          },
-        },
       }
 
     const manager = medusaContainer.resolve("manager")
@@ -121,9 +112,8 @@ describe("CreateProduct workflow", function () {
 
     expect(product).toBeUndefined()
 
-    // TODO: update to use the registration name once this is merged https://github.com/medusajs/medusa/pull/4626
     const productModule = medusaContainer.resolve(
-      "productModuleService"
+      ModuleRegistrationName.PRODUCT
     ) as IProductModuleService
 
     ;[product] = await productModule.list(
