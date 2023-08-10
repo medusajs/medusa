@@ -267,7 +267,7 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
         setActivePath("")
         // can't use next router as it doesn't support
         // changing url without scrolling
-        history.pushState({}, "", location.pathname)
+        history.replaceState({}, "", location.pathname)
       }
     }
 

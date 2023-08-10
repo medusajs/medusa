@@ -81,6 +81,8 @@ const SidebarItem = ({ item, nested = false, className }: SidebarItemProps) => {
           setShowLoading(true)
           setSidebarOpen(false)
         }}
+        replace
+        shallow
       >
         <span>{item.title}</span>
         {item.method && <MethodLabel method={item.method} className="h-fit" />}

@@ -53,7 +53,7 @@ const TagOperation = ({
         }
         // can't use next router as it doesn't support
         // changing url without scrolling
-        history.pushState({}, "", `#${path}`)
+        history.replaceState({}, "", `#${path}`)
         setActivePath(path)
       }
     },

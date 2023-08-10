@@ -53,7 +53,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
         if (currentHashArr.length < 2 || currentHashArr[0] !== slugTagName) {
           // can't use next router as it doesn't support
           // changing url without scrolling
-          history.pushState({}, "", `#${slugTagName}`)
+          history.replaceState({}, "", `#${slugTagName}`)
           setActivePath(slugTagName)
         }
       }
