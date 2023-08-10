@@ -30,11 +30,11 @@ You can refer to the [Project Preparation step in the Create Module documentatio
 
 ## Step 1: Create the Service
 
-Create the file `services/memcached-cache.ts` which will hold your cache service. Note that the name of the file is recommended to be in the format `<service_name>-cache`. So, if you’re not integrating `memcached`, you should replace the name with what’s relevant for your module.
+Create the file `src/services/memcached-cache.ts` which will hold your cache service. Note that the name of the file is recommended to be in the format `<service_name>-cache`. So, if you’re not integrating `memcached`, you should replace the name with what’s relevant for your module.
 
 Add the following content to the file:
 
-```ts title=services/memcached-cache.ts
+```ts title=src/services/memcached-cache.ts
 import { ICacheService } from "@medusajs/types"
 
 class MemcachedCacheService implements ICacheService {
@@ -206,7 +206,7 @@ Create the file `index.ts` with the following content:
 ```ts title=index.ts
 import { ModuleExports } from "@medusajs/modules-sdk"
 
-import { MemcachedCacheService } from "./services"
+import { MemcachedCacheService } from "./services/memcached-cache"
 
 const service = MemcachedCacheService
 
