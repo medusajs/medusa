@@ -18,12 +18,28 @@ export type WorkflowStepMiddlewareInput = {
 }
 
 interface PipelineInput {
+  /**
+   * The alias of the input data to store in
+   */
   inputAlias?: InputAlias | string
+  /**
+   * Descriptors to get the data from
+   */
   invoke?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
   compensate?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
   onComplete?: (args: WorkflowOnCompleteArguments) => {}
+  /**
+   * Apply the data aggregation
+   */
   aggregate?: boolean
+  /**
+   * Store the aggregated data in a new key, if this is present no need to set aggregate: true
+   */
   aggregateAlias?: string
+  /**
+   * Store the aggregated data from the chosen aliases, if this is present no need to set aggregate: true
+   */
+  aggregateFrom?: string[]
 }
 
 export type WorkflowArguments<T = any> = {
@@ -95,9 +111,15 @@ export function pipe<T>(
     }
 
     // Apply the aggregator just before the last handler
-    if (input.aggregate && functions.length) {
+    if (
+      (input.aggregate || input.aggregateAlias || input.aggregateFrom) &&
+      functions.length
+    ) {
       const handler = functions.pop()!
-      functions.push(aggregateData(undefined, input.aggregateAlias), handler)
+      functions.push(
+        aggregateData(input.aggregateFrom, input.aggregateAlias),
+        handler
+      )
     }
 
     let finalResult
