@@ -12,18 +12,14 @@ import {
   UpdateProductTypeDTO,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import {
-  DALUtils,
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-} from "@medusajs/utils"
+import { DALUtils, MedusaError } from "@medusajs/utils"
 
 export class ProductTypeRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
     this.manager_ = manager
   }
@@ -68,13 +64,11 @@ export class ProductTypeRepository extends DALUtils.MikroOrmBaseRepository {
     )
   }
 
-  @InjectTransactionManager()
   async upsert(
     types: CreateProductTypeDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductType[]> {
-    const { transactionManager: manager } = context
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const typesValues = types.map((type) => type.value)
     const existingTypes = await this.find(
@@ -111,30 +105,20 @@ export class ProductTypeRepository extends DALUtils.MikroOrmBaseRepository {
         newTypes.push((manager as SqlEntityManager).create(ProductType, type))
       })
 
-      await (manager as SqlEntityManager).persist(newTypes)
+      manager.persist(newTypes)
       upsertedTypes.push(...newTypes)
     }
 
     return upsertedTypes
   }
 
-  @InjectTransactionManager()
-  async delete(
-    ids: string[],
-    @MedusaContext()
-    { transactionManager: manager }: Context = {}
-  ): Promise<void> {
-    await (manager as SqlEntityManager).nativeDelete(
-      ProductType,
-      { id: { $in: ids } },
-      {}
-    )
+  async delete(ids: string[], context: Context = {}): Promise<void> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    await manager.nativeDelete(ProductType, { id: { $in: ids } }, {})
   }
 
-  @InjectTransactionManager()
   async create(
     data: CreateProductTypeDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductType[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -143,15 +127,13 @@ export class ProductTypeRepository extends DALUtils.MikroOrmBaseRepository {
       return manager.create(ProductType, typeData)
     })
 
-    await manager.persist(productTypes)
+    manager.persist(productTypes)
 
     return productTypes
   }
 
-  @InjectTransactionManager()
   async update(
     data: UpdateProductTypeDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductType[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -184,7 +166,7 @@ export class ProductTypeRepository extends DALUtils.MikroOrmBaseRepository {
       return manager.assign(existingType, typeData)
     })
 
-    await manager.persist(productTypes)
+    manager.persist(productTypes)
 
     return productTypes
   }

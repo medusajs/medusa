@@ -15,9 +15,9 @@ After creating the file under `src/subscribers`, in the constructor of your subs
 
 The `eventBusService.subscribe` method receives the name of the event as a first parameter and as a second parameter a method in your subscriber that will handle this event.
 
-For example, here is the `OrderNotifierSubscriber` class created in `src/subscribers/orderNotifier.ts`:
+For example, here is the `OrderNotifierSubscriber` class created in `src/subscribers/order-notifier.ts`:
 
-```ts title=src/subscribers/orderNotifier.ts
+```ts title=src/subscribers/order-notifier.ts
 class OrderNotifierSubscriber {
   constructor({ eventBusService }) {
     eventBusService.subscribe("order.placed", this.handleOrder)
@@ -93,7 +93,7 @@ You can access any service through the dependencies injected to your subscriberâ
 
 For example:
 
-```ts title=src/subscribers/orderNotifier.ts
+```ts title=src/subscribers/order-notifier.ts
 class OrderNotifierSubscriber {
   constructor({ productService, eventBusService }) {
       this.productService = productService
@@ -109,7 +109,7 @@ class OrderNotifierSubscriber {
 
 You can then use `this.productService` anywhere in your subscriberâ€™s methods. For example:
 
-```ts title=src/subscribers/orderNotifier.ts
+```ts title=src/subscribers/order-notifier.ts
 class OrderNotifierSubscriber {
   // ...
   handleOrder = async (data) => {
@@ -129,4 +129,6 @@ When using attributes defined in the subscriber, such as the `productService` in
 
 ## See Also
 
+- [Example: send order confirmation email](../../modules/orders/backend/send-order-confirmation.md)
+- [Example: send registration confirmation email](../../modules/customers/backend/send-confirmation.md)
 - [Create a Plugin](../plugins/create.mdx)
