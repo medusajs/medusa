@@ -33,13 +33,13 @@ export default function DocPageLayoutSidebar({
     <aside
       className={clsx(
         ThemeClassNames.docs.docSidebarContainer,
-        "lg:tw-block lg:tw-w-sidebar lg:tw-transition-[left] lg:tw-ease-ease lg:tw-duration-200 lg:tw-left-0 tw-hidden",
+        "lg:block lg:w-sidebar lg:transition-[left] lg:ease-ease lg:duration-200 lg:left-0 hidden",
         !hiddenSidebarContainer && "clip",
         hiddenSidebarContainer &&
-          "lg:tw-fixed lg:tw-left-[-100%] lg:tw-rounded lg:tw-border-0 lg:tw-border-medusa-border-strong lg:dark:tw-border-medusa-border-strong-dark",
+          "lg:fixed lg:left-[-100%] lg:rounded lg:border-0 lg:border-medusa-border-strong lg:dark:border-medusa-border-strong-dark",
         hiddenSidebarContainer &&
           sidebarContext?.floatingSidebar &&
-          "lg:!tw-left-0.5 lg:tw-top-[65px] lg:tw-z-20 lg:tw-bg-docs-bg lg:dark:tw-bg-docs-bg-dark lg:tw-shadow-flyout lg:dark:tw-shadow-flyout-dark"
+          "lg:!left-0.5 lg:top-[65px] lg:z-20 lg:bg-docs-bg lg:dark:bg-docs-bg-dark lg:shadow-flyout lg:dark:shadow-flyout-dark"
       )}
       onTransitionEnd={(e) => {
         if (
@@ -83,7 +83,7 @@ export default function DocPageLayoutSidebar({
         >
           <div
             className={clsx(
-              "lg:tw-top-[57px] lg:tw-sticky lg:tw-max-h-screen lg:[&>div]:tw-max-h-screen"
+              "lg:top-[57px] lg:sticky lg:max-h-screen lg:[&>div]:max-h-screen"
             )}
             ref={sidebarRef}
           >

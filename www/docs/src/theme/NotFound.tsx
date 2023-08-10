@@ -16,7 +16,7 @@ export default function NotFound(): JSX.Element {
       />
       <UserProvider>
         <Layout>
-          <main className="container markdown theme-doc-markdown tw-my-4">
+          <main className="container markdown theme-doc-markdown my-4">
             <div className="row">
               <div className="col col--6 col--offset-3">
                 <h1>

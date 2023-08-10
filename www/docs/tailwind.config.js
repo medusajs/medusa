@@ -3,7 +3,7 @@ import coreConfig from "../tailwind.config"
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   ...coreConfig,
-  prefix: "tw-",
+  // prefix: "tw-",
   corePlugins: {
     preflight: false, // disable Tailwind's reset
   },
@@ -16,6 +16,6 @@ module.exports = {
         DEFAULT: "8px",
         sm: "4px",
       },
-    }
-  }
+    },
+  },
 }

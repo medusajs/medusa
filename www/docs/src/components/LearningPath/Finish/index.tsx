@@ -31,7 +31,7 @@ const LearningPathFinish: React.FC<LearningPathFinishProps> = ({
         <Rating event={step.eventName} onRating={onRating} />
       )}
       {type === "custom" && (
-        <span className="tw-text-label-small tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark">
+        <span className="text-label-small text-medusa-text-subtle dark:text-medusa-text-subtle-dark">
           {step.descriptionJSX}
         </span>
       )}

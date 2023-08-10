@@ -1,24 +1,28 @@
-import { Suspense, cloneElement, useEffect, useRef, useState } from "react"
-import Loading from "../Loading"
+import React, { cloneElement, useRef, useState } from "react"
 import clsx from "clsx"
 import { CSSTransition } from "react-transition-group"
+import MDXSummary from "../MDXComponents/Summary"
 
 export type DetailsProps = {
   openInitial?: boolean
-  summaryContent?: React.ReactNode
-  summaryElm?: React.ReactNode
+  summary: React.ReactNode
+  className?: string
 } & React.HTMLAttributes<HTMLDetailsElement>
 
-const Details = ({
+export default function Details({
   openInitial = false,
-  summaryContent,
-  summaryElm,
+  summary,
   children,
   ...props
-}: DetailsProps) => {
+}: DetailsProps): JSX.Element {
   const [open, setOpen] = useState(openInitial)
   const [showContent, setShowContent] = useState(openInitial)
   const ref = useRef<HTMLDetailsElement>(null)
+  const summaryElement = React.isValidElement(summary) ? (
+    summary
+  ) : (
+    <MDXSummary>{summary ?? "Details"}</MDXSummary>
+  )
 
   const handleToggle = () => {
     if (open) {
@@ -45,22 +49,17 @@ const Details = ({
         event.stopPropagation()
       }}
       className={clsx(
-        "border-medusa-border-base dark:border-medusa-border-base-dark border-y",
-        "overflow-hidden",
+        "border-medusa-border-base dark:border-medusa-border-base-dark border-y border-solid border-x-0",
+        "overflow-hidden [&>summary]:relative [&>summary]:z-[400]",
         props.className
       )}
     >
-      {summaryContent && (
-        <summary onClick={handleToggle} className="cursor-pointer">
-          {summaryContent}
-        </summary>
-      )}
-      {summaryElm &&
-        cloneElement(summaryElm as React.ReactElement, {
-          open,
-          onClick: handleToggle,
-        })}
-      <CSSTransition
+      {cloneElement(summaryElement, {
+        open,
+        onClick: handleToggle,
+      })}
+      {/* Solve type error as explained here: https://github.com/reactjs/react-transition-group/issues/729 */}
+      <CSSTransition<undefined>
         unmountOnExit
         in={showContent}
         timeout={150}
@@ -79,12 +78,8 @@ const Details = ({
           }, 100)
         }}
       >
-        <Suspense fallback={<Loading className="!mb-2 !mt-0" />}>
-          {children}
-        </Suspense>
+        {children}
       </CSSTransition>
     </details>
   )
 }
-
-export default Details

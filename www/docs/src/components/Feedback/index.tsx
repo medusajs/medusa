@@ -101,7 +101,7 @@ const Feedback: React.FC<FeedbackProps> = ({
   }, [id])
 
   return (
-    <div className={`tw-py-2 ${className}`}>
+    <div className={`py-2 ${className}`}>
       <SwitchTransition mode="out-in">
         <CSSTransition
           key={
@@ -124,41 +124,41 @@ const Feedback: React.FC<FeedbackProps> = ({
           <>
             {!showForm && !submittedFeedback && (
               <div
-                className="tw-flex tw-flex-row tw-items-center"
+                className="flex flex-row items-center"
                 ref={inlineFeedbackRef}
               >
-                <span className="tw-mr-1.5 tw-text-body-regular">
+                <span className="mr-1.5 text-body-regular">
                   {question}
                 </span>
                 <Button
                   onClick={handleFeedback}
-                  className="tw-w-fit tw-mr-0.5 last:tw-mr-0 positive"
+                  className="w-fit mr-0.5 last:mr-0 positive"
                 >
                   {positiveBtn}
                 </Button>
                 <Button
                   onClick={handleFeedback}
-                  className="tw-w-fit tw-mr-0.5 last:tw-mr-0"
+                  className="w-fit mr-0.5 last:mr-0"
                 >
                   {negativeBtn}
                 </Button>
               </div>
             )}
             {showForm && !submittedFeedback && (
-              <div className="tw-flex tw-flex-col" ref={inlineQuestionRef}>
-                <span className="tw-mb-1">
+              <div className="flex flex-col" ref={inlineQuestionRef}>
+                <span className="mb-1">
                   {positiveFeedback ? positiveQuestion : negativeQuestion}
                 </span>
                 <textarea
                   rows={4}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="tw-rounded-sm tw-bg-transparent tw-border tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark tw-p-1 tw-font-base"
+                  className="rounded-sm bg-transparent border border-medusa-border-base dark:border-medusa-border-base-dark p-1 font-base"
                 ></textarea>
                 <Button
                   onClick={submitFeedback}
                   disabled={loading}
-                  className="tw-mt-1 tw-w-fit"
+                  className="mt-1 w-fit"
                 >
                   {submitBtn}
                 </Button>
@@ -167,7 +167,7 @@ const Feedback: React.FC<FeedbackProps> = ({
             {submittedFeedback && (
               <div>
                 <div
-                  className="tw-flex tw-flex-col tw-text-label-large-plus"
+                  className="flex flex-col text-label-large-plus"
                   ref={inlineMessageRef}
                 >
                   <span>{submitMessage}</span>

@@ -196,9 +196,9 @@ html[data-theme="dark"] {
 }
 
 .alert {
-  --ifm-code-background: theme(colors.medusa.code.bg.base.DEFAULT) !important;
+  --ifm-code-background: theme(colors.medusa.bg.subtle.DEFAULT) !important;
 }
 
 html[data-theme="dark"] .alert {
-  --ifm-code-background: theme(colors.medusa.code.bg.base.dark) !important;
+  --ifm-code-background: theme(colors.medusa.bg.subtle.dark) !important;
 }

@@ -1,5 +1,4 @@
 import clsx from "clsx"
-import IconMinusMini from "../../Icons/MinusMini"
 import IconPlusMini from "../../Icons/PlusMini"
 
 type DetailsSummaryProps = {
@@ -25,9 +24,10 @@ const DetailsSummary = ({
   return (
     <summary
       className={clsx(
-        "border-medusa-border-base dark:border-medusa-border-base-dark border-y",
         "flex items-center justify-between py-[12px]",
         expandable && "cursor-pointer",
+        !expandable &&
+          "border-medusa-border-base dark:border-medusa-border-base-dark border-y",
         "no-marker",
         className
       )}
@@ -51,7 +51,11 @@ const DetailsSummary = ({
       {(badge || expandable) && (
         <span className="flex gap-0.5">
           {badge}
-          {expandable && <>{open ? <IconMinusMini /> : <IconPlusMini />}</>}
+          {expandable && (
+            <IconPlusMini
+              className={clsx("transition-transform", open && "rotate-45")}
+            />
+          )}
         </span>
       )}
     </summary>

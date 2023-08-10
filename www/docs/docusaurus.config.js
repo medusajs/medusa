@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 require("dotenv").config()
-const path = require("path")
 const fs = require("fs")
 const reverseSidebar = require("./src/utils/reverseSidebar")
 

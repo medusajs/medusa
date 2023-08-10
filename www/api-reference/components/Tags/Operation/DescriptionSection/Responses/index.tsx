@@ -1,8 +1,8 @@
 import type { ResponsesObject } from "@/types/openapi"
 import clsx from "clsx"
 import Details from "@/components/Details"
-import DetailsSummary from "../../../../Details/Summary"
-import Badge from "../../../../Badge"
+import DetailsSummary from "@/components/Details/Summary"
+import Badge from "@/components/Badge"
 import TagOperationParameters from "../../Parameters"
 import { Fragment } from "react"
 
@@ -31,6 +31,10 @@ const TagsOperationDescriptionSectionResponses = ({
                         subtitle={Object.keys(response.content)[0]}
                         badge={<Badge variant="green">Success</Badge>}
                         expandable={false}
+                        className={clsx(
+                          index !== 0 && "border-t-0",
+                          index === 0 && "border-b-0"
+                        )}
                       />
                       <TagOperationParameters
                         schemaObject={
@@ -52,6 +56,7 @@ const TagsOperationDescriptionSectionResponses = ({
                         />
                       }
                       openInitial={index === 0}
+                      className={clsx(index !== 0 && "border-t-0")}
                     >
                       <TagOperationParameters
                         schemaObject={
@@ -78,6 +83,7 @@ const TagsOperationDescriptionSectionResponses = ({
                     </Badge>
                   }
                   expandable={false}
+                  className={clsx(index !== 0 && "border-t-0")}
                 />
               )}
             </Fragment>

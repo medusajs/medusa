@@ -34,20 +34,20 @@ const LearningPath: React.FC<LearningPathProps> = ({
   return (
     <div
       className={clsx(
-        "tw-rounded tw-shadow-card-rest dark:tw-shadow-card-rest-dark tw-bg-docs-bg-surface dark:tw-bg-docs-bg-surface-dark tw-mt-1.5 tw-mb-4",
+        "rounded shadow-card-rest dark:shadow-card-rest-dark bg-docs-bg-surface dark:bg-docs-bg-surface-dark mt-1.5 mb-4",
         className
       )}
     >
       <div
         className={clsx(
-          "tw-flex tw-items-center tw-gap-1 tw-p-1 tw-border-0 tw-border-b tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark"
+          "flex items-center gap-1 p-1 border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark"
         )}
       >
         <LearningPathIcon />
-        <div className={clsx("tw-flex-auto")}>
+        <div className={clsx("flex-auto")}>
           <span
             className={clsx(
-              "tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark tw-text-label-large-plus tw-block"
+              "text-medusa-text-base dark:text-medusa-text-base-dark text-label-large-plus block"
             )}
           >
             {path.label}
@@ -55,34 +55,34 @@ const LearningPath: React.FC<LearningPathProps> = ({
           {path.description && (
             <span
               className={clsx(
-                "tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark tw-text-label-regular tw-mt-[4px] tw-inline-block"
+                "text-medusa-text-subtle dark:text-medusa-text-subtle-dark text-label-regular mt-[4px] inline-block"
               )}
             >
               {path.description}
             </span>
           )}
         </div>
-        <Button onClick={handleClick} className={clsx("tw-flex-initial")}>
+        <Button onClick={handleClick} className={clsx("flex-initial")}>
           Start Path
         </Button>
       </div>
       {path.steps.map((step, index) => (
         <div
           className={clsx(
-            "tw-flex tw-items-center tw-p-1 tw-gap-1",
+            "flex items-center p-1 gap-1",
             index !== path.steps.length - 1 &&
-              "tw-border-0 tw-border-b tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark"
+              "border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark"
           )}
           key={index}
         >
           <div
-            className={clsx("tw-w-3 tw-flex tw-items-center tw-justify-center")}
+            className={clsx("w-3 flex items-center justify-center")}
           >
-            <IconCircleMiniSolid iconColorClassName="tw-stroke-medusa-icon-muted dark:tw-stroke-medusa-icon-muted-dark" />
+            <IconCircleMiniSolid iconColorClassName="stroke-medusa-icon-muted dark:stroke-medusa-icon-muted-dark" />
           </div>
           <span
             className={clsx(
-              "tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark tw-text-label-regular-plus"
+              "text-medusa-text-base dark:text-medusa-text-base-dark text-label-regular-plus"
             )}
           >
             {step.title}

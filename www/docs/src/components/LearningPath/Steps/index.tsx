@@ -24,38 +24,38 @@ const LearningPathSteps: React.FC<LearningPathStepsProps> = ({ ...rest }) => {
       {path.steps.map((step, index) => (
         <div
           className={clsx(
-            "tw-border-0 tw-border-b tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark",
-            "tw-relative tw-p-1"
+            "border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark",
+            "relative p-1"
           )}
           key={index}
         >
-          <div className={clsx("tw-flex tw-items-center tw-gap-1")}>
-            <div className="tw-w-2 tw-flex-none tw-flex tw-items-center tw-justify-center">
+          <div className={clsx("flex items-center gap-1")}>
+            <div className="w-2 flex-none flex items-center justify-center">
               {index === currentStep && (
                 <IconCircleDottedLine
-                  className="tw-shadow-active dark:tw-shadow-active-dark tw-rounded-full"
-                  iconColorClassName="tw-stroke-medusa-icon-interactive dark:tw-stroke-medusa-icon-interactive-dark"
+                  className="shadow-active dark:shadow-active-dark rounded-full"
+                  iconColorClassName="stroke-medusa-icon-interactive dark:stroke-medusa-icon-interactive-dark"
                 />
               )}
               {index < currentStep && (
-                <IconCheckCircleSolid iconColorClassName="tw-fill-medusa-icon-interactive dark:tw-fill-medusa-icon-interactive-dark" />
+                <IconCheckCircleSolid iconColorClassName="fill-medusa-icon-interactive dark:fill-medusa-icon-interactive-dark" />
               )}
               {index > currentStep && <IconCircleMiniSolid />}
             </div>
             <span
               className={clsx(
-                "tw-text-label-regular-plus tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark"
+                "text-label-regular-plus text-medusa-text-base dark:text-medusa-text-base-dark"
               )}
             >
               {step.title}
             </span>
           </div>
           {index === currentStep && (
-            <div className={clsx("tw-flex tw-items-center tw-gap-1")}>
-              <div className="tw-w-2 tw-flex-none"></div>
+            <div className={clsx("flex items-center gap-1")}>
+              <div className="w-2 flex-none"></div>
               <div
                 className={clsx(
-                  "tw-text-body-regular tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark tw-mt-1"
+                  "text-body-regular text-medusa-text-subtle dark:text-medusa-text-subtle-dark mt-1"
                 )}
               >
                 {step.descriptionJSX ?? step.description}
@@ -66,7 +66,7 @@ const LearningPathSteps: React.FC<LearningPathStepsProps> = ({ ...rest }) => {
             <Link
               href={step.path}
               className={clsx(
-                "tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full"
+                "absolute top-0 left-0 w-full h-full"
               )}
               onClick={(e) => {
                 e.preventDefault()
