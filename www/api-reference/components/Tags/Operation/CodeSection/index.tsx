@@ -29,12 +29,12 @@ const TagOperationCodeSection = ({
       <div
         className={clsx(
           "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark border-medusa-border-base dark:border-medusa-border-base-dark rounded-lg border py-0.5 px-[12px]",
-          "text-code-body flex justify-between"
+          "text-code-body flex w-full justify-between gap-1"
         )}
       >
-        <div>
-          <MethodLabel method={method} className="mr-1" />
-          <code>{endpointPath}</code>
+        <div className={clsx("flex w-[calc(100%-36px)] gap-1")}>
+          <MethodLabel method={method} className="h-fit" />
+          <code className="break-words break-all">{endpointPath}</code>
         </div>
         <CopyButton text={endpointPath} tooltipClassName="font-base">
           <IconCopyOutline iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
