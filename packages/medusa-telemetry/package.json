@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
-    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "prepublishOnly": "tsc --build",
     "watch": "babel -w src --out-dir dist/ --extensions \".ts,.js\" --ignore '**/__tests__','**/__mocks__'",
     "build": "babel src -d dist --extensions \".ts,.js\" --ignore '**/__tests__','**/__mocks__'",
     "serve": "node dist/app.js",

@@ -37,7 +37,7 @@
   },
   "scripts": {
     "watch": "tsc --build --watch",
-    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "prepublishOnly": "tsc --build",
     "build": "rimraf dist && tsc --build",
     "serve": "node dist/app.js",
     "test": "jest --maxWorkers=50% --detectOpenHandles --forceExit"
