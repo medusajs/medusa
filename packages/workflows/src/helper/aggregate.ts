@@ -2,8 +2,8 @@ import { PipelineHandler, WorkflowArguments } from "./pipe"
 import { isObject } from "@medusajs/utils"
 
 /**
- * Pipe utils that aggregates data from an object into a new object.
- * The new object will have a target key with the aggregated data from the keys.
+ * Pipe utils that merges data from an object into a new object.
+ * The new object will have a target key with the merged data from the keys if specified.
  * @param keys
  * @param target
  */

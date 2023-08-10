@@ -29,17 +29,17 @@ interface PipelineInput {
   compensate?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
   onComplete?: (args: WorkflowOnCompleteArguments) => {}
   /**
-   * Apply the data aggregation
+   * Apply the data merging
    */
-  aggregate?: boolean
+  merge?: boolean
   /**
-   * Store the aggregated data in a new key, if this is present no need to set aggregate: true
+   * Store the merged data in a new key, if this is present no need to set merge: true
    */
-  aggregateAlias?: string
+  mergeAlias?: string
   /**
-   * Store the aggregated data from the chosen aliases, if this is present no need to set aggregate: true
+   * Store the merged data from the chosen aliases, if this is present no need to set merge: true
    */
-  aggregateFrom?: string[]
+  mergeFrom?: string[]
 }
 
 export type WorkflowArguments<T = any> = {
@@ -112,14 +112,11 @@ export function pipe<T>(
 
     // Apply the aggregator just before the last handler
     if (
-      (input.aggregate || input.aggregateAlias || input.aggregateFrom) &&
+      (input.merge || input.mergeAlias || input.mergeFrom) &&
       functions.length
     ) {
       const handler = functions.pop()!
-      functions.push(
-        aggregateData(input.aggregateFrom, input.aggregateAlias),
-        handler
-      )
+      functions.push(aggregateData(input.mergeFrom, input.mergeAlias), handler)
     }
 
     let finalResult

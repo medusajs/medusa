@@ -46,7 +46,7 @@ describe("Pipe", function () {
     expect(result).toEqual(output)
   })
 
-  it("should evaluate the input object and append the values to the data object using the aggregation and return the result from the handler", async function () {
+  it("should evaluate the input object and append the values to the data object using the merge and return the result from the handler", async function () {
     const payload = { input: "input" }
     const output = { test: "test" }
     const invoke = {
@@ -58,7 +58,7 @@ describe("Pipe", function () {
     const handler = jest.fn().mockImplementation(async () => output)
     const input = {
       inputAlias: "payload",
-      aggregate: true,
+      merge: true,
       invoke: [
         {
           from: "payload",
@@ -90,7 +90,7 @@ describe("Pipe", function () {
     expect(result).toEqual(output)
   })
 
-  it("should evaluate the input object and append the values to the data object using the aggregation to store on the aggregate alias and return the result from the handler", async function () {
+  it("should evaluate the input object and append the values to the data object using the merge to store on the merge alias and return the result from the handler", async function () {
     const payload = { input: "input" }
     const output = { test: "test" }
     const invoke = {
@@ -102,7 +102,7 @@ describe("Pipe", function () {
     const handler = jest.fn().mockImplementation(async () => output)
     const input = {
       inputAlias: "payload",
-      aggregateAlias: "aggregatedData",
+      mergeAlias: "mergedData",
       invoke: [
         {
           from: "payload",
@@ -128,7 +128,7 @@ describe("Pipe", function () {
           input: payload,
           step1Data: invoke.step1,
           step2Data: invoke.step2,
-          aggregatedData: {
+          mergedData: {
             ...payload,
             ...invoke.step1,
             ...invoke.step2,
@@ -141,7 +141,7 @@ describe("Pipe", function () {
     expect(result).toEqual(output)
   })
 
-  it("should evaluate the input object and append the values to the data object using the aggregation to store on the aggregate alias from the aggregate from values and return the result from the handler", async function () {
+  it("should evaluate the input object and append the values to the data object using the merge to store on the merge alias from the merge from values and return the result from the handler", async function () {
     const payload = { input: "input" }
     const output = { test: "test" }
     const invoke = {
@@ -153,8 +153,8 @@ describe("Pipe", function () {
     const handler = jest.fn().mockImplementation(async () => output)
     const input = {
       inputAlias: "payload",
-      aggregateAlias: "aggregatedData",
-      aggregateFrom: ["input", "step1Data"],
+      mergeAlias: "mergedData",
+      mergeFrom: ["input", "step1Data"],
       invoke: [
         {
           from: "payload",
@@ -180,7 +180,7 @@ describe("Pipe", function () {
           input: payload,
           step1Data: invoke.step1,
           step2Data: invoke.step2,
-          aggregatedData: {
+          mergedData: {
             ...payload,
             ...invoke.step1,
           },
