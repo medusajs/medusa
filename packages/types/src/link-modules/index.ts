@@ -23,6 +23,12 @@ export interface ILinkModule {
     sharedContext?: Context
   ): Promise<unknown[]>
 
+  dismiss(
+    primaryKeyOrBulkData: string | string[] | [string | string[], string][],
+    foreignKeyData?: string,
+    sharedContext?: Context
+  ): Promise<unknown[]>
+
   delete(data: unknown | unknown[], sharedContext?: Context): Promise<unknown[]>
 
   softDelete(

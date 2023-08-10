@@ -122,7 +122,7 @@ describe("Remote Link", function () {
     ])
   })
 
-  it("Should call remove in cascade all the modules involved in the link", async function () {
+  it("Should call delete in cascade all the modules involved in the link", async function () {
     const remoteLink = new RemoteLink(allModules as any)
 
     ProductInventoryLinkModule.softDelete.mockImplementation(() => {
@@ -153,7 +153,7 @@ describe("Remote Link", function () {
       }
     })
 
-    await remoteLink.remove({
+    await remoteLink.delete({
       productService: {
         variant_id: "var_123",
       },

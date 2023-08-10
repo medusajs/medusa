@@ -161,6 +161,31 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  async dismiss(
+    primaryKeyOrBulkData: string | string[] | [string | string[], string][],
+    foreignKeyData?: string,
+    @MedusaContext() sharedContext: Context = {}
+  ) {
+    const data: unknown[] = []
+    if (foreignKeyData === undefined && Array.isArray(primaryKeyOrBulkData)) {
+      for (const [primaryKey, foreignKey] of primaryKeyOrBulkData) {
+        data.push(this.buildData(primaryKey, foreignKey as string))
+      }
+    } else {
+      data.push(
+        this.buildData(
+          primaryKeyOrBulkData as string | string[],
+          foreignKeyData!
+        )
+      )
+    }
+
+    const links = await this.pivotService_.dismiss(data, sharedContext)
+
+    return await this.baseRepository_.serialize<object[]>(links)
+  }
+
+  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async delete(
     data: any,
     @MedusaContext() sharedContext: Context = {}

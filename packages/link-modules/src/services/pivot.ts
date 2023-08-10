@@ -52,6 +52,30 @@ export default class PivotService<TEntity> {
   }
 
   @InjectTransactionManager(doNotForceTransaction, "pivotRepository_")
+  async dismiss(
+    data: unknown[],
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TEntity[]> {
+    const filter: any = []
+    for (const pair of data) {
+      filter.push({
+        $and: Object.entries(pair as object).map(([key, value]) => ({
+          [key]: value,
+        })),
+      })
+    }
+
+    const [rows] = await this.pivotRepository_.softDelete(
+      { $or: filter },
+      {
+        transactionManager: sharedContext.transactionManager,
+      }
+    )
+
+    return rows
+  }
+
+  @InjectTransactionManager(doNotForceTransaction, "pivotRepository_")
   async delete(
     data: unknown,
     @MedusaContext() sharedContext: Context = {}

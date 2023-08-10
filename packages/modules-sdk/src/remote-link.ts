@@ -366,7 +366,55 @@ export class RemoteLink {
     return created.flat()
   }
 
-  async remove(
+  async dismiss(link: LinkDefinition | LinkDefinition[]): Promise<unknown[]> {
+    const allLinks = Array.isArray(link) ? link : [link]
+    const serviceLinks = new Map<string, [string | string[], string][]>()
+
+    for (const rel of allLinks) {
+      const mods = Object.keys(rel)
+      if (mods.length > 2) {
+        throw new Error(`Only two modules can be linked.`)
+      }
+
+      const [moduleA, moduleB] = mods
+      const pk = Object.keys(rel[moduleA])
+      const moduleAKey = pk.join(",")
+      const moduleBKey = Object.keys(rel[moduleB]).join(",")
+
+      const service = this.getLinkModule(
+        moduleA,
+        moduleAKey,
+        moduleB,
+        moduleBKey
+      )
+
+      if (!service) {
+        throw new Error(
+          `Module to dismiss link ${moduleA}[${moduleAKey}] and ${moduleB}[${moduleBKey}] was not found.`
+        )
+      } else if (!serviceLinks.has(service.__definition.key)) {
+        serviceLinks.set(service.__definition.key, [])
+      }
+
+      const pkValue =
+        pk.length === 1 ? rel[moduleA][pk[0]] : pk.map((k) => rel[moduleA][k])
+
+      serviceLinks
+        .get(service.__definition.key)
+        ?.push([pkValue, rel[moduleB][moduleBKey]])
+    }
+
+    const promises: Promise<unknown[]>[] = []
+    for (const [serviceName, links] of serviceLinks) {
+      const service = this.modulesMap.get(serviceName)!
+      promises.push(service.dismiss(links))
+    }
+
+    const created = await Promise.all(promises)
+    return created.flat()
+  }
+
+  async delete(
     removedServices: DeleteEntityInput
   ): Promise<[CascadeError[] | null, RemovedIds]> {
     return await this.executeCascade(removedServices, "softDelete")
