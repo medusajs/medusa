@@ -78,7 +78,7 @@ export default function Details({
           }, 100)
         }}
       >
-        {children}
+        <div>{children}</div>
       </CSSTransition>
     </details>
   )

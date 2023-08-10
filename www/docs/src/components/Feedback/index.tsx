@@ -7,6 +7,10 @@ import uuid from "react-uuid"
 import Solutions from "./Solutions/index"
 import Button from "../Button"
 import { useUser } from "@site/src/providers/User"
+import Details from "../../theme/Details"
+import TextArea from "../TextArea"
+import Label from "../Label"
+import InputText from "../Input/Text"
 
 type FeedbackProps = {
   event?: string
@@ -19,6 +23,7 @@ type FeedbackProps = {
   submitMessage?: string
   showPossibleSolutions?: boolean
   className?: string
+  showLongForm?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 const Feedback: React.FC<FeedbackProps> = ({
@@ -32,6 +37,7 @@ const Feedback: React.FC<FeedbackProps> = ({
   submitMessage = "Thank you for helping improve our documentation!",
   showPossibleSolutions = true,
   className = "",
+  showLongForm = true,
 }) => {
   const [showForm, setShowForm] = useState(false)
   const [submittedFeedback, setSubmittedFeedback] = useState(false)
@@ -51,6 +57,10 @@ const Feedback: React.FC<FeedbackProps> = ({
   const isBrowser = useIsBrowser()
   const location = useLocation()
   const { track } = useUser()
+  const [steps, setSteps] = useState("")
+  const [medusaVersion, setMedusaVersion] = useState("")
+  const [errorFix, setErrorFix] = useState("")
+  const [contactInfo, setContactInfo] = useState("")
 
   function handleFeedback(e) {
     const feedback = e.target.classList.contains("positive")
@@ -75,6 +85,12 @@ const Feedback: React.FC<FeedbackProps> = ({
               ? "yes"
               : "no",
           message: message?.length ? message : null,
+          additional_data: {
+            steps,
+            medusaVersion,
+            errorFix,
+            contactInfo,
+          },
         },
         function () {
           if (showForm) {
@@ -127,9 +143,7 @@ const Feedback: React.FC<FeedbackProps> = ({
                 className="flex flex-row items-center"
                 ref={inlineFeedbackRef}
               >
-                <span className="mr-1.5 text-body-regular">
-                  {question}
-                </span>
+                <Label className="mr-1.5">{question}</Label>
                 <Button
                   onClick={handleFeedback}
                   className="w-fit mr-0.5 last:mr-0 positive"
@@ -146,15 +160,70 @@ const Feedback: React.FC<FeedbackProps> = ({
             )}
             {showForm && !submittedFeedback && (
               <div className="flex flex-col" ref={inlineQuestionRef}>
-                <span className="mb-1">
+                <Label className="mb-1">
                   {positiveFeedback ? positiveQuestion : negativeQuestion}
-                </span>
-                <textarea
+                </Label>
+                <TextArea
                   rows={4}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="rounded-sm bg-transparent border border-medusa-border-base dark:border-medusa-border-base-dark p-1 font-base"
-                ></textarea>
+                />
+                {showLongForm && !positiveFeedback && (
+                  <Details summary="More Details" className="mt-1">
+                    <div className="flex flex-col gap-0.5">
+                      <div className="flex flex-col gap-0.5">
+                        <Label>
+                          Can you provide the exact steps you took before
+                          receiving the error? For example, the commands you
+                          ran.
+                        </Label>
+                        <TextArea
+                          rows={4}
+                          value={steps}
+                          onChange={(e) => setSteps(e.target.value)}
+                          placeholder="1. I ran npm dev..."
+                        />
+                      </div>
+                      <div className="flex flex-col gap-0.5">
+                        <Label>
+                          If applicable, what version of Medusa are you using?
+                          If a plugin is related to the error, please provide a
+                          version of that as well.
+                        </Label>
+                        <TextArea
+                          rows={4}
+                          value={medusaVersion}
+                          onChange={(e) => setMedusaVersion(e.target.value)}
+                          placeholder="@medusajs/medusa: vX"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-0.5">
+                        <Label>
+                          Were you able to fix the error? If so, what steps did
+                          you follow?
+                        </Label>
+                        <TextArea
+                          rows={4}
+                          value={errorFix}
+                          onChange={(e) => setErrorFix(e.target.value)}
+                          placeholder="@medusajs/medusa: vX"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-0.5">
+                        <Label>
+                          Can you provide your email or discord username? This
+                          would allow us to contact you for further info or
+                          assist you with your issue.
+                        </Label>
+                        <InputText
+                          value={contactInfo}
+                          onChange={(e) => setContactInfo(e.target.value)}
+                          placeholder="user@example.com"
+                        />
+                      </div>
+                    </div>
+                  </Details>
+                )}
                 <Button
                   onClick={submitFeedback}
                   disabled={loading}

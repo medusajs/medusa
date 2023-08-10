@@ -14,7 +14,7 @@
   --ifm-color-primary: theme(colors.medusa.text.base.DEFAULT);
   --ifm-background-color: theme(colors.medusa.bg.base.DEFAULT);
   --ifm-background-surface-color: theme(colors.medusa.bg.subtle.DEFAULT);
-  --ifm-color-content: theme(colors.medusa.text.subtle.DEFAULT) !important;
+  --ifm-color-content: theme(colors.medusa.fg.subtle.DEFAULT) !important;
   --ifm-color-content-secondary: var(--ifm-color-content);
   --ifm-base-border-color: theme(colors.medusa.border.base.DEFAULT);
   --ifm-strong-border-color: theme(colors.medusa.border.strong.DEFAULT);
@@ -130,7 +130,7 @@ html[data-theme="dark"] {
   --ifm-background-surface-color: theme(colors.medusa.bg.base.dark);
   --ifm-hr-background-color: theme(colors.medusa.border.base.dark);
   --ifm-color-primary: theme(colors.medusa.text.base.dark);
-  --ifm-color-content: theme(colors.medusa.text.subtle.dark) !important;
+  --ifm-color-content: theme(colors.medusa.fg.subtle.dark) !important;
   --ifm-base-border-color: theme(colors.medusa.border.base.dark);
   --ifm-strong-border-color: theme(colors.medusa.border.strong.dark);
 

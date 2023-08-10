@@ -9,6 +9,8 @@ import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { useArea } from "../../providers/area"
 import clsx from "clsx"
+import TextArea from "../TextArea"
+import Label from "../Label"
 
 type FeedbackProps = {
   event: string
@@ -134,7 +136,7 @@ const Feedback: React.FC<FeedbackProps> = ({
                 )}
                 ref={inlineFeedbackRef}
               >
-                <span className="text-text-medium mr-1.5">{question}</span>
+                <Label className="mr-1.5">{question}</Label>
                 <div className={clsx("flex flex-row items-center gap-0.5")}>
                   <Button onClick={handleFeedback} className="positive w-fit">
                     {positiveBtn}
@@ -155,15 +157,14 @@ const Feedback: React.FC<FeedbackProps> = ({
             )}
             {showForm && !submittedFeedback && (
               <div className="flex flex-col gap-1" ref={inlineQuestionRef}>
-                <span>
+                <Label>
                   {positiveFeedback ? positiveQuestion : negativeQuestion}
-                </span>
-                <textarea
+                </Label>
+                <TextArea
                   rows={4}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="border-medusa-border-base dark:border-medusa-border-base-dark font-base rounded-sm border bg-transparent p-1"
-                ></textarea>
+                />
                 <Button
                   onClick={submitFeedback}
                   disabled={loading}

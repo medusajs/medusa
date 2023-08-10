@@ -1,7 +1,7 @@
 import React from "react"
 import clsx from "clsx"
 
-type ButtonProps = {
+export type ButtonProps = {
   btnTypeClassName?: string
   className?: string
   onClick?: React.MouseEventHandler<HTMLButtonElement>
