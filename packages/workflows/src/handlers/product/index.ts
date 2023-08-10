@@ -1,3 +1,4 @@
+export * from "./create-products-prepare-data"
 export * from "./create-products"
 export * from "./detach-sales-channel-from-products"
 export * from "./attach-sales-channel-to-products"

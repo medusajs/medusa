@@ -1,2 +1,2 @@
-export * from "./admin/products/create-products"
+export * from "./admin/product"
 export * from "./store/carts"

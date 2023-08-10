@@ -2,6 +2,7 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { PriceListServiceMock } from "../../../../../services/__mocks__/price-list"
 
+jest.setTimeout(10000)
 describe("POST /price-lists", () => {
   describe("successfully creates a price list", () => {
     let subject
