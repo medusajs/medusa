@@ -73,7 +73,9 @@ const SidebarItem = ({ item, nested = false, className }: SidebarItemProps) => {
         )}
         scroll={true}
         onClick={() => {
-          setSidebarOpen(false)
+          if (window.innerWidth <= 992) {
+            setSidebarOpen(false)
+          }
         }}
         replace
         shallow
