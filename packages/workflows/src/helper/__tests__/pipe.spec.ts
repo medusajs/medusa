@@ -102,7 +102,6 @@ describe("Pipe", function () {
     const handler = jest.fn().mockImplementation(async () => output)
     const input = {
       inputAlias: "payload",
-      aggregate: true,
       aggregateAlias: "aggregatedData",
       invoke: [
         {
@@ -154,7 +153,6 @@ describe("Pipe", function () {
     const handler = jest.fn().mockImplementation(async () => output)
     const input = {
       inputAlias: "payload",
-      aggregate: true,
       aggregateAlias: "aggregatedData",
       aggregateFrom: ["input", "step1Data"],
       invoke: [
