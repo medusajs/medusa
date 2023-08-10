@@ -63,7 +63,7 @@ const SidebarItem = ({ item, nested = false, className }: SidebarItemProps) => {
       <Link
         href={item.isPathHref ? item.path : `#${item.path}`}
         className={clsx(
-          "flex items-center justify-between rounded border px-0.5 py-[6px] hover:no-underline",
+          "flex items-center justify-between gap-0.5 rounded border px-0.5 py-[6px] hover:no-underline",
           !item.hasChildren &&
             "text-label-small-plus text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
           item.hasChildren &&
