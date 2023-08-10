@@ -45,15 +45,19 @@ const Details = ({
         event.stopPropagation()
       }}
       className={clsx(
-        "overflow-hidden [&>summary]:z-[400] [&>summary]:relative",
+        "overflow-hidden [&>summary]:relative [&>summary]:z-[400]",
         props.className
       )}
     >
-      {summaryContent && <summary onClick={handleToggle} className="cursor-pointer">{summaryContent}</summary>}
+      {summaryContent && (
+        <summary onClick={handleToggle} className="cursor-pointer">
+          {summaryContent}
+        </summary>
+      )}
       {summaryElm &&
         cloneElement(summaryElm as React.ReactElement, {
           open,
-          onClick: handleToggle
+          onClick: handleToggle,
         })}
       <CSSTransition
         unmountOnExit
@@ -64,20 +68,19 @@ const Details = ({
             "!mb-2",
             "!mt-0",
             "translate-y-1",
-            "transition-transform",
+            "transition-transform"
           )
         }}
         onExit={(node: HTMLElement) => {
-          node.classList.add(
-            "transition-transform",
-            "!-translate-y-1",
-          )
+          node.classList.add("transition-transform", "!-translate-y-1")
           setTimeout(() => {
             setOpen(false)
           }, 100)
         }}
       >
-        <Suspense fallback={<Loading className="!mb-2 !mt-0" />}>{children}</Suspense>
+        <Suspense fallback={<Loading className="!mb-2 !mt-0" />}>
+          {children}
+        </Suspense>
       </CSSTransition>
     </details>
   )
