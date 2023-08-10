@@ -203,28 +203,6 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
     return findItemInSection(selectedSection, path) !== undefined
   }
 
-  // const setSectionItems = (
-  //   newItems: SidebarItemType[],
-  //   section: SidebarItemSections
-  // ) => {
-  //   if (section === SidebarItemSections.TOP) {
-  //     setItems({
-  //       ...items,
-  //       top: newItems,
-  //     })
-  //   } else if (section === SidebarItemSections.BOTTOM) {
-  //     setItems({
-  //       ...items,
-  //       bottom: newItems,
-  //     })
-  //   } else if (section === SidebarItemSections.MOBILE) {
-  //     setItems({
-  //       ...items,
-  //       mobile: newItems,
-  //     })
-  //   }
-  // }
-
   const addItems = (
     newItems: SidebarItemType[],
     options?: {
@@ -256,56 +234,13 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       items: newItems,
       options,
     })
-
-    // if (!parent && !indexPosition && indexPosition !== 0) {
-    //   dispatch({
-    //     type: "add",
-    //     items: newItems,
-    //     options,
-    //   })
-    //   // setSectionItems([...oldItems, ...newItems], section)
-    //   return
-    // }
-
-    // if (parent) {
-    //   // find parent index
-    //   setSectionItems(
-    //     oldItems.map((i) => {
-    //       if (i.path === parent.path) {
-    //         return {
-    //           ...i,
-    //           children: [...(i.children || []), ...newItems],
-    //           loaded: parent.changeLoaded ? true : i.loaded,
-    //         }
-    //       } else {
-    //         return i
-    //       }
-    //     }),
-    //     section
-    //   )
-    //   return
-    // }
-
-    // if (indexPosition || indexPosition === 0) {
-    //   // add item at specified index
-    //   setSectionItems(
-    //     [
-    //       ...oldItems.slice(0, indexPosition),
-    //       ...newItems,
-    //       ...oldItems.slice(indexPosition),
-    //     ],
-    //     section
-    //   )
-    // }
   }
 
   const isItemActive = useCallback(
     (item: SidebarItemType, checkChildren = false): boolean => {
       return (
         item.path === activePath ||
-        (checkChildren &&
-          item.children?.some((childItem) => isItemActive(childItem))) ||
-        false
+        (checkChildren && activePath?.split("_")[0] === item.path)
       )
     },
     [activePath]

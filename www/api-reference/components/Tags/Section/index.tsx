@@ -3,7 +3,7 @@
 import getSectionId from "@/utils/get-section-id"
 import type { OpenAPIV3 } from "openapi-types"
 import { useInView } from "react-intersection-observer"
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useSidebar } from "@/providers/sidebar"
 import dynamic from "next/dynamic"
 import Loading from "@/components/Loading"
@@ -39,7 +39,7 @@ const MDXContentClient = dynamic<MDXContentClientProps>(
 const TagSection = ({ tag }: TagSectionProps) => {
   const { activePath, setActivePath } = useSidebar()
   const [loadPaths, setLoadPaths] = useState(false)
-  const slugTagName = getSectionId([tag.name])
+  const slugTagName = useMemo(() => getSectionId([tag.name]), [tag])
   const { area } = useArea()
   const { ref } = useInView({
     threshold: 0.5,

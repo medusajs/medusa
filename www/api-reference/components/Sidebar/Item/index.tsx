@@ -3,7 +3,7 @@ import { useSidebar } from "@/providers/sidebar"
 import clsx from "clsx"
 import dynamic from "next/dynamic"
 import Link from "next/link"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import type { MethodLabelProps } from "../../MethodLabel"
 import checkSidebarItemVisibility from "@/utils/check-sidebar-item-visibility"
 import Loading from "../../Loading"
@@ -24,7 +24,9 @@ const SidebarItem = ({ item, nested = false, className }: SidebarItemProps) => {
     setActivePath,
     setMobileSidebarOpen: setSidebarOpen,
   } = useSidebar()
-  const active = isItemActive(item, nested)
+  const active = useMemo(() => {
+    return isItemActive(item, nested)
+  }, [isItemActive, item, nested])
   const collapsed = !isItemActive(item, true)
   const ref = useRef<HTMLLIElement>(null)
 

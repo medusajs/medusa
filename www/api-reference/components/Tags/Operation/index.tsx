@@ -4,7 +4,7 @@ import type { Operation } from "@/types/openapi"
 import clsx from "clsx"
 import type { OpenAPIV3 } from "openapi-types"
 import getSectionId from "@/utils/get-section-id"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import { useInView } from "react-intersection-observer"
 import { useSidebar } from "@/providers/sidebar"
@@ -34,7 +34,10 @@ const TagOperation = ({
 }: TagOperationProps) => {
   const { setActivePath } = useSidebar()
   const [show, setShow] = useState(false)
-  const path = getSectionId([...(operation.tags || []), operation.operationId])
+  const path = useMemo(
+    () => getSectionId([...(operation.tags || []), operation.operationId]),
+    [operation]
+  )
   const nodeRef = useRef<Element | null>(null)
   const { loading, removeLoading } = useLoading()
   const { ref } = useInView({

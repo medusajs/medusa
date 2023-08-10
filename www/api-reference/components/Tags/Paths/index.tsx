@@ -7,7 +7,7 @@ import useSWR from "swr"
 import type { Operation, PathsObject } from "@/types/openapi"
 import type { SidebarItemType } from "@/providers/sidebar"
 import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import dynamic from "next/dynamic"
 import type { TagOperationProps } from "../Operation"
 import { useArea } from "@/providers/area"
@@ -27,7 +27,7 @@ export type TagPathsProps = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 const TagPaths = ({ tag, className }: TagPathsProps) => {
-  const tagSlugName = getSectionId([tag.name])
+  const tagSlugName = useMemo(() => getSectionId([tag.name]), [tag])
   const { area } = useArea()
   const { items, addItems, findItemInSection } = useSidebar()
   const { baseSpecs } = useBaseSpecs()
