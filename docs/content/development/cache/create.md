@@ -206,7 +206,9 @@ Create the file `index.ts` with the following content:
 ```ts title=index.ts
 import { ModuleExports } from "@medusajs/modules-sdk"
 
-import { MemcachedCacheService } from "./services/memcached-cache"
+import { 
+  MemcachedCacheService,
+} from "./services/memcached-cache"
 
 const service = MemcachedCacheService
 
