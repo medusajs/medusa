@@ -27,7 +27,7 @@ interface PipelineInput {
    */
   invoke?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
   compensate?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
-  onComplete?: (args: WorkflowOnCompleteArguments) => {}
+  onComplete?: (args: WorkflowOnCompleteArguments) => Promise<void>
   /**
    * Apply the data merging
    */
@@ -40,8 +40,6 @@ interface PipelineInput {
    * Store the merged data from the chosen aliases, if this is present no need to set merge: true
    */
   mergeFrom?: string[]
-
-  __isMergeApplied?: boolean
 }
 
 export type WorkflowArguments<T = any> = {
@@ -73,6 +71,15 @@ export function pipe<T>(
   input: PipelineInput,
   ...functions: [...PipelineHandler[], PipelineHandler<T>]
 ): WorkflowStepHandler {
+  // Apply the aggregator just before the last handler
+  if (
+    (input.merge || input.mergeAlias || input.mergeFrom) &&
+    functions.length
+  ) {
+    const handler = functions.pop()!
+    functions.push(aggregateData(input.mergeFrom, input.mergeAlias), handler)
+  }
+
   return async ({
     container,
     payload,
@@ -110,17 +117,6 @@ export function pipe<T>(
           data[action.from] = original[key][action.from]
         }
       }
-    }
-
-    // Apply the aggregator just before the last handler
-    if (
-      !input.__isMergeApplied &&
-      (input.merge || input.mergeAlias || input.mergeFrom) &&
-      functions.length
-    ) {
-      input.__isMergeApplied = true
-      const handler = functions.pop()!
-      functions.push(aggregateData(input.mergeFrom, input.mergeAlias), handler)
     }
 
     let finalResult
