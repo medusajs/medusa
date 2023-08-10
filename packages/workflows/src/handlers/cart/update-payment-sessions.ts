@@ -16,5 +16,5 @@ export async function updatePaymentSessions({
 }
 
 updatePaymentSessions.aliases = {
-  input: "input",
+  cart: "cart",
 }

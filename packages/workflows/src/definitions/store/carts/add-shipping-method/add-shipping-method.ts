@@ -4,6 +4,10 @@ import {
 } from "@medusajs/orchestration"
 import { CartDTO, WorkflowTypes } from "@medusajs/types"
 import {
+  defaultStoreCartFields,
+  defaultStoreCartRelations,
+} from "@medusajs/utils"
+import {
   CartHandlers,
   ShippingMethodHandlers,
   ShippingOptionHandlers,
@@ -15,7 +19,7 @@ import { prepareDeleteShippingMethodsData } from "./prepare-delete-shipping-meth
 import { setRetrieveConfig } from "./set-retrieve-config"
 
 export enum AddShippingMethodWorkflowActions {
-  prepare = "input",
+  prepare = "prepare",
   validateFulfillmentData = "validateFulfillmentData",
   validateLineItemShipping = "validateLineItemShipping",
   getOptionPrice = "getOptionPrice",
@@ -24,6 +28,7 @@ export enum AddShippingMethodWorkflowActions {
   adjustFreeShipping = "adjustFreeShipping",
   cleanUpPaymentSessions = "cleanUpPaymentSessions",
   updatePaymentSessions = "updatePaymentSessions",
+  result = "result",
 }
 
 export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
@@ -53,6 +58,10 @@ export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
                   action:
                     AddShippingMethodWorkflowActions.updatePaymentSessions,
                   saveResponse: false,
+                  next: {
+                    action: AddShippingMethodWorkflowActions.result,
+                    noCompensation: true,
+                  },
                 },
               },
             },
@@ -104,7 +113,7 @@ const handlers = new Map([
             },
             {
               from: AddShippingMethodWorkflowActions.validateFulfillmentData,
-              alias: "shippingOptionData",
+              alias: "shippingMethodData",
             },
           ],
           merge: true,
@@ -141,6 +150,16 @@ const handlers = new Map([
               alias: "shippingMethodsToDelete",
             },
           ],
+          merge: true,
+        },
+        async function ({ data }) {
+          return {
+            alias: "shippingMethodsToDelete",
+            value: {
+              shippingMethodsToDelete: data.shippingMethodsToDelete,
+              softDelete: false,
+            },
+          }
         },
         ShippingMethodHandlers.deleteShippingMethods
       ),
@@ -161,6 +180,7 @@ const handlers = new Map([
               alias: "shippingMethods",
             },
           ],
+          merge: true,
         },
         prepareDeleteShippingMethodsData,
         ShippingMethodHandlers.deleteShippingMethods
@@ -196,7 +216,6 @@ const handlers = new Map([
           relations: [
             "discounts",
             "discounts.rule",
-            "shipping_methods",
             "shipping_methods.shipping_option",
           ],
         }),
@@ -216,7 +235,6 @@ const handlers = new Map([
           relations: [
             "discounts",
             "discounts.rule",
-            "shipping_methods",
             "shipping_methods.shipping_option",
           ],
         }),
@@ -244,7 +262,6 @@ const handlers = new Map([
             "shipping_methods.shipping_option",
             "billing_address",
             "shipping_address",
-            "region",
             "region.tax_rates",
             "region.payment_providers",
             "payment_sessions",
@@ -258,8 +275,8 @@ const handlers = new Map([
         {
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
-            alias: "input",
           },
+          merge: true,
         },
         CartHandlers.cleanUpPaymentSessions
       ),
@@ -284,7 +301,6 @@ const handlers = new Map([
             "shipping_methods.shipping_option",
             "billing_address",
             "shipping_address",
-            "region",
             "region.tax_rates",
             "region.payment_providers",
             "payment_sessions",
@@ -293,6 +309,24 @@ const handlers = new Map([
         }),
         CartHandlers.retrieveCart,
         CartHandlers.updatePaymentSessions
+      ),
+    },
+  ],
+  [
+    AddShippingMethodWorkflowActions.result,
+    {
+      invoke: pipe(
+        {
+          invoke: {
+            from: AddShippingMethodWorkflowActions.prepare,
+          },
+          merge: true,
+        },
+        setRetrieveConfig({
+          relations: defaultStoreCartRelations,
+          select: defaultStoreCartFields,
+        }),
+        CartHandlers.retrieveCart
       ),
     },
   ],
@@ -309,6 +343,6 @@ export const addShippingMethod = exportWorkflow<
   CartDTO
 >(
   Workflows.AddShippingMethod,
-  AddShippingMethodWorkflowActions.updatePaymentSessions,
+  AddShippingMethodWorkflowActions.result,
   prepareAddShippingMethodToCartWorkflowData
 )

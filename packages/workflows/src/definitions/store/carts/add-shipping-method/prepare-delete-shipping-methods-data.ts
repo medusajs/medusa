@@ -1,17 +1,15 @@
+import { CartDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../../../helper"
 
-export async function prepareDeleteShippingMethodsData({
-  container,
-  context,
-  data,
-}: WorkflowArguments<{
-  input: {
-    cart: any
-  }
+type PreparationHandlerInput = {
+  cart: CartDTO & { shipping_methods: any[] }
   shippingMethods: any[]
-}>) {
-  const { input, shippingMethods } = data
-  const { cart } = input
+}
+
+export async function prepareDeleteShippingMethodsData({
+  data,
+}: WorkflowArguments<PreparationHandlerInput>) {
+  const { cart, shippingMethods } = data
 
   if (!cart.shipping_methods?.length) {
     return []

@@ -6,6 +6,7 @@ export async function deleteShippingMethods({
   data,
 }: WorkflowArguments<{
   shippingMethodsToDelete: any[]
+  softDelete?: boolean
 }>) {
   const { manager } = context
   const { shippingMethodsToDelete } = data
@@ -14,7 +15,9 @@ export async function deleteShippingMethods({
     .resolve("shippingOptionService")
     .withTransaction(manager)
 
-  await shippingOptionServiceTx.deleteShippingMethods(shippingMethodsToDelete)
+  await shippingOptionServiceTx.deleteShippingMethods(shippingMethodsToDelete, {
+    softDelete: data.softDelete ?? true,
+  })
 
   return {
     deletedShippingMethods: shippingMethodsToDelete,

@@ -56,5 +56,9 @@ export async function prepareAddShippingMethodToCartWorkflowData({
 }
 
 prepareAddShippingMethodToCartWorkflowData.aliases = {
-  input: "input",
+  // input: "input",
+  shippingMethodConfig: "shippingMethodConfig",
+  cart: "cart",
+  shippingOption: "shippingOption",
+  shippingMethodData: "shippingMethodData",
 }

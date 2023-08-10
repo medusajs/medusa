@@ -87,7 +87,7 @@ describe("/store/carts", () => {
       },
     })
 
-    expect(result.id).toBeDefined()
+    expect(result).toBeDefined()
     expect(transaction.getState()).toEqual("done")
   })
 

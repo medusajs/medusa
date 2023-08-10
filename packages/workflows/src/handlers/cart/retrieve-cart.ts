@@ -1,8 +1,10 @@
 import { WorkflowArguments } from "../../helper"
 
 type HandlerInputData = {
-  cart: {
-    id: string
+  input: {
+    cart: {
+      id: string
+    }
   }
   config: {
     retrieveConfig: {
@@ -28,7 +30,7 @@ export async function retrieveCart({
 
   const cartServiceTx = cartService.withTransaction(manager)
 
-  const retrieved = await cartServiceTx.retrieve(
+  const retrieved = await cartServiceTx.retrieveWithTotals(
     data[Aliases.Cart].id,
     data[Aliases.Config]?.retrieveConfig ?? {}
   )

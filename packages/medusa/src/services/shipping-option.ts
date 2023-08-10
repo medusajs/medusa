@@ -236,7 +236,8 @@ class ShippingOptionService extends TransactionBaseService {
    * @returns removed shipping methods
    */
   async deleteShippingMethods(
-    shippingMethods: ShippingMethod | ShippingMethod[]
+    shippingMethods: ShippingMethod | ShippingMethod[],
+    { softDelete = true } = {}
   ): Promise<ShippingMethod[]> {
     const removeEntities: ShippingMethod[] = Array.isArray(shippingMethods)
       ? shippingMethods
@@ -244,6 +245,11 @@ class ShippingOptionService extends TransactionBaseService {
 
     return await this.atomicPhase_(async (manager) => {
       const methodRepo = manager.withRepository(this.methodRepository_)
+
+      if (!softDelete) {
+        return await methodRepo.remove(removeEntities)
+      }
+
       return await methodRepo.softRemove(removeEntities)
     })
   }
