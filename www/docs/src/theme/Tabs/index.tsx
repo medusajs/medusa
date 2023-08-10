@@ -97,10 +97,7 @@ function TabList({
 
   return (
     <div
-      className={clsx(
-        isCodeTabs && "code-header",
-        !isCodeTabs && "[&+*]:pt-2"
-      )}
+      className={clsx(isCodeTabs && "code-header", !isCodeTabs && "[&+*]:pt-2")}
     >
       <div
         className={clsx(isCodeTabs && "relative overflow-auto")}
@@ -109,7 +106,7 @@ function TabList({
         {isCodeTabs && (
           <span
             className={clsx(
-              "xs:absolute xs:border xs:border-solid xs:border-medusa-code-border dark:xs:border-medusa-code-border-dark xs:bg-medusa-code-bg-header dark:xs:bg-medusa-code-bg-header-dark xs:transition-all xs:duration-200 xs:ease-ease xs:top-0 xs:z-[1] xs:rounded-full"
+              "xs:absolute xs:border xs:border-solid xs:border-medusa-code-border dark:xs:border-medusa-code-border-dark xs:bg-medusa-code-bg-base dark:xs:bg-medusa-code-bg-base-dark xs:transition-all xs:duration-200 xs:ease-ease xs:top-0 xs:z-[1] xs:rounded-full"
             )}
             ref={codeTabSelectorRef}
           ></span>
@@ -138,11 +135,12 @@ function TabList({
               className={clsx(
                 isCodeTabs &&
                   "text-compact-small-plus py-[4px] border border-solid border-transparent whitespace-nowrap rounded-full [&:not(:first-child)]:ml-[4px]",
-                "!mt-0 hover:!bg-medusa-code-bg-base dark:hover:!bg-medusa-code-bg-base-dark cursor-pointer",
+                "!mt-0 cursor-pointer",
                 attributes?.className,
+                isCodeTabs && "z-[2] flex justify-center items-center",
                 isCodeTabs &&
-                  "z-[2] flex justify-center items-center",
-                isCodeTabs && selectedValue !== value && "text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark",
+                  selectedValue !== value &&
+                  "text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark hover:!bg-medusa-code-bg-base dark:hover:!bg-medusa-code-bg-base-dark",
                 isCodeTabs &&
                   selectedValue === value &&
                   "text-medusa-code-text-base dark:text-medusa-code-text-base-dark border border-solid border-medusa-code-border dark:border-medusa-code-border-dark bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark xs:border-none xs:bg-transparent",
