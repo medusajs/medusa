@@ -5,8 +5,8 @@ import { Ora } from "ora"
 import promiseExec from "./promise-exec.js"
 import { EOL } from "os"
 import { displayFactBox, FactBoxOptions } from "./facts.js"
-import { clearProject } from "@medusajs/utils"
 import ProcessManager from "./process-manager.js"
+import { clearProject } from "./clear-project.js"
 
 type PrepareOptions = {
   directory: string

@@ -29,7 +29,6 @@
   },
   "dependencies": {
     "awilix": "^8.0.1",
-    "glob": "^7.1.6",
     "ulid": "^2.3.0"
   },
   "scripts": {
