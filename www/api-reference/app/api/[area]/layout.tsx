@@ -50,7 +50,7 @@ export default function RootLayout({
                     <Navbar />
                     <div className="max-w-xxl mx-auto flex w-full px-1.5">
                       <Sidebar />
-                      <main className="lg:w-api-ref-main relative mt-7 w-full flex-1">
+                      <main className="lg:w-api-ref-main relative mt-3 w-full flex-1 lg:mt-7">
                         {children}
                       </main>
                     </div>

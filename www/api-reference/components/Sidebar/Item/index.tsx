@@ -19,11 +19,7 @@ export type SidebarItemProps = {
 
 const SidebarItem = ({ item, nested = false, className }: SidebarItemProps) => {
   const [showLoading, setShowLoading] = useState(false)
-  const {
-    isItemActive,
-    setActivePath,
-    setMobileSidebarOpen: setSidebarOpen,
-  } = useSidebar()
+  const { isItemActive, setMobileSidebarOpen: setSidebarOpen } = useSidebar()
   const active = useMemo(() => {
     return isItemActive(item, nested)
   }, [isItemActive, item, nested])
@@ -77,8 +73,6 @@ const SidebarItem = ({ item, nested = false, className }: SidebarItemProps) => {
         )}
         scroll={true}
         onClick={() => {
-          setActivePath(item.path)
-          setShowLoading(true)
           setSidebarOpen(false)
         }}
         replace
