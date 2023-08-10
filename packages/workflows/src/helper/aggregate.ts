@@ -43,7 +43,7 @@ export function aggregateData<
 
     return {
       alias: target,
-      value,
+      value: target ? value[target as string] : value,
     }
   }
 }

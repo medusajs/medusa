@@ -22,6 +22,8 @@ interface PipelineInput {
   invoke?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
   compensate?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
   onComplete?: (args: WorkflowOnCompleteArguments) => {}
+  aggregate?: boolean
+  aggregateAlias?: string
 }
 
 export type WorkflowArguments<T = any> = {
@@ -93,9 +95,9 @@ export function pipe<T>(
     }
 
     // Apply the aggregator just before the last handler
-    if (functions.length) {
+    if (input.aggregate && functions.length) {
       const handler = functions.pop()!
-      functions.push(aggregateData(), handler)
+      functions.push(aggregateData(undefined, input.aggregateAlias), handler)
     }
 
     let finalResult

@@ -46,6 +46,101 @@ describe("Pipe", function () {
     expect(result).toEqual(output)
   })
 
+  it("should evaluate the input object and append the values to the data object using the aggregation and return the result from the handler", async function () {
+    const payload = { input: "input" }
+    const output = { test: "test" }
+    const invoke = {
+      input: payload,
+      step1: { step1Data: { test: "test" } },
+      step2: { step2Data: { test: "test" } },
+    }
+
+    const handler = jest.fn().mockImplementation(async () => output)
+    const input = {
+      inputAlias: "payload",
+      aggregate: true,
+      invoke: [
+        {
+          from: "payload",
+        },
+        {
+          from: "step1",
+        },
+        {
+          from: "step2",
+        },
+      ],
+    }
+
+    const result = await pipe(input, handler)({ invoke, payload } as any)
+
+    expect(handler).toHaveBeenCalled()
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: {
+          ...payload,
+          ...invoke.step1,
+          ...invoke.step2,
+        },
+      })
+    )
+
+    expect(result).toBeDefined()
+    expect(result).toEqual(output)
+  })
+
+  it("should evaluate the input object and append the values to the data object using the aggregation to store on the aggregate alias and return the result from the handler", async function () {
+    const payload = { input: "input" }
+    const output = { test: "test" }
+    const invoke = {
+      input: payload,
+      step1: { step1Data: { test: "test" } },
+      step2: { step2Data: { test: "test" } },
+    }
+
+    const handler = jest.fn().mockImplementation(async () => output)
+    const input = {
+      inputAlias: "payload",
+      aggregate: true,
+      aggregateAlias: "aggregatedData",
+      invoke: [
+        {
+          from: "payload",
+          alias: "input",
+        },
+        {
+          from: "step1",
+          alias: "step1Data",
+        },
+        {
+          from: "step2",
+          alias: "step2Data",
+        },
+      ],
+    }
+
+    const result = await pipe(input, handler)({ invoke, payload } as any)
+
+    expect(handler).toHaveBeenCalled()
+    expect(handler).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: {
+          input: payload,
+          step1Data: invoke.step1,
+          step2Data: invoke.step2,
+          aggregatedData: {
+            ...payload,
+            ...invoke.step1,
+            ...invoke.step2,
+          },
+        },
+      })
+    )
+
+    expect(result).toBeDefined()
+    expect(result).toEqual(output)
+  })
+
   it("should execute onComplete function if available but the output result shouldn't change", async function () {
     const payload = { input: "input" }
     const output = { test: "test" }
