@@ -6,7 +6,7 @@ import {
   UpdateProductTypeDTO,
   DAL,
   FindConfig,
-  ProductTypes
+  ProductTypes,
 } from "@medusajs/types"
 import { ProductTypeRepository } from "@repositories"
 import {
@@ -38,10 +38,7 @@ export default class ProductTypeService<
     config: FindConfig<ProductTypes.ProductTypeDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
-    return (await retrieveEntity<
-      ProductType,
-      ProductTypes.ProductTypeDTO
-    >({
+    return (await retrieveEntity<ProductType, ProductTypes.ProductTypeDTO>({
       id: productTypeId,
       entityName: ProductType.name,
       repository: this.productTypeRepository_,
@@ -76,9 +73,12 @@ export default class ProductTypeService<
 
   private buildQueryForList(
     filters: ProductTypes.FilterableProductTypeProps = {},
-    config: FindConfig<ProductTypes.ProductTypeDTO> = {},
+    config: FindConfig<ProductTypes.ProductTypeDTO> = {}
   ) {
-    const queryOptions = ModulesSdkUtils.buildQuery<ProductType>(filters, config)
+    const queryOptions = ModulesSdkUtils.buildQuery<ProductType>(
+      filters,
+      config
+    )
 
     if (filters.value) {
       queryOptions.where["value"] = { $ilike: filters.value }
