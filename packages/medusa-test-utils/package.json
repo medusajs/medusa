@@ -9,7 +9,7 @@
     "directory": "packages/medusa-test-utils"
   },
   "scripts": {
-    "prepublishOnly": "tsc --build",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
     "test": "jest --passWithNoTests src",
     "build": "babel src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'",
     "watch": "babel -w src --out-dir dist/ --ignore '**/__tests__','**/__mocks__'"

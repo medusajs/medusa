@@ -14,7 +14,7 @@
   "author": "Medusa",
   "license": "MIT",
   "scripts": {
-    "prepublishOnly": "tsc --build",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "test": "jest --passWithNoTests src",
     "build": "rimraf dist && tsc",
     "watch": "tsc --watch"

@@ -17,7 +17,7 @@
   },
   "scripts": {
     "build": "tsup src/index.ts",
-    "prepublishOnly": "tsc --build",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
     "test": "jest --passWithNoTests"
   },
   "author": "Oliver Juhl",

@@ -33,7 +33,7 @@
     "ulid": "^2.3.0"
   },
   "scripts": {
-    "prepublishOnly": "tsc --build",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
     "test": "jest"
