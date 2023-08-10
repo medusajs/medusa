@@ -13,6 +13,12 @@ In this document, you’ll learn what events are and why they’re useful in Med
 
 Events are used in Medusa to inform different parts of the commerce ecosystem that this event occurred. For example, when an order is placed, the `order.placed` event is triggered, which informs notification services like SendGrid to send a confirmation email to the customer.
 
+:::tip
+
+If you want to implement order confirmation emails, you can check this [step-by-step guide](../../modules/orders/backend/send-order-confirmation.md).
+
+:::
+
 The events system in Medusa is built on a publish/subscribe architecture. The Medusa core publish an event when an action takes place, and modules, plugins, or other forms of customizations can subscribe to that event. [Subscribers](./subscribers.mdx) can then perform a task asynchronously when the event is triggered.
 
 Although the core implements the main logic behind the events system, you’ll need to use an event module that takes care of the publish/subscribe functionality such as subscribing and emitting events. Medusa provides modules that you can use both for development and production, including Redis and Local modules.

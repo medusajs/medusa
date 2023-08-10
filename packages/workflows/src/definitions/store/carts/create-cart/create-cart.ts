@@ -12,11 +12,10 @@ import {
   RegionHandlers,
   SalesChannelHandlers,
 } from "../../../../handlers"
-import { aggregateData, exportWorkflow, pipe } from "../../../../helper"
+import { exportWorkflow, pipe } from "../../../../helper"
 import { Workflows } from "../../../../workflows"
 
 enum CreateCartActions {
-  setConfig = "setConfig",
   setContext = "setContext",
   attachLineItems = "attachLineItems",
   findRegion = "findRegion",
@@ -26,7 +25,6 @@ enum CreateCartActions {
   findOrCreateCustomer = "findOrCreateCustomer",
   removeCart = "removeCart",
   removeAddresses = "removeAddresses",
-  retrieveCart = "retrieveCart",
 }
 
 const workflowAlias = "cart"
@@ -40,10 +38,6 @@ const getWorkflowInput = (alias = workflowAlias) => ({
 
 const workflowSteps: TransactionStepsDefinition = {
   next: [
-    {
-      action: CreateCartActions.setConfig,
-      noCompensation: true,
-    },
     {
       action: CreateCartActions.findOrCreateCustomer,
       noCompensation: true,
@@ -67,10 +61,6 @@ const workflowSteps: TransactionStepsDefinition = {
           next: {
             action: CreateCartActions.attachLineItems,
             noCompensation: true,
-            next: {
-              action: CreateCartActions.retrieveCart,
-              noCompensation: true,
-            },
           },
         },
       },
@@ -79,16 +69,6 @@ const workflowSteps: TransactionStepsDefinition = {
 }
 
 const handlers = new Map([
-  [
-    CreateCartActions.setConfig,
-    {
-      invoke: pipe(
-        getWorkflowInput(CommonHandlers.setConfig.aliases.Config),
-        aggregateData(),
-        CommonHandlers.setConfig
-      ),
-    },
-  ],
   [
     CreateCartActions.findOrCreateCustomer,
     {
@@ -206,26 +186,6 @@ const handlers = new Map([
       ),
     },
   ],
-  [
-    CreateCartActions.retrieveCart,
-    {
-      invoke: pipe(
-        {
-          invoke: [
-            {
-              from: CreateCartActions.setConfig,
-              alias: CommonHandlers.setConfig.aliases.Config,
-            },
-            {
-              from: CreateCartActions.createCart,
-              alias: CartHandlers.retrieveCart.aliases.Cart,
-            },
-          ],
-        },
-        CartHandlers.retrieveCart
-      ),
-    },
-  ],
 ])
 
 WorkflowManager.register(Workflows.CreateCart, workflowSteps, handlers)
@@ -235,4 +195,4 @@ type CreateCartWorkflowOutput = Record<any, any>
 export const createCart = exportWorkflow<
   WorkflowTypes.CartWorkflow.CreateCartWorkflowInputDTO,
   CreateCartWorkflowOutput
->(Workflows.CreateCart, CreateCartActions.retrieveCart)
+>(Workflows.CreateCart, CreateCartActions.createCart)

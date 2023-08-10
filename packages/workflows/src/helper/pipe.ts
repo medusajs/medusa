@@ -1,11 +1,11 @@
 import {
+  DistributedTransaction,
   TransactionMetadata,
   WorkflowStepHandler,
 } from "@medusajs/orchestration"
 import { Context, MedusaContainer, SharedContext } from "@medusajs/types"
-
-import { DistributedTransaction } from "@medusajs/orchestration"
 import { InputAlias } from "../workflows"
+import { mergeData } from "./merge-data"
 
 export type WorkflowStepMiddlewareReturn = {
   alias?: string
@@ -18,10 +18,28 @@ export type WorkflowStepMiddlewareInput = {
 }
 
 interface PipelineInput {
+  /**
+   * The alias of the input data to store in
+   */
   inputAlias?: InputAlias | string
+  /**
+   * Descriptors to get the data from
+   */
   invoke?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
   compensate?: WorkflowStepMiddlewareInput | WorkflowStepMiddlewareInput[]
-  onComplete?: (args: WorkflowOnCompleteArguments) => {}
+  onComplete?: (args: WorkflowOnCompleteArguments) => Promise<void>
+  /**
+   * Apply the data merging
+   */
+  merge?: boolean
+  /**
+   * Store the merged data in a new key, if this is present no need to set merge: true
+   */
+  mergeAlias?: string
+  /**
+   * Store the merged data from the chosen aliases, if this is present no need to set merge: true
+   */
+  mergeFrom?: string[]
 }
 
 export type WorkflowArguments<T = any> = {
@@ -53,6 +71,15 @@ export function pipe<T>(
   input: PipelineInput,
   ...functions: [...PipelineHandler[], PipelineHandler<T>]
 ): WorkflowStepHandler {
+  // Apply the aggregator just before the last handler
+  if (
+    (input.merge || input.mergeAlias || input.mergeFrom) &&
+    functions.length
+  ) {
+    const handler = functions.pop()!
+    functions.push(mergeData(input.mergeFrom, input.mergeAlias), handler)
+  }
+
   return async ({
     container,
     payload,
