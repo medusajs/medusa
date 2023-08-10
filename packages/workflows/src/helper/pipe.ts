@@ -40,6 +40,8 @@ interface PipelineInput {
    * Store the merged data from the chosen aliases, if this is present no need to set merge: true
    */
   mergeFrom?: string[]
+
+  __isMergeApplied?: boolean
 }
 
 export type WorkflowArguments<T = any> = {
@@ -112,9 +114,11 @@ export function pipe<T>(
 
     // Apply the aggregator just before the last handler
     if (
+      !input.__isMergeApplied &&
       (input.merge || input.mergeAlias || input.mergeFrom) &&
       functions.length
     ) {
+      input.__isMergeApplied = true
       const handler = functions.pop()!
       functions.push(aggregateData(input.mergeFrom, input.mergeAlias), handler)
     }

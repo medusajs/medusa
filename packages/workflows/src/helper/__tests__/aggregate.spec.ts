@@ -14,13 +14,14 @@ describe("aggregate", function () {
       },
     }
 
-    const { value: result } = (await aggregateData(
+    const result = (await aggregateData(
       ["input", "another", "stringProp", "anArray"],
       "payload"
     )({ data: source } as any)) as unknown as WorkflowStepMiddlewareReturn
 
     expect(result).toEqual({
-      payload: {
+      alias: "payload",
+      value: {
         ...source.input,
         ...source.another,
         anArray: source.anArray,
