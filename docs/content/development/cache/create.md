@@ -201,9 +201,9 @@ class MemcachedCacheService implements ICacheService {
 
 After implementing the cache service, you must export it so that the Medusa backend can use it.
 
-Create the file `index.ts` with the following content:
+Create the file `src/index.ts` with the following content:
 
-```ts title=index.ts
+```ts title=src/index.ts
 import { ModuleExports } from "@medusajs/modules-sdk"
 
 import { 
@@ -237,7 +237,7 @@ module.exports = {
   modules: { 
     // ...
     cacheService: {
-        resolve: "path/to/custom-module", 
+        resolve: "path/to/custom-module/src/index.ts", 
         options: {
           // any necessary options
           ttl: 30, 

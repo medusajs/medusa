@@ -221,12 +221,14 @@ For example, consider you have the following file structure:
 |
 |___ custom-module
 |    |
-|    |___ index.ts
-|    |
-|    |___ services
-|    |    |
-|    |    |___ custom-service.ts
-|    |___ // more files
+|    |___ src
+|        |
+|        |___ index.ts
+|        |
+|        |___ services
+|        |    |
+|        |    |___ custom-service.ts
+|        |___ // more files
 |
 |
 |___ medusa-backend
@@ -242,7 +244,7 @@ module.exports = {
   modules: { 
     // ...
     moduleType: {
-      resolve: "../custom-module", 
+      resolve: "../custom-module/src", 
       // ...
     },
   },
@@ -257,7 +259,7 @@ module.exports = {
   modules: { 
     // ...
     moduleType: {
-      resolve: "../custom-module/index.ts", 
+      resolve: "../custom-module/src/index.ts", 
       // ...
     },
   },
