@@ -11,6 +11,7 @@ type SessionOptions = {
   rolling?: boolean
   saveUninitialized?: boolean
   secret?: string
+  domain?: string
   ttl?: number
 }
 

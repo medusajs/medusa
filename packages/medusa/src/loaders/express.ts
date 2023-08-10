@@ -33,6 +33,7 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
     cookie: {
       sameSite,
       secure,
+      domain: session_options?.domain,
       maxAge: session_options?.ttl ?? 10 * 60 * 60 * 1000,
     },
     store: null,
