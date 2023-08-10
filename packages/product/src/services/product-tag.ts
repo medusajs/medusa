@@ -38,10 +38,7 @@ export default class ProductTagService<
     config: FindConfig<ProductTypes.ProductTagDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
-    return (await retrieveEntity<
-      ProductTag,
-      ProductTypes.ProductTagDTO
-    >({
+    return (await retrieveEntity<ProductTag, ProductTypes.ProductTagDTO>({
       id: productTagId,
       entityName: ProductTag.name,
       repository: this.productTagRepository_,
@@ -76,7 +73,7 @@ export default class ProductTagService<
 
   private buildQueryForList(
     filters: ProductTypes.FilterableProductTagProps = {},
-    config: FindConfig<ProductTypes.ProductTagDTO> = {},
+    config: FindConfig<ProductTypes.ProductTagDTO> = {}
   ) {
     const queryOptions = ModulesSdkUtils.buildQuery<ProductTag>(filters, config)
 
