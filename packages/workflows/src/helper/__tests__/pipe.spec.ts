@@ -52,7 +52,7 @@ describe("Pipe", function () {
     const invoke = {
       input: payload,
       step1: { step1Data: { test: "test" } },
-      step2: { step2Data: { test: "test" } },
+      step2: [{ test: "test" }],
     }
 
     const handler = jest.fn().mockImplementation(async () => output)
@@ -68,6 +68,7 @@ describe("Pipe", function () {
         },
         {
           from: "step2",
+          alias: "step2Data",
         },
       ],
     }
@@ -80,7 +81,7 @@ describe("Pipe", function () {
         data: {
           ...payload,
           ...invoke.step1,
-          ...invoke.step2,
+          step2Data: invoke.step2,
         },
       })
     )
