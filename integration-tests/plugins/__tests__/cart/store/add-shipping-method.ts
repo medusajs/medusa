@@ -3,9 +3,14 @@ import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
 import { setPort } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
-import { addShippingMethod } from "@medusajs/workflows"
+import {
+  AddShippingMethodWorkflowActions,
+  addShippingMethod,
+  pipe,
+} from "@medusajs/workflows"
 
-import { Cart, CustomShippingOption } from "@medusajs/medusa"
+import { ShippingOption, ShippingProfile } from "@medusajs/medusa"
+import { ShippingProfileType } from "@medusajs/utils"
 import cartSeeder from "../../../../helpers/cart-seeder"
 
 jest.setTimeout(5000000)
@@ -44,27 +49,19 @@ describe("/store/carts", () => {
     await cartSeeder(dbConnection)
     const manager = dbConnection.manager
 
-    const _cart = await manager.create(Cart, {
-      id: "test-cart-with-cso",
-      customer_id: "some-customer",
-      email: "some-customer@email.com",
-      shipping_address: {
-        id: "test-shipping-address",
-        first_name: "lebron",
-        country_code: "us",
-      },
-      region_id: "test-region",
-      currency_code: "usd",
-      type: "swap",
+    const defaultProfile = await manager.findOne(ShippingProfile, {
+      where: { type: ShippingProfileType.DEFAULT },
     })
 
-    await manager.save(_cart)
-
-    await manager.insert(CustomShippingOption, {
-      id: "another-cso-test",
-      cart_id: "test-cart-with-cso",
-      shipping_option_id: "test-option",
-      price: 5,
+    await manager.insert(ShippingOption, {
+      id: "test-option-new",
+      name: "test-option-new",
+      provider_id: "test-ful",
+      region_id: "test-region",
+      profile_id: defaultProfile.id,
+      price_type: "flat_rate",
+      amount: 2000,
+      data: {},
     })
   })
 
@@ -90,87 +87,67 @@ describe("/store/carts", () => {
       },
     })
 
-    expect(result.cart).toBeDefined()
+    expect(result.id).toBeDefined()
     expect(transaction.getState()).toEqual("done")
   })
 
-  // it("should add a shipping method based on the existing custom shipping option", async () => {
-  //   const shippingOptionId = "test-option"
-  //   const cartId = "test-cart-with-cso"
+  it("should compensare correctly if add shipping method fails", async () => {
+    const manager = medusaContainer.resolve("manager")
+    const cartService = medusaContainer.resolve("cartService")
 
-  //   const manager = medusaContainer.resolve("manager")
+    // retrieve cart to test against
+    const cartBefore = await cartService.retrieve("test-cart", {
+      relations: ["shipping_methods"],
+    })
 
-  //   const createProductWorkflow = addShippingMethod(medusaContainer)
+    const addShippingMethodWorkflow = addShippingMethod(medusaContainer)
 
-  //   const input = {
-  //     cart_id: cartId,
-  //     option_id: shippingOptionId,
-  //     data: {}
-  //   }
+    addShippingMethodWorkflow.appendAction(
+      "fail_step",
+      AddShippingMethodWorkflowActions.updatePaymentSessions,
+      {
+        invoke: pipe({}, async function failStep() {
+          throw new Error(`Failed to add shipping method`)
+        }),
+      },
+      {
+        noCompensation: true,
+      }
+    )
 
-  //   const { result } = await createProductWorkflow.run({
-  //     input,
-  //     context: {
-  //       manager,
-  //     },
-  //   })
+    const input = {
+      cart_id: "test-cart",
+      option_id: "test-option-new",
+      data: {},
+    }
 
-  //   const value = result!.value
+    const { errors, transaction } = await addShippingMethodWorkflow.run({
+      input,
+      context: {
+        manager,
+      },
+      throwOnError: false,
+    })
 
-  //   expect(value.shipping_methods).toContainEqual(
-  //     expect.objectContaining({
-  //       shipping_option_id: shippingOptionId,
-  //       price: 5,
-  //     })
-  //   )
-  // })
+    const cartAfter = await cartService.retrieve("test-cart", {
+      relations: ["shipping_methods"],
+    })
 
-  //   it("given a cart with custom options and an option id not corresponding to any custom shipping option, then it should throw an invalid error", async () => {
-  //     const api = useApi()! as AxiosInstance
+    expect(cartBefore.shipping_methods[0]).toEqual(
+      expect.objectContaining({
+        id: cartAfter.shipping_methods[0].id,
+        shipping_option_id: cartAfter.shipping_methods[0].shipping_option_id,
+      })
+    )
 
-  //     try {
-  //       await api.post(
-  //         "/store/carts/test-cart-with-cso/shipping-methods",
-  //         {
-  //           option_id: "orphan-so",
-  //         },
-  //         { withCredentials: true }
-  //       )
-  //     } catch (err) {
-  //       expect(err.response.status).toEqual(400)
-  //       expect(err.response.data.message).toEqual("Wrong shipping option")
-  //     }
-  //   })
+    expect(errors).toEqual([
+      {
+        action: "fail_step",
+        handlerType: "invoke",
+        error: new Error(`Failed to add shipping method`),
+      },
+    ])
 
-  //   it("adds no more than 1 shipping method per shipping profile", async () => {
-  //     const api = useApi()! as AxiosInstance
-
-  //     const addShippingMethod = async (option_id) => {
-  //       return await api.post(
-  //         "/store/carts/test-cart/shipping-methods",
-  //         {
-  //           option_id,
-  //         },
-  //         { withCredentials: true }
-  //       )
-  //     }
-
-  //     await addShippingMethod("test-option")
-  //     const cartWithAnotherShippingMethod = await addShippingMethod(
-  //       "test-option-2"
-  //     )
-
-  //     expect(
-  //       cartWithAnotherShippingMethod.data.cart.shipping_methods.length
-  //     ).toEqual(1)
-  //     expect(
-  //       cartWithAnotherShippingMethod.data.cart.shipping_methods
-  //     ).toContainEqual(
-  //       expect.objectContaining({
-  //         shipping_option_id: "test-option-2",
-  //         price: 500,
-  //       })
-  //     )
-  //     expect(cartWithAnotherShippingMethod.status).toEqual(200)
-  //   })
+    expect(transaction.getState()).toEqual("failed")
+  })
 })

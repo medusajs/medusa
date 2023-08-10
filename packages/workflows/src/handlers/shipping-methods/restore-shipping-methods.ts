@@ -5,45 +5,29 @@ export async function restoreShippingMethods({
   context,
   data,
 }: WorkflowArguments<{
-  input: {
-    cart: any
-  }
   deletedShippingMethods: any[]
 }>) {
   const { manager } = context
 
   const { deletedShippingMethods } = data
 
-  if (deletedShippingMethods?.length) {
-    return []
+  if (!deletedShippingMethods?.length) {
+    return { restoredShippingMethods: [] }
   }
 
   const shippingOptionServiceTx = container
     .resolve("shippingOptionService")
     .withTransaction(manager)
 
-  const toCreate = deletedShippingMethods.map((method) => {
-    const config = {
-      ...method,
-    }
-    return {
-      option: method.shipping_option,
-      data: method.data,
-      price: method.price,
-      config,
-    }
-  })
-
-  const createdMethods = await shippingOptionServiceTx.createShippingMethods(
-    toCreate
+  const restored = await shippingOptionServiceTx.restoreShippingMethods(
+    deletedShippingMethods
   )
 
   return {
-    restoredShippingMethods: createdMethods,
+    restoredShippingMethods: restored,
   }
 }
 
 restoreShippingMethods.aliases = {
-  input: "input",
   deletedShippingMethods: "deletedShippingMethods",
 }

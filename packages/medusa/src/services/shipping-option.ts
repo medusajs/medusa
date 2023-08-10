@@ -244,7 +244,32 @@ class ShippingOptionService extends TransactionBaseService {
 
     return await this.atomicPhase_(async (manager) => {
       const methodRepo = manager.withRepository(this.methodRepository_)
-      return await methodRepo.remove(removeEntities)
+      return await methodRepo.softRemove(removeEntities)
+    })
+  }
+
+  /**
+   * Restores soft-deleted shipping methods
+   * @param {ShippingMethod | Array<ShippingMethod>} shippingMethods - the shipping method to restore
+   * @returns Restored shipping methods
+   */
+  async restoreShippingMethods(
+    shippingMethods: ShippingMethod | ShippingMethod[]
+  ): Promise<ShippingMethod[]> {
+    const removeEntities: ShippingMethod[] = Array.isArray(shippingMethods)
+      ? shippingMethods
+      : [shippingMethods]
+
+    return await this.atomicPhase_(async (manager) => {
+      const methodRepo = manager.withRepository(this.methodRepository_)
+
+      await methodRepo.restore({
+        id: In(removeEntities.map((s) => s.id)),
+      })
+
+      return await methodRepo.find({
+        where: { id: In(removeEntities.map((s) => s.id)) },
+      })
     })
   }
 

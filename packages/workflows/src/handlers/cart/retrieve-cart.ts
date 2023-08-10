@@ -24,8 +24,6 @@ export async function retrieveCart({
 }: WorkflowArguments<HandlerInputData>) {
   const { manager } = context
 
-  console.log("data", data)
-
   const cartService = container.resolve("cartService")
 
   const cartServiceTx = cartService.withTransaction(manager)

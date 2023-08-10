@@ -11,9 +11,9 @@ import {
   CustomerHandlers,
   RegionHandlers,
   SalesChannelHandlers,
-} from "../../../handlers"
-import { aggregateData, exportWorkflow, pipe } from "../../../helper"
-import { Workflows } from "../../../workflows"
+} from "../../../../handlers"
+import { aggregateData, exportWorkflow, pipe } from "../../../../helper"
+import { Workflows } from "../../../../workflows"
 
 enum CreateCartActions {
   setConfig = "setConfig",

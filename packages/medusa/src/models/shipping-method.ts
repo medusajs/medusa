@@ -11,6 +11,7 @@ import {
   PrimaryColumn,
 } from "typeorm"
 
+import { SoftDeletableEntity } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { FeatureFlagColumn } from "../utils/feature-flag-decorators"
@@ -28,7 +29,7 @@ import { Swap } from "./swap"
 )
 @Check(`"price" >= 0`)
 @Entity()
-export class ShippingMethod {
+export class ShippingMethod extends SoftDeletableEntity {
   @PrimaryColumn()
   id: string
 

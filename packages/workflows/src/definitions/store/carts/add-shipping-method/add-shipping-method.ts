@@ -42,10 +42,8 @@ export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
         noCompensation: true,
         next: {
           action: AddShippingMethodWorkflowActions.createShippingMethods,
-          noCompensation: true,
           next: {
             action: AddShippingMethodWorkflowActions.cleanUpShippingMethods,
-            saveResponse: false,
             next: {
               action: AddShippingMethodWorkflowActions.adjustFreeShipping,
               saveResponse: false,
@@ -140,6 +138,17 @@ const handlers = new Map([
         aggregateData(),
         ShippingMethodHandlers.createShippingMethods
       ),
+      compensate: pipe(
+        {
+          invoke: [
+            {
+              from: AddShippingMethodWorkflowActions.createShippingMethods,
+              alias: "shippingMethodsToDelete",
+            },
+          ],
+        },
+        ShippingMethodHandlers.deleteShippingMethods
+      ),
     },
   ],
   [
@@ -166,7 +175,6 @@ const handlers = new Map([
           invoke: [
             {
               from: AddShippingMethodWorkflowActions.prepare,
-              alias: "input",
             },
             {
               from: AddShippingMethodWorkflowActions.cleanUpShippingMethods,
@@ -174,6 +182,7 @@ const handlers = new Map([
             },
           ],
         },
+        aggregateData(),
         ShippingMethodHandlers.restoreShippingMethods
       ),
     },
@@ -316,9 +325,7 @@ WorkflowManager.register(
 
 export const addShippingMethod = exportWorkflow<
   WorkflowTypes.CartWorkflow.AddShippingMethodToCartDTO,
-  {
-    cart: CartDTO
-  }
+  CartDTO
 >(
   Workflows.AddShippingMethod,
   AddShippingMethodWorkflowActions.result,
