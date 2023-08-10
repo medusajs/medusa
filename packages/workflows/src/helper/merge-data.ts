@@ -7,7 +7,7 @@ import { isObject } from "@medusajs/utils"
  * @param keys
  * @param target
  */
-export function aggregateData<
+export function mergeData<
   T extends Record<string, unknown> = Record<string, unknown>,
   TKeys extends keyof T = keyof T,
   Target extends "payload" | string = string

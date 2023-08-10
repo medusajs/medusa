@@ -245,6 +245,10 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateProductsActions.prepare,
+              alias:
+                MiddlewaresHandlers
+                  .createProductsPrepareCreatePricesCompensation.aliases
+                  .preparedData,
             },
             {
               from: CreateProductsActions.createProducts,

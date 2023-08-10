@@ -5,7 +5,7 @@ import {
 } from "@medusajs/orchestration"
 import { Context, MedusaContainer, SharedContext } from "@medusajs/types"
 import { InputAlias } from "../definitions"
-import { aggregateData } from "./aggregate"
+import { mergeData } from "./merge-data"
 
 export type WorkflowStepMiddlewareReturn = {
   alias?: string
@@ -77,7 +77,7 @@ export function pipe<T>(
     functions.length
   ) {
     const handler = functions.pop()!
-    functions.push(aggregateData(input.mergeFrom, input.mergeAlias), handler)
+    functions.push(mergeData(input.mergeFrom, input.mergeAlias), handler)
   }
 
   return async ({

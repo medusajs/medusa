@@ -1,8 +1,8 @@
-import { aggregateData } from "../aggregate"
+import { mergeData } from "../merge-data"
 import { WorkflowStepMiddlewareReturn } from "../pipe"
 
-describe("aggregate", function () {
-  it("should aggregate a new object from the source into a specify target", async function () {
+describe("merge", function () {
+  it("should merge a new object from the source into a specify target", async function () {
     const source = {
       stringProp: "stringProp",
       anArray: ["anArray"],
@@ -14,7 +14,7 @@ describe("aggregate", function () {
       },
     }
 
-    const result = (await aggregateData(
+    const result = (await mergeData(
       ["input", "another", "stringProp", "anArray"],
       "payload"
     )({ data: source } as any)) as unknown as WorkflowStepMiddlewareReturn
@@ -30,7 +30,7 @@ describe("aggregate", function () {
     })
   })
 
-  it("should aggregate a new object from the entire source into the resul object", async function () {
+  it("should merge a new object from the entire source into the resul object", async function () {
     const source = {
       stringProp: "stringProp",
       anArray: ["anArray"],
@@ -42,7 +42,7 @@ describe("aggregate", function () {
       },
     }
 
-    const { value: result } = (await aggregateData()({
+    const { value: result } = (await mergeData()({
       data: source,
     } as any)) as unknown as WorkflowStepMiddlewareReturn
 
