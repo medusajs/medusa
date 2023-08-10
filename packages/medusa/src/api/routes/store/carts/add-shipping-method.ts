@@ -1,6 +1,8 @@
 import { IsOptional, IsString } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 
+import { FlagRouter } from "@medusajs/utils"
+import { Workflows, addShippingMethod } from "@medusajs/workflows"
 import { EntityManager } from "typeorm"
 import { CartService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
@@ -67,24 +69,47 @@ export default async (req, res) => {
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
 
-  await manager.transaction(async (m) => {
-    const txCartService = cartService.withTransaction(m)
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
 
-    await txCartService.addShippingMethod(
-      id,
-      validated.option_id,
-      validated.data
-    )
-
-    const updated = await txCartService.retrieve(id, {
-      select: ["id"],
-      relations: ["payment_sessions"],
-    })
-
-    if (updated.payment_sessions?.length) {
-      await txCartService.setPaymentSessions(id)
-    }
+  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
+    workflows: Workflows.AddShippingMethod,
   })
+
+  if (isWorkflowEnabled) {
+    const addShippingMethodFlow = addShippingMethod(req.scope)
+
+    const input = {
+      cart_id: id,
+      option_id: validated.option_id,
+      data: validated.data,
+    }
+
+    await addShippingMethodFlow.run({
+      input,
+      context: {
+        manager,
+      },
+    })
+  } else {
+    await manager.transaction(async (m) => {
+      const txCartService = cartService.withTransaction(m)
+
+      await txCartService.addShippingMethod(
+        id,
+        validated.option_id,
+        validated.data
+      )
+
+      const updated = await txCartService.retrieve(id, {
+        select: ["id"],
+        relations: ["payment_sessions"],
+      })
+
+      if (updated.payment_sessions?.length) {
+        await txCartService.setPaymentSessions(id)
+      }
+    })
+  }
 
   const data = await cartService.retrieveWithTotals(id, {
     select: defaultStoreCartFields,
