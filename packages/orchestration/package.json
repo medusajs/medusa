@@ -32,6 +32,6 @@
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
-    "test": "jest"
+    "test": "jest --runInBand --bail --forceExit"
   }
 }
