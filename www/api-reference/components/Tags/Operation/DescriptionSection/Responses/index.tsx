@@ -83,7 +83,12 @@ const TagsOperationDescriptionSectionResponses = ({
                     </Badge>
                   }
                   expandable={false}
-                  className={clsx(index !== 0 && "border-t-0")}
+                  className={clsx(
+                    index !== 0 && "border-t-0",
+                    index === 0 &&
+                      Object.entries(responses).length > 1 &&
+                      "border-b-0"
+                  )}
                 />
               )}
             </Fragment>
