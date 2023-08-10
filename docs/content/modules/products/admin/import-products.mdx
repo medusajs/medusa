@@ -29,15 +29,15 @@ Part of the process of importing products is uploading a CSV file. This requires
 - [MinIO](../../../plugins/file-service/minio.md) (At least version `1.1.0`)
 - [Spaces](../../../plugins/file-service/spaces.md)
 
-### CSV File
-
-You must have a CSV file that you will use to import products into your Medusa backend. You can check [this CSV example file](https://medusa-doc-files.s3.amazonaws.com/product-import-1.3.8.csv) to see which format is required for your import.
-
 :::note
 
-If you have Sales Channels enabled on your backend, you must use [this CSV example file](https://medusa-doc-files.s3.amazonaws.com/product-import-sales-channels.csv) instead.
+The local file service can't be used for product import.
 
 :::
+
+### CSV File
+
+You must have a CSV file that you will use to import products into your Medusa backend. You can check [this CSV example file](https://medusa-doc-files.s3.amazonaws.com/product-import-sales-channels.csv) to see which format is required for your import.
 
 ### JS Client
 
@@ -122,7 +122,6 @@ fetch(`<BACKEND_URL>/admin/uploads`, {
 ```bash
 curl -L -X POST '<BACKEND_URL>/admin/uploads' \
   -H 'Authorization: Bearer <API_TOKEN>' \
-  -H 'Content-Type: text/csv' \
   -F 'files=@"<FILE_PATH_1>"'
 ```
 
@@ -130,6 +129,8 @@ curl -L -X POST '<BACKEND_URL>/admin/uploads' \
 </Tabs>
 
 This request returns an array of uploads. Each item in the array is an object that includes the properties `url` and `key`. You’ll need the `key` to import the products next.
+
+Where `<FILE_PATH_1>` is a full path to the file. For example, `/Users/medusa/product-import-sales-channels.csv`
 
 ---
 
