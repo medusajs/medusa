@@ -46,13 +46,13 @@ If you follow the Medusa React code blocks, it's assumed you already have [Medus
 
 You must be an authenticated admin user before following along with the steps in the tutorial.
 
-You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin/#section/Authentication).
+You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin#authentication).
 
 ---
 
 ## List Customers
 
-You can show a list of customers by sending a request to the [List Customers](https://docs.medusajs.com/api/admin/#tag/Customer/operation/GetCustomers) endpoint:
+You can show a list of customers by sending a request to the [List Customers](https://docs.medusajs.com/api/admin#customers_getcustomers) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -118,7 +118,7 @@ curl -L -X GET '<BACKEND_URL>/admin/customers' \
 </TabItem>
 </Tabs>
 
-This request doesn’t require any path or query parameters. You can pass it optional parameters used for filtering and pagination. Check out the [API reference](https://docs.medusajs.com/api/admin/#tag/Customer/operation/GetCustomers) to learn more.
+This request doesn’t require any path or query parameters. You can pass it optional parameters used for filtering and pagination. Check out the [API reference](https://docs.medusajs.com/api/admin#customers_getcustomers) to learn more.
 
 This request returns the following data in the response:
 
@@ -129,7 +129,7 @@ This request returns the following data in the response:
 
 :::info
 
-You can learn more about pagination in the [API reference](https://docs.medusajs.com/api/admin/#section/Pagination).
+You can learn more about pagination in the [API reference](https://docs.medusajs.com/api/admin#pagination).
 
 :::
 
@@ -139,7 +139,7 @@ You can learn more about pagination in the [API reference](https://docs.medusajs
 
 Admins can create customer accounts. They have to supply the customer’s credentials and basic info.
 
-You can create a customer account by sending a request to the [Create a Customer](https://docs.medusajs.com/api/admin/#tag/Customer/operation/PostCustomers) endpoint:
+You can create a customer account by sending a request to the [Create a Customer](https://docs.medusajs.com/api/admin#customers_postcustomers) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -236,7 +236,7 @@ This request requires the following body parameters:
 - `first_name`: The customer’s first name.
 - `last_name`: the customer’s last name.
 
-You can also pass other optional parameters. To learn more, check out the [API reference](https://docs.medusajs.com/api/admin/#tag/Customer/operation/PostCustomers).
+You can also pass other optional parameters. To learn more, check out the [API reference](https://docs.medusajs.com/api/admin#customers_postcustomers).
 
 The request returns the created customer object in the response.
 
@@ -246,7 +246,7 @@ The request returns the created customer object in the response.
 
 An admin can edit a customer’s basic information and credentials.
 
-You can edit a customer’s information by sending a request to the [Update a Customer](https://docs.medusajs.com/api/admin/#tag/Customer/operation/PostCustomersCustomer) endpoint:
+You can edit a customer’s information by sending a request to the [Update a Customer](https://docs.medusajs.com/api/admin#customers_postcustomerscustomer) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -327,7 +327,7 @@ curl -L -X POST '<BACKEND_URL>/admin/customers/<CUSTOMER_ID>' \
 </TabItem>
 </Tabs>
 
-This request accepts any of the customer’s fields as body parameters. In this example, you update the customer’s first name. You can learn more about accepted body parameters in the [API reference](https://docs.medusajs.com/api/admin/#tag/Customer/operation/PostCustomersCustomer).
+This request accepts any of the customer’s fields as body parameters. In this example, you update the customer’s first name. You can learn more about accepted body parameters in the [API reference](https://docs.medusajs.com/api/admin#customers_postcustomerscustomer).
 
 This request returns the updated customer object in the response.
 

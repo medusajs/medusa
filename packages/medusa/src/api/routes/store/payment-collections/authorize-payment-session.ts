@@ -29,7 +29,6 @@ import { PaymentCollectionService } from "../../../../services"
  *     source: |
  *       curl -X POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/{session_id}/authorize'
  * security:
- *   - api_token: []
  *   - cookie_auth: []
  * tags:
  *   - Payment Collections

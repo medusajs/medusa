@@ -30,7 +30,6 @@ import { FindParams } from "../../../../types/common"
  *     source: |
  *       curl 'https://medusa-url.com/store/payment-collections/{id}'
  * security:
- *   - api_token: []
  *   - cookie_auth: []
  * tags:
  *   - Payment Collections

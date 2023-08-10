@@ -45,13 +45,13 @@ If you follow the Medusa React code blocks, it's assumed you already have [Medus
 
 You must be an authenticated admin user before following along with the steps in the tutorial.
 
-You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin/#section/Authentication).
+You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin#authentication).
 
 ---
 
 ## List Categories
 
-You can retrieve available categories by sending a request to the [List Categories](https://docs.medusajs.com/api/admin#tag/Product-Category/operation/GetProductCategories) endpoint:
+You can retrieve available categories by sending a request to the [List Categories](https://docs.medusajs.com/api/admin#product-categories_getproductcategories) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -123,15 +123,15 @@ curl -L -X GET '<BACKEND_URL>/admin/product-categories' \
 </TabItem>
 </Tabs>
 
-This request returns an array of product categories, as well as [pagination fields](https://docs.medusajs.com/api/admin#section/Pagination).
+This request returns an array of product categories, as well as [pagination fields](https://docs.medusajs.com/api/admin#pagination).
 
-You can also pass filters and other selection query parameters to the request. Check out the [API reference](https://docs.medusajs.com/api/admin#tag/Product-Category/operation/GetProductCategories) for more details on available query parameters.
+You can also pass filters and other selection query parameters to the request. Check out the [API reference](https://docs.medusajs.com/api/admin#product-categories_getproductcategories) for more details on available query parameters.
 
 ---
 
 ## Create a Category
 
-You can create a category by sending a request to the [Create a Category](https://docs.medusajs.com/api/admin#tag/Product-Category/operation/PostProductCategories) endpoint:
+You can create a category by sending a request to the [Create a Category](https://docs.medusajs.com/api/admin#product-categories_postproductcategories) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -215,7 +215,7 @@ The request returns the newly created product category.
 
 ## Retrieve a Category
 
-You can retrieve a product category by sending a request to the [Get a Product Category](https://docs.medusajs.com/api/admin#tag/Product-Category/operation/GetProductCategoriesCategory) endpoint:
+You can retrieve a product category by sending a request to the [Get a Product Category](https://docs.medusajs.com/api/admin#product-categories_getproductcategoriescategory) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -285,7 +285,7 @@ It returns the full object of the product category.
 
 ## Edit a Category
 
-You can edit a product category by sending a request to the [Update a Product Category](https://docs.medusajs.com/api/admin#tag/Product-Category/operation/PostProductCategoriesCategory) endpoint:
+You can edit a product category by sending a request to the [Update a Product Category](https://docs.medusajs.com/api/admin#product-categories_postproductcategoriescategory) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -364,7 +364,7 @@ This request requires the ID of the category to be passed as a path parameter.
 
 In its body, you can pass any of the category’s fields that you want to update. In the code snippet above, you update the name of the category.
 
-You can check the list of accepted fields in the [API reference](https://docs.medusajs.com/api/admin#tag/Product-Category/operation/PostProductCategoriesCategory).
+You can check the list of accepted fields in the [API reference](https://docs.medusajs.com/api/admin#product-categories_postproductcategoriescategory).
 
 The request returns the full object of the updated product category.
 
@@ -374,13 +374,13 @@ The request returns the full object of the updated product category.
 
 :::note
 
-You can manage the categories of each product individually using the [product APIs](https://docs.medusajs.com/api/admin#tag/Product). This section explores the other approach of managing a product’s category using the product category APIs.
+You can manage the categories of each product individually using the [product APIs](https://docs.medusajs.com/api/admin#products). This section explores the other approach of managing a product’s category using the product category APIs.
 
 :::
 
 ### Add Products to a Category
 
-You can add more than one product to a category using the [Add Products to a Category](https://docs.medusajs.com/api/admin#tag/Product-Category/operation/PostProductCategoriesCategoryProductsBatch) endpoint:
+You can add more than one product to a category using the [Add Products to a Category](https://docs.medusajs.com/api/admin#product-categories_postproductcategoriescategoryproductsbatch) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -491,7 +491,7 @@ The request returns the full object of the product category updated with the new
 
 ### Remove Products from a Category
 
-You can remove products from a category by sending a request to the [Delete Products](https://docs.medusajs.com/api/admin#tag/Product-Category/operation/DeleteProductCategoriesCategoryProductsBatch) endpoint:
+You can remove products from a category by sending a request to the [Delete Products](https://docs.medusajs.com/api/admin#product-categories_deleteproductcategoriescategoryproductsbatch) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -608,7 +608,7 @@ The request returns the full object of the product category updated with the its
 
 ## Delete a Category
 
-You can delete a product category by sending a request to the [Delete a Product Category](https://docs.medusajs.com/api/admin#tag/Product-Category/operation/DeleteProductCategoriesCategory) endpoint:
+You can delete a product category by sending a request to the [Delete a Product Category](https://docs.medusajs.com/api/admin#product-categories_deleteproductcategoriescategory) endpoint:
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>

@@ -139,6 +139,10 @@ tags:
     externalDocs:
       description: How to edit an order
       url: https://docs.medusajs.com/modules/orders/admin/edit-order
+  - name: Payments
+    description: >
+      A payment can be related to an order, swap, return, or more. It can be
+      captured or refunded.
   - name: Payment Collections
     description: >
       A payment collection is useful for managing additional payments, such as

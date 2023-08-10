@@ -33,7 +33,6 @@ post:
         $ref: >-
           ../code_samples/Shell/store_payment-collections_{id}_sessions_batch/post.sh
   security:
-    - api_token: []
     - cookie_auth: []
   tags:
     - Payment Collections

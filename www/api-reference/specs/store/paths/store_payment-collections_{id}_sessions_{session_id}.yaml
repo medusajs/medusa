@@ -31,6 +31,8 @@ post:
       source:
         $ref: >-
           ../code_samples/Shell/store_payment-collections_{id}_sessions_{session_id}/post.sh
+  security:
+    - cookie_auth: []
   tags:
     - Payment Collections
   responses:

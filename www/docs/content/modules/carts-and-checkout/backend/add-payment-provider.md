@@ -151,7 +151,7 @@ As mentioned in the overview, Payment Processors should have a static `identifi
 
 The `PaymentProvider` entity has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the class will be used when the Payment Processor is created in the database.
 
-The value of this property will also be used to reference the Payment Processor throughout the Medusa backend. For example, the identifier is used when a [Payment Session in a cart is selected on checkout](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSession).
+The value of this property will also be used to reference the Payment Processor throughout the Medusa backend. For example, the identifier is used when a [Payment Session in a cart is selected on checkout](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsession).
 
 The identifier can be retrieved using the `getIdentifier` method, which is defined in `AbstractPaymentProcessor`.
 
@@ -229,7 +229,7 @@ abstract class StripeBase extends AbstractPaymentProcessor {
 
 ### initiatePayment
 
-This method is called either if a region has only one payment provider enabled or when [a Payment Session is selected](https://docs.medusajs.com/api/store#tag/Cart/operation/PostCartsCartPaymentSession), which occurs when the customer selects their preferred payment method during checkout. It is used to allow you to make any necessary calls to the third-party provider to initialize the payment.
+This method is called either if a region has only one payment provider enabled or when [a Payment Session is selected](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsession), which occurs when the customer selects their preferred payment method during checkout. It is used to allow you to make any necessary calls to the third-party provider to initialize the payment.
 
 For example, in Stripe this method is used to create a Payment Intent for the customer.
 
@@ -346,7 +346,7 @@ class MyPaymentService extends AbstractPaymentService {
 
 ### updatePayment
 
-This method is used to perform any necessary updates on the payment. This method is called whenever the cart or any of its related data is updated. For example, when a [line item is added to the cart](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartLineItems) or when a [shipping method is selected](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartShippingMethod).
+This method is used to perform any necessary updates on the payment. This method is called whenever the cart or any of its related data is updated. For example, when a [line item is added to the cart](https://docs.medusajs.com/api/store#carts_postcartscartlineitems) or when a [shipping method is selected](https://docs.medusajs.com/api/store#carts_postcartscartshippingmethod).
 
 :::tip
 
@@ -417,8 +417,8 @@ class MyPaymentService extends AbstractPaymentService {
 
 This method is used to perform any actions necessary before a Payment Session is deleted. The Payment Session is deleted in one of the following cases:
 
-1. When a request is sent to [delete the Payment Session](https://docs.medusajs.com/api/store/#tag/Cart/operation/DeleteCartsCartPaymentSessionsSession).
-2. When the [Payment Session is refreshed](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartPaymentSessionsSession). The Payment Session is deleted so that a newer one is initialized instead.
+1. When a request is sent to [delete the Payment Session](https://docs.medusajs.com/api/store#carts_deletecartscartpaymentsessionssession).
+2. When the [Payment Session is refreshed](https://docs.medusajs.com/api/store#carts_postcartscartpaymentsessionssession). The Payment Session is deleted so that a newer one is initialized instead.
 3. When the Payment Processor is no longer available. This generally happens when the store operator removes it from the available Payment Processor in the admin.
 4. When the region of the store is changed based on the cart information and the Payment Processor is not available in the new region.
 
@@ -444,7 +444,7 @@ class MyPaymentService extends AbstractPaymentService {
 
 ### authorizePayment
 
-This method is used to authorize payment using the Payment Session of an order. This is called when the [cart is completed](https://docs.medusajs.com/api/store/#tag/Cart/operation/PostCartsCartComplete) and before the order is created.
+This method is used to authorize payment using the Payment Session of an order. This is called when the [cart is completed](https://docs.medusajs.com/api/store#carts_postcartscartcomplete) and before the order is created.
 
 This method is also used for authorizing payments of a swap of an order and when authorizing sessions in a payment collection.
 
@@ -510,7 +510,7 @@ class MyPaymentService extends AbstractPaymentService {
 
 This method is used to capture the payment amount of an order. This is typically triggered manually by the store operator from the admin.
 
-This method is also used for capturing payments of a swap of an order, or when the [Capture Payment](https://docs.medusajs.com/api/admin#tag/Payment/operation/PostPaymentsPaymentCapture) endpoint is called.
+This method is also used for capturing payments of a swap of an order, or when the [Capture Payment](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentcapture) endpoint is called.
 
 You can utilize this method to interact with the third-party provider and perform any actions necessary to capture the payment.
 
@@ -538,7 +538,7 @@ class MyPaymentService extends AbstractPaymentService {
 
 This method is used to refund an order’s payment. This is typically triggered manually by the store operator from the admin. The refund amount might be the total order amount or part of it.
 
-This method is also used for refunding payments of a swap or a claim of an order, or when the [Refund Payment](https://docs.medusajs.com/api/admin#tag/Payment/operation/PostPaymentsPaymentRefunds) endpoint is called.
+This method is also used for refunding payments of a swap or a claim of an order, or when the [Refund Payment](https://docs.medusajs.com/api/admin#payments_postpaymentspaymentrefunds) endpoint is called.
 
 You can utilize this method to interact with the third-party provider and perform any actions necessary to refund the payment.
 

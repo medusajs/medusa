@@ -1,6 +1,6 @@
 post:
   operationId: PostPaymentCollectionsSessionsBatchAuthorize
-  summary: Authorize PaymentSessions
+  summary: Authorize Payment Sessions
   description: Authorize the Payment Sessions of a Payment Collection.
   x-authenticated: false
   parameters:
@@ -30,7 +30,6 @@ post:
         $ref: >-
           ../code_samples/Shell/store_payment-collections_{id}_sessions_batch_authorize/post.sh
   security:
-    - api_token: []
     - cookie_auth: []
   tags:
     - Payment Collections

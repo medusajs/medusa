@@ -39,7 +39,6 @@ import { PaymentCollectionService } from "../../../../services"
  *         "provider_id": "stripe"
  *       }'
  * security:
- *   - api_token: []
  *   - cookie_auth: []
  * tags:
  *   - Payment Collections

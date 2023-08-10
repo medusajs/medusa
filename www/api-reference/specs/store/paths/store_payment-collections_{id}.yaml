@@ -37,7 +37,6 @@ get:
       source:
         $ref: ../code_samples/Shell/store_payment-collections_{id}/get.sh
   security:
-    - api_token: []
     - cookie_auth: []
   tags:
     - Payment Collections

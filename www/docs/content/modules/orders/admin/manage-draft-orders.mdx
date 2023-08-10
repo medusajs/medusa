@@ -46,13 +46,13 @@ If you follow the Medusa React code blocks, it's assumed you already have [Medus
 
 You must be an authenticated admin user before following along with the steps in the tutorial.
 
-You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin/#section/Authentication).
+You can learn more about [authenticating as an admin user in the API reference](https://docs.medusajs.com/api/admin#authentication).
 
 ---
 
 ## List Draft Orders
 
-You can list draft orders by sending a request to the [List Draft Orders endpoint](https://docs.medusajs.com/api/admin#tag/Draft-Orders/operation/GetDraftOrders):
+You can list draft orders by sending a request to the [List Draft Orders endpoint](https://docs.medusajs.com/api/admin#draft-orders_getdraftorders):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -117,15 +117,15 @@ curl -L -X GET '<BACKEND_URL>/admin/draft-orders' \
 </TabItem>
 </Tabs>
 
-This endpoint does not require any path or query parameters. You can pass search or pagination query parameters as explained in the [API reference](https://docs.medusajs.com/api/admin#tag/Draft-Orders/operation/GetDraftOrders).
+This endpoint does not require any path or query parameters. You can pass search or pagination query parameters as explained in the [API reference](https://docs.medusajs.com/api/admin#draft-orders_getdraftorders).
 
-The request returns an array of draft order objects along with [pagination parameters](https://docs.medusajs.com/api/admin#section/Pagination).
+The request returns an array of draft order objects along with [pagination parameters](https://docs.medusajs.com/api/admin#pagination).
 
 ---
 
 ## Create a Draft Order
 
-You can create a draft order by sending a request to the [Create Draft Order endpoint](https://docs.medusajs.com/api/admin#tag/Draft-Orders/operation/PostDraftOrders):
+You can create a draft order by sending a request to the [Create Draft Order endpoint](https://docs.medusajs.com/api/admin#draft-orders_postdraftorders):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -290,7 +290,7 @@ You can also pass other optional parameters. For example, the `items` array can 
 
 You must also pass for each item its quantity.
 
-To learn about other optional request body parameters, such as passing shipping or billing addresses, check out the [API reference](https://docs.medusajs.com/api/admin#tag/Draft-Orders/operation/PostDraftOrders).
+To learn about other optional request body parameters, such as passing shipping or billing addresses, check out the [API reference](https://docs.medusajs.com/api/admin#draft-orders_postdraftorders).
 
 The request returns the created draft order as an object.
 
@@ -298,7 +298,7 @@ The request returns the created draft order as an object.
 
 ## Retrieve Draft Order
 
-You can retrieve a draft order by sending a request to the [Get Draft Order endpoint](https://docs.medusajs.com/api/admin#tag/Draft-Orders/operation/GetDraftOrdersDraftOrder):
+You can retrieve a draft order by sending a request to the [Get Draft Order endpoint](https://docs.medusajs.com/api/admin#draft-orders_getdraftordersdraftorder):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -366,7 +366,7 @@ The request returns the draft order as an object.
 
 ## Update Draft Order
 
-You can update a draft order by sending a request to the [Update Draft Order endpoint](https://docs.medusajs.com/api/admin#tag/Draft-Orders/operation/PostDraftOrdersDraftOrder):
+You can update a draft order by sending a request to the [Update Draft Order endpoint](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorder):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -441,7 +441,7 @@ curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>' \
 
 This endpoint requires the draft order’s ID as a path parameter.
 
-In the request body, you can pass any of the draft order’s fields to update. In the example above, you update the `email` field. Check out the [API reference](https://docs.medusajs.com/api/admin#tag/Draft-Orders/operation/PostDraftOrdersDraftOrder) to learn about other accepted request body parameters.
+In the request body, you can pass any of the draft order’s fields to update. In the example above, you update the `email` field. Check out the [API reference](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorder) to learn about other accepted request body parameters.
 
 The request returns the updated draft order as an object.
 
@@ -451,7 +451,7 @@ The request returns the updated draft order as an object.
 
 ### Add Line Items
 
-You can add line items to a draft order by sending a request to the [Create Line Items endpoint](https://docs.medusajs.com/api/admin#tag/Draft-Orders/operation/PostDraftOrdersDraftOrderLineItems):
+You can add line items to a draft order by sending a request to the [Create Line Items endpoint](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderlineitems):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -535,13 +535,13 @@ There are two types of items that you can add:
 1. Defined product variants. This is done by passing the `variant_id` parameter, with its value being the ID of the product variant to add.
 2. Custom products that aren’t defined in your store. This is done by passing the `unit_price` parameter with its value being the price of the custom product, and the `title` property with its value being the title of the custom product.
 
-Check the [API reference](https://docs.medusajs.com/api/admin#tag/Draft-Orders/operation/PostDraftOrdersDraftOrderLineItems) for a full list of request body parameters.
+Check the [API reference](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderlineitems) for a full list of request body parameters.
 
 The request returns the updated draft order as an object. You can access the draft order’s items by accessing the `carts` property in the draft item, then the `items` property. The `items` property is an array of line item objects.
 
 ### Update Line Item
 
-You can update a line item by sending a request to the [Update Line Item endpoint](https://docs.medusajs.com/api/admin#tag/Draft-Orders/operation/PostDraftOrdersDraftOrderLineItemsItem):
+You can update a line item by sending a request to the [Update Line Item endpoint](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderlineitemsitem):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -619,13 +619,13 @@ curl -L -X POST '<BACKEND_URL>/admin/draft-orders/<DRAFT_ORDER_ID>/line-items/<I
 
 This endpoint requires the draft order and line item’s IDs as path parameters.
 
-In the request body, you can pass any of the line item’s fields as parameters to update them. In the example above, you pass the `quantity` parameter to update the quantity of the item. Check out the [API reference](https://docs.medusajs.com/api/admin#tag/Draft-Orders/operation/PostDraftOrdersDraftOrderLineItemsItem) for a full list of request body parameters.
+In the request body, you can pass any of the line item’s fields as parameters to update them. In the example above, you pass the `quantity` parameter to update the quantity of the item. Check out the [API reference](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderlineitemsitem) for a full list of request body parameters.
 
 The request returns the updated draft order as an object. You can access the draft order’s items by accessing the `carts` property in the draft item, then the `items` property. The `items` property is an array of line item objects.
 
 ### Delete Line Item
 
-You can delete a line item by sending a request to the [Delete Line Item endpoint](https://docs.medusajs.com/api/admin#tag/Draft-Orders/operation/DeleteDraftOrdersDraftOrderLineItemsItem):
+You can delete a line item by sending a request to the [Delete Line Item endpoint](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersdraftorderlineitemsitem):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -696,7 +696,7 @@ The request returns the updated draft order as an object. You can access the dra
 
 Registering the draft order’s payment leads to authorizing and capturing the payment using the `system` payment method. This would complete the draft order and create an order from it.
 
-You can register the draft order payment by sending a request to the [Register Draft Order Payment endpoint](https://docs.medusajs.com/api/admin#tag/Draft-Orders/operation/PostDraftOrdersDraftOrderRegisterPayment):
+You can register the draft order payment by sending a request to the [Register Draft Order Payment endpoint](https://docs.medusajs.com/api/admin#draft-orders_postdraftordersdraftorderregisterpayment):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
@@ -763,7 +763,7 @@ The request returns the order created from the draft order as an object.
 
 ## Delete a Draft Order
 
-You can delete a draft order by sending a request to the [Delete Draft Order endpoint](https://docs.medusajs.com/api/admin#tag/Draft-Orders/operation/DeleteDraftOrdersDraftOrder):
+You can delete a draft order by sending a request to the [Delete Draft Order endpoint](https://docs.medusajs.com/api/admin#draft-orders_deletedraftordersdraftorder):
 
 <Tabs groupId="request-type" isCodeTabs={true}>
 <TabItem value="client" label="Medusa JS Client" default>
