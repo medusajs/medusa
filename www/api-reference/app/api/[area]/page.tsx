@@ -46,3 +46,16 @@ export function generateMetadata({ params: { area } }: ReferencePageProps) {
     description: `REST API reference for the Medusa ${area} API. This reference includes code snippets and examples for Medusa JS Client and cURL.`,
   }
 }
+
+export const dynamicParams = false
+
+export async function generateStaticParams() {
+  return [
+    {
+      area: "admin",
+    },
+    {
+      area: "store",
+    },
+  ]
+}

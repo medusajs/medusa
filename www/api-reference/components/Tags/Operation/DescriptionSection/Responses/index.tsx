@@ -56,7 +56,7 @@ const TagsOperationDescriptionSectionResponses = ({
                         />
                       }
                       openInitial={index === 0}
-                      className={clsx(index !== 0 && "border-t-0")}
+                      className={clsx(index > 1 && "border-t-0")}
                     >
                       <TagOperationParameters
                         schemaObject={

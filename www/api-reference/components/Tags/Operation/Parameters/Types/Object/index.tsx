@@ -119,7 +119,10 @@ const TagOperationParametersObject = ({
   }
 
   return (
-    <Details summaryContent={getPropertyDescriptionElm(true)}>
+    <Details
+      summaryContent={getPropertyDescriptionElm(true)}
+      className="!border-y-0"
+    >
       {getPropertyParameterElms(true)}
     </Details>
   )

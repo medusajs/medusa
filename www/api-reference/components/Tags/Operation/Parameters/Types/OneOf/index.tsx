@@ -109,8 +109,10 @@ const TagOperationParamatersOneOf = ({
               schema={schema}
               name={schema.parameterName || schema.title || ""}
               isRequired={isRequired}
+              expandable={true}
             />
           }
+          className="!border-y-0"
         >
           <TagsOperationParametersNested>
             {getContent()}

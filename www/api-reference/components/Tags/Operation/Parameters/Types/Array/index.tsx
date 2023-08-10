@@ -66,6 +66,7 @@ const TagOperationParametersArray = ({
           expandable={true}
         />
       }
+      className="!border-y-0"
     >
       <TagsOperationParametersNested>
         <TagOperationParameters schemaObject={schema.items} topLevel={true} />
