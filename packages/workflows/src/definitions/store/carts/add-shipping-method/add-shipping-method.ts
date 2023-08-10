@@ -8,7 +8,7 @@ import {
   ShippingMethodHandlers,
   ShippingOptionHandlers,
 } from "../../../../handlers"
-import { aggregateData, exportWorkflow, pipe } from "../../../../helper"
+import { exportWorkflow, pipe } from "../../../../helper"
 import { Workflows } from "../../../../workflows"
 import { prepareAddShippingMethodToCartWorkflowData } from "./prepare-add-shipping-method-to-cart-data"
 import { prepareDeleteShippingMethodsData } from "./prepare-delete-shipping-methods-data"
@@ -24,7 +24,6 @@ export enum AddShippingMethodWorkflowActions {
   adjustFreeShipping = "adjustFreeShipping",
   cleanUpPaymentSessions = "cleanUpPaymentSessions",
   updatePaymentSessions = "updatePaymentSessions",
-  result = "result",
 }
 
 export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
@@ -54,10 +53,6 @@ export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
                   action:
                     AddShippingMethodWorkflowActions.updatePaymentSessions,
                   saveResponse: false,
-                  next: {
-                    action: AddShippingMethodWorkflowActions.result,
-                    noCompensation: true,
-                  },
                 },
               },
             },
@@ -78,8 +73,8 @@ const handlers = new Map([
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
           },
+          merge: true,
         },
-        aggregateData(),
         CartHandlers.validateShippingOptionForCart
       ),
     },
@@ -92,8 +87,8 @@ const handlers = new Map([
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
           },
+          merge: true,
         },
-        aggregateData(),
         CartHandlers.ensureCorrectLineItemShipping
       ),
     },
@@ -112,8 +107,8 @@ const handlers = new Map([
               alias: "shippingOptionData",
             },
           ],
+          merge: true,
         },
-        aggregateData(),
         ShippingOptionHandlers.getShippingOptionPrice
       ),
     },
@@ -134,8 +129,8 @@ const handlers = new Map([
               from: AddShippingMethodWorkflowActions.getOptionPrice,
             },
           ],
+          merge: true,
         },
-        aggregateData(),
         ShippingMethodHandlers.createShippingMethods
       ),
       compensate: pipe(
@@ -181,8 +176,8 @@ const handlers = new Map([
               alias: "deletedShippingMethods",
             },
           ],
+          merge: true,
         },
-        aggregateData(),
         ShippingMethodHandlers.restoreShippingMethods
       ),
     },
@@ -195,8 +190,8 @@ const handlers = new Map([
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
           },
+          merge: true,
         },
-        aggregateData(),
         setRetrieveConfig({
           relations: [
             "discounts",
@@ -215,8 +210,8 @@ const handlers = new Map([
               from: AddShippingMethodWorkflowActions.prepare,
             },
           ],
+          merge: true,
         },
-        aggregateData(),
         setRetrieveConfig({
           relations: [
             "discounts",
@@ -238,8 +233,8 @@ const handlers = new Map([
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
           },
+          merge: true,
         },
-        aggregateData(),
         setRetrieveConfig({
           relations: [
             "items.variant.product.profiles",
@@ -278,8 +273,8 @@ const handlers = new Map([
           invoke: {
             from: AddShippingMethodWorkflowActions.prepare,
           },
+          merge: true,
         },
-        aggregateData(),
         setRetrieveConfig({
           relations: [
             "items.variant.product.profiles",
@@ -301,20 +296,6 @@ const handlers = new Map([
       ),
     },
   ],
-  [
-    AddShippingMethodWorkflowActions.result,
-    {
-      invoke: pipe(
-        {
-          invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
-          },
-        },
-        aggregateData(),
-        CartHandlers.retrieveCart
-      ),
-    },
-  ],
 ])
 
 WorkflowManager.register(
@@ -328,6 +309,6 @@ export const addShippingMethod = exportWorkflow<
   CartDTO
 >(
   Workflows.AddShippingMethod,
-  AddShippingMethodWorkflowActions.result,
+  AddShippingMethodWorkflowActions.updatePaymentSessions,
   prepareAddShippingMethodToCartWorkflowData
 )
