@@ -19,6 +19,10 @@ If you're deploying the admin plugin along with the backend, you'll need at leas
 
 :::
 
+If you also don't have a Medusa project, you can deploy to Railway instantly with this button:
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/zC7eOq?referralCode=TW4Qi0)
+
 ---
 
 ## Prerequisites
