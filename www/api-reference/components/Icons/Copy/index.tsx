@@ -1,4 +1,3 @@
-import React from "react"
 import IconProps from "../types"
 
 const IconCopy = ({ iconColorClassName, ...props }: IconProps) => {

@@ -232,6 +232,10 @@
     @apply text-label-small-plus text-medusa-text-on-color dark:text-medusa-text-on-inverted-dark;
     @apply border-transparent border;
   }
+
+  .btn-clear {
+    @apply bg-transparent shadow-none border-0 outline-none;
+  }
 }
 
 @import url('./tooltip.css');

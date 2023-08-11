@@ -17,10 +17,10 @@ const Navbar = () => {
     >
       <div
         className={clsx(
-          "h-navbar max-w-xxl sticky top-0 mx-auto flex w-full justify-between py-[12px] px-3"
+          "h-navbar max-w-xxl sticky top-0 mx-auto flex w-full justify-between py-[12px] px-1 lg:px-3"
         )}
       >
-        <div className="flex w-full items-center gap-1.5 lg:w-auto">
+        <div className="flex w-full items-center gap-0.5 lg:w-auto lg:gap-1.5">
           <NavbarLogo />
           <div className="hidden items-center gap-1.5 lg:flex">
             <NavbarLink href="https://docs.medusajs.com/" label="Docs" />
@@ -39,13 +39,15 @@ const Navbar = () => {
               activeValue="admin"
             />
           </div>
+          <div className="lg:hidden [&>*]:flex-1">
+            <SearchBar />
+          </div>
           <NavbarMenuButton />
         </div>
         <div className="hidden min-w-0 flex-1 items-center justify-end gap-0.5 lg:flex">
-          <div className="lg:w-[240px] [&>*]:flex-1">
+          <div className="w-[240px] [&>*]:flex-1">
             <SearchBar />
           </div>
-          {/* <NavbarSidebarButton /> */}
           <NavbarColorModeToggle />
           <Link href="#" className="btn-primary">
             Feedback

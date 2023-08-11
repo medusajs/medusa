@@ -152,13 +152,13 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       },
       {
         title: "Store API",
-        path: "/store",
+        path: "/api/store",
         loaded: true,
         isPathHref: true,
       },
       {
         title: "Admin API",
-        path: "/admin",
+        path: "/api/admin",
         loaded: true,
         isPathHref: true,
       },

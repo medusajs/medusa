@@ -5,6 +5,7 @@ import clsx from "clsx"
 import dynamic from "next/dynamic"
 import { SidebarItemProps } from "./Item"
 import Loading from "../Loading"
+import IconClose from "../Icons/Close"
 
 const SidebarItem = dynamic<SidebarItemProps>(async () => import("./Item"), {
   loading: () => <Loading count={1} />,
@@ -15,7 +16,8 @@ type SidebarProps = {
 }
 
 const Sidebar = ({ className = "" }: SidebarProps) => {
-  const { items, mobileSidebarOpen, desktopSidebarOpen } = useSidebar()
+  const { items, mobileSidebarOpen, desktopSidebarOpen, setMobileSidebarOpen } =
+    useSidebar()
 
   return (
     <aside
@@ -32,6 +34,14 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
         animationFillMode: "forwards",
       }}
     >
+      <div className="flex justify-end p-1 lg:hidden">
+        <button
+          className="btn-clear"
+          onClick={() => setMobileSidebarOpen(false)}
+        >
+          <IconClose />
+        </button>
+      </div>
       <ul
         className={clsx(
           "sticky top-[57px] h-screen max-h-screen w-full list-none overflow-auto p-0",
