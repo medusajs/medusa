@@ -9,7 +9,7 @@ import IconExclamationCircleSolid from "../Icon/ExclamationCircleSolid"
 function NoteIcon() {
   return (
     <IconInformationCircleSolid
-      className="inline-block mr-[2px]"
+      className="inline-block mr-0.125"
       iconColorClassName="fill-medusa-fg-interactive-dark"
     />
   )
@@ -18,7 +18,7 @@ function NoteIcon() {
 function TipIcon() {
   return (
     <IconLightBulbSolid
-      className="inline-block mr-[2px]"
+      className="inline-block mr-0.125"
       iconColorClassName="fill-medusa-tag-orange-icon-dark"
     />
   )
@@ -27,7 +27,7 @@ function TipIcon() {
 function DangerIcon() {
   return (
     <IconExclamationCircleSolid
-      className="inline-block mr-[2px]"
+      className="inline-block mr-0.125"
       iconColorClassName="fill-medusa-fg-error dark:fill-medusa-fg-error-dark"
     />
   )

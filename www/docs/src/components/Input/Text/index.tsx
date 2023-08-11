@@ -14,7 +14,7 @@ const InputText: React.FC<InputTextProps> = (props) => {
       className={clsx(
         "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark shadow-button-secondary dark:shadow-button-secondary-dark",
         "rounded border-medusa-border-loud-muted dark:border-medusa-border-loud-muted-dark border border-solid",
-        "px-[12px] py-[9px]",
+        "px-0.75 py-[9px]",
         "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-subtle-hover-dark",
         "focus:border-medusa-border-interactive dark:focus:border-medusa-border-interactive-dark",
         "active:border-medusa-border-interactive dark:active:border-medusa-border-interactive-dark",

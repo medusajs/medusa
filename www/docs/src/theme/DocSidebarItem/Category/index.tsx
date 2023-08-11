@@ -165,7 +165,7 @@ export default function DocSidebarItemCategory({
           "[&_.sidebar-item-icon]:w-[20px] [&_.sidebar-item-icon]:h-[20px]",
         !customProps?.sidebar_is_title &&
           !customProps?.sidebar_is_back_link &&
-          "[&_.sidebar-item-icon]:mr-[12px]"
+          "[&_.sidebar-item-icon]:mr-0.75"
       )}
     >
       <div

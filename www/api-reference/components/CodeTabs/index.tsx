@@ -69,16 +69,16 @@ const CodeTabs = ({ tabs, className }: CodeTabsProps) => {
       ></span>
       <ul
         className={clsx(
-          "bg-medusa-code-bg-header dark:bg-medusa-code-bg-header-dark flex !list-none rounded-t py-[12px] px-1",
+          "bg-medusa-code-bg-header dark:bg-medusa-code-bg-header-dark py-0.75 flex !list-none rounded-t px-1",
           "border-medusa-code-border dark:border-medusa-code-border-dark border border-b-0 border-transparent",
-          "mb-0 gap-[4px]"
+          "gap-0.25 mb-0"
         )}
       >
         {tabs.map((tab, index) => (
           <li key={index}>
             <button
               className={clsx(
-                "text-compact-small-plus xs:border-0 relative z-[2] rounded-full border py-[4px] px-[12px]",
+                "text-compact-small-plus xs:border-0 py-0.25 px-0.75 relative z-[2] rounded-full border",
                 selectedTab.value !== tab.value &&
                   "text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark border-transparent",
                 selectedTab.value === tab.value &&

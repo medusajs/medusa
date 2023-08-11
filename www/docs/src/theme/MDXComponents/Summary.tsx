@@ -21,13 +21,13 @@ const MDXSummary = ({
   return (
     <summary
       className={clsx(
-        "flex items-center justify-between py-[12px] cursor-pointer",
+        "flex items-center justify-between py-0.75 cursor-pointer",
         "no-marker",
         props.className
       )}
       {...props}
     >
-      <span className="flex flex-col gap-[4px]">
+      <span className="flex flex-col gap-0.25">
         <span
           className={clsx(
             "text-compact-medium-plus text-medusa-fg-base dark:text-medusa-fg-base-dark",

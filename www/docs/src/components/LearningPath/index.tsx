@@ -55,7 +55,7 @@ const LearningPath: React.FC<LearningPathProps> = ({
           {path.description && (
             <span
               className={clsx(
-                "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark text-compact-medium mt-[4px] inline-block"
+                "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark text-compact-medium mt-0.25 inline-block"
               )}
             >
               {path.description}

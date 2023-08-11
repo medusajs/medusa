@@ -14,8 +14,8 @@ const TextArea = (props: TextAreaProps) => {
       {...props}
       className={clsx(
         "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark shadow-button-secondary dark:shadow-button-secondary-dark",
-        "border-medusa-border-loud-muted dark:border-medusa-border-loud-muted-dark rounded border border-solid",
-        "px-[12px] pt-[7px] pb-[9px]",
+        "border-medusa-border-loud-muted dark:border-medusa-border-loud-muted-dark rounded-sm border border-solid",
+        "pt-0.4 px-0.75 text-medium font-base pb-[9px]",
         "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-subtle-hover-dark",
         "focus:border-medusa-border-interactive dark:focus:border-medusa-border-interactive-dark",
         "active:border-medusa-border-interactive dark:active:border-medusa-border-interactive-dark",
@@ -23,7 +23,6 @@ const TextArea = (props: TextAreaProps) => {
         "disabled:border-medusa-border-base dark:disabled:border-medusa-border-base-dark",
         "placeholder:text-medusa-fg-muted dark:placeholder:text-medusa-fg-muted-dark",
         "disabled:placeholder:text-medusa-fg-disabled dark:disabled:placeholder:text-medusa-fg-disabled-dark",
-        "text-medium font-base",
         props.className
       )}
     />

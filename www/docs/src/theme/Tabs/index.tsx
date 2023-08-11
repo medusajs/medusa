@@ -134,7 +134,7 @@ function TabList({
               {...attributes}
               className={clsx(
                 isCodeTabs &&
-                  "text-compact-small-plus py-[4px] border border-solid border-transparent whitespace-nowrap rounded-full [&:not(:first-child)]:ml-[4px]",
+                  "text-compact-small-plus py-0.25 border border-solid border-transparent whitespace-nowrap rounded-full [&:not(:first-child)]:ml-0.25",
                 "!mt-0 cursor-pointer",
                 attributes?.className,
                 isCodeTabs && "z-[2] flex justify-center items-center",
@@ -152,10 +152,10 @@ function TabList({
                 !isCodeTabs &&
                   selectedValue !== value &&
                   "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
-                (!isCodeTabs || !attributes?.badge) && "px-[12px]",
+                (!isCodeTabs || !attributes?.badge) && "px-0.75",
                 isCodeTabs &&
                   attributes?.badge &&
-                  "[&_.badge]:ml-0.5 [&_.badge]:py-[2px] [&_.badge]:px-[6px] [&_.badge]:rounded-full pl-[12px] pr-[4px]"
+                  "[&_.badge]:ml-0.5 [&_.badge]:py-0.125 [&_.badge]:px-[6px] [&_.badge]:rounded-full pl-0.75 pr-0.25"
               )}
             >
               {label ?? value}

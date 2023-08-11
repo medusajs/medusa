@@ -15,7 +15,7 @@ const TextArea: React.FC<TextAreaProps> = (props) => {
       className={clsx(
         "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark shadow-button-secondary dark:shadow-button-secondary-dark",
         "rounded border-medusa-border-loud-muted dark:border-medusa-border-loud-muted-dark border border-solid",
-        "px-[12px] pt-[7px] pb-[9px]",
+        "px-0.75 pt-0.4 pb-[9px]",
         "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-subtle-hover-dark",
         "focus:border-medusa-border-interactive dark:focus:border-medusa-border-interactive-dark",
         "active:border-medusa-border-interactive dark:active:border-medusa-border-interactive-dark",

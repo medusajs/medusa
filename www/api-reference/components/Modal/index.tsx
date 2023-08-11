@@ -47,7 +47,7 @@ const Modal: React.FC<ModalProps> = ({
     >
       <div
         className={clsx(
-          "bg-medusa-bg-base dark:bg-medusa-bg-base-dark rounded",
+          "bg-medusa-bg-base dark:bg-medusa-bg-base-dark rounded-sm",
           "border-medusa-border-base dark:border-medusa-border-base-dark border border-solid",
           "shadow-modal dark:shadow-modal-dark",
           "w-[90%] md:w-[75%] lg:w-[560px]"

@@ -24,7 +24,7 @@ const DetailsSummary = ({
   return (
     <summary
       className={clsx(
-        "flex items-center justify-between py-[12px]",
+        "flex items-center justify-between py-0.75",
         expandable && "cursor-pointer",
         !expandable &&
           "border-medusa-border-base dark:border-medusa-border-base-dark border-y",
@@ -33,7 +33,7 @@ const DetailsSummary = ({
       )}
       {...rest}
     >
-      <span className="flex flex-col gap-[4px]">
+      <span className="gap-0.25 flex flex-col">
         <span
           className={clsx(
             "text-compact-medium-plus text-medusa-fg-base dark:text-medusa-fg-base-dark",

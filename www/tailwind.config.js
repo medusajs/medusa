@@ -498,8 +498,10 @@ module.exports = {
         navbar: "0px 1px 0px 0px #E6E8EB",
       },
       borderRadius: {
-        DEFAULT: "6px",
-        sm: "4px",
+        DEFAULT: "8px",
+        sm: "6px",
+        xs: "4px",
+        xxs: "2px"
       },
       lineHeight: {
         DEFAULT: "24px",
@@ -734,11 +736,15 @@ module.exports = {
     spacing: {
       px: "1px",
       0: "0px",
+      0.125: "2px",
+      0.25: "4px",
       0.4: "7px",
       0.5: "8px",
+      0.75: "12px",
       1: "16px",
       1.5: "24px",
       2: "32px",
+      2.5: "40px",
       3: "48px",
       4: "64px",
       5: "80px",

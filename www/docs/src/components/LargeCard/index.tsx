@@ -62,7 +62,7 @@ const LargeCard: React.FC<LargeCardProps> = ({
             iconWrapperClassName="p-[6px]"
           />
         )}
-        <div className="mb-[4px]">
+        <div className="mb-0.25">
           <span
             className={clsx(
               isSoon &&

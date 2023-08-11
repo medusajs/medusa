@@ -3,7 +3,7 @@
 }
 
 .theme-doc-toc-desktop .table-of-contents {
-  @apply !border-l-0 !p-0 text-[12px] relative overflow-y-hidden;
+  @apply !border-l-0 !p-0 text-0.75 relative overflow-y-hidden;
   @apply before:bg-toc dark:before:bg-toc-dark;
   @apply before:bg-no-repeat before:bg-[length:14px_10px] before:bg-[center_left];
   @apply before:pl-[22px] before:content-['On_this_page'] before:pb-0 text-compact-small-plus;
@@ -16,11 +16,11 @@
 }
 
 .theme-doc-toc-desktop .table-of-contents > li {
-  @apply first:mt-1 [&:not(:first-child)]:mt-0 last:mb-0 [&:not(:last-child)]:mb-[4px];
+  @apply first:mt-1 [&:not(:first-child)]:mt-0 last:mb-0 [&:not(:last-child)]:mb-0.25;
 }
 
 .theme-doc-toc-desktop .table-of-contents li a + ul {
-  @apply mt-[4px];
+  @apply mt-0.25;
 }
 
 .theme-doc-toc-desktop .table-of-contents__link {

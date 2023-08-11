@@ -28,7 +28,7 @@ const TagOperationCodeSection = ({
     <div className={clsx("mt-2 flex flex-col gap-2", className)}>
       <div
         className={clsx(
-          "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark border-medusa-border-base dark:border-medusa-border-base-dark rounded-lg border py-0.5 px-[12px]",
+          "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark border-medusa-border-base dark:border-medusa-border-base-dark px-0.75 rounded border py-0.5",
           "text-code-body flex w-full justify-between gap-1"
         )}
       >

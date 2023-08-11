@@ -25,9 +25,9 @@ const CodeBlock = ({
   return (
     <div
       className={clsx(
-        "bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark relative mb-1 rounded-lg",
+        "bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark relative mb-1 rounded",
         "border-medusa-code-border w-full max-w-full border",
-        "xs:after:content-[''] xs:after:rounded xs:after:absolute xs:after:right-0 xs:after:top-0 xs:after:w-[calc(10%+24px)] xs:after:h-full xs:after:bg-code-fade xs:dark:after:bg-code-fade-dark",
+        "xs:after:content-[''] xs:after:rounded-sm xs:after:absolute xs:after:right-0 xs:after:top-0 xs:after:w-[calc(10%+24px)] xs:after:h-full xs:after:bg-code-fade xs:dark:after:bg-code-fade-dark",
         collapsed && "max-h-[400px] overflow-auto",
         className
       )}
@@ -56,7 +56,7 @@ const CodeBlock = ({
               style={{ ...style, fontStretch: "100%" }}
               className={clsx(
                 "xs:max-w-[90%] relative !mt-0 break-words bg-transparent !outline-none",
-                "overflow-auto break-words rounded",
+                "overflow-auto break-words rounded-sm",
                 preClassName
               )}
             >
@@ -98,7 +98,7 @@ const CodeBlock = ({
             <div
               className={clsx(
                 "absolute z-50 hidden gap-1 md:flex",
-                tokens.length === 1 && "right-[12px] top-[10px]",
+                tokens.length === 1 && "right-0.75 top-[10px]",
                 tokens.length > 1 && "right-1 top-1"
               )}
             >

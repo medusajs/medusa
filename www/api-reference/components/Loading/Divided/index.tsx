@@ -41,10 +41,10 @@ const DividedLoading = ({ className }: DividedLoadingProps) => {
         <>
           <Loading count={1} />
           <Loading count={1} className="my-2" />
-          <Loading count={1} barClassName="h-[200px] !rounded" />
+          <Loading count={1} barClassName="h-[200px] !rounded-sm" />
           <Loading count={1} className="my-2" />
-          <Loading count={1} barClassName="h-3 !rounded" />
-          <Loading count={1} barClassName="h-[230px] !rounded" />
+          <Loading count={1} barClassName="h-3 !rounded-sm" />
+          <Loading count={1} barClassName="h-[230px] !rounded-sm" />
         </>
       }
       className={className}

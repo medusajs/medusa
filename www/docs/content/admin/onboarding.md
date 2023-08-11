@@ -689,7 +689,7 @@ Each of the collapsible elements below hold the path to the file that you should
                   ) : (
                     <span
                       className={clsx(
-                        "rounded-full block border-gray-500 w-[20px] h-[20px] ml-[2px] border-2 transition-all",
+                        "rounded-full block border-gray-500 w-[20px] h-[20px] ml-0.125 border-2 transition-all",
                         {
                           "border-dashed border-blue-500 outline-4 outline-blue-200 outline outline-offset-2":
                             active,

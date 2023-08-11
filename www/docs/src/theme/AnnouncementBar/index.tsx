@@ -18,18 +18,18 @@ export default function AnnouncementBar(): JSX.Element | null {
   return (
     <div
       className={clsx(
-        "relative flex items-center h-auto bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark p-[12px]",
+        "relative flex items-center h-auto bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark p-0.75",
         "rounded mx-1.5 mb-1 shadow-card-rest dark:shadow-card-rest-dark",
         "transition-all duration-200 ease-ease",
         "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-base-hover-dark",
         "print:hidden"
       )}
     >
-      <Bordered wrapperClassName="mr-[12px]">
+      <Bordered wrapperClassName="mr-0.75">
         <div
           className={clsx(
             "p-[6px] flex justify-center items-center",
-            "rounded-sm bg-medusa-bg-component dark:bg-medusa-bg-component-dark"
+            "rounded-xs bg-medusa-bg-component dark:bg-medusa-bg-component-dark"
           )}
         >
           <IconBell iconColorClassName="fill-medusa-fg-subtle dark:fill-medusa-fg-subtle-dark" />

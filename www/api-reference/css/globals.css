@@ -241,7 +241,7 @@
 @layer components {
   .btn-secondary {
     @apply inline-flex flex-row justify-center items-center;
-    @apply py-[5px] px-[12px] rounded cursor-pointer;
+    @apply py-[5px] px-0.75 rounded cursor-pointer;
     @apply bg-button-neutral dark:bg-button-neutral-dark;
     @apply hover:bg-button-neutral-hover dark:hover:!bg-no-image dark:hover:bg-medusa-button-neutral-hover-dark hover:no-underline;
     @apply active:bg-button-neutral-pressed dark:active:!bg-no-image dark:active:bg-medusa-button-neutral-pressed-dark;
@@ -257,12 +257,12 @@
   }
 
   .btn-secondary-icon {
-    @apply !p-[4px];
+    @apply !p-0.25;
   }
 
   .btn-primary {
     @apply inline-flex flex-row justify-center items-center;
-    @apply py-[6px] px-[12px] rounded cursor-pointer;
+    @apply py-[6px] px-0.75 rounded cursor-pointer;
     @apply bg-medusa-button-inverted dark:bg-medusa-button-inverted-dark bg-button-inverted dark:bg-button-inverted-dark;
     @apply hover:bg-button-inverted-hover dark:hover:bg-no-image hover:bg-medusa-button-inverted-hover dark:hover:bg-medusa-button-inverted-hover-dark hover:no-underline;
     @apply active:bg-button-inverted-pressed dark:active:bg-no-image active:bg-medusa-button-inverted-pressed dark:active:bg-medusa-button-inverted-pressed-dark;

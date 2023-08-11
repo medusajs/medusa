@@ -21,7 +21,7 @@
 .menu__list-item .menu__list:not(.theme-doc-sidebar-menu) .theme-doc-sidebar-item-category .menu__list-item-collapsible .menu__link--active::before,
 .menu__list-item .menu__list:not(.theme-doc-sidebar-menu) > .theme-doc-sidebar-item-link > .menu__link--active::before,
 .menu__list-item .menu__list:not(.theme-doc-sidebar-menu) .theme-doc-sidebar-item-category > .menu__list-item-collapsible::before {
-  @apply content-[''] h-full w-[1px] absolute left-[8px] top-0 z-[1];
+  @apply content-[''] h-full w-[1px] absolute left-0.5 top-0 z-[1];
 }
 
 .menu__list-item .menu__list:not(.theme-doc-sidebar-menu) [class*=theme-doc-sidebar-item-] .menu__link--active::before {
@@ -117,7 +117,7 @@
 }
 
 .menu__list:not(.theme-doc-sidebar-menu) > .theme-doc-sidebar-item-link:last-child > .menu__link--active::before {
-  @apply !top-[4px];
+  @apply !top-0.25;
 }
 
 .menu__link--sublist-caret:after {
@@ -129,7 +129,7 @@
 }
 
 .theme-doc-sidebar-item-category-level-1 > .menu__list {
-  @apply mb-[4px];
+  @apply mb-0.25;
 }
 
 .menu__list:not(.theme-doc-sidebar-menu),

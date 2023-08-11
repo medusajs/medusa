@@ -90,7 +90,7 @@
 
   .search-page-input {
     @apply rounded border border-solid border-medusa-border-base dark:border-medusa-border-base-dark;
-    @apply font-base text-medium p-[12px] w-full bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark;
+    @apply font-base text-medium p-0.75 w-full bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark;
     @apply text-medusa-fg-base dark:text-medusa-fg-base-dark mb-1;
     @apply transition-[border] duration-200 ease-ease;
     @apply focus:border-medusa-border-base dark:focus:border-medusa-border-base-dark;
@@ -98,7 +98,7 @@
   }
 
   .code-header {
-    @apply py-[12px] px-1 bg-medusa-code-bg-header dark:bg-medusa-code-bg-header-dark text-medusa-code-text-subtle dark:text-medusa-code-text-subtle;
+    @apply py-0.75 px-1 bg-medusa-code-bg-header dark:bg-medusa-code-bg-header-dark text-medusa-code-text-subtle dark:text-medusa-code-text-subtle;
     @apply flex justify-between items-center;
     @apply rounded-tl rounded-tr rounded-br-none rounded-bl-none border-b-0;
     @apply border border-solid border-medusa-code-border dark:border-medusa-code-border-dark border-b-0;
@@ -114,7 +114,7 @@
 
   .btn-secondary {
     @apply inline-flex flex-row justify-center items-center;
-    @apply py-[5px] px-[12px] rounded cursor-pointer;
+    @apply py-[5px] px-0.75 rounded cursor-pointer;
     @apply bg-button-neutral dark:bg-button-neutral-dark bg-transparent;
     @apply hover:bg-button-neutral-hover dark:hover:!bg-no-image dark:hover:!bg-medusa-button-neutral-hover-dark hover:no-underline;
     @apply active:bg-button-neutral-pressed dark:active:!bg-no-image dark:active:bg-medusa-button-neutral-pressed-dark;
@@ -130,7 +130,7 @@
 
   .btn-primary {
     @apply inline-flex flex-row justify-center items-center;
-    @apply py-[6px] px-[12px] rounded cursor-pointer;
+    @apply py-[6px] px-0.75 rounded cursor-pointer;
     @apply bg-medusa-button-inverted dark:bg-medusa-button-inverted-dark bg-button-inverted dark:bg-button-inverted-dark;
     @apply hover:bg-button-inverted-hover dark:hover:bg-no-image hover:bg-medusa-button-inverted-hover dark:hover:bg-medusa-button-inverted-hover-dark hover:no-underline;
     @apply active:bg-button-inverted-pressed dark:active:bg-no-image active:bg-medusa-button-inverted-pressed dark:active:bg-medusa-button-inverted-pressed-dark;

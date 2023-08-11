@@ -103,8 +103,8 @@ export default function CodeBlockString({
               </pre>
               <div
                 className={clsx(
-                  "flex gap-x-[2px] absolute right-1",
-                  tokens.length === 1 && "top-[4px]",
+                  "flex gap-x-0.125 absolute right-1",
+                  tokens.length === 1 && "top-0.25",
                   tokens.length > 1 && "top-1"
                 )}
               >
@@ -118,7 +118,7 @@ export default function CodeBlockString({
                       )}`}
                       target="_blank"
                       className={clsx(
-                        "bg-transparent border-none p-[4px] cursor-pointer rounded",
+                        "bg-transparent border-none p-0.25 cursor-pointer rounded",
                         "hover:bg-medusa-code-bg-base dark:hover:bg-medusa-code-bg-base-dark [&:not(:first-child)]:ml-0.5",
                         "inline-flex justify-center items-center invisible xs:visible"
                       )}
@@ -131,7 +131,7 @@ export default function CodeBlockString({
                 {!noCopy && (
                   <CopyButton
                     buttonClassName={clsx(
-                      "flex bg-transparent border-none p-[4px] cursor-pointer rounded"
+                      "flex bg-transparent border-none p-0.25 cursor-pointer rounded"
                     )}
                     text={code}
                   >

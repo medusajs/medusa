@@ -10,7 +10,7 @@ const Badge: React.FC<BadgeProps> = ({ className, variant, children }) => {
   return (
     <span
       className={clsx(
-        "text-compact-x-small-plus py-px px-0.4 rounded border border-solid text-center",
+        "text-compact-x-small-plus py-px px-0.4 rounded-sm border border-solid text-center",
         variant === "purple" &&
           "bg-medusa-tag-purple-bg dark:bg-medusa-tag-purple-bg-dark text-medusa-tag-purple-text dark:text-medusa-tag-purple-text-dark border-medusa-tag-purple-border dark:border-medusa-tag-purple-border-dark",
         variant === "purple-dark" &&

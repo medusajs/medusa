@@ -82,7 +82,7 @@ function CardLayout({
         <span
           className={clsx(
             "text-compact-medium-plus text-medusa-fg-base dark:text-medusa-fg-base-dark",
-            "mb-[4px] block",
+            "mb-0.25 block",
             "transition-all duration-200 ease-ease",
             isSoon &&
               "group-hover:text-medusa-fg-disabled dark:group-hover:text-medusa-fg-disabled-dark"

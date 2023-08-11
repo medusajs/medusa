@@ -222,7 +222,7 @@ details > div {
 
 .search-result-match {
   @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
-  @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark py-[4px] px-0;
+  @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark py-0.25 px-0;
 }
 
 .navbar {

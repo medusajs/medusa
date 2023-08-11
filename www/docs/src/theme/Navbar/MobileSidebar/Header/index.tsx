@@ -26,7 +26,7 @@ export default function NavbarMobileSidebarHeader(): JSX.Element {
     <div
       className={clsx(
         "items-center shadow-navbar dark:shadow-navbar-dark",
-        "flex flex-1 h-navbar py-[12px] px-1.5"
+        "flex flex-1 h-navbar py-0.75 px-1.5"
       )}
     >
       <NavbarLogo />

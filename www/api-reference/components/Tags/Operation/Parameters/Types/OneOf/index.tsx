@@ -73,7 +73,7 @@ const TagOperationParamatersOneOf = ({
               <li
                 key={index}
                 className={clsx(
-                  "cursor-pointer rounded-sm p-0.5",
+                  "rounded-xs cursor-pointer p-0.5",
                   "border border-solid",
                   activeTab === index &&
                     "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark border-medusa-border-strong dark:border-medusa-border-strong-dark",

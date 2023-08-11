@@ -41,7 +41,7 @@ function NavbarContentLayout({
     <div
       className={clsx(
         "flex flex-wrap justify-between w-full",
-        "max-w-xl mx-auto py-[12px] px-1.5"
+        "max-w-xl mx-auto py-0.75 px-1.5"
       )}
     >
       <div className={clsx("items-center flex flex-1 min-w-0")}>
@@ -160,7 +160,7 @@ export default function NavbarContent(): JSX.Element {
             <NavbarColorModeToggle
               className={clsx(
                 "lg:block hidden",
-                "navbar-action-icon-item !w-2 !h-2 ml-1 mr-[12px] [&>button]:!rounded"
+                "navbar-action-icon-item !w-2 !h-2 ml-1 mr-0.75 [&>button]:!rounded"
               )}
             />
           </Tooltip>
