@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic"
 import type { OpenAPIV3 } from "openapi-types"
 import type { SecurityDescriptionProps } from "./Description"
+import { Fragment } from "react"
 
 const SecurityDescription = dynamic<SecurityDescriptionProps>(
   async () => import("./Description")
@@ -16,12 +17,12 @@ const Security = ({ specs }: SecurityProps) => {
       {specs && (
         <>
           {Object.values(specs.components?.securitySchemes || {}).map(
-            (securitySchema) => (
-              <>
+            (securitySchema, index) => (
+              <Fragment key={index}>
                 {!("$ref" in securitySchema) && (
                   <SecurityDescription securitySchema={securitySchema} />
                 )}
-              </>
+              </Fragment>
             )
           )}
         </>

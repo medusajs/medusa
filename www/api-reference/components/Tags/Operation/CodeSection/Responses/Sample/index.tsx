@@ -88,7 +88,7 @@ const TagsOperationCodeSectionResponsesSample = ({
         {response.content && (
           <span>Content type: {Object.keys(response.content)[0]}</span>
         )}
-        <div>
+        <>
           {examples.length > 1 && (
             <select
               onChange={(event) =>
@@ -114,7 +114,7 @@ const TagsOperationCodeSectionResponsesSample = ({
             />
           )}
           {!selectedExample && <>Empty Response</>}
-        </div>
+        </>
       </div>
     </>
   )

@@ -5,6 +5,7 @@ import clsx from "clsx"
 import dynamic from "next/dynamic"
 import type { LinkProps } from "../../../../MDXComponents/Link"
 import capitalize from "../../../../../utils/capitalize"
+import { Fragment } from "react"
 
 const InlineCode = dynamic<InlineCodeProps>(
   async () => import("../../../../InlineCode")
@@ -52,13 +53,13 @@ const TagOperationParametersDescription = ({
       typeDescription = (
         <>
           {schema.oneOf?.map((item, index) => (
-            <span key={index}>
+            <Fragment key={index}>
               {index !== 0 && <> or </>}
               {item.type !== "array" && <>{item.title || item.type}</>}
               {item.type === "array" && (
                 <>array{item.items.type ? ` of ${item.items.type}s` : ""}</>
               )}
-            </span>
+            </Fragment>
           ))}
           {schema.nullable ? ` or null` : ""}
         </>
@@ -93,10 +94,10 @@ const TagOperationParametersDescription = ({
           <span>
             Enum:{" "}
             {schema.enum.map((value, index) => (
-              <>
+              <Fragment key={index}>
                 {index !== 0 && <>, </>}
                 <InlineCode key={index}>{JSON.stringify(value)}</InlineCode>
-              </>
+              </Fragment>
             ))}
           </span>
         </>

@@ -7,7 +7,7 @@ import useSWR from "swr"
 import type { Operation, PathsObject } from "@/types/openapi"
 import type { SidebarItemType } from "@/providers/sidebar"
 import { SidebarItemSections, useSidebar } from "@/providers/sidebar"
-import { useEffect, useMemo } from "react"
+import { Fragment, useEffect, useMemo } from "react"
 import dynamic from "next/dynamic"
 import type { TagOperationProps } from "../Operation"
 import { useArea } from "@/providers/area"
@@ -80,7 +80,7 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
     <div className={clsx("relative", className)}>
       {loading && <DividedLoading className="mt-7" />}
       {Object.entries(paths).map(([endpointPath, operations], pathIndex) => (
-        <div key={pathIndex}>
+        <Fragment key={pathIndex}>
           {Object.entries(operations).map(
             ([method, operation], operationIndex) => (
               <TagOperation
@@ -93,7 +93,7 @@ const TagPaths = ({ tag, className }: TagPathsProps) => {
               />
             )
           )}
-        </div>
+        </Fragment>
       ))}
     </div>
   )
