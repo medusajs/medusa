@@ -3,6 +3,7 @@ import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
 import { ProductVariantServiceMock } from "../../../../../services/__mocks__/product-variant"
 import { ShippingProfileServiceMock } from "../../../../../services/__mocks__/shipping-profile"
+import { SalesChannelServiceMock } from "../../../../../services/__mocks__/sales-channel"
 
 describe("POST /admin/products", () => {
   describe("successful creation with variants", () => {
@@ -46,6 +47,7 @@ describe("POST /admin/products", () => {
     })
 
     it("returns 200", () => {
+      expect(SalesChannelServiceMock.retrieveDefault).toHaveBeenCalledTimes(1)
       expect(subject.status).toEqual(200)
     })
 
@@ -53,23 +55,25 @@ describe("POST /admin/products", () => {
       expect(ProductVariantServiceMock.create).toHaveBeenCalledTimes(1)
       expect(ProductVariantServiceMock.create).toHaveBeenCalledWith(
         IdMap.getId("productWithOptions"),
-        {
-          title: "Test",
-          variant_rank: 0,
-          prices: [
-            {
-              currency_code: "USD",
-              amount: 100,
-            },
-          ],
-          options: [
-            {
-              option_id: IdMap.getId("option1"),
-              value: "100",
-            },
-          ],
-          inventory_quantity: 0,
-        }
+        [
+          {
+            title: "Test",
+            variant_rank: 0,
+            prices: [
+              {
+                currency_code: "USD",
+                amount: 100,
+              },
+            ],
+            options: [
+              {
+                option_id: IdMap.getId("option1"),
+                value: "100",
+              },
+            ],
+            inventory_quantity: 0,
+          },
+        ]
       )
     })
   })
@@ -114,6 +118,13 @@ describe("POST /admin/products", () => {
         is_giftcard: false,
         options: [{ title: "Denominations" }],
         profile_id: IdMap.getId("default_shipping_profile"),
+        sales_channels: [
+          {
+            description: "sales channel 1 description",
+            is_disabled: false,
+            name: "sales channel 1 name",
+          },
+        ],
       })
     })
 
@@ -173,6 +184,13 @@ describe("POST /admin/products", () => {
         is_giftcard: true,
         status: "draft",
         profile_id: IdMap.getId("giftCardProfile"),
+        sales_channels: [
+          {
+            description: "sales channel 1 description",
+            is_disabled: false,
+            name: "sales channel 1 name",
+          },
+        ],
       })
     })
 

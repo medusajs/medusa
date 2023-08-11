@@ -1,4 +1,11 @@
 type: object
+x-expanded-relations:
+  field: return_reasons
+  relations:
+    - parent_return_reason
+    - return_reason_children
+required:
+  - return_reasons
 properties:
   return_reasons:
     type: array

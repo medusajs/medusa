@@ -1,17 +1,31 @@
 export default {
-  getRepository: function (repo) {
-    return repo;
+  connection: {
+    getMetadata: (target) => {
+      return (
+        target["metadata"] ?? {
+          columns: [],
+        }
+      )
+    },
   },
 
-  getCustomRepository: function (repo) {
-    return repo;
+  getRepository: function (repo) {
+    return repo
+  },
+
+  withRepository: function (repo) {
+    if (repo) {
+      return Object.assign(repo, { manager: this })
+    }
+
+    return repo
   },
 
   transaction: function (isolationOrCb, cb) {
     if (typeof isolationOrCb === "string") {
-      return cb(this);
+      return cb(this)
     } else {
-      return isolationOrCb(this);
+      return isolationOrCb(this)
     }
   },
-};
+}

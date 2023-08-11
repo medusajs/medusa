@@ -8,20 +8,22 @@ import {
 import {
   defaultAdminOrdersFields as defaultOrderFields,
   defaultAdminOrdersRelations as defaultOrderRelations,
-} from "../orders/index"
+} from "../../../../types/orders"
 
 import { EntityManager } from "typeorm"
-import { Order } from "../../../../models"
 import { MedusaError } from "medusa-core-utils"
+import { Order } from "../../../../models"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /draft-orders/{id}/pay
- * summary: "Registers a Payment"
+ * @oas [post] /admin/draft-orders/{id}/pay
+ * summary: "Mark Paid"
  * operationId: "PostDraftOrdersDraftOrderRegisterPayment"
- * description: "Registers a payment for a Draft Order."
+ * description: "Capture the draft order's payment. This will also set the draft order's status to `completed` and create an Order from the draft order. The payment is captured through Medusa's system payment,
+ *  which is manual payment that isn't integrated with any third-party payment provider. It is assumed that the payment capturing is handled manually by the admin."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {String} The Draft Order id.
+ *   - (path) id=* {String} The Draft Order ID.
  * x-codegen:
  *   method: markPaid
  * x-codeSamples:
@@ -31,20 +33,20 @@ import { MedusaError } from "medusa-core-utils"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.draftOrders.markPaid(draft_order_id)
+ *       medusa.admin.draftOrders.markPaid(draftOrderId)
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/draft-orders/{id}/pay' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST 'https://medusa-url.com/admin/draft-orders/{id}/pay' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
@@ -75,6 +77,7 @@ export default async (req, res) => {
     "paymentProviderService"
   )
   const orderService: OrderService = req.scope.resolve("orderService")
+  const inventoryService: OrderService = req.scope.resolve("inventoryService")
   const cartService: CartService = req.scope.resolve("cartService")
   const productVariantInventoryService: ProductVariantInventoryService =
     req.scope.resolve("productVariantInventoryService")
@@ -84,9 +87,6 @@ export default async (req, res) => {
     const draftOrderServiceTx = draftOrderService.withTransaction(manager)
     const orderServiceTx = orderService.withTransaction(manager)
     const cartServiceTx = cartService.withTransaction(manager)
-
-    const productVariantInventoryServiceTx =
-      productVariantInventoryService.withTransaction(manager)
 
     const draftOrder = await draftOrderServiceTx.retrieve(id)
 
@@ -115,14 +115,10 @@ export default async (req, res) => {
         select: defaultOrderFields,
       })
 
-    await reserveQuantityForDraftOrder(order, {
-      productVariantInventoryService: productVariantInventoryServiceTx,
-    })
-
     return order
   })
 
-  res.status(200).json({ order })
+  res.status(200).json({ order: cleanResponseData(order, []) })
 }
 
 export const reserveQuantityForDraftOrder = async (

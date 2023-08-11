@@ -1,17 +1,17 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
+import { fixtures } from "../../../../mocks/data"
 import {
-  useAdminUpdateOrder,
-  useAdminCompleteOrder,
-  useAdminCapturePayment,
-  useAdminRefundPayment,
-  useAdminCreateShipment,
-  useAdminCancelOrder,
   useAdminAddShippingMethod,
   useAdminArchiveOrder,
-  useAdminCreateFulfillment,
   useAdminCancelFulfillment,
+  useAdminCancelOrder,
+  useAdminCapturePayment,
+  useAdminCompleteOrder,
+  useAdminCreateFulfillment,
+  useAdminCreateShipment,
+  useAdminRefundPayment,
+  useAdminUpdateOrder,
 } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
-import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminUpdateOrder hook", () => {

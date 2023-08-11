@@ -1,8 +1,16 @@
 type: object
+required:
+  - tags
 properties:
   tags:
+    description: An array of product tags details.
     type: array
     items:
+      type: object
+      required:
+        - id
+        - usage_count
+        - value
       properties:
         id:
           description: The ID of the tag.

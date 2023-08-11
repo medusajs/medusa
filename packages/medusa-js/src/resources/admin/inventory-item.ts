@@ -1,16 +1,20 @@
 import {
-  AdminGetInventoryItemsParams,
-  AdminInventoryItemsRes,
-  AdminPostInventoryItemsInventoryItemReq,
   AdminGetInventoryItemsItemLocationLevelsParams,
-  AdminPostInventoryItemsItemLocationLevelsLevelReq,
-  AdminInventoryItemsDeleteRes,
   AdminGetInventoryItemsItemParams,
+  AdminGetInventoryItemsParams,
+  AdminInventoryItemsDeleteRes,
   AdminInventoryItemsListWithVariantsAndLocationLevelsRes,
   AdminInventoryItemsLocationLevelsRes,
+  AdminInventoryItemsRes,
+  AdminPostInventoryItemsInventoryItemReq,
+  AdminPostInventoryItemsItemLocationLevelsLevelReq,
+  AdminPostInventoryItemsItemLocationLevelsReq,
+  AdminPostInventoryItemsParams,
+  AdminPostInventoryItemsReq,
 } from "@medusajs/medusa"
-import { ResponsePromise } from "../../typings"
+
 import BaseResource from "../base"
+import { ResponsePromise } from "../../typings"
 import qs from "qs"
 
 class AdminInventoryItemsResource extends BaseResource {
@@ -75,6 +79,28 @@ class AdminInventoryItemsResource extends BaseResource {
   }
 
   /**
+   * Create an Inventory Item
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please install @medusajs/inventory
+   * @description creates an Inventory Item
+   * @returns the created Inventory Item
+   */
+  create(
+    payload: AdminPostInventoryItemsReq,
+    query?: AdminPostInventoryItemsParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminInventoryItemsRes> {
+    let path = `/admin/inventory-items`
+    
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
+
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /**
    * Retrieve a list of Inventory Items
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
@@ -120,6 +146,29 @@ class AdminInventoryItemsResource extends BaseResource {
   }
 
   /**
+   * Create stock for an Inventory Item at a Stock Location
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please install @medusajs/inventory
+   * @description creates stock levle for an Inventory Item
+   * @returns the Inventory Item
+   */
+  createLocationLevel(
+    inventoryItemId: string,
+    payload: AdminPostInventoryItemsItemLocationLevelsReq,
+    query?: AdminGetInventoryItemsParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminInventoryItemsRes> {
+    let path = `/admin/inventory-items/${inventoryItemId}/location-levels`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
+
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /**
    * Removes an Inventory Item from a Stock Location. This erases trace of any quantity currently at the location.
    * @experimental This feature is under development and may change in the future.
    * To use this feature please install @medusajs/inventory
@@ -154,7 +203,7 @@ class AdminInventoryItemsResource extends BaseResource {
     query?: AdminGetInventoryItemsItemLocationLevelsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminInventoryItemsLocationLevelsRes> {
-    let path = `/admin/inventory-items/${inventoryItemId}`
+    let path = `/admin/inventory-items/${inventoryItemId}/location-levels`
 
     if (query) {
       const queryString = qs.stringify(query)

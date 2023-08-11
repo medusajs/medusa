@@ -1,3 +1,4 @@
+import { FlagRouter } from "@medusajs/utils"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
@@ -7,7 +8,6 @@ import { CurrencyRepository } from "../repositories/currency"
 import { FindConfig, Selector } from "../types/common"
 import { UpdateCurrencyInput } from "../types/currency"
 import { buildQuery } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
@@ -22,21 +22,18 @@ export default class CurrencyService extends TransactionBaseService {
     UPDATED: "currency.updated",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly currencyRepository_: typeof CurrencyRepository
   protected readonly eventBusService_: EventBusService
   protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
-    manager,
     currencyRepository,
     eventBusService,
     featureFlagRouter,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
-    this.manager_ = manager
+
     this.currencyRepository_ = currencyRepository
     this.eventBusService_ = eventBusService
     this.featureFlagRouter_ = featureFlagRouter
@@ -48,7 +45,7 @@ export default class CurrencyService extends TransactionBaseService {
    * @return The currency
    */
   async retrieveByCode(code: string): Promise<Currency | never> {
-    const currencyRepo = this.manager_.getCustomRepository(
+    const currencyRepo = this.activeManager_.withRepository(
       this.currencyRepository_
     )
 
@@ -85,7 +82,7 @@ export default class CurrencyService extends TransactionBaseService {
       take: 20,
     }
   ): Promise<[Currency[], number]> {
-    const productRepo = this.manager_.getCustomRepository(
+    const productRepo = this.activeManager_.withRepository(
       this.currencyRepository_
     )
 
@@ -117,14 +114,16 @@ export default class CurrencyService extends TransactionBaseService {
         }
       }
 
-      const currencyRepo = transactionManager.getCustomRepository(
+      const currencyRepo = transactionManager.withRepository(
         this.currencyRepository_
       )
       await currencyRepo.save(currency)
 
-      await this.eventBusService_.emit(CurrencyService.Events.UPDATED, {
-        code,
-      })
+      await this.eventBusService_
+        .withTransaction(transactionManager)
+        .emit(CurrencyService.Events.UPDATED, {
+          code,
+        })
 
       return currency
     })

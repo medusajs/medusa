@@ -1,11 +1,9 @@
-import Bull from "bull"
+import { Job, Queue, Worker } from "bullmq"
 import Redis from "ioredis"
 import { ConfigModule, Logger } from "../types/global"
 
 type InjectedDependencies = {
   logger: Logger
-  redisClient: Redis.Redis
-  redisSubscriber: Redis.Redis
 }
 
 type ScheduledJobHandler<T = unknown> = (
@@ -22,36 +20,38 @@ export default class JobSchedulerService {
   protected readonly logger_: Logger
   protected readonly handlers_: Map<string | symbol, ScheduledJobHandler[]> =
     new Map()
-  protected readonly queue_: Bull
+  protected readonly queue_: Queue
 
   constructor(
-    { logger, redisClient, redisSubscriber }: InjectedDependencies,
+    { logger }: InjectedDependencies,
     config: ConfigModule,
     singleton = true
   ) {
     this.config_ = config
     this.logger_ = logger
 
-    if (singleton) {
-      const opts = {
-        createClient: (type: string): Redis.Redis => {
-          switch (type) {
-            case "client":
-              return redisClient
-            case "subscriber":
-              return redisSubscriber
-            default:
-              if (config.projectConfig.redis_url) {
-                return new Redis(config.projectConfig.redis_url)
-              }
-              return redisClient
-          }
-        },
-      }
+    const prefix = `${config?.projectConfig?.redis_prefix ?? ""}${
+      this.constructor.name
+    }`
 
-      this.queue_ = new Bull(`scheduled-jobs:queue`, opts)
+    if (singleton && config?.projectConfig?.redis_url) {
+      // Required config
+      // See: https://github.com/OptimalBits/bull/blob/develop/CHANGELOG.md#breaking-changes
+      const connection = new Redis(config.projectConfig.redis_url, {
+        maxRetriesPerRequest: null,
+        enableReadyCheck: false,
+      })
+
+      this.queue_ = new Queue(`scheduled-jobs:queue`, {
+        connection,
+        prefix,
+      })
+
       // Register scheduled job worker
-      this.queue_.process(this.scheduledJobsWorker)
+      new Worker("scheduled-jobs:queue", this.scheduledJobsWorker, {
+        connection,
+        prefix,
+      })
     }
   }
 
@@ -112,7 +112,7 @@ export default class JobSchedulerService {
     schedule: string,
     handler: ScheduledJobHandler,
     options: CreateJobOptions
-  ): Promise<void> {
+  ): Promise<Job> {
     this.logger_.info(`Registering ${eventName}`)
     this.registerHandler(eventName, handler)
 
@@ -120,7 +120,7 @@ export default class JobSchedulerService {
       eventName,
       data,
     }
-    const repeatOpts = { repeat: { cron: schedule } }
+    const repeatOpts = { repeat: { pattern: schedule } }
 
     if (options?.keepExisting) {
       return await this.queue_.add(eventName, jobToCreate, repeatOpts)

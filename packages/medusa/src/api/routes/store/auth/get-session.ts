@@ -1,10 +1,11 @@
 import CustomerService from "../../../../services/customer"
+import { defaultRelations } from "."
 
 /**
- * @oas [get] /auth
+ * @oas [get] /store/auth
  * operationId: "GetAuth"
  * summary: "Get Current Customer"
- * description: "Gets the currently logged in Customer."
+ * description: "Retrieve the currently logged in Customer's details."
  * x-authenticated: true
  * x-codegen:
  *   method: getSession
@@ -22,8 +23,8 @@ import CustomerService from "../../../../services/customer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/auth' \
- *       --header 'Cookie: connect.sid={sid}'
+ *       curl 'https://medusa-url.com/store/auth' \
+ *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []
  * tags:
@@ -52,7 +53,7 @@ export default async (req, res) => {
   const customerService: CustomerService = req.scope.resolve("customerService")
 
   const customer = await customerService.retrieve(req.user.customer_id, {
-    relations: ["shipping_addresses", "orders", "orders.items"],
+    relations: defaultRelations,
   })
 
   res.json({ customer })

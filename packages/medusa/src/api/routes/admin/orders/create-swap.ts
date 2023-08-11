@@ -16,21 +16,26 @@ import {
   Min,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
 import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /order/{id}/swaps
+ * @oas [post] /admin/orders/{id}/swaps
  * operationId: "PostOrdersOrderSwaps"
  * summary: "Create a Swap"
- * description: "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously."
+ * description: "Create a Swap. This includes creating a return that is associated with the swap."
  * x-authenticated: true
+ * externalDocs:
+ *   description: How are swaps created
+ *   url: https://docs.medusajs.com/modules/orders/swaps#how-are-swaps-created
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -38,6 +43,7 @@ import { validator } from "../../../../utils/validator"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderSwapsReq"
  * x-codegen:
  *   method: createSwap
+ *   queryParams: AdminPostOrdersOrderSwapsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -45,7 +51,7 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.createSwap(order_id, {
+ *       medusa.admin.orders.createSwap(orderId, {
  *         return_items: [
  *           {
  *             item_id,
@@ -59,9 +65,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/swaps' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/swaps' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "return_items": [
  *             {
@@ -74,7 +80,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -98,7 +104,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminPostOrdersOrderSwapsReq, req.body)
+  const validated = req.validatedBody
 
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
     "idempotencyKeyService"
@@ -138,13 +144,15 @@ export default async (req, res) => {
               .workStage(idempotencyKey.idempotency_key, async (manager) => {
                 const order = await orderService
                   .withTransaction(manager)
-                  .retrieve(id, {
-                    select: ["refunded_total", "total"],
+                  .retrieveWithTotals(id, {
                     relations: [
+                      "cart",
                       "items",
+                      "items.variant",
                       "items.tax_lines",
                       "swaps",
                       "swaps.additional_items",
+                      "swaps.additional_items.variant",
                       "swaps.additional_items.tax_lines",
                     ],
                   })
@@ -160,12 +168,15 @@ export default async (req, res) => {
                       idempotency_key: idempotencyKey.idempotency_key,
                       no_notification: validated.no_notification,
                       allow_backorder: validated.allow_backorder,
+                      location_id: validated.return_location_id,
                     }
                   )
 
                 await swapService
                   .withTransaction(manager)
-                  .createCart(swap.id, validated.custom_shipping_options)
+                  .createCart(swap.id, validated.custom_shipping_options, {
+                    sales_channel_id: validated.sales_channel_id,
+                  })
 
                 const returnOrder = await returnService
                   .withTransaction(manager)
@@ -208,14 +219,15 @@ export default async (req, res) => {
 
                 const order = await orderService
                   .withTransaction(transactionManager)
-                  .retrieve(id, {
-                    select: defaultAdminOrdersFields,
-                    relations: defaultAdminOrdersRelations,
+                  .retrieveWithTotals(id, req.retrieveConfig, {
+                    includes: req.includes,
                   })
 
                 return {
                   response_code: 200,
-                  response_body: { order },
+                  response_body: {
+                    order: cleanResponseData(order, []),
+                  },
                 }
               })
           })
@@ -259,15 +271,16 @@ export default async (req, res) => {
  *   - return_items
  * properties:
  *   return_items:
- *     description: The Line Items to return as part of the Swap.
+ *     description: The Line Items to associate with the swap's return.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity
  *       properties:
  *         item_id:
- *           description: The ID of the Line Item that will be claimed.
+ *           description: The ID of the Line Item that will be returned.
  *           type: string
  *         quantity:
  *           description: The number of items that will be returned
@@ -279,7 +292,7 @@ export default async (req, res) => {
  *           description: An optional note with information about the Return.
  *           type: string
  *   return_shipping:
- *     description: How the Swap will be returned.
+ *     description: The shipping method associated with the swap's return.
  *     type: object
  *     required:
  *       - option_id
@@ -294,35 +307,37 @@ export default async (req, res) => {
  *     description: The new items to send to the Customer.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - variant_id
  *         - quantity
  *       properties:
  *         variant_id:
- *           description: The ID of the Product Variant to ship.
+ *           description: The ID of the Product Variant.
  *           type: string
  *         quantity:
- *           description: The quantity of the Product Variant to ship.
+ *           description: The quantity of the Product Variant.
  *           type: integer
  *   custom_shipping_options:
- *     description: The custom shipping options to potentially create a Shipping Method from.
+ *     description: An array of custom shipping options to potentially create a Shipping Method from to send the additional items.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - option_id
  *         - price
  *       properties:
  *         option_id:
- *           description: The ID of the Shipping Option to override with a custom price.
+ *           description: The ID of the Shipping Option.
  *           type: string
  *         price:
  *           description: The custom price of the Shipping Option.
  *           type: integer
  *   no_notification:
- *     description: If set to true no notification will be send related to this Swap.
+ *     description: If set to `true`, no notification will be sent to the customer related to this Swap.
  *     type: boolean
  *   allow_backorder:
- *     description: If true, swaps can be completed with items out of stock
+ *     description: If set to `true`, swaps can be completed with items out of stock
  *     type: boolean
  *     default: true
  */
@@ -339,6 +354,10 @@ export class AdminPostOrdersOrderSwapsReq {
   @Type(() => ReturnShipping)
   return_shipping?: ReturnShipping
 
+  @IsOptional()
+  @IsString()
+  sales_channel_id?: string
+
   @IsArray()
   @IsOptional()
   @ValidateNested({ each: true })
@@ -354,6 +373,10 @@ export class AdminPostOrdersOrderSwapsReq {
   @IsBoolean()
   @IsOptional()
   no_notification?: boolean
+
+  @IsOptional()
+  @IsString()
+  return_location_id?: string
 
   @IsBoolean()
   @IsOptional()
@@ -408,3 +431,5 @@ class AdditionalItem {
   @IsNotEmpty()
   quantity: number
 }
+
+export class AdminPostOrdersOrderSwapsParams extends FindParams {}

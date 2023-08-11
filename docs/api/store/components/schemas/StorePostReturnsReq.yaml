@@ -5,32 +5,34 @@ required:
 properties:
   order_id:
     type: string
-    description: The ID of the Order to create the Return from.
+    description: The ID of the Order to create the return for.
   items:
-    description: The items to include in the Return.
+    description: The items to include in the return.
     type: array
     items:
+      type: object
       required:
         - item_id
         - quantity
       properties:
         item_id:
-          description: The ID of the Line Item from the Order.
+          description: The ID of the line item to return.
           type: string
         quantity:
           description: The quantity to return.
           type: integer
         reason_id:
-          description: The ID of the return reason.
+          description: >-
+            The ID of the return reason. Return reasons can be retrieved from
+            the List Return Reasons endpoint.
           type: string
         note:
           description: A note to add to the item returned.
           type: string
   return_shipping:
     description: >-
-      If the Return is to be handled by the store operator the Customer can
-      choose a Return Shipping Method. Alternatvely the Customer can handle the
-      Return themselves.
+      The return shipping method used to return the items. If provided, a
+      fulfillment is automatically created for the return.
     type: object
     required:
       - option_id

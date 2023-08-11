@@ -41,7 +41,7 @@ describe("LineItemAdjustmentService", () => {
         where: {
           item_id: "li-1",
         },
-        relations: ["item"],
+        relations: { "item": true },
       })
     })
   })
@@ -78,7 +78,7 @@ describe("LineItemAdjustmentService", () => {
       expect(lineItemAdjustmentRepo.findOne).toHaveBeenCalledTimes(1)
       expect(lineItemAdjustmentRepo.findOne).toHaveBeenCalledWith({
         where: { id: "lia-1" },
-        relations: ["item"],
+        relations: { "item": true },
       })
     })
 

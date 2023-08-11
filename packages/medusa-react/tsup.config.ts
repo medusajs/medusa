@@ -1,4 +1,5 @@
 import type { Options } from "tsup"
+import { peerDependencies } from "./package.json"
 
 const config: Options = {
   entry: ["src/**/*.ts"],
@@ -11,6 +12,7 @@ const config: Options = {
   target: "es2020",
   skipNodeModulesBundle: true,
   tsconfig: "./tsconfig.json",
+  external: Object.keys(peerDependencies),
 }
 
 export default config

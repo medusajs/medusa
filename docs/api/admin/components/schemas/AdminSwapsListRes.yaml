@@ -1,7 +1,13 @@
 type: object
+required:
+  - swaps
+  - count
+  - offset
+  - limit
 properties:
   swaps:
     type: array
+    description: An array of swaps details.
     items:
       $ref: ./Swap.yaml
   count:
@@ -9,7 +15,7 @@ properties:
     description: The total number of items available
   offset:
     type: integer
-    description: The number of items skipped before these items
+    description: The number of swaps skipped when retrieving the swaps.
   limit:
     type: integer
     description: The number of items per page

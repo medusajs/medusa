@@ -11,9 +11,10 @@ import {
   runIdempotencyStep,
   RunIdempotencyStepOptions,
 } from "../../../../../utils/idempotency"
+import { cleanResponseData } from "../../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/line-items
+ * @oas [post] /store/carts/{id}/line-items
  * operationId: PostCartsCartLineItems
  * summary: "Add a Line Item"
  * description: "Generates a Line Item with a given Product Variant and adds it
@@ -43,14 +44,14 @@ import {
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/line-items' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/store/carts/{id}/line-items' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "variant_id": "{variant_id}",
  *           "quantity": 1
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -130,6 +131,13 @@ export default async (req, res) => {
     throw err
   }
 
+  if (idempotencyKey.response_body.cart) {
+    idempotencyKey.response_body.cart = cleanResponseData(
+      idempotencyKey.response_body.cart,
+      []
+    )
+  }
+
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }
 
@@ -149,6 +157,9 @@ export default async (req, res) => {
  *   metadata:
  *     type: object
  *     description: An optional key-value map with additional details about the Line Item.
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class StorePostCartsCartLineItemsReq {
   @IsString()

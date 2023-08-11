@@ -1,15 +1,18 @@
+import { IInventoryService } from "@medusajs/types"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
+import { ProductVariantInventoryService } from "../../../../services"
 
 /**
- * @oas [delete] /inventory-items/{id}
+ * @oas [delete] /admin/inventory-items/{id}
  * operationId: "DeleteInventoryItemsInventoryItem"
  * summary: "Delete an Inventory Item"
- * description: "Delete an Inventory Item"
+ * description: "Delete an Inventory Item. This does not delete the associated product variant."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item to delete.
+ * x-codegen:
+ *   method: delete
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -24,13 +27,13 @@ import { IInventoryService } from "../../../../interfaces"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/inventory-items/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/inventory-items/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - InventoryItem
+ *   - Inventory Items
  * responses:
  *   200:
  *     description: OK
@@ -47,11 +50,16 @@ export default async (req: Request, res: Response) => {
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
+  const productVariantInventoryService: ProductVariantInventoryService =
+    req.scope.resolve("productVariantInventoryService")
+
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
-    await inventoryService
+    await productVariantInventoryService
       .withTransaction(transactionManager)
-      .deleteInventoryItem(id)
+      .detachInventoryItem(id)
+
+    await inventoryService.deleteInventoryItem(id)
   })
 
   res.status(200).send({

@@ -1,6 +1,7 @@
-import { EntityRepository, Repository } from "typeorm"
-import { ShippingOptionRequirement } from "../models/shipping-option-requirement"
+import { ShippingOptionRequirement } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(ShippingOptionRequirement)
-// eslint-disable-next-line max-len
-export class ShippingOptionRequirementRepository extends Repository<ShippingOptionRequirement> {}
+export const ShippingOptionRequirementRepository = dataSource.getRepository(
+  ShippingOptionRequirement
+)
+export default ShippingOptionRequirementRepository

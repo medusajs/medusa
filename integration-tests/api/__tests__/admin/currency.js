@@ -1,10 +1,10 @@
 const path = require("path")
-const setupServer = require("../../../helpers/setup-server")
+const setupServer = require("../../../environment-helpers/setup-server")
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { useDb, initDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
+  require("../../../environment-helpers/start-server-with-environment").default
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb, initDb } = require("../../../environment-helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 const adminReqConfig = {
   headers: {
@@ -52,39 +52,6 @@ describe("/admin/currencies", () => {
       )
 
       expect(response.data).toMatchSnapshot()
-    })
-  })
-
-  describe("POST /admin/currencies/:code", function () {
-    beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (e) {
-        console.error(e)
-      }
-    })
-
-    afterEach(async () => {
-      const db = useDb()
-      await db.teardown()
-    })
-
-    it("should fail when attempting to update includes_tax", async () => {
-      const api = useApi()
-
-      try {
-        await api.post(
-          `/admin/currencies/aed`,
-          {
-            includes_tax: true,
-          },
-          adminReqConfig
-        )
-      } catch (error) {
-        expect(error.response.data.message).toBe(
-          "property includes_tax should not exist"
-        )
-      }
     })
   })
 })

@@ -1,10 +1,10 @@
 import { IsString } from "class-validator"
 
 /**
- * @oas [delete] /uploads
- * operationId: "AdminDeleteUploads"
+ * @oas [delete] /admin/uploads
+ * operationId: "DeleteUploads"
  * summary: "Delete an Uploaded File"
- * description: "Removes an uploaded file using the installed fileservice"
+ * description: "Delete an uploaded file from storage. The file is deleted using the installed file service on the Medusa backend."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -27,9 +27,9 @@ import { IsString } from "class-validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/uploads' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE 'https://medusa-url.com/admin/uploads' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "file_key": "{file_key}"
  *       }'
@@ -37,7 +37,7 @@ import { IsString } from "class-validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Upload
+ *   - Uploads
  * responses:
  *   200:
  *     description: OK

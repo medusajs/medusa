@@ -13,6 +13,8 @@ import {
 } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminProductKeys } from "../products"
+import { adminVariantKeys } from "../variants"
 import { adminOrderKeys } from "./../orders/queries"
 
 export const useAdminCreateClaim = (
@@ -84,7 +86,15 @@ export const useAdminFulfillClaim = (
       ...payload
     }: AdminPostOrdersOrderClaimsClaimFulfillmentsReq & { claim_id: string }) =>
       client.admin.orders.fulfillClaim(orderId, claim_id, payload),
-    buildOptions(queryClient, adminOrderKeys.detail(orderId), options)
+    buildOptions(
+      queryClient,
+      [
+        adminOrderKeys.detail(orderId),
+        adminVariantKeys.all,
+        adminProductKeys.lists(),
+      ],
+      options
+    )
   )
 }
 

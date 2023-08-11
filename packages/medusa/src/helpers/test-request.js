@@ -1,3 +1,8 @@
+import {
+  moduleHelper,
+  moduleLoader,
+  registerModules,
+} from "@medusajs/modules-sdk"
 import { asValue, createContainer } from "awilix"
 import express from "express"
 import jwt from "jsonwebtoken"
@@ -7,12 +12,11 @@ import "reflect-metadata"
 import supertest from "supertest"
 import apiLoader from "../loaders/api"
 import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
-import { moduleHelper } from "../loaders/module"
+import models from "../loaders/models"
 import passportLoader from "../loaders/passport"
+import repositories from "../loaders/repositories"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
-import registerModuleDefinitions from "../loaders/module-definitions"
-import moduleLoader from "../loaders/module"
 
 const adminSessionOpts = {
   cookieName: "session",
@@ -26,7 +30,7 @@ const clientSessionOpts = {
   secret: "test",
 }
 
-const moduleResolutions = registerModuleDefinitions({})
+const moduleResolutions = registerModules({})
 const config = {
   projectConfig: {
     jwt_secret: "supersecret",
@@ -34,12 +38,35 @@ const config = {
     admin_cors: "",
     store_cors: "",
   },
-  moduleResolutions,
 }
 
 const testApp = express()
 
+function asArray(resolvers) {
+  return {
+    resolve: (container) =>
+      resolvers.map((resolver) => container.build(resolver)),
+  }
+}
+
 const container = createContainer()
+
+// TODO: remove once the util is merged in master
+container.registerAdd = function (name, registration) {
+  const storeKey = name + "_STORE"
+
+  if (this.registrations[storeKey] === undefined) {
+    this.register(storeKey, asValue([]))
+  }
+  const store = this.resolve(storeKey)
+
+  if (this.registrations[name] === undefined) {
+    this.register(name, asArray(store))
+  }
+  store.unshift(registration)
+
+  return this
+}.bind(container)
 
 container.register("featureFlagRouter", asValue(featureFlagRouter))
 container.register("modulesHelper", asValue(moduleHelper))
@@ -65,10 +92,12 @@ testApp.use((req, res, next) => {
 })
 
 featureFlagLoader(config)
+models({ container, configModule: config, isTest: true })
+repositories({ container, isTest: true })
 servicesLoader({ container, configModule: config })
 strategiesLoader({ container, configModule: config })
 passportLoader({ app: testApp, container, configModule: config })
-moduleLoader({ container, configModule: config })
+moduleLoader({ container, moduleResolutions })
 
 testApp.use((req, res, next) => {
   req.scope = container.createScope()

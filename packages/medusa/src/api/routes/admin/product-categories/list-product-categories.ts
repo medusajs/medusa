@@ -1,25 +1,29 @@
-import { IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString, IsBoolean } from "class-validator"
 import { Request, Response } from "express"
 import { Transform } from "class-transformer"
 
 import { ProductCategoryService } from "../../../../services"
 import { extendedFindParamsMixin } from "../../../../types/common"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
- * @oas [get] /product-categories
+ * @oas [get] /admin/product-categories
  * operationId: "GetProductCategories"
  * summary: "List Product Categories"
- * description: "Retrieve a list of product categories."
+ * description: "Retrieve a list of product categories. The product categories can be filtered by fields such as `q` or `handle`. The product categories can also be paginated."
  * x-authenticated: true
+ * x-featureFlag: "product_categories"
  * parameters:
- *   - (query) q {string} Query used for searching product category names orhandles.
- *   - (query) is_internal {boolean} Search for only internal categories.
- *   - (query) is_active {boolean} Search for only active categories
- *   - (query) parent_category_id {string} Returns categories scoped by parent
- *   - (query) offset=0 {integer} How many product categories to skip in the result.
+ *   - (query) q {string} term to search product categories' names and handles.
+ *   - (query) handle {string} Filter by handle.
+ *   - (query) is_internal {boolean} Filter by whether the category is internal or not.
+ *   - (query) is_active {boolean} Filter by whether the category is active or not.
+ *   - (query) include_descendants_tree {boolean} If set to `true`, all nested descendants of a category are included in the response.
+ *   - (query) parent_category_id {string} Filter by the ID of a parent category.
+ *   - (query) offset=0 {integer} The number of product categories to skip when retrieving the product categories.
  *   - (query) limit=100 {integer} Limit the number of product categories returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in the product category.
- *   - (query) fields {string} (Comma separated) Which fields should be included in the product category.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned product categories.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned product categories.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetProductCategoriesParams
@@ -37,13 +41,13 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/product-categories' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/product-categories' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *   200:
  *     description: OK
@@ -91,6 +95,15 @@ export class AdminGetProductCategoriesParams extends extendedFindParamsMixin({
   @IsString()
   @IsOptional()
   q?: string
+
+  @IsString()
+  @IsOptional()
+  handle?: string
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => optionalBooleanMapper.get(value))
+  include_descendants_tree?: boolean
 
   @IsString()
   @IsOptional()

@@ -7,6 +7,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   Unique,
 } from "typeorm"
 
@@ -19,6 +20,7 @@ import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { Discount } from "./discount"
 
 export enum DiscountConditionType {
   PRODUCTS = "products",
@@ -141,16 +143,22 @@ export class DiscountCondition extends SoftDeletableEntity {
  * description: "Holds rule conditions for when a discount is applicable"
  * type: object
  * required:
- *   - type
- *   - operator
+ *   - created_at
+ *   - deleted_at
  *   - discount_rule_id
+ *   - id
+ *   - metadata
+ *   - operator
+ *   - type
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The discount condition's ID
+ *     type: string
  *     example: discon_01G8X9A7ESKAJXG2H0E6F1MW7A
  *   type:
- *     description: "The type of the Condition"
+ *     description: "The type of the condition. The type affects the available resources associated with the condition. For example, if the type is `products`, 
+ *      that means the `products` relation will hold the products associated with this condition and other relations will be empty."
  *     type: string
  *     enum:
  *       - products
@@ -159,62 +167,70 @@ export class DiscountCondition extends SoftDeletableEntity {
  *       - product_tags
  *       - customer_groups
  *   operator:
- *     description: "The operator of the Condition"
+ *     description: "The operator of the condition. `in` indicates that discountable resources are within the specified resources. `not_in` indicates that
+ *       discountable resources are everything but the specified resources."
  *     type: string
  *     enum:
  *       - in
  *       - not_in
  *   discount_rule_id:
- *     type: string
  *     description: The ID of the discount rule associated with the condition
+ *     type: string
  *     example: dru_01F0YESMVK96HVX7N419E3CJ7C
  *   discount_rule:
- *     description: Available if the relation `discount_rule` is expanded.
+ *     description: The details of the discount rule associated with the condition.
+ *     x-expandable: "discount_rule"
+ *     nullable: true
  *     $ref: "#/components/schemas/DiscountRule"
  *   products:
- *     description: products associated with this condition if type = products. Available if the relation `products` is expanded.
+ *     description: products associated with this condition if `type` is `products`.
  *     type: array
+ *     x-expandable: "products"
  *     items:
- *       type: object
- *       description: A product object.
+ *       $ref: "#/components/schemas/Product"
  *   product_types:
- *     description: product types associated with this condition if type = product_types. Available if the relation `product_types` is expanded.
+ *     description: Product types associated with this condition if `type` is `product_types`.
  *     type: array
+ *     x-expandable: "product_types"
  *     items:
- *       type: object
- *       description: A product type object.
+ *       $ref: "#/components/schemas/ProductType"
  *   product_tags:
- *     description: product tags associated with this condition if type = product_tags. Available if the relation `product_tags` is expanded.
+ *     description: Product tags associated with this condition if `type` is `product_tags`.
  *     type: array
+ *     x-expandable: "product_tags"
  *     items:
- *       type: object
- *       description: A product tag object.
+ *       $ref: "#/components/schemas/ProductTag"
  *   product_collections:
- *     description: product collections associated with this condition if type = product_collections. Available if the relation `product_collections` is expanded.
+ *     description: Product collections associated with this condition if `type` is `product_collections`.
  *     type: array
+ *     x-expandable: "product_collections"
  *     items:
- *       type: object
- *       description: A product collection object.
+ *       $ref: "#/components/schemas/ProductCollection"
  *   customer_groups:
- *     description: customer groups associated with this condition if type = customer_groups. Available if the relation `customer_groups` is expanded.
+ *     description: Customer groups associated with this condition if `type` is `customer_groups`.
  *     type: array
+ *     x-expandable: "customer_groups"
  *     items:
- *       type: object
- *       description: A customer group object.
+ *       $ref: "#/components/schemas/CustomerGroup"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

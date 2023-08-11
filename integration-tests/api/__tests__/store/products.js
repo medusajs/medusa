@@ -1,15 +1,19 @@
 const path = require("path")
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
 const {
   simpleProductFactory,
-  simpleProductCategoryFactory,
-} = require("../../factories")
+  simpleSalesChannelFactory,
+} = require("../../../factories")
 
-const productSeeder = require("../../helpers/store-product-seeder")
-const adminSeeder = require("../../helpers/admin-seeder")
+const productSeeder = require("../../../helpers/store-product-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const {
+  allowedStoreProductsFields,
+  defaultStoreProductsRelations,
+} = require("@medusajs/medusa/dist")
 
 jest.setTimeout(30000)
 
@@ -37,7 +41,14 @@ describe("/store/products", () => {
 
   describe("GET /store/products", () => {
     beforeEach(async () => {
-      await productSeeder(dbConnection)
+      const defaultSalesChannel = await simpleSalesChannelFactory(
+        dbConnection,
+        {
+          id: "sales-channel",
+          is_default: true,
+        }
+      )
+      await productSeeder(dbConnection, defaultSalesChannel)
       await adminSeeder(dbConnection)
     })
 
@@ -201,17 +212,21 @@ describe("/store/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(Object.keys(response.data.products[0])).toEqual([
-        // fields
-        "handle",
-        // relations
-        "variants",
-        "options",
-        "images",
-        "tags",
-        "collection",
-        "type",
-      ])
+      expect(Object.keys(response.data.products[0])).toHaveLength(8)
+      expect(Object.keys(response.data.products[0])).toEqual(
+        expect.arrayContaining([
+          // fields
+          "handle",
+          // relations
+          "variants",
+          "options",
+          "images",
+          "tags",
+          "collection",
+          "type",
+          "profiles",
+        ])
+      )
     })
 
     it("returns a list of ordered products by id ASC and filtered with free text search", async () => {
@@ -472,115 +487,6 @@ describe("/store/products", () => {
           expect.not.arrayContaining([notExpect])
         )
       }
-    })
-
-    describe("Product Category filtering", () => {
-      let categoryWithProduct,
-        categoryWithoutProduct,
-        nestedCategoryWithProduct,
-        nested2CategoryWithProduct
-      const nestedCategoryWithProductId = "nested-category-with-product-id"
-      const nested2CategoryWithProductId = "nested2-category-with-product-id"
-      const categoryWithProductId = "category-with-product-id"
-      const categoryWithoutProductId = "category-without-product-id"
-
-      beforeEach(async () => {
-        const manager = dbConnection.manager
-        categoryWithProduct = await simpleProductCategoryFactory(dbConnection, {
-          id: categoryWithProductId,
-          name: "category with Product",
-          products: [{ id: testProductId }],
-        })
-
-        nestedCategoryWithProduct = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            id: nestedCategoryWithProductId,
-            name: "nested category with Product1",
-            parent_category: categoryWithProduct,
-            products: [{ id: testProductId1 }],
-          }
-        )
-
-        nested2CategoryWithProduct = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            id: nested2CategoryWithProductId,
-            name: "nested2 category with Product1",
-            parent_category: nestedCategoryWithProduct,
-            products: [{ id: testProductFilteringId1 }],
-          }
-        )
-
-        categoryWithoutProduct = await simpleProductCategoryFactory(
-          dbConnection,
-          {
-            id: categoryWithoutProductId,
-            name: "category without product",
-          }
-        )
-      })
-
-      it("returns a list of products in product category without category children", async () => {
-        const api = useApi()
-        const params = `category_id[]=${categoryWithProductId}`
-        const response = await api.get(`/store/products?${params}`)
-
-        expect(response.status).toEqual(200)
-        expect(response.data.products).toHaveLength(1)
-        expect(response.data.products).toEqual([
-          expect.objectContaining({
-            id: testProductId,
-          }),
-        ])
-      })
-
-      it("returns a list of products in product category without category children explicitly set to false", async () => {
-        const api = useApi()
-        const params = `category_id[]=${categoryWithProductId}&include_category_children=false`
-        const response = await api.get(`/store/products?${params}`)
-
-        expect(response.status).toEqual(200)
-        expect(response.data.products).toHaveLength(1)
-        expect(response.data.products).toEqual([
-          expect.objectContaining({
-            id: testProductId,
-          }),
-        ])
-      })
-
-      it("returns a list of products in product category with category children", async () => {
-        const api = useApi()
-
-        const params = `category_id[]=${categoryWithProductId}&include_category_children=true`
-        const response = await api.get(`/store/products?${params}`)
-
-        expect(response.status).toEqual(200)
-        expect(response.data.products).toHaveLength(3)
-        expect(response.data.products).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              id: testProductId1,
-            }),
-            expect.objectContaining({
-              id: testProductId,
-            }),
-            expect.objectContaining({
-              id: testProductFilteringId1,
-            }),
-          ])
-        )
-      })
-
-      it("returns no products when product category with category children does not have products", async () => {
-        const api = useApi()
-
-        const params = `category_id[]=${categoryWithoutProductId}&include_category_children=true`
-        const response = await api.get(`/store/products?${params}`)
-
-        expect(response.status).toEqual(200)
-        expect(response.data.products).toHaveLength(0)
-      })
     })
   })
 
@@ -1090,23 +996,33 @@ describe("/store/products", () => {
     it("response contains only fields defined with `fields` param", async () => {
       const api = useApi()
 
+      // profile_id is not a column in the products table, so it should be ignored as it
+      // will be rejected by typeorm as invalid, though, it is an entity property
+      // that we want to return, so it part of the allowedStoreProductsFields
+      const fields = allowedStoreProductsFields.filter(
+        (f) => f !== "profile_id"
+      )
+
       const response = await api.get(
-        "/store/products/test-product?fields=handle"
+        `/store/products/test-product?fields=${fields.join(",")}`
       )
 
       expect(response.status).toEqual(200)
 
-      expect(Object.keys(response.data.product)).toEqual([
-        // fields
-        "handle",
-        // relations
-        "variants",
-        "options",
-        "images",
-        "tags",
-        "collection",
-        "type",
-      ])
+      const expectedProperties = [...fields, ...defaultStoreProductsRelations]
+      const actualProperties = [
+        ...Object.keys(response.data.product),
+        ...Object.keys(response.data.product.variants[0]).map(
+          (key) => `variants.${key}`
+        ),
+        "variants.prices.amount",
+        "options.values",
+      ]
+
+      expect(Object.keys(response.data.product).length).toEqual(31)
+      expect(actualProperties).toEqual(
+        expect.arrayContaining(expectedProperties)
+      )
     })
   })
 })

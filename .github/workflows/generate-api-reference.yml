@@ -1,21 +1,9 @@
 name: Generate API Reference
 on: 
-  push:
-    branches:
-      - "master"
-    paths:
-      - packages/medusa/src/api/routes/**
-      - '!packages/medusa/src/api/routes/**/index.ts'
-      - '!packages/medusa/src/api/routes/**/index.js'
-  pull_request:
-    types:
-      - closed
-    branches:
-      - "master"
-    paths:
-      - packages/medusa/src/api/routes/**
-      - '!packages/medusa/src/api/routes/**/index.ts'
-      - '!packages/medusa/src/api/routes/**/index.js'
+  workflow_dispatch:
+  release:
+    types: [published]
+
 jobs:
   api:
     runs-on: ubuntu-latest
@@ -34,7 +22,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "14"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Install dependencies
@@ -52,7 +40,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: 'chore(docs): Generated API Reference'
-          base: 'master'
+          base: 'develop'
           title: 'chore(docs): Updated API Reference'
           labels: 'type: chore'
           add-paths: docs/api/*

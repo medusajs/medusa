@@ -10,11 +10,11 @@ import {
 
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Product } from "./product"
 import { ProductType } from "./product-type"
 import { Region } from "./region"
 import { ShippingOption } from "./shipping-option"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class TaxRate extends BaseEntity {
@@ -30,7 +30,7 @@ export class TaxRate extends BaseEntity {
   @Column()
   region_id: string
 
-  @ManyToOne(() => Region)
+  @ManyToOne(() => Region, (region) => region.tax_rates)
   @JoinColumn({ name: "region_id" })
   region: Region
 
@@ -93,75 +93,89 @@ export class TaxRate extends BaseEntity {
 /**
  * @schema TaxRate
  * title: "Tax Rate"
- * description: "A Tax Rate can be used to associate a certain rate to charge on products within a given Region"
+ * description: "A Tax Rate can be used to define a custom rate to charge on specified products, product types, and shipping options within a given region."
  * type: object
  * required:
+ *   - code
+ *   - created_at
+ *   - id
+ *   - metadata
  *   - name
+ *   - rate
  *   - region_id
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The tax rate's ID
+ *     type: string
  *     example: txr_01G8XDBAWKBHHJRKH0AV02KXBR
  *   rate:
- *     description: "The numeric rate to charge"
+ *     description: The numeric rate to charge
+ *     nullable: true
  *     type: number
  *     example: 10
  *   code:
- *     description: "A code to identify the tax type by"
+ *     description: A code to identify the tax type by
+ *     nullable: true
  *     type: string
  *     example: tax01
  *   name:
- *     description: "A human friendly name for the tax"
+ *     description: A human friendly name for the tax
  *     type: string
  *     example: Tax Example
  *   region_id:
+ *     description: The ID of the region that the rate belongs to.
  *     type: string
- *     description: "The id of the Region that the rate belongs to"
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation `region` is expanded.
- *     type: object
+ *     description: The details of the region that the rate belongs to.
+ *     x-expandable: "region"
+ *     nullable: true
+ *     $ref: "#/components/schemas/Region"
  *   products:
+ *     description: The details of the products that belong to this tax rate.
  *     type: array
- *     description: The products that belong to this tax rate. Available if the relation `products` is expanded.
+ *     x-expandable: "products"
  *     items:
- *       type: object
- *       description: A product object.
+ *       $ref: "#/components/schemas/Product"
  *   product_types:
+ *     description: The details of the product types that belong to this tax rate.
  *     type: array
- *     description: The product types that belong to this tax rate. Available if the relation `product_types` is expanded.
+ *     x-expandable: "product_types"
  *     items:
- *       type: object
- *       description: A product type object.
+ *       $ref: "#/components/schemas/ProductType"
  *   shipping_options:
+ *     description: The details of the shipping options that belong to this tax rate.
  *     type: array
- *     description: The shipping options that belong to this tax rate. Available if the relation `shipping_options` is expanded.
+ *     x-expandable: "shipping_options"
  *     items:
- *       type: object
- *       description: A shipping option object.
+ *       $ref: "#/components/schemas/ShippingOption"
  *   product_count:
- *     description: "The count of products"
+ *     description: The count of products
  *     type: integer
- *     example: null
+ *     example: 10
  *   product_type_count:
- *     description: "The count of product types"
+ *     description: The count of product types
  *     type: integer
- *     example: null
+ *     example: 2
  *   shipping_option_count:
- *     description: "The count of shipping options"
+ *     description: The count of shipping options
  *     type: integer
- *     example: null
+ *     example: 1
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

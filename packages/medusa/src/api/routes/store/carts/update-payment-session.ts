@@ -1,17 +1,18 @@
 import { IsObject } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/payment-sessions/{provider_id}
+ * @oas [post] /store/carts/{id}/payment-sessions/{provider_id}
  * operationId: PostCartsCartPaymentSessionUpdate
  * summary: Update a Payment Session
- * description: "Updates a Payment Session with additional data."
+ * description: "Update a Payment Session with additional data. This can be useful depending on the payment provider used.
+ *  All payment sessions are updated and cart totals are recalculated afterwards."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
- *   - (path) provider_id=* {string} The id of the payment provider.
+ *   - (path) id=* {string} The ID of the Cart.
+ *   - (path) provider_id=* {string} The ID of the payment provider.
  * requestBody:
  *   content:
  *     application/json:
@@ -25,7 +26,7 @@ import { EntityManager } from "typeorm"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.updatePaymentSession(cart_id, 'manual', {
+ *       medusa.carts.updatePaymentSession(cartId, "manual", {
  *         data: {
  *
  *         }
@@ -36,13 +37,13 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/store/carts/{id}/payment-sessions/manual' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "data": {}
  *       }'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -64,10 +65,7 @@ import { EntityManager } from "typeorm"
 export default async (req, res) => {
   const { id, provider_id } = req.params
 
-  const validated = await validator(
-    StorePostCartsCartPaymentSessionUpdateReq,
-    req.body
-  )
+  const validated = req.validatedBody
 
   const cartService: CartService = req.scope.resolve("cartService")
 
@@ -86,7 +84,7 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart: data })
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }
 
 /**

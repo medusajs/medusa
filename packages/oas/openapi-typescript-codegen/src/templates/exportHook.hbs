@@ -1,0 +1,54 @@
+{{>header}}
+
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { UseQueryOptionsWrapper, UseMutationOptionsWrapper} from '../core/HookUtils';
+import { use{{{pascalCase clientName}}} } from '../use{{pascalCase clientName}}';
+{{#if imports}}
+	{{#each imports}}
+    {{#if @root.packageNames.models}}
+import type { {{{this}}} } from '{{{@root.packageNames.models}}}';
+    {{else}}
+import type { {{{this}}} } from '../models/{{{this}}}';
+      {{/if}}
+	{{/each}}
+{{/if}}
+
+const { client } = use{{{pascalCase clientName}}}()
+
+{{#each operations}}
+	export const use{{{service}}}{{{pascalCase name}}} = (
+		{{~#if parameters}}{{~>parameters~}},{{/if}}
+		{{#equals method 'GET'}}
+			options: UseQueryOptionsWrapper<Awaited<ReturnType<typeof client.{{camelCase service}}.{{name}}>>> = {}
+		{{else}}
+			options: UseMutationOptionsWrapper<Awaited<ReturnType<typeof client.{{camelCase service}}.{{name}}>>, unknown,
+				{{~#if parametersBody}} {{parametersBody.type}}{{else}} void{{/if~}}
+			> = {}
+		{{/equals}}
+	) => {
+		{{#equals method 'GET'}}
+			const { data, ...rest } = useQuery<Awaited<ReturnType<typeof client.{{camelCase service}}.{{name}}>>>(
+				['{{camelCase service}}', '{{ camelCase name }}'{{#if parameters}}, {{>parametersUntyped}}{{/if}}],
+				() => client.{{camelCase service}}.{{name}}({{#if parameters}}{{>parametersUntyped}}{{/if}}),
+				options
+			);
+			return { ...data, ...rest } as const
+		{{else}}
+			if (!options?.onSuccess) {
+				const queryClient = useQueryClient()
+				options.onSuccess = async () => {
+					await queryClient.invalidateQueries('{{camelCase service}}')
+				}
+			}
+			return useMutation<Awaited<ReturnType<typeof client.{{camelCase service}}.{{name}}>>, unknown,
+				{{~#if parametersBody}} {{parametersBody.type}}{{else}} void{{/if~}}
+			>(
+				['{{camelCase service}}', '{{ camelCase name }}'{{#if parameters}}, {{>parametersUntyped}}{{/if}}],
+				() => client.{{camelCase service}}.{{name}}({{#if parameters}}{{>parametersUntyped}}{{/if}}),
+				options
+			);
+		{{/equals}}
+	};
+
+{{/each}}
+

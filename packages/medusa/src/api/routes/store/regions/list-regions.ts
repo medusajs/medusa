@@ -3,20 +3,25 @@ import { IsInt, IsOptional, ValidateNested } from "class-validator"
 import { DateComparisonOperator } from "../../../../types/common"
 import RegionService from "../../../../services/region"
 import { Type } from "class-transformer"
+import { defaultRelations } from "."
 import { omit } from "lodash"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /regions
+ * @oas [get] /store/regions
  * operationId: GetRegions
  * summary: List Regions
- * description: "Retrieves a list of Regions."
+ * description: "Retrieve a list of regions. The regions can be filtered by fields such as `created_at`. The regions can also be paginated. This endpoint is useful to
+ *  show the customer all available regions to choose from."
+ * externalDocs:
+ *   description: "How to use regions in a storefront"
+ *   url: "https://docs.medusajs.com/modules/regions-and-currencies/storefront/use-regions"
  * parameters:
- *   - (query) offset=0 {integer} How many regions to skip in the result.
+ *   - (query) offset=0 {integer} The number of regions to skip when retrieving the regions.
  *   - (query) limit=100 {integer} Limit the number of regions returned.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting regions were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -38,7 +43,7 @@ import { validator } from "../../../../utils/validator"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting regions were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -74,9 +79,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/regions'
+ *       curl 'https://medusa-url.com/store/regions'
  * tags:
- *   - Region
+ *   - Regions
  * responses:
  *   200:
  *     description: OK
@@ -104,14 +109,17 @@ export default async (req, res) => {
   const filterableFields = omit(validated, ["limit", "offset"])
 
   const listConfig = {
-    relations: ["countries", "payment_providers", "fulfillment_providers"],
+    relations: defaultRelations,
     skip: offset,
     take: limit,
   }
 
-  const regions = await regionService.list(filterableFields, listConfig)
+  const [regions, count] = await regionService.listAndCount(
+    filterableFields,
+    listConfig
+  )
 
-  res.json({ regions })
+  res.json({ regions, count, limit, offset })
 }
 
 export class StoreGetRegionsParams {

@@ -2,6 +2,25 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ShippingOptionServiceMock } from "../../../../../services/__mocks__/shipping-option"
 
+const defaultFields = [
+  "id",
+  "name",
+  "region_id",
+  "profile_id",
+  "provider_id",
+  "price_type",
+  "amount",
+  "is_return",
+  "admin_only",
+  "data",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  "metadata",
+]
+
+const defaultRelations = ["region", "profile", "requirements"]
+
 describe("GET /admin/shipping-options/:optionId", () => {
   describe("successful retrieval", () => {
     let subject
@@ -27,7 +46,11 @@ describe("GET /admin/shipping-options/:optionId", () => {
     it("calls service retrieve", () => {
       expect(ShippingOptionServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(ShippingOptionServiceMock.retrieve).toHaveBeenCalledWith(
-        IdMap.getId("validId")
+        IdMap.getId("validId"),
+        {
+          select: defaultFields,
+          relations: defaultRelations,
+        }
       )
     })
   })

@@ -7,10 +7,10 @@ import { SalesChannelService } from "../../../../services"
 import { Type } from "class-transformer"
 
 /**
- * @oas [post] /sales-channels/{id}/products/batch
+ * @oas [post] /admin/sales-channels/{id}/products/batch
  * operationId: "PostSalesChannelsChannelProductsBatch"
- * summary: "Add Products"
- * description: "Assign a batch of product to a sales channel."
+ * summary: "Add Products to Sales Channel"
+ * description: "Add a list of products to a sales channel."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Sales channel.
@@ -28,10 +28,10 @@ import { Type } from "class-transformer"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.salesChannels.addProducts(sales_channel_id, {
+ *       medusa.admin.salesChannels.addProducts(salesChannelId, {
  *         product_ids: [
  *           {
- *             id: product_id
+ *             id: productId
  *           }
  *         ]
  *       })
@@ -41,9 +41,9 @@ import { Type } from "class-transformer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/sales-channels/afasf/products/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/sales-channels/{id}/products/batch' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "product_ids": [
  *             {
@@ -55,7 +55,7 @@ import { Type } from "class-transformer"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Sales Channel
+ *   - Sales Channels
  * responses:
  *   200:
  *     description: OK

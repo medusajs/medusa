@@ -8,15 +8,16 @@ import { Type } from "class-transformer"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /product-categories/{id}/products/batch
+ * @oas [post] /admin/product-categories/{id}/products/batch
  * operationId: "PostProductCategoriesCategoryProductsBatch"
- * summary: "Add Products to a category"
- * description: "Assign a batch of products to a product category."
+ * summary: "Add Products to a Category"
+ * description: "Add a list of products to a product category."
  * x-authenticated: true
+ * x-featureFlag: "product_categories"
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category.
- *   - (query) expand {string} (Comma separated) Category fields to be expanded in the response.
- *   - (query) fields {string} (Comma separated) Category fields to be retrieved in the response.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned product category.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned product category.
  * requestBody:
  *   content:
  *     application/json:
@@ -32,10 +33,10 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.productCategories.addProducts(product_category_id, {
+ *       medusa.admin.productCategories.addProducts(productCategoryId, {
  *         product_ids: [
  *           {
- *             id: product_id
+ *             id: productId
  *           }
  *         ]
  *       })
@@ -45,10 +46,9 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location \
- *       --request POST 'https://medusa-url.com/admin/product-categories/{product_category_id}/products/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/product-categories/{id}/products/batch' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "product_ids": [
  *             {
@@ -60,7 +60,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *   200:
  *     description: OK

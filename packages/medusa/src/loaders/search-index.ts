@@ -1,7 +1,6 @@
-import { MedusaContainer } from "../types/global"
-import { Logger } from "../types/global"
+import { AbstractSearchService } from "@medusajs/utils"
 import { EventBusService } from "../services"
-import { AbstractSearchService } from "../interfaces"
+import { Logger, MedusaContainer } from "../types/global"
 
 export const SEARCH_INDEX_EVENT = "SEARCH_INDEX_EVENT"
 

@@ -1,85 +1,123 @@
 /**
  * @schema Cart
  * title: "Cart"
- * description: "Represents a user cart"
+ * description: "A cart represents a virtual shopping bag. It can be used to complete an order, a swap, or a claim."
  * type: object
+ * required:
+ *   - billing_address_id
+ *   - completed_at
+ *   - context
+ *   - created_at
+ *   - customer_id
+ *   - deleted_at
+ *   - email
+ *   - id
+ *   - idempotency_key
+ *   - metadata
+ *   - payment_authorized_at
+ *   - payment_id
+ *   - payment_session
+ *   - region_id
+ *   - shipping_address_id
+ *   - type
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The cart's ID
+ *     type: string
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   email:
- *     type: string
  *     description: The email associated with the cart
+ *     nullable: true
+ *     type: string
  *     format: email
  *   billing_address_id:
- *     type: string
  *     description: The billing address's ID
+ *     nullable: true
+ *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   billing_address:
- *     description: Available if the relation `billing_address` is expanded.
+ *     description: The details of the billing address associated with the cart.
+ *     x-expandable: "billing_address"
+ *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   shipping_address_id:
- *     type: string
  *     description: The shipping address's ID
+ *     nullable: true
+ *     type: string
  *     example: addr_01G8ZH853YPY9B94857DY91YGW
  *   shipping_address:
- *     description: Available if the relation `shipping_address` is expanded.
+ *     description: The details of the shipping address associated with the cart.
+ *     x-expandable: "shipping_address"
+ *     nullable: true
  *     $ref: "#/components/schemas/Address"
  *   items:
- *     description: Available if the relation `items` is expanded.
+ *     description: The line items added to the cart.
  *     type: array
+ *     x-expandable: "items"
  *     items:
  *       $ref: "#/components/schemas/LineItem"
  *   region_id:
- *     type: string
  *     description: The region's ID
+ *     type: string
  *     example: reg_01G1G5V26T9H8Y0M4JNE3YGA4G
  *   region:
- *     description: A region object. Available if the relation `region` is expanded.
- *     type: object
+ *     description: The details of the region associated with the cart.
+ *     x-expandable: "region"
+ *     nullable: true
+ *     $ref: "#/components/schemas/Region"
  *   discounts:
+ *     description: An array of details of all discounts applied to the cart.
  *     type: array
- *     description: Available if the relation `discounts` is expanded.
+ *     x-expandable: "discounts"
  *     items:
- *       type: object
- *       description: A discount object.
+ *       $ref: "#/components/schemas/Discount"
  *   gift_cards:
+ *     description: An array of details of all gift cards applied to the cart.
  *     type: array
- *     description: Available if the relation `gift_cards` is expanded.
+ *     x-expandable: "gift_cards"
  *     items:
- *       type: object
- *       description: A gift card object.
+ *       $ref: "#/components/schemas/GiftCard"
  *   customer_id:
- *     type: string
  *     description: The customer's ID
+ *     nullable: true
+ *     type: string
  *     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
  *   customer:
- *     description: A customer object. Available if the relation `customer` is expanded.
- *     type: object
+ *     description: The details of the customer the cart belongs to.
+ *     x-expandable: "customer"
+ *     nullable: true
+ *     $ref: "#/components/schemas/Customer"
  *   payment_session:
- *     description: The selected payment session in the cart.
+ *     description: The details of the selected payment session in the cart.
+ *     x-expandable: "payment_session"
+ *     nullable: true
  *     $ref: "#/components/schemas/PaymentSession"
  *   payment_sessions:
+ *     description: The details of all payment sessions created on the cart.
  *     type: array
- *     description: The payment sessions created on the cart.
+ *     x-expandable: "payment_sessions"
  *     items:
  *       $ref: "#/components/schemas/PaymentSession"
  *   payment_id:
- *     type: string
  *     description: The payment's ID if available
+ *     nullable: true
+ *     type: string
  *     example: pay_01G8ZCC5W42ZNY842124G7P5R9
  *   payment:
- *     description: Available if the relation `payment` is expanded.
+ *     description: The details of the payment associated with the cart.
+ *     nullable: true
+ *     x-expandable: "payment"
  *     $ref: "#/components/schemas/Payment"
  *   shipping_methods:
+ *     description: The details of the shipping methods added to the cart.
  *     type: array
- *     description: The shipping methods added to the cart.
+ *     x-expandable: "shipping_methods"
  *     items:
  *       $ref: "#/components/schemas/ShippingMethod"
  *   type:
- *     type: string
  *     description: The cart's type.
+ *     type: string
  *     enum:
  *       - default
  *       - swap
@@ -88,83 +126,107 @@
  *       - claim
  *     default: default
  *   completed_at:
+ *     description: The date with timezone at which the cart was completed.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the cart was completed."
  *     format: date-time
  *   payment_authorized_at:
+ *     description: The date with timezone at which the payment was authorized.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the payment was authorized."
  *     format: date-time
  *   idempotency_key:
- *     type: string
  *     description: Randomly generated key used to continue the completion of a cart in case of failure.
+ *     nullable: true
+ *     type: string
  *     externalDocs:
- *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+ *       url: https://docs.medusajs.com/development/idempotency-key/overview.md
  *       description: Learn more how to use the idempotency key.
  *   context:
- *     type: object
  *     description: "The context of the cart which can include info like IP or user agent."
+ *     nullable: true
+ *     type: object
  *     example:
  *       ip: "::1"
  *       user_agent: "PostmanRuntime/7.29.2"
  *   sales_channel_id:
- *     type: string
  *     description: The sales channel ID the cart is associated with.
+ *     nullable: true
+ *     type: string
  *     example: null
  *   sales_channel:
- *     description: A sales channel object. Available if the relation `sales_channel` is expanded.
- *     type: object
+ *     description: The details of the sales channel associated with the cart.
+ *     nullable: true
+ *     x-expandable: "sales_channel"
+ *     $ref: "#/components/schemas/SalesChannel"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   shipping_total:
- *     type: integer
  *     description: The total of shipping
+ *     type: integer
  *     example: 1000
  *   discount_total:
+ *     description: The total of discount rounded
  *     type: integer
- *     description: The total of discount
  *     example: 800
- *   tax_total:
+ *   raw_discount_total:
+ *     description: The total of discount
  *     type: integer
+ *     example: 800
+ *   item_tax_total:
+ *     description: The total of items with taxes
+ *     type: integer
+ *     example: 8000
+ *   shipping_tax_total:
+ *     description: The total of shipping with taxes
+ *     type: integer
+ *     example: 1000
+ *   tax_total:
  *     description: The total of tax
+ *     type: integer
  *     example: 0
  *   refunded_total:
- *     type: integer
  *     description: The total amount refunded if the order associated with this cart is returned.
+ *     type: integer
  *     example: 0
  *   total:
- *     type: integer
  *     description: The total amount of the cart
+ *     type: integer
  *     example: 8200
  *   subtotal:
- *     type: integer
  *     description: The subtotal of the cart
+ *     type: integer
  *     example: 8000
  *   refundable_amount:
- *     type: integer
  *     description: The amount that can be refunded
+ *     type: integer
  *     example: 8200
  *   gift_card_total:
- *     type: integer
  *     description: The total of gift cards
+ *     type: integer
  *     example: 0
  *   gift_card_tax_total:
- *     type: integer
  *     description: The total of gift cards with taxes
+ *     type: integer
  *     example: 0
  */
 
@@ -179,7 +241,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
+  OneToOne
 } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import {
@@ -187,6 +249,8 @@ import {
   FeatureFlagDecorators,
 } from "../utils/feature-flag-decorators"
 
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 import { Address } from "./address"
 import { Customer } from "./customer"
 import { Discount } from "./discount"
@@ -197,8 +261,6 @@ import { PaymentSession } from "./payment-session"
 import { Region } from "./region"
 import { SalesChannel } from "./sales-channel"
 import { ShippingMethod } from "./shipping-method"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum CartType {
   DEFAULT = "default",
@@ -333,6 +395,7 @@ export class Cart extends SoftDeletableEntity {
 
   shipping_total?: number
   discount_total?: number
+  raw_discount_total?: number
   item_tax_total?: number | null
   shipping_tax_total?: number | null
   tax_total?: number | null

@@ -4,12 +4,12 @@ import { EntityManager } from "typeorm"
 import PublishableApiKeyService from "../../../../services/publishable-api-key"
 
 /**
- * @oas [post] /publishable-api-keys/{id}/revoke
+ * @oas [post] /admin/publishable-api-keys/{id}/revoke
  * operationId: "PostPublishableApiKeysPublishableApiKeyRevoke"
- * summary: "Revoke PublishableApiKey"
- * description: "Revokes a PublishableApiKey."
+ * summary: "Revoke a Publishable API Key"
+ * description: "Revoke a Publishable API Key. Revoking the publishable API Key can't be undone, and the key can't be used in future requests."
  * parameters:
- *   - (path) id=* {string} The ID of the PublishableApiKey.
+ *   - (path) id=* {string} The ID of the Publishable API Key.
  * x-authenticated: true
  * x-codegen:
  *   method: revoke
@@ -27,13 +27,13 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/publishable-api-keys/{pka_id}/revoke' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST 'https://medusa-url.com/admin/publishable-api-keys/{id}/revoke' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PublishableApiKey
+ *   - Publishable Api Keys
  * responses:
  *   200:
  *     description: OK

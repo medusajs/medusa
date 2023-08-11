@@ -1,13 +1,14 @@
-import { EntityManager } from "typeorm"
-import { IStockLocationService, TransactionBaseService } from "../interfaces"
-import { SalesChannelService, EventBusService } from "./"
-
-import { SalesChannelLocation } from "../models"
+import { IEventBusService, IStockLocationService } from "@medusajs/types"
+import { MedusaError } from "medusa-core-utils"
+import { EntityManager, In } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
+import { SalesChannelLocation } from "../models/sales-channel-location"
+import SalesChannelService from "./sales-channel"
 
 type InjectedDependencies = {
   stockLocationService: IStockLocationService
   salesChannelService: SalesChannelService
-  eventBusService: EventBusService
+  eventBusService: IEventBusService
   manager: EntityManager
 }
 
@@ -16,91 +17,136 @@ type InjectedDependencies = {
  */
 
 class SalesChannelLocationService extends TransactionBaseService {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   protected readonly salesChannelService_: SalesChannelService
-  protected readonly eventBusService: EventBusService
-  protected readonly stockLocationService: IStockLocationService
+  protected readonly eventBusService_: IEventBusService
+  protected readonly stockLocationService_: IStockLocationService
 
   constructor({
     salesChannelService,
     stockLocationService,
     eventBusService,
-    manager,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.salesChannelService_ = salesChannelService
-    this.eventBusService = eventBusService
-    this.stockLocationService = stockLocationService
+    this.eventBusService_ = eventBusService
+    this.stockLocationService_ = stockLocationService
   }
 
   /**
    * Removes an association between a sales channel and a stock location.
-   * @param {string} salesChannelId - The ID of the sales channel.
-   * @param {string} locationId - The ID of the stock location.
-   * @returns {Promise<void>} A promise that resolves when the association has been removed.
+   * @param salesChannelId - The ID of the sales channel or undefined if all the sales channel will be affected.
+   * @param locationId - The ID of the stock location.
+   * @returns A promise that resolves when the association has been removed.
    */
   async removeLocation(
-    salesChannelId: string,
-    locationId: string
+    locationId: string,
+    salesChannelId?: string
   ): Promise<void> {
-    const manager = this.transactionManager_ || this.manager_
-    await manager.delete(SalesChannelLocation, {
-      sales_channel_id: salesChannelId,
+    const salesChannelLocationRepo =
+      this.activeManager_.getRepository(SalesChannelLocation)
+
+    const where: any = {
       location_id: locationId,
+    }
+    if (salesChannelId) {
+      where.sales_channel_id = salesChannelId
+    }
+
+    const scLoc = await salesChannelLocationRepo.find({
+      where,
     })
+
+    if (scLoc.length) {
+      await salesChannelLocationRepo.remove(scLoc)
+    }
   }
 
   /**
    * Associates a sales channel with a stock location.
-   * @param {string} salesChannelId - The ID of the sales channel.
-   * @param {string} locationId - The ID of the stock location.
-   * @returns {Promise<void>} A promise that resolves when the association has been created.
+   * @param salesChannelId - The ID of the sales channel.
+   * @param locationId - The ID of the stock location.
+   * @returns A promise that resolves when the association has been created.
    */
   async associateLocation(
     salesChannelId: string,
     locationId: string
   ): Promise<void> {
-    const manager = this.transactionManager_ || this.manager_
     const salesChannel = await this.salesChannelService_
-      .withTransaction(manager)
+      .withTransaction(this.activeManager_)
       .retrieve(salesChannelId)
 
-    const stockLocationId = locationId
-
-    if (this.stockLocationService) {
-      const stockLocation = await this.stockLocationService.retrieve(locationId)
-      locationId = stockLocation.id
+    if (this.stockLocationService_) {
+      // trhows error if not found
+      await this.stockLocationService_.retrieve(locationId, undefined, {
+        transactionManager: this.activeManager_,
+      })
     }
 
-    const salesChannelLocation = manager.create(SalesChannelLocation, {
+    const salesChannelLocationRepo =
+      this.activeManager_.getRepository(SalesChannelLocation)
+
+    const salesChannelLocation = salesChannelLocationRepo.create({
       sales_channel_id: salesChannel.id,
-      location_id: stockLocationId,
+      location_id: locationId,
     })
 
-    await manager.save(salesChannelLocation)
+    await salesChannelLocationRepo.save(salesChannelLocation)
   }
 
   /**
    * Lists the stock locations associated with a sales channel.
-   * @param {string} salesChannelId - The ID of the sales channel.
-   * @returns {Promise<string[]>} A promise that resolves with an array of location IDs.
+   * @param salesChannelId - The ID of the sales channel.
+   * @returns A promise that resolves with an array of location IDs.
    */
-  async listLocations(salesChannelId: string): Promise<string[]> {
-    const manager = this.transactionManager_ || this.manager_
-    const salesChannel = await this.salesChannelService_
-      .withTransaction(manager)
-      .retrieve(salesChannelId)
+  async listLocationIds(salesChannelId: string | string[]): Promise<string[]> {
+    const ids = Array.isArray(salesChannelId)
+      ? salesChannelId
+      : [salesChannelId]
 
-    const locations = await manager.find(SalesChannelLocation, {
-      where: { sales_channel_id: salesChannel.id },
+    const [salesChannels, count] = await this.salesChannelService_
+      .withTransaction(this.activeManager_)
+      .listAndCount({ id: ids }, { select: ["id"], skip: 0 })
+
+    if (!count) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Sales channel with id: ${ids.join(", ")} was not found`
+      )
+    }
+
+    const locations = await this.activeManager_.find(SalesChannelLocation, {
+      where: { sales_channel_id: In(salesChannels.map((sc) => sc.id)) },
+      select: ["location_id"],
     })
 
     return locations.map((l) => l.location_id)
+  }
+
+  /**
+   * Lists the sales channels associated with a stock location.
+   * @param {string} salesChannelId - The ID of the stock location.
+   * @returns {Promise<string[]>} A promise that resolves with an array of sales channel IDs.
+   */
+  async listSalesChannelIds(locationId: string): Promise<string[]> {
+    const location = await this.stockLocationService_.retrieve(
+      locationId,
+      undefined,
+      {
+        transactionManager: this.activeManager_,
+      }
+    )
+
+    const salesChannelRepo =
+      this.activeManager_.getRepository(SalesChannelLocation)
+
+    const salesChannelLocations = await salesChannelRepo.find({
+      where: { location_id: location.id },
+      select: ["sales_channel_id"],
+    })
+
+    return salesChannelLocations.map((l) => l.sales_channel_id)
   }
 }
 

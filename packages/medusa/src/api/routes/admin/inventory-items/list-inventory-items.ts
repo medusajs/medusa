@@ -1,56 +1,71 @@
-import { Request, Response } from "express"
-import { IsString, IsBoolean, IsOptional } from "class-validator"
-import { Transform } from "class-transformer"
-import { IsType } from "../../../../utils/validators/is-type"
-import { getLevelsByInventoryItemId } from "./utils/join-levels"
+import { IsBoolean, IsOptional, IsString } from "class-validator"
 import {
-  getVariantsByInventoryItemId,
-  InventoryItemsWithVariants,
-} from "./utils/join-variants"
+  NumericalComparisonOperator,
+  StringComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 import {
   ProductVariantInventoryService,
   ProductVariantService,
 } from "../../../../services"
-import { IInventoryService } from "../../../../interfaces"
+import { Request, Response } from "express"
+import { getLevelsByInventoryItemId, joinLevels } from "./utils/join-levels"
 import {
-  extendedFindParamsMixin,
-  StringComparisonOperator,
-  NumericalComparisonOperator,
-} from "../../../../types/common"
-import { AdminInventoryItemsListWithVariantsAndLocationLevelsRes } from "."
+  getVariantsByInventoryItemId,
+  joinVariants,
+} from "./utils/join-variants"
+
+import { IInventoryService } from "@medusajs/types"
+import { IsType } from "../../../../utils/validators/is-type"
+import { Transform } from "class-transformer"
 
 /**
- * @oas [get] /inventory-items
+ * @oas [get] /admin/inventory-items
  * operationId: "GetInventoryItems"
- * summary: "List inventory items."
- * description: "Lists inventory items."
+ * summary: "List Inventory Items"
+ * description: "Retrieve a list of inventory items. The inventory items can be filtered by fields such as `q` or `location_id`. The inventory items can also be paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) offset=0 {integer} How many inventory items to skip in the result.
+ *   - (query) offset=0 {integer} The number of inventory items to skip when retrieving the inventory items.
  *   - (query) limit=20 {integer} Limit the number of inventory items returned.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
- *   - (query) q {string} Query used for searching product inventory items and their properties.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in each returned inventory item.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned inventory item.
+ *   - (query) q {string} term to search inventory item's sku, title, and description.
  *   - in: query
  *     name: location_id
  *     style: form
  *     explode: false
- *     description: Locations ids to search for.
+ *     description: Filter by location IDs.
  *     schema:
  *       type: array
  *       items:
  *         type: string
- *   - (query) id {string} id to search for.
- *   - (query) sku {string} sku to search for.
- *   - (query) origin_country {string} origin_country to search for.
- *   - (query) mid_code {string} mid_code to search for.
- *   - (query) material {string} material to search for.
- *   - (query) hs_code {string} hs_code to search for.
- *   - (query) weight {string} weight to search for.
- *   - (query) length {string} length to search for.
- *   - (query) height {string} height to search for.
- *   - (query) width {string} width to search for.
- *   - (query) requires_shipping {string} requires_shipping to search for.
+ *   - in: query
+ *     name: id
+ *     style: form
+ *     explode: false
+ *     description: Filter by the inventory ID
+ *     schema:
+ *       oneOf:
+ *         - type: string
+ *           description: inventory ID
+ *         - type: array
+ *           description: an array of inventory IDs
+ *           items:
+ *             type: string
+ *   - (query) sku {string} Filter by SKU
+ *   - (query) origin_country {string} Filter by origin country
+ *   - (query) mid_code {string} Filter by MID code
+ *   - (query) material {string} Filter by material
+ *   - (query) hs_code {string} Filter by HS Code
+ *   - (query) weight {string} Filter by weight
+ *   - (query) length {string} Filter by length
+ *   - (query) height {string} Filter by height
+ *   - (query) width {string} Filter by width
+ *   - (query) requires_shipping {string} Filter by whether the item requires shipping
+ * x-codegen:
+ *   method: list
+ *   queryParams: AdminGetInventoryItemsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -59,15 +74,14 @@ import { AdminInventoryItemsListWithVariantsAndLocationLevelsRes } from "."
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.inventoryItems.list()
- *       .then(({ inventory_items }) => {
+ *       .then(({ inventory_items, count, offset, limit }) => {
  *         console.log(inventory_items.length);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/inventory-items' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json'
+ *       curl 'https://medusa-url.com/admin/inventory-items' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -119,33 +133,16 @@ export default async (req: Request, res: Response) => {
     listConfig
   )
 
-  const levelsByItemId = await getLevelsByInventoryItemId(
+  const inventory_items = await joinVariants(
     inventoryItems,
-    locationIds,
-    inventoryService
-  )
-
-  const variantsByInventoryItemId: InventoryItemsWithVariants =
-    await getVariantsByInventoryItemId(
-      inventoryItems,
-      productVariantInventoryService,
-      productVariantService
-    )
-
-  const inventoryItemsWithVariantsAndLocationLevels = inventoryItems.map(
-    (
-      inventoryItem
-    ): AdminInventoryItemsListWithVariantsAndLocationLevelsRes => {
-      return {
-        ...inventoryItem,
-        variants: variantsByInventoryItemId[inventoryItem.id] ?? [],
-        location_levels: levelsByItemId[inventoryItem.id] ?? [],
-      }
-    }
-  )
+    productVariantInventoryService,
+    productVariantService
+  ).then(async (res) => {
+    return await joinLevels(res, locationIds, inventoryService)
+  })
 
   res.status(200).json({
-    inventory_items: inventoryItemsWithVariantsAndLocationLevels,
+    inventory_items,
     count,
     offset: skip,
     limit: take,

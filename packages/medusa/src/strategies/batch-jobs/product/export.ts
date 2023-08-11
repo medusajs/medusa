@@ -1,24 +1,29 @@
 import { EntityManager } from "typeorm"
+
+import { humanizeAmount } from "medusa-core-utils"
+
+import { FlagRouter } from "@medusajs/utils"
+import { defaultAdminProductRelations } from "../../../api"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
+import ProductCategoryFeatureFlag from "../../../loaders/feature-flags/product-categories"
+import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 import { Product, ProductVariant } from "../../../models"
 import { BatchJobService, ProductService } from "../../../services"
 import { BatchJobStatus, CreateBatchJobInput } from "../../../types/batch-job"
-import { defaultAdminProductRelations } from "../../../api"
+import { FindProductConfig } from "../../../types/product"
+import { csvCellContentFormatter } from "../../../utils"
 import { prepareListQuery } from "../../../utils/get-query-config"
 import {
-  DynamicProductExportDescriptor,
-  ProductExportBatchJob,
-  ProductExportBatchJobContext,
-  ProductExportInjectedDependencies,
-  ProductExportPriceData,
+    DynamicProductExportDescriptor,
+    ProductExportBatchJob,
+    ProductExportBatchJobContext,
+    ProductExportInjectedDependencies,
+    ProductExportPriceData,
 } from "./types"
-import { FindProductConfig } from "../../../types/product"
-import { FlagRouter } from "../../../utils/flag-router"
-import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
-import { csvCellContentFormatter } from "../../../utils"
 import {
-  productColumnsDefinition,
-  productSalesChannelColumnsDefinition,
+    productCategoriesColumnsDefinition,
+    productColumnsDefinition,
+    productSalesChannelColumnsDefinition,
 } from "./types/columns-definition"
 
 export default class ProductExportStrategy extends AbstractBatchJobStrategy {
@@ -49,6 +54,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     ...productSalesChannelColumnsDefinition,
   }
 
+  protected readonly productCategoriesColumnDefinitions = {
+    ...productCategoriesColumnsDefinition,
+  }
+
   private readonly NEWLINE_ = "\r\n"
   private readonly DELIMITER_ = ";"
   private readonly DEFAULT_LIMIT = 50
@@ -76,6 +85,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
 
     if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
       this.defaultRelations_.push("sales_channels")
+    }
+
+    if (featureFlagRouter.isFeatureEnabled(ProductCategoryFeatureFlag.key)) {
+      this.defaultRelations_.push("categories")
     }
   }
 
@@ -144,6 +157,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       let dynamicOptionColumnCount = 0
       let dynamicImageColumnCount = 0
       let dynamicSalesChannelsColumnCount = 0
+      let dynamicProductCategoriesColumnCount = 0
       let pricesData = new Set<string>()
 
       while (offset < productCount) {
@@ -170,6 +184,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
           shapeData.salesChannelsColumnCount,
           dynamicSalesChannelsColumnCount
         )
+        dynamicProductCategoriesColumnCount = Math.max(
+          shapeData.productCategoriesColumnCount,
+          dynamicProductCategoriesColumnCount
+        )
         pricesData = new Set([...pricesData, ...shapeData.pricesData])
 
         offset += products.length
@@ -184,6 +202,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
               dynamicImageColumnCount,
               dynamicOptionColumnCount,
               dynamicSalesChannelsColumnCount,
+              dynamicProductCategoriesColumnCount,
               prices: [...pricesData].map((stringifyData) =>
                 JSON.parse(stringifyData)
               ),
@@ -314,12 +333,14 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       dynamicImageColumnCount,
       dynamicOptionColumnCount,
       dynamicSalesChannelsColumnCount,
+      dynamicProductCategoriesColumnCount,
     } = batchJob?.context?.shape ?? {}
 
     this.appendMoneyAmountDescriptors(prices)
     this.appendOptionsDescriptors(dynamicOptionColumnCount)
     this.appendImagesDescriptors(dynamicImageColumnCount)
     this.appendSalesChannelsDescriptors(dynamicSalesChannelsColumnCount)
+    this.appendProductCategoriesDescriptors(dynamicProductCategoriesColumnCount)
 
     const exportedColumns = Object.values(this.columnsDefinition)
       .map(
@@ -403,6 +424,56 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     }
   }
 
+  private appendProductCategoriesDescriptors(maxCategoriesCount): void {
+    const columnNameHandleBuilder = (this.productCategoriesColumnDefinitions[
+      "Product Category Handle"
+    ]!.exportDescriptor as DynamicProductExportDescriptor)!
+      .buildDynamicColumnName
+
+    const columnNameNameBuilder = (this.productCategoriesColumnDefinitions[
+      "Product Category Name"
+    ]!.exportDescriptor as DynamicProductExportDescriptor)!
+      .buildDynamicColumnName
+
+    const columnNameDescriptionBuilder = (this
+      .productCategoriesColumnDefinitions["Product Category Description"]!
+      .exportDescriptor as DynamicProductExportDescriptor)!
+      .buildDynamicColumnName
+
+    for (let i = 0; i < maxCategoriesCount; ++i) {
+      let columnNameId = columnNameHandleBuilder(i)
+
+      this.columnsDefinition[columnNameId] = {
+        name: columnNameId,
+        exportDescriptor: {
+          accessor: (product: Product) => product?.categories[i]?.handle ?? "",
+          entityName: "product",
+        },
+      }
+
+      columnNameId = columnNameNameBuilder(i)
+
+      this.columnsDefinition[columnNameId] = {
+        name: columnNameId,
+        exportDescriptor: {
+          accessor: (product: Product) => product?.categories[i]?.name ?? "",
+          entityName: "product",
+        },
+      }
+
+      columnNameId = columnNameDescriptionBuilder(i)
+
+      this.columnsDefinition[columnNameId] = {
+        name: columnNameId,
+        exportDescriptor: {
+          accessor: (product: Product) =>
+            product?.categories[i]?.description ?? "",
+          entityName: "product",
+        },
+      }
+    }
+  }
+
   private appendOptionsDescriptors(maxOptionsCount: number): void {
     for (let i = 0; i < maxOptionsCount; ++i) {
       const columnNameNameBuilder = (this.columnsDefinition["Option Name"]!
@@ -460,7 +531,12 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
                     priceData.currency_code.toLowerCase()
                 )
               })
-              return price?.amount?.toString() ?? ""
+              return price?.amount
+                ? humanizeAmount(
+                    price?.amount,
+                    priceData.currency_code!
+                  ).toString()
+                : ""
             },
             entityName: "variant",
           },
@@ -487,7 +563,12 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
                     priceData.region?.id?.toLowerCase()
                 )
               })
-              return price?.amount?.toString() ?? ""
+              return price?.amount
+                ? humanizeAmount(
+                    price?.amount,
+                    priceData.region!.currency_code!
+                  ).toString()
+                : ""
             },
             entityName: "variant",
           },
@@ -546,7 +627,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
   }
 
   /**
-   * Return the maximun number of each relation that must appears in the export.
+   * Return the maximum number of each relation that must appears in the export.
    * The number of item of a relation can vary between 0-Infinity and therefore the number of columns
    * that will be added to the export correspond to that number
    * @param products - The main entity to get the relation shape from
@@ -562,11 +643,13 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
     optionColumnCount: number
     imageColumnCount: number
     salesChannelsColumnCount: number
+    productCategoriesColumnCount: number
     pricesData: Set<string>
   } {
     let optionColumnCount = 0
     let imageColumnCount = 0
     let salesChannelsColumnCount = 0
+    let productCategoriesColumnCount = 0
     const pricesData = new Set<string>()
 
     // Retrieve the highest count of each object to build the dynamic columns later
@@ -584,6 +667,16 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
         salesChannelsColumnCount = Math.max(
           salesChannelsColumnCount,
           salesChannelCount
+        )
+      }
+
+      if (
+        this.featureFlagRouter_.isFeatureEnabled(ProductCategoryFeatureFlag.key)
+      ) {
+        const categoriesCount = product?.categories?.length ?? 0
+        productCategoriesColumnCount = Math.max(
+          productCategoriesColumnCount,
+          categoriesCount
         )
       }
 
@@ -611,6 +704,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy {
       optionColumnCount,
       imageColumnCount,
       salesChannelsColumnCount,
+      productCategoriesColumnCount,
       pricesData,
     }
   }

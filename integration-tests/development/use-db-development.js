@@ -1,6 +1,6 @@
 const path = require("path")
 
-const { createConnection } = require("typeorm")
+const { DataSource } = require("typeorm")
 const { getConfigFile } = require("medusa-core-utils")
 
 const DB_HOST = process.env.DB_HOST
@@ -14,14 +14,16 @@ process.env.NODE_ENV = "development"
 require("./dev-require")
 
 async function createDB() {
-  const connection = await createConnection({
+  const connection = new DataSource({
     type: "postgres",
     url: `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}`,
   })
 
+  await connection.initialize()
+
   await connection.query(`DROP DATABASE IF EXISTS "${DB_NAME}";`)
   await connection.query(`CREATE DATABASE "${DB_NAME}";`)
-  await connection.close()
+  await connection.destroy()
 }
 
 module.exports = {
@@ -47,6 +49,7 @@ module.exports = {
     const {
       getEnabledMigrations,
       getModuleSharedResources,
+      runIsolatedModulesMigration,
     } = require("@medusajs/medusa/dist/commands/utils/get-migrations")
 
     const entities = modelsLoader({}, { register: false })
@@ -72,7 +75,7 @@ module.exports = {
 
     await createDB()
 
-    const dbConnection = await createConnection({
+    const dbConnection = new DataSource({
       type: "postgres",
       url: DB_URL,
       entities: enabledEntities.concat(moduleModels),
@@ -80,7 +83,11 @@ module.exports = {
       // logging: true,
     })
 
+    await dbConnection.initialize()
+
     await dbConnection.runMigrations()
+
+    await runIsolatedModulesMigration(configModule)
 
     return dbConnection
   },

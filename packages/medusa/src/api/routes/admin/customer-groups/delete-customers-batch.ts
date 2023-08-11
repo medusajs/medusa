@@ -8,10 +8,10 @@ import { ValidateNested } from "class-validator"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [delete] /customer-groups/{id}/customers/batch
+ * @oas [delete] /admin/customer-groups/{id}/customers/batch
  * operationId: "DeleteCustomerGroupsGroupCustomerBatch"
- * summary: "Remove Customers"
- * description: "Removes a list of customers, represented by id's, from a customer group."
+ * summary: "Remove Customers from Group"
+ * description: "Remove a list of customers from a customer group. This doesn't delete the customer, only the association between the customer and the customer group."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the customer group.
@@ -29,10 +29,10 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.customerGroups.removeCustomers(customer_group_id, {
+ *       medusa.admin.customerGroups.removeCustomers(customerGroupId, {
  *         customer_ids: [
  *           {
- *             id: customer_id
+ *             id: customerId
  *           }
  *         ]
  *       })
@@ -42,9 +42,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/customer-groups/{id}/customers/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE 'https://medusa-url.com/admin/customer-groups/{id}/customers/batch' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "customer_ids": [
  *               {
@@ -56,7 +56,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Customer Group
+ *   - Customer Groups
  * responses:
  *   200:
  *     description: OK
@@ -114,6 +114,7 @@ export default async (req: Request, res: Response) => {
  *     description: "The ids of the customers to remove"
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - id
  *       properties:

@@ -24,7 +24,7 @@ TransactionBaseService.constructor
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:65](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L65)
+[medusa/src/services/order-edit.ts:75](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L75)
 
 ## Properties
 
@@ -38,7 +38,7 @@ TransactionBaseService.\_\_configModule\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:10](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L10)
+[medusa/src/interfaces/transaction-base-service.ts:14](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L14)
 
 ___
 
@@ -52,7 +52,21 @@ TransactionBaseService.\_\_container\_\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:9](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L9)
+[medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+
+___
+
+### \_\_moduleDeclaration\_\_
+
+• `Protected` `Optional` `Readonly` **\_\_moduleDeclaration\_\_**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.\_\_moduleDeclaration\_\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:15](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L15)
 
 ___
 
@@ -62,7 +76,17 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:60](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L60)
+[medusa/src/services/order-edit.ts:69](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L69)
+
+___
+
+### inventoryService\_
+
+• `Protected` `Readonly` **inventoryService\_**: `undefined` \| `IInventoryService`
+
+#### Defined in
+
+[medusa/src/services/order-edit.ts:73](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L73)
 
 ___
 
@@ -72,7 +96,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:62](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L62)
+[medusa/src/services/order-edit.ts:71](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L71)
 
 ___
 
@@ -82,21 +106,31 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:59](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L59)
+[medusa/src/services/order-edit.ts:68](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L68)
 
 ___
 
 ### manager\_
 
-• `Protected` `Readonly` **manager\_**: `EntityManager`
+• `Protected` **manager\_**: `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.manager\_
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:52](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L52)
+[medusa/src/interfaces/transaction-base-service.ts:5](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L5)
+
+___
+
+### newTotalsService\_
+
+• `Protected` `Readonly` **newTotalsService\_**: [`NewTotalsService`](NewTotalsService.md)
+
+#### Defined in
+
+[medusa/src/services/order-edit.ts:67](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L67)
 
 ___
 
@@ -106,17 +140,17 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:63](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L63)
+[medusa/src/services/order-edit.ts:72](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L72)
 
 ___
 
 ### orderEditRepository\_
 
-• `Protected` `Readonly` **orderEditRepository\_**: typeof `OrderEditRepository`
+• `Protected` `Readonly` **orderEditRepository\_**: `Repository`<`OrderEdit`\>
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:55](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L55)
+[medusa/src/services/order-edit.ts:63](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L63)
 
 ___
 
@@ -126,7 +160,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:57](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L57)
+[medusa/src/services/order-edit.ts:65](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L65)
 
 ___
 
@@ -136,7 +170,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:61](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L61)
+[medusa/src/services/order-edit.ts:70](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L70)
 
 ___
 
@@ -146,7 +180,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:58](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L58)
+[medusa/src/services/order-edit.ts:66](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L66)
 
 ___
 
@@ -154,13 +188,13 @@ ___
 
 • `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
 
-#### Overrides
+#### Inherited from
 
 TransactionBaseService.transactionManager\_
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:53](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L53)
+[medusa/src/interfaces/transaction-base-service.ts:6](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L6)
 
 ___
 
@@ -181,7 +215,25 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:43](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L43)
+[medusa/src/services/order-edit.ts:54](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L54)
+
+## Accessors
+
+### activeManager\_
+
+• `Protected` `get` **activeManager_**(): `EntityManager`
+
+#### Returns
+
+`EntityManager`
+
+#### Inherited from
+
+TransactionBaseService.activeManager\_
+
+#### Defined in
+
+[medusa/src/interfaces/transaction-base-service.ts:8](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L8)
 
 ## Methods
 
@@ -202,7 +254,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:554](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L554)
+[medusa/src/services/order-edit.ts:541](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L541)
 
 ___
 
@@ -241,7 +293,7 @@ TransactionBaseService.atomicPhase\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:48](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L48)
+[medusa/src/interfaces/transaction-base-service.ts:56](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L56)
 
 ___
 
@@ -255,7 +307,7 @@ ___
 | :------ | :------ |
 | `orderEditId` | `string` |
 | `context` | `Object` |
-| `context.loggedInUserId?` | `string` |
+| `context.canceledBy?` | `string` |
 
 #### Returns
 
@@ -263,7 +315,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:698](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L698)
+[medusa/src/services/order-edit.ts:687](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L687)
 
 ___
 
@@ -277,7 +329,7 @@ ___
 | :------ | :------ |
 | `orderEditId` | `string` |
 | `context` | `Object` |
-| `context.loggedInUserId?` | `string` |
+| `context.confirmedBy?` | `string` |
 
 #### Returns
 
@@ -285,7 +337,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:737](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L737)
+[medusa/src/services/order-edit.ts:726](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L726)
 
 ___
 
@@ -299,7 +351,7 @@ ___
 | :------ | :------ |
 | `data` | `CreateOrderEditInput` |
 | `context` | `Object` |
-| `context.loggedInUserId` | `string` |
+| `context.createdBy` | `string` |
 
 #### Returns
 
@@ -307,7 +359,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:214](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L214)
+[medusa/src/services/order-edit.ts:162](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L162)
 
 ___
 
@@ -321,8 +373,8 @@ ___
 | :------ | :------ |
 | `orderEditId` | `string` |
 | `context` | `Object` |
+| `context.declinedBy?` | `string` |
 | `context.declinedReason?` | `string` |
-| `context.loggedInUserId?` | `string` |
 
 #### Returns
 
@@ -330,7 +382,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:316](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L316)
+[medusa/src/services/order-edit.ts:260](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L260)
 
 ___
 
@@ -350,7 +402,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:540](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L540)
+[medusa/src/services/order-edit.ts:490](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L490)
 
 ___
 
@@ -370,7 +422,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:292](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L292)
+[medusa/src/services/order-edit.ts:238](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L238)
 
 ___
 
@@ -390,7 +442,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:810](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L810)
+[medusa/src/services/order-edit.ts:808](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L808)
 
 ___
 
@@ -411,29 +463,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:626](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L626)
-
-___
-
-### getTotals
-
-▸ **getTotals**(`orderEditId`): `Promise`<{ `difference_due`: `number` ; `discount_total`: `number` ; `gift_card_tax_total`: `number` ; `gift_card_total`: `number` ; `shipping_total`: `number` ; `subtotal`: `number` ; `tax_total`: ``null`` \| `number` ; `total`: `number`  }\>
-
-Compute and return the different totals from the order edit id
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `orderEditId` | `string` |
-
-#### Returns
-
-`Promise`<{ `difference_due`: `number` ; `discount_total`: `number` ; `gift_card_tax_total`: `number` ; `gift_card_total`: `number` ; `shipping_total`: `number` ; `subtotal`: `number` ; `tax_total`: ``null`` \| `number` ; `total`: `number`  }\>
-
-#### Defined in
-
-[packages/medusa/src/services/order-edit.ts:155](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L155)
+[medusa/src/services/order-edit.ts:613](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L613)
 
 ___
 
@@ -454,7 +484,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:143](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L143)
+[medusa/src/services/order-edit.ts:154](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L154)
 
 ___
 
@@ -475,19 +505,21 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:119](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L119)
+[medusa/src/services/order-edit.ts:130](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L130)
 
 ___
 
 ### refreshAdjustments
 
-▸ **refreshAdjustments**(`orderEditId`): `Promise`<`void`\>
+▸ **refreshAdjustments**(`orderEditId`, `config?`): `Promise`<`void`\>
 
 #### Parameters
 
-| Name | Type |
-| :------ | :------ |
-| `orderEditId` | `string` |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `orderEditId` | `string` | `undefined` |
+| `config` | `Object` | `undefined` |
+| `config.preserveCustomAdjustments` | `boolean` | `false` |
 
 #### Returns
 
@@ -495,7 +527,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:497](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L497)
+[medusa/src/services/order-edit.ts:439](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L439)
 
 ___
 
@@ -516,7 +548,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:440](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L440)
+[medusa/src/services/order-edit.ts:382](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L382)
 
 ___
 
@@ -530,7 +562,7 @@ ___
 | :------ | :------ |
 | `orderEditId` | `string` |
 | `context` | `Object` |
-| `context.loggedInUserId?` | `string` |
+| `context.requestedBy?` | `string` |
 
 #### Returns
 
@@ -538,7 +570,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:658](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L658)
+[medusa/src/services/order-edit.ts:645](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L645)
 
 ___
 
@@ -559,13 +591,13 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:90](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L90)
+[medusa/src/services/order-edit.ts:102](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L102)
 
 ___
 
 ### retrieveActive
 
-▸ `Protected` **retrieveActive**(`orderId`, `config?`): `Promise`<`undefined` \| `OrderEdit`\>
+▸ `Protected` **retrieveActive**(`orderId`, `config?`): `Promise`<`undefined` \| ``null`` \| `OrderEdit`\>
 
 #### Parameters
 
@@ -576,11 +608,11 @@ ___
 
 #### Returns
 
-`Promise`<`undefined` \| `OrderEdit`\>
+`Promise`<`undefined` \| ``null`` \| `OrderEdit`\>
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:789](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L789)
+[medusa/src/services/order-edit.ts:788](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L788)
 
 ___
 
@@ -604,7 +636,7 @@ TransactionBaseService.shouldRetryTransaction\_
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:29](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L29)
+[medusa/src/interfaces/transaction-base-service.ts:37](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L37)
 
 ___
 
@@ -617,37 +649,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `orderEditId` | `string` |
-| `data` | `Object` |
-| `data.canceled_at?` | { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } |
-| `data.canceled_by?` | `string` |
-| `data.changes?` | (`undefined` \| { type?: OrderEditItemChangeType \| undefined; order\_edit\_id?: string \| undefined; order\_edit?: { order\_id?: string \| undefined; order?: { readonly object?: "order" \| undefined; ... 51 more ...; updated\_at?: { ...; } \| undefined; } \| undefined; ... 27 more ...; updated\_at?: { ...; } \| undefined; } \| undefined; ... 7 ...)[] |
-| `data.confirmed_at?` | { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } |
-| `data.confirmed_by?` | `string` |
-| `data.created_at?` | { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } |
-| `data.created_by?` | `string` |
-| `data.declined_at?` | { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } |
-| `data.declined_by?` | `string` |
-| `data.declined_reason?` | `string` |
-| `data.difference_due?` | `number` |
-| `data.discount_total?` | `number` |
-| `data.gift_card_tax_total?` | `number` |
-| `data.gift_card_total?` | `number` |
-| `data.id?` | `string` |
-| `data.internal_note?` | `string` |
-| `data.items?` | (`undefined` \| { cart\_id?: string \| undefined; cart?: { readonly object?: "cart" \| undefined; email?: string \| undefined; billing\_address\_id?: string \| undefined; billing\_address?: { customer\_id?: string \| ... 1 more ... \| undefined; ... 16 more ...; updated\_at?: { ...; } \| undefined; } \| undefined; ... 36 more ...; updated\_at?: {...)[] |
-| `data.order?` | { readonly object?: "order" \| undefined; status?: OrderStatus \| undefined; fulfillment\_status?: FulfillmentStatus \| undefined; payment\_status?: PaymentStatus \| undefined; ... 48 more ...; updated\_at?: { ...; } \| undefined; } |
-| `data.order_id?` | `string` |
-| `data.payment_collection?` | { type?: PaymentCollectionType \| undefined; status?: PaymentCollectionStatus \| undefined; description?: string \| null \| undefined; ... 13 more ...; updated\_at?: { ...; } \| undefined; } |
-| `data.payment_collection_id?` | `string` |
-| `data.requested_at?` | { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } |
-| `data.requested_by?` | `string` |
-| `data.shipping_total?` | `number` |
-| `data.status?` | `OrderEditStatus` |
-| `data.subtotal?` | `number` |
-| `data.tax_total?` | ``null`` \| `number` |
-| `data.total?` | `number` |
-| `data.updated_at?` | { toString?: {} \| undefined; toDateString?: {} \| undefined; toTimeString?: {} \| undefined; toLocaleString?: {} \| undefined; toLocaleDateString?: {} \| undefined; toLocaleTimeString?: {} \| undefined; ... 37 more ...; [Symbol.toPrimitive]?: {} \| undefined; } |
-| `data.loadStatus?` |  |
+| `data` | `DeepPartial`<`OrderEdit`\> |
 
 #### Returns
 
@@ -655,7 +657,7 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:263](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L263)
+[medusa/src/services/order-edit.ts:211](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L211)
 
 ___
 
@@ -682,7 +684,7 @@ Create or update order edit item change line item and apply the quantity
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:367](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L367)
+[medusa/src/services/order-edit.ts:309](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L309)
 
 ___
 
@@ -706,7 +708,7 @@ TransactionBaseService.withTransaction
 
 #### Defined in
 
-[packages/medusa/src/interfaces/transaction-base-service.ts:13](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/interfaces/transaction-base-service.ts#L13)
+[medusa/src/interfaces/transaction-base-service.ts:20](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/interfaces/transaction-base-service.ts#L20)
 
 ___
 
@@ -726,4 +728,4 @@ ___
 
 #### Defined in
 
-[packages/medusa/src/services/order-edit.ts:856](https://github.com/medusajs/medusa/blob/6dafb5154/packages/medusa/src/services/order-edit.ts#L856)
+[medusa/src/services/order-edit.ts:860](https://github.com/medusajs/medusa/blob/755f9cf30/packages/medusa/src/services/order-edit.ts#L860)

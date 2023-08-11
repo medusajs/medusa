@@ -5,29 +5,36 @@ import {
   ProductVariantService,
   RegionService,
 } from "../../../../services"
+import { IsOptional, IsString } from "class-validator"
 
+import { FindParams } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { defaultStoreVariantRelations } from "."
 import { validator } from "../../../../utils/validator"
-import { IsOptional, IsString } from "class-validator"
-import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
-import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
- * @oas [get] /variants/{variant_id}
+ * @oas [get] /store/variants/{id}
  * operationId: GetVariantsVariant
  * summary: Get a Product Variant
- * description: "Retrieves a Product Variant by id"
+ * description: |
+ *   Retrieve a Product Variant's details. For accurate and correct pricing of the product variant based on the customer's context, it's highly recommended to pass fields such as
+ *   `region_id`, `currency_code`, and `cart_id` when available.
+ *
+ *   Passing `sales_channel_id` ensures retrieving only variants of products available in the current sales channel.
+ *   You can alternatively use a publishable API key in the request header instead of passing a `sales_channel_id`.
+ * externalDocs:
+ *   description: "How to pass product pricing parameters"
+ *   url: "https://docs.medusajs.com/modules/products/storefront/show-products#product-pricing-parameters"
  * parameters:
- *   - (path) variant_id=* {string} The id of the Product Variant.
- *   - (query) cart_id {string} The id of the Cart to set prices based on.
- *   - (query) sales_channel_id {string} A sales channel id for result configuration.
- *   - (query) region_id {string} The id of the Region to set prices based on.
+ *   - (path) id=* {string} The ID of the Product Variant.
+ *   - (query) sales_channel_id {string} The ID of the sales channel the customer is viewing the product variant from.
+ *   - (query) cart_id {string} The ID of the cart. This is useful for accurate pricing based on the cart's context.
+ *   - (query) region_id {string} The ID of the region. This is useful for accurate pricing based on the selected region.
  *   - in: query
  *     name: currency_code
  *     style: form
  *     explode: false
- *     description: The 3 character ISO currency code to set prices based on.
+ *     description: A 3 character ISO currency code. This is useful for accurate pricing based on the selected currency.
  *     schema:
  *       type: string
  *       externalDocs:
@@ -40,9 +47,9 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/variants/{id}'
+ *       curl 'https://medusa-url.com/store/variants/{id}'
  * tags:
- *   - Product Variant
+ *   - Product Variants
  * responses:
  *   200:
  *     description: OK
@@ -77,16 +84,11 @@ export default async (req, res) => {
 
   const customer_id = req.user?.customer_id
 
-  const rawVariant = await variantService.retrieve(id, {
-    relations: defaultStoreVariantRelations,
-  })
+  const rawVariant = await variantService.retrieve(id, req.retrieveConfig)
 
   let sales_channel_id = validated.sales_channel_id
-  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
-  if (featureFlagRouter.isFeatureEnabled(PublishableAPIKeysFeatureFlag.key)) {
-    if (req.publishableApiKeyScopes?.sales_channel_id.length === 1) {
-      sales_channel_id = req.publishableApiKeyScopes.sales_channel_id[0]
-    }
+  if (req.publishableApiKeyScopes?.sales_channel_ids.length === 1) {
+    sales_channel_id = req.publishableApiKeyScopes.sales_channel_ids[0]
   }
 
   let regionId = validated.region_id

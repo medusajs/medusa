@@ -1,13 +1,13 @@
-import {
-  LineItem,
-  LineItemTaxLine,
-  ShippingMethod,
-  ShippingMethodTaxLine,
-} from "../models"
+import { FlagRouter } from "@medusajs/utils"
 import { ITaxCalculationStrategy, TaxCalculationContext } from "../interfaces"
-import { calculatePriceTaxAmount } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import {
+    LineItem,
+    LineItemTaxLine,
+    ShippingMethod,
+    ShippingMethodTaxLine,
+} from "../models"
+import { calculatePriceTaxAmount } from "../utils"
 
 class TaxCalculationStrategy implements ITaxCalculationStrategy {
   protected readonly featureFlagRouter_: FlagRouter
@@ -73,9 +73,7 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
         taxableAmount = item.unit_price * item.quantity
       }
 
-      taxableAmount -=
-        ((allocations.discount && allocations.discount.unit_amount) || 0) *
-        item.quantity
+      taxableAmount -= allocations.discount?.amount ?? 0
 
       for (const filteredTaxLine of filteredTaxLines) {
         taxTotal += Math.round(

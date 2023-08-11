@@ -1,9 +1,9 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
+import { fixtures } from "../../../../mocks/data"
 import {
   useAdminShippingOption,
   useAdminShippingOptions,
 } from "../../../../src"
-import { renderHook } from "@testing-library/react-hooks"
-import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminShippingOptions hook", () => {

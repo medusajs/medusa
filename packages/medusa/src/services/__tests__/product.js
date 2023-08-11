@@ -1,6 +1,6 @@
-import { IdMap, MockRepository, MockManager } from "medusa-test-utils"
+import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import ProductService from "../product"
-import { FlagRouter } from "../../utils/flag-router"
+import { FlagRouter } from "@medusajs/utils"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -63,7 +63,7 @@ describe("ProductService", () => {
       const result = await productService.retrieve(IdMap.getId("ironman"))
 
       expect(productRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
-      expect(productRepo.findOneWithRelations).toHaveBeenCalledWith(undefined, {
+      expect(productRepo.findOneWithRelations).toHaveBeenCalledWith([], {
         where: { id: IdMap.getId("ironman") },
       })
 

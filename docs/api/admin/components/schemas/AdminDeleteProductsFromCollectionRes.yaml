@@ -1,4 +1,8 @@
 type: object
+required:
+  - id
+  - object
+  - removed_products
 properties:
   id:
     type: string
@@ -11,5 +15,5 @@ properties:
     description: The IDs of the products removed from the collection
     type: array
     items:
-      description: The ID of a Product to add to the Product Collection.
+      description: The ID of the Product removed from the Product Collection.
       type: string

@@ -2,10 +2,10 @@ import { Request, Response } from "express"
 import { OrderEditService } from "../../../../services"
 
 /**
- * @oas [get] /order-edits/{id}
+ * @oas [get] /store/order-edits/{id}
  * operationId: "GetOrderEditsOrderEdit"
- * summary: "Retrieve an OrderEdit"
- * description: "Retrieves a OrderEdit."
+ * summary: "Retrieve an Order Edit"
+ * description: "Retrieve an Order Edit's details."
  * parameters:
  *   - (path) id=* {string} The ID of the OrderEdit.
  * x-codegen:
@@ -16,16 +16,16 @@ import { OrderEditService } from "../../../../services"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.orderEdits.retrieve(order_edit_id)
+ *       medusa.orderEdits.retrieve(orderEditId)
  *       .then(({ order_edit }) => {
  *         console.log(order_edit.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/order-edits/{id}'
+ *       curl 'https://medusa-url.com/store/order-edits/{id}'
  * tags:
- *   - OrderEdit
+ *   - Order Edits
  * responses:
  *   200:
  *     description: OK

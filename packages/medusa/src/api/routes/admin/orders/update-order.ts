@@ -8,22 +8,23 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
-import { AddressPayload } from "../../../../types/common"
+import { AddressPayload, FindParams } from "../../../../types/common"
 import { EntityManager } from "typeorm"
 import { OrderService } from "../../../../services"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}
+ * @oas [post] /admin/orders/{id}
  * operationId: "PostOrdersOrder"
  * summary: "Update an Order"
- * description: "Updates and order"
+ * description: "Update and order's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -31,6 +32,7 @@ import { validator } from "../../../../utils/validator"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderReq"
  * x-codegen:
  *   method: update
+ *   params: AdminPostOrdersOrderParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -38,8 +40,8 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.update(order_id, {
- *         email: 'user@example.com'
+ *       medusa.admin.orders.update(orderId, {
+ *         email: "user@example.com"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
@@ -47,9 +49,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/adasda' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/orders/adasda' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com"
  *       }'
@@ -57,7 +59,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -82,23 +84,20 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const value = await validator(AdminPostOrdersOrderReq, req.body)
-
   const orderService: OrderService = req.scope.resolve("orderService")
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
     return await orderService
       .withTransaction(transactionManager)
-      .update(id, value)
+      .update(id, req.validatedBody)
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.status(200).json({ order })
+  res.status(200).json({ order: cleanResponseData(order, []) })
 }
 
 /**
@@ -106,41 +105,39 @@ export default async (req, res) => {
  * type: object
  * properties:
  *   email:
- *     description: the email for the order
+ *     description: the email associated with the order
  *     type: string
  *   billing_address:
- *     description: Billing address
- *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *     description: The order's billing address
+ *     $ref: "#/components/schemas/AddressPayload"
  *   shipping_address:
- *     description: Shipping address
- *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *     description: The order's shipping address
+ *     $ref: "#/components/schemas/AddressPayload"
  *   items:
- *     description: The Line Items for the order
+ *     description: The line items of the order
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/LineItem"
  *   region:
- *     description: ID of the region where the order belongs
+ *     description: ID of the region that the order is associated with.
  *     type: string
  *   discounts:
- *     description: Discounts applied to the order
+ *     description: The discounts applied to the order
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/Discount"
  *   customer_id:
- *     description: ID of the customer
+ *     description: The ID of the customer associated with the order.
  *     type: string
  *   payment_method:
- *     description: payment method chosen for the order
+ *     description: The payment method chosen for the order.
  *     type: object
  *     properties:
  *       provider_id:
  *         type: string
- *         description: ID of the payment provider
+ *         description: The ID of the payment provider.
  *       data:
- *         description: Data relevant for the given payment method
+ *         description: Any data relevant for the given payment method.
  *         type: object
  *   shipping_method:
  *     description: The Shipping Method used for shipping the order.
@@ -157,14 +154,14 @@ export default async (req, res) => {
  *         description: The price of the shipping.
  *       data:
  *         type: object
- *         description: Data relevant to the specific shipping method.
+ *         description: Any data relevant to the specific shipping method.
  *       items:
  *         type: array
  *         items:
  *           $ref: "#/components/schemas/LineItem"
  *         description: Items to ship
  *   no_notification:
- *     description: A flag to indicate if no notifications should be emitted related to the updated order.
+ *     description: If set to `true`, no notification will be sent to the customer related to this order.
  *     type: boolean
  */
 export class AdminPostOrdersOrderReq {
@@ -244,3 +241,5 @@ class ShippingMethod {
   @IsOptional()
   items?: Record<string, unknown>[]
 }
+
+export class AdminPostOrdersOrderParams extends FindParams {}

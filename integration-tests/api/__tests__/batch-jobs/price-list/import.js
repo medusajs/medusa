@@ -1,16 +1,16 @@
 const fs = require("fs")
 const path = require("path")
 
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
+const setupServer = require("../../../../environment-helpers/setup-server")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../../helpers/admin-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
 const {
   simpleRegionFactory,
   simplePriceListFactory,
   simpleProductFactory,
-} = require("../../../factories")
+} = require("../../../../factories")
 
 const adminReqConfig = {
   headers: {
@@ -64,7 +64,6 @@ describe("Price list import batch job", () => {
 
     medusaProcess = await setupServer({
       cwd,
-      redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
     })
   })

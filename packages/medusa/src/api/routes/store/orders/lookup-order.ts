@@ -9,24 +9,22 @@ import { Type } from "class-transformer"
 
 import { OrderService } from "../../../../services"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
-
-import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [get] /orders
+ * @oas [get] /store/orders
  * operationId: "GetOrders"
  * summary: "Look Up an Order"
- * description: "Look up an order using filters."
+ * description: "Look up an order using filters. If the filters don't narrow down the results to a single order, a 404 response is returned with no orders."
  * parameters:
- *   - (query) display_id=* {number} The display id given to the Order.
- *   - (query) fields {string} (Comma separated) Which fields should be included in the result.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in the result.
+ *   - (query) display_id=* {number} Filter by ID.
+ *   - (query) fields {string} Comma-separated fields that should be expanded in the returned order.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
  *   - in: query
  *     name: email
  *     style: form
  *     explode: false
- *     description: The email associated with this order.
+ *     description: Filter by email.
  *     required: true
  *     schema:
  *       type: string
@@ -35,7 +33,7 @@ import { FindParams } from "../../../../types/common"
  *     name: shipping_address
  *     style: form
  *     explode: false
- *     description: The shipping address associated with this order.
+ *     description: Filter by the shipping address's postal code.
  *     schema:
  *       type: object
  *       properties:
@@ -53,7 +51,7 @@ import { FindParams } from "../../../../types/common"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.orders.lookupOrder({
  *         display_id: 1,
- *         email: 'user@example.com'
+ *         email: "user@example.com"
  *       })
  *       .then(({ order }) => {
  *         console.log(order.id);
@@ -61,9 +59,9 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/orders?display_id=1&email=user@example.com'
+ *       curl 'https://medusa-url.com/store/orders?display_id=1&email=user@example.com'
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -92,10 +90,7 @@ export default async (req, res) => {
       display_id: validated.display_id,
       email: validated.email,
     },
-    {
-      select: defaultStoreOrdersFields,
-      relations: defaultStoreOrdersRelations,
-    }
+    req.listConfig
   )
 
   if (orders.length !== 1) {
@@ -105,7 +100,9 @@ export default async (req, res) => {
 
   const order = orders[0]
 
-  res.json({ order: cleanResponseData(order, req.allowedProperties || []) })
+  res.json({
+    order: cleanResponseData(order, req.allowedProperties || []),
+  })
 }
 
 export class ShippingAddressPayload {

@@ -1,5 +1,69 @@
 # Change Log
 
+## 1.3.11
+
+### Patch Changes
+
+- [#4524](https://github.com/medusajs/medusa/pull/4524) [`fe6586e56`](https://github.com/medusajs/medusa/commit/fe6586e560ad20ec59df4727bb8a7f1f42072f4a) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-plugin-sendgrid): Use correct SendGrid client
+
+## 1.3.10
+
+### Patch Changes
+
+- [#4389](https://github.com/medusajs/medusa/pull/4389) [`9dcdc0041`](https://github.com/medusajs/medusa/commit/9dcdc0041a2b08cc0723343dd8d9127d9977b086) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(medusa, utils): fix the way selects are consumed alongside the relations
+
+- [#4384](https://github.com/medusajs/medusa/pull/4384) [`f65a501da`](https://github.com/medusajs/medusa/commit/f65a501da5101da75217a2b69a61ccd4fd3a3b4d) Thanks [@pevey](https://github.com/pevey)! - feat(medusa-plugin-sendgrid): Add error messages to SendgridService.sendNotification
+
+## 1.3.9
+
+### Patch Changes
+
+- [#3763](https://github.com/medusajs/medusa/pull/3763) [`4104d9ccb`](https://github.com/medusajs/medusa/commit/4104d9ccb25276c85b5363f85e14b3093e64df85) Thanks [@StephixOne](https://github.com/StephixOne)! - fix(plugin-discount-generator,plugin-economic,plugin-mailchimp,plugin-restock-notification,plugin-sendgrid,plugin-wishlist): Temporarily remove payload validation in some plugins
+
+## 1.3.8
+
+### Patch Changes
+
+- [#3041](https://github.com/medusajs/medusa/pull/3041) [`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724) Thanks [@riqwan](https://github.com/riqwan)! - chore(medusa): Typeorm fixes / enhancements
+  - upgrade typeorm from 0.2.51 to 0.3.11
+  - Plugin repository loader to work with Typeorm update
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0
+  - medusa-interfaces@1.3.7
+  - medusa-test-utils@1.1.40
+
+## 1.3.8-rc.0
+
+### Patch Changes
+
+- [#3041](https://github.com/medusajs/medusa/pull/3041) [`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724) Thanks [@riqwan](https://github.com/riqwan)! - chore(medusa): Typeorm fixes / enhancements
+  - upgrade typeorm from 0.2.51 to 0.3.11
+  - Plugin repository loader to work with Typeorm update
+- Updated dependencies [[`121b42acf`](https://github.com/medusajs/medusa/commit/121b42acfe98c12dd593f9b1f2072ff0f3b61724), [`aa690beed`](https://github.com/medusajs/medusa/commit/aa690beed775646cbc86b445fb5dc90dcac087d5), [`54dcc1871`](https://github.com/medusajs/medusa/commit/54dcc1871c8f28bea962dbb9df6e79b038d56449), [`77d46220c`](https://github.com/medusajs/medusa/commit/77d46220c23bfe19e575cbc445874eb6c22f3c73)]:
+  - medusa-core-utils@1.2.0-rc.0
+  - medusa-interfaces@1.3.7-rc.0
+  - medusa-test-utils@1.1.40-rc.0
+
+## 1.3.7
+
+### Patch Changes
+
+- [#3238](https://github.com/medusajs/medusa/pull/3238) [`8194d19b0`](https://github.com/medusajs/medusa/commit/8194d19b0e933310fdc65af25300da5dd185e669) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-plugin-sendgrid): Undefined order
+
+- Updated dependencies [[`8c5219a31`](https://github.com/medusajs/medusa/commit/8c5219a31ef76ee571fbce84d7d57a63abe56eb0)]:
+  - medusa-core-utils@1.1.39
+  - medusa-interfaces@1.3.6
+
+## 1.3.6
+
+### Patch Changes
+
+- [#2941](https://github.com/medusajs/medusa/pull/2941) [`2551fe0b9`](https://github.com/medusajs/medusa/commit/2551fe0b935c19476828a05c47f4cf3e0d9e6d79) Thanks [@RegisHubelia](https://github.com/RegisHubelia)! - fix(medusa-plugin-sendgrid): Inject GiftCardService to eliminate undefined error
+
+- Updated dependencies [[`08324355a`](https://github.com/medusajs/medusa/commit/08324355a4466b017a0bc7ab1d333ee3cd27b8c4)]:
+  - medusa-core-utils@1.1.38
+  - medusa-interfaces@1.3.5
+
 ## 1.3.5
 
 ### Patch Changes

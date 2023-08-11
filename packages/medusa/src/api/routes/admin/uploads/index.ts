@@ -42,15 +42,20 @@ export default (app) => {
 /**
  * @schema AdminUploadsRes
  * type: object
+ * required:
+ *   - uploads
  * properties:
  *   uploads:
  *     type: array
+ *     description: "Uploaded files details."
  *     items:
  *       type: object
+ *       required:
+ *         - url
  *       properties:
  *         url:
- *           type: string
  *           description: The URL of the uploaded file.
+ *           type: string
  *           format: uri
  */
 export type AdminUploadsRes = {
@@ -60,6 +65,10 @@ export type AdminUploadsRes = {
 /**
  * @schema AdminDeleteUploadsRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -78,10 +87,12 @@ export type AdminDeleteUploadsRes = DeleteResponse
 /**
  * @schema AdminUploadsDownloadUrlRes
  * type: object
+ * required:
+ *   - download_url
  * properties:
  *   download_url:
- *     type: string
  *     description: The Download URL of the file
+ *     type: string
  */
 export type AdminUploadsDownloadUrlRes = {
   download_url: string

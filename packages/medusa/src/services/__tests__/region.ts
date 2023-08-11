@@ -1,11 +1,11 @@
+import { FlagRouter } from "@medusajs/utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { CreateRegionInput } from "../../types/region"
-import { FlagRouter } from "../../utils/flag-router"
+import EventBusService from "../event-bus"
 import {
-  EventBusService,
-  FulfillmentProviderService,
-  PaymentProviderService,
-  StoreService,
+    FulfillmentProviderService,
+    PaymentProviderService,
+    StoreService,
 } from "../index"
 import RegionService from "../region"
 
@@ -447,7 +447,7 @@ describe("RegionService", () => {
       expect(regionRepository.findOne).toHaveBeenCalledTimes(1)
       expect(regionRepository.findOne).toHaveBeenCalledWith({
         where: { id: IdMap.getId("region") },
-        relations: ["countries"],
+        relations: { countries: true },
       })
 
       expect(regionRepository.save).toHaveBeenCalledTimes(1)

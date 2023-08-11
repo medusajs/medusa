@@ -1,23 +1,27 @@
+import { IStockLocationService } from "@medusajs/types"
 import { IsOptional } from "class-validator"
-import { IsType } from "../../../../utils/validators/is-type"
-
-import { IStockLocationService } from "../../../../interfaces"
-import { extendedFindParamsMixin } from "../../../../types/common"
 import { Request, Response } from "express"
+import {
+  SalesChannelLocationService,
+  SalesChannelService,
+} from "../../../../services"
+import { extendedFindParamsMixin } from "../../../../types/common"
+import { IsType } from "../../../../utils/validators/is-type"
+import { joinSalesChannels } from "./utils/join-sales-channels"
 
 /**
- * @oas [get] /stock-locations
+ * @oas [get] /admin/stock-locations
  * operationId: "GetStockLocations"
  * summary: "List Stock Locations"
- * description: "Retrieves a list of stock locations"
+ * description: "Retrieve a list of stock locations. The stock locations can be filtered by fields such as `name` or `created_at`. The stock locations can also be sorted or paginated."
  * x-authenticated: true
  * parameters:
- *   - (query) id {string} ID of the stock location
- *   - (query) name {string} Name of the stock location
- *   - (query) order {string} The field to order the results by.
+ *   - (query) id {string} Filter by ID.
+ *   - (query) name {string} Filter by name.
+ *   - (query) order {string} A stock-location field to sort-order the retrieved stock locations by.
  *   - in: query
  *     name: created_at
- *     description: Date comparison for when resulting collections were created.
+ *     description: Filter by a creation date range.
  *     schema:
  *       type: object
  *       properties:
@@ -39,7 +43,7 @@ import { Request, Response } from "express"
  *            format: date
  *   - in: query
  *     name: updated_at
- *     description: Date comparison for when resulting collections were updated.
+ *     description: Filter by an update date range.
  *     schema:
  *       type: object
  *       properties:
@@ -61,7 +65,7 @@ import { Request, Response } from "express"
  *            format: date
  *   - in: query
  *     name: deleted_at
- *     description: Date comparison for when resulting collections were deleted.
+ *     description: Filter by a deletion date range.
  *     schema:
  *       type: object
  *       properties:
@@ -81,10 +85,10 @@ import { Request, Response } from "express"
  *            type: string
  *            description: filter by dates greater than or equal to this date
  *            format: date
- *   - (query) offset=0 {integer} How many stock locations to skip in the result.
+ *   - (query) offset=0 {integer} The number of stock locations to skip when retrieving the stock locations.
  *   - (query) limit=20 {integer} Limit the number of stock locations returned.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in each stock location of the result.
- *   - (query) fields {string} (Comma separated) Which fields should be included in each stock location of the result.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned stock locations.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned stock locations.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetStockLocationsParams
@@ -102,13 +106,13 @@ import { Request, Response } from "express"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/stock-locations' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/stock-locations' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Sales Channel
+ *   - Stock Locations
  * responses:
  *   200:
  *     description: OK
@@ -133,14 +137,51 @@ export default async (req: Request, res: Response) => {
   const stockLocationService: IStockLocationService = req.scope.resolve(
     "stockLocationService"
   )
+  const channelLocationService: SalesChannelLocationService = req.scope.resolve(
+    "salesChannelLocationService"
+  )
+  const salesChannelService: SalesChannelService = req.scope.resolve(
+    "salesChannelService"
+  )
 
   const { filterableFields, listConfig } = req
   const { skip, take } = listConfig
 
-  const [locations, count] = await stockLocationService.listAndCount(
+  const filterOnSalesChannel = !!filterableFields.sales_channel_id
+
+  const includeSalesChannels =
+    !!listConfig.relations?.includes("sales_channels")
+
+  if (includeSalesChannels) {
+    listConfig.relations = listConfig.relations?.filter(
+      (r) => r !== "sales_channels"
+    )
+  }
+
+  if (filterOnSalesChannel) {
+    const ids: string[] = Array.isArray(filterableFields.sales_channel_id)
+      ? filterableFields.sales_channel_id
+      : [filterableFields.sales_channel_id]
+
+    delete filterableFields.sales_channel_id
+
+    const locationIds = await channelLocationService.listLocationIds(ids)
+
+    filterableFields.id = [...new Set(locationIds.flat())]
+  }
+
+  let [locations, count] = await stockLocationService.listAndCount(
     filterableFields,
     listConfig
   )
+
+  if (includeSalesChannels) {
+    locations = await joinSalesChannels(
+      locations,
+      channelLocationService,
+      salesChannelService
+    )
+  }
 
   res.status(200).json({
     stock_locations: locations,
@@ -165,4 +206,8 @@ export class AdminGetStockLocationsParams extends extendedFindParamsMixin({
   @IsOptional()
   @IsType([String, [String]])
   address_id?: string | string[]
+
+  @IsOptional()
+  @IsType([String, [String]])
+  sales_channel_id?: string | string[]
 }

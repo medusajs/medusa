@@ -1,8 +1,29 @@
-import { BeforeInsert, Column, Entity, Index } from "typeorm"
-import { SoftDeletableEntity, generateEntityId } from "@medusajs/medusa"
+import { generateEntityId } from "@medusajs/utils"
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  Index,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm"
 
 @Entity()
-export class StockLocationAddress extends SoftDeletableEntity {
+export class StockLocationAddress {
+  @PrimaryColumn()
+  id: string
+
+  @CreateDateColumn({ type: "timestamptz" })
+  created_at: Date
+
+  @UpdateDateColumn({ type: "timestamptz" })
+  updated_at: Date
+
+  @DeleteDateColumn({ type: "timestamptz" })
+  deleted_at: Date | null
+
   @Column({ type: "text" })
   address_1: string
 

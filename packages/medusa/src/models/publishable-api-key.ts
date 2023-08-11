@@ -1,12 +1,9 @@
-import { BeforeInsert, Column } from "typeorm"
+import { BeforeInsert, Column, Entity } from "typeorm"
 
 import { BaseEntity } from "../interfaces"
-import { resolveDbType } from "../utils/db-aware-column"
-import { generateEntityId } from "../utils"
-import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
-import PublishableAPIKeysFeatureFlag from "../loaders/feature-flags/publishable-api-keys"
+import { generateEntityId, resolveDbType } from "../utils"
 
-@FeatureFlagEntity(PublishableAPIKeysFeatureFlag.key)
+@Entity()
 export class PublishableApiKey extends BaseEntity {
   @Column({ type: "varchar", nullable: true })
   created_by: string | null
@@ -29,37 +26,45 @@ export class PublishableApiKey extends BaseEntity {
 /**
  * @schema PublishableApiKey
  * title: "Publishable API key"
- * description: "Publishable API key defines scopes (i.e. resources) that are available within a request."
+ * description: "A Publishable API key defines scopes that resources are available in. Then, it can be used in request to infer the resources without having to directly pass them. For example, a publishable API key can be associated with one or more sales channels. Then, when the publishable API key is passed in the header of a request, it is inferred what sales channel is being used without having to pass the sales channel as a query or body parameter of the request. Publishable API keys can only be used with sales channels, at the moment."
  * type: object
+ * required:
+ *   - created_at
+ *   - created_by
+ *   - id
+ *   - revoked_by
+ *   - revoked_at
+ *   - title
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The key's ID
+ *     type: string
  *     example: pk_01G1G5V27GYX4QXNARRQCW1N8T
  *   created_by:
+ *    description: The unique identifier of the user that created the key.
+ *    nullable: true
  *    type: string
- *    description: "The unique identifier of the user that created the key."
  *    example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
- *   created_by_user:
- *    description: A user object. Available if the relation `created_by_user` is expanded.
- *    type: object
- *   created_at:
- *     type: string
- *     description: "The date with timezone at which the resource was created."
- *     format: date-time
  *   revoked_by:
+ *     description: The unique identifier of the user that revoked the key.
+ *     nullable: true
  *     type: string
- *     description: "The unique identifier of the user that revoked the key."
  *     example: usr_01G1G5V26F5TB3GPAPNJ8X1S3V
- *   revoked_by_user:
- *     description: A user object. Available if the relation `revoked_by_user` is expanded.
- *     type: object
  *   revoked_at:
+ *     description: The date with timezone at which the key was revoked.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the key was revoked."
+ *     format: date-time
+ *   title:
+ *     description: The key's title.
+ *     type: string
+ *   created_at:
+ *     description: The date with timezone at which the resource was created.
+ *     type: string
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  */

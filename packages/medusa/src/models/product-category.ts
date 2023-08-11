@@ -1,32 +1,34 @@
 import { generateEntityId } from "../utils/generate-entity-id"
-import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { BaseEntity } from "../interfaces/models/base-entity"
 import { kebabCase } from "lodash"
 import { Product } from "."
 import {
   BeforeInsert,
-  Index,
-  Entity,
-  Tree,
   Column,
-  PrimaryGeneratedColumn,
+  Entity,
+  Index,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  Tree,
   TreeChildren,
   TreeParent,
-  TreeLevelColumn,
-  JoinColumn,
-  ManyToMany,
-  JoinTable,
 } from "typeorm"
 
 @Entity()
 @Tree("materialized-path")
-export class ProductCategory extends SoftDeletableEntity {
+@Index(["parent_category_id", "rank"], { unique: true })
+export class ProductCategory extends BaseEntity {
   static productCategoryProductJoinTable = "product_category_product"
   static treeRelations = ["parent_category", "category_children"]
 
   @Column()
   name: string
 
-  @Index({ unique: true, where: "deleted_at IS NULL" })
+  @Column({ nullable: false, default: '' })
+  description: string
+
+  @Index({ unique: true })
   @Column({ nullable: false })
   handle: string
 
@@ -52,6 +54,9 @@ export class ProductCategory extends SoftDeletableEntity {
 
   @TreeChildren({ cascade: true })
   category_children: ProductCategory[]
+
+  @Column({ nullable: false, default: 0 })
+  rank: number
 
   @ManyToMany(() => Product, { cascade: ["remove", "soft-remove"] })
   @JoinTable({
@@ -79,28 +84,39 @@ export class ProductCategory extends SoftDeletableEntity {
 
 /**
  * @schema ProductCategory
- * title: "ProductCategory"
- * description: "Represents a product category"
+ * title: "Product Category"
+ * description: "A product category can be used to categorize products into a hierarchy of categories."
  * x-resourceId: ProductCategory
+ * x-featureFlag: "product_categories"
  * type: object
  * required:
+ *   - category_children
+ *   - created_at
+ *   - handle
+ *   - id
+ *   - is_active
+ *   - is_internal
+ *   - mpath
  *   - name
+ *   - parent_category_id
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The product category's ID
+ *     type: string
  *     example: pcat_01G2SG30J8C85S4A5CHM2S1NS2
  *   name:
- *     type: string
  *     description: The product category's name
+ *     type: string
  *     example: Regular Fit
  *   handle:
- *     description: "A unique string that identifies the Category - example: slug structures."
+ *     description: A unique string that identifies the Product Category - can for example be used in slug structures.
  *     type: string
  *     example: regular-fit
  *   mpath:
- *     type: string
  *     description: A string for Materialized Paths - used for finding ancestors and descendents
+ *     nullable: true
+ *     type: string
  *     example: pcat_id1.pcat_id2.pcat_id3
  *   is_internal:
  *     type: boolean
@@ -110,35 +126,38 @@ export class ProductCategory extends SoftDeletableEntity {
  *     type: boolean
  *     description: A flag to make product category visible/hidden in the store front
  *     default: false
+ *   rank:
+ *     type: integer
+ *     description: An integer that depicts the rank of category in a tree node
+ *     default: 0
  *   category_children:
- *     description: Available if the relation `category_children` are expanded.
+ *     description: The details of the category's children.
  *     type: array
+ *     x-expandable: "category_children"
  *     items:
- *       type: object
- *       description: A product category object.
+ *       $ref: "#/components/schemas/ProductCategory"
  *   parent_category_id:
  *     description: The ID of the parent category.
+ *     nullable: true
  *     type: string
  *     default: null
  *   parent_category:
- *     description: A product category object. Available if the relation `parent_category` is expanded.
- *     type: object
+ *     description: The details of the parent of this category.
+ *     x-expandable: "parent_category"
+ *     nullable: true
+ *     $ref: "#/components/schemas/ProductCategory"
  *   products:
- *     description: products associated with category. Available if the relation `products` is expanded.
+ *     description: The details of the products that belong to this category.
  *     type: array
+ *     x-expandable: "products"
  *     items:
- *       type: object
- *       description: A product object.
+ *       $ref: "#/components/schemas/Product"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
- *     format: date-time
- *   deleted_at:
- *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  */

@@ -1,8 +1,9 @@
 import {
+  AdminExtendedStoresRes,
   AdminPaymentProvidersList,
-  AdminTaxProvidersList,
   AdminPostStoreReq,
   AdminStoresRes,
+  AdminTaxProvidersList,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -56,7 +57,7 @@ class AdminStoresResource extends BaseResource {
    */
   retrieve(
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminStoresRes> {
+  ): ResponsePromise<AdminExtendedStoresRes> {
     const path = `/admin/store/`
     return this.client.request("GET", path, undefined, {}, customHeaders)
   }

@@ -1,17 +1,17 @@
 const jwt = require("jsonwebtoken")
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
-const userSeeder = require("../../helpers/user-seeder")
-const adminSeeder = require("../../helpers/admin-seeder")
+const userSeeder = require("../../../helpers/user-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 const {
   simpleAnalyticsConfigFactory,
-} = require("../../factories/simple-analytics-config-factory")
+} = require("../../../factories/simple-analytics-config-factory")
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
+  require("../../../environment-helpers/start-server-with-environment").default
 
 jest.setTimeout(30000)
 
@@ -171,6 +171,16 @@ describe("/admin/users", () => {
     })
 
     describe("Password reset", () => {
+      it("Doesn't fail to fetch user when resetting password for an unknown email (unauthorized endpoint)", async () => {
+        const api = useApi()
+
+        const resp = await api.post("/admin/users/password-token", {
+          email: "test-doesnt-exist@test.com",
+        })
+
+        expect(resp.status).toEqual(204)
+      })
+
       it("Doesn't fail when generating password reset token (unauthorized endpoint)", async () => {
         const api = useApi()
 

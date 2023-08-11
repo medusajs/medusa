@@ -1,10 +1,12 @@
-import { Router } from "express"
 import "reflect-metadata"
+
 import { Product, ProductTag, ProductType, ProductVariant } from "../../../.."
 import { FindParams, PaginatedResponse } from "../../../../types/common"
-import { PricedProduct } from "../../../../types/pricing"
-import { FlagRouter } from "../../../../utils/flag-router"
 import middlewares, { transformQuery } from "../../../middlewares"
+
+import { FlagRouter } from "@medusajs/utils"
+import { Router } from "express"
+import { PricedProduct } from "../../../../types/pricing"
 import { validateSalesChannelsExist } from "../../../middlewares/validators/sales-channel-existence"
 import { AdminGetProductsParams } from "./list-products"
 
@@ -15,6 +17,10 @@ export default (app, featureFlagRouter: FlagRouter) => {
 
   if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
     defaultAdminProductRelations.push("sales_channels")
+  }
+
+  if (featureFlagRouter.isFeatureEnabled("product_categories")) {
+    defaultAdminProductRelations.push("categories")
   }
 
   route.post(
@@ -95,12 +101,12 @@ export const defaultAdminProductRelations = [
   "variants",
   "variants.prices",
   "variants.options",
+  "profiles",
   "images",
   "options",
   "tags",
   "type",
   "collection",
-  "categories",
 ]
 
 export const defaultAdminProductFields: (keyof Product)[] = [
@@ -114,7 +120,6 @@ export const defaultAdminProductFields: (keyof Product)[] = [
   "is_giftcard",
   "discountable",
   "thumbnail",
-  "profile_id",
   "collection_id",
   "type_id",
   "weight",
@@ -136,6 +141,22 @@ export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
 /**
  * @schema AdminProductsDeleteOptionRes
  * type: object
+ * x-expanded-relations:
+ *   field: product
+ *   relations:
+ *     - collection
+ *     - images
+ *     - options
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
+ *     - variants.prices
+ * required:
+ *   - option_id
+ *   - object
+ *   - deleted
+ *   - product
  * properties:
  *   option_id:
  *     type: string
@@ -149,7 +170,8 @@ export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
  *     description: Whether or not the items were deleted.
  *     default: true
  *   product:
- *     $ref: "#/components/schemas/Product"
+ *     description: Product details.
+ *     $ref: "#/components/schemas/PricedProduct"
  */
 export type AdminProductsDeleteOptionRes = {
   option_id: string
@@ -161,6 +183,22 @@ export type AdminProductsDeleteOptionRes = {
 /**
  * @schema AdminProductsDeleteVariantRes
  * type: object
+ * x-expanded-relations:
+ *   field: product
+ *   relations:
+ *     - collection
+ *     - images
+ *     - options
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
+ *     - variants.prices
+ * required:
+ *   - variant_id
+ *   - object
+ *   - deleted
+ *   - product
  * properties:
  *   variant_id:
  *     type: string
@@ -174,7 +212,8 @@ export type AdminProductsDeleteOptionRes = {
  *     description: Whether or not the items were deleted.
  *     default: true
  *   product:
- *     $ref: "#/components/schemas/Product"
+ *     description: Product details.
+ *     $ref: "#/components/schemas/PricedProduct"
  */
 export type AdminProductsDeleteVariantRes = {
   variant_id: string
@@ -186,6 +225,10 @@ export type AdminProductsDeleteVariantRes = {
 /**
  * @schema AdminProductsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -208,19 +251,36 @@ export type AdminProductsDeleteRes = {
 /**
  * @schema AdminProductsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: products
+ *   relations:
+ *     - collection
+ *     - images
+ *     - options
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
+ *     - variants.prices
+ *   totals:
+ *     - variants.purchasable
+ * required:
+ *   - products
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   products:
  *     type: array
+ *     description: An array of products details.
  *     items:
- *       oneOf:
- *         - $ref: "#/components/schemas/Product"
- *         - $ref: "#/components/schemas/PricedProduct"
+ *       $ref: "#/components/schemas/PricedProduct"
  *   count:
  *     type: integer
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of products skipped when retrieving the products.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -232,9 +292,15 @@ export type AdminProductsListRes = PaginatedResponse & {
 /**
  * @schema AdminProductsListVariantsRes
  * type: object
+ * required:
+ *   - variants
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   variants:
  *     type: array
+ *     description: An array of product variants details.
  *     items:
  *       $ref: "#/components/schemas/ProductVariant"
  *   count:
@@ -242,7 +308,7 @@ export type AdminProductsListRes = PaginatedResponse & {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of product variants skipped when retrieving the product variants.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -254,9 +320,12 @@ export type AdminProductsListVariantsRes = PaginatedResponse & {
 /**
  * @schema AdminProductsListTypesRes
  * type: object
+ * required:
+ *   - types
  * properties:
  *   types:
  *     type: array
+ *     description: An array of product types details.
  *     items:
  *       $ref: "#/components/schemas/ProductType"
  */
@@ -267,10 +336,18 @@ export type AdminProductsListTypesRes = {
 /**
  * @schema AdminProductsListTagsRes
  * type: object
+ * required:
+ *   - tags
  * properties:
  *   tags:
+ *     description: An array of product tags details.
  *     type: array
  *     items:
+ *       type: object
+ *       required:
+ *         - id
+ *         - usage_count
+ *         - value
  *       properties:
  *         id:
  *           description: The ID of the tag.
@@ -293,9 +370,23 @@ export type AdminProductsListTagsRes = {
 /**
  * @schema AdminProductsRes
  * type: object
+ * x-expanded-relations:
+ *   field: product
+ *   relations:
+ *     - collection
+ *     - images
+ *     - options
+ *     - tags
+ *     - type
+ *     - variants
+ *     - variants.options
+ *     - variants.prices
+ * required:
+ *   - product
  * properties:
  *   product:
- *     $ref: "#/components/schemas/Product"
+ *     description: Product details.
+ *     $ref: "#/components/schemas/PricedProduct"
  */
 export type AdminProductsRes = {
   product: Product
@@ -316,3 +407,4 @@ export * from "./set-metadata"
 export * from "./update-option"
 export * from "./update-product"
 export * from "./update-variant"
+

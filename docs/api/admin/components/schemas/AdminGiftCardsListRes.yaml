@@ -1,4 +1,17 @@
 type: object
+x-expanded-relations:
+  field: gift_cards
+  relations:
+    - order
+    - region
+  eager:
+    - region.fulfillment_providers
+    - region.payment_providers
+required:
+  - gift_cards
+  - count
+  - offset
+  - limit
 properties:
   gift_cards:
     type: array
@@ -9,7 +22,7 @@ properties:
     description: The total number of items available
   offset:
     type: integer
-    description: The number of items skipped before these items
+    description: The number of gift cards skipped when retrieving the gift cards.
   limit:
     type: integer
     description: The number of items per page

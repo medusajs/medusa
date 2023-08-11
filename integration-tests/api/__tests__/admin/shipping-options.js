@@ -1,17 +1,17 @@
 const path = require("path")
 const { ShippingProfile } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
+const setupServer = require("../../../environment-helpers/setup-server")
 const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
-const shippingOptionSeeder = require("../../helpers/shipping-option-seeder")
+  require("../../../environment-helpers/start-server-with-environment").default
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const shippingOptionSeeder = require("../../../helpers/shipping-option-seeder")
 const {
   simpleShippingOptionFactory,
   simpleRegionFactory,
-} = require("../../factories")
+} = require("../../../factories")
 
 const adminReqConfig = {
   headers: {
@@ -28,7 +28,7 @@ describe("/admin/shipping-options", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: false })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -92,7 +92,7 @@ describe("/admin/shipping-options", () => {
       )
     })
 
-    it("fails as it is not allowed to set id from client side", async () => {
+    it("fails to add a a requirement with an id if it does not exists", async () => {
       const api = useApi()
 
       const payload = {
@@ -123,7 +123,9 @@ describe("/admin/shipping-options", () => {
         })
 
       expect(res.status).toEqual(400)
-      expect(res.data.message).toEqual("ID does not exist")
+      expect(res.data.message).toEqual(
+        "Shipping option requirement with id not_allowed does not exist"
+      )
     })
 
     it("it successfully updates a set of existing requirements", async () => {
@@ -274,7 +276,9 @@ describe("/admin/shipping-options", () => {
 
       const manager = dbConnection.manager
       const defaultProfile = await manager.findOne(ShippingProfile, {
-        type: "default",
+        where: {
+          type: ShippingProfile.default,
+        },
       })
 
       payload = {
@@ -521,7 +525,9 @@ describe("[MEDUSA_FF_TAX_INCLUSIVE_PRICING] /admin/shipping-options", () => {
       const defaultProfile = await dbConnection.manager.findOne(
         ShippingProfile,
         {
-          type: "default",
+          where: {
+            type: ShippingProfile.default,
+          },
         }
       )
 

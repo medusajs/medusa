@@ -7,16 +7,17 @@ import {
 } from "class-validator"
 import { OrderService, ReturnService, SwapService } from "../../../../services"
 
-import { EntityManager } from "typeorm"
 import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { isDefined } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { validator } from "../../../../utils/validator"
+import { defaultRelations } from "."
 
 /**
- * @oas [post] /returns/{id}/receive
+ * @oas [post] /admin/returns/{id}/receive
  * operationId: "PostReturnsReturnReceive"
  * summary: "Receive a Return"
- * description: "Registers a Return as received. Updates statuses on Orders and Swaps accordingly."
+ * description: "Mark a Return as received. This also updates the status of associated order, claim, or swap accordingly."
  * parameters:
  *   - (path) id=* {string} The ID of the Return.
  * requestBody:
@@ -33,7 +34,7 @@ import { isDefined } from "medusa-core-utils"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.returns.receive(return_id, {
+ *       medusa.admin.returns.receive(returnId, {
  *         items: [
  *           {
  *             item_id,
@@ -47,9 +48,9 @@ import { isDefined } from "medusa-core-utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/returns/{id}/receive' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/returns/{id}/receive' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "items": [
  *             {
@@ -62,7 +63,7 @@ import { isDefined } from "medusa-core-utils"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Return
+ *   - Returns
  * responses:
  *   200:
  *     description: OK
@@ -124,7 +125,9 @@ export default async (req, res) => {
     }
   })
 
-  receivedReturn = await returnService.retrieve(id, { relations: ["swap"] })
+  receivedReturn = await returnService.retrieve(id, {
+    relations: defaultRelations,
+  })
 
   res.status(200).json({ return: receivedReturn })
 }
@@ -147,6 +150,7 @@ class Item {
  *     description: The Line Items that have been received.
  *     type: array
  *     items:
+ *       type: object
  *       required:
  *         - item_id
  *         - quantity

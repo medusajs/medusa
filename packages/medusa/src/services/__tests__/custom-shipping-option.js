@@ -1,5 +1,5 @@
+import { MockManager, MockRepository } from "medusa-test-utils"
 import CustomShippingOptionService from "../custom-shipping-option"
-import { MockManager, MockRepository, IdMap } from "medusa-test-utils"
 
 describe("CustomShippingOptionService", () => {
   describe("list", () => {
@@ -37,7 +37,9 @@ describe("CustomShippingOptionService", () => {
         where: {
           cart_id: "test-cso-cart",
         },
-        relations: ["shipping_option"],
+        relations: {
+          shipping_option: true,
+        },
       })
     })
   })
@@ -73,7 +75,10 @@ describe("CustomShippingOptionService", () => {
       expect(customShippingOptionRepository.findOne).toHaveBeenCalledTimes(1)
       expect(customShippingOptionRepository.findOne).toHaveBeenCalledWith({
         where: { id: "cso-test" },
-        relations: ["shipping_option", "cart"],
+        relations: {
+          shipping_option: true,
+          cart: true,
+        },
       })
     })
 
@@ -108,20 +113,22 @@ describe("CustomShippingOptionService", () => {
       await customShippingOptionService.create(customShippingOption)
 
       expect(customShippingOptionRepository.create).toHaveBeenCalledTimes(1)
-      expect(customShippingOptionRepository.create).toHaveBeenCalledWith({
-        cart_id: "test-cso-cart",
-        shipping_option_id: "test-so",
-        price: 30,
-        metadata: undefined,
-      })
+      expect(customShippingOptionRepository.create).toHaveBeenCalledWith([
+        {
+          cart_id: "test-cso-cart",
+          shipping_option_id: "test-so",
+          price: 30,
+        },
+      ])
 
       expect(customShippingOptionRepository.save).toHaveBeenCalledTimes(1)
       expect(customShippingOptionRepository.save).toHaveBeenCalledWith({
+        0: {
+          cart_id: "test-cso-cart",
+          shipping_option_id: "test-so",
+          price: 30,
+        },
         id: "test-cso",
-        cart_id: "test-cso-cart",
-        shipping_option_id: "test-so",
-        price: 30,
-        metadata: undefined,
       })
     })
   })

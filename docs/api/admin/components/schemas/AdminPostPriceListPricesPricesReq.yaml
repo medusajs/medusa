@@ -4,6 +4,7 @@ properties:
     description: The prices to update or add.
     type: array
     items:
+      type: object
       required:
         - amount
         - variant_id
@@ -13,13 +14,13 @@ properties:
           type: string
         region_id:
           description: >-
-            The ID of the Region for which the price is used. Only required if
-            currecny_code is not provided.
+            The ID of the Region for which the price is used. This is only
+            required if `currecny_code` is not provided.
           type: string
         currency_code:
           description: >-
             The 3 character ISO currency code for which the price will be used.
-            Only required if region_id is not provided.
+            This is only required if `region_id` is not provided.
           type: string
           externalDocs:
             url: https://en.wikipedia.org/wiki/ISO_4217#Active_codes
@@ -38,6 +39,6 @@ properties:
           type: integer
   override:
     description: >-
-      If true the prices will replace all existing prices associated with the
-      Price List.
+      If set to `true`, the prices will replace all existing prices associated
+      with the Price List.
     type: boolean

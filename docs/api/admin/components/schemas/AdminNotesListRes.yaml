@@ -1,7 +1,13 @@
 type: object
+required:
+  - notes
+  - count
+  - offset
+  - limit
 properties:
   notes:
     type: array
+    description: An array of notes
     items:
       $ref: ./Note.yaml
   count:
@@ -9,7 +15,7 @@ properties:
     description: The total number of items available
   offset:
     type: integer
-    description: The number of items skipped before these items
+    description: The number of notes skipped when retrieving the notes.
   limit:
     type: integer
     description: The number of items per page

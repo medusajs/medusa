@@ -1,6 +1,7 @@
 import {
   AdminGiftCardsDeleteRes,
   AdminGiftCardsRes,
+  AdminPostGiftCardsGiftCardReq,
   AdminPostGiftCardsReq,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
@@ -33,14 +34,14 @@ export const useAdminUpdateGiftCard = (
   options?: UseMutationOptions<
     Response<AdminGiftCardsRes>,
     Error,
-    AdminPostGiftCardsReq
+    AdminPostGiftCardsGiftCardReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: AdminPostGiftCardsReq) =>
+    (payload: AdminPostGiftCardsGiftCardReq) =>
       client.admin.giftCards.update(id, payload),
     buildOptions(
       queryClient,

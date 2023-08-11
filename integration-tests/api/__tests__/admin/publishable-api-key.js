@@ -1,19 +1,18 @@
 const path = require("path")
 const { IdMap } = require("medusa-test-utils")
 
-const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { useDb, initDb } = require("../../../environment-helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
 const {
   simplePublishableApiKeyFactory,
-} = require("../../factories/simple-publishable-api-key-factory")
+} = require("../../../factories/simple-publishable-api-key-factory")
 const {
   simpleSalesChannelFactory,
   simpleProductFactory,
   simpleRegionFactory,
-} = require("../../factories")
+} = require("../../../factories")
+const setupServer = require("../../../environment-helpers/setup-server")
 
 jest.setTimeout(50000)
 
@@ -30,22 +29,15 @@ const customerData = {
   last_name: "medusa",
 }
 
-describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
+describe("Publishable API keys", () => {
   let medusaProcess
   let dbConnection
   const adminUserId = "admin_user"
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    const [process, connection] = await startServerWithEnvironment({
-      cwd,
-      env: {
-        MEDUSA_FF_PUBLISHABLE_API_KEYS: true,
-        MEDUSA_FF_SALES_CHANNELS: true,
-      },
-    })
-    dbConnection = connection
-    medusaProcess = process
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -690,7 +682,7 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
       )
     })
 
-    it("returns all products if PK is not passed", async () => {
+    it("returns default product from default sales channel if PK is not passed", async () => {
       const api = useApi()
 
       await api.post(
@@ -711,15 +703,9 @@ describe("[MEDUSA_FF_PUBLISHABLE_API_KEYS] Publishable API keys", () => {
         },
       })
 
-      expect(response.data.products.length).toBe(3)
+      expect(response.data.products.length).toBe(1)
       expect(response.data.products).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({
-            id: product1.id,
-          }),
-          expect.objectContaining({
-            id: product2.id,
-          }),
           expect.objectContaining({
             id: product3.id,
           }),

@@ -1,15 +1,15 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 
+import { fixtures } from "../../../../mocks/data"
 import {
+  useAdminAddPublishableKeySalesChannelsBatch,
+  useAdminCreatePublishableApiKey,
   useAdminDeletePublishableApiKey,
+  useAdminRemovePublishableKeySalesChannelsBatch,
   useAdminRevokePublishableApiKey,
   useAdminUpdatePublishableApiKey,
-  useAdminCreatePublishableApiKey,
-  useAdminAddPublishableKeySalesChannelsBatch,
-  useAdminRemovePublishableKeySalesChannelsBatch,
 } from "../../../../src"
 import { createWrapper } from "../../../utils"
-import { fixtures } from "../../../../mocks/data"
 
 describe("useAdminCreatePublishableApiKey hook", () => {
   test("Created a publishable api key", async () => {

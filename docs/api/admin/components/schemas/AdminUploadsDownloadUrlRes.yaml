@@ -1,5 +1,7 @@
 type: object
+required:
+  - download_url
 properties:
   download_url:
-    type: string
     description: The Download URL of the file
+    type: string

@@ -1,15 +1,15 @@
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
 import { IsString } from "class-validator"
-import { ProductService } from "../../../../services"
+import { PricingService, ProductService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 
 /**
- * @oas [post] /products/{id}/options/{option_id}
+ * @oas [post] /admin/products/{id}/options/{option_id}
  * operationId: "PostProductsProductOptionsOption"
  * summary: "Update a Product Option"
- * description: "Updates a Product Option"
+ * description: "Update a Product Option's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Product.
@@ -28,8 +28,8 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.products.updateOption(product_id, option_id, {
- *         title: 'Size'
+ *       medusa.admin.products.updateOption(productId, optionId, {
+ *         title: "Size"
  *       })
  *       .then(({ product }) => {
  *         console.log(product.id);
@@ -37,9 +37,9 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/products/{id}/options/{option_id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/products/{id}/options/{option_id}' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "Size"
  *       }'
@@ -47,7 +47,7 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product
+ *   - Products
  * responses:
  *   200:
  *     description: OK
@@ -77,6 +77,7 @@ export default async (req, res) => {
   )
 
   const productService: ProductService = req.scope.resolve("productService")
+  const pricingService: PricingService = req.scope.resolve("pricingService")
 
   const manager: EntityManager = req.scope.resolve("manager")
   await manager.transaction(async (transactionManager) => {
@@ -85,10 +86,12 @@ export default async (req, res) => {
       .updateOption(id, option_id, validated)
   })
 
-  const product = await productService.retrieve(id, {
+  const rawProduct = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
   })
+
+  const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
 }

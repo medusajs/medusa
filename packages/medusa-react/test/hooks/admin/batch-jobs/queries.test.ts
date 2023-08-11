@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { fixtures } from "../../../../mocks/data"
 import { useAdminBatchJob, useAdminBatchJobs } from "../../../../src"
 import { createWrapper } from "../../../utils"

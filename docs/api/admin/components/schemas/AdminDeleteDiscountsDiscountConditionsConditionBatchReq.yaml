@@ -3,9 +3,10 @@ required:
   - resources
 properties:
   resources:
-    description: The resources to be deleted from the discount condition
+    description: The resources to be removed from the discount condition
     type: array
     items:
+      type: object
       required:
         - id
       properties:

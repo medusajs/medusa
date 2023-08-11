@@ -17,6 +17,7 @@ properties:
     description: The Claim Items that the Claim will consist of.
     type: array
     items:
+      type: object
       required:
         - item_id
         - quantity
@@ -39,7 +40,7 @@ properties:
             - production_failure
             - other
         tags:
-          description: A list o tags to add to the Claim Item
+          description: A list of tags to add to the Claim Item
           type: array
           items:
             type: string
@@ -50,7 +51,8 @@ properties:
   return_shipping:
     description: >-
       Optional details for the Return Shipping Method, if the items are to be
-      sent back.
+      sent back. Providing this field will result in a return being created and
+      associated with the claim.
     type: object
     properties:
       option_id:
@@ -60,23 +62,29 @@ properties:
         type: integer
         description: The price to charge for the Shipping Method.
   additional_items:
-    description: The new items to send to the Customer when the Claim type is Replace.
+    description: >-
+      The new items to send to the Customer. This is only used if the claim's
+      type is `replace`.
     type: array
     items:
+      type: object
       required:
         - variant_id
         - quantity
       properties:
         variant_id:
-          description: The ID of the Product Variant to ship.
+          description: The ID of the Product Variant.
           type: string
         quantity:
-          description: The quantity of the Product Variant to ship.
+          description: The quantity of the Product Variant.
           type: integer
   shipping_methods:
-    description: The Shipping Methods to send the additional Line Items with.
+    description: >-
+      The Shipping Methods to send the additional Line Items with. This is only
+      used if the claim's type is `replace`.
     type: array
     items:
+      type: object
       properties:
         id:
           description: The ID of an existing Shipping Method
@@ -87,14 +95,18 @@ properties:
         price:
           description: The price to charge for the Shipping Method
           type: integer
+        data:
+          description: An optional set of key-value pairs to hold additional information.
+          type: object
   shipping_address:
-    type: object
     description: >-
-      An optional shipping address to send the claim to. Defaults to the parent
-      order's shipping address
-    $ref: ./Address.yaml
+      An optional shipping address to send the claimed items to. If not
+      provided, the parent order's shipping address will be used.
+    $ref: ./AddressPayload.yaml
   refund_amount:
-    description: The amount to refund the Customer when the Claim type is `refund`.
+    description: >-
+      The amount to refund the customer. This is used when the claim's type is
+      `refund`.
     type: integer
   no_notification:
     description: If set to true no notification will be send related to this Claim.
@@ -102,3 +114,7 @@ properties:
   metadata:
     description: An optional set of key-value pairs to hold additional information.
     type: object
+    externalDocs:
+      description: Learn about the metadata attribute, and how to delete and update it.
+      url: >-
+        https://docs.medusajs.com/development/entities/overview#metadata-attribute

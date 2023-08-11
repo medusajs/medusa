@@ -1,6 +1,7 @@
 import { Router } from "express"
 import { PaymentProvider, Store, TaxProvider } from "./../../../../"
 import middlewares from "../../../middlewares"
+import { ExtendedStoreDTO } from "../../../../types/store"
 
 const route = Router()
 
@@ -29,11 +30,35 @@ export default (app) => {
   return app
 }
 
+export const defaultRelationsExtended = ["currencies", "default_currency"]
+
+/**
+ * @schema AdminExtendedStoresRes
+ * type: object
+ * x-expanded-relations:
+ *   field: store
+ *   relations:
+ *     - currencies
+ *     - default_currency
+ * required:
+ *   - store
+ * properties:
+ *   store:
+ *     description: Store details.
+ *     $ref: "#/components/schemas/ExtendedStoreDTO"
+ */
+export type AdminExtendedStoresRes = {
+  store: ExtendedStoreDTO
+}
+
 /**
  * @schema AdminStoresRes
  * type: object
+ * required:
+ *   - store
  * properties:
  *   store:
+ *     description: Store details.
  *     $ref: "#/components/schemas/Store"
  */
 export type AdminStoresRes = {
@@ -43,9 +68,12 @@ export type AdminStoresRes = {
 /**
  * @schema AdminTaxProvidersList
  * type: object
+ * required:
+ *   - tax_providers
  * properties:
  *   tax_providers:
  *     type: array
+ *     description: An array of tax providers details.
  *     items:
  *       $ref: "#/components/schemas/TaxProvider"
  */
@@ -56,9 +84,12 @@ export type AdminTaxProvidersList = {
 /**
  * @schema AdminPaymentProvidersList
  * type: object
+ * required:
+ *   - payment_providers
  * properties:
  *   payment_providers:
  *     type: array
+ *     description: An array of payment providers details.
  *     items:
  *       $ref: "#/components/schemas/PaymentProvider"
  */

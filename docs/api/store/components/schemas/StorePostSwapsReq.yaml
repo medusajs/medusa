@@ -11,18 +11,21 @@ properties:
     description: The items to include in the Return.
     type: array
     items:
+      type: object
       required:
         - item_id
         - quantity
       properties:
         item_id:
-          description: The ID of the Line Item from the Order.
+          description: The ID of the order's line item to return.
           type: string
         quantity:
-          description: The quantity to swap.
+          description: The quantity to return.
           type: integer
         reason_id:
-          description: The ID of the reason of this return.
+          description: >-
+            The ID of the reason of this return. Return reasons can be retrieved
+            from the List Return Reasons endpoint.
           type: string
         note:
           description: The note to add to the item being swapped.
@@ -31,16 +34,17 @@ properties:
     type: string
     description: The ID of the Shipping Option to create the Shipping Method from.
   additional_items:
-    description: The items to exchange the returned items to.
+    description: The items to exchange the returned items with.
     type: array
     items:
+      type: object
       required:
         - variant_id
         - quantity
       properties:
         variant_id:
-          description: The ID of the Product Variant to send.
+          description: The ID of the Product Variant.
           type: string
         quantity:
-          description: The quantity to send of the variant.
+          description: The quantity of the variant.
           type: integer

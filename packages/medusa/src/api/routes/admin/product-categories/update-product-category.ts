@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString, IsInt, Min, IsNotEmpty } from "class-validator"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 
@@ -7,11 +7,12 @@ import { AdminProductCategoriesReqBase } from "../../../../types/product-categor
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /product-categories/{id}
+ * @oas [post] /admin/product-categories/{id}
  * operationId: "PostProductCategoriesCategory"
  * summary: "Update a Product Category"
  * description: "Updates a Product Category."
  * x-authenticated: true
+ * x-featureFlag: "product_categories"
  * parameters:
  *   - (path) id=* {string} The ID of the Product Category.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product category.
@@ -31,7 +32,7 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.productCategories.update(product_category_id, {
+ *       medusa.admin.productCategories.update(productCategoryId, {
  *         name: "Skinny Jeans"
  *       })
  *       .then(({ product_category }) => {
@@ -40,9 +41,9 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/product-categories/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/product-categories/{id}' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "name": "Skinny Jeans"
  *       }'
@@ -50,7 +51,7 @@ import { FindParams } from "../../../../types/common"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Product Category
+ *   - Product Categories
  * responses:
  *  "200":
  *    description: OK
@@ -103,6 +104,9 @@ export default async (req: Request, res: Response) => {
  *   name:
  *     type: string
  *     description:  The name to identify the Product Category by.
+ *   description:
+ *     type: string
+ *     description: An optional text field to describe the Product Category by.
  *   handle:
  *     type: string
  *     description:  A handle to be used in slugs.
@@ -115,12 +119,26 @@ export default async (req: Request, res: Response) => {
  *   parent_category_id:
  *     type: string
  *     description: The ID of the parent product category
+ *   rank:
+ *     type: number
+ *     description: The rank of the category in the tree node (starting from 0)
  */
 // eslint-disable-next-line max-len
 export class AdminPostProductCategoriesCategoryReq extends AdminProductCategoriesReqBase {
   @IsString()
   @IsOptional()
   name?: string
+
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  handle?: string
+
+  @IsOptional()
+  @IsInt()
+  @IsNotEmpty()
+  @Min(0)
+  rank?: number
 }
 
 export class AdminPostProductCategoriesCategoryParams extends FindParams {}

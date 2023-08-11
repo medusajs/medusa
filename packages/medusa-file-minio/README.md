@@ -1,38 +1,72 @@
-# medusa-file-minio
+# MinIO
 
-Upload files to a MinIO server.
+Store uploaded files to your Medusa backend on MinIO.
 
-Learn more about how you can use this plugin in the [documentation](https://docs.medusajs.com/add-plugins/minio).
+[Plugin Documentation](https://docs.medusajs.com/plugins/file-service/minio) | [Medusa Website](https://medusajs.com) | [Medusa Repository](https://github.com/medusajs/medusa)
 
-## Options
+## Features
 
-```js
-{
-  endpoint: "minio.server.com",
-  bucket: "test",
-  access_key_id: "YOUR-ACCESS-KEY",
-  secret_access_key: "YOUR-SECRET-KEY",
+- Store product images on MinIO
+- Support for importing and exporting data through CSV files, such as Products or Prices.
+- Support for both private and public buckets.
 
-  // private bucket configuration
-  private_bucket: 'private-bucket',
-  private_access_key_id: "YOUR-ACCESS-KEY",
-  private_secret_access_key: "YOUR-SECRET-KEY",
-}
-```
+---
 
-Optionally a `download_url_duration` option can be specified to change the valid duration of presigned download links. The duration is configured in seconds. (Default = 60 seconds)
+## Prerequisites
 
-## Configuring a private bucket in Minio
+- [Medusa backend](https://docs.medusajs.com/development/backend/install)
+- [MinIO](https://docs.min.io/minio/baremetal/quickstart/quickstart.html)
 
-Certain operations in Medusa such as data import and export require a separate, protected bucket. The plugin will raise an error if operations used for imports and exports are invoked without the correct setup.
+---
 
-Configuring Minio for requires configuration of one additional option: `private_bucket` which refers to the name given to the protected bucket in Minio.
+## How to Install
 
-Separate credentials can, optionally, be used to access the private bucket by configuring the following options:
+1\. Run the following command in the directory of the Medusa backend:
 
-```
-  private_access_key_id: "YOUR-ACCESS-KEY",
-  private_secret_access_key: "YOUR-SECRET-KEY",
-```
+  ```bash
+  npm install medusa-file-minio
+  ```
 
-If no separate access key is given the same access key will be used for both the `bucket` and the `private_bucket`.
+2\. Set the following environment variables in `.env`:
+
+  ```bash
+  MINIO_ENDPOINT=<ENDPOINT>
+  MINIO_BUCKET=<BUCKET>
+  MINIO_ACCESS_KEY=<ACCESS_KEY>
+  MINIO_SECRET_KEY=<SECRET_KEY>
+  ```
+
+3\. In `medusa-config.js` add the following at the end of the `plugins` array:
+
+  ```js
+  const plugins = [
+    // ...
+    {
+      resolve: `medusa-file-minio`,
+      options: {
+          endpoint: process.env.MINIO_ENDPOINT,
+          bucket: process.env.MINIO_BUCKET,
+          access_key_id: process.env.MINIO_ACCESS_KEY,
+          secret_access_key: process.env.MINIO_SECRET_KEY,
+      },
+    },
+  ]
+  ```
+
+---
+
+## Test the Plugin
+
+1\. Run the following command in the directory of the Medusa backend to run the backend:
+
+  ```bash
+  npm run start
+  ```
+
+2\. Upload an image for a product using the admin dashboard or using [the Admin APIs](https://docs.medusajs.com/api/admin#tag/Upload).
+
+---
+
+## Additional Resources
+
+- [MinIO Plugin Documentation](https://docs.medusajs.com/plugins/file-service/minio)

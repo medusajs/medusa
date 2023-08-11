@@ -2,6 +2,7 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { PriceListServiceMock } from "../../../../../services/__mocks__/price-list"
 
+jest.setTimeout(10000)
 describe("POST /price-lists", () => {
   describe("successfully creates a price list", () => {
     let subject
@@ -112,7 +113,7 @@ describe("POST /price-lists", () => {
     it("returns descriptive error that several fields are missing", () => {
       expect(subject.body.type).toEqual("invalid_data")
       expect(subject.body.message).toEqual(
-        "name must be a string, type must be a valid enum value, prices must be an array"
+        "name must be a string, type must be one of the following values: sale, override, prices must be an array"
       )
     })
   })

@@ -59,8 +59,19 @@ export const defaultAdminGiftCardRelations = ["region", "order"]
 /**
  * @schema AdminGiftCardsRes
  * type: object
+ * x-expanded-relations:
+ *   field: gift_card
+ *   relations:
+ *     - order
+ *     - region
+ *   eager:
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
+ * required:
+ *   - gift_card
  * properties:
  *   gift_card:
+ *     description: "A gift card's details."
  *     $ref: "#/components/schemas/GiftCard"
  */
 export type AdminGiftCardsRes = {
@@ -70,6 +81,10 @@ export type AdminGiftCardsRes = {
 /**
  * @schema AdminGiftCardsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -80,7 +95,7 @@ export type AdminGiftCardsRes = {
  *     default: gift-card
  *   deleted:
  *     type: boolean
- *     description: Whether the gift card was deleted successfully or not.
+ *     description: Whether the gift card was deleted successfully.
  *     default: true
  */
 export type AdminGiftCardsDeleteRes = DeleteResponse
@@ -88,6 +103,19 @@ export type AdminGiftCardsDeleteRes = DeleteResponse
 /**
  * @schema AdminGiftCardsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: gift_cards
+ *   relations:
+ *     - order
+ *     - region
+ *   eager:
+ *     - region.fulfillment_providers
+ *     - region.payment_providers
+ * required:
+ *   - gift_cards
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   gift_cards:
  *     type: array
@@ -98,7 +126,7 @@ export type AdminGiftCardsDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of gift cards skipped when retrieving the gift cards.
  *   limit:
  *     type: integer
  *     description: The number of items per page

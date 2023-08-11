@@ -1,15 +1,19 @@
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
+
 import { EntityManager } from "typeorm"
-import { IInventoryService } from "../../../../interfaces"
+import { IInventoryService } from "@medusajs/types"
+import { LineItemService } from "../../../../services"
+import { isDefined } from "@medusajs/utils"
+import { validateUpdateReservationQuantity } from "./utils/validate-reservation-quantity"
 
 /**
- * @oas [post] /reservations/{id}
+ * @oas [post] /admin/reservations/{id}
  * operationId: "PostReservationsReservation"
- * summary: "Updates a Reservation"
- * description: "Updates a Reservation which can be associated with any resource as required."
+ * summary: "Update a Reservation"
+ * description: "Update a Reservation's details.'"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Reservation to update.
+ *   - (path) id=* {string} The ID of the Reservation.
  * requestBody:
  *  content:
  *    application/json:
@@ -22,18 +26,18 @@ import { IInventoryService } from "../../../../interfaces"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.reservations.update(reservation.id, {
+ *       medusa.admin.reservations.update(reservationId, {
  *         quantity: 3
  *       })
- *       .then(({ reservations }) => {
- *         console.log(reservations.id);
+ *       .then(({ reservation }) => {
+ *         console.log(reservation.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/reservations/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/reservations/{id}' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *          "quantity": 3,
  *       }'
@@ -41,14 +45,14 @@ import { IInventoryService } from "../../../../interfaces"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Reservation
+ *   - Reservations
  * responses:
  *   200:
  *     description: OK
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminPostReservationsReq"
+ *           $ref: "#/components/schemas/AdminReservationsRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -69,14 +73,26 @@ export default async (req, res) => {
   }
 
   const manager: EntityManager = req.scope.resolve("manager")
+  const lineItemService: LineItemService = req.scope.resolve("lineItemService")
 
   const inventoryService: IInventoryService =
     req.scope.resolve("inventoryService")
 
+  const reservation = await inventoryService.retrieveReservationItem(id)
+
+  if (reservation.line_item_id && isDefined(validatedBody.quantity)) {
+    await validateUpdateReservationQuantity(
+      reservation.line_item_id,
+      validatedBody.quantity - reservation.quantity,
+      {
+        lineItemService,
+        inventoryService,
+      }
+    )
+  }
+
   const result = await manager.transaction(async (manager) => {
-    await inventoryService
-      .withTransaction(manager)
-      .updateReservationItem(id, validatedBody)
+    await inventoryService.updateReservationItem(id, validatedBody)
   })
 
   res.status(200).json({ reservation: result })
@@ -87,14 +103,17 @@ export default async (req, res) => {
  * type: object
  * properties:
  *   location_id:
- *     description: "The id of the location of the reservation"
+ *     description: "The ID of the location associated with the reservation."
  *     type: string
  *   quantity:
- *     description: "The id of the reservation item"
+ *     description: "The quantity to reserve."
  *     type: number
  *   metadata:
  *     description: An optional set of key-value pairs with additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostReservationsReservationReq {
   @IsNumber()
@@ -104,6 +123,10 @@ export class AdminPostReservationsReservationReq {
   @IsString()
   @IsOptional()
   location_id?: string
+
+  @IsString()
+  @IsOptional()
+  description?: string
 
   @IsObject()
   @IsOptional()

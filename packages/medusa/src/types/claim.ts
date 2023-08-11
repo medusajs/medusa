@@ -18,6 +18,7 @@ export type CreateClaimInput = {
   order: Order
   claim_order_id?: string
   shipping_address_id?: string
+  return_location_id?: string
 }
 
 type CreateClaimReturnShippingInput = {
@@ -29,6 +30,7 @@ type CreateClaimShippingMethodInput = {
   id?: string
   option_id?: string
   price?: number
+  data?: Record<string, unknown>
 }
 
 export type CreateClaimItemInput = {
@@ -59,6 +61,7 @@ type UpdateClaimShippingMethodInput = {
   id?: string
   option_id?: string
   price?: number
+  data?: Record<string, unknown>
 }
 
 type UpdateClaimItemInput = {

@@ -94,19 +94,83 @@ export const defaultAdminDraftOrdersFields: (keyof DraftOrder)[] = [
 /**
  * @schema AdminPostDraftOrdersDraftOrderRegisterPaymentRes
  * type: object
+ * required:
+ *   - order
  * properties:
  *   order:
+ *     description: Order's details.
  *     $ref: "#/components/schemas/Order"
  */
 export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
   order: Order
 }
-
 /**
  * @schema AdminDraftOrdersRes
  * type: object
+ * x-expanded-relations:
+ *   field: draft_order
+ *   relations:
+ *     - order
+ *     - cart
+ *     - cart.items
+ *     - cart.items.adjustments
+ *     - cart.billing_address
+ *     - cart.customer
+ *     - cart.discounts
+ *     - cart.discounts.rule
+ *     - cart.items
+ *     - cart.items.adjustments
+ *     - cart.payment
+ *     - cart.payment_sessions
+ *     - cart.region
+ *     - cart.region.payment_providers
+ *     - cart.shipping_address
+ *     - cart.shipping_methods
+ *     - cart.shipping_methods.shipping_option
+ *   eager:
+ *     - cart.region.fulfillment_providers
+ *     - cart.region.payment_providers
+ *     - cart.shipping_methods.shipping_option
+ *   implicit:
+ *     - cart.discounts
+ *     - cart.discounts.rule
+ *     - cart.gift_cards
+ *     - cart.items
+ *     - cart.items.adjustments
+ *     - cart.items.tax_lines
+ *     - cart.items.variant
+ *     - cart.items.variant.product
+ *     - cart.items.variant.product.profiles
+ *     - cart.region
+ *     - cart.region.tax_rates
+ *     - cart.shipping_address
+ *     - cart.shipping_methods
+ *     - cart.shipping_methods.tax_lines
+ *   totals:
+ *     - cart.discount_total
+ *     - cart.gift_card_tax_total
+ *     - cart.gift_card_total
+ *     - cart.item_tax_total
+ *     - cart.refundable_amount
+ *     - cart.refunded_total
+ *     - cart.shipping_tax_total
+ *     - cart.shipping_total
+ *     - cart.subtotal
+ *     - cart.tax_total
+ *     - cart.total
+ *     - cart.items.discount_total
+ *     - cart.items.gift_card_total
+ *     - cart.items.original_tax_total
+ *     - cart.items.original_total
+ *     - cart.items.refundable
+ *     - cart.items.subtotal
+ *     - cart.items.tax_total
+ *     - cart.items.total
+ * required:
+ *   - draft_order
  * properties:
  *   draft_order:
+ *     description: Draft order's details.
  *     $ref: "#/components/schemas/DraftOrder"
  */
 export type AdminDraftOrdersRes = {
@@ -116,6 +180,10 @@ export type AdminDraftOrdersRes = {
 /**
  * @schema AdminDraftOrdersDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -126,7 +194,7 @@ export type AdminDraftOrdersRes = {
  *     default: draft-order
  *   deleted:
  *     type: boolean
- *     description: Whether the draft order was deleted successfully or not.
+ *     description: Whether the draft order was deleted successfully.
  *     default: true
  */
 export type AdminDraftOrdersDeleteRes = DeleteResponse
@@ -134,9 +202,22 @@ export type AdminDraftOrdersDeleteRes = DeleteResponse
 /**
  * @schema AdminDraftOrdersListRes
  * type: object
+ * x-expanded-relations:
+ *   field: draft_orders
+ *   relations:
+ *     - order
+ *     - cart
+ *     - cart.items
+ *     - cart.items.adjustments
+ * required:
+ *   - draft_orders
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   draft_orders:
  *     type: array
+ *     description: An array of draft order's details.
  *     items:
  *       $ref: "#/components/schemas/DraftOrder"
  *   count:
@@ -144,7 +225,7 @@ export type AdminDraftOrdersDeleteRes = DeleteResponse
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of draft orders skipped when retrieving the draft orders.
  *   limit:
  *     type: integer
  *     description: The number of items per page

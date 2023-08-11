@@ -1,19 +1,19 @@
 const path = require("path")
 
-const { bootstrapApp } = require("../../../helpers/bootstrap-app")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const { setPort, useApi } = require("../../../helpers/use-api")
+const { bootstrapApp } = require("../../../environment-helpers/bootstrap-app")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const { setPort, useApi } = require("../../../environment-helpers/use-api")
 
-const adminSeeder = require("../../helpers/admin-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
-jest.setTimeout(30000)
+jest.setTimeout(10000)
 
 const {
   simpleOrderFactory,
   simpleStoreFactory,
   simpleProductFactory,
   simpleShippingOptionFactory,
-} = require("../../factories")
+} = require("../../../factories")
 
 describe("medusa-plugin-sendgrid", () => {
   let appContainer
@@ -120,6 +120,8 @@ describe("medusa-plugin-sendgrid", () => {
             updated_at: expect.any(Date),
             product: {
               profile_id: expect.any(String),
+              profile: expect.any(Object),
+              profiles: expect.any(Array),
               created_at: expect.any(Date),
               updated_at: expect.any(Date),
             },
@@ -242,6 +244,8 @@ describe("medusa-plugin-sendgrid", () => {
               updated_at: expect.any(Date),
               product: {
                 profile_id: expect.any(String),
+                profile: expect.any(Object),
+                profiles: expect.any(Array),
                 created_at: expect.any(Date),
                 updated_at: expect.any(Date),
               },
@@ -303,6 +307,8 @@ describe("medusa-plugin-sendgrid", () => {
             updated_at: expect.any(Date),
             product: {
               profile_id: expect.any(String),
+              profile: expect.any(Object),
+              profiles: expect.any(Array),
               created_at: expect.any(Date),
               updated_at: expect.any(Date),
             },
@@ -340,8 +346,6 @@ describe("medusa-plugin-sendgrid", () => {
       },
       { headers: { authorization: "Bearer test_token" } }
     )
-
-    expect(response.status).toEqual(200)
 
     expect(response.status).toEqual(200)
 
@@ -421,7 +425,6 @@ describe("medusa-plugin-sendgrid", () => {
       price: 500,
     })
     const api = useApi()
-
     const response = await api.post(
       `/admin/orders/${order.id}/claims`,
       {
@@ -488,6 +491,8 @@ describe("medusa-plugin-sendgrid", () => {
             updated_at: expect.any(Date),
             product: {
               profile_id: expect.any(String),
+              profile: expect.any(Object),
+              profiles: expect.any(Array),
               created_at: expect.any(Date),
               updated_at: expect.any(Date),
             },
@@ -557,11 +562,14 @@ describe("medusa-plugin-sendgrid", () => {
         phone: "12353245",
       },
     })
+
     await api.post(`/store/carts/${cartId}/shipping-methods`, {
       option_id: shippingOut.id,
     })
+
     await api.post(`/store/carts/${cartId}/payment-sessions`)
     await api.post(`/store/carts/${cartId}/complete`)
+
     const { data: fulfillmentData } = await api.post(
       `/admin/orders/${order.id}/swaps/${swapId}/fulfillments`,
       {},
@@ -592,6 +600,8 @@ describe("medusa-plugin-sendgrid", () => {
         updated_at: expect.any(Date),
         product: {
           profile_id: expect.any(String),
+          profile: expect.any(Object),
+          profiles: expect.any(Array),
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         },
@@ -741,7 +751,6 @@ describe("medusa-plugin-sendgrid", () => {
 
     const order = await createReturnableOrder(dbConnection)
     const api = useApi()
-
     const response = await api.post(
       `/admin/orders/${order.id}/swaps`,
       {
@@ -781,6 +790,8 @@ const getReturnSnap = (received = false) => {
       updated_at: expect.any(Date),
       product: {
         profile_id: expect.any(String),
+        profile: expect.any(Object),
+        profiles: expect.any(Array),
         created_at: expect.any(Date),
         updated_at: expect.any(Date),
       },

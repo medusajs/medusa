@@ -1,18 +1,21 @@
-import { EntityManager } from "typeorm"
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
-  FindConfig,
-  buildQuery,
-  IEventBusService,
-  FilterableReservationItemProps,
   CreateReservationItemInput,
-  TransactionBaseService,
+  FilterableReservationItemProps,
+  FindConfig,
+  IEventBusService,
+  SharedContext,
   UpdateReservationItemInput,
-} from "@medusajs/medusa"
-
-import { ReservationItem } from "../models"
-import { CONNECTION_NAME } from "../config"
+} from "@medusajs/types"
+import {
+  InjectEntityManager,
+  isDefined,
+  MedusaContext,
+  MedusaError,
+} from "@medusajs/utils"
+import { EntityManager, FindManyOptions, In } from "typeorm"
 import { InventoryLevelService } from "."
+import { ReservationItem } from "../models"
+import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -20,49 +23,44 @@ type InjectedDependencies = {
   inventoryLevelService: InventoryLevelService
 }
 
-export default class ReservationItemService extends TransactionBaseService {
+export default class ReservationItemService {
   static Events = {
     CREATED: "reservation-item.created",
     UPDATED: "reservation-item.updated",
     DELETED: "reservation-item.deleted",
-    DELETED_BY_LINE_ITEM: "reservation-item.deleted-by-line-item",
   }
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-  protected readonly eventBusService_: IEventBusService
+  protected readonly manager_: EntityManager
+  protected readonly eventBusService_: IEventBusService | undefined
   protected readonly inventoryLevelService_: InventoryLevelService
 
   constructor({
     eventBusService,
-    manager,
     inventoryLevelService,
+    manager,
   }: InjectedDependencies) {
-    super(arguments[0])
-
     this.manager_ = manager
     this.eventBusService_ = eventBusService
     this.inventoryLevelService_ = inventoryLevelService
-  }
-
-  private getManager(): EntityManager {
-    return this.transactionManager_ ?? this.manager_
   }
 
   /**
    * Lists reservation items that match the provided filter.
    * @param selector - Filters to apply to the reservation items.
    * @param config - Configuration for the query.
+   * @param context
    * @return Array of reservation items that match the selector.
    */
   async list(
     selector: FilterableReservationItemProps = {},
-    config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 }
+    config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 },
+    context: SharedContext = {}
   ): Promise<ReservationItem[]> {
-    const manager = this.getManager()
+    const manager = context.transactionManager ?? this.manager_
     const itemRepository = manager.getRepository(ReservationItem)
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config) as FindManyOptions
+
     return await itemRepository.find(query)
   }
 
@@ -70,16 +68,19 @@ export default class ReservationItemService extends TransactionBaseService {
    * Lists reservation items that match the provided filter and returns the total count.
    * @param selector - Filters to apply to the reservation items.
    * @param config - Configuration for the query.
+   * @param context
    * @return Array of reservation items that match the selector and the total count.
    */
   async listAndCount(
     selector: FilterableReservationItemProps = {},
-    config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 }
+    config: FindConfig<ReservationItem> = { relations: [], skip: 0, take: 10 },
+    context: SharedContext = {}
   ): Promise<[ReservationItem[], number]> {
-    const manager = this.getManager()
+    const manager = context.transactionManager ?? this.manager_
     const itemRepository = manager.getRepository(ReservationItem)
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery(selector, config) as FindManyOptions
+
     return await itemRepository.findAndCount(query)
   }
 
@@ -87,12 +88,14 @@ export default class ReservationItemService extends TransactionBaseService {
    * Retrieves a reservation item by its id.
    * @param reservationItemId - The id of the reservation item to retrieve.
    * @param config - Configuration for the query.
+   * @param context
    * @return The reservation item with the provided id.
    * @throws If reservationItemId is not defined or if the reservation item was not found.
    */
   async retrieve(
     reservationItemId: string,
-    config: FindConfig<ReservationItem> = {}
+    config: FindConfig<ReservationItem> = {},
+    context: SharedContext = {}
   ): Promise<ReservationItem> {
     if (!isDefined(reservationItemId)) {
       throw new MedusaError(
@@ -101,10 +104,13 @@ export default class ReservationItemService extends TransactionBaseService {
       )
     }
 
-    const manager = this.getManager()
+    const manager = context.transactionManager ?? this.manager_
     const reservationItemRepository = manager.getRepository(ReservationItem)
 
-    const query = buildQuery({ id: reservationItemId }, config)
+    const query = buildQuery(
+      { id: reservationItemId },
+      config
+    ) as FindManyOptions
     const [reservationItem] = await reservationItemRepository.find(query)
 
     if (!reservationItem) {
@@ -120,168 +126,214 @@ export default class ReservationItemService extends TransactionBaseService {
   /**
    * Create a new reservation item.
    * @param data - The reservation item data.
+   * @param context
    * @return The created reservation item.
    */
-  async create(data: CreateReservationItemInput): Promise<ReservationItem> {
-    return await this.atomicPhase_(async (manager) => {
-      const itemRepository = manager.getRepository(ReservationItem)
+  @InjectEntityManager()
+  async create(
+    data: CreateReservationItemInput[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<ReservationItem[]> {
+    const manager = context.transactionManager!
+    const reservationItemRepository = manager.getRepository(ReservationItem)
 
-      const inventoryItem = itemRepository.create({
-        inventory_item_id: data.inventory_item_id,
-        line_item_id: data.line_item_id,
-        location_id: data.location_id,
-        quantity: data.quantity,
-        metadata: data.metadata,
-      })
+    const reservationItems = reservationItemRepository.create(
+      data.map((tc) => ({
+        inventory_item_id: tc.inventory_item_id,
+        line_item_id: tc.line_item_id,
+        location_id: tc.location_id,
+        quantity: tc.quantity,
+        metadata: tc.metadata,
+        external_id: tc.external_id,
+        description: tc.description,
+        created_by: tc.created_by,
+      }))
+    )
 
-      const [newInventoryItem] = await Promise.all([
-        itemRepository.save(inventoryItem),
-        this.inventoryLevelService_
-          .withTransaction(manager)
-          .adjustReservedQuantity(
+    const [newReservationItems] = await Promise.all([
+      reservationItemRepository.save(reservationItems),
+      ...data.map(
+        async (data) =>
+          // TODO make bulk
+          await this.inventoryLevelService_.adjustReservedQuantity(
             data.inventory_item_id,
             data.location_id,
-            data.quantity
-          ),
-      ])
+            data.quantity,
+            context
+          )
+      ),
+    ])
 
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(ReservationItemService.Events.CREATED, {
-          id: newInventoryItem.id,
-        })
-
-      return newInventoryItem
+    await this.eventBusService_?.emit?.(ReservationItemService.Events.CREATED, {
+      ids: newReservationItems.map((i) => i.id),
     })
+
+    return newReservationItems
   }
 
   /**
    * Update a reservation item.
    * @param reservationItemId - The reservation item's id.
    * @param data - The reservation item data to update.
+   * @param context
    * @return The updated reservation item.
    */
+  @InjectEntityManager()
   async update(
     reservationItemId: string,
-    data: UpdateReservationItemInput
+    data: UpdateReservationItemInput,
+    @MedusaContext() context: SharedContext = {}
   ): Promise<ReservationItem> {
-    return await this.atomicPhase_(async (manager) => {
-      const itemRepository = manager.getRepository(ReservationItem)
+    const manager = context.transactionManager!
+    const itemRepository = manager.getRepository(ReservationItem)
 
-      const item = await this.retrieve(reservationItemId)
+    const item = await this.retrieve(reservationItemId, undefined, context)
 
-      const shouldUpdateQuantity =
-        isDefined(data.quantity) && data.quantity !== item.quantity
+    const shouldUpdateQuantity =
+      isDefined(data.quantity) && data.quantity !== item.quantity
 
-      const shouldUpdateLocation =
-        isDefined(data.location_id) &&
-        isDefined(data.quantity) &&
-        data.location_id !== item.location_id
+    const shouldUpdateLocation =
+      isDefined(data.location_id) && data.location_id !== item.location_id
 
-      const ops: Promise<unknown>[] = []
+    const ops: Promise<unknown>[] = []
 
-      if (shouldUpdateLocation) {
-        ops.push(
-          this.inventoryLevelService_
-            .withTransaction(manager)
-            .adjustReservedQuantity(
-              item.inventory_item_id,
-              item.location_id,
-              item.quantity * -1
-            ),
-          this.inventoryLevelService_
-            .withTransaction(manager)
-            .adjustReservedQuantity(
-              item.inventory_item_id,
-              data.location_id!,
-              data.quantity!
-            )
+    if (shouldUpdateLocation) {
+      ops.push(
+        this.inventoryLevelService_.adjustReservedQuantity(
+          item.inventory_item_id,
+          item.location_id,
+          item.quantity * -1,
+          context
+        ),
+        this.inventoryLevelService_.adjustReservedQuantity(
+          item.inventory_item_id,
+          data.location_id!,
+          data.quantity || item.quantity!,
+          context
         )
-      } else if (shouldUpdateQuantity) {
-        const quantityDiff = data.quantity! - item.quantity
-        ops.push(
-          this.inventoryLevelService_
-            .withTransaction(manager)
-            .adjustReservedQuantity(
-              item.inventory_item_id,
-              item.location_id,
-              quantityDiff
-            )
+      )
+    } else if (shouldUpdateQuantity) {
+      const quantityDiff = data.quantity! - item.quantity
+      ops.push(
+        this.inventoryLevelService_.adjustReservedQuantity(
+          item.inventory_item_id,
+          item.location_id,
+          quantityDiff,
+          context
         )
-      }
+      )
+    }
 
-      const mergedItem = itemRepository.merge(item, data)
+    const mergedItem = itemRepository.merge(item, data)
 
-      ops.push(itemRepository.save(item))
+    ops.push(itemRepository.save(item))
 
-      await Promise.all(ops)
+    await Promise.all(ops)
 
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(ReservationItemService.Events.UPDATED, {
-          id: mergedItem.id,
-        })
-
-      return mergedItem
+    await this.eventBusService_?.emit?.(ReservationItemService.Events.UPDATED, {
+      id: mergedItem.id,
     })
+
+    return mergedItem
   }
 
   /**
    * Deletes a reservation item by line item id.
    * @param lineItemId - the id of the line item to delete.
+   * @param context
    */
-  async deleteByLineItem(lineItemId: string): Promise<void> {
-    await this.atomicPhase_(async (manager) => {
-      const itemRepository = manager.getRepository(ReservationItem)
+  @InjectEntityManager()
+  async deleteByLineItem(
+    lineItemId: string | string[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<void> {
+    const manager = context.transactionManager!
+    const itemRepository = manager.getRepository(ReservationItem)
 
-      const items = await this.list({ line_item_id: lineItemId })
+    const lineItemIds = Array.isArray(lineItemId) ? lineItemId : [lineItemId]
 
-      const ops: Promise<unknown>[] = []
-      for (const item of items) {
-        ops.push(itemRepository.softRemove({ line_item_id: lineItemId }))
-        ops.push(
-          this.inventoryLevelService_
-            .withTransaction(manager)
-            .adjustReservedQuantity(
-              item.inventory_item_id,
-              item.location_id,
-              item.quantity * -1
-            )
+    const reservationItems = await this.list(
+      { line_item_id: lineItemIds },
+      undefined,
+      context
+    )
+
+    const ops: Promise<unknown>[] = [
+      itemRepository.softDelete({ line_item_id: In(lineItemIds) }),
+    ]
+
+    for (const reservation of reservationItems) {
+      ops.push(
+        this.inventoryLevelService_.adjustReservedQuantity(
+          reservation.inventory_item_id,
+          reservation.location_id,
+          reservation.quantity * -1,
+          context
         )
-      }
-      await Promise.all(ops)
+      )
+    }
 
-      await this.eventBusService_
-        .withTransaction(manager)
-        .emit(ReservationItemService.Events.DELETED_BY_LINE_ITEM, {
-          line_item_id: lineItemId,
-        })
+    await Promise.all(ops)
+
+    await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
+      line_item_id: lineItemId,
+    })
+  }
+
+  /**
+   * Deletes reservation items by location ID.
+   * @param locationId - The ID of the location to delete reservations for.
+   * @param context
+   */
+  @InjectEntityManager()
+  async deleteByLocationId(
+    locationId: string | string[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<void> {
+    const manager = context.transactionManager!
+    const itemRepository = manager.getRepository(ReservationItem)
+
+    const ids = Array.isArray(locationId) ? locationId : [locationId]
+
+    await itemRepository.softDelete({ location_id: In(ids) })
+
+    await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
+      location_id: locationId,
     })
   }
 
   /**
    * Deletes a reservation item by id.
    * @param reservationItemId - the id of the reservation item to delete.
+   * @param context
    */
-  async delete(reservationItemId: string): Promise<void> {
-    await this.atomicPhase_(async (manager) => {
-      const itemRepository = manager.getRepository(ReservationItem)
-      const item = await this.retrieve(reservationItemId)
+  @InjectEntityManager()
+  async delete(
+    reservationItemId: string | string[],
+    @MedusaContext() context: SharedContext = {}
+  ): Promise<void> {
+    const ids = Array.isArray(reservationItemId)
+      ? reservationItemId
+      : [reservationItemId]
+    const manager = context.transactionManager!
+    const itemRepository = manager.getRepository(ReservationItem)
+    const items = await this.list({ id: ids }, undefined, context)
 
-      await Promise.all([
-        itemRepository.softRemove({ id: reservationItemId }),
-        this.inventoryLevelService_
-          .withTransaction(manager)
-          .adjustReservedQuantity(
-            item.inventory_item_id,
-            item.location_id,
-            item.quantity * -1
-          ),
-      ])
+    const promises: Promise<unknown>[] = items.map(async (item) => {
+      await this.inventoryLevelService_.adjustReservedQuantity(
+        item.inventory_item_id,
+        item.location_id,
+        item.quantity * -1,
+        context
+      )
     })
 
-    await this.eventBusService_.emit(ReservationItemService.Events.DELETED, {
-      id: reservationItemId,
+    promises.push(itemRepository.softRemove(items))
+
+    await Promise.all(promises)
+
+    await this.eventBusService_?.emit?.(ReservationItemService.Events.DELETED, {
+      ids: reservationItemId,
     })
   }
 }

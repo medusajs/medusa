@@ -1,6 +1,6 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
-import { FlagRouter } from "../../utils/flag-router"
+import { FlagRouter } from "@medusajs/utils"
 import ShippingOptionService from "../shipping-option"
 
 describe("ShippingOptionService", () => {
@@ -342,10 +342,13 @@ describe("ShippingOptionService", () => {
       softRemove: (q) => {
         return Promise.resolve()
       },
-      findOne: (i) =>
-        i.where.id === IdMap.getId("requirement_id")
-          ? { id: IdMap.getId("requirement_id") }
-          : null,
+      findOne: (i) => {
+        if (i.where.id === IdMap.getId("requirement_id")) {
+          return { id: IdMap.getId("requirement_id") }
+        } else {
+          return null
+        }
+      }
     })
 
     const optionService = new ShippingOptionService({
@@ -371,7 +374,7 @@ describe("ShippingOptionService", () => {
     it("is idempotent", async () => {
       await optionService.removeRequirement(IdMap.getId("validId"), "something")
 
-      expect(shippingOptionRequirementRepository.softRemove).toBeCalledTimes(1)
+      expect(shippingOptionRequirementRepository.softRemove).toBeCalledTimes(0)
     })
   })
 

@@ -9,15 +9,14 @@ import {
 } from "typeorm"
 import {
   DbAwareColumn,
-  resolveDbGenerationStrategy,
-  resolveDbType,
+  resolveDbType
 } from "../utils/db-aware-column"
 
 import { BaseEntity } from "../interfaces/models/base-entity"
-import { Cart } from "./cart"
-import { Order } from "./order"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { manualAutoIncrement } from "../utils/manual-auto-increment"
+import { Cart } from "./cart"
+import { Order } from "./order"
 
 export enum DraftOrderStatus {
   OPEN = "open",
@@ -31,7 +30,7 @@ export class DraftOrder extends BaseEntity {
 
   @Index()
   @Column()
-  @Generated(resolveDbGenerationStrategy("increment"))
+  @Generated("increment")
   display_id: number
 
   @Index()
@@ -82,70 +81,93 @@ export class DraftOrder extends BaseEntity {
 /**
  * @schema DraftOrder
  * title: "DraftOrder"
- * description: "Represents a draft order"
+ * description: "A draft order is created by an admin without direct involvement of the customer. Once its payment is marked as captured, it is transformed into an order."
  * type: object
+ * required:
+ *   - canceled_at
+ *   - cart_id
+ *   - completed_at
+ *   - created_at
+ *   - display_id
+ *   - id
+ *   - idempotency_key
+ *   - metadata
+ *   - no_notification_order
+ *   - order_id
+ *   - status
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The draft order's ID
+ *     type: string
  *     example: dorder_01G8TJFKBG38YYFQ035MSVG03C
  *   status:
+ *     description: The status of the draft order. It's changed to `completed` when it's transformed to an order.
  *     type: string
- *     description: The status of the draft order
  *     enum:
  *       - open
  *       - completed
  *     default: open
  *   display_id:
- *     type: string
  *     description: The draft order's display ID
+ *     type: string
  *     example: 2
  *   cart_id:
+ *     description: The ID of the cart associated with the draft order.
+ *     nullable: true
  *     type: string
- *     description: "The ID of the cart associated with the draft order."
  *     example: cart_01G8ZH853Y6TFXWPG5EYE81X63
  *   cart:
- *     description: A cart object. Available if the relation `cart` is expanded.
- *     type: object
+ *     description: The details of the cart associated with the draft order.
+ *     x-expandable: "cart"
+ *     nullable: true
+ *     $ref: "#/components/schemas/Cart"
  *   order_id:
+ *     description: The ID of the order created from the draft order when its payment is captured.
+ *     nullable: true
  *     type: string
- *     description: "The ID of the order associated with the draft order."
  *     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
  *   order:
- *     description: An order object. Available if the relation `order` is expanded.
- *     type: object
+ *     description: The details of the order created from the draft order when its payment is captured.
+ *     x-expandable: "order"
+ *     nullable: true
+ *     $ref: "#/components/schemas/Order"
  *   canceled_at:
- *     type: string
  *     description: The date the draft order was canceled at.
+ *     nullable: true
+ *     type: string
  *     format: date-time
  *   completed_at:
- *     type: string
  *     description: The date the draft order was completed at.
+ *     nullable: true
+ *     type: string
  *     format: date-time
  *   no_notification_order:
- *     type: boolean
  *     description: Whether to send the customer notifications regarding order updates.
+ *     nullable: true
+ *     type: boolean
  *     example: false
  *   idempotency_key:
- *     type: string
  *     description: Randomly generated key used to continue the completion of the cart associated with the draft order in case of failure.
+ *     nullable: true
+ *     type: string
  *     externalDocs:
- *       url: https://docs.medusajs.com/advanced/backend/payment/overview#idempotency-key
+ *       url: https://docs.medusajs.com/development/idempotency-key/overview.md
  *       description: Learn more how to use the idempotency key.
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
- *     format: date-time
- *   deleted_at:
- *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

@@ -2,5 +2,8 @@
   "position": 12,
   "collapsed": false,
   "link": null,
-  "label": "Users"
+  "label": "Users",
+  "customProps": {
+    "sidebar_is_group_headline": true
+  }
 }

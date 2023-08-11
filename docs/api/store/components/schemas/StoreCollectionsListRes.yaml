@@ -1,7 +1,13 @@
 type: object
+required:
+  - collections
+  - count
+  - offset
+  - limit
 properties:
   collections:
     type: array
+    description: An array of product collections details
     items:
       $ref: ./ProductCollection.yaml
   count:
@@ -9,7 +15,9 @@ properties:
     description: The total number of items available
   offset:
     type: integer
-    description: The number of items skipped before these items
+    description: >-
+      The number of product collections skipped when retrieving the product
+      collections.
   limit:
     type: integer
     description: The number of items per page

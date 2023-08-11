@@ -1,10 +1,10 @@
+import { FlagRouter } from "@medusajs/utils"
 import { Router } from "express"
+import "reflect-metadata"
 import { Region } from "../../../.."
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
-import "reflect-metadata"
-import { FlagRouter } from "../../../../utils/flag-router"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 const route = Router()
 
@@ -88,8 +88,20 @@ export const defaultAdminRegionRelations = [
 /**
  * @schema AdminRegionsRes
  * type: object
+ * x-expanded-relations:
+ *   field: region
+ *   relations:
+ *     - countries
+ *     - fulfillment_providers
+ *     - payment_providers
+ *   eager:
+ *     - fulfillment_providers
+ *     - payment_providers
+ * required:
+ *   - region
  * properties:
  *   region:
+ *     description: "Region details."
  *     $ref: "#/components/schemas/Region"
  */
 export class AdminRegionsRes {
@@ -99,9 +111,24 @@ export class AdminRegionsRes {
 /**
  * @schema AdminRegionsListRes
  * type: object
+ * x-expanded-relations:
+ *   field: regions
+ *   relations:
+ *     - countries
+ *     - fulfillment_providers
+ *     - payment_providers
+ *   eager:
+ *     - fulfillment_providers
+ *     - payment_providers
+ * required:
+ *   - regions
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   regions:
  *     type: array
+ *     description: "An array of regions details."
  *     items:
  *       $ref: "#/components/schemas/Region"
  *   count:
@@ -109,7 +136,7 @@ export class AdminRegionsRes {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of regions skipped when retrieving the regions.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -121,6 +148,10 @@ export type AdminRegionsListRes = PaginatedResponse & {
 /**
  * @schema AdminRegionsDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
@@ -144,30 +175,39 @@ export class FulfillmentOption {
 /**
  * @schema AdminGetRegionsRegionFulfillmentOptionsRes
  * type: object
+ * required:
+ *   - fulfillment_options
  * properties:
  *   fulfillment_options:
  *     type: array
+ *     description: Fulfillment providers details.
  *     items:
  *       type: object
+ *       required:
+ *         - provider_id
+ *         - options
  *       properties:
  *         provider_id:
- *           type: string
  *           description: ID of the fulfillment provider
+ *           type: string
  *         options:
- *           type: array
  *           description: fulfillment provider options
- *           example:
- *             - id: "manual-fulfillment"
- *             - id: "manual-fulfillment-return"
- *               is_return: true
+ *           type: array
+ *           items:
+ *             type: object
+ *             example:
+ *               - id: "manual-fulfillment"
+ *               - id: "manual-fulfillment-return"
+ *                 is_return: true
  */
 export class AdminGetRegionsRegionFulfillmentOptionsRes {
   fulfillment_options: FulfillmentOption[]
 }
 
+export * from "./add-country"
+export * from "./add-fulfillment-provider"
+export * from "./add-payment-provider"
+export * from "./create-region"
 export * from "./list-regions"
 export * from "./update-region"
-export * from "./create-region"
-export * from "./add-country"
-export * from "./add-payment-provider"
-export * from "./add-fulfillment-provider"
+

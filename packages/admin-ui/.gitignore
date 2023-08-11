@@ -1,0 +1,4 @@
+/dist
+/build
+.vercel
+/ui/preview

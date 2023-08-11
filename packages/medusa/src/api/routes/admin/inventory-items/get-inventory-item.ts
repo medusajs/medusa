@@ -1,18 +1,21 @@
-import { IInventoryService } from "../../../../interfaces"
+import { IInventoryService } from "@medusajs/types"
 import { Request, Response } from "express"
 import { FindParams } from "../../../../types/common"
 import { joinLevels } from "./utils/join-levels"
 
 /**
- * @oas [get] /inventory-items/{id}
+ * @oas [get] /admin/inventory-items/{id}
  * operationId: "GetInventoryItemsInventoryItem"
- * summary: "Retrive an Inventory Item."
- * description: "Retrives an Inventory Item."
+ * summary: "Get an Inventory Item"
+ * description: "Retrieve an Inventory Item's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Inventory Item.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned inventory item.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned inventory item.
+ * x-codegen:
+ *   method: retrieve
+ *   queryParams: AdminGetInventoryItemsItemParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -27,9 +30,8 @@ import { joinLevels } from "./utils/join-levels"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/inventory-items/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json'
+ *       curl 'https://medusa-url.com/admin/inventory-items/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

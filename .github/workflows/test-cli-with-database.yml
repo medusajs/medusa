@@ -1,9 +1,6 @@
 name: CLI Pipeline
 on:
   pull_request:
-    paths-ignore:
-      - "docs/**"
-      - "www/**"
 
 jobs:
   test-cli-with-database:
@@ -11,11 +8,6 @@ jobs:
       NODE_ENV: CI
       REDIS_URL: redis://localhost:6379
       DATABASE_URL: "postgres://postgres:postgres@localhost/cli-test"
-
-    strategy:
-      matrix:
-        db: [sqlite, postgres]
-
     services:
       redis:
         image: redis
@@ -59,16 +51,8 @@ jobs:
 
       - name: Create Medusa project
         run: |
-          medusa new cli-test
+          medusa new cli-test --skip-db
         working-directory: ..
-
-      - name: Install postgres config
-        if: matrix.db == 'postgres'
-        run: |
-          curl \
-          https://raw.githubusercontent.com/medusajs/medusa-starter-default/feat/postgres-config/medusa-config.js \
-          --output medusa-config.js
-        working-directory: ../cli-test
 
       - name: run medusa dev
         run: medusa-dev --force-install
@@ -89,7 +73,7 @@ jobs:
       ##########################  Test medusa develop  ###############################
 
       - name: Run development server
-        run: medusa develop  > /dev/null 2>&1 &
+        run: medusa develop &
         working-directory: ../cli-test
 
       - name: Testing development server
@@ -98,7 +82,7 @@ jobs:
       ###########################  Test medusa start  ################################
 
       - name: Starting medusa
-        run: medusa start > /dev/null 2>&1 &
+        run: medusa start &
         working-directory: ../cli-test
 
       - name: Testing server

@@ -34,44 +34,55 @@ export class CustomerGroup extends SoftDeletableEntity {
 /**
  * @schema CustomerGroup
  * title: "Customer Group"
- * description: "Represents a customer group"
+ * description: "A customer group that can be used to organize customers into groups of similar traits."
  * type: object
  * required:
+ *   - created_at
+ *   - deleted_at
+ *   - id
+ *   - metadata
  *   - name
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The customer group's ID
+ *     type: string
  *     example: cgrp_01G8ZH853Y6TFXWPG5EYE81X63
  *   name:
- *     type: string
  *     description: The name of the customer group
+ *     type: string
  *     example: VIP
  *   customers:
+ *     description: The details of the customers that belong to the customer group.
  *     type: array
- *     description: The customers that belong to the customer group. Available if the relation `customers` is expanded.
+ *     x-expandable: "customers"
  *     items:
- *       type: object
- *       description: A customer object.
+ *       $ref: "#/components/schemas/Customer"
  *   price_lists:
+ *     description: The price lists that are associated with the customer group.
  *     type: array
- *     description: The price lists that are associated with the customer group. Available if the relation `price_lists` is expanded.
+ *     x-expandable: "price_lists"
  *     items:
  *       $ref: "#/components/schemas/PriceList"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

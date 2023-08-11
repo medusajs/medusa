@@ -2,15 +2,15 @@ import { MedusaError } from "medusa-core-utils/dist"
 
 /**
  * Dedicated method to set metadata.
- * @param obj - the entity to apply metadata to.
  * @param metadata - the metadata to set
+ * @param obj - the entity to apply metadata to.
  * @return resolves to the updated result.
  */
 export function setMetadata(
-  obj: { metadata: Record<string, unknown> | null },
+  obj: { metadata: Record<string, unknown> | null } | null | undefined,
   metadata: Record<string, unknown>
 ): Record<string, unknown> {
-  const existing = obj.metadata || {}
+  const existing = obj?.metadata || {}
   const newData = {}
 
   for (const [key, value] of Object.entries(metadata)) {

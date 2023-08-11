@@ -8,8 +8,10 @@ import {
   AdminProductCategoriesListRes,
   AdminProductCategoriesCategoryRes,
   AdminGetProductCategoryParams,
+  AdminPostProductCategoriesCategoryReq,
 } from "@medusajs/medusa"
 import qs from "qs"
+
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
@@ -55,7 +57,7 @@ class AdminProductCategoriesResource extends BaseResource {
    */
   update(
     productCategoryId: string,
-    payload: AdminPostProductCategoriesCategoryParams,
+    payload: AdminPostProductCategoriesCategoryReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductCategoriesCategoryRes> {
     const path = `/admin/product-categories/${productCategoryId}`
@@ -63,10 +65,10 @@ class AdminProductCategoriesResource extends BaseResource {
   }
 
   /**
-   * Retrieve a list of product categorys
+   * Retrieve a list of product categories
    * @experimental This feature is under development and may change in the future.
    * To use this feature please enable featureflag `product_categories` in your medusa backend project.
-   * @description Retrieve a list of product categorys
+   * @description Retrieve a list of product categories
    * @returns the list of product category as well as the pagination properties
    */
   list(

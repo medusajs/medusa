@@ -2,10 +2,10 @@ import { EntityManager } from "typeorm"
 import { ReturnReasonService } from "../../../../services"
 
 /**
- * @oas [delete] /return-reasons/{id}
+ * @oas [delete] /admin/return-reasons/{id}
  * operationId: "DeleteReturnReason"
  * summary: "Delete a Return Reason"
- * description: "Deletes a return reason."
+ * description: "Delete a return reason."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the return reason
@@ -18,20 +18,20 @@ import { ReturnReasonService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.returnReasons.delete(return_reason_id)
+ *       medusa.admin.returnReasons.delete(returnReasonId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/return-reasons/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/return-reasons/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Return Reason
+ *   - Return Reasons
  * responses:
  *   200:
  *     description: OK

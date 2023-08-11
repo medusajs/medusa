@@ -23,7 +23,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "14"
+          node-version: "16.10.0"
           cache: "yarn"
 
       - name: Install dependencies
@@ -38,7 +38,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: 'chore(docs): Removed Docs Announcement Bar (automated)'
-          base: 'master'
+          base: 'develop'
           title: 'chore(docs): Removed Docs Announcement Bar (automated)'
           labels: 'type: chore'
           add-paths: www/docs/**

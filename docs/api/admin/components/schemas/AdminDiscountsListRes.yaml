@@ -1,4 +1,16 @@
 type: object
+x-expanded-relations:
+  field: discounts
+  relations:
+    - parent_discount
+    - regions
+    - rule
+    - rule.conditions
+required:
+  - discounts
+  - count
+  - offset
+  - limit
 properties:
   discounts:
     type: array
@@ -9,7 +21,7 @@ properties:
     description: The total number of items available
   offset:
     type: integer
-    description: The number of items skipped before these items
+    description: The number of discounts skipped when retrieving the discounts.
   limit:
     type: integer
     description: The number of items per page

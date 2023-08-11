@@ -1,19 +1,18 @@
-import { FulfillmentProvider, PaymentProvider, Store } from "../../../../models"
+import { ModulesHelper } from "@medusajs/modules-sdk"
+import { FlagRouter } from "@medusajs/utils"
+import { defaultRelationsExtended } from "."
 import {
-  FulfillmentProviderService,
-  PaymentProviderService,
-  StoreService,
+    FulfillmentProviderService,
+    PaymentProviderService,
+    StoreService,
 } from "../../../../services"
-import { FeatureFlagsResponse } from "../../../../types/feature-flags"
-import { ModulesResponse } from "../../../../types/modules"
-import { FlagRouter } from "../../../../utils/flag-router"
-import { ModulesHelper } from "../../../../utils/module-helper"
+import { ExtendedStoreDTO } from "../../../../types/store"
 
 /**
- * @oas [get] /store
+ * @oas [get] /admin/store
  * operationId: "GetStore"
  * summary: "Get Store details"
- * description: "Retrieves the Store details"
+ * description: "Retrieve the Store's details."
  * x-authenticated: true
  * x-codegen:
  *   method: retrieve
@@ -31,8 +30,8 @@ import { ModulesHelper } from "../../../../utils/module-helper"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/store' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/store' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -44,7 +43,7 @@ import { ModulesHelper } from "../../../../utils/module-helper"
  *     content:
  *       application/json:
  *         schema:
- *           $ref: "#/components/schemas/AdminStoresRes"
+ *           $ref: "#/components/schemas/AdminExtendedStoresRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":
@@ -70,19 +69,14 @@ export default async (req, res) => {
   const fulfillmentProviderService: FulfillmentProviderService =
     req.scope.resolve("fulfillmentProviderService")
 
-  const relations = ["currencies", "default_currency"]
+  const relations = [...defaultRelationsExtended]
   if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
     relations.push("default_sales_channel")
   }
 
   const data = (await storeService.retrieve({
     relations,
-  })) as Store & {
-    payment_providers: PaymentProvider[]
-    fulfillment_providers: FulfillmentProvider[]
-    feature_flags: FeatureFlagsResponse
-    modules: ModulesResponse
-  }
+  })) as ExtendedStoreDTO
 
   data.feature_flags = featureFlagRouter.listFlags()
   data.modules = modulesHelper.modules

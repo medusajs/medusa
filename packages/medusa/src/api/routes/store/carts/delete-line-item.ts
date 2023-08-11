@@ -1,15 +1,16 @@
 import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [delete] /carts/{id}/line-items/{line_id}
+ * @oas [delete] /store/carts/{id}/line-items/{line_id}
  * operationId: DeleteCartsCartLineItemsItem
  * summary: Delete a Line Item
- * description: "Removes a Line Item from a Cart."
+ * description: "Delete a Line Item from a Cart. The payment sessions will be updated and the totals will be recalculated."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
- *   - (path) line_id=* {string} The id of the Line Item.
+ *   - (path) id=* {string} The ID of the Cart.
+ *   - (path) line_id=* {string} The ID of the Line Item.
  * x-codegen:
  *   method: deleteLineItem
  * x-codeSamples:
@@ -18,16 +19,16 @@ import { CartService } from "../../../../services"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.lineItems.delete(cart_id, line_id)
+ *       medusa.carts.lineItems.delete(cartId, lineId)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}'
+ *       curl -X DELETE 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -53,16 +54,18 @@ export default async (req, res) => {
   const cartService: CartService = req.scope.resolve("cartService")
 
   await manager.transaction(async (m) => {
+    const cartServiceTx = cartService.withTransaction(m)
+
     // Remove the line item
-    await cartService.withTransaction(m).removeLineItem(id, line_id)
+    await cartServiceTx.removeLineItem(id, line_id)
 
     // If the cart has payment sessions update these
-    const updated = await cartService.withTransaction(m).retrieve(id, {
+    const updated = await cartServiceTx.retrieve(id, {
       relations: ["payment_sessions"],
     })
 
     if (updated.payment_sessions?.length) {
-      await cartService.withTransaction(m).setPaymentSessions(id)
+      await cartServiceTx.setPaymentSessions(id)
     }
   })
 
@@ -70,5 +73,6 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
-  res.status(200).json({ cart: data })
+
+  res.status(200).json({ cart: cleanResponseData(data, []) })
 }

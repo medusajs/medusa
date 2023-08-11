@@ -5,14 +5,14 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
 import { extendedFindParamsMixin } from "../../../../types/common"
 
 /**
- * @oas [get] /publishable-api-keys/{id}/sales-channels
+ * @oas [get] /admin/publishable-api-keys/{id}/sales-channels
  * operationId: "GetPublishableApiKeySalesChannels"
- * summary: "List SalesChannels"
- * description: "List PublishableApiKey's SalesChannels"
+ * summary: "List Sales Channels"
+ * description: "List the sales channels associated with a publishable API key. The sales channels can be filtered by fields such as `q`."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Publishable Api Key.
- *   - (query) q {string} Query used for searching sales channels' names and descriptions.
+ *   - (path) id=* {string} The ID of the publishable API key.
+ *   - (query) q {string} query to search sales channels' names and descriptions.
  * x-codegen:
  *   method: listSalesChannels
  *   queryParams: GetPublishableApiKeySalesChannelsParams
@@ -30,13 +30,13 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/publishable-api-keys/{pka_id}/sales-channels' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/publishable-api-keys/{id}/sales-channels' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PublishableApiKey
+ *   - Publishable Api Keys
  * responses:
  *   200:
  *     description: OK

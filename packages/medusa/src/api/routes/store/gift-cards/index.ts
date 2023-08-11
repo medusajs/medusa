@@ -28,8 +28,11 @@ export const allowedStoreGiftCardFields = ["id", "code", "value", "balance"]
 /**
  * @schema StoreGiftCardsRes
  * type: object
+ * required:
+ *   - gift_card
  * properties:
  *   gift_card:
+ *     description: "Gift card details."
  *     $ref: "#/components/schemas/GiftCard"
  */
 export type StoreGiftCardsRes = {

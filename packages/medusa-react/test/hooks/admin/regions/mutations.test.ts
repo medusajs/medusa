@@ -1,14 +1,14 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
+import { fixtures } from "../../../../mocks/data"
 import {
   useAdminCreateRegion,
-  useAdminUpdateRegion,
   useAdminDeleteRegion,
   useAdminRegionAddFulfillmentProvider,
-  useAdminRegionDeleteFulfillmentProvider,
   useAdminRegionAddPaymentProvider,
+  useAdminRegionDeleteFulfillmentProvider,
   useAdminRegionDeletePaymentProvider,
+  useAdminUpdateRegion,
 } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
-import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminCreateRegion hook", () => {

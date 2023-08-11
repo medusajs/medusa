@@ -1,5 +1,17 @@
 # Change Log
 
+## 0.1.4
+
+### Patch Changes
+
+- [#4419](https://github.com/medusajs/medusa/pull/4419) [`627bdb689`](https://github.com/medusajs/medusa/commit/627bdb689f26282ba49a185bfc5182a7c1e734dd) Thanks [@adrien2p](https://github.com/adrien2p)! - chore(gatsby-source-medusa): Cleanup plugin setup
+
+## 0.1.3
+
+### Patch Changes
+
+- [#3217](https://github.com/medusajs/medusa/pull/3217) [`8c5219a31`](https://github.com/medusajs/medusa/commit/8c5219a31ef76ee571fbce84d7d57a63abe56eb0) Thanks [@adrien2p](https://github.com/adrien2p)! - chore: Fix npm packages files included
+
 ## 0.1.2
 
 ### Patch Changes

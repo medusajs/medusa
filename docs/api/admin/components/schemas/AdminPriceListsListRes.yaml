@@ -1,7 +1,13 @@
 type: object
+required:
+  - price_lists
+  - count
+  - offset
+  - limit
 properties:
   price_lists:
     type: array
+    description: An array of price lists details.
     items:
       $ref: ./PriceList.yaml
   count:
@@ -9,7 +15,7 @@ properties:
     description: The total number of items available
   offset:
     type: integer
-    description: The number of items skipped before these items
+    description: The number of price lists skipped when retrieving the price lists.
   limit:
     type: integer
     description: The number of items per page

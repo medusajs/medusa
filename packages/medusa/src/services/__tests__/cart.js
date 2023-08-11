@@ -2,7 +2,7 @@ import _ from "lodash"
 import { asClass, asValue, createContainer } from "awilix"
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { FlagRouter } from "../../utils/flag-router"
+import { FlagRouter } from "@medusajs/utils"
 import CartService from "../cart"
 import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
@@ -84,7 +84,7 @@ describe("CartService", () => {
     it("calls cart model functions", () => {
       expect(cartRepository.findOneWithRelations).toHaveBeenCalledTimes(1)
       expect(cartRepository.findOneWithRelations).toHaveBeenCalledWith(
-        undefined,
+        {},
         {
           where: { id: IdMap.getId("emptyCart") },
           select: undefined,
@@ -129,7 +129,9 @@ describe("CartService", () => {
       )
 
       expect(cartRepository.findOne).toBeCalledTimes(1)
-      expect(cartRepository.findOne).toBeCalledWith(id)
+      expect(cartRepository.findOne).toBeCalledWith({
+        where: { id },
+      })
 
       expect(cartRepository.save).toBeCalledTimes(1)
       expect(cartRepository.save).toBeCalledWith({
@@ -167,7 +169,7 @@ describe("CartService", () => {
 
     const addressRepository = MockRepository({
       create: (c) => c,
-      findOne: (id) => {
+      findOneWithRelations: (id) => {
         return {
           id,
           first_name: "LeBron",
@@ -346,7 +348,7 @@ describe("CartService", () => {
     }
 
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("cartWithLine")) {
           return Promise.resolve({
             id: IdMap.getId("cartWithLine"),
@@ -587,7 +589,7 @@ describe("CartService", () => {
     }
 
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("cartWithLine")) {
           return Promise.resolve({
             id: IdMap.getId("cartWithLine"),
@@ -673,7 +675,7 @@ describe("CartService", () => {
       },
     }
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("withShipping")) {
           return Promise.resolve({
             shipping_methods: [
@@ -816,7 +818,7 @@ describe("CartService", () => {
 
   describe("update", () => {
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === "withpays") {
           return Promise.resolve({
             payment_sessions: [
@@ -848,23 +850,33 @@ describe("CartService", () => {
       await cartService.update("withpays", {})
 
       expect(cartRepository.findOneWithRelations).toHaveBeenCalledWith(
-        expect.arrayContaining([
-          "items",
-          "shipping_methods",
-          "shipping_address",
-          "billing_address",
-          "gift_cards",
-          "customer",
-          "region",
-          "payment_sessions",
-          "region.countries",
-          "discounts",
-          "discounts.rule",
-          "discounts.regions",
-        ]),
-        {
-          where: { id: "withpays" },
-        }
+        expect.objectContaining({
+          billing_address: true,
+          customer: true,
+          discounts: {
+            rule: true,
+          },
+          gift_cards: true,
+          items: {
+            variant: {
+              product: {
+                profiles: true,
+              },
+            },
+          },
+          payment_sessions: true,
+          region: { countries: true },
+          shipping_address: true,
+          shipping_methods: {
+            shipping_option: true,
+          },
+        }),
+        expect.objectContaining({
+          select: undefined,
+          where: {
+            id: "withpays",
+          },
+        })
       )
     })
   })
@@ -904,7 +916,7 @@ describe("CartService", () => {
     }
 
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("cannot")) {
           return Promise.resolve({
             items: [
@@ -1229,8 +1241,23 @@ describe("CartService", () => {
 
   describe("setRegion", () => {
     const lineItemService = {
-      update: jest.fn((r) => r),
+      update: jest.fn((id) => ({ id })),
       delete: jest.fn(),
+      retrieve: jest.fn().mockImplementation((lineItemId) => {
+        if (lineItemId === IdMap.getId("existing")) {
+          return Promise.resolve({
+            id: lineItemId,
+          })
+        }
+        return Promise.resolve({
+          id: lineItemId,
+        })
+      }),
+      list: jest.fn().mockImplementation(async (selector) => {
+        return selector.id.map((id) => {
+          return { id }
+        })
+      }),
       withTransaction: function () {
         return this
       },
@@ -1255,6 +1282,25 @@ describe("CartService", () => {
         return this
       },
     }
+
+    const discountService = {
+      list: jest.fn().mockReturnValue(
+        Promise.resolve([
+          {
+            id: IdMap.getId("stays"),
+            regions: [{ id: IdMap.getId("region-us") }],
+          },
+          {
+            id: IdMap.getId("removes"),
+            regions: [],
+          },
+        ])
+      ),
+      withTransaction: function () {
+        return this
+      },
+    }
+
     const cartRepository = MockRepository({
       findOneWithRelations: () =>
         Promise.resolve({
@@ -1294,14 +1340,14 @@ describe("CartService", () => {
       withTransaction: function () {
         return this
       },
-      calculateVariantPrice: async (variantId, context) => {
+      calculateVariantPrice: async ([{ variantId }], context) => {
         if (variantId === IdMap.getId("fail")) {
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
             `Money amount for variant with id ${variantId} in region ${context.region_id} does not exist`
           )
         } else {
-          return { calculatedPrice: 100 }
+          return new Map([[variantId, { calculatedPrice: 100 }]])
         }
       },
     }
@@ -1309,6 +1355,7 @@ describe("CartService", () => {
       manager: MockManager,
       paymentProviderService,
       addressRepository,
+      discountService,
       totalsService,
       cartRepository,
       newTotalsService: newTotalsServiceMock,
@@ -1361,7 +1408,11 @@ describe("CartService", () => {
           shipping_address: {
             country_code: "us",
           },
-          items: [IdMap.getId("testitem")],
+          items: [
+            {
+              id: IdMap.getId("testitem"),
+            },
+          ],
           payment_session: null,
           payment_sessions: [],
           gift_cards: [],
@@ -1378,7 +1429,7 @@ describe("CartService", () => {
 
   describe("setPaymentSession", () => {
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("cartWithLine")) {
           return Promise.resolve({
             total: 100,
@@ -1586,7 +1637,7 @@ describe("CartService", () => {
     }
 
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("cart-to-filter")) {
           return Promise.resolve(cart3)
         }
@@ -1688,8 +1739,8 @@ describe("CartService", () => {
 
       expect(paymentSessionRepositoryMock.create).toHaveBeenCalledTimes(1)
       expect(paymentSessionRepositoryMock.save).toHaveBeenCalledTimes(2) // create and update
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledTimes(1)
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledTimes(1)
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: "not_in_region",
       })
     })
@@ -1697,12 +1748,12 @@ describe("CartService", () => {
     it("removes if cart total === 0", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cart-remove"))
 
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledTimes(2)
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledTimes(2)
 
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: provider1Id,
       })
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: provider2Id,
       })
     })
@@ -1710,12 +1761,12 @@ describe("CartService", () => {
     it("removes if cart total < 0", async () => {
       await cartService.setPaymentSessions(IdMap.getId("cart-negative"))
 
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledTimes(2)
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledTimes(2)
 
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: provider1Id,
       })
-      expect(paymentSessionRepositoryMock.delete).toHaveBeenCalledWith({
+      expect(paymentSessionRepositoryMock.remove).toHaveBeenCalledWith({
         provider_id: provider2Id,
       })
     })
@@ -1792,7 +1843,7 @@ describe("CartService", () => {
     const cartWithCustomSO = buildCart("cart-with-custom-so")
 
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         switch (q.where.id) {
           case IdMap.getId("lines"):
             return Promise.resolve(cart3)
@@ -1991,7 +2042,7 @@ describe("CartService", () => {
     }
 
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         if (q.where.id === IdMap.getId("with-d")) {
           return Promise.resolve({
             id: IdMap.getId("cart"),
@@ -2062,126 +2113,141 @@ describe("CartService", () => {
       withTransaction: function () {
         return this
       },
-      retrieveByCode: jest.fn().mockImplementation((code) => {
-        if (code === "US10") {
-          return Promise.resolve({
-            regions: [{ id: IdMap.getId("bad") }],
-          })
+      listByCodes: jest.fn().mockImplementation((code) => {
+        const codes = Array.isArray(code) ? code : [code]
+
+        const data = []
+
+        for (const code of codes) {
+          if (code === "US10") {
+            data.push({
+              regions: [{ id: IdMap.getId("bad") }],
+            })
+          }
+          if (code === "limit-reached") {
+            data.push({
+              id: IdMap.getId("limit-reached"),
+              code: "limit-reached",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {},
+              usage_count: 2,
+              usage_limit: 2,
+            })
+          }
+          if (code === "null-count") {
+            data.push({
+              id: IdMap.getId("null-count"),
+              code: "null-count",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {},
+              usage_count: null,
+              usage_limit: 2,
+            })
+          }
+          if (code === "FREESHIPPING") {
+            data.push({
+              id: IdMap.getId("freeship"),
+              code: "FREESHIPPING",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "free_shipping",
+              },
+            })
+          }
+          if (code === "EarlyDiscount") {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(1),
+              ends_at: getOffsetDate(10),
+            })
+          }
+          if (code === "ExpiredDiscount") {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              ends_at: getOffsetDate(-1),
+              starts_at: getOffsetDate(-10),
+            })
+          }
+          if (code === "ExpiredDynamicDiscount") {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              is_dynamic: true,
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(-10),
+              ends_at: getOffsetDate(-1),
+            })
+          }
+          if (code === "ExpiredDynamicDiscountEndDate") {
+            data.push({
+              id: IdMap.getId("10off"),
+              is_dynamic: true,
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(-10),
+              ends_at: getOffsetDate(-3),
+              valid_duration: "P0Y0M1D",
+            })
+          }
+          if (code === "ValidDiscount") {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(-10),
+              ends_at: getOffsetDate(10),
+            })
+          }
+          if (code === "ApplicableForCustomer") {
+            data.push({
+              id: "ApplicableForCustomer",
+              code: "ApplicableForCustomer",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                id: "test-rule",
+                type: "percentage",
+              },
+              starts_at: getOffsetDate(-10),
+              ends_at: getOffsetDate(10),
+            })
+          }
+
+          if (!data.length) {
+            data.push({
+              id: IdMap.getId("10off"),
+              code: "10%OFF",
+              regions: [{ id: IdMap.getId("good") }],
+              rule: {
+                type: "percentage",
+              },
+            })
+          }
         }
-        if (code === "limit-reached") {
-          return Promise.resolve({
-            id: IdMap.getId("limit-reached"),
-            code: "limit-reached",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {},
-            usage_count: 2,
-            usage_limit: 2,
-          })
+
+        if (Array.isArray(code)) {
+          return Promise.resolve(data)
         }
-        if (code === "null-count") {
-          return Promise.resolve({
-            id: IdMap.getId("null-count"),
-            code: "null-count",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {},
-            usage_count: null,
-            usage_limit: 2,
-          })
-        }
-        if (code === "FREESHIPPING") {
-          return Promise.resolve({
-            id: IdMap.getId("freeship"),
-            code: "FREESHIPPING",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "free_shipping",
-            },
-          })
-        }
-        if (code === "EarlyDiscount") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            code: "10%OFF",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(1),
-            ends_at: getOffsetDate(10),
-          })
-        }
-        if (code === "ExpiredDiscount") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            code: "10%OFF",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            ends_at: getOffsetDate(-1),
-            starts_at: getOffsetDate(-10),
-          })
-        }
-        if (code === "ExpiredDynamicDiscount") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            code: "10%OFF",
-            is_dynamic: true,
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(-10),
-            ends_at: getOffsetDate(-1),
-          })
-        }
-        if (code === "ExpiredDynamicDiscountEndDate") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            is_dynamic: true,
-            code: "10%OFF",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(-10),
-            ends_at: getOffsetDate(-3),
-            valid_duration: "P0Y0M1D",
-          })
-        }
-        if (code === "ValidDiscount") {
-          return Promise.resolve({
-            id: IdMap.getId("10off"),
-            code: "10%OFF",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(-10),
-            ends_at: getOffsetDate(10),
-          })
-        }
-        if (code === "ApplicableForCustomer") {
-          return Promise.resolve({
-            id: "ApplicableForCustomer",
-            code: "ApplicableForCustomer",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              id: "test-rule",
-              type: "percentage",
-            },
-            starts_at: getOffsetDate(-10),
-            ends_at: getOffsetDate(10),
-          })
-        }
-        return Promise.resolve({
-          id: IdMap.getId("10off"),
-          code: "10%OFF",
-          regions: [{ id: IdMap.getId("good") }],
-          rule: {
-            type: "percentage",
-          },
-        })
+
+        return Promise.resolve(data[0])
       }),
       canApplyForCustomer: jest
         .fn()
@@ -2333,7 +2399,7 @@ describe("CartService", () => {
         discounts: [{ code: "10%OFF" }, { code: "FREESHIPPING" }],
       })
 
-      expect(discountService.retrieveByCode).toHaveBeenCalledTimes(2)
+      expect(discountService.listByCodes).toHaveBeenCalledTimes(1)
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
       expect(cartRepository.save).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -2465,7 +2531,7 @@ describe("CartService", () => {
 
   describe("removeDiscount", () => {
     const cartRepository = MockRepository({
-      findOneWithRelations: (rels, q) => {
+      findOneWithRelations: (rel, q) => {
         return Promise.resolve({
           id: IdMap.getId("cart"),
           discounts: [

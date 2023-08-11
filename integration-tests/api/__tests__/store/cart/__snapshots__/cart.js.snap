@@ -2,17 +2,25 @@
 
 exports[`/store/carts POST /store/carts/:id fails to complete cart with items inventory not/partially covered 1`] = `
 Object {
-  "code": "insufficient_inventory",
-  "message": "Variant with id: test-variant-2 does not have the required inventory",
-  "type": "not_allowed",
+  "errors": Array [
+    Object {
+      "code": "insufficient_inventory",
+      "message": "Variant with id: test-variant-2 does not have the required inventory",
+      "type": "not_allowed",
+    },
+  ],
 }
 `;
 
 exports[`/store/carts POST /store/carts/:id fails to complete swap cart with items inventory not/partially covered 1`] = `
 Object {
-  "code": "insufficient_inventory",
-  "message": "Variant with id: test-variant-2 does not have the required inventory",
-  "type": "not_allowed",
+  "errors": Array [
+    Object {
+      "code": "insufficient_inventory",
+      "message": "Variant with id: test-variant-2 does not have the required inventory",
+      "type": "not_allowed",
+    },
+  ],
 }
 `;
 

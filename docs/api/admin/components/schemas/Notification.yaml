@@ -1,21 +1,29 @@
 title: Notification
 description: >-
-  Notifications a communications sent via Notification Providers as a reaction
-  to internal events such as `order.placed`. Notifications can be used to show a
-  chronological timeline for communications sent to a Customer regarding an
-  Order, and enables resends.
+  A notification is an alert sent, typically to customers, using the installed
+  Notification Provider as a reaction to internal events such as `order.placed`.
+  Notifications can be resent.
 type: object
 required:
+  - created_at
+  - customer_id
+  - data
+  - event_name
+  - id
+  - parent_id
+  - provider_id
   - resource_type
   - resource_id
   - to
+  - updated_at
 properties:
   id:
-    type: string
     description: The notification's ID
+    type: string
     example: noti_01G53V9Y6CKMCGBM1P0X7C28RX
   event_name:
     description: The name of the event that the notification was sent for.
+    nullable: true
     type: string
     example: order.placed
   resource_type:
@@ -27,16 +35,20 @@ properties:
     type: string
     example: order_01G8TJSYT9M6AVS5N4EMNFS1EK
   customer_id:
-    description: The ID of the Customer that the Notification was sent to.
+    description: The ID of the customer that this notification was sent to.
+    nullable: true
     type: string
     example: cus_01G2SG30J8C85S4A5CHM2S1NS2
   customer:
-    description: A customer object. Available if the relation `customer` is expanded.
-    type: object
+    description: The details of the customer that this notification was sent to.
+    x-expandable: customer
+    nullable: true
+    $ref: ./Customer.yaml
   to:
     description: >-
       The address that the Notification was sent to. This will usually be an
-      email address, but represent other addresses such as a chat bot user id
+      email address, but can represent other addresses such as a chat bot user
+      ID.
     type: string
     example: user@example.com
   data:
@@ -45,23 +57,37 @@ properties:
       necessary for the Notification Provider to initiate a resend.
     type: object
     example: {}
+  parent_id:
+    description: The notification's parent ID
+    nullable: true
+    type: string
+    example: noti_01G53V9Y6CKMCGBM1P0X7C28RX
+  parent_notification:
+    description: The details of the parent notification.
+    x-expandable: parent_notification
+    nullable: true
+    type: object
   resends:
-    description: The resends that have been completed after the original Notification.
+    description: The details of all resends of the notification.
     type: array
+    x-expandable: resends
     items:
-      $ref: ./NotificationResend.yaml
+      type: object
   provider_id:
-    description: The id of the Notification Provider that handles the Notification.
+    description: The ID of the notification provider used to send the notification.
+    nullable: true
     type: string
     example: sengrid
   provider:
-    description: Available if the relation `provider` is expanded.
+    description: The notification provider used to send the notification.
+    x-expandable: provider
+    nullable: true
     $ref: ./NotificationProvider.yaml
   created_at:
-    type: string
     description: The date with timezone at which the resource was created.
+    type: string
     format: date-time
   updated_at:
-    type: string
     description: The date with timezone at which the resource was updated.
+    type: string
     format: date-time

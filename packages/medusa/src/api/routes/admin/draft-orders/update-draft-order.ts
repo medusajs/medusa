@@ -19,12 +19,13 @@ import { CartUpdateProps } from "../../../../types/cart"
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
  * @oas [post] /admin/draft-orders/{id}
  * operationId: PostDraftOrdersDraftOrder
  * summary: Update a Draft Order
- * description: "Updates a Draft Order."
+ * description: "Update a Draft Order's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Draft Order.
@@ -42,7 +43,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.draftOrders.update(draft_order_id, {
+ *       medusa.admin.draftOrders.update(draftOrderId, {
  *         email: "user@example.com"
  *       })
  *       .then(({ draft_order }) => {
@@ -51,9 +52,9 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/draft-orders/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/draft-orders/{id}' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com"
  *       }'
@@ -61,7 +62,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Draft Order
+ *   - Draft Orders
  * responses:
  *   200:
  *     description: OK
@@ -137,7 +138,7 @@ export default async (req, res) => {
     select: defaultAdminDraftOrdersCartFields,
   })
 
-  res.status(200).json({ draft_order: draftOrder })
+  res.status(200).json({ draft_order: cleanResponseData(draftOrder, []) })
 }
 
 /**
@@ -155,17 +156,17 @@ export default async (req, res) => {
  *        description: See a list of codes.
  *   email:
  *     type: string
- *     description: "An email to be used on the Draft Order."
+ *     description: "An email to be used in the Draft Order."
  *     format: email
  *   billing_address:
  *     description: "The Address to be used for billing purposes."
  *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *       - type: string
  *   shipping_address:
- *     description: "The Address to be used for shipping."
+ *     description: "The Address to be used for shipping purposes."
  *     anyOf:
- *       - $ref: "#/components/schemas/AddressFields"
+ *       - $ref: "#/components/schemas/AddressPayload"
  *       - type: string
  *   discounts:
  *     description: "An array of Discount codes to add to the Draft Order."
@@ -179,10 +180,10 @@ export default async (req, res) => {
  *           description: "The code that a Discount is identifed by."
  *           type: string
  *   no_notification_order:
- *     description: "An optional flag passed to the resulting order to determine use of notifications."
+ *     description: "An optional flag passed to the resulting order that indicates whether the customer should receive notifications about order updates."
  *     type: boolean
  *   customer_id:
- *     description: "The ID of the Customer to associate the Draft Order with."
+ *     description: "The ID of the customer this draft order is associated with."
  *     type: string
  */
 export class AdminPostDraftOrdersDraftOrderReq {

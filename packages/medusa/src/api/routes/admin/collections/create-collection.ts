@@ -2,12 +2,13 @@ import { IsNotEmpty, IsObject, IsOptional, IsString } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
+import { defaultAdminCollectionsRelations } from "."
 
 /**
- * @oas [post] /collections
+ * @oas [post] /admin/collections
  * operationId: "PostCollections"
  * summary: "Create a Collection"
- * description: "Creates a Product Collection."
+ * description: "Create a Product Collection."
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -24,7 +25,7 @@ import { EntityManager } from "typeorm"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.collections.create({
- *         title: 'New Collection'
+ *         title: "New Collection"
  *       })
  *       .then(({ collection }) => {
  *         console.log(collection.id);
@@ -32,9 +33,9 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/collections' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/collections' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "title": "New Collection"
  *       }'
@@ -42,7 +43,7 @@ import { EntityManager } from "typeorm"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Collection
+ *   - Product Collections
  * responses:
  *  "200":
  *    description: OK
@@ -77,7 +78,9 @@ export default async (req: Request, res: Response) => {
       .create(validatedBody)
   })
 
-  const collection = await productCollectionService.retrieve(created.id)
+  const collection = await productCollectionService.retrieve(created.id, {
+    relations: defaultAdminCollectionsRelations,
+  })
 
   res.status(200).json({ collection })
 }
@@ -90,13 +93,16 @@ export default async (req: Request, res: Response) => {
  * properties:
  *   title:
  *     type: string
- *     description:  The title to identify the Collection by.
+ *     description: The title of the collection.
  *   handle:
  *     type: string
- *     description:  An optional handle to be used in slugs, if none is provided we will kebab-case the title.
+ *     description: An optional handle to be used in slugs. If none is provided, the kebab-case version of the title will be used.
  *   metadata:
  *     description: An optional set of key-value pairs to hold additional information.
  *     type: object
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */
 export class AdminPostCollectionsReq {
   @IsString()

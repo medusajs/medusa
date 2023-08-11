@@ -2,14 +2,16 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { EntityManager } from "typeorm"
 import IdempotencyKeyService from "../../../../services/idempotency-key"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /carts/{id}/payment-sessions
+ * @oas [post] /store/carts/{id}/payment-sessions
  * operationId: "PostCartsCartPaymentSessions"
  * summary: "Create Payment Sessions"
- * description: "Creates Payment Sessions for each of the available Payment Providers in the Cart's Region."
+ * description: "Create Payment Sessions for each of the available Payment Providers in the Cart's Region. If there only one payment session is created,
+ *  it will be selected by default. The creation of the payment session uses the payment provider and may require sending requests to third-party services."
  * parameters:
- *   - (path) id=* {string} The id of the Cart.
+ *   - (path) id=* {string} The ID of the Cart.
  * x-codegen:
  *   method: createPaymentSessions
  * x-codeSamples:
@@ -18,16 +20,16 @@ import IdempotencyKeyService from "../../../../services/idempotency-key"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.carts.createPaymentSessions(cart_id)
+ *       medusa.carts.createPaymentSessions(cartId)
  *       .then(({ cart }) => {
  *         console.log(cart.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/carts/{id}/payment-sessions'
+ *       curl -X POST 'https://medusa-url.com/store/carts/{id}/payment-sessions'
  * tags:
- *   - Cart
+ *   - Carts
  * responses:
  *   200:
  *     description: OK
@@ -133,5 +135,11 @@ export default async (req, res) => {
     throw err
   }
 
+  if (idempotencyKey.response_body.cart) {
+    idempotencyKey.response_body.data = cleanResponseData(
+      idempotencyKey.response_body.cart,
+      []
+    )
+  }
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }

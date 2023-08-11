@@ -2,13 +2,13 @@ import { EntityManager } from "typeorm"
 import { PaymentCollectionService } from "../../../../services"
 
 /**
- * @oas [post] /payment-collections/{id}/authorize
+ * @oas [post] /admin/payment-collections/{id}/authorize
  * operationId: "PostPaymentCollectionsPaymentCollectionAuthorize"
  * summary: "Mark Authorized"
- * description: "Sets the status of PaymentCollection as Authorized."
+ * description: "Set the status of a Payment Collection as `authorized`. This will also change the `authorized_amount` of the payment collection."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the PaymentCollection.
+ *   - (path) id=* {string} The ID of the Payment Collection.
  * x-codegen:
  *   method: markAsAuthorized
  * x-codeSamples:
@@ -18,20 +18,20 @@ import { PaymentCollectionService } from "../../../../services"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.paymentCollections.markAsAuthorized(payment_collection_id)
+ *       medusa.admin.paymentCollections.markAsAuthorized(paymentCollectionId)
  *         .then(({ payment_collection }) => {
  *           console.log(payment_collection.id)
  *         })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/payment-collections/{id}/authorize' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST 'https://medusa-url.com/admin/payment-collections/{id}/authorize' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - PaymentCollection
+ *   - Payment Collections
  * responses:
  *   200:
  *     description: OK

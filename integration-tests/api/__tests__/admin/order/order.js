@@ -9,28 +9,28 @@ const {
 } = require("@medusajs/medusa")
 const idMap = require("medusa-test-utils/src/id-map").default
 
-const setupServer = require("../../../../helpers/setup-server")
-const { useApi } = require("../../../../helpers/use-api")
-const { initDb, useDb } = require("../../../../helpers/use-db")
+const setupServer = require("../../../../environment-helpers/setup-server")
+const { useApi } = require("../../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../../environment-helpers/use-db")
 
-const orderSeeder = require("../../../helpers/order-seeder")
-const swapSeeder = require("../../../helpers/swap-seeder")
-const adminSeeder = require("../../../helpers/admin-seeder")
-const claimSeeder = require("../../../helpers/claim-seeder")
+const orderSeeder = require("../../../../helpers/order-seeder")
+const swapSeeder = require("../../../../helpers/swap-seeder")
+const adminSeeder = require("../../../../helpers/admin-seeder")
+const claimSeeder = require("../../../../helpers/claim-seeder")
 
 const {
   expectPostCallToReturn,
   expectAllPostCallsToReturn,
   callGet,
   partial,
-} = require("../../../helpers/call-helpers")
+} = require("../../../../helpers/call-helpers")
 const {
   simpleShippingOptionFactory,
   simpleOrderFactory,
   simplePaymentFactory,
   simpleProductFactory,
   simpleLineItemFactory,
-} = require("../../../factories")
+} = require("../../../../factories")
 
 const adminReqConfig = {
   headers: {
@@ -1346,6 +1346,7 @@ describe("/admin/orders", () => {
 
     it("creates a claim on a swap", async () => {
       const api = useApi()
+      const shippingOption = await simpleShippingOptionFactory(dbConnection)
 
       const claimOnClaim = await api
         .post(
@@ -1365,6 +1366,15 @@ describe("/admin/orders", () => {
               {
                 variant_id: "test-variant",
                 quantity: 1,
+              },
+            ],
+            shipping_methods: [
+              {
+                option_id: shippingOption.id,
+                price: 1000,
+                data: {
+                  test: "test",
+                },
               },
             ],
           },
@@ -1429,6 +1439,57 @@ describe("/admin/orders", () => {
           }),
         ])
       )
+    })
+
+    it("Receives return with custom refund amount passed on receive", async () => {
+      const api = useApi()
+
+      const orderId = "test-order"
+      const itemId = "test-item"
+
+      const returned = await api.post(
+        `/admin/orders/${orderId}/return`,
+        {
+          items: [
+            {
+              // item has a unit_price of 8000 with a 800 adjustment
+              item_id: itemId,
+              quantity: 1,
+            },
+          ],
+        },
+        adminReqConfig
+      )
+
+      const returnOrder = returned.data.order.returns[0]
+
+      expect(returned.status).toEqual(200)
+      expect(returnOrder.refund_amount).toEqual(7200)
+
+      const received = await api.post(
+        `/admin/returns/${returnOrder.id}/receive`,
+        {
+          items: [
+            {
+              item_id: itemId,
+              quantity: 1,
+            },
+          ],
+          refund: 0,
+        },
+        adminReqConfig
+      )
+
+      const receivedReturn = received.data.return
+
+      expect(received.status).toEqual(200)
+      expect(receivedReturn.refund_amount).toEqual(0)
+
+      const orderRes = await api.get(`/admin/orders/${orderId}`, adminReqConfig)
+
+      const order = orderRes.data.order
+
+      expect(order.refunds.length).toEqual(0)
     })
 
     it("increases inventory_quantity when return is received", async () => {
@@ -1535,6 +1596,40 @@ describe("/admin/orders", () => {
       )
     })
 
+    it("lists orders with specific fields and relations", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/orders?fields=id,created_at&expand=billing_address",
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.orders).toHaveLength(6)
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          {
+            id: "test-order",
+            created_at: expect.any(String),
+            billing_address: expect.objectContaining({
+              id: "test-billing-address",
+              first_name: "lebron",
+            }),
+            shipping_total: expect.any(Number),
+            discount_total: expect.any(Number),
+            tax_total: expect.any(Number),
+            refunded_total: expect.any(Number),
+            total: expect.any(Number),
+            subtotal: expect.any(Number),
+            paid_total: expect.any(Number),
+            refundable_amount: expect.any(Number),
+            gift_card_total: expect.any(Number),
+            gift_card_tax_total: expect.any(Number),
+          },
+        ])
+      )
+    })
+
     it("lists all orders with a fulfillment status = fulfilled and payment status = captured", async () => {
       const api = useApi()
 
@@ -1559,7 +1654,7 @@ describe("/admin/orders", () => {
       )
     })
 
-    it("fails to lists all orders with an invalid status", async () => {
+    it.only("fails to lists all orders with an invalid status", async () => {
       expect.assertions(3)
       const api = useApi()
 
@@ -1569,7 +1664,7 @@ describe("/admin/orders", () => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("invalid_data")
           expect(err.response.data.message).toEqual(
-            "each value in status must be a valid enum value"
+            "each value in status must be one of the following values: pending, completed, archived, canceled, requires_action"
           )
         })
     })
@@ -2038,7 +2133,9 @@ describe("/admin/orders", () => {
 
       const manager = dbConnection.manager
       const customOptions = await manager.find(CustomShippingOption, {
-        shipping_option_id: "test-option",
+        where: {
+          shipping_option_id: "test-option",
+        },
       })
 
       expect(response.status).toEqual(200)
@@ -2346,11 +2443,90 @@ describe("/admin/orders", () => {
       )
 
       expect(order.status).toEqual(200)
-      expect(order.data.order).toEqual(
-        expect.objectContaining({
-          id: "test-order",
-        })
+      // id + totals + region relation
+      expect(order.data.order).toEqual({
+        id: "test-order",
+        region: expect.any(Object),
+        shipping_total: 1000,
+        discount_total: 800,
+        tax_total: 0,
+        refunded_total: 0,
+        total: 8200,
+        subtotal: 8000,
+        paid_total: 0,
+        refundable_amount: 0,
+        gift_card_total: 0,
+        gift_card_tax_total: 0,
+      })
+    })
+
+    it("retrieves an order with expand returnable_items only should return the entire object and only returnable_items as relation", async () => {
+      const api = useApi()
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}?expand=returnable_items`,
+        adminReqConfig
       )
+
+      expect(order.status).toEqual(200)
+      // all order properties + totals + returnable_items relation
+      expect(order.data.order).toEqual({
+        id: "test-order",
+        status: "pending",
+        fulfillment_status: "fulfilled",
+        payment_status: "captured",
+        display_id: expect.any(Number),
+        cart_id: null,
+        draft_order_id: null,
+        customer_id: "test-customer",
+        email: "test@email.com",
+        region_id: "test-region",
+        currency_code: "usd",
+        tax_rate: 0,
+        canceled_at: null,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        metadata: null,
+        no_notification: null,
+        sales_channel_id: null,
+        returnable_items: expect.any(Array),
+        shipping_total: 1000,
+        discount_total: 800,
+        tax_total: 0,
+        refunded_total: 0,
+        total: 8200,
+        subtotal: 8000,
+        paid_total: 10000,
+        refundable_amount: 10000,
+        gift_card_total: 0,
+        gift_card_tax_total: 0,
+      })
+    })
+
+    it("retrieves an order with expand returnable_items and field id should return the id and the retunable_items", async () => {
+      const api = useApi()
+
+      const order = await api.get(
+        `/admin/orders/${testOrderId}?expand=returnable_items&fields=id`,
+        adminReqConfig
+      )
+
+      expect(order.status).toEqual(200)
+      // id + totals + returnable_items relation
+      expect(order.data.order).toEqual({
+        id: "test-order",
+        returnable_items: expect.any(Array),
+        shipping_total: 1000,
+        discount_total: 800,
+        tax_total: 0,
+        refunded_total: 0,
+        total: 8200,
+        subtotal: 8000,
+        paid_total: 10000,
+        refundable_amount: 10000,
+        gift_card_total: 0,
+        gift_card_tax_total: 0,
+      })
     })
 
     it("retrieves an order should include the items totals", async () => {

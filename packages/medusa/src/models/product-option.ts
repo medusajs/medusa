@@ -42,46 +42,59 @@ export class ProductOption extends SoftDeletableEntity {
 /**
  * @schema ProductOption
  * title: "Product Option"
- * description: "Product Options define properties that may vary between different variants of a Product. Common Product Options are \"Size\" and \"Color\", but Medusa doesn't limit what Product Options that can be defined."
+ * description: A Product Option defines properties that may vary between different variants of a Product. Common Product Options are "Size" and "Color". Admins are free to create any product options.
  * type: object
  * required:
- *   - title
+ *   - created_at
+ *   - deleted_at
+ *   - id
+ *   - metadata
  *   - product_id
+ *   - title
+ *   - updated_at
  * properties:
  *   id:
- *     type: string
  *     description: The product option's ID
+ *     type: string
  *     example: opt_01F0YESHQBZVKCEXJ24BS6PCX3
  *   title:
- *     description: "The title that the Product Option is defined by (e.g. \"Size\")."
+ *     description: The title that the Product Option is defined by (e.g. `Size`).
  *     type: string
  *     example: Size
  *   values:
- *     description: The Product Option Values that are defined for the Product Option. Available if the relation `values` is expanded.
+ *     description: The details of the values of the product option.
  *     type: array
+ *     x-expandable: "values"
  *     items:
  *       $ref: "#/components/schemas/ProductOptionValue"
  *   product_id:
- *     description: "The ID of the Product that the Product Option is defined for."
+ *     description: The ID of the product that this product option belongs to.
  *     type: string
  *     example: prod_01G1G5V2MBA328390B5AXJ610F
  *   product:
- *     description: A product object. Available if the relation `product` is expanded.
- *     type: object
+ *     description: The details of the product that this product option belongs to.
+ *     x-expandable: "product"
+ *     nullable: true
+ *     $ref: "#/components/schemas/Product"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

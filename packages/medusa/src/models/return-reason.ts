@@ -50,52 +50,69 @@ export class ReturnReason extends SoftDeletableEntity {
 /**
  * @schema ReturnReason
  * title: "Return Reason"
- * description: "A Reason for why a given product is returned. A Return Reason can be used on Return Items in order to indicate why a Line Item was returned."
+ * description: "A Return Reason is a value defined by an admin. It can be used on Return Items in order to indicate why a Line Item was returned."
  * type: object
  * required:
- *   - value
+ *   - created_at
+ *   - deleted_at
+ *   - description
+ *   - id
  *   - label
+ *   - metadata
+ *   - parent_return_reason_id
+ *   - updated_at
+ *   - value
  * properties:
  *   id:
+ *     description: The return reason's ID
  *     type: string
- *     description: The cart's ID
  *     example: rr_01G8X82GCCV2KSQHDBHSSAH5TQ
- *   description:
- *     description: "A description of the Reason."
- *     type: string
- *     example: Items that are damaged
- *   label:
- *     description: "A text that can be displayed to the Customer as a reason."
- *     type: string
- *     example: Damaged goods
  *   value:
- *     description: "The value to identify the reason by."
+ *     description: The value to identify the reason by.
  *     type: string
  *     example: damaged
- *   parent_return_reason_id:
+ *   label:
+ *     description: A text that can be displayed to the Customer as a reason.
  *     type: string
+ *     example: Damaged goods
+ *   description:
+ *     description: A description of the Reason.
+ *     nullable: true
+ *     type: string
+ *     example: Items that are damaged
+ *   parent_return_reason_id:
  *     description: The ID of the parent reason.
+ *     nullable: true
+ *     type: string
  *     example: null
  *   parent_return_reason:
- *     description: Available if the relation `parent_return_reason` is expanded.
+ *     description: The details of the parent reason.
+ *     x-expandable: "parent_return_reason"
+ *     nullable: true
  *     $ref: "#/components/schemas/ReturnReason"
  *   return_reason_children:
- *     description: Available if the relation `return_reason_children` is expanded.
+ *     description: The details of the child reasons.
+ *     x-expandable: "return_reason_children"
  *     $ref: "#/components/schemas/ReturnReason"
  *   created_at:
+ *     description: The date with timezone at which the resource was created.
  *     type: string
- *     description: "The date with timezone at which the resource was created."
  *     format: date-time
  *   updated_at:
+ *     description: The date with timezone at which the resource was updated.
  *     type: string
- *     description: "The date with timezone at which the resource was updated."
  *     format: date-time
  *   deleted_at:
+ *     description: The date with timezone at which the resource was deleted.
+ *     nullable: true
  *     type: string
- *     description: "The date with timezone at which the resource was deleted."
  *     format: date-time
  *   metadata:
- *     type: object
  *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

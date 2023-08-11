@@ -6,20 +6,27 @@ import {
   IsString,
 } from "class-validator"
 import { OrderService, SwapService } from "../../../../services"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 
 import { EntityManager } from "typeorm"
 import { validator } from "../../../../utils/validator"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/swaps/{swap_id}/shipments
+ * @oas [post] /admin/orders/{id}/swaps/{swap_id}/shipments
  * operationId: "PostOrdersOrderSwapsSwapShipments"
- * summary: "Create Swap Shipment"
- * description: "Registers a Swap Fulfillment as shipped."
+ * summary: "Ship a Swap's Fulfillment"
+ * description: "RMark a swap's fulfillment as shipped. This changes the swap's fulfillment status to either `shipped` or `partially_shipped`, depending on
+ *  whether all the items were shipped."
  * x-authenticated: true
+ * externalDocs:
+ *   description: Handling swap fulfillments
+ *   url: https://docs.medusajs.com/modules/orders/swaps#handling-swap-fulfillment
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
  *   - (path) swap_id=* {string} The ID of the Swap.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * requestBody:
  *   content:
  *     application/json:
@@ -27,6 +34,7 @@ import { validator } from "../../../../utils/validator"
  *         $ref: "#/components/schemas/AdminPostOrdersOrderSwapsSwapShipmentsReq"
  * x-codegen:
  *   method: createSwapShipment
+ *   params: AdminPostOrdersOrderSwapsSwapShipmentsParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -43,9 +51,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/swaps/{swap_id}/shipments' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/swaps/{swap_id}/shipments' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "fulfillment_id": "{fulfillment_id}"
  *       }'
@@ -53,7 +61,7 @@ import { validator } from "../../../../utils/validator"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Swap
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -95,12 +103,11 @@ export default async (req, res) => {
     )
   })
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
 
 /**
@@ -135,3 +142,5 @@ export class AdminPostOrdersOrderSwapsSwapShipmentsReq {
   @IsOptional()
   no_notification?: boolean
 }
+
+export class AdminPostOrdersOrderSwapsSwapShipmentsParams extends FindParams {}

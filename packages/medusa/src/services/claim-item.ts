@@ -1,5 +1,4 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { ClaimImage, ClaimItem, ClaimTag } from "../models"
 import { ClaimImageRepository } from "../repositories/claim-image"
@@ -24,11 +23,7 @@ class ClaimItemService extends TransactionBaseService {
   protected readonly claimTagRepository_: typeof ClaimTagRepository
   protected readonly claimImageRepository_: typeof ClaimImageRepository
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   constructor({
-    manager,
     claimItemRepository,
     claimTagRepository,
     claimImageRepository,
@@ -38,7 +33,6 @@ class ClaimItemService extends TransactionBaseService {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.claimItemRepository_ = claimItemRepository
     this.claimTagRepository_ = claimTagRepository
     this.claimImageRepository_ = claimImageRepository
@@ -48,9 +42,7 @@ class ClaimItemService extends TransactionBaseService {
 
   async create(data: CreateClaimItemInput): Promise<ClaimItem> {
     return await this.atomicPhase_(async (manager) => {
-      const ciRepo: ClaimItemRepository = manager.getCustomRepository(
-        this.claimItemRepository_
-      )
+      const ciRepo = manager.withRepository(this.claimItemRepository_)
 
       const { item_id, reason, quantity, tags, images, ...rest } = data
 
@@ -86,9 +78,7 @@ class ClaimItemService extends TransactionBaseService {
 
       let tagsToAdd: ClaimTag[] = []
       if (tags && tags.length) {
-        const claimTagRepo = manager.getCustomRepository(
-          this.claimTagRepository_
-        )
+        const claimTagRepo = manager.withRepository(this.claimTagRepository_)
         tagsToAdd = await Promise.all(
           tags.map(async (t) => {
             const normalized = t.trim().toLowerCase()
@@ -105,9 +95,7 @@ class ClaimItemService extends TransactionBaseService {
 
       let imagesToAdd: ClaimImage[] = []
       if (images && images.length) {
-        const claimImgRepo = manager.getCustomRepository(
-          this.claimImageRepository_
-        )
+        const claimImgRepo = manager.withRepository(this.claimImageRepository_)
         imagesToAdd = images.map((url) => {
           return claimImgRepo.create({ url })
         })
@@ -138,7 +126,7 @@ class ClaimItemService extends TransactionBaseService {
 
   async update(id, data): Promise<ClaimItem> {
     return this.atomicPhase_(async (manager) => {
-      const ciRepo = manager.getCustomRepository(this.claimItemRepository_)
+      const ciRepo = manager.withRepository(this.claimItemRepository_)
       const item = await this.retrieve(id, { relations: ["images", "tags"] })
 
       const { tags, images, reason, note, metadata } = data
@@ -157,9 +145,7 @@ class ClaimItemService extends TransactionBaseService {
 
       if (tags) {
         item.tags = []
-        const claimTagRepo = manager.getCustomRepository(
-          this.claimTagRepository_
-        )
+        const claimTagRepo = manager.withRepository(this.claimTagRepository_)
         for (const t of tags) {
           if (t.id) {
             item.tags.push(t)
@@ -180,9 +166,7 @@ class ClaimItemService extends TransactionBaseService {
       }
 
       if (images) {
-        const claimImgRepo = manager.getCustomRepository(
-          this.claimImageRepository_
-        )
+        const claimImgRepo = manager.withRepository(this.claimImageRepository_)
         const ids = images.map((i) => i.id)
         for (const i of item.images) {
           if (!ids.includes(i.id)) {
@@ -226,7 +210,7 @@ class ClaimItemService extends TransactionBaseService {
       order: { created_at: "DESC" },
     }
   ): Promise<ClaimItem[]> {
-    const ciRepo = this.manager_.getCustomRepository(this.claimItemRepository_)
+    const ciRepo = this.activeManager_.withRepository(this.claimItemRepository_)
     const query = buildQuery(selector, config)
     return ciRepo.find(query)
   }
@@ -248,7 +232,7 @@ class ClaimItemService extends TransactionBaseService {
       )
     }
 
-    const claimItemRepo = this.manager_.getCustomRepository(
+    const claimItemRepo = this.activeManager_.withRepository(
       this.claimItemRepository_
     )
     const query = buildQuery({ id: claimItemId }, config)

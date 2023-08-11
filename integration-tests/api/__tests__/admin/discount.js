@@ -6,15 +6,15 @@ const {
   CustomerGroup,
 } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
-const adminSeeder = require("../../helpers/admin-seeder")
-const discountSeeder = require("../../helpers/discount-seeder")
-const { simpleProductFactory } = require("../../factories")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
+const adminSeeder = require("../../../helpers/admin-seeder")
+const discountSeeder = require("../../../helpers/discount-seeder")
+const { simpleProductFactory } = require("../../../factories")
 const {
   simpleDiscountFactory,
-} = require("../../factories/simple-discount-factory")
+} = require("../../../factories/simple-discount-factory")
 
 jest.setTimeout(30000)
 
@@ -324,7 +324,7 @@ describe("/admin/discounts", () => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("invalid_data")
           expect(err.response.data.message).toEqual(
-            "type must be a valid enum value"
+            "type must be one of the following values: fixed, percentage, free_shipping"
           )
         })
     })
@@ -907,7 +907,8 @@ describe("/admin/discounts", () => {
             is_dynamic: false,
           },
           adminReqConfig
-        ).catch(e => e)
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(400)
       expect(err.response.data.message).toEqual(
@@ -1026,7 +1027,8 @@ describe("/admin/discounts", () => {
             regions: [validRegionId, "test-region-2"],
           },
           adminReqConfig
-        ).catch(e => e)
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(400)
       expect(err.response.data.message).toEqual(
@@ -1060,7 +1062,8 @@ describe("/admin/discounts", () => {
             regions: [validRegionId, "test-region-2"],
           },
           adminReqConfig
-        ).catch(e => e)
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(400)
       expect(err.response.data.message).toEqual(
@@ -1092,7 +1095,8 @@ describe("/admin/discounts", () => {
           `/admin/discounts/${response.data.discount.id}/regions/test-region-2`,
           {},
           adminReqConfig
-        ).catch(e => e)
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(400)
       expect(err.response.data.message).toEqual(
@@ -1246,7 +1250,8 @@ describe("/admin/discounts", () => {
             ends_at: new Date("09/14/2021 17:50"),
           },
           adminReqConfig
-        ).catch(e => e)
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(400)
       expect(err.response.data).toEqual(
@@ -1259,20 +1264,22 @@ describe("/admin/discounts", () => {
     it("fails to create a discount if the regions contains an invalid regionId ", async () => {
       const api = useApi()
 
-      const err = await api.post(
-        "/admin/discounts",
-        {
-          code: "HELLOWORLD",
-          rule: {
-            description: "test",
-            type: "percentage",
-            value: 10,
-            allocation: "total",
+      const err = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            regions: [validRegionId, invalidRegionId],
           },
-          regions: [validRegionId, invalidRegionId],
-        },
-        adminReqConfig
-      ).catch(e => e)
+          adminReqConfig
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(404)
       expect(err.response.data.message).toEqual(
@@ -1283,20 +1290,22 @@ describe("/admin/discounts", () => {
     it("fails to create a discount if the regions contains only invalid regionIds ", async () => {
       const api = useApi()
 
-      const err = await api.post(
-        "/admin/discounts",
-        {
-          code: "HELLOWORLD",
-          rule: {
-            description: "test",
-            type: "percentage",
-            value: 10,
-            allocation: "total",
+      const err = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            regions: [invalidRegionId],
           },
-          regions: [invalidRegionId],
-        },
-        adminReqConfig
-      ).catch(e => e)
+          adminReqConfig
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(404)
       expect(err.response.data.message).toEqual(
@@ -1307,19 +1316,21 @@ describe("/admin/discounts", () => {
     it("fails to create a discount if regions are not present ", async () => {
       const api = useApi()
 
-      const err = await api.post(
-        "/admin/discounts",
-        {
-          code: "HELLOWORLD",
-          rule: {
-            description: "test",
-            type: "percentage",
-            value: 10,
-            allocation: "total",
+      const err = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
           },
-        },
-        adminReqConfig
-      ).catch((e) => e)
+          adminReqConfig
+        )
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(400)
       expect(err.response.data.message).toEqual(
@@ -1868,7 +1879,7 @@ describe("/admin/discounts", () => {
       const cond = discount.data.discount.rule.conditions[0]
 
       const response = await api.post(
-        `/admin/discounts/test-discount/conditions/${cond.id}?expand=rule,rule.conditions,rule.conditions.products`,
+        `/admin/discounts/test-discount/conditions/${cond.id}?expand=rule.conditions.products.profiles`,
         {
           products: [prod2.id],
         },
@@ -1900,6 +1911,8 @@ describe("/admin/discounts", () => {
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
                   profile_id: expect.any(String),
+                  profiles: expect.any(Array),
+                  profile: expect.any(Object),
                   type_id: expect.any(String),
                   id: "test-product",
                 },
@@ -2036,7 +2049,7 @@ describe("/admin/discounts", () => {
       const api = useApi()
 
       const discountCondition = await api.get(
-        "/admin/discounts/test-discount/conditions/test-condition?expand=products&fields=id,type",
+        "/admin/discounts/test-discount/conditions/test-condition?expand=products.profiles&fields=id,type",
         adminReqConfig
       )
 
@@ -2050,6 +2063,8 @@ describe("/admin/discounts", () => {
           {
             id: "test-product",
             profile_id: expect.any(String),
+            profiles: expect.any(Array),
+            profile: expect.any(Object),
             type_id: expect.any(String),
             created_at: expect.any(String),
             updated_at: expect.any(String),
@@ -2204,11 +2219,16 @@ describe("/admin/discounts", () => {
 
     it("should respond with 404 on non-existing code", async () => {
       const api = useApi()
-      const err = await api.get("/admin/discounts/code/non-existing", adminReqConfig).catch(e => e)
+
+      const code = "non-existing"
+
+      const err = await api
+        .get(`/admin/discounts/code/${code}`, adminReqConfig)
+        .catch((e) => e)
 
       expect(err.response.status).toEqual(404)
       expect(err.response.data.message).toBe(
-        "Discount with code non-existing was not found"
+        `Discounts with code ${code} was not found`
       )
     })
 
@@ -2337,7 +2357,7 @@ describe("/admin/discounts", () => {
       const cond = discount.data.discount.rule.conditions[0]
 
       const response = await api.post(
-        `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule,rule.conditions,rule.conditions.products`,
+        `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule.conditions.products.profiles`,
         {
           resources: [{ id: prod2.id }, { id: prod3.id }],
         },
@@ -2474,7 +2494,7 @@ describe("/admin/discounts", () => {
       const cond = discount.data.discount.rule.conditions[0]
 
       const response = await api.delete(
-        `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule,rule.conditions,rule.conditions.products`,
+        `/admin/discounts/test-discount/conditions/${cond.id}/batch?expand=rule.conditions.products.profiles`,
         {
           ...adminReqConfig,
           data: {

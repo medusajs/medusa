@@ -1,4 +1,4 @@
-import { Transform, Type } from "class-transformer"
+import { DateComparisonOperator, FindConfig, Selector } from "./common"
 import {
   IsArray,
   IsBoolean,
@@ -7,21 +7,22 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   PriceList,
   Product,
+  ProductCategory,
   ProductOptionValue,
   ProductStatus,
   SalesChannel,
-  ProductCategory,
 } from "../models"
+import { Transform, Type } from "class-transformer"
+
 import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
-import { optionalBooleanMapper } from "../utils/validators/is-boolean"
-import { IsType } from "../utils/validators/is-type"
-import { DateComparisonOperator, FindConfig, Selector } from "./common"
-import { PriceListLoadConfig } from "./price-list"
 import { FindOperator } from "typeorm"
+import { IsType } from "../utils/validators/is-type"
+import { PriceListLoadConfig } from "./price-list"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
+import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 
 /**
  * API Level DTOs + Validation rules
@@ -263,4 +264,12 @@ export class ProductTypeReq {
 
   @IsString()
   value: string
+}
+
+export type ProductFilterOptions = {
+  price_list_id?: FindOperator<PriceList>
+  sales_channel_id?: FindOperator<SalesChannel>
+  category_id?: FindOperator<ProductCategory>
+  include_category_children?: boolean
+  discount_condition_id?: string
 }

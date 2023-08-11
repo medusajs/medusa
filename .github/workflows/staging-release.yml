@@ -1,7 +1,8 @@
 name: Staging Release and Publish
 
 on:
-  push:
+  # TODO: Enabling manual workflow triggering while in pre-release mode. Remove when 1.8 is released
+  workflow_dispatch:
     branches:
       - develop
     paths-ignore:

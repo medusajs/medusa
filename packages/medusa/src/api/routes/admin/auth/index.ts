@@ -26,8 +26,11 @@ export default (app) => {
 /**
  * @schema AdminAuthRes
  * type: object
+ * required:
+ *   - user
  * properties:
  *   user:
+ *     description: User details.
  *     $ref: "#/components/schemas/User"
  */
 export type AdminAuthRes = {

@@ -1,7 +1,5 @@
 import { Router } from "express"
 
-import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
-import PublishableAPIKeysFeatureFlag from "../../../../loaders/feature-flags/publishable-api-keys"
 import middlewares, {
   transformBody,
   transformQuery,
@@ -18,11 +16,7 @@ import { GetPublishableApiKeySalesChannelsParams } from "./list-publishable-api-
 const route = Router()
 
 export default (app) => {
-  app.use(
-    "/publishable-api-keys",
-    isFeatureFlagEnabled(PublishableAPIKeysFeatureFlag.key),
-    route
-  )
+  app.use("/publishable-api-keys", route)
 
   route.post(
     "/",
@@ -83,8 +77,11 @@ export default (app) => {
 /**
  * @schema AdminPublishableApiKeysRes
  * type: object
+ * required:
+ *   - publishable_api_key
  * properties:
  *   publishable_api_key:
+ *     description: "Publishable API key details."
  *     $ref: "#/components/schemas/PublishableApiKey"
  */
 export type AdminPublishableApiKeysRes = {
@@ -94,9 +91,15 @@ export type AdminPublishableApiKeysRes = {
 /**
  * @schema AdminPublishableApiKeysListRes
  * type: object
+ * required:
+ *   - publishable_api_keys
+ *   - count
+ *   - offset
+ *   - limit
  * properties:
  *   publishable_api_keys:
  *     type: array
+ *     description: "An array of publishable API keys details."
  *     items:
  *       $ref: "#/components/schemas/PublishableApiKey"
  *   count:
@@ -104,7 +107,7 @@ export type AdminPublishableApiKeysRes = {
  *     description: The total number of items available
  *   offset:
  *     type: integer
- *     description: The number of items skipped before these items
+ *     description: The number of publishable API keys skipped when retrieving the publishable API keys.
  *   limit:
  *     type: integer
  *     description: The number of items per page
@@ -116,17 +119,21 @@ export type AdminPublishableApiKeysListRes = PaginatedResponse & {
 /**
  * @schema AdminPublishableApiKeyDeleteRes
  * type: object
+ * required:
+ *   - id
+ *   - object
+ *   - deleted
  * properties:
  *   id:
  *     type: string
- *     description: The ID of the deleted PublishableApiKey.
+ *     description: The ID of the deleted publishable API key.
  *   object:
  *     type: string
  *     description: The type of the object that was deleted.
  *     default: publishable_api_key
  *   deleted:
  *     type: boolean
- *     description: Whether the PublishableApiKeys was deleted.
+ *     description: Whether the publishable API key was deleted.
  *     default: true
  */
 export type AdminPublishableApiKeyDeleteRes = DeleteResponse
@@ -134,8 +141,11 @@ export type AdminPublishableApiKeyDeleteRes = DeleteResponse
 /**
  * @schema AdminPublishableApiKeysListSalesChannelsRes
  * type: object
+ * required:
+ *   - sales_channels
  * properties:
  *   sales_channels:
+ *     description: "An array of sales channels details."
  *     type: array
  *     items:
  *       $ref: "#/components/schemas/SalesChannel"

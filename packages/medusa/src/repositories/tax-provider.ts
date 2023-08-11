@@ -1,5 +1,5 @@
-import { EntityRepository, Repository } from "typeorm"
-import { TaxProvider } from "../models/tax-provider"
+import { TaxProvider } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(TaxProvider)
-export class TaxProviderRepository extends Repository<TaxProvider> {}
+export const TaxProviderRepository = dataSource.getRepository(TaxProvider)
+export default TaxProviderRepository

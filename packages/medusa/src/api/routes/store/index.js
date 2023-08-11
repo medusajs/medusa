@@ -26,15 +26,15 @@ const route = Router()
 export default (app, container, config) => {
   app.use("/store", route)
 
+  const featureFlagRouter = container.resolve("featureFlagRouter")
   const storeCors = config.store_cors || ""
+
   route.use(
     cors({
       origin: parseCorsOrigins(storeCors),
       credentials: true,
     })
   )
-
-  const featureFlagRouter = container.resolve("featureFlagRouter")
 
   route.use(middlewares.authenticateCustomer())
 

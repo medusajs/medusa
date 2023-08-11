@@ -8,14 +8,12 @@ import AuthService from "../../../../services/auth"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /auth
+ * @oas [post] /admin/auth
  * operationId: "PostAuth"
  * summary: "User Login"
  * x-authenticated: false
- * description: "Logs a User in and authorizes them to manage Store settings."
- * parameters:
- *   - (body) email=* {string} The User's email.
- *   - (body) password=* {string} The User's password.
+ * description: "Log a User in and includes the Cookie session in the response header. The cookie session can be used in subsequent requests to authorize the user to perform admin functionalities.
+ * When using Medusa's JS or Medusa React clients, the cookie is automatically attached to subsequent requests."
  * requestBody:
  *   content:
  *     application/json:
@@ -30,16 +28,17 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       medusa.admin.auth.createSession({
- *         email: 'user@example.com',
- *         password: 'supersecret'
- *       }).then((({ user }) => {
+ *         email: "user@example.com",
+ *         password: "supersecret"
+ *       })
+ *       .then(({ user }) => {
  *         console.log(user.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/auth' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/auth' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "email": "user@example.com",
  *         "password": "supersecret"
@@ -109,11 +108,11 @@ export default async (req, res) => {
  * properties:
  *   email:
  *     type: string
- *     description: The User's email.
+ *     description: The user's email.
  *     format: email
  *   password:
  *     type: string
- *     description: The User's password.
+ *     description: The user's password.
  *     format: password
  */
 export class AdminPostAuthReq {

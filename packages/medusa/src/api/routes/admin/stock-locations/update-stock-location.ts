@@ -1,20 +1,19 @@
-import { Request, Response } from "express"
+import { IStockLocationService } from "@medusajs/types"
 import { Type } from "class-transformer"
 import { IsObject, IsOptional, IsString, ValidateNested } from "class-validator"
-
-import { IStockLocationService } from "../../../../interfaces"
+import { Request, Response } from "express"
 import { FindParams } from "../../../../types/common"
 
 /**
- * @oas [post] /stock-locations/{id}
+ * @oas [post] /admin/stock-locations/{id}
  * operationId: "PostStockLocationsStockLocation"
  * summary: "Update a Stock Location"
- * description: "Updates a Stock Location."
+ * description: "Update a Stock Location's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Stock Location.
- *   - (query) expand {string} Comma separated list of relations to include in the results.
- *   - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned stock location.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned stock location.
  * requestBody:
  *   content:
  *     application/json:
@@ -29,8 +28,8 @@ import { FindParams } from "../../../../types/common"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.stockLocations.update(stock_location_id, {
- *         name: 'App'
+ *       medusa.admin.stockLocations.update(stockLocationId, {
+ *         name: 'Main Warehouse'
  *       })
  *       .then(({ stock_location }) => {
  *         console.log(stock_location.id);
@@ -38,17 +37,17 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/stock-locations/{id}' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/stock-locations/{id}' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
- *           "name": "App"
+ *           "name": "Main Warehouse"
  *       }'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Stock Location
+ *   - Stock Locations
  * responses:
  *   200:
  *     description: OK
@@ -132,6 +131,9 @@ class StockLocationAddress {
  *     type: object
  *     description: An optional key-value map with additional details
  *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  *   address:
  *     $ref: "#/components/schemas/StockLocationAddressInput"
  */

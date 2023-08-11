@@ -1,11 +1,11 @@
 const { Store } = require("@medusajs/medusa")
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const setupServer = require("../../../environment-helpers/setup-server")
+const { useApi } = require("../../../environment-helpers/use-api")
+const { initDb, useDb } = require("../../../environment-helpers/use-db")
 
-const adminSeeder = require("../../helpers/admin-seeder")
+const adminSeeder = require("../../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
@@ -75,7 +75,9 @@ describe("/admin/store", () => {
       medusaProcess = await setupServer({ cwd })
 
       const manager = dbConnection.manager
-      const store = await manager.findOne(Store, { name: "Medusa Store" })
+      const store = await manager.findOne(Store, {
+        where: { name: "Medusa Store" },
+      })
       await manager.query(
         `INSERT INTO store_currencies (store_id, currency_code) VALUES ('${store.id}', 'dkk')`
       )

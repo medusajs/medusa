@@ -1,5 +1,6 @@
-import { EntityRepository, Repository } from "typeorm"
-import { ShippingTaxRate } from "../models/shipping-tax-rate"
+import { ShippingTaxRate } from "../models"
+import { dataSource } from "../loaders/database"
 
-@EntityRepository(ShippingTaxRate)
-export class ShippingTaxRateRepository extends Repository<ShippingTaxRate> {}
+export const ShippingTaxRateRepository =
+  dataSource.getRepository(ShippingTaxRate)
+export default ShippingTaxRateRepository

@@ -2,14 +2,20 @@ import { EntityManager } from "typeorm"
 import { IsolationLevel } from "typeorm/driver/types/IsolationLevel"
 
 export abstract class TransactionBaseService {
-  protected abstract manager_: EntityManager
-  protected abstract transactionManager_: EntityManager | undefined
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  protected get activeManager_(): EntityManager {
+    return this.transactionManager_ ?? this.manager_
+  }
 
   protected constructor(
     protected readonly __container__: any,
     protected readonly __configModule__?: Record<string, unknown>,
     protected readonly __moduleDeclaration__?: Record<string, unknown>
-  ) {}
+  ) {
+    this.manager_ = __container__.manager
+  }
 
   withTransaction(transactionManager?: EntityManager): this {
     if (!transactionManager) {

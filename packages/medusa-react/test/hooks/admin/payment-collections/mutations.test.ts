@@ -1,9 +1,9 @@
+import { renderHook } from "@testing-library/react-hooks/dom"
 import {
   useAdminDeletePaymentCollection,
-  useAdminUpdatePaymentCollection,
   useAdminMarkPaymentCollectionAsAuthorized,
+  useAdminUpdatePaymentCollection,
 } from "../../../../src"
-import { renderHook } from "@testing-library/react-hooks"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminDeletePaymentCollection hook", () => {

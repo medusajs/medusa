@@ -1,19 +1,20 @@
-import { BatchJob, Product, ProductVariant } from "../../../../models"
-import { Selector } from "../../../../types/common"
-import { CsvSchema, CsvSchemaColumn } from "../../../../interfaces/csv-parser"
-import {
-  BatchJobService,
-  ProductCollectionService,
-  ProductService,
-  ProductVariantService,
-  RegionService,
-  SalesChannelService,
-  ShippingProfileService,
-} from "../../../../services"
+import { FlagRouter } from "@medusajs/utils"
 import { FileService } from "medusa-interfaces"
-import { FlagRouter } from "../../../../utils/flag-router"
 import { EntityManager } from "typeorm"
 import { IFileService } from "../../../../interfaces"
+import { CsvSchema, CsvSchemaColumn } from "../../../../interfaces/csv-parser"
+import { BatchJob, Product, ProductVariant } from "../../../../models"
+import {
+    BatchJobService,
+    ProductCategoryService,
+    ProductCollectionService,
+    ProductService,
+    ProductVariantService,
+    RegionService,
+    SalesChannelService,
+    ShippingProfileService,
+} from "../../../../services"
+import { Selector } from "../../../../types/common"
 
 export type ProductExportInjectedDependencies = {
   manager: EntityManager
@@ -37,6 +38,7 @@ export type ProductExportBatchJobContext = {
     dynamicOptionColumnCount: number
     dynamicImageColumnCount: number
     dynamicSalesChannelsColumnCount: number
+    dynamicProductCategoriesColumnCount: number
   }
   list_config?: {
     select?: string[]
@@ -82,6 +84,7 @@ export type ProductImportInjectedProps = {
   salesChannelService: SalesChannelService
   regionService: RegionService
   productCollectionService: ProductCollectionService
+  productCategoryService: ProductCategoryService
   fileService: typeof FileService
 
   featureFlagRouter: FlagRouter

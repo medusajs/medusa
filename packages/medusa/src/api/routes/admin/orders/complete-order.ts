@@ -1,16 +1,21 @@
 import { OrderService } from "../../../../services"
 import { EntityManager } from "typeorm"
+import { FindParams } from "../../../../types/common"
+import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [post] /orders/{id}/complete
+ * @oas [post] /admin/orders/{id}/complete
  * operationId: "PostOrdersOrderComplete"
  * summary: "Complete an Order"
- * description: "Completes an Order"
+ * description: "Complete an Order and change its status. A canceled order can't be completed."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Order.
+ *   - (query) expand {string} Comma-separated relations that should be expanded in the returned order.
+ *   - (query) fields {string} Comma-separated fields that should be included in the returned order.
  * x-codegen:
  *   method: complete
+ *   params: AdminPostOrdersOrderCompleteParams
  * x-codeSamples:
  *   - lang: JavaScript
  *     label: JS Client
@@ -18,20 +23,20 @@ import { EntityManager } from "typeorm"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.orders.complete(order_id)
+ *       medusa.admin.orders.complete(orderId)
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/orders/{id}/complete' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/complete' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -64,9 +69,11 @@ export default async (req, res) => {
       .completeOrder(id)
   })
 
-  const order = await orderService.retrieve(id, {
-    relations: ["region", "customer", "swaps"],
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig, {
+    includes: req.includes,
   })
 
-  res.json({ order })
+  res.json({ order: cleanResponseData(order, []) })
 }
+
+export class AdminPostOrdersOrderCompleteParams extends FindParams {}

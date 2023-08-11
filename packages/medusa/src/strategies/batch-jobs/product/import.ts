@@ -2,36 +2,36 @@
 import { computerizeAmount, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 
+import { FlagRouter } from "@medusajs/utils"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
+import ProductCategoryFeatureFlag from "../../../loaders/feature-flags/product-categories"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 import { BatchJob, SalesChannel } from "../../../models"
 import {
-  BatchJobService,
-  ProductCollectionService,
-  ProductService,
-  ProductVariantService,
-  RegionService,
-  SalesChannelService,
-  ShippingProfileService
+    BatchJobService,
+    ProductCategoryService,
+    ProductCollectionService,
+    ProductService,
+    ProductVariantService,
+    RegionService,
+    SalesChannelService,
+    ShippingProfileService,
 } from "../../../services"
 import CsvParser from "../../../services/csv-parser"
 import { CreateProductInput } from "../../../types/product"
+import { CreateProductVariantInput } from "../../../types/product-variant"
 import {
-  CreateProductVariantInput,
-  UpdateProductVariantInput
-} from "../../../types/product-variant"
-import { FlagRouter } from "../../../utils/flag-router"
-import {
-  OperationType,
-  ProductImportBatchJob,
-  ProductImportCsvSchema,
-  ProductImportInjectedProps,
-  ProductImportJobContext,
-  TParsedProductImportRowData
+    OperationType,
+    ProductImportBatchJob,
+    ProductImportCsvSchema,
+    ProductImportInjectedProps,
+    ProductImportJobContext,
+    TParsedProductImportRowData,
 } from "./types"
 import {
-  productImportColumnsDefinition,
-  productImportSalesChannelsColumnsDefinition
+    productImportColumnsDefinition,
+    productImportProductCategoriesColumnsDefinition,
+    productImportSalesChannelsColumnsDefinition,
 } from "./types/columns-definition"
 import { transformProductData, transformVariantData } from "./utils"
 
@@ -64,6 +64,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   protected readonly salesChannelService_: SalesChannelService
   protected readonly productVariantService_: ProductVariantService
   protected readonly shippingProfileService_: ShippingProfileService
+  protected readonly productCategoryService_: ProductCategoryService
 
   protected readonly csvParser_: CsvParser<
     ProductImportCsvSchema,
@@ -80,6 +81,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     regionService,
     fileService,
     productCollectionService,
+    productCategoryService,
     manager,
     featureFlagRouter,
   }: ProductImportInjectedProps) {
@@ -90,11 +92,18 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       SalesChannelFeatureFlag.key
     )
 
+    const isProductCategoriesFeatureOn = featureFlagRouter.isFeatureEnabled(
+      ProductCategoryFeatureFlag.key
+    )
+
     this.csvParser_ = new CsvParser({
       columns: [
         ...productImportColumnsDefinition.columns,
         ...(isSalesChannelsFeatureOn
           ? productImportSalesChannelsColumnsDefinition.columns
+          : []),
+        ...(isProductCategoriesFeatureOn
+          ? productImportProductCategoriesColumnsDefinition.columns
           : []),
       ],
     })
@@ -110,6 +119,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     this.shippingProfileService_ = shippingProfileService
     this.regionService_ = regionService
     this.productCollectionService_ = productCollectionService
+    this.productCategoryService_ = productCategoryService
   }
 
   async buildTemplate(): Promise<string> {
@@ -126,11 +136,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     row: TParsedProductImportRowData,
     errorDescription?: string
   ): never {
-    const message = `Error while processing row with:
-      product id: ${row["product.id"]},
-      product handle: ${row["product.handle"]},
-      variant id: ${row["variant.id"]}
-      variant sku: ${row["variant.sku"]}
+    const message = `Error while processing row with
+      [(product id: ${row["product.id"]}),
+      (product handle: ${row["product.handle"]}),
+      (variant id: ${row["variant.id"]}),
+      (variant sku: ${row["variant.sku"]})]: 
       ${errorDescription}`
 
     throw new MedusaError(MedusaError.Types.INVALID_DATA, message)
@@ -371,6 +381,33 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   }
 
   /**
+   * Method retrieves product categories from handles provided in the CSV.
+   *
+   * @param data array of product category handles
+   */
+  private async processCategories(
+    data: { handle: string }[]
+  ): Promise<{ id: string }[]> {
+    const retIds: { id: string }[] = []
+    const transactionManager = this.transactionManager_ ?? this.manager_
+    const productCategoryService =
+      this.productCategoryService_.withTransaction(transactionManager)
+
+    for (const category of data) {
+      const categoryPartial = (await productCategoryService.retrieveByHandle(
+        category.handle,
+        {
+          select: ["id"],
+        }
+      )) as { id: string }
+
+      retIds.push(categoryPartial)
+    }
+
+    return retIds
+  }
+
+  /**
    * Method creates products using `ProductService` and parsed data from a CSV row.
    *
    * @param batchJob - The current batch job being processed.
@@ -396,6 +433,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       SalesChannelFeatureFlag.key
     )
 
+    const isProductCategoriesFeatureOn =
+      this.featureFlagRouter_.isFeatureEnabled(ProductCategoryFeatureFlag.key)
+
     for (const productOp of productOps) {
       const productData = transformProductData(productOp)
 
@@ -420,6 +460,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
             )
           ).id
           delete productData.collection
+        }
+
+        if (isProductCategoriesFeatureOn && productOp["product.categories"]) {
+          productData["categories"] = await this.processCategories(
+            productOp["product.categories"] as { handle: string }[]
+          )
         }
 
         // TODO: we should only pass the expected data and should not have to cast the entire object. Here we are passing everything contained in productData
@@ -459,6 +505,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       SalesChannelFeatureFlag.key
     )
 
+    const isProductCategoriesFeatureOn =
+      this.featureFlagRouter_.isFeatureEnabled(ProductCategoryFeatureFlag.key)
+
     for (const productOp of productOps) {
       const productData = transformProductData(productOp)
       try {
@@ -484,6 +533,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
             )
           ).id
           delete productData.collection
+        }
+
+        if (isProductCategoriesFeatureOn && productOp["product.categories"]) {
+          productData["categories"] = await this.processCategories(
+            productOp["product.categories"] as { handle: string }[]
+          )
         }
 
         // TODO: we should only pass the expected data. Here we are passing everything contained in productData
@@ -584,12 +639,13 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
         await this.prepareVariantOptions(variantOp, product.id)
 
+        const updateData = transformVariantData(variantOp)
+        delete updateData.product
+        delete updateData["product.handle"]
+
         await this.productVariantService_
           .withTransaction(transactionManager)
-          .update(
-            variantOp["variant.id"] as string,
-            transformVariantData(variantOp) as UpdateProductVariantInput
-          )
+          .update(variantOp["variant.id"] as string, updateData)
       } catch (e) {
         ProductImportStrategy.throwDescriptiveError(variantOp, e.message)
       }

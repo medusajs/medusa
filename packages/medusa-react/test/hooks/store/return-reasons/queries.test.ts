@@ -1,7 +1,7 @@
-import { renderHook } from "@testing-library/react-hooks"
+import { renderHook } from "@testing-library/react-hooks/dom"
 import { fixtures } from "../../../../mocks/data"
-import { createWrapper } from "../../../utils"
 import { useReturnReason, useReturnReasons } from "../../../../src/"
+import { createWrapper } from "../../../utils"
 
 describe("useReturnReasons hook", () => {
   test("returns a list of return reasons", async () => {

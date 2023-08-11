@@ -1,4 +1,8 @@
 type: object
+required:
+  - id
+  - object
+  - deleted
 properties:
   id:
     type: string
@@ -9,5 +13,5 @@ properties:
     default: gift-card
   deleted:
     type: boolean
-    description: Whether the gift card was deleted successfully or not.
+    description: Whether the gift card was deleted successfully.
     default: true

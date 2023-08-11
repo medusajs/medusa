@@ -1,11 +1,23 @@
 import { Router } from "express"
 import errorHandler from "./middlewares/error-handler"
+import compression from "compression"
 import admin from "./routes/admin"
 import store from "./routes/store"
+import { shouldCompressResponse, compressionOptions } from "../utils/api"
 
 // guaranteed to get dependencies
 export default (container, config) => {
   const app = Router()
+  const httpCompressionOptions = compressionOptions(config)
+
+  if (httpCompressionOptions.enabled) {
+    app.use(
+      compression({
+        filter: shouldCompressResponse,
+        ...httpCompressionOptions,
+      })
+    )
+  }
 
   admin(app, container, config)
   store(app, container, config)
@@ -43,6 +55,7 @@ export * from "./routes/admin/publishable-api-keys"
 export * from "./routes/admin/regions"
 export * from "./routes/admin/return-reasons"
 export * from "./routes/admin/returns"
+export * from "./routes/admin/reservations"
 export * from "./routes/admin/sales-channels"
 export * from "./routes/admin/shipping-options"
 export * from "./routes/admin/shipping-profiles"

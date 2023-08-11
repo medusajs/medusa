@@ -42,20 +42,16 @@ class ShippingProfileService extends TransactionBaseService {
   protected readonly shippingProfileRepository_: typeof ShippingProfileRepository
   protected readonly productRepository_: typeof ProductRepository
 
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-
   constructor({
-    manager,
     shippingProfileRepository,
     productService,
     productRepository,
     shippingOptionService,
     customShippingOptionService,
   }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.manager_ = manager
     this.shippingProfileRepository_ = shippingProfileRepository
     this.productService_ = productService
     this.productRepository_ = productRepository
@@ -72,11 +68,14 @@ class ShippingProfileService extends TransactionBaseService {
     selector: Selector<ShippingProfile> = {},
     config: FindConfig<ShippingProfile> = { relations: [], skip: 0, take: 10 }
   ): Promise<ShippingProfile[]> {
-    const shippingProfileRepo = this.manager_.getCustomRepository(
+    const shippingProfileRepo = this.activeManager_.withRepository(
       this.shippingProfileRepository_
     )
 
-    const query = buildQuery(selector, config)
+    const query = buildQuery<Selector<ShippingProfile>, ShippingProfile>(
+      selector,
+      config
+    )
     return shippingProfileRepo.find(query)
   }
 
@@ -143,7 +142,7 @@ class ShippingProfileService extends TransactionBaseService {
       )
     }
 
-    const profileRepository = this.manager_.getCustomRepository(
+    const profileRepository = this.activeManager_.withRepository(
       this.shippingProfileRepository_
     )
 
@@ -161,13 +160,13 @@ class ShippingProfileService extends TransactionBaseService {
     return profile
   }
 
-  async retrieveDefault(): Promise<ShippingProfile | undefined> {
-    const profileRepository = this.manager_.getCustomRepository(
+  async retrieveDefault(): Promise<ShippingProfile | null> {
+    const profileRepository = this.activeManager_.withRepository(
       this.shippingProfileRepository_
     )
 
     const profile = await profileRepository.findOne({
-      where: { type: "default" },
+      where: { type: ShippingProfileType.DEFAULT },
     })
 
     return profile
@@ -182,7 +181,7 @@ class ShippingProfileService extends TransactionBaseService {
       let profile = await this.retrieveDefault()
 
       if (!profile) {
-        const profileRepository = manager.getCustomRepository(
+        const profileRepository = manager.withRepository(
           this.shippingProfileRepository_
         )
 
@@ -204,13 +203,13 @@ class ShippingProfileService extends TransactionBaseService {
    * Retrieves the default gift card profile
    * @return the shipping profile for gift cards
    */
-  async retrieveGiftCardDefault(): Promise<ShippingProfile | undefined> {
-    const profileRepository = this.manager_.getCustomRepository(
+  async retrieveGiftCardDefault(): Promise<ShippingProfile | null> {
+    const profileRepository = this.activeManager_.withRepository(
       this.shippingProfileRepository_
     )
 
     const giftCardProfile = await profileRepository.findOne({
-      where: { type: "gift_card" },
+      where: { type: ShippingProfileType.GIFT_CARD },
     })
 
     return giftCardProfile
@@ -226,7 +225,7 @@ class ShippingProfileService extends TransactionBaseService {
       let profile = await this.retrieveGiftCardDefault()
 
       if (!profile) {
-        const profileRepository = manager.getCustomRepository(
+        const profileRepository = manager.withRepository(
           this.shippingProfileRepository_
         )
 
@@ -249,7 +248,7 @@ class ShippingProfileService extends TransactionBaseService {
    */
   async create(profile: CreateShippingProfile): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      const profileRepository = manager.getCustomRepository(
+      const profileRepository = manager.withRepository(
         this.shippingProfileRepository_
       )
 
@@ -287,27 +286,20 @@ class ShippingProfileService extends TransactionBaseService {
     update: UpdateShippingProfile
   ): Promise<ShippingProfile> {
     return await this.atomicPhase_(async (manager) => {
-      const profileRepository = manager.getCustomRepository(
+      const profileRepository = manager.withRepository(
         this.shippingProfileRepository_
       )
 
-      let profile = await this.retrieve(profileId, {
-        relations: [
-          "products",
-          "products.profile",
-          "shipping_options",
-          "shipping_options.profile",
-        ],
-      })
+      const profile = await this.retrieve(profileId)
 
       const { metadata, products, shipping_options, ...rest } = update
 
       if (products) {
-        profile = await this.addProduct(profile.id, products)
+        await this.addProduct(profile.id, products)
       }
 
       if (shipping_options) {
-        profile = await this.addShippingOption(profile.id, shipping_options)
+        await this.addShippingOption(profile.id, shipping_options)
       }
 
       if (metadata) {
@@ -330,7 +322,7 @@ class ShippingProfileService extends TransactionBaseService {
    */
   async delete(profileId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const profileRepo = manager.getCustomRepository(
+      const profileRepo = manager.withRepository(
         this.shippingProfileRepository_
       )
 
@@ -348,12 +340,22 @@ class ShippingProfileService extends TransactionBaseService {
   }
 
   /**
-   * Adds a product of an array of products to the profile.
+   * @deprecated use {@link addProducts} instead
+   */
+  async addProduct(
+    profileId: string,
+    productId: string | string[]
+  ): Promise<ShippingProfile> {
+    return await this.addProducts(profileId, productId)
+  }
+
+  /**
+   * Adds a product or an array of products to the profile.
    * @param profileId - the profile to add the products to.
    * @param productId - the ID of the product or multiple products to add.
    * @return the result of update
    */
-  async addProduct(
+  async addProducts(
     profileId: string,
     productId: string | string[]
   ): Promise<ShippingProfile> {
@@ -365,14 +367,27 @@ class ShippingProfileService extends TransactionBaseService {
         profileId
       )
 
-      return await this.retrieve(profileId, {
-        relations: [
-          "products",
-          "products.profile",
-          "shipping_options",
-          "shipping_options.profile",
-        ],
-      })
+      return await this.retrieve(profileId)
+    })
+  }
+
+  /**
+   * Removes a product or an array of products from the profile.
+   * @param profileId - the profile to add the products to.
+   * @param productId - the ID of the product or multiple products to add.
+   * @return the result of update
+   */
+  async removeProducts(
+    profileId: string | null,
+    productId: string | string[]
+  ): Promise<ShippingProfile | void> {
+    return await this.atomicPhase_(async (manager) => {
+      const productServiceTx = this.productService_.withTransaction(manager)
+
+      await productServiceTx.updateShippingProfile(
+        isString(productId) ? [productId] : productId,
+        null
+      )
     })
   }
 
@@ -397,12 +412,7 @@ class ShippingProfileService extends TransactionBaseService {
       )
 
       return await this.retrieve(profileId, {
-        relations: [
-          "products",
-          "products.profile",
-          "shipping_options",
-          "shipping_options.profile",
-        ],
+        relations: ["products.profiles", "shipping_options.profile"],
       })
     })
   }

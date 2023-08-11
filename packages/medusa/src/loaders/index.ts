@@ -1,27 +1,19 @@
-import {
-  asFunction,
-  asValue,
-  AwilixContainer,
-  createContainer,
-  Resolver,
-} from "awilix"
-import { ClassOrFunctionReturning } from "awilix/lib/container"
+import { asValue } from "awilix"
 import { Express, NextFunction, Request, Response } from "express"
 import { track } from "medusa-telemetry"
 import { EOL } from "os"
 import "reflect-metadata"
 import requestIp from "request-ip"
-import { Connection, getManager } from "typeorm"
+import { Connection } from "typeorm"
 import { MedusaContainer } from "../types/global"
 import apiLoader from "./api"
 import loadConfig from "./config"
-import databaseLoader from "./database"
+import databaseLoader, { dataSource } from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import featureFlagsLoader from "./feature-flags"
 import Logger from "./logger"
 import modelsLoader from "./models"
-import moduleLoader from "./module"
 import passportLoader from "./passport"
 import pluginsLoader, { registerPluginModels } from "./plugins"
 import redisLoader from "./redis"
@@ -30,6 +22,11 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
+
+import { moduleLoader, registerModules } from "@medusajs/modules-sdk"
+import { createMedusaContainer } from "medusa-core-utils"
+import pgConnectionLoader from "./pg-connection"
+import { ContainerRegistrationKeys } from "@medusajs/utils"
 
 type Options = {
   directory: string
@@ -48,31 +45,11 @@ export default async ({
 }> => {
   const configModule = loadConfig(rootDirectory)
 
-  const container = createContainer() as MedusaContainer
-  container.register("configModule", asValue(configModule))
-
-  container.registerAdd = function (
-    this: MedusaContainer,
-    name: string,
-    registration: typeof asFunction | typeof asValue
-  ) {
-    const storeKey = name + "_STORE"
-
-    if (this.registrations[storeKey] === undefined) {
-      this.register(storeKey, asValue([] as Resolver<unknown>[]))
-    }
-    const store = this.resolve(storeKey) as (
-      | ClassOrFunctionReturning<unknown>
-      | Resolver<unknown>
-    )[]
-
-    if (this.registrations[name] === undefined) {
-      this.register(name, asArray(store))
-    }
-    store.unshift(registration)
-
-    return this
-  }.bind(container)
+  const container = createMedusaContainer()
+  container.register(
+    ContainerRegistrationKeys.CONFIG_MODULE,
+    asValue(configModule)
+  )
 
   // Add additional information to context of request
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
@@ -87,7 +64,7 @@ export default async ({
   track("FEATURE_FLAGS_LOADED")
 
   container.register({
-    logger: asValue(Logger),
+    [ContainerRegistrationKeys.LOGGER]: asValue(Logger),
     featureFlagRouter: asValue(featureFlagRouter),
   })
 
@@ -95,7 +72,7 @@ export default async ({
 
   const modelsActivity = Logger.activity(`Initializing models${EOL}`)
   track("MODELS_INIT_STARTED")
-  modelsLoader({ container })
+  modelsLoader({ container, rootDirectory })
   const mAct = Logger.success(modelsActivity, "Models initialized") || {}
   track("MODELS_INIT_COMPLETED", { duration: mAct.duration })
 
@@ -109,21 +86,21 @@ export default async ({
   const pmAct = Logger.success(pmActivity, "Plugin models initialized") || {}
   track("PLUGIN_MODELS_INIT_COMPLETED", { duration: pmAct.duration })
 
-  const repoActivity = Logger.activity(`Initializing repositories${EOL}`)
-  track("REPOSITORIES_INIT_STARTED")
-  repositoriesLoader({ container })
-  const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
-  track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
-
   const stratActivity = Logger.activity(`Initializing strategies${EOL}`)
   track("STRATEGIES_INIT_STARTED")
   strategiesLoader({ container, configModule, isTest })
   const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
   track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
 
+  await pgConnectionLoader({ container, configModule })
+
   const modulesActivity = Logger.activity(`Initializing modules${EOL}`)
   track("MODULES_INIT_STARTED")
-  await moduleLoader({ container, configModule, logger: Logger })
+  await moduleLoader({
+    container,
+    moduleResolutions: registerModules(configModule?.modules),
+    logger: Logger,
+  })
   const modAct = Logger.success(modulesActivity, "Modules initialized") || {}
   track("MODULES_INIT_COMPLETED", { duration: modAct.duration })
 
@@ -136,7 +113,15 @@ export default async ({
   const dbAct = Logger.success(dbActivity, "Database initialized") || {}
   track("DATABASE_INIT_COMPLETED", { duration: dbAct.duration })
 
-  container.register({ manager: asValue(dbConnection.manager) })
+  const repoActivity = Logger.activity(`Initializing repositories${EOL}`)
+  track("REPOSITORIES_INIT_STARTED")
+  repositoriesLoader({ container })
+  const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
+  track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
+
+  container.register({
+    [ContainerRegistrationKeys.MANAGER]: asValue(dataSource.manager),
+  })
 
   const servicesActivity = Logger.activity(`Initializing services${EOL}`)
   track("SERVICES_INIT_STARTED")
@@ -153,7 +138,7 @@ export default async ({
 
   // Add the registered services to the request scope
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
-    container.register({ manager: asValue(getManager()) })
+    container.register({ manager: asValue(dataSource.manager) })
     ;(req as any).scope = container.createScope()
     next()
   })
@@ -198,13 +183,4 @@ export default async ({
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
   return { container, dbConnection, app: expressApp }
-}
-
-function asArray(
-  resolvers: (ClassOrFunctionReturning<unknown> | Resolver<unknown>)[]
-): { resolve: (container: AwilixContainer) => unknown[] } {
-  return {
-    resolve: (container: AwilixContainer) =>
-      resolvers.map((resolver) => container.build(resolver)),
-  }
 }

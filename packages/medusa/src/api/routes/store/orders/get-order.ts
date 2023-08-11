@@ -1,18 +1,16 @@
-import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "./index"
-
 import { OrderService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
 
 /**
- * @oas [get] /orders/{id}
+ * @oas [get] /store/orders/{id}
  * operationId: GetOrdersOrder
  * summary: Get an Order
- * description: "Retrieves an Order"
+ * description: "Retrieve an Order's details."
  * parameters:
- *   - (path) id=* {string} The id of the Order.
- *   - (query) fields {string} (Comma separated) Which fields should be included in the result.
- *   - (query) expand {string} (Comma separated) Which fields should be expanded in the result.
+ *   - (path) id=* {string} The ID of the Order.
+ *   - (query) fields {string} Comma-separated fields that should be expanded in the returned order.
+ *   - (query) expand {string} Comma-separated relations that should be included in the returned order.
  * x-codegen:
  *   method: retrieve
  * x-codeSamples:
@@ -21,16 +19,16 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *     source: |
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
- *       medusa.orders.retrieve(order_id)
+ *       medusa.orders.retrieve(orderId)
  *       .then(({ order }) => {
  *         console.log(order.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/store/orders/{id}'
+ *       curl 'https://medusa-url.com/store/orders/{id}'
  * tags:
- *   - Order
+ *   - Orders
  * responses:
  *   200:
  *     description: OK
@@ -53,10 +51,7 @@ export default async (req, res) => {
   const { id } = req.params
 
   const orderService: OrderService = req.scope.resolve("orderService")
-  const order = await orderService.retrieveWithTotals(id, {
-    select: defaultStoreOrdersFields,
-    relations: defaultStoreOrdersRelations,
-  })
+  const order = await orderService.retrieveWithTotals(id, req.retrieveConfig)
 
   res.json({
     order: cleanResponseData(order, req.allowedProperties || []),

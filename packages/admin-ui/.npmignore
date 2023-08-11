@@ -1,0 +1,6 @@
+.DS_store
+.turbo
+/src
+/build
+.vercel
+/ui/preview

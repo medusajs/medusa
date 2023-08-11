@@ -1,5 +1,6 @@
-import { PriceSelectionContext } from "../interfaces/price-selection-strategy"
 import { MoneyAmount, Product, ProductVariant, ShippingOption } from "../models"
+
+import { PriceSelectionContext } from "../interfaces/price-selection-strategy"
 import { TaxServiceRate } from "./tax-service"
 
 export type ProductVariantPricing = {
@@ -31,6 +32,35 @@ export type ShippingOptionPricing = {
   tax_amount: number
 }
 
+/** @schema PricedShippingOption
+ * title: "Priced Shipping Option"
+ * type: object
+ * allOf:
+ *   - $ref: "#/components/schemas/ShippingOption"
+ *   - type: object
+ *     properties:
+ *       price_incl_tax:
+ *         type: number
+ *         description: Price including taxes
+ *       tax_rates:
+ *         type: array
+ *         description: An array of applied tax rates
+ *         items:
+ *           type: object
+ *           properties:
+ *             rate:
+ *               type: number
+ *               description: The tax rate value
+ *             name:
+ *               type: string
+ *               description: The name of the tax rate
+ *             code:
+ *               type: string
+ *               description: The code of the tax rate
+ *       tax_amount:
+ *         type: number
+ *         description: The taxes applied.
+ */
 export type PricedShippingOption = Partial<ShippingOption> &
   ShippingOptionPricing
 

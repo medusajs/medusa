@@ -1,4 +1,11 @@
 type: object
+x-expanded-relations:
+  field: return_reason
+  relations:
+    - parent_return_reason
+    - return_reason_children
+required:
+  - return_reason
 properties:
   return_reason:
     $ref: ./ReturnReason.yaml
