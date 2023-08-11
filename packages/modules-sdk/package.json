@@ -31,9 +31,9 @@
     "resolve-cwd": "^3.0.0"
   },
   "scripts": {
-    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
-    "test": "jest",
+    "test": "jest --runInBand --bail --forceExit",
     "watch": "tsc --build --watch"
   }
 }
