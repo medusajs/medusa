@@ -1,6 +1,6 @@
 post:
   operationId: PostPaymentCollectionsSessionsBatchAuthorize
-  summary: Authorize PaymentSessions
+  summary: Authorize Payment Sessions
   description: Authorize the Payment Sessions of a Payment Collection.
   x-authenticated: false
   parameters:
