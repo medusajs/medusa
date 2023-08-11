@@ -45,10 +45,7 @@ const ColorModeProvider = ({ children }: ColorModeProviderProps) => {
       localStorage.setItem("theme", colorMode)
     }
 
-    const htmlElm = document.querySelector("html")
-    if (htmlElm) {
-      htmlElm.setAttribute("data-theme", colorMode)
-    }
+    document.querySelector("html")?.setAttribute("data-theme", colorMode)
   }, [colorMode])
 
   return (
