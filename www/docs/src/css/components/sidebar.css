@@ -54,7 +54,7 @@
 
 .theme-doc-sidebar-item-category-level-2 > .menu__list-item-collapsible .menu__link--active::before,
 .menu__list:not(.theme-doc-sidebar-menu) > .theme-doc-sidebar-item-link.theme-doc-sidebar-item-link-level-2 > .menu__link--active::before {
-  @apply bg-medusa-icon-interactive dark:bg-medusa-icon-interactive-dark !z-[2] !top-[6px];
+  @apply bg-medusa-fg-interactive dark:bg-medusa-fg-interactive-dark !z-[2] !top-[6px];
 }
 
 .theme-doc-sidebar-item-category-level-2:only-child > .menu__list-item-collapsible .menu__link--active::before,
@@ -125,7 +125,7 @@
 }
 
 .menu__link {
-  @apply cursor-pointer !rounded text-label-small-plus;
+  @apply cursor-pointer !rounded text-compact-small-plus;
 }
 
 .theme-doc-sidebar-item-category-level-1 > .menu__list {
@@ -148,7 +148,7 @@
 
 /** Mobile Sidebar **/
 .navbar-sidebar__back {
-  @apply bg-transparent w-fit top-[unset] pl-0 ml-0 mb-1 text-label-small-plus;
+  @apply bg-transparent w-fit top-[unset] pl-0 ml-0 mb-1 text-compact-small-plus;
 }
 
 .theme-doc-sidebar-item-link {
@@ -158,10 +158,10 @@
 /** Redocly sidebar **/
 
 .redocusaurus .menu-content > div > ul > li > ul label:not([type=tag]):not(.active) {
-  @apply text-medusa-text-subtle dark:text-medusa-text-subtle-dark;
-  @apply hover:text-medusa-text-base dark:hover:text-medusa-text-base-dark;
+  @apply text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark;
+  @apply hover:text-medusa-fg-base dark:hover:text-medusa-fg-base-dark;
 }
 
 .redocusaurus .menu-content > div > ul > li > ul label:not([type=tag]).active {
-  @apply text-medusa-text-base dark:text-medusa-text-base-dark;
+  @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
 }

@@ -59,7 +59,7 @@ const Solutions: React.FC<SolutionsProps> = ({ feedback, message }) => {
   return (
     <>
       {possibleSolutions.length > 0 && (
-        <div className="text-label-large-plus font-normal">
+        <div className="text-compact-large-plus font-normal">
           <span className="inline-block my-1 mx-0">
             If you faced a problem, here are some possible solutions from
             GitHub:

@@ -25,7 +25,7 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
                 text={item.title}
                 html={item.html}
                 key={index}
-                tooltipClassName="!text-label-x-small-plus"
+                tooltipClassName="!text-compact-x-small-plus"
               >
                 <a
                   href={item.href}
@@ -46,7 +46,7 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
                 text={item.title}
                 html={item.html}
                 key={index}
-                tooltipClassName="!text-label-x-small-plus"
+                tooltipClassName="!text-compact-x-small-plus"
               >
                 <button
                   className={clsx(

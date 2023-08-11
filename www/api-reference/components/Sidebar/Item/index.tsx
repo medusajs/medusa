@@ -61,9 +61,9 @@ const SidebarItem = ({ item, nested = false, className }: SidebarItemProps) => {
         className={clsx(
           "flex items-center justify-between gap-0.5 rounded border px-0.5 py-[6px] hover:no-underline",
           !item.hasChildren &&
-            "text-label-small-plus text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+            "text-compact-small-plus text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
           item.hasChildren &&
-            "text-label-x-small-plus text-medusa-fg-muted dark:text-medusa-fg-muted-dark uppercase",
+            "text-compact-x-small-plus text-medusa-fg-muted dark:text-medusa-fg-muted-dark uppercase",
           active &&
             "!text-medusa-fg-base dark:!text-medusa-fg-base-dark bg-medusa-bg-base-pressed dark:bg-medusa-bg-base-pressed-dark",
           active &&

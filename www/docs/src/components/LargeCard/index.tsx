@@ -66,8 +66,8 @@ const LargeCard: React.FC<LargeCardProps> = ({
           <span
             className={clsx(
               isSoon &&
-                "group-hover:text-medusa-text-disabled dark:group-hover:text-medusa-text-disabled-dark",
-              "text-medusa-text-base dark:text-medusa-text-base-dark text-label-regular-plus",
+                "group-hover:text-medusa-fg-disabled dark:group-hover:text-medusa-fg-disabled-dark",
+              "text-medusa-fg-base dark:text-medusa-fg-base-dark text-compact-medium-plus",
               "transition-all duration-200 ease-ease"
             )}
           >
@@ -77,8 +77,8 @@ const LargeCard: React.FC<LargeCardProps> = ({
         <div
           className={clsx(
             isSoon &&
-              "group-hover:text-medusa-text-disabled dark:group-hover:text-medusa-text-disabled-dark",
-            "transition-all duration-200 ease-ease text-body-regular"
+              "group-hover:text-medusa-fg-disabled dark:group-hover:text-medusa-fg-disabled-dark",
+            "transition-all duration-200 ease-ease text-medium"
           )}
         >
           {children}

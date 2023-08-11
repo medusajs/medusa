@@ -59,7 +59,7 @@ const TagsOperationDescriptionSection = ({
         {operation["x-featureFlag"] && (
           <TagsOperationFeatureFlagNotice
             featureFlag={operation["x-featureFlag"]}
-            tooltipTextClassName="font-normal text-medusa-text-subtle dark:text-medusa-text-subtle-dark"
+            tooltipTextClassName="font-normal text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark"
             badgeClassName="ml-0.5"
           />
         )}

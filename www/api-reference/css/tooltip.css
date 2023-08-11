@@ -1,6 +1,6 @@
 .react-tooltip {
   @apply !border !border-solid !border-medusa-border-base dark:!border-medusa-border-base-dark;
-  @apply !rounded !text-label-x-small-plus !shadow-overlay dark:!shadow-overlay-dark;
+  @apply !rounded !text-compact-x-small-plus !shadow-tooltip dark:!shadow-tooltip-dark;
   @apply !py-0.4 !px-1 lg:block hidden;
 }
 

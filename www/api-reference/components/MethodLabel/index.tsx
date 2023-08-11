@@ -10,7 +10,7 @@ const MethodLabel = ({ method, className }: MethodLabelProps) => {
   return (
     <span
       className={clsx(
-        "text-label-x-small-plus rounded border py-0 px-[6px]",
+        "text-compact-x-small-plus rounded border py-0 px-[6px]",
         method === "get" &&
           "bg-medusa-tag-green-bg dark:bg-medusa-tag-green-bg-dark text-medusa-tag-green-text dark:text-medusa-tag-green-text-dark border-medusa-tag-green-border dark:border-medusa-tag-green-border-dark",
         method === "post" &&

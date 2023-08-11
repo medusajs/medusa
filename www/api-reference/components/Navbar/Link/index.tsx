@@ -29,7 +29,7 @@ const NavbarLink = ({
           "text-medusa-fg-base dark:text-medusa-fg-base-dark",
         activeItem !== activeValue &&
           "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
-        "text-label-small-plus inline-block",
+        "text-compact-small-plus inline-block",
         "hover:text-medusa-fg-base dark:hover:text-medusa-fg-base-dark",
         className
       )}

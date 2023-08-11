@@ -17,7 +17,7 @@ const Button = ({
     <button
       className={clsx(
         // isSelected &&
-        //   "bg-medusa-bg-interactive dark:bg-medusa-bg-interactive-dark text-medusa-text-on-color border-transparent",
+        //   "bg-medusa-bg-interactive dark:bg-medusa-bg-interactive-dark text-medusa-fg-on-color border-transparent",
         // !isSelected &&
         //   "bg-medusa-bg-base dark:bg-medusa-bg-base-dark border-medusa-border-base dark:border-medusa-border-base-dark",
         variant === "primary" && "btn-primary",

@@ -18,7 +18,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       className={clsx(
-        !btnTypeClassName?.length && "btn-primary",
+        !btnTypeClassName?.length && "btn-secondary",
         btnTypeClassName,
         className
       )}

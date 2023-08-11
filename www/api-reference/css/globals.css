@@ -247,12 +247,13 @@
     @apply active:bg-button-neutral-pressed dark:active:!bg-no-image dark:active:bg-medusa-button-neutral-pressed-dark;
     @apply focus:shadow-button-secondary dark:focus:shadow-button-secondary-dark;
     @apply disabled:!bg-no-image disabled:bg-medusa-bg-disabled dark:disabled:bg-medusa-bg-disabled-dark;
-    @apply disabled:cursor-not-allowed transition-all disabled:border-medusa-border-base dark:disabled:border-medusa-border-base-dark;
+    @apply disabled:cursor-not-allowed disabled:border-medusa-border-base dark:disabled:border-medusa-border-base-dark;
     @apply border border-solid border-medusa-border-loud-muted dark:border-medusa-border-loud-muted-dark;
     @apply text-compact-small-plus text-medusa-fg-base dark:text-medusa-fg-base-dark;
     @apply shadow-button-secondary dark:shadow-button-secondary-dark;
     @apply focus:shadow-button-secondary-focus dark:focus:shadow-button-secondary-focus-dark;
     @apply active:shadow-button-secondary-focus dark:active:shadow-button-secondary-focus-dark;
+    @apply select-none;
   }
 
   .btn-secondary-icon {
@@ -272,6 +273,7 @@
     @apply text-compact-small-plus text-medusa-fg-on-inverted dark:text-medusa-fg-on-inverted-dark;
     @apply disabled:text-medusa-fg-disabled dark:disabled:text-medusa-fg-disabled-dark;
     @apply border border-medusa-border-loud dark:border-medusa-border-loud-dark;
+    @apply select-none;
   }
 
   .btn-clear {

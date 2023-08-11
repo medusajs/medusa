@@ -148,10 +148,10 @@ function TabList({
                   "border-0 border-b-[3px] rounded inline-flex p-1 transition-[background-color] duration-200 ease-ease",
                 !isCodeTabs &&
                   selectedValue === value &&
-                  "border-solid border-medusa-text-base dark:border-medusa-text-base-dark rounded-b-none",
+                  "border-solid border-medusa-fg-base dark:border-medusa-fg-base-dark rounded-b-none",
                 !isCodeTabs &&
                   selectedValue !== value &&
-                  "text-medusa-text-subtle dark:text-medusa-text-subtle-dark",
+                  "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
                 (!isCodeTabs || !attributes?.badge) && "px-[12px]",
                 isCodeTabs &&
                   attributes?.badge &&
@@ -166,7 +166,7 @@ function TabList({
       {isCodeTabs && (
         <span
           className={clsx(
-            "text-label-small-plus text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark hidden xs:block"
+            "text-compact-small-plus text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark hidden xs:block"
           )}
         >
           {codeTitle}

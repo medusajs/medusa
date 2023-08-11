@@ -386,7 +386,7 @@ function SearchPageContent(): JSX.Element {
               name="q"
               className={clsx(
                 "search-page-input",
-                "placeholder:text-medusa-text-subtle dark:placeholder:text-medusa-text-subtle-dark"
+                "placeholder:text-medusa-fg-subtle dark:placeholder:text-medusa-fg-subtle-dark"
               )}
               placeholder={translate({
                 id: "theme.SearchPage.inputPlaceholder",
@@ -413,7 +413,7 @@ function SearchPageContent(): JSX.Element {
         </form>
 
         <div className="row">
-          <div className={clsx("col", "col--8", "!text-label-small-plus")}>
+          <div className={clsx("col", "col--8", "!text-compact-small-plus")}>
             {!!searchResultState.totalResults &&
               documentsFoundPlural(searchResultState.totalResults)}
           </div>
@@ -436,7 +436,7 @@ function SearchPageContent(): JSX.Element {
                       to={url}
                       dangerouslySetInnerHTML={{ __html: title }}
                       className={clsx(
-                        "text-medusa-text-base dark:text-medusa-text-base-dark"
+                        "text-medusa-fg-base dark:text-medusa-fg-base-dark"
                       )}
                     />
                   </h2>
@@ -446,7 +446,7 @@ function SearchPageContent(): JSX.Element {
                       <ul
                         className={clsx(
                           "mb-0 pl-0",
-                          "!text-label-x-small-plus text-medusa-text-subtle dark:text-medusa-text-subtle-dark"
+                          "!text-compact-x-small-plus text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark"
                         )}
                       >
                         {breadcrumbs.map((html, index) => (
@@ -490,7 +490,7 @@ function SearchPageContent(): JSX.Element {
               <div
                 key="spinner"
                 className={clsx(
-                  "w-3 h-3 border-0.4 border-solid border-[#eee] border-t-medusa-text-base dark:border-t-medusa-text-base-dark",
+                  "w-3 h-3 border-0.4 border-solid border-[#eee] border-t-medusa-fg-base dark:border-t-medusa-fg-base-dark",
                   "rounded-[50%] animate-spin my-0 mx-auto"
                 )}
               />

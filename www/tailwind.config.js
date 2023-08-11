@@ -156,15 +156,6 @@ module.exports = {
                 dark: "#DBEAFE" // TODO change
               }
             },
-            // TODO remove if not added
-            field: {
-              DEFAULT: "#F8F9FA",
-              dark: "#232326",
-              hover: {
-                DEFAULT: "#F1F3F5",
-                dark: "#28282C",
-              },
-            },
           },
           fg: {
             base: {
@@ -239,101 +230,6 @@ module.exports = {
               DEFAULT: "#BE123C",
               dark: "#BE123C" // TODO change
             },
-            // TODO remove if not added
-            focus: {
-              DEFAULT: "#0081F1",
-              dark: "#6E56CF",
-              inset: {
-                DEFAULT: "#FFFFFF",
-                dark: "#1C1C1F",
-              },
-            },
-            "neutral-buttons": {
-              DEFAULT: "rgba(17, 24, 28, 0.16)",
-              dark: "rgba(255, 255, 255, 0.06)",
-            },
-            "colored-buttons": {
-              DEFAULT: "rgba(17, 24, 28, 0.35)",
-              dark: "rgba(0, 0, 0, 0.24)",
-            },
-          },
-          // TODO remove if not added and replace usage with fg
-          text: {
-            base: {
-              DEFAULT: "#11181C",
-              dark: "#EDEDEF",
-            },
-            subtle: {
-              DEFAULT: "#687076",
-              dark: "#7E7D86",
-            },
-            muted: {
-              DEFAULT: "#889096",
-              dark: "#706F78",
-            },
-            disabled: {
-              DEFAULT: "#C1C8CD",
-              dark: "#504F57",
-            },
-            "on-color": {
-              DEFAULT: "#FFFFFF",
-              dark: "#FFFFFF",
-            },
-            interactive: {
-              DEFAULT: "#0081F1",
-              dark: "#7C66DC",
-              hover: {
-                DEFAULT: "#006ADC",
-                dark: "#9E8CFC",
-              },
-            },
-            error: {
-              DEFAULT: "#E5484D",
-              dark: "#E5484D",
-            },
-            "on-inverted": {
-              DEFAULT: "#FFFFFF",
-              dark: "#1A1523",
-            },
-          },
-          // TODO remove if not added and replace usage with fg
-          icon: {
-            base: {
-              DEFAULT: "#11181C",
-              dark: "#EDEDEF",
-            },
-            subtle: {
-              DEFAULT: "#687076",
-              dark: "#7E7D86",
-            },
-            muted: {
-              DEFAULT: "#889096",
-              dark: "#706F78",
-            },
-            disabled: {
-              DEFAULT: "#C1C8CD",
-              dark: "#504F57",
-            },
-            "on-color": {
-              DEFAULT: "#FFFFFF",
-              dark: "#FFFFFF",
-            },
-            interactive: {
-              DEFAULT: "#0081F1",
-              dark: "#7C66DC",
-              hover: {
-                DEFAULT: "#006ADC",
-                dark: "#9E8CFC",
-              },
-            },
-            error: {
-              DEFAULT: "#E5484D",
-              dark: "#E5484D",
-            },
-            "on-inverted": {
-              DEFAULT: "#FFFFFF",
-              dark: "#1A1523",
-            },
           },
           button: {
             inverted: {
@@ -373,19 +269,6 @@ module.exports = {
                 dark: "#2E2E32",
               },
             },
-            // TODO remove if not added
-            brand: {
-              DEFAULT: "#5746AF",
-              dark: "#5842C3",
-              hover: {
-                DEFAULT: "#644FC1",
-                dark: "#5842C3",
-              },
-              pressed: {
-                DEFAULT: "#5746AF",
-                dark: "#7C66DC",
-              },
-            },
             neutral: {
               DEFAULT: "#F8F9FA",
               dark: "#28282C",
@@ -401,10 +284,6 @@ module.exports = {
             disabled: {
               DEFAULT: "#ECEEF0",
               dark: "#28282C",
-            },
-            success: {
-              DEFAULT: "#30A46C",
-              dark: "#30A46C",
             },
           },
           tag: {
@@ -540,51 +419,6 @@ module.exports = {
                 dark: "#671E22",
               },
             },
-            // TODO remove if not added
-            transparent: {
-              bg: {
-                DEFAULT: "rgba(255, 255, 255, 0)",
-                dark: "#1C1C1F",
-                hover: {
-                  DEFAULT: "#F8F9FA",
-                  dark: "#232326",
-                },
-              },
-              text: {
-                DEFAULT: "#687076",
-                dark: "#A09FA6",
-              },
-              icon: {
-                DEFAULT: "#889096",
-                dark: "#706F78",
-              },
-              border: {
-                DEFAULT: "#DFE3E6",
-                dark: "#3E3E44",
-              },
-            },
-            pink: {
-              bg: {
-                DEFAULT: "#FCE5F3",
-                dark: "#451A37",
-                hover: {
-                  DEFAULT: "#F9D8EC",
-                  dark: "#501B3F",
-                },
-              },
-              text: {
-                DEFAULT: "#CD1D8D",
-                dark: "#F65CB6",
-              },
-              icon: {
-                DEFAULT: "#D6409F",
-                dark: "#D6409F",
-              },
-              border: {
-                DEFAULT: "#F3C6E2",
-                dark: "#601D48",
-              },
-            },
           },
           code: {
             text: {
@@ -596,8 +430,6 @@ module.exports = {
                 DEFAULT: "#9CA3AF",
                 dark: "#7E7D86"
               },
-              // TODO remove once changed in docs
-              muted: "#697177",
               highlight: "#102A4C"
             },
             icon: {
@@ -617,46 +449,6 @@ module.exports = {
             border: {
               DEFAULT: "#374151",
               dark: "#2E2E32"
-            },
-            // TODO remove once changed in docs
-            block: {
-              bg: "#151718",
-              transparent: "transparent",
-              header: "#1A1D1E",
-              border: "#2E2E32",
-              action: "#706F78",
-            },
-            tabs: {
-              bg: "#1A1D1E",
-            },
-            tab: {
-              bg: "#151718",
-              hover: "rgba(141, 141, 141, 0.16)",
-              border: "#3A3F42",
-              text: {
-                DEFAULT: "#787F85",
-                active: "#EDEDEF",
-              },
-              title: "#787F85",
-            },
-          },
-          // TODO remove if not used
-          support: {
-            error: {
-              DEFAULT: "#E5484D",
-              dark: "#E5484D",
-            },
-            warning: {
-              DEFAULT: "#FFB224",
-              dark: "#FFB224",
-            },
-            success: {
-              DEFAULT: "#30A46C",
-              dark: "#30A46C",
-            },
-            info: {
-              DEFAULT: "#0091FF",
-              dark: "#0091FF",
             },
           },
         },
@@ -693,14 +485,6 @@ module.exports = {
           "0px 2px 24px 0px rgba(3, 7, 18, 0.08), 0px 16px 32px 0px rgba(3, 7, 18, 0.08), 0px 0px 0px 1px rgba(3, 7, 18, 0.08), 0px 0px 0px 2px rgba(229, 231, 235, 0.40) inset, 0px 0px 0px 1px #FFF inset",
         "modal-dark":
           "0px 2px 24px 0px rgba(0, 0, 0, 0.32), 0px 16px 32px 0px rgba(0, 0, 0, 0.32), 0px 0px 0px 1px rgba(255, 255, 255, 0.10)",
-        // TODO remove if not used
-        focus: "0px 0px 0px 2px #FFFFFF, 0px 0px 0px 4px #0081F1",
-        "focus-dark": "0px 0px 0px 2px #1C1C1F, 0px 0px 0px 4px #6E56CF",
-        active: "0px 0px 0px 3px #E1F0FF",
-        "active-dark": "0px 0px 0px 3px #2C2250",
-        overlay: "0px 2px 16px rgba(0, 0, 0, 0.08)",
-        "overlay-dark": "0px 2px 16px rgba(0, 0, 0, 0.32)",
-        navbar: "0px 1px 0px 0px #E6E8EB",
         "navbar-dark": "0px 1px 0px 0px #2E2E32",
         "button-primary": "0px 1px 1px 0px rgba(3, 7, 18, 0.20), 0px 2px 0px 0px rgba(255, 255, 255, 0.16) inset",
         "button-primary-focus": "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 1px 0px rgba(3, 7, 18, 0.20), 0px 2px 0px 0px rgba(255, 255, 255, 0.16) inset",
@@ -708,6 +492,10 @@ module.exports = {
         "button-secondary-dark": "0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset", // TODO change
         "button-secondary-focus": "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset",
         "button-secondary-focus-dark": "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset", // TODO change
+        // TODO remove if not used
+        active: "0px 0px 0px 3px #E1F0FF",
+        "active-dark": "0px 0px 0px 3px #2C2250",
+        navbar: "0px 1px 0px 0px #E6E8EB",
       },
       borderRadius: {
         DEFAULT: "6px",
@@ -733,13 +521,11 @@ module.exports = {
         "button-danger-dark": "linear-gradient(180deg, #DC3D43 0%, #AA2429 29.95%)",
         "button-danger-hover": "linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.00) 100%)",
         "button-danger-pressed": "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.16) 100%)",
+        "code-fade": "linear-gradient(90deg, #11182700, #111827 24px)",
+        "code-fade-dark": "linear-gradient(90deg, #1C1C1F00, #1C1C1F 24px)",
         // TODO remove if not used
         "docs-button-neutral": "linear-gradient(180deg, #FFF 30.10%, #F8F9FA 100%)",
         "docs-button-neutral-dark": "linear-gradient(180deg, #2E2E32 0%, #28282C 32.67%)",
-        "primary-gradient":
-          "linear-gradient(90deg, rgba(146, 144, 254, 0) 0%, rgba(163, 219, 254, 0.4) 26.04%, #9290FE 53.65%, rgba(197, 145, 255, 0.4) 78.65%, rgba(201, 138, 255, 0) 100%)",
-        "code-fade": "linear-gradient(90deg, #11182700, #111827 24px)",
-        "code-fade-dark": "linear-gradient(90deg, #1C1C1F00, #1C1C1F 24px)",
       },
       screens: {
         xs: "576px",
@@ -913,113 +699,6 @@ module.exports = {
             fontWeight: "400",
           },
         ],
-        // TODO remove once changed in docs
-        "body-x-large-plus": [
-          "18px",
-          {
-            lineHeight: "32px",
-            fontWeight: "500",
-          },
-        ],
-        "body-x-large": [
-          "18px",
-          {
-            lineHeight: "32px",
-            fontWeight: "500",
-          },
-        ],
-        "body-large-plus": [
-          "16px",
-          {
-            lineHeight: "28px",
-            fontWeight: "500",
-          },
-        ],
-        "body-large": [
-          "16px",
-          {
-            lineHeight: "28px",
-            fontWeight: "400",
-          },
-        ],
-        "body-regular-plus": [
-          "14px",
-          {
-            lineHeight: "24px",
-            fontWeight: "500",
-          },
-        ],
-        "body-regular": [
-          "14px",
-          {
-            lineHeight: "24px",
-            fontWeight: "400",
-          },
-        ],
-        "label-large-plus": [
-          "16px",
-          {
-            lineHeight: "20px",
-            fontWeight: "500",
-          },
-        ],
-        "label-large": [
-          "16px",
-          {
-            lineHeight: "20px",
-            fontWeight: "400",
-          },
-        ],
-        "label-regular-plus": [
-          "14px",
-          {
-            lineHeight: "20px",
-            fontWeight: "500",
-          },
-        ],
-        "label-regular": [
-          "14px",
-          {
-            lineHeight: "20px",
-            fontWeight: "400",
-          },
-        ],
-        "label-small-plus": [
-          "13px",
-          {
-            lineHeight: "20px",
-            fontWeight: "500",
-          },
-        ],
-        "label-small": [
-          "13px",
-          {
-            lineHeight: "20px",
-            fontWeight: "400",
-          },
-        ],
-        "label-x-small-plus": [
-          "12px",
-          {
-            lineHeight: "20px",
-            fontWeight: "500",
-          },
-        ],
-        "label-x-small": [
-          "12px",
-          {
-            lineHeight: "20px",
-            fontWeight: "400",
-          },
-        ],
-        // TODO remove if not used
-        "code": [
-          "14px",
-          {
-            lineHeight: "24px",
-            fontWeight: "400",
-          }
-        ]
       },
     },
     fontFamily: {

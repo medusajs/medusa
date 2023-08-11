@@ -182,7 +182,7 @@ details summary {
 }
 
 .markdown kbd {
-  @apply !font-monospace !bg-medusa-bg-component dark:!bg-medusa-bg-component-dark !text-medusa-text-subtle dark:!text-medusa-text-subtle-dark;
+  @apply !font-monospace !bg-medusa-bg-component dark:!bg-medusa-bg-component-dark !text-medusa-fg-subtle dark:!text-medusa-fg-subtle-dark;
   @apply !rounded-md !border-medusa-border-strong dark:!border-medusa-border-strong-dark !shadow-none;
 }
 
@@ -192,7 +192,7 @@ details summary {
 }
 
 .theme-last-updated {
-  @apply font-normal not-italic text-label-small-plus;
+  @apply font-normal not-italic text-compact-small-plus;
 }
 
 .theme-last-updated,
@@ -221,7 +221,7 @@ details > div {
 }
 
 .search-result-match {
-  @apply text-medusa-text-base dark:text-medusa-text-base-dark;
+  @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
   @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark py-[4px] px-0;
 }
 
@@ -234,7 +234,7 @@ html:not(.plugin-redoc) .navbar:not(.navbar-sidebar--show) {
 }
 
 .navbar__link {
-  @apply text-label-small-plus;
+  @apply text-compact-small-plus;
 }
 
 .navbar__brand {
@@ -258,7 +258,7 @@ h3 {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @apply text-medusa-text-base dark:text-medusa-text-base-dark;
+  @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
 }
 
 .markdown > h1:first-child,

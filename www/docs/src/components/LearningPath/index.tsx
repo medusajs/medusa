@@ -47,7 +47,7 @@ const LearningPath: React.FC<LearningPathProps> = ({
         <div className={clsx("flex-auto")}>
           <span
             className={clsx(
-              "text-medusa-text-base dark:text-medusa-text-base-dark text-label-large-plus block"
+              "text-medusa-fg-base dark:text-medusa-fg-base-dark text-compact-large-plus block"
             )}
           >
             {path.label}
@@ -55,7 +55,7 @@ const LearningPath: React.FC<LearningPathProps> = ({
           {path.description && (
             <span
               className={clsx(
-                "text-medusa-text-subtle dark:text-medusa-text-subtle-dark text-label-regular mt-[4px] inline-block"
+                "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark text-compact-medium mt-[4px] inline-block"
               )}
             >
               {path.description}
@@ -78,11 +78,11 @@ const LearningPath: React.FC<LearningPathProps> = ({
           <div
             className={clsx("w-3 flex items-center justify-center")}
           >
-            <IconCircleMiniSolid iconColorClassName="stroke-medusa-icon-muted dark:stroke-medusa-icon-muted-dark" />
+            <IconCircleMiniSolid iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
           </div>
           <span
             className={clsx(
-              "text-medusa-text-base dark:text-medusa-text-base-dark text-label-regular-plus"
+              "text-medusa-fg-base dark:text-medusa-fg-base-dark text-compact-medium-plus"
             )}
           >
             {step.title}

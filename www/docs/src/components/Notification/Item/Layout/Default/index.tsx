@@ -28,12 +28,11 @@ const NotificationItemLayoutDefault: React.FC<
         {type !== "none" && (
           <div
             className={clsx(
-              type !== "custom" &&
-                "w-2 flex justify-center items-center"
+              type !== "custom" && "w-2 flex justify-center items-center"
             )}
           >
             {type === "info" && (
-              <IconInformationCircleSolid iconColorClassName="fill-medusa-support-info dark:fill-medusa-support-info-dark" />
+              <IconInformationCircleSolid iconColorClassName="fill-medusa-fg-interactive-dark" />
             )}
             {type === "error" && (
               <IconXCircleSolid iconColorClassName="fill-medusa-tag-red-icon dark:fill-medusa-tag-red-icon-dark" />
@@ -49,8 +48,8 @@ const NotificationItemLayoutDefault: React.FC<
         )}
         <span
           className={clsx(
-            "text-label-regular-plus",
-            "text-medusa-text-base dark:text-medusa-text-base-dark"
+            "text-compact-medium-plus",
+            "text-medusa-fg-base dark:text-medusa-fg-base-dark"
           )}
         >
           {title}
@@ -68,7 +67,7 @@ const NotificationItemLayoutDefault: React.FC<
             {text && (
               <span
                 className={clsx(
-                  "text-body-regular text-medusa-text-subtle dark:text-medusa-text-subtle-dark"
+                  "text-medium text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark"
                 )}
               >
                 {text}

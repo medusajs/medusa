@@ -14,7 +14,7 @@ const IconXMark = ({ iconColorClassName, ...props }: IconProps) => {
         d="M5 15L15 5M5 5L15 15"
         className={
           iconColorClassName ||
-          "stroke-medusa-icon-subtle dark:stroke-medusa-icon-subtle-dark"
+          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle-dark"
         }
         strokeWidth="1.5"
         strokeLinecap="round"

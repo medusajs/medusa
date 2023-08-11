@@ -21,7 +21,7 @@ const InlineCode = (props: InlineCodeProps) => {
         <CopyButton
           text={props.children as string}
           buttonClassName={clsx(
-            "bg-transparent border-0 p-0 inline text-medusa-text-subtle dark:text-medusa-text-subtle-dark",
+            "bg-transparent border-0 p-0 inline text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
             "active:[&>code]:bg-medusa-bg-subtle-pressed dark:active:[&>code]:bg-medusa-bg-subtle-pressed-dark",
             "focus:[&>code]:bg-medusa-bg-subtle-pressed dark:focus:[&>code]:bg-medusa-bg-subtle-pressed-dark",
             "hover:[&>code]:bg-medusa-bg-subtle-hover dark:hover:[&>code]:bg-medusa-bg-base-hover-dark"

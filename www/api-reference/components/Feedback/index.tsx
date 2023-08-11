@@ -186,7 +186,7 @@ const Feedback: React.FC<FeedbackProps> = ({
             {submittedFeedback && (
               <div>
                 <div
-                  className="text-label-large-plus flex flex-col"
+                  className="text-compact-large-plus flex flex-col"
                   ref={inlineMessageRef}
                 >
                   <span>{submitMessage}</span>

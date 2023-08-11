@@ -21,8 +21,8 @@
 }
 
 .DocSearch-Input {
-  @apply !text-body-regular !pl-1;
-  @apply placeholder:text-medusa-text-muted dark:placeholder:text-medusa-text-muted-dark;
+  @apply !text-medium !pl-1;
+  @apply placeholder:text-medusa-fg-muted dark:placeholder:text-medusa-fg-muted-dark;
 }
 
 .DocSearch-Dropdown {
@@ -31,7 +31,7 @@
 }
 
 .DocSearch-Hit-source {
-  @apply !m-0 !text-label-small-plus uppercase text-medusa-text-muted dark:text-medusa-text-muted-dark;
+  @apply !m-0 !text-compact-small-plus uppercase text-medusa-fg-muted dark:text-medusa-fg-muted-dark;
   @apply border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark;
   @apply !py-[10px] !px-1.5;
 }
@@ -72,20 +72,20 @@
 
 .DocSearch-Hit-title,
 .DocSearch-Hit-title mark {
-  @apply !text-medusa-text-base dark:!text-medusa-text-base-dark;
-  @apply !text-label-small-plus;
+  @apply !text-medusa-fg-base dark:!text-medusa-fg-base-dark;
+  @apply !text-compact-small-plus;
 }
 
 .DocSearch-Hit-path {
-  @apply !text-medusa-text-subtle dark:!text-medusa-text-subtle-dark !text-label-small;
+  @apply !text-medusa-fg-subtle dark:!text-medusa-fg-subtle-dark !text-compact-small;
 }
 
 .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
-  --docsearch-hit-active-color: theme(colors.medusa.text.subtle.DEFAULT);
+  --docsearch-hit-active-color: theme(colors.medusa.fg.subtle.DEFAULT);
 }
 
 html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
-  --docsearch-hit-active-color: theme(colors.medusa.text.subtle.dark);
+  --docsearch-hit-active-color: theme(colors.medusa.fg.subtle.dark);
 }
 
 .DocSearch-Hit[aria-selected=true] a {
@@ -140,11 +140,11 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 }
 
 .DocSearch-NoResults .DocSearch-Title {
-  @apply !text-label-small !pl-1;
+  @apply !text-compact-small !pl-1;
 }
 
 .DocSearch-NoResults-Prefill-List {
-  @apply text-center !text-label-small-plus !pl-1;
+  @apply text-center !text-compact-small-plus !pl-1;
 }
 
 .DocSearch-NoResults-Prefill-List li::marker {
@@ -152,12 +152,12 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 }
 
 .DocSearch-NoResults-Prefill-List li button {
-  @apply text-medusa-text-base dark:text-medusa-text-base-dark;
+  @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
 }
 .DocSearch-Button {
   @apply w-full !h-full !rounded lg:!border lg:!border-solid lg:!border-medusa-border-base lg:dark:!border-medusa-border-base-dark border-0;
-  @apply lg:!bg-medusa-bg-field lg:dark:!bg-medusa-bg-field-dark !bg-transparent;
-  @apply lg:hover:!bg-medusa-bg-field-hover lg:dark:hover:!bg-medusa-bg-field-hover-dark;
+  @apply lg:!bg-medusa-bg-subtle lg:dark:!bg-medusa-bg-subtle-dark !bg-transparent;
+  @apply lg:hover:!bg-medusa-bg-subtle-hover lg:dark:hover:!bg-medusa-bg-subtle-hover-dark;
   @apply !py-[6px] !pl-0.5 relative;
   @apply hover:!border-medusa-border-base hover:dark:!border-medusa-border-base-dark;
   @apply active:!border-medusa-border-base active:dark:!border-medusa-border-base-dark;
@@ -178,8 +178,8 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 }
 
 .DocSearch-Button-Placeholder {
-  @apply text-medusa-text-muted dark:text-medusa-text-muted-dark;
-  @apply !pl-0.5 !text-label-small lg:!block !hidden;
+  @apply text-medusa-fg-muted dark:text-medusa-fg-muted-dark;
+  @apply !pl-0.5 !text-compact-small lg:!block !hidden;
 }
 
 .DocSearch-Button-Keys {
@@ -187,7 +187,7 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 }
 
 .DocSearch-Button-Key {
-  @apply !shadow-none !rounded-md !text-label-x-small-plus !font-base align-middle !p-[2px];
+  @apply !shadow-none !rounded-md !text-compact-x-small-plus !font-base align-middle !p-[2px];
   @apply !border !border-solid !border-medusa-border-strong dark:!border-medusa-border-strong-dark;
   @apply [&span]:hidden [&:not(:last-child)]:!mr-[4px] last:!mr-0;
 }

@@ -12,16 +12,16 @@ type SocialLinksProps = {
 const SocialLinks: React.FC<SocialLinksProps> = ({ links = [] }) => {
   const socialIcons = {
     twitter: (
-      <IconTwitter iconColorClassName="fill-medusa-icon-muted dark:fill-medusa-icon-muted-dark group-hover:fill-medusa-icon-subtle dark:group-hover:fill-medusa-icon-subtle-dark" />
+      <IconTwitter iconColorClassName="fill-medusa-fg-muted dark:fill-medusa-fg-muted-dark group-hover:fill-medusa-fg-subtle dark:group-hover:fill-medusa-fg-subtle-dark" />
     ),
     github: (
-      <IconGitHub iconColorClassName="fill-medusa-icon-muted dark:fill-medusa-icon-muted-dark group-hover:fill-medusa-icon-subtle dark:group-hover:fill-medusa-icon-subtle-dark" />
+      <IconGitHub iconColorClassName="fill-medusa-fg-muted dark:fill-medusa-fg-muted-dark group-hover:fill-medusa-fg-subtle dark:group-hover:fill-medusa-fg-subtle-dark" />
     ),
     discord: (
-      <IconDiscord iconColorClassName="fill-medusa-icon-muted dark:fill-medusa-icon-muted-dark group-hover:fill-medusa-icon-subtle dark:group-hover:fill-medusa-icon-subtle-dark" />
+      <IconDiscord iconColorClassName="fill-medusa-fg-muted dark:fill-medusa-fg-muted-dark group-hover:fill-medusa-fg-subtle dark:group-hover:fill-medusa-fg-subtle-dark" />
     ),
     linkedin: (
-      <IconLinkedIn iconColorClassName="fill-medusa-icon-muted dark:fill-medusa-icon-muted-dark group-hover:fill-medusa-icon-subtle dark:group-hover:fill-medusa-icon-subtle-dark" />
+      <IconLinkedIn iconColorClassName="fill-medusa-fg-muted dark:fill-medusa-fg-muted-dark group-hover:fill-medusa-fg-subtle dark:group-hover:fill-medusa-fg-subtle-dark" />
     ),
   }
 

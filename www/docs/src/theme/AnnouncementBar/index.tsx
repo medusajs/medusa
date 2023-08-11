@@ -32,7 +32,7 @@ export default function AnnouncementBar(): JSX.Element | null {
             "rounded-sm bg-medusa-bg-component dark:bg-medusa-bg-component-dark"
           )}
         >
-          <IconBell iconColorClassName="fill-medusa-icon-subtle dark:fill-medusa-icon-subtle-dark" />
+          <IconBell iconColorClassName="fill-medusa-fg-subtle dark:fill-medusa-fg-subtle-dark" />
         </div>
       </Bordered>
       <AnnouncementBarContent className={clsx("flex-1")} />

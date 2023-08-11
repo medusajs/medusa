@@ -10,7 +10,7 @@ function NoteIcon() {
   return (
     <IconInformationCircleSolid
       className="inline-block mr-[2px]"
-      iconColorClassName="fill-medusa-support-info dark:fill-medusa-support-info-dark"
+      iconColorClassName="fill-medusa-fg-interactive-dark"
     />
   )
 }
@@ -19,7 +19,7 @@ function TipIcon() {
   return (
     <IconLightBulbSolid
       className="inline-block mr-[2px]"
-      iconColorClassName="fill-medusa-support-warning dark:fill-medusa-support-warning-dark"
+      iconColorClassName="fill-medusa-tag-orange-icon-dark"
     />
   )
 }
@@ -28,7 +28,7 @@ function DangerIcon() {
   return (
     <IconExclamationCircleSolid
       className="inline-block mr-[2px]"
-      iconColorClassName="fill-medusa-support-error dark:fill-medusa-support-error-dark"
+      iconColorClassName="fill-medusa-fg-error dark:fill-medusa-fg-error-dark"
     />
   )
 }
@@ -174,18 +174,16 @@ export default function Admonition(props: Props): JSX.Element {
       className={clsx(
         "p-1 border border-solid border-medusa-border-base dark:border-medusa-border-base-dark rounded",
         "bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark shadow-none",
-        "[&_a]:no-underline [&_a]:text-medusa-text-base dark:[&_a]:text-medusa-text-base-dark hover:[&_a]:text-medusa-text-subtle dark:hover:[&_a]:text-medusa-text-subtle-dark",
+        "[&_a]:no-underline [&_a]:text-medusa-fg-base dark:[&_a]:text-medusa-fg-base-dark hover:[&_a]:text-medusa-fg-subtle dark:hover:[&_a]:text-medusa-fg-subtle-dark",
         "mb-2 alert"
       )}
     >
       <div className={clsx("flex")}>
-        <span className={clsx("inline-block h-1.5 w-1.5 mr-1")}>
-          {icon}
-        </span>
+        <span className={clsx("inline-block h-1.5 w-1.5 mr-1")}>{icon}</span>
         <div
           className={clsx(
-            "text-medusa-text-subtle dark:text-medusa-text-subtle-dark",
-            "text-body-regular flex-1 [&>*:last-child]:mb-0",
+            "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+            "text-medium flex-1 [&>*:last-child]:mb-0",
             "[&>p>code]:px-0.5 [&>p>code]:text-code-label"
           )}
         >

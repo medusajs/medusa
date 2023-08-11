@@ -26,7 +26,7 @@ const CodeBlock = ({
     <div
       className={clsx(
         "bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark relative mb-1 rounded-lg",
-        "border-medusa-code-block-border w-full max-w-full border",
+        "border-medusa-code-border w-full max-w-full border",
         "xs:after:content-[''] xs:after:rounded xs:after:absolute xs:after:right-0 xs:after:top-0 xs:after:w-[calc(10%+24px)] xs:after:h-full xs:after:bg-code-fade xs:dark:after:bg-code-fade-dark",
         collapsed && "max-h-[400px] overflow-auto",
         className
@@ -78,7 +78,7 @@ const CodeBlock = ({
                       {tokens.length > 1 && (
                         <span
                           className={clsx(
-                            "text-medusa-text-subtle mr-1 table-cell select-none",
+                            "text-medusa-fg-subtle mr-1 table-cell select-none",
                             "bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark sticky left-0 w-[1%] px-1 text-right"
                           )}
                         >
