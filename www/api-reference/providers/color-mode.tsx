@@ -35,13 +35,6 @@ const ColorModeProvider = ({ children }: ColorModeProviderProps) => {
     }
   }
 
-  const setHtmlAttribute = useCallback(() => {
-    const htmlElm = document.querySelector("html")
-    if (htmlElm) {
-      htmlElm.setAttribute("data-theme", colorMode)
-    }
-  }, [colorMode])
-
   useEffect(() => {
     init()
   }, [])
@@ -51,8 +44,12 @@ const ColorModeProvider = ({ children }: ColorModeProviderProps) => {
     if (theme !== colorMode) {
       localStorage.setItem("theme", colorMode)
     }
-    setHtmlAttribute()
-  }, [colorMode, setHtmlAttribute])
+
+    const htmlElm = document.querySelector("html")
+    if (htmlElm) {
+      htmlElm.setAttribute("data-theme", colorMode)
+    }
+  }, [colorMode])
 
   return (
     <ColorModeContext.Provider
