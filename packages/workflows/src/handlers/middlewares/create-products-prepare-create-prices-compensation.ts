@@ -10,33 +10,37 @@ type VariantIndexAndPrices = {
 export async function createProductsPrepareCreatePricesCompensation({
   data,
 }: WorkflowArguments<{
-  productsHandleVariantsIndexPricesMap: Map<
-    ProductHandle,
-    VariantIndexAndPrices[]
-  >
+  preparedData: {
+    productsHandleVariantsIndexPricesMap: Map<
+      ProductHandle,
+      VariantIndexAndPrices[]
+    >
+  }
   products: ProductTypes.ProductDTO[]
 }>) {
   const productsHandleVariantsIndexPricesMap =
-    data.productsHandleVariantsIndexPricesMap
+    data.preparedData.productsHandleVariantsIndexPricesMap
   const products = data.products
 
   const updatedProductsHandleVariantsIndexPricesMap = new Map()
-  productsHandleVariantsIndexPricesMap.forEach((items, productHandle) => {
-    const existingItems =
-      updatedProductsHandleVariantsIndexPricesMap.get(productHandle) ?? []
+  productsHandleVariantsIndexPricesMap.forEach(
+    (existingItems, productHandle) => {
+      const items =
+        updatedProductsHandleVariantsIndexPricesMap.get(productHandle) ?? []
 
-    items.forEach(({ index }) => {
-      existingItems.push({
-        index,
-        prices: [],
+      existingItems.forEach(({ index }) => {
+        items.push({
+          index,
+          prices: [],
+        })
       })
-    })
 
-    updatedProductsHandleVariantsIndexPricesMap.set(productHandle, items)
-  })
+      updatedProductsHandleVariantsIndexPricesMap.set(productHandle, items)
+    }
+  )
 
   return {
-    alias: "",
+    alias: createProductsPrepareCreatePricesCompensation.aliases.output,
     value: {
       productsHandleVariantsIndexPricesMap:
         updatedProductsHandleVariantsIndexPricesMap,
@@ -46,5 +50,6 @@ export async function createProductsPrepareCreatePricesCompensation({
 }
 
 createProductsPrepareCreatePricesCompensation.aliases = {
-  payload: "payload",
+  preparedData: "preparedData",
+  output: "createProductsPrepareCreatePricesCompensationOutput",
 }

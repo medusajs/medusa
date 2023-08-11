@@ -1,5 +1,4 @@
 import { AddressDTO } from "../../address"
-import { WorkflowInputConfig } from "../common"
 
 export interface CreateLineItemInputDTO {
   variant_id: string
@@ -7,7 +6,6 @@ export interface CreateLineItemInputDTO {
 }
 
 export interface CreateCartWorkflowInputDTO {
-  config?: WorkflowInputConfig
   region_id?: string
   country_code?: string
   items?: CreateLineItemInputDTO[]
