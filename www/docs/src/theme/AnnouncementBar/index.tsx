@@ -44,9 +44,7 @@ export default function AnnouncementBar(): JSX.Element | null {
       )}
       <a
         href={id}
-        className={clsx(
-          "absolute top-0 left-0 w-full h-full z-[100]"
-        )}
+        className={clsx("absolute top-0 left-0 w-full h-full z-[100]")}
       />
     </div>
   )

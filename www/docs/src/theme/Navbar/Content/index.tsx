@@ -44,15 +44,8 @@ function NavbarContentLayout({
         "max-w-xl mx-auto py-0.75 px-1.5"
       )}
     >
-      <div className={clsx("items-center flex flex-1 min-w-0")}>
-        {left}
-      </div>
-      <div
-        className={clsx(
-          "items-center flex flex-1 min-w-0",
-          "justify-end"
-        )}
-      >
+      <div className={clsx("items-center flex flex-1 min-w-0")}>{left}</div>
+      <div className={clsx("items-center flex flex-1 min-w-0", "justify-end")}>
         {right}
       </div>
     </div>

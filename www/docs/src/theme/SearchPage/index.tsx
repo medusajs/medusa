@@ -490,7 +490,7 @@ function SearchPageContent(): JSX.Element {
               <div
                 key="spinner"
                 className={clsx(
-                  "w-3 h-3 border-0.4 border-solid border-[#eee] border-t-medusa-fg-base dark:border-t-medusa-fg-base-dark",
+                  "w-3 h-3 border-[7px] border-solid border-[#eee] border-t-medusa-fg-base dark:border-t-medusa-fg-base-dark",
                   "rounded-[50%] animate-spin my-0 mx-auto"
                 )}
               />

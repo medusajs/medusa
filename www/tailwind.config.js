@@ -501,7 +501,8 @@ module.exports = {
         DEFAULT: "8px",
         sm: "6px",
         xs: "4px",
-        xxs: "2px"
+        xxs: "2px",
+        lg: "16px",
       },
       lineHeight: {
         DEFAULT: "24px",

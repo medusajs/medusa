@@ -3,11 +3,11 @@
 }
 
 .theme-doc-toc-desktop .table-of-contents {
-  @apply !border-l-0 !p-0 text-0.75 relative overflow-y-hidden;
+  @apply !border-l-0 !p-0 text-[12px] relative overflow-y-hidden;
   @apply before:bg-toc dark:before:bg-toc-dark;
   @apply before:bg-no-repeat before:bg-[length:14px_10px] before:bg-[center_left];
   @apply before:pl-[22px] before:content-['On_this_page'] before:pb-0 text-compact-small-plus;
-  @apply after:content-[''] after:absolute after:left-0 after:top-[40px];
+  @apply after:content-[''] after:absolute after:left-0 after:top-2.5;
   @apply after:h-full after:w-[1px] after:bg-medusa-border-base dark:after:bg-medusa-border-base-dark;
 }
 
