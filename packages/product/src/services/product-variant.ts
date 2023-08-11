@@ -138,9 +138,11 @@ export default class ProductVariantService<
     const variantsData = [...data]
     variantsData.forEach((variant) => Object.assign(variant, { product }))
 
-    return await (this.productVariantRepository_ as ProductVariantRepository).update(variantsData, {
+    return (await (
+      this.productVariantRepository_ as ProductVariantRepository
+    ).update(variantsData, {
       transactionManager: sharedContext.transactionManager,
-    }) as TEntity[]
+    })) as TEntity[]
   }
 
   @InjectTransactionManager(doNotForceTransaction, "productVariantRepository_")

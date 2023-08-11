@@ -35,7 +35,7 @@ import {
 import { DistributedTransaction } from "@medusajs/orchestration"
 import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 import { FlagRouter } from "@medusajs/utils"
-import { Workflows, createProducts } from "@medusajs/workflows"
+import { createProducts, Workflows } from "@medusajs/workflows"
 import { Type } from "class-transformer"
 import { EntityManager } from "typeorm"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
@@ -142,6 +142,8 @@ export default async (req, res) => {
     )
   }
 
+  let product
+
   if (isWorkflowEnabled && !!productModuleService) {
     const createProductWorkflow = createProducts(req.scope)
 
@@ -157,119 +159,114 @@ export default async (req, res) => {
       },
     }
 
-    const { result: products } = await createProductWorkflow.run({
+    const { result } = await createProductWorkflow.run({
       input,
       context: {
         manager: entityManager,
       },
     })
+    product = result[0]
+  } else {
+    product = await entityManager.transaction(async (manager) => {
+      const { variants } = validated
+      delete validated.variants
 
-    return res.json({ product: products[0] })
+      if (!validated.thumbnail && validated.images && validated.images.length) {
+        validated.thumbnail = validated.images[0]
+      }
+
+      let shippingProfile
+      // Get default shipping profile
+      if (validated.is_giftcard) {
+        shippingProfile = await shippingProfileService
+          .withTransaction(manager)
+          .retrieveGiftCardDefault()
+      } else {
+        shippingProfile = await shippingProfileService
+          .withTransaction(manager)
+          .retrieveDefault()
+      }
+
+      // Provided that the feature flag is enabled and
+      // no sales channels are available, set the default one
+      if (
+        featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
+        !validated?.sales_channels?.length
+      ) {
+        const defaultSalesChannel = await salesChannelService
+          .withTransaction(manager)
+          .retrieveDefault()
+        validated.sales_channels = [defaultSalesChannel]
+      }
+
+      const newProduct = await productService
+        .withTransaction(manager)
+        .create({ ...validated, profile_id: shippingProfile.id })
+
+      if (variants) {
+        for (const [index, variant] of variants.entries()) {
+          variant["variant_rank"] = index
+        }
+
+        const optionIds =
+          validated?.options?.map(
+            (o) => newProduct.options.find((newO) => newO.title === o.title)?.id
+          ) || []
+
+        const allVariantTransactions: DistributedTransaction[] = []
+        const transactionDependencies = {
+          manager,
+          inventoryService,
+          productVariantInventoryService,
+          productVariantService,
+        }
+
+        try {
+          const variantsInputData = variants.map((variant) => {
+            const options =
+              variant?.options?.map((option, index) => ({
+                ...option,
+                option_id: optionIds[index],
+              })) || []
+
+            return {
+              ...variant,
+              options,
+            } as CreateProductVariantInput
+          })
+
+          const varTransaction = await createVariantsTransaction(
+            transactionDependencies,
+            newProduct.id,
+            variantsInputData
+          )
+          allVariantTransactions.push(varTransaction)
+        } catch (e) {
+          await Promise.all(
+            allVariantTransactions.map(async (transaction) => {
+              await revertVariantTransaction(
+                transactionDependencies,
+                transaction
+              ).catch(() => logger.warn("Transaction couldn't be reverted."))
+            })
+          )
+
+          throw e
+        }
+      }
+
+      return newProduct
+    })
   }
 
-  const product = await entityManager.transaction(async (manager) => {
-    const { variants } = validated
-    delete validated.variants
-
-    if (!validated.thumbnail && validated.images && validated.images.length) {
-      validated.thumbnail = validated.images[0]
-    }
-
-    let shippingProfile
-    // Get default shipping profile
-    if (validated.is_giftcard) {
-      shippingProfile = await shippingProfileService
-        .withTransaction(manager)
-        .retrieveGiftCardDefault()
-    } else {
-      shippingProfile = await shippingProfileService
-        .withTransaction(manager)
-        .retrieveDefault()
-    }
-
-    // Provided that the feature flag is enabled and
-    // no sales channels are available, set the default one
-    if (
-      featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key) &&
-      !validated?.sales_channels?.length
-    ) {
-      const defaultSalesChannel = await salesChannelService
-        .withTransaction(manager)
-        .retrieveDefault()
-      validated.sales_channels = [defaultSalesChannel]
-    }
-
-    const newProduct = await productService
-      .withTransaction(manager)
-      .create({ ...validated, profile_id: shippingProfile.id })
-
-    if (variants) {
-      for (const [index, variant] of variants.entries()) {
-        variant["variant_rank"] = index
-      }
-
-      const optionIds =
-        validated?.options?.map(
-          (o) => newProduct.options.find((newO) => newO.title === o.title)?.id
-        ) || []
-
-      const allVariantTransactions: DistributedTransaction[] = []
-      const transactionDependencies = {
-        manager,
-        inventoryService,
-        productVariantInventoryService,
-        productVariantService,
-      }
-
-      try {
-        const variantsInputData = variants.map((variant) => {
-          const options =
-            variant?.options?.map((option, index) => ({
-              ...option,
-              option_id: optionIds[index],
-            })) || []
-
-          return {
-            ...variant,
-            options,
-          } as CreateProductVariantInput
-        })
-
-        const varTransaction = await createVariantsTransaction(
-          transactionDependencies,
-          newProduct.id,
-          variantsInputData
-        )
-        allVariantTransactions.push(varTransaction)
-      } catch (e) {
-        await Promise.all(
-          allVariantTransactions.map(async (transaction) => {
-            await revertVariantTransaction(
-              transactionDependencies,
-              transaction
-            ).catch(() => logger.warn("Transaction couldn't be reverted."))
-          })
-        )
-
-        throw e
-      }
-    }
-
-    const rawProduct = await productService
-      .withTransaction(manager)
-      .retrieve(newProduct.id, {
-        select: defaultAdminProductFields,
-        relations: defaultAdminProductRelations,
-      })
-
-    const [product] = await pricingService
-      .withTransaction(manager)
-      .setProductPrices([rawProduct])
-
-    return product
+  const rawProduct = await productService.retrieve(product.id, {
+    select: defaultAdminProductFields,
+    relations: defaultAdminProductRelations,
   })
 
-  res.json({ product })
+  const [pricedProduct] = await pricingService.setProductPrices([rawProduct])
+
+  res.json({ product: pricedProduct })
 }
 
 class ProductVariantOptionReq {

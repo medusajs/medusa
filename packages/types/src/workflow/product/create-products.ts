@@ -1,5 +1,4 @@
 import { ProductStatus } from "../../product"
-import { WorkflowInputConfig } from "../common"
 
 export interface CreateProductTypeInputDTO {
   id?: string
@@ -88,13 +87,8 @@ export interface CreateProductInputDTO {
   metadata?: Record<string, unknown>
 
   sales_channels?: CreateProductSalesChannelInputDTO[]
-  listConfig: {
-    select: string[]
-    relations: string[]
-  }
 }
 
 export interface CreateProductsWorkflowInputDTO {
   products: CreateProductInputDTO[]
-  config?: WorkflowInputConfig
 }

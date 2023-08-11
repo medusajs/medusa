@@ -76,8 +76,8 @@ get:
       $ref: ../components/responses/500_error.yaml
 post:
   operationId: PostInventoryItemsInventoryItemLocationLevels
-  summary: Create an Location Level
-  description: Create an Location Level for a given Inventory Item.
+  summary: Create an Inventory Level
+  description: Create an Inventory Level for a given Inventory Item.
   x-authenticated: true
   parameters:
     - in: path
