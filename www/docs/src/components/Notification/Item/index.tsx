@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import React, { Children, ReactElement, useEffect, useRef } from "react"
+import React, { Children, ReactElement } from "react"
 import NotificationItemLayoutDefault from "./Layout/Default"
 
 export type NotificationItemProps = {

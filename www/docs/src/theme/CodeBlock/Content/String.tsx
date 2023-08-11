@@ -84,9 +84,7 @@ export default function CodeBlockString({
                       "table p-1 code-block-numbering",
                     title && "p-1",
                     !title && tokens.length > 1 && "p-1",
-                    !title &&
-                      tokens.length === 1 &&
-                      "py-0.5 pr-0.5 pl-1"
+                    !title && tokens.length === 1 && "py-0.5 pr-0.5 pl-1"
                   )}
                 >
                   {tokens.map((line, i) => (

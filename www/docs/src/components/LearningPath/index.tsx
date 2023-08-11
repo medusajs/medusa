@@ -3,7 +3,6 @@ import { useNotifications } from "@site/src/providers/NotificationProvider"
 import { getLearningPath } from "@site/src/utils/learning-paths"
 import clsx from "clsx"
 import React from "react"
-import useBaseUrl from "@docusaurus/useBaseUrl"
 import Button from "../Button"
 import IconCircleMiniSolid from "@site/src/theme/Icon/CircleMiniSolid"
 import LearningPathIcon from "./Icon"
@@ -75,9 +74,7 @@ const LearningPath: React.FC<LearningPathProps> = ({
           )}
           key={index}
         >
-          <div
-            className={clsx("w-3 flex items-center justify-center")}
-          >
+          <div className={clsx("w-3 flex items-center justify-center")}>
             <IconCircleMiniSolid iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
           </div>
           <span

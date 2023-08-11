@@ -1,4 +1,4 @@
-import { Suspense, cloneElement, useEffect, useRef, useState } from "react"
+import { Suspense, cloneElement, useRef, useState } from "react"
 import Loading from "../Loading"
 import clsx from "clsx"
 import { CSSTransition } from "react-transition-group"

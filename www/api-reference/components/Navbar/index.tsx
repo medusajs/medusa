@@ -1,5 +1,4 @@
 import clsx from "clsx"
-import Link from "next/link"
 import NavbarLink from "./Link"
 import NavbarColorModeToggle from "./ColorModeToggle"
 import NavbarLogo from "./Logo"
@@ -18,7 +17,7 @@ const Navbar = () => {
     >
       <div
         className={clsx(
-          "h-navbar max-w-xxl sticky top-0 mx-auto flex w-full justify-between py-0.75 px-1 lg:px-3"
+          "h-navbar max-w-xxl py-0.75 sticky top-0 mx-auto flex w-full justify-between px-1 lg:px-3"
         )}
       >
         <div className="flex w-full items-center gap-0.5 lg:w-auto lg:gap-1.5">

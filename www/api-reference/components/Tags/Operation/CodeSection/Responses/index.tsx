@@ -1,5 +1,4 @@
 import type { Operation } from "@/types/openapi"
-import clsx from "clsx"
 import dynamic from "next/dynamic"
 import type { TagsOperationCodeSectionResponsesSampleProps } from "./Sample"
 import Badge from "../../../../Badge"

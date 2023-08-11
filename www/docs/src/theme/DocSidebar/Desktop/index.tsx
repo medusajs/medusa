@@ -86,10 +86,7 @@ function DocSidebarDesktop({ path, sidebar }: Props) {
       <Content
         path={path}
         sidebar={sidebar}
-        className={clsx(
-          "main-sidebar",
-          "!mt-0 !pt-0 !px-1.5 !pb-4"
-        )}
+        className={clsx("main-sidebar", "!mt-0 !pt-0 !px-1.5 !pb-4")}
       />
     </div>
   )

@@ -24,7 +24,7 @@ const DetailsSummary = ({
   return (
     <summary
       className={clsx(
-        "flex items-center justify-between py-0.75",
+        "py-0.75 flex items-center justify-between",
         expandable && "cursor-pointer",
         !expandable &&
           "border-medusa-border-base dark:border-medusa-border-base-dark border-y",

@@ -41,9 +41,7 @@ export default function FooterLayout({
             </div>
           </div>
         )}
-        <div
-          className={clsx("col col--6 row lg:justify-end justify-start")}
-        >
+        <div className={clsx("col col--6 row lg:justify-end justify-start")}>
           {socialLinks && <SocialLinks links={socialLinks} />}
           {links}
         </div>

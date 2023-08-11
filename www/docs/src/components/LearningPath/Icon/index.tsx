@@ -21,10 +21,7 @@ const LearningPathIcon: React.FC<LearningPathIconProps> = ({
     >
       <img
         src={useBaseUrl("/img/learning-path-img.png")}
-        className={clsx(
-          "rounded-full w-2.5 h-2.5 no-zoom-img",
-          imgClassName
-        )}
+        className={clsx("rounded-full w-2.5 h-2.5 no-zoom-img", imgClassName)}
       />
     </div>
   )

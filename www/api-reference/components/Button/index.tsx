@@ -7,7 +7,6 @@ export type ButtonProps = {
 } & React.HTMLAttributes<HTMLButtonElement>
 
 const Button = ({
-  isSelected = false,
   className,
   children,
   variant = "primary",
@@ -16,10 +15,6 @@ const Button = ({
   return (
     <button
       className={clsx(
-        // isSelected &&
-        //   "bg-medusa-bg-interactive dark:bg-medusa-bg-interactive-dark text-medusa-fg-on-color border-transparent",
-        // !isSelected &&
-        //   "bg-medusa-bg-base dark:bg-medusa-bg-base-dark border-medusa-border-base dark:border-medusa-border-base-dark",
         variant === "primary" && "btn-primary",
         variant === "secondary" && "btn-secondary",
         className
