@@ -344,7 +344,10 @@ module.exports = {
               pressed: {
                 DEFAULT: "#111827",
                 dark: "#EEEDEF"
-              }
+              },
+              // TODO remove if not updated
+              DEFAULT: "#111827",
+              dark: "#F4F2F4",
             },
             danger: {
               DEFAULT: "#E5484D",
@@ -393,18 +396,6 @@ module.exports = {
               pressed: {
                 DEFAULT: "#F1F3F5",
                 dark: "#34343A",
-              },
-            },
-            inverted: {
-              DEFAULT: "#151718",
-              dark: "#F4F2F4",
-              hover: {
-                DEFAULT: "#202425",
-                dark: "#F4F2F4",
-              },
-              pressed: {
-                DEFAULT: "#26292B",
-                dark: "#EEEDEF",
               },
             },
             disabled: {
@@ -711,6 +702,8 @@ module.exports = {
         "overlay-dark": "0px 2px 16px rgba(0, 0, 0, 0.32)",
         navbar: "0px 1px 0px 0px #E6E8EB",
         "navbar-dark": "0px 1px 0px 0px #2E2E32",
+        "button-primary": "0px 1px 1px 0px rgba(3, 7, 18, 0.20), 0px 2px 0px 0px rgba(255, 255, 255, 0.16) inset",
+        "button-primary-focus": "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 1px 0px rgba(3, 7, 18, 0.20), 0px 2px 0px 0px rgba(255, 255, 255, 0.16) inset",
         "button-secondary": "0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset",
         "button-secondary-dark": "0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset", // TODO change
         "button-secondary-focus": "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset",

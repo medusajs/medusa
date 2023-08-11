@@ -138,17 +138,25 @@ const Feedback: React.FC<FeedbackProps> = ({
               >
                 <Label className="mr-1.5">{question}</Label>
                 <div className={clsx("flex flex-row items-center gap-0.5")}>
-                  <Button onClick={handleFeedback} className="positive w-fit">
+                  <Button
+                    onClick={handleFeedback}
+                    className="positive w-fit"
+                    variant="secondary"
+                  >
                     {positiveBtn}
                   </Button>
-                  <Button onClick={handleFeedback} className="w-fit">
+                  <Button
+                    onClick={handleFeedback}
+                    className="w-fit"
+                    variant="secondary"
+                  >
                     {negativeBtn}
                   </Button>
                   <Link
                     href={`https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml&title=API%20Ref%28${area}%29%3A%20Issue%20in%20${encodeURI(
                       sectionTitle
                     )}`}
-                    className="btn-primary"
+                    className="btn-secondary"
                   >
                     Report Issue
                   </Link>
@@ -169,6 +177,7 @@ const Feedback: React.FC<FeedbackProps> = ({
                   onClick={submitFeedback}
                   disabled={loading}
                   className="w-fit"
+                  variant="secondary"
                 >
                   {submitBtn}
                 </Button>

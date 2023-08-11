@@ -5,7 +5,7 @@ import clsx from "clsx"
 import dynamic from "next/dynamic"
 import { SidebarItemProps } from "./Item"
 import Loading from "../Loading"
-import IconClose from "../Icons/Close"
+import IconXMark from "../Icons/XMark"
 
 const SidebarItem = dynamic<SidebarItemProps>(async () => import("./Item"), {
   loading: () => <Loading count={1} />,
@@ -39,7 +39,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
           className="btn-clear"
           onClick={() => setMobileSidebarOpen(false)}
         >
-          <IconClose />
+          <IconXMark />
         </button>
       </div>
       <ul

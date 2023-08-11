@@ -9,6 +9,7 @@ import { Inter } from "next/font/google"
 import { Roboto_Mono } from "next/font/google"
 import AnalyticsProvider from "@/providers/analytics"
 import NavbarProvider from "@/providers/navbar"
+import ModalProvider from "../../../providers/modal"
 
 export const metadata = {
   title: "Medusa API Reference",
@@ -42,23 +43,25 @@ export default function RootLayout({
         )}
       >
         <AnalyticsProvider>
-          <ColorModeProvider>
-            <BaseSpecsProvider>
-              <SidebarProvider>
-                <NavbarProvider>
-                  <div className="w-full">
-                    <Navbar />
-                    <div className="max-w-xxl mx-auto flex w-full px-1.5">
-                      <Sidebar />
-                      <main className="lg:w-api-ref-main relative mt-3 w-full flex-1 lg:mt-7">
-                        {children}
-                      </main>
+          <ModalProvider>
+            <ColorModeProvider>
+              <BaseSpecsProvider>
+                <SidebarProvider>
+                  <NavbarProvider>
+                    <div className="w-full">
+                      <Navbar />
+                      <div className="max-w-xxl mx-auto flex w-full px-1.5">
+                        <Sidebar />
+                        <main className="lg:w-api-ref-main relative mt-3 w-full flex-1 lg:mt-7">
+                          {children}
+                        </main>
+                      </div>
                     </div>
-                  </div>
-                </NavbarProvider>
-              </SidebarProvider>
-            </BaseSpecsProvider>
-          </ColorModeProvider>
+                  </NavbarProvider>
+                </SidebarProvider>
+              </BaseSpecsProvider>
+            </ColorModeProvider>
+          </ModalProvider>
         </AnalyticsProvider>
       </body>
     </html>

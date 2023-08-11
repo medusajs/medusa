@@ -6,6 +6,7 @@ import NavbarLogo from "./Logo"
 import SearchBar from "../SearchBar"
 import NavbarMenuButton from "./MenuButton"
 import getLinkWithBasePath from "../../utils/get-link-with-base-path"
+import FeedbackModal from "./FeedbackModal"
 
 const Navbar = () => {
   return (
@@ -49,9 +50,7 @@ const Navbar = () => {
             <SearchBar />
           </div>
           <NavbarColorModeToggle />
-          <Link href="#" className="btn-primary">
-            Feedback
-          </Link>
+          <FeedbackModal />
         </div>
       </div>
     </nav>

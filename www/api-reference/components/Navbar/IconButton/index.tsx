@@ -10,7 +10,7 @@ const NavbarIconButton = ({
   return (
     <button
       className={clsx(
-        "btn-primary btn-primary-icon",
+        "btn-secondary btn-secondary-icon",
         "[&>svg]:h-[22px] [&>svg]:w-[22px]",
         className
       )}

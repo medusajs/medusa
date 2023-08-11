@@ -1,6 +1,6 @@
 import IconProps from "../types"
 
-const IconClose = ({ iconColorClassName, ...props }: IconProps) => {
+const IconXMark = ({ iconColorClassName, ...props }: IconProps) => {
   return (
     <svg
       width={props.width || 20}
@@ -11,12 +11,12 @@ const IconClose = ({ iconColorClassName, ...props }: IconProps) => {
       {...props}
     >
       <path
-        d="M6 14L14 6M6 6L14 14"
+        d="M5 15L15 5M5 5L15 15"
         className={
           iconColorClassName ||
-          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle-dark"
+          "stroke-medusa-icon-subtle dark:stroke-medusa-icon-subtle-dark"
         }
-        strokeWidth={1.5}
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -24,4 +24,4 @@ const IconClose = ({ iconColorClassName, ...props }: IconProps) => {
   )
 }
 
-export default IconClose
+export default IconXMark
