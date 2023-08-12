@@ -1,5 +1,4 @@
 import * as DefaultRepositories from "@repositories"
-
 import {
   BaseRepository,
   ProductCategoryRepository,
@@ -52,9 +51,9 @@ export default async ({
   })
 
   if (customRepositories) {
-    await loadCustomRepositories({ customRepositories, container })
+    loadCustomRepositories({ customRepositories, container })
   } else {
-    await loadDefaultRepositories({ container })
+    loadDefaultRepositories({ container })
   }
 }
 

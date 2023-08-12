@@ -35,22 +35,30 @@ export interface RepositoryService<T = any> extends BaseRepositoryService<T> {
     context?: Context
   ): Promise<[T[], number]>
 
-  // Only required for some repositories
-  upsert?(data: any, context?: Context): Promise<T[]>
-
   create(data: unknown[], context?: Context): Promise<T[]>
 
-  // TODO: remove optionality when all the other repositories have an update
-  update?(data: unknown[], context?: Context): Promise<T[]>
+  update(data: unknown[], context?: Context): Promise<T[]>
 
   delete(ids: string[], context?: Context): Promise<void>
 
-  softDelete(ids: string[], context?: Context): Promise<T[]>
+  /**
+   * Soft delete entities and cascade to related entities if configured.
+   *
+   * @param ids
+   * @param context
+   *
+   * @returns [T[], Record<string, string[]>] the second value being the map of the entity names and ids that were soft deleted
+   */
+  softDelete(
+    ids: string[],
+    context?: Context
+  ): Promise<[T[], Record<string, unknown[]>]>
 
   restore(ids: string[], context?: Context): Promise<T[]>
 }
 
-export interface TreeRepositoryService<T = any> extends BaseRepositoryService<T> {
+export interface TreeRepositoryService<T = any>
+  extends BaseRepositoryService<T> {
   find(
     options?: FindOptions<T>,
     transformOptions?: RepositoryTransformOptions,

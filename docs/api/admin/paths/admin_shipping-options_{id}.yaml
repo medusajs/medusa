@@ -1,7 +1,7 @@
 get:
   operationId: GetShippingOptionsOption
   summary: Get a Shipping Option
-  description: Retrieves a Shipping Option.
+  description: Retrieve a Shipping Option's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -48,7 +48,7 @@ get:
 post:
   operationId: PostShippingOptionsOption
   summary: Update Shipping Option
-  description: Updates a Shipping Option
+  description: Update a Shipping Option's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -99,8 +99,10 @@ post:
       $ref: ../components/responses/500_error.yaml
 delete:
   operationId: DeleteShippingOptionsOption
-  summary: Delete a Shipping Option
-  description: Deletes a Shipping Option.
+  summary: Delete Shipping Option
+  description: >-
+    Delete a Shipping Option. Once deleted, it can't be used when creating
+    orders or returns.
   x-authenticated: true
   parameters:
     - in: path

@@ -2,15 +2,14 @@ import {
   Product,
   ProductCategory,
   ProductCollection,
-  ProductType,
   ProductTag,
+  ProductType,
 } from "@models"
 
 import {
   FilterQuery as MikroFilterQuery,
   FindOptions as MikroOptions,
   LoadStrategy,
-  wrap
 } from "@mikro-orm/core"
 
 import {
@@ -20,16 +19,17 @@ import {
   WithRequiredProperty,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { MedusaError, isDefined, InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
 
-import { AbstractBaseRepository } from "./base"
 import { ProductServiceTypes } from "../types/services"
 
-export class ProductRepository extends AbstractBaseRepository<Product> {
+// eslint-disable-next-line max-len
+export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<Product> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
     this.manager_ = manager
   }
@@ -114,55 +114,43 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
     }
   }
 
-  @InjectTransactionManager()
-  async delete(
-    ids: string[],
-    @MedusaContext()
-    { transactionManager: manager }: Context = {}
-  ): Promise<void> {
-    await (manager as SqlEntityManager).nativeDelete(
-      Product,
-      { id: { $in: ids } },
-      {}
-    )
+  async delete(ids: string[], context: Context = {}): Promise<void> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
   }
 
-  @InjectTransactionManager()
   async create(
     data: WithRequiredProperty<ProductTypes.CreateProductOnlyDTO, "status">[],
-    @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<Product[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
     const products = data.map((product) => {
       return (manager as SqlEntityManager).create(Product, product)
     })
 
-    await (manager as SqlEntityManager).persist(products)
+    manager.persist(products)
 
     return products
   }
 
-  @InjectTransactionManager()
   async update(
     data: WithRequiredProperty<ProductServiceTypes.UpdateProductDTO, "id">[],
-    @MedusaContext() context: Context = {}
+    context: Context = {}
   ): Promise<Product[]> {
     let categoryIds: string[] = []
     let tagIds: string[] = []
-    let collectionIds: string[] = []
-    let typeIds: string[] = []
+    const collectionIds: string[] = []
+    const typeIds: string[] = []
     // TODO: use the getter method (getActiveManager)
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     data.forEach((productData) => {
       categoryIds = categoryIds.concat(
-        productData?.categories?.map(c => c.id) || []
+        productData?.categories?.map((c) => c.id) || []
       )
 
-      tagIds = tagIds.concat(
-        productData?.tags?.map(c => c.id) || []
-      )
+      tagIds = tagIds.concat(productData?.tags?.map((c) => c.id) || [])
 
       if (productData.collection_id) {
         collectionIds.push(productData.collection_id)
@@ -173,27 +161,39 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
       }
     })
 
-    const productsToUpdate = await manager.find(Product, {
-      id: data.map((updateData) => updateData.id)
-    }, {
-      populate: ["tags", "categories"]
-    })
+    const productsToUpdate = await manager.find(
+      Product,
+      {
+        id: data.map((updateData) => updateData.id),
+      },
+      {
+        populate: ["tags", "categories"],
+      }
+    )
 
-    const collectionsToAssign = collectionIds.length ? await manager.find(ProductCollection, {
-      id: collectionIds
-    }) : []
+    const collectionsToAssign = collectionIds.length
+      ? await manager.find(ProductCollection, {
+          id: collectionIds,
+        })
+      : []
 
-    const typesToAssign = typeIds.length ? await manager.find(ProductType, {
-      id: typeIds
-    }) : []
+    const typesToAssign = typeIds.length
+      ? await manager.find(ProductType, {
+          id: typeIds,
+        })
+      : []
 
-    const categoriesToAssign = categoryIds.length ? await manager.find(ProductCategory, {
-      id: categoryIds
-    }) : []
+    const categoriesToAssign = categoryIds.length
+      ? await manager.find(ProductCategory, {
+          id: categoryIds,
+        })
+      : []
 
-    const tagsToAssign = tagIds.length ? await manager.find(ProductTag, {
-      id: tagIds
-    }) : []
+    const tagsToAssign = tagIds.length
+      ? await manager.find(ProductTag, {
+          id: tagIds,
+        })
+      : []
 
     const categoriesToAssignMap = new Map<string, ProductCategory>(
       categoriesToAssign.map((category) => [category.id, category])
@@ -227,8 +227,8 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
         }
 
         const {
-          categories: categoriesData,
-          tags: tagsData,
+          categories: categoriesData = [],
+          tags: tagsData = [],
           collection_id: collectionId,
           type_id: typeId,
         } = updateData
@@ -245,16 +245,21 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
             const productCategory = categoriesToAssignMap.get(categoryData.id)
 
             if (productCategory) {
-              await product.categories.add(productCategory)
+              product.categories.add(productCategory)
             }
           }
 
-          const categoryIdsToAssignSet = new Set(categoriesData.map(cd => cd.id))
-          const categoriesToDelete = product.categories.getItems().filter(
-            (existingCategory) => !categoryIdsToAssignSet.has(existingCategory.id)
+          const categoryIdsToAssignSet = new Set(
+            categoriesData.map((cd) => cd.id)
           )
+          const categoriesToDelete = product.categories
+            .getItems()
+            .filter(
+              (existingCategory) =>
+                !categoryIdsToAssignSet.has(existingCategory.id)
+            )
 
-          await product.categories.remove(categoriesToDelete)
+          product.categories.remove(categoriesToDelete)
         }
 
         if (isDefined(tagsData)) {
@@ -268,26 +273,26 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
             }
 
             if (productTag) {
-              await product.tags.add(productTag)
+              product.tags.add(productTag)
             }
           }
 
-          const tagIdsToAssignSet = new Set(tagsData.map(cd => cd.id))
-          const tagsToDelete = product.tags.getItems().filter(
-            (existingTag) => !tagIdsToAssignSet.has(existingTag.id)
-          )
+          const tagIdsToAssignSet = new Set(tagsData.map((cd) => cd.id))
+          const tagsToDelete = product.tags
+            .getItems()
+            .filter((existingTag) => !tagIdsToAssignSet.has(existingTag.id))
 
-          await product.tags.remove(tagsToDelete)
+          product.tags.remove(tagsToDelete)
         }
 
         if (isDefined(collectionId)) {
-          const collection = collectionsToAssignMap.get(collectionId)
+          const collection = collectionsToAssignMap.get(collectionId!)
 
           product.collection = collection || null
         }
 
         if (isDefined(typeId)) {
-          const type = typesToAssignMap.get(typeId)
+          const type = typesToAssignMap.get(typeId!)
 
           if (type) {
             product.type = type
@@ -298,7 +303,7 @@ export class ProductRepository extends AbstractBaseRepository<Product> {
       })
     )
 
-    await manager.persist(products)
+    manager.persist(products)
 
     return products
   }

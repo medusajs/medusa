@@ -1,7 +1,7 @@
 get:
   operationId: GetSalesChannelsSalesChannel
   summary: Get a Sales Channel
-  description: Retrieves the sales channel.
+  description: Retrieve a sales channel's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -48,7 +48,7 @@ get:
 post:
   operationId: PostSalesChannelsSalesChannel
   summary: Update a Sales Channel
-  description: Updates a Sales Channel.
+  description: Update a Sales Channel's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -100,7 +100,9 @@ post:
 delete:
   operationId: DeleteSalesChannelsSalesChannel
   summary: Delete a Sales Channel
-  description: Deletes the sales channel.
+  description: >-
+    Delete a sales channel. Associated products, stock locations, and other
+    resources are not deleted.
   x-authenticated: true
   parameters:
     - in: path

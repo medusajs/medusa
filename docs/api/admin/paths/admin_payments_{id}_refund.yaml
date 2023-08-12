@@ -1,7 +1,7 @@
 post:
   operationId: PostPaymentsPaymentRefunds
-  summary: Create a Refund
-  description: Issues a Refund.
+  summary: Refund Payment
+  description: Refund a payment. The payment must be captured first.
   x-authenticated: true
   parameters:
     - in: path

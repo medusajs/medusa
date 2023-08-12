@@ -5,19 +5,16 @@ import {
 } from "@mikro-orm/core"
 import { Product, ProductOption } from "@models"
 import { Context, DAL, ProductTypes } from "@medusajs/types"
-import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import {
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-} from "@medusajs/utils"
+import { DALUtils, MedusaError } from "@medusajs/utils"
 
-export class ProductOptionRepository extends AbstractBaseRepository<ProductOption> {
+// eslint-disable-next-line max-len
+export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseRepository<ProductOption> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
     this.manager_ = manager
   }
@@ -62,12 +59,7 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
     )
   }
 
-  @InjectTransactionManager()
-  async delete(
-    ids: string[],
-    @MedusaContext()
-    context: Context = {}
-  ): Promise<void> {
+  async delete(ids: string[], context: Context = {}): Promise<void> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     await (manager as SqlEntityManager).nativeDelete(
@@ -77,10 +69,8 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
     )
   }
 
-  @InjectTransactionManager()
   async create(
     data: ProductTypes.CreateProductOptionDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductOption[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -88,13 +78,15 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
 
     data.forEach((d) => d.product_id && productIds.push(d.product_id))
 
-    const existingProducts = await manager.find(
-      Product,
-      { id: { $in: productIds } },
-    )
+    const existingProducts = await manager.find(Product, {
+      id: { $in: productIds },
+    })
 
     const existingProductsMap = new Map(
-      existingProducts.map<[string, Product]>((product) => [product.id, product])
+      existingProducts.map<[string, Product]>((product) => [
+        product.id,
+        product,
+      ])
     )
 
     const productOptions = data.map((optionData) => {
@@ -111,15 +103,13 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
       return manager.create(ProductOption, optionData)
     })
 
-    await manager.persist(productOptions)
+    manager.persist(productOptions)
 
     return productOptions
   }
 
-  @InjectTransactionManager()
   async update(
     data: ProductTypes.UpdateProductOptionDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductOption[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -136,7 +126,10 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
     )
 
     const existingOptionsMap = new Map(
-      existingOptions.map<[string, ProductOption]>((option) => [option.id, option])
+      existingOptions.map<[string, ProductOption]>((option) => [
+        option.id,
+        option,
+      ])
     )
 
     const productOptions = data.map((optionData) => {
@@ -152,7 +145,7 @@ export class ProductOptionRepository extends AbstractBaseRepository<ProductOptio
       return manager.assign(existingOption, optionData)
     })
 
-    await manager.persist(productOptions)
+    manager.persist(productOptions)
 
     return productOptions
   }

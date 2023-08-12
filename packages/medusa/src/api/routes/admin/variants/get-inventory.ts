@@ -42,7 +42,7 @@ import { joinLevels } from "../inventory-items/utils/join-levels"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Variants
+ *   - Product Variants
  * responses:
  *   200:
  *     description: OK

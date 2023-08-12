@@ -1,9 +1,10 @@
+import { FlagRouter } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import {
-  OrderDescriptor,
-  OrderExportBatchJob,
-  OrderExportBatchJobContext,
-  orderExportPropertiesDescriptors,
+    OrderDescriptor,
+    OrderExportBatchJob,
+    OrderExportBatchJobContext,
+    orderExportPropertiesDescriptors,
 } from "."
 import { AdminPostBatchesReq } from "../../../api"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
@@ -13,7 +14,6 @@ import { OrderService } from "../../../services"
 import BatchJobService from "../../../services/batch-job"
 import { BatchJobStatus } from "../../../types/batch-job"
 import { FindConfig } from "../../../types/common"
-import { FlagRouter } from "../../../utils/flag-router"
 import { prepareListQuery } from "../../../utils/get-query-config"
 
 type InjectedDependencies = {

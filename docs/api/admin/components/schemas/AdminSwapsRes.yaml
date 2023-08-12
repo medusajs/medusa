@@ -21,4 +21,5 @@ required:
   - swap
 properties:
   swap:
+    description: Swap details.
     $ref: ./Swap.yaml

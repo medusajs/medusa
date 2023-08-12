@@ -1,2 +1,2 @@
-curl --location --request GET 'https://medusa-url.com/admin/variants' \
---header 'Authorization: Bearer {api_token}'
+curl 'https://medusa-url.com/admin/variants' \
+-H 'Authorization: Bearer {api_token}'

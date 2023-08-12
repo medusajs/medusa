@@ -41,11 +41,11 @@ minio server ~/minio --console-address :9090 --address :9001
 
 After installing MinIO and logging into the Console, you can create a bucket that will store the files of your Medusa backend by following these steps:
 
-1. Click on the “Create Bucket” button
-2. For the Bucket Name field, enter a name for the bucket. By MinIO’s requirement, the name can only consist of lower case characters, numbers, dots (`.`), and hyphens (`-`).
-3. Click on the Create Bucket button.
-4. On the bucket's page, click on the cog icon at the top right to configure the bucket.
-5. Click on the edit icon next to Access Policy.
+1. Go to the Buckets page from the sidebar.
+2. Click on the “Create Bucket” button.
+3. For the Bucket Name field, enter a name for the bucket. By MinIO’s requirement, the name can only consist of lower case characters, numbers, dots (`.`), and hyphens (`-`).
+4. Click on the Create Bucket button.
+5. On the bucket's page, click on the edit icon next to Access Policy.
 6. In the pop-up that opens, change the selected value to “public” and click Set.
 
 :::warning

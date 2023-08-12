@@ -15,6 +15,7 @@ required:
 properties:
   variants:
     type: array
+    description: An array of product variant details.
     items:
       $ref: ./PricedVariant.yaml
   count:
@@ -22,7 +23,9 @@ properties:
     description: The total number of items available
   offset:
     type: integer
-    description: The number of items skipped before these items
+    description: >-
+      The number of product variants skipped when retrieving the product
+      variants.
   limit:
     type: integer
     description: The number of items per page

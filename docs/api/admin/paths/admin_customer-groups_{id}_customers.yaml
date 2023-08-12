@@ -1,7 +1,9 @@
 get:
   operationId: GetCustomerGroupsGroupCustomers
   summary: List Customers
-  description: Retrieves a list of customers in a customer group
+  description: >-
+    Retrieve a list of customers in a customer group. The customers can be
+    filtered by the `q` field. The customers can also be paginated.
   x-authenticated: true
   parameters:
     - in: path
@@ -12,24 +14,26 @@ get:
         type: string
     - in: query
       name: limit
-      description: The number of items to return.
+      description: The number of customers to return.
       schema:
         type: integer
         default: 50
     - in: query
       name: offset
-      description: The items to skip before result.
+      description: The number of customers to skip when retrieving the customers.
       schema:
         type: integer
         default: 0
     - in: query
       name: expand
-      description: (Comma separated) Which fields should be expanded in each customer.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        customers.
       schema:
         type: string
     - in: query
       name: q
-      description: a search term to search email, first_name, and last_name.
+      description: a term to search customers by email, first_name, and last_name.
       schema:
         type: string
   x-codegen:

@@ -4,5 +4,6 @@ required:
 properties:
   shipping_profiles:
     type: array
+    description: An array of shipping profiles details.
     items:
       $ref: ./ShippingProfile.yaml

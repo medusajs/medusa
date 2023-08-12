@@ -129,6 +129,7 @@ export default async (req, res) => {
         allow_discounts: false,
         unit_price: validated.unit_price || 0,
         quantity: validated.quantity,
+        metadata: validated.metadata,
       })
     }
 

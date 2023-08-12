@@ -178,7 +178,7 @@ Make sure to define `S3_CUSTOM_AGENT` in your environment variables first.
 Run your Medusa backend with the following command:
 
 ```bash npm2yarn
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
 
 Then, you can either test the plugin using the [REST APIs](/api/store) or using the [Medusa Admin](../../admin/quickstart.mdx).
@@ -220,7 +220,7 @@ module.exports = withStoreConfig({
 Where:
 
 - `<BUCKET_NAME>` is the name of the S3 bucket you’re using
-- `<REGION>` is the region of the S3 bucket (for example, `eu-west-1`)
+- `<REGION>` is the region of the S3 bucket (for example, `eu-west-1`). If your S3 URL doesn't use region in it, you may omit it to be instead `<BUCKET_NAME>.s3.amazonaws.com`.
 
 ---
 

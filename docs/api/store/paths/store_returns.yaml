@@ -1,7 +1,12 @@
 post:
   operationId: PostReturns
   summary: Create Return
-  description: Creates a Return for an Order.
+  description: >-
+    Create a Return for an Order. If a return shipping method is specified, the
+    return is automatically fulfilled.
+  externalDocs:
+    description: How to create a return in a storefront
+    url: https://docs.medusajs.com/modules/orders/storefront/create-return
   requestBody:
     content:
       application/json:

@@ -1,7 +1,9 @@
 post:
   operationId: PostOrdersOrderCapture
-  summary: Capture Order's Payment
-  description: Captures all the Payments associated with an Order.
+  summary: Capture an Order's Payments
+  description: >-
+    Capture all the Payments associated with an Order. The payment of canceled
+    orders can't be captured.
   x-authenticated: true
   parameters:
     - in: path
@@ -12,12 +14,12 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   x-codegen:

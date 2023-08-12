@@ -1,53 +1,63 @@
 get:
   operationId: GetNotifications
   summary: List Notifications
-  description: Retrieves a list of Notifications.
+  description: >-
+    Retrieve a list of notifications. The notifications can be filtered by
+    fields such as `event_name` or `resource_type`. The notifications can also
+    be paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: offset
       description: >-
-        The number of notifications to skip before starting to collect the
-        notifications set
+        The number of inventory items to skip when retrieving the inventory
+        items.
       schema:
         type: integer
         default: 0
     - in: query
       name: limit
-      description: The number of notifications to return
+      description: Limit the number of notifications returned.
       schema:
         type: integer
         default: 50
     - in: query
       name: fields
-      description: Comma separated fields to include in the result set
+      description: >-
+        Comma-separated fields that should be included in each returned
+        notification.
       schema:
         type: string
     - in: query
       name: expand
-      description: Comma separated fields to populate
+      description: >-
+        Comma-separated relations that should be expanded in each returned
+        notification.
       schema:
         type: string
     - in: query
       name: event_name
-      description: The name of the event that the notification was sent for.
+      description: >-
+        Filter by the name of the event that triggered sending this
+        notification.
       schema:
         type: string
     - in: query
       name: resource_type
-      description: The type of resource that the Notification refers to.
+      description: Filter by the resource type.
       schema:
         type: string
     - in: query
       name: resource_id
-      description: The ID of the resource that the Notification refers to.
+      description: Filter by the resource ID.
       schema:
         type: string
     - in: query
       name: to
       description: >-
-        The address that the Notification was sent to. This will usually be an
-        email address, but represent other addresses such as a chat bot user id
+        Filter by the address that the Notification was sent to. This will
+        usually be an email address, but it can also represent other addresses
+        such as a chat bot user id.
       schema:
         type: string
     - in: query
