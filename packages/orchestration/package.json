@@ -29,9 +29,9 @@
     "graphql": "^16.6.0"
   },
   "scripts": {
-    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
-    "test": "jest"
+    "test": "jest --runInBand --bail --forceExit"
   }
 }

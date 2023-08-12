@@ -2,14 +2,15 @@ import {
   AdminCollectionsDeleteRes,
   AdminCollectionsRes,
   AdminDeleteProductsFromCollectionReq,
+  AdminDeleteProductsFromCollectionRes,
   AdminPostCollectionsCollectionReq,
   AdminPostCollectionsReq,
   AdminPostProductsToCollectionReq,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import {
-  useMutation,
   UseMutationOptions,
+  useMutation,
   useQueryClient,
 } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
@@ -106,7 +107,7 @@ export const useAdminAddProductsToCollection = (
 export const useAdminRemoveProductsFromCollection = (
   id: string,
   options?: UseMutationOptions<
-    Response<AdminCollectionsDeleteRes>,
+    Response<AdminDeleteProductsFromCollectionRes>,
     Error,
     AdminDeleteProductsFromCollectionReq
   >

@@ -1,19 +1,18 @@
-import { InputAlias, Workflows } from "../definitions"
+import { InputAlias, Workflows } from "../../definitions"
 import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
-import { exportWorkflow, pipe } from "../helper"
+import { exportWorkflow, pipe } from "../../helper"
 
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import {
   InventoryHandlers,
   MiddlewaresHandlers,
   ProductHandlers,
-} from "../handlers"
-import { aggregateData } from "../helper/aggregate"
+} from "../../handlers"
 
-export enum Actions {
+export enum CreateProductsActions {
   prepare = "prepare",
   createProducts = "createProducts",
   attachToSalesChannel = "attachToSalesChannel",
@@ -21,34 +20,29 @@ export enum Actions {
   createPrices = "createPrices",
   createInventoryItems = "createInventoryItems",
   attachInventoryItems = "attachInventoryItems",
-  result = "result",
 }
 
 export const workflowSteps: TransactionStepsDefinition = {
   next: {
-    action: Actions.prepare,
+    action: CreateProductsActions.prepare,
     noCompensation: true,
     next: {
-      action: Actions.createProducts,
+      action: CreateProductsActions.createProducts,
       next: [
         {
-          action: Actions.attachShippingProfile,
+          action: CreateProductsActions.attachShippingProfile,
           saveResponse: false,
         },
         {
-          action: Actions.attachToSalesChannel,
+          action: CreateProductsActions.attachToSalesChannel,
           saveResponse: false,
         },
         {
-          action: Actions.createPrices,
+          action: CreateProductsActions.createPrices,
           next: {
-            action: Actions.createInventoryItems,
+            action: CreateProductsActions.createInventoryItems,
             next: {
-              action: Actions.attachInventoryItems,
-              next: {
-                action: Actions.result,
-                noCompensation: true,
-              },
+              action: CreateProductsActions.attachInventoryItems,
             },
           },
         },
@@ -59,234 +53,212 @@ export const workflowSteps: TransactionStepsDefinition = {
 
 const handlers = new Map([
   [
-    Actions.prepare,
+    CreateProductsActions.prepare,
     {
       invoke: pipe(
         {
+          merge: true,
           inputAlias: InputAlias.ProductsInputData,
           invoke: {
             from: InputAlias.ProductsInputData,
           },
         },
-        aggregateData(),
-        MiddlewaresHandlers.createProductsPrepareData
+        ProductHandlers.createProductsPrepareData
       ),
     },
   ],
   [
-    Actions.createProducts,
+    CreateProductsActions.createProducts,
     {
       invoke: pipe(
         {
+          merge: true,
           invoke: {
-            from: Actions.prepare,
+            from: CreateProductsActions.prepare,
           },
         },
-        aggregateData(),
         ProductHandlers.createProducts
       ),
       compensate: pipe(
         {
+          merge: true,
           invoke: {
-            from: Actions.createProducts,
+            from: CreateProductsActions.createProducts,
             alias: ProductHandlers.removeProducts.aliases.products,
           },
         },
-        aggregateData(),
         ProductHandlers.removeProducts
       ),
     },
   ],
   [
-    Actions.attachShippingProfile,
+    CreateProductsActions.attachShippingProfile,
     {
       invoke: pipe(
         {
+          merge: true,
           invoke: [
             {
-              from: Actions.prepare,
+              from: CreateProductsActions.prepare,
             },
             {
-              from: Actions.createProducts,
+              from: CreateProductsActions.createProducts,
               alias:
                 ProductHandlers.attachShippingProfileToProducts.aliases
                   .products,
             },
           ],
         },
-        aggregateData(),
         ProductHandlers.attachShippingProfileToProducts
       ),
       compensate: pipe(
         {
+          merge: true,
           invoke: [
             {
-              from: Actions.prepare,
+              from: CreateProductsActions.prepare,
             },
             {
-              from: Actions.createProducts,
+              from: CreateProductsActions.createProducts,
               alias:
                 ProductHandlers.detachShippingProfileFromProducts.aliases
                   .products,
             },
           ],
         },
-        aggregateData(),
         ProductHandlers.detachShippingProfileFromProducts
       ),
     },
   ],
   [
-    Actions.attachToSalesChannel,
+    CreateProductsActions.attachToSalesChannel,
     {
       invoke: pipe(
         {
+          merge: true,
           invoke: [
             {
-              from: Actions.prepare,
+              from: CreateProductsActions.prepare,
             },
             {
-              from: Actions.createProducts,
+              from: CreateProductsActions.createProducts,
               alias:
                 ProductHandlers.attachSalesChannelToProducts.aliases.products,
             },
           ],
         },
-        aggregateData(),
         ProductHandlers.attachSalesChannelToProducts
       ),
       compensate: pipe(
         {
+          merge: true,
           invoke: [
             {
-              from: Actions.prepare,
+              from: CreateProductsActions.prepare,
             },
             {
-              from: Actions.createProducts,
+              from: CreateProductsActions.createProducts,
               alias:
                 ProductHandlers.detachSalesChannelFromProducts.aliases.products,
             },
           ],
         },
-        aggregateData(),
         ProductHandlers.detachSalesChannelFromProducts
       ),
     },
   ],
   [
-    Actions.createInventoryItems,
+    CreateProductsActions.createInventoryItems,
     {
       invoke: pipe(
         {
+          merge: true,
           invoke: {
-            from: Actions.createProducts,
+            from: CreateProductsActions.createProducts,
             alias: InventoryHandlers.createInventoryItems.aliases.products,
           },
         },
-        aggregateData(),
         InventoryHandlers.createInventoryItems
       ),
       compensate: pipe(
         {
+          merge: true,
           invoke: {
-            from: Actions.createInventoryItems,
+            from: CreateProductsActions.createInventoryItems,
             alias:
               InventoryHandlers.removeInventoryItems.aliases.inventoryItems,
           },
         },
-        aggregateData(),
         InventoryHandlers.removeInventoryItems
       ),
     },
   ],
   [
-    Actions.attachInventoryItems,
+    CreateProductsActions.attachInventoryItems,
     {
       invoke: pipe(
         {
+          merge: true,
           invoke: {
-            from: Actions.createInventoryItems,
+            from: CreateProductsActions.createInventoryItems,
             alias:
               InventoryHandlers.attachInventoryItems.aliases.inventoryItems,
           },
         },
-        aggregateData(),
         InventoryHandlers.attachInventoryItems
       ),
       compensate: pipe(
         {
+          merge: true,
           invoke: {
-            from: Actions.createInventoryItems,
+            from: CreateProductsActions.createInventoryItems,
             alias:
               InventoryHandlers.detachInventoryItems.aliases.inventoryItems,
           },
         },
-        aggregateData(),
         InventoryHandlers.detachInventoryItems
       ),
     },
   ],
   [
-    Actions.createPrices,
+    CreateProductsActions.createPrices,
     {
       invoke: pipe(
         {
+          merge: true,
           invoke: [
             {
-              from: Actions.prepare,
+              from: CreateProductsActions.prepare,
             },
             {
-              from: Actions.createProducts,
+              from: CreateProductsActions.createProducts,
               alias:
                 ProductHandlers.updateProductsVariantsPrices.aliases.products,
             },
           ],
         },
-        aggregateData(),
         ProductHandlers.updateProductsVariantsPrices
       ),
       compensate: pipe(
         {
+          merge: true,
           invoke: [
             {
-              from: Actions.prepare,
+              from: CreateProductsActions.prepare,
+              alias:
+                MiddlewaresHandlers
+                  .createProductsPrepareCreatePricesCompensation.aliases
+                  .preparedData,
             },
             {
-              from: Actions.createProducts,
+              from: CreateProductsActions.createProducts,
               alias:
                 ProductHandlers.updateProductsVariantsPrices.aliases.products,
             },
           ],
         },
-        aggregateData(),
         MiddlewaresHandlers.createProductsPrepareCreatePricesCompensation,
         ProductHandlers.updateProductsVariantsPrices
-      ),
-    },
-  ],
-  [
-    Actions.result,
-    {
-      invoke: pipe(
-        {
-          invoke: [
-            {
-              from: Actions.prepare,
-            },
-            {
-              from: Actions.createProducts,
-              alias: "products",
-            },
-          ],
-        },
-        async ({ data }) => {
-          return {
-            alias: ProductHandlers.listProducts.aliases.ids,
-            value: data.products.map((product) => product.id),
-          }
-        },
-        aggregateData(),
-        ProductHandlers.listProducts
       ),
     },
   ],
@@ -297,4 +269,4 @@ WorkflowManager.register(Workflows.CreateProducts, workflowSteps, handlers)
 export const createProducts = exportWorkflow<
   WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO,
   ProductTypes.ProductDTO[]
->(Workflows.CreateProducts, Actions.result)
+>(Workflows.CreateProducts, CreateProductsActions.createProducts)

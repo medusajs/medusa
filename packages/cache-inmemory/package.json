@@ -26,7 +26,7 @@
   },
   "scripts": {
     "watch": "tsc --build --watch",
-    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "test": "jest --passWithNoTests"
   },
