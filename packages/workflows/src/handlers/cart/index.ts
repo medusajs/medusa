@@ -6,4 +6,6 @@ export * from "./remove-cart"
 export * from "./retrieve-cart"
 export * from "./update-line-item-shipping"
 export * from "./update-payment-sessions"
+export * from "./upsert-payment-sessions"
 export * from "./validate-shipping-option-for-cart"
+

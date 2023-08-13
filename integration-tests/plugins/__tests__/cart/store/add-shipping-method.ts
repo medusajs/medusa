@@ -104,7 +104,7 @@ describe("/store/carts", () => {
 
     addShippingMethodWorkflow.appendAction(
       "fail_step",
-      AddShippingMethodWorkflowActions.updatePaymentSessions,
+      AddShippingMethodWorkflowActions.upsertPaymentSessions,
       {
         invoke: pipe({}, async function failStep() {
           throw new Error(`Failed to add shipping method`)
@@ -148,6 +148,6 @@ describe("/store/carts", () => {
       },
     ])
 
-    expect(transaction.getState()).toEqual("failed")
+    expect(transaction.getState()).toEqual("reverted")
   })
 })

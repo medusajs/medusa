@@ -26,8 +26,7 @@ export enum AddShippingMethodWorkflowActions {
   createShippingMethods = "createShippingMethods",
   cleanUpShippingMethods = "cleanUpShippingMethods",
   adjustFreeShipping = "adjustFreeShipping",
-  cleanUpPaymentSessions = "cleanUpPaymentSessions",
-  updatePaymentSessions = "updatePaymentSessions",
+  upsertPaymentSessions = "upsertPaymentSessions",
   result = "result",
 }
 
@@ -52,16 +51,11 @@ export const addShippingMethodWorkflowSteps: TransactionStepsDefinition = {
               action: AddShippingMethodWorkflowActions.adjustFreeShipping,
               saveResponse: false,
               next: {
-                action: AddShippingMethodWorkflowActions.cleanUpPaymentSessions,
+                action: AddShippingMethodWorkflowActions.upsertPaymentSessions,
                 saveResponse: false,
                 next: {
-                  action:
-                    AddShippingMethodWorkflowActions.updatePaymentSessions,
-                  saveResponse: false,
-                  next: {
-                    action: AddShippingMethodWorkflowActions.result,
-                    noCompensation: true,
-                  },
+                  action: AddShippingMethodWorkflowActions.result,
+                  noCompensation: true,
                 },
               },
             },
@@ -231,20 +225,12 @@ const handlers = new Map([
           ],
           merge: true,
         },
-        setRetrieveConfig({
-          relations: [
-            "discounts",
-            "discounts.rule",
-            "shipping_methods.shipping_option",
-          ],
-        }),
-        CartHandlers.retrieveCart,
         CartHandlers.adjustFreeShippingOnCart
       ),
     },
   ],
   [
-    AddShippingMethodWorkflowActions.cleanUpPaymentSessions,
+    AddShippingMethodWorkflowActions.upsertPaymentSessions,
     {
       invoke: pipe(
         {
@@ -268,8 +254,7 @@ const handlers = new Map([
             "customer",
           ],
         }),
-        CartHandlers.retrieveCart,
-        CartHandlers.cleanUpPaymentSessions
+        CartHandlers.upsertPaymentSessions
       ),
       compensate: pipe(
         {
@@ -278,37 +263,7 @@ const handlers = new Map([
           },
           merge: true,
         },
-        CartHandlers.cleanUpPaymentSessions
-      ),
-    },
-  ],
-  [
-    AddShippingMethodWorkflowActions.updatePaymentSessions,
-    {
-      invoke: pipe(
-        {
-          invoke: {
-            from: AddShippingMethodWorkflowActions.prepare,
-          },
-          merge: true,
-        },
-        setRetrieveConfig({
-          relations: [
-            "items.variant.product.profiles",
-            "items.adjustments",
-            "discounts.rule",
-            "gift_cards",
-            "shipping_methods.shipping_option",
-            "billing_address",
-            "shipping_address",
-            "region.tax_rates",
-            "region.payment_providers",
-            "payment_sessions",
-            "customer",
-          ],
-        }),
-        CartHandlers.retrieveCart,
-        CartHandlers.updatePaymentSessions
+        CartHandlers.upsertPaymentSessions
       ),
     },
   ],
