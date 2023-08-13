@@ -6,7 +6,7 @@ import OrganizeForm, {
   OrganizeFormType,
 } from "../../forms/product/organize-form"
 
-import { Product } from "@medusajs/medusa"
+import { Product as BaseProduct } from "@medusajs/medusa"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
@@ -18,6 +18,13 @@ import MetadataForm, {
 } from "../../forms/general/metadata-form"
 import Button from "../../fundamentals/button"
 import Modal from "../../molecules/modal"
+
+type Product = BaseProduct & {
+  title_ar: string
+  subtitle_ar: string | null
+  description_ar: string | null
+  handle_ar: string | null
+}
 
 type Props = {
   product: Product
@@ -57,13 +64,18 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
     onUpdate(
       {
         title: data.general.title,
+        title_ar: data.general.title_ar,
+        subtitle_ar: data.general.subtitle_ar,
         handle: data.general.handle,
+        handle_ar: data.general.handle_ar,
         // @ts-ignore
         material: data.general.material,
         // @ts-ignore
         subtitle: data.general.subtitle,
         // @ts-ignore
         description: data.general.description,
+        // @ts-ignore
+        description_ar: data.general.description_ar,
         // @ts-ignore
         type: data.organize.type
           ? {
@@ -150,10 +162,14 @@ const getDefaultValues = (product: Product): GeneralFormWrapper => {
   return {
     general: {
       title: product.title,
+      title_ar: product.title_ar,
       subtitle: product.subtitle,
+      subtitle_ar: product.subtitle_ar,
       material: product.material,
       handle: product.handle!,
+      handle_ar: product.handle_ar!,
       description: product.description || null,
+      description_ar: product.description_ar || null,
     },
     organize: {
       collection: product.collection

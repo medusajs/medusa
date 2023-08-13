@@ -352,13 +352,17 @@ const createPayload = (
 ): AdminPostProductsReq => {
   const payload: AdminPostProductsReq = {
     title: data.general.title,
+    title_ar: data.general.title_ar,
     subtitle: data.general.subtitle || undefined,
+    subtitle_ar: data.general.subtitle_ar || undefined,
     material: data.general.material || undefined,
     handle: data.general.handle,
+    handle_ar: data.general.handle_ar,
     discountable: data.discounted.value,
     is_giftcard: false,
     collection_id: data.organize.collection?.value,
     description: data.general.description || undefined,
+    description_ar: data.general.description_ar || undefined,
     height: data.dimensions.height || undefined,
     length: data.dimensions.length || undefined,
     weight: data.dimensions.weight || undefined,
@@ -422,8 +426,10 @@ const createBlank = (): NewProductForm => {
   return {
     general: {
       title: "",
+      title_ar: "",
       material: null,
       subtitle: null,
+      subtitle_ar: null,
       description: null,
       handle: "",
     },

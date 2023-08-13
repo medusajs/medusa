@@ -1,4 +1,4 @@
-import { Product } from "@medusajs/medusa"
+import { Product as BaseProduct } from "@medusajs/medusa"
 import useEditProductActions from "../../../hooks/use-edit-product-actions"
 import useToggleState from "../../../hooks/use-toggle-state"
 import {
@@ -17,6 +17,12 @@ import Section from "../section"
 import ChannelsModal from "./channels-modal"
 import GeneralModal from "./general-modal"
 
+type Product = BaseProduct & {
+  title_ar: string
+  subtitle_ar: string
+  handle_ar: string
+  description_ar: string | null
+}
 type Props = {
   product: Product
 }

@@ -1,3 +1,5 @@
+import { Controller } from "react-hook-form"
+import ReactQuill from "react-quill"
 import FormValidator from "../../../../utils/form-validator"
 import { NestedForm } from "../../../../utils/nested-form"
 import InputField from "../../../molecules/input"
@@ -5,10 +7,14 @@ import TextArea from "../../../molecules/textarea"
 
 export type GeneralFormType = {
   title: string
+  title_ar: string
   subtitle: string | null
+  subtitle_ar: string | null
   handle: string
+  handle_ar: string
   material: string | null
   description: string | null
+  description_ar: string | null
 }
 
 type Props = {
@@ -22,6 +28,7 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
     register,
     path,
     formState: { errors },
+    control,
   } = form
 
   return (
@@ -56,6 +63,30 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         <br />
         50-60 characters is the recommended length for search engines.
       </p>
+      <div className="gap-x-large mb-small grid grid-cols-2">
+        <InputField
+          label="Title in arabic"
+          placeholder={isGiftCard ? "Gift Card" : "Winter Jacket"}
+          required
+          {...register(path("title_ar"), {
+            required: "Title ar is required",
+            minLength: {
+              value: 1,
+              message: "Title must be at least 1 character",
+            },
+            pattern: FormValidator.whiteSpaceRule("Title"),
+          })}
+          errors={errors}
+        />
+        <InputField
+          label="Subtitle in arabic"
+          placeholder="Warm and cozy..."
+          {...register(path("subtitle_ar"), {
+            pattern: FormValidator.whiteSpaceRule("Subtitle"),
+          })}
+          errors={errors}
+        />
+      </div>
       <div className="gap-x-large mb-large grid grid-cols-2">
         <InputField
           label="Handle"
@@ -86,6 +117,17 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
           errors={errors}
         />
       </div>
+      <div className="gap-x-large mb-large grid grid-cols-2">
+        <InputField
+          label="Handle in arabic"
+          placeholder={isGiftCard ? "Paper" : "100% Cotton"}
+          {...register(path("handle_ar"), {
+            minLength: FormValidator.minOneCharRule("Handle"),
+            pattern: FormValidator.whiteSpaceRule("Handle"),
+          })}
+          errors={errors}
+        />
+      </div>
       <TextArea
         label="Description"
         placeholder={
@@ -96,6 +138,31 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         {...register(path("description"))}
         errors={errors}
       />
+      <TextArea
+        label="Description in arabic"
+        placeholder={
+          isGiftCard ? "The gift card is..." : "A warm and cozy jacket..."
+        }
+        rows={3}
+        className="mb-small"
+        {...register(path("description_ar"))}
+        errors={errors}
+      />
+      <div>
+        <Controller
+          name="__nested__.description_ar"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <ReactQuill
+              value={field.value || ""}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+            />
+          )}
+        />
+      </div>
+
       <p className="inter-base-regular text-grey-50">
         Give your {isGiftCard ? "gift card" : "product"} a short and clear
         description.

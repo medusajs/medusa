@@ -6107,6 +6107,7 @@ __metadata:
     react-json-tree: ^0.17.0
     react-jwt: ^1.1.4
     react-nestable: ^2.0.0
+    react-quill: ^2.0.0
     react-router-dom: 6.8.0
     react-select: ^5.5.4
     react-table: ^7.7.0
@@ -12289,6 +12290,15 @@ __metadata:
   version: 6.9.7
   resolution: "@types/qs@npm:6.9.7"
   checksum: 157eb05f4c75790b0ebdcf7b0547ff117feabc8cda03c3cac3d3ea82bb19a1912e76a411df3eb0bdd01026a9770f07bc0e7e3fbe39ebb31c1be4564c16be35f1
+  languageName: node
+  linkType: hard
+
+"@types/quill@npm:^1.3.10":
+  version: 1.3.10
+  resolution: "@types/quill@npm:1.3.10"
+  dependencies:
+    parchment: ^1.1.2
+  checksum: d006c4d5579d3a5b6cfd4b5f99c00dda40babe66791258c6db39298b204b6a0db102dd41c122e617dcd5aab6182d1ad35be50f3ec0dcde5cea4d474abffce5d8
   languageName: node
   linkType: hard
 
@@ -18634,6 +18644,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"deep-equal@npm:^1.0.1":
+  version: 1.1.1
+  resolution: "deep-equal@npm:1.1.1"
+  dependencies:
+    is-arguments: ^1.0.4
+    is-date-object: ^1.0.1
+    is-regex: ^1.0.4
+    object-is: ^1.0.1
+    object-keys: ^1.1.1
+    regexp.prototype.flags: ^1.2.0
+  checksum: 473d5dd1d707afd5ad3068864765590591b049d0e0d9a01931599dbbd820e35f09d0a42faa6e4644deb7cf6b7dc90f7bfdf5559f42279d67f714209b62036212
+  languageName: node
+  linkType: hard
+
 "deep-extend@npm:^0.6.0":
   version: 0.6.0
   resolution: "deep-extend@npm:0.6.0"
@@ -18744,6 +18768,16 @@ __metadata:
     has-property-descriptors: ^1.0.0
     object-keys: ^1.1.1
   checksum: 1e09acd814c3761f2355d9c8a18fbc2b5d2e1073e1302245c134e96aacbff51b152e2a6f5f5db23af3c43e26f4e3a0d42f569aa4135f49046246c934bfb8e1dc
+  languageName: node
+  linkType: hard
+
+"define-properties@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "define-properties@npm:1.2.0"
+  dependencies:
+    has-property-descriptors: ^1.0.0
+    object-keys: ^1.1.1
+  checksum: 34b58cae4651936a3c8c720310ce393a3227f5123640ab5402e7d6e59bb44f8295b789cb5d74e7513682b2e60ff20586d6f52b726d964d617abffa3da76344e0
   languageName: node
   linkType: hard
 
@@ -21128,6 +21162,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eventemitter3@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "eventemitter3@npm:2.0.3"
+  checksum: 001ff65ddf1c2d627edcdde5efc2a8335a42af72406970de3b4917368e9f0fab5de7d02cdbfb0f5fca944543b2057e045be91c91b9ae3adc6a4dc10c99ad814f
+  languageName: node
+  linkType: hard
+
 "eventemitter3@npm:^3.1.0":
   version: 3.1.2
   resolution: "eventemitter3@npm:3.1.2"
@@ -21565,7 +21606,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"extend@npm:^3.0.0, extend@npm:~3.0.2":
+"extend@npm:^3.0.0, extend@npm:^3.0.2, extend@npm:~3.0.2":
   version: 3.0.2
   resolution: "extend@npm:3.0.2"
   checksum: 73bf6e27406e80aa3e85b0d1c4fd987261e628064e170ca781125c0b635a3dabad5e05adbf07595ea0cf1e6c5396cacb214af933da7cbaf24fe75ff14818e8f9
@@ -21659,6 +21700,13 @@ __metadata:
   version: 3.1.3
   resolution: "fast-deep-equal@npm:3.1.3"
   checksum: 40dedc862eb8992c54579c66d914635afbec43350afbbe991235fdcb4e3a8d5af1b23ae7e79bef7d4882d0ecee06c3197488026998fb19f72dc95acff1d1b1d0
+  languageName: node
+  linkType: hard
+
+"fast-diff@npm:1.1.2":
+  version: 1.1.2
+  resolution: "fast-diff@npm:1.1.2"
+  checksum: a24adf44d65f6f59e7ceec32905f95c57542253aa66a200a8365b86a16553239fb0f286107e77cbb5b997f5f36fd8d2fcfcf8f7db301e4e06c1d825959f4a306
   languageName: node
   linkType: hard
 
@@ -25163,7 +25211,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-arguments@npm:^1.1.0":
+"is-arguments@npm:^1.0.4, is-arguments@npm:^1.1.0":
   version: 1.1.1
   resolution: "is-arguments@npm:1.1.1"
   dependencies:
@@ -25713,7 +25761,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-regex@npm:^1.1.2, is-regex@npm:^1.1.4":
+"is-regex@npm:^1.0.4, is-regex@npm:^1.1.2, is-regex@npm:^1.1.4":
   version: 1.1.4
   resolution: "is-regex@npm:1.1.4"
   dependencies:
@@ -32956,6 +33004,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"object-is@npm:^1.0.1":
+  version: 1.1.5
+  resolution: "object-is@npm:1.1.5"
+  dependencies:
+    call-bind: ^1.0.2
+    define-properties: ^1.1.3
+  checksum: 8c263fb03fc28f1ffb54b44b9147235c5e233dc1ca23768e7d2569740b5d860154d7cc29a30220fe28ed6d8008e2422aefdebfe987c103e1c5d190cf02d9d886
+  languageName: node
+  linkType: hard
+
 "object-keys@npm:^1.1.1":
   version: 1.1.1
   resolution: "object-keys@npm:1.1.1"
@@ -33652,6 +33710,13 @@ __metadata:
     dot-case: ^3.0.4
     tslib: ^2.0.3
   checksum: ccc053f3019f878eca10e70ec546d92f51a592f762917dafab11c8b532715dcff58356118a6f350976e4ab109e321756f05739643ed0ca94298e82291e6f9e76
+  languageName: node
+  linkType: hard
+
+"parchment@npm:^1.1.2, parchment@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "parchment@npm:1.1.4"
+  checksum: 2171f1361fcc79b7afe50313bf83fc8d924ad363c88e0193973a2c5783adfc4b10e755911d019c0138a3e12c122da31f74c00c7d95aa2da9e0a605addbf6c803
   languageName: node
   linkType: hard
 
@@ -35825,6 +35890,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"quill-delta@npm:^3.6.2":
+  version: 3.6.3
+  resolution: "quill-delta@npm:3.6.3"
+  dependencies:
+    deep-equal: ^1.0.1
+    extend: ^3.0.2
+    fast-diff: 1.1.2
+  checksum: bf78a6a1ab6229d2eecbbaa119df5df08cd583d79325dcfcedd5236452799f0955ad020c1a7553e5f136a415f878dc82a87796182c912dd3d1a0dc958c461ed9
+  languageName: node
+  linkType: hard
+
+"quill@npm:^1.3.7":
+  version: 1.3.7
+  resolution: "quill@npm:1.3.7"
+  dependencies:
+    clone: ^2.1.1
+    deep-equal: ^1.0.1
+    eventemitter3: ^2.0.3
+    extend: ^3.0.2
+    parchment: ^1.1.4
+    quill-delta: ^3.6.2
+  checksum: c5d874cc8693b017a3dfd79ad6f65b1803cf54ccee7540abe059d5841902a198643acc316027d8a5914c3f2531e67981676249ea014956dd27ebfb73fd83cff0
+  languageName: node
+  linkType: hard
+
 "quotemeta@npm:0.0.0":
   version: 0.0.0
   resolution: "quotemeta@npm:0.0.0"
@@ -36393,6 +36483,20 @@ __metadata:
     react: ^16.8.0 || ^17 || ^18
     react-dom: ^16.8.0 || ^17 || ^18
   checksum: 23f93540537ca4c035425bb8d5e51b11131fbc921d7ac1d041d0ae557feac8c877f3a012d36b94df8787803f52ed81e6df9257ac9e58719875f7805518d6db3f
+  languageName: node
+  linkType: hard
+
+"react-quill@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "react-quill@npm:2.0.0"
+  dependencies:
+    "@types/quill": ^1.3.10
+    lodash: ^4.17.4
+    quill: ^1.3.7
+  peerDependencies:
+    react: ^16 || ^17 || ^18
+    react-dom: ^16 || ^17 || ^18
+  checksum: c850c4d6bd35108a509ce0bd759afd021ca4425be6cba3419a25839979f7e1411fd6d119c0724cdb0619da07e5abf10081af3c139046bc39caf5f217c19d76b0
   languageName: node
   linkType: hard
 
@@ -36997,6 +37101,17 @@ __metadata:
     extend-shallow: ^3.0.2
     safe-regex: ^1.1.0
   checksum: a0f8d6045f63b22e9759db10e248369c443b41cedd7dba0922d002b66c2734bc2aef0d98c4d45772d1f756245f4c5203856b88b9624bba2a58708858a8d485d6
+  languageName: node
+  linkType: hard
+
+"regexp.prototype.flags@npm:^1.2.0":
+  version: 1.5.0
+  resolution: "regexp.prototype.flags@npm:1.5.0"
+  dependencies:
+    call-bind: ^1.0.2
+    define-properties: ^1.2.0
+    functions-have-names: ^1.2.3
+  checksum: 312b7966c5cd2e6837da4073e0e6450191e3c6e8f07276cbed35e170ea5606f91487b435eb3290593f8aed39b1191c44f5340e6e5392650feaf2b34a98378464
   languageName: node
   linkType: hard
 
