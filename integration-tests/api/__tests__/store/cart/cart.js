@@ -2690,6 +2690,43 @@ describe("/store/carts", () => {
     })
   })
 
+  describe("ignore region update if value didn't change", () => {
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("has no side-effects when updating region with no change", async () => {
+      const region = await simpleRegionFactory(dbConnection, {
+        countries: ["us", "ca"],
+      })
+      const product = await simpleProductFactory(dbConnection)
+      const cart = await simpleCartFactory(dbConnection, {
+        region: region.id,
+        line_items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+        shipping_address: {
+          country_code: "us",
+        },
+      })
+
+      const api = useApi()
+
+      const { data: preconditionData } = await api.get(
+        `/store/carts/${cart.id}`
+      )
+      const { data, status } = await api
+        .post(`/store/carts/${cart.id}`, {
+          region_id: region.id,
+        })
+        .catch((err) => {
+          console.log(err)
+          throw err
+        })
+
+      expect(status).toEqual(200)
+      expect(data.cart.shipping_address.country_code).toEqual("us")
+    })
+  })
+
   describe("calculated prices for shipping option", () => {
     afterEach(async () => {
       await doAfterEach()
