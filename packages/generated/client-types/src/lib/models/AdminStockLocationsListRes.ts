@@ -12,7 +12,7 @@ export interface AdminStockLocationsListRes {
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of stock locations skipped when retrieving the stock locations.
    */
   offset: number
   /**

@@ -1,13 +1,16 @@
 post:
   operationId: PostOrdersSwapCancel
-  summary: Cancels a Swap
-  description: Cancels a Swap
+  summary: Cancel a Swap
+  description: Cancel a Swap and change its status.
   x-authenticated: true
+  externalDocs:
+    description: Canceling a swap
+    url: https://docs.medusajs.com/modules/orders/swaps#canceling-a-swap
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Order.
+      description: The ID of the Order the swap is associated with.
       schema:
         type: string
     - in: path
@@ -18,12 +21,12 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   x-codegen:

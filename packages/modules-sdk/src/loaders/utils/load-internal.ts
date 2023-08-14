@@ -8,7 +8,10 @@ import {
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
-import { createMedusaContainer } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  createMedusaContainer,
+} from "@medusajs/utils"
 import { asFunction, asValue } from "awilix"
 
 export async function loadInternalModule(
@@ -69,24 +72,25 @@ export async function loadInternalModule(
     }
   }
 
-  const localContainer =
-    resources === MODULE_RESOURCE_TYPE.ISOLATED
-      ? createMedusaContainer()
-      : (container.createScope() as MedusaContainer)
+  const localContainer = createMedusaContainer()
 
-  if (resources === MODULE_RESOURCE_TYPE.ISOLATED) {
-    const moduleDependencies = resolution?.dependencies ?? []
+  const dependencies = resolution?.dependencies ?? []
+  if (resources === MODULE_RESOURCE_TYPE.SHARED) {
+    dependencies.push(
+      ContainerRegistrationKeys.MANAGER,
+      ContainerRegistrationKeys.CONFIG_MODULE,
+      ContainerRegistrationKeys.LOGGER,
+      ContainerRegistrationKeys.PG_CONNECTION
+    )
+  }
 
-    for (const dependency of moduleDependencies) {
-      localContainer.register(
-        dependency,
-        asFunction(() => {
-          return container.hasRegistration(dependency)
-            ? container.resolve(dependency)
-            : undefined
-        })
-      )
-    }
+  for (const dependency of dependencies) {
+    localContainer.register(
+      dependency,
+      asFunction(() => {
+        return container.resolve(dependency, { allowUnregistered: true })
+      })
+    )
   }
 
   const moduleLoaders = loadedModule?.loaders ?? []

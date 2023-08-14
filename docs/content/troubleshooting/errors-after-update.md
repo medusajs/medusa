@@ -7,7 +7,7 @@ If you run into errors after updating Medusa and its dependencies, it's highly r
 If there's no upgrade guide for your version, make sure that you ran the `migrations` command in the root directory of your Medusa backend:
 
 ```bash
-npx @medusajs/medusa-cli migrations run
+npx medusa migrations run
 ```
 
 This ensures your backend has the latest database structure required. Then, try running your Medusa backend again and check whether the same error occurs.

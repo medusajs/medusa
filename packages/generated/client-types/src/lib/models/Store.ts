@@ -7,7 +7,7 @@ import type { Currency } from "./Currency"
 import type { SalesChannel } from "./SalesChannel"
 
 /**
- * Holds settings for the Store, such as name, currencies, etc.
+ * A store holds the main settings of the commerce shop. By default, only one store is created and used within the Medusa backend. It holds settings related to the name of the store, available currencies, and more.
  */
 export interface Store {
   /**
@@ -23,11 +23,11 @@ export interface Store {
    */
   default_currency_code: string
   /**
-   * Available if the relation `default_currency` is expanded.
+   * The details of the store's default currency.
    */
   default_currency?: Currency | null
   /**
-   * The currencies that are enabled for the Store. Available if the relation `currencies` is expanded.
+   * The details of the enabled currencies in the store.
    */
   currencies?: Array<Currency>
   /**
@@ -47,11 +47,11 @@ export interface Store {
    */
   default_location_id: string | null
   /**
-   * The sales channel ID the cart is associated with.
+   * The ID of the store's default sales channel.
    */
   default_sales_channel_id?: string | null
   /**
-   * A sales channel object. Available if the relation `default_sales_channel` is expanded.
+   * The details of the store's default sales channel.
    */
   default_sales_channel?: SalesChannel | null
   /**

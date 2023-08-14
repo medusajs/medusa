@@ -5,11 +5,11 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminGetSwapsParams {
   /**
-   * The upper limit for the amount of responses returned.
+   * Limit the number of swaps returned.
    */
   limit?: number
   /**
-   * The offset of the list returned.
+   * The number of swaps to skip when retrieving the swaps.
    */
   offset?: number
 }

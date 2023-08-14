@@ -7,4 +7,5 @@ required:
   - discount_condition
 properties:
   discount_condition:
+    description: Discount condition details.
     $ref: ./DiscountCondition.yaml

@@ -1,7 +1,7 @@
 get:
   operationId: GetInvites
   summary: Lists Invites
-  description: Lists all Invites
+  description: Retrieve a list of invites.
   x-authenticated: true
   x-codegen:
     method: list
@@ -41,7 +41,11 @@ get:
 post:
   operationId: PostInvites
   summary: Create an Invite
-  description: Creates an Invite and triggers an 'invite' created event
+  description: >-
+    Create an Invite. This will generate a token associated with the invite and
+    trigger an `invite.created` event. If you have a Notification Provider
+    installed that handles this event, a notification should be sent to the
+    email associated with the invite to allow them to accept the invite.
   x-authenticated: true
   requestBody:
     content:

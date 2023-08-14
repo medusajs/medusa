@@ -3,5 +3,5 @@ required:
   - title
 properties:
   title:
-    description: A title for the publishable api key
+    description: The title of the publishable API key
     type: string

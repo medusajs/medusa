@@ -10,4 +10,5 @@ required:
   - return
 properties:
   return:
+    description: Return details.
     $ref: ./Return.yaml

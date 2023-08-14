@@ -2,38 +2,38 @@
 import { computerizeAmount, MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 
+import { FlagRouter } from "@medusajs/utils"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
+import ProductCategoryFeatureFlag from "../../../loaders/feature-flags/product-categories"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 import { BatchJob, SalesChannel } from "../../../models"
 import {
-  BatchJobService,
-  ProductCategoryService,
-  ProductCollectionService,
-  ProductService,
-  ProductVariantService,
-  RegionService,
-  SalesChannelService,
-  ShippingProfileService,
+    BatchJobService,
+    ProductCategoryService,
+    ProductCollectionService,
+    ProductService,
+    ProductVariantService,
+    RegionService,
+    SalesChannelService,
+    ShippingProfileService,
 } from "../../../services"
 import CsvParser from "../../../services/csv-parser"
 import { CreateProductInput } from "../../../types/product"
 import { CreateProductVariantInput } from "../../../types/product-variant"
-import { FlagRouter } from "../../../utils/flag-router"
 import {
-  OperationType,
-  ProductImportBatchJob,
-  ProductImportCsvSchema,
-  ProductImportInjectedProps,
-  ProductImportJobContext,
-  TParsedProductImportRowData,
+    OperationType,
+    ProductImportBatchJob,
+    ProductImportCsvSchema,
+    ProductImportInjectedProps,
+    ProductImportJobContext,
+    TParsedProductImportRowData,
 } from "./types"
 import {
-  productImportColumnsDefinition,
-  productImportSalesChannelsColumnsDefinition,
-  productImportProductCategoriesColumnsDefinition,
+    productImportColumnsDefinition,
+    productImportProductCategoriesColumnsDefinition,
+    productImportSalesChannelsColumnsDefinition,
 } from "./types/columns-definition"
 import { transformProductData, transformVariantData } from "./utils"
-import ProductCategoryFeatureFlag from "../../../loaders/feature-flags/product-categories"
 
 /**
  * Process this many variant rows before reporting progress.

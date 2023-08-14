@@ -1,67 +1,67 @@
 import { IInventoryService } from "@medusajs/types"
 import {
-  buildRelations,
-  buildSelects,
-  isDefined,
-  MedusaError,
+    buildRelations,
+    buildSelects,
+    FlagRouter,
+    isDefined,
+    MedusaError,
 } from "@medusajs/utils"
 import {
-  EntityManager,
-  FindManyOptions,
-  FindOptionsWhere,
-  ILike,
-  IsNull,
-  Not,
-  Raw,
+    EntityManager,
+    FindManyOptions,
+    FindOptionsWhere,
+    ILike,
+    IsNull,
+    Not,
+    Raw,
 } from "typeorm"
 import {
-  CartService,
-  CustomerService,
-  DiscountService,
-  DraftOrderService,
-  FulfillmentProviderService,
-  FulfillmentService,
-  GiftCardService,
-  LineItemService,
-  NewTotalsService,
-  PaymentProviderService,
-  ProductVariantInventoryService,
-  RegionService,
-  ShippingOptionService,
-  ShippingProfileService,
-  TaxProviderService,
-  TotalsService,
+    CartService,
+    CustomerService,
+    DiscountService,
+    DraftOrderService,
+    FulfillmentProviderService,
+    FulfillmentService,
+    GiftCardService,
+    LineItemService,
+    NewTotalsService,
+    PaymentProviderService,
+    ProductVariantInventoryService,
+    RegionService,
+    ShippingOptionService,
+    ShippingProfileService,
+    TaxProviderService,
+    TotalsService,
 } from "."
+import { TransactionBaseService } from "../interfaces"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
-  Address,
-  Cart,
-  ClaimOrder,
-  Fulfillment,
-  FulfillmentItem,
-  FulfillmentStatus,
-  GiftCard,
-  LineItem,
-  Order,
-  OrderStatus,
-  Payment,
-  PaymentStatus,
-  Return,
-  Swap,
-  TrackingLink,
+    Address,
+    Cart,
+    ClaimOrder,
+    Fulfillment,
+    FulfillmentItem,
+    FulfillmentStatus,
+    GiftCard,
+    LineItem,
+    Order,
+    OrderStatus,
+    Payment,
+    PaymentStatus,
+    Return,
+    Swap,
+    TrackingLink,
 } from "../models"
-import { TransactionBaseService } from "../interfaces"
 import { AddressRepository } from "../repositories/address"
 import { OrderRepository } from "../repositories/order"
 import { FindConfig, QuerySelector, Selector } from "../types/common"
 import {
-  CreateFulfillmentOrder,
-  FulFillmentItemType,
+    CreateFulfillmentOrder,
+    FulFillmentItemType,
 } from "../types/fulfillment"
 import { TotalsContext, UpdateOrderInput } from "../types/orders"
 import { CreateShippingMethodDto } from "../types/shipping-options"
 import { buildQuery, isString, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import EventBusService from "./event-bus"
 
 export const ORDER_CART_ALREADY_EXISTS_ERROR = "Order from cart already exists"
@@ -342,11 +342,9 @@ class OrderService extends TransactionBaseService {
     const totalsToSelect = select.filter((v) => totalFields.includes(v))
     if (totalsToSelect.length > 0) {
       const relationSet = new Set(relations)
-      relationSet.add("items")
       relationSet.add("items.tax_lines")
       relationSet.add("items.adjustments")
-      relationSet.add("items.variant")
-      relationSet.add("items.variant.product")
+      relationSet.add("items.variant.product.profiles")
       relationSet.add("swaps")
       relationSet.add("swaps.additional_items")
       relationSet.add("swaps.additional_items.tax_lines")
@@ -1034,9 +1032,7 @@ class OrderService extends TransactionBaseService {
         relations: [
           "shipping_methods",
           "shipping_methods.shipping_option",
-          "items",
-          "items.variant",
-          "items.variant.product",
+          "items.variant.product.profiles",
         ],
       })
       const { shipping_methods } = order
@@ -1364,9 +1360,9 @@ class OrderService extends TransactionBaseService {
    * In a situation where the order has more than one shipping method,
    * we need to partition the order items, such that they can be sent
    * to their respective fulfillment provider.
-   * @param orderId - id of order to cancel.
+   * @param orderId - id of order to fulfil.
    * @param itemsToFulfill - items to fulfil.
-   * @param config - the config to cancel.
+   * @param config - the config to fulfil.
    * @return result of the update operation.
    */
   async createFulfillment(
@@ -1403,10 +1399,8 @@ class OrderService extends TransactionBaseService {
           "billing_address",
           "shipping_methods",
           "shipping_methods.shipping_option",
-          "items",
           "items.adjustments",
-          "items.variant",
-          "items.variant.product",
+          "items.variant.product.profiles",
           "payments",
         ],
       })

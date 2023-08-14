@@ -5,27 +5,27 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StoreGetProductsProductParams {
   /**
-   * The sales channel used when fetching the product.
+   * The ID of the sales channel the customer is viewing the product from.
    */
   sales_channel_id?: string
   /**
-   * The ID of the customer's cart.
+   * The ID of the cart. This is useful for accurate pricing based on the cart's context.
    */
   cart_id?: string
   /**
-   * The ID of the region the customer is using. This is helpful to ensure correct prices are retrieved for a region.
+   * The ID of the region. This is useful for accurate pricing based on the selected region.
    */
   region_id?: string
   /**
-   * (Comma separated) Which fields should be included in the result.
-   */
-  fields?: string
-  /**
-   * (Comma separated) Which fields should be expanded in each product of the result.
+   * Comma-separated relations that should be expanded in the returned product.
    */
   expand?: string
   /**
-   * The 3 character ISO currency code to set prices based on. This is helpful to ensure correct prices are retrieved for a currency.
+   * Comma-separated fields that should be included in the returned product.
+   */
+  fields?: string
+  /**
+   * A 3 character ISO currency code. This is useful for accurate pricing based on the selected currency.
    */
   currency_code?: string
 }

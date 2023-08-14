@@ -1,32 +1,36 @@
 post:
   operationId: PostOrdersOrderSwapsSwapProcessPayment
-  summary: Process Swap Payment
+  summary: Process a Swap Payment
   description: >-
-    When there are differences between the returned and shipped Products in a
-    Swap, the difference must be processed. Either a Refund will be issued or a
-    Payment will be captured.
+    Process a swap's payment either by refunding or issuing a payment. This
+    depends on the `difference_due` of the swap. If `difference_due` is
+    negative, the amount is refunded. If `difference_due` is positive, the
+    amount is captured.
   x-authenticated: true
+  externalDocs:
+    description: Handling a swap's payment
+    url: https://docs.medusajs.com/modules/orders/swaps#handling-swap-payment
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Order.
+      description: The ID of the order the swap is associated with.
       schema:
         type: string
     - in: path
       name: swap_id
       required: true
-      description: The ID of the Swap.
+      description: The ID of the swap.
       schema:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   x-codegen:

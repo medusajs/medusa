@@ -1,22 +1,24 @@
+import { FlagRouter } from "@medusajs/utils"
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { BasePaymentService } from "medusa-interfaces"
+import { EOL } from "os"
 import { EntityManager } from "typeorm"
 import {
-  AbstractPaymentProcessor,
-  AbstractPaymentService,
-  isPaymentProcessorError,
-  PaymentContext,
-  PaymentProcessorError,
-  PaymentSessionResponse,
-  TransactionBaseService,
+    AbstractPaymentProcessor,
+    AbstractPaymentService,
+    isPaymentProcessorError,
+    PaymentContext,
+    PaymentProcessorError,
+    PaymentSessionResponse,
+    TransactionBaseService,
 } from "../interfaces"
 import {
-  Cart,
-  Payment,
-  PaymentProvider,
-  PaymentSession,
-  PaymentSessionStatus,
-  Refund,
+    Cart,
+    Payment,
+    PaymentProvider,
+    PaymentSession,
+    PaymentSessionStatus,
+    Refund,
 } from "../models"
 import { PaymentRepository } from "../repositories/payment"
 import { PaymentProviderRepository } from "../repositories/payment-provider"
@@ -26,10 +28,8 @@ import { FindConfig, Selector } from "../types/common"
 import { Logger } from "../types/global"
 import { CreatePaymentInput, PaymentSessionInput } from "../types/payment"
 import { buildQuery, isString } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import { CustomerService } from "./index"
 import PaymentService from "./payment"
-import { EOL } from "os"
 
 type PaymentProviderKey = `pp_${string}` | "systemPaymentProviderService"
 type InjectedDependencies = {

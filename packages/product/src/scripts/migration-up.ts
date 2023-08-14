@@ -1,11 +1,7 @@
-import { LoaderOptions, Logger } from "@medusajs/types"
-import {
-  ProductServiceInitializeCustomDataLayerOptions,
-  ProductServiceInitializeOptions,
-} from "../types"
-import { createConnection, loadDatabaseConfig } from "../utils"
+import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
 import * as ProductModels from "@models"
 import { EntitySchema } from "@mikro-orm/core"
+import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 
 /**
  * This script is only valid for mikro orm managers. If a user provide a custom manager
@@ -18,18 +14,15 @@ export async function runMigrations({
   options,
   logger,
 }: Pick<
-  LoaderOptions<
-    | ProductServiceInitializeOptions
-    | ProductServiceInitializeCustomDataLayerOptions
-  >,
+  LoaderOptions<ModulesSdkTypes.ModuleServiceInitializeOptions>,
   "options" | "logger"
 > = {}) {
   logger ??= console as unknown as Logger
 
-  const dbData = loadDatabaseConfig(options)
+  const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)!
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
-  const orm = await createConnection(dbData, entities)
+  const orm = await DALUtils.mikroOrmCreateConnection(dbData, entities)
 
   try {
     const migrator = orm.getMigrator()

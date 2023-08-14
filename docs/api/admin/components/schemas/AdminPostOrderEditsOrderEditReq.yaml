@@ -1,5 +1,5 @@
 type: object
 properties:
   internal_note:
-    description: An optional note to create or update for the order edit.
+    description: An optional note to create or update in the order edit.
     type: string

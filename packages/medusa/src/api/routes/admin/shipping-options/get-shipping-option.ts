@@ -4,7 +4,7 @@ import { defaultFields, defaultRelations } from "."
  * @oas [get] /admin/shipping-options/{id}
  * operationId: "GetShippingOptionsOption"
  * summary: "Get a Shipping Option"
- * description: "Retrieves a Shipping Option."
+ * description: "Retrieve a Shipping Option's details."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Shipping Option.
@@ -17,15 +17,15 @@ import { defaultFields, defaultRelations } from "."
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.shippingOptions.retrieve(option_id)
+ *       medusa.admin.shippingOptions.retrieve(optionId)
  *       .then(({ shipping_option }) => {
  *         console.log(shipping_option.id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/shipping-options/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/shipping-options/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

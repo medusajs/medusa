@@ -1,7 +1,7 @@
 post:
   operationId: PostDraftOrdersDraftOrderLineItemsItem
   summary: Update a Line Item
-  description: Updates a Line Item for a Draft Order
+  description: Update a Line Item in a Draft Order
   x-authenticated: true
   parameters:
     - in: path
@@ -62,7 +62,7 @@ post:
 delete:
   operationId: DeleteDraftOrdersDraftOrderLineItemsItem
   summary: Delete a Line Item
-  description: Removes a Line Item from a Draft Order.
+  description: Deletes a Line Item from a Draft Order.
   x-authenticated: true
   parameters:
     - in: path
@@ -74,7 +74,7 @@ delete:
     - in: path
       name: line_id
       required: true
-      description: The ID of the Draft Order.
+      description: The ID of the line item.
       schema:
         type: string
   x-codegen:

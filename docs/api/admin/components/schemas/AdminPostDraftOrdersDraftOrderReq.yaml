@@ -12,7 +12,7 @@ properties:
       description: See a list of codes.
   email:
     type: string
-    description: An email to be used on the Draft Order.
+    description: An email to be used in the Draft Order.
     format: email
   billing_address:
     description: The Address to be used for billing purposes.
@@ -20,7 +20,7 @@ properties:
       - $ref: ./AddressPayload.yaml
       - type: string
   shipping_address:
-    description: The Address to be used for shipping.
+    description: The Address to be used for shipping purposes.
     anyOf:
       - $ref: ./AddressPayload.yaml
       - type: string
@@ -37,9 +37,9 @@ properties:
           type: string
   no_notification_order:
     description: >-
-      An optional flag passed to the resulting order to determine use of
-      notifications.
+      An optional flag passed to the resulting order that indicates whether the
+      customer should receive notifications about order updates.
     type: boolean
   customer_id:
-    description: The ID of the Customer to associate the Draft Order with.
+    description: The ID of the customer this draft order is associated with.
     type: string

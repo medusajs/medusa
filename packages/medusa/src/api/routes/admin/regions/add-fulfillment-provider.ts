@@ -10,7 +10,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/regions/{id}/fulfillment-providers
  * operationId: "PostRegionsRegionFulfillmentProviders"
  * summary: "Add Fulfillment Provider"
- * description: "Adds a Fulfillment Provider to a Region"
+ * description: "Add a Fulfillment Provider to the list of fulfullment providers in a Region."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The ID of the Region.
@@ -28,8 +28,8 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.regions.addFulfillmentProvider(region_id, {
- *         provider_id: 'manual'
+ *       medusa.admin.regions.addFulfillmentProvider(regionId, {
+ *         provider_id: "manual"
  *       })
  *       .then(({ region }) => {
  *         console.log(region.id);
@@ -37,9 +37,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/regions/{id}/fulfillment-providers' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/regions/{id}/fulfillment-providers' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "provider_id": "manual"
  *       }'
@@ -97,7 +97,7 @@ export default async (req, res) => {
  *   - provider_id
  * properties:
  *   provider_id:
- *     description: "The ID of the Fulfillment Provider to add."
+ *     description: "The ID of the Fulfillment Provider."
  *     type: string
  */
 export class AdminPostRegionsRegionFulfillmentProvidersReq {

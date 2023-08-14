@@ -7,6 +7,9 @@ import type { Customer } from "./Customer"
 import type { Order } from "./Order"
 
 export interface StoreAuthRes {
+  /**
+   * Customer's details.
+   */
   customer: Merge<
     SetRelation<Customer, "orders" | "shipping_addresses">,
     {

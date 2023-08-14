@@ -1,7 +1,10 @@
 get:
   operationId: GetCollections
   summary: List Collections
-  description: Retrieve a list of Product Collection.
+  description: >-
+    Retrieve a list of Product Collection. The product collections can be
+    filtered by fields such as `handle` or `title`. The collections can also be
+    sorted or paginated.
   x-authenticated: true
   parameters:
     - in: query
@@ -12,33 +15,33 @@ get:
         default: 10
     - in: query
       name: offset
-      description: The number of collections to skip before the results.
+      description: The number of collections to skip when retrieving the collections.
       schema:
         type: integer
         default: 0
     - in: query
       name: title
-      description: The title of collections to return.
+      description: Filter collections by their title.
       schema:
         type: string
     - in: query
       name: handle
-      description: The handle of collections to return.
+      description: Filter collections by their handle.
       schema:
         type: string
     - in: query
       name: q
-      description: a search term to search titles and handles.
+      description: a term to search collections by their title or handle.
       schema:
         type: string
     - in: query
       name: discount_condition_id
-      description: The discount condition id on which to filter the product collections.
+      description: Filter collections by a discount condition ID associated with them.
       schema:
         type: string
     - in: query
       name: created_at
-      description: Date comparison for when resulting collections were created.
+      description: Filter by a creation date range.
       schema:
         type: object
         properties:
@@ -60,7 +63,7 @@ get:
             format: date
     - in: query
       name: updated_at
-      description: Date comparison for when resulting collections were updated.
+      description: Filter by an update date range.
       schema:
         type: object
         properties:
@@ -82,7 +85,7 @@ get:
             format: date
     - in: query
       name: deleted_at
-      description: Date comparison for when resulting collections were deleted.
+      description: Filter by a deletion date range.
       schema:
         type: object
         properties:
@@ -118,7 +121,7 @@ get:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Collections
+    - Product Collections
   responses:
     '200':
       description: OK
@@ -141,7 +144,7 @@ get:
 post:
   operationId: PostCollections
   summary: Create a Collection
-  description: Creates a Product Collection.
+  description: Create a Product Collection.
   x-authenticated: true
   requestBody:
     content:
@@ -163,7 +166,7 @@ post:
     - api_token: []
     - cookie_auth: []
   tags:
-    - Collections
+    - Product Collections
   responses:
     '200':
       description: OK

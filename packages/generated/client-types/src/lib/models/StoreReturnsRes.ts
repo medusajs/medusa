@@ -7,6 +7,9 @@ import type { Return } from "./Return"
 import type { ReturnItem } from "./ReturnItem"
 
 export interface StoreReturnsRes {
+  /**
+   * Return details.
+   */
   return: Merge<
     SetRelation<Return, "items">,
     {

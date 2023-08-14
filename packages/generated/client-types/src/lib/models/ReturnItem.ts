@@ -8,27 +8,27 @@ import type { Return } from "./Return"
 import type { ReturnReason } from "./ReturnReason"
 
 /**
- * Correlates a Line Item with a Return, keeping track of the quantity of the Line Item that will be returned.
+ * A return item represents a line item in an order that is to be returned. It includes details related to the return and the reason behind it.
  */
 export interface ReturnItem {
   /**
-   * The id of the Return that the Return Item belongs to.
+   * The ID of the Return that the Return Item belongs to.
    */
   return_id: string
   /**
-   * The id of the Line Item that the Return Item references.
+   * The ID of the Line Item that the Return Item references.
    */
   item_id: string
   /**
-   * Available if the relation `return_order` is expanded.
+   * Details of the Return that the Return Item belongs to.
    */
   return_order?: Return | null
   /**
-   * Available if the relation `item` is expanded.
+   * The details of the line item in the original order to be returned.
    */
   item?: LineItem | null
   /**
-   * The quantity of the Line Item that is included in the Return.
+   * The quantity of the Line Item to be returned.
    */
   quantity: number
   /**
@@ -48,7 +48,7 @@ export interface ReturnItem {
    */
   reason_id: string | null
   /**
-   * Available if the relation `reason` is expanded.
+   * The details of the reason for returning the item.
    */
   reason?: ReturnReason | null
   /**

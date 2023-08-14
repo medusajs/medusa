@@ -1,13 +1,13 @@
 post:
   operationId: PostCustomersCustomerAddressesAddress
   summary: Update a Shipping Address
-  description: Updates a Customer's saved Shipping Address.
+  description: Update the logged-in customer's saved Shipping Address's details.
   x-authenticated: true
   parameters:
     - in: path
       name: address_id
       required: true
-      description: The id of the Address to update.
+      description: The ID of the Address.
       schema:
         type: string
   requestBody:
@@ -55,7 +55,7 @@ post:
 delete:
   operationId: DeleteCustomersCustomerAddressesAddress
   summary: Delete an Address
-  description: Removes an Address from the Customer's saved addresses.
+  description: Delete an Address from the Customer's saved addresses.
   x-authenticated: true
   parameters:
     - in: path

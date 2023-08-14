@@ -1,7 +1,7 @@
 get:
   operationId: GetRegionsRegion
   summary: Get a Region
-  description: Retrieves a Region.
+  description: Retrieve a Region's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -48,7 +48,7 @@ get:
 post:
   operationId: PostRegionsRegion
   summary: Update a Region
-  description: Updates a Region
+  description: Update a Region's details.
   x-authenticated: true
   parameters:
     - in: path
@@ -100,7 +100,9 @@ post:
 delete:
   operationId: DeleteRegionsRegion
   summary: Delete a Region
-  description: Deletes a Region.
+  description: >-
+    Delete a Region. Associated resources, such as providers or currencies are
+    not deleted. Associated tax rates are deleted.
   x-authenticated: true
   parameters:
     - in: path

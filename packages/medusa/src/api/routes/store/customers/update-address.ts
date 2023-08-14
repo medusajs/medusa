@@ -9,10 +9,10 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /store/customers/me/addresses/{address_id}
  * operationId: PostCustomersCustomerAddressesAddress
  * summary: "Update a Shipping Address"
- * description: "Updates a Customer's saved Shipping Address."
+ * description: "Update the logged-in customer's saved Shipping Address's details."
  * x-authenticated: true
  * parameters:
- *   - (path) address_id=* {String} The id of the Address to update.
+ *   - (path) address_id=* {String} The ID of the Address.
  * requestBody:
  *   content:
  *     application/json:
@@ -27,8 +27,8 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged
- *       medusa.customers.addresses.updateAddress(address_id, {
- *         first_name: 'Gina'
+ *       medusa.customers.addresses.updateAddress(addressId, {
+ *         first_name: "Gina"
  *       })
  *       .then(({ customer }) => {
  *         console.log(customer.id);
@@ -36,9 +36,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
- *       --header 'Cookie: connect.sid={sid}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
+ *       -H 'Cookie: connect.sid={sid}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "first_name": "Gina"
  *       }'

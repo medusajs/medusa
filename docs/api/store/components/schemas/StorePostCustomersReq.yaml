@@ -6,19 +6,19 @@ required:
   - password
 properties:
   first_name:
-    description: The Customer's first name.
+    description: The customer's first name.
     type: string
   last_name:
-    description: The Customer's last name.
+    description: The customer's last name.
     type: string
   email:
-    description: The email of the customer.
+    description: The customer's email.
     type: string
     format: email
   password:
-    description: The Customer's password.
+    description: The customer's password.
     type: string
     format: password
   phone:
-    description: The Customer's phone number.
+    description: The customer's phone number.
     type: string

@@ -9,7 +9,7 @@ import type { PaymentSession } from "./PaymentSession"
 import type { Region } from "./Region"
 
 /**
- * Payment Collection
+ * A payment collection allows grouping and managing a list of payments at one. This can be helpful when making additional payment for order edits or integrating installment payments.
  */
 export interface PaymentCollection {
   /**
@@ -42,27 +42,27 @@ export interface PaymentCollection {
    */
   authorized_amount: number | null
   /**
-   * The region's ID
+   * The ID of the region this payment collection is associated with.
    */
   region_id: string
   /**
-   * Available if the relation `region` is expanded.
+   * The details of the region this payment collection is associated with.
    */
   region?: Region | null
   /**
-   * The 3 character ISO code for the currency.
+   * The 3 character ISO code for the currency this payment collection is associated with.
    */
   currency_code: string
   /**
-   * Available if the relation `currency` is expanded.
+   * The details of the currency this payment collection is associated with.
    */
   currency?: Currency | null
   /**
-   * Available if the relation `payment_sessions` is expanded.
+   * The details of the payment sessions created as part of the payment collection.
    */
   payment_sessions?: Array<PaymentSession>
   /**
-   * Available if the relation `payments` is expanded.
+   * The details of the payments created as part of the payment collection.
    */
   payments?: Array<Payment>
   /**

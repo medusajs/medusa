@@ -1,5 +1,6 @@
-import { Router } from "express"
 import { Notification } from "./../../../../"
+import { PaginatedResponse } from "@medusajs/types"
+import { Router } from "express"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -48,10 +49,20 @@ export const defaultAdminNotificationsFields = [
  * properties:
  *   notifications:
  *     type: array
+ *     description: an array of notifications
  *     items:
  *       $ref: "#/components/schemas/Notification"
+ *   count:
+ *     type: integer
+ *     description: The total number of notifications
+ *   offset:
+ *     type: integer
+ *     description: The number of notifications skipped when retrieving the notifications.
+ *   limit:
+ *     type: integer
+ *     description: The number of notifications per page
  */
-export type AdminNotificationsListRes = {
+export type AdminNotificationsListRes = PaginatedResponse & {
   notifications: Notification[]
 }
 
@@ -66,6 +77,7 @@ export type AdminNotificationsListRes = {
  *   - notification
  * properties:
  *   notification:
+ *     description: Notification details
  *     $ref: "#/components/schemas/Notification"
  */
 export type AdminNotificationsRes = {

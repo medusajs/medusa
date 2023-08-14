@@ -12,11 +12,11 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/tax-rates
  * operationId: "PostTaxRates"
  * summary: "Create a Tax Rate"
- * description: "Creates a Tax Rate"
+ * description: "Create a Tax Rate."
  * parameters:
  *   - in: query
  *     name: fields
- *     description: "Which fields should be included in the result."
+ *     description: "Comma-separated fields that should be included in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -25,7 +25,7 @@ import { validator } from "../../../../utils/validator"
  *         type: string
  *   - in: query
  *     name: expand
- *     description: "Which fields should be expanded and retrieved in the result."
+ *     description: "Comma-separated relations that should be expanded in the returned tax rate."
  *     style: form
  *     explode: false
  *     schema:
@@ -49,8 +49,8 @@ import { validator } from "../../../../utils/validator"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.taxRates.create({
- *         code: 'TEST',
- *         name: 'New Tax Rate',
+ *         code: "TEST",
+ *         name: "New Tax Rate",
  *         region_id
  *       })
  *       .then(({ tax_rate }) => {
@@ -59,9 +59,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/admin/tax-rates' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/admin/tax-rates' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "code": "TEST",
  *           "name": "New Tax Rate",
@@ -149,19 +149,19 @@ export default async (req, res) => {
  * properties:
  *   code:
  *     type: string
- *     description: "A code to identify the tax type by"
+ *     description: "The code of the tax rate."
  *   name:
  *     type: string
- *     description: "A human friendly name for the tax"
+ *     description: "The name of the tax rate."
  *   region_id:
  *     type: string
- *     description: "The ID of the Region that the rate belongs to"
+ *     description: "The ID of the Region that the tax rate belongs to."
  *   rate:
  *     type: number
- *     description: "The numeric rate to charge"
+ *     description: "The numeric rate to charge."
  *   products:
  *     type: array
- *     description: "The IDs of the products associated with this tax rate"
+ *     description: "The IDs of the products associated with this tax rate."
  *     items:
  *       type: string
  *   shipping_options:

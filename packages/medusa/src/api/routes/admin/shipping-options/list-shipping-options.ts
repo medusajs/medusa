@@ -10,24 +10,24 @@ import { validator } from "../../../../utils/validator"
  * @oas [get] /admin/shipping-options
  * operationId: "GetShippingOptions"
  * summary: "List Shipping Options"
- * description: "Retrieves a list of Shipping Options."
+ * description: "Retrieve a list of Shipping Options. The shipping options can be filtered by fields such as `region_id` or `is_return`."
  * x-authenticated: true
  * parameters:
  *  - in: query
  *    name: region_id
  *    schema:
  *      type: string
- *    description: Region ID to fetch options from
+ *    description: Filter by a region ID.
  *  - in: query
  *    name: is_return
+ *    description: Filter by whether the shipping option is used for returns or orders.
  *    schema:
  *      type: boolean
- *    description: Flag for fetching return options only
  *  - in: query
  *    name: admin_only
  *    schema:
  *      type: boolean
- *    description: Flag for fetching admin specific options
+ *    description: Filter by whether the shipping option is used only by admins or not.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetShippingOptionsParams
@@ -45,8 +45,8 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/shipping-options' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/shipping-options' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

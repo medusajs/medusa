@@ -168,6 +168,7 @@ export const allowedStoreOrdersFields = [
  *     - items.tax_lines
  *     - items.variant
  *     - items.variant.product
+ *     - items.variant.product.profiles
  *     - refunds
  *     - region
  *     - shipping_methods
@@ -214,6 +215,7 @@ export const allowedStoreOrdersFields = [
  *     - swaps.additional_items.total
  * properties:
  *   order:
+ *     description: "Order details."
  *     $ref: "#/components/schemas/Order"
  */
 export type StoreOrdersRes = {

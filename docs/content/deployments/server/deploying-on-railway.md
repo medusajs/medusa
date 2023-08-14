@@ -19,6 +19,13 @@ If you're deploying the admin plugin along with the backend, you'll need at leas
 
 :::
 
+If you also don't have a Medusa project, you can deploy to Railway instantly with this button:
+
+<a 
+  href="https://railway.app/template/zC7eOq?referralCode=TW4Qi0" class="img-url no-zoom-img">
+  <img src="https://railway.app/button.svg" alt="Deploy with Railway" class="no-zoom-img"/>
+</a>
+
 ---
 
 ## Prerequisites
@@ -28,6 +35,13 @@ If you're deploying the admin plugin along with the backend, you'll need at leas
 It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../development/backend/install.mdx).
 
 Furthermore, your Medusa backend should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Backend documentation](./../../development/backend/configurations.md) to learn how to do that.
+
+### Production Modules
+
+If you're using development modules for events and caching, it's highly recommended to install production modules instead. These can be:
+
+- [Redis Event Module](../../development/events/modules/redis.md)
+- [Redis Cache Module](../../development/cache/modules/redis.md)
 
 ### Needed Accounts
 
@@ -40,15 +54,23 @@ Furthermore, your Medusa backend should be configured to work with PostgreSQL an
 
 ---
 
-## Changes to Medusa Backend Codebase
+## (Optional) Step 1: Add Nixpacks Configurations
 
-By default, Railway looks for a Dockerfile in the root of the codebase. If there is one, it will try to deploy your backend using it.
+If you've created your project using `create-medusa-app`, you might receive errors during the deployment process as Railway uses NPM by default. To avoid that, you need to configure Nixpacks to either use `yarn` or add the `--legacy-peer-deps` option to `npm install`.
 
-As this guide doesn't use Docker, make sure to delete `Dockerfile` from the root of your Medusa backend.
+In the root of your Medusa project, add the `nixpacks.toml` file with the following content:
+
+```toml
+[phases.setup]
+nixPkgs = ['nodejs', 'yarn']
+
+[phases.install]
+cmds=['yarn install']
+```
 
 ---
 
-## Create GitHub Repository
+## Step 2: Create GitHub Repository
 
 Before you can deploy your Medusa backend you need to create a GitHub repository and push the code base to it.
 
@@ -83,7 +105,7 @@ After pushing the changes, you can find the files in your GitHub repository.
 
 ---
 
-## Deploy to Railway
+## Step 3: Deploy to Railway
 
 In this section, you’ll create the PostgreSQL and Redis databases first, then deploy the backend from the GitHub repository. 
 
@@ -102,7 +124,7 @@ In the same project view:
 
 1. Click on the New button.
 2. Choose the Database option.
-3. Choose Add Redis**.**
+3. Choose Add Redis.
 
 A new Redis database will be added to the project view in a few seconds. Click on it to open the database sidebar.
 
@@ -117,7 +139,7 @@ In the same project view:
 
 1. Click on the New button.
 2. Choose the ”GitHub Repo” option.
-3. Choose the ”Configure GitHub App” option to give Railway permission to read and pull your code from GitHub.
+3. If you still haven't given GitHub permissions to Railway, choose the ”Configure GitHub App” option to do that.
 4. Choose the repository from the GitHub Repo dropdown.
 
 :::tip
@@ -126,7 +148,7 @@ If the GitHub repositories in the dropdown are stuck on loading and aren't showi
 
 :::
 
-It will take the backend a few minutes to deploy successfully.
+It will take the backend a few minutes for the deployment to finish. It may fail since you haven't added the environment variables yet.
 
 ### Configure Environment Variables
 
@@ -162,7 +184,7 @@ The start command is the command used to run the backend. You’ll change it to 
 To change the start command of your Medusa backend:
 
 1. Click on the GitHub repository’s card.
-2. Click on the Settings tab and scroll down to the Service section.
+2. Click on the Settings tab and scroll down to the Deploy section.
 3. Paste the following in the Start Command field:
 
 ```bash
@@ -174,12 +196,12 @@ medusa migrations run && medusa start
 The last step is to add a domain name to your Medusa backend. To do that:
 
 1. Click on the GitHub repository’s card.
-2. Click on the Settings tab and scroll down to the Domains section.
+2. Click on the Settings tab and scroll down to the Environment section.
 3. Either click on the Custom Domain button to enter your own domain or the Generate Domain button to generate a random domain.
 
 ---
 
-## Test the Backend
+## Step 4: Test the Backend
 
 Every change you make to the settings redeploys the backend. You can check the Deployments of the backend by clicking on the GitHub repository’s card and choosing the Deployments tab.
 
@@ -215,6 +237,10 @@ If you run into any issues or a problem with your deployed backend, you can chec
 2. Click on the Deployments tab.
 3. Click on the View Logs button.
 
+### Error: connect ENOENT
+
+This error may be thrown by a module that uses Redis. If you see it in your build or deploy logs, make sure that your Redis configurations are correct.
+
 ---
 
 ## Run Commands on the Backend
@@ -222,6 +248,14 @@ If you run into any issues or a problem with your deployed backend, you can chec
 To run commands on your backend, you can use [Railway’s CLI tool to run a local shell and execute commands](https://docs.railway.app/develop/cli#local-shell).
 
 For example, you can run commands on the backend to seed the database or create a new user using [Medusa’s CLI tool](../../cli/reference.mdx).
+
+### Create Admin User
+
+You can create an admin user by running the following command in the root of your Medusa project:
+
+```bash
+railway run npx medusa user --email admin@medusa-test.com --password supersecret
+```
 
 ---
 

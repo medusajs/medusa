@@ -1,13 +1,13 @@
-import ProductExportStrategy from "../../../batch-jobs/product/export"
+import { FlagRouter } from "@medusajs/utils"
+import { Request } from "express"
 import { IdMap, MockManager } from "medusa-test-utils"
+import { AdminPostBatchesReq, defaultAdminProductRelations, } from "../../../../api"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 import { User } from "../../../../models"
 import { BatchJobStatus } from "../../../../types/batch-job"
 import { productsToExport } from "../../../__fixtures__/product-export-data"
-import { AdminPostBatchesReq, defaultAdminProductRelations, } from "../../../../api"
+import ProductExportStrategy from "../../../batch-jobs/product/export"
 import { ProductExportBatchJob } from "../../../batch-jobs/product/types"
-import { Request } from "express"
-import { FlagRouter } from "../../../../utils/flag-router"
-import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
 
 const productServiceMock = {
   withTransaction: function () {

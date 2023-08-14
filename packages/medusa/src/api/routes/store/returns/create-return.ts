@@ -21,7 +21,10 @@ import { defaultRelations } from "."
  * @oas [post] /store/returns
  * operationId: "PostReturns"
  * summary: "Create Return"
- * description: "Creates a Return for an Order."
+ * description: "Create a Return for an Order. If a return shipping method is specified, the return is automatically fulfilled."
+ * externalDocs:
+ *   description: "How to create a return in a storefront"
+ *   url: "https://docs.medusajs.com/modules/orders/storefront/create-return"
  * requestBody:
  *   content:
  *     application/json:
@@ -50,8 +53,8 @@ import { defaultRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request POST 'https://medusa-url.com/store/returns' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X POST 'https://medusa-url.com/store/returns' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "order_id": "asfasf",
  *           "items": [
@@ -260,9 +263,9 @@ class Item {
  * properties:
  *   order_id:
  *     type: string
- *     description: The ID of the Order to create the Return from.
+ *     description: The ID of the Order to create the return for.
  *   items:
- *     description: "The items to include in the Return."
+ *     description: "The items to include in the return."
  *     type: array
  *     items:
  *       type: object
@@ -271,19 +274,19 @@ class Item {
  *         - quantity
  *       properties:
  *         item_id:
- *           description: The ID of the Line Item from the Order.
+ *           description: The ID of the line item to return.
  *           type: string
  *         quantity:
  *           description: The quantity to return.
  *           type: integer
  *         reason_id:
- *           description: The ID of the return reason.
+ *           description: The ID of the return reason. Return reasons can be retrieved from the List Return Reasons endpoint.
  *           type: string
  *         note:
  *           description: A note to add to the item returned.
  *           type: string
  *   return_shipping:
- *     description: If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.
+ *     description: The return shipping method used to return the items. If provided, a fulfillment is automatically created for the return.
  *     type: object
  *     required:
  *       - option_id

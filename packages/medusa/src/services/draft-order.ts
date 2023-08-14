@@ -334,6 +334,7 @@ class DraftOrderService extends TransactionBaseService {
             allow_discounts: false,
             unit_price: price,
             quantity: item.quantity,
+            metadata: item.metadata,
           })
         })
 
@@ -384,9 +385,7 @@ class DraftOrderService extends TransactionBaseService {
           relations: [
             "shipping_methods",
             "shipping_methods.shipping_option",
-            "items",
-            "items.variant",
-            "items.variant.product",
+            "items.variant.product.profiles",
             "payment_sessions",
           ],
         })

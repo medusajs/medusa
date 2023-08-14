@@ -8,10 +8,10 @@ import { validator } from "../../../../utils/validator"
  * @oas [delete] /admin/price-lists/{id}/prices/batch
  * operationId: "DeletePriceListsPriceListPricesBatch"
  * summary: "Delete Prices"
- * description: "Batch delete prices that belong to a Price List"
+ * description: "Delete a list of prices in a Price List"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Price List that the Money Amounts (Prices) that will be deleted belongs to.
+ *   - (path) id=* {string} The ID of the Price List
  * requestBody:
  *   content:
  *     application/json:
@@ -26,7 +26,7 @@ import { validator } from "../../../../utils/validator"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.priceLists.deletePrices(price_list_id, {
+ *       medusa.admin.priceLists.deletePrices(priceListId, {
  *         price_ids: [
  *           price_id
  *         ]
@@ -37,9 +37,9 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/price-lists/{id}/prices/batch' \
- *       --header 'Authorization: Bearer {api_token}' \
- *       --header 'Content-Type: application/json' \
+ *       curl -X DELETE 'https://medusa-url.com/admin/price-lists/{id}/prices/batch' \
+ *       -H 'Authorization: Bearer {api_token}' \
+ *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "price_ids": [
  *             "adasfa"
@@ -96,7 +96,7 @@ export default async (req, res) => {
  * type: object
  * properties:
  *   price_ids:
- *     description: The price id's of the Money Amounts to delete.
+ *     description: The price IDs of the Money Amounts to delete.
  *     type: array
  *     items:
  *       type: string

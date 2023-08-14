@@ -12,12 +12,14 @@ get:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the results.
+      description: >-
+        Comma-separated relations that should be expanded in the returned
+        discount.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the results.
+      description: Comma-separated fields that should be included in the returned discount.
       schema:
         type: string
   x-codegen:
@@ -60,8 +62,8 @@ post:
   operationId: PostDiscountsDiscount
   summary: Update a Discount
   description: >-
-    Updates a Discount with a given set of rules that define how the Discount
-    behaves.
+    Update a Discount with a given set of rules that define how the Discount is
+    applied.
   x-authenticated: true
   parameters:
     - in: path
@@ -73,15 +75,15 @@ post:
     - in: query
       name: expand
       description: >-
-        (Comma separated) Which fields should be expanded in each item of the
-        result.
+        Comma-separated relations that should be expanded in the returned
+        discount.
       schema:
         type: string
     - in: query
       name: fields
       description: >-
-        (Comma separated) Which fields should be included in each item of the
-        result.
+        Comma-separated fields that should be retrieved in the returned
+        discount.
       schema:
         type: string
   requestBody:
@@ -128,7 +130,9 @@ post:
 delete:
   operationId: DeleteDiscountsDiscount
   summary: Delete a Discount
-  description: Deletes a Discount.
+  description: >-
+    Delete a Discount. Deleting the discount will make it unavailable for
+    customers to use.
   x-authenticated: true
   parameters:
     - in: path
