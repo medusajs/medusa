@@ -574,7 +574,7 @@ function EditPricesTable(props: EditPricesTableProps) {
         "text"
       )
 
-      const rows = paste.split("\n").map((r) => r.trim().split("\t"))
+      const rows = paste.split("\n").map((r) => r.split("\t"))
 
       // single cell click -> determine from the content
       if (
@@ -603,6 +603,15 @@ function EditPricesTable(props: EditPricesTableProps) {
           for (let j = 0; j <= jBoundary; j++) {
             if (j >= columns.length) {
               break
+            }
+
+            if (isText(parts[j % parts.length])) {
+              notification(
+                "Error",
+                "Invalid data - copied cells contain text",
+                "error"
+              )
+              return
             }
 
             const amount = parseFloat(parts[j % parts.length])
