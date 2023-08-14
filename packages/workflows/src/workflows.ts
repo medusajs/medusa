@@ -2,6 +2,7 @@ export enum Workflows {
   CreateProducts = "create-products",
   CreateCart = "create-cart",
   AddShippingMethod = "add-shipping-method",
+  AddLineItemToCart = "add-line-item-to-cart",
 }
 
 export enum InputAlias {
