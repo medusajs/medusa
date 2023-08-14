@@ -3,6 +3,7 @@ export type AddLineItemToCartDTO = {
   quantity: number
   metadata?: Record<string, unknown> | undefined
   customer_id?: string
+  unit_price?: number
 }
 
 export type AddLineItemToCartWorkflowDTO = {

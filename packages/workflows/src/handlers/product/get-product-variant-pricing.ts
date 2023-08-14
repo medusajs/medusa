@@ -1,17 +1,23 @@
-import { WorkflowTypes } from "@medusajs/types"
 import { WorkflowDataPreparationArguments } from "../../helper"
+
+type GetProductVariantPricingInput = {
+  variant_id: string
+  quantity: number
+}
+
+type HandlerInput = {
+  variantPricingData: GetProductVariantPricingInput[]
+  context: {
+    customer_id?: string
+    region_id: string
+  }
+}
 
 export async function getProductVariantsPricing({
   container,
   context,
   data,
-}: WorkflowDataPreparationArguments<{
-  variantToLineItemsMap: Map<
-    string,
-    WorkflowTypes.CartWorkflow.AddLineItemToCartDTO
-  >
-  cart
-}>) {
+}: WorkflowDataPreparationArguments<HandlerInput>) {
   const { manager } = context
 
   const productVariantService = container
@@ -23,15 +29,12 @@ export async function getProductVariantsPricing({
 
   const variants = await productVariantService.list(
     {
-      id: [...data.variantToLineItemsMap].map((vli) => vli[0]),
+      id: data.variantPricingData.map((vli) => vli[0]),
     },
     {
       relations: ["product"],
     }
   )
-
-  // Map<string, ProductVariant>
-  const variantsMap = new Map<string, any>()
 
   const variantsToCalculatePricingFor: {
     variantId: string
@@ -39,15 +42,12 @@ export async function getProductVariantsPricing({
   }[] = []
 
   for (const variant of variants) {
-    variantsMap.set(variant.id, variant)
+    const pricingData = data.variantPricingData.find(variant.id)
 
-    const variantResolvedData = data.variantToLineItemsMap.get(variant.id)
-    if (variantResolvedData?.unit_price == null) {
-      variantsToCalculatePricingFor.push({
-        variantId: variant.id,
-        quantity: variantResolvedData!.quantity,
-      })
-    }
+    variantsToCalculatePricingFor.push({
+      variantId: variant.id,
+      quantity: pricingData!.quantity,
+    })
   }
 
   let variantsPricing = {}
@@ -56,15 +56,14 @@ export async function getProductVariantsPricing({
     variantsPricing = await pricingService.getProductVariantsPricing(
       variantsToCalculatePricingFor,
       {
-        region_id: Cart.region_id,
-        customer_id: context?.customer_id,
+        region_id: data.context.region_id,
+        customer_id: data.context?.customer_id,
         include_discount_prices: true,
       }
     )
   }
 
   return {
-    cart,
-    lineItemsToCreate,
+    variantsPricing,
   }
 }

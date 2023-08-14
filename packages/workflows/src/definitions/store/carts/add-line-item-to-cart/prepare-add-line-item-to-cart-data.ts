@@ -22,8 +22,11 @@ export async function prepareAddLineItemToCartWorkflowData({
       item.variant_id,
       {
         ...item,
-        region_id: cart.region_id,
-        customer_id: item.customer_id || cart.customer_id,
+        context: {
+          region_id: cart.region_id,
+          customer_id: item.customer_id || cart.customer_id,
+          metadata: item.metadata,
+        }
       },
     ])
   )
