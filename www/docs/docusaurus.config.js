@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 require("dotenv").config()
+const path = require("path")
 const fs = require("fs")
 const reverseSidebar = require("./src/utils/reverseSidebar")
 
@@ -159,8 +160,8 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl:
-            "https://github.com/medusajs/medusa/edit/develop/docs/content",
-          path: "content",
+            "https://github.com/medusajs/medusa/edit/develop/www/docs/content",
+          path: path.join(__dirname, "content"),
           routeBasePath: "/",
           remarkPlugins: [
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
