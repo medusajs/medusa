@@ -24,7 +24,7 @@ export async function bundle() {
 
   if (!pathExists) {
     logger.panic(
-      "The `src/admin` directory could not be found. It appears that your project does not include any admin extensions."
+      "The `src/admin` directory could not be found. It appears that your project does not contain any admin extensions."
     )
   }
 
@@ -50,86 +50,51 @@ export async function bundle() {
     findAllValidSettings(path.resolve(adminDir, "settings")),
   ])
 
-  const widgetImports = dedent`
-    ${widgets
-      .map((widget, i) => {
-        return `import Widget${i}, { config as widgetConfig${i} } from "${normalizePath(
-          widget
-        )}"`
-      })
-      .join("\n")}
-  `
+  const widgetArray = widgets.map((file, index) => {
+    return {
+      importStatement: `import Widget${index}, { config as widgetConfig${index} } from "${normalizePath(
+        file
+      )}"`,
+      extension: `{ Component: Widget${index}, config: { ...widgetConfig${index}, type: "widget" } }`,
+    }
+  })
 
-  const routeImports = dedent`
-    ${routes
-      .map((route, i) => {
-        return `import Route${i}${
-          route.hasConfig ? `, { config as routeConfig${i} }` : ""
-        } from "${normalizePath(route.file)}"`
-      })
-      .join("\n")}
-    `
+  const routeArray = routes.map((route, index) => {
+    return {
+      importStatement: dedent`
+        import Route${index}${
+        route.hasConfig ? `, { config as routeConfig${index} }` : ""
+      } from "${normalizePath(route.file)}"`,
+      extension: `{
+                Component: Route${index},
+                config: { path: "${route.path}", type: "route"${
+        route.hasConfig ? `, ...routeConfig${index}` : ""
+      } }
+            }`,
+    }
+  })
 
-  const settingImports = dedent`
-    ${settings
-      .map((setting, i) => {
-        return `import Setting${i}, { config as settingConfig${i} } from "${normalizePath(
-          setting.file
-        )}"`
-      })
-      .join("\n")}
-    `
+  const settingArray = settings.map((setting, index) => {
+    return {
+      importStatement: dedent`
+        import Setting${index}, { config as settingConfig${index} } from "${normalizePath(
+        setting.file
+      )}"`,
+      extension: `{ Component: Setting${index}, config: { path: "${setting.path}", type: "setting", ...settingConfig${index} } }`,
+    }
+  })
 
-  const body = dedent`
+  const extensionsArray = [...routeArray, ...settingArray, ...widgetArray]
+
+  const virtualEntry = dedent`
+    ${extensionsArray.map((e) => e.importStatement).join("\n")}
+
     const entry = {
       identifier: "${identifier}",
       extensions: [
-        ${
-          routes.length > 0
-            ? routes
-                .map(
-                  (r, i) => `{
-                Component: Route${i},
-                config: { path: "${r.path}", type: "route"${
-                    r.hasConfig ? `, ...routeConfig${i}` : ""
-                  } }
-            }`
-                )
-                .join(",\n")
-            : ""
-        }
-        ${routes.length > 0 && settings.length > 0 ? "," : ""}
-        ${
-          settings.length > 0
-            ? settings
-                .map(
-                  (r, i) => `{
-                Component: Setting${i},
-                config: { path: "${r.path}", type: "setting", ...settingConfig${i} }
-            }`
-                )
-                .join(",\n")
-            : ""
-        }
-        ${settings.length > 0 && widgets.length > 0 ? "," : ""}
-        ${widgets
-          .map(
-            (_, i) => `{
-            Component: Widget${i},
-            config: { type: "widget", ...widgetConfig${i} }
-        }`
-          )
-          .join(",\n")}
+        ${extensionsArray.map((e) => e.extension).join(",\n")}
       ],
     }
-  `
-
-  const virtualEntry = dedent`
-    ${widgetImports}
-    ${routeImports}
-    ${settingImports}
-
-    ${body}
 
     export default entry
   `
