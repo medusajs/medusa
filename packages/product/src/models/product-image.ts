@@ -2,6 +2,7 @@ import {
   BeforeCreate,
   Collection,
   Entity,
+  Filter,
   Index,
   ManyToMany,
   OptionalProps,
@@ -9,14 +10,13 @@ import {
   Property,
 } from "@mikro-orm/core"
 
-import { generateEntityId } from "@medusajs/utils"
+import { DALUtils, generateEntityId } from "@medusajs/utils"
 import Product from "./product"
-import { SoftDeletable } from "../utils"
 
 type OptionalRelations = "products"
 
 @Entity({ tableName: "image" })
-@SoftDeletable()
+@Filter(DALUtils.mikroOrmSoftDeletableFilterOptions)
 class ProductImage {
   [OptionalProps]?: OptionalRelations
 

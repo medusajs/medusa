@@ -135,7 +135,7 @@ import { omit } from "lodash"
  *   - api_token: []
  *   - cookie_auth: []
  * tags:
- *   - Variants
+ *   - Product Variants
  * responses:
  *   200:
  *     description: OK

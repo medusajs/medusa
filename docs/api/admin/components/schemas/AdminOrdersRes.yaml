@@ -58,6 +58,7 @@ x-expanded-relations:
     - items.tax_lines
     - items.variant
     - items.variant.product
+    - items.variant.product.profiles
     - refunds
     - region
     - shipping_methods
@@ -106,4 +107,5 @@ required:
   - order
 properties:
   order:
+    description: Order details.
     $ref: ./Order.yaml

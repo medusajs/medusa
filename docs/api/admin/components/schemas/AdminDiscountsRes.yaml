@@ -13,4 +13,5 @@ required:
   - discount
 properties:
   discount:
+    description: Discount details.
     $ref: ./Discount.yaml

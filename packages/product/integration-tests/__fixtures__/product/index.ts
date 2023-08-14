@@ -8,6 +8,7 @@ import {
   ProductType,
   ProductVariant,
 } from "@models"
+
 import ProductOption from "../../../src/models/product-option"
 
 export * from "./data/create-product"

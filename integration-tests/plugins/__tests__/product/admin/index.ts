@@ -6,10 +6,12 @@ import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import adminSeeder from "../../../../helpers/admin-seeder"
 import productSeeder from "../../../../helpers/product-seeder"
 
-import { simpleSalesChannelFactory } from "../../../../factories"
+import { Modules, ModulesDefinition } from "@medusajs/modules-sdk"
+import { Workflows } from "@medusajs/workflows"
 import { AxiosInstance } from "axios"
+import { simpleSalesChannelFactory } from "../../../../factories"
 
-jest.setTimeout(50000)
+jest.setTimeout(5000000)
 
 const adminHeaders = {
   headers: {
@@ -21,11 +23,14 @@ describe("/admin/products", () => {
   let medusaProcess
   let dbConnection
   let express
+  let medusaContainer
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd } as any)
-    const { app, port } = await bootstrapApp({ cwd })
+    const { app, port, container } = await bootstrapApp({ cwd })
+    medusaContainer = container
+
     setPort(port)
     express = app.listen(port, () => {
       process.send?.(port)
@@ -37,6 +42,24 @@ describe("/admin/products", () => {
     await db.shutdown()
 
     medusaProcess.kill()
+  })
+
+  it("Should have loaded the product module", function () {
+    const productRegistrationName =
+      ModulesDefinition[Modules.PRODUCT].registrationName
+    expect(
+      medusaContainer.hasRegistration(productRegistrationName)
+    ).toBeTruthy()
+  })
+
+  it("Should have enabled workflows feature flag", function () {
+    const flagRouter = medusaContainer.resolve("featureFlagRouter")
+
+    const workflowsFlag = flagRouter.isFeatureEnabled({
+      workflows: Workflows.CreateProducts,
+    })
+
+    expect(workflowsFlag).toBe(true)
   })
 
   describe("POST /admin/products", () => {

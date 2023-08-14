@@ -3,14 +3,13 @@ import {
   TransactionCheckpoint,
   TransactionPayload,
 } from "./distributed-transaction"
+import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 import {
   TransactionHandlerType,
-  TransactionModel,
   TransactionState,
-  TransactionStepStatus,
   TransactionStepsDefinition,
+  TransactionStepStatus,
 } from "./types"
-import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 
 import { EventEmitter } from "events"
 
@@ -234,9 +233,8 @@ export class TransactionOrchestrator extends EventEmitter {
       const stepDef = flow.steps[step]
       const curState = stepDef.getStates()
       if (
-        (curState.state === TransactionState.DONE ||
-          curState.status === TransactionStepStatus.PERMANENT_FAILURE) &&
-        !stepDef.definition.noCompensation
+        curState.state === TransactionState.DONE ||
+        curState.status === TransactionStepStatus.PERMANENT_FAILURE
       ) {
         stepDef.beginCompensation()
         stepDef.changeState(TransactionState.NOT_STARTED)
@@ -335,6 +333,11 @@ export class TransactionOrchestrator extends EventEmitter {
       if (curState.state === TransactionState.NOT_STARTED) {
         if (step.isCompensating()) {
           step.changeState(TransactionState.COMPENSATING)
+
+          if (step.definition.noCompensation) {
+            step.changeState(TransactionState.REVERTED)
+            continue
+          }
         } else if (flow.state === TransactionState.INVOKING) {
           step.changeState(TransactionState.INVOKING)
         }
@@ -366,7 +369,7 @@ export class TransactionOrchestrator extends EventEmitter {
       if (!step.definition.async) {
         execution.push(
           transaction
-            .handler(step.definition.action + "", type, payload)
+            .handler(step.definition.action + "", type, payload, transaction)
             .then(async (response) => {
               await TransactionOrchestrator.setStepSuccess(
                 transaction,
@@ -387,7 +390,7 @@ export class TransactionOrchestrator extends EventEmitter {
         execution.push(
           transaction.saveCheckpoint().then(async () =>
             transaction
-              .handler(step.definition.action + "", type, payload)
+              .handler(step.definition.action + "", type, payload, transaction)
               .catch(async (error) => {
                 await TransactionOrchestrator.setStepFailure(
                   transaction,

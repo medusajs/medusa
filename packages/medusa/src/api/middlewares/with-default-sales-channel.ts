@@ -1,7 +1,7 @@
+import { FlagRouter } from "@medusajs/utils"
 import { NextFunction, Request, Response } from "express"
 import SalesChannelFeatureFlag from "../../loaders/feature-flags/sales-channels"
 import { SalesChannelService } from "../../services"
-import { FlagRouter } from "../../utils/flag-router"
 
 /**
  * Middleware that includes the default sales channel on the request, if no sales channels present

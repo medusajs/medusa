@@ -6,19 +6,15 @@ import {
 } from "@mikro-orm/core"
 import { Context, DAL, ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import {
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-} from "@medusajs/utils"
+import { DALUtils, MedusaError } from "@medusajs/utils"
 
-import { BaseRepository } from "./base"
-
-export class ProductCollectionRepository extends BaseRepository {
+// eslint-disable-next-line max-len
+export class ProductCollectionRepository extends DALUtils.MikroOrmBaseRepository {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
     this.manager_ = manager
   }
@@ -65,23 +61,17 @@ export class ProductCollectionRepository extends BaseRepository {
     )
   }
 
-  @InjectTransactionManager()
-  async delete(
-    collectionIds: string[],
-    @MedusaContext()
-    { transactionManager: manager }: Context = {}
-  ): Promise<void> {
-    await (manager as SqlEntityManager).nativeDelete(
+  async delete(collectionIds: string[], context: Context = {}): Promise<void> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    await manager.nativeDelete(
       ProductCollection,
       { id: { $in: collectionIds } },
       {}
     )
   }
 
-  @InjectTransactionManager()
   async create(
     data: ProductTypes.CreateProductCollectionDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductCollection[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -90,15 +80,13 @@ export class ProductCollectionRepository extends BaseRepository {
       return manager.create(ProductCollection, collectionData)
     })
 
-    await manager.persist(productCollections)
+    manager.persist(productCollections)
 
     return productCollections
   }
 
-  @InjectTransactionManager()
   async update(
     data: ProductTypes.UpdateProductCollectionDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductCollection[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -134,7 +122,7 @@ export class ProductCollectionRepository extends BaseRepository {
       return manager.assign(existingCollection, collectionData)
     })
 
-    await manager.persist(productCollections)
+    manager.persist(productCollections)
 
     return productCollections
   }

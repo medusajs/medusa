@@ -1,13 +1,16 @@
 post:
   operationId: PostOrderEditsOrderEditRequest
   summary: Request Confirmation
-  description: Request customer confirmation of an Order Edit
+  description: >-
+    Request customer confirmation of an Order Edit. This would emit the event
+    `order-edit.requested` which Notification Providers listen to and send a
+    notification to the customer about the order edit.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Order Edit to request confirmation from.
+      description: The ID of the Order Edit.
       schema:
         type: string
   x-codegen:

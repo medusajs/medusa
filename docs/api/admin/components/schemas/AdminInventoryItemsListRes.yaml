@@ -7,6 +7,7 @@ required:
 properties:
   inventory_items:
     type: array
+    description: an array of Inventory Item details
     items:
       $ref: ./InventoryItemDTO.yaml
   count:
@@ -14,7 +15,7 @@ properties:
     description: The total number of items available
   offset:
     type: integer
-    description: The number of items skipped before these items
+    description: The number of inventory items skipped when retrieving the inventory items.
   limit:
     type: integer
     description: The number of items per page

@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "yarn prebuild && tsc --build",
     "prebuild": "ts-node ./scripts/build.ts && yarn prettier",
     "prettier": "prettier --write --loglevel warn ./src/lib",
@@ -24,7 +24,7 @@
     "url": "https://github.com/medusajs/medusa/issues"
   },
   "devDependencies": {
-    "@medusajs/medusa-oas-cli": "0.2.13",
+    "@medusajs/medusa-oas-cli": "0.2.14",
     "cross-env": "^7.0.3",
     "execa": "^5.1.1",
     "jest": "^27.4.7",

@@ -8,4 +8,5 @@ required:
   - price_list
 properties:
   price_list:
+    description: Price List details.
     $ref: ./PriceList.yaml

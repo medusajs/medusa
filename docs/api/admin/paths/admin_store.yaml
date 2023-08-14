@@ -1,7 +1,7 @@
 get:
   operationId: GetStore
   summary: Get Store details
-  description: Retrieves the Store details
+  description: Retrieve the Store's details.
   x-authenticated: true
   x-codegen:
     method: retrieve
@@ -41,7 +41,7 @@ get:
 post:
   operationId: PostStore
   summary: Update Store Details
-  description: Updates the Store details
+  description: Update the Store's details.
   x-authenticated: true
   requestBody:
     content:

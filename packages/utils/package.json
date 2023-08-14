@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/utils",
-  "version": "1.9.4",
+  "version": "1.9.5",
   "description": "Medusa utilities functions shared by Medusa core and Modules",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -18,7 +18,7 @@
   "author": "Medusa",
   "license": "MIT",
   "devDependencies": {
-    "@medusajs/types": "^1.10.0",
+    "@medusajs/types": "^1.10.1",
     "@types/express": "^4.17.17",
     "cross-env": "^5.2.1",
     "express": "^4.18.2",
@@ -33,9 +33,9 @@
     "ulid": "^2.3.0"
   },
   "scripts": {
-    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
-    "test": "jest"
+    "test": "jest --runInBand --bail --forceExit"
   }
 }

@@ -4,5 +4,5 @@ To resolve this issue, make sure you change into the `backend` directory of the 
 
 ```bash npm2yarn
 cd backend
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```

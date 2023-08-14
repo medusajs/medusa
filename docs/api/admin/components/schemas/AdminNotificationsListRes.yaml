@@ -8,6 +8,7 @@ required:
 properties:
   notifications:
     type: array
+    description: an array of notifications
     items:
       $ref: ./Notification.yaml
   count:
@@ -15,7 +16,7 @@ properties:
     description: The total number of notifications
   offset:
     type: integer
-    description: The number of notifications skipped before these notifications
+    description: The number of notifications skipped when retrieving the notifications.
   limit:
     type: integer
     description: The number of notifications per page

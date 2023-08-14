@@ -1,7 +1,9 @@
 post:
   operationId: PostReturnsReturnCancel
   summary: Cancel a Return
-  description: Registers a Return as canceled.
+  description: >-
+    Registers a Return as canceled. The return can be associated with an order,
+    claim, or swap.
   parameters:
     - in: path
       name: id

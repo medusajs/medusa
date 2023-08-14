@@ -6049,13 +6049,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/admin-ui@^1.9.3, @medusajs/admin-ui@workspace:packages/admin-ui":
+"@medusajs/admin-ui@^1.9.4, @medusajs/admin-ui@workspace:packages/admin-ui":
   version: 0.0.0-use.local
   resolution: "@medusajs/admin-ui@workspace:packages/admin-ui"
   dependencies:
     "@hookform/error-message": ^2.0.1
-    "@medusajs/medusa": ^1.13.0
-    "@medusajs/types": ^1.9.0
+    "@medusajs/medusa": ^1.13.1
+    "@medusajs/types": ^1.10.1
     "@radix-ui/react-accordion": ^1.0.1
     "@radix-ui/react-avatar": ^1.0.1
     "@radix-ui/react-collapsible": ^1.0.1
@@ -6125,8 +6125,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/admin@workspace:packages/admin"
   dependencies:
-    "@medusajs/admin-ui": ^1.9.3
-    "@medusajs/medusa": ^1.13.0
+    "@medusajs/admin-ui": ^1.9.4
+    "@medusajs/medusa": ^1.13.1
     "@types/express": ^4.17.13
     commander: ^10.0.0
     dotenv: ^16.0.3
@@ -6152,6 +6152,7 @@ __metadata:
     "@medusajs/types": ^1.8.8
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6167,6 +6168,7 @@ __metadata:
     cross-env: ^5.2.1
     ioredis: ^5.3.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6176,7 +6178,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/client-types@workspace:packages/generated/client-types"
   dependencies:
-    "@medusajs/medusa-oas-cli": 0.2.13
+    "@medusajs/medusa-oas-cli": 0.2.14
     cross-env: ^7.0.3
     execa: ^5.1.1
     jest: ^27.4.7
@@ -6195,6 +6197,7 @@ __metadata:
     "@medusajs/utils": ^1.9.2
     cross-env: ^5.2.1
     jest: ^25.5.2
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
     ulid: ^2.3.0
@@ -6214,6 +6217,7 @@ __metadata:
     ioredis: ^5.2.5
     jest: ^25.5.2
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6226,6 +6230,7 @@ __metadata:
     "@medusajs/medusa": ^1.12.0
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     typescript: ^4.9.5
   peerDependencies:
     medusa-interfaces: ^1.3.7
@@ -6242,17 +6247,18 @@ __metadata:
     awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typeorm: ^0.3.16
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-cli@^1.3.17, @medusajs/medusa-cli@workspace:packages/medusa-cli":
+"@medusajs/medusa-cli@^1.3.18, @medusajs/medusa-cli@workspace:packages/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/medusa-cli"
   dependencies:
-    "@medusajs/utils": ^1.9.2
+    "@medusajs/utils": ^1.9.5
     "@types/yargs": ^15.0.15
     axios: ^0.21.4
     chalk: ^4.0.0
@@ -6277,6 +6283,7 @@ __metadata:
     prompts: ^2.4.2
     regenerator-runtime: ^0.13.11
     resolve-cwd: ^3.0.0
+    rimraf: ^5.0.1
     semver: ^7.3.8
     stack-trace: ^0.0.10
     ts-jest: ^25.5.1
@@ -6309,11 +6316,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-oas-cli@0.2.13, @medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli":
+"@medusajs/medusa-oas-cli@0.2.14, @medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli"
   dependencies:
-    "@medusajs/medusa": ^1.13.0
+    "@medusajs/medusa": ^1.13.1
     "@medusajs/openapi-typescript-codegen": ^0.2.1
     "@medusajs/types": "workspace:^"
     "@medusajs/utils": "workspace:^"
@@ -6337,15 +6344,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@^1.12.0, @medusajs/medusa@^1.12.1, @medusajs/medusa@^1.12.2, @medusajs/medusa@^1.12.3, @medusajs/medusa@^1.13.0, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@^1.12.0, @medusajs/medusa@^1.12.1, @medusajs/medusa@^1.12.2, @medusajs/medusa@^1.12.3, @medusajs/medusa@^1.13.1, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
-    "@medusajs/medusa-cli": ^1.3.17
-    "@medusajs/modules-sdk": ^1.9.0
+    "@medusajs/medusa-cli": ^1.3.18
+    "@medusajs/modules-sdk": ^1.9.1
     "@medusajs/orchestration": ^0.1.0
-    "@medusajs/types": ^1.9.0
-    "@medusajs/utils": ^1.9.3
+    "@medusajs/types": ^1.10.1
+    "@medusajs/utils": ^1.9.5
+    "@medusajs/workflows": ^0.1.1
     "@types/express": ^4.17.17
     "@types/ioredis": ^4.28.10
     "@types/jsonwebtoken": ^8.5.9
@@ -6376,6 +6384,7 @@ __metadata:
     iso8601-duration: ^1.3.0
     jest: ^25.5.4
     jsonwebtoken: ^9.0.0
+    knex: 2.4.2
     lodash: ^4.17.21
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
@@ -6389,12 +6398,14 @@ __metadata:
     passport-http-bearer: ^1.0.1
     passport-jwt: ^4.0.1
     passport-local: ^1.0.0
+    pg: ^8.11.2
     qs: ^6.11.2
     randomatic: ^3.1.1
     redis: ^3.0.2
     reflect-metadata: ^0.1.13
     regenerator-runtime: ^0.13.11
-    request-ip: ^2.1.3
+    request-ip: ^3.3.0
+    rimraf: ^5.0.1
     scrypt-kdf: ^2.0.1
     supertest: ^4.0.2
     ts-jest: ^25.5.1
@@ -6411,17 +6422,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@^1.9.0, @medusajs/modules-sdk@workspace:packages/modules-sdk":
+"@medusajs/modules-sdk@^1.8.8, @medusajs/modules-sdk@^1.9.1, @medusajs/modules-sdk@workspace:packages/modules-sdk":
   version: 0.0.0-use.local
   resolution: "@medusajs/modules-sdk@workspace:packages/modules-sdk"
   dependencies:
     "@medusajs/orchestration": ^0.1.0
-    "@medusajs/types": ^1.9.0
-    "@medusajs/utils": ^1.9.3
+    "@medusajs/types": ^1.10.1
+    "@medusajs/utils": ^1.9.5
     awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
     resolve-cwd: ^3.0.0
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6431,7 +6443,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/oas-github-ci@workspace:packages/oas/oas-github-ci"
   dependencies:
-    "@medusajs/medusa-oas-cli": 0.2.13
+    "@medusajs/medusa-oas-cli": 0.2.14
     execa: ^5.1.1
   languageName: unknown
   linkType: soft
@@ -6482,6 +6494,7 @@ __metadata:
     cross-env: ^5.2.1
     graphql: ^16.6.0
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -6491,9 +6504,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/product@workspace:packages/product"
   dependencies:
-    "@medusajs/modules-sdk": ^1.9.0
-    "@medusajs/types": ^1.9.0
-    "@medusajs/utils": ^1.9.3
+    "@medusajs/modules-sdk": ^1.9.1
+    "@medusajs/types": ^1.10.1
+    "@medusajs/utils": ^1.9.5
     "@mikro-orm/cli": 5.7.12
     "@mikro-orm/core": 5.7.12
     "@mikro-orm/migrations": 5.7.12
@@ -6503,6 +6516,7 @@ __metadata:
     dotenv: ^16.1.4
     faker: ^6.6.6
     jest: ^25.5.4
+    knex: 2.4.2
     lodash: ^4.17.21
     medusa-test-utils: ^1.1.40
     pg-god: ^1.0.12
@@ -6528,30 +6542,32 @@ __metadata:
     awilix: ^8.0.0
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typeorm: ^0.3.16
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^1.10.0, @medusajs/types@^1.8.10, @medusajs/types@^1.8.11, @medusajs/types@^1.8.8, @medusajs/types@^1.9.0, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/types@^1.10.0, @medusajs/types@^1.10.1, @medusajs/types@^1.8.10, @medusajs/types@^1.8.11, @medusajs/types@^1.8.8, @medusajs/types@^1.9.0, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
     awilix: ^8.0.0
     cross-env: ^5.2.1
     ioredis: ^5.2.5
+    rimraf: ^5.0.1
     typeorm: ^0.3.16
     typescript: ^4.4.4
     winston: ^3.8.2
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@^1.9.1, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.3, @medusajs/utils@^1.9.4, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^1.9.1, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.3, @medusajs/utils@^1.9.4, @medusajs/utils@^1.9.5, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
-    "@medusajs/types": ^1.10.0
+    "@medusajs/types": ^1.10.1
     "@types/express": ^4.17.17
     awilix: ^8.0.1
     cross-env: ^5.2.1
@@ -6565,14 +6581,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/workflows@workspace:packages/workflows":
+"@medusajs/workflows@^0.1.1, @medusajs/workflows@workspace:packages/workflows":
   version: 0.0.0-use.local
   resolution: "@medusajs/workflows@workspace:packages/workflows"
   dependencies:
-    "@medusajs/modules-sdk": ^1.9.0
+    "@medusajs/modules-sdk": ^1.9.1
     "@medusajs/orchestration": ^0.1.0
-    "@medusajs/types": ^1.9.0
-    "@medusajs/utils": ^1.9.3
+    "@medusajs/types": ^1.10.1
+    "@medusajs/utils": ^1.9.5
     awilix: ^8.0.1
     cross-env: ^5.2.1
     jest: ^25.5.4
@@ -25946,13 +25962,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is_js@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "is_js@npm:0.9.0"
-  checksum: 3d278fa0607bef6a7c2a109e3e28f6a5e8ac3c339f4cb813201e274070ba4e596cfd77a097902abdb8c0e06e434c9e306fdce3dd47b7417c0ce086cb2a4888b3
-  languageName: node
-  linkType: hard
-
 "isarray@npm:0.0.1":
   version: 0.0.1
   resolution: "isarray@npm:0.0.1"
@@ -30399,6 +30408,7 @@ __metadata:
   dependencies:
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     ts-jest: ^25.5.1
     typescript: ^4.4.4
   languageName: unknown
@@ -30442,6 +30452,7 @@ __metadata:
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     typescript: ^4.9.5
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
@@ -30460,6 +30471,7 @@ __metadata:
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     typescript: ^4.9.5
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
@@ -30564,6 +30576,7 @@ __metadata:
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -30667,6 +30680,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
+    rimraf: ^5.0.1
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
@@ -30685,6 +30699,7 @@ __metadata:
     express: ^4.17.1
     jest: ^25.5.4
     medusa-core-utils: ^1.2.0
+    rimraf: ^5.0.1
     stripe: ^11.10.0
     typescript: ^4.9.5
   peerDependencies:
@@ -30703,6 +30718,7 @@ __metadata:
     client-sessions: ^0.8.0
     cross-env: ^5.2.1
     jest: ^25.5.4
+    rimraf: ^5.0.1
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -30862,6 +30878,7 @@ __metadata:
     mailchimp-api-v3: ^1.14.0
     medusa-core-utils: ^1.2.0
     medusa-test-utils: ^1.1.40
+    rimraf: ^5.0.1
     typescript: ^4.4.4
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
@@ -30881,6 +30898,7 @@ __metadata:
     jest: ^25.5.4
     lodash: ^4.17.21
     meilisearch: ^0.32.3
+    rimraf: ^5.0.1
     typescript: ^4.9.5
   peerDependencies:
     "@medusajs/medusa": ^1.12.0
@@ -37233,12 +37251,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"request-ip@npm:^2.1.3":
-  version: 2.2.0
-  resolution: "request-ip@npm:2.2.0"
-  dependencies:
-    is_js: ^0.9.0
-  checksum: a8e13ad1326deca2e7182ed655a03ce5a86d6afe5487271d4f01a31d2aea23c197727a94521e4a534a58f140f083da73a605e49512d52d7d68fe28a8e4332f23
+"request-ip@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "request-ip@npm:3.3.0"
+  checksum: 35ab5fcb29408cb72629b53207f00a443a60fe881ffb63e3b08a06c07dae3eee617522741bd0b035492153d6c9babe7f8d9f79c008d493d1e6638b0bd92cb02b
   languageName: node
   linkType: hard
 

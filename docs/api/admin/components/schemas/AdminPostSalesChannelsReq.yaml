@@ -9,5 +9,5 @@ properties:
     description: The description of the Sales Channel
     type: string
   is_disabled:
-    description: Whether the Sales Channel is disabled or not.
+    description: Whether the Sales Channel is disabled.
     type: boolean

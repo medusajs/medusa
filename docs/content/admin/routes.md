@@ -17,6 +17,12 @@ An admin UI route is essentially a React Component created under the `src/admin/
 
 This guide explains how to create a new route in the admin dashboard with some examples.
 
+:::note
+
+If you want to create a page under the Settings page, please refer to [this documentation](./setting-pages.md) instead.
+
+:::
+
 ---
 
 ## Prerequisites
@@ -150,12 +156,14 @@ const CustomPage = () => {
 export default CustomPage
 ```
 
+This will create an admin UI route at the path `/a/custom`, with its content being the content of the React component.
+
 ### Step 3: Test it Out
 
 To test your admin UI route, run the following command in the root directory of the Medusa backend project:
 
 ```bash npm2yarn
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
 
 This will build your admin and opens a window in your default browser to `localhost:7001`. After you log in, if you go to `localhost:7001/a/custom`, you’ll find the page you just created.
@@ -165,6 +173,45 @@ This will build your admin and opens a window in your default browser to `localh
 When using the `develop` command, the admin dashboard will run in development mode and will restart whenever you make changes to your admin customizations. This allows you to see changes in the dashboard instantly during your development.
 
 :::
+
+---
+
+## Route Props
+
+Every route receives props of the type `RouteProps`, which includes the `notify` prop. The `notify` prop is an object that includes the following attributes:
+
+- `success`: a function that can be used to show a success message.
+- `error`: a function that can be used to show an error message.
+- `warn`: a function that can be used to show a warning message.
+- `info`: a function that can be used to show an info message.
+
+For example:
+
+```tsx
+import { Post } from "../../../../../models/post"
+import PostForm from "../../../../components/post/form"
+import { RouteProps } from "@medusajs/admin-ui"
+
+const BlogPostCreatePage = ({
+  notify,
+}: RouteProps) => {
+  const onSuccess = (post: Post) => {
+    notify.success(
+      "Success",
+      `Post ${post.title} created successfully`
+    )
+  }
+
+  return (
+    <div>
+      <h1 className="text-xl mb-2">Create Post</h1>
+      <PostForm onSuccess={onSuccess} />
+    </div>
+  )
+}
+
+export default BlogPostCreatePage
+```
 
 ---
 
@@ -239,7 +286,9 @@ const CustomPage = () => {
 export default CustomPage
 ```
 
-### Routing Functionalities
+---
+
+## Routing Functionalities
 
 If you want to use routing functionalities such as linking to another page or navigating between pages, you can use `react-router-dom`'s utility hooks and functions.
 
@@ -316,7 +365,9 @@ const CustomPage = () => {
 export default CustomPage
 ```
 
-You can also use `medusa-react` to interact with custom endpoints using the [createCustomAdminHooks utility function](../medusa-react/overview.mdx#custom-hooks).
+### Custom Endpoints
+
+You can also use `medusa-react` to interact with custom endpoints using [Custom Hooks utility functions](../medusa-react/overview.mdx#custom-hooks).
 
 ---
 
