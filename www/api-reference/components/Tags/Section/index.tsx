@@ -16,6 +16,8 @@ import type { LinkProps } from "../../MDXComponents/Link"
 import SectionContainer from "../../Section/Container"
 import Feedback from "../../Feedback"
 import { useArea } from "../../../providers/area"
+import SectionDivider from "../../Section/Divider"
+import clsx from "clsx"
 
 export type TagSectionProps = {
   tag: OpenAPIV3.TagObject
@@ -37,12 +39,13 @@ const MDXContentClient = dynamic<MDXContentClientProps>(
 ) as React.FC<MDXContentClientProps>
 
 const TagSection = ({ tag }: TagSectionProps) => {
-  const { activePath, setActivePath } = useSidebar()
+  const { setActivePath } = useSidebar()
   const [loadPaths, setLoadPaths] = useState(false)
   const slugTagName = useMemo(() => getSectionId([tag.name]), [tag])
   const { area } = useArea()
   const { ref } = useInView({
     threshold: 0.5,
+    rootMargin: `112px 0px 112px 0px`,
     onChange: (inView) => {
       if (inView && !loadPaths) {
         setLoadPaths(true)
@@ -72,18 +75,13 @@ const TagSection = ({ tag }: TagSectionProps) => {
     }
   }, [slugTagName])
 
-  useEffect(() => {
-    if (activePath) {
-      const activePathArr = activePath.split("_")
-      if (activePathArr.length > 1 && activePathArr[0] === slugTagName) {
-        setLoadPaths(true)
-      }
-    }
-  }, [activePath, slugTagName])
-
   return (
-    <div className="min-h-screen" id={slugTagName} ref={ref}>
+    <div
+      className={clsx("min-h-screen", !loadPaths && "relative")}
+      id={slugTagName}
+    >
       <DividedLayout
+        ref={ref}
         mainContent={
           <SectionContainer>
             <h2>{tag.name}</h2>
@@ -122,6 +120,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
           <TagPaths tag={tag} />
         </LoadingProvider>
       )}
+      {!loadPaths && <SectionDivider />}
     </div>
   )
 }

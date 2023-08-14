@@ -1,4 +1,5 @@
 import clsx from "clsx"
+import { forwardRef } from "react"
 
 type DividedLayoutProps = {
   mainContent: React.ReactNode
@@ -8,38 +9,44 @@ type DividedLayoutProps = {
   codeContentClassName?: string
 }
 
-const DividedLayout = ({
-  mainContent,
-  codeContent,
-  className,
-  mainContentClassName,
-  codeContentClassName,
-}: DividedLayoutProps) => {
-  return (
-    <div
-      className={clsx(
-        "flex w-full flex-col justify-between lg:flex-row lg:gap-4",
-        className
-      )}
-    >
+const DividedLayout = forwardRef<HTMLDivElement, DividedLayoutProps>(
+  function DividedLayout(
+    {
+      mainContent,
+      codeContent,
+      className,
+      mainContentClassName,
+      codeContentClassName,
+    },
+    ref
+  ) {
+    return (
       <div
         className={clsx(
-          "w-full flex-shrink-0 flex-grow-0 lg:w-[calc(50%-32px)] lg:basis-[calc(50%-32px)] lg:pl-4",
-          mainContentClassName
+          "flex w-full flex-col justify-between lg:flex-row lg:gap-4",
+          className
         )}
+        ref={ref}
       >
-        {mainContent}
+        <div
+          className={clsx(
+            "w-full flex-shrink-0 flex-grow-0 lg:w-[calc(50%-32px)] lg:basis-[calc(50%-32px)] lg:pl-4",
+            mainContentClassName
+          )}
+        >
+          {mainContent}
+        </div>
+        <div
+          className={clsx(
+            "w-full flex-shrink-0 flex-grow-0 pr-1.5 lg:w-[calc(50%-32px)] lg:basis-[calc(50%-32px)]",
+            codeContentClassName
+          )}
+        >
+          {codeContent}
+        </div>
       </div>
-      <div
-        className={clsx(
-          "w-full flex-shrink-0 flex-grow-0 pr-1.5 lg:w-[calc(50%-32px)] lg:basis-[calc(50%-32px)]",
-          codeContentClassName
-        )}
-      >
-        {codeContent}
-      </div>
-    </div>
-  )
-}
+    )
+  }
+)
 
 export default DividedLayout
