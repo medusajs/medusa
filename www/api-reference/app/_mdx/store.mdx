@@ -275,13 +275,58 @@ that are expanded by default in the request.
 ### Expanding One Relation
 
 
-For example, when you retrieve a product, you can retrieve its collection by
+For example, when you retrieve a list of products, you can retrieve their collections by
 passing to the `expand` query parameter the value `collection`:
 
+<CodeTabs 
+  tabs={[
+    {
+      label: 'cURL',
+      value: 'curl',
+      code: {
+        source: `curl "http://localhost:9000/store/products?expand=collection"`,
+        lang: `bash`,
+      }
+    },
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.products.list({
+  expand: "collection"
+})
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length);
+});`,
+        lang: `ts`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `import { useProducts } from "medusa-react"
 
-```bash
-curl "http://localhost:9000/store/products/prod_01GDJGP2XPQT2N3JHZQFMH5V45?expand=collection"
-```
+const Products = () => {
+  const { products, isLoading } = useProducts({
+    expand: "collection"
+  })
+
+  return (
+    <div>
+      {/* ... */}
+    </div>
+  )
+}
+
+export default Products`,
+        lang: `tsx`,
+      }
+    }
+  ]}
+/>
 
 ### Expanding Multiple Relations
 
@@ -289,13 +334,58 @@ You can expand more than one relation by separating the relations in the
 `expand` query parameter with a comma.
 
 
-For example, to retrieve both the variants and the collection of a product,
+For example, to retrieve both the variants and the collection of the products,
 pass to the `expand` query parameter the value `variants,collection`:
 
+<CodeTabs 
+  tabs={[
+    {
+      label: 'cURL',
+      value: 'curl',
+      code: {
+        source: `curl "http://localhost:9000/store/products?expand=variants,collection"`,
+        lang: `bash`,
+      }
+    },
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.products.list({
+  expand: "variants,collection"
+})
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length);
+});`,
+        lang: `ts`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `import { useProducts } from "medusa-react"
 
-```bash
-curl "http://localhost:9000/store/products/prod_01GDJGP2XPQT2N3JHZQFMH5V45?expand=variants,collection"
-```
+const Products = () => {
+  const { products, isLoading } = useProducts({
+    expand: "variants,collection"
+  })
+
+  return (
+    <div>
+      {/* ... */}
+    </div>
+  )
+}
+
+export default Products`,
+        lang: `tsx`,
+      }
+    }
+  ]}
+/>
 
 
 ### Prevent Expanding Relations
@@ -304,16 +394,60 @@ curl "http://localhost:9000/store/products/prod_01GDJGP2XPQT2N3JHZQFMH5V45?expan
 Some requests expand relations by default. You can prevent that by passing
 an empty expand value to retrieve an entity without any extra relations.
 
-
 For example:
 
+<CodeTabs 
+  tabs={[
+    {
+      label: 'cURL',
+      value: 'curl',
+      code: {
+        source: `curl "http://localhost:9000/store/products?expand"`,
+        lang: `bash`,
+      }
+    },
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.products.list({
+  expand: ""
+})
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length);
+});`,
+        lang: `ts`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `import { useProducts } from "medusa-react"
 
-```bash
-curl "http://localhost:9000/store/products/prod_01GDJGP2XPQT2N3JHZQFMH5V45?expand"
-```
+const Products = () => {
+  const { products, isLoading } = useProducts({
+    expand: ""
+  })
+
+  return (
+    <div>
+      {/* ... */}
+    </div>
+  )
+}
+
+export default Products`,
+        lang: `tsx`,
+      }
+    }
+  ]}
+/>
 
 
-This would retrieve the product with only its properties, without any
+This would retrieve the products with only their properties, without any
 relations like `collection`.
 
 <Feedback
@@ -353,10 +487,55 @@ For example, when you retrieve a list of products, you can retrieve only the
 titles of the products by passing `title` as a value to the `fields` query
 parameter:
 
+<CodeTabs 
+  tabs={[
+    {
+      label: 'cURL',
+      value: 'curl',
+      code: {
+        source: `curl "http://localhost:9000/store/products?fields=title"`,
+        lang: `bash`,
+      }
+    },
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.products.list({
+  fields: "title"
+})
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length);
+});`,
+        lang: `ts`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `import { useProducts } from "medusa-react"
 
-```bash
-curl "http://localhost:9000/store/products?fields=title"
-```
+const Products = () => {
+  const { products, isLoading } = useProducts({
+    fields: "title"
+  })
+
+  return (
+    <div>
+      {/* ... */}
+    </div>
+  )
+}
+
+export default Products`,
+        lang: `tsx`,
+      }
+    }
+  ]}
+/>
 
 
 As mentioned above, the expanded relations such as `variants` will still be
@@ -366,10 +545,57 @@ returned as they're not affected by the `fields` parameter.
 You can ensure that only the `title` field is returned by passing an empty
 value to the `expand` query parameter. For example:
 
+<CodeTabs 
+  tabs={[
+    {
+      label: 'cURL',
+      value: 'curl',
+      code: {
+        source: `curl "http://localhost:9000/store/products?fields=title&expand"`,
+        lang: `bash`,
+      }
+    },
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.products.list({
+  fields: "title",
+  expand: ""
+})
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length);
+});`,
+        lang: `ts`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `import { useProducts } from "medusa-react"
 
-```bash
-curl "http://localhost:9000/store/products?fields=title&expand"
-```
+const Products = () => {
+  const { products, isLoading } = useProducts({
+    fields: "title",
+    expand: ""
+  })
+
+  return (
+    <div>
+      {/* ... */}
+    </div>
+  )
+}
+
+export default Products`,
+        lang: `tsx`,
+      }
+    }
+  ]}
+/>
 
 
 ### Selecting Multiple Fields
@@ -379,12 +605,57 @@ You can pass more than one field by seperating the field names in the
 `fields` query parameter with a comma.
 
 
-For example, to select the `title` and `handle` of a product:
+For example, to select the `title` and `handle` of the products:
 
+<CodeTabs 
+  tabs={[
+    {
+      label: 'cURL',
+      value: 'curl',
+      code: {
+        source: `curl "http://localhost:9000/store/products?fields=title,handle"`,
+        lang: `bash`,
+      }
+    },
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.products.list({
+  fields: "title,handle"
+})
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length);
+});`,
+        lang: `ts`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `import { useProducts } from "medusa-react"
 
-```bash
-curl "http://localhost:9000/store/products?fields=title,handle"
-```
+const Products = () => {
+  const { products, isLoading } = useProducts({
+    fields: "title,handle"
+  })
+
+  return (
+    <div>
+      {/* ... */}
+    </div>
+  )
+}
+
+export default Products`,
+        lang: `tsx`,
+      }
+    }
+  ]}
+/>
 
 
 ### Retrieve Only the ID
@@ -393,19 +664,111 @@ curl "http://localhost:9000/store/products?fields=title,handle"
 You can pass an empty `fields` query parameter to return only the ID of an
 entity. For example:
 
+<CodeTabs 
+  tabs={[
+    {
+      label: 'cURL',
+      value: 'curl',
+      code: {
+        source: `curl "http://localhost:9000/store/products?fields"`,
+        lang: `bash`,
+      }
+    },
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.products.list({
+  fields: ""
+})
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length);
+});`,
+        lang: `ts`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `import { useProducts } from "medusa-react"
 
-```bash
-curl "http://localhost:9000/store/products?fields"
-```
+const Products = () => {
+  const { products, isLoading } = useProducts({
+    fields: ""
+  })
+
+  return (
+    <div>
+      {/* ... */}
+    </div>
+  )
+}
+
+export default Products`,
+        lang: `tsx`,
+      }
+    }
+  ]}
+/>
 
 
 You can also pair with an empty `expand` query parameter to ensure that the
 relations aren't retrieved as well. For example:
 
+<CodeTabs 
+  tabs={[
+    {
+      label: 'cURL',
+      value: 'curl',
+      code: {
+        source: `curl "http://localhost:9000/store/products?fields"`,
+        lang: `bash`,
+      }
+    },
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.products.list({
+  fields: "",
+  expand: ""
+})
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length);
+});`,
+        lang: `ts`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `import { useProducts } from "medusa-react"
 
-```bash
-curl "http://localhost:9000/store/products?fields&expand"
-```
+const Products = () => {
+  const { products, isLoading } = useProducts({
+    fields: "",
+    expand: ""
+  })
+
+  return (
+    <div>
+      {/* ... */}
+    </div>
+  )
+}
+
+export default Products`,
+        lang: `tsx`,
+      }
+    }
+  ]}
+/>
 
 <Feedback
   event="survey_api-ref"
@@ -583,10 +946,55 @@ offset should be 50, and so on.
 For example, to limit the number of products returned in the List Products
 endpoint:
 
+<CodeTabs 
+  tabs={[
+    {
+      label: 'cURL',
+      value: 'curl',
+      code: {
+        source: `curl "http://localhost:9000/store/products?limit=5"`,
+        lang: `bash`,
+      }
+    },
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.products.list({
+  limit: 5
+})
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length);
+});`,
+        lang: `ts`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `import { useProducts } from "medusa-react"
 
-```bash
-curl "http://localhost:9000/store/products?limit=5"
-```
+const Products = () => {
+  const { products, isLoading } = useProducts({
+    limit: 5
+  })
+
+  return (
+    <div>
+      {/* ... */}
+    </div>
+  )
+}
+
+export default Products`,
+        lang: `tsx`,
+      }
+    }
+  ]}
+/>
 
 
 ### Response Fields
@@ -618,19 +1026,109 @@ sort the retrieved items by an attribute of that item. For example, you can
 sort products by their `created_at` attribute by setting `order` to
 `created_at`:
 
+<CodeTabs 
+  tabs={[
+    {
+      label: 'cURL',
+      value: 'curl',
+      code: {
+        source: `curl "http://localhost:9000/store/products?order=created_at"`,
+        lang: `bash`,
+      }
+    },
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.products.list({
+  order: "created_at"
+})
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length);
+});`,
+        lang: `ts`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `import { useProducts } from "medusa-react"
 
-```bash
-curl "http://localhost:9000/list/products?order=created_at"
-```
+const Products = () => {
+  const { products, isLoading } = useProducts({
+    order: "created_at"
+  })
+
+  return (
+    <div>
+      {/* ... */}
+    </div>
+  )
+}
+
+export default Products`,
+        lang: `tsx`,
+      }
+    }
+  ]}
+/>
 
 
 By default, the sort direction will be ascending. To change it to
 descending, pass a dash (`-`) before the attribute name. For example:
 
+<CodeTabs 
+  tabs={[
+    {
+      label: 'cURL',
+      value: 'curl',
+      code: {
+        source: `curl "http://localhost:9000/store/products?order=-created_at"`,
+        lang: `bash`,
+      }
+    },
+    {
+      label: 'Medusa JS Client',
+      value: 'js-client',
+      code: {
+        source: `import Medusa from "@medusajs/medusa-js"
+const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+medusa.products.list({
+  order: "-created_at"
+})
+.then(({ products, limit, offset, count }) => {
+  console.log(products.length);
+});`,
+        lang: `ts`,
+      }
+    },
+    {
+      label: 'Medusa React',
+      value: 'medusa-react',
+      code: {
+        source: `import { useProducts } from "medusa-react"
 
-```bash
-curl "http://localhost:9000/list/products?order=-created_at"
-```
+const Products = () => {
+  const { products, isLoading } = useProducts({
+    order: "-created_at"
+  })
+
+  return (
+    <div>
+      {/* ... */}
+    </div>
+  )
+}
+
+export default Products`,
+        lang: `tsx`,
+      }
+    }
+  ]}
+/>
 
 
 This sorts the products by their `created_at` attribute in the descending
