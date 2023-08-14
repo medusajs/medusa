@@ -11,6 +11,7 @@ import { BaseEntity } from "../../interfaces"
 import { FindConfig, QueryConfig, RequestQueryFields } from "../../types/common"
 import { omit } from "lodash"
 import { removeUndefinedProperties } from "../../utils"
+import { buildSelects, objectToStringPath } from "@medusajs/utils"
 
 /**
  * Middleware that transform the query input for the admin end points
@@ -151,7 +152,7 @@ function getStoreAllowedProperties<TEntity extends BaseEntity>(
       ? [...(validated.expand?.split(",") || []), ...includeKeys]
       : queryConfig?.allowedRelations || []
 
-  allowed.push(...fields, ...expand)
+  allowed.push(...fields, ...objectToStringPath(buildSelects(expand)))
 
   return allowed
 }
@@ -180,7 +181,7 @@ function getAllowedProperties<TEntity extends BaseEntity>(
       ? [...(validated.expand?.split(",") || []), ...includeKeys]
       : queryConfig?.defaultRelations || []
 
-  allowed.push(...fields, ...expand)
+  allowed.push(...fields, ...objectToStringPath(buildSelects(expand)))
 
   return allowed as string[]
 }

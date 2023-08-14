@@ -5,7 +5,7 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminResetPasswordTokenRequest {
   /**
-   * The Users email.
+   * The User's email.
    */
   email: string
 }

@@ -1,7 +1,7 @@
 delete:
   operationId: DeleteDiscountsDiscountDynamicCodesCode
   summary: Delete a Dynamic Code
-  description: Deletes a dynamic code from a Discount.
+  description: Delete a dynamic code from a Discount.
   x-authenticated: true
   parameters:
     - in: path
@@ -13,7 +13,7 @@ delete:
     - in: path
       name: code
       required: true
-      description: The ID of the Discount
+      description: The dynamic code to delete
       schema:
         type: string
   x-codegen:

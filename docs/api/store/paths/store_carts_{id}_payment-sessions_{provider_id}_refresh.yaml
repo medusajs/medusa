@@ -2,20 +2,20 @@ post:
   operationId: PostCartsCartPaymentSessionsSession
   summary: Refresh a Payment Session
   description: >-
-    Refreshes a Payment Session to ensure that it is in sync with the Cart -
-    this is usually not necessary.
+    Refresh a Payment Session to ensure that it is in sync with the Cart. This
+    is usually not necessary, but is provided for edge cases.
   parameters:
     - in: path
       name: id
       required: true
-      description: The id of the Cart.
+      description: The ID of the Cart.
       schema:
         type: string
     - in: path
       name: provider_id
       required: true
       description: >-
-        The id of the Payment Provider that created the Payment Session to be
+        The ID of the Payment Provider that created the Payment Session to be
         refreshed.
       schema:
         type: string

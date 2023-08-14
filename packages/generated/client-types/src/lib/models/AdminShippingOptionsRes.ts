@@ -7,6 +7,9 @@ import type { Region } from "./Region"
 import type { ShippingOption } from "./ShippingOption"
 
 export interface AdminShippingOptionsRes {
+  /**
+   * Shipping option details.
+   */
   shipping_option: Merge<
     SetRelation<ShippingOption, "profile" | "region" | "requirements">,
     {

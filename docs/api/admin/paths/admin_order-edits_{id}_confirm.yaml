@@ -1,7 +1,9 @@
 post:
   operationId: PostOrderEditsOrderEditConfirm
-  summary: Confirms an OrderEdit
-  description: Confirms an OrderEdit.
+  summary: Confirm an OrderEdit
+  description: >-
+    Confirm an Order Edit. This will reflect the changes in the order edit on
+    the associated order.
   x-authenticated: true
   parameters:
     - in: path

@@ -6,13 +6,16 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { ProductCollection } from "./ProductCollection"
 
 export interface StoreCollectionsListRes {
+  /**
+   * An array of product collections details
+   */
   collections: Array<ProductCollection>
   /**
    * The total number of items available
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of product collections skipped when retrieving the product collections.
    */
   offset: number
   /**

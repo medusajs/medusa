@@ -11,7 +11,7 @@ import type { TaxProvider } from "./TaxProvider"
 import type { TaxRate } from "./TaxRate"
 
 /**
- * Regions hold settings for how Customers in a given geographical location shop. The is, for example, where currencies and tax rates are defined. A Region can consist of multiple countries to accomodate common shopping settings across countries.
+ * A region holds settings specific to a geographical location, including the currency, tax rates, and fulfillment and payment providers. A Region can consist of multiple countries to accomodate common shopping settings across countries.
  */
 export interface Region {
   /**
@@ -23,11 +23,11 @@ export interface Region {
    */
   name: string
   /**
-   * The 3 character currency code that the Region uses.
+   * The 3 character currency code used in the region.
    */
   currency_code: string
   /**
-   * Available if the relation `currency` is expanded.
+   * The details of the currency used in the region.
    */
   currency?: Currency | null
   /**
@@ -35,7 +35,7 @@ export interface Region {
    */
   tax_rate: number
   /**
-   * The tax rates that are included in the Region. Available if the relation `tax_rates` is expanded.
+   * The details of the tax rates used in the region, aside from the default rate.
    */
   tax_rates?: Array<TaxRate>
   /**
@@ -51,7 +51,7 @@ export interface Region {
    */
   automatic_taxes: boolean
   /**
-   * The countries that are included in the Region. Available if the relation `countries` is expanded.
+   * The details of the countries included in this region.
    */
   countries?: Array<Country>
   /**
@@ -59,19 +59,19 @@ export interface Region {
    */
   tax_provider_id: string | null
   /**
-   * Available if the relation `tax_provider` is expanded.
+   * The details of the tax provider used in the region.
    */
   tax_provider?: TaxProvider | null
   /**
-   * The Payment Providers that can be used to process Payments in the Region. Available if the relation `payment_providers` is expanded.
+   * The details of the payment providers that can be used to process payments in the region.
    */
   payment_providers?: Array<PaymentProvider>
   /**
-   * The Fulfillment Providers that can be used to fulfill orders in the Region. Available if the relation `fulfillment_providers` is expanded.
+   * The details of the fulfillment providers that can be used to fulfill items of orders and similar resources in the region.
    */
   fulfillment_providers?: Array<FulfillmentProvider>
   /**
-   * [EXPERIMENTAL] Does the prices for the region include tax
+   * Whether the prices for the region include tax
    */
   includes_tax?: boolean
   /**

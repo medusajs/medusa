@@ -1,18 +1,18 @@
 import { ModulesHelper } from "@medusajs/modules-sdk"
+import { FlagRouter } from "@medusajs/utils"
 import { defaultRelationsExtended } from "."
 import {
-  FulfillmentProviderService,
-  PaymentProviderService,
-  StoreService,
+    FulfillmentProviderService,
+    PaymentProviderService,
+    StoreService,
 } from "../../../../services"
 import { ExtendedStoreDTO } from "../../../../types/store"
-import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
  * @oas [get] /admin/store
  * operationId: "GetStore"
  * summary: "Get Store details"
- * description: "Retrieves the Store details"
+ * description: "Retrieve the Store's details."
  * x-authenticated: true
  * x-codegen:
  *   method: retrieve
@@ -30,8 +30,8 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/store' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/store' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

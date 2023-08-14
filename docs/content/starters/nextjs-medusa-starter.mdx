@@ -1,5 +1,6 @@
 ---
-description: 'Learn how to install the Next.js Starter Template to use with Medusa. The Next.js Starter Template includes ready-integrations with plugins like Stripe and Algolia. It offers features like customer accounts, cart and checkout flows, and more.'
+title: 'Get started with Next.js for e-commerce'
+description: 'Learn how to get started with a Next.js storefront and Medusa. The Next.js Starter includes ready-integrations with plugins like Stripe and Algolia. It offers features like customer accounts, cart and checkout flows, and more.'
 ---
 
 import Feedback from '@site/src/components/Feedback';
@@ -8,7 +9,7 @@ import Troubleshooting from '@site/src/components/Troubleshooting'
 import ModuleXErrorSection from '../troubleshooting/common-installation-errors/_module-x-error.mdx'
 import CorsErrorSection from '../troubleshooting/cors-issues.md'
 
-# Next.js Starter Template Quickstart
+# Next.js Quickstart
 
 This document guides you to install and set up the Next.js Starter Template.
 
@@ -43,7 +44,13 @@ Instead of manually following this guide to install then later deploy the Next.j
 
 ## Prerequisites
 
-This document assumes you already have a Medusa backend installed. If you don’t, please follow the [Create Medusa App guide](../create-medusa-app.mdx) to learn how to do it.
+This document assumes you already have a Medusa backend installed. If you don’t, you can install the Medusa backend with the following command:
+
+```bash
+npx create-medusa-app@latest
+```
+
+Learn more about prerequisites of `create-medusa-app` and troubleshooting in [this guide](../create-medusa-app.mdx).
 
 You should also have Node.js with v16 or greater installed. You can check your Node.js version with the following command:
 
@@ -105,6 +112,16 @@ Your Next.js Starter Template is now running at `localhost:8000`
 ---
 
 ## Development Notes
+
+### Changing Medusa Backend URL
+
+By default, the Medusa backend runs at `http://localhost:9000`. This value is defined in your Next.js starter template under the environment variable `NEXT_PUBLIC_MEDUSA_BACKEND_URL`.
+
+If you need to change the URL of your Medusa backend because you changed the backend's default port or because you deployed your backend, change the value of `NEXT_PUBLIC_MEDUSA_BACKEND_URL` (typically in `.env.local`) to your backend URL. For example:
+
+```bash
+NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://localhost:9001
+```
 
 ### Toggle Search Engine Feature
 

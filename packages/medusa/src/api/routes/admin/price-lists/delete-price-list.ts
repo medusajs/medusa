@@ -5,10 +5,10 @@ import PriceListService from "../../../../services/price-list"
  * @oas [delete] /admin/price-lists/{id}
  * operationId: "DeletePriceListsPriceList"
  * summary: "Delete a Price List"
- * description: "Deletes a Price List"
+ * description: "Delete a Price List and its associated prices."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Price List to delete.
+ *   - (path) id=* {string} The ID of the Price List.
  * x-codegen:
  *   method: delete
  * x-codeSamples:
@@ -18,15 +18,15 @@ import PriceListService from "../../../../services/price-list"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.priceLists.delete(price_list_id)
+ *       medusa.admin.priceLists.delete(priceListId)
  *       .then(({ id, object, deleted }) => {
  *         console.log(id);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/price-lists/{id}' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/price-lists/{id}' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

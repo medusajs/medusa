@@ -4,12 +4,12 @@ import PriceListService from "../../../../services/price-list"
 /**
  * @oas [delete] /admin/price-lists/{id}/variants/{variant_id}/prices
  * operationId: "DeletePriceListsPriceListVariantsVariantPrices"
- * summary: "Delete Variant's Prices"
+ * summary: "Delete a Variant's Prices"
  * description: "Delete all the prices related to a specific variant in a price list"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The ID of the Price List that the Money Amounts that will be deleted belongs to.
- *   - (path) variant_id=* {string} The ID of the variant from which the money amount will be deleted.
+ *   - (path) id=* {string} The ID of the Price List.
+ *   - (path) variant_id=* {string} The ID of the variant.
  * x-codegen:
  *   method: deleteVariantPrices
  * x-codeSamples:
@@ -19,15 +19,15 @@ import PriceListService from "../../../../services/price-list"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.priceLists.deleteVariantPrices(price_list_id, variant_id)
+ *       medusa.admin.priceLists.deleteVariantPrices(priceListId, variantId)
  *       .then(({ ids, object, deleted }) => {
  *         console.log(ids);
  *       });
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request DELETE 'https://medusa-url.com/admin/price-lists/{id}/variants/{variant_id}/prices' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl -X DELETE 'https://medusa-url.com/admin/price-lists/{id}/variants/{variant_id}/prices' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []

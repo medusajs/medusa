@@ -1,20 +1,20 @@
 import { IsNumber, IsOptional } from "class-validator"
 
-import { ReturnService } from "../../../../services"
-import { Type } from "class-transformer"
-import { validator } from "../../../../utils/validator"
 import { FindConfig } from "../../../../types/common"
 import { Return } from "../../../../models"
+import { ReturnService } from "../../../../services"
+import { Type } from "class-transformer"
 import { defaultRelationsList } from "."
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /admin/returns
  * operationId: "GetReturns"
  * summary: "List Returns"
- * description: "Retrieves a list of Returns"
+ * description: "Retrieve a list of Returns. The returns can be paginated."
  * parameters:
- *   - (query) limit=50 {number} The upper limit for the amount of responses returned.
- *   - (query) offset=0 {number} The offset of the list returned.
+ *   - (query) limit=50 {number} Limit the number of Returns returned.
+ *   - (query) offset=0 {number} The number of Returns to skip when retrieving the Returns.
  * x-codegen:
  *   method: list
  *   queryParams: AdminGetReturnsParams
@@ -32,8 +32,8 @@ import { defaultRelationsList } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl --location --request GET 'https://medusa-url.com/admin/returns' \
- *       --header 'Authorization: Bearer {api_token}'
+ *       curl 'https://medusa-url.com/admin/returns' \
+ *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
  *   - cookie_auth: []
@@ -73,11 +73,13 @@ export default async (req, res) => {
     order: { created_at: "DESC" },
   } as FindConfig<Return>
 
-  const returns = await returnService.list(selector, { ...listConfig })
+  const [returns, count] = await returnService.listAndCount(selector, {
+    ...listConfig,
+  })
 
   res.json({
     returns,
-    count: returns.length,
+    count,
     offset: validated.offset,
     limit: validated.limit,
   })

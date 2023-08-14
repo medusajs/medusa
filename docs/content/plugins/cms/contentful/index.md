@@ -164,7 +164,7 @@ npm run seed
 To start the backend run the following command:
 
 ```bash
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
 
 If you seeded the database with demo data, you should see that events related to the products are triggered.

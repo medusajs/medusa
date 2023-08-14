@@ -13,7 +13,7 @@ export interface AdminPostProductsReq {
    */
   subtitle?: string
   /**
-   * A description of the Product.
+   * The description of the Product.
    */
   description?: string
   /**
@@ -21,23 +21,23 @@ export interface AdminPostProductsReq {
    */
   is_giftcard?: boolean
   /**
-   * A flag to indicate if discounts can be applied to the LineItems generated from this Product
+   * A flag to indicate if discounts can be applied to the Line Items generated from this Product
    */
   discountable?: boolean
   /**
-   * Images of the Product.
+   * An array of images of the Product. Each value in the array is a URL to the image. You can use the upload endpoints to upload the image and obtain a URL.
    */
   images?: Array<string>
   /**
-   * The thumbnail to use for the Product.
+   * The thumbnail to use for the Product. The value is a URL to the thumbnail. You can use the upload endpoints to upload the thumbnail and obtain a URL.
    */
   thumbnail?: string
   /**
-   * A unique handle to identify the Product by.
+   * A unique handle to identify the Product by. If not provided, the kebab-case version of the product title will be used. This can be used as a slug in URLs.
    */
   handle?: string
   /**
-   * The status of the product.
+   * The status of the product. The product is shown to the customer only if its status is `published`.
    */
   status?: "draft" | "proposed" | "published" | "rejected"
   /**
@@ -45,7 +45,7 @@ export interface AdminPostProductsReq {
    */
   type?: {
     /**
-     * The ID of the Product Type.
+     * The ID of an existing Product Type. If not provided, a new product type will be created.
      */
     id?: string
     /**
@@ -54,24 +54,24 @@ export interface AdminPostProductsReq {
     value: string
   }
   /**
-   * The ID of the Collection the Product should belong to.
+   * The ID of the Product Collection the Product belongs to.
    */
   collection_id?: string
   /**
-   * Tags to associate the Product with.
+   * Product Tags to associate the Product with.
    */
   tags?: Array<{
     /**
-     * The ID of an existing Tag.
+     * The ID of an existing Product Tag. If not provided, a new product tag will be created.
      */
     id?: string
     /**
-     * The value of the Tag, these will be upserted.
+     * The value of the Tag. If the `id` is provided, the value of the existing tag will be updated.
      */
     value: string
   }>
   /**
-   * [EXPERIMENTAL] Sales channels to associate the Product with.
+   * Sales channels to associate the Product with.
    */
   sales_channels?: Array<{
     /**
@@ -80,28 +80,28 @@ export interface AdminPostProductsReq {
     id: string
   }>
   /**
-   * Categories to add the Product to.
+   * Product categories to add the Product to.
    */
   categories?: Array<any>
   /**
-   * The Options that the Product should have. These define on which properties the Product's Product Variants will differ.
+   * The Options that the Product should have. A new product option will be created for every item in the array.
    */
   options?: Array<{
     /**
-     * The title to identify the Product Option by.
+     * The title of the Product Option.
      */
     title: string
   }>
   /**
-   * A list of Product Variants to create with the Product.
+   * An array of Product Variants to create with the Product. Each product variant must have a unique combination of Product Option values.
    */
   variants?: Array<{
     /**
-     * The title to identify the Product Variant by.
+     * The title of the Product Variant.
      */
     title: string
     /**
-     * The unique SKU for the Product Variant.
+     * The unique SKU of the Product Variant.
      */
     sku?: string
     /**
@@ -113,15 +113,15 @@ export interface AdminPostProductsReq {
      */
     upc?: string
     /**
-     * A generic GTIN field for the Product Variant.
+     * A generic GTIN field of the Product Variant.
      */
     barcode?: string
     /**
-     * The Harmonized System code for the Product Variant.
+     * The Harmonized System code of the Product Variant.
      */
     hs_code?: string
     /**
-     * The amount of stock kept for the Product Variant.
+     * The amount of stock kept of the Product Variant.
      */
     inventory_quantity?: number
     /**
@@ -129,7 +129,7 @@ export interface AdminPostProductsReq {
      */
     allow_backorder?: boolean
     /**
-     * Whether Medusa should keep track of the inventory for this Product Variant.
+     * Whether Medusa should keep track of the inventory of this Product Variant.
      */
     manage_inventory?: boolean
     /**
@@ -153,7 +153,7 @@ export interface AdminPostProductsReq {
      */
     origin_country?: string
     /**
-     * The Manufacturer Identification code for the Product Variant.
+     * The Manufacturer Identification code of the Product Variant.
      */
     mid_code?: string
     /**
@@ -164,28 +164,34 @@ export interface AdminPostProductsReq {
      * An optional set of key-value pairs with additional information.
      */
     metadata?: Record<string, any>
+    /**
+     * An array of product variant prices. A product variant can have different prices for each region or currency code.
+     */
     prices?: Array<{
       /**
-       * The ID of the Region for which the price is used. Only required if currency_code is not provided.
+       * The ID of the Region the price will be used in. This is only required if `currency_code` is not provided.
        */
       region_id?: string
       /**
-       * The 3 character ISO currency code for which the price will be used. Only required if region_id is not provided.
+       * The 3 character ISO currency code the price will be used in. This is only required if `region_id` is not provided.
        */
       currency_code?: string
       /**
-       * The amount to charge for the Product Variant.
+       * The price amount.
        */
       amount: number
       /**
-       * The minimum quantity for which the price will be used.
+       * The minimum quantity required to be added to the cart for the price to be used.
        */
       min_quantity?: number
       /**
-       * The maximum quantity for which the price will be used.
+       * The maximum quantity required to be added to the cart for the price to be used.
        */
       max_quantity?: number
     }>
+    /**
+     * An array of Product Option values that the variant corresponds to. The option values should be added into the array in the same index as in the `options` field of the product.
+     */
     options?: Array<{
       /**
        * The value to give for the Product Option at the same index in the Product's `options` field.
@@ -210,7 +216,7 @@ export interface AdminPostProductsReq {
    */
   width?: number
   /**
-   * The Harmonized System code for the Product Variant.
+   * The Harmonized System code of the Product.
    */
   hs_code?: string
   /**
@@ -218,7 +224,7 @@ export interface AdminPostProductsReq {
    */
   origin_country?: string
   /**
-   * The Manufacturer Identification code for the Product.
+   * The Manufacturer Identification code of the Product.
    */
   mid_code?: string
   /**

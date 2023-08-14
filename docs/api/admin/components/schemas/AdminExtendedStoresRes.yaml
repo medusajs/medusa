@@ -8,4 +8,5 @@ required:
   - store
 properties:
   store:
+    description: Store details.
     $ref: ./ExtendedStoreDTO.yaml

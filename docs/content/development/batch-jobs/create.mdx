@@ -279,14 +279,8 @@ npm run build
 This section covers how to test and use your batch job strategy. Make sure to start your backend first:
 
 ```bash
-npx @medusajs/medusa-cli develop
+npx medusa develop
 ```
-
-:::info
-
-If your `start` script uses the `medusa develop` command, whenever you make changes in the `src` directory the `build` command will automatically run and the backend will restart.
-
-:::
 
 You must also use an authenticated user to send batch job requests. You can refer to the [authentication guide in the API reference](/api/admin/#section/Authentication) for more details.
 

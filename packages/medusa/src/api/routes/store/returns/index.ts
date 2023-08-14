@@ -28,6 +28,7 @@ export const defaultRelations = ["items", "items.reason"]
  *   - return
  * properties:
  *   return:
+ *     description: "Return details."
  *     $ref: "#/components/schemas/Return"
  */
 export type StoreReturnsRes = {

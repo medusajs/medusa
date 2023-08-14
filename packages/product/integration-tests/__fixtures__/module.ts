@@ -1,21 +1,49 @@
-import { FindOptions, RepositoryService } from "@medusajs/types"
+import { Context } from "@medusajs/types"
+import { DALUtils } from "@medusajs/utils"
 
-class CustomRepository implements RepositoryService {
-  constructor() {}
-
-  find(options?: FindOptions): Promise<any[]> {
-    throw new Error("Method not implemented.")
+class CustomRepository extends DALUtils.MikroOrmBaseRepository {
+  constructor({ manager }) {
+    // @ts-ignore
+    super(...arguments)
   }
 
-  findAndCount(options?: FindOptions): Promise<[any[], number]> {
-    throw new Error("Method not implemented.")
+  find = jest.fn().mockImplementation(async () => [])
+  findAndCount = jest.fn().mockImplementation(async () => [])
+  create = jest.fn()
+  update = jest.fn()
+  delete = jest.fn()
+  softDelete = jest.fn()
+  restore = jest.fn()
+
+  async transaction<TManager = unknown>(
+    task: (transactionManager: TManager) => Promise<any>,
+    options: {
+      isolationLevel?: string
+      enableNestedTransactions?: boolean
+      transaction?: TManager
+    } = {}
+  ): Promise<any> {
+    return super.transaction(task, options)
+  }
+
+  getActiveManager<TManager = unknown>({
+    transactionManager,
+    manager,
+  }: Context = {}): TManager {
+    return super.getActiveManager({ transactionManager, manager })
+  }
+
+  getFreshManager<TManager = unknown>(): TManager {
+    return super.getFreshManager()
+  }
+
+  async serialize<TOutput extends object | object[]>(
+    data: any,
+    options?: any
+  ): Promise<TOutput> {
+    return super.serialize(data, options)
   }
 }
-
-CustomRepository.prototype.find = jest.fn().mockImplementation(async () => [])
-CustomRepository.prototype.findAndCount = jest
-  .fn()
-  .mockImplementation(async () => [])
 
 export class ProductRepository extends CustomRepository {}
 export class ProductTagRepository extends CustomRepository {}

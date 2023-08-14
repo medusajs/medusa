@@ -85,6 +85,7 @@ export const allowedStoreProductCategoryFields = [
  *   - product_category
  * properties:
  *   product_category:
+ *     description: "Product category details."
  *     $ref: "#/components/schemas/ProductCategory"
  */
 export type StoreGetProductCategoriesCategoryRes = {
@@ -107,6 +108,7 @@ export type StoreGetProductCategoriesCategoryRes = {
  * properties:
  *   product_categories:
  *      type: array
+ *      description: "An array of product categories details."
  *      items:
  *        $ref: "#/components/schemas/ProductCategory"
  *   count:
@@ -114,7 +116,7 @@ export type StoreGetProductCategoriesCategoryRes = {
  *      description: The total number of items available
  *   offset:
  *      type: integer
- *      description: The number of items skipped before these items
+ *      description: The number of product categories skipped when retrieving the product categories.
  *   limit:
  *      type: integer
  *      description: The number of items per page

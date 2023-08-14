@@ -1,33 +1,36 @@
 get:
   operationId: GetCurrencies
   summary: List Currency
-  description: Retrieves a list of Currency
+  description: >-
+    Retrieve a list of currencies. The currencies can be filtered by fields such
+    as `code`. The currencies can also be sorted or paginated.
   x-authenticated: true
   parameters:
     - in: query
       name: code
-      description: Code of the currency to search for.
+      description: filter by currency code.
       schema:
         type: string
     - in: query
       name: includes_tax
-      description: Search for tax inclusive currencies.
+      description: filter currencies by whether they include taxes or not.
       schema:
         type: boolean
+        x-featureFlag: tax_inclusive_pricing
     - in: query
       name: order
-      description: order to retrieve products in.
+      description: A field to sort order the retrieved currencies by.
       schema:
         type: string
     - in: query
       name: offset
-      description: How many products to skip in the result.
+      description: The number of currencies to skip when retrieving the currencies.
       schema:
         type: number
         default: '0'
     - in: query
       name: limit
-      description: Limit the number of products returned.
+      description: The number of currencies to return.
       schema:
         type: number
         default: '20'

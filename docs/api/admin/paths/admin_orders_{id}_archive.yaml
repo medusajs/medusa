@@ -1,7 +1,7 @@
 post:
   operationId: PostOrdersOrderArchive
   summary: Archive Order
-  description: Archives the order with the given id.
+  description: Archive an order and change its status.
   x-authenticated: true
   parameters:
     - in: path
@@ -12,12 +12,12 @@ post:
         type: string
     - in: query
       name: expand
-      description: Comma separated list of relations to include in the result.
+      description: Comma-separated relations that should be expanded in the returned order.
       schema:
         type: string
     - in: query
       name: fields
-      description: Comma separated list of fields to include in the result.
+      description: Comma-separated fields that should be included in the returned order.
       schema:
         type: string
   x-codegen:

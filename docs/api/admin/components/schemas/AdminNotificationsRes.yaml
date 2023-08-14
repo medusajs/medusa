@@ -7,4 +7,5 @@ required:
   - notification
 properties:
   notification:
+    description: Notification details
     $ref: ./Notification.yaml

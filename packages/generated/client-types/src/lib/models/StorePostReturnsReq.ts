@@ -5,15 +5,15 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface StorePostReturnsReq {
   /**
-   * The ID of the Order to create the Return from.
+   * The ID of the Order to create the return for.
    */
   order_id: string
   /**
-   * The items to include in the Return.
+   * The items to include in the return.
    */
   items: Array<{
     /**
-     * The ID of the Line Item from the Order.
+     * The ID of the line item to return.
      */
     item_id: string
     /**
@@ -21,7 +21,7 @@ export interface StorePostReturnsReq {
      */
     quantity: number
     /**
-     * The ID of the return reason.
+     * The ID of the return reason. Return reasons can be retrieved from the List Return Reasons endpoint.
      */
     reason_id?: string
     /**
@@ -30,7 +30,7 @@ export interface StorePostReturnsReq {
     note?: string
   }>
   /**
-   * If the Return is to be handled by the store operator the Customer can choose a Return Shipping Method. Alternatvely the Customer can handle the Return themselves.
+   * The return shipping method used to return the items. If provided, a fulfillment is automatically created for the return.
    */
   return_shipping?: {
     /**

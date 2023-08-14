@@ -1,19 +1,21 @@
 delete:
   operationId: DeleteOrderEditsOrderEditItemChange
   summary: Delete a Line Item Change
-  description: Deletes an Order Edit Item Change
+  description: >-
+    Delete a line item change that indicates the addition, deletion, or update
+    of a line item in the original order.
   x-authenticated: true
   parameters:
     - in: path
       name: id
       required: true
-      description: The ID of the Order Edit to delete.
+      description: The ID of the Order Edit.
       schema:
         type: string
     - in: path
       name: change_id
       required: true
-      description: The ID of the Order Edit Item Change to delete.
+      description: The ID of the Line Item Change to delete.
       schema:
         type: string
   x-codegen:

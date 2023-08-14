@@ -8,4 +8,5 @@ required:
   - shipping_profile
 properties:
   shipping_profile:
+    description: Shipping profile details.
     $ref: ./ShippingProfile.yaml

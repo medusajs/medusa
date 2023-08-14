@@ -5,19 +5,19 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostReservationsReq {
   /**
-   * The id of the location of the reservation
+   * The ID of the line item of the reservation.
    */
   line_item_id?: string
   /**
-   * The id of the location of the reservation
+   * The ID of the location of the reservation.
    */
   location_id: string
   /**
-   * The id of the inventory item the reservation relates to
+   * The ID of the inventory item the reservation is associated with.
    */
   inventory_item_id: string
   /**
-   * The id of the reservation item
+   * The quantity to reserve.
    */
   quantity: number
   /**

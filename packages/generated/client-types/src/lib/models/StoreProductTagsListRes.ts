@@ -6,13 +6,16 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 import type { ProductTag } from "./ProductTag"
 
 export interface StoreProductTagsListRes {
+  /**
+   * An array of product tags details.
+   */
   product_tags: Array<ProductTag>
   /**
    * The total number of items available
    */
   count: number
   /**
-   * The number of items skipped before these items
+   * The number of product tags skipped when retrieving the product tags.
    */
   offset: number
   /**
