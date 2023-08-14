@@ -177,7 +177,7 @@ const plugins = [
             ],
           },
           transformer: (product) => ({ 
-            id: product.id, 
+            objectID: product.id, 
             // other attributes...
           }),
         },
