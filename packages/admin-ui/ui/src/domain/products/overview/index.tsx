@@ -176,7 +176,7 @@ const Overview = () => {
 
   return (
     <>
-      <div className="flex h-full grow flex-col">
+      <div className="gap-y-xsmall flex h-full grow flex-col">
         {getWidgets("product.list.before").map((w, i) => {
           return (
             <WidgetContainer

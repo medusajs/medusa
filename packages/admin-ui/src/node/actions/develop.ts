@@ -1,8 +1,10 @@
 import path from "node:path"
+import openBrowser from "react-dev-utils/openBrowser"
 import webpack from "webpack"
 import WebpackDevDerver, {
   Configuration as DevServerConfiguration,
 } from "webpack-dev-server"
+
 import { DevelopArgs } from "../types"
 import { logger, watchLocalAdminFolder } from "../utils"
 import { createCacheDir } from "../utils/create-cache-dir"
@@ -22,7 +24,7 @@ export async function develop({
       open: true,
       port: 7001,
       logLevel: "error",
-      stats: "minimal",
+      stats: "normal",
     },
   },
 }: DevelopArgs) {
@@ -46,7 +48,7 @@ export async function develop({
   const compiler = webpack({
     ...config,
     infrastructureLogging: { level: options.develop.logLevel },
-    stats: options.develop.stats,
+    stats: options.develop.stats === "normal" ? "errors-only" : undefined,
   })
 
   const devServerArgs: DevServerConfiguration = {
@@ -58,20 +60,29 @@ export async function develop({
         warnings: false,
       },
     },
-    open: options.develop.open
-      ? {
-          target: `http://localhost:${options.develop.port}${
-            options.path ? options.path : ""
-          }`,
+    open: false,
+    onListening: options.develop.open
+      ? function (devServer) {
+          if (!devServer) {
+            logger.warn("Failed to open browser.")
+          }
+
+          openBrowser(
+            `http://localhost:${options.develop.port}${
+              options.path ? options.path : ""
+            }`
+          )
         }
-      : false,
+      : undefined,
     devMiddleware: {
       publicPath: options.path,
+      stats: options.develop.stats === "normal" ? false : undefined,
     },
     historyApiFallback: {
       index: options.path,
       disableDotRule: true,
     },
+    hot: true,
   }
 
   const server = new WebpackDevDerver(devServerArgs, compiler)

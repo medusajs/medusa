@@ -33,7 +33,7 @@ const DraftOrderIndex = () => {
   }, [view])
 
   return (
-    <div className="flex h-full grow flex-col gap-y-3">
+    <div className="gap-y-xsmall flex h-full grow flex-col">
       {getWidgets("draft_order.list.before").map((Widget, i) => {
         return (
           <WidgetContainer
@@ -62,7 +62,6 @@ const DraftOrderIndex = () => {
         >
           <DraftOrderTable />
         </BodyCard>
-        <Spacer />
       </div>
       {getWidgets("draft_order.list.after").map((Widget, i) => {
         return (
@@ -74,6 +73,7 @@ const DraftOrderIndex = () => {
           />
         )
       })}
+      <Spacer />
       {showNewOrder && (
         <NewOrderFormProvider>
           <NewOrder onDismiss={() => setShowNewOrder(false)} />

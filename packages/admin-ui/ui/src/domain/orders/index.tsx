@@ -79,7 +79,7 @@ const OrderIndex = () => {
 
   return (
     <>
-      <div className="flex h-full grow flex-col">
+      <div className="gap-y-xsmall flex h-full grow flex-col">
         {getWidgets("order.list.before").map((w, i) => {
           return (
             <WidgetContainer
@@ -108,7 +108,6 @@ const OrderIndex = () => {
           >
             <OrderTable setContextFilters={setContextFilters} />
           </BodyCard>
-          <Spacer />
         </div>
         {getWidgets("order.list.after").map((w, i) => {
           return (
@@ -120,6 +119,7 @@ const OrderIndex = () => {
             />
           )
         })}
+        <Spacer />
       </div>
       {exportModalOpen && (
         <ExportModal

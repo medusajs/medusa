@@ -53,6 +53,10 @@ function createLogger(): Logger {
     }
 
     console[method](format())
+
+    if (options?.error) {
+      console.error(options.error)
+    }
   }
 
   return {
@@ -61,6 +65,7 @@ function createLogger(): Logger {
     error: (msg, options) => output("error", msg, options),
     panic: (msg, options) => {
       output("error", msg, options)
+      output("error", "Exiting process", {})
       process.exit(1)
     },
   }

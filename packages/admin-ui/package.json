@@ -79,6 +79,7 @@
     "react-country-flag": "^3.0.2",
     "react-currency-input-field": "^3.6.8",
     "react-datepicker": "^4.8.0",
+    "react-dev-utils": "^12.0.1",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0",
