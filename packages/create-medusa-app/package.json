@@ -10,7 +10,7 @@
     "dev": "ts-node --esm src/index.ts",
     "build": "tsc",
     "watch": "tsc --watch",
-    "prepare": "cross-env NODE_ENV=production yarn run build"
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
   },
   "dependencies": {
     "boxen": "^5",

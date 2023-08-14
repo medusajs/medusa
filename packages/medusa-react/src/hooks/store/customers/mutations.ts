@@ -3,7 +3,7 @@ import {
   StorePostCustomersCustomerReq,
   StorePostCustomersReq,
 } from "@medusajs/medusa"
-import { useMutation, UseMutationOptions } from "@tanstack/react-query"
+import { UseMutationOptions, useMutation } from "@tanstack/react-query"
 import { useMedusa } from "../../../contexts/medusa"
 
 export const useCreateCustomer = (
