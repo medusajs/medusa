@@ -183,6 +183,14 @@ const config = {
         },
       },
     ],
+    [
+      "@docusaurus/preset-classic",
+      {
+        sitemap: {
+          filename: "sitemap-docs.xml",
+        },
+      },
+    ],
   ],
 }
 

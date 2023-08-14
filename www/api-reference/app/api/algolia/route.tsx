@@ -7,6 +7,8 @@ import getSectionId from "../../../utils/get-section-id"
 import { NextResponse } from "next/server"
 import { JSDOM } from "jsdom"
 import capitalize from "../../../utils/capitalize"
+import getBaseUrl from "../../../utils/get-base-url"
+import getUrl from "../../../utils/get-url"
 
 export async function GET() {
   const algoliaClient = algoliasearch(
@@ -147,8 +149,4 @@ function getHierarchy(area: string, levels: string[]): Record<string, string> {
   })
 
   return heirarchy
-}
-
-function getUrl(area: string, name?: string): string {
-  return `${process.env.NEXT_PUBLIC_BASE_URL}/api/${area}#${name}`
 }
