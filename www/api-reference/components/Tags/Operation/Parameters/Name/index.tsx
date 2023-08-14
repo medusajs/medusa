@@ -47,9 +47,9 @@ const TagOperationParametersName = ({
           <Tooltip
             tooltipChildren={
               <>
-                This can be <Link href="#expanding-fields">expanded</Link> into
-                an object
-                <br /> with the <code>expand</code> request parameter.
+                If this request accepts an <code>expand</code> parameter,
+                <br /> this field can be{" "}
+                <Link href="#expanding-fields">expanded</Link> into an object.
               </>
             }
             clickable
