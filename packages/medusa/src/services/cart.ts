@@ -1022,10 +1022,6 @@ class CartService extends TransactionBaseService {
     cart: Cart,
     shouldAdd: boolean
   ): Promise<void> {
-    if (!cart.discounts.some(({ rule }) => rule.type === "free_shipping")) {
-      return
-    }
-
     if (!cart.shipping_methods?.length) {
       return
     }
@@ -1843,7 +1839,7 @@ class CartService extends TransactionBaseService {
             const updateData = {
               cart,
               customer: cart.customer,
-              amount: cart.total,
+              amount: cart.total!,
               currency_code: cart.region.currency_code,
               provider_id: session.provider_id,
             }
