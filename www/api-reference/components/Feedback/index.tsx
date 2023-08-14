@@ -89,6 +89,7 @@ const Feedback: React.FC<FeedbackProps> = ({
             ? "yes"
             : "no",
         message: message?.length ? message : null,
+        os: window.navigator.userAgent,
         ...extraData,
       },
       function () {

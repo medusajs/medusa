@@ -85,6 +85,7 @@ const Feedback: React.FC<FeedbackProps> = ({
               ? "yes"
               : "no",
           message: message?.length ? message : null,
+          os: isBrowser ? window.navigator.userAgent : "",
           additional_data: {
             steps,
             medusaVersion,
