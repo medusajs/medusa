@@ -10,6 +10,9 @@ const SearchBar = () => {
       appId={process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || "temp"}
       indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME || "temp"}
       apiKey={process.env.NEXT_PUBLIC_ALGOLIA_API_KEY || "temp"}
+      searchParameters={{
+        tagFilters: ["api"],
+      }}
     />
   )
 }

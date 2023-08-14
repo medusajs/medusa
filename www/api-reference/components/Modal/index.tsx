@@ -25,7 +25,6 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
   const { closeModal } = useModal()
   const dialogRef = useRef<HTMLDialogElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
 
   const handleClick = (e: React.MouseEvent<HTMLDialogElement, MouseEvent>) => {
     // close modal when the user clicks outside the content
@@ -52,7 +51,6 @@ const Modal: React.FC<ModalProps> = ({
           "shadow-modal dark:shadow-modal-dark",
           "w-[90%] md:w-[75%] lg:w-[560px]"
         )}
-        ref={contentRef}
       >
         <ModalHeader title={title} />
         <div

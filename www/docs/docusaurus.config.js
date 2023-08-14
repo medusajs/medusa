@@ -53,6 +53,9 @@ const config = {
       appId: algoliaAppId,
       contextualSearch: false,
       externalUrlRegex: "https://medusajs.com",
+      searchParameters: {
+        tagFilters: "-reference",
+      },
     },
     prism: {
       defaultLanguage: "js",

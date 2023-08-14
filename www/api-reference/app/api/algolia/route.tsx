@@ -7,7 +7,6 @@ import getSectionId from "../../../utils/get-section-id"
 import { NextResponse } from "next/server"
 import { JSDOM } from "jsdom"
 import capitalize from "../../../utils/capitalize"
-import getBaseUrl from "../../../utils/get-base-url"
 import getUrl from "../../../utils/get-url"
 
 export async function GET() {
@@ -22,6 +21,11 @@ export async function GET() {
   // retrieve tags and their operations to index them
   const indices: Record<string, any>[] = []
   for (const area of ["store", "admin"]) {
+    const defaultIndexData = {
+      version: ["current"],
+      lang: "en",
+      _tags: ["api", area],
+    }
     // find and parse static headers from pages
     const dom = await JSDOM.fromURL(getUrl(area))
     const headers = dom.window.document.querySelectorAll("h2")
@@ -37,12 +41,10 @@ export async function GET() {
         hierarchy: getHierarchy(area, [header.textContent]),
         type: `content`,
         content: header.textContent,
-        version: ["current"],
-        lang: "en",
-        tags: ["api", area],
         url,
         url_without_variables: url,
         url_without_anchor: url,
+        ...defaultIndexData,
       })
     })
 
@@ -60,12 +62,10 @@ export async function GET() {
           hierarchy: getHierarchy(area, [tag.name]),
           type: "lvl1",
           content: null,
-          version: ["current"],
-          lang: "en",
-          tags: ["api", area],
           url,
           url_without_variables: url,
           url_without_anchor: url,
+          ...defaultIndexData,
         })
         const paths = await getPathsOfTag(tagName, area)
 
@@ -83,11 +83,10 @@ export async function GET() {
               type: "content",
               content: operation.summary,
               content_camel: operation.summary,
-              lang: "en",
-              version: ["current"],
               url,
               url_without_variables: url,
               url_without_anchor: url,
+              ...defaultIndexData,
             })
 
             // index its description
@@ -110,11 +109,10 @@ export async function GET() {
               type: "content",
               content: operation.description,
               content_camel: operation.description,
-              lang: "en",
-              version: ["current"],
               url,
               url_without_variables: url,
               url_without_anchor: url,
+              ...defaultIndexData,
             })
           })
         })
