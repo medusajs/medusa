@@ -1,19 +1,26 @@
 import * as StockModels from "../models"
 
-import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/modules-sdk"
+import {
+  InternalModuleDeclaration,
+  LoaderOptions,
+  Logger,
+  ModuleServiceInitializeOptions,
+} from "@medusajs/types"
 
 import { EntitySchema } from "@mikro-orm/core"
-import { Logger } from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import { createConnection } from "../utils/create-connection"
 
 export async function revertMigration(
-  { options, logger }: Pick<LoaderOptions, "options" | "logger">,
+  { options, logger }: LoaderOptions,
   moduleDeclaration?: InternalModuleDeclaration
 ) {
   logger ??= console as unknown as Logger
 
-  const dbData = ModulesSdkUtils.loadDatabaseConfig("stock-location", options)
+  const dbData = ModulesSdkUtils.loadDatabaseConfig(
+    "stock-location",
+    options as unknown as ModuleServiceInitializeOptions
+  )
 
   const entities = Object.values(StockModels) as unknown as EntitySchema[]
 

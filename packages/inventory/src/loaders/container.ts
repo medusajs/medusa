@@ -1,7 +1,6 @@
 import * as DefaultRepositories from "../repositories"
 
 import {
-  BaseRepository,
   InventoryItemRepository,
   InventoryLevelRepository,
   ReservationItemRepository,
@@ -40,7 +39,6 @@ export default async (
 
 async function loadDefaultRepositories({ container }) {
   container.register({
-    baseRepository: asClass(BaseRepository).singleton(),
     reservationItemRepository: asClass(ReservationItemRepository).singleton(),
     inventoryLevelRepository: asClass(InventoryLevelRepository).singleton(),
     inventoryItemRepository: asClass(InventoryItemRepository).singleton(),

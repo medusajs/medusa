@@ -1,46 +1,50 @@
 import * as InventoryModels from "../models"
 
-import {
-  InternalModuleDeclaration,
-  LoaderOptions,
-  MODULE_RESOURCE_TYPE,
-  MODULE_SCOPE,
-} from "@medusajs/modules-sdk"
+import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/modules-sdk"
 import { MedusaError, ModulesSdkUtils } from "@medusajs/utils"
 
 import { EntitySchema } from "@mikro-orm/core"
-import { ModulesSdkTypes } from "@medusajs/types"
 import { asValue } from "awilix"
 import { createConnection } from "../utils/create-connection"
 
 export default async (
-  { options, container }: LoaderOptions,
+  { options, container, logger }: LoaderOptions,
   moduleDeclaration?: InternalModuleDeclaration
 ): Promise<void> => {
-  if (
-    moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
-    moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
-  ) {
-    const { projectConfig } = container.resolve("configModule")
-    options = {
-      database: {
-        clientUrl: projectConfig.database_url!,
-      },
-    }
-  }
+  const entities = Object.values(InventoryModels) as unknown as EntitySchema[]
 
-  const customManager = (
-    options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
-  )?.manager
+  await ModulesSdkUtils.mikroOrmConnectionLoader({
+    entities,
+    container,
+    options,
+    moduleDeclaration,
+    logger,
+  })
 
-  if (!customManager) {
-    const dbData = ModulesSdkUtils.loadDatabaseConfig("inventory", options)
-    await loadDefault({ database: dbData, container })
-  } else {
-    container.register({
-      manager: asValue(customManager),
-    })
-  }
+  // if (
+  //   moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
+  //   moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
+  // ) {
+  //   const { projectConfig } = container.resolve("configModule")
+  //   options = {
+  //     database: {
+  //       clientUrl: projectConfig.database_url!,
+  //     },
+  //   }
+  // }
+
+  // const customManager = (
+  //   options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
+  // )?.manager
+
+  // if (!customManager) {
+  //   const dbData = ModulesSdkUtils.loadDatabaseConfig("inventory", options)
+  //   await loadDefault({ database: dbData, container })
+  // } else {
+  //   container.register({
+  //     manager: asValue(customManager),
+  //   })
+  // }
 }
 
 async function loadDefault({ database, container }) {

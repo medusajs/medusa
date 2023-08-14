@@ -6,9 +6,12 @@ import {
 } from "@medusajs/types"
 import { StockLocationAddress } from "../models"
 
-import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import {
+  DALUtils,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/utils"
 import {
   FilterQuery as MikroQuery,
   LoadStrategy,
@@ -18,7 +21,7 @@ import {
 type InjectedDependencies = { manager: SqlEntityManager }
 
 // eslint-disable-next-line max-len
-export class StockLocationAddressRepository extends AbstractBaseRepository<StockLocationAddress> {
+export class StockLocationAddressRepository extends DALUtils.MikroOrmAbstractBaseRepository<StockLocationAddress> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: InjectedDependencies) {
@@ -40,8 +43,7 @@ export class StockLocationAddressRepository extends AbstractBaseRepository<Stock
     options?: FindOptions<StockLocationAddress> | undefined,
     context: Context = {}
   ): Promise<[StockLocationAddress[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...options }
     findOptions_.options ??= {}
@@ -61,8 +63,10 @@ export class StockLocationAddressRepository extends AbstractBaseRepository<Stock
   async create(
     data: StockLocationAddressInput[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<StockLocationAddress[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
     const items = data.map((item) => {
       return (manager as SqlEntityManager).create(StockLocationAddress, item)
     })
@@ -82,9 +86,9 @@ export class StockLocationAddressRepository extends AbstractBaseRepository<Stock
       >
     }[],
     @MedusaContext()
-    { transactionManager }: Context = {}
+    context: Context = {}
   ): Promise<StockLocationAddress[]> {
-    const manager = (transactionManager ?? this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const items = await Promise.all(
       data.map(async ({ item, update }) => {
@@ -101,12 +105,10 @@ export class StockLocationAddressRepository extends AbstractBaseRepository<Stock
   async delete(
     ids: string[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<void> {
-    await (manager as SqlEntityManager).nativeDelete(
-      StockLocationAddress,
-      { id: { $in: ids } },
-      {}
-    )
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
+    await manager.nativeDelete(StockLocationAddress, { id: { $in: ids } }, {})
   }
 }

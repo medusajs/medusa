@@ -22,6 +22,7 @@ import {
 import {
   InjectTransactionManager,
   MedusaContext,
+  InjectManager,
   MedusaError,
 } from "@medusajs/utils"
 import { joinerConfig } from "../joiner-config"
@@ -76,6 +77,7 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return A tuple of inventory items and their total count
    */
+  @InjectManager("baseRepository_")
   async listInventoryItems(
     selector: FilterableInventoryItemProps,
     config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 },
@@ -94,6 +96,7 @@ export default class InventoryService implements IInventoryService {
     return [serialized, count]
   }
 
+  @InjectManager("baseRepository_")
   async list(
     selector: FilterableInventoryItemProps,
     config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 },
@@ -119,6 +122,7 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return A tuple of inventory levels and their total count
    */
+  @InjectManager("baseRepository_")
   async listInventoryLevels(
     selector: FilterableInventoryLevelProps,
     config: FindConfig<InventoryLevelDTO> = {
@@ -148,6 +152,7 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return A tuple of reservation items and their total count
    */
+  @InjectManager("baseRepository_")
   async listReservationItems(
     selector: FilterableReservationItemProps,
     config: FindConfig<ReservationItemDTO> = {
@@ -174,6 +179,7 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return The retrieved inventory item
    */
+  @InjectManager("baseRepository_")
   async retrieveInventoryItem(
     inventoryItemId: string,
     config?: FindConfig<InventoryItemDTO>,
@@ -201,6 +207,7 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return the retrieved inventory level
    */
+  @InjectManager("baseRepository_")
   async retrieveInventoryLevel(
     inventoryItemId: string,
     locationId: string,
@@ -234,6 +241,7 @@ export default class InventoryService implements IInventoryService {
    * @param reservationId
    * @param context
    */
+  @InjectManager("baseRepository_")
   async retrieveReservationItem(
     reservationId: string,
     context: Context = {}

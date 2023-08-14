@@ -11,6 +11,7 @@ import {
   UpdateStockLocationInput,
 } from "@medusajs/types"
 import {
+  InjectManager,
   InjectTransactionManager,
   isDefined,
   MedusaContext,
@@ -84,6 +85,7 @@ export default class StockLocationService {
    * @param context
    * @return A list of stock locations.
    */
+  @InjectManager("baseRepository_")
   async list(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
@@ -114,6 +116,7 @@ export default class StockLocationService {
    * @param context
    * @return A list of stock locations and the count of matching stock locations.
    */
+  @InjectManager("baseRepository_")
   async listAndCount(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
@@ -160,6 +163,7 @@ export default class StockLocationService {
     return serialized
   }
 
+  @InjectManager("baseRepository_")
   protected async retrieve_(
     stockLocationId: string,
     config: FindConfig<StockLocation> = {},

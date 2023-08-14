@@ -1,19 +1,25 @@
 import * as InventoryModels from "../models"
 
-import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/modules-sdk"
-
 import { EntitySchema } from "@mikro-orm/core"
-import { Logger } from "@medusajs/types"
+import {
+  Logger,
+  ModuleServiceInitializeOptions,
+  InternalModuleDeclaration,
+  LoaderOptions,
+} from "@medusajs/types"
 import { ModulesSdkUtils } from "@medusajs/utils"
 import { createConnection } from "../utils/create-connection"
 
 export async function runMigrations(
-  { options, logger }: Pick<LoaderOptions, "options" | "logger">,
+  { options, logger }: LoaderOptions,
   moduleDeclaration?: InternalModuleDeclaration
 ) {
   logger ??= console as unknown as Logger
 
-  const dbData = ModulesSdkUtils.loadDatabaseConfig("inventory", options)
+  const dbData = ModulesSdkUtils.loadDatabaseConfig(
+    "inventory",
+    options as unknown as ModuleServiceInitializeOptions
+  )
 
   const entities = Object.values(InventoryModels) as unknown as EntitySchema[]
 

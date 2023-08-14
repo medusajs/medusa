@@ -4,15 +4,11 @@ import {
   DAL,
   FindOptions,
 } from "@medusajs/types"
-import { InventoryItem, ReservationItem } from "../models"
+import { InventoryItem } from "../models"
 
-import { AbstractBaseRepository } from "./base"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import {
-  QueryBuilder,
-  SelectQueryBuilder,
-  SqlEntityManager,
-} from "@mikro-orm/postgresql"
-import {
+  DALUtils,
   InjectTransactionManager,
   MedusaContext,
   isDefined,
@@ -29,7 +25,7 @@ import { buildWhere } from "../utils/build-query"
 type InjectedDependencies = { manager: SqlEntityManager }
 
 // eslint-disable-next-line max-len
-export class InventoryItemRepository extends AbstractBaseRepository<InventoryItem> {
+export class InventoryItemRepository extends DALUtils.MikroOrmAbstractBaseRepository<InventoryItem> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: InjectedDependencies) {
@@ -51,8 +47,7 @@ export class InventoryItemRepository extends AbstractBaseRepository<InventoryIte
     options?: FindOptions<InventoryItem> | undefined,
     context: Context = {}
   ): Promise<[InventoryItem[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const where = { deleted_at: null, ...options?.where }
 
@@ -83,13 +78,15 @@ export class InventoryItemRepository extends AbstractBaseRepository<InventoryIte
   async create(
     data: CreateInventoryItemInput[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<InventoryItem[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
     const items = data.map((item) => {
-      return (manager as SqlEntityManager).create(InventoryItem, item)
+      return manager.create(InventoryItem, item)
     })
 
-    ;(manager as SqlEntityManager).persist(items)
+    manager.persist(items)
 
     return items
   }
@@ -104,16 +101,16 @@ export class InventoryItemRepository extends AbstractBaseRepository<InventoryIte
       >
     }[],
     @MedusaContext()
-    { transactionManager }: Context = {}
+    context: Context = {}
   ): Promise<InventoryItem[]> {
-    const manager = (transactionManager ?? this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    const uglyConversion = (
+    const convertToEntityWithStringValues = (
       item: Omit<
         Partial<InventoryItem>,
         "id" | "created_at" | "metadata" | "deleted_at" | "updated_at"
       >
-    ): EntityData<InventoryItem> => {
+    ) => {
       const it = {
         ...item,
       }
@@ -134,7 +131,7 @@ export class InventoryItemRepository extends AbstractBaseRepository<InventoryIte
     }
 
     const items = data.map(({ item, update }) => {
-      return manager.assign(item, uglyConversion(update))
+      return manager.assign(item, convertToEntityWithStringValues(update))
     })
 
     await manager.persistAndFlush(items)
@@ -146,13 +143,11 @@ export class InventoryItemRepository extends AbstractBaseRepository<InventoryIte
   async delete(
     ids: string[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<void> {
-    await (manager as SqlEntityManager).nativeDelete(
-      InventoryItem,
-      { id: { $in: ids } },
-      {}
-    )
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
+    await manager.nativeDelete(InventoryItem, { id: { $in: ids } }, {})
   }
 
   async getListQuery(

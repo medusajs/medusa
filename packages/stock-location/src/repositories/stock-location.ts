@@ -1,9 +1,12 @@
 import { Context, CreateStockLocationInput, FindOptions } from "@medusajs/types"
 import { StockLocation, StockLocationAddress } from "../models"
 
-import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import {
+  DALUtils,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/utils"
 import {
   FilterQuery as MikroQuery,
   LoadStrategy,
@@ -14,7 +17,7 @@ import {
 type InjectedDependencies = { manager: SqlEntityManager }
 
 // eslint-disable-next-line max-len
-export class StockLocationRepostiory extends AbstractBaseRepository<StockLocation> {
+export class StockLocationRepostiory extends DALUtils.MikroOrmAbstractBaseRepository<StockLocation> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: InjectedDependencies) {
@@ -36,10 +39,7 @@ export class StockLocationRepostiory extends AbstractBaseRepository<StockLocatio
     options?: FindOptions<StockLocation> | undefined,
     context: Context = {}
   ): Promise<[StockLocation[], number]> {
-    let manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
-    // TODO: update it with the injectManager when its merged
-    manager = manager.fork()
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const findOptions_ = { ...options }
     findOptions_.options ??= {}
@@ -59,13 +59,15 @@ export class StockLocationRepostiory extends AbstractBaseRepository<StockLocatio
   async create(
     data: CreateStockLocationInput[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<StockLocation[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
     const items = data.map((item) => {
-      return (manager as SqlEntityManager).create(StockLocation, item)
+      return manager.create(StockLocation, item)
     })
 
-    ;(manager as SqlEntityManager).persist(items)
+    manager.persist(items)
 
     return items
   }
@@ -80,9 +82,9 @@ export class StockLocationRepostiory extends AbstractBaseRepository<StockLocatio
       >
     }[],
     @MedusaContext()
-    { transactionManager }: Context = {}
+    context: Context = {}
   ): Promise<StockLocation[]> {
-    const manager = (transactionManager ?? this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const items = data.map(({ item, update }) => {
       return manager.assign<StockLocation>(item, update)
@@ -97,12 +99,10 @@ export class StockLocationRepostiory extends AbstractBaseRepository<StockLocatio
   async delete(
     ids: string[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<void> {
-    await (manager as SqlEntityManager).nativeDelete(
-      StockLocation,
-      { id: { $in: ids } },
-      {}
-    )
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
+    await manager.nativeDelete(StockLocation, { id: { $in: ids } }, {})
   }
 }

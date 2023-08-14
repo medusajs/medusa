@@ -6,9 +6,12 @@ import {
 } from "@medusajs/types"
 import { InventoryLevel, ReservationItem } from "../models"
 
-import { AbstractBaseRepository } from "./base"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import {
+  DALUtils,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/utils"
 import {
   FilterQuery as MikroQuery,
   LoadStrategy,
@@ -16,7 +19,7 @@ import {
 } from "@mikro-orm/core"
 
 // eslint-disable-next-line max-len
-export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLevel> {
+export class InventoryLevelRepository extends DALUtils.MikroOrmAbstractBaseRepository<InventoryLevel> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -36,10 +39,9 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
 
   async findAndCount(
     options?: FindOptions<InventoryLevel> | undefined,
-    context: Context | undefined = {}
+    context: Context = {}
   ): Promise<[InventoryLevel[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const where = { deleted_at: null, ...options?.where }
     const findOptions_ = { ...options, where }
@@ -61,13 +63,15 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
   async create(
     data: CreateInventoryLevelInput[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<InventoryLevel[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
     const items = data.map((level) => {
-      return (manager as SqlEntityManager).create(InventoryLevel, level)
+      return manager.create(InventoryLevel, level)
     })
 
-    ;(manager as SqlEntityManager).persist(items)
+    manager.persist(items)
 
     return items
   }
@@ -76,13 +80,11 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
   async delete(
     ids: string[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<void> {
-    await (manager as SqlEntityManager).nativeDelete(
-      InventoryLevel,
-      { id: { $in: ids } },
-      {}
-    )
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
+    await manager.nativeDelete(InventoryLevel, { id: { $in: ids } }, {})
   }
 
   @InjectTransactionManager()
@@ -92,9 +94,9 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
       update: UpdateInventoryLevelInput
     }[],
     @MedusaContext()
-    { transactionManager }: Context = {}
+    context: Context = {}
   ): Promise<InventoryLevel[]> {
-    const manager = (transactionManager ?? this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const items = data.map(({ item, update }) => {
       return manager.assign(item, update)
@@ -110,14 +112,13 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
     inventoryItemId: string,
     locationIds: string[] | string,
     @MedusaContext()
-    { transactionManager }: Context = {}
+    context: Context = {}
   ): Promise<number> {
-    const manager = (transactionManager ?? this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
-    const builder1 = manager.createQueryBuilder(InventoryLevel, "il")
     const builder = manager.createQueryBuilder(InventoryLevel, "il")
 
-    const a = builder1
+    const formattedQuery = builder
       .select("SUM(il.stocked_quantity) as sum")
       .where({
         $and: [
@@ -127,7 +128,7 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
       })
       .getFormattedQuery()
 
-    const res = await manager.execute(a)
+    const res = await manager.execute(formattedQuery)
 
     return Number(res[0]["sum"]) ?? 0
   }
@@ -137,9 +138,9 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
     inventoryItemId: string,
     locationIds: string[] | string,
     @MedusaContext()
-    { transactionManager }: Context = {}
+    context: Context = {}
   ): Promise<number> {
-    const manager = (transactionManager ?? this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const builder = manager.createQueryBuilder(InventoryLevel, "il")
 
@@ -161,9 +162,9 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
     inventoryItemId: string,
     locationIds: string[] | string,
     @MedusaContext()
-    { transactionManager }: Context = {}
+    context: Context = {}
   ): Promise<number> {
-    const manager = (transactionManager ?? this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const builder = manager.createQueryBuilder(InventoryLevel, "il")
 
@@ -186,9 +187,9 @@ export class InventoryLevelRepository extends AbstractBaseRepository<InventoryLe
     locationId: string,
     quantity: number,
     @MedusaContext()
-    { transactionManager }: Context = {}
+    context: Context = {}
   ): Promise<void> {
-    const manager = (transactionManager ?? this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const qb = manager.createQueryBuilder(InventoryLevel, "il")
 

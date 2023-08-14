@@ -10,13 +10,16 @@ import {
   FilterQuery as MikroQuery,
 } from "@mikro-orm/core"
 
-import { AbstractBaseRepository } from "./base"
 import { ReservationItem } from "../models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { InjectTransactionManager, MedusaContext } from "@medusajs/utils"
+import {
+  DALUtils,
+  InjectTransactionManager,
+  MedusaContext,
+} from "@medusajs/utils"
 
 // eslint-disable-next-line max-len
-export class ReservationItemRepository extends AbstractBaseRepository<ReservationItem> {
+export class ReservationItemRepository extends DALUtils.MikroOrmAbstractBaseRepository<ReservationItem> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
@@ -38,8 +41,7 @@ export class ReservationItemRepository extends AbstractBaseRepository<Reservatio
     options?: FindOptions<ReservationItem> | undefined,
     context: Context = {}
   ): Promise<[ReservationItem[], number]> {
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const where = { deleted_at: null, ...options?.where }
     const findOptions_ = { ...options, where }
@@ -61,13 +63,15 @@ export class ReservationItemRepository extends AbstractBaseRepository<Reservatio
   async create(
     data: CreateReservationItemInput[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<ReservationItem[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
     const items = data.map((item) => {
-      return (manager as SqlEntityManager).create(ReservationItem, item)
+      return manager.create(ReservationItem, item)
     })
 
-    ;(manager as SqlEntityManager).persist(items)
+    manager.persist(items)
 
     return items
   }
@@ -76,13 +80,11 @@ export class ReservationItemRepository extends AbstractBaseRepository<Reservatio
   async delete(
     ids: string[],
     @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<void> {
-    await (manager as SqlEntityManager).nativeDelete(
-      ReservationItem,
-      { id: { $in: ids } },
-      {}
-    )
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
+    await manager.nativeDelete(ReservationItem, { id: { $in: ids } }, {})
   }
 
   @InjectTransactionManager()
@@ -92,9 +94,9 @@ export class ReservationItemRepository extends AbstractBaseRepository<Reservatio
       update: UpdateReservationItemInput
     }[],
     @MedusaContext()
-    { transactionManager }: Context = {}
+    context: Context = {}
   ): Promise<ReservationItem[]> {
-    const manager = (transactionManager ?? this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const items = data.map(({ item, update }) => {
       return manager.assign(item, update)
