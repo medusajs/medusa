@@ -4,7 +4,7 @@ Thank you for your interest in contributing to the documentation! You will be he
 
 :::tip
 
-This guide is specific to contributing to the documentation. If you’re interested in contributing to Medusa’s codebase, check out the [contributing guidelines in the Medusa GitHub repository](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
+This guide is specific to contributing to the documentation. If you’re interested in contributing to Medusa’s codebase, check out the [contributing guidelines in the Medusa GitHub repository](https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md).
 
 :::
 
@@ -12,13 +12,13 @@ This guide is specific to contributing to the documentation. If you’re interes
 
 The documentation website is built with [Docusaurus](https://docusaurus.io/), a framework that optimizes documentation creation. If you’re not familiar with Docusaurus, it’s recommended to check out the [Installation documentation](https://docusaurus.io/docs/installation) on their website. This will help you better understand Docusaurus, how it works, its structure, and more details.
 
-The documentation codebase is hosted as part of the [medusa repository](https://github.com/medusajs/medusa) on GitHub. You’ll find the code that runs the Docusaurus website under the [www/docs](https://github.com/medusajs/medusa/tree/master/www/docs) directory.
+The documentation codebase is hosted as part of the [medusa repository](https://github.com/medusajs/medusa) on GitHub. You’ll find the code that runs the Docusaurus website under the [www/docs](https://github.com/medusajs/medusa/tree/develop/www/docs) directory.
 
 ---
 
 ## Documentation Content
 
-The documentation content is written in Markdown format and is located in the [docs/content](https://github.com/medusajs/medusa/tree/master/docs/content) directory of the same repository. If you’re not familiar with Markdown, check out [this cheat sheet](https://www.markdownguide.org/cheat-sheet/) for a quick start.
+The documentation content is written in Markdown format and is located in the [www/docs/docs](https://github.com/medusajs/medusa/tree/develop/www/docs/docs) directory of the same repository. If you’re not familiar with Markdown, check out [this cheat sheet](https://www.markdownguide.org/cheat-sheet/) for a quick start.
 
 You’ll also find MDX files. MDX files combine the power of Markdown with React. So, the content of the file can contain JSX components and import statements, among other features. You can learn more about [MDX in docusaurus’s guide.](https://docusaurus.io/docs/markdown-features/react)
 
@@ -33,8 +33,8 @@ You’ll also find MDX files. MDX files combine the power of Markdown with React
 
 ## What You Can’t Contribute To
 
-- All references under the `docs/content/reference` directory are automatically generated using Typedoc. So, you can’t contribute to it by making changes to its markdown files.
-- The API reference is generated from OpenApi Spec (OAS) comments added on endpoints in the core Medusa package. So, you can't contribute to it by making changes to files under `docs/api`. You can, however, contribute by making changes to the endpoint's comments. Endpoints are located under the `packages/medusa/src/api` directory.
+- All references under the `www/docs/docs/reference` directory are automatically generated using Typedoc. So, you can’t contribute to it by making changes to its markdown files.
+- The API reference is generated from OpenApi Spec (OAS) comments added on endpoints in the core Medusa package. So, you can't contribute to it by making changes to files under `www/api-reference/specs`. You can, however, contribute by making changes to the endpoint's comments. Endpoints are located under the `packages/medusa/src/api` directory.
 
 ---
 
@@ -50,7 +50,7 @@ If you’re fixing errors in an existing documentation page, you can scroll down
 
 If you’re adding a new page or contributing to the codebase, you need to fork the repository, create a new branch, and make all changes necessary in your repository. Then, once you’re done,  create a PR in the Medusa repository.
 
-For more details on how to contribute, check out [the contribution guidelines in the Medusa repository](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
+For more details on how to contribute, check out [the contribution guidelines in the Medusa repository](https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md).
 
 ### Base Branch
 
@@ -439,7 +439,7 @@ You can check the result of running the "lint" action on your PR by clicking the
 If you want to check your work locally, you can do that by:
 
 1. [Installing Vale](https://vale.sh/docs/vale-cli/installation/) on your machine.
-2. Changing to the `docs` directory:
+2. Changing to the `www/docs` directory:
 
 ```bash
 cd docs
