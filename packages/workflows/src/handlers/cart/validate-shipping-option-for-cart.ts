@@ -8,11 +8,15 @@ type HandlerInput = {
   cart: CartDTO
 }
 
+type HandlerOutput = {
+  validatedData: Record<string, unknown>
+}
+
 export async function validateShippingOptionForCart({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInput>) {
+}: WorkflowArguments<HandlerInput>): Promise<HandlerOutput> {
   const { manager } = context
 
   const fulfillmentProvider = container.resolve("fulfillmentProviderService")

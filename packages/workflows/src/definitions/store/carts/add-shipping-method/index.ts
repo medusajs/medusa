@@ -294,7 +294,7 @@ WorkflowManager.register(
 )
 
 export const addShippingMethod = exportWorkflow<
-  WorkflowTypes.CartWorkflow.AddShippingMethodToCartDTO,
+  WorkflowTypes.CartWorkflow.AddShippingMethodToCartWorkflowDTO,
   CartDTO
 >(
   Workflows.AddShippingMethod,

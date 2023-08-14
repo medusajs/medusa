@@ -7,11 +7,15 @@ type HandlerInput = {
   shippingMethodConfig: Record<string, unknown>
 }
 
+type HandlerOutput = {
+  shippingOptionPrice: number
+}
+
 export async function getShippingOptionPrice({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInput>) {
+}: WorkflowArguments<HandlerInput>): Promise<HandlerOutput> {
   const { manager } = context
 
   const { shippingOption, shippingMethodConfig, shippingMethodData } = data

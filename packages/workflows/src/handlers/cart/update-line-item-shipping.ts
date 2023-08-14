@@ -1,17 +1,28 @@
-import { WorkflowArguments } from "../../helper";
+import { CartDTO } from "@medusajs/types"
+import { WorkflowArguments } from "../../helper"
 
 type HandlerInput = {
-  cart: any
+  cart: CartDTO
+}
+
+type HandlerOutput = {
+  lineItems: any[]
 }
 
 export async function ensureCorrectLineItemShipping({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInput>) {
+}: WorkflowArguments<HandlerInput>): Promise<HandlerOutput> {
   const { manager } = context
 
   const { cart } = data
+
+  if (!cart?.items?.length || !cart.shipping_methods?.length) {
+    return {
+      lineItems: [],
+    }
+  }
 
   const lineItemService = container
     .resolve("lineItemService")

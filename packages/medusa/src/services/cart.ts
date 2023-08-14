@@ -765,7 +765,10 @@ class CartService extends TransactionBaseService {
 
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        let cart = await this.retrieve(cartId, { select })
+        let cart = await this.retrieve(cartId, {
+          select,
+          relations: ["shipping_methods"],
+        })
 
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
           if (config.validateSalesChannels) {
@@ -900,6 +903,12 @@ class CartService extends TransactionBaseService {
             throw err
           })
 
+        if (cart.shipping_methods?.length) {
+          await this.shippingOptionService_
+            .withTransaction(transactionManager)
+            .deleteShippingMethods(cart.shipping_methods)
+        }
+
         cart = await this.retrieve(cart.id, {
           relations: [
             "items.variant.product.profiles",
@@ -1022,10 +1031,6 @@ class CartService extends TransactionBaseService {
     cart: Cart,
     shouldAdd: boolean
   ): Promise<void> {
-    if (!cart.discounts.some(({ rule }) => rule.type === "free_shipping")) {
-      return
-    }
-
     if (!cart.shipping_methods?.length) {
       return
     }
@@ -1113,7 +1118,7 @@ class CartService extends TransactionBaseService {
           await this.updateUnitPrices_(cart, data.region_id, data.customer_id)
         }
 
-        if (isDefined(data.region_id)) {
+        if (isDefined(data.region_id) && cart.region_id !== data.region_id) {
           const shippingAddress =
             typeof data.shipping_address !== "string"
               ? data.shipping_address
@@ -1843,7 +1848,7 @@ class CartService extends TransactionBaseService {
             const updateData = {
               cart,
               customer: cart.customer,
-              amount: cart.total,
+              amount: cart.total!,
               currency_code: cart.region.currency_code,
               provider_id: session.provider_id,
             }

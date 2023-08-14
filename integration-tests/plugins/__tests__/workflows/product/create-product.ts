@@ -1,14 +1,14 @@
-import path from "path"
-import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import { IProductModuleService, WorkflowTypes } from "@medusajs/types"
 import {
-  createProducts,
   CreateProductsActions,
   Handlers,
+  createProducts,
   pipe,
 } from "@medusajs/workflows"
-import { IProductModuleService, WorkflowTypes } from "@medusajs/types"
-import { ModuleRegistrationName } from "@medusajs/modules-sdk"
+import path from "path"
+import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import { initDb, useDb } from "../../../../environment-helpers/use-db"
 
 describe("CreateProduct workflow", function () {
   let medusaProcess

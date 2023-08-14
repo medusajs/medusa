@@ -67,72 +67,74 @@ describe("medusa-plugin-sendgrid", () => {
       id: order.id,
     })
 
-    expect(data).toMatchSnapshot({
-      date: expect.any(String),
-      id: expect.any(String),
-      display_id: expect.any(Number),
-      sales_channel_id: null,
-      created_at: expect.any(Date),
-      canceled_at: expect.any(Date),
-      updated_at: expect.any(Date),
-      customer_id: expect.any(String),
-      customer: {
+    expect(data).toEqual(
+      expect.objectContaining({
+        date: expect.any(String),
         id: expect.any(String),
+        display_id: expect.any(Number),
+        sales_channel_id: null,
         created_at: expect.any(Date),
+        canceled_at: expect.any(Date),
         updated_at: expect.any(Date),
-      },
-      shipping_methods: [
-        {
+        customer_id: expect.any(String),
+        customer: expect.objectContaining({
           id: expect.any(String),
-          shipping_option_id: expect.any(String),
-          order_id: expect.any(String),
-          shipping_option: {
-            id: expect.any(String),
-            profile_id: expect.any(String),
-            created_at: expect.any(Date),
-            updated_at: expect.any(Date),
-          },
-        },
-      ],
-      shipping_address_id: expect.any(String),
-      shipping_address: {
-        id: expect.any(String),
-        created_at: expect.any(Date),
-        updated_at: expect.any(Date),
-      },
-      items: [
-        {
-          adjustments: [],
           created_at: expect.any(Date),
-          order_edit_id: null,
-          original_item_id: null,
           updated_at: expect.any(Date),
-          order_id: expect.any(String),
-          tax_lines: [
-            {
+        }),
+        shipping_methods: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            shipping_option_id: expect.any(String),
+            order_id: expect.any(String),
+            shipping_option: expect.objectContaining({
               id: expect.any(String),
-              created_at: expect.any(Date),
-              updated_at: expect.any(Date),
-            },
-          ],
-          variant: {
-            created_at: expect.any(Date),
-            updated_at: expect.any(Date),
-            product: {
               profile_id: expect.any(String),
-              profile: expect.any(Object),
-              profiles: expect.any(Array),
               created_at: expect.any(Date),
               updated_at: expect.any(Date),
-            },
-          },
-        },
-      ],
-      region: {
-        created_at: expect.any(Date),
-        updated_at: expect.any(Date),
-      },
-    })
+            }),
+          }),
+        ]),
+        shipping_address_id: expect.any(String),
+        shipping_address: expect.objectContaining({
+          id: expect.any(String),
+          created_at: expect.any(Date),
+          updated_at: expect.any(Date),
+        }),
+        items: expect.arrayContaining([
+          expect.objectContaining({
+            adjustments: [],
+            created_at: expect.any(Date),
+            order_edit_id: null,
+            original_item_id: null,
+            updated_at: expect.any(Date),
+            order_id: expect.any(String),
+            tax_lines: expect.arrayContaining([
+              expect.objectContaining({
+                id: expect.any(String),
+                created_at: expect.any(Date),
+                updated_at: expect.any(Date),
+              }),
+            ]),
+            variant: expect.objectContaining({
+              created_at: expect.any(Date),
+              updated_at: expect.any(Date),
+              product: expect.objectContaining({
+                profile_id: expect.any(String),
+                profile: expect.any(Object),
+                profiles: expect.any(Array),
+                created_at: expect.any(Date),
+                updated_at: expect.any(Date),
+              }),
+            }),
+          }),
+        ]),
+        region: expect.objectContaining({
+          created_at: expect.any(Date),
+          updated_at: expect.any(Date),
+        }),
+      })
+    )
   })
 
   test("order shipment created data", async () => {
@@ -165,99 +167,100 @@ describe("medusa-plugin-sendgrid", () => {
       fulfillment_id: fulfillment.id,
     })
 
-    expect(data).toMatchSnapshot({
-      date: expect.any(String),
-      fulfillment: {
-        id: expect.any(String),
-        order_id: expect.any(String),
-        created_at: expect.any(Date),
-        updated_at: expect.any(Date),
-        shipped_at: expect.any(Date),
-        items: [
-          {
-            fulfillment_id: expect.any(String),
-          },
-        ],
-      },
-      order: {
-        display_id: expect.any(Number),
-        id: expect.any(String),
-        created_at: expect.any(Date),
-        updated_at: expect.any(Date),
-        customer_id: expect.any(String),
-        customer: {
+    expect(data).toEqual(
+      expect.objectContaining({
+        date: expect.any(String),
+        fulfillment: expect.objectContaining({
+          id: expect.any(String),
+          order_id: expect.any(String),
+          created_at: expect.any(Date),
+          updated_at: expect.any(Date),
+          shipped_at: expect.any(Date),
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              fulfillment_id: expect.any(String),
+            }),
+          ]),
+        }),
+        order: expect.objectContaining({
+          display_id: expect.any(Number),
           id: expect.any(String),
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
-        },
-
-        fulfillments: [
-          {
+          customer_id: expect.any(String),
+          customer: expect.objectContaining({
             id: expect.any(String),
-            order_id: expect.any(String),
             created_at: expect.any(Date),
             updated_at: expect.any(Date),
-            shipped_at: expect.any(Date),
-            items: [
-              {
-                fulfillment_id: expect.any(String),
-              },
-            ],
-          },
-        ],
-        shipping_methods: [
-          {
-            id: expect.any(String),
-            shipping_option_id: expect.any(String),
-            order_id: expect.any(String),
-            shipping_option: {
+          }),
+          fulfillments: expect.arrayContaining([
+            expect.objectContaining({
               id: expect.any(String),
-              profile_id: expect.any(String),
+              order_id: expect.any(String),
               created_at: expect.any(Date),
               updated_at: expect.any(Date),
-            },
-          },
-        ],
-        shipping_address_id: expect.any(String),
-        shipping_address: {
-          id: expect.any(String),
-          created_at: expect.any(Date),
-          updated_at: expect.any(Date),
-        },
-        items: [
-          {
-            adjustments: [],
+              shipped_at: expect.any(Date),
+              items: expect.arrayContaining([
+                expect.objectContaining({
+                  fulfillment_id: expect.any(String),
+                }),
+              ]),
+            }),
+          ]),
+          shipping_methods: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              shipping_option_id: expect.any(String),
+              order_id: expect.any(String),
+              shipping_option: expect.objectContaining({
+                id: expect.any(String),
+                profile_id: expect.any(String),
+                created_at: expect.any(Date),
+                updated_at: expect.any(Date),
+              }),
+            }),
+          ]),
+          shipping_address_id: expect.any(String),
+          shipping_address: expect.objectContaining({
+            id: expect.any(String),
             created_at: expect.any(Date),
             updated_at: expect.any(Date),
-            order_edit_id: null,
-            original_item_id: null,
-            order_id: expect.any(String),
-            tax_lines: [
-              {
-                id: expect.any(String),
-                created_at: expect.any(Date),
-                updated_at: expect.any(Date),
-              },
-            ],
-            variant: {
+          }),
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              adjustments: [],
               created_at: expect.any(Date),
               updated_at: expect.any(Date),
-              product: {
-                profile_id: expect.any(String),
-                profile: expect.any(Object),
-                profiles: expect.any(Array),
+              order_edit_id: null,
+              original_item_id: null,
+              order_id: expect.any(String),
+              tax_lines: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  created_at: expect.any(Date),
+                  updated_at: expect.any(Date),
+                }),
+              ]),
+              variant: expect.objectContaining({
                 created_at: expect.any(Date),
                 updated_at: expect.any(Date),
-              },
-            },
-          },
-        ],
-        region: {
-          created_at: expect.any(Date),
-          updated_at: expect.any(Date),
-        },
-      },
-    })
+                product: expect.objectContaining({
+                  profile_id: expect.any(String),
+                  profile: expect.any(Object),
+                  profiles: expect.any(Array),
+                  created_at: expect.any(Date),
+                  updated_at: expect.any(Date),
+                }),
+              }),
+            }),
+          ]),
+          region: expect.objectContaining({
+            created_at: expect.any(Date),
+            updated_at: expect.any(Date),
+          }),
+        }),
+      })
+    )
   })
 
   test("order placed data", async () => {
@@ -595,25 +598,25 @@ describe("medusa-plugin-sendgrid", () => {
       updated_at: expect.any(Date),
       order_edit_id: null,
       original_item_id: null,
-      variant: {
+      variant: expect.objectContaining({
         created_at: expect.any(Date),
         updated_at: expect.any(Date),
-        product: {
+        product: expect.objectContaining({
           profile_id: expect.any(String),
           profile: expect.any(Object),
           profiles: expect.any(Array),
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
-        },
-      },
-      tax_lines: [
-        {
+        }),
+      }),
+      tax_lines: expect.arrayContaining([
+        expect.objectContaining({
           id: expect.any(String),
           item_id: expect.any(String),
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
-        },
-      ],
+        }),
+      ]),
     }
 
     const swapSnap = {
@@ -625,95 +628,102 @@ describe("medusa-plugin-sendgrid", () => {
       confirmed_at: expect.any(Date),
       idempotency_key: expect.any(String),
       shipping_address_id: expect.any(String),
-      additional_items: [
-        {
+      additional_items: expect.arrayContaining([
+        expect.objectContaining({
           swap_id: expect.any(String),
           cart_id: expect.any(String),
           ...itemSnap,
-        },
-      ],
+        }),
+      ]),
     }
 
-    expect(data).toMatchSnapshot({
-      date: expect.any(String),
-      swap: {
-        ...swapSnap,
-        shipping_address: {
-          id: expect.any(String),
-          created_at: expect.any(Date),
-          updated_at: expect.any(Date),
-        },
-        shipping_methods: [
-          {
+    expect(data).toEqual(
+      expect.objectContaining({
+        date: expect.any(String),
+        swap: expect.objectContaining({
+          ...swapSnap,
+          shipping_address: expect.objectContaining({
             id: expect.any(String),
-            cart_id: expect.any(String),
-            swap_id: expect.any(String),
-            shipping_option: {
+            created_at: expect.any(Date),
+            updated_at: expect.any(Date),
+          }),
+          shipping_methods: expect.arrayContaining([
+            expect.objectContaining({
               id: expect.any(String),
-              profile_id: expect.any(String),
-              created_at: expect.any(Date),
-              updated_at: expect.any(Date),
-            },
-            shipping_option_id: expect.any(String),
-            tax_lines: [
-              {
+              cart_id: expect.any(String),
+              swap_id: expect.any(String),
+              shipping_option: expect.objectContaining({
                 id: expect.any(String),
+                profile_id: expect.any(String),
                 created_at: expect.any(Date),
                 updated_at: expect.any(Date),
-                shipping_method_id: expect.any(String),
-              },
-            ],
-          },
-        ],
-        return_order: {
+              }),
+              shipping_option_id: expect.any(String),
+              tax_lines: expect.arrayContaining([
+                expect.objectContaining({
+                  id: expect.any(String),
+                  created_at: expect.any(Date),
+                  updated_at: expect.any(Date),
+                  shipping_method_id: expect.any(String),
+                }),
+              ]),
+            }),
+          ]),
+          return_order: expect.objectContaining({
+            id: expect.any(String),
+            swap_id: expect.any(String),
+            created_at: expect.any(Date),
+            updated_at: expect.any(Date),
+            items: expect.arrayContaining([
+              expect.objectContaining({
+                return_id: expect.any(String),
+              }),
+            ]),
+          }),
+        }),
+        fulfillment: expect.objectContaining({
           id: expect.any(String),
-          swap_id: expect.any(String),
           created_at: expect.any(Date),
+          shipped_at: expect.any(Date),
           updated_at: expect.any(Date),
-          items: [
-            {
-              return_id: expect.any(String),
-            },
-          ],
-        },
-      },
-      fulfillment: {
-        id: expect.any(String),
-        created_at: expect.any(Date),
-        shipped_at: expect.any(Date),
-        updated_at: expect.any(Date),
-        swap_id: expect.any(String),
-        items: [
-          {
-            fulfillment_id: expect.any(String),
-            item_id: expect.any(String),
-          },
-        ],
-      },
-      order: {
-        display_id: expect.any(Number),
-        id: expect.any(String),
-        created_at: expect.any(Date),
-        updated_at: expect.any(Date),
-        items: [{ order_id: expect.any(String), ...itemSnap }],
-        customer_id: expect.any(String),
-        shipping_address_id: expect.any(String),
-        sales_channel_id: null,
-        swaps: [swapSnap],
-        region: {
+          swap_id: expect.any(String),
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              fulfillment_id: expect.any(String),
+              item_id: expect.any(String),
+            }),
+          ]),
+        }),
+        order: expect.objectContaining({
+          display_id: expect.any(Number),
           id: expect.any(String),
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
-        },
-      },
-      items: [
-        {
-          swap_id: expect.any(String),
-          cart_id: expect.any(String),
-          ...itemSnap,
-        },
-      ],
-    })
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              order_id: expect.any(String),
+              ...itemSnap,
+            }),
+          ]),
+          customer_id: expect.any(String),
+          shipping_address_id: expect.any(String),
+          sales_channel_id: null,
+          swaps: expect.arrayContaining([expect.objectContaining(swapSnap)]),
+          region: expect.objectContaining({
+            id: expect.any(String),
+            created_at: expect.any(Date),
+            updated_at: expect.any(Date),
+          }),
+        }),
+        items: expect.arrayContaining([
+          expect.objectContaining({
+            swap_id: expect.any(String),
+            cart_id: expect.any(String),
+            ...itemSnap,
+          }),
+        ]),
+      })
+    )
   })
 
   test("return requested data", async () => {

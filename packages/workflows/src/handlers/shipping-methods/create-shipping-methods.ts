@@ -1,4 +1,4 @@
-import { ShippingOptionDTO } from "@medusajs/types"
+import { ShippingMethodDTO, ShippingOptionDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
 type HandlerInput = {
@@ -8,11 +8,13 @@ type HandlerInput = {
   shippingOptionPrice: number
 }
 
+type HandlerOutput = ShippingMethodDTO[]
+
 export async function createShippingMethods({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInput>) {
+}: WorkflowArguments<HandlerInput>): Promise<HandlerOutput> {
   const { manager } = context
 
   const {

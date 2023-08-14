@@ -1,13 +1,20 @@
+import { ShippingMethodDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
+
+type HandlerInput = {
+  shippingMethodsToDelete: ShippingMethodDTO[]
+  softDelete?: boolean
+}
+
+type HandlerOutput = {
+  deletedShippingMethods: ShippingMethodDTO[]
+}
 
 export async function deleteShippingMethods({
   container,
   context,
   data,
-}: WorkflowArguments<{
-  shippingMethodsToDelete: any[]
-  softDelete?: boolean
-}>) {
+}: WorkflowArguments<HandlerInput>): Promise<HandlerOutput> {
   const { manager } = context
   const { shippingMethodsToDelete } = data
 

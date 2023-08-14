@@ -1,12 +1,19 @@
+import { ShippingMethodDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
+
+type HandlerInput = {
+  deletedShippingMethods: ShippingMethodDTO[]
+}
+
+type HandlerOutput = {
+  restoredShippingMethods: ShippingMethodDTO[]
+}
 
 export async function restoreShippingMethods({
   container,
   context,
   data,
-}: WorkflowArguments<{
-  deletedShippingMethods: any[]
-}>) {
+}: WorkflowArguments<HandlerInput>): Promise<HandlerOutput> {
   const { manager } = context
 
   const { deletedShippingMethods } = data
