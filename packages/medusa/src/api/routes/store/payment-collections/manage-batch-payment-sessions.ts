@@ -62,7 +62,7 @@ import { PaymentCollectionService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/payment-collections/{id}/sessions/batch' \
+ *       curl -X POST '{backend_url}/store/payment-collections/{id}/sessions/batch' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *         "sessions": [

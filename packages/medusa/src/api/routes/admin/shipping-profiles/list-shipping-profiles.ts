@@ -22,7 +22,7 @@ import { ShippingProfileService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/shipping-profiles' \
+ *       curl '{backend_url}/admin/shipping-profiles' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

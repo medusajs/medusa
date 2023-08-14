@@ -1,2 +1,2 @@
-curl -X POST 'https://medusa-url.com/admin/currencies' \
+curl -X POST '{backend_url}/admin/currencies' \
 -H 'Authorization: Bearer {api_token}'

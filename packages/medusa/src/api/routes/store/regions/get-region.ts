@@ -23,7 +23,7 @@ import { defaultRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/regions/{id}'
+ *       curl '{backend_url}/store/regions/{id}'
  * tags:
  *   - Regions
  * responses:

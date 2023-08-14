@@ -12,7 +12,7 @@ import { OauthService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/apps' \
+ *       curl '{backend_url}/admin/apps' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

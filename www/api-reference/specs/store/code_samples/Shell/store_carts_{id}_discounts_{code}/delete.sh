@@ -1,1 +1,1 @@
-curl -X DELETE 'https://medusa-url.com/store/carts/{id}/discounts/{code}'
+curl -X DELETE '{backend_url}/store/carts/{id}/discounts/{code}'

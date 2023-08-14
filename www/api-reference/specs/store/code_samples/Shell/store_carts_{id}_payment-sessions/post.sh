@@ -1,1 +1,1 @@
-curl -X POST 'https://medusa-url.com/store/carts/{id}/payment-sessions'
+curl -X POST '{backend_url}/store/carts/{id}/payment-sessions'

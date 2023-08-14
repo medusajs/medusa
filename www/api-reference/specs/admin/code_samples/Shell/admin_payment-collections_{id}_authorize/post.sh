@@ -1,2 +1,2 @@
-curl -X POST 'https://medusa-url.com/admin/payment-collections/{id}/authorize' \
+curl -X POST '{backend_url}/admin/payment-collections/{id}/authorize' \
 -H 'Authorization: Bearer {api_token}'

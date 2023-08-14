@@ -32,7 +32,7 @@ import { defaultStoreCategoryScope } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/product-categories/{id}' \
+ *       curl '{backend_url}/store/product-categories/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

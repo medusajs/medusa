@@ -1,4 +1,4 @@
-curl -X POST 'https://medusa-url.com/store/products/search' \
+curl -X POST '{backend_url}/store/products/search' \
 -H 'Content-Type: application/json' \
 --data-raw '{
     "q": "Shirt"

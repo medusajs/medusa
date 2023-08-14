@@ -1,2 +1,2 @@
-curl 'https://medusa-url.com/admin/products' \
+curl '{backend_url}/admin/products' \
 -H 'Authorization: Bearer {api_token}'

@@ -1,4 +1,4 @@
-curl -X POST 'https://medusa-url.com/store/swaps' \
+curl -X POST '{backend_url}/store/swaps' \
 -H 'Content-Type: application/json' \
 --data-raw '{
     "order_id": "{order_id}",

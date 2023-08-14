@@ -1,4 +1,4 @@
-curl -X POST 'https://medusa-url.com/admin/regions/{region_id}/countries' \
+curl -X POST '{backend_url}/admin/regions/{region_id}/countries' \
 -H 'Authorization: Bearer {api_token}' \
 -H 'Content-Type: application/json' \
 --data-raw '{

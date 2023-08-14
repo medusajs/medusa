@@ -1,2 +1,2 @@
-curl -X POST 'https://medusa-url.com/admin/batch-jobs/{id}/cancel' \
+curl -X POST '{backend_url}/admin/batch-jobs/{id}/cancel' \
 -H 'Authorization: Bearer {api_token}'

@@ -1,2 +1,2 @@
-curl 'https://medusa-url.com/admin/tax-rates/{id}' \
+curl '{backend_url}/admin/tax-rates/{id}' \
 -H 'Authorization: Bearer {api_token}'

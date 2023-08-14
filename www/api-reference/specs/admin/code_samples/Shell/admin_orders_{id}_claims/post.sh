@@ -1,4 +1,4 @@
-curl -X POST 'https://medusa-url.com/admin/orders/{id}/claims' \
+curl -X POST '{backend_url}/admin/orders/{id}/claims' \
 -H 'Authorization: Bearer {api_token}' \
 -H 'Content-Type: application/json' \
 --data-raw '{

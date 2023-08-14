@@ -1,4 +1,4 @@
-curl -X POST 'https://medusa-url.com/admin/uploads/protected' \
+curl -X POST '{backend_url}/admin/uploads/protected' \
 -H 'Authorization: Bearer {api_token}' \
 -H 'Content-Type: image/jpeg' \
 --form 'files=@"<FILE_PATH_1>"' \

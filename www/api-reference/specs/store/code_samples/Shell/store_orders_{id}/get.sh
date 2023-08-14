@@ -1,1 +1,1 @@
-curl 'https://medusa-url.com/store/orders/{id}'
+curl '{backend_url}/store/orders/{id}'

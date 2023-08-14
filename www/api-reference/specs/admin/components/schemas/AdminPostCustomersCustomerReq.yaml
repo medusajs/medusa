@@ -2,7 +2,7 @@ type: object
 properties:
   email:
     type: string
-    description: The Customer's email.
+    description: The Customer's email. You can't update the email of a registered customer.
     format: email
   first_name:
     type: string

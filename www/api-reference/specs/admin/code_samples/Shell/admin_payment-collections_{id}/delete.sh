@@ -1,2 +1,2 @@
-curl -X DELETE 'https://medusa-url.com/admin/payment-collections/{id}' \
+curl -X DELETE '{backend_url}/admin/payment-collections/{id}' \
 -H 'Authorization: Bearer {api_token}'

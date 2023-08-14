@@ -24,7 +24,7 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/shipping-options/{option_id}' \
+ *       curl -X DELETE '{backend_url}/admin/shipping-options/{option_id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

@@ -1,2 +1,2 @@
-curl 'https://medusa-url.com/store/auth' \
+curl '{backend_url}/store/auth' \
 -H 'Cookie: connect.sid={sid}'
