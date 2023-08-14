@@ -195,34 +195,44 @@ function validateDefaultExport(
         : declaration.id && declaration.id.name
 
     if (exportName) {
-      traverse(ast, {
-        VariableDeclarator({ node, scope }) {
-          let isDefaultExport = false
+      try {
+        traverse(ast, {
+          VariableDeclarator({ node, scope }) {
+            let isDefaultExport = false
 
-          if (node.id.type === "Identifier" && node.id.name === exportName) {
-            isDefaultExport = true
-          }
+            if (node.id.type === "Identifier" && node.id.name === exportName) {
+              isDefaultExport = true
+            }
 
-          if (!isDefaultExport) {
-            return
-          }
+            if (!isDefaultExport) {
+              return
+            }
 
-          traverse(
-            node,
-            {
-              ReturnStatement(path) {
-                if (
-                  path.node.argument?.type === "JSXElement" ||
-                  path.node.argument?.type === "JSXFragment"
-                ) {
-                  hasComponentExport = true
-                }
+            traverse(
+              node,
+              {
+                ReturnStatement(path) {
+                  if (
+                    path.node.argument?.type === "JSXElement" ||
+                    path.node.argument?.type === "JSXFragment"
+                  ) {
+                    hasComponentExport = true
+                  }
+                },
               },
-            },
-            scope
-          )
-        },
-      })
+              scope
+            )
+          },
+        })
+      } catch (e) {
+        logger.error(
+          `There was an error while validating the default export of ${path}. The following error must be resolved before continuing:`,
+          {
+            error: e,
+          }
+        )
+        return false
+      }
     }
   }
 
@@ -251,7 +261,10 @@ async function validateWidget(file: string) {
     ast = parse(content, parserOptions)
   } catch (e) {
     logger.error(
-      `The widget ${file} is invalid and will not be injected. Please make sure that the widget is valid.`
+      `An error occurred while parsing the Widget "${file}", and the Widget cannot be injected. The following error must be resolved before continuing:`,
+      {
+        error: e,
+      }
     )
     return false
   }
@@ -259,26 +272,36 @@ async function validateWidget(file: string) {
   let hasConfigExport = false
   let hasComponentExport = false
 
-  traverse(ast, {
-    ExportDefaultDeclaration: (path) => {
-      hasComponentExport = validateDefaultExport(path, ast)
-    },
-    ExportNamedDeclaration: (path) => {
-      hasConfigExport = validateConfigExport(path, "widget")
-    },
-  })
+  try {
+    traverse(ast, {
+      ExportDefaultDeclaration: (path) => {
+        hasComponentExport = validateDefaultExport(path, ast)
+      },
+      ExportNamedDeclaration: (path) => {
+        hasConfigExport = validateConfigExport(path, "widget")
+      },
+    })
+  } catch (e) {
+    logger.error(
+      `An error occurred while validating the Widget "${file}". The following error must be resolved before continuing:`,
+      {
+        error: e,
+      }
+    )
+    return false
+  }
 
   if (hasConfigExport && !hasComponentExport) {
     if (!hasComponentExport) {
       logger.error(
-        `The default export in ${file} is invalid and the widget will not be injected. Please make sure that the default export is a valid React component.`
+        `The default export in the Widget "${file}" is invalid and the widget will not be injected. Please make sure that the default export is a valid React component.`
       )
     }
   }
 
   if (!hasConfigExport && hasComponentExport) {
     logger.error(
-      `The widget config export in ${file} is invalid and the widget will not be injected. Please make sure that the config export is valid.`
+      `The Widget config export in "${file}" is invalid and the Widget cannot be injected. Please ensure that the config is valid.`
     )
   }
 
@@ -369,8 +392,9 @@ async function validateRoute(
 
   if (!valid) {
     logger.error(
-      `The page ${file} is invalid and will not be injected. ${error}`
+      `The path ${cleanPath} for the UI Route "${file}" is invalid and the route cannot be injected. The following error must be fixed before the route can be injected: ${error}`
     )
+
     return null
   }
 
@@ -388,20 +412,42 @@ async function validateRoute(
     parserOptions.plugins.push("typescript")
   }
 
-  const ast = parse(content, parserOptions)
+  let ast: ParseResult<any>
 
-  traverse(ast, {
-    ExportDefaultDeclaration: (path) => {
-      hasComponentExport = validateDefaultExport(path, ast)
-    },
-    ExportNamedDeclaration: (path) => {
-      hasConfigExport = validateConfigExport(path, "route")
-    },
-  })
+  try {
+    ast = parse(content, parserOptions)
+  } catch (e) {
+    logger.error(
+      `An error occurred while parsing the UI Route "${file}", and the UI Route cannot be injected. The following error must be resolved before continuing:`,
+      {
+        error: e,
+      }
+    )
+    return null
+  }
+
+  try {
+    traverse(ast, {
+      ExportDefaultDeclaration: (path) => {
+        hasComponentExport = validateDefaultExport(path, ast)
+      },
+      ExportNamedDeclaration: (path) => {
+        hasConfigExport = validateConfigExport(path, "route")
+      },
+    })
+  } catch (e) {
+    logger.error(
+      `An error occurred while validating the UI Route "${file}", and the UI Route cannot be injected. The following error must be resolved before continuing:`,
+      {
+        error: e,
+      }
+    )
+    return null
+  }
 
   if (!hasComponentExport) {
     logger.error(
-      `The default export in ${file} is invalid and the page will not be injected. Please make sure that the default export is a valid React component.`
+      `The default export in the UI Route "${file}" is invalid and the route cannot be injected. Please make sure that the default export is a valid React component.`
     )
 
     return null
@@ -421,8 +467,9 @@ async function validateSetting(file: string, basePath: string) {
 
   if (!valid) {
     logger.error(
-      `The settings page ${file} is invalid and will not be injected. ${error}`
+      `The path ${cleanPath} for the Setting "${file}" is invalid and the setting cannot be injected. The following error must be fixed before the Setting can be injected: ${error}`
     )
+
     return null
   }
 
@@ -440,20 +487,46 @@ async function validateSetting(file: string, basePath: string) {
     parserOptions.plugins.push("typescript")
   }
 
-  const ast = parse(content, parserOptions)
+  let ast: ParseResult<any>
 
-  traverse(ast, {
-    ExportDefaultDeclaration: (path) => {
-      hasComponentExport = validateDefaultExport(path, ast)
-    },
-    ExportNamedDeclaration: (path) => {
-      hasConfigExport = validateConfigExport(path, "setting")
-    },
-  })
+  try {
+    ast = parse(content, parserOptions)
+  } catch (e) {
+    logger.error(
+      `
+      An error occured while parsing the Setting "${file}". The following error must be resolved before continuing:
+      `,
+      {
+        error: e,
+      }
+    )
+
+    return null
+  }
+
+  try {
+    traverse(ast, {
+      ExportDefaultDeclaration: (path) => {
+        hasComponentExport = validateDefaultExport(path, ast)
+      },
+      ExportNamedDeclaration: (path) => {
+        hasConfigExport = validateConfigExport(path, "setting")
+      },
+    })
+  } catch (e) {
+    logger.error(
+      `
+      An error occured while validating the Setting "${file}". The following error must be resolved before continuing:`,
+      {
+        error: e,
+      }
+    )
+    return null
+  }
 
   if (!hasComponentExport) {
     logger.error(
-      `The default export in ${file} is invalid and the page will not be injected. Please make sure that the default export is a valid React component.`
+      `The default export in the Setting "${file}" is invalid and the page will not be injected. Please make sure that the default export is a valid React component.`
     )
 
     return null
@@ -461,7 +534,7 @@ async function validateSetting(file: string, basePath: string) {
 
   if (!hasConfigExport) {
     logger.error(
-      `The named export "config" in ${file} is invalid or missing and the settings page will not be injected. Please make sure that the file exports a valid config.`
+      `The named export "config" in the Setting "${file}" is invalid or missing and the settings page will not be injected. Please make sure that the file exports a valid config.`
     )
 
     return null
@@ -484,6 +557,8 @@ async function findAllValidSettings(dir: string) {
 
   const paths = await fse.readdir(dir)
 
+  let hasSubDirs = false
+
   // We only check the first level of directories for settings files
   for (const pa of paths) {
     const filePath = path.join(dir, pa)
@@ -499,9 +574,17 @@ async function findAllValidSettings(dir: string) {
         if (fileStat.isFile() && /^(.*\/)?page\.[jt]sx?$/i.test(file)) {
           settingsFiles.push(filePath)
           break
+        } else if (fileStat.isDirectory()) {
+          hasSubDirs = true
         }
       }
     }
+  }
+
+  if (hasSubDirs) {
+    logger.warn(
+      `The directory ${dir} contains subdirectories. Settings do not support nested routes, only UI Routes support nested paths.`
+    )
   }
 
   const validSettingsFiles = await Promise.all(

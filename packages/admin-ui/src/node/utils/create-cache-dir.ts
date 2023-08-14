@@ -14,7 +14,10 @@ async function copyAdmin(dest: string) {
     })
   } catch (err) {
     logger.panic(
-      `Could not copy the admin UI to ${destDir}. Please make sure you have write access to this folder.`
+      `Could not copy the admin UI to ${destDir}. See the error below for details:`,
+      {
+        error: err,
+      }
     )
   }
 }

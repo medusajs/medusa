@@ -20,17 +20,9 @@ export type DevelopOptions = {
   logLevel?: "error" | "none" | "warn" | "info" | "log" | "verbose"
   /**
    * Determines the verbosity of the development server.
-   * @default "minimal"
+   * @default "normal"
    */
-  stats?:
-    | "none"
-    | "verbose"
-    | "minimal"
-    | "summary"
-    | "errors-only"
-    | "errors-warnings"
-    | "normal"
-    | "detailed"
+  stats?: "normal" | "debug"
 }
 
 export type AdminOptions = {

@@ -50,36 +50,38 @@ const Edit = () => {
         label="Back to Products"
         className="mb-xsmall"
       />
-      {getWidgets("product.details.before").map((w, i) => {
-        return (
-          <WidgetContainer
-            key={i}
-            injectionZone={"product.details.before"}
-            widget={w}
-            entity={product}
-          />
-        )
-      })}
-      <div className="gap-x-base grid grid-cols-12">
-        <div className="gap-y-xsmall col-span-8 flex flex-col">
-          <ProductGeneralSection product={product} />
-          <ProductVariantsSection product={product} />
-          <ProductAttributesSection product={product} />
-          {getWidgets("product.details.after").map((w, i) => {
-            return (
-              <WidgetContainer
-                key={i}
-                injectionZone={"product.details.after"}
-                widget={w}
-                entity={product}
-              />
-            )
-          })}
-          <ProductRawSection product={product} />
-        </div>
-        <div className="gap-y-xsmall col-span-4 flex flex-col">
-          <ProductThumbnailSection product={product} />
-          <ProductMediaSection product={product} />
+      <div className="gap-y-xsmall flex flex-col">
+        {getWidgets("product.details.before").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              injectionZone={"product.details.before"}
+              widget={w}
+              entity={product}
+            />
+          )
+        })}
+        <div className="gap-x-base grid grid-cols-12">
+          <div className="gap-y-xsmall col-span-8 flex flex-col">
+            <ProductGeneralSection product={product} />
+            <ProductVariantsSection product={product} />
+            <ProductAttributesSection product={product} />
+            {getWidgets("product.details.after").map((w, i) => {
+              return (
+                <WidgetContainer
+                  key={i}
+                  injectionZone={"product.details.after"}
+                  widget={w}
+                  entity={product}
+                />
+              )
+            })}
+            <ProductRawSection product={product} />
+          </div>
+          <div className="gap-y-xsmall col-span-4 flex flex-col">
+            <ProductThumbnailSection product={product} />
+            <ProductMediaSection product={product} />
+          </div>
         </div>
       </div>
     </div>

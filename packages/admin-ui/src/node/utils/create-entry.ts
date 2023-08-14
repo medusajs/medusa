@@ -18,10 +18,17 @@ async function copyLocalExtensions(src: string, dest: string) {
       filter: copyFilter,
     })
   } catch (err) {
-    logger.panic(
-      `Could not copy local extensions to cache folder. ${err.message}`
+    logger.error(
+      `Could not copy local extensions to cache folder. See the error below for details:`,
+      {
+        error: err,
+      }
     )
+
+    return false
   }
+
+  return true
 }
 
 /**
@@ -36,10 +43,17 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
     return false
   }
 
-  await copyLocalExtensions(
+  const copied = await copyLocalExtensions(
     localAdminDir,
     path.resolve(dest, "admin", "src", "extensions")
   )
+
+  if (!copied) {
+    logger.error(
+      "Could not copy local extensions to cache folder. See above error for details. The error must be fixed before any local extensions can be injected."
+    )
+    return false
+  }
 
   const [localWidgets, localRoutes, localSettings] = await Promise.all([
     findAllValidWidgets(
@@ -125,7 +139,10 @@ async function createLocalExtensionsEntry(appDir: string, dest: string) {
     )
   } catch (err) {
     logger.panic(
-      `Failed to write the entry file for the local extensions. Error: ${err.message}`
+      `Failed to write the entry file for the local extensions. See the error below for details:`,
+      {
+        error: err,
+      }
     )
   }
 
@@ -222,7 +239,10 @@ async function createMainExtensionsEntry(
       )
     } catch (err) {
       logger.panic(
-        `Failed to write the entry file for the main extensions. Error: ${err.message}`
+        `Failed to write the entry file for the main extensions. See the error below for details:`,
+        {
+          error: err,
+        }
       )
     }
 
@@ -277,7 +297,10 @@ async function createMainExtensionsEntry(
     )
   } catch (err) {
     logger.panic(
-      `Failed to write the extensions entry file. Error: ${err.message}`
+      `Failed to write the extensions entry file. See the error below for details:`,
+      {
+        error: err,
+      }
     )
   }
 }
