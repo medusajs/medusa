@@ -9,7 +9,7 @@ export async function upsertPaymentSessions({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInput>) {
+}: WorkflowArguments<HandlerInput>): Promise<void> {
   const { manager } = context
 
   const { cart } = data

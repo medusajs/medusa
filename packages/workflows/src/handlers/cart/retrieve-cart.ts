@@ -1,6 +1,6 @@
 import { WorkflowArguments } from "../../helper"
 
-type HandlerInputData = {
+type HandlerInput = {
   input: {
     cart: {
       id: string
@@ -23,7 +23,7 @@ export async function retrieveCart({
   container,
   context,
   data,
-}: WorkflowArguments<HandlerInputData>) {
+}: WorkflowArguments<HandlerInput>) {
   const { manager } = context
 
   const cartService = container.resolve("cartService")

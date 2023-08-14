@@ -1,3 +1,5 @@
+import { ShippingMethodDTO } from "../shipping-method"
+
 export type CartDTO = {
   id?: string
   email?: string
@@ -24,4 +26,8 @@ export type CartDTO = {
   refundable_amount?: number
   gift_card_total?: number
   gift_card_tax_total?: number
+
+  // TODO: Replace with CartItemDTO
+  items?: any[]
+  shipping_methods?: ShippingMethodDTO[]
 }
