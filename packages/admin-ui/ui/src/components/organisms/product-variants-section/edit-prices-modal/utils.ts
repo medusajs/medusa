@@ -79,30 +79,6 @@ export function mod(n: number, m: number) {
   return ((n % m) + m) % m
 }
 
-const isText = (v: string) => {
+export const isText = (v: string) => {
   return v !== "" && isNaN(Number(v))
-}
-
-/**
- * Check whether data pasted from the buffer has the right format
- */
-export function parseBufferData(data: string) {
-  const rows = data.split("\n").map((r) => r.split("\t"))
-
-  const hasFirstRowWithLabels =
-    rows[0].length === 1
-      ? isText(rows[0][0])
-      : rows[0].slice(1).every((s, i) => {
-          return (i === 0 && s === "") || isText(s)
-        })
-
-  const hasFirstColumnWithLabels =
-    rows.length === 1
-      ? isText(rows[0][0])
-      : rows
-          .slice(1)
-          .map((r) => r[0])
-          .every(isText)
-
-  return { rows, hasFirstRowWithLabels, hasFirstColumnWithLabels }
 }

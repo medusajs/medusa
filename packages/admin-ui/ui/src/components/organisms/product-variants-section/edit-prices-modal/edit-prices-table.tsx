@@ -6,7 +6,7 @@ import {
   getCurrencyPricesOnly,
   getRegionPricesOnly,
   mod,
-  parseBufferData,
+  isText,
 } from "./utils"
 import IconBuildingTax from "../../../fundamentals/icons/building-tax-icon"
 import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
@@ -537,23 +537,9 @@ function EditPricesTable(props: EditPricesTableProps) {
           columns[c] = true
         })
 
-        ret =
-          "\t" +
-          Object.keys(columns)
-            .map((k) => {
-              if (k.startsWith("reg_")) {
-                return storeRegions?.find((r) => r.id === k)?.name || k
-              }
-              return k.toUpperCase()
-            })
-            .join("\t")
-
         Object.keys(variants)
           .sort((v1, v2) => variantIds.indexOf(v1) - variantIds.indexOf(v2))
           .forEach((k) => {
-            const variant = props.product.variants!.find((v) => v.id === k)
-
-            ret += `\n${variant.title}\t`
             Object.keys(columns).forEach((c) => {
               const price = editedPrices[getKey(k, c)]
 
@@ -561,7 +547,10 @@ function EditPricesTable(props: EditPricesTableProps) {
             })
 
             ret = ret.slice(0, -1)
+            ret += `\n`
           })
+
+        ret = ret.slice(0, -1)
 
         navigator.clipboard.writeText(ret)
         notification("Success", "Copied to clipboard", "success")
@@ -585,16 +574,7 @@ function EditPricesTable(props: EditPricesTableProps) {
         "text"
       )
 
-      const { rows, hasFirstRowWithLabels, hasFirstColumnWithLabels } =
-        parseBufferData(paste)
-
-      if (hasFirstRowWithLabels) {
-        rows.shift()
-      }
-
-      if (hasFirstColumnWithLabels) {
-        rows.forEach((r) => r.shift())
-      }
+      const rows = paste.split("\n").map((r) => r.trim().split("\t"))
 
       // single cell click -> determine from the content
       if (
@@ -603,9 +583,10 @@ function EditPricesTable(props: EditPricesTableProps) {
       ) {
         const _edited = { ...editedPrices }
 
+        const isRange = startIndex !== endIndex || startIndexCol !== endIndexCol
+
         // if only anchor is clicked past selected, if range is selected fill and repeat until selected area is filled
-        const iBoundary =
-          startIndex === endIndex ? rows.length - 1 : endIndex - startIndex
+        const iBoundary = !isRange ? rows.length - 1 : endIndex - startIndex
 
         for (let i = 0; i <= iBoundary; i++) {
           if (i >= variantIds.length) {
@@ -615,10 +596,9 @@ function EditPricesTable(props: EditPricesTableProps) {
           const parts = rows[i % rows.length]
 
           // if only anchor is clicked past selected, if range is selected fill and repeat until selected area is filled
-          const jBoundary =
-            startIndexCol === endIndexCol
-              ? parts.length - 1
-              : endIndexCol - startIndexCol
+          const jBoundary = !isRange
+            ? parts.length - 1
+            : endIndexCol - startIndexCol
 
           for (let j = 0; j <= jBoundary; j++) {
             if (j >= columns.length) {
