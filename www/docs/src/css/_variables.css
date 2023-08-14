@@ -103,7 +103,7 @@
   --docsearch-modal-background: theme(colors.medusa.bg.base.DEFAULT) !important;
   --docsearch-modal-shadow: theme(boxShadow.modal) !important;
   --docsearch-container-background: theme(colors.medusa.bg.overlay.DEFAULT) !important;
-  --docsearch-key-gradient: theme(colors.medusa.bg.component.DEFAULT) !important;
+  --docsearch-key-gradient: theme(colors.medusa.tag.neutral.bg.DEFAULT) !important;
   --docsearch-muted-color: theme(colors.medusa.fg.subtle.DEFAULT) !important;
   --docsearch-spacing: 12px theme(spacing[1.5]) !important;
   --docsearch-highlight-color: theme(colors.medusa.fg.muted.DEFAULT) !important;
@@ -167,7 +167,7 @@ html[data-theme="dark"] {
   --docsearch-modal-background: theme(colors.medusa.bg.base.dark) !important;
   --docsearch-modal-shadow: theme(boxShadow.modal-dark) !important;
   --docsearch-container-background: theme(colors.medusa.bg.overlay.dark) !important;
-  --docsearch-key-gradient: theme(colors.medusa.bg.component.dark) !important;
+  --docsearch-key-gradient: theme(colors.medusa.tag.neutral.bg.dark) !important;
   --docsearch-muted-color: theme(colors.medusa.fg.subtle.dark) !important;
   --docsearch-highlight-color: theme(colors.medusa.fg.muted.dark) !important;
 

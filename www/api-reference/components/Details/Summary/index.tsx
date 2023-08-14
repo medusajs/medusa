@@ -43,7 +43,7 @@ const DetailsSummary = ({
           {title}
         </span>
         {subtitle && (
-          <span className="text-compact-medium text-medusa-fg-subtle dark:text-medusa-bg-subtle-dark">
+          <span className="text-compact-medium text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark">
             {subtitle}
           </span>
         )}

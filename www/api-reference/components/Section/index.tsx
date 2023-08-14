@@ -20,12 +20,7 @@ const Section = ({ children, className }: SectionProps) => {
   return (
     <div
       ref={sectionRef}
-      className={clsx(
-        "[&_pre]:dark:border-medusa-code-border [&_pre]:rounded-sm [&_pre]:border [&_pre]:border-transparent",
-        "[&_ul]:list-disc [&_ul]:px-1",
-        "[&_h2]:pt-7",
-        className
-      )}
+      className={clsx("[&_ul]:list-disc [&_ul]:px-1", "[&_h2]:pt-7", className)}
     >
       {children}
     </div>

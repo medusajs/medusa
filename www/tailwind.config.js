@@ -102,133 +102,141 @@ module.exports = {
           bg: {
             subtle: {
               DEFAULT: "#F9FAFB",
-              dark: "#161618",
+              dark: "#0A0A0A",
               hover: {
                 DEFAULT: "#F3F4F6",
-                dark: "#1C1C1F",
+                dark: "#171717",
               },
               pressed: {
                 DEFAULT: "#E5E7EB",
-                dark: "#232326",
+                dark: "#262626",
               },
             },
             base: {
               DEFAULT: "#FFFFFF",
-              dark: "#1C1C1F",
+              dark: "#171717",
               hover: {
                 DEFAULT: "#F9FAFB",
-                dark: "#232326",
+                dark: "#262626",
               },
               pressed: {
                 DEFAULT: "#F3F4F6",
-                dark: "#28282C",
+                dark: "#303030",
               },
             },
             component: {
               DEFAULT: "#F1F3F5",
-              dark: "#2E2E32",
+              dark: "#262626",
             },
             "toggle-off": {
               DEFAULT: "#E5E7EB",
-              dark: "#3E3E44",
+              dark: "#262626",
               hover: {
                 DEFAULT: "#E5E7EB",
-                dark: "#E5E7EB" // TODO change
+                dark: "#303030"
               }
             },
             interactive: {
               DEFAULT: "#3B82F6",
-              dark: "#102A4C",
+              dark: "#60A5FA",
             },
             overlay: {
               DEFAULT: "rgba(3, 7, 18, 0.4)",
-              dark: "rgba(22, 22, 24, 0.7)",
+              dark: "rgba(10, 10, 10, 0.70)",
             },
             disabled: {
-              DEFAULT: "rgba(243, 244, 246, 1)",
-              dark: "rgba(243, 244, 246, 1)" // TODO change
+              DEFAULT: "#F3F4F6",
+              dark: "#262626"
             },
             highlight: {
               DEFAULT: "#EFF6FF",
-              dark: "#102A4C",
+              dark: "#172554",
               hover: {
                 DEFAULT: "#DBEAFE",
-                dark: "#DBEAFE" // TODO change
+                dark: "#1E3A8A" // TODO change
               }
             },
+            field: {
+              DEFAULT: "#F9FAFB",
+              dark: "#262626",
+              hover: {
+                DEFAULT: "#F3F4F6",
+                dark: "#303030"
+              }
+            }
           },
           fg: {
             base: {
               DEFAULT: "#030712",
-              dark: "#EDEDEF"
+              dark: "#EEEEEE"
             },
             subtle: {
               DEFAULT: "#4B5563",
-              dark: "#7E7D86"
+              dark: "#A3A3A3"
             },
             muted: {
               DEFAULT: "#9CA3AF",
-              dark: "#706F78"
+              dark: "#6E6E6E"
             },
             disabled: {
               DEFAULT: "#D1D5DB",
-              dark: "#504F57"
+              dark: "#3F3F3F"
             },
             on: {
               color: {
                 DEFAULT: "#FFFFFF",
-                dark: "#FFFFFF"
+                dark: "#EEEEEE"
               },
               inverted: {
                 DEFAULT: "#FFFFFF",
-                dark: "#1A1523"
+                dark: "#0A0A0A"
               }
             },
             interactive: {
               DEFAULT: "#3B82F6",
-              dark: "#0091FF",
+              dark: "#60A5FA",
               hover: {
                 DEFAULT: "#2563EB",
-                dark: "#369EFF"
+                dark: "#3B82F6"
               }
             },
             error: {
               DEFAULT: "#E11D48",
-              dark: "#E5484D"
+              dark: "#E11D48"
             }
           },
           border: {
             base: {
               DEFAULT: "#E5E7EB",
-              dark: "#2E2E32",
+              dark: "#303030",
             },
             strong: {
               DEFAULT: "#D1D5DB",
-              dark: "#3E3E44",
+              dark: "#373737",
             },
             loud: {
               DEFAULT: "#030712",
-              dark: "#EDEDEF",
+              dark: "#EEEEEE",
               muted: {
                 DEFAULT: "rgba(3, 7, 18, 0.1)",
-                dark: "rgba(3, 7, 18, 0.1)" // TODO change
+                dark: "rgba(238, 238, 238, 0.1)"
               },
               transparent: {
                 DEFAULT: "rgba(3, 7, 18, 0)",
-                dark: "rgba(3, 7, 18, 0)" // TODO change
+                dark: "rgba(238, 238, 238, 0)"
               }
             },
             interactive: {
               DEFAULT: "#3B82F6",
-              dark: "#0091FF",
+              dark: "#60A5FA",
             },
             error: {
               DEFAULT: "#E11D48",
-              dark: "#E5484D",
+              dark: "#F43F5E",
             },
             danger: {
               DEFAULT: "#BE123C",
-              dark: "#BE123C" // TODO change
+              dark: "#E11D48"
             },
           },
           button: {
@@ -290,133 +298,133 @@ module.exports = {
             neutral: {
               bg: {
                 DEFAULT: "#F3F4F6",
-                dark: "#28282C",
+                dark: "#262626",
                 hover: {
                   DEFAULT: "#E5E7EB",
-                  dark: "#2E2E32",
+                  dark: "#303030",
                 },
               },
               text: {
                 DEFAULT: "#4B5563",
-                dark: "#A09FA6",
+                dark: "#818181",
               },
               icon: {
                 DEFAULT: "#6B7280",
-                dark: "#706F78",
+                dark: "#6E6E6E",
               },
               border: {
                 DEFAULT: "#E5E7EB",
-                dark: "#3E3E44",
+                dark: "#34343A",
               },
             },
             purple: {
               bg: {
                 DEFAULT: "#EDE9FE",
-                dark: "#2C2250",
+                dark: "#2E1064",
                 hover: {
                   DEFAULT: "#DDD6FE",
-                  dark: "#32275F",
+                  dark: "#4C1D95",
                 },
               },
               text: {
                 DEFAULT: "#6D28D9",
-                dark: "#9E8CFC",
+                dark: "#8B5CF6",
               },
               icon: {
                 DEFAULT: "#7C3AED",
-                dark: "#6E56CF",
+                dark: "#6D28D9",
               },
               border: {
                 DEFAULT: "#DDD6FE",
-                dark: "#392C72",
+                dark: "#4C1D95",
               },
             },
             blue: {
               bg: {
                 DEFAULT: "#DBEAFE",
-                dark: "#102A4C",
+                dark: "#172554",
                 hover: {
                   DEFAULT: "#BFDBFE",
-                  dark: "#0F3058",
+                  dark: "#1E2A8A",
                 },
               },
               text: {
                 DEFAULT: "#1D4ED8",
-                dark: "#52A9FF",
+                dark: "#3B82F6",
               },
               icon: {
                 DEFAULT: "#2563EB",
-                dark: "#0091FF",
+                dark: "#1D4ED8",
               },
               border: {
                 DEFAULT: "#BFDBFE",
-                dark: "#0D3868",
+                dark: "#1E3A8A",
               },
             },
             green: {
               bg: {
                 DEFAULT: "#D1FAE5",
-                dark: "#113123",
+                dark: "#022C22",
                 hover: {
                   DEFAULT: "#A7F3D0",
-                  dark: "#133929",
+                  dark: "#064E3B",
                 },
               },
               text: {
                 DEFAULT: "#047857",
-                dark: "#4CC38A",
+                dark: "#10B981",
               },
               icon: {
                 DEFAULT: "#059669",
-                dark: "#30A46C",
+                dark: "#047857",
               },
               border: {
                 DEFAULT: "#A7F3D0",
-                dark: "#164430",
+                dark: "#064E3B",
               },
             },
             orange: {
               bg: {
                 DEFAULT: "#FEF4C7",
-                dark: "#3F2200",
+                dark: "#451A03",
                 hover: {
                   DEFAULT: "#FDE68A",
-                  dark: "#4A2900",
+                  dark: "#78350F",
                 },
               },
               text: {
                 DEFAULT: "#B45309",
-                dark: "#F1A10D",
+                dark: "#F59E0B",
               },
               icon: {
                 DEFAULT: "#D97706",
-                dark: "#FFB224",
+                dark: "#B45309",
               },
               border: {
                 DEFAULT: "#FDE68A",
-                dark: "#573300",
+                dark: "#78350F",
               },
             },
             red: {
               bg: {
                 DEFAULT: "#FFE4E6",
-                dark: "#481A1D",
+                dark: "#4C0519",
                 hover: {
                   DEFAULT: "#FECDD3",
-                  dark: "#541B1F",
+                  dark: "#881337",
                 },
               },
               text: {
                 DEFAULT: "#BE123C",
-                dark: "#FF6369",
+                dark: "#F43F5E",
               },
               icon: {
                 DEFAULT: "#E11D48",
-                dark: "#E5484D",
+                dark: "#BE123C",
               },
               border: {
                 DEFAULT: "#FECDD3",
-                dark: "#671E22",
+                dark: "#881337",
               },
             },
           },
@@ -424,31 +432,31 @@ module.exports = {
             text: {
               base: {
                 DEFAULT: "#F9FAFB",
-                dark: "#EDEDEF"
+                dark: "#EEEEEE"
               },
               subtle: {
                 DEFAULT: "#9CA3AF",
-                dark: "#7E7D86"
+                dark: "#6E6E6E"
               },
               highlight: "#102A4C"
             },
             icon: {
               DEFAULT: "#6B7280",
-              dark: "#504F57"
+              dark: "#4A4A4A"
             },
             bg: {
               base: {
                 DEFAULT: "#111827",
-                dark: "#1C1C1F"
+                dark: "#1B1B1B"
               },
               header: {
                 DEFAULT: "#1F2937",
-                dark: "#161618"
+                dark: "#171717"
               }
             },
             border: {
               DEFAULT: "#374151",
-              dark: "#2E2E32"
+              dark: "#303030"
             },
           },
         },

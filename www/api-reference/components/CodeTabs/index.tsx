@@ -82,11 +82,9 @@ const CodeTabs = ({ tabs, className }: CodeTabsProps) => {
                 selectedTab.value !== tab.value &&
                   "text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark border-transparent",
                 selectedTab.value === tab.value &&
-                  "text-medusa-code-text-base dark:text-medusa-code-text-base-dark bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark xs:bg-transparent",
-                selectedTab.value === tab.value &&
-                  "border-medusa-code-border dark:border-medusa-code-border-dark",
+                  "text-medusa-code-text-base dark:text-medusa-code-text-base-dark bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark xs:!bg-transparent",
                 selectedTab.value !== tab.value &&
-                  "hover:bg-medusa-code-bg-base dark:hover:bg-medusa-code-bg-base"
+                  "hover:bg-medusa-code-bg-base dark:hover:bg-medusa-code-bg-base-dark"
               )}
               ref={(tabControl) => tabRefs.push(tabControl)}
               onClick={() => {

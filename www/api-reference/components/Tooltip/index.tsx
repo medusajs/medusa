@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import { useState, useEffect } from "react"
 import { Tooltip as ReactTooltip } from "react-tooltip"
 import type { ITooltip } from "react-tooltip"
@@ -43,8 +44,15 @@ const Tooltip = ({
       </span>
       <ReactTooltip
         anchorId={elementId || ""}
-        className={tooltipClassName}
+        className={clsx(
+          "!border-medusa-border-base dark:!border-medusa-border-base-dark !border !border-solid",
+          "!text-compact-x-small-plus !shadow-tooltip dark:!shadow-tooltip-dark !rounded",
+          "!py-0.4 !z-[1000] hidden !px-1 lg:block",
+          tooltipClassName
+        )}
         wrapper="span"
+        noArrow={true}
+        positionStrategy={"fixed"}
         {...rest}
       >
         {tooltipChildren}

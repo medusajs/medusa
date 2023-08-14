@@ -24,7 +24,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
       className={clsx(
         "clip bg-docs-bg dark:bg-docs-bg-dark w-api-ref-sidebar block",
         "border-medusa-border-base dark:border-medusa-border-base-dark border-0 border-r border-solid",
-        "fixed -left-full top-[57px] z-50 h-screen transition-[left] lg:relative lg:left-0 lg:top-auto lg:h-auto",
+        "fixed -left-full top-[57px] h-screen transition-[left] lg:relative lg:left-0 lg:top-auto lg:h-auto",
         "lg:w-sidebar w-full md:w-auto",
         mobileSidebarOpen && "!left-0",
         !desktopSidebarOpen && "!absolute !-left-full",

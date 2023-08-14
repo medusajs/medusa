@@ -143,7 +143,7 @@ function TabList({
                   "text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark hover:!bg-medusa-code-bg-base dark:hover:!bg-medusa-code-bg-base-dark",
                 isCodeTabs &&
                   selectedValue === value &&
-                  "text-medusa-code-text-base dark:text-medusa-code-text-base-dark border border-solid border-medusa-code-border dark:border-medusa-code-border-dark bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark xs:border-none xs:bg-transparent",
+                  "text-medusa-code-text-base dark:text-medusa-code-text-base-dark border border-solid border-medusa-code-border dark:border-medusa-code-border-dark bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark xs:!border-none xs:!bg-transparent",
                 !isCodeTabs &&
                   "border-0 border-b-[3px] rounded inline-flex p-1 transition-[background-color] duration-200 ease-ease",
                 !isCodeTabs &&

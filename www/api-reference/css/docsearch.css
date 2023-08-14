@@ -156,8 +156,8 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 }
 .DocSearch-Button {
   @apply w-full !h-full !rounded lg:!border lg:!border-solid lg:!border-medusa-border-loud-muted lg:dark:!border-medusa-border-base-dark border-0;
-  @apply lg:!bg-medusa-bg-subtle lg:dark:!bg-medusa-bg-base-dark !bg-transparent;
-  @apply lg:hover:!bg-medusa-bg-subtle-hover lg:dark:hover:!bg-medusa-bg-subtle-hover-dark;
+  @apply lg:!bg-medusa-bg-field lg:dark:!bg-medusa-bg-field-dark !bg-transparent;
+  @apply lg:hover:!bg-medusa-bg-field-hover lg:dark:hover:!bg-medusa-bg-field-hover-dark;
   @apply lg:disabled:!bg-medusa-bg-disabled lg:dark:disabled:!bg-medusa-bg-disabled-dark;
   @apply !py-[5px] !px-0.5 relative ml-0;
   @apply hover:!border-medusa-border-loud-muted hover:dark:!border-medusa-border-loud-muted-dark;
@@ -201,8 +201,8 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 
 
 :root {
-  --docsearch-searchbox-background: theme(colors.medusa.bg.subtle.DEFAULT) !important;
-  --docsearch-searchbox-focus-background: theme(colors.medusa.bg.subtle.hover.DEFAULT) !important;
+  --docsearch-searchbox-background: theme(colors.medusa.bg.field.DEFAULT) !important;
+  --docsearch-searchbox-focus-background: theme(colors.medusa.bg.field.hover.DEFAULT) !important;
   --docsearch-searchbox-shadow: none !important;
   --docsearch-modal-height: 472px !important;
   --docsearch-modal-background: theme(colors.medusa.bg.base.DEFAULT) !important;
@@ -220,12 +220,13 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 }
 
 html[data-theme="dark"] {
-  --docsearch-searchbox-background: theme(colors.medusa.bg.subtle.dark) !important;
-  --docsearch-searchbox-focus-background: theme(colors.medusa.bg.subtle.hover.dark) !important;
+  --docsearch-searchbox-background: theme(colors.medusa.bg.field.dark) !important;
+  --docsearch-searchbox-focus-background: theme(colors.medusa.bg.field.hover.dark) !important;
   --docsearch-modal-background: theme(colors.medusa.bg.base.dark) !important;
   --docsearch-modal-shadow: theme(boxShadow.modal-dark) !important;
   --docsearch-container-background: theme(colors.medusa.bg.overlay.dark) !important;
   --docsearch-key-gradient: theme(colors.medusa.tag.neutral.bg.dark) !important;
   --docsearch-muted-color: theme(colors.medusa.tag.neutral.text.dark) !important;
   --docsearch-highlight-color: theme(colors.medusa.fg.muted.dark) !important;
+  --docsearch-text-color: theme(colors.medusa.fg.base.dark) !important;
 }

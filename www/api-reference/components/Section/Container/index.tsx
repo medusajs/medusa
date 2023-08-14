@@ -13,7 +13,7 @@ const SectionContainer = ({
   return (
     <div className={clsx("relative pb-7", !noTopPadding && "pt-7")}>
       {children}
-      <SectionDivider />
+      <SectionDivider className="-left-1.5 lg:!-left-4" />
     </div>
   )
 }
