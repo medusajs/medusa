@@ -40,7 +40,7 @@ const config = {
     },
   ],
   themeConfig: {
-    image: "img/docs-banner.jpg",
+    image: "img/docs-meta.jpg",
     colorMode: {
       defaultMode: "light",
       disableSwitch: false,
@@ -159,7 +159,8 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl:
-            "https://github.com/medusajs/medusa/edit/develop/www/docs/docs",
+            "https://github.com/medusajs/medusa/edit/develop/www/docs/content",
+          path: "content",
           routeBasePath: "/",
           remarkPlugins: [
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
@@ -180,11 +181,6 @@ const config = {
         gtag: {
           trackingID: "G-S7G7X3JYS3",
         },
-      },
-    ],
-    [
-      "@docusaurus/preset-classic",
-      {
         sitemap: {
           filename: "sitemap-docs.xml",
         },

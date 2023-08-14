@@ -85,23 +85,23 @@ module.exports = {
   ignorePatterns: [],
   overrides: [
     {
-      files: ["docs/**/*.md", "docs/**/*.mdx"],
+      files: ["content/**/*.md", "content/**/*.mdx"],
       processor: "markdown/markdown",
     },
     {
       files: [
-        "docs/**/*.md/*.js",
-        "docs/**/*.mdx/*.js",
-        "docs/**/*.md/*.jsx",
-        "docs/**/*.mdx/*.jsx",
+        "content/**/*.md/*.js",
+        "content/**/*.mdx/*.js",
+        "content/**/*.md/*.jsx",
+        "content/**/*.mdx/*.jsx",
       ],
     },
     {
       files: [
-        "docs/**/*.md/*.ts",
-        "docs/**/*.mdx/*.ts",
-        "docs/**/*.md/*.tsx",
-        "docs/**/*.mdx/*.tsx",
+        "content/**/*.md/*.ts",
+        "content/**/*.mdx/*.ts",
+        "content/**/*.md/*.tsx",
+        "content/**/*.mdx/*.tsx",
       ],
       plugins: ["@typescript-eslint/eslint-plugin"],
       extends: ["plugin:@typescript-eslint/recommended"],

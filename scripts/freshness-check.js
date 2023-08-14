@@ -13,7 +13,7 @@ const linearClient = new LinearClient({
   apiKey: process.env.LINEAR_API_KEY
 });
 
-const repoPath = path.join('docs', 'docs');
+const repoPath = path.join('docs', 'content');
 let freshnessCheckLabelId = "";
 let documentationTeamId = "";
 

@@ -1,8 +1,8 @@
-!docs
+!content
 **/node_modules/*
 **/.docusaurus/*
 **/build/*
 .eslintrc.js
 babel.config.js
-docs/references/**
-docs/**/events-list.md
+content/references/**
+content/**/events-list.md
