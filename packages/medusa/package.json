@@ -40,7 +40,7 @@
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "serve": "node dist/app.js",
-    "test": "jest --maxWorkers=50% --detectOpenHandles --forceExit"
+    "test": "jest --runInBand --bail --detectOpenHandles --forceExit"
   },
   "peerDependencies": {
     "medusa-interfaces": "^1.3.7",
