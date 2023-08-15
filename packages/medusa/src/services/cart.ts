@@ -1837,9 +1837,9 @@ class CartService extends TransactionBaseService {
       const paymentProviderServiceTx =
         this.paymentProviderService_.withTransaction(manager)
 
-      const { total } = cart
+      const { total, region, customer, payment_session } = cart
 
-      await Promise.all(
+      const result = await Promise.allSettled(
         cart.payment_sessions.map(async (session) => {
           /**
            * Update selected and initiated payment session with the latest cart data.
@@ -1847,9 +1847,9 @@ class CartService extends TransactionBaseService {
           if (session.is_selected && session.is_initiated) {
             const updateData = {
               cart,
-              customer: cart.customer,
-              amount: cart.total!,
-              currency_code: cart.region.currency_code,
+              customer: customer,
+              amount: total!,
+              currency_code: region.currency_code,
               provider_id: session.provider_id,
             }
 
@@ -1881,6 +1881,53 @@ class CartService extends TransactionBaseService {
           return psRepo.save(upsertedSession)
         })
       )
+
+      const updatedSessions: PaymentSession[] = (
+        result.filter(
+          (r) => r.status === "fulfilled"
+        ) as PromiseFulfilledResult<PaymentSession>[]
+      ).map((r) => r.value)
+
+      if (region.payment_providers.length === 1 && !cart.payment_session) {
+        const paymentProvider = region.payment_providers[0]
+
+        let session = updatedSessions.find(
+          (p) => p.provider_id === paymentProvider.id
+        )
+
+        if (!session) {
+          session = await paymentProviderServiceTx.createSession({
+            cart,
+            customer: customer,
+            amount: total!,
+            currency_code: region.currency_code,
+            provider_id: paymentProvider.id,
+          })
+        }
+
+        return await psRepo.update(session.id, {
+          is_selected: true,
+          is_initiated: true,
+        })
+      } else {
+        await Promise.all(
+          region.payment_providers.map(async (pp) => {
+            if (updatedSessions.find((p) => p.provider_id === pp.id)) {
+              return
+            }
+
+            const paymentSession = psRepo.create({
+              cart_id: cart.id,
+              data: {},
+              status: PaymentSessionStatus.PENDING,
+              amount: total,
+              provider_id: pp.id,
+            })
+
+            return psRepo.save(paymentSession)
+          })
+        )
+      }
     })
   }
 
