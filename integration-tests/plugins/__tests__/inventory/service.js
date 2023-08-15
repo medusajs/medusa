@@ -773,7 +773,6 @@ describe("Inventory Module", () => {
       ).toEqual(
         expect.objectContaining({
           id: expect.any(String),
-
           inventory_item_id: inventoryItem.id,
           location_id: locationId,
           stocked_quantity: 5,
