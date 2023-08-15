@@ -33,13 +33,13 @@ export default function DocPageLayoutSidebar({
     <aside
       className={clsx(
         ThemeClassNames.docs.docSidebarContainer,
-        "lg:block lg:w-sidebar lg:transition-[left] lg:ease-ease lg:duration-200 lg:left-0 hidden",
+        "min-[997px]:block min-[997px]:w-sidebar min-[997px]:transition-[left] min-[997px]:ease-ease min-[997px]:duration-200 min-[997px]:left-0 hidden",
         !hiddenSidebarContainer && "clip",
         hiddenSidebarContainer &&
-          "lg:fixed lg:left-[-100%] lg:rounded lg:border-0 lg:border-medusa-border-strong lg:dark:border-medusa-border-strong-dark",
+          "min-[997px]:fixed min-[997px]:left-[-100%] min-[997px]:rounded min-[997px]:border-0 min-[997px]:border-medusa-border-strong min-[997px]:dark:border-medusa-border-strong-dark",
         hiddenSidebarContainer &&
           sidebarContext?.floatingSidebar &&
-          "lg:!left-0.5 lg:top-[65px] lg:z-20 lg:bg-docs-bg lg:dark:bg-docs-bg-dark lg:shadow-flyout lg:dark:shadow-flyout-dark"
+          "min-[997px]:!left-0.5 min-[997px]:top-[65px] min-[997px]:z-20 min-[997px]:bg-docs-bg min-[997px]:dark:bg-docs-bg-dark min-[997px]:shadow-flyout min-[997px]:dark:shadow-flyout-dark"
       )}
       onTransitionEnd={(e) => {
         if (
@@ -83,7 +83,7 @@ export default function DocPageLayoutSidebar({
         >
           <div
             className={clsx(
-              "lg:top-[57px] lg:sticky lg:max-h-screen lg:[&>div]:max-h-screen"
+              "min-[997px]:top-[57px] min-[997px]:sticky min-[997px]:max-h-screen min-[997px]:[&>div]:max-h-screen"
             )}
             ref={sidebarRef}
           >

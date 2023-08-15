@@ -27,7 +27,7 @@ const SidebarItem = ({ item, nested = false, className }: SidebarItemProps) => {
   const ref = useRef<HTMLLIElement>(null)
 
   useEffect(() => {
-    if (active && ref.current && window.innerWidth >= 992) {
+    if (active && ref.current && window.innerWidth >= 1025) {
       if (
         !checkSidebarItemVisibility(ref.current, {
           topMargin: 57,
@@ -73,7 +73,7 @@ const SidebarItem = ({ item, nested = false, className }: SidebarItemProps) => {
         )}
         scroll={true}
         onClick={() => {
-          if (window.innerWidth <= 992) {
+          if (window.innerWidth < 1025) {
             setSidebarOpen(false)
           }
         }}

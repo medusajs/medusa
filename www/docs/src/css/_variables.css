@@ -63,7 +63,7 @@
 
   /* Navbar */
   --ifm-navbar-background-color: var(--ifm-background-color);
-  --ifm-navbar-shadow: theme(boxShadow.navbar);
+  --ifm-navbar-shadow: none;
   --ifm-navbar-padding-vertical: 12px;
   --ifm-navbar-padding-horizontal: theme(padding[1.5]);
   --ifm-navbar-item-padding-vertical: 6px;
@@ -145,7 +145,7 @@ html[data-theme="dark"] {
   --ifm-toc-link-color: theme(colors.medusa.fg.subtle.dark);
 
   /* Navbar */
-  --ifm-navbar-shadow: theme(boxShadow.navbar-dark);
+  --ifm-navbar-shadow: none;
   --ifm-navbar-link-hover-color: theme(colors.medusa.fg.base.dark);
   --ifm-navbar-link-color: theme(colors.medusa.fg.subtle.dark);
 

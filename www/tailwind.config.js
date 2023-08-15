@@ -242,26 +242,26 @@ module.exports = {
           button: {
             inverted: {
               hover: {
-                DEFAULT: "#111827",
-                dark: "#F4F2F4"
+                DEFAULT: "#0A0A0A",
+                dark: "#EEEEEE"
               },
               pressed: {
-                DEFAULT: "#111827",
+                DEFAULT: "#0A0A0A",
                 dark: "#EEEDEF"
               },
               // TODO remove if not updated
-              DEFAULT: "#111827",
-              dark: "#F4F2F4",
+              DEFAULT: "#0A0A0A",
+              dark: "#EEEEEE",
             },
             danger: {
-              DEFAULT: "#E5484D",
-              dark: "#AA2429",
+              DEFAULT: "#E11D48",
+              dark: "#9F1239",
               hover: {
-                DEFAULT: "#DC3D43",
-                dark: "#AA2429",
+                DEFAULT: "#E11D48",
+                dark: "#9F1239",
               },
               pressed: {
-                DEFAULT: "#CD2B31",
+                DEFAULT: "#E11D48",
                 dark: "#E5484D",
               },
             },
@@ -270,23 +270,23 @@ module.exports = {
               dark: "rgba(0, 0, 0, 0)",
               hover: {
                 DEFAULT: "#F9FAFB",
-                dark: "#2E2E32",
+                dark: "#262626",
               },
               pressed: {
                 DEFAULT: "#F3F4F6",
-                dark: "#2E2E32",
+                dark: "#303030",
               },
             },
             neutral: {
-              DEFAULT: "#F8F9FA",
-              dark: "#28282C",
+              DEFAULT: "#FFFFFF",
+              dark: "#262626",
               hover: {
-                DEFAULT: "#F8F9FA",
-                dark: "#2E2E32",
+                DEFAULT: "#FFFFFF",
+                dark: "#262626",
               },
               pressed: {
-                DEFAULT: "#F1F3F5",
-                dark: "#34343A",
+                DEFAULT: "#FFFFFF",
+                dark: "#262626",
               },
             },
             disabled: {
@@ -494,8 +494,14 @@ module.exports = {
         "modal-dark":
           "0px 2px 24px 0px rgba(0, 0, 0, 0.32), 0px 16px 32px 0px rgba(0, 0, 0, 0.32), 0px 0px 0px 1px rgba(255, 255, 255, 0.10)",
         "navbar-dark": "0px 1px 0px 0px #2E2E32",
-        "button-primary": "0px 1px 1px 0px rgba(3, 7, 18, 0.20), 0px 2px 0px 0px rgba(255, 255, 255, 0.16) inset",
-        "button-primary-focus": "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 1px 0px rgba(3, 7, 18, 0.20), 0px 2px 0px 0px rgba(255, 255, 255, 0.16) inset",
+        "button-colored": "0px 1px 0px 0px rgba(0, 0, 0, 0.12), 0px 0.5px 0px 0px rgba(0, 0, 0, 0.12), 0px 2px 0px 0px rgba(255, 255, 255, 0.16) inset",
+        "button-colored-dark": "0px 1px 0px 0px rgba(0, 0, 0, 0.40), 0px 0.5px 0px 0px rgba(0, 0, 0, 0.40)",
+        "button-colored-focused": "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 0px 0px rgba(0, 0, 0, 0.12), 0px 0.5px 0px 0px rgba(0, 0, 0, 0.12), 0px 2px 0px 0px rgba(255, 255, 255, 0.16) inset",
+        "button-colored-focused-dark": "0px 0px 0px 3px rgba(96, 165, 250, 0.80), 0px 0px 0px 1px #171717, 0px 1px 0px 0px rgba(0, 0, 0, 0.40), 0px 0.5px 0px 0px rgba(0, 0, 0, 0.40)",
+        "button-neutral": "0px 1px 0px 0px rgba(0, 0, 0, 0.12), 0px 0.5px 0px 0px rgba(0, 0, 0, 0.12)",
+        "button-neutral-dark": "0px 1px 0px 0px rgba(0, 0, 0, 0.40), 0px 0.5px 0px 0px rgba(0, 0, 0, 0.40), 0px 1.5px 0px 0px rgba(255, 255, 255, 0.10) inset",
+        "button-neutral-focused": "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 0px 0px rgba(0, 0, 0, 0.12), 0px 0.5px 0px 0px rgba(0, 0, 0, 0.12)",
+        "button-neutral-focused-dark": "0px 0px 0px 3px rgba(96, 165, 250, 0.80), 0px 0px 0px 1px #171717, 0px 1px 0px 0px rgba(0, 0, 0, 0.40), 0px 0.5px 0px 0px rgba(0, 0, 0, 0.40), 0px 1.5px 0px 0px rgba(255, 255, 255, 0.10) inset",
         "button-secondary": "0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset",
         "button-secondary-dark": "0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset", // TODO change
         "button-secondary-focus": "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 1px 0px rgba(3, 7, 18, 0.06), 0px -1px 0px 0px rgba(3, 7, 18, 0.08) inset",
@@ -504,6 +510,8 @@ module.exports = {
         active: "0px 0px 0px 3px #E1F0FF",
         "active-dark": "0px 0px 0px 3px #2C2250",
         navbar: "0px 1px 0px 0px #E6E8EB",
+        "button-primary": "0px 1px 1px 0px rgba(3, 7, 18, 0.20), 0px 2px 0px 0px rgba(255, 255, 255, 0.16) inset",
+        "button-primary-focus": "0px 0px 0px 3px rgba(59, 130, 246, 0.60), 0px 0px 0px 1px #FFF, 0px 1px 1px 0px rgba(3, 7, 18, 0.20), 0px 2px 0px 0px rgba(255, 255, 255, 0.16) inset",
       },
       borderRadius: {
         DEFAULT: "8px",
@@ -519,19 +527,25 @@ module.exports = {
         "button-neutral":
           "linear-gradient(180deg, rgba(3, 7, 18, 0.00) 0%, rgba(3, 7, 18, 0.02) 100%)",
         "button-neutral-dark":
-          "linear-gradient(180deg, #2E2E32 0%, #28282C 32.67%)",
+          "linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.00) 100%)",
         "button-neutral-hover": "linear-gradient(180deg, rgba(3, 7, 18, 0.00) 0%, rgba(3, 7, 18, 0.06) 100%)",
+        "button-neutral-hover-dark": "linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.00) 100%)",
         "button-neutral-pressed": "linear-gradient(180deg, rgba(3, 7, 18, 0.06) 0%, rgba(3, 7, 18, 0.00) 100%)",
+        "button-neutral-pressed-dark": "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.08) 100%)",
         "no-image": "none",
         "button-inverted": "linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.00) 100%)",
         "button-inverted-dark":
-          "linear-gradient(180deg, #FFF 31.33%, #F4F2F4 100%)",
+          "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.12) 100%)",
         "button-inverted-hover": "linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.00) 100%)",
+        "button-inverted-hover-dark": "linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.16) 100%)",
         "button-inverted-pressed": "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.16) 100%)",
+        "button-inverted-pressed-dark": "linear-gradient(180deg, rgba(0, 0, 0, 0.16) 0%, rgba(0, 0, 0, 0.00) 100%)",
         "button-danger": "linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.00) 100%)",
-        "button-danger-dark": "linear-gradient(180deg, #DC3D43 0%, #AA2429 29.95%)",
+        "button-danger-dark": "linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.00) 100%)",
         "button-danger-hover": "linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.00) 100%)",
+        "button-danger-hover-dark": "linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.00) 100%)",
         "button-danger-pressed": "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.16) 100%)",
+        "button-danger-pressed-dark": "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.14) 100%)",
         "code-fade": "linear-gradient(90deg, #11182700, #111827 24px)",
         "code-fade-dark": "linear-gradient(90deg, #1C1C1F00, #1C1C1F 24px)",
         // TODO remove if not used
@@ -540,7 +554,7 @@ module.exports = {
       },
       screens: {
         xs: "576px",
-        lg: "992px",
+        lg: "1025px",
         xl: "1419px",
         xxl: "1440px",
       },
@@ -780,6 +794,7 @@ module.exports = {
       "search-no-result": "url('/img/search-no-result-light.svg')",
       "search-no-result-dark": "url('/img/search-no-result.svg')",
       "magnifying-glass": "url('/img/magnifying-glass.svg')",
+      "magnifying-glass-dark": "url('/img/magnifying-glass-dark.svg')",
       toc: "url('/img/side-menu-light.svg')",
       "toc-dark": "url('/img/side-menu.svg')",
     },

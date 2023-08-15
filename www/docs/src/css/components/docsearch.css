@@ -1,6 +1,6 @@
 .DocSearch-Modal {
   @apply border border-solid !border-medusa-border-base dark:!border-medusa-border-base-dark;
-  @apply !rounded !relative;
+  @apply lg:!rounded !relative;
   @apply md:!m-[unset] md:w-[560px];
 }
 
@@ -193,5 +193,5 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 }
 
 [class*=searchBox] {
-  @apply lg:w-[280px] lg:max-w-[280px] lg:!h-2 lg:!p-0;
+  @apply lg:w-[280px] lg:max-w-[280px] lg:!h-2 lg:!p-0 !static;
 }

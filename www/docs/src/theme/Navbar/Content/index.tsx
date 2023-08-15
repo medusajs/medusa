@@ -40,12 +40,16 @@ function NavbarContentLayout({
   return (
     <div
       className={clsx(
-        "flex flex-wrap justify-between w-full",
-        "max-w-xl mx-auto py-0.75 px-1.5"
+        "flex flex-wrap justify-between items-center w-full",
+        "lg:max-w-xl mx-auto py-0.5 px-1"
       )}
     >
-      <div className={clsx("items-center flex flex-1 min-w-0")}>{left}</div>
-      <div className={clsx("items-center flex flex-1 min-w-0", "justify-end")}>
+      <div className={clsx("items-center flex flex-1 min-w-0 gap-1.5")}>
+        {left}
+      </div>
+      <div
+        className={clsx("items-center flex lg:flex-1 min-w-0", "justify-end")}
+      >
         {right}
       </div>
     </div>
@@ -77,6 +81,14 @@ export default function NavbarContent(): JSX.Element {
         <>
           {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
           <NavbarLogo />
+          <NavbarItems items={leftItems} />
+        </>
+      }
+      right={
+        // TODO stop hardcoding items?
+        // Ask the user to add the respective navbar items => more flexible
+        <div className="flex gap-0.5">
+          <NavbarItems items={rightItems} />
           {hideable && sidebarContext?.hasSidebar && (
             <NavbarActions
               items={[
@@ -129,36 +141,23 @@ export default function NavbarContent(): JSX.Element {
                     },
                   },
                   icon: !sidebarContext?.hiddenSidebarContainer
-                    ? "bars-three"
+                    ? "sidebar"
                     : "chevron-double-left-mini-solid",
                 },
               ]}
-              className="mr-0.5 sidebar-toggler"
+              className="sidebar-toggler"
             />
           )}
-          <NavbarItems items={leftItems} />
-        </>
-      }
-      right={
-        // TODO stop hardcoding items?
-        // Ask the user to add the respective navbar items => more flexible
-        <>
-          <NavbarItems items={rightItems} />
-          <span
-            className={clsx(
-              "lg:h-[20px] lg:w-[1px] lg:mx-1 lg:inline-block lg:align-middle lg:bg-medusa-border-strong lg:dark:bg-medusa-border-strong-dark"
-            )}
-          ></span>
           <Tooltip text="Switch theme">
             <NavbarColorModeToggle
               className={clsx(
                 "lg:block hidden",
-                "navbar-action-icon-item !w-2 !h-2 ml-1 mr-0.75 [&>button]:!rounded"
+                "navbar-action-icon-item !w-2 !h-2 [&>button]:!rounded"
               )}
             />
           </Tooltip>
           <NavbarActions items={navbarActions} />
-        </>
+        </div>
       }
     />
   )

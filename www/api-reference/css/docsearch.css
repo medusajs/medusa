@@ -21,7 +21,7 @@
 }
 
 .DocSearch-Input {
-  @apply !text-medium !pl-1;
+  @apply !text-compact-large lg:!text-medium !pl-1;
   @apply placeholder:text-medusa-fg-muted dark:placeholder:text-medusa-fg-muted-dark;
 }
 
@@ -159,7 +159,7 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
   @apply lg:!bg-medusa-bg-field lg:dark:!bg-medusa-bg-field-dark !bg-transparent;
   @apply lg:hover:!bg-medusa-bg-field-hover lg:dark:hover:!bg-medusa-bg-field-hover-dark;
   @apply lg:disabled:!bg-medusa-bg-disabled lg:dark:disabled:!bg-medusa-bg-disabled-dark;
-  @apply !py-[5px] !px-0.5 relative ml-0;
+  @apply p-0 lg:!py-[5px] lg:!px-0.5 relative ml-0;
   @apply hover:!border-medusa-border-loud-muted hover:dark:!border-medusa-border-loud-muted-dark;
   @apply active:!border-medusa-border-interactive active:dark:!border-medusa-border-interactive-dark;
   @apply focus:!border-medusa-border-interactive focus:dark:!border-medusa-border-interactive-dark;
@@ -177,7 +177,7 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 
 .DocSearch-Button-Container {
   @apply before:content-[''] before:h-[20px] before:w-[20px] before:absolute before:left-0.5 before:top-[5px];
-  @apply before:bg-magnifying-glass before:bg-no-repeat;
+  @apply before:bg-magnifying-glass dark:before:bg-magnifying-glass-dark before:bg-no-repeat;
 }
 
 .DocSearch-Button-Placeholder {

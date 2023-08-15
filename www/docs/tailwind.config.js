@@ -7,14 +7,22 @@ module.exports = {
   corePlugins: {
     preflight: false, // disable Tailwind's reset
   },
-  content: ["./src/**/*.{js,jsx,ts,tsx}", "../../docs/content/**/*.{mdx,md}"],
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "../../docs/content/**/*.{mdx,md}",
+    "docusaurus.config.js",
+    "sidebars.js",
+  ],
   theme: {
     ...coreConfig.theme,
     extend: {
       ...coreConfig.theme.extend,
-      borderRadius: {
-        DEFAULT: "8px",
-        sm: "4px",
+      screens: {
+        ...coreConfig.theme.screens,
+        xs: "576px",
+        lg: "996px",
+        xl: "1419px",
+        xxl: "1440px",
       },
     },
   },

@@ -1,7 +1,7 @@
 "use client"
 
 import { useColorMode } from "@/providers/color-mode"
-import NavbarIconButton from "../IconButton"
+import NavbarIconButton, { NavbarIconButtonProps } from "../IconButton"
 import type IconProps from "@/components/Icons/types"
 import dynamic from "next/dynamic"
 
@@ -13,11 +13,15 @@ const IconDarkMode = dynamic<IconProps>(
   async () => import("../../Icons/DarkMode")
 ) as React.FC<IconProps>
 
-const NavbarColorModeToggle = () => {
+type NavbarColorModeToggleProps = {
+  buttonProps?: NavbarIconButtonProps
+}
+
+const NavbarColorModeToggle = ({ buttonProps }: NavbarColorModeToggleProps) => {
   const { colorMode, toggleColorMode } = useColorMode()
 
   return (
-    <NavbarIconButton onClick={() => toggleColorMode()}>
+    <NavbarIconButton {...buttonProps} onClick={() => toggleColorMode()}>
       {colorMode === "light" && (
         <IconLightMode iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
       )}

@@ -1,6 +1,6 @@
 import clsx from "clsx"
 
-type NavbarIconButtonProps = React.HTMLAttributes<HTMLButtonElement>
+export type NavbarIconButtonProps = React.HTMLAttributes<HTMLButtonElement>
 
 const NavbarIconButton = ({
   children,

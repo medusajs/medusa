@@ -21,6 +21,7 @@ module.exports = {
       "search-no-result": "url('/images/search-no-result-light.svg')",
       "search-no-result-dark": "url('/images/search-no-result.svg')",
       "magnifying-glass": "url('/images/magnifying-glass.svg')",
+      "magnifying-glass-dark": "url('/images/magnifying-glass-dark.svg')",
     },
   },
 }

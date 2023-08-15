@@ -6,6 +6,8 @@ import SearchBar from "../SearchBar"
 import NavbarMenuButton from "./MenuButton"
 import getLinkWithBasePath from "../../utils/get-link-with-base-path"
 import FeedbackModal from "./FeedbackModal"
+import NavbarMobileLogo from "./MobileLogo"
+import MobileMenu from "./MobileMenu"
 
 const Navbar = () => {
   return (
@@ -20,7 +22,7 @@ const Navbar = () => {
           "h-navbar max-w-xxl py-0.75 sticky top-0 mx-auto flex w-full justify-between px-1 lg:px-3"
         )}
       >
-        <div className="flex w-full items-center gap-0.5 lg:w-auto lg:gap-1.5">
+        <div className="hidden w-full items-center gap-0.5 lg:flex lg:w-auto lg:gap-1.5">
           <NavbarLogo />
           <div className="hidden items-center gap-1.5 lg:flex">
             <NavbarLink href="https://docs.medusajs.com/" label="Docs" />
@@ -39,10 +41,6 @@ const Navbar = () => {
               activeValue="admin"
             />
           </div>
-          <div className="lg:hidden [&>*]:flex-1">
-            <SearchBar />
-          </div>
-          <NavbarMenuButton />
         </div>
         <div className="hidden min-w-0 flex-1 items-center justify-end gap-0.5 lg:flex">
           <div className="w-[240px] [&>*]:flex-1">
@@ -51,6 +49,7 @@ const Navbar = () => {
           <NavbarColorModeToggle />
           <FeedbackModal />
         </div>
+        <MobileMenu />
       </div>
     </nav>
   )

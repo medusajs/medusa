@@ -5,7 +5,6 @@ import clsx from "clsx"
 import dynamic from "next/dynamic"
 import { SidebarItemProps } from "./Item"
 import Loading from "../Loading"
-import IconXMark from "../Icons/XMark"
 
 const SidebarItem = dynamic<SidebarItemProps>(async () => import("./Item"), {
   loading: () => <Loading count={1} />,
@@ -16,8 +15,7 @@ type SidebarProps = {
 }
 
 const Sidebar = ({ className = "" }: SidebarProps) => {
-  const { items, mobileSidebarOpen, desktopSidebarOpen, setMobileSidebarOpen } =
-    useSidebar()
+  const { items, mobileSidebarOpen, desktopSidebarOpen } = useSidebar()
 
   return (
     <aside
@@ -25,7 +23,7 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
         "clip bg-docs-bg dark:bg-docs-bg-dark w-api-ref-sidebar block",
         "border-medusa-border-base dark:border-medusa-border-base-dark border-0 border-r border-solid",
         "fixed -left-full top-[57px] h-screen transition-[left] lg:relative lg:left-0 lg:top-auto lg:h-auto",
-        "lg:w-sidebar w-full md:w-auto",
+        "lg:w-sidebar z-[100] w-full lg:z-0",
         mobileSidebarOpen && "!left-0",
         !desktopSidebarOpen && "!absolute !-left-full",
         className
@@ -34,14 +32,6 @@ const Sidebar = ({ className = "" }: SidebarProps) => {
         animationFillMode: "forwards",
       }}
     >
-      <div className="flex justify-end p-1 lg:hidden">
-        <button
-          className="btn-clear"
-          onClick={() => setMobileSidebarOpen(false)}
-        >
-          <IconXMark />
-        </button>
-      </div>
       <ul
         className={clsx(
           "sticky top-[57px] h-screen max-h-screen w-full list-none overflow-auto p-0",

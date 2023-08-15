@@ -76,6 +76,7 @@ const TagsOperationDescriptionSection = ({
         sectionTitle={operation.summary}
         className="!my-2"
         vertical={true}
+        question="Did this endpoint run successfully?"
       />
       {operation.externalDocs && (
         <>

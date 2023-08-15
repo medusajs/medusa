@@ -226,7 +226,7 @@ details > div {
 }
 
 .navbar {
-  @apply z-[399] p-0;
+  @apply z-[399] p-0 border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark;
 }
 
 html:not(.plugin-redoc) .navbar:not(.navbar-sidebar--show) {
@@ -238,11 +238,15 @@ html:not(.plugin-redoc) .navbar:not(.navbar-sidebar--show) {
 }
 
 .navbar__brand {
-  @apply mr-1.5;
+  @apply mr-0;
 }
 
 .navbar__logo {
-  @apply w-[83px] h-[20px] flex justify-center items-center !mr-0;
+  @apply w-[82px] h-[20px] lg:w-[20px] lg:h-[20px] flex justify-center items-center !mr-0;
+}
+
+.navbar__item {
+  @apply p-0 lg:!block !hidden;
 }
 
 h1 {
