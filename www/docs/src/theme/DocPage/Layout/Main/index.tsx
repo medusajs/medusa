@@ -10,18 +10,18 @@ export default function DocPageLayoutMain({ children }: Props): JSX.Element {
   return (
     <main
       className={clsx(
-        "tw-flex tw-flex-col tw-w-full lg:tw-flex-grow",
+        "flex flex-col w-full lg:flex-grow",
         (sidebarContext?.hiddenSidebarContainer || !sidebar) &&
-          "lg:tw-max-w-[calc(100%-30px)]",
+          "lg:max-w-[calc(100%-30px)]",
         !sidebarContext?.hiddenSidebarContainer &&
-          "xxl:tw-max-w-[1119px] lg:tw-max-w-[calc(100%-321px)]"
+          "xxl:max-w-[1119px] lg:max-w-[calc(100%-321px)]"
       )}
     >
       <div
         className={clsx(
-          "container padding-top--md tw-px-0",
+          "container padding-top--md px-0",
           sidebarContext?.hiddenSidebarContainer &&
-            "lg:tw-max-w-main-content-hidden-sidebar"
+            "lg:max-w-main-content-hidden-sidebar"
         )}
       >
         {children}

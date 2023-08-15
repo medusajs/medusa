@@ -31,6 +31,7 @@ declare module "@medusajs/docs" {
   import { IconProps } from "../theme/Icon/index"
   import { DocContextValue as DocusaurusDocContextValue } from "@docusaurus/theme-common/internal"
   import { ReactNode } from "react"
+  import { NavbarLogo } from "@docusaurus/theme-common"
 
   type ItemCustomProps = {
     customProps?: {
@@ -150,6 +151,7 @@ declare module "@medusajs/docs" {
     prism: {
       magicComments: MagicCommentConfig[]
     }
+    mobileLogo: NavbarLogo
   } & DocusaurusThemeConfig
 
   export declare type MedusaDocusaurusConfig = {

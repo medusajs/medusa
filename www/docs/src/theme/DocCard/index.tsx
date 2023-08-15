@@ -36,10 +36,10 @@ function CardContainer({
         href={href}
         className={clsx(
           "card",
-          "tw-bg-medusa-bg-subtle dark:tw-bg-medusa-bg-base-dark",
-          "tw-rounded tw-shadow-card-rest dark:tw-shadow-card-rest-dark",
-          "tw-transition-all tw-duration-200 tw-ease-ease",
-          "tw-flex tw-p-1 !tw-pb-1.5 tw-h-full",
+          "bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark",
+          "rounded shadow-card-rest dark:shadow-card-rest-dark",
+          "transition-all duration-200 ease-ease",
+          "flex p-1 !pb-1.5 h-full",
           className
         )}
       >
@@ -66,29 +66,26 @@ function CardLayout({
       className={clsx(
         containerClassName,
         !isSoon &&
-          "hover:tw-bg-medusa-bg-subtle-hover dark:hover:tw-bg-medusa-bg-base-hover-dark",
-        isSoon && "tw-pointer-events-none",
+          "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-base-hover-dark",
+        isSoon && "pointer-events-none",
         isHighlighted &&
-          "md:before:tw-content-[''] md:before:tw-absolute md:before:tw-top-0 before:tw-right-0 md:before:tw-w-1/2 md:before:tw-h-full md:before:tw-bg-no-repeat md:before:tw-bg-cover md:before:tw-bg-card-highlighted dark:md:before:tw-bg-card-highlighted-dark",
-        !isSoon &&
-          "hover:tw-shadow-card-hover dark:hover:tw-shadow-card-hover-dark"
+          "md:before:content-[''] md:before:absolute md:before:top-0 before:right-0 md:before:w-1/2 md:before:h-full md:before:bg-no-repeat md:before:bg-cover md:before:bg-card-highlighted dark:md:before:bg-card-highlighted-dark",
+        !isSoon && "hover:shadow-card-hover dark:hover:shadow-card-hover-dark"
       )}
     >
-      <div
-        className={clsx("tw-mb-1 tw-flex tw-justify-between tw-items-center")}
-      >
+      <div className={clsx("mb-1 flex justify-between items-center")}>
         {icon}
         {isSoon && <Badge variant={"purple"}>Guide coming soon</Badge>}
         {badge && <Badge {...badge} />}
       </div>
-      <div className={clsx("tw-w-[calc(100%-20px)] [&>*:last-child]:tw-mb-0")}>
+      <div className={clsx("w-[calc(100%-20px)] [&>*:last-child]:mb-0")}>
         <span
           className={clsx(
-            "tw-text-label-regular-plus tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark",
-            "tw-mb-[4px] tw-block",
-            "tw-transition-all tw-duration-200 tw-ease-ease",
+            "text-compact-medium-plus text-medusa-fg-base dark:text-medusa-fg-base-dark",
+            "mb-0.25 block",
+            "transition-all duration-200 ease-ease",
             isSoon &&
-              "group-hover:tw-text-medusa-text-disabled dark:group-hover:tw-text-medusa-text-disabled-dark"
+              "group-hover:text-medusa-fg-disabled dark:group-hover:text-medusa-fg-disabled-dark"
           )}
           title={title}
         >
@@ -97,11 +94,11 @@ function CardLayout({
         {description && (
           <p
             className={clsx(
-              "tw-text-body-regular tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark",
-              "tw-transition-all tw-duration-200 tw-ease-ease",
+              "text-medium text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+              "transition-all duration-200 ease-ease",
               isSoon &&
-                "group-hover:tw-text-medusa-text-disabled dark:group-hover:tw-text-medusa-text-disabled-dark",
-              isHighlighted && "md:tw-w-1/2"
+                "group-hover:text-medusa-fg-disabled dark:group-hover:text-medusa-fg-disabled-dark",
+              isHighlighted && "md:w-1/2"
             )}
             title={description}
           >
@@ -111,11 +108,11 @@ function CardLayout({
         {html && (
           <p
             className={clsx(
-              "tw-text-label-regular tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark",
-              "tw-transition-all tw-duration-200 tw-ease-ease",
+              "text-compact-medium text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+              "transition-all duration-200 ease-ease",
               isSoon &&
-                "group-hover:tw-text-medusa-text-disabled dark:group-hover:tw-text-medusa-text-disabled-dark",
-              isHighlighted && "md:tw-w-1/2"
+                "group-hover:text-medusa-fg-disabled dark:group-hover:text-medusa-fg-disabled-dark",
+              isHighlighted && "md:w-1/2"
             )}
             dangerouslySetInnerHTML={{
               __html: html,
@@ -135,8 +132,8 @@ function getCardIcon(item: ModifiedSidebarItem): JSX.Element {
           light: item.customProps.themedImage.light,
           dark: item.customProps.themedImage.dark,
         }}
-        iconWrapperClassName={clsx("tw-p-[6px]")}
-        iconClassName={clsx("tw-h-[20px] tw-w-[20px]")}
+        iconWrapperClassName={clsx("p-[6px]")}
+        iconClassName={clsx("h-[20px] w-[20px]")}
       />
     )
   } else if (item.customProps?.image) {
@@ -145,16 +142,16 @@ function getCardIcon(item: ModifiedSidebarItem): JSX.Element {
         icon={{
           light: item.customProps.image,
         }}
-        iconWrapperClassName={clsx("tw-p-[6px]")}
-        iconClassName={clsx("tw-h-[20px] tw-w-[20px]")}
+        iconWrapperClassName={clsx("p-[6px]")}
+        iconClassName={clsx("h-[20px] w-[20px]")}
       />
     )
   } else if (item.customProps?.icon) {
     return (
       <BorderedIcon
         IconComponent={item.customProps.icon}
-        iconWrapperClassName={clsx("tw-p-[6px]")}
-        iconClassName={clsx("tw-h-[20px] tw-w-[20px]")}
+        iconWrapperClassName={clsx("p-[6px]")}
+        iconClassName={clsx("h-[20px] w-[20px]")}
       />
     )
   } else if (
@@ -164,8 +161,8 @@ function getCardIcon(item: ModifiedSidebarItem): JSX.Element {
     return (
       <BorderedIcon
         IconComponent={Icons[item.customProps?.iconName]}
-        iconWrapperClassName={clsx("tw-p-[6px]")}
-        iconClassName={clsx("tw-h-[20px] tw-w-[20px]")}
+        iconWrapperClassName={clsx("p-[6px]")}
+        iconClassName={clsx("h-[20px] w-[20px]")}
       />
     )
   } else {

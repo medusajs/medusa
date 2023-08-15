@@ -157,7 +157,7 @@ import { DateComparisonOperator } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/customers/me/orders' \
+ *       curl '{backend_url}/store/customers/me/orders' \
  *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []

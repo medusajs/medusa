@@ -25,7 +25,7 @@ import { TaxRateService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/tax-rates/{id}' \
+ *       curl -X DELETE '{backend_url}/admin/tax-rates/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

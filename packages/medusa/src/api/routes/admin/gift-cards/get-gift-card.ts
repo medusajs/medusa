@@ -24,7 +24,7 @@ import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/gift-cards/{id}' \
+ *       curl '{backend_url}/admin/gift-cards/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

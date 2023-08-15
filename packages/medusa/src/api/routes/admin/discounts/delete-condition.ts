@@ -32,7 +32,7 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/discounts/{id}/conditions/{condition_id}' \
+ *       curl -X DELETE '{backend_url}/admin/discounts/{id}/conditions/{condition_id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

@@ -1,19 +1,19 @@
 /** This CSS file includes tailwind styling definitions for classes defined by docusaurus **/
 html,
 body {
-  @apply tw-h-full;
+  @apply h-full;
 }
 
 .cards-grid {
-  @apply tw-grid tw-gap-x-1 tw-auto-rows-fr;
+  @apply grid gap-x-1 auto-rows-fr;
 }
 
 .cards-grid.grid-6 {
-  @apply md:tw-grid-cols-2 tw-grid-cols-1;
+  @apply md:grid-cols-2 grid-cols-1;
 }
 
 .cards-grid.grid-4 {
-  @apply lg:tw-grid-cols-3 md:tw-grid-cols-2 tw-grid-cols-1;
+  @apply lg:grid-cols-3 md:grid-cols-2 grid-cols-1;
 }
 
 h1 + .cards-grid,
@@ -22,13 +22,13 @@ h2 + .cards-grid,
 h2 + .card-wrapper,
 h3 + .cards-grid,
 h3 + .card-wrapper {
-  @apply tw-mt-1.5;
+  @apply mt-1.5;
 }
 
 .markdown p + img,
 .markdown .alert,
 .markdown .code-wrapper {
-  @apply tw-mb-2;
+  @apply mb-2;
 }
 
 .markdown h2,
@@ -38,24 +38,24 @@ h3 + .card-wrapper {
 .markdown p + .alert,
 .markdown p + section,
 video {
-  @apply tw-mt-2;
+  @apply mt-2;
 }
 
 .theme-code-block {
-  @apply tw-border tw-border-solid tw-border-medusa-code-block-border;
+  @apply border border-solid border-medusa-code-border dark:border-medusa-code-border-dark;
 }
 
 .markdown p + .card-wrapper {
-  @apply tw-mt-1.5;
+  @apply mt-1.5;
 }
 
 .card + p {
-  @apply tw-mt-2;
+  @apply mt-2;
 }
 
 .card-highlighted {
  
-  @apply tw-relative tw-mb-4 tw-bg-medusa-bg-subtle dark:tw-bg-medusa-bg-base-dark hover:tw-bg-medusa-bg-subtle-hover dark:hover:tw-bg-medusa-bg-subtle-hover-dark;
+  @apply relative mb-4 bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-subtle-hover-dark;
 }
 
 .col.toc-wrapper {
@@ -63,50 +63,50 @@ video {
 }
 
 .markdown-doc-wrapper--fluid {
-  @apply tw-max-w-[inherit];
+  @apply max-w-[inherit];
 }
 
 :global(.docusaurus-mt-lg) {
-  @apply tw-mt-3;
+  @apply mt-3;
 }
 
 :global(#__docusaurus) {
-  @apply tw-min-h-full tw-flex tw-flex-col;
+  @apply min-h-full flex flex-col;
 }
 
 .code-tabs .theme-code-block {
-  @apply !tw-rounded-t-none !tw-rounded-b
+  @apply !rounded-t-none !rounded-b
 }
 
 [class*=codeLineNumber] {
-  @apply tw-text-medusa-code-text-muted !tw-pl-0;
+  @apply text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark !pl-0;
 }
 
 .prism-code {
-  @apply xs:tw-max-w-[90%] xs:after:tw-content-[''] xs:after:tw-rounded xs:after:tw-absolute;
-  @apply xs:after:tw-right-0 xs:after:tw-top-0 xs:after:tw-w-[calc(10%+24px)] xs:after:tw-h-full xs:after:tw-bg-code-fade;
+  @apply xs:max-w-[90%] text-code-body [&_*]:text-code-body xs:after:content-[''] xs:after:rounded xs:after:absolute;
+  @apply xs:after:right-0 xs:after:top-0 xs:after:w-[calc(10%+24px)] xs:after:h-full xs:after:bg-code-fade dark:xs:after:bg-code-fade-dark;
 }
 
 .prism-code:not(:hover)::-webkit-scrollbar-thumb,
 .prism-code:not(:hover)::-webkit-scrollbar-track {
-  @apply xs:tw-invisible;
+  @apply xs:invisible;
 }
 
 .prism-code:hover::-webkit-scrollbar-thumb,
 .prism-code:hover::-webkit-scrollbar-track {
-  @apply xs:tw-opacity-100
+  @apply xs:opacity-100
 }
 
 .prism-code {
-  @apply tw-bg-transparent tw-break-words !tw-outline-none;
+  @apply bg-transparent break-words !outline-none;
 }
 
 .prism-code div {
-  @apply !tw-outline-none focus:!tw-outline-none active:!tw-outline-none;
+  @apply !outline-none focus:!outline-none active:!outline-none;
 }
 
 .code-tabs {
-  @apply tw-relative;
+  @apply relative;
 }
 
 .sidebar-desktop nav {
@@ -116,31 +116,31 @@ video {
 }
 
 .main-wrapper {
-  @apply tw-max-w-xl tw-mx-auto xl:tw-min-w-xl tw-w-full;
+  @apply max-w-xl mx-auto xl:min-w-xl w-full;
 }
 
 .theme-doc-breadcrumbs {
-  @apply tw-hidden;
+  @apply hidden;
 }
 
 article {
-  @apply tw-max-w-[960px];
+  @apply max-w-[960px];
 }
 
 .padding-top--md {
-  @apply !tw-pt-3;
+  @apply !pt-3;
 }
 
 .margin-bottom--lg {
-  @apply !tw-mb-1;
+  @apply !mb-1;
 }
 
 details summary {
-  @apply tw-cursor-pointer;
+  @apply cursor-pointer;
 }
 
 .reference-table {
-  @apply !tw-table tw-table-fixed tw-w-full;
+  @apply !table table-fixed w-full;
 }
 
 .reference-table p {
@@ -149,59 +149,63 @@ details summary {
 
 .reference-table.table-col-4 th,
 .reference-table.table-col-4 td {
-  @apply [&:nth-child(1)]:!tw-w-1/5 [&:nth-child(2)]:!tw-w-1/5 [&:nth-child(3)]:!tw-w-2/5 [&:nth-child(4)]:!tw-w-1/5;
+  @apply [&:nth-child(1)]:!w-1/5 [&:nth-child(2)]:!w-1/5 [&:nth-child(3)]:!w-2/5 [&:nth-child(4)]:!w-1/5;
 }
 
 .reference-table th:nth-child(1),
 .reference-table td:nth-child(1) {
-  @apply [&:nth-child(1)]:!tw-w-[30%] [&:nth-child(2)]:!tw-w-[30%] [&:nth-child(3)]:!tw-w-2/5;
+  @apply [&:nth-child(1)]:!w-[30%] [&:nth-child(2)]:!w-[30%] [&:nth-child(3)]:!w-2/5;
 }
 
 .reference-table .tooltip-container code {
-  @apply tw-whitespace-nowrap;
+  @apply whitespace-nowrap;
 }
 
 .reference-table .theme-code-block span {
-  @apply !tw-max-w-full !tw-break-words !tw-whitespace-break-spaces;
+  @apply !max-w-full !break-words !whitespace-break-spaces;
+}
+
+.theme-code-block {
+  @apply !bg-medusa-code-bg-base dark:!bg-medusa-code-bg-base-dark
 }
 
 .reference-table .code-block-numbering {
-  @apply !tw-block;
+  @apply !block;
 }
 
 .container {
-  @apply !tw-pt-3 !tw-max-w-full;
+  @apply !pt-3 !max-w-full;
 }
 
 .pagination-nav {
-  @apply tw-hidden;
+  @apply hidden;
 }
 
 .markdown kbd {
-  @apply !tw-font-monospace !tw-bg-medusa-bg-component dark:!tw-bg-medusa-bg-component-dark !tw-text-medusa-text-subtle dark:!tw-text-medusa-text-subtle-dark;
-  @apply !tw-rounded-md !tw-border-medusa-border-strong dark:!tw-border-medusa-border-strong-dark !tw-shadow-none;
+  @apply !font-monospace !bg-medusa-bg-component dark:!bg-medusa-bg-component-dark !text-medusa-fg-subtle dark:!text-medusa-fg-subtle-dark;
+  @apply !rounded-md !border-medusa-border-strong dark:!border-medusa-border-strong-dark !shadow-none;
 }
 
 .theme-doc-footer {
-  @apply !tw-mt-0 tw-border-0 !tw-border-t tw-border-solid !tw-border-medusa-border-base dark:!tw-border-medusa-border-base-dark;
-  @apply tw-pt-2;
+  @apply !mt-0 border-0 !border-t border-solid !border-medusa-border-base dark:!border-medusa-border-base-dark;
+  @apply pt-2;
 }
 
 .theme-last-updated {
-  @apply tw-font-normal tw-not-italic tw-text-label-small-plus;
+  @apply font-normal not-italic text-compact-small-plus;
 }
 
 .theme-last-updated,
 .theme-last-updated b {
-  @apply !tw-font-normal;
+  @apply !font-normal;
 }
 
 .medium-zoom-overlay {
-  @apply tw-z-[400];
+  @apply z-[400];
 }
 
 .medium-zoom-image--opened {
-  @apply tw-z-[400];
+  @apply z-[400];
 }
 
 details > div {
@@ -209,76 +213,80 @@ details > div {
 }
 
 .row--justify-end {
-  @apply tw-justify-end;
+  @apply justify-end;
 }
 
 .docs-page-container {
-  @apply !tw-px-0;
+  @apply !px-0;
 }
 
 .search-result-match {
-  @apply tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark;
-  @apply tw-bg-medusa-bg-highlight dark:tw-bg-medusa-bg-highlight-dark tw-py-[4px] tw-px-0;
+  @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
+  @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark py-0.25 px-0;
 }
 
 .navbar {
-  @apply tw-z-[399] tw-p-0;
+  @apply z-[399] p-0 border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark;
 }
 
 html:not(.plugin-redoc) .navbar:not(.navbar-sidebar--show) {
-  @apply supports-[backdrop-filter]:tw-bg-transparent supports-[backdrop-filter]:tw-backdrop-blur-md;
+  @apply supports-[backdrop-filter]:bg-transparent supports-[backdrop-filter]:backdrop-blur-md;
 }
 
 .navbar__link {
-  @apply tw-text-label-small-plus;
+  @apply text-compact-small-plus;
 }
 
 .navbar__brand {
-  @apply tw-mr-1.5;
+  @apply mr-0;
 }
 
 .navbar__logo {
-  @apply tw-w-[83px] tw-h-[20px] tw-flex tw-justify-center tw-items-center !tw-mr-0;
+  @apply w-[82px] h-[20px] lg:w-[20px] lg:h-[20px] flex justify-center items-center !mr-0;
+}
+
+.navbar__item {
+  @apply p-0 lg:!block !hidden;
 }
 
 h1 {
-  @apply !tw-text-h1;
+  @apply !text-h1;
 }
 
 h2 {
-  @apply !tw-text-h2;
+  @apply !text-h2;
 }
 
 h3 {
-  @apply !tw-text-h3;
+  @apply !text-h3;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @apply tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark;
+  @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
 }
 
 .markdown > h1:first-child,
 .markdown > h2,
 .markdown > h3 {
-  @apply tw-mb-0.5;
+  @apply mb-0.5;
 }
 
 .markdown > p {
-  @apply tw-mb-0.5;
+  @apply mb-0.5;
 }
 
 .markdown > p img {
-  @apply tw-mt-0.5;
+  @apply mt-0.5;
 }
 
 .markdown {
-  @apply tw-mb-0;
+  @apply mb-0;
 }
 
 *::selection {
-  @apply tw-bg-medusa-bg-highlight dark:tw-bg-medusa-bg-highlight-dark;
+  @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark;
 }
 
 .prism-code *::selection, .code-header::selection {
-  @apply tw-bg-medusa-code-text-highlight;
+  @apply bg-medusa-code-text-highlight;
 }

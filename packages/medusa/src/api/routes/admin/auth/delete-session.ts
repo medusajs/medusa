@@ -18,7 +18,7 @@
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/auth' \
+ *       curl -X DELETE '{backend_url}/admin/auth' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
