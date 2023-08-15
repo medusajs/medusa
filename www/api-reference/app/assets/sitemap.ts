@@ -12,10 +12,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const results = [
     {
-      url: baseUrl,
-      lastModified: new Date(),
-    },
-    {
       url: `${baseUrl}/api/admin`,
       lastModified: new Date(),
     },
