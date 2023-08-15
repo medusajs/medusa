@@ -17,6 +17,8 @@ type LinkDefinition = {
   [moduleName: string]: {
     [fieldName: string]: string
   }
+} & {
+  data?: Record<string, unknown>
 }
 
 type RemoteRelationship = ModuleJoinerRelationship & {
@@ -320,10 +322,16 @@ export class RemoteLink {
 
   async create(link: LinkDefinition | LinkDefinition[]): Promise<unknown[]> {
     const allLinks = Array.isArray(link) ? link : [link]
-    const serviceLinks = new Map<string, [string | string[], string][]>()
+    const serviceLinks = new Map<
+      string,
+      [string | string[], string, Record<string, unknown>?][]
+    >()
 
     for (const rel of allLinks) {
       const mods = Object.keys(rel)
+      const extraFields = rel.data
+
+      delete rel.data
       if (mods.length > 2) {
         throw new Error(`Only two modules can be linked.`)
       }
@@ -353,7 +361,7 @@ export class RemoteLink {
 
       serviceLinks
         .get(service.__definition.key)
-        ?.push([pkValue, rel[moduleB][moduleBKey]])
+        ?.push([pkValue, rel[moduleB][moduleBKey], extraFields])
     }
 
     const promises: Promise<unknown[]>[] = []

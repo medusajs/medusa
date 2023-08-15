@@ -23,6 +23,7 @@ type InjectedDependencies = {
   pivotService: PivotService<any>
   primaryKey: string | string[]
   foreignKey: string
+  extraFields: string[]
 }
 
 export default class LinkModuleService<TPivot> implements ILinkModule {
@@ -30,6 +31,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
   protected readonly pivotService_: PivotService<TPivot>
   protected primaryKey_: string[]
   protected foreignKey_: string
+  protected extraFields_: string[]
 
   constructor(
     {
@@ -37,6 +39,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
       pivotService,
       primaryKey,
       foreignKey,
+      extraFields,
     }: InjectedDependencies,
     readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -44,13 +47,18 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     this.pivotService_ = pivotService
     this.primaryKey_ = !Array.isArray(primaryKey) ? [primaryKey] : primaryKey
     this.foreignKey_ = foreignKey
+    this.extraFields_ = extraFields
   }
 
   __joinerConfig(): ModuleJoinerConfig {
     return {} as ModuleJoinerConfig
   }
 
-  private buildData(primaryKeyData: string | string[], foreignKeyData: string) {
+  private buildData(
+    primaryKeyData: string | string[],
+    foreignKeyData: string,
+    extra: Record<string, unknown> = {}
+  ) {
     if (this.primaryKey_.length > 1) {
       if (
         !Array.isArray(primaryKeyData) ||
@@ -67,11 +75,15 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     return {
       [pk]: primaryKeyData,
       [this.foreignKey_]: foreignKeyData,
+      ...extra,
     }
   }
 
   private isValidFieldName(name: string) {
-    return this.primaryKey_.concat(this.foreignKey_).includes(name)
+    return this.primaryKey_
+      .concat(this.foreignKey_)
+      .concat(this.extraFields_)
+      .includes(name)
   }
 
   private validateFields(data: any) {
@@ -137,20 +149,31 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async create(
-    primaryKeyOrBulkData: string | string[] | [string | string[], string][],
+    primaryKeyOrBulkData:
+      | string
+      | string[]
+      | [string | string[], string, Record<string, unknown>][],
     foreignKeyData?: string,
+    extraFields?: Record<string, unknown>,
     @MedusaContext() sharedContext: Context = {}
   ) {
     const data: unknown[] = []
     if (foreignKeyData === undefined && Array.isArray(primaryKeyOrBulkData)) {
-      for (const [primaryKey, foreignKey] of primaryKeyOrBulkData) {
-        data.push(this.buildData(primaryKey, foreignKey as string))
+      for (const [primaryKey, foreignKey, extra] of primaryKeyOrBulkData) {
+        data.push(
+          this.buildData(
+            primaryKey as string | string[],
+            foreignKey as string,
+            extra as Record<string, unknown>
+          )
+        )
       }
     } else {
       data.push(
         this.buildData(
           primaryKeyOrBulkData as string | string[],
-          foreignKeyData!
+          foreignKeyData!,
+          extraFields
         )
       )
     }

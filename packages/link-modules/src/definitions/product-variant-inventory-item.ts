@@ -5,7 +5,6 @@ import { LINKS } from "../links"
 export const ProductVariantInventoryItem: ModuleJoinerConfig = {
   serviceName: LINKS.ProductVariantInventoryItem,
   isLink: true,
-  tableName: "product_variant_inventory_item",
   alias: [
     {
       name: "product_variant_inventory_item",
@@ -14,7 +13,7 @@ export const ProductVariantInventoryItem: ModuleJoinerConfig = {
       name: "product_variant_inventory_items",
     },
   ],
-  primaryKeys: ["variant_id", "inventory_item_id"],
+  primaryKeys: ["id", "variant_id", "inventory_item_id"],
   relationships: [
     {
       serviceName: Modules.PRODUCT,

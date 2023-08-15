@@ -18,7 +18,10 @@ export interface ILinkModule {
   ): Promise<[unknown[], number]>
 
   create(
-    primaryKeyOrBulkData: string | string[] | [string | string[], string][],
+    primaryKeyOrBulkData:
+      | string
+      | string[]
+      | [string | string[], string, Record<string, unknown>?][],
     foreignKeyData?: string,
     sharedContext?: Context
   ): Promise<unknown[]>

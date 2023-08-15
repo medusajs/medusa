@@ -2,10 +2,14 @@ import { BaseRepository, getPivotRepository } from "@repositories"
 import { PivotService, getModuleService } from "@services"
 
 import { LoaderOptions } from "@medusajs/modules-sdk"
-import { InternalModuleDeclaration, ModulesSdkTypes } from "@medusajs/types"
+import {
+  InternalModuleDeclaration,
+  ModuleJoinerConfig,
+  ModulesSdkTypes,
+} from "@medusajs/types"
 import { asClass, asValue } from "awilix"
 
-export function containerLoader(entity, joinerConfig) {
+export function containerLoader(entity, joinerConfig: ModuleJoinerConfig) {
   return async (
     {
       options,
@@ -19,8 +23,12 @@ export function containerLoader(entity, joinerConfig) {
     const [primary, foreign] = joinerConfig.relationships!
 
     container.register({
+      joinerConfig: asValue(joinerConfig),
       primaryKey: asValue(primary.foreignKey.split(",")),
       foreignKey: asValue(foreign.foreignKey),
+      extraFields: asValue(
+        Object.keys(joinerConfig.databaseConfig?.schema || {})
+      ),
 
       linkModuleService: asClass(getModuleService(joinerConfig)).singleton(),
       pivotService: asClass(PivotService).singleton(),

@@ -1,6 +1,6 @@
+import { asValue } from "awilix"
 import { createMedusaContainer } from "medusa-core-utils"
 import path from "path"
-import { asValue } from "awilix"
 
 import modelsLoader from "../models"
 
