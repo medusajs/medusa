@@ -11,9 +11,9 @@ import {
   CartHandlers,
   ShippingMethodHandlers,
   ShippingOptionHandlers,
-} from "../../../../handlers"
-import { exportWorkflow, pipe } from "../../../../helper"
-import { Workflows } from "../../../../workflows"
+} from "../../../handlers"
+import { exportWorkflow, pipe } from "../../../helper"
+import { Workflows } from "../../../workflows"
 import { prepareAddShippingMethodToCartWorkflowData } from "./prepare-add-shipping-method-to-cart-data"
 import { prepareDeleteShippingMethodsData } from "./prepare-delete-shipping-methods-data"
 import { setRetrieveConfig } from "./set-retrieve-config"

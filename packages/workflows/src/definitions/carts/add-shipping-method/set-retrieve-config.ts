@@ -1,4 +1,4 @@
-import { WorkflowArguments } from "../../../../helper"
+import { WorkflowArguments } from "../../../helper"
 
 export function setRetrieveConfig(config) {
   return async function (_: WorkflowArguments) {

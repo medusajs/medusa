@@ -1,5 +1,5 @@
 import { CartDTO } from "@medusajs/types"
-import { WorkflowArguments } from "../../../../helper"
+import { WorkflowArguments } from "../../../helper"
 
 type PreparationHandlerInput = {
   cart: CartDTO & { shipping_methods: any[] }

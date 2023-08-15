@@ -1,16 +1,16 @@
 import {
-  TransactionStepsDefinition,
-  WorkflowManager,
+    TransactionStepsDefinition,
+    WorkflowManager,
 } from "@medusajs/orchestration"
-import { exportWorkflow, pipe } from "../../../helper"
-import { InputAlias, Workflows } from "../../../workflows"
+import { exportWorkflow, pipe } from "../../helper"
+import { InputAlias, Workflows } from "../../workflows"
 
 import { ProductTypes, WorkflowTypes } from "@medusajs/types"
 import {
-  InventoryHandlers,
-  MiddlewaresHandlers,
-  ProductHandlers,
-} from "../../../handlers"
+    InventoryHandlers,
+    MiddlewaresHandlers,
+    ProductHandlers,
+} from "../../handlers"
 
 export enum CreateProductsActions {
   prepare = "prepare",
