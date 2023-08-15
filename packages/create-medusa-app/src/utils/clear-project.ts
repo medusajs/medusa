@@ -8,10 +8,12 @@ export function clearProject(directory: string) {
     path.join(directory, `src`, `**/onboarding/`)
   )
   const typeFiles = glob.sync(path.join(directory, `src`, `types`))
-  const srcFiles = glob.sync(path.join(directory, `src`, `**/*.{ts,tsx,js,jsx}`))
+  const srcFiles = glob.sync(
+    path.join(directory, `src`, `**/*.{ts,tsx,js,jsx}`)
+  )
 
   const files = [...adminFiles, ...onboardingFiles, ...typeFiles, ...srcFiles]
-  
+
   files.forEach((file) =>
     fs.rmSync(file, {
       recursive: true,

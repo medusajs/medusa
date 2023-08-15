@@ -22,7 +22,7 @@
     "test": "jest --passWithNoTests src",
     "build": "rimraf dist && tsc",
     "watch": "tsc --watch",
-    "prepare": "cross-env NODE_ENV=production yarn run build"
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
   },
   "author": "Sebastian Rindom",
   "license": "MIT",
@@ -44,6 +44,7 @@
     "execa": "^5.1.1",
     "fs-exists-cached": "^1.0.0",
     "fs-extra": "^10.0.0",
+    "glob": "^7.1.6",
     "hosted-git-info": "^4.0.2",
     "inquirer": "^8.0.0",
     "is-valid-path": "^0.1.1",

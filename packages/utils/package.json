@@ -29,13 +29,12 @@
   },
   "dependencies": {
     "awilix": "^8.0.1",
-    "glob": "^7.1.6",
     "ulid": "^2.3.0"
   },
   "scripts": {
-    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "build": "rimraf dist && tsc --build",
     "watch": "tsc --build --watch",
-    "test": "jest"
+    "test": "jest --runInBand --bail --forceExit"
   }
 }

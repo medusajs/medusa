@@ -10,13 +10,13 @@
     "dev": "ts-node --esm src/index.ts",
     "build": "tsc",
     "watch": "tsc --watch",
-    "prepare": "cross-env NODE_ENV=production yarn run build"
+    "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
   },
   "dependencies": {
-    "@medusajs/utils": "^1.9.3",
     "boxen": "^5",
     "chalk": "^5.2.0",
     "commander": "^10.0.1",
+    "glob": "^7.1.6",
     "inquirer": "^9.2.2",
     "medusa-telemetry": "^0.0.16",
     "nanoid": "^4.0.2",
