@@ -18,6 +18,7 @@ import { InventoryLevel } from "../models"
 import { InventoryLevelRepository } from "../repositories"
 import { doNotForceTransaction } from "../utils"
 import { buildWhere } from "../utils/build-query"
+import { InjectManager } from "@medusajs/utils"
 
 type InjectedDependencies = {
   eventBusService: IEventBusService
@@ -49,10 +50,11 @@ export default class InventoryLevelService {
    * @param context
    * @return Array of inventory levels.
    */
+  @InjectManager("inventoryLevelRepository_")
   async list(
     selector: FilterableInventoryLevelProps = {},
     config: FindConfig<InventoryLevel> = { relations: [], skip: 0, take: 10 },
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ): Promise<InventoryLevel[]> {
     const queryOptions = ModulesSdkUtils.buildQuery<InventoryLevel>(
       selector,
@@ -71,10 +73,11 @@ export default class InventoryLevelService {
    * @param context
    * @return An array of inventory levels and a count.
    */
+  @InjectManager("inventoryLevelRepository_")
   async listAndCount(
     selector: FilterableInventoryLevelProps = {},
     config: FindConfig<InventoryLevel> = { relations: [], skip: 0, take: 10 },
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ): Promise<[InventoryLevel[], number]> {
     // const manager = context.transactionManager ?? this.manager_
     // const levelRepository = manager.getRepository(InventoryLevel)
@@ -102,10 +105,11 @@ export default class InventoryLevelService {
    * @return A inventory level.
    * @throws If the inventory level ID is not defined or the given ID was not found.
    */
+  @InjectManager("inventoryLevelRepository_")
   async retrieve(
     inventoryLevelId: string,
     config: FindConfig<InventoryLevel> = {},
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ): Promise<InventoryLevel> {
     if (!isDefined(inventoryLevelId)) {
       throw new MedusaError(

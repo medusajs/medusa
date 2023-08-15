@@ -81,6 +81,7 @@ export default class InventoryService implements IInventoryService {
   async listInventoryItems(
     selector: FilterableInventoryItemProps,
     config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 },
+    @MedusaContext()
     context: Context = {}
   ): Promise<[InventoryItemDTO[], number]> {
     const [items, count] = await this.inventoryItemService_.listAndCount(
@@ -100,6 +101,7 @@ export default class InventoryService implements IInventoryService {
   async list(
     selector: FilterableInventoryItemProps,
     config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 },
+    @MedusaContext()
     context: Context = {}
   ): Promise<InventoryItemDTO[]> {
     const items = await this.inventoryItemService_.list(
@@ -130,6 +132,7 @@ export default class InventoryService implements IInventoryService {
       skip: 0,
       take: 10,
     },
+    @MedusaContext()
     context: Context = {}
   ): Promise<[InventoryLevelDTO[], number]> {
     const [levels, count] = await this.inventoryLevelService_.listAndCount(
@@ -160,6 +163,7 @@ export default class InventoryService implements IInventoryService {
       skip: 0,
       take: 10,
     },
+    @MedusaContext()
     context: Context = {}
   ): Promise<[ReservationItemDTO[], number]> {
     const [reservations, count] =
@@ -183,7 +187,7 @@ export default class InventoryService implements IInventoryService {
   async retrieveInventoryItem(
     inventoryItemId: string,
     config?: FindConfig<InventoryItemDTO>,
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ): Promise<InventoryItemDTO> {
     const inventoryItem = await this.inventoryItemService_.retrieve(
       inventoryItemId,
@@ -211,7 +215,7 @@ export default class InventoryService implements IInventoryService {
   async retrieveInventoryLevel(
     inventoryItemId: string,
     locationId: string,
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ): Promise<InventoryLevelDTO> {
     const [inventoryLevel] = await this.inventoryLevelService_.list(
       { inventory_item_id: inventoryItemId, location_id: locationId },
@@ -244,6 +248,7 @@ export default class InventoryService implements IInventoryService {
   @InjectManager("baseRepository_")
   async retrieveReservationItem(
     reservationId: string,
+    @MedusaContext()
     context: Context = {}
   ): Promise<ReservationItemDTO> {
     const reservation = await this.reservationItemService_.retrieve(
@@ -695,7 +700,7 @@ export default class InventoryService implements IInventoryService {
     inventoryItemId: string,
     locationId: string,
     adjustment: number,
-    @MedusaContext() context: Context = {}
+    context: Context = {}
   ): Promise<InventoryLevelDTO> {
     const updatedInventoryLevel = await this.adjustInventory_(
       inventoryItemId,

@@ -1,12 +1,18 @@
 import * as DefaultRepositories from "../repositories"
 
 import {
+  BaseRepository,
   InventoryItemRepository,
   InventoryLevelRepository,
   ReservationItemRepository,
 } from "../repositories"
-import { Constructor, DAL, ModulesSdkTypes } from "@medusajs/types"
-import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/modules-sdk"
+import {
+  Constructor,
+  DAL,
+  InternalModuleDeclaration,
+  LoaderOptions,
+  ModulesSdkTypes,
+} from "@medusajs/types"
 import {
   InventoryItemService,
   InventoryLevelService,
@@ -39,6 +45,7 @@ export default async (
 
 async function loadDefaultRepositories({ container }) {
   container.register({
+    baseRepository: asClass(BaseRepository).singleton(),
     reservationItemRepository: asClass(ReservationItemRepository).singleton(),
     inventoryLevelRepository: asClass(InventoryLevelRepository).singleton(),
     inventoryItemRepository: asClass(InventoryItemRepository).singleton(),

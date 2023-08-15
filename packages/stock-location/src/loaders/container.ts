@@ -3,6 +3,7 @@ import * as DefaultRepositories from "../repositories"
 import { Constructor, DAL, ModulesSdkTypes } from "@medusajs/types"
 import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/modules-sdk"
 
+import { BaseRepository } from "../repositories"
 import { StockLocationService } from "../services"
 import { asClass } from "awilix"
 import { lowerCaseFirst } from "@medusajs/utils"
@@ -28,6 +29,7 @@ export default async (
 
 async function loadDefaultRepositories({ container }) {
   container.register({
+    baseRepository: asClass(BaseRepository).singleton(),
     stockLocationRepository: asClass(
       DefaultRepositories.StockLocationRepostiory
     ).singleton(),

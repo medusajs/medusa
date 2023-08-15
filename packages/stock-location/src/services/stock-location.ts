@@ -89,7 +89,7 @@ export default class StockLocationService {
   async list(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ): Promise<StockLocation[]> {
     const queryOptions = ModulesSdkUtils.buildQuery<StockLocation>(
       selector,
@@ -120,7 +120,7 @@ export default class StockLocationService {
   async listAndCount(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ): Promise<[StockLocation[], number]> {
     const queryOptions = ModulesSdkUtils.buildQuery<StockLocation>(
       selector,
@@ -167,7 +167,7 @@ export default class StockLocationService {
   protected async retrieve_(
     stockLocationId: string,
     config: FindConfig<StockLocation> = {},
-    context: Context = {}
+    @MedusaContext() context: Context = {}
   ): Promise<StockLocation> {
     if (!isDefined(stockLocationId)) {
       throw new MedusaError(

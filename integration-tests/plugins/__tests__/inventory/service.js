@@ -286,7 +286,6 @@ describe("Inventory Module", () => {
           metadata: null,
           reserved_quantity: 4,
           stocked_quantity: 25,
-          deleted_at: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         })
@@ -774,13 +773,13 @@ describe("Inventory Module", () => {
       ).toEqual(
         expect.objectContaining({
           id: expect.any(String),
+
           inventory_item_id: inventoryItem.id,
           location_id: locationId,
           stocked_quantity: 5,
           reserved_quantity: 5,
           incoming_quantity: 0,
           metadata: null,
-          deleted_at: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         })
@@ -801,7 +800,6 @@ describe("Inventory Module", () => {
           reserved_quantity: 1,
           incoming_quantity: 0,
           metadata: null,
-          deleted_at: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         })
