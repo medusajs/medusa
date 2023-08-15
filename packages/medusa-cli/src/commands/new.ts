@@ -18,8 +18,8 @@ import inquirer from "inquirer"
 
 import reporter from "../reporter"
 import { getPackageManager, setPackageManager } from "../util/package-manager"
-import { clearProject } from "@medusajs/utils"
 import { PanicId } from "../reporter/panic-handler"
+import { clearProject } from "../util/clear-project"
 
 const removeUndefined = (obj) => {
   return Object.fromEntries(
