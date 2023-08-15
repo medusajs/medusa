@@ -1,5 +1,3 @@
-import * as InventoryModels from "./models"
-
 import { revertMigration, runMigrations } from "./scripts"
 
 import InventoryService from "./services/inventory"

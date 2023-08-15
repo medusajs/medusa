@@ -14,7 +14,6 @@ import {
   InventoryItemDTO,
   InventoryLevelDTO,
   JoinerServiceConfig,
-  MODULE_RESOURCE_TYPE,
   ReservationItemDTO,
   UpdateInventoryLevelInput,
   UpdateReservationItemInput,

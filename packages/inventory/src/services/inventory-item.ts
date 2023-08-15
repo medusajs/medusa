@@ -1,6 +1,5 @@
 import {
   CreateInventoryItemInput,
-  DAL,
   FilterableInventoryItemProps,
   FindConfig,
   IEventBusService,
@@ -17,7 +16,6 @@ import {
 import { InventoryItem } from "../models"
 import { InventoryItemRepository } from "../repositories"
 import { doNotForceTransaction } from "../utils"
-import { query } from "express"
 import { buildWhere } from "../utils/build-query"
 import { setMetadata } from "@medusajs/utils"
 
@@ -62,11 +60,6 @@ export default class InventoryItemService {
 
     queryOptions.where = buildWhere(selector)
 
-    // const queryBuilder = getListQuery(
-    //   context.transactionManager ?? this.manager_,
-    //   selector,
-    //   config
-    // )
     return await this.inventoryItemRepository_.find(queryOptions, context)
   }
 
@@ -97,19 +90,19 @@ export default class InventoryItemService {
       config
     )
 
-    const inventoryItem = await this.inventoryItemRepository_.find(
+    const [inventoryItem] = await this.inventoryItemRepository_.find(
       queryOptions,
       context
     )
 
-    if (!inventoryItem?.length) {
+    if (!inventoryItem) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `InventoryItem with id ${inventoryItemId} was not found`
       )
     }
 
-    return inventoryItem[0]
+    return inventoryItem
   }
 
   /**

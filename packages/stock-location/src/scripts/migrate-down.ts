@@ -9,7 +9,6 @@ import {
 
 import { EntitySchema } from "@mikro-orm/core"
 import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
-import { createConnection } from "../utils/create-connection"
 
 export async function revertMigration(
   { options, logger }: LoaderOptions,

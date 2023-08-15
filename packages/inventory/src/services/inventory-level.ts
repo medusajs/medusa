@@ -4,7 +4,6 @@ import {
   FilterableInventoryLevelProps,
   FindConfig,
   IEventBusService,
-  SharedContext,
   UpdateInventoryLevelInput,
 } from "@medusajs/types"
 import {
@@ -79,11 +78,6 @@ export default class InventoryLevelService {
     config: FindConfig<InventoryLevel> = { relations: [], skip: 0, take: 10 },
     @MedusaContext() context: Context = {}
   ): Promise<[InventoryLevel[], number]> {
-    // const manager = context.transactionManager ?? this.manager_
-    // const levelRepository = manager.getRepository(InventoryLevel)
-
-    // const query = buildQuery(selector, config) as FindManyOptions
-    // return await levelRepository.findAndCount(query)
     const queryOptions = ModulesSdkUtils.buildQuery<InventoryLevel>(
       selector,
       config
@@ -213,15 +207,6 @@ export default class InventoryLevelService {
       locationId,
       quantity
     )
-    // await manager
-    //   .createQueryBuilder()
-    //   .update(InventoryLevel)
-    //   .set({ reserved_quantity: () => `reserved_quantity + ${quantity}` })
-    //   .where(
-    //     "inventory_item_id = :inventoryItemId AND location_id = :locationId",
-    //     { inventoryItemId, locationId }
-    //   )
-    //   .execute()
   }
 
   /**
@@ -324,13 +309,6 @@ export default class InventoryLevelService {
       locationIds,
       context
     )
-
-    // const result = await levelRepository
-    //   .createQueryBuilder()
-    //   .select("SUM(stocked_quantity)", "quantity")
-    //   .where("inventory_item_id = :inventoryItemId", { inventoryItemId })
-    //   .andWhere("location_id IN (:...locationIds)", { locationIds })
-    //   .getRawOne()
   }
 
   /**
@@ -354,18 +332,6 @@ export default class InventoryLevelService {
       locationIds,
       context
     )
-
-    // const manager = context.transactionManager ?? this.manager_
-    // const levelRepository = manager.getRepository(InventoryLevel)
-
-    // const result = await levelRepository
-    //   .createQueryBuilder()
-    //   .select("SUM(stocked_quantity - reserved_quantity)", "quantity")
-    //   .where("inventory_item_id = :inventoryItemId", { inventoryItemId })
-    //   .andWhere("location_id IN (:...locationIds)", { locationIds })
-    //   .getRawOne()
-
-    // return parseFloat(result.quantity)
   }
 
   /**
@@ -389,17 +355,5 @@ export default class InventoryLevelService {
       locationIds,
       context
     )
-
-    // const manager = context.transactionManager ?? this.manager_
-    // const levelRepository = manager.getRepository(InventoryLevel)
-
-    // const result = await levelRepository
-    //   .createQueryBuilder()
-    //   .select("SUM(reserved_quantity)", "quantity")
-    //   .where("inventory_item_id = :inventoryItemId", { inventoryItemId })
-    //   .andWhere("location_id IN (:...locationIds)", { locationIds })
-    //   .getRawOne()
-
-    // return parseFloat(result.quantity)
   }
 }

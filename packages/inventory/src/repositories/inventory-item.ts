@@ -1,9 +1,4 @@
-import {
-  Context,
-  CreateInventoryItemInput,
-  DAL,
-  FindOptions,
-} from "@medusajs/types"
+import { Context, CreateInventoryItemInput, FindOptions } from "@medusajs/types"
 import { InventoryItem } from "../models"
 
 import { SqlEntityManager } from "@mikro-orm/postgresql"
@@ -13,14 +8,7 @@ import {
   MedusaContext,
   isDefined,
 } from "@medusajs/utils"
-import {
-  FilterQuery as MikroQuery,
-  LoadStrategy,
-  FindOptions as MikroOptions,
-  DeepPartial,
-  EntityData,
-} from "@mikro-orm/core"
-import { buildWhere } from "../utils/build-query"
+import { LoadStrategy, FindOptions as MikroOptions } from "@mikro-orm/core"
 
 type InjectedDependencies = { manager: SqlEntityManager }
 
@@ -65,13 +53,6 @@ export class InventoryItemRepository extends DALUtils.MikroOrmAbstractBaseReposi
       findOptions_.options as MikroOptions<InventoryItem>,
       manager
     )
-
-    // return await queryBuilder.getResultAndCount()
-    // return await manager.findAndCount(
-    //   InventoryItem,
-    //   findOptions_.where as MikroQuery<InventoryItem>,
-    //   findOptions_.options as MikroOptions<InventoryItem>
-    // )
   }
 
   @InjectTransactionManager()

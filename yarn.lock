@@ -6253,7 +6253,6 @@ __metadata:
     jest: ^25.5.4
     rimraf: ^5.0.1
     ts-jest: ^25.5.1
-    typeorm: ^0.3.16
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -6553,7 +6552,6 @@ __metadata:
     jest: ^25.5.4
     rimraf: ^5.0.1
     ts-jest: ^25.5.1
-    typeorm: ^0.3.16
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft

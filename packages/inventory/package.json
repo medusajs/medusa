@@ -31,8 +31,7 @@
     "@mikro-orm/core": "5.7.12",
     "@mikro-orm/migrations": "^5.7.12",
     "@mikro-orm/postgresql": "5.7.12",
-    "awilix": "^8.0.0",
-    "typeorm": "^0.3.16"
+    "awilix": "^8.0.0"
   },
   "scripts": {
     "watch": "tsc --build --watch",

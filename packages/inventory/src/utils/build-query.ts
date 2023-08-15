@@ -1,13 +1,4 @@
-import { ExtendedFindConfig, FilterQuery, FindConfig } from "@medusajs/types"
-import {
-  FindManyOptions,
-  FindOperator,
-  FindOptionsOrder,
-  FindOptionsRelations,
-  FindOptionsSelect,
-  FindOptionsWhere,
-} from "typeorm"
-import { buildOrder, buildRelations, buildSelects } from "@medusajs/utils"
+import { FilterQuery } from "@medusajs/types"
 
 const getOperator = (key, value) => {
   switch (key) {
@@ -30,74 +21,6 @@ const getOperator = (key, value) => {
   }
 }
 
-/**
- * Used to build TypeORM queries.
- * @param selector The selector
- * @param config The config
- * @return The QueryBuilderConfig
- */
-// export function buildQuery<TWhereKeys extends object, TEntity = unknown>(
-//   selector: TWhereKeys,
-//   config: FindConfig<TEntity> = {}
-// ) {
-//   const query: ExtendedFindConfig<TEntity> = {
-//     where: buildWhere<TWhereKeys, TEntity>(selector),
-//   }
-
-//   if ("deleted_at" in selector) {
-//     query.withDeleted = true
-//   }
-
-//   if ("skip" in config) {
-//     (query as FindManyOptions<TEntity>).skip = config.skip
-//   }
-
-//   if ("take" in config) {
-//     (query as FindManyOptions<TEntity>).take = config.take
-//   }
-
-//   if (config.relations) {
-//     query.relations = buildRelations(
-//       config.relations
-//     ) as FindOptionsRelations<TEntity>
-//   }
-
-//   if (config.select) {
-//     query.select = buildSelects(
-//       config.select as string[]
-//     ) as FindOptionsSelect<TEntity>
-//   }
-
-//   if (config.order) {
-//     query.order = buildOrder(config.order) as FindOptionsOrder<TEntity>
-//   }
-
-//   return query
-// }
-
-/**
- * @param constraints
- *
- * @example
- * const q = buildWhere(
- *   {
- *     id: "1234",
- *     test1: ["123", "12", "1"],
- *     test2: Not("this"),
- *     date: { gt: date },
- *     amount: { gt: 10 },
- *   },
- *)
- *
- * // Output
- * {
- *    id: "1234",
- *    test1: In(["123", "12", "1"]),
- *    test2: Not("this"),
- *    date: MoreThan(date),
- *    amount: MoreThan(10)
- * }
- */
 export function buildWhere<TWhereKeys extends object, TEntity>(
   constraints: TWhereKeys
 ): FilterQuery<TEntity> {
@@ -109,11 +32,6 @@ export function buildWhere<TWhereKeys extends object, TEntity>(
 
     if (value === null) {
       where[key] = { $eq: null }
-      continue
-    }
-
-    if (value instanceof FindOperator) {
-      where[key] = value
       continue
     }
 

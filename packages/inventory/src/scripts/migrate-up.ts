@@ -8,7 +8,6 @@ import {
   LoaderOptions,
 } from "@medusajs/types"
 import { ModulesSdkUtils, DALUtils } from "@medusajs/utils"
-import { createConnection } from "../utils/create-connection"
 
 export async function runMigrations(
   { options, logger }: LoaderOptions,

@@ -4,11 +4,9 @@ import {
   FilterableReservationItemProps,
   FindConfig,
   IEventBusService,
-  SharedContext,
   UpdateReservationItemInput,
 } from "@medusajs/types"
 import {
-  InjectEntityManager,
   InjectTransactionManager,
   isDefined,
   MedusaContext,

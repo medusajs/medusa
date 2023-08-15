@@ -22,7 +22,6 @@ import {
 import { EntityManager } from "typeorm"
 import { joinerConfig } from "../joiner-config"
 import { StockLocation, StockLocationAddress } from "../models"
-import { buildQuery } from "../utils/build-query"
 import {
   StockLocationAddressRepository,
   StockLocationRepostiory,

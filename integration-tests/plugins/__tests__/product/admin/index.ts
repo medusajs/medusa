@@ -118,7 +118,6 @@ describe("/admin/products", () => {
         .catch((err) => {
           console.log(err)
         })
-        
 
       expect(response?.status).toEqual(200)
       expect(response?.data.product).toEqual(

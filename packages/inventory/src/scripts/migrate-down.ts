@@ -4,8 +4,7 @@ import { InternalModuleDeclaration, LoaderOptions } from "@medusajs/modules-sdk"
 
 import { EntitySchema } from "@mikro-orm/core"
 import { Logger } from "@medusajs/types"
-import { ModulesSdkUtils } from "@medusajs/utils"
-import { createConnection } from "../utils/create-connection"
+import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { ModuleServiceInitializeOptions } from "@medusajs/types"
 
 export async function revertMigration(
@@ -21,7 +20,9 @@ export async function revertMigration(
 
   const entities = Object.values(InventoryModels) as unknown as EntitySchema[]
 
-  const orm = await createConnection(dbData, entities)
+  const orm = await DALUtils.mikroOrmCreateConnection(dbData, entities, {
+    dirname: __dirname,
+  })
 
   try {
     const migrator = orm.getMigrator()
