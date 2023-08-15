@@ -28,7 +28,7 @@ const BorderedIcon: React.FC<BorderedIconProp> = ({
     <Bordered wrapperClassName={wrapperClassName}>
       <span
         className={clsx(
-          "tw-inline-flex tw-justify-center tw-items-center tw-rounded-sm tw-p-[2px] tw-bg-medusa-bg-component dark:tw-bg-medusa-bg-component-dark",
+          "inline-flex justify-center items-center rounded-xs p-0.125 bg-medusa-bg-component dark:bg-medusa-bg-component-dark",
           iconWrapperClassName
         )}
       >

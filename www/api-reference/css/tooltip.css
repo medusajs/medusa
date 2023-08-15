@@ -1,0 +1,20 @@
+/* .react-tooltip {
+  @apply !border !border-solid !border-medusa-border-base dark:!border-medusa-border-base-dark;
+  @apply !rounded !text-compact-x-small-plus !shadow-tooltip dark:!shadow-tooltip-dark;
+  @apply !py-0.4 !px-1 lg:block hidden;
+} */
+
+/* .react-tooltip-arrow {
+  @apply hidden;
+} */
+
+:root {
+  --rt-opacity: theme(opacity.100) !important;
+  --rt-color-dark: theme(colors.medusa.bg.base.DEFAULT) !important;
+  --rt-color-white: theme(colors.medusa.fg.subtle.DEFAULT) !important;
+}
+
+[data-theme="dark"] {
+  --rt-color-dark: theme(colors.medusa.bg.base.dark) !important;
+  --rt-color-white: theme(colors.medusa.fg.subtle.dark) !important;
+}

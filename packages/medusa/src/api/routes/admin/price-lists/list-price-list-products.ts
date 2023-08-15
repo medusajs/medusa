@@ -150,7 +150,7 @@ import { isDefined } from "medusa-core-utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/price-lists/{id}/products' \
+ *       curl '{backend_url}/admin/price-lists/{id}/products' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

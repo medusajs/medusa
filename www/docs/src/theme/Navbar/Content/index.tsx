@@ -40,18 +40,15 @@ function NavbarContentLayout({
   return (
     <div
       className={clsx(
-        "tw-flex tw-flex-wrap tw-justify-between tw-w-full",
-        "tw-max-w-xl tw-mx-auto tw-py-[12px] tw-px-1.5"
+        "flex flex-wrap justify-between items-center w-full",
+        "lg:max-w-xl mx-auto py-0.5 px-1"
       )}
     >
-      <div className={clsx("tw-items-center tw-flex tw-flex-1 tw-min-w-0")}>
+      <div className={clsx("items-center flex flex-1 min-w-0 gap-1.5")}>
         {left}
       </div>
       <div
-        className={clsx(
-          "tw-items-center tw-flex tw-flex-1 tw-min-w-0",
-          "tw-justify-end"
-        )}
+        className={clsx("items-center flex lg:flex-1 min-w-0", "justify-end")}
       >
         {right}
       </div>
@@ -84,35 +81,43 @@ export default function NavbarContent(): JSX.Element {
         <>
           {!mobileSidebar.disabled && <NavbarMobileSidebarToggle />}
           <NavbarLogo />
+          <NavbarItems items={leftItems} />
+        </>
+      }
+      right={
+        // TODO stop hardcoding items?
+        // Ask the user to add the respective navbar items => more flexible
+        <div className="flex gap-0.5">
+          <NavbarItems items={rightItems} />
           {hideable && sidebarContext?.hasSidebar && (
             <NavbarActions
               items={[
                 {
                   type: "button",
                   html: !sidebarContext?.hiddenSidebarContainer
-                    ? `<span class="tw-text-label-x-small-plus">Close sidebar <kbd class="${clsx(
-                        "tw-bg-medusa-tag-neutral-bg dark:tw-bg-medusa-tag-neutral-bg-dark",
-                        "tw-border tw-border-solid tw-rounded tw-border-medusa-tag-neutral-border dark:tw-border-medusa-tag-neutral-border-dark",
-                        "tw-text-medusa-tag-neutral-text dark:tw-text-medusa-tag-neutral-text tw-font-base tw-text-label-x-small-plus",
-                        "tw-inline-flex tw-w-[22px] tw-h-[22px] !tw-p-0 tw-justify-center tw-items-center tw-shadow-none tw-ml-0.5"
+                    ? `<span class="text-compact-x-small-plus">Close sidebar <kbd class="${clsx(
+                        "bg-medusa-tag-neutral-bg dark:bg-medusa-tag-neutral-bg-dark",
+                        "border border-solid rounded border-medusa-tag-neutral-border dark:border-medusa-tag-neutral-border-dark",
+                        "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark font-base text-compact-x-small-plus",
+                        "inline-flex w-[22px] h-[22px] !p-0 justify-center items-center shadow-none ml-0.5"
                       )}">${isApple ? "⌘" : "Ctrl"}</kbd>
                       <kbd class="${clsx(
-                        "tw-bg-medusa-tag-neutral-bg dark:tw-bg-medusa-tag-neutral-bg-dark",
-                        "tw-border tw-border-solid tw-rounded tw-border-medusa-tag-neutral-border dark:tw-border-medusa-tag-neutral-border-dark",
-                        "tw-text-medusa-tag-neutral-text dark:tw-text-medusa-tag-neutral-text tw-font-base tw-text-label-x-small-plus",
-                        "tw-inline-flex tw-w-[22px] tw-h-[22px] !tw-p-0 tw-justify-center tw-items-center tw-shadow-none"
+                        "bg-medusa-tag-neutral-bg dark:bg-medusa-tag-neutral-bg-dark",
+                        "border border-solid rounded border-medusa-tag-neutral-border dark:border-medusa-tag-neutral-border-dark",
+                        "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark font-base text-compact-x-small-plus",
+                        "inline-flex w-[22px] h-[22px] !p-0 justify-center items-center shadow-none"
                       )}">I</kbd></span>`
-                    : `<span class="tw-text-label-x-small-plus">Lock sidebar open <kbd class="${clsx(
-                        "tw-bg-medusa-tag-neutral-bg dark:tw-bg-medusa-tag-neutral-bg-dark",
-                        "tw-border tw-border-solid tw-rounded tw-border-medusa-tag-neutral-border dark:tw-border-medusa-tag-neutral-border-dark",
-                        "tw-text-medusa-tag-neutral-text dark:tw-text-medusa-tag-neutral-text tw-font-base tw-text-label-x-small-plus",
-                        "tw-inline-flex tw-w-[22px] tw-h-[22px] !tw-p-0 tw-justify-center tw-items-center tw-shadow-none tw-ml-0.5"
+                    : `<span class="text-compact-x-small-plus">Lock sidebar open <kbd class="${clsx(
+                        "bg-medusa-tag-neutral-bg dark:bg-medusa-tag-neutral-bg-dark",
+                        "border border-solid rounded border-medusa-tag-neutral-border dark:border-medusa-tag-neutral-border-dark",
+                        "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark font-base text-compact-x-small-plus",
+                        "inline-flex w-[22px] h-[22px] !p-0 justify-center items-center shadow-none ml-0.5"
                       )}">${isApple ? "⌘" : "Ctrl"}</kbd>
                     <kbd class="${clsx(
-                      "tw-bg-medusa-tag-neutral-bg dark:tw-bg-medusa-tag-neutral-bg-dark",
-                      "tw-border tw-border-solid tw-rounded tw-border-medusa-tag-neutral-border dark:tw-border-medusa-tag-neutral-border-dark",
-                      "tw-text-medusa-tag-neutral-text dark:tw-text-medusa-tag-neutral-text tw-font-base tw-text-label-x-small-plus",
-                      "tw-inline-flex tw-w-[22px] tw-h-[22px] !tw-p-0 tw-justify-center tw-items-center tw-shadow-none"
+                      "bg-medusa-tag-neutral-bg dark:bg-medusa-tag-neutral-bg-dark",
+                      "border border-solid rounded border-medusa-tag-neutral-border dark:border-medusa-tag-neutral-border-dark",
+                      "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark font-base text-compact-x-small-plus",
+                      "inline-flex w-[22px] h-[22px] !p-0 justify-center items-center shadow-none"
                     )}">I</kbd></span>`,
                   events: {
                     onClick: sidebarContext?.onCollapse,
@@ -136,36 +141,23 @@ export default function NavbarContent(): JSX.Element {
                     },
                   },
                   icon: !sidebarContext?.hiddenSidebarContainer
-                    ? "bars-three"
+                    ? "sidebar"
                     : "chevron-double-left-mini-solid",
                 },
               ]}
-              className="tw-mr-0.5 sidebar-toggler"
+              className="sidebar-toggler"
             />
           )}
-          <NavbarItems items={leftItems} />
-        </>
-      }
-      right={
-        // TODO stop hardcoding items?
-        // Ask the user to add the respective navbar items => more flexible
-        <>
-          <NavbarItems items={rightItems} />
-          <span
-            className={clsx(
-              "lg:tw-h-[20px] lg:tw-w-[1px] lg:tw-mx-1 lg:tw-inline-block lg:tw-align-middle lg:tw-bg-medusa-border-strong lg:dark:tw-bg-medusa-border-strong-dark"
-            )}
-          ></span>
           <Tooltip text="Switch theme">
             <NavbarColorModeToggle
               className={clsx(
-                "lg:tw-block tw-hidden",
-                "navbar-action-icon-item !tw-w-2 !tw-h-2 tw-ml-1 tw-mr-[12px] [&>button]:!tw-rounded"
+                "lg:block hidden",
+                "navbar-action-icon-item !w-2 !h-2 [&>button]:!rounded"
               )}
             />
           </Tooltip>
           <NavbarActions items={navbarActions} />
-        </>
+        </div>
       }
     />
   )

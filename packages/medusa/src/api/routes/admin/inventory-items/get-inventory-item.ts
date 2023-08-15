@@ -30,7 +30,7 @@ import { joinLevels } from "./utils/join-levels"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/inventory-items/{id}' \
+ *       curl '{backend_url}/admin/inventory-items/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

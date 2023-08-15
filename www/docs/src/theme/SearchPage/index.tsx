@@ -89,9 +89,9 @@ function SearchVersionSelectList({
       className={clsx(
         "col",
         "col--3",
-        "tw-pl-0",
-        "lg:!tw-max-w-[unset] xs:!tw-max-w-[40%] !tw-max-w-full",
-        "xs:tw-pl-0 tw-pl-1"
+        "pl-0",
+        "lg:!max-w-[unset] xs:!max-w-[40%] !max-w-full",
+        "xs:pl-0 pl-1"
       )}
     >
       {versionedPluginEntries.map(([pluginId, docsData]) => {
@@ -367,14 +367,14 @@ function SearchPageContent(): JSX.Element {
         <meta property="robots" content="noindex, follow" />
       </Head>
 
-      <div className={clsx("container", "tw-mt-2")}>
+      <div className={clsx("container", "mt-2")}>
         <h1>{getTitle()}</h1>
 
         <form className="row" onSubmit={(e) => e.preventDefault()}>
           <div
             className={clsx(
               "col",
-              "lg:tw-max-w-[unset] xs:tw-max-w-[60%] tw-max-w-full",
+              "lg:max-w-[unset] xs:max-w-[60%] max-w-full",
               {
                 "col--9": docsSearchVersionsHelpers.versioningEnabled,
                 "col--12": !docsSearchVersionsHelpers.versioningEnabled,
@@ -386,7 +386,7 @@ function SearchPageContent(): JSX.Element {
               name="q"
               className={clsx(
                 "search-page-input",
-                "placeholder:tw-text-medusa-text-subtle dark:placeholder:tw-text-medusa-text-subtle-dark"
+                "placeholder:text-medusa-fg-subtle dark:placeholder:text-medusa-fg-subtle-dark"
               )}
               placeholder={translate({
                 id: "theme.SearchPage.inputPlaceholder",
@@ -413,7 +413,7 @@ function SearchPageContent(): JSX.Element {
         </form>
 
         <div className="row">
-          <div className={clsx("col", "col--8", "!tw-text-label-small-plus")}>
+          <div className={clsx("col", "col--8", "!text-compact-small-plus")}>
             {!!searchResultState.totalResults &&
               documentsFoundPlural(searchResultState.totalResults)}
           </div>
@@ -426,17 +426,17 @@ function SearchPageContent(): JSX.Element {
                 <article
                   key={i}
                   className={clsx(
-                    "tw-py-1 tw-px-0 tw-border-b tw-border-t-0 tw-border-x-0 tw-border-solid",
-                    "tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark",
-                    "!tw-max-w-[unset]"
+                    "py-1 px-0 border-b border-t-0 border-x-0 border-solid",
+                    "border-medusa-border-base dark:border-medusa-border-base-dark",
+                    "!max-w-[unset]"
                   )}
                 >
-                  <h2 className={clsx("tw-font-normal tw-mb-0.5")}>
+                  <h2 className={clsx("font-normal mb-0.5")}>
                     <Link
                       to={url}
                       dangerouslySetInnerHTML={{ __html: title }}
                       className={clsx(
-                        "tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark"
+                        "text-medusa-fg-base dark:text-medusa-fg-base-dark"
                       )}
                     />
                   </h2>
@@ -445,8 +445,8 @@ function SearchPageContent(): JSX.Element {
                     <nav aria-label="breadcrumbs">
                       <ul
                         className={clsx(
-                          "tw-mb-0 tw-pl-0",
-                          "!tw-text-label-x-small-plus tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark"
+                          "mb-0 pl-0",
+                          "!text-compact-x-small-plus text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark"
                         )}
                       >
                         {breadcrumbs.map((html, index) => (
@@ -464,7 +464,7 @@ function SearchPageContent(): JSX.Element {
 
                   {summary && (
                     <p
-                      className={clsx("tw-mt-0.5 tw-mb-0 tw-mx-0")}
+                      className={clsx("mt-0.5 mb-0 mx-0")}
                       // Developer provided the HTML, so assume it's safe.
                       // eslint-disable-next-line react/no-danger
                       dangerouslySetInnerHTML={{ __html: summary }}
@@ -490,8 +490,8 @@ function SearchPageContent(): JSX.Element {
               <div
                 key="spinner"
                 className={clsx(
-                  "tw-w-3 tw-h-3 tw-border-0.4 tw-border-solid tw-border-[#eee] tw-border-t-medusa-text-base dark:tw-border-t-medusa-text-base-dark",
-                  "tw-rounded-[50%] tw-animate-spin tw-my-0 tw-mx-auto"
+                  "w-3 h-3 border-[7px] border-solid border-[#eee] border-t-medusa-fg-base dark:border-t-medusa-fg-base-dark",
+                  "rounded-[50%] animate-spin my-0 mx-auto"
                 )}
               />
             ),
@@ -499,7 +499,7 @@ function SearchPageContent(): JSX.Element {
         )}
 
         {searchResultState.hasMore && (
-          <div className={clsx("tw-mt-2")} ref={setLoaderRef}>
+          <div className={clsx("mt-2")} ref={setLoaderRef}>
             <Translate
               id="theme.SearchPage.fetchingNewResults"
               description="The paragraph for fetching new search results"

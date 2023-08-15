@@ -36,8 +36,8 @@ const useCurrentLearningPath = () => {
         layout: "default",
         CustomIcon: (
           <LearningPathIcon
-            className="!tw-w-2 !tw-h-2"
-            imgClassName="!tw-w-1.5 !tw-h-1.5"
+            className="!w-2 !h-2"
+            imgClassName="!w-1.5 !h-1.5"
           />
         ),
         children: (

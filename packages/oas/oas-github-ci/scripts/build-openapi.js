@@ -8,7 +8,7 @@ const execa = require("execa")
 const isDryRun = process.argv.indexOf("--dry-run") !== -1
 const basePath = path.resolve(__dirname, `../`)
 const repoRootPath = path.resolve(basePath, `../../../`)
-const docsApiPath = path.resolve(repoRootPath, "docs/api/")
+const docsApiPath = path.resolve(repoRootPath, "www/api-reference/specs")
 
 const run = async () => {
   const oasOutDir = isDryRun ? await getTmpDirectory() : docsApiPath

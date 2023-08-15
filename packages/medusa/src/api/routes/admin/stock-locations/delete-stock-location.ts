@@ -24,7 +24,7 @@ import { SalesChannelLocationService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/stock-locations/{id}' \
+ *       curl -X DELETE '{backend_url}/admin/stock-locations/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

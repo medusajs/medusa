@@ -9,8 +9,8 @@ import IconExclamationCircleSolid from "../Icon/ExclamationCircleSolid"
 function NoteIcon() {
   return (
     <IconInformationCircleSolid
-      className="tw-inline-block tw-mr-[2px]"
-      iconColorClassName="tw-fill-medusa-support-info dark:tw-fill-medusa-support-info-dark"
+      className="inline-block mr-0.125"
+      iconColorClassName="fill-medusa-fg-interactive-dark"
     />
   )
 }
@@ -18,8 +18,8 @@ function NoteIcon() {
 function TipIcon() {
   return (
     <IconLightBulbSolid
-      className="tw-inline-block tw-mr-[2px]"
-      iconColorClassName="tw-fill-medusa-support-warning dark:tw-fill-medusa-support-warning-dark"
+      className="inline-block mr-0.125"
+      iconColorClassName="fill-medusa-tag-orange-icon-dark"
     />
   )
 }
@@ -27,8 +27,8 @@ function TipIcon() {
 function DangerIcon() {
   return (
     <IconExclamationCircleSolid
-      className="tw-inline-block tw-mr-[2px]"
-      iconColorClassName="tw-fill-medusa-support-error dark:tw-fill-medusa-support-error-dark"
+      className="inline-block mr-0.125"
+      iconColorClassName="fill-medusa-fg-error dark:fill-medusa-fg-error-dark"
     />
   )
 }
@@ -172,21 +172,19 @@ export default function Admonition(props: Props): JSX.Element {
   return (
     <div
       className={clsx(
-        "tw-p-1 tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark tw-rounded",
-        "tw-bg-medusa-bg-subtle dark:tw-bg-medusa-bg-base-dark tw-shadow-none",
-        "[&_a]:tw-no-underline [&_a]:tw-text-medusa-text-base dark:[&_a]:tw-text-medusa-text-base-dark hover:[&_a]:tw-text-medusa-text-subtle dark:hover:[&_a]:tw-text-medusa-text-subtle-dark",
-        "tw-mb-2 alert"
+        "p-1 border border-solid border-medusa-border-base dark:border-medusa-border-base-dark rounded",
+        "bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark shadow-none",
+        "[&_a]:no-underline [&_a]:text-medusa-fg-base dark:[&_a]:text-medusa-fg-base-dark hover:[&_a]:text-medusa-fg-subtle dark:hover:[&_a]:text-medusa-fg-subtle-dark",
+        "mb-2 alert"
       )}
     >
-      <div className={clsx("tw-flex")}>
-        <span className={clsx("tw-inline-block tw-h-1.5 tw-w-1.5 tw-mr-1")}>
-          {icon}
-        </span>
+      <div className={clsx("flex")}>
+        <span className={clsx("inline-block h-1.5 w-1.5 mr-1")}>{icon}</span>
         <div
           className={clsx(
-            "tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark",
-            "tw-text-body-regular tw-flex-1 [&>*:last-child]:tw-mb-0",
-            "[&>p>code]:tw-px-0.5 [&>p>code]:tw-text-[14px]"
+            "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+            "text-medium flex-1 [&>*:last-child]:mb-0",
+            "[&>p>code]:px-0.5 [&>p>code]:text-code-label"
           )}
         >
           {children}

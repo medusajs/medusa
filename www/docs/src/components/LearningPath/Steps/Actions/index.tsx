@@ -22,15 +22,15 @@ const LearningPathStepActions: React.FC<LearningPathStepActionsType> = ({
   }
 
   return (
-    <div className="tw-flex tw-gap-0.5 tw-p-1 tw-justify-end tw-items-center">
+    <div className="flex gap-0.5 p-1 justify-end items-center">
       <Button onClick={onClose}>Close</Button>
       {hasNextStep() && (
-        <Button onClick={nextStep} btnTypeClassName="btn-inverted">
+        <Button onClick={nextStep} btnTypeClassName="btn-primary">
           Next
         </Button>
       )}
       {!hasNextStep() && (
-        <Button onClick={handleFinish} btnTypeClassName="btn-inverted">
+        <Button onClick={handleFinish} btnTypeClassName="btn-primary">
           Finish
         </Button>
       )}

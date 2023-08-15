@@ -97,19 +97,16 @@ function TabList({
 
   return (
     <div
-      className={clsx(
-        isCodeTabs && "code-header",
-        !isCodeTabs && "[&+*]:tw-pt-2"
-      )}
+      className={clsx(isCodeTabs && "code-header", !isCodeTabs && "[&+*]:pt-2")}
     >
       <div
-        className={clsx(isCodeTabs && "tw-relative tw-overflow-auto")}
+        className={clsx(isCodeTabs && "relative overflow-auto")}
         ref={codeTabsWrapperRef}
       >
         {isCodeTabs && (
           <span
             className={clsx(
-              "xs:tw-absolute xs:tw-border xs:tw-border-solid xs:tw-border-medusa-code-tab-border xs:tw-bg-medusa-code-tab-bg xs:tw-transition-all xs:tw-duration-200 xs:tw-ease-ease xs:tw-top-0 xs:tw-z-[1] xs:tw-rounded-full"
+              "xs:absolute xs:border xs:border-solid xs:border-medusa-code-border dark:xs:border-medusa-code-border-dark xs:bg-medusa-code-bg-base dark:xs:bg-medusa-code-bg-base-dark xs:transition-all xs:duration-200 xs:ease-ease xs:top-0 xs:z-[1] xs:rounded-full"
             )}
             ref={codeTabSelectorRef}
           ></span>
@@ -120,7 +117,7 @@ function TabList({
           className={clsx(
             "tabs",
             isCodeTabs && "no-scrollbar",
-            "tw-list-none",
+            "list-none",
             className
           )}
         >
@@ -137,26 +134,28 @@ function TabList({
               {...attributes}
               className={clsx(
                 isCodeTabs &&
-                  "tw-text-medusa-code-tab-text tw-text-label-small-plus tw-py-[4px] tw-border tw-border-solid tw-border-transparent tw-whitespace-nowrap tw-rounded-full [&:not(:first-child)]:tw-ml-[4px]",
-                "!tw-mt-0 hover:!tw-bg-medusa-code-tab-hover tw-cursor-pointer",
+                  "text-compact-small-plus py-0.25 border border-solid border-transparent whitespace-nowrap rounded-full [&:not(:first-child)]:ml-0.25",
+                "!mt-0 cursor-pointer",
                 attributes?.className,
+                isCodeTabs && "z-[2] flex justify-center items-center",
                 isCodeTabs &&
-                  "tw-z-[2] tw-flex tw-justify-center tw-items-center",
+                  selectedValue !== value &&
+                  "text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark hover:!bg-medusa-code-bg-base dark:hover:!bg-medusa-code-bg-base-dark",
                 isCodeTabs &&
                   selectedValue === value &&
-                  "tw-text-medusa-code-tab-text-active tw-border tw-border-solid tw-border-medusa-code-tab-border tw-bg-medusa-code-tab-bg xs:tw-border-none xs:tw-bg-transparent",
+                  "text-medusa-code-text-base dark:text-medusa-code-text-base-dark border border-solid border-medusa-code-border dark:border-medusa-code-border-dark bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark xs:!border-none xs:!bg-transparent",
                 !isCodeTabs &&
-                  "tw-border-0 tw-border-b-[3px] tw-rounded tw-inline-flex tw-p-1 tw-transition-[background-color] tw-duration-200 tw-ease-ease",
+                  "border-0 border-b-[3px] rounded inline-flex p-1 transition-[background-color] duration-200 ease-ease",
                 !isCodeTabs &&
                   selectedValue === value &&
-                  "tw-border-solid tw-border-medusa-text-base dark:tw-border-medusa-text-base-dark tw-rounded-b-none",
+                  "border-solid border-medusa-fg-base dark:border-medusa-fg-base-dark rounded-b-none",
                 !isCodeTabs &&
                   selectedValue !== value &&
-                  "tw-text-medusa-text-subtle dark:tw-text-medusa-text-subtle-dark",
-                (!isCodeTabs || !attributes?.badge) && "tw-px-[12px]",
+                  "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+                (!isCodeTabs || !attributes?.badge) && "px-0.75",
                 isCodeTabs &&
                   attributes?.badge &&
-                  "[&_.badge]:tw-ml-0.5 [&_.badge]:tw-py-[2px] [&_.badge]:tw-px-[6px] [&_.badge]:tw-rounded-full tw-pl-[12px] tw-pr-[4px]"
+                  "[&_.badge]:ml-0.5 [&_.badge]:py-0.125 [&_.badge]:px-[6px] [&_.badge]:rounded-full pl-0.75 pr-0.25"
               )}
             >
               {label ?? value}
@@ -167,7 +166,7 @@ function TabList({
       {isCodeTabs && (
         <span
           className={clsx(
-            "tw-text-label-small-plus tw-text-medusa-code-tab-title tw-hidden xs:tw-block"
+            "text-compact-small-plus text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark hidden xs:block"
           )}
         >
           {codeTitle}
@@ -212,7 +211,7 @@ type TabsComponentProp = TabsCustomProps & OldProps
 function TabsComponent(props: TabsComponentProp): JSX.Element {
   const tabs = useTabs(props)
   return (
-    <div className={clsx("tw-mb-1.5")}>
+    <div className={clsx("mb-1.5")}>
       <TabList {...props} {...tabs} />
       <TabContent {...props} {...tabs} />
     </div>
@@ -247,7 +246,7 @@ export default function Tabs(props: TabsProps): JSX.Element {
         props.wrapperClassName,
         isCodeTabs && "code-tabs",
         !isCodeTabs &&
-          "tw-bg-docs-bg-surface dark:tw-bg-docs-bg-surface-dark tw-p-1 tw-border tw-border-solid tw-border-medusa-border-base dark:tw-border-medusa-border-base-dark tw-rounded"
+          "bg-docs-bg-surface dark:bg-docs-bg-surface-dark p-1 border border-solid border-medusa-border-base dark:border-medusa-border-base-dark rounded"
       )}
     >
       <TabsComponent
