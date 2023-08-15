@@ -1,6 +1,5 @@
 export * from "./bundles"
 export * from "./cart"
-export * from "./cli"
 export * from "./common"
 export * from "./dal"
 export * from "./decorators"
