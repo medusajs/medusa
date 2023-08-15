@@ -22,7 +22,9 @@ export async function runMigrations({
   const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)!
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
-  const orm = await DALUtils.mikroOrmCreateConnection(dbData, entities)
+  const orm = await DALUtils.mikroOrmCreateConnection(dbData, entities, {
+    dirname: __dirname,
+  })
 
   try {
     const migrator = orm.getMigrator()

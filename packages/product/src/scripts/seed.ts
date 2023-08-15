@@ -34,7 +34,9 @@ export async function run({
   const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)!
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
 
-  const orm = await DALUtils.mikroOrmCreateConnection(dbData, entities)
+  const orm = await DALUtils.mikroOrmCreateConnection(dbData, entities, {
+    dirname: __dirname,
+  })
   const manager = orm.em.fork()
 
   try {
@@ -57,8 +59,8 @@ async function createProductCategories(
 ): Promise<ProductCategory[]> {
   const categories: ProductCategory[] = []
 
-  for (let categoryData of categoriesData) {
-    let categoryDataClone = { ...categoryData }
+  for (const categoryData of categoriesData) {
+    const categoryDataClone = { ...categoryData }
     let parentCategory: ProductCategory | null = null
     const parentCategoryId = categoryDataClone.parent_category_id as string
     delete categoryDataClone.parent_category_id
