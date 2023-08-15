@@ -1,6 +1,6 @@
 import { useBaseSpecs } from "@/providers/base-specs"
 import type { OpenAPIV3 } from "openapi-types"
-import DetailsSummary from "../../../../Details/Summary"
+import Card from "../../../../Card"
 
 export type TagsOperationDescriptionSectionSecurityProps = {
   security: OpenAPIV3.SecurityRequirementObject[]
@@ -24,10 +24,10 @@ const TagsOperationDescriptionSectionSecurity = ({
 
   return (
     <div className="my-2">
-      <DetailsSummary
-        title="Authorizations"
-        subtitle={getDescription()}
-        expandable={false}
+      <Card
+        title="Authorization"
+        text={getDescription()}
+        href="#authentication"
       />
     </div>
   )
