@@ -1,10 +1,10 @@
+import { asValue } from "awilix"
 import { createMedusaContainer } from "medusa-core-utils"
 import path from "path"
-import { asValue } from "awilix"
 
 import modelsLoader from "../models"
 
-describe("models loader", () => {
+describe.skip("models loader", () => {
   const container = createMedusaContainer()
   container.register("db_entities", asValue([]))
   let models

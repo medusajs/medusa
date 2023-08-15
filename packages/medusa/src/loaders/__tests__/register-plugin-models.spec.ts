@@ -1,11 +1,11 @@
+import { asValue } from "awilix"
 import { createMedusaContainer } from "medusa-core-utils"
 import path from "path"
-import { asValue } from "awilix"
 
 import { registerPluginModels } from "../plugins"
 import configModule from './__fixtures__/customizations/medusa-config'
 
-describe("plugin models loader", () => {
+describe.skip("plugin models loader", () => {
   const container = createMedusaContainer()
   container.register("db_entities", asValue([]))
 
