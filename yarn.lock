@@ -6243,7 +6243,7 @@ __metadata:
   dependencies:
     "@medusajs/modules-sdk": ^1.8.8
     "@medusajs/types": "workspace:^"
-    "@medusajs/utils": ^1.9.1
+    "@medusajs/utils": ^1.9.5
     "@mikro-orm/cli": ^5.7.12
     "@mikro-orm/core": 5.7.12
     "@mikro-orm/migrations": ^5.7.12
@@ -6543,7 +6543,7 @@ __metadata:
   dependencies:
     "@medusajs/modules-sdk": "workspace:^"
     "@medusajs/types": "workspace:^"
-    "@medusajs/utils": ^1.9.1
+    "@medusajs/utils": ^1.9.5
     "@mikro-orm/cli": 5.7.12
     "@mikro-orm/core": 5.7.12
     "@mikro-orm/migrations": 5.7.12
@@ -6572,7 +6572,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@^1.9.1, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.3, @medusajs/utils@^1.9.4, @medusajs/utils@^1.9.5, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^1.9.2, @medusajs/utils@^1.9.3, @medusajs/utils@^1.9.4, @medusajs/utils@^1.9.5, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:

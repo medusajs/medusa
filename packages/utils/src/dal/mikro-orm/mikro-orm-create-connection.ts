@@ -2,7 +2,8 @@ import { ModuleServiceInitializeOptions } from "@medusajs/types"
 
 export async function mikroOrmCreateConnection(
   database: ModuleServiceInitializeOptions["database"] & { connection?: any },
-  entities: any[]
+  entities: any[], 
+  context: {dirname?: string } = {}
 ) {
   let schema = database.schema || "public"
 
@@ -10,6 +11,7 @@ export async function mikroOrmCreateConnection(
     connection: { ssl: true },
   }
 
+  const dirname = context.dirname ?? __dirname
   let clientUrl = database.clientUrl
 
   if (database.connection) {
@@ -20,6 +22,9 @@ export async function mikroOrmCreateConnection(
       database.connection.context.client.config.connection.connectionString
     schema = database.connection.context.client.config.searchPath
   }
+
+  console.log(dirname)
+  console.log(dirname + "/../migrations")
 
   const { MikroORM } = await import("@mikro-orm/postgresql")
   return await MikroORM.init({
@@ -33,7 +38,7 @@ export async function mikroOrmCreateConnection(
     tsNode: process.env.APP_ENV === "development",
     type: "postgresql",
     migrations: {
-      path: __dirname + "/../migrations",
+      path: dirname + "/../migrations",
     },
   })
 }

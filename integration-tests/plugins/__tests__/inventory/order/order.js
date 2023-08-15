@@ -31,7 +31,7 @@ describe("/store/carts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    const { container, app, port } = await bootstrapApp({ cwd })
+    const { container, app, port } = await bootstrapApp({ cwd, verbose: true })
     appContainer = container
 
     setPort(port)

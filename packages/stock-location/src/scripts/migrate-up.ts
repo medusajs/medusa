@@ -24,7 +24,9 @@ export async function runMigrations(
 
   const entities = Object.values(StockModels) as unknown as EntitySchema[]
 
-  const orm = await createConnection(dbData, entities)
+  const orm = await DALUtils.mikroOrmCreateConnection(dbData, entities, {
+    dirname: __dirname,
+  })
 
   try {
     const migrator = orm.getMigrator()
