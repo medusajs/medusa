@@ -115,7 +115,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/regions' \
+ *       curl '{backend_url}/admin/regions' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

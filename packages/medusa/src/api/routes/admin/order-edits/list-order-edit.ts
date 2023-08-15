@@ -33,7 +33,7 @@ import { IsOptional, IsString } from "class-validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/order-edits' \
+ *       curl '{backend_url}/admin/order-edits' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

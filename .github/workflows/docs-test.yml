@@ -2,8 +2,8 @@ name: Documentation Tests
 on: 
   pull_request:
     paths:
-      - docs/content/**
       - www/docs/**
+      - www/api-reference/**
 jobs:
   docs-test:
     runs-on: ubuntu-latest
@@ -52,7 +52,7 @@ jobs:
           fetch-depth: 0
 
       - name: Get Directories to Scan
-        working-directory: docs
+        working-directory: www/docs/vale
         run: ./get-files.sh
         id: directories
 
@@ -79,14 +79,14 @@ jobs:
           fetch-depth: 0
 
       - name: Install dependencies
-        uses: ./.github/actions/cache-deps
-        with:
-          extension: eslint-docs
+        working-directory: www/docs
+        run: yarn install
 
       - name: Run Eslint
-        run: yarn lint:docs
+        working-directory: www/docs
+        run: yarn lint:content
   
-  code-eslint:
+  code-docs-eslint:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
@@ -105,4 +105,25 @@ jobs:
 
       - name: Run Eslint
         working-directory: www/docs
+        run: yarn lint
+
+  code-api-ref-eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        working-directory: www/api-reference
+        run: yarn install
+
+      - name: Run Eslint
+        working-directory: www/api-reference
         run: yarn lint

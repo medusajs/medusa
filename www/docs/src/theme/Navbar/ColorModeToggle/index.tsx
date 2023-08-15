@@ -17,7 +17,7 @@ export default function NavbarColorModeToggle({
     <ColorModeToggle
       className={className}
       buttonClassName={
-        "hover:!tw-bg-medusa-button-neutral-hover dark:hover:!tw-bg-medusa-button-neutral-hover-dark"
+        "hover:!bg-medusa-button-neutral-hover dark:hover:!bg-medusa-button-neutral-hover-dark"
       }
       value={colorMode}
       onChange={setColorMode}

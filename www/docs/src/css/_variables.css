@@ -7,24 +7,26 @@
   --ifm-hr-margin-vertical: theme(margin.2);
   --ifm-leading: theme(lineHeight.DEFAULT);
   --ifm-list-left-padding: theme(spacing.1);
+  --font-inter: "Inter";
+  --font-roboto-mono: "Roboto Mono";
   
   /* Colors */
-  --ifm-color-primary: theme(colors.medusa.text.base.DEFAULT);
+  --ifm-color-primary: theme(colors.medusa.fg.base.DEFAULT);
   --ifm-background-color: theme(colors.medusa.bg.base.DEFAULT);
   --ifm-background-surface-color: theme(colors.medusa.bg.subtle.DEFAULT);
-  --ifm-color-content: theme(colors.medusa.text.subtle.DEFAULT) !important;
+  --ifm-color-content: theme(colors.medusa.fg.subtle.DEFAULT) !important;
   --ifm-color-content-secondary: var(--ifm-color-content);
   --ifm-base-border-color: theme(colors.medusa.border.base.DEFAULT);
   --ifm-strong-border-color: theme(colors.medusa.border.strong.DEFAULT);
   --ifm-hr-background-color: theme(colors.medusa.border.base.DEFAULT);
 
   /* Fonts */
-  --ifm-code-font-size: theme(fontSize.body-regular[0]);
+  --ifm-code-font-size: theme(fontSize.code-label);
   --ifm-font-family-base: theme(fontFamily.base);
   --ifm-font-family-monospace: theme(fontFamily.monospace);
-  --ifm-font-size-base: theme(fontSize.body-regular[0]);
-  --ifm-line-height-base: theme(fontSize.body-regular[1].lineHeight);
-  --ifm-font-weight-base: theme(fontSize.body-regular[1].fontWeight);
+  --ifm-font-size-base: theme(fontSize.medium[0]);
+  --ifm-line-height-base: theme(fontSize.medium[1].lineHeight);
+  --ifm-font-weight-base: theme(fontSize.medium[1].fontWeight);
 
   /* Headings */
   /** Due to how docusaurus styles headings, the styles are applied on h1, h2, and h3 again in _docusaurus **/
@@ -49,26 +51,26 @@
   /* Sidebar */
   --ifm-menu-link-padding-vertical: 6px;
   --ifm-menu-link-padding-horizontal: theme(margin.1);
-  --ifm-menu-color: theme(colors.medusa.text.subtle.DEFAULT);
-  --ifm-menu-color-active: theme(colors.medusa.text.base.DEFAULT);
+  --ifm-menu-color: theme(colors.medusa.fg.subtle.DEFAULT);
+  --ifm-menu-color-active: theme(colors.medusa.fg.base.DEFAULT);
   --ifm-menu-color-background-hover: theme(colors.medusa.bg.base.hover.DEFAULT);
   --ifm-menu-color-background-active: theme(colors.medusa.bg.base.pressed.DEFAULT);
 
   /* Toc */
   --ifm-toc-border-color: theme(colors.medusa.border.base.DEFAULT);
-  --ifm-toc-link-color: theme(colors.medusa.text.subtle.DEFAULT);
+  --ifm-toc-link-color: theme(colors.medusa.fg.subtle.DEFAULT);
   --ifm-toc-padding-horizontal: theme(padding.1);
 
   /* Navbar */
   --ifm-navbar-background-color: var(--ifm-background-color);
-  --ifm-navbar-shadow: theme(boxShadow.navbar);
+  --ifm-navbar-shadow: none;
   --ifm-navbar-padding-vertical: 12px;
   --ifm-navbar-padding-horizontal: theme(padding[1.5]);
   --ifm-navbar-item-padding-vertical: 6px;
   --ifm-navbar-item-padding-horizontal: theme(padding[1]);
   --ifm-navbar-height: theme(height.navbar);
-  --ifm-navbar-link-hover-color: theme(colors.medusa.text.base.DEFAULT);
-  --ifm-navbar-link-color: theme(colors.medusa.text.subtle.DEFAULT);
+  --ifm-navbar-link-hover-color: theme(colors.medusa.fg.base.DEFAULT);
+  --ifm-navbar-link-color: theme(colors.medusa.fg.subtle.DEFAULT);
 
   /* Inline Code */
   --ifm-code-border-radius: theme(borderRadius.DEFAULT);
@@ -76,7 +78,7 @@
   --ifm-code-background: theme(colors.medusa.bg.subtle.DEFAULT) !important;
 
   /* Code Blocks */
-  --ifm-pre-background: theme(colors.medusa.code.block.bg);
+  --ifm-pre-background: theme(colors.medusa.code.bg.base.DEFAULT);
   --ifm-pre-padding: theme(padding.1);
 
   /* Tabs */
@@ -88,23 +90,23 @@
   --rt-color-white: var(--ifm-color-content) !important;
 
   /* Footer */
-  --ifm-footer-color: theme(colors.medusa.text.muted.DEFAULT);
+  --ifm-footer-color: theme(colors.medusa.fg.muted.DEFAULT);
   --ifm-footer-background-color: transparent;
   --ifm-footer-padding-horizontal: 0;
   --ifm-footer-link-color: var(--ifm-color-content);
 
   /* Search */
-  --docsearch-searchbox-background: theme(colors.medusa.bg.field.DEFAULT) !important;
-  --docsearch-searchbox-focus-background: theme(colors.medusa.bg.field.hover.DEFAULT) !important;
+  --docsearch-searchbox-background: theme(colors.medusa.bg.subtle.DEFAULT) !important;
+  --docsearch-searchbox-focus-background: theme(colors.medusa.bg.subtle.hover.DEFAULT) !important;
   --docsearch-searchbox-shadow: none !important;
   --docsearch-modal-height: 472px !important;
   --docsearch-modal-background: theme(colors.medusa.bg.base.DEFAULT) !important;
   --docsearch-modal-shadow: theme(boxShadow.modal) !important;
   --docsearch-container-background: theme(colors.medusa.bg.overlay.DEFAULT) !important;
-  --docsearch-key-gradient: theme(colors.medusa.bg.component.DEFAULT) !important;
-  --docsearch-muted-color: theme(colors.medusa.text.subtle.DEFAULT) !important;
+  --docsearch-key-gradient: theme(colors.medusa.tag.neutral.bg.DEFAULT) !important;
+  --docsearch-muted-color: theme(colors.medusa.fg.subtle.DEFAULT) !important;
   --docsearch-spacing: 12px theme(spacing[1.5]) !important;
-  --docsearch-highlight-color: theme(colors.medusa.text.muted.DEFAULT) !important;
+  --docsearch-highlight-color: theme(colors.medusa.fg.muted.DEFAULT) !important;
   --docsearch-text-color: var(--ifm-color-primary) !important;
   --docsearch-hit-background: var(--docsearch-modal-background) !important;
   --docsearch-hit-height: auto !important;
@@ -118,7 +120,7 @@
   --ifm-table-border-color: theme(colors.medusa.border.base.DEFAULT);
   --ifm-table-head-background: var(--ifm-background-surface-color);
   --ifm-table-head-color: var(--ifm-color-primary);
-  --ifm-table-head-font-weight: theme(fontSize.body-regular-plus[1].fontWeight);
+  --ifm-table-head-font-weight: theme(fontSize.medium-plus[1].fontWeight);
   --ifm-table-stripe-background: var(--ifm-background-surface-color) !important;
 }
 
@@ -127,44 +129,47 @@ html[data-theme="dark"] {
   --ifm-background-color: theme(colors.medusa.bg.subtle.dark);
   --ifm-background-surface-color: theme(colors.medusa.bg.base.dark);
   --ifm-hr-background-color: theme(colors.medusa.border.base.dark);
-  --ifm-color-primary: theme(colors.medusa.text.base.dark);
-  --ifm-color-content: theme(colors.medusa.text.subtle.dark) !important;
+  --ifm-color-primary: theme(colors.medusa.fg.base.dark);
+  --ifm-color-content: theme(colors.medusa.fg.subtle.dark) !important;
   --ifm-base-border-color: theme(colors.medusa.border.base.dark);
   --ifm-strong-border-color: theme(colors.medusa.border.strong.dark);
 
   /* Sidebar */
-  --ifm-menu-color: theme(colors.medusa.text.subtle.dark);
-  --ifm-menu-color-active: theme(colors.medusa.text.base.dark);
+  --ifm-menu-color: theme(colors.medusa.fg.subtle.dark);
+  --ifm-menu-color-active: theme(colors.medusa.fg.base.dark);
   --ifm-menu-color-background-hover: theme(colors.medusa.bg.subtle.hover.dark);
   --ifm-menu-color-background-active: theme(colors.medusa.bg.subtle.pressed.dark);
 
   /* Toc */
   --ifm-toc-border-color: theme(colors.medusa.border.base.dark);
-  --ifm-toc-link-color: theme(colors.medusa.text.subtle.dark);
+  --ifm-toc-link-color: theme(colors.medusa.fg.subtle.dark);
 
   /* Navbar */
-  --ifm-navbar-shadow: theme(boxShadow.navbar-dark);
-  --ifm-navbar-link-hover-color: theme(colors.medusa.text.base.dark);
-  --ifm-navbar-link-color: theme(colors.medusa.text.subtle.dark);
+  --ifm-navbar-shadow: none;
+  --ifm-navbar-link-hover-color: theme(colors.medusa.fg.base.dark);
+  --ifm-navbar-link-color: theme(colors.medusa.fg.subtle.dark);
 
   /* Inline Code */
   --ifm-code-background: theme(colors.medusa.bg.base.dark) !important;
+
+  /* Code Blocks */
+  --ifm-pre-background: theme(colors.medusa.code.bg.base.dark);
 
   /* Tooltip */
   --rt-color-dark: theme(colors.medusa.bg.base.dark) !important;
 
   /* Footer */
-  --ifm-footer-color: theme(colors.medusa.text.muted.dark);
+  --ifm-footer-color: theme(colors.medusa.fg.muted.dark);
 
   /* Search */
-  --docsearch-searchbox-background: theme(colors.medusa.bg.field.dark) !important;
-  --docsearch-searchbox-focus-background: theme(colors.medusa.bg.field.hover.dark) !important;
+  --docsearch-searchbox-background: theme(colors.medusa.bg.subtle.dark) !important;
+  --docsearch-searchbox-focus-background: theme(colors.medusa.bg.subtle.hover.dark) !important;
   --docsearch-modal-background: theme(colors.medusa.bg.base.dark) !important;
   --docsearch-modal-shadow: theme(boxShadow.modal-dark) !important;
   --docsearch-container-background: theme(colors.medusa.bg.overlay.dark) !important;
-  --docsearch-key-gradient: theme(colors.medusa.bg.component.dark) !important;
-  --docsearch-muted-color: theme(colors.medusa.text.subtle.dark) !important;
-  --docsearch-highlight-color: theme(colors.medusa.text.muted.dark) !important;
+  --docsearch-key-gradient: theme(colors.medusa.tag.neutral.bg.dark) !important;
+  --docsearch-muted-color: theme(colors.medusa.fg.subtle.dark) !important;
+  --docsearch-highlight-color: theme(colors.medusa.fg.muted.dark) !important;
 
   /* Tables */
   --ifm-table-border-color: theme(colors.medusa.border.base.dark);
@@ -195,5 +200,5 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="dark"] .alert {
-  --ifm-code-background: theme(colors.medusa.bg.base.dark) !important;
+  --ifm-code-background: theme(colors.medusa.bg.subtle.dark) !important;
 }

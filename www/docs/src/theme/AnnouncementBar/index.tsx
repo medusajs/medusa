@@ -18,35 +18,33 @@ export default function AnnouncementBar(): JSX.Element | null {
   return (
     <div
       className={clsx(
-        "tw-relative tw-flex tw-items-center tw-h-auto tw-bg-medusa-bg-subtle dark:tw-bg-medusa-bg-base-dark tw-p-[12px]",
-        "tw-rounded tw-mx-1.5 tw-mb-1 tw-shadow-card-rest dark:tw-shadow-card-rest-dark",
-        "tw-transition-all tw-duration-200 tw-ease-ease",
-        "hover:tw-bg-medusa-bg-subtle-hover dark:hover:tw-bg-medusa-bg-base-hover-dark",
-        "print:tw-hidden"
+        "relative flex items-center h-auto bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark p-0.75",
+        "rounded mx-1.5 mb-1 shadow-card-rest dark:shadow-card-rest-dark",
+        "transition-all duration-200 ease-ease",
+        "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-base-hover-dark",
+        "print:hidden"
       )}
     >
-      <Bordered wrapperClassName="tw-mr-[12px]">
+      <Bordered wrapperClassName="mr-0.75">
         <div
           className={clsx(
-            "tw-p-[6px] tw-flex tw-justify-center tw-items-center",
-            "tw-rounded-sm tw-bg-medusa-bg-component dark:tw-bg-medusa-bg-component-dark"
+            "p-[6px] flex justify-center items-center",
+            "rounded-xs bg-medusa-bg-component dark:bg-medusa-bg-component-dark"
           )}
         >
-          <IconBell iconColorClassName="tw-fill-medusa-icon-subtle dark:tw-fill-medusa-icon-subtle-dark" />
+          <IconBell iconColorClassName="fill-medusa-fg-subtle dark:fill-medusa-fg-subtle-dark" />
         </div>
       </Bordered>
-      <AnnouncementBarContent className={clsx("tw-flex-1")} />
+      <AnnouncementBarContent className={clsx("flex-1")} />
       {isCloseable && (
         <AnnouncementBarCloseButton
           onClick={close}
-          className={clsx("tw-z-[101] tw-text-right lg:tw-basis-[50px]")}
+          className={clsx("z-[101] text-right lg:basis-[50px]")}
         />
       )}
       <a
         href={id}
-        className={clsx(
-          "tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-z-[100]"
-        )}
+        className={clsx("absolute top-0 left-0 w-full h-full z-[100]")}
       />
     </div>
   )

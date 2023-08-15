@@ -24,7 +24,7 @@ import NoteService from "../../../../services/note"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/notes/{id}' \
+ *       curl '{backend_url}/admin/notes/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

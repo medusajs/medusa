@@ -14,7 +14,7 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
   className = "",
 }) => {
   return (
-    <div className={clsx("lg:tw-block tw-hidden", className)}>
+    <div className={clsx("lg:block hidden", className)}>
       {items.map((item, index) => {
         // eslint-disable-next-line no-case-declarations
         const ItemIcon = item.icon ? Icon[item.icon] : null
@@ -25,7 +25,7 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
                 text={item.title}
                 html={item.html}
                 key={index}
-                tooltipClassName="!tw-text-label-x-small-plus"
+                tooltipClassName="!text-compact-x-small-plus"
               >
                 <a
                   href={item.href}
@@ -46,7 +46,7 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
                 text={item.title}
                 html={item.html}
                 key={index}
-                tooltipClassName="!tw-text-label-x-small-plus"
+                tooltipClassName="!text-compact-x-small-plus"
               >
                 <button
                   className={clsx(
