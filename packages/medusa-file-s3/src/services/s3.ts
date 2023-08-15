@@ -111,7 +111,7 @@ class S3Service extends AbstractFileService implements IFileService {
 
     const fileKey = `${fileData.name}.${fileData.ext}`
     const params: PutObjectRequest = {
-      ACL: fileData.acl ?? "private",
+      ACL: fileData.isPrivate ? "private" : "public-read",
       Bucket: this.bucket_,
       Body: pass,
       Key: fileKey,

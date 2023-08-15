@@ -120,11 +120,10 @@ class MinioService extends AbstractFileService implements IFileService {
 
   async getUploadStreamDescriptor(
     fileData: UploadStreamDescriptorType & {
-      usePrivateBucket?: boolean
       contentType?: string
     }
   ) {
-    const usePrivateBucket = fileData.usePrivateBucket ?? true
+    const usePrivateBucket = fileData.isPrivate ?? true
 
     this.validatePrivateBucketConfiguration_(usePrivateBucket)
 
@@ -150,9 +149,9 @@ class MinioService extends AbstractFileService implements IFileService {
   }
 
   async getDownloadStream(
-    fileData: GetUploadedFileType & { usePrivateBucket?: boolean }
+    fileData: GetUploadedFileType & { isPrivate?: boolean }
   ) {
-    const usePrivateBucket = !!fileData.usePrivateBucket
+    const usePrivateBucket = fileData.isPrivate ?? true
     this.validatePrivateBucketConfiguration_(usePrivateBucket)
     const client = this.getClient(usePrivateBucket)
 
