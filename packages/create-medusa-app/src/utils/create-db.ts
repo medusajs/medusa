@@ -40,7 +40,7 @@ export async function runCreateDb({
   }
 }
 
-export async function getDbClientAndCredentials(dbName: string): Promise<{
+async function getForDbName(dbName: string): Promise<{
   client: pg.Client
   dbConnectionString: string
 }> {
@@ -99,5 +99,42 @@ export async function getDbClientAndCredentials(dbName: string): Promise<{
   return {
     client,
     dbConnectionString,
+  }
+}
+
+async function getForDbUrl(dbUrl: string): Promise<{
+  client: pg.Client
+  dbConnectionString: string
+}> {
+  let client!: pg.Client
+
+  try {
+    client = await postgresClient({
+      connectionString: dbUrl,
+    })
+  } catch (e) {
+    logMessage({
+      message: `Couldn't connect to PostgreSQL using the database URL you passed. Make sure it's correct and try again.`,
+      type: "error",
+    })
+  }
+
+  return {
+    client,
+    dbConnectionString: dbUrl,
+  }
+}
+
+export async function getDbClientAndCredentials({
+  dbName = "",
+  dbUrl = "",
+}): Promise<{
+  client: pg.Client
+  dbConnectionString: string
+}> {
+  if (dbName) {
+    return await getForDbName(dbName)
+  } else {
+    return await getForDbUrl(dbUrl)
   }
 }
