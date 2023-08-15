@@ -41,7 +41,7 @@ module.exports = {
   modules: {
     [Modules.STOCK_LOCATION]: {
       scope: "internal",
-      resources: "shared",
+      resources: "isolated",
       resolve: "@medusajs/stock-location",
       options: {
         database: {
@@ -52,7 +52,7 @@ module.exports = {
     },
     [Modules.INVENTORY]: {
       scope: "internal",
-      resources: "shared",
+      resources: "isolated",
       resolve: "@medusajs/inventory",
       options: {
         database: {
@@ -67,7 +67,7 @@ module.exports = {
     },
     [Modules.PRODUCT]: {
       scope: "internal",
-      resources: "shared",
+      resources: "isolated",
       resolve: "@medusajs/product",
     },
   },

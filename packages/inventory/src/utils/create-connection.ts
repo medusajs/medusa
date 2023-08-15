@@ -7,7 +7,7 @@ export async function createConnection(
   entities: any[]
 ) {
   const schema = database.schema || "public"
-  const orm = await MikroORM.init<PostgreSqlDriver>({
+  return await MikroORM.init<PostgreSqlDriver>({
     discovery: { disableDynamicFileAccess: true },
     entities,
     debug: database.debug ?? process.env.NODE_ENV?.startsWith("dev") ?? false,
@@ -23,8 +23,4 @@ export async function createConnection(
       path: __dirname + "/../migrations",
     },
   })
-
-  types.setTypeParser(1700, (val) => val)
-
-  return orm
 }

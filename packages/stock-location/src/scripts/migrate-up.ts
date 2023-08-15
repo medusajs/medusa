@@ -8,7 +8,7 @@ import {
 } from "@medusajs/types"
 
 import { EntitySchema } from "@mikro-orm/core"
-import { ModulesSdkUtils } from "@medusajs/utils"
+import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { createConnection } from "../utils/create-connection"
 
 export async function runMigrations(
@@ -29,8 +29,12 @@ export async function runMigrations(
   try {
     const migrator = orm.getMigrator()
 
+    logger.info(__dirname + "/../migrations")
+
     const pendingMigrations = await migrator.getPendingMigrations()
-    logger.info(`Running pending migrations: ${pendingMigrations}`)
+    logger.info(
+      `Running pending migrations: ${JSON.stringify(pendingMigrations)}`
+    )
 
     await migrator.up({
       migrations: pendingMigrations.map((m) => m.name),
