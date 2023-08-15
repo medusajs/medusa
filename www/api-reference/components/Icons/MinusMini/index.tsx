@@ -14,7 +14,7 @@ const IconMinusMini = ({ iconColorClassName, ...props }: IconProps) => {
         d="M14.375 10H5.62498"
         className={
           iconColorClassName ||
-          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle"
+          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle-dark"
         }
         strokeWidth="1.5"
         strokeLinecap="round"

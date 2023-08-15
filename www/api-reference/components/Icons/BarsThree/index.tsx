@@ -15,7 +15,7 @@ const IconBarsThree = ({ iconColorClassName, ...props }: IconProps) => {
         d="M3.125 5.00006H16.875M3.125 10H16.875M3.125 15.0001H16.875"
         className={
           iconColorClassName ||
-          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle"
+          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle-dark"
         }
         strokeWidth="1.5"
         strokeLinecap="round"
