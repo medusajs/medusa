@@ -28,7 +28,7 @@ describe("/admin/products", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd } as any)
-    const { app, port, container } = await bootstrapApp({ cwd, verbose: true })
+    const { app, port, container } = await bootstrapApp({ cwd })
     medusaContainer = container
 
     setPort(port)
