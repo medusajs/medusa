@@ -7,9 +7,7 @@ import SearchBar from "../../SearchBar"
 import NavbarColorModeToggle from "../ColorModeToggle"
 
 const MobileMenu = () => {
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth < 1025 : false
-  )
+  const [isMobile, setIsMobile] = useState(false)
 
   const handleResize = useCallback(() => {
     if (window.innerWidth < 1025 && !isMobile) {
@@ -27,10 +25,14 @@ const MobileMenu = () => {
     }
   }, [handleResize])
 
+  useEffect(() => {
+    handleResize()
+  }, [])
+
   return (
-    <>
+    <div className="flex w-full items-center justify-between lg:hidden">
       {isMobile && (
-        <div className="flex w-full items-center justify-between lg:hidden">
+        <>
           <NavbarMenuButton
             buttonProps={{
               className:
@@ -47,9 +49,9 @@ const MobileMenu = () => {
               }}
             />
           </div>
-        </div>
+        </>
       )}
-    </>
+    </div>
   )
 }
 
