@@ -1,3 +1,4 @@
+import { ProductVariantPricingDTO } from "@medusajs/types"
 import { WorkflowDataPreparationArguments } from "../../helper"
 
 type GetProductVariantPricingInput = {
@@ -6,18 +7,22 @@ type GetProductVariantPricingInput = {
 }
 
 type HandlerInput = {
-  variantPricingData: GetProductVariantPricingInput[]
+  variants: GetProductVariantPricingInput[]
   context: {
-    customer_id?: string
     region_id: string
+    customer_id?: string
   }
+}
+
+type HandlerOutput = {
+  variantsPricing: ProductVariantPricingDTO | {}
 }
 
 export async function getProductVariantsPricing({
   container,
   context,
   data,
-}: WorkflowDataPreparationArguments<HandlerInput>) {
+}: WorkflowDataPreparationArguments<HandlerInput>): Promise<HandlerOutput> {
   const { manager } = context
 
   const productVariantService = container
@@ -29,7 +34,7 @@ export async function getProductVariantsPricing({
 
   const variants = await productVariantService.list(
     {
-      id: data.variantPricingData.map((vli) => vli[0]),
+      id: data.variants.map((vli) => vli[0]),
     },
     {
       relations: ["product"],
@@ -42,7 +47,7 @@ export async function getProductVariantsPricing({
   }[] = []
 
   for (const variant of variants) {
-    const pricingData = data.variantPricingData.find(variant.id)
+    const pricingData = data.variants.find(variant.id)
 
     variantsToCalculatePricingFor.push({
       variantId: variant.id,
@@ -50,7 +55,7 @@ export async function getProductVariantsPricing({
     })
   }
 
-  let variantsPricing = {}
+  let variantsPricing: ProductVariantPricingDTO | {} = {}
 
   if (variantsToCalculatePricingFor.length) {
     variantsPricing = await pricingService.getProductVariantsPricing(
@@ -64,6 +69,6 @@ export async function getProductVariantsPricing({
   }
 
   return {
-    variantsPricing,
+    variantsPricing: variantsPricing ?? {},
   }
 }

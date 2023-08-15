@@ -1,14 +1,28 @@
-import { WorkflowTypes } from "@medusajs/types"
+import {
+  AddLineItemVariantToCartDTO,
+  CartDTO,
+  WorkflowTypes,
+} from "@medusajs/types"
 import { WorkflowDataPreparationArguments } from "../../../../helper"
 
-type AddLineItemInputData =
+type PreparationHandlerInput =
   WorkflowTypes.CartWorkflow.AddLineItemToCartWorkflowDTO
+
+type PreparationHandlerOutput = {
+  cart: CartDTO
+  variantToLineItemsMap: Map<string, AddLineItemVariantToCartDTO>
+  context: {
+    region_id: string
+    customer_id?: string
+  }
+}
 
 export async function prepareAddLineItemToCartWorkflowData({
   container,
   context,
   data,
-}: WorkflowDataPreparationArguments<AddLineItemInputData>) {
+}: // eslint-disable-next-line max-len
+WorkflowDataPreparationArguments<PreparationHandlerInput>): Promise<PreparationHandlerOutput> {
   const { manager } = context
 
   const cartService = container.resolve("cartService").withTransaction(manager)
@@ -21,18 +35,19 @@ export async function prepareAddLineItemToCartWorkflowData({
     data.line_items.map((item) => [
       item.variant_id,
       {
-        ...item,
-        context: {
-          region_id: cart.region_id,
-          customer_id: item.customer_id || cart.customer_id,
-          metadata: item.metadata,
-        }
+        variant_id: item.variant_id,
+        quantity: item.quantity,
+        metadata: item.metadata ?? {},
       },
     ])
-  )
+  ) as PreparationHandlerOutput["variantToLineItemsMap"]
 
   return {
     cart,
     variantToLineItemsMap,
+    context: {
+      region_id: cart.region_id,
+      customer_id: cart.customer_id,
+    },
   }
 }

@@ -4,6 +4,7 @@ import {
 } from "@medusajs/orchestration"
 import { CartDTO, WorkflowTypes } from "@medusajs/types"
 import { CartHandlers } from "../../../../handlers"
+import { getProductVariantsPricing } from "../../../../handlers/product/get-product-variant-pricing"
 import { exportWorkflow, pipe } from "../../../../helper"
 import { Workflows } from "../../../../workflows"
 import { prepareAddLineItemToCartWorkflowData } from "./prepare-add-line-item-to-cart-data"
@@ -27,35 +28,30 @@ export enum Actions {
 export const steps: TransactionStepsDefinition = {
   next: [
     {
-      action: Actions.validateLineItemData,
+      action: Actions.getProductVariantPrice,
       noCompensation: true,
       next: {
-        action: Actions.getProductVariantPrice,
+        action: Actions.generateLineItem,
         noCompensation: true,
-        saveResponse: false,
         next: {
-          action: Actions.generateLineItem,
-          noCompensation: true,
+          action: Actions.generateAdjustments,
           next: {
-            action: Actions.generateAdjustments,
+            action: Actions.validateLineItemForCart,
             next: {
-              action: Actions.validateLineItemForCart,
+              action: Actions.confirmInventory,
+              saveResponse: false,
               next: {
-                action: Actions.confirmInventory,
+                action: Actions.upsertLineItem,
                 saveResponse: false,
                 next: {
-                  action: Actions.upsertLineItem,
-                  saveResponse: false,
+                  action: Actions.updateShippingOnLineItems,
+                  noCompensation: true,
                   next: {
-                    action: Actions.updateShippingOnLineItems,
+                    action: Actions.deleteShippingMethods,
                     noCompensation: true,
                     next: {
-                      action: Actions.deleteShippingMethods,
+                      action: Actions.refreshAdjustments,
                       noCompensation: true,
-                      next: {
-                        action: Actions.refreshAdjustments,
-                        noCompensation: true,
-                      },
                     },
                   },
                 },
@@ -69,6 +65,21 @@ export const steps: TransactionStepsDefinition = {
 }
 
 const handlers = new Map([
+  [
+    Actions.getProductVariantPrice,
+    {
+      invoke: pipe(
+        {
+          inputAlias: Actions.prepare,
+          invoke: {
+            from: Actions.prepare,
+          },
+          merge: true,
+        },
+        getProductVariantsPricing
+      ),
+    },
+  ],
   [
     Actions.validateLineItemData,
     {
@@ -89,7 +100,7 @@ const handlers = new Map([
 WorkflowManager.register(Workflows.AddLineItemToCart, steps, handlers)
 
 export const addLineItemToCart = exportWorkflow<
-  WorkflowTypes.CartWorkflow.AddLineItemToCartDTO,
+  WorkflowTypes.CartWorkflow.AddLineItemToCartWorkflowDTO,
   CartDTO
 >(
   Workflows.AddLineItemToCart,
