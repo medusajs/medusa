@@ -52,7 +52,7 @@ const config = {
       placeholder: "Search docs...",
       appId: algoliaAppId,
       contextualSearch: false,
-      externalUrlRegex: "https://medusajs.com",
+      externalUrlRegex: "https://medusajs.com,https://docs.medusajs.com/api/",
       searchParameters: {
         tagFilters: "-reference",
       },
