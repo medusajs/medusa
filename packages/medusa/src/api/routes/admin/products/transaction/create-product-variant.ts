@@ -90,23 +90,28 @@ export const createVariantsTransaction = async (
   }
 
   async function createInventoryItems(variants: ProductVariant[] = []) {
+    const context = { transactionManager: manager }
+
     return await Promise.all(
       variants.map(async (variant) => {
         if (!variant.manage_inventory) {
           return
         }
 
-        const inventoryItem = await inventoryService!.createInventoryItem({
-          sku: variant.sku,
-          origin_country: variant.origin_country,
-          hs_code: variant.hs_code,
-          mid_code: variant.mid_code,
-          material: variant.material,
-          weight: variant.weight,
-          length: variant.length,
-          height: variant.height,
-          width: variant.width,
-        })
+        const inventoryItem = await inventoryService!.createInventoryItem(
+          {
+            sku: variant.sku,
+            origin_country: variant.origin_country,
+            hs_code: variant.hs_code,
+            mid_code: variant.mid_code,
+            material: variant.material,
+            weight: variant.weight,
+            length: variant.length,
+            height: variant.height,
+            width: variant.width,
+          },
+          context
+        )
 
         return { variant, inventoryItem }
       })
@@ -119,9 +124,14 @@ export const createVariantsTransaction = async (
       inventoryItem: InventoryItemDTO
     }[] = []
   ) {
+    const context = { transactionManager: manager }
+
     return await Promise.all(
       data.map(async ({ inventoryItem }) => {
-        return await inventoryService!.deleteInventoryItem(inventoryItem.id)
+        return await inventoryService!.deleteInventoryItem(
+          inventoryItem.id,
+          context
+        )
       })
     )
   }

@@ -769,7 +769,12 @@ export default class OrderEditService extends TransactionBaseService {
 
       if (this.inventoryService_) {
         const itemsIds = lineItems.map((i) => i.id)
-        await this.inventoryService_!.deleteReservationItemsByLineItem(itemsIds)
+        await this.inventoryService_!.deleteReservationItemsByLineItem(
+          itemsIds,
+          {
+            transactionManager: manager,
+          }
+        )
       }
 
       await this.eventBusService_

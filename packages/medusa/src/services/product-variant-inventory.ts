@@ -332,6 +332,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
       },
       {
         select: ["id"],
+      },
+      {
+        transactionManager: this.activeManager_,
       }
     )
 
@@ -485,7 +488,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
             location_id: locationIds,
             inventory_item_id: variantInventory[0].inventory_item_id,
           },
-          undefined
+          undefined,
+          moduleContext
         )
 
       if (count === 0) {
@@ -509,7 +513,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
             inventory_item_id: inventoryPart.inventory_item_id,
             quantity: itemQuantity,
           }
-        })
+        }),
+        moduleContext
       )
 
     return reservationItems.flat()
@@ -563,7 +568,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
         },
         {
           order: { created_at: "DESC" },
-        }
+        },
+        context
       )
 
     reservations.sort((a, _) => {
@@ -585,7 +591,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
         (r) => r.quantity === deltaUpdate && r.location_id === locationId
       )
       if (exactReservation) {
-        await this.inventoryService_.deleteReservationItem(exactReservation.id)
+        await this.inventoryService_.deleteReservationItem(
+          exactReservation.id,
+          context
+        )
         return
       }
 
@@ -605,7 +614,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
 
       if (reservationsToDelete.length) {
         await this.inventoryService_.deleteReservationItem(
-          reservationsToDelete.map((r) => r.id)
+          reservationsToDelete.map((r) => r.id),
+          context
         )
       }
 
@@ -614,7 +624,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
           reservationToUpdate.id,
           {
             quantity: reservationToUpdate.quantity - remainingQuantity,
-          }
+          },
+          context
         )
       }
     }
@@ -653,7 +664,8 @@ class ProductVariantInventoryService extends TransactionBaseService {
             inventory_item_id: pvInventoryItems.map((i) => i.inventory_item_id),
             location_id: locationId,
           },
-          undefined
+          undefined,
+          context
         )
 
       if (!inventoryLevelCount) {
@@ -714,7 +726,9 @@ class ProductVariantInventoryService extends TransactionBaseService {
     }
 
     const itemIds = Array.isArray(lineItemId) ? lineItemId : [lineItemId]
-    await this.inventoryService_.deleteReservationItemsByLineItem(itemIds)
+    await this.inventoryService_.deleteReservationItemsByLineItem(itemIds, {
+      transactionManager: this.activeManager_,
+    })
   }
 
   /**
@@ -758,7 +772,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
         return await this.inventoryService_.adjustInventory(
           inventoryPart.inventory_item_id,
           locationId,
-          itemQuantity
+          itemQuantity,
+          {
+            transactionManager: this.activeManager_,
+          }
         )
       })
     )
@@ -868,7 +885,10 @@ class ProductVariantInventoryService extends TransactionBaseService {
             ),
           ],
         },
-        {}
+        {},
+        {
+          transactionManager: this.activeManager_,
+        }
       )
 
       locationLevels.reduce((acc, curr) => {

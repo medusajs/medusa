@@ -173,7 +173,10 @@ export default async (req: Request, res: Response) => {
 
   const [reservations, count] = await inventoryService.listReservationItems(
     filterableFields,
-    listConfig
+    listConfig,
+    {
+      transactionManager: manager,
+    }
   )
 
   const promises: Promise<any>[] = []
@@ -182,6 +185,7 @@ export default async (req: Request, res: Response) => {
     promises.push(
       joinInventoryItems(reservations, {
         inventoryService,
+        manager,
       })
     )
   }
