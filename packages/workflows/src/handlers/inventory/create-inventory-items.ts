@@ -20,7 +20,7 @@ export async function createInventoryItems({
   const inventoryService: IInventoryService =
     container.resolve("inventoryService")
 
-    if (!inventoryService) {
+  if (!inventoryService) {
     const logger = container.resolve("logger")
     logger.warn(
       `Inventory service not found. You should install the @medusajs/inventory package to use inventory. The 'createInventoryItems' will be skipped.`
@@ -55,6 +55,10 @@ export async function createInventoryItems({
           length: variant.length!,
           height: variant.height!,
           width: variant.width!,
+        },
+        {
+          transactionManager: (context.transactionManager ??
+            context.manager) as any,
         }
       )
 

@@ -10,8 +10,7 @@ export async function mikroOrmCreateConnection(
   let driverOptions = database.driverOptions ?? {
     connection: { ssl: true },
   }
-
-  const dirname = context.dirname ?? __dirname
+  
   let clientUrl = database.clientUrl
 
   if (database.connection) {
@@ -23,8 +22,7 @@ export async function mikroOrmCreateConnection(
     schema = database.connection.context.client.config.searchPath
   }
 
-  console.log(dirname)
-  console.log(dirname + "/../migrations")
+  const dirname = context.dirname ?? __dirname
 
   const { MikroORM } = await import("@mikro-orm/postgresql")
   return await MikroORM.init({
