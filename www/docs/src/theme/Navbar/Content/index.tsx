@@ -98,25 +98,25 @@ export default function NavbarContent(): JSX.Element {
                     ? `<span class="text-compact-x-small-plus">Close sidebar <kbd class="${clsx(
                         "bg-medusa-tag-neutral-bg dark:bg-medusa-tag-neutral-bg-dark",
                         "border border-solid rounded border-medusa-tag-neutral-border dark:border-medusa-tag-neutral-border-dark",
-                        "text-medusa-tag-neutral-text dark:text-medusa-tag-neutral-text font-base text-compact-x-small-plus",
+                        "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark font-base text-compact-x-small-plus",
                         "inline-flex w-[22px] h-[22px] !p-0 justify-center items-center shadow-none ml-0.5"
                       )}">${isApple ? "⌘" : "Ctrl"}</kbd>
                       <kbd class="${clsx(
                         "bg-medusa-tag-neutral-bg dark:bg-medusa-tag-neutral-bg-dark",
                         "border border-solid rounded border-medusa-tag-neutral-border dark:border-medusa-tag-neutral-border-dark",
-                        "text-medusa-tag-neutral-text dark:text-medusa-tag-neutral-text font-base text-compact-x-small-plus",
+                        "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark font-base text-compact-x-small-plus",
                         "inline-flex w-[22px] h-[22px] !p-0 justify-center items-center shadow-none"
                       )}">I</kbd></span>`
                     : `<span class="text-compact-x-small-plus">Lock sidebar open <kbd class="${clsx(
                         "bg-medusa-tag-neutral-bg dark:bg-medusa-tag-neutral-bg-dark",
                         "border border-solid rounded border-medusa-tag-neutral-border dark:border-medusa-tag-neutral-border-dark",
-                        "text-medusa-tag-neutral-text dark:text-medusa-tag-neutral-text font-base text-compact-x-small-plus",
+                        "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark font-base text-compact-x-small-plus",
                         "inline-flex w-[22px] h-[22px] !p-0 justify-center items-center shadow-none ml-0.5"
                       )}">${isApple ? "⌘" : "Ctrl"}</kbd>
                     <kbd class="${clsx(
                       "bg-medusa-tag-neutral-bg dark:bg-medusa-tag-neutral-bg-dark",
                       "border border-solid rounded border-medusa-tag-neutral-border dark:border-medusa-tag-neutral-border-dark",
-                      "text-medusa-tag-neutral-text dark:text-medusa-tag-neutral-text font-base text-compact-x-small-plus",
+                      "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark font-base text-compact-x-small-plus",
                       "inline-flex w-[22px] h-[22px] !p-0 justify-center items-center shadow-none"
                     )}">I</kbd></span>`,
                   events: {
