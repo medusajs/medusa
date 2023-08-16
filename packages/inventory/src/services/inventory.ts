@@ -1,11 +1,9 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
   BulkUpdateInventoryLevelInput,
-  Context,
   CreateInventoryItemInput,
   CreateInventoryLevelInput,
   CreateReservationItemInput,
-  DAL,
   FilterableInventoryItemProps,
   FilterableInventoryLevelProps,
   FilterableReservationItemProps,
@@ -14,34 +12,32 @@ import {
   InventoryItemDTO,
   InventoryLevelDTO,
   JoinerServiceConfig,
+  MODULE_RESOURCE_TYPE,
   ReservationItemDTO,
+  SharedContext,
   UpdateInventoryLevelInput,
   UpdateReservationItemInput,
 } from "@medusajs/types"
 import {
-  InjectTransactionManager,
+  InjectEntityManager,
   MedusaContext,
-  InjectManager,
   MedusaError,
 } from "@medusajs/utils"
+import { EntityManager } from "typeorm"
 import { joinerConfig } from "../joiner-config"
 import InventoryItemService from "./inventory-item"
 import InventoryLevelService from "./inventory-level"
 import ReservationItemService from "./reservation-item"
-import { shouldForceTransaction } from "../utils"
-import { InventoryItem, InventoryLevel } from "../models"
 
 type InjectedDependencies = {
-  manager: any
+  manager: EntityManager
   inventoryItemService: InventoryItemService
   inventoryLevelService: InventoryLevelService
   reservationItemService: ReservationItemService
-  baseRepository: DAL.RepositoryService
 }
 
 export default class InventoryService implements IInventoryService {
-  protected readonly manager_: any
-  protected baseRepository_: DAL.RepositoryService
+  protected readonly manager_: EntityManager
 
   protected readonly inventoryItemService_: InventoryItemService
   protected readonly reservationItemService_: ReservationItemService
@@ -53,7 +49,6 @@ export default class InventoryService implements IInventoryService {
       inventoryItemService,
       inventoryLevelService,
       reservationItemService,
-      baseRepository,
     }: InjectedDependencies,
     options?: unknown,
     protected readonly moduleDeclaration?: InternalModuleDeclaration
@@ -62,7 +57,6 @@ export default class InventoryService implements IInventoryService {
     this.inventoryItemService_ = inventoryItemService
     this.inventoryLevelService_ = inventoryLevelService
     this.reservationItemService_ = reservationItemService
-    this.baseRepository_ = baseRepository
   }
 
   __joinerConfig(): JoinerServiceConfig {
@@ -76,44 +70,23 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return A tuple of inventory items and their total count
    */
-  @InjectManager("baseRepository_")
   async listInventoryItems(
     selector: FilterableInventoryItemProps,
     config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext()
-    context: Context = {}
+    context: SharedContext = {}
   ): Promise<[InventoryItemDTO[], number]> {
-    const [items, count] = await this.inventoryItemService_.listAndCount(
+    return await this.inventoryItemService_.listAndCount(
       selector,
       config,
       context
     )
-
-    const serialized = await this.baseRepository_.serialize<InventoryItemDTO[]>(
-      items
-    )
-
-    return [serialized, count]
   }
-
-  @InjectManager("baseRepository_")
   async list(
     selector: FilterableInventoryItemProps,
     config: FindConfig<InventoryItemDTO> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext()
-    context: Context = {}
+    context: SharedContext = {}
   ): Promise<InventoryItemDTO[]> {
-    const items = await this.inventoryItemService_.list(
-      selector,
-      config,
-      context
-    )
-
-    const serialized = await this.baseRepository_.serialize<InventoryItemDTO[]>(
-      items
-    )
-
-    return serialized
+    return await this.inventoryItemService_.list(selector, config, context)
   }
 
   /**
@@ -123,7 +96,6 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return A tuple of inventory levels and their total count
    */
-  @InjectManager("baseRepository_")
   async listInventoryLevels(
     selector: FilterableInventoryLevelProps,
     config: FindConfig<InventoryLevelDTO> = {
@@ -131,20 +103,13 @@ export default class InventoryService implements IInventoryService {
       skip: 0,
       take: 10,
     },
-    @MedusaContext()
-    context: Context = {}
+    context: SharedContext = {}
   ): Promise<[InventoryLevelDTO[], number]> {
-    const [levels, count] = await this.inventoryLevelService_.listAndCount(
+    return await this.inventoryLevelService_.listAndCount(
       selector,
       config,
       context
     )
-
-    const serialized = await this.baseRepository_.serialize<
-      InventoryLevelDTO[]
-    >(levels)
-
-    return [serialized, count]
   }
 
   /**
@@ -154,7 +119,6 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return A tuple of reservation items and their total count
    */
-  @InjectManager("baseRepository_")
   async listReservationItems(
     selector: FilterableReservationItemProps,
     config: FindConfig<ReservationItemDTO> = {
@@ -162,17 +126,13 @@ export default class InventoryService implements IInventoryService {
       skip: 0,
       take: 10,
     },
-    @MedusaContext()
-    context: Context = {}
+    context: SharedContext = {}
   ): Promise<[ReservationItemDTO[], number]> {
-    const [reservations, count] =
-      await this.reservationItemService_.listAndCount(selector, config, context)
-
-    const serialized = await this.baseRepository_.serialize<
-      ReservationItemDTO[]
-    >(reservations)
-
-    return [serialized, count]
+    return await this.reservationItemService_.listAndCount(
+      selector,
+      config,
+      context
+    )
   }
 
   /**
@@ -182,25 +142,17 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return The retrieved inventory item
    */
-  @InjectManager("baseRepository_")
   async retrieveInventoryItem(
     inventoryItemId: string,
     config?: FindConfig<InventoryItemDTO>,
-    @MedusaContext() context: Context = {}
+    context: SharedContext = {}
   ): Promise<InventoryItemDTO> {
     const inventoryItem = await this.inventoryItemService_.retrieve(
       inventoryItemId,
       config,
       context
     )
-    const serialized = await this.baseRepository_.serialize<InventoryItemDTO>(
-      inventoryItem,
-      {
-        populate: true,
-      }
-    )
-
-    return serialized
+    return { ...inventoryItem }
   }
 
   /**
@@ -210,11 +162,10 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return the retrieved inventory level
    */
-  @InjectManager("baseRepository_")
   async retrieveInventoryLevel(
     inventoryItemId: string,
     locationId: string,
-    @MedusaContext() context: Context = {}
+    context: SharedContext = {}
   ): Promise<InventoryLevelDTO> {
     const [inventoryLevel] = await this.inventoryLevelService_.list(
       { inventory_item_id: inventoryItemId, location_id: locationId },
@@ -227,14 +178,7 @@ export default class InventoryService implements IInventoryService {
         `Inventory level for item ${inventoryItemId} and location ${locationId} not found`
       )
     }
-    const serialized = await this.baseRepository_.serialize<InventoryLevelDTO>(
-      inventoryLevel,
-      {
-        populate: true,
-      }
-    )
-
-    return serialized
+    return inventoryLevel
   }
 
   /**
@@ -244,31 +188,20 @@ export default class InventoryService implements IInventoryService {
    * @param reservationId
    * @param context
    */
-  @InjectManager("baseRepository_")
   async retrieveReservationItem(
     reservationId: string,
-    @MedusaContext()
-    context: Context = {}
+    context: SharedContext = {}
   ): Promise<ReservationItemDTO> {
-    const reservation = await this.reservationItemService_.retrieve(
+    return await this.reservationItemService_.retrieve(
       reservationId,
       undefined,
       context
     )
-
-    const serialized = await this.baseRepository_.serialize<ReservationItemDTO>(
-      reservation,
-      {
-        populate: true,
-      }
-    )
-
-    return serialized
   }
 
   private async ensureInventoryLevels(
     data: { location_id: string; inventory_item_id: string }[],
-    context: Context = {}
+    context: SharedContext = {}
   ): Promise<InventoryLevelDTO[]> {
     const inventoryLevels = await this.inventoryLevelService_.list(
       {
@@ -307,74 +240,46 @@ export default class InventoryService implements IInventoryService {
     )
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  protected async createReservationItems_(
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
+  async createReservationItems(
     input: CreateReservationItemInput[],
-    @MedusaContext() context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<ReservationItemDTO[]> {
     await this.ensureInventoryLevels(input, context)
 
     return await this.reservationItemService_.create(input, context)
   }
 
-  async createReservationItems(
-    input: CreateReservationItemInput[],
-    context: Context = {}
-  ): Promise<ReservationItemDTO[]> {
-    const reservations = await this.createReservationItems_(input, context)
-
-    const serialized = await this.baseRepository_.serialize<
-      ReservationItemDTO[]
-    >(reservations, {
-      populate: true,
-    })
-
-    return serialized
-  }
   /**
    * Creates a reservation item
    * @param input - the input object
    * @return The created reservation item
    */
-
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async createReservationItem(
     input: CreateReservationItemInput,
-    context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<ReservationItemDTO> {
-    const [reservation] = await this.createReservationItems_([input], context)
+    const [result] = await this.createReservationItems([input], context)
 
-    const serialized = await this.baseRepository_.serialize<ReservationItemDTO>(
-      reservation,
-      {
-        populate: true,
-      }
-    )
-
-    return serialized
+    return result
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  async createInventoryItems_(
-    input: CreateInventoryItemInput[],
-    @MedusaContext() context: Context = {}
-  ): Promise<InventoryItemDTO[]> {
-    return await this.inventoryItemService_.create(input, context)
-  }
-
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async createInventoryItems(
     input: CreateInventoryItemInput[],
-    context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryItemDTO[]> {
-    const items = await this.createInventoryItems_(input, context)
-
-    const serialized = await this.baseRepository_.serialize<InventoryItemDTO[]>(
-      items,
-      {
-        populate: true,
-      }
-    )
-
-    return serialized
+    return await this.inventoryItemService_.create(input, context)
   }
 
   /**
@@ -383,29 +288,28 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return The created inventory item
    */
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async createInventoryItem(
     input: CreateInventoryItemInput,
-    context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryItemDTO> {
-    const [item] = await this.createInventoryItems_([input], context)
+    const [result] = await this.createInventoryItems([input], context)
 
-    const serialized = await this.baseRepository_.serialize<InventoryItemDTO>(
-      item,
-      {
-        populate: true,
-      }
-    )
-
-    return serialized
+    return result
   }
 
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async createInventoryLevels(
     input: CreateInventoryLevelInput[],
-    context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryLevelDTO[]> {
-    const levels = await this.createInventoryLevels_(input, context)
-
-    return this.baseRepository_.serialize(levels, { populate: true })
+    return await this.inventoryLevelService_.create(input, context)
   }
 
   /**
@@ -414,21 +318,17 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return The created inventory level
    */
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async createInventoryLevel(
     input: CreateInventoryLevelInput,
-    context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryLevelDTO> {
-    const [result] = await this.createInventoryLevels_([input], context)
+    const [result] = await this.createInventoryLevels([input], context)
 
-    return this.baseRepository_.serialize(result, { populate: true })
-  }
-
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  protected async createInventoryLevels_(
-    input: CreateInventoryLevelInput[],
-    @MedusaContext() context: Context = {}
-  ): Promise<InventoryLevelDTO[]> {
-    return await this.inventoryLevelService_.create(input, context)
+    return result
   }
 
   /**
@@ -438,36 +338,21 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return The updated inventory item
    */
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async updateInventoryItem(
     inventoryItemId: string,
     input: Partial<CreateInventoryItemInput>,
-    context: Context = {}
-  ): Promise<InventoryItemDTO> {
-    const inventoryItem = await this.updateInventoryItem_(
-      inventoryItemId,
-      input,
-      context
-    )
-
-    const serialized = await this.baseRepository_.serialize<InventoryItemDTO>(
-      inventoryItem
-    )
-
-    return serialized
-  }
-
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  async updateInventoryItem_(
-    inventoryItemId: string,
-    input: Partial<CreateInventoryItemInput>,
-    @MedusaContext() context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryItemDTO> {
     const inventoryItem = await this.inventoryItemService_.update(
       inventoryItemId,
       input,
       context
     )
-    return inventoryItem
+    return { ...inventoryItem }
   }
 
   /**
@@ -475,10 +360,13 @@ export default class InventoryService implements IInventoryService {
    * @param inventoryItemId - the id of the inventory item to delete
    * @param context
    */
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async deleteInventoryItem(
     inventoryItemId: string | string[],
-    @MedusaContext() context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     await this.inventoryLevelService_.deleteByInventoryItemId(
       inventoryItemId,
@@ -488,10 +376,13 @@ export default class InventoryService implements IInventoryService {
     return await this.inventoryItemService_.delete(inventoryItemId, context)
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async deleteInventoryItemLevelByLocationId(
     locationId: string | string[],
-    @MedusaContext() context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     return await this.inventoryLevelService_.deleteByLocationId(
       locationId,
@@ -499,10 +390,13 @@ export default class InventoryService implements IInventoryService {
     )
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async deleteReservationItemByLocationId(
     locationId: string | string[],
-    @MedusaContext() context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     return await this.reservationItemService_.deleteByLocationId(
       locationId,
@@ -516,11 +410,14 @@ export default class InventoryService implements IInventoryService {
    * @param locationId - the id of the location associated with the level
    * @param context
    */
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async deleteInventoryLevel(
     inventoryItemId: string,
     locationId: string,
-    @MedusaContext() context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     const [inventoryLevel] = await this.inventoryLevelService_.list(
       { inventory_item_id: inventoryItemId, location_id: locationId },
@@ -535,15 +432,18 @@ export default class InventoryService implements IInventoryService {
     return await this.inventoryLevelService_.delete(inventoryLevel.id, context)
   }
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  protected async updateInventoryLevels_(
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
+  async updateInventoryLevels(
     updates: ({
       inventory_item_id: string
       location_id: string
     } & UpdateInventoryLevelInput)[],
-    @MedusaContext() context: Context = {}
+    context?: SharedContext
   ): Promise<InventoryLevelDTO[]> {
-    const inventoryLevels = await this.ensureInventoryLevels(updates, context)
+    const inventoryLevels = await this.ensureInventoryLevels(updates)
 
     const levelMap = inventoryLevels.reduce((acc, curr) => {
       const inventoryLevelMap = acc.get(curr.inventory_item_id) ?? new Map()
@@ -572,11 +472,15 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return The updated inventory level
    */
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async updateInventoryLevel(
     inventoryItemId: string,
     locationIdOrContext?: string,
     input?: UpdateInventoryLevelInput,
-    context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryLevelDTO> {
     const updates: BulkUpdateInventoryLevelInput[] = [
       {
@@ -586,33 +490,9 @@ export default class InventoryService implements IInventoryService {
       },
     ]
 
-    const [level] = await this.updateInventoryLevels_(updates, context)
-    const serialized = await this.baseRepository_.serialize<InventoryLevelDTO>(
-      level,
-      {
-        populate: true,
-      }
-    )
+    const [result] = await this.updateInventoryLevels(updates, context)
 
-    return serialized
-  }
-
-  async updateInventoryLevels(
-    updates: ({
-      inventory_item_id: string
-      location_id: string
-    } & UpdateInventoryLevelInput)[],
-    context: Context = {}
-  ): Promise<InventoryLevelDTO[]> {
-    const levels = await this.updateInventoryLevels_(updates, context)
-
-    const serialized = await this.baseRepository_.serialize<
-      InventoryLevelDTO[]
-    >(levels, {
-      populate: true,
-    })
-
-    return serialized
+    return result
   }
 
   /**
@@ -623,32 +503,14 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return The updated inventory level
    */
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async updateReservationItem(
     reservationItemId: string,
     input: UpdateReservationItemInput,
-    context: Context = {}
-  ): Promise<ReservationItemDTO> {
-    const reservation = await this.updateReservationItem_(
-      reservationItemId,
-      input,
-      context
-    )
-
-    const serialized = await this.baseRepository_.serialize<ReservationItemDTO>(
-      reservation,
-      {
-        populate: true,
-      }
-    )
-
-    return serialized
-  }
-
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  async updateReservationItem_(
-    reservationItemId: string,
-    input: UpdateReservationItemInput,
-    @MedusaContext() context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<ReservationItemDTO> {
     return await this.reservationItemService_.update(
       reservationItemId,
@@ -662,10 +524,13 @@ export default class InventoryService implements IInventoryService {
    * @param lineItemId - the id of the line item associated with the reservation item
    * @param context
    */
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async deleteReservationItemsByLineItem(
     lineItemId: string | string[],
-    @MedusaContext() context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     return await this.reservationItemService_.deleteByLineItem(
       lineItemId,
@@ -678,10 +543,13 @@ export default class InventoryService implements IInventoryService {
    * @param reservationItemId - the id of the reservation item to delete
    * @param context
    */
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async deleteReservationItem(
     reservationItemId: string | string[],
-    @MedusaContext() context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
     return await this.reservationItemService_.delete(reservationItemId, context)
   }
@@ -695,35 +563,15 @@ export default class InventoryService implements IInventoryService {
    * @return The updated inventory level
    * @throws when the inventory level is not found
    */
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async adjustInventory(
     inventoryItemId: string,
     locationId: string,
     adjustment: number,
-    context: Context = {}
-  ): Promise<InventoryLevelDTO> {
-    const updatedInventoryLevel = await this.adjustInventory_(
-      inventoryItemId,
-      locationId,
-      adjustment,
-      context
-    )
-
-    const serialized = await this.baseRepository_.serialize<InventoryLevelDTO>(
-      updatedInventoryLevel,
-      {
-        populate: true,
-      }
-    )
-
-    return serialized
-  }
-
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  async adjustInventory_(
-    inventoryItemId: string,
-    locationId: string,
-    adjustment: number,
-    @MedusaContext() context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<InventoryLevelDTO> {
     const [inventoryLevel] = await this.inventoryLevelService_.list(
       { inventory_item_id: inventoryItemId, location_id: locationId },
@@ -740,12 +588,12 @@ export default class InventoryService implements IInventoryService {
     const updatedInventoryLevel = await this.inventoryLevelService_.update(
       inventoryLevel.id,
       {
-        stocked_quantity: Number(inventoryLevel.stocked_quantity) + adjustment,
+        stocked_quantity: inventoryLevel.stocked_quantity + adjustment,
       },
       context
     )
 
-    return updatedInventoryLevel
+    return { ...updatedInventoryLevel }
   }
 
   /**
@@ -759,11 +607,9 @@ export default class InventoryService implements IInventoryService {
   async retrieveAvailableQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context: Context = {}
+    context: SharedContext = {}
   ): Promise<number> {
     // Throws if item does not exist
-    // TODO: context
-
     await this.inventoryItemService_.retrieve(
       inventoryItemId,
       {
@@ -797,10 +643,9 @@ export default class InventoryService implements IInventoryService {
   async retrieveStockedQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context: Context = {}
+    context: SharedContext = {}
   ): Promise<number> {
     // Throws if item does not exist
-    // TODO: context
     await this.inventoryItemService_.retrieve(
       inventoryItemId,
       {
@@ -834,7 +679,7 @@ export default class InventoryService implements IInventoryService {
   async retrieveReservedQuantity(
     inventoryItemId: string,
     locationIds: string[],
-    context: Context = {}
+    context: SharedContext = {}
   ): Promise<number> {
     // Throws if item does not exist
     await this.inventoryItemService_.retrieve(
@@ -867,12 +712,15 @@ export default class InventoryService implements IInventoryService {
    * @param context
    * @return Whether there is sufficient inventory
    */
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async confirmInventory(
     inventoryItemId: string,
     locationIds: string[],
     quantity: number,
-    @MedusaContext() context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<boolean> {
     const availableQuantity = await this.retrieveAvailableQuantity(
       inventoryItemId,

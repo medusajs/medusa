@@ -1,15 +1,20 @@
-import { revertMigration, runMigrations } from "./scripts"
-
 import InventoryService from "./services/inventory"
+import loadContainer from "./loaders/container"
+import loadConnection from "./loaders/connection"
+import * as InventoryModels from "./models"
 import { ModuleExports } from "@medusajs/types"
-import loadModule from "./loaders"
+import migrations from "./migrations"
+import { revertMigration, runMigrations } from "./migrations/run-migration"
 
 const service = InventoryService
-const loaders = [loadModule]
+const loaders = [loadContainer, loadConnection]
+const models = Object.values(InventoryModels)
 
 export const moduleDefinition: ModuleExports = {
   service,
+  migrations,
   loaders,
+  models,
   runMigrations,
   revertMigration,
 }

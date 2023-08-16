@@ -1,5 +1,4 @@
 import { DatabaseType } from "typeorm"
-import { InventoryLevel } from "../models"
 
 export type InventoryServiceInitializeOptions = {
   database?: {
@@ -11,8 +10,3 @@ export type InventoryServiceInitializeOptions = {
     logging?: boolean
   }
 }
-
-export type UpdateInventoryLevelInput = Omit<
-  Partial<InventoryLevel>,
-  "id" | "created_at" | "metadata" | "deleted_at"
->

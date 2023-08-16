@@ -1,61 +1,48 @@
+import { generateEntityId } from "@medusajs/utils"
 import {
-  BeforeCreate,
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
+  JoinColumn,
   ManyToOne,
-  OptionalProps,
-  PrimaryKey,
-  Property,
-} from "@mikro-orm/core"
-
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm"
 import { StockLocationAddress } from "./stock-location-address"
-import { generateEntityId } from "@medusajs/utils"
 
-type OptionalFields = "created_at" | "updated_at"
-
-@Entity({ tableName: "stock_location" })
+@Entity()
 export class StockLocation {
-  [OptionalProps]?: OptionalFields
-
-  @PrimaryKey({ columnType: "text" })
+  @PrimaryColumn()
   id: string
 
-  @Property({
-    onCreate: () => new Date(),
-    columnType: "timestamptz",
-  })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @Property({
-    onCreate: () => new Date(),
-    onUpdate: () => new Date(),
-    columnType: "timestamptz",
-  })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
-  @Property({ columnType: "timestamptz", nullable: true })
+  @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date | null
 
-  @Property({ columnType: "text" })
+  @Column({ type: "text" })
   name: string
 
   @Index()
-  @Property({ columnType: "text", nullable: true })
+  @Column({ type: "text", nullable: true })
   address_id: string | null
 
-  @ManyToOne(() => StockLocationAddress, {
-    nullable: true,
-    fieldName: "address_id",
-  })
-  address?: StockLocationAddress | null
+  @ManyToOne(() => StockLocationAddress)
+  @JoinColumn({ name: "address_id" })
+  address: StockLocationAddress | null
 
-  @Property({ columnType: "jsonb", nullable: true })
+  @Column({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 
-  @BeforeCreate()
-  private beforeCreate(): void {
+  @BeforeInsert()
+  private beforeInsert(): void {
     this.id = generateEntityId(this.id, "sloc")
   }
 }
-
-export default StockLocation

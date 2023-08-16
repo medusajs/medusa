@@ -1,40 +1,30 @@
 import { InternalModuleDeclaration } from "@medusajs/modules-sdk"
 import {
-  Context,
   CreateStockLocationInput,
-  DAL,
   FilterableStockLocationProps,
   FindConfig,
   IEventBusService,
   JoinerServiceConfig,
+  MODULE_RESOURCE_TYPE,
+  SharedContext,
   StockLocationAddressInput,
   UpdateStockLocationInput,
 } from "@medusajs/types"
 import {
-  InjectManager,
-  InjectTransactionManager,
-  isDefined,
+  InjectEntityManager,
   MedusaContext,
   MedusaError,
-  ModulesSdkUtils,
+  isDefined,
   setMetadata,
 } from "@medusajs/utils"
 import { EntityManager } from "typeorm"
 import { joinerConfig } from "../joiner-config"
 import { StockLocation, StockLocationAddress } from "../models"
-import {
-  StockLocationAddressRepository,
-  StockLocationRepostiory,
-} from "../repositories"
-import { shouldForceTransaction } from "../utils"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
+import { buildQuery } from "../utils/build-query"
 
 type InjectedDependencies = {
   manager: EntityManager
   eventBusService: IEventBusService
-  baseRepository: DAL.RepositoryService
-  stockLocationRepository: StockLocationRepostiory
-  stockLocationAddressRepository: StockLocationAddressRepository
 }
 
 /**
@@ -50,27 +40,14 @@ export default class StockLocationService {
 
   protected readonly manager_: EntityManager
   protected readonly eventBusService_: IEventBusService
-  protected baseRepository_: DAL.RepositoryService
-  protected readonly stockLocationRepository_: StockLocationRepostiory
-  // eslint-disable-next-line max-len
-  protected readonly stockLocationAddressRepository_: StockLocationAddressRepository
 
   constructor(
-    {
-      eventBusService,
-      manager,
-      baseRepository,
-      stockLocationRepository,
-      stockLocationAddressRepository,
-    }: InjectedDependencies,
+    { eventBusService, manager }: InjectedDependencies,
     options?: unknown,
     protected readonly moduleDeclaration?: InternalModuleDeclaration
   ) {
     this.manager_ = manager
     this.eventBusService_ = eventBusService
-    this.baseRepository_ = baseRepository
-    this.stockLocationRepository_ = stockLocationRepository
-    this.stockLocationAddressRepository_ = stockLocationAddressRepository
   }
 
   __joinerConfig(): JoinerServiceConfig {
@@ -84,28 +61,16 @@ export default class StockLocationService {
    * @param context
    * @return A list of stock locations.
    */
-  @InjectManager("baseRepository_")
   async list(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext() context: Context = {}
+    context: SharedContext = {}
   ): Promise<StockLocation[]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<StockLocation>(
-      selector,
-      config
-    )
+    const manager = context.transactionManager ?? this.manager_
+    const locationRepo = manager.getRepository(StockLocation)
 
-    const locations = await this.stockLocationRepository_.find(
-      queryOptions,
-      context
-    )
-
-    const serialized = await this.baseRepository_.serialize<StockLocation[]>(
-      locations,
-      { populate: true }
-    )
-
-    return serialized
+    const query = buildQuery(selector, config)
+    return await locationRepo.find(query)
   }
 
   /**
@@ -115,28 +80,16 @@ export default class StockLocationService {
    * @param context
    * @return A list of stock locations and the count of matching stock locations.
    */
-  @InjectManager("baseRepository_")
   async listAndCount(
     selector: FilterableStockLocationProps = {},
     config: FindConfig<StockLocation> = { relations: [], skip: 0, take: 10 },
-    @MedusaContext() context: Context = {}
+    context: SharedContext = {}
   ): Promise<[StockLocation[], number]> {
-    const queryOptions = ModulesSdkUtils.buildQuery<StockLocation>(
-      selector,
-      config
-    )
+    const manager = context.transactionManager ?? this.manager_
+    const locationRepo = manager.getRepository(StockLocation)
 
-    const [locations, count] = await this.stockLocationRepository_.findAndCount(
-      queryOptions,
-      context
-    )
-
-    const serialized = await this.baseRepository_.serialize<StockLocation[]>(
-      locations,
-      { populate: true }
-    )
-
-    return [serialized, count]
+    const query = buildQuery(selector, config)
+    return await locationRepo.findAndCount(query)
   }
 
   /**
@@ -150,23 +103,7 @@ export default class StockLocationService {
   async retrieve(
     stockLocationId: string,
     config: FindConfig<StockLocation> = {},
-    context: Context = {}
-  ): Promise<StockLocation> {
-    const loc = await this.retrieve_(stockLocationId, config, context)
-
-    const serialized = await this.baseRepository_.serialize<StockLocation>(
-      loc,
-      { populate: true }
-    )
-
-    return serialized
-  }
-
-  @InjectManager("baseRepository_")
-  protected async retrieve_(
-    stockLocationId: string,
-    config: FindConfig<StockLocation> = {},
-    @MedusaContext() context: Context = {}
+    context: SharedContext = {}
   ): Promise<StockLocation> {
     if (!isDefined(stockLocationId)) {
       throw new MedusaError(
@@ -174,15 +111,12 @@ export default class StockLocationService {
         `"stockLocationId" must be defined`
       )
     }
-    const queryOptions = ModulesSdkUtils.buildQuery<StockLocation>(
-      { id: stockLocationId },
-      config
-    )
 
-    const [loc] = await this.stockLocationRepository_.find(
-      queryOptions,
-      context
-    )
+    const manager = context.transactionManager ?? this.manager_
+    const locationRepo = manager.getRepository(StockLocation)
+
+    const query = buildQuery({ id: stockLocationId }, config)
+    const [loc] = await locationRepo.find(query)
 
     if (!loc) {
       throw new MedusaError(
@@ -200,43 +134,39 @@ export default class StockLocationService {
    * @param context
    * @returns The created stock location.
    */
-
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async create(
     data: CreateStockLocationInput,
-    context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<StockLocation> {
-    const result = await this.create_(data, context)
+    const manager = context.transactionManager!
 
-    const serialized = await this.baseRepository_.serialize<StockLocation>(
-      result,
-      { populate: true }
-    )
+    const locationRepo = manager.getRepository(StockLocation)
 
-    return serialized
-  }
+    const loc = locationRepo.create({
+      name: data.name,
+    })
 
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  async create_(
-    data: CreateStockLocationInput,
-    @MedusaContext() context: Context = {}
-  ): Promise<StockLocation> {
     if (isDefined(data.address) || isDefined(data.address_id)) {
       if (typeof data.address === "string" || data.address_id) {
         const addrId = (data.address ?? data.address_id) as string
-        data.address_id = addrId
+        loc.address_id = addrId
       } else {
-        const [addressResult] =
-          await this.stockLocationAddressRepository_.create(
-            [data.address!],
-            context
-          )
-        data.address_id = addressResult.id
+        const locAddressRepo = manager.getRepository(StockLocationAddress)
+        const locAddress = locAddressRepo.create(data.address!)
+        const addressResult = await locAddressRepo.save(locAddress)
+        loc.address_id = addressResult.id
       }
     }
 
-    delete data.address
-
-    const [result] = await this.stockLocationRepository_.create([data], context)
+    const { metadata } = data
+    if (metadata) {
+      loc.metadata = setMetadata(loc, metadata)
+    }
+    const result = await locationRepo.save(loc)
 
     await this.eventBusService_?.emit?.(StockLocationService.Events.CREATED, {
       id: result.id,
@@ -252,64 +182,47 @@ export default class StockLocationService {
    * @param context
    * @returns The updated stock location.
    */
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async update(
     stockLocationId: string,
     updateData: UpdateStockLocationInput,
-    context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<StockLocation> {
-    const updatedLocation = await this.update_(
-      stockLocationId,
-      updateData,
-      context
-    )
+    const manager = context.transactionManager!
+    const locationRepo = manager.getRepository(StockLocation)
 
-    const serialized = await this.baseRepository_.serialize<StockLocation>(
-      updatedLocation,
-      { populate: true }
-    )
-
-    return serialized
-  }
-
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  protected async update_(
-    stockLocationId: string,
-    updateData: UpdateStockLocationInput,
-    @MedusaContext() context: Context = {}
-  ): Promise<StockLocation> {
-    const location = await this.retrieve_(stockLocationId, undefined, context)
+    const item = await this.retrieve(stockLocationId, undefined, context)
 
     const { address, ...data } = updateData
 
     if (address) {
-      if (location.address_id) {
-        await this.updateAddress_(location.address_id, address, context)
+      if (item.address_id) {
+        await this.updateAddress(item.address_id, address, context)
       } else {
-        const [addressResult] =
-          await this.stockLocationAddressRepository_.create([address], context)
+        const locAddressRepo = manager.getRepository(StockLocationAddress)
+        const locAddress = locAddressRepo.create(address)
+        const addressResult = await locAddressRepo.save(locAddress)
         data.address_id = addressResult.id
       }
     }
 
-    const { metadata } = data
+    const { metadata, ...fields } = data
 
+    const toSave = locationRepo.merge(item, fields)
     if (metadata) {
-      data.metadata = setMetadata(location, metadata)
+      toSave.metadata = setMetadata(toSave, metadata)
     }
 
-    const [updatedLocation] = await this.stockLocationRepository_.update(
-      [{ item: location, update: { ...data } }],
-      context
-    )
+    await locationRepo.save(toSave)
 
     await this.eventBusService_?.emit?.(StockLocationService.Events.UPDATED, {
       id: stockLocationId,
     })
 
-    await (context.transactionManager! as SqlEntityManager).flush()
-    ;(context.transactionManager! as SqlEntityManager).clear()
-
-    return updatedLocation
+    return item
   }
 
   /**
@@ -319,31 +232,14 @@ export default class StockLocationService {
    * @param context
    * @returns The updated stock location address.
    */
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   protected async updateAddress(
     addressId: string,
     address: StockLocationAddressInput,
-    context: Context = {}
-  ): Promise<StockLocationAddress> {
-    const updatedAddress = await this.updateAddress_(
-      addressId,
-      address,
-      context
-    )
-
-    const serialized =
-      await this.baseRepository_.serialize<StockLocationAddress>(
-        updatedAddress,
-        { populate: true }
-      )
-
-    return serialized
-  }
-
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
-  protected async updateAddress_(
-    addressId: string,
-    address: StockLocationAddressInput,
-    @MedusaContext() context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<StockLocationAddress> {
     if (!isDefined(addressId)) {
       throw new MedusaError(
@@ -352,14 +248,12 @@ export default class StockLocationService {
       )
     }
 
-    const queryOptions = ModulesSdkUtils.buildQuery<StockLocation>({
-      id: addressId,
-    })
+    const manager = context.transactionManager!
+    const locationAddressRepo = manager.getRepository(StockLocationAddress)
 
-    const [existingAddress] = await this.stockLocationAddressRepository_.find(
-      queryOptions,
-      context
-    )
+    const existingAddress = await locationAddressRepo.findOne({
+      where: { id: addressId },
+    })
     if (!existingAddress) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -367,23 +261,14 @@ export default class StockLocationService {
       )
     }
 
-    const { metadata } = address
+    const { metadata, ...fields } = address
 
-    let newMetadata
+    const toSave = locationAddressRepo.merge(existingAddress, fields)
     if (metadata) {
-      newMetadata = setMetadata(existingAddress, metadata)
+      toSave.metadata = setMetadata(toSave, metadata)
     }
 
-    if (newMetadata) {
-      address.metadata = newMetadata
-    }
-
-    const [updatedAddress] = await this.stockLocationAddressRepository_.update(
-      [{ item: existingAddress, update: address }],
-      context
-    )
-
-    return updatedAddress
+    return await locationAddressRepo.save(toSave)
   }
 
   /**
@@ -392,12 +277,18 @@ export default class StockLocationService {
    * @param context
    * @returns An empty promise.
    */
-  @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
+  @InjectEntityManager(
+    (target) =>
+      target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  )
   async delete(
     id: string,
-    @MedusaContext() context: Context = {}
+    @MedusaContext() context: SharedContext = {}
   ): Promise<void> {
-    await this.stockLocationRepository_.delete([id], context)
+    const manager = context.transactionManager!
+    const locationRepo = manager.getRepository(StockLocation)
+
+    await locationRepo.softRemove({ id })
 
     await this.eventBusService_?.emit?.(StockLocationService.Events.DELETED, {
       id,

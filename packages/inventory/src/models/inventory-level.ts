@@ -1,95 +1,52 @@
+import { generateEntityId } from "@medusajs/utils"
 import {
-  AfterUpdate,
-  BeforeCreate,
-  Collection,
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
-  ManyToMany,
-  ManyToOne,
-  OnLoad,
-  OptionalProps,
-  PrimaryKey,
-  Property,
-  Unique,
-} from "@mikro-orm/core"
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm"
 
-import InventoryItem from "./inventory-item"
-import { generateEntityId } from "@medusajs/utils"
-
-type OptionalProperties =
-  | "deleted_at"
-  | "created_at"
-  | "updated_at"
-  | "stocked_quantity"
-  | "reserved_quantity"
-  | "incoming_quantity"
-
-@Entity({ tableName: "inventory_level" })
-@Unique({
-  name: "IDX_inventory_level_item_id_location_id",
-  properties: ["inventory_item_id", "location_id"],
-})
+@Entity()
+@Index(["inventory_item_id", "location_id"], { unique: true })
 export class InventoryLevel {
-  [OptionalProps]?: OptionalProperties
-  @PrimaryKey({ columnType: "text" })
+  @PrimaryColumn()
   id: string
 
-  @Property({
-    onCreate: () => new Date(),
-    columnType: "timestamptz",
-  })
+  @CreateDateColumn({ type: "timestamptz" })
   created_at: Date
 
-  @Property({
-    onCreate: () => new Date(),
-    onUpdate: () => new Date(),
-    columnType: "timestamptz",
-  })
+  @UpdateDateColumn({ type: "timestamptz" })
   updated_at: Date
 
-  @Property({ columnType: "timestamptz", nullable: true })
+  @DeleteDateColumn({ type: "timestamptz" })
   deleted_at: Date | null
 
-  @Index({
-    name: "IDX_inventory_level_inventory_item_id",
-    expression: `CREATE INDEX "IDX_inventory_level_inventory_item_id" ON "inventory_level" ("inventory_item_id") WHERE deleted_at IS NULL;`,
-  })
-  @Property({ columnType: "text" })
+  @Index()
+  @Column({ type: "text" })
   inventory_item_id: string
 
-  @Index({
-    name: "IDX_inventory_level_location_id",
-    expression: `CREATE INDEX "IDX_inventory_level_location_id" ON "inventory_level" ("location_id") WHERE deleted_at IS NULL;`,
-  })
-  @Property({ columnType: "text" })
+  @Index()
+  @Column({ type: "text" })
   location_id: string
 
-  @Property({ columnType: "numeric", default: 0, serializer: Number })
+  @Column({ default: 0 })
   stocked_quantity: number
 
-  @Property({
-    columnType: "numeric",
-    default: 0,
-    serializer: Number,
-  })
+  @Column({ default: 0 })
   reserved_quantity: number
 
-  @Property({ columnType: "numeric", default: 0, serializer: Number })
+  @Column({ default: 0 })
   incoming_quantity: number
 
-  @Property({ columnType: "jsonb", nullable: true })
+  @Column({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 
-  @ManyToOne(() => InventoryItem, {
-    nullable: true,
-    fieldName: "inventory_item_id",
-  })
-  inventory_item: InventoryItem | null
-
-  @BeforeCreate()
+  @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "ilev")
   }
 }
-
-export default InventoryLevel
