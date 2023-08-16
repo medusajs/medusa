@@ -85,7 +85,6 @@ describe("Create Variant", () => {
       const invItem = await inventoryService.createInventoryItem({
         sku: "test-sku",
       })
-
       await productVariantInventoryService.attachInventoryItem(
         variantId,
         invItem.id

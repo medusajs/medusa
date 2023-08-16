@@ -66,6 +66,7 @@ describe("Inventory Module", () => {
           width: 50,
           requires_shipping: true,
           metadata: { abc: 123 },
+          deleted_at: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         })
@@ -100,7 +101,6 @@ describe("Inventory Module", () => {
           weight: 500,
           metadata: {
             dce: 456,
-            abc: "",
           },
         }
       )
@@ -119,6 +119,7 @@ describe("Inventory Module", () => {
           width: item.width,
           requires_shipping: true,
           metadata: { dce: 456 },
+          deleted_at: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         })
@@ -193,8 +194,10 @@ describe("Inventory Module", () => {
           incoming_quantity: 4,
           inventory_item_id: inventoryItem.id,
           location_id: "location_123",
+          metadata: null,
           reserved_quantity: 15,
           stocked_quantity: 50,
+          deleted_at: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         })
@@ -286,6 +289,7 @@ describe("Inventory Module", () => {
           metadata: null,
           reserved_quantity: 4,
           stocked_quantity: 25,
+          deleted_at: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         })
@@ -339,7 +343,7 @@ describe("Inventory Module", () => {
         } catch (e) {
           error = e
         }
-        expect(error.message).toEqual("manager.findAndCount is not a function")
+        expect(error.message).toEqual("manager.getRepository is not a function")
       })
 
       it("should pass along the correct context when doing a single update", async () => {
@@ -386,7 +390,7 @@ describe("Inventory Module", () => {
         } catch (e) {
           error = e
         }
-        expect(error.message).toEqual("manager.findAndCount is not a function")
+        expect(error.message).toEqual("manager.getRepository is not a function")
       })
     })
 
@@ -482,6 +486,7 @@ describe("Inventory Module", () => {
           location_id: locationId,
           quantity: 10,
           metadata: { abc: 123 },
+          deleted_at: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         })
@@ -779,6 +784,7 @@ describe("Inventory Module", () => {
           reserved_quantity: 5,
           incoming_quantity: 0,
           metadata: null,
+          deleted_at: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         })
@@ -799,6 +805,7 @@ describe("Inventory Module", () => {
           reserved_quantity: 1,
           incoming_quantity: 0,
           metadata: null,
+          deleted_at: null,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
         })

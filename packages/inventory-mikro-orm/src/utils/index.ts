@@ -5,5 +5,5 @@ export function doNotForceTransaction(): boolean {
 }
 
 export function shouldForceTransaction(target: any): boolean {
-  return true // target.moduleDeclaration?.resources === MODULE_RESOURCE_TYPE.ISOLATED
+  return true 
 }

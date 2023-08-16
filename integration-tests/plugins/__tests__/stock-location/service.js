@@ -36,16 +36,21 @@ describe("Inventory Module", () => {
     it("create", async () => {
       const stockLocationService = appContainer.resolve("stockLocationService")
 
-      const created = await stockLocationService.create({
-        name: "first location",
-      })
-
-      expect(created).toEqual({
-        id: expect.any(String),
-        name: "first location",
-        created_at: expect.any(Date),
-        updated_at: expect.any(Date),
-      })
+      expect(
+        await stockLocationService.create({
+          name: "first location",
+        })
+      ).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: "first location",
+          deleted_at: null,
+          address_id: null,
+          metadata: null,
+          created_at: expect.any(Date),
+          updated_at: expect.any(Date),
+        })
+      )
 
       expect(
         await stockLocationService.create({
@@ -107,14 +112,18 @@ describe("Inventory Module", () => {
           id: loc.id,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
+          deleted_at: null,
           name: "location",
           address_id: addressId,
+          metadata: null,
           address: expect.objectContaining({
             id: addressId,
             created_at: expect.any(Date),
             updated_at: expect.any(Date),
+            deleted_at: null,
             address_1: "addr_1",
             address_2: "line 2",
+            company: null,
             city: "city",
             country_code: "DK",
             phone: "111222333",
@@ -145,21 +154,24 @@ describe("Inventory Module", () => {
       expect(
         await stockLocationService.retrieve(loc.id, {
           relations: ["address"],
-          fields: ["id", "name", "address_id", "address.address_1"],
         })
       ).toEqual(
         expect.objectContaining({
           id: loc.id,
           created_at: expect.any(Date),
           updated_at: expect.any(Date),
+          deleted_at: null,
           name: "location name",
           address_id: addressId,
+          metadata: null,
           address: expect.objectContaining({
             id: addressId,
             created_at: expect.any(Date),
             updated_at: expect.any(Date),
+            deleted_at: null,
             address_1: "addr_1 updated",
             address_2: "line 2",
+            company: null,
             city: "city",
             country_code: "US",
             phone: "111222333",

@@ -40,6 +40,7 @@ describe("Inventory Items endpoints", () => {
   })
 
   beforeEach(async () => {
+    // create inventory item
     await adminSeeder(dbConnection)
 
     const api = useApi()
@@ -358,9 +359,7 @@ describe("Inventory Items endpoints", () => {
           id: variantId,
           inventory: [
             expect.objectContaining({
-              location_levels: [],
-              reserved_quantity: 0,
-              stocked_quantity: 0,
+              ...inventoryItemCreateRes.data.inventory_item,
             }),
           ],
         }),
