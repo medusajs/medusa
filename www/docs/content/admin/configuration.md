@@ -89,18 +89,19 @@ This is an advanced feature and requires knowledge of configuring webpack. If co
 For example:
 
 ```js title=src/admin/webpack.config.js
-import { withCustomWebpackConfig } from "@medusajs/admin";
+import { withCustomWebpackConfig } from "@medusajs/admin"
 
 export default withCustomWebpackConfig((config, webpack) => {
   config.plugins.push(
     new webpack.DefinePlugin({
     "process.env": {
       NODE_ENV: JSON.stringify("production"),
-      API_URL: JSON.stringify("https://api.medusa-commerce.com"),
+      API_URL: 
+        JSON.stringify("https://api.medusa-commerce.com"),
     },
     })
-  );
+  )
   
-  return config;
+  return config
 })
 ```
