@@ -6237,9 +6237,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/inventory@workspace:packages/inventory":
+"@medusajs/inventory-mikro-orm@workspace:packages/inventory-mikro-orm":
   version: 0.0.0-use.local
-  resolution: "@medusajs/inventory@workspace:packages/inventory"
+  resolution: "@medusajs/inventory-mikro-orm@workspace:packages/inventory-mikro-orm"
   dependencies:
     "@medusajs/modules-sdk": ^1.8.8
     "@medusajs/types": "workspace:^"
@@ -6253,6 +6253,23 @@ __metadata:
     jest: ^25.5.4
     rimraf: ^5.0.1
     ts-jest: ^25.5.1
+    typescript: ^4.4.4
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/inventory@workspace:packages/inventory":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/inventory@workspace:packages/inventory"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.8.8
+    "@medusajs/types": ^1.8.11
+    "@medusajs/utils": ^1.9.1
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    rimraf: ^5.0.1
+    ts-jest: ^25.5.1
+    typeorm: ^0.3.16
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
@@ -6536,9 +6553,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/stock-location@workspace:packages/stock-location":
+"@medusajs/stock-location-mikro-orm@workspace:packages/stock-location-mikro-orm":
   version: 0.0.0-use.local
-  resolution: "@medusajs/stock-location@workspace:packages/stock-location"
+  resolution: "@medusajs/stock-location-mikro-orm@workspace:packages/stock-location-mikro-orm"
   dependencies:
     "@medusajs/modules-sdk": "workspace:^"
     "@medusajs/types": "workspace:^"
@@ -6556,7 +6573,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@^1.10.0, @medusajs/types@^1.10.1, @medusajs/types@^1.8.10, @medusajs/types@^1.8.8, @medusajs/types@^1.9.0, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/stock-location@workspace:packages/stock-location":
+  version: 0.0.0-use.local
+  resolution: "@medusajs/stock-location@workspace:packages/stock-location"
+  dependencies:
+    "@medusajs/modules-sdk": ^1.8.8
+    "@medusajs/types": ^1.8.8
+    "@medusajs/utils": ^1.9.1
+    awilix: ^8.0.0
+    cross-env: ^5.2.1
+    jest: ^25.5.4
+    rimraf: ^5.0.1
+    ts-jest: ^25.5.1
+    typeorm: ^0.3.16
+    typescript: ^4.4.4
+  languageName: unknown
+  linkType: soft
+
+"@medusajs/types@^1.10.0, @medusajs/types@^1.10.1, @medusajs/types@^1.8.10, @medusajs/types@^1.8.11, @medusajs/types@^1.8.8, @medusajs/types@^1.9.0, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -6570,7 +6604,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/utils@^1.9.2, @medusajs/utils@^1.9.3, @medusajs/utils@^1.9.4, @medusajs/utils@^1.9.5, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^1.9.1, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.3, @medusajs/utils@^1.9.4, @medusajs/utils@^1.9.5, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:

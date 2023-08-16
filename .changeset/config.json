@@ -7,7 +7,7 @@
   "access": "public",
   "baseBranch": "develop",
   "updateInternalDependencies": "patch",
-  "ignore": ["integration-tests-api", "integration-tests-plugins", "integration-tests-repositories"],
+  "ignore": ["integration-tests-api", "integration-tests-plugins", "integration-tests-repositories", "@medusajs/inventory-mikro-orm", "@medusajs/stock-location-mikro-orm"],
   "snapshot": {
     "useCalculatedVersion": true
   },
