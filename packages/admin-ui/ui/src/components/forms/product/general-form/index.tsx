@@ -1,9 +1,10 @@
 import { Controller } from "react-hook-form"
 import ReactQuill from "react-quill"
+import "react-quill/dist/quill.snow.css"
 import FormValidator from "../../../../utils/form-validator"
 import { NestedForm } from "../../../../utils/nested-form"
+import InputHeader from "../../../fundamentals/input-header"
 import InputField from "../../../molecules/input"
-import TextArea from "../../../molecules/textarea"
 
 export type GeneralFormType = {
   title: string
@@ -13,8 +14,8 @@ export type GeneralFormType = {
   handle: string
   handle_ar: string
   material: string | null
-  description: string | null
-  description_ar: string | null
+  description: ReactQuill.Value
+  description_ar: ReactQuill.Value
 }
 
 type Props = {
@@ -28,7 +29,6 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
     register,
     path,
     formState: { errors },
-    control,
   } = form
 
   return (
@@ -128,7 +128,7 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
           errors={errors}
         />
       </div>
-      <TextArea
+      {/* <TextArea
         label="Description"
         placeholder={
           isGiftCard ? "The gift card is..." : "A warm and cozy jacket..."
@@ -147,17 +147,37 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         className="mb-small"
         {...register(path("description_ar"))}
         errors={errors}
-      />
-      <div>
+      /> */}
+      <div className="mb-large">
+        <InputHeader label="Description" className="mb-xsmall" />
         <Controller
-          name="__nested__.description_ar"
-          control={control}
+          name={path("description")}
+          control={form.control}
           defaultValue=""
           render={({ field }) => (
             <ReactQuill
-              value={field.value || ""}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
+              theme="snow"
+              value={form.getValues(path("description"))}
+              onChange={(value) => {
+                field.onChange(value)
+              }}
+            />
+          )}
+        />
+      </div>
+      <div>
+        <InputHeader label="Description in arabic" className="mb-xsmall" />
+        <Controller
+          name={path("description_ar")}
+          control={form.control}
+          defaultValue=""
+          render={({ field }) => (
+            <ReactQuill
+              theme="snow"
+              value={form.getValues(path("description_ar"))}
+              onChange={(value) => {
+                field.onChange(value)
+              }}
             />
           )}
         />
