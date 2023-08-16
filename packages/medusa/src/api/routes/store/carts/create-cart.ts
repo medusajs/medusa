@@ -57,7 +57,7 @@ import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/carts'
+ *       curl -X POST '{backend_url}/store/carts'
  * tags:
  *   - Carts
  * responses:

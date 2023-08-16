@@ -22,7 +22,7 @@ import InviteService from "../../../../services/invite"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/invites' \
+ *       curl '{backend_url}/admin/invites' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

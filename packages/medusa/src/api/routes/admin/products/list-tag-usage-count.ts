@@ -22,7 +22,7 @@ import { ProductService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/products/tag-usage' \
+ *       curl '{backend_url}/admin/products/tag-usage' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

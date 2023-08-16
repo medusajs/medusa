@@ -23,7 +23,7 @@ export default function DocSidebarItemHtml({
       className={clsx(
         ThemeClassNames.docs.docSidebarItemLink,
         ThemeClassNames.docs.docSidebarItemLinkLevel(level),
-        defaultStyle && ["lg:tw-py-[6px] lg:tw-px-1", "menu__list-item"],
+        defaultStyle && ["lg:py-[6px] lg:px-1", "menu__list-item"],
         className,
         customProps?.sidebar_is_title && "sidebar-title",
         customProps?.sidebar_is_group_headline && "sidebar-group-headline",
@@ -33,10 +33,10 @@ export default function DocSidebarItemHtml({
         customProps?.sidebar_is_soon &&
           "sidebar-soon-link sidebar-badge-wrapper",
         !customProps?.sidebar_is_title &&
-          "[&_.sidebar-item-icon]:tw-w-[20px] [&_.sidebar-item-icon]:tw-h-[20px]",
+          "[&_.sidebar-item-icon]:w-[20px] [&_.sidebar-item-icon]:h-[20px]",
         !customProps?.sidebar_is_title &&
           !customProps?.sidebar_is_back_link &&
-          "[&_.sidebar-item-icon]:tw-mr-[12px]"
+          "[&_.sidebar-item-icon]:mr-0.75"
       )}
       key={index}
     >

@@ -100,7 +100,7 @@ import { Request, Response } from "express"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/product-tags' \
+ *       curl '{backend_url}/admin/product-tags' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

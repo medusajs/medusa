@@ -35,7 +35,7 @@ const NotificationContainer = () => {
               onClose={() => handleClose(notification)}
               className={clsx(
                 notification.className,
-                "!tw-relative !tw-top-0 !tw-bottom-0 !tw-right-0"
+                "!relative !top-0 !bottom-0 !right-0"
               )}
             />
           </CSSTransition>
@@ -48,11 +48,11 @@ const NotificationContainer = () => {
     <>
       {renderFilteredNotifications(
         (notification) => notification.placement === "top",
-        "tw-flex tw-fixed tw-flex-col tw-gap-0.5 md:tw-right-1 tw-right-0 md:tw-top-1 tw-top-0 tw-z-[400] md:tw-w-auto tw-w-full"
+        "flex fixed flex-col gap-0.5 md:right-1 right-0 md:top-1 top-0 z-[400] md:w-auto w-full"
       )}
       {renderFilteredNotifications(
         (notification) => notification.placement !== "top",
-        "tw-flex tw-flex-col tw-gap-0.5 tw-fixed md:tw-right-1 tw-right-0 md:tw-bottom-1 tw-bottom-0 tw-z-[400] md:tw-w-auto tw-w-full"
+        "flex flex-col gap-0.5 fixed md:right-1 right-0 md:bottom-1 bottom-0 z-[400] md:w-auto w-full"
       )}
     </>
   )

@@ -37,7 +37,7 @@ import { EntityManager } from "typeorm"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/customers/password-token' \
+ *       curl -X POST '{backend_url}/store/customers/password-token' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "email": "user@example.com"

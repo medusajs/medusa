@@ -27,7 +27,7 @@ import { IsString } from "class-validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/uploads' \
+ *       curl -X DELETE '{backend_url}/admin/uploads' \
  *       -H 'Authorization: Bearer {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{

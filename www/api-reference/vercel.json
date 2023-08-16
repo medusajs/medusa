@@ -1,0 +1,6 @@
+{
+  "crons": [{
+    "path": "/api/algolia",
+    "schedule": "0 0 * * 4"
+  }]
+}

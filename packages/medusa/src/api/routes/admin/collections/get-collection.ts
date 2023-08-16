@@ -27,7 +27,7 @@ import { defaultAdminCollectionsRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/collections/{id}' \
+ *       curl '{backend_url}/admin/collections/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
