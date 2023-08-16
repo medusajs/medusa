@@ -1,6 +1,6 @@
 "use client"
 
-/* Copied from Docusaurus to maintain scroll position */
+/* Copied from Docusaurus to maintain scroll position on re-renders. Useful when content of the page is updated dynamically */
 
 /**
  * Copyright (c) Facebook, Inc. and its affiliates.
