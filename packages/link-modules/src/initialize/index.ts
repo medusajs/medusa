@@ -79,13 +79,11 @@ export const initialize = async (
       if (extended.length === 0) {
         continue
       }
-    } else {
-      if (
-        !modulesLoadedKeys.includes(primary.serviceName) ||
-        !modulesLoadedKeys.includes(foreign.serviceName)
-      ) {
-        continue
-      }
+    } else if (
+      !modulesLoadedKeys.includes(primary.serviceName) ||
+      !modulesLoadedKeys.includes(foreign.serviceName)
+    ) {
+      continue
     }
 
     const moduleDefinition = getLinkModuleDefinition(
@@ -138,14 +136,10 @@ export async function runMigrations(
       continue
     }
 
-    if (definition.relationships?.length !== 2 && !definition.isReadOnlyLink) {
+    if (definition.relationships?.length !== 2) {
       throw new Error(
         `Link module ${definition.serviceName} must have 2 relationships.`
       )
-    }
-
-    if (definition.isReadOnlyLink) {
-      continue
     }
 
     const [primary, foreign] = definition.relationships ?? []

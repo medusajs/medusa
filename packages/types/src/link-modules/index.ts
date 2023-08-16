@@ -32,7 +32,7 @@ export interface ILinkModule {
     sharedContext?: Context
   ): Promise<unknown[]>
 
-  delete(data: unknown | unknown[], sharedContext?: Context): Promise<unknown[]>
+  delete(data: unknown | unknown[], sharedContext?: Context): Promise<void>
 
   softDelete(
     data: unknown | unknown[],

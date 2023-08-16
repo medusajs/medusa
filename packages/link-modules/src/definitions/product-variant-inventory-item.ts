@@ -5,6 +5,16 @@ import { LINKS } from "../links"
 export const ProductVariantInventoryItem: ModuleJoinerConfig = {
   serviceName: LINKS.ProductVariantInventoryItem,
   isLink: true,
+  databaseConfig: {
+    tableName: "product_variant_inventory_item",
+    idPrefix: "pvitem",
+    schema: {
+      required_quantity: {
+        type: "integer",
+        defaultRaw: "1",
+      },
+    },
+  },
   alias: [
     {
       name: "product_variant_inventory_item",

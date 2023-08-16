@@ -79,16 +79,13 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     }
   }
 
-  private isValidFieldName(name: string) {
-    return this.primaryKey_
-      .concat(this.foreignKey_)
-      .concat(this.extraFields_)
-      .includes(name)
+  private isValidKeyName(name: string) {
+    return this.primaryKey_.concat(this.foreignKey_).includes(name)
   }
 
   private validateFields(data: any) {
     const keys = Object.keys(data)
-    if (!keys.every((k) => this.isValidFieldName(k))) {
+    if (!keys.every((k) => this.isValidKeyName(k))) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Invalid field name provided. Valid field names are ${this.primaryKey_.concat(
@@ -129,7 +126,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
   ): Promise<unknown[]> {
     const rows = await this.pivotService_.list(filters, config, sharedContext)
 
-    return JSON.parse(JSON.stringify(rows))
+    return await this.baseRepository_.serialize<object[]>(rows)
   }
 
   @InjectManager("baseRepository_")
@@ -144,7 +141,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
       sharedContext
     )
 
-    return [JSON.parse(JSON.stringify(rows)), count]
+    return [await this.baseRepository_.serialize<object[]>(rows), count]
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
@@ -212,11 +209,10 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
   async delete(
     data: any,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<unknown[]> {
+  ): Promise<void> {
     this.validateFields(data)
 
-    const removed = await this.pivotService_.delete(data, sharedContext)
-    return await this.baseRepository_.serialize<object[]>(removed)
+    await this.pivotService_.delete(data, sharedContext)
   }
 
   async softDelete(
@@ -226,6 +222,8 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     },
     sharedContext: Context = {}
   ): Promise<Record<string, unknown[]> | void> {
+    this.validateFields(data)
+
     let [, cascadedEntitiesMap] = await this.softDelete_(data, sharedContext)
 
     const pk = this.primaryKey_.join(",")
@@ -265,6 +263,8 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     },
     sharedContext: Context = {}
   ): Promise<Record<string, unknown[]> | void> {
+    this.validateFields(data)
+
     let [, cascadedEntitiesMap] = await this.restore_(data, sharedContext)
 
     const pk = this.primaryKey_.join(",")
