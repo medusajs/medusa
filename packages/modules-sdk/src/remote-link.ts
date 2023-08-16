@@ -5,7 +5,7 @@ import {
   ModuleJoinerRelationship,
 } from "@medusajs/types"
 
-import { toPascalCase } from "@medusajs/utils"
+import { isObject, toPascalCase } from "@medusajs/utils"
 import { MedusaModule } from "./medusa-module"
 
 export type DeleteEntityInput = {
@@ -17,6 +17,8 @@ type LinkDefinition = {
   [moduleName: string]: {
     [fieldName: string]: string
   }
+} & {
+  data?: Record<string, unknown>
 }
 
 type RemoteRelationship = ModuleJoinerRelationship & {
@@ -320,10 +322,16 @@ export class RemoteLink {
 
   async create(link: LinkDefinition | LinkDefinition[]): Promise<unknown[]> {
     const allLinks = Array.isArray(link) ? link : [link]
-    const serviceLinks = new Map<string, [string | string[], string][]>()
+    const serviceLinks = new Map<
+      string,
+      [string | string[], string, Record<string, unknown>?][]
+    >()
 
     for (const rel of allLinks) {
       const mods = Object.keys(rel)
+      const extraFields = rel.data
+
+      delete rel.data
       if (mods.length > 2) {
         throw new Error(`Only two modules can be linked.`)
       }
@@ -351,9 +359,12 @@ export class RemoteLink {
       const pkValue =
         pk.length === 1 ? rel[moduleA][pk[0]] : pk.map((k) => rel[moduleA][k])
 
-      serviceLinks
-        .get(service.__definition.key)
-        ?.push([pkValue, rel[moduleB][moduleBKey]])
+      const fields: unknown[] = [pkValue, rel[moduleB][moduleBKey]]
+      if (isObject(extraFields)) {
+        fields.push(extraFields)
+      }
+
+      serviceLinks.get(service.__definition.key)?.push(fields as any)
     }
 
     const promises: Promise<unknown[]>[] = []

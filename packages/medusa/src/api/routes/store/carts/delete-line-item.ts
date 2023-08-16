@@ -26,7 +26,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}'
+ *       curl -X DELETE '{backend_url}/store/carts/{id}/line-items/{line_id}'
  * tags:
  *   - Carts
  * responses:

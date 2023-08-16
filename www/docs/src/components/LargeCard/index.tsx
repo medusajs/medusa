@@ -33,23 +33,23 @@ const LargeCard: React.FC<LargeCardProps> = ({
   return (
     <article
       className={clsx(
-        "tw-group tw-bg-docs-bg-surface dark:tw-bg-docs-bg-surface-dark",
-        "tw-rounded",
-        "tw-p-1 !tw-pb-1.5 tw-shadow-card-rest dark:tw-shadow-card-rest-dark",
-        "tw-flex tw-flex-col tw-justify-between tw-relative",
-        "[&:nth-child(3n+1):before]:tw-bg-[2%_52%] [&:nth-child(3n+2):before]:tw-bg-[19%_16%] [&:nth-child(3n+3):before]:tw-bg-[17%_50%]",
+        "group bg-docs-bg-surface dark:bg-docs-bg-surface-dark",
+        "rounded",
+        "p-1 !pb-1.5 shadow-card-rest dark:shadow-card-rest-dark",
+        "flex flex-col justify-between relative",
+        "[&:nth-child(3n+1):before]:bg-[2%_52%] [&:nth-child(3n+2):before]:bg-[19%_16%] [&:nth-child(3n+3):before]:bg-[17%_50%]",
         !isSoon &&
-          "hover:tw-bg-medusa-bg-subtle-hover dark:hover:tw-bg-medusa-bg-base-hover-dark hover:tw-shadow-card-hover dark:hover:tw-shadow-card-hover-dark",
+          "hover:bg-medusa-bg-subtle-hover dark:hover:bg-medusa-bg-base-hover-dark hover:shadow-card-hover dark:hover:shadow-card-hover-dark",
         !isSoon &&
-          "group-hover:tw-bg-medusa-bg-subtle-hover dark:group-hover:tw-bg-medusa-bg-base-hover-dark group-hover:tw-shadow-card-hover dark:group-hover:tw-shadow-card-hover-dark",
-        "tw-transition-all tw-duration-200 tw-ease-ease",
+          "group-hover:bg-medusa-bg-subtle-hover dark:group-hover:bg-medusa-bg-base-hover-dark group-hover:shadow-card-hover dark:group-hover:shadow-card-hover-dark",
+        "transition-all duration-200 ease-ease",
         "large-card",
         className
       )}
     >
-      <div className={clsx("tw-z-[3]")}>
+      <div className={clsx("z-[3]")}>
         {isSoon && (
-          <Badge variant={"purple"} className="tw-absolute tw-top-1 tw-right-1">
+          <Badge variant={"purple"} className="absolute top-1 right-1">
             Guide coming soon
           </Badge>
         )}
@@ -57,18 +57,18 @@ const LargeCard: React.FC<LargeCardProps> = ({
           <BorderedIcon
             IconComponent={Icon}
             icon={image}
-            iconClassName="tw-w-[20px] tw-h-[20px]"
-            wrapperClassName="tw-mb-1"
-            iconWrapperClassName="tw-p-[6px]"
+            iconClassName="w-[20px] h-[20px]"
+            wrapperClassName="mb-1"
+            iconWrapperClassName="p-[6px]"
           />
         )}
-        <div className="tw-mb-[4px]">
+        <div className="mb-0.25">
           <span
             className={clsx(
               isSoon &&
-                "group-hover:tw-text-medusa-text-disabled dark:group-hover:tw-text-medusa-text-disabled-dark",
-              "tw-text-medusa-text-base dark:tw-text-medusa-text-base-dark tw-text-label-regular-plus",
-              "tw-transition-all tw-duration-200 tw-ease-ease"
+                "group-hover:text-medusa-fg-disabled dark:group-hover:text-medusa-fg-disabled-dark",
+              "text-medusa-fg-base dark:text-medusa-fg-base-dark text-compact-medium-plus",
+              "transition-all duration-200 ease-ease"
             )}
           >
             {title}
@@ -77,8 +77,8 @@ const LargeCard: React.FC<LargeCardProps> = ({
         <div
           className={clsx(
             isSoon &&
-              "group-hover:tw-text-medusa-text-disabled dark:group-hover:tw-text-medusa-text-disabled-dark",
-            "tw-transition-all tw-duration-200 tw-ease-ease tw-text-body-regular"
+              "group-hover:text-medusa-fg-disabled dark:group-hover:text-medusa-fg-disabled-dark",
+            "transition-all duration-200 ease-ease text-medium"
           )}
         >
           {children}
@@ -88,8 +88,8 @@ const LargeCard: React.FC<LargeCardProps> = ({
         <Link
           href={href}
           className={clsx(
-            "tw-absolute tw-top-0 tw-left-0 tw-w-full tw-h-full tw-z-[4] tw-rounded",
-            isSoon && "group-hover:tw-pointer-events-none"
+            "absolute top-0 left-0 w-full h-full z-[4] rounded",
+            isSoon && "group-hover:pointer-events-none"
           )}
         ></Link>
       )}

@@ -47,7 +47,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/variants/{id}'
+ *       curl '{backend_url}/store/variants/{id}'
  * tags:
  *   - Product Variants
  * responses:

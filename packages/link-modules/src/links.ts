@@ -8,11 +8,4 @@ export const LINKS = {
     Modules.INVENTORY,
     "inventory_item_id"
   ),
-
-  InventoryLevelStockLocation: composeLinkName(
-    Modules.INVENTORY,
-    "location_id",
-    Modules.STOCK_LOCATION,
-    "stock_location_id"
-  ),
 }

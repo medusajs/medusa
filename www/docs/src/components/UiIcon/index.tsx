@@ -19,7 +19,7 @@ const UiIcon: React.FC<UiIconProps> = ({
         light: lightIcon,
         dark: darkIcon || lightIcon,
       }}
-      className="tw-align-sub tw-w-[20px] tw-h-[20px]"
+      className="align-sub w-[20px] h-[20px]"
     />
   )
 }

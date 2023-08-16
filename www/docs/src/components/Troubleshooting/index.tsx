@@ -1,5 +1,6 @@
 import React from "react"
-import Details from "@theme/Details"
+import Details from "../../theme/Details"
+import clsx from "clsx"
 
 type TroubleshootingSection = {
   title: string
@@ -14,7 +15,11 @@ const Troubleshooting: React.FC<TroubleshootingProps> = ({ sections }) => {
   return (
     <>
       {sections.map(({ title, content }, index) => (
-        <Details summary={title} key={index}>
+        <Details
+          summary={title}
+          key={index}
+          className={clsx(index !== 0 && "border-t-0")}
+        >
           {content}
         </Details>
       ))}

@@ -1,8 +1,8 @@
 import { JoinerRelationship, JoinerServiceConfig } from "../joiner"
 
-import { Logger } from "../logger"
 import { MedusaContainer } from "../common"
 import { RepositoryService } from "../dal"
+import { Logger } from "../logger"
 
 export type Constructor<T> = new (...args: any[]) => T
 export * from "../common/medusa-container"
@@ -114,7 +114,40 @@ export type ModuleJoinerConfig = Omit<
   isLink?: boolean // If the module is a link module
   linkableKeys?: string[] // Keys that can be used to link to other modules
   isReadOnlyLink?: boolean // If true it expands a RemoteQuery property but doesn't have a pivot table
-  tableName?: string // Name of the pivot table. If not provided it is auto generated
+  databaseConfig?: {
+    tableName?: string // Name of the pivot table. If not provided it is auto generated
+    idPrefix?: string // Prefix for the id column. If not provided it is "link"
+    extraFields?: Record<
+      string,
+      {
+        type:
+          | "date"
+          | "time"
+          | "datetime"
+          | "bigint"
+          | "blob"
+          | "uint8array"
+          | "array"
+          | "enumArray"
+          | "enum"
+          | "json"
+          | "integer"
+          | "smallint"
+          | "tinyint"
+          | "mediumint"
+          | "float"
+          | "double"
+          | "boolean"
+          | "decimal"
+          | "string"
+          | "uuid"
+          | "text"
+        defaultValue?: string
+        nullable?: boolean
+        options?: Record<string, unknown> // Mikro-orm options for the column
+      }
+    >
+  }
 }
 
 export declare type ModuleJoinerRelationship = JoinerRelationship & {

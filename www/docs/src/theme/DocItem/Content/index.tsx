@@ -38,26 +38,21 @@ export default function DocItemContent({ children }: Props): JSX.Element {
     <div className={clsx(ThemeClassNames.docs.docMarkdown, "markdown")}>
       {syntheticTitle && (
         <header
-          className={clsx(
-            badge && "md:tw-flex md:tw-items-center md:tw-gap-0.5 tw-mb-2"
-          )}
+          className={clsx(badge && "md:flex md:items-center md:gap-0.5 mb-2")}
         >
-          <Heading as="h1" className={clsx(badge && "!tw-mb-0")}>
+          <Heading as="h1" className={clsx(badge && "!mb-0")}>
             {syntheticTitle}
             {badge && (
               <Badge
                 variant={badge.variant}
-                className="md:tw-hidden tw-ml-1 tw-align-middle"
+                className="md:hidden ml-1 align-middle"
               >
                 {badge.text}
               </Badge>
             )}
           </Heading>
           {badge && (
-            <Badge
-              variant={badge.variant}
-              className={clsx("md:tw-block tw-hidden")}
-            >
+            <Badge variant={badge.variant} className={clsx("md:block hidden")}>
               {badge.text}
             </Badge>
           )}

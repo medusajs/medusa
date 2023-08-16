@@ -23,6 +23,7 @@ type InjectedDependencies = {
   pivotService: PivotService<any>
   primaryKey: string | string[]
   foreignKey: string
+  extraFields: string[]
 }
 
 export default class LinkModuleService<TPivot> implements ILinkModule {
@@ -30,6 +31,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
   protected readonly pivotService_: PivotService<TPivot>
   protected primaryKey_: string[]
   protected foreignKey_: string
+  protected extraFields_: string[]
 
   constructor(
     {
@@ -37,6 +39,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
       pivotService,
       primaryKey,
       foreignKey,
+      extraFields,
     }: InjectedDependencies,
     readonly moduleDeclaration: InternalModuleDeclaration
   ) {
@@ -44,13 +47,18 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     this.pivotService_ = pivotService
     this.primaryKey_ = !Array.isArray(primaryKey) ? [primaryKey] : primaryKey
     this.foreignKey_ = foreignKey
+    this.extraFields_ = extraFields
   }
 
   __joinerConfig(): ModuleJoinerConfig {
     return {} as ModuleJoinerConfig
   }
 
-  private buildData(primaryKeyData: string | string[], foreignKeyData: string) {
+  private buildData(
+    primaryKeyData: string | string[],
+    foreignKeyData: string,
+    extra: Record<string, unknown> = {}
+  ) {
     if (this.primaryKey_.length > 1) {
       if (
         !Array.isArray(primaryKeyData) ||
@@ -67,16 +75,17 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     return {
       [pk]: primaryKeyData,
       [this.foreignKey_]: foreignKeyData,
+      ...extra,
     }
   }
 
-  private isValidFieldName(name: string) {
+  private isValidKeyName(name: string) {
     return this.primaryKey_.concat(this.foreignKey_).includes(name)
   }
 
   private validateFields(data: any) {
     const keys = Object.keys(data)
-    if (!keys.every((k) => this.isValidFieldName(k))) {
+    if (!keys.every((k) => this.isValidKeyName(k))) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         `Invalid field name provided. Valid field names are ${this.primaryKey_.concat(
@@ -117,7 +126,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
   ): Promise<unknown[]> {
     const rows = await this.pivotService_.list(filters, config, sharedContext)
 
-    return JSON.parse(JSON.stringify(rows))
+    return await this.baseRepository_.serialize<object[]>(rows)
   }
 
   @InjectManager("baseRepository_")
@@ -132,25 +141,36 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
       sharedContext
     )
 
-    return [JSON.parse(JSON.stringify(rows)), count]
+    return [await this.baseRepository_.serialize<object[]>(rows), count]
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async create(
-    primaryKeyOrBulkData: string | string[] | [string | string[], string][],
+    primaryKeyOrBulkData:
+      | string
+      | string[]
+      | [string | string[], string, Record<string, unknown>][],
     foreignKeyData?: string,
+    extraFields?: Record<string, unknown>,
     @MedusaContext() sharedContext: Context = {}
   ) {
     const data: unknown[] = []
     if (foreignKeyData === undefined && Array.isArray(primaryKeyOrBulkData)) {
-      for (const [primaryKey, foreignKey] of primaryKeyOrBulkData) {
-        data.push(this.buildData(primaryKey, foreignKey as string))
+      for (const [primaryKey, foreignKey, extra] of primaryKeyOrBulkData) {
+        data.push(
+          this.buildData(
+            primaryKey as string | string[],
+            foreignKey as string,
+            extra as Record<string, unknown>
+          )
+        )
       }
     } else {
       data.push(
         this.buildData(
           primaryKeyOrBulkData as string | string[],
-          foreignKeyData!
+          foreignKeyData!,
+          extraFields
         )
       )
     }
@@ -189,11 +209,10 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
   async delete(
     data: any,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<unknown[]> {
+  ): Promise<void> {
     this.validateFields(data)
 
-    const removed = await this.pivotService_.delete(data, sharedContext)
-    return await this.baseRepository_.serialize<object[]>(removed)
+    await this.pivotService_.delete(data, sharedContext)
   }
 
   async softDelete(
@@ -203,6 +222,8 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     },
     sharedContext: Context = {}
   ): Promise<Record<string, unknown[]> | void> {
+    this.validateFields(data)
+
     let [, cascadedEntitiesMap] = await this.softDelete_(data, sharedContext)
 
     const pk = this.primaryKey_.join(",")
@@ -242,6 +263,8 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     },
     sharedContext: Context = {}
   ): Promise<Record<string, unknown[]> | void> {
+    this.validateFields(data)
+
     let [, cascadedEntitiesMap] = await this.restore_(data, sharedContext)
 
     const pk = this.primaryKey_.join(",")

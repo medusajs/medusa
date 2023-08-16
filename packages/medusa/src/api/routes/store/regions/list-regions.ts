@@ -79,7 +79,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/regions'
+ *       curl '{backend_url}/store/regions'
  * tags:
  *   - Regions
  * responses:

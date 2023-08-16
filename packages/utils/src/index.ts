@@ -1,5 +1,4 @@
 export * from "./bundles"
-export * from "./cli"
 export * from "./common"
 export * from "./decorators"
 export * from "./event-bus"

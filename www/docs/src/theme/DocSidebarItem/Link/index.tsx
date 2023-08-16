@@ -39,15 +39,15 @@ export default function DocSidebarItemLink({
         customProps?.sidebar_is_soon &&
           "sidebar-soon-link sidebar-badge-wrapper",
         !customProps?.sidebar_is_title &&
-          "[&_.sidebar-item-icon]:tw-w-[20px] [&_.sidebar-item-icon]:tw-h-[20px]",
+          "[&_.sidebar-item-icon]:w-[20px] [&_.sidebar-item-icon]:h-[20px]",
         !customProps?.sidebar_is_title &&
           !customProps?.sidebar_is_back_link &&
-          "[&_.sidebar-item-icon]:tw-mr-[12px]"
+          "[&_.sidebar-item-icon]:mr-0.75"
       )}
       key={label}
     >
       <Link
-        className={clsx("menu__link", !isInternalLink && "tw-items-center", {
+        className={clsx("menu__link", !isInternalLink && "items-center", {
           "menu__link--active": isActive,
         })}
         autoAddBaseUrl={autoAddBaseUrl}

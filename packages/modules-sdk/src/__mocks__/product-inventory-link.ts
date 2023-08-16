@@ -15,7 +15,9 @@ export const ProductInventoryLinkModule = {
   __joinerConfig: {
     serviceName: "productVariantInventoryInventoryItemLink",
     isLink: true,
-    tableName: "product_variant_inventory_item",
+    databaseConfig: {
+      tableName: "product_variant_inventory_item",
+    },
     alias: [
       {
         name: "product_variant_inventory_item",

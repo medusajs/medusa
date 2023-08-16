@@ -47,7 +47,7 @@ import { updateInventoryAndReservations } from "./create-fulfillment"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/claims/{claim_id}/fulfillments' \
+ *       curl -X POST '{backend_url}/admin/orders/{id}/claims/{claim_id}/fulfillments' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
