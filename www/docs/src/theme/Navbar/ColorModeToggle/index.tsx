@@ -2,6 +2,7 @@ import React from "react"
 import { useColorMode, useThemeConfig } from "@docusaurus/theme-common"
 import ColorModeToggle from "@theme/ColorModeToggle"
 import type { Props } from "@theme/Navbar/ColorModeToggle"
+import clsx from "clsx"
 
 export default function NavbarColorModeToggle({
   className,
@@ -16,9 +17,9 @@ export default function NavbarColorModeToggle({
   return (
     <ColorModeToggle
       className={className}
-      buttonClassName={
+      buttonClassName={clsx(
         "hover:!bg-medusa-button-neutral-hover dark:hover:!bg-medusa-button-neutral-hover-dark"
-      }
+      )}
       value={colorMode}
       onChange={setColorMode}
     />

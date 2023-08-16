@@ -19,8 +19,12 @@ export default function MobileSidebarToggle(): JSX.Element {
       className="navbar__toggle !block lg:!hidden clean-btn"
       type="button"
     >
-      {!shown && <IconSidebar />}
-      {shown && <IconXMark />}
+      {!shown && (
+        <IconSidebar iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+      )}
+      {shown && (
+        <IconXMark iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+      )}
     </button>
   )
 }

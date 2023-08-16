@@ -107,6 +107,7 @@ declare module "@medusajs/docs" {
     type: string
     title?: string
     icon?: string
+    Icon?: React.ReactElement
     className?: string
     label?: string
     html?: string
@@ -120,10 +121,10 @@ declare module "@medusajs/docs" {
   export declare type NavbarActionButton = NavbarActionBase & {
     type: "button"
     events?: {
-      onClick?: (e: MouseEvent) => void
-      onMouseEnter?: (e: MouseEvent) => void
-      onMouseLeave?: (e: MouseEvent) => void
-      onMouseOver?: (e: MouseEvent) => void
+      onClick?: MouseEventHandler<HTMLButtonElement>
+      onMouseEnter?: MouseEventHandler<HTMLButtonElement>
+      onMouseLeave?: MouseEventHandler<HTMLButtonElement>
+      onMouseOver?: MouseEventHandler<HTMLButtonElement>
     }
   }
 
