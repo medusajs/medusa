@@ -39,7 +39,7 @@ const MDXContentClient = dynamic<MDXContentClientProps>(
 ) as React.FC<MDXContentClientProps>
 
 const TagSection = ({ tag }: TagSectionProps) => {
-  const { setActivePath } = useSidebar()
+  const { activePath, setActivePath } = useSidebar()
   const [loadPaths, setLoadPaths] = useState(false)
   const slugTagName = useMemo(() => getSectionId([tag.name]), [tag])
   const { area } = useArea()
@@ -64,8 +64,8 @@ const TagSection = ({ tag }: TagSectionProps) => {
   })
 
   useEffect(() => {
-    if (location.hash && location.hash.includes(slugTagName)) {
-      const tagName = location.hash.replace("#", "").split("_")
+    if (activePath && activePath.includes(slugTagName)) {
+      const tagName = activePath.split("_")
       if (tagName.length === 1 && tagName[0] === slugTagName) {
         const elm = document.getElementById(tagName[0]) as Element
         elm?.scrollIntoView()
@@ -73,7 +73,7 @@ const TagSection = ({ tag }: TagSectionProps) => {
         setLoadPaths(true)
       }
     }
-  }, [slugTagName])
+  }, [slugTagName, activePath])
 
   return (
     <div

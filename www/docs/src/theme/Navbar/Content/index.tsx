@@ -14,6 +14,8 @@ import { ThemeConfig } from "@medusajs/docs"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import clsx from "clsx"
 import { useSidebar } from "@site/src/providers/Sidebar"
+import IconSidebar from "../../Icon/Sidebar"
+import IconChevronDoubleLeftMiniSolid from "../../Icon/ChevronDoubleLeftMiniSolid"
 
 function useNavbarItems() {
   // TODO temporary casting until ThemeConfig type is improved
@@ -140,9 +142,11 @@ export default function NavbarContent(): JSX.Element {
                       }, 100)
                     },
                   },
-                  icon: !sidebarContext?.hiddenSidebarContainer
-                    ? "sidebar"
-                    : "chevron-double-left-mini-solid",
+                  Icon: !sidebarContext?.hiddenSidebarContainer ? (
+                    <IconSidebar iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+                  ) : (
+                    <IconChevronDoubleLeftMiniSolid iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+                  ),
                 },
               ]}
               className="sidebar-toggler"
@@ -151,7 +155,6 @@ export default function NavbarContent(): JSX.Element {
           <Tooltip text="Switch theme">
             <NavbarColorModeToggle
               className={clsx(
-                "lg:block hidden",
                 "navbar-action-icon-item !w-2 !h-2 [&>button]:!rounded"
               )}
             />

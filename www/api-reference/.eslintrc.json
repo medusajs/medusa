@@ -1,6 +1,7 @@
 {
   "extends": [
     "next/core-web-vitals",
+    "google",
     "../.eslintrc.js"
   ],
   "rules": {

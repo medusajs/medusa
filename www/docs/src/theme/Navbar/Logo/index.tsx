@@ -11,7 +11,7 @@ export default function NavbarLogo(): JSX.Element {
         titleClassName="navbar__title text--truncate"
       />
       <MobileLogo
-        className="navbar__brand lg:hidden"
+        className="navbar__brand lg:hidden mx-auto"
         imageClassName="navbar__logo"
         titleClassName="navbar__title text--truncate"
       />
