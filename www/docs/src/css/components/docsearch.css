@@ -174,7 +174,7 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
 
 .DocSearch-Button-Container {
   @apply before:content-[''] before:h-[20px] before:w-[20px] before:absolute before:left-0.5 before:top-[5px];
-  @apply before:bg-magnifying-glass before:bg-no-repeat;
+  @apply before:bg-magnifying-glass dark:before:bg-magnifying-glass-dark before:bg-no-repeat;
 }
 
 .DocSearch-Button-Placeholder {
