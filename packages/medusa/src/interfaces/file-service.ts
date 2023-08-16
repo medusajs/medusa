@@ -26,7 +26,7 @@ export type DeleteFileType = {
 export type UploadStreamDescriptorType = {
   name: string
   ext?: string
-  isPrivate?: string
+  isPrivate?: boolean
   [x: string]: unknown
 }
 
