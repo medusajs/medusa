@@ -1,11 +1,10 @@
-import { Button } from "@medusajs/ui"
 import { useAdminLogin } from "medusa-react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
-
 import { useWidgets } from "../../../providers/widget-provider"
 import InputError from "../../atoms/input-error"
 import WidgetContainer from "../../extensions/widget-container"
+import Button from "../../fundamentals/button"
 import SigninInput from "../../molecules/input-signin"
 
 type FormValues = {
@@ -82,10 +81,11 @@ const LoginCard = ({ toResetPassword }: LoginCardProps) => {
             <InputError errors={errors} name="password" />
           </div>
           <Button
-            className="mt-4 w-full"
+            className="rounded-rounded inter-base-regular mt-4 w-[280px]"
             variant="secondary"
+            size="medium"
             type="submit"
-            isLoading={isLoading}
+            loading={isLoading}
           >
             Continue
           </Button>
