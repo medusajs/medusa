@@ -1,4 +1,4 @@
-import { Context, FindOptions } from "@medusajs/types"
+import { Context, FindOptions, ModuleJoinerConfig } from "@medusajs/types"
 import {
   EntitySchema,
   LoadStrategy,
@@ -6,19 +6,30 @@ import {
   FindOptions as MikroOptions,
 } from "@mikro-orm/core"
 
-import { MikroOrmAbstractBaseRepository } from "@medusajs/utils"
+import {
+  MikroOrmAbstractBaseRepository,
+  generateEntityId,
+} from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
 export function getPivotRepository(model: EntitySchema) {
   return class PivotRepository extends MikroOrmAbstractBaseRepository<object> {
     readonly manager_: SqlEntityManager
     readonly model_: EntitySchema
+    readonly joinerConfig_: ModuleJoinerConfig
 
-    constructor({ manager }: { manager: SqlEntityManager }) {
+    constructor({
+      manager,
+      joinerConfig,
+    }: {
+      manager: SqlEntityManager
+      joinerConfig: ModuleJoinerConfig
+    }) {
       // @ts-ignore
       super(...arguments)
       this.manager_ = manager
       this.model_ = model
+      this.joinerConfig_ = joinerConfig
     }
 
     async find(
@@ -77,6 +88,11 @@ export function getPivotRepository(model: EntitySchema) {
       const manager = this.getActiveManager<SqlEntityManager>(context)
 
       const links = data.map((link: any) => {
+        link.id = generateEntityId(
+          link.id,
+          this.joinerConfig_.databaseConfig?.idPrefix ?? "link"
+        )
+
         return manager.create(this.model_, link)
       })
 

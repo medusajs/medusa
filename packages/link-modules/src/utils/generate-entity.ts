@@ -26,7 +26,7 @@ export function generateEntity(
   const fieldNames = primary.foreignKey.split(",").concat(foreign.foreignKey)
 
   const tableName =
-    joinerConfig.tableName ??
+    joinerConfig.databaseConfig?.tableName ??
     composeTableName(
       primary.serviceName,
       primary.foreignKey,
@@ -43,12 +43,31 @@ export function generateEntity(
     return acc
   }, {})
 
+  const extraFields = joinerConfig.databaseConfig?.extraFields ?? {}
+
+  for (const column in extraFields) {
+    fieldNames.push(column)
+
+    fields[column] = {
+      type: extraFields[column].type,
+      nullable: !!extraFields[column].nullable,
+      defaultRaw: extraFields[column].defaultValue,
+      ...(extraFields[column].options ?? {}),
+    }
+  }
+
+  const hashTableName = simpleHash(tableName)
+
   return new EntitySchema({
     class: getClass(
       ...fieldNames.concat("created_at", "updated_at", "deleted_at")
     ) as any,
     tableName,
     properties: {
+      id: {
+        type: "string",
+        nullable: false,
+      },
       ...fields,
       created_at: {
         type: "Date",
@@ -67,20 +86,24 @@ export function generateEntity(
     },
     indexes: [
       {
+        properties: ["id"],
+        name: "IDX_id_" + hashTableName,
+      },
+      {
         properties: primary.foreignKey.split(","),
         name:
           "IDX_" +
           primary.foreignKey.split(",").join("_") +
           "_" +
-          simpleHash(tableName),
+          hashTableName,
       },
       {
         properties: foreign.foreignKey,
-        name: "IDX_" + foreign.foreignKey + "_" + simpleHash(tableName),
+        name: "IDX_" + foreign.foreignKey + "_" + hashTableName,
       },
       {
         properties: ["deleted_at"],
-        name: "IDX_deleted_at_" + simpleHash(tableName),
+        name: "IDX_deleted_at_" + hashTableName,
       },
     ],
   })

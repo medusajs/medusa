@@ -79,10 +79,10 @@ export default class PivotService<TEntity> {
   async delete(
     data: unknown,
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<unknown[]> {
-    return (await this.pivotRepository_.delete(data, {
+  ): Promise<void> {
+    await this.pivotRepository_.delete(data, {
       transactionManager: sharedContext.transactionManager,
-    })) as any
+    })
   }
 
   @InjectTransactionManager(doNotForceTransaction, "pivotRepository_")
@@ -92,7 +92,7 @@ export default class PivotService<TEntity> {
   ): Promise<[string[], Record<string, string[]>]> {
     const filter = {}
     for (const key in data) {
-      filter[key] = { $in: data[key] }
+      filter[key] = { $in: Array.isArray(data[key]) ? data[key] : [data[key]] }
     }
 
     return await this.pivotRepository_.softDelete(filter, {
@@ -102,9 +102,14 @@ export default class PivotService<TEntity> {
 
   @InjectTransactionManager(doNotForceTransaction, "pivotRepository_")
   async restore(
-    data: unknown,
+    data: any,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[string[], Record<string, string[]>]> {
+    const filter = {}
+    for (const key in data) {
+      filter[key] = { $in: Array.isArray(data[key]) ? data[key] : [data[key]] }
+    }
+
     return await this.pivotRepository_.restore(data, {
       transactionManager: sharedContext.transactionManager,
     })

@@ -18,7 +18,10 @@ export interface ILinkModule {
   ): Promise<[unknown[], number]>
 
   create(
-    primaryKeyOrBulkData: string | string[] | [string | string[], string][],
+    primaryKeyOrBulkData:
+      | string
+      | string[]
+      | [string | string[], string, Record<string, unknown>?][],
     foreignKeyData?: string,
     sharedContext?: Context
   ): Promise<unknown[]>
@@ -29,7 +32,7 @@ export interface ILinkModule {
     sharedContext?: Context
   ): Promise<unknown[]>
 
-  delete(data: unknown | unknown[], sharedContext?: Context): Promise<unknown[]>
+  delete(data: unknown | unknown[], sharedContext?: Context): Promise<void>
 
   softDelete(
     data: unknown | unknown[],
