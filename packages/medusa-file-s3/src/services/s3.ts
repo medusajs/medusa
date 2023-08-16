@@ -109,9 +109,11 @@ class S3Service extends AbstractFileService implements IFileService {
     const client = this.getClient()
     const pass = new stream.PassThrough()
 
+    const isPrivate = fileData.isPrivate ?? true // default to private
+
     const fileKey = `${fileData.name}.${fileData.ext}`
     const params: PutObjectRequest = {
-      ACL: fileData.isPrivate ? "private" : "public-read",
+      ACL: isPrivate ? "private" : "public-read",
       Bucket: this.bucket_,
       Body: pass,
       Key: fileKey,
