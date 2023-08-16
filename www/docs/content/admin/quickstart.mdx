@@ -71,23 +71,23 @@ const plugins = [
 
 The plugin accepts the following options:
 
-1. `serve`: (default: `true`) a boolean indicating whether to serve the admin dashboard when the Medusa backend starts. If set to `false`, you can serve the admin dashboard using the [dev command](./configurations#dev-command-options).
+1. `serve`: (default: `true`) a boolean indicating whether to serve the admin dashboard when the Medusa backend starts. If set to `false`, you can serve the admin dashboard using the [dev command](./configuration.md#dev-command-options).
 2. `path`: (default: `app`) a string indicating the path the admin server should run on when running the Medusa backend in production. It must be prefixed with a slash `/`, but it can't end with a `/`, which throws an error. It also can't be one of the reserved paths: "admin" and "store".
 3. `outDir`: Optional path for where to output the admin build files.
-4. `autoRebuild`: (default: `false`) a boolean indicating whether the admin UI should be rebuilt if there are any changes or if a missing build is detected when the backend starts. If not set, you must [manually build the admin dashboard](./configurations#build-command-options).
+4. `autoRebuild`: (default: `false`) a boolean indicating whether the admin UI should be rebuilt if there are any changes or if a missing build is detected when the backend starts. If not set, you must [manually build the admin dashboard](./configuration.md#build-command-options).
 5. `develop`: An optional object that accepts the following properties:
   - `open`: (default: `true`) a boolean value that indicates if the browser should be opened when the medusa project is first started.
   - `port`: (default: `7001`) a number indicating the port the admin dashboard runs on.
 
 ### Optional: Manually Building Admin Dashboard
 
-If you have `autoRebuild` disabled, you must build your admin dashboard before starting the Medusa backend. Refer to the [build command](./configurations#build-command-options) for more details.
+If you have `autoRebuild` disabled, you must build your admin dashboard before starting the Medusa backend. Refer to the [build command](./configurations.md#build-command-options) for more details.
 
 ### Step 3: Test the Admin Dashboard
 
 :::tip
 
-If you disabled the `serve` option, you need to run the admin dashboard separately using the [dev command](./configurations#dev-command-options)
+If you disabled the `serve` option, you need to run the admin dashboard separately using the [dev command](./configuration.md#dev-command-options)
 
 :::
 
