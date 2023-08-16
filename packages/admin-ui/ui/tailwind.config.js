@@ -13,9 +13,8 @@ let uiPath = ""
 
 try {
   uiPath = path.resolve(
-    path.dirname(require.resolve("@medusajs/ui/package.json")),
-    "build",
-    "esm",
+    path.dirname(require.resolve("@medusajs/ui")),
+    "../..",
     "**/*.{js,ts,jsx,tsx}"
   )
 } catch (e) {

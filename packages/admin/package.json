@@ -28,6 +28,8 @@
   },
   "dependencies": {
     "@medusajs/admin-ui": "*",
+    "@medusajs/ui": "0.0.0-snapshot-20230816100247",
+    "@medusajs/ui-preset": "0.0.0-snapshot-20230816100247",
     "@rollup/plugin-alias": "5.0.0",
     "@rollup/plugin-commonjs": "24.1.0",
     "@rollup/plugin-json": "6.0.0",
