@@ -160,7 +160,7 @@ describe("/store/carts", () => {
     })
 
     describe("canceling an order", () => {
-      it.only("cancels an order with many items should succeed", async () => {
+      it("cancels an order with many items should succeed", async () => {
         const api = useApi()
 
         const stockLocation = await stockLocationService.create({
