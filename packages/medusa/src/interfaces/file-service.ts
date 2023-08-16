@@ -15,6 +15,7 @@ export type FileServiceGetUploadStreamResult = {
 
 export type GetUploadedFileType = {
   fileKey: string
+  isPrivate?: boolean
   [x: string]: unknown
 }
 
