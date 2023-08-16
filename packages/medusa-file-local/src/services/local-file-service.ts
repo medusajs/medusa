@@ -6,6 +6,7 @@ import {
 } from "@medusajs/medusa"
 import fs from "fs"
 import { parse } from "path"
+import stream from "stream"
 
 class LocalService extends AbstractFileService implements IFileService {
   protected uploadDir_: string
@@ -54,7 +55,21 @@ class LocalService extends AbstractFileService implements IFileService {
   async getUploadStreamDescriptor(
     fileData
   ): Promise<FileServiceGetUploadStreamResult> {
-    throw Error("Not implemented")
+    const parsedFilename = parse(fileData.originalname)
+    const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
+    const fileUrl = `${this.backendUrl_}/${this.uploadDir_}/${fileKey}`
+
+    const pass = new stream.PassThrough()
+    const writeStream = fs.createWriteStream(`${this.uploadDir_}/${fileKey}`)
+
+    pass.pipe(writeStream)
+
+    const promise = new Promise((res, rej) => {
+      writeStream.on("finish", res)
+      writeStream.on("error", rej)
+    })
+
+    return { url: fileUrl, fileKey, writeStream: pass, promise }
   }
 
   async getDownloadStream(fileData): Promise<NodeJS.ReadableStream> {
