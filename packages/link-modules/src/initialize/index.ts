@@ -1,5 +1,6 @@
 import { InternalModuleDeclaration, MedusaModule } from "@medusajs/modules-sdk"
 import {
+  ExternalModuleDeclaration,
   ILinkModule,
   LinkModuleDefinition,
   LoaderOptions,
@@ -7,6 +8,7 @@ import {
   MODULE_SCOPE,
   ModuleExports,
   ModuleJoinerConfig,
+  ModuleServiceInitializeCustomDataLayerOptions,
   ModuleServiceInitializeOptions,
 } from "@medusajs/types"
 import { lowerCaseFirst, simpleHash } from "@medusajs/utils"
@@ -17,7 +19,11 @@ import { composeLinkName } from "../utils"
 import { getLinkModuleDefinition } from "./module-definition"
 
 export const initialize = async (
-  options?: ModuleServiceInitializeOptions | InternalModuleDeclaration,
+  options?:
+    | ModuleServiceInitializeOptions
+    | ModuleServiceInitializeCustomDataLayerOptions
+    | ExternalModuleDeclaration
+    | InternalModuleDeclaration,
   modulesDefinition?: ModuleJoinerConfig[],
   injectedDependencies?: InitializeModuleInjectableDependencies
 ): Promise<{ [link: string]: ILinkModule }> => {
