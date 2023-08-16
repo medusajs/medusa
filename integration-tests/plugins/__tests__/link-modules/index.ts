@@ -21,7 +21,7 @@ describe("Link Modules", () => {
         extraFields: {
           extra_field: {
             type: "integer",
-            defaultRaw: "-1",
+            defaultValue: "-1",
           },
           another_field: {
             type: "string",

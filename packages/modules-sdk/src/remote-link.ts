@@ -5,7 +5,7 @@ import {
   ModuleJoinerRelationship,
 } from "@medusajs/types"
 
-import { toPascalCase } from "@medusajs/utils"
+import { isObject, toPascalCase } from "@medusajs/utils"
 import { MedusaModule } from "./medusa-module"
 
 export type DeleteEntityInput = {
@@ -359,9 +359,12 @@ export class RemoteLink {
       const pkValue =
         pk.length === 1 ? rel[moduleA][pk[0]] : pk.map((k) => rel[moduleA][k])
 
-      serviceLinks
-        .get(service.__definition.key)
-        ?.push([pkValue, rel[moduleB][moduleBKey], extraFields])
+      const fields: unknown[] = [pkValue, rel[moduleB][moduleBKey]]
+      if (isObject(extraFields)) {
+        fields.push(extraFields)
+      }
+
+      serviceLinks.get(service.__definition.key)?.push(fields as any)
     }
 
     const promises: Promise<unknown[]>[] = []
