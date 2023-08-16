@@ -2,7 +2,7 @@
 title: createCustomAdminHooks Error
 ---
 
-If you've installed Medusa prior to v1.12.3 with the `create-medusa-app` command, then you try to update the `@medusajs/medusa` and `@medusajs/admin` to the latest `beta` versions, you might run into the following error when running your Medusa backend:
+If you've installed Medusa prior to v1.13.2 with the `create-medusa-app` command, then you try to update the `@medusajs/medusa` and `@medusajs/admin` to the latest `beta` versions, you might run into the following error when running your Medusa backend:
 
 ```bash
 Module '"medusa-react"' has no exported member 'createCustomAdminHooks'.
