@@ -36,6 +36,7 @@ jobs:
         working-directory: www/docs
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
+          API_URL: "https://docs.medusajs.com"
         run: yarn build
         
   lint:
