@@ -86,6 +86,11 @@ In your terminal, run the following command:
   - `--repo-url <url>`: The repository URL to create the project from. By default it will be `https://github.com/medusajs/medusa-starter-default`.
   - `--seed`: A flag indicating whether the database should be seeded with demo data. By default, seeding is disabled.
   - `--no-boilerplate`: A flag that removes all files added for an enhanced onboarding experience (files under `src/admin`, `src/api`, etc...). This is helpful if you want to create a clean project, and is only recommended if you're familiar with Medusa.
+  - `--no-browser`: Disables opening the browser at the end of the project creation and only shows success message.
+  - `--skip-db`: Skips creating the database, running migrations, and seeding, and subsequently skips opening the browser. Useful if you want to set the database URL at a later point in the configurations.
+  - `--db-url <url>`: Skips database creation and sets the database URL to the provided URL. Throws an error if connection to the database fails. Will still run migrations and open the admin after project creation. Useful if you already have a database created, locally or remotely.
+  - `--no-migrations`: Skips running migrations, creating admin user, and seeding. If used, it's expected that you pass the `--db-url` option with a URL of a database that has all necessary migrations. Otherwise, unexpected errors will occur. Helpful only if combined with `--db-url`.
+  - `--directory-path <path>`: Allows specifying the parent directory path to create the directory of the new project in.
 
 </details>
 
