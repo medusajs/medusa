@@ -5,6 +5,10 @@ import { SetRelation, Merge } from "../core/ModelUtils"
 
 export interface AdminPostInventoryItemsReq {
   /**
+   * The ID of the variant to create the inventory item for.
+   */
+  variant_id: string
+  /**
    * The unique SKU of the associated Product Variant.
    */
   sku?: string
