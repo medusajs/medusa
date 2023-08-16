@@ -259,6 +259,14 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
     }
   }
 
+  // this is mainly triggered by Algolia
+  const handleHashChange = useCallback(() => {
+    const currentPath = location.hash.replace("#", "")
+    if (currentPath !== activePath) {
+      setActivePath(currentPath)
+    }
+  }, [activePath])
+
   useEffect(() => {
     init()
 
@@ -271,13 +279,6 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       }
     }
 
-    const handleHashChange = () => {
-      const currentPath = location.hash.replace("#", "")
-      if (currentPath !== activePath) {
-        setActivePath(currentPath)
-      }
-    }
-
     window.addEventListener("scroll", handleScroll)
     window.addEventListener("hashchange", handleHashChange)
 
@@ -285,7 +286,7 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       window.removeEventListener("scroll", handleScroll)
       window.removeEventListener("hashchange", handleHashChange)
     }
-  }, [])
+  }, [handleHashChange])
 
   return (
     <SidebarContext.Provider
