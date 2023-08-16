@@ -13,7 +13,6 @@ module.exports = {
   ],
   extends: [
     "eslint:recommended", 
-    "google", 
     "plugin:prettier/recommended",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",

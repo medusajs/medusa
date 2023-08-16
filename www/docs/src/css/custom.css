@@ -146,10 +146,10 @@
   }
 
   .navbar-action-icon-item {
-    @apply bg-docs-button-neutral dark:bg-docs-button-neutral-dark hover:!bg-no-image active:!bg-no-image hover:bg-medusa-button-neutral-hover dark:hover:bg-medusa-button-neutral-hover-dark;
-    @apply active:bg-medusa-button-neutral-pressed dark:active:bg-medusa-button-neutral-pressed-dark;
-    @apply focus:shadow-button-secondary-focus dark:focus:shadow-button-secondary-focus-dark;
-    @apply border border-solid border-medusa-border-loud-muted dark:border-medusa-border-loud-muted-dark rounded;
+    @apply lg:bg-docs-button-neutral lg:dark:bg-docs-button-neutral-dark hover:!bg-no-image lg:active:!bg-no-image hover:bg-medusa-button-neutral-hover dark:hover:bg-medusa-button-neutral-hover-dark;
+    @apply lg:active:bg-medusa-button-neutral-pressed lg:dark:active:bg-medusa-button-neutral-pressed-dark;
+    @apply lg:focus:shadow-button-secondary-focus lg:dark:focus:shadow-button-secondary-focus-dark;
+    @apply lg:border lg:border-solid lg:border-medusa-border-loud-muted lg:dark:border-medusa-border-loud-muted-dark rounded;
     @apply w-2 h-2 flex justify-center items-center cursor-pointer;
   }
 
