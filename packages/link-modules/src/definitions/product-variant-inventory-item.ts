@@ -8,10 +8,10 @@ export const ProductVariantInventoryItem: ModuleJoinerConfig = {
   databaseConfig: {
     tableName: "product_variant_inventory_item",
     idPrefix: "pvitem",
-    schema: {
+    extraFields: {
       required_quantity: {
         type: "integer",
-        defaultRaw: "1",
+        defaultValue: "1",
       },
     },
   },

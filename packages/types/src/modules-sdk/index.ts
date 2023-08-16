@@ -117,7 +117,7 @@ export type ModuleJoinerConfig = Omit<
   databaseConfig?: {
     tableName?: string // Name of the pivot table. If not provided it is auto generated
     idPrefix?: string // Prefix for the id column. If not provided it is "link"
-    schema?: Record<
+    extraFields?: Record<
       string,
       {
         type:
@@ -142,7 +142,7 @@ export type ModuleJoinerConfig = Omit<
           | "string"
           | "uuid"
           | "text"
-        defaultRaw?: string
+        defaultValue?: string
         nullable?: boolean
         options?: Record<string, unknown> // Mikro-orm options for the column
       }

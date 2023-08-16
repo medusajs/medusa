@@ -43,7 +43,7 @@ export function generateEntity(
     return acc
   }, {})
 
-  const extraFields = joinerConfig.databaseConfig?.schema ?? {}
+  const extraFields = joinerConfig.databaseConfig?.extraFields ?? {}
 
   for (const column in extraFields) {
     fieldNames.push(column)
@@ -51,7 +51,7 @@ export function generateEntity(
     fields[column] = {
       type: extraFields[column].type,
       nullable: !!extraFields[column].nullable,
-      defaultRaw: extraFields[column].defaultRaw,
+      defaultRaw: extraFields[column].defaultValue,
       ...(extraFields[column].options ?? {}),
     }
   }

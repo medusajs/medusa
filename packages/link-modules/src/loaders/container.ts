@@ -27,7 +27,7 @@ export function containerLoader(entity, joinerConfig: ModuleJoinerConfig) {
       primaryKey: asValue(primary.foreignKey.split(",")),
       foreignKey: asValue(foreign.foreignKey),
       extraFields: asValue(
-        Object.keys(joinerConfig.databaseConfig?.schema || {})
+        Object.keys(joinerConfig.databaseConfig?.extraFields || {})
       ),
 
       linkModuleService: asClass(getModuleService(joinerConfig)).singleton(),

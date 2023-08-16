@@ -18,7 +18,7 @@ describe("Link Modules", () => {
       databaseConfig: {
         tableName: "linkTableName",
         idPrefix: "prefix",
-        schema: {
+        extraFields: {
           extra_field: {
             type: "integer",
             defaultRaw: "-1",
