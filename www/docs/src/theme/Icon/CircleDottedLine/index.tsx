@@ -18,7 +18,7 @@ const IconCircleDottedLine: React.FC<IconProps> = ({
         d="M12.5 2.93589C10.884 2.3547 9.116 2.3547 7.5 2.93589"
         className={
           iconColorClassName ||
-          "tw-stroke-medusa-icon-subtle dark:tw-stroke-medusa-icon-subtle"
+          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle-dark"
         }
         strokeWidth="1.5"
         strokeLinecap="round"
@@ -28,7 +28,7 @@ const IconCircleDottedLine: React.FC<IconProps> = ({
         d="M2.63049 8.63198C2.94295 6.94471 3.82573 5.41606 5.13094 4.30209"
         className={
           iconColorClassName ||
-          "tw-stroke-medusa-icon-subtle dark:tw-stroke-medusa-icon-subtle"
+          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle-dark"
         }
         strokeWidth="1.5"
         strokeLinecap="round"
@@ -38,7 +38,7 @@ const IconCircleDottedLine: React.FC<IconProps> = ({
         d="M5.13094 15.6979C3.82575 14.5839 2.94298 13.0552 2.63049 11.368"
         className={
           iconColorClassName ||
-          "tw-stroke-medusa-icon-subtle dark:tw-stroke-medusa-icon-subtle"
+          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle-dark"
         }
         strokeWidth="1.5"
         strokeLinecap="round"
@@ -48,7 +48,7 @@ const IconCircleDottedLine: React.FC<IconProps> = ({
         d="M7.5 17.0641C9.116 17.6453 10.884 17.6453 12.5 17.0641"
         className={
           iconColorClassName ||
-          "tw-stroke-medusa-icon-subtle dark:tw-stroke-medusa-icon-subtle"
+          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle-dark"
         }
         strokeWidth="1.5"
         strokeLinecap="round"
@@ -58,7 +58,7 @@ const IconCircleDottedLine: React.FC<IconProps> = ({
         d="M17.3695 8.63198C17.057 6.94471 16.1742 5.41606 14.869 4.30209"
         className={
           iconColorClassName ||
-          "tw-stroke-medusa-icon-subtle dark:tw-stroke-medusa-icon-subtle"
+          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle-dark"
         }
         strokeWidth="1.5"
         strokeLinecap="round"
@@ -68,7 +68,7 @@ const IconCircleDottedLine: React.FC<IconProps> = ({
         d="M14.869 15.6979C16.1742 14.5839 17.057 13.0552 17.3695 11.368"
         className={
           iconColorClassName ||
-          "tw-stroke-medusa-icon-subtle dark:tw-stroke-medusa-icon-subtle"
+          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle-dark"
         }
         strokeWidth="1.5"
         strokeLinecap="round"

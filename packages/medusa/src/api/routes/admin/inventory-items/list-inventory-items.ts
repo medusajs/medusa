@@ -80,7 +80,7 @@ import { Transform } from "class-transformer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/inventory-items' \
+ *       curl '{backend_url}/admin/inventory-items' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

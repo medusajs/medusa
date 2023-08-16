@@ -27,7 +27,7 @@ import CustomerService from "../../../../services/customer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/store/customers/me/addresses/{address_id}' \
+ *       curl -X DELETE '{backend_url}/store/customers/me/addresses/{address_id}' \
  *       -H 'Cookie: connect.sid={sid}'
  * security:
  *   - cookie_auth: []

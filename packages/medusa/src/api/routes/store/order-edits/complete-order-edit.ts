@@ -33,7 +33,7 @@ import {
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/order-edits/{id}/complete'
+ *       curl -X POST '{backend_url}/store/order-edits/{id}/complete'
  * tags:
  *   - Order Edits
  * responses:

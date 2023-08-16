@@ -28,7 +28,7 @@ import { IsString } from "class-validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/uploads/download-url' \
+ *       curl -X POST '{backend_url}/admin/uploads/download-url' \
  *       -H 'Authorization: Bearer {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
