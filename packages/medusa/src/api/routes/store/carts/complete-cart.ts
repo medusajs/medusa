@@ -35,7 +35,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/carts/{id}/complete'
+ *       curl -X POST '{backend_url}/store/carts/{id}/complete'
  * tags:
  *   - Carts
  * responses:

@@ -22,7 +22,7 @@ import { PaymentProviderService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/store/payment-providers' \
+ *       curl '{backend_url}/admin/store/payment-providers' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

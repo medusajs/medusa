@@ -765,9 +765,9 @@ class CartService extends TransactionBaseService {
 
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        let cart = await this.retrieve(cartId, { 
-          select, 
-          relations: ["shipping_methods"] 
+        let cart = await this.retrieve(cartId, {
+          select,
+          relations: ["shipping_methods"],
         })
 
         if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
@@ -1112,7 +1112,7 @@ class CartService extends TransactionBaseService {
           await this.updateUnitPrices_(cart, data.region_id, data.customer_id)
         }
 
-        if (isDefined(data.region_id)) {
+        if (isDefined(data.region_id) && cart.region_id !== data.region_id) {
           const shippingAddress =
             typeof data.shipping_address !== "string"
               ? data.shipping_address

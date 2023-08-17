@@ -30,7 +30,7 @@ import { extendedFindParamsMixin } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/publishable-api-keys/{id}/sales-channels' \
+ *       curl '{backend_url}/admin/publishable-api-keys/{id}/sales-channels' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

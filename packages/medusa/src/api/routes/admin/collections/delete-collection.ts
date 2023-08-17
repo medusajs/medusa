@@ -27,7 +27,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/collections/{id}' \
+ *       curl -X DELETE '{backend_url}/admin/collections/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

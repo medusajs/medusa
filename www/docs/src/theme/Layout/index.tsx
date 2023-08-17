@@ -64,7 +64,7 @@ export default function Layout(props: Props): JSX.Element {
         id={SkipToContentFallbackId}
         className={clsx(
           ThemeClassNames.wrapper.main,
-          "tw-flex-auto tw-flex-grow tw-flex-shrink-0",
+          "flex-auto flex-grow flex-shrink-0",
           wrapperClassName
         )}
       >

@@ -22,7 +22,7 @@
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/batch-jobs/{id}' \
+ *       curl '{backend_url}/admin/batch-jobs/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

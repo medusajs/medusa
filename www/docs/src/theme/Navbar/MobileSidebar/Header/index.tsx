@@ -11,8 +11,8 @@ function CloseButton() {
     <button
       type="button"
       className={clsx(
-        "tw-bg-transparent tw-border-0 tw-text-inherit tw-cursor-pointer tw-p-0",
-        "tw-flex tw-ml-auto"
+        "bg-transparent border-0 text-inherit cursor-pointer p-0",
+        "flex ml-auto"
       )}
       onClick={() => mobileSidebar.toggle()}
     >
@@ -25,15 +25,15 @@ export default function NavbarMobileSidebarHeader(): JSX.Element {
   return (
     <div
       className={clsx(
-        "tw-items-center tw-shadow-navbar dark:tw-shadow-navbar-dark",
-        "tw-flex tw-flex-1 tw-h-navbar tw-py-[12px] tw-px-1.5"
+        "items-center shadow-navbar dark:shadow-navbar-dark",
+        "flex flex-1 h-navbar py-0.75 px-1.5"
       )}
     >
       <NavbarLogo />
       <NavbarColorModeToggle
         className={clsx(
-          "[&>button]:hover:tw-bg-medusa-button-neutral-hover dark:[&>button]:hover:tw-bg-medusa-button-neutral-hover-dark",
-          "[&>button]:!tw-rounded"
+          "[&>button]:hover:bg-medusa-button-neutral-hover dark:[&>button]:hover:bg-medusa-button-neutral-hover-dark",
+          "[&>button]:!rounded"
         )}
       />
       <CloseButton />

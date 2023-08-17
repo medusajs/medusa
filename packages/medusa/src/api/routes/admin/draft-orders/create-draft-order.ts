@@ -67,7 +67,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/draft-orders' \
+ *       curl -X POST '{backend_url}/admin/draft-orders' \
  *       -H 'Authorization: Bearer {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{

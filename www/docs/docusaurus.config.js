@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 require("dotenv").config()
-const path = require("path")
 const fs = require("fs")
-const docsPath = path.join(__dirname, "../../docs/content")
-const apisPath = path.join(__dirname, "../../docs/api")
 const reverseSidebar = require("./src/utils/reverseSidebar")
 
 const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
@@ -43,7 +40,7 @@ const config = {
     },
   ],
   themeConfig: {
-    image: "img/docs-banner.jpg",
+    image: "img/docs-meta.jpg",
     colorMode: {
       defaultMode: "light",
       disableSwitch: false,
@@ -55,7 +52,10 @@ const config = {
       placeholder: "Search docs...",
       appId: algoliaAppId,
       contextualSearch: false,
-      externalUrlRegex: "https://medusajs.com",
+      externalUrlRegex: "https://medusajs.com,https://docs.medusajs.com/api/",
+      searchParameters: {
+        tagFilters: "-reference",
+      },
     },
     prism: {
       defaultLanguage: "js",
@@ -69,38 +69,40 @@ const config = {
       hideOnScroll: false,
       logo: {
         alt: "Medusa",
-        src: "img/logo.png",
-        srcDark: "img/logo-dark.png",
+        src: "img/logo-icon.png",
+        srcDark: "img/logo-icon-dark.png",
+        width: 20,
+        height: 20,
       },
       items: [
-        {
-          type: "search",
-          position: "left",
-        },
         {
           type: "docSidebar",
           sidebarId: "homepage",
           label: "Docs",
-          position: "right",
+          position: "left",
         },
         {
           type: "docSidebar",
           sidebarId: "userGuideSidebar",
           label: "User Guide",
-          position: "right",
+          position: "left",
         },
         {
-          href: "/api/store",
+          href: `${process.env.API_URL}/api/store`,
           label: "Store API",
           prependBaseUrlToHref: true,
           target: "_blank",
-          position: "right",
+          position: "left",
         },
         {
-          href: "/api/admin",
+          href: `${process.env.API_URL}/api/admin`,
           label: "Admin API",
           prependBaseUrlToHref: true,
           target: "_blank",
+          position: "left",
+        },
+        {
+          type: "search",
           position: "right",
         },
       ],
@@ -109,10 +111,17 @@ const config = {
       {
         type: "link",
         href: "https://github.com/medusajs/medusa/issues/new?assignees=&labels=type%3A+docs&template=docs.yml",
-        title: "Report an Issue",
-        icon: "report",
+        label: "Report an Issue",
+        className: "btn-secondary max-[1014px]:hidden",
       },
     ],
+    mobileLogo: {
+      alt: "Medusa",
+      src: "img/logo-mobile.png",
+      srcDark: "img/logo-mobile-dark.png",
+      width: 82,
+      height: 20,
+    },
     footer: {
       copyright: `© ${new Date().getFullYear()} Medusa, Inc. All rights reserved.`,
     },
@@ -162,8 +171,8 @@ const config = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl:
-            "https://github.com/medusajs/medusa/edit/develop/docs/content",
-          path: docsPath,
+            "https://github.com/medusajs/medusa/edit/develop/www/docs/content",
+          path: "content",
           routeBasePath: "/",
           remarkPlugins: [
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
@@ -184,46 +193,8 @@ const config = {
         gtag: {
           trackingID: "G-S7G7X3JYS3",
         },
-      },
-    ],
-    [
-      "redocusaurus",
-      {
-        // Plugin Options for loading OpenAPI files
-        specs: [
-          {
-            spec: path.join(apisPath, "store/openapi.yaml"),
-            route: "/api/store",
-            layout: {
-              noFooter: true,
-            },
-          },
-          {
-            spec: path.join(apisPath, "admin/openapi.yaml"),
-            route: "/api/admin",
-            layout: {
-              noFooter: true,
-            },
-          },
-        ],
-        // Theme Options for modifying how redoc renders them
-        theme: {
-          primaryColorDark: "#161618",
-          options: {
-            disableSearch: true,
-            nativeScrollbars: true,
-            sortTagsAlphabetically: true,
-            expandResponses: "200,204",
-            generatedPayloadSamplesMaxDepth: 4,
-            showObjectSchemaExamples: true,
-            requiredPropsFirst: true,
-            hideRequestPayloadSample: true,
-          },
-          theme: {
-            sidebar: {
-              width: "250px",
-            },
-          },
+        sitemap: {
+          filename: "sitemap-docs.xml",
         },
       },
     ],
