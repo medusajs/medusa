@@ -109,6 +109,12 @@ You’ll first be asked to enter the name of your project, which is used to crea
 
 ### (Optional) Step 2: Specify PostgreSQL credentials
 
+:::note
+
+This doesn't apply if you supplied the `--db-url` option. In that case, the command will fail if it can't connect to the supplied connection URL.
+
+:::
+
 By default, this command will try to use the default PostgreSQL credentials to connect to your PostgreSQL server. If they don't work, you'll be prompted to enter your PostgreSQL database and password. If they work, you can move ahead to the next step.
 
 These credentials will be used to create a database during this setup and configure your Medusa backend to connect to that database.
