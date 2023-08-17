@@ -2,14 +2,16 @@ import { useAdminStore } from "medusa-react"
 import React, { useState } from "react"
 
 import { useFeatureFlag } from "../../../providers/feature-flag-provider"
+import { useRoutes } from "../../../providers/route-provider"
 import BuildingsIcon from "../../fundamentals/icons/buildings-icon"
 import CartIcon from "../../fundamentals/icons/cart-icon"
 import CashIcon from "../../fundamentals/icons/cash-icon"
 import GearIcon from "../../fundamentals/icons/gear-icon"
 import GiftIcon from "../../fundamentals/icons/gift-icon"
 import SaleIcon from "../../fundamentals/icons/sale-icon"
-import TagIcon from "../../fundamentals/icons/tag-icon"
+import SquaresPlus from "../../fundamentals/icons/squares-plus"
 import SwatchIcon from "../../fundamentals/icons/swatch-icon"
+import TagIcon from "../../fundamentals/icons/tag-icon"
 import UsersIcon from "../../fundamentals/icons/users-icon"
 import SidebarMenuItem from "../../molecules/sidebar-menu-item"
 import UserMenu from "../../molecules/user-menu"
@@ -21,6 +23,8 @@ const Sidebar: React.FC = () => {
 
   const { isFeatureEnabled } = useFeatureFlag()
   const { store } = useAdminStore()
+
+  const { getLinks } = useRoutes()
 
   const triggerHandler = () => {
     const id = triggerHandler.id++
@@ -104,6 +108,21 @@ const Sidebar: React.FC = () => {
             triggerHandler={triggerHandler}
             text={"Pricing"}
           />
+          {getLinks().map(({ path, label, icon }, index) => {
+            const cleanLink = path.replace("/a/", "")
+
+            const Icon = icon ? icon : SquaresPlus
+
+            return (
+              <SidebarMenuItem
+                key={index}
+                pageLink={`/a${cleanLink}`}
+                icon={icon ? <Icon /> : <SquaresPlus size={ICON_SIZE} />}
+                triggerHandler={triggerHandler}
+                text={label}
+              />
+            )
+          })}
           <SidebarMenuItem
             pageLink={"/a/settings"}
             icon={<GearIcon size={ICON_SIZE} />}

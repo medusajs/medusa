@@ -12,9 +12,9 @@ In this document, you’ll learn how to manage your account including resetting 
 
 To reset your password:
 
-1. On the login screen, click on the “Reset password” link.
+1. On the login screen, click on the “Forget your password?” link.
 2. Enter the email of your account.
-3. Click on “Send reset instructions”.
+3. Click on the “Send reset instructions” button.
 4. You’ll find the instructions to reset your password in the email you receive.
 
 :::note

@@ -13,7 +13,7 @@ In this document, you’ll learn how to view and manage taxes in your Medusa Adm
 To view taxes:
 
 1. Click on Settings in the sidebar.
-2. Choose Tax Settings from the list of settings.
+2. Choose Taxes from the list of settings.
 
 This opens the Taxes page where you can find a list of regions. This is because every time you create a region, a default tax rate is associated with that region.
 
@@ -26,7 +26,7 @@ To edit a region’s taxes:
 1. Go to Settings → Taxes.
 2. Click on the region you want to edit the taxes for in the Regions section.
 
-This opens a Details form to the right where you can edit the taxes calculation settings and manage the tax rates.
+This opens a Details form to the right where you can edit the taxes calculation settings and [manage the tax rates](./tax-rates.mdx).
 
 ---
 
@@ -44,9 +44,10 @@ The tax provider that you choose defines how taxes are calculated for products a
 
 If you have integrated a custom tax provider and want to use it to calculate taxes in a region:
 
-1. Select a region whose taxes you want to edit.
-2. Change the selected tax provider in the Tax Provider field.
-3. Click Save at the bottom right.
+1. Go to Settings → Taxes.
+2. Select a region whose taxes you want to edit.
+3. Change the selected tax provider in the Tax Provider field.
+4. Click Save at the bottom right.
 
 ### Disable Automatic Taxes Calculation
 
@@ -62,16 +63,18 @@ If you switch off automatic taxes calculation, the taxes must be calculated manu
 
 To disable automatic taxes calculation:
 
-1. Select a region whose tax you want to edit.
-2. Check off the “Calculate taxes automatically” input.
-3. Click Save at the bottom right.
+1. Go to Settings → Taxes.
+2. Select a region whose tax you want to edit.
+3. Check off the “Calculate taxes automatically” input.
+4. Click Save at the bottom right.
 
 ### Disable Taxes for Gift Cards
 
 To disable applying taxes for Gift Cards:
 
-1. Select a region whose tax you want to edit.
-2. Check off the “Apply tax to gift cards” input.
-3. Click Save at the bottom right.
+1. Go to Settings → Taxes.
+2. Select a region whose tax you want to edit.
+3. Check off the “Apply tax to gift cards” input.
+4. Click Save at the bottom right.
 
 Enabling taxes for Gift Cards follows the same process, except you check the input.
