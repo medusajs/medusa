@@ -102,6 +102,13 @@ const config = {
           position: "left",
         },
         {
+          href: `${process.env.API_URL}/ui`,
+          label: "UI",
+          prependBaseUrlToHref: true,
+          target: "_blank",
+          position: "left",
+        },
+        {
           type: "search",
           position: "right",
         },
