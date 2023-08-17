@@ -193,6 +193,212 @@ const paths: LearningPathType[] = [
       },
     },
   },
+  {
+    name: "entity-and-api",
+    label: "Create Entity and Expose it with Endpoints",
+    description:
+      "Learn how to create a new table in your database, then create endpoints to expose and manipulate its data.",
+    steps: [
+      {
+        title: "Create entity",
+        path: "/development/entities/create",
+        description: "Create your entity, its migration, and repository.",
+      },
+      {
+        title: "Create service",
+        path: "/development/services/create-service",
+        description:
+          "A service is a class that defines helper methods for your entity. The service will be used by the endpoints to access or modify the entity's data.",
+      },
+      {
+        title: "Create endpoints",
+        path: "/development/endpoints/create",
+      },
+    ],
+    finish: {
+      type: "rating",
+      step: {
+        title: "Congratulations on creating your entity and endpoints!",
+        description: "Please rate your experience using this learning path.",
+        eventName: "rating_path_entity-and-api",
+      },
+    },
+  },
+  {
+    name: "plugin",
+    label: "Create a Plugin",
+    description:
+      "Learn how to create a plugin that can be re-used across Medusa backends.",
+    steps: [
+      {
+        title: "Setup plugin project",
+        path: "/development/backend/install",
+        description:
+          "A plugin is initially a Medusa backend with customizations. If you don't have a project ready, you can create one using Medusa's CLI tool.",
+      },
+      {
+        title: "Implement Customizations",
+        path: "/development/entities/create",
+        descriptionJSX: (
+          <>
+            Your plugin can hold backend and admin customizations. Those
+            include:
+            <ul>
+              <li>
+                <Link to="/development/entities/create">Create Entity</Link>
+              </li>
+              <li>
+                <Link to="/development/services/create-service">
+                  Create Service
+                </Link>
+              </li>
+              <li>
+                <Link to="/development/endpoints/create">
+                  Create an Endpoint
+                </Link>
+              </li>
+              <li>
+                <Link to="/development/events/create-subscriber">
+                  Create Subscriber
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/widgets">Create Admin Widgets</Link>
+              </li>
+              <li>
+                <Link to="/admin/routes">Create Admin Routes</Link>
+              </li>
+              <li>
+                <Link to="/admin/setting-pages">
+                  Create Admin Setting Pages
+                </Link>
+              </li>
+              <li>
+                <Link to="/development/search/create">
+                  Create Search Service
+                </Link>
+              </li>
+              <li>
+                <Link to="/development/file-service/create-file-service">
+                  Create File Service
+                </Link>
+              </li>
+              <li>
+                <Link to="/development/notification-service/create-notification-service">
+                  Create Notification Service
+                </Link>
+              </li>
+            </ul>
+            If you&apos;ve already made your custom development, you can skip to
+            the next step.
+          </>
+        ),
+      },
+      {
+        title: "Change your package.json",
+        path: "/development/plugins/create#changes-to-packagejson",
+        descriptionJSX: (
+          <>
+            Once you&apos;re done making your customizations and you&apos;re
+            ready to publish your plugin, make changes to your{" "}
+            <code>package.json</code> in preparation for publishing.
+          </>
+        ),
+      },
+      {
+        title: "Optionally test locally",
+        path: "/development/plugins/create#test-your-plugin",
+        description:
+          "If necessary, you can test your plugin in a separate local Medusa backend. It's recommended, however, to do your plugin testing within the plugin project.",
+      },
+      {
+        title: "Publish plugin",
+        path: "/development/plugins/publish",
+        description: "Publish your plugin on NPM.",
+      },
+    ],
+    finish: {
+      type: "rating",
+      step: {
+        title: "Congratulations on creating your plugin!",
+        description: "Please rate your experience using this learning path.",
+        eventName: "rating_path_plugin",
+      },
+    },
+  },
+  {
+    name: "storefront",
+    label: "Create a Custom Storefront",
+    description:
+      "Learn how to create a custom storefront with your preferred language or framework.",
+    steps: [
+      {
+        title: "Choose your client",
+        path: "/medusa-react/overview",
+        descriptionJSX: (
+          <>
+            As your storefront connect to the Medusa backend, you need a way to
+            interact with the backend&apos;s REST APIs. There are three ways to
+            do so, based on your type of project:
+            <ul>
+              <li>
+                <Link to="/medusa-react/overview">Medusa React</Link>: Can be
+                used in any React-based project. For example, in a Next.js
+                storefront.
+              </li>
+              <li>
+                <Link to="/js-client/overview">Medusa JS Client</Link>: Can be
+                used in any JavaScript and NPM based project. For example, in a
+                Nuxt storefront.
+              </li>
+              <li>
+                <Link to={`${process.env.API_URL}/api/store`}>
+                  Store REST APIs
+                </Link>
+                : You can send requests directly to the API endpoints without
+                using Medusa&apos;s clients.
+              </li>
+            </ul>
+          </>
+        ),
+      },
+      {
+        title: "Set CORS configurations in Backend",
+        path: "/development/backend/configurations#admin_cors-and-store_cors",
+        description:
+          "To ensure your storefront can connect to the backend, make sure to configure the backend's CORS configuration based on your storefront's local or remote URL.",
+      },
+      {
+        title: "Create a Publishable API Key",
+        path: "/user-guide/settings/publishable-api-keys",
+        descriptionJSX: (
+          <>
+            A publishable API key allows you to associate a key with a sales
+            channel. Then, you can include that key in the headers of all your
+            requests.
+            <br />
+            You can create the publishable API key from the dashboard.
+            Alternatively, you can create it using the{" "}
+            <Link to="/development/publishable-api-keys/admin/manage-publishable-api-keys">
+              Admin APIs
+            </Link>
+          </>
+        ),
+      },
+      {
+        title: "Use Publishable API Key",
+        path: "/development/publishable-api-keys/storefront/use-in-requests",
+        description:
+          "After creating the publishable API key and associating it with sales channels, you can pass it in the header of your requests to Store API endpoints.",
+      },
+      {
+        title: "Add Region Selection",
+        path: "/modules/regions-and-currencies/storefront/use-regions",
+        description:
+          "In your storefront, you can allow your customers to view available regions and select their current region. This can affect the prices, discounts, and shipping and payment providers available to the customer.",
+      },
+    ],
+  },
 ]
 
 export const getLearningPaths = () => paths
