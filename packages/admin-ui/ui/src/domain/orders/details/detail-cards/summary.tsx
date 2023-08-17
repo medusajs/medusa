@@ -3,8 +3,8 @@ import {
   Order,
   VariantInventory,
 } from "@medusajs/medusa"
-import { DisplayTotal, PaymentDetails } from "../templates"
 import React, { useContext, useMemo } from "react"
+import { DisplayTotal, PaymentDetails } from "../templates"
 
 import { ActionType } from "../../../../components/molecules/actionables"
 import Badge from "../../../../components/fundamentals/badge"
@@ -15,11 +15,11 @@ import OrderLine from "../order-line"
 import { ReservationItemDTO } from "@medusajs/types"
 import ReserveItemsModal from "../reservation/reserve-items-modal"
 import { Response } from "@medusajs/medusa-js"
-import StatusIndicator from "../../../../components/fundamentals/status-indicator"
 import { sum } from "lodash"
-import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 import { useMedusa } from "medusa-react"
+import StatusIndicator from "../../../../components/fundamentals/status-indicator"
 import useToggleState from "../../../../hooks/use-toggle-state"
+import { useFeatureFlag } from "../../../../providers/feature-flag-provider"
 
 type SummaryCardProps = {
   order: Order
@@ -168,7 +168,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({ order, reservations }) => {
 
   return (
     <BodyCard
-      className={"mb-4 h-auto min-h-0 w-full"}
+      className={"h-auto min-h-0 w-full"}
       title="Summary"
       status={
         isFeatureEnabled("inventoryService") &&

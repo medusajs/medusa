@@ -16,20 +16,28 @@
   "scripts": {
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build",
     "test": "jest --passWithNoTests src",
-    "build": "rimraf dist && tsc",
+    "build": "rimraf dist && tsc -p ./tsconfig.server.json && medusa-admin bundle",
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@medusajs/medusa": "^1.12.2",
+    "@medusajs/admin": "*",
+    "@medusajs/medusa": "*",
     "@types/stripe": "^8.0.417",
     "awilix": "^8.0.1",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
+    "medusa-react": "^9.0.0",
     "rimraf": "^5.0.1",
     "typescript": "^4.9.5"
   },
+  "peerDependenciesMeta": {
+    "medusa-react": {
+      "optional": true
+    }
+  },
   "peerDependencies": {
-    "@medusajs/medusa": "^1.12.0"
+    "@medusajs/medusa": "^1.12.0",
+    "medusa-react": "^9.0.0"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

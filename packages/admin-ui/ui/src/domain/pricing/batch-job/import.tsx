@@ -171,6 +171,10 @@ function ImportPrices(props: ImportPricesProps) {
     }
   }
 
+  const templateLink = process.env.ADMIN_PATH
+    ? `${process.env.ADMIN_PATH}/temp/price-list-import-template.csv`
+    : `/temp/price-list-import-template.csv`
+
   return (
     <UploadModal
       type="prices"
@@ -186,7 +190,7 @@ function ImportPrices(props: ImportPricesProps) {
       summary={getSummary()}
       onFileRemove={onFileRemove}
       processUpload={processUpload}
-      templateLink="/temp/price-list-import-template.csv"
+      templateLink={templateLink}
     />
   )
 }
