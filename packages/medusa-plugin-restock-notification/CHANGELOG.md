@@ -1,5 +1,11 @@
 # Change Log
 
+## 7.0.2
+
+### Patch Changes
+
+- [#4718](https://github.com/medusajs/medusa/pull/4718) [`803aca068`](https://github.com/medusajs/medusa/commit/803aca0689ce6d9f0d93d883dbd3547c427ff33e) Thanks [@josipmatichr](https://github.com/josipmatichr)! - feat(medusa-plugin-restock-notifications): Multi-warehouse support
+
 ## 7.0.1
 
 ### Patch Changes
