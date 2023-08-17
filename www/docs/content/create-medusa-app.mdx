@@ -16,6 +16,7 @@ import EagainError from "./troubleshooting/create-medusa-app-errors/_eagain-erro
 import ConnectionErrorSection from './troubleshooting/database-errors/_connection-error.md'
 import FreshInstallationSection from './troubleshooting/awilix-resolution-error/_fresh-installation.md'
 import EaddrinuseSection from './troubleshooting/eaddrinuse.md'
+import InvalidTokenError from './troubleshooting/create-medusa-app-errors/_no-browser-token-error.mdx'
 
 # Install Medusa with create-medusa-app
 
@@ -216,6 +217,10 @@ Based on what you're building, you can find a development path for you in the Re
     {
       title: "Error: connect ECONNREFUSED ::1:5432",
       content: <ConnectionErrorSection />
+    },
+    {
+      title: "Invalid Token Error after Using --no-browser option",
+      content: <InvalidTokenError />
     },
     {
       title: 'AwilixResolutionError: Could Not Resolve X',
