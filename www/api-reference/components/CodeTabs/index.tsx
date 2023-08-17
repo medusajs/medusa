@@ -1,26 +1,32 @@
 "use client"
 
 import clsx from "clsx"
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef } from "react"
 import CodeBlock, { CodeBlockProps } from "../CodeBlock"
+import useTabs, { BaseTabType } from "../../hooks/use-tabs"
+import { useScrollPositionBlocker } from "../../hooks/scroll-utils"
 
 type TabType = {
-  label: string
-  value: string
   code?: CodeBlockProps
   codeBlock?: React.ReactNode
-}
+} & BaseTabType
 
 type CodeTabsProps = {
   tabs: TabType[]
   className?: string
+  group?: string
 }
 
-const CodeTabs = ({ tabs, className }: CodeTabsProps) => {
-  const [selectedTab, setSelectedTab] = useState(tabs[0])
+const CodeTabs = ({ tabs, className, group = "client" }: CodeTabsProps) => {
+  const { selectedTab, changeSelectedTab } = useTabs<TabType>({
+    tabs,
+    group,
+  })
   const tabRefs: (HTMLButtonElement | null)[] = useMemo(() => [], [])
   const codeTabSelectorRef = useRef<HTMLSpanElement | null>(null)
   const codeTabsWrapperRef = useRef<HTMLDivElement | null>(null)
+  const { blockElementScrollPositionUntilNextRender } =
+    useScrollPositionBlocker()
 
   const changeTabSelectorCoordinates = useCallback(
     (selectedTabElm: HTMLElement) => {
@@ -79,18 +85,21 @@ const CodeTabs = ({ tabs, className }: CodeTabsProps) => {
             <button
               className={clsx(
                 "text-compact-small-plus xs:border-0 py-0.25 px-0.75 relative z-[2] rounded-full border",
-                selectedTab.value !== tab.value &&
+                (!selectedTab || selectedTab.value !== tab.value) && [
                   "text-medusa-code-text-subtle dark:text-medusa-code-text-subtle-dark border-transparent",
-                selectedTab.value === tab.value &&
-                  "text-medusa-code-text-base dark:text-medusa-code-text-base-dark bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark xs:!bg-transparent",
-                selectedTab.value !== tab.value &&
-                  "hover:bg-medusa-code-bg-base dark:hover:bg-medusa-code-bg-base-dark"
+                  "hover:bg-medusa-code-bg-base dark:hover:bg-medusa-code-bg-base-dark",
+                ],
+                selectedTab?.value === tab.value &&
+                  "text-medusa-code-text-base dark:text-medusa-code-text-base-dark bg-medusa-code-bg-base dark:bg-medusa-code-bg-base-dark xs:!bg-transparent"
               )}
               ref={(tabControl) => tabRefs.push(tabControl)}
-              onClick={() => {
-                setSelectedTab(tab)
+              onClick={(e) => {
+                blockElementScrollPositionUntilNextRender(
+                  e.target as HTMLButtonElement
+                )
+                changeSelectedTab(tab)
               }}
-              aria-selected={selectedTab.value === tab.value}
+              aria-selected={selectedTab?.value === tab.value}
               role="tab"
             >
               {tab.label}
@@ -99,16 +108,16 @@ const CodeTabs = ({ tabs, className }: CodeTabsProps) => {
         ))}
       </ul>
       <>
-        {selectedTab.code && (
+        {selectedTab?.code && (
           <CodeBlock
-            {...selectedTab.code}
+            {...selectedTab?.code}
             className={clsx(
               "!mt-0 !rounded-t-none",
               selectedTab.code.className
             )}
           />
         )}
-        {selectedTab.codeBlock && <>{selectedTab.codeBlock}</>}
+        {selectedTab?.codeBlock && <>{selectedTab.codeBlock}</>}
       </>
     </div>
   )

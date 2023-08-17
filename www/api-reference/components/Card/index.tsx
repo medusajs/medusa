@@ -13,7 +13,7 @@ const Card = ({ title, text, href, className }: CardProps) => {
   return (
     <div
       className={clsx(
-        "bg-medusa-bg-subtle dark:bg-medusa-bg-subtle-dark w-full rounded",
+        "bg-medusa-bg-subtle dark:bg-medusa-code-bg-base-dark w-full rounded",
         "shadow-card-rest dark:shadow-card-rest-dark py-0.75 relative px-1",
         "flex items-center justify-between gap-1 transition-shadow",
         href && "hover:shadow-card-hover dark:hover:shadow-card-hover-dark",
