@@ -11,10 +11,6 @@ program
     "Install a Medusa project without the boilerplate and demo files."
   )
   .option(
-    "--stable",
-    "Install the latest stable version. This removes all onboarding features"
-  )
-  .option(
     "--skip-db",
     "Skips creating the database, running migrations, and seeding, and subsequently skips opening the browser.",
     false
