@@ -3,9 +3,10 @@ import {
   FileServiceGetUploadStreamResult,
   FileServiceUploadResult,
   IFileService,
+  UploadStreamDescriptorType,
 } from "@medusajs/medusa"
 import fs from "fs"
-import { parse, join } from "path"
+import path from "path"
 import stream from "stream"
 
 class LocalService extends AbstractFileService implements IFileService {
@@ -30,38 +31,55 @@ class LocalService extends AbstractFileService implements IFileService {
   async uploadFile(
     file: Express.Multer.File,
     options = {}
-  ): Promise<{ url: string }> {
-    const parsedFilename = parse(file.originalname)
+  ): Promise<{ url: string; key: string }> {
+    const parsedFilename = path.parse(file.originalname)
 
-    const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
+    if (parsedFilename.dir) {
+      this.ensureDirExists(parsedFilename.dir)
+    }
+
+    const fileKey = path.join(
+      parsedFilename.dir,
+      `${Date.now()}-${parsedFilename.base}`
+    )
 
     return new Promise((resolve, reject) => {
       fs.copyFile(file.path, `${this.uploadDir_}/${fileKey}`, (err) => {
         if (err) {
+          reject(err)
           throw err
         }
 
         const fileUrl = `${this.backendUrl_}/${this.uploadDir_}/${fileKey}`
 
-        resolve({ url: fileUrl })
+        resolve({ url: fileUrl, key: fileKey })
       })
     })
   }
 
   async delete(file): Promise<void> {
-    throw Error("Not implemented")
+    const filePath = `${this.uploadDir_}/${file.fileKey}`
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath)
+    }
   }
 
   async getUploadStreamDescriptor(
-    fileData
+    fileData: UploadStreamDescriptorType
   ): Promise<FileServiceGetUploadStreamResult> {
-    const parsedFilename = parse(fileData.name)
+    const parsedFilename = path.parse(
+      fileData.name + (fileData.ext ? `.${fileData.ext}` : "")
+    )
 
-    this.ensureDirExists(parsedFilename.dir)
+    if (parsedFilename.dir) {
+      this.ensureDirExists(parsedFilename.dir)
+    }
 
-    const fileKey = `${parsedFilename.dir}/${
-      parsedFilename.name
-    }-${Date.now()}.${fileData.ext}`
+    const fileKey = path.join(
+      parsedFilename.dir,
+      `${Date.now()}-${parsedFilename.base}`
+    )
+
     const fileUrl = `${this.backendUrl_}/${this.uploadDir_}/${fileKey}`
 
     const pass = new stream.PassThrough()
@@ -93,10 +111,10 @@ class LocalService extends AbstractFileService implements IFileService {
    * @private
    */
   private ensureDirExists(dirPath: string) {
-    const path = join(this.uploadDir_, dirPath)
+    const relativePath = path.join(this.uploadDir_, dirPath)
 
-    if (!fs.existsSync(path)) {
-      fs.mkdirSync(path, { recursive: true })
+    if (!fs.existsSync(relativePath)) {
+      fs.mkdirSync(relativePath, { recursive: true })
     }
   }
 }
