@@ -55,19 +55,19 @@ class LocalService extends AbstractFileService implements IFileService {
   async getUploadStreamDescriptor(
     fileData
   ): Promise<FileServiceGetUploadStreamResult> {
-    const parsedFilename = parse(fileData.originalname)
+    const parsedFilename = parse(fileData.name)
 
-    const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
+    const fileKey = `${parsedFilename.name}-${Date.now()}.${fileData.ext}`
     const fileUrl = `${this.backendUrl_}/${this.uploadDir_}/${fileKey}`
 
     const pass = new stream.PassThrough()
     const writeStream = fs.createWriteStream(`${this.uploadDir_}/${fileKey}`)
 
-    writeStream.pipe(pass) // for consistency with the IFileService
+    pass.pipe(writeStream) // for consistency with the IFileService
 
     const promise = new Promise((res, rej) => {
-      pass.on("finish", res)
-      pass.on("error", rej)
+      writeStream.on("finish", res)
+      writeStream.on("error", rej)
     })
 
     return { url: fileUrl, fileKey, writeStream: pass, promise }
