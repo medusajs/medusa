@@ -73,6 +73,7 @@ const useCurrentLearningPath = () => {
         layout: "empty",
         id,
         children: LearningStep(id),
+        className: "flex flex-col",
       })
       updatePath({
         notificationId: id,

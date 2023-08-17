@@ -18,7 +18,7 @@ const LearningPath: React.FC<LearningPathProps> = ({
 }) => {
   const path = getLearningPath(pathName)
   if (!path) {
-    throw new Error("Learning path does not exist.")
+    throw new Error(`Learning path ${pathName} does not exist.`)
   }
   const { startPath, path: currentPath } = useLearningPath()
   const notificationContext = useNotifications()
@@ -43,7 +43,7 @@ const LearningPath: React.FC<LearningPathProps> = ({
         )}
       >
         <LearningPathIcon />
-        <div className={clsx("flex-auto")}>
+        <div className={clsx("basis-3/4")}>
           <span
             className={clsx(
               "text-medusa-fg-base dark:text-medusa-fg-base-dark text-compact-large-plus block"
@@ -61,7 +61,7 @@ const LearningPath: React.FC<LearningPathProps> = ({
             </span>
           )}
         </div>
-        <Button onClick={handleClick} className={clsx("flex-initial")}>
+        <Button onClick={handleClick} className={clsx("basis-1/4 max-w-fit")}>
           Start Path
         </Button>
       </div>
