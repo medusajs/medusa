@@ -56,13 +56,14 @@ class LocalService extends AbstractFileService implements IFileService {
     fileData
   ): Promise<FileServiceGetUploadStreamResult> {
     const parsedFilename = parse(fileData.originalname)
+
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
     const fileUrl = `${this.backendUrl_}/${this.uploadDir_}/${fileKey}`
 
     const pass = new stream.PassThrough()
     const writeStream = fs.createWriteStream(`${this.uploadDir_}/${fileKey}`)
 
-    writeStream.pipe(pass)
+    writeStream.pipe(pass) // for consistency with the IFileService
 
     const promise = new Promise((res, rej) => {
       pass.on("finish", res)
@@ -73,7 +74,8 @@ class LocalService extends AbstractFileService implements IFileService {
   }
 
   async getDownloadStream(fileData): Promise<NodeJS.ReadableStream> {
-    throw Error("Not implemented")
+    const filePath = `${this.uploadDir_}/${fileData.fileKey}`
+    return fs.createReadStream(filePath)
   }
 
   async getPresignedDownloadUrl(fileData): Promise<string> {
