@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa-oas-cli",
-  "version": "0.2.14",
+  "version": "0.2.15",
   "description": "OAS CLI",
   "main": "dist/index.js",
   "bin": {
@@ -34,7 +34,7 @@
     "medusa-oas": "ts-node src/index.ts"
   },
   "dependencies": {
-    "@medusajs/medusa": "^1.13.1",
+    "@medusajs/medusa": "^1.14.0",
     "@medusajs/openapi-typescript-codegen": "^0.2.1",
     "@medusajs/types": "workspace:^",
     "@medusajs/utils": "workspace:^",

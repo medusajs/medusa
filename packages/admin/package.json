@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/admin",
-  "version": "6.0.5",
+  "version": "7.0.0",
   "bin": {
     "medusa-admin": "./bin/medusa-admin.js"
   },
@@ -48,7 +48,7 @@
     "ts-dedent": "^2.2.0"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "1.12.0"
+    "@medusajs/medusa": "1.14.0"
   },
   "devDependencies": {
     "@medusajs/medusa": "*",

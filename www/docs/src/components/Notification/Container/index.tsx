@@ -48,11 +48,11 @@ const NotificationContainer = () => {
     <>
       {renderFilteredNotifications(
         (notification) => notification.placement === "top",
-        "flex fixed flex-col gap-0.5 md:right-1 right-0 md:top-1 top-0 z-[400] md:w-auto w-full"
+        "flex fixed flex-col gap-0.5 right-0 top-0 z-[400] md:w-auto w-full max-h-[calc(100vh-57px)] overflow-y-auto"
       )}
       {renderFilteredNotifications(
         (notification) => notification.placement !== "top",
-        "flex flex-col gap-0.5 fixed md:right-1 right-0 md:bottom-1 bottom-0 z-[400] md:w-auto w-full"
+        "flex flex-col gap-0.5 fixed right-0 bottom-0 z-[400] md:w-auto w-full max-h-[calc(100vh-57px)] overflow-y-auto"
       )}
     </>
   )
