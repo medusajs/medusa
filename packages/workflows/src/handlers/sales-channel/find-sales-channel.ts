@@ -29,7 +29,7 @@ export async function findSalesChannel({
 
   let salesChannelId = data[Aliases.SalesChannel].sales_channel_id
   let salesChannel
-  const salesChannelDTO: AttachSalesChannelDTO = {}
+  
   const publishableApiKeyScopes =
     data[Aliases.SalesChannel].publishableApiKeyScopes || {}
 
@@ -66,9 +66,7 @@ export async function findSalesChannel({
     )
   }
 
-  salesChannelDTO.sales_channel_id = salesChannel?.id
-
-  return salesChannelDTO
+  return { sales_channel_id: salesChannel?.id}
 }
 
 findSalesChannel.aliases = Aliases

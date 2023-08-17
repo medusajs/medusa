@@ -71,7 +71,7 @@ const DbTestUtil = {
 const instance = DbTestUtil
 
 module.exports = {
-  initDb: async function ({ cwd, database_extra }) {
+  initDb: async function ({ cwd, database_extra = {} }) {
     const { configModule } = getConfigFile(cwd, `medusa-config`)
     const { featureFlags } = configModule
 

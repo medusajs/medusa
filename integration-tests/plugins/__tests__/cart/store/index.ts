@@ -6,8 +6,13 @@ import setupServer from "../../../../environment-helpers/setup-server"
 import { setPort, useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
+import { AxiosInstance } from "axios"
 
 jest.setTimeout(30000)
+
+const getApi = () => { 
+  return useApi() as unknown as AxiosInstance
+}
 
 describe("/store/carts", () => {
   let medusaProcess
@@ -76,7 +81,7 @@ describe("/store/carts", () => {
     })
 
     it("should create a cart", async () => {
-      const api = useApi()
+      const api = getApi()
       const response = await api.post("/store/carts")
 
       expect(response.status).toEqual(200)
@@ -86,7 +91,7 @@ describe("/store/carts", () => {
     })
 
     it("should fail to create a cart when no region exist", async () => {
-      const api = useApi()
+      const api = getApi()
 
       await dbConnection.manager.query(
         `UPDATE "country"
@@ -133,7 +138,7 @@ describe("/store/carts", () => {
 
       await dbConnection.manager.save(ma_sale_1)
 
-      const api = useApi()
+      const api = getApi()
 
       const response = await api
         .post("/store/carts", {
@@ -148,7 +153,6 @@ describe("/store/carts", () => {
             },
           ],
         })
-        .catch((err) => console.log(err))
 
       response.data.cart.items.sort((a, b) => a.quantity - b.quantity)
 
@@ -173,7 +177,7 @@ describe("/store/carts", () => {
     })
 
     it("should create a cart with country", async () => {
-      const api = useApi()
+      const api = getApi()
       const response = await api.post("/store/carts", {
         country_code: "us",
       })
@@ -186,7 +190,7 @@ describe("/store/carts", () => {
     })
 
     it("should create a cart with context", async () => {
-      const api = useApi()
+      const api = getApi()
 
       const response = await api.post("/store/carts", {
         context: {

@@ -29,7 +29,7 @@ export async function findRegion({
   if (isDefined(data[Aliases.Region].region_id)) {
     regionId = data[Aliases.Region].region_id
   } else {
-    const regions = await regionService.list({}, {})
+    const regions = await regionService.list({}, { take: 1 })
 
     if (!regions?.length) {
       throw new MedusaError(
