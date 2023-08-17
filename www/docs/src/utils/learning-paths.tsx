@@ -34,7 +34,7 @@ const paths: LearningPathType[] = [
       type: "rating",
       step: {
         title: "Congratulations on building your store!",
-        description: "Please rate your experience using this learning path.",
+        description: "Please rate your experience using this recipe.",
         eventName: "rating_path_simple-quickstart",
       },
     },
@@ -120,7 +120,7 @@ const paths: LearningPathType[] = [
       type: "rating",
       step: {
         title: "Congratulations on building your marketplace!",
-        description: "Please rate your experience using this learning path.",
+        description: "Please rate your experience using this recipe.",
         eventName: "rating_path_marketplace",
       },
     },
@@ -188,7 +188,7 @@ const paths: LearningPathType[] = [
       type: "rating",
       step: {
         title: "Congratulations on implementing subscription-based purchases!",
-        description: "Please rate your experience using this learning path.",
+        description: "Please rate your experience using this recipe.",
         eventName: "rating_path_subscriptions",
       },
     },
@@ -219,8 +219,137 @@ const paths: LearningPathType[] = [
       type: "rating",
       step: {
         title: "Congratulations on creating your entity and endpoints!",
-        description: "Please rate your experience using this learning path.",
+        description: "Please rate your experience using this recipe.",
         eventName: "rating_path_entity-and-api",
+      },
+    },
+  },
+  {
+    name: "storefront",
+    label: "Create a Custom Storefront",
+    description:
+      "Learn how to create a custom storefront with your preferred language or framework.",
+    steps: [
+      {
+        title: "Choose your client",
+        path: "/medusa-react/overview",
+        descriptionJSX: (
+          <>
+            As your storefront connect to the Medusa backend, you need a way to
+            interact with the backend&apos;s REST APIs. There are three ways to
+            do so, based on your type of project:
+            <ul>
+              <li>
+                <Link to="/medusa-react/overview">Medusa React</Link>: Can be
+                used in any React-based project. For example, in a Next.js
+                storefront.
+              </li>
+              <li>
+                <Link to="/js-client/overview">Medusa JS Client</Link>: Can be
+                used in any JavaScript and NPM based project. For example, in a
+                Nuxt storefront.
+              </li>
+              <li>
+                <Link to={`https://docs.medusajs.com/api/store`}>
+                  Store REST APIs
+                </Link>
+                : You can send requests directly to the API endpoints without
+                using Medusa&apos;s clients.
+              </li>
+            </ul>
+          </>
+        ),
+      },
+      {
+        title: "Set CORS configurations in Backend",
+        path: "/development/backend/configurations#admin_cors-and-store_cors",
+        description:
+          "To ensure your storefront can connect to the backend, make sure to configure the backend's CORS configuration based on your storefront's local or remote URL.",
+      },
+      {
+        title: "Create a Publishable API Key",
+        path: "/user-guide/settings/publishable-api-keys",
+        descriptionJSX: (
+          <>
+            A publishable API key allows you to associate a key with a sales
+            channel. Then, you can include that key in the headers of all your
+            requests.
+            <br />
+            You can create the publishable API key from the dashboard.
+            Alternatively, you can create it using the{" "}
+            <Link to="/development/publishable-api-keys/admin/manage-publishable-api-keys">
+              Admin APIs
+            </Link>
+          </>
+        ),
+      },
+      {
+        title: "Use Publishable API Key",
+        path: "/development/publishable-api-keys/storefront/use-in-requests",
+        description:
+          "After creating the publishable API key and associating it with sales channels, you can pass it in the header of your requests to Store API endpoints.",
+      },
+      {
+        title: "Add Region Selection",
+        path: "/modules/regions-and-currencies/storefront/use-regions",
+        description:
+          "In your storefront, you can allow your customers to view available regions and select their current region. This can affect the prices, discounts, and shipping and payment providers available to the customer.",
+      },
+      {
+        title: "Display Products",
+        path: "/modules/products/storefront/show-products",
+        description: "Display products to your customers in the storefront.",
+      },
+      {
+        title: "Implement Cart Functionalities",
+        path: "/modules/carts-and-checkout/storefront/implement-cart",
+        description:
+          "Allow your customers to add items to their cart, update them, and more in preparation for checkout.",
+      },
+      {
+        title: "Implement Checkout Flow",
+        path: "/modules/carts-and-checkout/storefront/implement-checkout-flow",
+        description:
+          "Implement the checkout flow that allows customers to handle shipping and payment, then place their orders.",
+      },
+      {
+        title: "Implement Customer Profiles",
+        path: "/modules/customers/storefront/implement-customer-profiles",
+        description:
+          "Allow customers to register, login, edit their profile information, and more.",
+      },
+      {
+        title: "More Commerce Functionalities",
+        path: "/modules/overview",
+        descriptionJSX: (
+          <>
+            This recipe guided you to create a storefront with basic
+            functionalities. You can add more functionalities to your storefront
+            based on your use case.
+            <ul>
+              <li>
+                The <Link to="/modules/overview">Commerce Modules</Link>{" "}
+                documentation holds various storefront-related how-to guides to
+                help you implement different features.
+              </li>
+              <li>
+                You can also checkout the{" "}
+                <Link to={`https://docs.medusajs.com/api/store`}>
+                  Store REST APIs
+                </Link>{" "}
+                for a full list of available REST APIs.
+              </li>
+            </ul>
+          </>
+        ),
+      },
+    ],
+    finish: {
+      type: "rating",
+      step: {
+        title: "Congratulations on creating your storefront!",
+        description: "Please rate your experience using this recipe.",
+        eventName: "rating_path_storefront",
       },
     },
   },
@@ -321,87 +450,15 @@ const paths: LearningPathType[] = [
       type: "rating",
       step: {
         title: "Congratulations on creating your plugin!",
-        description: "Please rate your experience using this learning path.",
+        description: "Please rate your experience using this recipe.",
         eventName: "rating_path_plugin",
       },
     },
   },
-  {
-    name: "storefront",
-    label: "Create a Custom Storefront",
-    description:
-      "Learn how to create a custom storefront with your preferred language or framework.",
-    steps: [
-      {
-        title: "Choose your client",
-        path: "/medusa-react/overview",
-        descriptionJSX: (
-          <>
-            As your storefront connect to the Medusa backend, you need a way to
-            interact with the backend&apos;s REST APIs. There are three ways to
-            do so, based on your type of project:
-            <ul>
-              <li>
-                <Link to="/medusa-react/overview">Medusa React</Link>: Can be
-                used in any React-based project. For example, in a Next.js
-                storefront.
-              </li>
-              <li>
-                <Link to="/js-client/overview">Medusa JS Client</Link>: Can be
-                used in any JavaScript and NPM based project. For example, in a
-                Nuxt storefront.
-              </li>
-              <li>
-                <Link to={`${process.env.API_URL}/api/store`}>
-                  Store REST APIs
-                </Link>
-                : You can send requests directly to the API endpoints without
-                using Medusa&apos;s clients.
-              </li>
-            </ul>
-          </>
-        ),
-      },
-      {
-        title: "Set CORS configurations in Backend",
-        path: "/development/backend/configurations#admin_cors-and-store_cors",
-        description:
-          "To ensure your storefront can connect to the backend, make sure to configure the backend's CORS configuration based on your storefront's local or remote URL.",
-      },
-      {
-        title: "Create a Publishable API Key",
-        path: "/user-guide/settings/publishable-api-keys",
-        descriptionJSX: (
-          <>
-            A publishable API key allows you to associate a key with a sales
-            channel. Then, you can include that key in the headers of all your
-            requests.
-            <br />
-            You can create the publishable API key from the dashboard.
-            Alternatively, you can create it using the{" "}
-            <Link to="/development/publishable-api-keys/admin/manage-publishable-api-keys">
-              Admin APIs
-            </Link>
-          </>
-        ),
-      },
-      {
-        title: "Use Publishable API Key",
-        path: "/development/publishable-api-keys/storefront/use-in-requests",
-        description:
-          "After creating the publishable API key and associating it with sales channels, you can pass it in the header of your requests to Store API endpoints.",
-      },
-      {
-        title: "Add Region Selection",
-        path: "/modules/regions-and-currencies/storefront/use-regions",
-        description:
-          "In your storefront, you can allow your customers to view available regions and select their current region. This can affect the prices, discounts, and shipping and payment providers available to the customer.",
-      },
-    ],
-  },
 ]
 
-export const getLearningPaths = () => paths
+// get a shallow copy
+export const getLearningPaths = () => [...paths]
 
 export const getLearningPath = (
   pathName: string

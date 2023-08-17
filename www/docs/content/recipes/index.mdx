@@ -3,6 +3,7 @@ import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
 import Feedback from '@site/src/components/Feedback';
 import LearningPath from '@site/src/components/LearningPath';
+import LearningPathList from '@site/src/components/LearningPath/List';
 import LargeCard from '@site/src/components/LargeCard';
 import Button from '@site/src/components/Button';
 
@@ -60,14 +61,25 @@ Follow this guide if you want to implement subscription-based purhcases with Med
   }
 }} />
 
+---
+
+## Other Recipes
+
+This section includes general recipes available to guide you through your development with Medusa.
+
+<LearningPathList ignore={[
+  "simple-quickstart",
+  "marketplace",
+  "subscriptions"
+]} />
+
 <Feedback 
    event="survey_use_cases"
    question="Did your find your use case?"
    positiveQuestion="Is there anything that should improved?"
    negativeQuestion="What was your use case?"
+   showLongForm={false}
 />
-
----
 
 <!-- vale docs.HeadingPunctuation = NO -->
 
