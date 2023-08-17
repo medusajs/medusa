@@ -95,6 +95,12 @@ If you want to use a PostgreSQL database hosted on Vercel, you must use the `--d
 npx create-medusa-app@latest --db-url "postgres://default:<password><host-region>.postgres.vercel-storage.com:5432/verceldb?sslmode=require"
 ```
 
+:::note
+
+If the database already has the necessary migrations and you don't need the command to run migrations, you can pass the `--no-migrations` option.
+
+:::
+
 ### (Optional) Connect to a Supabase Database
 
 If you want to connect to a Supabase database, you must use the `--db-url` option with its value beign the connection URL to your Supabase database. For example:
@@ -102,6 +108,12 @@ If you want to connect to a Supabase database, you must use the `--db-url` optio
 ```bash
 npx create-medusa-app@latest --db-url postgresql://postgres:<password>@<host>.supabase.co:5432/postgres
 ```
+
+:::note
+
+If the database already has the necessary migrations and you don't need the command to run migrations, you can pass the `--no-migrations` option.
+
+:::
 
 ### Step 1: Specify Project Name
 
