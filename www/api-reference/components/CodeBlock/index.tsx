@@ -37,7 +37,7 @@ const CodeBlock = ({
           ...themes.vsDark,
           plain: {
             ...themes.vsDark.plain,
-            backgroundColor: colorMode === "light" ? "#111827" : "#1B1B1B",
+            backgroundColor: colorMode === "light" ? "#111827" : "#1E1E1E",
           },
         }}
         code={source.trim()}
