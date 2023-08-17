@@ -9,6 +9,10 @@ const nextConfig = {
     return {
       fallback: [
         {
+          source: "/ui/:path*",
+          destination: `${process.env.NEXT_PUBLIC_UI_URL}/ui/:path*`,
+        },
+        {
           source: "/:path*",
           destination: `${process.env.NEXT_PUBLIC_DOCS_URL}/:path*`,
         },
