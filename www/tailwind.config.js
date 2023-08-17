@@ -447,7 +447,7 @@ module.exports = {
             bg: {
               base: {
                 DEFAULT: "#111827",
-                dark: "#1B1B1B"
+                dark: "#1E1E1E"
               },
               header: {
                 DEFAULT: "#1F2937",
@@ -547,7 +547,7 @@ module.exports = {
         "button-danger-pressed": "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.16) 100%)",
         "button-danger-pressed-dark": "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.14) 100%)",
         "code-fade": "linear-gradient(90deg, #11182700, #111827 24px)",
-        "code-fade-dark": "linear-gradient(90deg, #1B1B1B00, #1B1B1B 24px)",
+        "code-fade-dark": "linear-gradient(90deg, #1E1E1E00, #1E1E1E 24px)",
         // TODO remove if not used
         "docs-button-neutral": "linear-gradient(180deg, #FFF 30.10%, #F8F9FA 100%)",
         "docs-button-neutral-dark": "linear-gradient(180deg, #2E2E32 0%, #28282C 32.67%)",
