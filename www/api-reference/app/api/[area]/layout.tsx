@@ -10,6 +10,7 @@ import { Roboto_Mono } from "next/font/google"
 import AnalyticsProvider from "@/providers/analytics"
 import NavbarProvider from "@/providers/navbar"
 import ModalProvider from "../../../providers/modal"
+import { ScrollControllerProvider } from "../../../hooks/scroll-utils"
 
 export const metadata = {
   title: "Medusa API Reference",
@@ -48,15 +49,17 @@ export default function RootLayout({
               <BaseSpecsProvider>
                 <SidebarProvider>
                   <NavbarProvider>
-                    <div className="w-full">
-                      <Navbar />
-                      <div className="max-w-xxl mx-auto flex w-full px-1.5">
-                        <Sidebar />
-                        <main className="lg:w-api-ref-main relative mt-4 w-full flex-1 lg:mt-7">
-                          {children}
-                        </main>
+                    <ScrollControllerProvider>
+                      <div className="w-full">
+                        <Navbar />
+                        <div className="max-w-xxl mx-auto flex w-full px-1.5">
+                          <Sidebar />
+                          <main className="lg:w-api-ref-main relative mt-4 w-full flex-1 lg:mt-7">
+                            {children}
+                          </main>
+                        </div>
                       </div>
-                    </div>
+                    </ScrollControllerProvider>
                   </NavbarProvider>
                 </SidebarProvider>
               </BaseSpecsProvider>
