@@ -40,6 +40,7 @@ const Navbar = () => {
               label="Admin API"
               activeValue="admin"
             />
+            <NavbarLink href="https://docs.medusajs.com/ui" label="UI" />
           </div>
         </div>
         <div className="hidden min-w-0 flex-1 items-center justify-end gap-0.5 lg:flex">
