@@ -5,7 +5,7 @@ import {
   IFileService,
 } from "@medusajs/medusa"
 import fs from "fs"
-import { parse } from "path"
+import { parse, join } from "path"
 import stream from "stream"
 
 class LocalService extends AbstractFileService implements IFileService {
@@ -15,7 +15,7 @@ class LocalService extends AbstractFileService implements IFileService {
   constructor({}, options) {
     super({}, options)
 
-    this.uploadDir_ = options.upload_dir || "uploads/images"
+    this.uploadDir_ = options.upload_dir || "uploads"
     this.backendUrl_ = options.backend_url || "http://localhost:9000"
   }
 
@@ -57,7 +57,11 @@ class LocalService extends AbstractFileService implements IFileService {
   ): Promise<FileServiceGetUploadStreamResult> {
     const parsedFilename = parse(fileData.name)
 
-    const fileKey = `${parsedFilename.name}-${Date.now()}.${fileData.ext}`
+    this.ensureDirExists(parsedFilename.dir)
+
+    const fileKey = `${parsedFilename.dir}/${
+      parsedFilename.name
+    }-${Date.now()}.${fileData.ext}`
     const fileUrl = `${this.backendUrl_}/${this.uploadDir_}/${fileKey}`
 
     const pass = new stream.PassThrough()
@@ -80,6 +84,20 @@ class LocalService extends AbstractFileService implements IFileService {
 
   async getPresignedDownloadUrl(fileData): Promise<string> {
     return `${this.backendUrl_}/${this.uploadDir_}/${fileData.fileKey}`
+  }
+
+  /**
+   * Ensure `uploadDir_` has nested directories provided as file path
+   *
+   * @param dirPath - file path relative to the base directory
+   * @private
+   */
+  private ensureDirExists(dirPath: string) {
+    const path = join(this.uploadDir_, dirPath)
+
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path, { recursive: true })
+    }
   }
 }
 
