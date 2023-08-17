@@ -3,6 +3,8 @@ import { Route, Routes, useNavigate } from "react-router-dom"
 
 import { useAdminCreateBatchJob } from "medusa-react"
 import Spacer from "../../components/atoms/spacer"
+import RouteContainer from "../../components/extensions/route-container"
+import WidgetContainer from "../../components/extensions/widget-container"
 import Button from "../../components/fundamentals/button"
 import ExportIcon from "../../components/fundamentals/icons/export-icon"
 import BodyCard from "../../components/organisms/body-card"
@@ -12,6 +14,8 @@ import OrderTable from "../../components/templates/order-table"
 import useNotification from "../../hooks/use-notification"
 import useToggleState from "../../hooks/use-toggle-state"
 import { usePolling } from "../../providers/polling-provider"
+import { useRoutes } from "../../providers/route-provider"
+import { useWidgets } from "../../providers/widget-provider"
 import { getErrorMessage } from "../../utils/error-messages"
 import Details from "./details"
 import { transformFiltersAsExportContext } from "./utils"
@@ -34,6 +38,8 @@ const OrderIndex = () => {
     close: closeExportModal,
     state: exportModalOpen,
   } = useToggleState(false)
+
+  const { getWidgets } = useWidgets()
 
   const actions = useMemo(() => {
     return [
@@ -73,7 +79,17 @@ const OrderIndex = () => {
 
   return (
     <>
-      <div className="flex h-full grow flex-col">
+      <div className="gap-y-xsmall flex h-full grow flex-col">
+        {getWidgets("order.list.before").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              injectionZone={"order.list.before"}
+              widget={w}
+              entity={undefined}
+            />
+          )
+        })}
         <div className="flex w-full grow flex-col">
           <BodyCard
             customHeader={
@@ -92,8 +108,18 @@ const OrderIndex = () => {
           >
             <OrderTable setContextFilters={setContextFilters} />
           </BodyCard>
-          <Spacer />
         </div>
+        {getWidgets("order.list.after").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              injectionZone={"order.list.after"}
+              widget={w}
+              entity={undefined}
+            />
+          )
+        })}
+        <Spacer />
       </div>
       {exportModalOpen && (
         <ExportModal
@@ -108,10 +134,23 @@ const OrderIndex = () => {
 }
 
 const Orders = () => {
+  const { getNestedRoutes } = useRoutes()
+
+  const nestedRoutes = getNestedRoutes("/products")
+
   return (
     <Routes>
       <Route index element={<OrderIndex />} />
       <Route path="/:id" element={<Details />} />
+      {nestedRoutes.map((r, i) => {
+        return (
+          <Route
+            path={r.path}
+            key={i}
+            element={<RouteContainer route={r} previousPath={"/orders"} />}
+          />
+        )
+      })}
     </Routes>
   )
 }

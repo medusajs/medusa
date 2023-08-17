@@ -19,7 +19,7 @@ import { adminCollectionKeys } from "./queries"
 
 export const useAdminCreateCollection = (
   options?: UseMutationOptions<
-    Response<AdminCollectionsRes>,
+    Response<AdminCollectionsRes>, 
     Error,
     AdminPostCollectionsReq
   >
