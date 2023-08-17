@@ -152,7 +152,7 @@ get:
 post:
   operationId: PostInventoryItems
   summary: Create an Inventory Item
-  description: Create an Inventory Item.
+  description: Create an Inventory Item for a product variant.
   x-authenticated: true
   parameters:
     - in: query
