@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import Fade from "../../../components/atoms/fade-wrapper"
 import Spacer from "../../../components/atoms/spacer"
+import WidgetContainer from "../../../components/extensions/widget-container"
 import Button from "../../../components/fundamentals/button"
 import ExportIcon from "../../../components/fundamentals/icons/export-icon"
 import PlusIcon from "../../../components/fundamentals/icons/plus-icon"
@@ -16,6 +17,7 @@ import ProductTable from "../../../components/templates/product-table"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
 import { usePolling } from "../../../providers/polling-provider"
+import { useWidgets } from "../../../providers/widget-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
 import ImportProducts from "../batch-job/import"
 import NewProduct from "../new"
@@ -30,7 +32,10 @@ const Overview = () => {
     state: createProductState,
     close: closeProductCreate,
     open: openProductCreate,
-  } = useToggleState()
+  } = useToggleState(
+    !location.search.includes("view=collections") &&
+      location.search.includes("modal=new")
+  )
 
   const { resetInterval } = usePolling()
   const createBatchJob = useAdminCreateBatchJob()
@@ -38,6 +43,8 @@ const Overview = () => {
   const notification = useNotification()
 
   const createCollection = useAdminCreateCollection()
+
+  const { getWidgets } = useWidgets()
 
   useEffect(() => {
     if (location.search.includes("?view=collections")) {
@@ -110,13 +117,19 @@ const Overview = () => {
     open: openExportModal,
     close: closeExportModal,
     state: exportModalOpen,
-  } = useToggleState(false)
+  } = useToggleState(
+    !location.search.includes("view=collections") &&
+      location.search.includes("modal=export")
+  )
 
   const {
     open: openImportModal,
     close: closeImportModal,
     state: importModalOpen,
-  } = useToggleState(false)
+  } = useToggleState(
+    !location.search.includes("view=collections") &&
+      location.search.includes("modal=import")
+  )
 
   const handleCreateCollection = async (data, colMetadata) => {
     const metadata = colMetadata
@@ -163,7 +176,17 @@ const Overview = () => {
 
   return (
     <>
-      <div className="flex h-full grow flex-col">
+      <div className="gap-y-xsmall flex h-full grow flex-col">
+        {getWidgets("product.list.before").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              injectionZone={"product.list.before"}
+              widget={w}
+              entity={undefined}
+            />
+          )
+        })}
         <div className="flex w-full grow flex-col">
           <BodyCard
             forceDropdown={false}
@@ -181,6 +204,16 @@ const Overview = () => {
           </BodyCard>
           <Spacer />
         </div>
+        {getWidgets("product.list.after").map((w, i) => {
+          return (
+            <WidgetContainer
+              key={i}
+              injectionZone={"product.list.after"}
+              widget={w}
+              entity={undefined}
+            />
+          )
+        })}
       </div>
 
       {showNewCollection && (
