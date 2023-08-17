@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/product",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Medusa Product module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -49,9 +49,9 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
-    "@medusajs/modules-sdk": "^1.9.1",
-    "@medusajs/types": "^1.10.1",
-    "@medusajs/utils": "^1.9.5",
+    "@medusajs/modules-sdk": "^1.9.2",
+    "@medusajs/types": "^1.10.2",
+    "@medusajs/utils": "^1.9.6",
     "@mikro-orm/core": "5.7.12",
     "@mikro-orm/migrations": "5.7.12",
     "@mikro-orm/postgresql": "5.7.12",
