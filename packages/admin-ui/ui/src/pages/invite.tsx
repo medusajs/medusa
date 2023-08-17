@@ -1,4 +1,4 @@
-import { useAdminAcceptInvite } from "medusa-react"
+import { useAdminAcceptInvite, useAdminLogin } from "medusa-react"
 import qs from "qs"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -12,12 +12,18 @@ import PublicLayout from "../components/templates/login-layout"
 import useNotification from "../hooks/use-notification"
 import { getErrorMessage } from "../utils/error-messages"
 import FormValidator from "../utils/form-validator"
+import { analytics, useAdminCreateAnalyticsConfig } from "../services/analytics"
+import AnalyticsConfigForm, {
+  AnalyticsConfigFormType,
+} from "../components/organisms/analytics-config-form"
+import { nestedForm } from "../utils/nested-form"
 
 type FormValues = {
   password: string
   repeat_password: string
   first_name: string
   last_name: string
+  analytics: AnalyticsConfigFormType
 }
 
 const InvitePage = () => {
@@ -25,7 +31,14 @@ const InvitePage = () => {
   const parsed = qs.parse(location.search.substring(1))
   const [signUp, setSignUp] = useState(false)
 
-  let token: Object | null = null
+  const first_run = !!parsed.first_run
+
+  let token: {
+    iat: number
+    invite_id: string
+    role: string
+    user_email: string
+  } | null = null
   if (parsed?.token) {
     try {
       token = decodeToken(parsed.token as string)
@@ -34,25 +47,41 @@ const InvitePage = () => {
     }
   }
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setError,
-  } = useForm<FormValues>({
+  const form = useForm<FormValues>({
     defaultValues: {
       first_name: "",
       last_name: "",
       password: "",
       repeat_password: "",
+      analytics: {
+        opt_out: false,
+        anonymize: false,
+      },
     },
   })
 
-  const { mutate, isLoading } = useAdminAcceptInvite()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = form
+
+  const { mutateAsync: acceptInvite, isLoading: acceptInviteIsLoading } =
+    useAdminAcceptInvite()
+  const {
+    mutateAsync: createAnalyticsConfig,
+    isLoading: createAnalyticsConfigIsLoading,
+  } = useAdminCreateAnalyticsConfig()
+  const { mutateAsync: doLogin, isLoading: loginIsLoading } = useAdminLogin()
+
+  const isLoading =
+    acceptInviteIsLoading || createAnalyticsConfigIsLoading || loginIsLoading
+
   const navigate = useNavigate()
   const notification = useNotification()
 
-  const handleAcceptInvite = handleSubmit((data: FormValues) => {
+  const handleAcceptInvite = handleSubmit(async (data: FormValues) => {
     if (data.password !== data.repeat_password) {
       setError(
         "repeat_password",
@@ -68,24 +97,35 @@ const InvitePage = () => {
       return
     }
 
-    mutate(
-      {
+    try {
+      await acceptInvite({
         token: parsed.token as string,
         user: {
           first_name: data.first_name,
           last_name: data.last_name,
           password: data.password,
         },
-      },
-      {
-        onSuccess: () => {
-          navigate("/login")
-        },
-        onError: (err) => {
-          notification("Error", getErrorMessage(err), "error")
-        },
+      })
+
+      await doLogin({ email: token!.user_email, password: data.password })
+
+      const shouldTrackEmail =
+        !data.analytics.anonymize &&
+        !data.analytics.opt_out &&
+        token?.user_email
+
+      await createAnalyticsConfig(data.analytics)
+
+      if (shouldTrackEmail) {
+        await analytics.track("userEmail", {
+          email: token?.user_email,
+        })
       }
-    )
+
+      navigate("/a/orders")
+    } catch (err) {
+      notification("Error", getErrorMessage(err), "error")
+    }
   })
 
   if (!token) {
@@ -113,30 +153,13 @@ const InvitePage = () => {
       <SEO title="Create Account" />
       {signUp ? (
         <form onSubmit={handleAcceptInvite}>
-          <div className="flex flex-col items-center">
+          <div className="flex w-[300px] flex-col items-center">
             <h1 className="inter-xlarge-semibold mb-large text-[20px]">
               Create your Medusa account
             </h1>
             <div className="gap-y-small flex flex-col">
               <div>
-                <SigninInput
-                  placeholder="First name"
-                  {...register("first_name", {
-                    required: FormValidator.required("First name"),
-                  })}
-                  autoComplete="given-name"
-                />
-                <InputError errors={errors} name="first_name" />
-              </div>
-              <div>
-                <SigninInput
-                  placeholder="Last name"
-                  {...register("last_name", {
-                    required: FormValidator.required("Last name"),
-                  })}
-                  autoComplete="family-name"
-                />
-                <InputError errors={errors} name="last_name" />
+                <SigninInput readOnly placeholder={token.user_email} />
               </div>
               <div>
                 <SigninInput
@@ -160,10 +183,16 @@ const InvitePage = () => {
                 <InputError errors={errors} name="repeat_password" />
               </div>
             </div>
+            <div className="gap-y-small my-8 flex w-[300px] flex-col">
+              <AnalyticsConfigForm
+                form={nestedForm(form, "analytics")}
+                compact={true}
+              />
+            </div>
             <Button
               variant="secondary"
               size="medium"
-              className="mt-large w-[280px]"
+              className="mt-large w-[300px]"
               loading={isLoading}
             >
               Create account
@@ -176,17 +205,25 @@ const InvitePage = () => {
       ) : (
         <div className="flex flex-col items-center text-center">
           <h1 className="inter-xlarge-semibold text-[20px]">
-            You have been invited to join the team
+            {first_run
+              ? `Let's get you started!`
+              : `You have been invited to join the team`}
           </h1>
-          <p className="inter-base-regular text-grey-50 mt-xsmall">
-            You can now join the team. Sign up below and get started
-            <br />
-            with your Medusa account right away.
-          </p>
+          {first_run ? (
+            <p className="inter-base-regular text-grey-50 mt-xsmall">
+              Create an admin account to access your <br /> Medusa dashboard.
+            </p>
+          ) : (
+            <p className="inter-base-regular text-grey-50 mt-xsmall">
+              You can now join the team. Sign up below and get started
+              <br />
+              with your Medusa account right away.
+            </p>
+          )}
           <Button
             variant="secondary"
             size="medium"
-            className="mt-xlarge w-[280px]"
+            className="mt-xlarge w-[300px]"
             onClick={() => setSignUp(true)}
           >
             Sign up
