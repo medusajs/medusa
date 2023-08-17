@@ -47,8 +47,8 @@ To refund an order’s payment:
 3. Click on the Refund button.
 4. In the new window that opens:
     - Enter the Refund amount. It must be less than the Total Paid amount specified in the Payment section.
-    - Choose a reason for the refund.
-    - Optionally provide a note for the customer to see.
+    - In the Reason field, choose a reason for the refund.
+    - For the Note field, you can optionally provide a note for the customer to see.
     - If you don’t want the customer to receive an email that the refund has been made, uncheck the “Send notifications” checkbox.
 5. Once you’re done, click on the Complete button.
 
