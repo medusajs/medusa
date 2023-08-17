@@ -2,9 +2,6 @@
 title: 'Example: How to Create Onboarding Widget'
 description: 'Learn how to build the onboarding widget available in the admin dashboard the first time you install a Medusa project.'
 addHowToData: true
-badge:
-  variant: orange
-  text: beta
 ---
 
 In this guide, you’ll learn how to build the onboarding widget available in the admin dashboard the first time you install a Medusa project.
@@ -28,7 +25,7 @@ By following this tutorial, you’ll:
 
 ## Prerequisites
 
-Before you follow along this tutorial, you must have a Medusa backend installed with the `beta` version of the `@medusajs/admin` package. If not, you can use the following command to get started:
+Before you follow along this tutorial, you must have a Medusa backend installed. If not, you can use the following command to get started:
 
 ```bash
 npx create-medusa-app@latest

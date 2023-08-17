@@ -69,16 +69,6 @@ const modules = {}
 
 ### Changes for Admin Plugins
 
-:::note
-
-Admin customizations are currently in beta and require you to use the `beta` version of `@medusajs/admin` and `@medusajs/medusa`. You can install them with the following command:
-
-```bash npm2yarn
-npm install @medusajs/admin@beta @medusajs/medusa@beta
-```
-
-:::
-
 If your plugin contains customizations to the admin dashboard, it's recommended to create different `tsconfig` files for backend and admin customizations, then modify the scripts in `package.json` to handle building backend and admin customizations separately.
 
 :::note
@@ -433,7 +423,7 @@ class MyService extends TransactionBaseService {
 
 :::note
 
-Since admin customizations are still in `beta` mode, `enableUI`'s default value is `false` if not provided by the plugin users. This means that it must be enabled manually in a plugin's option for the customizations to appear in the admin dashboard. Once the admin customizations are out of beta, this behavior will be reversed.
+`enableUI`'s default value is `false` if not provided by the plugin users. This means that it must be enabled manually in a plugin's option for the customizations to appear in the admin dashboard.
 
 :::
 
