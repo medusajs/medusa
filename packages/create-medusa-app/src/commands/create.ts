@@ -31,7 +31,6 @@ export type CreateOptions = {
   seed?: boolean
   // commander passed --no-boilerplate as boilerplate
   boilerplate?: boolean
-  stable?: boolean
   skipDb?: boolean
   dbUrl?: string
   browser?: boolean
@@ -43,7 +42,6 @@ export default async ({
   repoUrl = "",
   seed,
   boilerplate,
-  stable,
   skipDb,
   dbUrl,
   browser,
@@ -123,7 +121,6 @@ export default async ({
       repoUrl,
       abortController,
       spinner,
-      stable,
     })
   } catch {
     return
@@ -217,9 +214,7 @@ export default async ({
     resources: ["http://localhost:9000/health"],
   }).then(async () =>
     open(
-      stable
-        ? "http://localhost:9000/store/products"
-        : inviteToken
+      inviteToken
         ? `http://localhost:7001/invite?token=${inviteToken}&first_run=true`
         : "http://localhost:7001"
     )
