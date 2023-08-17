@@ -5137,8 +5137,8 @@ __metadata:
     "@hookform/error-message": ^2.0.1
     "@medusajs/medusa": "*"
     "@medusajs/types": "*"
-    "@medusajs/ui": 0.0.0-snapshot-20230816112538
-    "@medusajs/ui-preset": 0.0.0-snapshot-20230816112538
+    "@medusajs/ui": ^1.0.0
+    "@medusajs/ui-preset": ^1.0.0
     "@pmmmwh/react-refresh-webpack-plugin": ^0.5.10
     "@radix-ui/react-accordion": ^1.0.1
     "@radix-ui/react-avatar": ^1.0.1
@@ -5351,21 +5351,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@medusajs/icons@npm:*":
+  version: 1.0.0
+  resolution: "@medusajs/icons@npm:1.0.0"
+  peerDependencies:
+    react: ^16.x || ^17.x || ^18.x
+  checksum: 3bf8d754a9e55460e6b6ab593c470ed1f0018a0b98d7fd53dd651359788d9f293dab3cc32719a2042834e71b252fd1d76dd32b60c076fe11f98999f6bea149de
+  languageName: node
+  linkType: hard
+
 "@medusajs/icons@npm:0.0.0-snapshot-20230816100247":
   version: 0.0.0-snapshot-20230816100247
   resolution: "@medusajs/icons@npm:0.0.0-snapshot-20230816100247"
   peerDependencies:
     react: ^16.x || ^17.x || ^18.x
   checksum: 3efab1bb573c51f5479d23390421a0794319d9b340a9be480aa2033072d615a540b83a8629f246880d72a7f69c17573914e97897c5669457479cd9fe30296601
-  languageName: node
-  linkType: hard
-
-"@medusajs/icons@npm:0.0.0-snapshot-20230816112538":
-  version: 0.0.0-snapshot-20230816112538
-  resolution: "@medusajs/icons@npm:0.0.0-snapshot-20230816112538"
-  peerDependencies:
-    react: ^16.x || ^17.x || ^18.x
-  checksum: 89fc54d302cac6d595fd5086aefdbf7ecc7847325444a21b15222b13c2e78a8eacb8a667070c9abb5001728d5bf3c66269cfd4e5f2d657f3d4e4f98fcb37a3fe
   languageName: node
   linkType: hard
 
@@ -5708,15 +5708,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/ui-preset@npm:0.0.0-snapshot-20230816112538":
-  version: 0.0.0-snapshot-20230816112538
-  resolution: "@medusajs/ui-preset@npm:0.0.0-snapshot-20230816112538"
+"@medusajs/ui-preset@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@medusajs/ui-preset@npm:1.0.0"
   dependencies:
     "@tailwindcss/forms": ^0.5.3
     tailwindcss-animate: ^1.0.6
   peerDependencies:
     tailwindcss: ">=3.0.0"
-  checksum: 8d2762440a7435f5f6b4755db5afa8b0b3758b3c96f497638f831467ec65d8888b3aeb2b81a2679b7280302d70a113bd3bb2783d1463814ed3e987f0226e74d2
+  checksum: 4365d5e4a726250aa5299df8ce9e1ffdc9f864586b506d8552ad1561ac2a2d66d8692dd761702728904d7af884aae9d85de9dcfe94413161264821a8c7648223
   languageName: node
   linkType: hard
 
@@ -5756,11 +5756,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/ui@npm:0.0.0-snapshot-20230816112538":
-  version: 0.0.0-snapshot-20230816112538
-  resolution: "@medusajs/ui@npm:0.0.0-snapshot-20230816112538"
+"@medusajs/ui@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@medusajs/ui@npm:1.0.0"
   dependencies:
-    "@medusajs/icons": 0.0.0-snapshot-20230816112538
+    "@medusajs/icons": "*"
     "@radix-ui/react-alert-dialog": ^1.0.4
     "@radix-ui/react-avatar": ^1.0.3
     "@radix-ui/react-checkbox": ^1.0.4
@@ -5770,6 +5770,7 @@ __metadata:
     "@radix-ui/react-popover": ^1.0.6
     "@radix-ui/react-radio-group": ^1.1.3
     "@radix-ui/react-scroll-area": ^1.0.4
+    "@radix-ui/react-select": ^1.2.2
     "@radix-ui/react-slot": ^1.0.2
     "@radix-ui/react-switch": ^1.0.3
     "@radix-ui/react-toast": ^1.1.4
@@ -5788,7 +5789,7 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 5bb1d132874ce91abb0ba165a9f392f080d5897195a41abbb910e6254466b1597c57b2a1d754342d678486de16cebf850c31ac05bca8393ab518f3a0e1a6fba2
+  checksum: 6b957037cda3cc10ed7dad3491440c4fda38289f4b64b7cc275aea8c96e9ede80ee78417d597fd93a1f0db9abdc7ac0e1f1f2e820c4b71538fa4640b78891171
   languageName: node
   linkType: hard
 
@@ -7609,7 +7610,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-select@npm:^1.2.0":
+"@radix-ui/react-select@npm:^1.2.0, @radix-ui/react-select@npm:^1.2.2":
   version: 1.2.2
   resolution: "@radix-ui/react-select@npm:1.2.2"
   dependencies:
