@@ -87,6 +87,22 @@ In your terminal, run the following command:
 
 </details>
 
+### (Optional) Connect to a Vercel PostgreSQL Database
+
+If you want to use a PostgreSQL database hosted on Vercel, you must use the `--db-url` option and add to the end of your connection URL `?sslmode=require`. For example:
+
+```bash
+npx create-medusa-app@latest --db-url "postgres://default:<password><host-region>.postgres.vercel-storage.com:5432/verceldb?sslmode=require"
+```
+
+### (Optional) Connect to a Supabase Database
+
+If you want to connect to a Supabase database, you must use the `--db-url` option with its value beign the connection URL to your Supabase database. For example:
+
+```bash
+npx create-medusa-app@latest --db-url postgresql://postgres:<password>@<host>.supabase.co:5432/postgres
+```
+
 ### Step 1: Specify Project Name
 
 You’ll first be asked to enter the name of your project, which is used to create the directory holding your Medusa backend. You can use the default `my-medusa-store` or enter another project name.
