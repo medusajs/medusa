@@ -1,5 +1,13 @@
 # Change Log
 
+## 6.0.3
+
+### Patch Changes
+
+- [#4747](https://github.com/medusajs/medusa/pull/4747) [`9469063f6`](https://github.com/medusajs/medusa/commit/9469063f643180002ede7a8e94c6de53d2770d04) Thanks [@olivermrbl](https://github.com/olivermrbl)! - fix(medusa-js): return type of collection hook + export
+
+- [#4761](https://github.com/medusajs/medusa/pull/4761) [`f1a05f472`](https://github.com/medusajs/medusa/commit/f1a05f4725dcc45150f014769562bd3dfbc0f1f8) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - feat(admin, admin-ui, medusa, medusa-js, medusa-react, stripe-plugin): Support admin extensions
+
 ## 6.0.2
 
 ### Patch Changes

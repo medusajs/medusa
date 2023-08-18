@@ -99,6 +99,11 @@ module.exports = {
       items: [
         {
           type: "doc",
+          label: "Admin Custom Configuration",
+          id: "admin/configuration",
+        },
+        {
+          type: "doc",
           label: "Admin Widgets",
           id: "admin/widgets",
         },
