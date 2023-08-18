@@ -39,7 +39,7 @@ If you want to use another Git Provider supported by DigitalOcean, it’s possib
 Change the `start` script in `package.json` to the following:
 
 ```json
-"start": "medusa migrations run && medusa start"
+"start": "npm run build && medusa migrations run && medusa start"
 ```
 
 This ensures that Migrations are run everytime the Medusa backend is restarted.
