@@ -328,10 +328,10 @@ export class RemoteLink {
     >()
 
     for (const rel of allLinks) {
-      const mods = Object.keys(rel)
       const extraFields = rel.data
-
       delete rel.data
+      
+      const mods = Object.keys(rel);
       if (mods.length > 2) {
         throw new Error(`Only two modules can be linked.`)
       }
