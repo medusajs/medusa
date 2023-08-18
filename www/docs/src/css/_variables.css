@@ -43,8 +43,8 @@
   --ifm-h4-font-size: var(--ifm-font-size-base);
 
   /* Links */
-  --ifm-link-color: var(--ifm-color-primary);
-  --ifm-link-hover-color: var(--ifm-color-content);
+  --ifm-link-color: theme(colors.medusa.fg.interactive.DEFAULT);
+  --ifm-link-hover-color: theme(colors.medusa.fg.interactive.hover.DEFAULT);
   --ifm-link-decoration: none;
   --ifm-link-hover-decoration: none;
 
@@ -133,6 +133,10 @@ html[data-theme="dark"] {
   --ifm-color-content: theme(colors.medusa.fg.subtle.dark) !important;
   --ifm-base-border-color: theme(colors.medusa.border.base.dark);
   --ifm-strong-border-color: theme(colors.medusa.border.strong.dark);
+
+  /* Links */
+  --ifm-link-color: theme(colors.medusa.fg.interactive.DEFAULT);
+  --ifm-link-hover-color: theme(colors.medusa.fg.interactive.hover.DEFAULT);
 
   /* Sidebar */
   --ifm-menu-color: theme(colors.medusa.fg.subtle.dark);
