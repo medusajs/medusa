@@ -28,15 +28,6 @@ enum CreateCartActions {
   setContext = "setContext",
 }
 
-const workflowAlias = "cart"
-const getWorkflowInput = (alias = workflowAlias) => ({
-  inputAlias: workflowAlias,
-  invoke: {
-    from: workflowAlias,
-    alias,
-  },
-})
-
 const workflowSteps: TransactionStepsDefinition = {
   next: {
     action: CreateCartActions.prepareCartData,
@@ -45,14 +36,17 @@ const workflowSteps: TransactionStepsDefinition = {
     next: [
       {
         action: CreateCartActions.findOrCreateCustomer,
+        saveResponse: true,
         noCompensation: true,
       },
       {
         action: CreateCartActions.findSalesChannel,
+        saveResponse: true,
         noCompensation: true,
       },
       {
         action: CreateCartActions.setContext,
+        saveResponse: true,
         noCompensation: true,
       },
       {
@@ -98,8 +92,8 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: CreateCartActions.prepareCartData, 
-              alias: CustomerHandlers.findOrCreateCustomer.aliases.Customer, 
+              from: CreateCartActions.prepareCartData,
+              alias: CustomerHandlers.findOrCreateCustomer.aliases.Customer,
             },
           ],
         },
@@ -111,9 +105,12 @@ const handlers = new Map([
     CreateCartActions.findSalesChannel,
     {
       invoke: pipe(
-        getWorkflowInput(
-          SalesChannelHandlers.findSalesChannel.aliases.SalesChannel
-        ),
+        {
+          invoke: {
+            from: CreateCartActions.prepareCartData,
+            alias: SalesChannelHandlers.findSalesChannel.aliases.SalesChannel,
+          },
+        },
         SalesChannelHandlers.findSalesChannel
       ),
     },
@@ -122,7 +119,12 @@ const handlers = new Map([
     CreateCartActions.setContext,
     {
       invoke: pipe(
-        getWorkflowInput(CommonHandlers.setContext.aliases.Context),
+        {
+          invoke: {
+            from: CreateCartActions.prepareCartData,
+            alias: CommonHandlers.setContext.aliases.Context,
+          },
+        },
         CommonHandlers.setContext
       ),
     },
@@ -131,7 +133,12 @@ const handlers = new Map([
     CreateCartActions.findRegion,
     {
       invoke: pipe(
-        getWorkflowInput(RegionHandlers.findRegion.aliases.Region),
+        { 
+          invoke: { 
+            from: CreateCartActions.prepareCartData, 
+            alias: RegionHandlers.findRegion.aliases.Region
+          }
+        },
         RegionHandlers.findRegion
       ),
     },
@@ -143,8 +150,8 @@ const handlers = new Map([
         {
           invoke: [
             {
-              from: CreateCartActions.prepareCartData, 
-              alias: AddressHandlers.findOrCreateAddresses.aliases.Addresses
+              from: CreateCartActions.prepareCartData,
+              alias: AddressHandlers.findOrCreateAddresses.aliases.Addresses,
             },
             {
               from: CreateCartActions.findRegion,
@@ -201,9 +208,10 @@ const handlers = new Map([
       invoke: pipe(
         {
           invoke: [
-            getWorkflowInput(
-              CartHandlers.attachLineItemsToCart.aliases.LineItems
-            ).invoke,
+            {
+              from: CreateCartActions.prepareCartData,
+              alias: CartHandlers.attachLineItemsToCart.aliases.LineItems
+            },
             {
               from: CreateCartActions.createCart,
               alias: CartHandlers.attachLineItemsToCart.aliases.Cart,
