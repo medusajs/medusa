@@ -47,6 +47,7 @@ export function generateMetadata({ params: { area } }: ReferencePageProps) {
   return {
     title: `Medusa ${capitalize(area)} API Reference`,
     description: `REST API reference for the Medusa ${area} API. This reference includes code snippets and examples for Medusa JS Client and cURL.`,
+    metadataBase: process.env.NEXT_PUBLIC_BASE_URL,
   }
 }
 
