@@ -23,7 +23,7 @@ In this document, you’ll learn how to use create-medusa-app to set up a Medusa
 
 :::tip
 
-`create-medusa-app` allows you to install and setup a Medusa backend project with minimal configurations. If you're more familiar with Medusa or you need to have more control over the configurations of the Medusa backend, such as database connection details, you can either use the [command's options](#how-to-create-a-medusa-project) to customize the setup, or use the [backend quickstart instead](./development/backend/install.mdx).
+`create-medusa-app` allows you to install and setup a Medusa backend project with minimal configurations. If you're more familiar with Medusa or you need to have more control over the configurations of the Medusa backend, such as database connection details, you can either use the [command's options](#command-options) to customize the setup, or use the [backend quickstart instead](./development/backend/install.mdx).
 
 :::
 
@@ -45,7 +45,7 @@ Before you can install and use Medusa, you need the following tools installed on
 
 ---
 
-## How to Create a Medusa Project
+## Step 1: Run create-medusa-app
 
 In your terminal, run the following command:
 
@@ -73,21 +73,20 @@ In your terminal, run the following command:
   </TabItem>
 </Tabs>
 
-<details>
-  <summary>Available Options</summary>
+### Command Options
 
-  - `--repo-url <url>`: The repository URL to create the project from. By default it will be `https://github.com/medusajs/medusa-starter-default`.
-  - `--seed`: A flag indicating whether the database should be seeded with demo data. By default, seeding is disabled.
-  - `--no-boilerplate`: A flag that removes all files added for an enhanced onboarding experience (files under `src/admin`, `src/api`, etc...). This is helpful if you want to create a clean project, and is only recommended if you're familiar with Medusa.
-  - `--no-browser`: Disables opening the browser at the end of the project creation and only shows success message.
-  - `--skip-db`: Skips creating the database, running migrations, and seeding, and subsequently skips opening the browser. Useful if you want to set the database URL at a later point in the configurations.
-  - `--db-url <url>`: Skips database creation and sets the database URL to the provided URL. Throws an error if connection to the database fails. Will still run migrations and open the admin after project creation. Useful if you already have a database created, locally or remotely.
-  - `--no-migrations`: Skips running migrations, creating admin user, and seeding. If used, it's expected that you pass the `--db-url` option with a URL of a database that has all necessary migrations. Otherwise, unexpected errors will occur. Helpful only if combined with `--db-url`.
-  - `--directory-path <path>`: Allows specifying the parent directory path to create the directory of the new project in.
+The `create-medusa-app` command can accept the following options:
 
-</details>
+- `--repo-url <url>`: The repository URL to create the project from. By default it will be `https://github.com/medusajs/medusa-starter-default`.
+- `--seed`: A flag indicating whether the database should be seeded with demo data. By default, seeding is disabled.
+- `--no-boilerplate`: A flag that removes all files added for an enhanced onboarding experience (files under `src/admin`, `src/api`, etc...). This is helpful if you want to create a clean project, and is only recommended if you're familiar with Medusa.
+- `--no-browser`: Disables opening the browser at the end of the project creation and only shows success message.
+- `--skip-db`: Skips creating the database, running migrations, and seeding, and subsequently skips opening the browser. Useful if you want to set the database URL at a later point in the configurations.
+- `--db-url <url>`: Skips database creation and sets the database URL to the provided URL. Throws an error if connection to the database fails. Will still run migrations and open the admin after project creation. Useful if you already have a database created, locally or remotely.
+- `--no-migrations`: Skips running migrations, creating admin user, and seeding. If used, it's expected that you pass the `--db-url` option with a URL of a database that has all necessary migrations. Otherwise, unexpected errors will occur. Helpful only if combined with `--db-url`.
+- `--directory-path <path>`: Allows specifying the parent directory path to create the directory of the new project in.
 
-### (Optional) Connect to a Vercel PostgreSQL Database
+### Example: Connect to a Vercel PostgreSQL Database
 
 If you want to use a PostgreSQL database hosted on Vercel, you must use the `--db-url` option and add to the end of your connection URL `?sslmode=require`. For example:
 
@@ -101,7 +100,7 @@ If the database already has the necessary migrations and you don't need the comm
 
 :::
 
-### (Optional) Connect to a Supabase Database
+### Example: Connect to a Supabase Database
 
 If you want to connect to a Supabase database, you must use the `--db-url` option with its value beign the connection URL to your Supabase database. For example:
 
@@ -115,11 +114,15 @@ If the database already has the necessary migrations and you don't need the comm
 
 :::
 
-### Step 1: Specify Project Name
+---
+
+## Step 2: Specify Project Name
 
 You’ll first be asked to enter the name of your project, which is used to create the directory holding your Medusa backend. You can use the default `my-medusa-store` or enter another project name.
 
-### (Optional) Step 2: Specify PostgreSQL credentials
+---
+
+## (Optional) Step 3: Specify PostgreSQL credentials
 
 :::note
 
@@ -131,22 +134,25 @@ By default, this command will try to use the default PostgreSQL credentials to c
 
 These credentials will be used to create a database during this setup and configure your Medusa backend to connect to that database.
 
-### Step 3: Enter an admin email
+---
+
+## Step 4: Enter an admin email
 
 You'll then be prompted to enter an admin email for your admin user. You'll be using this admin email later to login to your admin dashboard. You can use the default `admin@medusa-test.com` or enter any other email.
 
-### Step 4: Wait for Project Setup
-
-After the above steps, the project setup will start which includes:
+After following the above steps, the project setup will start which includes:
 
 1. Creating the project directory. The directory name will be the project name you entered in step 1.
-2. Creating the project database.
+2. Creating the project database if `--db-url` and `--skip-db` options are not passed.
 3. Installing dependencies in your project directory.
-4. Building project and running migrations to migrate the Medusa schema into your project database.
-5. Create the admin user.
-6. Seeding the database with demo data.
+4. Building project
+5. Running migrations to migrate the Medusa schema into your project database unless `--skip-db` or `--no-migrations` are passed.
+6. Creating the admin user unless `--skip-db` or `--no-migrations` are passed.
+7. Seeding the database with demo data unless `--skip-db` or `--no-migrations` are passed.
 
-### Step 5: Log into admin dashboard
+---
+
+## Step 5: Log into admin dashboard
 
 Once the project is prepared, the Medusa backend will start and the admin dashboard will be opened in your default browser. You'll then be asked to enter a password for the admin email you entered earlier, as well as other account information.
 
