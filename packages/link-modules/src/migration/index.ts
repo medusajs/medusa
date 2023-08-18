@@ -37,13 +37,32 @@ export function getMigration(
     try {
       await orm.em.getConnection().execute(`SELECT 1 FROM ${tableName} LIMIT 0`)
       hasTable = true
-      logger.info(`Skipping "${tableName}" creation.`)
     } catch {}
 
-    if (!hasTable) {
-      try {
-        const generator = orm.getSchemaGenerator()
+    const generator = orm.getSchemaGenerator()
+    if (hasTable) {
+      const updateSql = await generator.getUpdateSchemaSQL()
+      const entityUpdates = updateSql
+        .split(";")
+        .map((sql) => sql.trim())
+        .filter((sql) =>
+          sql.toLowerCase().includes(`alter table "${tableName.toLowerCase()}"`)
+        )
 
+      if (entityUpdates.length > 0) {
+        try {
+          await generator.execute(entityUpdates.join(";"))
+          logger.info(`Link module "${serviceName}" migration executed`)
+        } catch (error) {
+          logger.error(
+            `Link module "${serviceName}" migration failed to run - Error: ${error}`
+          )
+        }
+      } else {
+        logger.info(`Skipping "${tableName}" migration.`)
+      }
+    } else {
+      try {
         await generator.createSchema()
 
         logger.info(`Link module "${serviceName}" migration executed`)
