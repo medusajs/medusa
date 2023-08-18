@@ -281,7 +281,7 @@ module.exports = {
               id: "deployments/server/general-guide",
               label: "General Deployment",
               customProps: {
-                icon: "academic-cap-solid",
+                iconName: "academic-cap-solid",
               },
             },
           ],
