@@ -94,10 +94,17 @@ export default async ({
   const adminEmail =
     !skipDb && migrations ? await askForAdminEmail(seed, boilerplate) : ""
 
-  const { client, dbConnectionString } = !skipDb
+  const {
+    client,
+    dbConnectionString,
+    isRemote = false,
+  } = !skipDb
     ? await getDbClientAndCredentials({
         dbName,
         dbUrl,
+        processManager,
+        abortController,
+        spinner,
       })
     : { client: null, dbConnectionString: "" }
   isDbInitialized = true
@@ -131,7 +138,7 @@ export default async ({
     message: "Created project directory",
   })
 
-  if (client && !dbUrl) {
+  if (client && !dbUrl && !isRemote) {
     factBoxOptions.interval = displayFactBox({
       ...factBoxOptions,
       title: "Creating database...",
