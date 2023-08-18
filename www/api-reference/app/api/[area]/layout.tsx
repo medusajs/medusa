@@ -11,6 +11,7 @@ import AnalyticsProvider from "@/providers/analytics"
 import NavbarProvider from "@/providers/navbar"
 import ModalProvider from "../../../providers/modal"
 import { ScrollControllerProvider } from "../../../hooks/scroll-utils"
+import SearchModal from "../../../components/SearchModal"
 
 export const metadata = {
   title: "Medusa API Reference",
@@ -59,6 +60,7 @@ export default function RootLayout({
                           </main>
                         </div>
                       </div>
+                      {/* <SearchModal /> */}
                     </ScrollControllerProvider>
                   </NavbarProvider>
                 </SidebarProvider>

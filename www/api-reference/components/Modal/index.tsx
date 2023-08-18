@@ -52,7 +52,7 @@ const Modal: React.FC<ModalProps> = ({
           "w-[90%] md:w-[75%] lg:w-[560px]"
         )}
       >
-        <ModalHeader title={title} />
+        {title && <ModalHeader title={title} />}
         <div
           className={clsx(
             "overflow-auto py-1.5 px-2 lg:min-h-[400px]",
