@@ -32,6 +32,7 @@ declare module "@medusajs/docs" {
   import { DocContextValue as DocusaurusDocContextValue } from "@docusaurus/theme-common/internal"
   import { ReactNode } from "react"
   import { NavbarLogo } from "@docusaurus/theme-common"
+  import type { DocusaurusContext } from "@docusaurus/types"
 
   type ItemCustomProps = {
     customProps?: {
@@ -168,4 +169,8 @@ declare module "@medusajs/docs" {
       }
     }
   } & DocusaurusDocContextValue
+
+  export declare type MedusaDocusaurusContext = DocusaurusContext & {
+    siteConfig: MedusaDocusaurusConfig
+  }
 }
