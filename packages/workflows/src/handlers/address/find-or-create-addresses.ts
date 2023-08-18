@@ -44,9 +44,9 @@ export async function findOrCreateAddresses({
 
   if (!shippingAddress && !shippingAddressId) {
     if (region.countries.length === 1) {
-      const shippingAddress = addressRepository.create({
+      const shippingAddress = await addressRepository.save(addressRepository.create({
         country_code: regionCountries[0],
-      })
+      }))
 
       addressesDTO.shipping_address_id = shippingAddress?.id
     }

@@ -74,6 +74,18 @@ describe("/store/carts", () => {
          WHERE iso_2 = 'us'`
       )
 
+      await manager.insert(Region, {
+        id: "region-1",
+        name: "Test Region",
+        currency_code: "dkk",
+        tax_rate: 0,
+      })
+      await manager.query(
+        `UPDATE "country"
+         SET region_id='region-1'
+         WHERE iso_2 = 'dk'`
+      )
+
       prod1 = await simpleProductFactory(dbConnection, {
         id: "test-product",
         variants: [{ id: "test-variant_1" }],
@@ -195,10 +207,12 @@ describe("/store/carts", () => {
       const api = useApi()
 
       const response = await api.post("/store/carts", {
-        country_code: "us",
+        country_code: "dk",
+        region_id: "region-1",
       })
+
       expect(response.status).toEqual(200)
-      expect(response.data.cart.shipping_address.country_code).toEqual("us")
+      expect(response.data.cart.shipping_address.country_code).toEqual("dk")
 
       const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
       expect(getRes.status).toEqual(200)

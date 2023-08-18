@@ -1,6 +1,6 @@
 export type AddressDTO = {
   id?: string
-  address_1: string
+  address_1?: string | null
   address_2?: string | null
   company?: string | null
   country_code: string

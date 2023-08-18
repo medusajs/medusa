@@ -7,6 +7,7 @@ import { setPort, useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { simpleProductFactory } from "../../../../factories"
 import { AxiosInstance } from "axios"
+import { Customer } from "@medusajs/medusa"
 
 jest.setTimeout(30000)
 
@@ -17,7 +18,6 @@ const getApi = () => {
 describe("/store/carts", () => {
   let medusaProcess
   let dbConnection
-  let express
 
   const doAfterEach = async () => {
     const db = useDb()
@@ -30,7 +30,7 @@ describe("/store/carts", () => {
     medusaProcess = await setupServer({ cwd, verbose: true })
     const { app, port } = await bootstrapApp({ cwd })
     setPort(port)
-    express = app.listen(port, () => {
+    app.listen(port, () => {
       process.send?.(port)
     })
   })
@@ -53,12 +53,39 @@ describe("/store/carts", () => {
         currency_code: "usd",
         tax_rate: 0,
       })
+      await manager.insert(Region, {
+        id: "region-1",
+        name: "Test Region",
+        currency_code: "dkk",
+        tax_rate: 0,
+      })
 
       await manager.query(
         `UPDATE "country"
          SET region_id='region'
          WHERE iso_2 = 'us'`
       )
+
+      await manager.query(
+        `UPDATE "country"
+         SET region_id='region-1'
+         WHERE iso_2 = 'dk'`
+      )
+      await manager.query(
+        `UPDATE "country"
+         SET region_id='region-1'
+         WHERE iso_2 = 'uk'`
+      )
+
+      await dbConnection.manager.insert(Customer, {
+        id: "test_customer",
+        first_name: "john",
+        last_name: "doe",
+        email: "john@doe.com",
+        password_hash:
+          "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
+        has_account: true,
+      })
 
       prod1 = await simpleProductFactory(dbConnection, {
         id: "test-product",
@@ -95,8 +122,7 @@ describe("/store/carts", () => {
 
       await dbConnection.manager.query(
         `UPDATE "country"
-         SET region_id=null
-         WHERE iso_2 = 'us'`
+         SET region_id=null`
       )
 
       await dbConnection.manager.query(`DELETE from region`)
@@ -176,18 +202,41 @@ describe("/store/carts", () => {
       expect(getRes.status).toEqual(200)
     })
 
-    it("should create a cart with country", async () => {
+    it("should create a cart with a customer", async () => { 
+      const api = getApi()
+
+      const authResponse = await api.post("/store/auth", {
+        email: "john@doe.com",
+        password: "test",
+      })
+
+      const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
+
+      const response = await api.post("/store/carts", {}, {
+        headers: {
+          Cookie: authCookie,
+        },
+      })
+      
+      expect(response.status).toEqual(200)
+      expect(response.data.cart.customer_id).toEqual(authResponse.data.customer.id)        
+      expect(response.data.cart.email).toEqual("john@doe.com")        
+    })
+
+    it("should create a cart with country given by country_code", async () => {
       const api = getApi()
       const response = await api.post("/store/carts", {
-        country_code: "us",
+        country_code: "dk",
+        region_id: 'region-1'
       })
 
       expect(response.status).toEqual(200)
-      expect(response.data.cart.shipping_address.country_code).toEqual("us")
+      expect(response.data.cart.shipping_address.country_code).toEqual("dk")
 
       const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
       expect(getRes.status).toEqual(200)
     })
+
 
     it("should create a cart with context", async () => {
       const api = getApi()

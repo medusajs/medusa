@@ -13,8 +13,8 @@ export interface CreateCartWorkflowInputDTO {
   sales_channel_id?: string
   shipping_address_id?: string
   billing_address_id?: string
-  billing_address?: AddressDTO
-  shipping_address?: AddressDTO
+  billing_address?: Partial<AddressDTO>
+  shipping_address?: Partial<AddressDTO>
   customer_id?: string
   email?: string
 }

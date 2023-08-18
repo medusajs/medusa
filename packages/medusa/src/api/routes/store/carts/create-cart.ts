@@ -96,10 +96,13 @@ export default async (req, res) => {
 
   let cart
 
+  const customerId = req.user?.customer_id
+
   if (isWorkflowEnabled) {
     const cartWorkflow = createCartWorkflow(req.scope as MedusaContainer)
     const input = {
       ...validated,
+      customer_id: customerId,
       publishableApiKeyScopes: req.publishableApiKeyScopes,
       context: {
         ...reqContext,
@@ -151,9 +154,9 @@ export default async (req, res) => {
       },
     }
 
-    if (req.user && req.user.customer_id) {
+    if (customerId) {
       const customerService = req.scope.resolve("customerService")
-      const customer = await customerService.retrieve(req.user.customer_id)
+      const customer = await customerService.retrieve(customerId)
       toCreate["customer_id"] = customer.id
       toCreate["email"] = customer.email
     }
