@@ -276,6 +276,14 @@ module.exports = {
                 },
               },
             },
+            {
+              type: "doc",
+              id: "deployments/server/general-guide",
+              label: "General Deployment",
+              customProps: {
+                icon: "academic-cap-solid",
+              },
+            },
           ],
         },
         {
