@@ -26,6 +26,7 @@ enum CreateCartActions {
   removeCart = "removeCart",
   removeAddresses = "removeAddresses",
   setContext = "setContext",
+  generateLineItems = "generateLineItems",
 }
 
 const workflowSteps: TransactionStepsDefinition = {
@@ -59,8 +60,13 @@ const workflowSteps: TransactionStepsDefinition = {
           next: {
             action: CreateCartActions.createCart,
             next: {
-              action: CreateCartActions.attachLineItems,
+              action: CreateCartActions.generateLineItems,
               noCompensation: true,
+              saveResponse: true,
+              next: { 
+                action: CreateCartActions.attachLineItems,
+                noCompensation: true,
+              }
             },
           },
         },
@@ -203,13 +209,33 @@ const handlers = new Map([
     },
   ],
   [
-    CreateCartActions.attachLineItems,
+    CreateCartActions.generateLineItems,
     {
       invoke: pipe(
         {
           invoke: [
             {
               from: CreateCartActions.prepareCartData,
+              alias: CartHandlers.attachLineItemsToCart.aliases.LineItems
+            },
+            {
+              from: CreateCartActions.createCart,
+              alias: CartHandlers.attachLineItemsToCart.aliases.Cart,
+            },
+          ],
+        },
+        CartHandlers.generateLineItems
+      ),
+    },
+  ],
+  [
+    CreateCartActions.attachLineItems,
+    {
+      invoke: pipe(
+        {
+          invoke: [
+            {
+              from: CreateCartActions.generateLineItems,
               alias: CartHandlers.attachLineItemsToCart.aliases.LineItems
             },
             {
