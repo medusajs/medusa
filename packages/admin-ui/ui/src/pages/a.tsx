@@ -21,6 +21,7 @@ import SalesChannels from "../domain/sales-channels"
 import Settings from "../domain/settings"
 import { AnalyticsProvider } from "../providers/analytics-provider"
 import ProductCategories from "../domain/product-categories"
+import ProductReview from "../domain/product-reviews"
 
 const IndexPage = () => {
   const navigate = useNavigate()
@@ -54,6 +55,7 @@ const DashboardRoutes = () => {
             <Route path="discounts/*" element={<Discounts />} />
             <Route path="customers/*" element={<Customers />} />
             <Route path="pricing/*" element={<Pricing />} />
+            <Route path="reviews/*" element={<ProductReview />} />
             <Route path="settings/*" element={<Settings />} />
             <Route path="sales-channels/*" element={<SalesChannels />} />
             <Route

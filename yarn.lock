@@ -6086,7 +6086,7 @@ __metadata:
     copy-to-clipboard: ^3.3.1
     emoji-picker-react: ^4.4.3
     framer-motion: ^9.1.6
-    medusa-react: ^9.0.3
+    medusa-react: ^9.0.4
     moment: ^2.29.4
     pluralize: ^8.0.0
     postcss: ^8.4.21
@@ -6297,7 +6297,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-js@^6.0.2, @medusajs/medusa-js@workspace:packages/medusa-js":
+"@medusajs/medusa-js@*, @medusajs/medusa-js@^6.0.2, @medusajs/medusa-js@workspace:packages/medusa-js":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-js@workspace:packages/medusa-js"
   dependencies:
@@ -31119,7 +31119,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-react@^9.0.3, medusa-react@workspace:packages/medusa-react":
+"medusa-react@npm:^9.0.4":
+  version: 9.0.4
+  resolution: "medusa-react@npm:9.0.4"
+  dependencies:
+    "@medusajs/medusa-js": "*"
+  peerDependencies:
+    "@medusajs/medusa": ^1.12.0
+    "@tanstack/react-query": ^4.22.0
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  checksum: fb613532d3fff331873c3e52ca49c051f2abb70bb89c761b921db6d4702b71ae80b09b174a6f7ff24521cc31c2b57edf81bab244a1462871bc04aff227257324
+  languageName: node
+  linkType: hard
+
+"medusa-react@workspace:packages/medusa-react":
   version: 0.0.0-use.local
   resolution: "medusa-react@workspace:packages/medusa-react"
   dependencies:
