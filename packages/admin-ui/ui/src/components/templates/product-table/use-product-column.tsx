@@ -40,7 +40,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
         Header: "Name",
         accessor: "title",
         Cell: ({ row: { original } }) => {
-          return (
+          return ( 
             <div className="flex items-center">
               <div className="my-1.5 mr-4 flex h-[40px] w-[30px] items-center">
                 {original.thumbnail ? (
@@ -52,7 +52,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
                   <ImagePlaceholder />
                 )}
               </div>
-              {original.title}
+              {original.title_ar}
             </div>
           )
         },

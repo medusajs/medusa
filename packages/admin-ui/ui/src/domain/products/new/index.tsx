@@ -41,6 +41,9 @@ import { useFeatureFlag } from "../../../providers/feature-flag-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
 import { prepareImages } from "../../../utils/images"
 import { nestedForm } from "../../../utils/nested-form"
+import SeoForm, {
+  SeoFormType,
+} from "../../../components/forms/product/seo-form"
 
 type NewProductForm = {
   general: GeneralFormType
@@ -52,6 +55,7 @@ type NewProductForm = {
   thumbnail: ThumbnailFormType
   media: MediaFormType
   salesChannels: AddSalesChannelsFormType
+  seo: SeoFormType
 }
 
 type Props = {
@@ -337,6 +341,12 @@ const NewProduct = ({ onClose }: Props) => {
                 </p>
                 <MediaForm form={nestedForm(form, "media")} />
               </Accordion.Item>
+              <Accordion.Item title="SEO" value="seo">
+                <p className="inter-base-regular mb-large text-grey-50">
+                  Add SEO information to your product.
+                </p>
+                <SeoForm form={nestedForm(form, "seo")} />
+              </Accordion.Item>
             </Accordion>
           </div>
         </FocusModal.Main>
@@ -465,6 +475,11 @@ const createBlank = (): NewProductForm => {
     variants: {
       entries: [],
       options: [],
+    },
+    seo: {
+      seo_title: "",
+      seo_description: "",
+      seo_url: "",
     },
   }
 }

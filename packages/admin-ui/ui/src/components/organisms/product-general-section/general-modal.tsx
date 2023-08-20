@@ -18,12 +18,16 @@ import MetadataForm, {
 } from "../../forms/general/metadata-form"
 import Button from "../../fundamentals/button"
 import Modal from "../../molecules/modal"
+import SeoForm, { SeoFormType } from "../../forms/product/seo-form"
 
 type Product = BaseProduct & {
   title_ar: string
   subtitle_ar: string | null
   description_ar: string | null
   handle_ar: string | null
+  seo_title: string | null
+  seo_description: string | null
+  seo_url: string | null
 }
 
 type Props = {
@@ -37,6 +41,7 @@ type GeneralFormWrapper = {
   organize: OrganizeFormType
   discountable: DiscountableFormType
   metadata: MetadataFormType
+  seo: SeoFormType
 }
 
 const GeneralModal = ({ product, open, onClose }: Props) => {
@@ -97,6 +102,10 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
           : [],
         discountable: data.discountable.value,
         metadata: getSubmittableMetadata(data.metadata),
+        // seo
+        seo_title: data.seo.seo_title,
+        seo_description: data.seo.seo_description,
+        seo_url: data.seo.seo_url,
       },
       onReset
     )
@@ -129,6 +138,10 @@ const GeneralModal = ({ product, open, onClose }: Props) => {
             <div className="mt-xlarge">
               <h2 className="inter-base-semibold mb-base">Metadata</h2>
               <MetadataForm form={nestedForm(form, "metadata")} />
+            </div>
+            <div className="mt-xlarge">
+              <h2 className="inter-base-semibold mb-base">Seo</h2>
+              <SeoForm form={nestedForm(form, "seo")} />
             </div>
           </Modal.Content>
           <Modal.Footer>
@@ -185,6 +198,11 @@ const getDefaultValues = (product: Product): GeneralFormWrapper => {
       value: product.discountable,
     },
     metadata: getMetadataFormValues(product.metadata),
+    seo: {
+      seo_title: product.seo_title || null,
+      seo_description: product.seo_description || null,
+      seo_url: product.seo_url || null,
+    },
   }
 }
 

@@ -65,8 +65,8 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
       </p>
       <div className="gap-x-large mb-small grid grid-cols-2">
         <InputField
-          label="Title in arabic"
-          placeholder={isGiftCard ? "Gift Card" : "Winter Jacket"}
+          label="العنوان"
+          placeholder={isGiftCard ? "كرت هدية" : "سترة الشتاء"}
           required
           {...register(path("title_ar"), {
             required: "Title ar is required",
@@ -79,8 +79,8 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
           errors={errors}
         />
         <InputField
-          label="Subtitle in arabic"
-          placeholder="Warm and cozy..."
+          label="العنوان الفرعي"
+          placeholder="دافئة ومريحة"
           {...register(path("subtitle_ar"), {
             pattern: FormValidator.whiteSpaceRule("Subtitle"),
           })}
@@ -119,9 +119,9 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
       </div>
       <div className="gap-x-large mb-large grid grid-cols-2">
         <InputField
-          label="Handle in arabic"
-          placeholder={isGiftCard ? "Paper" : "100% Cotton"}
+          label="مقبض"
           {...register(path("handle_ar"), {
+            required: requireHandle ? "Handle is required" : undefined,
             minLength: FormValidator.minOneCharRule("Handle"),
             pattern: FormValidator.whiteSpaceRule("Handle"),
           })}

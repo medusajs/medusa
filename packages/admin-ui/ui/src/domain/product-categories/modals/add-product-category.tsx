@@ -1,16 +1,17 @@
 import { useState } from "react"
 
 import { ProductCategory } from "@medusajs/medusa"
+import { useQueryClient } from "@tanstack/react-query"
 import {
   adminProductCategoryKeys,
   useAdminCreateProductCategory,
 } from "medusa-react"
-
-import { useQueryClient } from "@tanstack/react-query"
+import ReactQuill from "react-quill"
+import "react-quill/dist/quill.snow.css"
 import Button from "../../../components/fundamentals/button"
 import CrossIcon from "../../../components/fundamentals/icons/cross-icon"
+import InputHeader from "../../../components/fundamentals/input-header"
 import InputField from "../../../components/molecules/input"
-import TextArea from "../../../components/molecules/textarea"
 import FocusModal from "../../../components/molecules/modal/focus-modal"
 import { NextSelect } from "../../../components/molecules/select/next-select"
 import useNotification from "../../../hooks/use-notification"
@@ -44,8 +45,11 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
   const queryClient = useQueryClient()
 
   const [name, setName] = useState("")
+  const [name_ar, setNameAr] = useState("")
   const [handle, setHandle] = useState("")
+  const [handle_ar, setHandleAr] = useState("")
   const [description, setDescription] = useState("")
+  const [description_ar, setDescriptionAr] = useState("")
   const [isActive, setIsActive] = useState(true)
   const [isPublic, setIsPublic] = useState(true)
 
@@ -55,8 +59,11 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
     try {
       await createProductCategory({
         name,
+        name_ar,
         handle,
+        handle_ar,
         description,
+        description_ar,
         is_active: isActive,
         is_internal: !isPublic,
         parent_category_id: parentCategory?.id ?? null,
@@ -134,14 +141,44 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
               onChange={(ev) => setHandle(ev.target.value)}
             />
           </div>
+          <div className="mb-8 flex justify-between gap-6">
+            <InputField
+              required
+              label="Name in arabic"
+              type="string"
+              name="name_ar"
+              value={name_ar}
+              className="w-[338px]"
+              placeholder="الإسم"
+              onChange={(ev) => setNameAr(ev.target.value)}
+            />
+
+            <InputField
+              label="Handle in arabic"
+              type="string"
+              name="handle_ar"
+              value={handle_ar}
+              className="w-[338px]"
+              placeholder="Custom handle in arabic"
+              onChange={(ev) => setHandleAr(ev.target.value)}
+            />
+          </div>
 
           <div className="mb-8">
-            <TextArea
-              label="Description"
-              name="description"
+            <InputHeader label="Description" className="mb-xsmall" />
+            <ReactQuill
+              theme="snow"
               value={description}
-              placeholder="Give this category a description"
-              onChange={(ev) => setDescription(ev.target.value)}
+              onChange={(value) => setDescription(value)}
+            />
+          </div>
+
+          <div className="mb-8">
+            <InputHeader label="Description in arabic" className="mb-xsmall" />
+            <ReactQuill
+              theme="snow"
+              value={description_ar}
+              onChange={(value) => setDescriptionAr(value)}
             />
           </div>
 

@@ -22,6 +22,9 @@ type Product = BaseProduct & {
   subtitle_ar: string
   handle_ar: string
   description_ar: string | null
+  seo_title: string
+  seo_description: string
+  seo_url: string
 }
 type Props = {
   product: Product
@@ -68,7 +71,7 @@ const ProductGeneralSection = ({ product }: Props) => {
   return (
     <>
       <Section
-        title={product.title}
+        title={product.title + "  " + product.title_ar}
         actions={actions}
         forceDropdown
         status={
@@ -80,6 +83,12 @@ const ProductGeneralSection = ({ product }: Props) => {
           />
         }
       >
+        <p
+          className="inter-base-regular text-grey-50 mt-2 whitespace-pre-wrap"
+          dangerouslySetInnerHTML={{ __html: product.description_ar as string }}
+        >
+          <br />
+        </p>
         <p
           className="inter-base-regular text-grey-50 mt-2 whitespace-pre-wrap"
           dangerouslySetInnerHTML={{ __html: product.description as string }}
@@ -134,10 +143,15 @@ const ProductDetails = ({ product }: Props) => {
   return (
     <div className="mt-8 flex flex-col gap-y-3">
       <h2 className="inter-base-semibold">Details</h2>
-      <Detail title="Subtitle" value={product.subtitle} />
-      <Detail title="Handle" value={product.handle} />
+      <Detail title="Subtitle english" value={product.subtitle} />
+      <Detail title="Subtitle arabic" value={product.subtitle_ar} />
+      <Detail title="Handle english" value={product.handle} />
+      <Detail title="Handle arabic" value={product.handle_ar} />
       <Detail title="Type" value={product.type?.value} />
       <Detail title="Collection" value={product.collection?.title} />
+      <Detail title="SEO title" value={product.seo_title} />
+      <Detail title="SEO description" value={product.seo_description} />
+      <Detail title="SEO URL" value={product.seo_url} />
       {isFeatureEnabled(FeatureFlag.PRODUCT_CATEGORIES) && (
         <Detail
           title="Category"
