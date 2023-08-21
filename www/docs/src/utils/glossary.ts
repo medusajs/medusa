@@ -29,7 +29,7 @@ const glossary: GlossaryType[] = [
   {
     title: "Dependency Injection",
     content:
-      "Classes receive other resources, such as services or repositories, through dependency injection.",
+      "Classes receive other resources, such as services or repositories, in their constructor using dependency injection.",
     matchTextRegex: /(dependency injection|dependency-injection)/i,
     referenceLink: "/development/fundamentals/dependency-injection",
   },
