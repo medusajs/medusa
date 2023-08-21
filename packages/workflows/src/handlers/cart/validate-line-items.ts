@@ -44,7 +44,7 @@ export async function validateLineItemsForCart({
         .map((item) => item.title)
         .join(
           " - "
-        )}] must belongs to the sales channel on which the cart has been created.`
+        )}] must belong to the sales channel on which the cart has been created.`
     )
   }
 }

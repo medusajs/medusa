@@ -1,13 +1,13 @@
 import { MoneyAmount, PriceList, Region } from "@medusajs/medusa"
-import path from "path"
-
-import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
-import setupServer from "../../../../environment-helpers/setup-server"
-import { setPort, useApi } from "../../../../environment-helpers/use-api"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
-import { simpleProductFactory } from "../../../../factories"
+import { setPort, useApi } from "../../../../environment-helpers/use-api"
+import { simpleProductFactory, simpleSalesChannelFactory } from "../../../../factories"
+
 import { AxiosInstance } from "axios"
 import { Customer } from "@medusajs/medusa"
+import { bootstrapApp } from "../../../../environment-helpers/bootstrap-app"
+import path from "path"
+import setupServer from "../../../../environment-helpers/setup-server"
 
 jest.setTimeout(30000)
 
@@ -237,6 +237,24 @@ describe("/store/carts", () => {
       expect(getRes.status).toEqual(200)
     })
 
+    it("should validate items added to a cart on creation", async () => {
+      const api = getApi()
+
+      // create product w/ channel
+      const prod = await simpleProductFactory(dbConnection, {
+        sales_channels: [{ name: 'test' }]
+      })
+
+      const { response } = await api.post("/store/carts", {
+        items: [{ 
+          variant_id: prod!.variants[0].id,
+          quantity: 1,
+        }]
+      }).catch(err => err)
+
+      expect(response.status).toEqual(400)
+      expect(response.data.message).toEqual(`The products [${prod!.title}] must belong to the sales channel on which the cart has been created.`)
+    })
 
     it("should create a cart with context", async () => {
       const api = getApi()
