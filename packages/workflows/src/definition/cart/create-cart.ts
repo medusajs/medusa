@@ -29,6 +29,8 @@ enum CreateCartActions {
   generateLineItems = "generateLineItems",
   validateLineItemsForCart = "validateLineItemsForCart",
   confirmLineItemQuantities = "confirmLineItemQuantities",
+  createLineItems = "createLineItems",
+  refreshAdjustments = "refreshAdjustments",
 }
 
 const workflowSteps: TransactionStepsDefinition = {
@@ -61,6 +63,7 @@ const workflowSteps: TransactionStepsDefinition = {
           noCompensation: true,
           next: {
             action: CreateCartActions.createCart,
+            saveResponse: true,
             next: {
               action: CreateCartActions.generateLineItems,
               noCompensation: true,
@@ -72,8 +75,12 @@ const workflowSteps: TransactionStepsDefinition = {
                   action: CreateCartActions.confirmLineItemQuantities,
                   noCompensation: true,
                   next: {
-                    action: CreateCartActions.attachLineItems,
+                    action: CreateCartActions.createLineItems,
                     noCompensation: true,
+                    next: {
+                      action: CreateCartActions.refreshAdjustments,
+                      noCompensation: true,
+                    },
                   },
                 },
               },
@@ -226,11 +233,11 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.prepareCartData,
-              alias: CartHandlers.attachLineItemsToCart.aliases.LineItems,
+              alias: CartHandlers.refreshAdjustments.aliases.LineItems,
             },
             {
               from: CreateCartActions.createCart,
-              alias: CartHandlers.attachLineItemsToCart.aliases.Cart,
+              alias: CartHandlers.refreshAdjustments.aliases.Cart,
             },
           ],
         },
@@ -239,22 +246,22 @@ const handlers = new Map([
     },
   ],
   [
-    CreateCartActions.attachLineItems,
+    CreateCartActions.refreshAdjustments,
     {
       invoke: pipe(
         {
           invoke: [
             {
               from: CreateCartActions.generateLineItems,
-              alias: CartHandlers.attachLineItemsToCart.aliases.LineItems,
+              alias: CartHandlers.refreshAdjustments.aliases.LineItems,
             },
             {
               from: CreateCartActions.createCart,
-              alias: CartHandlers.attachLineItemsToCart.aliases.Cart,
+              alias: CartHandlers.refreshAdjustments.aliases.Cart,
             },
           ],
         },
-        CartHandlers.attachLineItemsToCart
+        CartHandlers.refreshAdjustments
       ),
     },
   ],
@@ -266,11 +273,11 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.generateLineItems,
-              alias: CartHandlers.attachLineItemsToCart.aliases.LineItems,
+              alias: CartHandlers.refreshAdjustments.aliases.LineItems,
             },
             {
               from: CreateCartActions.createCart,
-              alias: CartHandlers.attachLineItemsToCart.aliases.Cart,
+              alias: CartHandlers.refreshAdjustments.aliases.Cart,
             },
           ],
         },
@@ -286,11 +293,11 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.generateLineItems,
-              alias: CartHandlers.attachLineItemsToCart.aliases.LineItems,
+              alias: CartHandlers.refreshAdjustments.aliases.LineItems,
             },
             {
               from: CreateCartActions.createCart,
-              alias: CartHandlers.attachLineItemsToCart.aliases.Cart,
+              alias: CartHandlers.refreshAdjustments.aliases.Cart,
             },
           ],
         },
@@ -298,6 +305,22 @@ const handlers = new Map([
       ),
     },
   ],
+  [
+    CreateCartActions.createLineItems,
+    {
+      invoke: pipe(
+        {
+          invoke: [
+            {
+              from: CreateCartActions.generateLineItems,
+              alias: CartHandlers.refreshAdjustments.aliases.LineItems,
+            },
+          ],
+        },
+        CartHandlers.createLineItems
+      ),
+    },
+  ]
 ])
 
 WorkflowManager.register(Workflows.CreateCart, workflowSteps, handlers)

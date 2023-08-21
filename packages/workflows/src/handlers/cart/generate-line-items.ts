@@ -39,9 +39,13 @@ export async function generateLineItems({
       quantity: item.quantity,
     }))
 
-  return await lineItemServiceTx.generate(generateInputData, {
+  const items = await lineItemServiceTx.generate(generateInputData, {
     region_id: cart.region_id,
     customer_id: cart.customer_id,
+  })
+
+  return items.map(i => { 
+    return {...i, cart_id: cart.id, has_shipping: false}
   })
 }
 

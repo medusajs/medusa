@@ -928,13 +928,7 @@ class CartService extends TransactionBaseService {
     )
   }
 
-  async createLineItemsForNewCart(
-    cartId: string,
-    lineItems: LineItem | LineItem[],
-    config = { validateSalesChannels: true }
-  ): Promise<void> {
-    const items: LineItem[] = Array.isArray(lineItems) ? lineItems : [lineItems]
-
+  async createLineItemsForNewCart(cartId: string): Promise<void> {
     const select: (keyof Cart)[] = ["id"]
 
     if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
@@ -943,95 +937,7 @@ class CartService extends TransactionBaseService {
 
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        let cart = await this.retrieve(cartId, {
-          select,
-          relations: ["shipping_methods"],
-        })
-
-        const lineItemServiceTx =
-          this.lineItemService_.withTransaction(transactionManager)
-        const productVariantInventoryServiceTx =
-          this.productVariantInventoryService_.withTransaction(
-            transactionManager
-          )
-
-        const existingItems = await lineItemServiceTx.list(
-          {
-            cart_id: cart.id,
-            variant_id: In(items.map((item) => item.variant_id)),
-            should_merge: true,
-          },
-          { select: ["id", "metadata", "quantity", "variant_id"] }
-        )
-
-        const existingItemsVariantMap = new Map()
-        existingItems.forEach((item) => {
-          existingItemsVariantMap.set(item.variant_id, item)
-        })
-
-        const lineItemsToCreate: LineItem[] = []
-        const lineItemsToUpdate: { [id: string]: LineItem }[] = []
-        for (const item of items) {
-          let currentItem: LineItem | undefined
-
-          const existingItem = existingItemsVariantMap.get(item.variant_id)
-          if (item.should_merge) {
-            if (existingItem && isEqual(existingItem.metadata, item.metadata)) {
-              currentItem = existingItem
-            }
-          }
-
-          if (currentItem) {
-            lineItemsToUpdate[currentItem.id] = {
-              quantity: item.quantity,
-              has_shipping: false,
-            }
-          } else {
-            // Since the variant is eager loaded, we are removing it before the line item is being created.
-            delete (item as Partial<LineItem>).variant
-            item.has_shipping = false
-            item.cart_id = cart.id
-            lineItemsToCreate.push(item)
-          }
-        }
-
-        const itemKeysToUpdate = Object.keys(lineItemsToUpdate)
-
-        // Update all items that needs to be updated
-        if (itemKeysToUpdate.length) {
-          await Promise.all(
-            itemKeysToUpdate.map(async (id) => {
-              return await lineItemServiceTx.update(id, lineItemsToUpdate[id])
-            })
-          )
-        }
-
-        // Create all items that needs to be created
-        await lineItemServiceTx.create(lineItemsToCreate)
-
-        await lineItemServiceTx
-          .update(
-            {
-              cart_id: cartId,
-              has_shipping: true,
-            },
-            { has_shipping: false }
-          )
-          .catch((err: Error | MedusaError) => {
-            // We only want to catch the errors related to not found items since we don't care if there is not item to update
-            if ("type" in err && err.type === MedusaError.Types.NOT_FOUND) {
-              return
-            }
-            throw err
-          })
-
-        if (cart.shipping_methods?.length) {
-          await this.shippingOptionService_
-            .withTransaction(transactionManager)
-            .deleteShippingMethods(cart.shipping_methods)
-        }
-
-        cart = await this.retrieve(cart.id, {
+        const cart = await this.retrieve(cartId, {
           relations: [
             "items.variant.product.profiles",
             "discounts",

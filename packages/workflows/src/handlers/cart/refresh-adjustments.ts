@@ -17,27 +17,19 @@ enum Aliases {
   Cart = "cart",
 }
 
-export async function attachLineItemsToCart({
+export async function refreshAdjustments({
   container,
   context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<void> {
   const { manager } = context
 
-  const featureFlagRouter = container.resolve("featureFlagRouter")
   const cartService = container.resolve("cartService")
 
   const cartServiceTx = cartService.withTransaction(manager)
-  let lineItems = data[Aliases.LineItems]
   const cart = data[Aliases.Cart]
 
-  if (lineItems?.length) {
-    await cartServiceTx.createLineItemsForNewCart(cart.id, lineItems, {
-      validateSalesChannels: featureFlagRouter.isFeatureEnabled(
-        SalesChannelFeatureFlag.key
-      ),
-    })
-  }
+  await cartServiceTx.createLineItemsForNewCart(cart.id)
 }
 
-attachLineItemsToCart.aliases = Aliases
+refreshAdjustments.aliases = Aliases
