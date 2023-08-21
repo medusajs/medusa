@@ -1,6 +1,7 @@
 import { WorkflowArguments } from "../../helper"
 
 enum Aliases {
+  CreatedLineItems = "created_line_items",
   LineItems = "line_items",
 }
 
@@ -12,7 +13,9 @@ export async function createLineItems({
   
   let lineItems = data[Aliases.LineItems] || []
 
-  return await lineItemService.create(lineItems)
+  const items = await lineItemService.create(lineItems)
+
+  return items
 }
 
 createLineItems.aliases = Aliases

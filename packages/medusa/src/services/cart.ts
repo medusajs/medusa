@@ -928,24 +928,9 @@ class CartService extends TransactionBaseService {
     )
   }
 
-  async createLineItemsForNewCart(cartId: string): Promise<void> {
-    const select: (keyof Cart)[] = ["id"]
-
-    if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
-      select.push("sales_channel_id")
-    }
-
+  async createLineItemsForNewCart(cart: Cart): Promise<void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const cart = await this.retrieve(cartId, {
-          relations: [
-            "items.variant.product.profiles",
-            "discounts",
-            "discounts.rule",
-            "region",
-          ],
-        })
-
         await this.refreshAdjustments_(cart)
 
         await this.eventBus_

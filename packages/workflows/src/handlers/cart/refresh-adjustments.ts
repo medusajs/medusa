@@ -13,7 +13,6 @@ type HandlerInputData = {
 }
 
 enum Aliases {
-  LineItems = "line_items",
   Cart = "cart",
 }
 
@@ -27,9 +26,22 @@ export async function refreshAdjustments({
   const cartService = container.resolve("cartService")
 
   const cartServiceTx = cartService.withTransaction(manager)
-  const cart = data[Aliases.Cart]
+  const cartId = data[Aliases.Cart].id
 
-  await cartServiceTx.createLineItemsForNewCart(cart.id)
+  const cart = await cartServiceTx.retrieve(cartId, {
+    relations: [
+      "items.variant.product.profiles",
+      "discounts",
+      "discounts.rule",
+      "region",
+    ],
+    select: [
+      "id", 
+      "sales_channel_id"
+    ]
+  })
+
+  await cartServiceTx.createLineItemsForNewCart(cart)
 }
 
 refreshAdjustments.aliases = Aliases

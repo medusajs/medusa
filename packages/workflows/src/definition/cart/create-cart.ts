@@ -233,7 +233,7 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.prepareCartData,
-              alias: CartHandlers.refreshAdjustments.aliases.LineItems,
+              alias: CartHandlers.generateLineItems.aliases.LineItems,
             },
             {
               from: CreateCartActions.createCart,
@@ -253,7 +253,7 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.generateLineItems,
-              alias: CartHandlers.refreshAdjustments.aliases.LineItems,
+              alias: CartHandlers.generateLineItems.aliases.LineItems,
             },
             {
               from: CreateCartActions.createCart,
@@ -273,7 +273,7 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.generateLineItems,
-              alias: CartHandlers.refreshAdjustments.aliases.LineItems,
+              alias: CartHandlers.generateLineItems.aliases.LineItems,
             },
             {
               from: CreateCartActions.createCart,
@@ -293,7 +293,7 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.generateLineItems,
-              alias: CartHandlers.refreshAdjustments.aliases.LineItems,
+              alias: CartHandlers.generateLineItems.aliases.LineItems,
             },
             {
               from: CreateCartActions.createCart,
@@ -313,7 +313,7 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.generateLineItems,
-              alias: CartHandlers.refreshAdjustments.aliases.LineItems,
+              alias: CartHandlers.generateLineItems.aliases.LineItems,
             },
           ],
         },
@@ -324,7 +324,7 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.createLineItems,
-              alias: CartHandlers.refreshAdjustments.aliases.LineItems,
+              alias: CartHandlers.createLineItems.aliases.CreatedLineItems,
             },
           ],
         },
