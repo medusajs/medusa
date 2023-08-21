@@ -4,6 +4,7 @@ import LineItemService from "../line-item"
 import { PricingServiceMock } from "../__mocks__/pricing"
 import { ProductVariantServiceMock } from "../__mocks__/product-variant"
 import { RegionServiceMock } from "../__mocks__/region"
+import { In } from "typeorm"
 ;[true, false].forEach((isTaxInclusiveEnabled) => {
   describe(`tax inclusive flag set to: ${isTaxInclusiveEnabled}`, () => {
     describe("LineItemService", () => {
@@ -293,20 +294,9 @@ import { RegionServiceMock } from "../__mocks__/region"
         it("successfully deletes", async () => {
           await lineItemService.delete(IdMap.getId("test-line-item"))
 
-          expect(lineItemRepository.remove).toHaveBeenCalledTimes(1)
-          expect(lineItemRepository.remove).toHaveBeenCalledWith({
-            id: IdMap.getId("test-line-item"),
-            variant_id: IdMap.getId("test-variant"),
-            variant: {
-              id: IdMap.getId("test-variant"),
-              title: "Test variant",
-            },
-            cart_id: IdMap.getId("test-cart"),
-            title: "Test product",
-            description: "Test variant",
-            thumbnail: "",
-            unit_price: 50,
-            quantity: 1,
+          expect(lineItemRepository.delete).toHaveBeenCalledTimes(1)
+          expect(lineItemRepository.delete).toHaveBeenCalledWith({
+            id: In([IdMap.getId("test-line-item")]),
           })
         })
       })

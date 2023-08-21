@@ -124,6 +124,11 @@ describe("/store/carts", () => {
          SET region_id=null
          WHERE iso_2 = 'us'`
       )
+      await dbConnection.manager.query(
+        `UPDATE "country"
+         SET region_id=null
+         WHERE iso_2 = 'dk'`
+      )
       await dbConnection.manager.query(`DELETE
                                         from region`)
 

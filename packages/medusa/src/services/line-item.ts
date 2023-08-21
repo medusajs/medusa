@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager, In } from "typeorm"
+import { DeleteResult, EntityManager, In } from "typeorm"
 import { DeepPartial } from "typeorm/common/DeepPartial"
 
 import { FlagRouter } from "@medusajs/utils"
@@ -462,9 +462,7 @@ class LineItemService extends TransactionBaseService {
    * @param id - the id of the line item to delete
    * @return the result of the delete operation
    */
-  async delete(
-    id: string | string[]
-  ): Promise<LineItem | undefined | null | void> {
+  async delete(id: string | string[]): Promise<DeleteResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const lineItemRepository = transactionManager.withRepository(
@@ -472,13 +470,7 @@ class LineItemService extends TransactionBaseService {
         )
 
         const ids = Array.isArray(id) ? id : [id]
-        return await lineItemRepository
-          .find({ where: { id: In(ids) } })
-          .then(async (lineItems) => {
-            if (lineItems.length) {
-              await lineItemRepository.remove(lineItems)
-            }
-          })
+        return await lineItemRepository.delete({ id: In(ids) })
       }
     )
   }
@@ -489,9 +481,7 @@ class LineItemService extends TransactionBaseService {
    * @param id - the id of the line item to delete
    * @return the result of the delete operation
    */
-  async deleteWithTaxLines(
-    id: string
-  ): Promise<LineItem | undefined | null | void> {
+  async deleteWithTaxLines(id: string): Promise<DeleteResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         await this.taxProviderService_
