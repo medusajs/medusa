@@ -5,7 +5,13 @@ addHowToData: true
 
 # Deploy Your Medusa Backend on Microtica
 
-In this document, you'll learn how to deploy your Medusa backend on your AWS account with Microtica. 
+In this document, you'll learn how to deploy your Medusa backend on your AWS account with Microtica.
+
+:::note
+
+This guide was submitted through a community contribution.
+
+:::
 
 ## Overview
 
