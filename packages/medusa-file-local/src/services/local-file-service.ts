@@ -1,10 +1,10 @@
+import { AbstractFileService, IFileService } from "@medusajs/medusa"
 import {
-  AbstractFileService,
   FileServiceGetUploadStreamResult,
   FileServiceUploadResult,
-  IFileService,
   UploadStreamDescriptorType,
-} from "@medusajs/medusa"
+} from "@medusajs/types"
+
 import fs from "fs"
 import path from "path"
 import stream from "stream"

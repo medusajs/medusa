@@ -8,30 +8,30 @@ import ProductCategoryFeatureFlag from "../../../loaders/feature-flags/product-c
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 import { BatchJob, SalesChannel } from "../../../models"
 import {
-    BatchJobService,
-    ProductCategoryService,
-    ProductCollectionService,
-    ProductService,
-    ProductVariantService,
-    RegionService,
-    SalesChannelService,
-    ShippingProfileService,
+  BatchJobService,
+  ProductCategoryService,
+  ProductCollectionService,
+  ProductService,
+  ProductVariantService,
+  RegionService,
+  SalesChannelService,
+  ShippingProfileService,
 } from "../../../services"
 import CsvParser from "../../../services/csv-parser"
 import { CreateProductInput } from "../../../types/product"
 import { CreateProductVariantInput } from "../../../types/product-variant"
 import {
-    OperationType,
-    ProductImportBatchJob,
-    ProductImportCsvSchema,
-    ProductImportInjectedProps,
-    ProductImportJobContext,
-    TParsedProductImportRowData,
+  OperationType,
+  ProductImportBatchJob,
+  ProductImportCsvSchema,
+  ProductImportInjectedProps,
+  ProductImportJobContext,
+  TParsedProductImportRowData,
 } from "./types"
 import {
-    productImportColumnsDefinition,
-    productImportProductCategoriesColumnsDefinition,
-    productImportSalesChannelsColumnsDefinition,
+  productImportColumnsDefinition,
+  productImportProductCategoriesColumnsDefinition,
+  productImportSalesChannelsColumnsDefinition,
 } from "./types/columns-definition"
 import { transformProductData, transformVariantData } from "./utils"
 
@@ -693,7 +693,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
     for (const op in results) {
       if (results[op]?.length) {
-        const { writeStream, promise } = await this.fileService_
+        const { writeStream, fileKey, promise } = await this.fileService_
           .withTransaction(transactionManager)
           .getUploadStreamDescriptor({
             name: ProductImportStrategy.buildFilename(batchJobId, op),
@@ -704,6 +704,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
         writeStream.write(JSON.stringify(results[op]))
         writeStream.end()
+
+        await this.batchJobService_
+          .withTransaction(transactionManager)
+          .update(batchJobId, {
+            result: { files: { op: fileKey } },
+          })
       }
     }
 

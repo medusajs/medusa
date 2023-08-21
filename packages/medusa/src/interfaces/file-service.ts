@@ -1,5 +1,11 @@
-import stream from "stream"
 import { TransactionBaseService } from "./transaction-base-service"
+import {
+  DeleteFileType,
+  FileServiceGetUploadStreamResult,
+  FileServiceUploadResult,
+  GetUploadedFileType,
+  UploadStreamDescriptorType,
+} from "@medusajs/types"
 
 export type FileServiceUploadResult = {
   url: string

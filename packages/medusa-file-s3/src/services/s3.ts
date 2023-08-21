@@ -1,14 +1,13 @@
 import fs from "fs"
 import aws from "aws-sdk"
 import { parse } from "path"
+import { AbstractFileService, IFileService } from "@medusajs/medusa"
 import {
-  AbstractFileService,
   DeleteFileType,
   FileServiceUploadResult,
   GetUploadedFileType,
-  IFileService,
   UploadStreamDescriptorType,
-} from "@medusajs/medusa"
+} from "@medusajs/types"
 import stream from "stream"
 import { PutObjectRequest } from "aws-sdk/clients/s3"
 import { ClientConfiguration } from "aws-sdk/clients/s3"
