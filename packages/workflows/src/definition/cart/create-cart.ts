@@ -191,6 +191,7 @@ const handlers = new Map([
     {
       invoke: pipe(
         {
+          merge: true,
           invoke: [
             {
               from: CreateCartActions.findRegion,
@@ -207,6 +208,10 @@ const handlers = new Map([
             {
               from: CreateCartActions.findOrCreateAddresses,
               alias: CartHandlers.createCart.aliases.Addresses,
+            },
+            {
+              from: CreateCartActions.findSalesChannel,
+              alias: CartHandlers.createCart.aliases.SalesChannel,
             },
           ],
         },
