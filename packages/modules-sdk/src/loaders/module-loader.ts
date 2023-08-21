@@ -11,6 +11,47 @@ import { loadInternalModule } from "./utils"
 
 export const moduleHelper = new ModulesHelper()
 
+export const moduleLoader = async ({
+  container,
+  moduleResolutions,
+  logger,
+}: {
+  container: MedusaContainer
+  moduleResolutions: Record<string, ModuleResolution>
+  logger: Logger
+}): Promise<void> => {
+  for (const resolution of Object.values(moduleResolutions ?? {})) {
+    const registrationResult = await loadModule(container, resolution, logger!)
+
+    if (registrationResult?.error) {
+      const { error } = registrationResult
+      if (resolution.definition.isRequired) {
+        logger?.error(
+          `Could not resolve required module: ${resolution.definition.label}. Error: ${error.message}${EOL}`
+        )
+        throw error
+      }
+
+      logger?.warn(
+        `Could not resolve module: ${resolution.definition.label}. Error: ${error.message}${EOL}`
+      )
+    }
+  }
+
+  moduleHelper.setModules(
+    Object.entries(moduleResolutions).reduce((acc, [k, v]) => {
+      if (v.resolutionPath) {
+        acc[k] = v
+      }
+      return acc
+    }, {})
+  )
+
+  container.register({
+    modulesHelper: asValue(moduleHelper),
+  })
+}
+
 async function loadModule(
   container: MedusaContainer,
   resolution: ModuleResolution,
@@ -56,45 +97,4 @@ async function loadModule(
   }
 
   return await loadInternalModule(container, resolution, logger)
-}
-
-export const moduleLoader = async ({
-  container,
-  moduleResolutions,
-  logger,
-}: {
-  container: MedusaContainer
-  moduleResolutions: Record<string, ModuleResolution>
-  logger: Logger
-}): Promise<void> => {
-  for (const resolution of Object.values(moduleResolutions ?? {})) {
-    const registrationResult = await loadModule(container, resolution, logger!)
-
-    if (registrationResult?.error) {
-      const { error } = registrationResult
-      if (resolution.definition.isRequired) {
-        logger?.error(
-          `Could not resolve required module: ${resolution.definition.label}. Error: ${error.message}${EOL}`
-        )
-        throw error
-      }
-
-      logger?.warn(
-        `Could not resolve module: ${resolution.definition.label}. Error: ${error.message}${EOL}`
-      )
-    }
-  }
-
-  moduleHelper.setModules(
-    Object.entries(moduleResolutions).reduce((acc, [k, v]) => {
-      if (v.resolutionPath) {
-        acc[k] = v
-      }
-      return acc
-    }, {})
-  )
-
-  container.register({
-    modulesHelper: asValue(moduleHelper),
-  })
 }

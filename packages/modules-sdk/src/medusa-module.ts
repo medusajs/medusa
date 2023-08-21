@@ -4,6 +4,7 @@ import {
   LoadedModule,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  ModuleDefinition,
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
@@ -125,7 +126,8 @@ export class MedusaModule {
     defaultPath: string,
     declaration?: InternalModuleDeclaration | ExternalModuleDeclaration,
     moduleExports?: ModuleExports,
-    injectedDependencies?: Record<string, any>
+    injectedDependencies?: Record<string, any>,
+    moduleDefinition?: ModuleDefinition
   ): Promise<{
     [key: string]: T
   }> {
@@ -157,10 +159,10 @@ export class MedusaModule {
 
     if (declaration?.scope !== MODULE_SCOPE.EXTERNAL) {
       modDeclaration = {
-        scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
+        scope: declaration?.scope || MODULE_SCOPE.INTERNAL,
+        resources: declaration?.resources || MODULE_RESOURCE_TYPE.ISOLATED,
         resolve: defaultPath,
-        options: declaration,
+        options: declaration?.options ?? declaration,
         alias: declaration?.alias,
         main: declaration?.main,
       }
@@ -177,7 +179,8 @@ export class MedusaModule {
     const moduleResolutions = registerMedusaModule(
       moduleKey,
       modDeclaration!,
-      moduleExports
+      moduleExports,
+      moduleDefinition
     )
 
     try {
