@@ -3,6 +3,7 @@ import { TransactionBaseService } from "./transaction-base-service"
 
 export type FileServiceUploadResult = {
   url: string
+  key: string
 }
 
 export type FileServiceGetUploadStreamResult = {

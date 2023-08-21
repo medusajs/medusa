@@ -31,7 +31,7 @@ class LocalService extends AbstractFileService implements IFileService {
   async uploadFile(
     file: Express.Multer.File,
     options = {}
-  ): Promise<{ url: string; key: string }> {
+  ): Promise<FileServiceUploadResult> {
     const parsedFilename = path.parse(file.originalname)
 
     if (parsedFilename.dir) {
