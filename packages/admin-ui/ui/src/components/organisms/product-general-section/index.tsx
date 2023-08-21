@@ -86,9 +86,8 @@ const ProductGeneralSection = ({ product }: Props) => {
         <p
           className="inter-base-regular text-grey-50 mt-2 whitespace-pre-wrap"
           dangerouslySetInnerHTML={{ __html: product.description_ar as string }}
-        >
-          <br />
-        </p>
+        ></p>
+        <br />
         <p
           className="inter-base-regular text-grey-50 mt-2 whitespace-pre-wrap"
           dangerouslySetInnerHTML={{ __html: product.description as string }}
