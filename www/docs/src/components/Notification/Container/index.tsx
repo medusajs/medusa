@@ -1,7 +1,7 @@
 import {
   NotificationItemType,
   useNotifications,
-} from "@site/src/providers/NotificationProvider"
+} from "@site/src/providers/Notification"
 import React from "react"
 import NotificationItem from "../Item"
 import { CSSTransition, TransitionGroup } from "react-transition-group"
