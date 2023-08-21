@@ -1,7 +1,10 @@
 import { MoneyAmount, PriceList, Region } from "@medusajs/medusa"
 import { initDb, useDb } from "../../../../environment-helpers/use-db"
 import { setPort, useApi } from "../../../../environment-helpers/use-api"
-import { simpleProductFactory, simpleSalesChannelFactory } from "../../../../factories"
+import {
+  simpleProductFactory,
+  simpleSalesChannelFactory,
+} from "../../../../factories"
 
 import { AxiosInstance } from "axios"
 import { Customer } from "@medusajs/medusa"
@@ -11,13 +14,14 @@ import setupServer from "../../../../environment-helpers/setup-server"
 
 jest.setTimeout(30000)
 
-const getApi = () => { 
+const getApi = () => {
   return useApi() as unknown as AxiosInstance
 }
 
 describe("/store/carts", () => {
   let medusaProcess
   let dbConnection
+  let appContainer
 
   const doAfterEach = async () => {
     const db = useDb()
@@ -28,7 +32,8 @@ describe("/store/carts", () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({ cwd, verbose: true })
-    const { app, port } = await bootstrapApp({ cwd })
+    const { container, app, port } = await bootstrapApp({ cwd })
+    appContainer = container
     setPort(port)
     app.listen(port, () => {
       process.send?.(port)
@@ -166,19 +171,18 @@ describe("/store/carts", () => {
 
       const api = getApi()
 
-      const response = await api
-        .post("/store/carts", {
-          items: [
-            {
-              variant_id: prod1.variants[0].id,
-              quantity: 1,
-            },
-            {
-              variant_id: prodSale.variants[0].id,
-              quantity: 2,
-            },
-          ],
-        })
+      const response = await api.post("/store/carts", {
+        items: [
+          {
+            variant_id: prod1.variants[0].id,
+            quantity: 1,
+          },
+          {
+            variant_id: prodSale.variants[0].id,
+            quantity: 2,
+          },
+        ],
+      })
 
       response.data.cart.items.sort((a, b) => a.quantity - b.quantity)
 
@@ -202,7 +206,7 @@ describe("/store/carts", () => {
       expect(getRes.status).toEqual(200)
     })
 
-    it("should create a cart with a customer", async () => { 
+    it("should create a cart with a customer", async () => {
       const api = getApi()
 
       const authResponse = await api.post("/store/auth", {
@@ -212,22 +216,28 @@ describe("/store/carts", () => {
 
       const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
 
-      const response = await api.post("/store/carts", {}, {
-        headers: {
-          Cookie: authCookie,
-        },
-      })
-      
+      const response = await api.post(
+        "/store/carts",
+        {},
+        {
+          headers: {
+            Cookie: authCookie,
+          },
+        }
+      )
+
       expect(response.status).toEqual(200)
-      expect(response.data.cart.customer_id).toEqual(authResponse.data.customer.id)        
-      expect(response.data.cart.email).toEqual("john@doe.com")        
+      expect(response.data.cart.customer_id).toEqual(
+        authResponse.data.customer.id
+      )
+      expect(response.data.cart.email).toEqual("john@doe.com")
     })
 
     it("should create a cart with country given by country_code", async () => {
       const api = getApi()
       const response = await api.post("/store/carts", {
         country_code: "dk",
-        region_id: 'region-1'
+        region_id: "region-1",
       })
 
       expect(response.status).toEqual(200)
@@ -241,18 +251,67 @@ describe("/store/carts", () => {
       const api = getApi()
 
       const prod = await simpleProductFactory(dbConnection, {
-        sales_channels: [{ name: 'test' }]
+        sales_channels: [{ name: "test" }],
       })
 
-      const { response } = await api.post("/store/carts", {
-        items: [{ 
-          variant_id: prod!.variants[0].id,
-          quantity: 1,
-        }]
-      }).catch(err => err)
+      const { response } = await api
+        .post("/store/carts", {
+          items: [
+            {
+              variant_id: prod!.variants[0].id,
+              quantity: 1,
+            },
+          ],
+        })
+        .catch((err) => err)
 
       expect(response.status).toEqual(400)
-      expect(response.data.message).toEqual(`The products [${prod!.title}] must belong to the sales channel on which the cart has been created.`)
+      expect(response.data.message).toEqual(
+        `The products [${
+          prod!.title
+        }] must belong to the sales channel on which the cart has been created.`
+      )
+    })
+
+    it("should validate item quantities on cart creation", async () => {
+      const api = getApi()
+      const inventoryService = appContainer.resolve("inventoryService")
+      const prodVarInventoryService = appContainer.resolve(
+        "productVariantInventoryService"
+      )
+      
+      await simpleProductFactory(dbConnection, {
+        variants: [
+          {
+            manage_inventory: true,
+            allow_backorder: false,
+            inventory_quantity: 0,
+            id: "test-variant-without-quantity",
+          },
+        ],
+      })
+
+      const invItem = await inventoryService.createInventoryItem({
+        sku: "test-sku",
+      })
+
+      await prodVarInventoryService.attachInventoryItem("test-variant-without-quantity", invItem.id)
+
+      const { response } = await api
+        .post("/store/carts", {
+          items: [
+            {
+              variant_id: "test-variant-without-quantity",
+              quantity: 1,
+            },
+          ],
+        })
+        .catch((err) => err)
+
+      expect(response.status).toEqual(400)
+      expect(response.data.message).toEqual(
+        `Variant with id: test-variant-without-quantity does not have the required inventory.` 
+      )
     })
 
     it("should create a cart with context", async () => {

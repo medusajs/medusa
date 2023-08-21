@@ -1,11 +1,4 @@
 import {
-  TransactionStepsDefinition,
-  WorkflowManager,
-} from "@medusajs/orchestration"
-import { CartWorkflow } from "@medusajs/types"
-
-import { Workflows } from "../../definitions"
-import {
   AddressHandlers,
   CartHandlers,
   CommonHandlers,
@@ -13,7 +6,14 @@ import {
   RegionHandlers,
   SalesChannelHandlers,
 } from "../../handlers"
+import {
+  TransactionStepsDefinition,
+  WorkflowManager,
+} from "@medusajs/orchestration"
 import { exportWorkflow, pipe } from "../../helper"
+
+import { CartWorkflow } from "@medusajs/types"
+import { Workflows } from "../../definitions"
 
 enum CreateCartActions {
   attachLineItems = "attachLineItems",
@@ -28,6 +28,7 @@ enum CreateCartActions {
   setContext = "setContext",
   generateLineItems = "generateLineItems",
   validateLineItemsForCart = "validateLineItemsForCart",
+  confirmLineItemQuantities = "confirmLineItemQuantities",
 }
 
 const workflowSteps: TransactionStepsDefinition = {
@@ -67,11 +68,15 @@ const workflowSteps: TransactionStepsDefinition = {
               next: {
                 action: CreateCartActions.validateLineItemsForCart,
                 noCompensation: true,
-                next: { 
-                  action: CreateCartActions.attachLineItems,
+                next: {
+                  action: CreateCartActions.confirmLineItemQuantities,
                   noCompensation: true,
-                }
-              }
+                  next: {
+                    action: CreateCartActions.attachLineItems,
+                    noCompensation: true,
+                  },
+                },
+              },
             },
           },
         },
@@ -144,11 +149,11 @@ const handlers = new Map([
     CreateCartActions.findRegion,
     {
       invoke: pipe(
-        { 
-          invoke: { 
-            from: CreateCartActions.prepareCartData, 
-            alias: RegionHandlers.findRegion.aliases.Region
-          }
+        {
+          invoke: {
+            from: CreateCartActions.prepareCartData,
+            alias: RegionHandlers.findRegion.aliases.Region,
+          },
         },
         RegionHandlers.findRegion
       ),
@@ -221,7 +226,7 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.prepareCartData,
-              alias: CartHandlers.attachLineItemsToCart.aliases.LineItems
+              alias: CartHandlers.attachLineItemsToCart.aliases.LineItems,
             },
             {
               from: CreateCartActions.createCart,
@@ -241,7 +246,7 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.generateLineItems,
-              alias: CartHandlers.attachLineItemsToCart.aliases.LineItems
+              alias: CartHandlers.attachLineItemsToCart.aliases.LineItems,
             },
             {
               from: CreateCartActions.createCart,
@@ -261,7 +266,7 @@ const handlers = new Map([
           invoke: [
             {
               from: CreateCartActions.generateLineItems,
-              alias: CartHandlers.attachLineItemsToCart.aliases.LineItems
+              alias: CartHandlers.attachLineItemsToCart.aliases.LineItems,
             },
             {
               from: CreateCartActions.createCart,
@@ -270,6 +275,26 @@ const handlers = new Map([
           ],
         },
         CartHandlers.validateLineItemsForCart
+      ),
+    },
+  ],
+  [
+    CreateCartActions.confirmLineItemQuantities,
+    {
+      invoke: pipe(
+        {
+          invoke: [
+            {
+              from: CreateCartActions.generateLineItems,
+              alias: CartHandlers.attachLineItemsToCart.aliases.LineItems,
+            },
+            {
+              from: CreateCartActions.createCart,
+              alias: CartHandlers.attachLineItemsToCart.aliases.Cart,
+            },
+          ],
+        },
+        CartHandlers.confirmQuantitiesForLineItems
       ),
     },
   ],

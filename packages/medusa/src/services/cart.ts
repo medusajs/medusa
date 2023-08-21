@@ -981,29 +981,6 @@ class CartService extends TransactionBaseService {
             }
           }
 
-          // If content matches one of the line items currently in the cart we can
-          // simply update the quantity of the existing line item
-          item.quantity = currentItem
-            ? (currentItem.quantity += item.quantity)
-            : item.quantity
-
-          if (item.variant_id) {
-            const isSufficient =
-              await productVariantInventoryServiceTx.confirmInventory(
-                item.variant_id,
-                item.quantity,
-                { salesChannelId: cart.sales_channel_id }
-              )
-
-            if (!isSufficient) {
-              throw new MedusaError(
-                MedusaError.Types.NOT_ALLOWED,
-                `Variant with id: ${item.variant_id} does not have the required inventory`,
-                MedusaError.Codes.INSUFFICIENT_INVENTORY
-              )
-            }
-          }
-
           if (currentItem) {
             lineItemsToUpdate[currentItem.id] = {
               quantity: item.quantity,
