@@ -76,7 +76,7 @@ const workflowSteps: TransactionStepsDefinition = {
                   noCompensation: true,
                   next: {
                     action: CreateCartActions.createLineItems,
-                    noCompensation: true,
+                    saveResponse: true,
                     next: {
                       action: CreateCartActions.refreshAdjustments,
                       noCompensation: true,
@@ -318,6 +318,17 @@ const handlers = new Map([
           ],
         },
         CartHandlers.createLineItems
+      ),
+      compensate: pipe(
+        {
+          invoke: [
+            {
+              from: CreateCartActions.createLineItems,
+              alias: CartHandlers.refreshAdjustments.aliases.LineItems,
+            },
+          ],
+        },
+        CartHandlers.removeLineItems
       ),
     },
   ]

@@ -6,10 +6,10 @@ import { FlagRouter } from "@medusajs/utils"
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
-    LineItem,
-    LineItemAdjustment,
-    LineItemTaxLine,
-    ProductVariant,
+  LineItem,
+  LineItemAdjustment,
+  LineItemTaxLine,
+  ProductVariant,
 } from "../models"
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
@@ -19,11 +19,11 @@ import { GenerateInputData, GenerateLineItemContext } from "../types/line-item"
 import { ProductVariantPricing } from "../types/pricing"
 import { buildQuery, isString, setMetadata } from "../utils"
 import {
-    PricingService,
-    ProductService,
-    ProductVariantService,
-    RegionService,
-    TaxProviderService,
+  PricingService,
+  ProductService,
+  ProductVariantService,
+  RegionService,
+  TaxProviderService,
 } from "./index"
 import LineItemAdjustmentService from "./line-item-adjustment"
 
@@ -462,16 +462,23 @@ class LineItemService extends TransactionBaseService {
    * @param id - the id of the line item to delete
    * @return the result of the delete operation
    */
-  async delete(id: string): Promise<LineItem | undefined | null> {
+  async delete(
+    id: string | string[]
+  ): Promise<LineItem | undefined | null | void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const lineItemRepository = transactionManager.withRepository(
           this.lineItemRepository_
         )
 
+        const ids = Array.isArray(id) ? id : [id]
         return await lineItemRepository
-          .findOne({ where: { id } })
-          .then((lineItem) => lineItem && lineItemRepository.remove(lineItem))
+          .find({ where: { id: In(ids) } })
+          .then(async (lineItems) => {
+            if (lineItems.length) {
+              await lineItemRepository.remove(lineItems)
+            }
+          })
       }
     )
   }
@@ -482,7 +489,9 @@ class LineItemService extends TransactionBaseService {
    * @param id - the id of the line item to delete
    * @return the result of the delete operation
    */
-  async deleteWithTaxLines(id: string): Promise<LineItem | undefined | null> {
+  async deleteWithTaxLines(
+    id: string
+  ): Promise<LineItem | undefined | null | void> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         await this.taxProviderService_
