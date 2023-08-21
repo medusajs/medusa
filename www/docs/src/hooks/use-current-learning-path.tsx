@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useLearningPath } from "../providers/LearningPath"
-import { useNotifications } from "../providers/NotificationProvider"
+import { useNotifications } from "../providers/Notification"
 import LearningPathSteps from "../components/LearningPath/Steps"
 import LearningPathFinish from "../components/LearningPath/Finish"
 import LearningPathIcon from "../components/LearningPath/Icon"

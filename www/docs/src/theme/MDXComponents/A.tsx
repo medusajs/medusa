@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useMemo } from "react"
 import type { Props } from "@theme/MDXComponents/A"
 import { getGlossaryByPath } from "../../utils/glossary"
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
@@ -14,10 +14,12 @@ const MDXA = (props: Props) => {
   } = useDocusaurusContext() as MedusaDocusaurusContext
 
   // check if a glossary exists for href
-  const glossary =
-    (typeof children === "string" && href.startsWith("/")) || href.includes(url)
+  const glossary = useMemo(() => {
+    return (typeof children === "string" && href.startsWith("/")) ||
+      href.includes(url)
       ? getGlossaryByPath(children as string)
       : null
+  }, [href, children])
 
   if (!glossary) {
     return <Link {...props} />

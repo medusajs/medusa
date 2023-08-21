@@ -17,7 +17,7 @@ import SearchMetadata from "@theme/SearchMetadata"
 import type { Props } from "@theme/DocPage"
 import LearningPathProvider from "@site/src/providers/LearningPath"
 import SidebarProvider from "@site/src/providers/Sidebar"
-import NotificationProvider from "@site/src/providers/NotificationProvider"
+import NotificationProvider from "@site/src/providers/Notification"
 import UserProvider from "@site/src/providers/User"
 import ModalProvider from "../../providers/Modal"
 
