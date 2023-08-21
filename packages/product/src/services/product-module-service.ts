@@ -22,10 +22,10 @@ import {
   CreateProductOnlyDTO,
   DAL,
   FindConfig,
+  IEventBusModuleService,
   InternalModuleDeclaration,
   JoinerServiceConfig,
   ProductTypes,
-  IEventBusModuleService,
 } from "@medusajs/types"
 
 import ProductImageService from "./product-image"
@@ -739,12 +739,6 @@ export default class ProductModuleService<
         productVariantsMap.set(productData.handle!, variants ?? [])
         productOptionsMap.set(productData.handle!, options ?? [])
 
-        if (!productData.thumbnail && productData.images?.length) {
-          productData.thumbnail = isString(productData.images[0])
-            ? (productData.images[0] as string)
-            : (productData.images[0] as { url: string }).url
-        }
-
         if (productData.is_giftcard) {
           productData.discountable = false
         }
@@ -1084,7 +1078,7 @@ export default class ProductModuleService<
     },
     sharedContext: Context = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
-    let [products, cascadedEntitiesMap] = await this.softDelete_(
+    const [products, cascadedEntitiesMap] = await this.softDelete_(
       productIds,
       sharedContext
     )

@@ -1,5 +1,28 @@
 # @medusajs/modules-sdk
 
+## 1.9.2
+
+### Patch Changes
+
+- [#4626](https://github.com/medusajs/medusa/pull/4626) [`3f3a84262`](https://github.com/medusajs/medusa/commit/3f3a84262ce9cbd911923278a54e301fbe9a4634) Thanks [@adrien2p](https://github.com/adrien2p)! - [WIP] feat(types, product, utils, medusa): Include shared connection for modules
+
+- Updated dependencies [[`ac866ebb5`](https://github.com/medusajs/medusa/commit/ac866ebb5197ee694dda91824b501109012a3dd1), [`3f3a84262`](https://github.com/medusajs/medusa/commit/3f3a84262ce9cbd911923278a54e301fbe9a4634), [`30ce35b16`](https://github.com/medusajs/medusa/commit/30ce35b163afa25f4e1d8d1bd392f401a3b413df), [`281b0746c`](https://github.com/medusajs/medusa/commit/281b0746cfbe80b83c6a67d1ea120b47a0ea7121), [`c0ca00290`](https://github.com/medusajs/medusa/commit/c0ca00290106fbdc8e15077bc8d1c3eafbef59f2)]:
+  - @medusajs/orchestration@0.2.0
+  - @medusajs/types@1.10.2
+  - @medusajs/utils@1.9.6
+
+## 1.9.1
+
+### Patch Changes
+
+- [#4674](https://github.com/medusajs/medusa/pull/4674) [`4b80ba8a3`](https://github.com/medusajs/medusa/commit/4b80ba8a356806da3c92634e40e8946da25e35ee) Thanks [@adrien2p](https://github.com/adrien2p)! - fix(product, integration-tests): Fix integration tests
+
+- [#4654](https://github.com/medusajs/medusa/pull/4654) [`8af55aed8`](https://github.com/medusajs/medusa/commit/8af55aed87da7252c7c261175bc98331466a0da8) Thanks [@riqwan](https://github.com/riqwan)! - feat(product,types): added event bus events for products
+
+- Updated dependencies [[`8af55aed8`](https://github.com/medusajs/medusa/commit/8af55aed87da7252c7c261175bc98331466a0da8), [`5c60aad17`](https://github.com/medusajs/medusa/commit/5c60aad177a99574ffff5ebdc02ce9dc86ef9af9), [`4073b7313`](https://github.com/medusajs/medusa/commit/4073b73130c874dc7d2240726224a01b7b19b1a1)]:
+  - @medusajs/types@1.10.1
+  - @medusajs/utils@1.9.5
+
 ## 1.9.0
 
 ### Minor Changes

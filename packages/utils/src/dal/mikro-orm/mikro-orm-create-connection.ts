@@ -1,28 +1,39 @@
 import { ModuleServiceInitializeOptions } from "@medusajs/types"
 
 export async function mikroOrmCreateConnection(
-  database: ModuleServiceInitializeOptions["database"],
+  database: ModuleServiceInitializeOptions["database"] & { connection?: any },
   entities: any[]
 ) {
-  const { MikroORM } = await import("@mikro-orm/postgresql")
+  let schema = database.schema || "public"
 
-  const schema = database.schema || "public"
-  const orm = await MikroORM.init({
+  let driverOptions = database.driverOptions ?? {
+    connection: { ssl: true },
+  }
+
+  let clientUrl = database.clientUrl
+
+  if (database.connection) {
+    // Reuse already existing connection
+    // It is important that the knex package version is the same as the one used by MikroORM knex package
+    driverOptions = database.connection
+    clientUrl =
+      database.connection.context.client.config.connection.connectionString
+    schema = database.connection.context.client.config.searchPath
+  }
+
+  const { MikroORM } = await import("@mikro-orm/postgresql")
+  return await MikroORM.init({
     discovery: { disableDynamicFileAccess: true },
     entities,
     debug: database.debug ?? process.env.NODE_ENV?.startsWith("dev") ?? false,
     baseDir: process.cwd(),
-    clientUrl: database.clientUrl,
+    clientUrl,
     schema,
-    driverOptions: database.driverOptions ?? {
-      connection: { ssl: true },
-    },
+    driverOptions,
     tsNode: process.env.APP_ENV === "development",
     type: "postgresql",
     migrations: {
       path: __dirname + "/../migrations",
     },
   })
-
-  return orm
 }

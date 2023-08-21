@@ -81,7 +81,7 @@ import { Type } from "class-transformer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/collections'
+ *       curl '{backend_url}/store/collections'
  * tags:
  *   - Product Collections
  * responses:

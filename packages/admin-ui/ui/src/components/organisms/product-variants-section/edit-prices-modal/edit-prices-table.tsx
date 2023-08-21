@@ -2,11 +2,24 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import { useAdminRegions, useAdminStore } from "medusa-react"
 import { Product } from "@medusajs/client-types"
 
-import { getCurrencyPricesOnly, getRegionPricesOnly } from "./utils"
-import CurrencyCell from "./currency-cell"
+import {
+  getCurrencyPricesOnly,
+  getRegionPricesOnly,
+  mod,
+  isText,
+} from "./utils"
 import IconBuildingTax from "../../../fundamentals/icons/building-tax-icon"
 import { currencies as CURRENCY_MAP } from "../../../../utils/currencies"
 import Tooltip from "../../../atoms/tooltip"
+import CurrencyCell from "./currency-cell"
+import useNotification from "../../../../hooks/use-notification"
+
+enum ArrowMove {
+  UP,
+  DOWN,
+  LEFT,
+  RIGHT,
+}
 
 type EditPricesTableProps = {
   product: Product
@@ -21,9 +34,9 @@ type EditPricesTableProps = {
 let anchorVariant: string | undefined
 
 /**
- * During drag move keep info which column is active one.
+ * Currency or region column that is origin of the drag move.
  */
-let activeCurrencyOrRegion: string | undefined = undefined
+let anchorCurrencyOrRegion: string | undefined
 
 /**
  * Pointer for displaying highlight rectangle range.
@@ -31,6 +44,10 @@ let activeCurrencyOrRegion: string | undefined = undefined
 let startIndex: number | undefined
 let endIndex: number | undefined
 let anchorIndex: number | undefined
+
+let startIndexCol: number | undefined
+let endIndexCol: number | undefined
+let anchorIndexCol: number | undefined
 
 /**
  * Temp. variable for persisting previous "editedPrices" state before editing,
@@ -61,7 +78,11 @@ function EditPricesTable(props: EditPricesTableProps) {
     limit: 1000,
   })
 
+  const notification = useNotification()
+
   const initialPricesSet = useRef(false)
+
+  const columns = [...props.currencies, ...props.regions]
 
   const [isDragFill, setIsDragFill] = useState(false)
   const [isDrag, setIsDrag] = useState(false)
@@ -78,7 +99,7 @@ function EditPricesTable(props: EditPricesTableProps) {
     region?: string,
     override?: boolean
   ) => {
-    if ((currencyCode || region) !== activeCurrencyOrRegion) {
+    if ((currencyCode || region) !== anchorCurrencyOrRegion) {
       return
     }
 
@@ -111,12 +132,167 @@ function EditPricesTable(props: EditPricesTableProps) {
     startIndex = undefined
     endIndex = undefined
 
+    anchorIndexCol = undefined
+    startIndexCol = undefined
+    endIndexCol = undefined
+
     anchorVariant = undefined
-    activeCurrencyOrRegion = undefined
+    anchorCurrencyOrRegion = undefined
 
     // warning state updates in event handlers will be batched together so if there is another
     // `setSelectedCells` (or `resetSelection`) call in the same event handler, only last state will apply
     setSelectedCells({})
+  }
+
+  const moveAnchor = (
+    direction: ArrowMove,
+    isShift: boolean,
+    isCmd: boolean
+  ) => {
+    if (!anchorIndex) {
+      setSelectedCells({ [getKey(variantIds[0], columns[0])]: true })
+    }
+
+    if (direction === ArrowMove.DOWN) {
+      if (!isShift) {
+        let ind = variantIds.findIndex((v) => v === anchorVariant)
+        ind = mod(ind + 1, variantIds.length)
+        const nextVariant = variantIds[ind]
+
+        anchorVariant = nextVariant
+        anchorIndex = ind
+        startIndex = ind
+        endIndex = ind
+
+        startIndexCol = anchorIndexCol
+        endIndexCol = anchorIndexCol
+
+        setSelectedCells({
+          [getKey(nextVariant, anchorCurrencyOrRegion)]: true,
+        })
+      } else {
+        if (isCmd) {
+          startIndex = anchorIndex
+          endIndex = variantIds.length - 1
+        } else {
+          if (anchorIndex === startIndex) {
+            endIndex = Math.min(endIndex + 1, variantIds.length - 1)
+          } else {
+            startIndex = Math.min(startIndex + 1, variantIds.length - 1)
+          }
+        }
+
+        onSelectionRangeChange()
+      }
+    }
+
+    if (direction === ArrowMove.UP) {
+      if (!isShift) {
+        let ind = variantIds.findIndex((v) => v === anchorVariant)
+        ind = mod(ind - 1, variantIds.length)
+        const nextVariant = variantIds[ind]
+        anchorVariant = nextVariant
+
+        anchorIndex = ind
+        startIndex = ind
+        endIndex = ind
+
+        startIndexCol = anchorIndexCol
+        endIndexCol = anchorIndexCol
+
+        setSelectedCells({
+          [getKey(nextVariant, anchorCurrencyOrRegion)]: true,
+        })
+      } else {
+        if (isCmd) {
+          endIndex = anchorIndex
+          startIndex = 0
+        } else {
+          if (anchorIndex === startIndex) {
+            if (startIndex === endIndex) {
+              startIndex = Math.max(startIndex - 1, 0)
+            } else {
+              endIndex = Math.max(endIndex - 1, 0)
+            }
+          } else {
+            startIndex = Math.max(startIndex - 1, 0)
+          }
+        }
+
+        onSelectionRangeChange()
+      }
+    }
+
+    if (direction === ArrowMove.LEFT) {
+      if (!isShift) {
+        let ind = columns.findIndex((v) => v === anchorCurrencyOrRegion)
+        ind = mod(ind - 1, columns.length)
+        const nextCol = columns[ind]
+
+        anchorCurrencyOrRegion = nextCol
+
+        anchorIndexCol = ind
+        startIndexCol = ind
+        endIndexCol = ind
+
+        startIndex = anchorIndex
+        endIndex = anchorIndex
+
+        setSelectedCells({
+          [getKey(anchorVariant, nextCol)]: true,
+        })
+      } else {
+        if (isCmd) {
+          endIndexCol = anchorIndexCol
+          startIndexCol = 0
+        } else {
+          if (anchorIndexCol === startIndexCol) {
+            if (startIndexCol === endIndexCol) {
+              startIndexCol = Math.max(startIndexCol - 1, 0)
+            } else {
+              endIndexCol = Math.max(endIndexCol - 1, 0)
+            }
+          } else {
+            startIndexCol = Math.max(startIndexCol - 1, 0)
+          }
+        }
+
+        onSelectionRangeChange()
+      }
+    }
+
+    if (direction === ArrowMove.RIGHT) {
+      if (!isShift) {
+        let ind = columns.findIndex((v) => v === anchorCurrencyOrRegion)
+        ind = mod(ind + 1, columns.length)
+        const nextCol = columns[ind]
+
+        anchorCurrencyOrRegion = nextCol
+
+        anchorIndexCol = ind
+        startIndexCol = ind
+        endIndexCol = ind
+
+        startIndex = anchorIndex
+        endIndex = anchorIndex
+
+        setSelectedCells({
+          [getKey(anchorVariant, nextCol)]: true,
+        })
+      } else {
+        if (isCmd) {
+          startIndexCol = anchorIndexCol
+          endIndexCol = columns.length - 1
+        } else {
+          if (anchorIndexCol === startIndexCol) {
+            endIndexCol = Math.min(endIndexCol + 1, columns.length - 1)
+          } else {
+            startIndexCol = Math.min(startIndexCol + 1, columns.length - 1)
+          }
+        }
+        onSelectionRangeChange()
+      }
+    }
   }
 
   /**
@@ -138,10 +314,37 @@ function EditPricesTable(props: EditPricesTableProps) {
       endIndex = anchorIndex
     }
 
+    onSelectionRangeChange()
+  }
+
+  const onColumnOver = (currencyOrRegion: string) => {
+    if (!(isDragFill || isDrag)) {
+      return
+    }
+
+    const currentIndexCol = columns.findIndex((v) => v === currencyOrRegion)
+
+    if (currentIndexCol > anchorIndexCol) {
+      endIndexCol = currentIndexCol
+      startIndexCol = anchorIndexCol
+    } else {
+      startIndexCol = currentIndexCol
+      endIndexCol = anchorIndexCol
+    }
+
+    onSelectionRangeChange()
+  }
+
+  const onSelectionRangeChange = () => {
+    const selectedColumns = columns.slice(startIndexCol, endIndexCol + 1)
     const selectedVariants = variantIds.slice(startIndex, endIndex + 1)
 
-    const keys = selectedVariants.map((vId) =>
-      getKey(vId, activeCurrencyOrRegion)
+    const keys = []
+
+    selectedVariants.forEach((vId) =>
+      selectedColumns.forEach((c) => {
+        keys.push(getKey(vId, c))
+      })
     )
 
     const nextSelection = { ...selectedCells }
@@ -149,7 +352,7 @@ function EditPricesTable(props: EditPricesTableProps) {
 
     Object.keys(nextSelection).forEach((k) => {
       // deselect case
-      if (k.split("-")[1] === activeCurrencyOrRegion && !keys.includes(k)) {
+      if (!keys.includes(k)) {
         delete nextSelection[k] // remove selection
         nextPrices[k] = prevPriceState[k] // ...and reset price of that cell to the previous state
       }
@@ -161,7 +364,7 @@ function EditPricesTable(props: EditPricesTableProps) {
 
       if (isDragFill) {
         nextPrices[k] =
-          editedPrices[getKey(anchorVariant, activeCurrencyOrRegion)]
+          editedPrices[getKey(anchorVariant, anchorCurrencyOrRegion)]
       }
     })
 
@@ -184,14 +387,16 @@ function EditPricesTable(props: EditPricesTableProps) {
     // set variant row anchors
     anchorVariant = variantId
     anchorIndex = variantIds.findIndex((v) => v === anchorVariant)
+    startIndex = anchorIndex
+    endIndex = startIndex
 
-    activeCurrencyOrRegion = currencyCode || regionId
+    anchorCurrencyOrRegion = currencyCode || regionId
+    anchorIndexCol = columns.findIndex((v) => v === anchorCurrencyOrRegion)
+    startIndexCol = anchorIndexCol
+    endIndexCol = anchorIndexCol
+
     setSelectedCells({ [getKey(variantId, currencyCode || regionId)]: true })
     setIsDrag(true)
-
-    startIndex = props.product.variants!.findIndex((v) => v.id === variantId)
-    endIndex = startIndex
-    anchorIndex = startIndex
   }
 
   const onInputChange = (
@@ -288,6 +493,69 @@ function EditPricesTable(props: EditPricesTableProps) {
         setEditedPrices(next)
       }
 
+      if (e.key === "Tab") {
+        e.stopPropagation()
+        e.preventDefault()
+
+        if (e.shiftKey) {
+          if (anchorIndexCol === 0) {
+            moveAnchor(ArrowMove.UP, false)
+          }
+          moveAnchor(ArrowMove.LEFT, false)
+        } else {
+          if (anchorIndexCol === columns.length - 1) {
+            moveAnchor(ArrowMove.DOWN, false)
+          }
+          moveAnchor(ArrowMove.RIGHT, false)
+        }
+      }
+
+      if (e.keyCode === 38) {
+        moveAnchor(ArrowMove.UP, e.shiftKey, e.metaKey || e.ctrlKey)
+      }
+
+      if (e.keyCode === 40) {
+        moveAnchor(ArrowMove.DOWN, e.shiftKey, e.metaKey || e.ctrlKey)
+      }
+
+      if (e.keyCode === 37) {
+        moveAnchor(ArrowMove.LEFT, e.shiftKey, e.metaKey || e.ctrlKey)
+      }
+
+      if (e.keyCode === 39) {
+        moveAnchor(ArrowMove.RIGHT, e.shiftKey, e.metaKey || e.ctrlKey)
+      }
+
+      if ((e.ctrlKey || e.metaKey) && e.keyCode === 67) {
+        let ret = ""
+        const variants = {}
+        const columns = {}
+
+        Object.keys(selectedCells).forEach((k) => {
+          const [r, c] = k.split("-")
+          variants[r] = true
+          columns[c] = true
+        })
+
+        Object.keys(variants)
+          .sort((v1, v2) => variantIds.indexOf(v1) - variantIds.indexOf(v2))
+          .forEach((k) => {
+            Object.keys(columns).forEach((c) => {
+              const price = editedPrices[getKey(k, c)]
+
+              ret += (!isNaN(price) ? price : "") + "\t"
+            })
+
+            ret = ret.slice(0, -1)
+            ret += `\n`
+          })
+
+        ret = ret.slice(0, -1)
+
+        navigator.clipboard.writeText(ret)
+        notification("Success", "Copied to clipboard", "success")
+      }
+
       /**
        * Undo last selection change (or delete) on CMD/CTR + Z
        */
@@ -301,14 +569,74 @@ function EditPricesTable(props: EditPricesTableProps) {
       }
     }
 
+    const onPaste = (event: ClipboardEvent) => {
+      const paste = (event.clipboardData || window.clipboardData).getData(
+        "text"
+      )
+
+      const rows = paste.split("\n").map((r) => r.split("\t"))
+
+      // single cell click -> determine from the content
+      if (
+        typeof anchorIndex === "number" &&
+        typeof anchorIndexCol === "number"
+      ) {
+        const _edited = { ...editedPrices }
+
+        const isRange = startIndex !== endIndex || startIndexCol !== endIndexCol
+
+        // if only anchor is clicked past selected, if range is selected fill and repeat until selected area is filled
+        const iBoundary = !isRange ? rows.length - 1 : endIndex - startIndex
+
+        for (let i = 0; i <= iBoundary; i++) {
+          if (i >= variantIds.length) {
+            break
+          }
+
+          const parts = rows[i % rows.length]
+
+          // if only anchor is clicked past selected, if range is selected fill and repeat until selected area is filled
+          const jBoundary = !isRange
+            ? parts.length - 1
+            : endIndexCol - startIndexCol
+
+          for (let j = 0; j <= jBoundary; j++) {
+            if (j >= columns.length) {
+              break
+            }
+
+            if (isText(parts[j % parts.length])) {
+              notification(
+                "Error",
+                "Invalid data - copied cells contain text",
+                "error"
+              )
+              return
+            }
+
+            const amount = parseFloat(parts[j % parts.length])
+
+            _edited[
+              getKey(variantIds[startIndex + i], columns[startIndexCol + j])
+            ] = !isNaN(amount) ? amount : undefined
+          }
+        }
+
+        setEditedPrices(_edited)
+      }
+    }
+
     document.addEventListener("mousedown", down)
     document.addEventListener("mouseup", up)
     document.addEventListener("keydown", onKeyDown)
 
+    document.addEventListener("paste", onPaste)
+
     return () => {
       document.removeEventListener("mousedown", down)
       document.removeEventListener("mouseup", up)
-      document.addEventListener("keydown", onKeyDown)
+      document.removeEventListener("keydown", onKeyDown)
+      document.removeEventListener("paste", onPaste)
     }
   }, [selectedCells])
 
@@ -443,7 +771,7 @@ function EditPricesTable(props: EditPricesTableProps) {
                   {variant.title} {variant.sku && `∙ ${variant.sku}`}
                 </td>
 
-                {props.currencies.map((c) => {
+                {props.currencies.map((c, indexCol) => {
                   return (
                     <CurrencyCell
                       key={variant.id + c}
@@ -454,48 +782,53 @@ function EditPricesTable(props: EditPricesTableProps) {
                       onInputChange={onInputChange}
                       onMouseCellClick={onMouseCellClick}
                       onDragFillStart={onDragFillStart}
-                      isAnchor={anchorIndex === index}
-                      isRangeStart={
-                        activeCurrencyOrRegion === c && startIndex === index
+                      onColumnOver={onColumnOver}
+                      isAnchor={
+                        anchorIndex === index && anchorIndexCol === indexCol
                       }
-                      isRangeEnd={
-                        activeCurrencyOrRegion === c && index === endIndex
-                      }
-                      isInRange={
-                        activeCurrencyOrRegion === c &&
-                        index >= startIndex &&
-                        index <= endIndex
+                      isRangeStart={startIndex === index}
+                      isRangeEnd={index === endIndex}
+                      isInRange={index >= startIndex && index <= endIndex}
+                      isRangeStartCol={startIndexCol === indexCol}
+                      isRangeEndCol={indexCol === endIndexCol}
+                      isInRangeCol={
+                        indexCol >= startIndexCol && indexCol <= endIndexCol
                       }
                     />
                   )
                 })}
 
-                {props.regions.map((r) => (
-                  <CurrencyCell
-                    key={variant.id + r}
-                    region={r!}
-                    variant={variant}
-                    isSelected={selectedCells[getKey(variant.id, undefined, r)]}
-                    editedAmount={
-                      editedPrices[getKey(variant.id, undefined, r)]
-                    }
-                    onInputChange={onInputChange}
-                    onMouseCellClick={onMouseCellClick}
-                    onDragFillStart={onDragFillStart}
-                    isAnchor={anchorIndex === index}
-                    isRangeStart={
-                      activeCurrencyOrRegion === r && startIndex === index
-                    }
-                    isRangeEnd={
-                      activeCurrencyOrRegion === r && index === endIndex
-                    }
-                    isInRange={
-                      activeCurrencyOrRegion === r &&
-                      index >= startIndex &&
-                      index <= endIndex
-                    }
-                  />
-                ))}
+                {props.regions.map((r, indexCol) => {
+                  indexCol = props.currencies.length + indexCol
+                  return (
+                    <CurrencyCell
+                      key={variant.id + r}
+                      region={r!}
+                      variant={variant}
+                      isSelected={
+                        selectedCells[getKey(variant.id, undefined, r)]
+                      }
+                      editedAmount={
+                        editedPrices[getKey(variant.id, undefined, r)]
+                      }
+                      onInputChange={onInputChange}
+                      onMouseCellClick={onMouseCellClick}
+                      onDragFillStart={onDragFillStart}
+                      onColumnOver={onColumnOver}
+                      isAnchor={
+                        anchorIndex === index && anchorIndexCol === indexCol
+                      }
+                      isRangeStart={startIndex === index}
+                      isRangeEnd={index === endIndex}
+                      isInRange={index >= startIndex && index <= endIndex}
+                      isRangeStartCol={startIndexCol === indexCol}
+                      isRangeEndCol={indexCol === endIndexCol}
+                      isInRangeCol={
+                        indexCol >= startIndexCol && indexCol <= endIndexCol
+                      }
+                    />
+                  )
+                })}
               </tr>
             )
           })}

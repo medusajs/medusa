@@ -77,6 +77,7 @@ import IconServerStack from "./ServerStack"
 import IconServerStackSolid from "./ServerStackSolid"
 import IconShoppingCart from "./ShoppingCart"
 import IconShoppingCartSolid from "./ShoppingCartSolid"
+import IconSidebar from "./Sidebar"
 import IconSparkles from "./Sparkles"
 import IconSparklesSolid from "./SparklesSolid"
 import IconSquaresPlus from "./SquaresPlus"
@@ -180,6 +181,7 @@ export default {
   "server-stack-solid": IconServerStackSolid,
   "shopping-cart": IconShoppingCart,
   "shopping-cart-solid": IconShoppingCartSolid,
+  sidebar: IconSidebar,
   sparkles: IconSparkles,
   "sparkles-solid": IconSparklesSolid,
   "squares-plus": IconSquaresPlus,

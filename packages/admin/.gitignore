@@ -8,12 +8,7 @@
 /types
 /loaders
 /setup
-
-# Vite cache
-.cache
-
-# Vite build output
-build
+/lib
 
 # Platform-specific files
 .DS_Store

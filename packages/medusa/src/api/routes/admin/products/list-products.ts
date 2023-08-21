@@ -199,7 +199,7 @@ import { FilterableProductProps } from "../../../../types/product"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/products' \
+ *       curl '{backend_url}/admin/products' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

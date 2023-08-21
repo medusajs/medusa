@@ -1,7 +1,7 @@
 import React from "react"
 import clsx from "clsx"
 
-type ButtonProps = {
+export type ButtonProps = {
   btnTypeClassName?: string
   className?: string
   onClick?: React.MouseEventHandler<HTMLButtonElement>
@@ -18,7 +18,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       className={clsx(
-        !btnTypeClassName?.length && "btn-primary",
+        !btnTypeClassName?.length && "btn-secondary",
         btnTypeClassName,
         className
       )}

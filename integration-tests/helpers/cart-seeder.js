@@ -520,7 +520,7 @@ module.exports = async (dataSource, data = {}) => {
     id: "test-variant",
     title: "test variant",
     product_id: "test-product",
-    inventory_quantity: 1,
+    inventory_quantity: 10,
     options: [
       {
         option_id: "test-option",

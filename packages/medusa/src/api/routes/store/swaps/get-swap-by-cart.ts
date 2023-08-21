@@ -23,7 +23,7 @@ import { defaultStoreSwapRelations } from "."
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/swaps/{cart_id}'
+ *       curl '{backend_url}/store/swaps/{cart_id}'
  * tags:
  *   - Swaps
  * responses:

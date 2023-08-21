@@ -28,9 +28,8 @@ import { FindParams } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/payment-collections/{id}'
+ *       curl '{backend_url}/store/payment-collections/{id}'
  * security:
- *   - api_token: []
  *   - cookie_auth: []
  * tags:
  *   - Payment Collections

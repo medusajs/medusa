@@ -6,17 +6,15 @@ import {
 import { Context, DAL } from "@medusajs/types"
 import { Image, Product } from "@models"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import {
-  DALUtils,
-  InjectTransactionManager,
-  MedusaContext,
-} from "@medusajs/utils"
+import { DALUtils } from "@medusajs/utils"
 
+// eslint-disable-next-line max-len
 export class ProductImageRepository extends DALUtils.MikroOrmAbstractBaseRepository<Image> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
     this.manager_ = manager
   }
@@ -61,13 +59,8 @@ export class ProductImageRepository extends DALUtils.MikroOrmAbstractBaseReposit
     )
   }
 
-  @InjectTransactionManager()
-  async upsert(
-    urls: string[],
-    @MedusaContext()
-    context: Context = {}
-  ): Promise<Image[]> {
-    const { transactionManager: manager } = context
+  async upsert(urls: string[], context: Context = {}): Promise<Image[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     const existingImages = await this.find(
       {
@@ -98,32 +91,19 @@ export class ProductImageRepository extends DALUtils.MikroOrmAbstractBaseReposit
     })
 
     if (imageToCreate.length) {
-      await (manager as SqlEntityManager).persist(imageToCreate)
+      manager.persist(imageToCreate)
       upsertedImgs.push(...imageToCreate)
     }
 
     return upsertedImgs
   }
 
-  @InjectTransactionManager()
-  async delete(
-    ids: string[],
-    @MedusaContext()
-    { transactionManager: manager }: Context = {}
-  ): Promise<void> {
-    await (manager as SqlEntityManager).nativeDelete(
-      Product,
-      { id: { $in: ids } },
-      {}
-    )
+  async delete(ids: string[], context: Context = {}): Promise<void> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
   }
 
-  @InjectTransactionManager()
-  async create(
-    data: unknown[],
-    @MedusaContext()
-    { transactionManager: manager }: Context = {}
-  ): Promise<Image[]> {
+  async create(data: unknown[], context: Context = {}): Promise<Image[]> {
     throw new Error("Method not implemented.")
   }
 }

@@ -8,6 +8,7 @@ import { panicHandler } from "./panic-handler"
 import * as Transport from "winston-transport"
 
 const LOG_LEVEL = process.env.LOG_LEVEL || "silly"
+const LOG_FILE = process.env.LOG_FILE || ""
 const NODE_ENV = process.env.NODE_ENV || "development"
 const IS_DEV = NODE_ENV.startsWith("dev")
 
@@ -22,6 +23,14 @@ if (!IS_DEV) {
         winston.format.cli(),
         winston.format.splat()
       ),
+    })
+  )
+}
+
+if (LOG_FILE) {
+  transports.push(
+    new winston.transports.File({
+      filename: LOG_FILE
     })
   )
 }

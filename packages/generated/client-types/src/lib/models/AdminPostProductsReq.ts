@@ -82,7 +82,12 @@ export interface AdminPostProductsReq {
   /**
    * Product categories to add the Product to.
    */
-  categories?: Array<any>
+  categories?: Array<{
+    /**
+     * The ID of a Product Category.
+     */
+    id: string
+  }>
   /**
    * The Options that the Product should have. A new product option will be created for every item in the array.
    */

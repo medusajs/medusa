@@ -1,4 +1,5 @@
 const { Modules } = require("@medusajs/modules-sdk")
+const { Workflows } = require("@medusajs/workflows")
 const DB_HOST = process.env.DB_HOST
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
@@ -30,6 +31,12 @@ module.exports = {
     jwt_secret: "test",
     cookie_secret: "test",
     database_extra: { idle_in_transaction_session_timeout: 0 },
+  },
+  featureFlags: {
+    workflows: {
+      [Workflows.CreateProducts]: true,
+      [Workflows.CreateCart]: true,
+    },
   },
   modules: {
     [Modules.STOCK_LOCATION]: {

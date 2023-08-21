@@ -188,7 +188,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/store/products'
+ *       curl '{backend_url}/store/products'
  * tags:
  *   - Products
  * responses:

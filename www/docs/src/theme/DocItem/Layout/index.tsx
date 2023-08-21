@@ -42,18 +42,18 @@ export default function DocItemLayout({ children }: Props): JSX.Element {
   const docTOC = useDocTOC()
   const sidebarContext = useSidebar()
   return (
-    <div className="row tw-m-0">
+    <div className="row m-0">
       <div
         className={clsx(
           "col",
-          "tw-my-0 tw-mx-auto tw-max-w-main-content tw-w-full tw-ml-auto lg:tw-py-0 tw-py-0 tw-px-1",
-          !docTOC.hidden && "tw-w-9/12",
-          !sidebarContext?.hiddenSidebarContainer && "!tw-max-w-[720px]"
+          "my-0 mx-auto max-w-main-content w-full ml-auto lg:py-0 py-0 px-1",
+          !docTOC.hidden && "w-9/12",
+          !sidebarContext?.hiddenSidebarContainer && "!max-w-[720px]"
         )}
       >
         <DocVersionBanner />
         <div>
-          <article className={clsx("[&>*:first-child]:tw-mt-0")}>
+          <article className={clsx("[&>*:first-child]:mt-0")}>
             <DocBreadcrumbs />
             <DocVersionBadge />
             {docTOC.mobile}
