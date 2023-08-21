@@ -704,12 +704,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
         writeStream.write(JSON.stringify(results[op]))
         writeStream.end()
-
-        await this.batchJobService_
-          .withTransaction(transactionManager)
-          .update(batchJobId, {
-            result: { files: { op: fileKey } },
-          })
       }
     }
 
