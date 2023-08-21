@@ -28,7 +28,8 @@ const glossary: GlossaryType[] = [
   },
   {
     title: "Dependency Injection",
-    content: "The act of delivering the required resources to a class",
+    content:
+      "Classes receive other resources, such as services or repositories, through dependency injection.",
     matchTextRegex: /(dependency injection|dependency-injection)/i,
     referenceLink: "/development/fundamentals/dependency-injection",
   },
@@ -41,7 +42,7 @@ const glossary: GlossaryType[] = [
   },
   {
     title: "Endpoint",
-    content: "REST API exposed to frontends or external systems.",
+    content: "REST API routes exposed to frontends or external systems.",
     matchTextRegex: /endpoint/i,
     referenceLink: "/development/endpoints/overview",
   },
@@ -54,7 +55,7 @@ const glossary: GlossaryType[] = [
   {
     title: "Module",
     content:
-      "Reusable pieces of code that provide specific functionality or feature.",
+      "Reusable pieces of code, typically as NPM packages, that provide specific functionality or feature.",
     matchTextRegex: /module/,
     ignoreTextRegex: /commerce module/i,
     referenceLink: "/development/modules/overview",
@@ -81,13 +82,14 @@ const glossary: GlossaryType[] = [
   {
     title: "Strategy",
     content:
-      "A class that contains an isolated piece of logic that can be overridden and customized",
+      "A class that contains an isolated piece of logic that can be overridden and customized.",
     matchTextRegex: /(strategy|strategies)/i,
     referenceLink: "/development/strategies/overview",
   },
   {
     title: "Feature Flag",
-    content: "Guards beta features in the Medusa backend.",
+    content:
+      "A flag that guards beta features in the Medusa backend and ensures they can only be used when enabled.",
     matchTextRegex: /(feature-flag|feature flag)/i,
     referenceLink: "/development/feature-flags/overview",
   },
@@ -130,7 +132,8 @@ const glossary: GlossaryType[] = [
   },
   {
     title: "Service",
-    content: "A class that includes helper methods associated with an entity.",
+    content:
+      "A class that typically includes helper methods associated with an entity.",
     matchTextRegex: /service/i,
     ignoreTextRegex:
       /(file-service|file service|notification service|notification-service|search service|search-service)/i,
@@ -160,7 +163,7 @@ const glossary: GlossaryType[] = [
   {
     title: "Admin Widget",
     content:
-      "Custom React components that can be injected into different locations in the Medusa admin dashboard",
+      "Custom React components that can be injected into different locations in the Medusa admin dashboard.",
     matchTextRegex: /admin widget/i,
     referenceLink: "/admin/widgets",
   },
@@ -174,7 +177,7 @@ const glossary: GlossaryType[] = [
   {
     title: "Admin Setting Page",
     content:
-      "A React component that is used to create a new setting page in the Medusa admin dashboard",
+      "A React component that is used to create a new setting page in the Medusa admin dashboard.",
     matchTextRegex: /admin setting page/i,
     referenceLink: "/admin/setting-pages",
   },
