@@ -79,6 +79,22 @@ export const registerMedusaModule = (
   return moduleResolutions
 }
 
+export const registerMedusaLinkModule = (
+  definition: ModuleDefinition,
+  moduleDeclaration: Partial<InternalModuleDeclaration>,
+  moduleExports?: ModuleExports
+): Record<string, ModuleResolution> => {
+  const moduleResolutions = {} as Record<string, ModuleResolution>
+
+  moduleResolutions[definition.key] = getInternalModuleResolution(
+    definition,
+    moduleDeclaration as InternalModuleDeclaration,
+    moduleExports
+  )
+
+  return moduleResolutions
+}
+
 function getInternalModuleResolution(
   definition: ModuleDefinition,
   moduleConfig: InternalModuleDeclaration | string | false,

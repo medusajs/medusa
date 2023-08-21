@@ -27,12 +27,12 @@ import {
   UpdateProductTypeDTO,
 } from "./common"
 
-import { Context } from "../shared-context"
 import { FindConfig } from "../common"
-import { JoinerServiceConfig } from "../joiner"
+import { ModuleJoinerConfig } from "../modules-sdk"
+import { Context } from "../shared-context"
 
 export interface IProductModuleService {
-  __joinerConfig(): JoinerServiceConfig
+  __joinerConfig(): ModuleJoinerConfig
 
   retrieve(
     productId: string,
@@ -245,5 +245,9 @@ export interface IProductModuleService {
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
-  restore(productIds: string[], sharedContext?: Context): Promise<ProductDTO[]>
+  restore<TReturnableLinkableKeys extends string = string>(
+    productIds: string[],
+    config?: { returnLinkableKeys?: TReturnableLinkableKeys[] },
+    sharedContext?: Context
+  ): Promise<Record<string, string[]> | void>
 }

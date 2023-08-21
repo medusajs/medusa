@@ -2,6 +2,7 @@ import {
   JoinerRelationship,
   JoinerServiceConfig,
   LoadedModule,
+  ModuleJoinerConfig,
   RemoteExpandProperty,
 } from "@medusajs/types"
 
@@ -31,24 +32,26 @@ export class RemoteQuery {
       )
     }
 
-    const servicesConfig: JoinerServiceConfig[] = []
+    const servicesConfig: ModuleJoinerConfig[] = []
     for (const mod of modulesLoaded) {
       if (!mod.__definition.isQueryable) {
         continue
       }
 
-      if (this.modulesMap.has(mod.__definition.key)) {
+      const serviceName = mod.__definition.key
+
+      if (this.modulesMap.has(serviceName)) {
         throw new Error(
-          `Duplicated instance of module ${mod.__definition.key} is not allowed.`
+          `Duplicated instance of module ${serviceName} is not allowed.`
         )
       }
 
-      this.modulesMap.set(mod.__definition.key, mod)
+      this.modulesMap.set(serviceName, mod)
       servicesConfig.push(mod.__joinerConfig)
     }
 
     this.remoteJoiner = new RemoteJoiner(
-      servicesConfig,
+      servicesConfig as JoinerServiceConfig[],
       remoteFetchData ?? this.remoteFetchData.bind(this)
     )
   }

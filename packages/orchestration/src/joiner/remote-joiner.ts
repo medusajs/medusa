@@ -2,10 +2,12 @@ import {
   JoinerRelationship,
   JoinerServiceConfig,
   JoinerServiceConfigAlias,
+  ModuleJoinerConfig,
   RemoteExpandProperty,
   RemoteJoinerQuery,
   RemoteNestedExpands,
 } from "@medusajs/types"
+
 import { isDefined } from "@medusajs/utils"
 import GraphQLParser from "./graphql-ast"
 
@@ -84,7 +86,7 @@ export class RemoteJoiner {
   }
 
   constructor(
-    private serviceConfigs: JoinerServiceConfig[],
+    private serviceConfigs: ModuleJoinerConfig[],
     private remoteFetchData: (
       expand: RemoteExpandProperty,
       keyField: string,
@@ -112,10 +114,10 @@ export class RemoteJoiner {
     this.remoteFetchData = remoteFetchData
   }
 
-  private buildReferences(serviceConfigs: JoinerServiceConfig[]) {
+  private buildReferences(serviceConfigs: ModuleJoinerConfig[]) {
     const expandedRelationships: Map<string, JoinerRelationship[]> = new Map()
     for (const service of serviceConfigs) {
-      if (this.serviceConfigCache.has(service.serviceName)) {
+      if (this.serviceConfigCache.has(service.serviceName!)) {
         throw new Error(`Service "${service.serviceName}" is already defined.`)
       }
 
@@ -124,37 +126,41 @@ export class RemoteJoiner {
       }
 
       // add aliases
-      if (!service.alias) {
-        service.alias = [{ name: service.serviceName.toLowerCase() }]
-      } else if (!Array.isArray(service.alias)) {
-        service.alias = [service.alias]
-      }
-
-      // self-reference
-      for (const alias of service.alias) {
-        if (this.serviceConfigCache.has(`alias_${alias.name}}`)) {
-          const defined = this.serviceConfigCache.get(`alias_${alias.name}}`)
-          throw new Error(
-            `Cannot add alias "${alias.name}" for "${service.serviceName}". It is already defined for Service "${defined?.serviceName}".`
-          )
+      const isReadOnlyDefinition =
+        service.serviceName === undefined || service.isReadOnlyLink
+      if (!isReadOnlyDefinition) {
+        if (!service.alias) {
+          service.alias = [{ name: service.serviceName!.toLowerCase() }]
+        } else if (!Array.isArray(service.alias)) {
+          service.alias = [service.alias]
         }
 
-        const args =
-          service.args || alias.args
-            ? { ...service.args, ...alias.args }
-            : undefined
+        // self-reference
+        for (const alias of service.alias) {
+          if (this.serviceConfigCache.has(`alias_${alias.name}}`)) {
+            const defined = this.serviceConfigCache.get(`alias_${alias.name}}`)
+            throw new Error(
+              `Cannot add alias "${alias.name}" for "${service.serviceName}". It is already defined for Service "${defined?.serviceName}".`
+            )
+          }
 
-        service.relationships?.push({
-          alias: alias.name,
-          foreignKey: alias.name + "_id",
-          primaryKey: "id",
-          serviceName: service.serviceName,
-          args,
-        })
-        this.cacheServiceConfig(serviceConfigs, undefined, alias.name)
+          const args =
+            service.args || alias.args
+              ? { ...service.args, ...alias.args }
+              : undefined
+
+          service.relationships?.push({
+            alias: alias.name,
+            foreignKey: alias.name + "_id",
+            primaryKey: "id",
+            serviceName: service.serviceName!,
+            args,
+          })
+          this.cacheServiceConfig(serviceConfigs, undefined, alias.name)
+        }
+
+        this.cacheServiceConfig(serviceConfigs, service.serviceName)
       }
-
-      this.cacheServiceConfig(serviceConfigs, service.serviceName)
 
       if (!service.extends) {
         continue
@@ -433,7 +439,8 @@ export class RemoteJoiner {
           item[relationship.alias] = item[field]
             .map((id) => {
               if (relationship.isList && !Array.isArray(relatedDataMap[id])) {
-                relatedDataMap[id] = [relatedDataMap[id]]
+                relatedDataMap[id] =
+                  relatedDataMap[id] !== undefined ? [relatedDataMap[id]] : []
               }
 
               return relatedDataMap[id]
@@ -441,7 +448,10 @@ export class RemoteJoiner {
             .filter((relatedItem) => relatedItem !== undefined)
         } else {
           if (relationship.isList && !Array.isArray(relatedDataMap[itemKey])) {
-            relatedDataMap[itemKey] = [relatedDataMap[itemKey]]
+            relatedDataMap[itemKey] =
+              relatedDataMap[itemKey] !== undefined
+                ? [relatedDataMap[itemKey]]
+                : []
           }
 
           item[relationship.alias] = relatedDataMap[itemKey]

@@ -2,9 +2,9 @@ import {
   Constructor,
   InternalModuleDeclaration,
   Logger,
-  MedusaContainer,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
+  MedusaContainer,
   ModuleExports,
   ModuleResolution,
 } from "@medusajs/types"
