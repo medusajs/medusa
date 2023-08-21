@@ -1,7 +1,31 @@
-import { FlagRouter } from "@medusajs/utils"
-import { isEmpty, isEqual } from "lodash"
-import { MedusaError, isDefined } from "medusa-core-utils"
-import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
+import {
+  Address,
+  Cart,
+  CustomShippingOption,
+  Customer,
+  Discount,
+  DiscountRule,
+  DiscountRuleType,
+  LineItem,
+  PaymentSession,
+  PaymentSessionStatus,
+  SalesChannel,
+  ShippingMethod,
+} from "../models"
+import {
+  AddressPayload,
+  FindConfig,
+  TotalField,
+  WithRequiredProperty,
+} from "../types/common"
+import {
+  CartCreateProps,
+  CartUpdateProps,
+  FilterableCartProps,
+  LineItemUpdate,
+  LineItemValidateData,
+  isCart,
+} from "../types/cart"
 import {
   CustomShippingOptionService,
   CustomerService,
@@ -22,43 +46,20 @@ import {
   TaxProviderService,
   TotalsService,
 } from "."
+import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
-import {
-  Address,
-  Cart,
-  CustomShippingOption,
-  Customer,
-  Discount,
-  DiscountRule,
-  DiscountRuleType,
-  LineItem,
-  PaymentSession,
-  PaymentSessionStatus,
-  SalesChannel,
-  ShippingMethod,
-} from "../models"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import { buildQuery, isString, setMetadata } from "../utils"
+import { isEmpty, isEqual } from "lodash"
+
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
+import { FlagRouter } from "@medusajs/utils"
 import { LineItemRepository } from "../repositories/line-item"
-import { PaymentSessionRepository } from "../repositories/payment-session"
-import { ShippingMethodRepository } from "../repositories/shipping-method"
-import {
-  CartCreateProps,
-  CartUpdateProps,
-  FilterableCartProps,
-  LineItemUpdate,
-  LineItemValidateData,
-  isCart,
-} from "../types/cart"
-import {
-  AddressPayload,
-  FindConfig,
-  TotalField,
-  WithRequiredProperty,
-} from "../types/common"
 import { PaymentSessionInput } from "../types/payment"
-import { buildQuery, isString, setMetadata } from "../utils"
+import { PaymentSessionRepository } from "../repositories/payment-session"
+import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
+import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { validateEmail } from "../utils/is-email"
 
 type InjectedDependencies = {
@@ -946,39 +947,6 @@ class CartService extends TransactionBaseService {
           select,
           relations: ["shipping_methods"],
         })
-
-        if (this.featureFlagRouter_.isFeatureEnabled("sales_channels")) {
-          if (config.validateSalesChannels) {
-            const areValid = await Promise.all(
-              items.map(async (item) => {
-                if (item.variant_id) {
-                  return await this.validateLineItem(
-                    cart,
-                    item as LineItemValidateData
-                  )
-                }
-                return true
-              })
-            )
-
-            const invalidProducts = areValid
-              .map((valid, index) => {
-                return !valid ? { title: items[index].title } : undefined
-              })
-              .filter((v): v is { title: string } => !!v)
-
-            if (invalidProducts.length) {
-              throw new MedusaError(
-                MedusaError.Types.INVALID_DATA,
-                `The products [${invalidProducts
-                  .map((item) => item.title)
-                  .join(
-                    " - "
-                  )}] must belongs to the sales channel on which the cart has been created.`
-              )
-            }
-          }
-        }
 
         const lineItemServiceTx =
           this.lineItemService_.withTransaction(transactionManager)

@@ -240,7 +240,6 @@ describe("/store/carts", () => {
     it("should validate items added to a cart on creation", async () => {
       const api = getApi()
 
-      // create product w/ channel
       const prod = await simpleProductFactory(dbConnection, {
         sales_channels: [{ name: 'test' }]
       })
