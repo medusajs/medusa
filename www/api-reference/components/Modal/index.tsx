@@ -38,7 +38,7 @@ const Modal: React.FC<ModalProps> = ({
       {...props}
       className={clsx(
         "fixed top-0 left-0 flex h-screen w-screen items-center justify-center",
-        "z-[500] bg-transparent",
+        "bg-medusa-bg-overlay dark:bg-medusa-bg-overlay-dark z-[500]",
         className
       )}
       onClick={handleClick}
@@ -55,7 +55,7 @@ const Modal: React.FC<ModalProps> = ({
         {title && <ModalHeader title={title} />}
         <div
           className={clsx(
-            "overflow-auto py-1.5 px-2 lg:min-h-[400px]",
+            "overflow-auto py-1.5 px-2 lg:max-h-[400px] lg:min-h-[400px]",
             contentClassName
           )}
         >

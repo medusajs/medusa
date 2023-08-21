@@ -60,7 +60,7 @@ export default function RootLayout({
                           </main>
                         </div>
                       </div>
-                      {/* <SearchModal /> */}
+                      <SearchModal />
                     </ScrollControllerProvider>
                   </NavbarProvider>
                 </SidebarProvider>

@@ -155,12 +155,12 @@ html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
   @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
 }
 .DocSearch-Button {
-  @apply w-full !h-full !rounded lg:!border lg:!border-solid lg:!border-medusa-border-loud-muted lg:dark:!border-medusa-border-base-dark border-0;
+  @apply w-full !h-full !rounded lg:!border lg:!border-solid lg:!border-medusa-border-base lg:dark:!border-medusa-border-base-dark border-0;
   @apply lg:!bg-medusa-bg-field lg:dark:!bg-medusa-bg-field-dark !bg-transparent;
   @apply lg:hover:!bg-medusa-bg-field-hover lg:dark:hover:!bg-medusa-bg-field-hover-dark;
   @apply lg:disabled:!bg-medusa-bg-disabled lg:dark:disabled:!bg-medusa-bg-disabled-dark;
   @apply p-0 lg:!py-[5px] lg:!px-0.5 relative ml-0;
-  @apply hover:!border-medusa-border-loud-muted hover:dark:!border-medusa-border-loud-muted-dark;
+  @apply hover:!border-medusa-border-base hover:dark:!border-medusa-border-base-dark;
   @apply active:!border-medusa-border-interactive active:dark:!border-medusa-border-interactive-dark;
   @apply focus:!border-medusa-border-interactive focus:dark:!border-medusa-border-interactive-dark;
   @apply disabled:!border-medusa-border-base disabled:dark:!border-medusa-border-base-dark;
