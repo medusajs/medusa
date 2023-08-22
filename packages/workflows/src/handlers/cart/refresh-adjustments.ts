@@ -37,7 +37,7 @@ export async function refreshAdjustments({
     ]
   })
 
-  await cartService.createLineItemsForNewCart(cart)
+  await cartService.refreshAdjustments(cart)
 }
 
 refreshAdjustments.aliases = Aliases

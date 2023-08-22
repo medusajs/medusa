@@ -941,21 +941,9 @@ class CartService extends TransactionBaseService {
     )
   }
 
-  async createLineItemsForNewCart(cart: Cart): Promise<void> {
-    return await this.atomicPhase_(
-      async (transactionManager: EntityManager) => {
-        await this.refreshAdjustments_(cart)
-
-        await this.eventBus_
-          .withTransaction(transactionManager)
-          .emit(CartService.Events.UPDATED, { id: cart.id })
-      }
-    )
-  }
-
-  async refreshAdjustments(cartOrId: string | Cart): Promise<void> {
+  async refreshAdjustments(cartOrId: Cart | string): Promise<void> {
     const cart =
-      cartOrId instanceof Cart ? cartOrId : await this.retrieve(cartOrId)
+      typeof cartOrId === "object" ? cartOrId : await this.retrieve(cartOrId)
 
     await this.refreshAdjustments_(cart)
 
