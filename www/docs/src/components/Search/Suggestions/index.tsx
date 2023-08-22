@@ -11,7 +11,7 @@ const SearchSuggestions = () => {
       "Install Medusa with create-medusa-app",
       "Next.js quickstart",
       "Admin dashboard quickstart",
-      "Commerce features",
+      "Commerce modules",
       "Medusa architecture",
     ],
     development: [
