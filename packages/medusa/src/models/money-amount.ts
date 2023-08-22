@@ -13,6 +13,7 @@ import { ProductVariant } from "./product-variant"
 import { Region } from "./region"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { DbAwareColumn } from "../utils"
 
 @Entity()
 export class MoneyAmount extends SoftDeletableEntity {
@@ -60,6 +61,9 @@ export class MoneyAmount extends SoftDeletableEntity {
   @ManyToOne(() => Region)
   @JoinColumn({ name: "region_id" })
   region?: Region
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): undefined | void {
@@ -158,4 +162,12 @@ export class MoneyAmount extends SoftDeletableEntity {
  *     nullable: true
  *     type: string
  *     format: date-time
+ *   metadata:
+ *     description: An optional key-value map with additional details
+ *     nullable: true
+ *     type: object
+ *     example: {car: "white"}
+ *     externalDocs:
+ *       description: "Learn about the metadata attribute, and how to delete and update it."
+ *       url: "https://docs.medusajs.com/development/entities/overview#metadata-attribute"
  */

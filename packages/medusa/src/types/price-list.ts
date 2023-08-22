@@ -7,6 +7,7 @@ import {
   Validate,
   ValidateIf,
   ValidateNested,
+  IsObject,
 } from "class-validator"
 import { PriceList } from "../models/price-list"
 import { DateComparisonOperator, FindConfig } from "./common"
@@ -115,6 +116,10 @@ export class AdminPriceListPricesCreateReq {
   @IsOptional()
   @IsInt()
   max_quantity?: number
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
 }
 
 export type CreatePriceListInput = {
