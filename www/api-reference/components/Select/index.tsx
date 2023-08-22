@@ -9,6 +9,7 @@ import IconXMarkMini from "../Icons/XMarkMini"
 export type OptionType = {
   value: string
   label: string
+  index?: string
   isAllOption?: boolean
 }
 
@@ -19,6 +20,7 @@ type SelectProps = {
   removeSelected?: (value: string) => void
   multiple?: boolean
   addAll?: boolean
+  showClearButton?: boolean
 } & React.ComponentProps<"input">
 
 const Select = ({
@@ -30,6 +32,7 @@ const Select = ({
   multiple,
   className,
   addAll = multiple,
+  showClearButton = true,
   ...props
 }: SelectProps) => {
   const [open, setOpen] = useState(false)
@@ -147,19 +150,27 @@ const Select = ({
       }}
     >
       {hasSelectedValues && (
-        <Badge variant="neutral" className="flex flex-1">
+        <Badge
+          variant="neutral"
+          className={clsx("flex", showClearButton && "flex-1")}
+        >
           <span
-            className={clsx("text-compact-medium-plus mr-0.125 inline-block")}
+            className={clsx(
+              "text-compact-medium-plus inline-block",
+              showClearButton && "mr-0.125"
+            )}
           >
             {(value as string[]).length}
           </span>
-          <IconXMarkMini
-            iconColorClassName="stroke-medusa-tag-neutral-icon dark:stroke-medusa-tag-neutral-icon-dark"
-            onClick={(e) => {
-              e.stopPropagation()
-              setSelected?.([])
-            }}
-          />
+          {showClearButton && (
+            <IconXMarkMini
+              iconColorClassName="stroke-medusa-tag-neutral-icon dark:stroke-medusa-tag-neutral-icon-dark"
+              onClick={(e) => {
+                e.stopPropagation()
+                setSelected?.([])
+              }}
+            />
+          )}
         </Badge>
       )}
       <span

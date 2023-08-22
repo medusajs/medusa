@@ -10,19 +10,18 @@ export type ModalProps = {
   title?: string
   actions?: ButtonProps[]
   contentClassName?: string
-} & React.DetailedHTMLProps<
-  React.DialogHTMLAttributes<HTMLDialogElement>,
-  HTMLDialogElement
->
+  onClose?: React.ReactEventHandler<HTMLDialogElement>
+} & React.ComponentProps<"dialog">
 
-const Modal: React.FC<ModalProps> = ({
+const Modal = ({
   className,
   title,
   actions,
   children,
   contentClassName,
+  onClose,
   ...props
-}) => {
+}: ModalProps) => {
   const { closeModal } = useModal()
   const dialogRef = useRef<HTMLDialogElement>(null)
 
@@ -30,7 +29,13 @@ const Modal: React.FC<ModalProps> = ({
     // close modal when the user clicks outside the content
     if (e.target === dialogRef.current) {
       closeModal()
+      onClose?.(e)
     }
+  }
+
+  const handleClose = (e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
+    onClose?.(e)
+    closeModal()
   }
 
   return (
@@ -39,10 +44,12 @@ const Modal: React.FC<ModalProps> = ({
       className={clsx(
         "fixed top-0 left-0 flex h-screen w-screen items-center justify-center",
         "bg-medusa-bg-overlay dark:bg-medusa-bg-overlay-dark z-[500]",
+        "hidden open:flex",
         className
       )}
       onClick={handleClick}
       ref={dialogRef}
+      onClose={handleClose}
     >
       <div
         className={clsx(

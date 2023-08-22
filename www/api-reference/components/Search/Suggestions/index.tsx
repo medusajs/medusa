@@ -2,7 +2,7 @@ import clsx from "clsx"
 import Badge from "../../Badge"
 import { useInstantSearch } from "react-instantsearch"
 
-const SearchModalSuggestions = () => {
+const SearchSuggestions = () => {
   const { setIndexUiState } = useInstantSearch()
   const suggestions = [
     "Authentication",
@@ -35,4 +35,4 @@ const SearchModalSuggestions = () => {
   )
 }
 
-export default SearchModalSuggestions
+export default SearchSuggestions

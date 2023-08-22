@@ -1,16 +1,18 @@
 "use client"
 
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import algoliasearch, { SearchClient } from "algoliasearch/lite"
 import { InstantSearch, SearchBox, Configure } from "react-instantsearch"
-import Modal from "../Modal"
+import Modal from "../../Modal"
 import clsx from "clsx"
-import IconMagnifyingGlass from "../Icons/MagnifyingGlass"
-import Select, { OptionType } from "../Select"
-import IconXMark from "../Icons/XMark"
-import Hits from "./Hits"
-import EmptyQueryBoundary from "./EmptyQueryBoundary"
-import SearchModalSuggestions from "./Suggestions"
+import IconMagnifyingGlass from "../../Icons/MagnifyingGlass"
+import Select, { OptionType } from "../../Select"
+import IconXMark from "../../Icons/XMark"
+import SearchEmptyQueryBoundary from "../EmptyQueryBoundary"
+import SearchSuggestions from "../Suggestions"
+import { useSearch } from "../../../providers/search"
+import checkArraySameElms from "../../../utils/array-same-elms"
+import SearchHitsWrapper from "../Hits"
 
 const algoliaClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || "temp",
@@ -60,13 +62,17 @@ const SearchModal = () => {
         label: "User Guide",
       },
       {
-        value: "docs_reference",
+        value: "reference",
         label: "References",
+      },
+      {
+        value: "ui",
+        label: "UI",
       },
     ]
   }, [])
-  // TODO change based on area
-  const [filters, setFilters] = useState<string[]>(["admin"])
+  const { isOpen, setIsOpen, defaultFilters } = useSearch()
+  const [filters, setFilters] = useState<string[]>(defaultFilters)
   const formattedFilters: string = useMemo(() => {
     let formatted = ""
     filters.forEach((filter) => {
@@ -81,10 +87,20 @@ const SearchModal = () => {
     return formatted
   }, [filters])
 
+  useEffect(() => {
+    if (!checkArraySameElms(defaultFilters, filters)) {
+      setFilters(defaultFilters)
+    }
+  }, [defaultFilters])
+
   return (
-    <Modal contentClassName={"!p-0 overflow-hidden relative h-[400px]"}>
+    <Modal
+      contentClassName={"!p-0 overflow-hidden relative h-[400px]"}
+      open={isOpen}
+      onClose={() => setIsOpen(false)}
+    >
       <InstantSearch
-        indexName={process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME}
+        indexName={process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME}
         searchClient={searchClient}
       >
         <div className="flex">
@@ -99,6 +115,7 @@ const SearchModal = () => {
             removeSelected={(value) =>
               setFilters((prev) => prev.filter((v) => v !== value))
             }
+            showClearButton={false}
             placeholder="Filters"
             className="h-[56px] basis-1/3 rounded-b-none rounded-tr-none border-t-0 border-l-0 shadow-none"
           />
@@ -115,7 +132,10 @@ const SearchModal = () => {
                 "appearance-none search-cancel:hidden"
               ),
               submit: clsx("absolute top-[18px] left-1.5"),
-              reset: clsx("absolute top-[18px] right-1"),
+              reset: clsx(
+                "absolute top-[18px] right-1 hover:bg-medusa-bg-field-hover dark:bg-medusa-bg-field-hover-dark",
+                "p-0.125 rounded"
+              ),
               loadingIndicator: clsx("absolute top-[18px] right-1"),
             }}
             submitIconComponent={() => (
@@ -128,13 +148,18 @@ const SearchModal = () => {
             autoFocus
           />
         </div>
-        <Configure
-          filters={formattedFilters}
-          attributesToSnippet={["content", "hierarchy.lvl1", "hierarchy.lvl2"]}
-        />
-        <EmptyQueryBoundary fallback={<SearchModalSuggestions />}>
-          <Hits />
-        </EmptyQueryBoundary>
+        <SearchEmptyQueryBoundary fallback={<SearchSuggestions />}>
+          <SearchHitsWrapper
+            configureProps={{
+              filters: formattedFilters,
+              attributesToSnippet: [
+                "content",
+                "hierarchy.lvl1",
+                "hierarchy.lvl2",
+              ],
+            }}
+          />
+        </SearchEmptyQueryBoundary>
       </InstantSearch>
     </Modal>
   )

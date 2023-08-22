@@ -1,12 +1,20 @@
 import clsx from "clsx"
 import Link from "next/link"
-import { Fragment, useCallback, useMemo } from "react"
-import { Snippet, useHits } from "react-instantsearch"
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react"
+import {
+  Configure,
+  ConfigureProps,
+  Index,
+  Snippet,
+  useHits,
+  useInstantSearch,
+} from "react-instantsearch"
 import BorderedIcon from "../../BorderedIcon"
 import IconDocumentTextSolid from "../../Icons/DocumentTextSolid"
 import IconArrowDownLeftMini from "../../Icons/ArrowDownLeftMini"
+import SearchNoResult from "../NoResults"
 
-type HitType = {
+export type HitType = {
   hierarchy: {
     lvl0: string | null
     lvl1: string | null
@@ -28,8 +36,63 @@ type GroupedHitType = {
   [k: string]: HitType[]
 }
 
-const Hits = () => {
+type SearchHitWrapperProps = {
+  configureProps: ConfigureProps
+}
+
+const SearchHitsWrapper = ({ configureProps }: SearchHitWrapperProps) => {
+  const { status } = useInstantSearch()
+  const [nbNoResults, setNbNoResults] = useState(0)
+  const indices = useMemo(
+    () => [
+      process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME || "temp",
+      process.env.NEXT_PUBLIC_DOCS_ALGOLIA_INDEX_NAME || "temp",
+    ],
+    []
+  )
+  const showNoResults = useMemo(() => {
+    return nbNoResults === indices.length
+  }, [nbNoResults, indices])
+
+  const incrementNoResults = useCallback(() => {
+    setNbNoResults((prev) => {
+      return prev >= indices.length ? indices.length : prev + 1
+    })
+  }, [indices])
+
+  const decrementNoResults = () => {
+    setNbNoResults((prev) => {
+      return prev <= 0 ? 0 : prev - 1
+    })
+  }
+
+  return (
+    <div className="h-[calc(100%-56px)] overflow-auto">
+      {status !== "loading" && showNoResults && <SearchNoResult />}
+      {indices.map((indexName, index) => (
+        <Index indexName={indexName} key={index}>
+          <SearchHits
+            incrementNoResults={incrementNoResults}
+            decrementNoResults={decrementNoResults}
+          />
+          <Configure {...configureProps} />
+        </Index>
+      ))}
+    </div>
+  )
+}
+
+type SearchHitsProps = {
+  incrementNoResults: () => void
+  decrementNoResults: () => void
+}
+
+const SearchHits = ({
+  incrementNoResults,
+  decrementNoResults,
+}: SearchHitsProps) => {
   const { hits } = useHits<HitType>()
+  const { status } = useInstantSearch()
 
   // group by lvl0
   const grouped = useMemo(() => {
@@ -46,16 +109,18 @@ const Hits = () => {
     return grouped
   }, [hits])
 
-  const getContentTitle = useCallback((item: HitType): string => {
-    return (
-      [...Object.values(item.hierarchy)]
-        .reverse()
-        .find((value) => value !== null && value !== item.content) || ""
-    )
-  }, [])
+  useEffect(() => {
+    if (status !== "loading") {
+      if (!hits.length) {
+        incrementNoResults()
+      } else {
+        decrementNoResults()
+      }
+    }
+  }, [hits, status])
 
   return (
-    <div className="h-[calc(100%-56px)] overflow-auto">
+    <div className="overflow-auto">
       {Object.keys(grouped).map((groupName, index) => (
         <Fragment key={index}>
           <span
@@ -133,4 +198,4 @@ const Hits = () => {
   )
 }
 
-export default Hits
+export default SearchHitsWrapper

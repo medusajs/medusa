@@ -1,14 +1,14 @@
 import { useInstantSearch } from "react-instantsearch"
 
-type EmptyQueryBoundaryProps = {
+type SearchEmptyQueryBoundaryProps = {
   children: React.ReactNode
   fallback: React.ReactNode
 }
 
-const EmptyQueryBoundary = ({
+const SearchEmptyQueryBoundary = ({
   children,
   fallback,
-}: EmptyQueryBoundaryProps) => {
+}: SearchEmptyQueryBoundaryProps) => {
   const { indexUiState } = useInstantSearch()
 
   if (!indexUiState.query) {
@@ -18,4 +18,4 @@ const EmptyQueryBoundary = ({
   return children
 }
 
-export default EmptyQueryBoundary
+export default SearchEmptyQueryBoundary
