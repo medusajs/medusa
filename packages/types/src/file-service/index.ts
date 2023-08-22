@@ -15,6 +15,7 @@ export type FileServiceGetUploadStreamResult = {
 
 export type GetUploadedFileType = {
   fileKey: string
+  isPrivate?: boolean
   [x: string]: unknown
 }
 
@@ -26,6 +27,6 @@ export type DeleteFileType = {
 export type UploadStreamDescriptorType = {
   name: string
   ext?: string
-  acl?: string
+  isPrivate?: boolean
   [x: string]: unknown
 }
