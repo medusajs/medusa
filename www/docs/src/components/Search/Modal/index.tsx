@@ -5,7 +5,7 @@ import algoliasearch, { SearchClient } from "algoliasearch/lite"
 import { InstantSearch, SearchBox } from "react-instantsearch"
 import Modal from "../../Modal"
 import clsx from "clsx"
-import Select, { OptionType } from "../../Select"
+import Select from "../../Select"
 import SearchEmptyQueryBoundary from "../EmptyQueryBoundary"
 import SearchSuggestions from "../Suggestions"
 import SearchHitsWrapper from "../Hits"
@@ -15,7 +15,7 @@ import IconXMark from "../../../theme/Icon/XMark"
 import checkArraySameElms from "../../../utils/array-same-elms"
 import { useSearch } from "../../../providers/Search"
 import { useThemeConfig } from "@docusaurus/theme-common"
-import { ThemeConfig } from "@medusajs/docs"
+import { OptionType, ThemeConfig } from "@medusajs/docs"
 
 const SearchModal = () => {
   const { algoliaConfig: algolia } = useThemeConfig() as ThemeConfig
@@ -53,38 +53,7 @@ const SearchModal = () => {
     }
   }, [])
 
-  const options: OptionType[] = useMemo(() => {
-    return [
-      {
-        value: "admin",
-        label: "Admin API",
-      },
-      {
-        value: "store",
-        label: "Store API",
-      },
-      {
-        value: "docs",
-        label: "Docs",
-      },
-      {
-        value: "user-guide",
-        label: "User Guide",
-      },
-      {
-        value: "plugins",
-        label: "Plugins",
-      },
-      {
-        value: "reference",
-        label: "References",
-      },
-      {
-        value: "ui",
-        label: "UI",
-      },
-    ]
-  }, [])
+  const options: OptionType[] = algolia.filters
   const { isOpen, setIsOpen, defaultFilters } = useSearch()
   const [filters, setFilters] = useState<string[]>(defaultFilters)
   const formattedFilters: string = useMemo(() => {

@@ -43,17 +43,6 @@ const config = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
-    // algolia: {
-    //   apiKey: algoliaApiKey,
-    //   indexName: "medusa-commerce",
-    //   placeholder: "Search docs...",
-    //   appId: algoliaAppId,
-    //   contextualSearch: false,
-    //   externalUrlRegex: "https://medusajs.com,https://docs.medusajs.com/api/",
-    //   searchParameters: {
-    //     tagFilters: "-reference",
-    //   },
-    // },
     algoliaConfig: {
       appId: process.env.ALGOLIA_APP_ID || "temp",
       apiKey: process.env.ALGOLIA_API_KEY || "temp",
@@ -61,6 +50,51 @@ const config = {
         docs: process.env.NEXT_PUBLIC_DOCS_ALGOLIA_INDEX_NAME,
         api: process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME,
       },
+      filters: [
+        {
+          value: "docs",
+          label: "Docs",
+        },
+        {
+          value: "user-guide",
+          label: "User Guide",
+        },
+        {
+          value: "admin",
+          label: "Admin API",
+        },
+        {
+          value: "store",
+          label: "Store API",
+        },
+        {
+          value: "plugins",
+          label: "Plugins",
+        },
+        {
+          value: "reference",
+          label: "References",
+        },
+        {
+          value: "ui",
+          label: "UI",
+        },
+      ],
+      defaultFiltersByPath: [
+        {
+          path: "/user-guide",
+          filters: ["user-guide"],
+        },
+        {
+          path: "/references",
+          filters: ["reference"],
+        },
+        {
+          path: "/plugins",
+          filters: ["plugins"],
+        },
+      ],
+      defaultFilters: ["docs"],
     },
     prism: {
       defaultLanguage: "js",

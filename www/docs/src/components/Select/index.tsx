@@ -6,13 +6,7 @@ import IconChevronUpDown from "../../theme/Icon/ChevronUpDown"
 import IconCheckMini from "../../theme/Icon/CheckMini"
 import IconEllipseMiniSolid from "../../theme/Icon/EllipseMiniSolid"
 import IconXMarkMini from "../../theme/Icon/XMarkMini"
-
-export type OptionType = {
-  value: string
-  label: string
-  index?: string
-  isAllOption?: boolean
-}
+import { OptionType } from "@medusajs/docs"
 
 type SelectProps = {
   value: string | string[]

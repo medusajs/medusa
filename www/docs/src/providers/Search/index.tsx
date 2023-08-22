@@ -2,6 +2,9 @@ import React, { useEffect } from "react"
 import { createContext, useContext, useState } from "react"
 import SearchModal from "../../components/Search/Modal"
 import { useLocalPathname } from "@docusaurus/theme-common/internal"
+import { useThemeConfig } from "@docusaurus/theme-common"
+import { ThemeConfig } from "@medusajs/docs"
+import checkArraySameElms from "../../utils/array-same-elms"
 
 type SearchContextType = {
   isOpen: boolean
@@ -20,20 +23,20 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [defaultFilters, setDefaultFilters] = useState<string[]>([])
   const currentPath = useLocalPathname()
+  const { algoliaConfig: algolia } = useThemeConfig() as ThemeConfig
 
   useEffect(() => {
-    let resultFilter = ""
-    if (currentPath.startsWith("/user-guide")) {
-      resultFilter = "user-guide"
-    } else if (currentPath.startsWith("/references")) {
-      resultFilter = "reference"
-    } else if (currentPath.startsWith("/plugins")) {
-      resultFilter = "plugins"
-    } else {
-      resultFilter = "docs"
+    let resultFilters = []
+    algolia.defaultFiltersByPath.some((filtersByPath) => {
+      if (currentPath.startsWith(filtersByPath.path)) {
+        resultFilters = filtersByPath.filters
+      }
+    })
+    if (!resultFilters.length && algolia.defaultFilters) {
+      resultFilters = algolia.defaultFilters
     }
-    if (!defaultFilters.includes(resultFilter)) {
-      setDefaultFilters([resultFilter])
+    if (!checkArraySameElms(defaultFilters, resultFilters)) {
+      setDefaultFilters(resultFilters)
     }
   }, [currentPath])
 

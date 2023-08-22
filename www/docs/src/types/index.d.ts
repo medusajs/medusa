@@ -131,6 +131,12 @@ declare module "@medusajs/docs" {
 
   export declare type NavbarAction = NavbarActionLink | NavbarActionButton
 
+  export declare type OptionType = {
+    value: string
+    label: string
+    isAllOption?: boolean
+  }
+
   export declare type ThemeConfig = {
     reportCodeLinkPrefix?: string
     footerFeedback: {
@@ -161,6 +167,12 @@ declare module "@medusajs/docs" {
         api: string
       }
       appId: string
+      filters: OptionType[]
+      defaultFilters: string[]
+      defaultFiltersByPath: {
+        path: string
+        filters: string[]
+      }[]
     }
   } & DocusaurusThemeConfig
 
