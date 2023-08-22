@@ -1,6 +1,6 @@
 ---
-"@medusajs/utils": minor
-"@medusajs/product": minor
+"@medusajs/utils": patch
+"@medusajs/product": patch
 ---
 
 Fix mikro-orm connection loader
