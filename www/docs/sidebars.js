@@ -362,6 +362,15 @@ module.exports = {
     },
     {
       type: "doc",
+      id: "glossary",
+      label: "Glossary",
+      customProps: {
+        sidebar_icon: "book-open",
+      },
+      className: "homepage-sidebar-item",
+    },
+    {
+      type: "doc",
       id: "usage",
       label: "Usage",
       customProps: {

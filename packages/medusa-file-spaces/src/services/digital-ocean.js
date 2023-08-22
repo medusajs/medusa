@@ -82,9 +82,13 @@ class DigitalOceanService extends AbstractFileService {
 
     const pass = new stream.PassThrough()
 
+    // default to private
+    const isPrivate =
+      typeof fileData.isPrivate === "undefined" ? true : fileData.isPrivate
+
     const fileKey = `${fileData.name}.${fileData.ext}`
     const params = {
-      ACL: fileData.acl ?? "private",
+      ACL: isPrivate ? "private" : "public-read",
       Bucket: this.bucket_,
       Body: pass,
       Key: fileKey,

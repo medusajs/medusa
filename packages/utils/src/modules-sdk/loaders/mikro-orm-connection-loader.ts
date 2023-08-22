@@ -5,11 +5,11 @@ import {
   MODULE_SCOPE,
   ModulesSdkTypes,
 } from "@medusajs/types"
-import { asValue } from "awilix"
 import { PostgreSqlDriver, SqlEntityManager } from "@mikro-orm/postgresql"
+import { asValue } from "awilix"
 import { ContainerRegistrationKeys, MedusaError } from "../../common"
-import { loadDatabaseConfig } from "../load-module-database-config"
 import { mikroOrmCreateConnection } from "../../dal"
+import { loadDatabaseConfig } from "../load-module-database-config"
 
 export async function mikroOrmConnectionLoader({
   container,
@@ -50,7 +50,8 @@ export async function mikroOrmConnectionLoader({
   let dbConfig
   const shouldSwallowError = !!(
     options as ModulesSdkTypes.ModuleServiceInitializeOptions
-  )?.database.connection
+  )?.database?.connection
+
   dbConfig = {
     ...loadDatabaseConfig(
       "product",
@@ -58,7 +59,7 @@ export async function mikroOrmConnectionLoader({
       shouldSwallowError
     ),
     connection: (options as ModulesSdkTypes.ModuleServiceInitializeOptions)
-      ?.database.connection,
+      ?.database?.connection,
   }
 
   manager ??= await loadDefault({

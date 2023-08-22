@@ -1,5 +1,5 @@
 import { useLearningPath } from "@site/src/providers/LearningPath"
-import { useNotifications } from "@site/src/providers/NotificationProvider"
+import { useNotifications } from "@site/src/providers/Notification"
 import { getLearningPath } from "@site/src/utils/learning-paths"
 import clsx from "clsx"
 import React from "react"
