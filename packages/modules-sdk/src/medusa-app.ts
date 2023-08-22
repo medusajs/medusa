@@ -2,14 +2,15 @@ import {
   ExternalModuleDeclaration,
   InternalModuleDeclaration,
   LoadedModule,
+  MODULE_RESOURCE_TYPE,
+  MODULE_SCOPE,
 } from "@medusajs/types"
 
 import { isObject } from "@medusajs/utils"
 import { MODULE_PACKAGE_NAMES, Modules } from "./definitions"
 import { MedusaModule } from "./medusa-module"
+import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
-
-class RemoteLink {} // TODO: available when PR remote link is mergerd
 
 declare global {
   function query(query: string): Promise<any>
@@ -70,6 +71,18 @@ export async function MedusaApp({
         delete declaration.definition
       } else {
         path = MODULE_PACKAGE_NAMES[mod as Modules]
+      }
+
+      if (!declaration.scope) {
+        declaration.scope = MODULE_SCOPE.INTERNAL
+      }
+
+      if (
+        declaration.scope === MODULE_SCOPE.INTERNAL &&
+        !declaration.resources &&
+        sharedResourcesConfig
+      ) {
+        declaration.resources = MODULE_RESOURCE_TYPE.SHARED
       }
 
       const loaded = await MedusaModule.bootstrap(
