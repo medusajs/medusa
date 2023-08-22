@@ -23,6 +23,7 @@ import {
 } from "./types"
 import { BatchJob } from "../../../models"
 import { TParsedProductImportRowData } from "../product/types"
+import { PriceListPriceCreateInput } from "../../../types/price-list"
 
 /*
  * Default strategy class used for a batch import of products/variants.
@@ -308,7 +309,7 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
         priceImportOperations.map(async (op) => {
           await txPriceListService.addPrices(
             priceListId,
-            op.prices.map((p) => {
+            (op.prices as PriceListPriceCreateInput[]).map((p) => {
               return {
                 ...p,
                 variant_id: op.variant_id,
