@@ -16,15 +16,11 @@ type HandlerOutputData = {
 
 export async function createCart({
   container,
-  context,
   data,
 }: WorkflowArguments): Promise<HandlerOutputData> {
-  const { manager } = context
-
   const cartService = container.resolve("cartService")
-  const cartServiceTx = cartService.withTransaction(manager)
   
-  return await cartServiceTx.createOnlyCart(data)
+  return await cartService.createOnlyCart(data)
 }
 
 createCart.aliases = Aliases

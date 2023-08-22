@@ -18,17 +18,13 @@ enum Aliases {
 
 export async function refreshAdjustments({
   container,
-  context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<void> {
-  const { manager } = context
-
   const cartService = container.resolve("cartService")
 
-  const cartServiceTx = cartService.withTransaction(manager)
   const cartId = data[Aliases.Cart].id
 
-  const cart = await cartServiceTx.retrieve(cartId, {
+  const cart = await cartService.retrieve(cartId, {
     relations: [
       "items.variant.product.profiles",
       "discounts",
@@ -41,7 +37,7 @@ export async function refreshAdjustments({
     ]
   })
 
-  await cartServiceTx.createLineItemsForNewCart(cart)
+  await cartService.createLineItemsForNewCart(cart)
 }
 
 refreshAdjustments.aliases = Aliases

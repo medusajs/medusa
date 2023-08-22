@@ -20,16 +20,11 @@ enum Aliases {
 
 export async function retrieveCart({
   container,
-  context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<CartDTO> {
-  const { manager } = context
-
   const cartService = container.resolve("cartService")
 
-  const cartServiceTx = cartService.withTransaction(manager)
-
-  const retrieved = await cartServiceTx.retrieve(
+  const retrieved = await cartService.retrieve(
     data[Aliases.Cart].id,
     data[Aliases.Config].retrieveConfig
   )
