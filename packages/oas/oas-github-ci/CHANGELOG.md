@@ -1,5 +1,14 @@
 # @medusajs/oas-github-ci
 
+## 1.0.15
+
+### Patch Changes
+
+- [#4770](https://github.com/medusajs/medusa/pull/4770) [`914d773d3`](https://github.com/medusajs/medusa/commit/914d773d3a82c86685b66c0c33ab1d7a9bad7dd4) Thanks [@shahednasser](https://github.com/shahednasser)! - feat(@medusajs/oas-github-ci): Improvements for custom API reference
+
+- Updated dependencies []:
+  - @medusajs/medusa-oas-cli@0.2.15
+
 ## 1.0.14
 
 ### Patch Changes

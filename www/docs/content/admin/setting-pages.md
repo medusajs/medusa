@@ -2,9 +2,6 @@
 title: 'How to Create an Admin Setting Page'
 description: 'Learn how to create a new setting page in the admin dashboard.'
 addHowToData: true
-badge:
-  variant: orange
-  text: beta
 ---
 
 In this document, you’ll learn how to create a setting page in the admin.
@@ -24,12 +21,6 @@ This guide explains how to create a new setting page in the admin dashboard with
 ## Prerequisites
 
 It’s assumed you already have a Medusa backend with the admin plugin installed before you move forward with this guide. If not, you can follow [this documentation page](../create-medusa-app.mdx) to install a Medusa project.
-
-Furthermore, custom Admin Setting Pages are currently available as a beta feature. So, you must install the `beta` version of the `@medusajs/admin` and `@medusajs/medusa` packages:
-
-```bash npm2yarn
-npm install @medusajs/admin@beta @medusajs/medusa@beta
-```
 
 ### (Optional) TypeScript Preparations
 
@@ -128,6 +119,12 @@ All setting page paths are prefixed with `/a/settings`.
 
 For example, if you want the setting page to be available in the admin dashboard under the path `/a/settings/custom` you should create your setting page under the file path `src/admin/settings/custom/page.tsx`.
 
+:::note
+
+Only one-level deep files are accepted. So, for example, you can create the page `src/admin/settings/custom/page.tsx`, but not `src/admin/settings/custom/nested/page.tsx`.
+
+:::
+
 ### Step 2: Create React Component in File
 
 For a setting page to be valid, it must default export a React component. There are no restrictions on the content of the React component. It must also export a configuration object that indicates how the tab is shown on the Setting page.
@@ -189,7 +186,7 @@ For example:
 
 ```tsx title=src/admin/settings/custom/page.tsx
 import type { SettingConfig } from "@medusajs/admin"
-import type { SettingProps } from "@medusajs/admin-ui"
+import type { SettingProps } from "@medusajs/admin"
 
 const CustomSettingPage = ({
   notify,
