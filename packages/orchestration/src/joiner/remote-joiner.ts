@@ -20,7 +20,7 @@ export class RemoteJoiner {
     fields: string[],
     expands?: RemoteNestedExpands
   ): Record<string, unknown> {
-    if (!fields) {
+    if (!fields || !data) {
       return data
     }
 

@@ -31,6 +31,9 @@ export type InternalModuleDeclaration = {
   scope: MODULE_SCOPE.INTERNAL
   resources: MODULE_RESOURCE_TYPE
   dependencies?: string[]
+  /**
+   * @deprecated The property should not be used.
+   */
   resolve?: string
   options?: Record<string, unknown>
   alias?: string // If multiple modules are registered with the same key, the alias can be used to differentiate them
@@ -44,6 +47,7 @@ export type ExternalModuleDeclaration = {
     url: string
     keepAlive: boolean
   }
+  options?: Record<string, unknown>
   alias?: string // If multiple modules are registered with the same key, the alias can be used to differentiate them
   main?: boolean // If the module is the main module for the key when multiple ones are registered
 }
@@ -62,7 +66,13 @@ export type ModuleDefinition = {
   registrationName: string
   defaultPackage: string | false
   label: string
+  /**
+   * @deprecated property will be removed in future versions
+   */
   canOverride?: boolean
+  /**
+   * @deprecated property will be removed in future versions
+   */
   isRequired?: boolean
   isQueryable?: boolean // If the module is queryable via Remote Joiner
   dependencies?: string[]
@@ -77,6 +87,13 @@ export type LinkModuleDefinition = {
   label: string
   dependencies?: string[]
   defaultModuleDeclaration: InternalModuleDeclaration
+}
+
+type ModuleDeclaration = ExternalModuleDeclaration | InternalModuleDeclaration
+export type ModuleConfig = ModuleDeclaration & {
+  module: string
+  path: string
+  definition: ModuleDefinition
 }
 
 export type LoadedModule = unknown & {

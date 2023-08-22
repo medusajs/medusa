@@ -5,13 +5,16 @@ import {
   ModuleResolution,
 } from "@medusajs/types"
 
+import { asValue } from "awilix"
 import { EOL } from "os"
 import { ModulesHelper } from "../module-helper"
-import { asValue } from "awilix"
 import { loadInternalModule } from "./utils"
 
 export const moduleHelper = new ModulesHelper()
 
+/**
+ * @deprecated The method should not be used. Use MedusaApp() instead.
+ */
 export const moduleLoader = async ({
   container,
   moduleResolutions,
