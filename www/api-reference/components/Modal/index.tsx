@@ -9,6 +9,7 @@ export type ModalProps = {
   className?: string
   title?: string
   actions?: ButtonProps[]
+  modalContainerClassName?: string
   contentClassName?: string
   onClose?: React.ReactEventHandler<HTMLDialogElement>
 } & React.ComponentProps<"dialog">
@@ -19,6 +20,7 @@ const Modal = ({
   actions,
   children,
   contentClassName,
+  modalContainerClassName,
   onClose,
   ...props
 }: ModalProps) => {
@@ -56,7 +58,8 @@ const Modal = ({
           "bg-medusa-bg-base dark:bg-medusa-bg-base-dark rounded-sm",
           "border-medusa-border-base dark:border-medusa-border-base-dark border border-solid",
           "shadow-modal dark:shadow-modal-dark",
-          "w-[90%] md:w-[75%] lg:w-[560px]"
+          "w-[90%] md:h-auto md:w-[75%] lg:w-[560px]",
+          modalContainerClassName
         )}
       >
         {title && <ModalHeader title={title} />}

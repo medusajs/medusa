@@ -13,6 +13,7 @@ import SearchSuggestions from "../Suggestions"
 import { useSearch } from "../../../providers/search"
 import checkArraySameElms from "../../../utils/array-same-elms"
 import SearchHitsWrapper from "../Hits"
+import Button from "../../Button"
 
 const algoliaClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || "temp",
@@ -95,7 +96,8 @@ const SearchModal = () => {
 
   return (
     <Modal
-      contentClassName={"!p-0 overflow-hidden relative h-[400px]"}
+      contentClassName={"!p-0 overflow-hidden relative h-full md:h-[400px]"}
+      modalContainerClassName="w-screen h-screen"
       open={isOpen}
       onClose={() => setIsOpen(false)}
     >
@@ -142,11 +144,25 @@ const SearchModal = () => {
               <IconMagnifyingGlass iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
             )}
             resetIconComponent={() => (
-              <IconXMark iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+              <IconXMark
+                iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark"
+                className="hidden md:block"
+              />
             )}
             placeholder="Find something..."
             autoFocus
           />
+          <Button
+            variant="clear"
+            className={clsx(
+              "bg-medusa-bg-field dark:bg-medusa-bg-field-dark block md:hidden",
+              "border-medusa-border-base dark:border-medusa-border-base-dark border-b",
+              "pr-1"
+            )}
+            onClick={() => setIsOpen(false)}
+          >
+            <IconXMark iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
+          </Button>
         </div>
         <SearchEmptyQueryBoundary fallback={<SearchSuggestions />}>
           <SearchHitsWrapper
