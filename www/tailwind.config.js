@@ -783,9 +783,4 @@ module.exports = {
       "toc-dark": "url('/img/side-menu.svg')",
     },
   },
-  plugins: [
-    require('tailwindcss/plugin')(({ addVariant }) => {
-      addVariant('search-cancel', '&::-webkit-search-cancel-button');
-    }),
-  ],
 }

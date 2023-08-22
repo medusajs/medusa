@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import IconChevronUpDown from "../Icons/ChevronUpDown"
-import { useCallback, useMemo, useRef, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import IconCheckMini from "../Icons/CheckMini"
 import IconEllipseSolid from "../Icons/EllipseMiniSolid"
 import Badge from "../Badge"
@@ -37,6 +37,7 @@ const Select = ({
 }: SelectProps) => {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   const isValueSelected = useCallback(
     (val: string) => {
@@ -123,6 +124,27 @@ const Select = ({
     )
   }
 
+  const handleOutsideClick = useCallback(
+    (e: MouseEvent) => {
+      if (
+        open &&
+        !dropdownRef.current?.contains(e.target as Element) &&
+        !ref.current?.contains(e.target as Element)
+      ) {
+        setOpen(false)
+      }
+    },
+    [open]
+  )
+
+  useEffect(() => {
+    document.body.addEventListener("click", handleOutsideClick)
+
+    return () => {
+      document.body.removeEventListener("click", handleOutsideClick)
+    }
+  }, [handleOutsideClick])
+
   return (
     <div
       className={clsx(
@@ -144,7 +166,7 @@ const Select = ({
       )}
       ref={ref}
       onClick={(e) => {
-        if ((e.target as Element).tagName !== "LI") {
+        if (!dropdownRef.current?.contains(e.target as Element)) {
           setOpen((prev) => !prev)
         }
       }}
@@ -195,6 +217,7 @@ const Select = ({
           "z-10 h-0 overflow-hidden transition-transform",
           open && "h-auto translate-y-0.5 !overflow-visible"
         )}
+        ref={dropdownRef}
       >
         <ul
           className={clsx(
