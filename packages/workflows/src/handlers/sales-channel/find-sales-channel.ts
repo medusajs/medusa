@@ -22,10 +22,14 @@ enum Aliases {
 
 export async function findSalesChannel({
   container,
+  context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<AttachSalesChannelDTO> {
+  const { manager } = context
   const salesChannelService = container.resolve("salesChannelService")
+  const salesChannelServiceTx = salesChannelService.withTransaction(manager)
   const storeService = container.resolve("storeService")
+  const storeServiceTx = storeService.withTransaction(manager)
 
   let salesChannelId = data[Aliases.SalesChannel].sales_channel_id
   let salesChannel
@@ -50,10 +54,10 @@ export async function findSalesChannel({
   }
 
   if (isDefined(salesChannelId)) {
-    salesChannel = await salesChannelService.retrieve(salesChannelId)
+    salesChannel = await salesChannelServiceTx.retrieve(salesChannelId)
   } else {
     salesChannel = (
-      await storeService.retrieve({
+      await storeServiceTx.retrieve({
         relations: ["default_sales_channel"],
       })
     ).default_sales_channel

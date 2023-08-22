@@ -20,8 +20,10 @@ enum Aliases {
 
 export async function generateLineItems({
   container,
+  context,
   data,
 }: WorkflowArguments<HandlerInputData>) {
+  const { manager } = context
   const lineItemService = container.resolve("lineItemService")
   const lineItems = data[Aliases.LineItems].items
   const cart = data[Aliases.Cart]
@@ -31,17 +33,19 @@ export async function generateLineItems({
   }
 
   const generateInputData = lineItems.map((item) => ({
-      variantId: item.variant_id,
-      quantity: item.quantity,
-    }))
+    variantId: item.variant_id,
+    quantity: item.quantity,
+  }))
 
-  const items = await lineItemService.generate(generateInputData, {
-    region_id: cart.region_id,
-    customer_id: cart.customer_id,
-  })
+  const items = await lineItemService
+    .withTransaction(manager)
+    .generate(generateInputData, {
+      region_id: cart.region_id,
+      customer_id: cart.customer_id,
+    })
 
-  return items.map(i => { 
-    return {...i, cart_id: cart.id, has_shipping: false}
+  return items.map((i) => {
+    return { ...i, cart_id: cart.id, has_shipping: false }
   })
 }
 

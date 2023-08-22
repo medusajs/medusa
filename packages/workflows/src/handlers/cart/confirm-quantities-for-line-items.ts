@@ -17,12 +17,17 @@ type HandlerInputData = {
   }
 }
 
-
 export async function confirmQuantitiesForLineItems({
   container,
+  context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<void> {
-  const productVariantInventoryService = container.resolve("productVariantInventoryService")
+  const { manager } = context
+  const productVariantInventoryService = container.resolve(
+    "productVariantInventoryService"
+  )
+  const productVariantInventoryServiceTx =
+    productVariantInventoryService.withTransaction(manager)
 
   let lineItems = data[Aliases.LineItems] || []
   const cart = data[Aliases.Cart]
@@ -30,7 +35,7 @@ export async function confirmQuantitiesForLineItems({
   for (const item of lineItems) {
     if (item.variant_id) {
       const isSufficient =
-        await productVariantInventoryService.confirmInventory(
+        await productVariantInventoryServiceTx.confirmInventory(
           item.variant_id,
           item.quantity,
           { salesChannelId: cart.sales_channel_id }

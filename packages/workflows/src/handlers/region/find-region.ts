@@ -19,9 +19,12 @@ enum Aliases {
 
 export async function findRegion({
   container,
+  context,
   data,
 }: WorkflowArguments<HandlerInputData>): Promise<RegionDTO> {
+  const { manager } = context
   const regionService = container.resolve("regionService")
+  const regionServiceTx = regionService.withTransaction(manager)
 
   let regionId: string
   const regionDTO: RegionDTO = {}
@@ -29,7 +32,7 @@ export async function findRegion({
   if (isDefined(data[Aliases.Region].region_id)) {
     regionId = data[Aliases.Region].region_id
   } else {
-    const regions = await regionService.list({}, { take: 1 })
+    const regions = await regionServiceTx.list({}, { take: 1 })
 
     if (!regions?.length) {
       throw new MedusaError(

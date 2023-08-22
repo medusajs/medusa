@@ -6,13 +6,18 @@ enum Aliases {
 
 export async function removeLineItems({
   container,
+  context,
   data,
 }: WorkflowArguments): Promise<void> {
+  const { manager } = context
+
   const lineItemService = container.resolve("lineItemService")
 
   const lineItems = data[Aliases.LineItems]
 
-  return await lineItemService.delete(lineItems.map((li) => li.id))
+  return await lineItemService
+    .withTransaction(manager)
+    .delete(lineItems.map((li) => li.id))
 }
 
 removeLineItems.aliases = Aliases

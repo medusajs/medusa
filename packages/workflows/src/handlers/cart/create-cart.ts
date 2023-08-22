@@ -9,18 +9,19 @@ enum Aliases {
   Context = "context",
 }
 
-
 type HandlerOutputData = {
   cart: CartDTO
 }
 
 export async function createCart({
   container,
+  context,
   data,
 }: WorkflowArguments): Promise<HandlerOutputData> {
+  const { manager } = context
   const cartService = container.resolve("cartService")
-  
-  return await cartService.createCartFromData(data)
+
+  return await cartService.withTransaction(manager).createCartFromData(data)
 }
 
 createCart.aliases = Aliases

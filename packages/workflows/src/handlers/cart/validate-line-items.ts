@@ -8,9 +8,12 @@ enum Aliases {
 
 export async function validateLineItemsForCart({
   container,
+  context,
   data,
 }: WorkflowArguments): Promise<void> {
+  const { manager } = context
   const cartService = container.resolve("cartService")
+  const cartServiceTx = cartService.withTransaction(manager)
 
   const cart = data[Aliases.Cart]
   const items = data[Aliases.LineItems]
@@ -22,7 +25,7 @@ export async function validateLineItemsForCart({
   const areValid = await Promise.all(
     items.map(async (item) => {
       if (item.variant_id) {
-        return await cartService.validateLineItem(
+        return await cartServiceTx.validateLineItem(
           cart,
           item
         )
