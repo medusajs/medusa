@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { useLearningPath } from "../providers/LearningPath"
-import { useNotifications } from "../providers/NotificationProvider"
+import { useNotifications } from "../providers/Notification"
 import LearningPathSteps from "../components/LearningPath/Steps"
 import LearningPathFinish from "../components/LearningPath/Finish"
 import LearningPathIcon from "../components/LearningPath/Icon"
@@ -36,8 +36,8 @@ const useCurrentLearningPath = () => {
         layout: "default",
         CustomIcon: (
           <LearningPathIcon
-            className="!tw-w-2 !tw-h-2"
-            imgClassName="!tw-w-1.5 !tw-h-1.5"
+            className="!w-2 !h-2"
+            imgClassName="!w-1.5 !h-1.5"
           />
         ),
         children: (
@@ -73,6 +73,7 @@ const useCurrentLearningPath = () => {
         layout: "empty",
         id,
         children: LearningStep(id),
+        className: "flex flex-col",
       })
       updatePath({
         notificationId: id,

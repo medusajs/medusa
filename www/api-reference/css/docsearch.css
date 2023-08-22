@@ -1,0 +1,232 @@
+.DocSearch-Modal {
+  @apply border border-solid !border-medusa-border-base dark:!border-medusa-border-base-dark;
+  @apply !rounded !relative;
+  @apply md:!m-[unset] md:w-[560px];
+}
+
+.DocSearch-SearchBar {
+  @apply !p-0;
+}
+
+.DocSearch-Form {
+  --docsearch-spacing: theme(margin[1.5]);
+  --docsearch-searchbox-height: 56px;
+  --docsearch-searchbox-focus-background: var(--docsearch-modal-background) !important;
+
+  @apply !rounded-t !rounded-b-none border-0 border-b border-solid !border-medusa-border-base dark:!border-medusa-border-base-dark;
+}
+
+.DocSearch-LoadingIndicator svg, .DocSearch-MagnifierLabel svg {
+  @apply !w-[20px] !h-[20px];
+}
+
+.DocSearch-Input {
+  @apply !text-compact-large lg:!text-medium !pl-1;
+  @apply placeholder:text-medusa-fg-muted dark:placeholder:text-medusa-fg-muted-dark;
+}
+
+.DocSearch-Dropdown {
+  @apply !pt-0 !pb-2.5 !px-0;
+  @apply !max-h-[416px];
+}
+
+.DocSearch-Hit-source {
+  @apply !m-0 !text-compact-small-plus uppercase text-medusa-fg-muted dark:text-medusa-fg-muted-dark;
+  @apply border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark;
+  @apply !py-[10px] !px-1.5;
+}
+
+.DocSearch-Footer {
+  @apply !hidden;
+}
+
+.DocSearch-Hit {
+  @apply !p-0;
+}
+
+.DocSearch-Hit:not(.DocSearch-Hit--Child) .DocSearch-Hit-icon {
+  @apply !w-2.5 !h-2.5 p-0.125 border border-solid border-medusa-border-strong dark:border-medusa-border-strong-dark;
+  @apply rounded flex justify-center items-center;
+  @apply before:content-[''] before:w-2 before:h-2 before:bg-no-repeat before:bg-center before:bg-contain before:bg-search-hit dark:before:bg-search-hit-dark;
+}
+
+.DocSearch-Hit-icon svg {
+  @apply hidden;
+}
+
+.DocSearch-Hit--Child .DocSearch-Hit-icon {
+  @apply hidden;
+}
+
+.DocSearch-Hit a {
+  @apply !py-0.75 !px-1.5 !shadow-none !rounded-none;
+}
+
+.DocSearch-Hit:not(:last-of-type) a {
+  @apply border-0 border-b border-solid border-medusa-border-base dark:border-medusa-border-base-dark;
+}
+
+.DocSearch-Hit-content-wrapper {
+  @apply !mt-0 !mx-1;
+}
+
+.DocSearch-Hit-title,
+.DocSearch-Hit-title mark {
+  @apply !text-medusa-fg-base dark:!text-medusa-fg-base-dark;
+  @apply !text-compact-small-plus;
+}
+
+.DocSearch-Hit-path {
+  @apply !text-medusa-fg-subtle dark:!text-medusa-fg-subtle-dark !text-compact-small;
+}
+
+.DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
+  --docsearch-hit-active-color: theme(colors.medusa.fg.subtle.DEFAULT);
+}
+
+html[data-theme="dark"] .DocSearch-Hit[aria-selected=true] .DocSearch-Hit-path {
+  --docsearch-hit-active-color: theme(colors.medusa.fg.subtle.dark);
+}
+
+.DocSearch-Hit[aria-selected=true] a {
+  @apply !bg-medusa-bg-base-hover dark:!bg-medusa-bg-base-hover-dark;
+}
+
+.DocSearch-Hit[aria-selected=true] .DocSearch-Hit-content-wrapper + .DocSearch-Hit-action:last-child {
+  @apply h-1.5 w-1.5 border border-solid border-medusa-border-strong dark:border-medusa-border-strong-dark;
+  @apply rounded bg-medusa-bg-base dark:bg-medusa-bg-base-dark p-0.125 flex justify-center items-center;
+  @apply before:content-[''] before:w-[20px] before:h-[20px] before:bg-search-arrow dark:before:bg-search-arrow-dark before:bg-no-repeat before:bg-center;
+}
+
+.DocSearch-Hit-content-wrapper + .DocSearch-Hit-action:last-child svg,
+.DocSearch-Hit[aria-selected=true] .DocSearch-Hit-content-wrapper + .DocSearch-Hit-action:last-child svg {
+  @apply hidden;
+}
+
+.DocSearch-Hit[aria-selected=true] mark {
+  @apply !no-underline;
+}
+
+.DocSearch-Hit[aria-selected=true] .DocSearch-Hit-Tree {
+  @apply text-medusa-border-strong dark:text-medusa-border-strong-dark;
+}
+
+.DocSearch-Hit-Tree {
+  @apply text-medusa-border-base dark:text-medusa-border-base-dark;
+}
+
+.DocSearch-HitsFooter {
+  @apply z-[100] absolute bottom-0 left-0 w-full h-2.5 !bg-medusa-bg-base dark:!bg-medusa-bg-base-dark;
+  @apply border-0 border-t border-solid border-medusa-border-base dark:border-medusa-border-base-dark;
+}
+
+.DocSearch-HitsFooter a {
+  @apply !border-b-0;
+}
+
+.DocSearch-Reset {
+  @apply !rounded transition-all duration-200 ease-ease;
+  @apply hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark;
+}
+
+.DocSearch-NoResults .DocSearch-Screen-Icon {
+  @apply w-[20px] h-[20px] !p-0 flex justify-center items-center mt-0 mb-1 mx-auto;
+  @apply before:content-[''] before:w-full before:h-full before:bg-no-repeat before:bg-center before:bg-contain;
+  @apply before:bg-search-no-result dark:before:bg-search-no-result-dark;
+}
+
+.DocSearch-NoResults .DocSearch-Screen-Icon svg {
+  @apply hidden;
+}
+
+.DocSearch-NoResults .DocSearch-Title {
+  @apply !text-compact-small !pl-1;
+}
+
+.DocSearch-NoResults-Prefill-List {
+  @apply text-center !text-compact-small-plus !pl-1;
+}
+
+.DocSearch-NoResults-Prefill-List li::marker {
+  @apply content-[''];
+}
+
+.DocSearch-NoResults-Prefill-List li button {
+  @apply text-medusa-fg-base dark:text-medusa-fg-base-dark;
+}
+.DocSearch-Button {
+  @apply w-full !h-full !rounded lg:!border lg:!border-solid lg:!border-medusa-border-loud-muted lg:dark:!border-medusa-border-base-dark border-0;
+  @apply lg:!bg-medusa-bg-field lg:dark:!bg-medusa-bg-field-dark !bg-transparent;
+  @apply lg:hover:!bg-medusa-bg-field-hover lg:dark:hover:!bg-medusa-bg-field-hover-dark;
+  @apply lg:disabled:!bg-medusa-bg-disabled lg:dark:disabled:!bg-medusa-bg-disabled-dark;
+  @apply p-0 lg:!py-[5px] lg:!px-0.5 relative ml-0;
+  @apply hover:!border-medusa-border-loud-muted hover:dark:!border-medusa-border-loud-muted-dark;
+  @apply active:!border-medusa-border-interactive active:dark:!border-medusa-border-interactive-dark;
+  @apply focus:!border-medusa-border-interactive focus:dark:!border-medusa-border-interactive-dark;
+  @apply disabled:!border-medusa-border-base disabled:dark:!border-medusa-border-base-dark;
+  @apply lg:!shadow-button-secondary lg:dark:!shadow-button-secondary-dark;
+}
+
+.DocSearch-Container {
+  @apply !z-[1001] md:flex md:justify-center md:items-center;
+}
+
+.DocSearch-Button .DocSearch-Search-Icon {
+  @apply invisible;
+}
+
+.DocSearch-Button-Container {
+  @apply before:content-[''] before:h-[20px] before:w-[20px] before:absolute before:left-0.5 before:top-[5px];
+  @apply before:bg-magnifying-glass dark:before:bg-magnifying-glass-dark before:bg-no-repeat;
+}
+
+.DocSearch-Button-Placeholder {
+  @apply text-medusa-fg-muted dark:text-medusa-fg-muted-dark;
+  @apply !pl-0.5 !text-compact-small lg:!block !hidden;
+}
+
+.DocSearch-Button-Keys {
+  @apply w-fit !min-w-[unset] lg:!flex !hidden;
+}
+
+.DocSearch-Button-Key {
+  @apply !shadow-none !rounded-md !text-compact-x-small-plus !font-base align-middle !p-0.25;
+  @apply !border !border-solid !border-medusa-tag-neutral-border dark:!border-medusa-tag-neutral-border-dark;
+  @apply [&span]:hidden [&:not(:last-child)]:!mr-0.25 last:!mr-0;
+}
+
+[class*=searchBox] {
+  @apply lg:w-[280px] lg:max-w-[280px] lg:!h-2 lg:!p-0;
+}
+
+
+:root {
+  --docsearch-searchbox-background: theme(colors.medusa.bg.field.DEFAULT) !important;
+  --docsearch-searchbox-focus-background: theme(colors.medusa.bg.field.hover.DEFAULT) !important;
+  --docsearch-searchbox-shadow: none !important;
+  --docsearch-modal-height: 472px !important;
+  --docsearch-modal-background: theme(colors.medusa.bg.base.DEFAULT) !important;
+  --docsearch-modal-shadow: theme(boxShadow.modal) !important;
+  --docsearch-container-background: theme(colors.medusa.bg.overlay.DEFAULT) !important;
+  --docsearch-key-gradient: theme(colors.medusa.tag.neutral.bg.DEFAULT) !important;
+  --docsearch-muted-color: theme(colors.medusa.tag.neutral.text.DEFAULT) !important;
+  --docsearch-spacing: 12px theme(spacing[1.5]) !important;
+  --docsearch-highlight-color: theme(colors.medusa.fg.muted.DEFAULT) !important;
+  --docsearch-text-color: theme(colors.medusa.fg.base.DEFAULT) !important;
+  --docsearch-hit-background: var(--docsearch-modal-background) !important;
+  --docsearch-hit-height: auto !important;
+  --docsearch-hit-active-color: var(--docsearch-text-color) !important;
+  --docsearch-footer-height: 40px !important;
+}
+
+html[data-theme="dark"] {
+  --docsearch-searchbox-background: theme(colors.medusa.bg.field.dark) !important;
+  --docsearch-searchbox-focus-background: theme(colors.medusa.bg.field.hover.dark) !important;
+  --docsearch-modal-background: theme(colors.medusa.bg.base.dark) !important;
+  --docsearch-modal-shadow: theme(boxShadow.modal-dark) !important;
+  --docsearch-container-background: theme(colors.medusa.bg.overlay.dark) !important;
+  --docsearch-key-gradient: theme(colors.medusa.tag.neutral.bg.dark) !important;
+  --docsearch-muted-color: theme(colors.medusa.tag.neutral.text.dark) !important;
+  --docsearch-highlight-color: theme(colors.medusa.fg.muted.dark) !important;
+  --docsearch-text-color: theme(colors.medusa.fg.base.dark) !important;
+}

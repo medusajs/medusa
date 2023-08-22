@@ -29,7 +29,7 @@ import { ReturnReasonService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/return-reasons/{id}' \
+ *       curl '{backend_url}/admin/return-reasons/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

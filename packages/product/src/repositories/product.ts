@@ -19,21 +19,17 @@ import {
   WithRequiredProperty,
 } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import {
-  DALUtils,
-  InjectTransactionManager,
-  isDefined,
-  MedusaContext,
-  MedusaError,
-} from "@medusajs/utils"
+import { DALUtils, isDefined, MedusaError } from "@medusajs/utils"
 
 import { ProductServiceTypes } from "../types/services"
 
+// eslint-disable-next-line max-len
 export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<Product> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
     this.manager_ = manager
   }
@@ -118,46 +114,36 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
     }
   }
 
-  @InjectTransactionManager()
-  async delete(
-    ids: string[],
-    @MedusaContext()
-    { transactionManager: manager }: Context = {}
-  ): Promise<void> {
-    await (manager as SqlEntityManager).nativeDelete(
-      Product,
-      { id: { $in: ids } },
-      {}
-    )
+  async delete(ids: string[], context: Context = {}): Promise<void> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+    await manager.nativeDelete(Product, { id: { $in: ids } }, {})
   }
 
-  @InjectTransactionManager()
   async create(
     data: WithRequiredProperty<ProductTypes.CreateProductOnlyDTO, "status">[],
-    @MedusaContext()
-    { transactionManager: manager }: Context = {}
+    context: Context = {}
   ): Promise<Product[]> {
+    const manager = this.getActiveManager<SqlEntityManager>(context)
+
     const products = data.map((product) => {
       return (manager as SqlEntityManager).create(Product, product)
     })
 
-    await (manager as SqlEntityManager).persist(products)
+    manager.persist(products)
 
     return products
   }
 
-  @InjectTransactionManager()
   async update(
     data: WithRequiredProperty<ProductServiceTypes.UpdateProductDTO, "id">[],
-    @MedusaContext() context: Context = {}
+    context: Context = {}
   ): Promise<Product[]> {
     let categoryIds: string[] = []
     let tagIds: string[] = []
-    let collectionIds: string[] = []
-    let typeIds: string[] = []
+    const collectionIds: string[] = []
+    const typeIds: string[] = []
     // TODO: use the getter method (getActiveManager)
-    const manager = (context.transactionManager ??
-      this.manager_) as SqlEntityManager
+    const manager = this.getActiveManager<SqlEntityManager>(context)
 
     data.forEach((productData) => {
       categoryIds = categoryIds.concat(
@@ -259,7 +245,7 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
             const productCategory = categoriesToAssignMap.get(categoryData.id)
 
             if (productCategory) {
-              await product.categories.add(productCategory)
+              product.categories.add(productCategory)
             }
           }
 
@@ -273,7 +259,7 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
                 !categoryIdsToAssignSet.has(existingCategory.id)
             )
 
-          await product.categories.remove(categoriesToDelete)
+          product.categories.remove(categoriesToDelete)
         }
 
         if (isDefined(tagsData)) {
@@ -287,7 +273,7 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
             }
 
             if (productTag) {
-              await product.tags.add(productTag)
+              product.tags.add(productTag)
             }
           }
 
@@ -296,7 +282,7 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
             .getItems()
             .filter((existingTag) => !tagIdsToAssignSet.has(existingTag.id))
 
-          await product.tags.remove(tagsToDelete)
+          product.tags.remove(tagsToDelete)
         }
 
         if (isDefined(collectionId)) {
@@ -317,7 +303,7 @@ export class ProductRepository extends DALUtils.MikroOrmAbstractBaseRepository<P
       })
     )
 
-    await manager.persist(products)
+    manager.persist(products)
 
     return products
   }

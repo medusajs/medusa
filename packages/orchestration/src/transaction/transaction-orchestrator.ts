@@ -7,8 +7,8 @@ import { TransactionStep, TransactionStepHandler } from "./transaction-step"
 import {
   TransactionHandlerType,
   TransactionState,
-  TransactionStepStatus,
   TransactionStepsDefinition,
+  TransactionStepStatus,
 } from "./types"
 
 import { EventEmitter } from "events"
@@ -233,9 +233,8 @@ export class TransactionOrchestrator extends EventEmitter {
       const stepDef = flow.steps[step]
       const curState = stepDef.getStates()
       if (
-        (curState.state === TransactionState.DONE ||
-          curState.status === TransactionStepStatus.PERMANENT_FAILURE) &&
-        !stepDef.definition.noCompensation
+        curState.state === TransactionState.DONE ||
+        curState.status === TransactionStepStatus.PERMANENT_FAILURE
       ) {
         stepDef.beginCompensation()
         stepDef.changeState(TransactionState.NOT_STARTED)
@@ -334,6 +333,11 @@ export class TransactionOrchestrator extends EventEmitter {
       if (curState.state === TransactionState.NOT_STARTED) {
         if (step.isCompensating()) {
           step.changeState(TransactionState.COMPENSATING)
+
+          if (step.definition.noCompensation) {
+            step.changeState(TransactionState.REVERTED)
+            continue
+          }
         } else if (flow.state === TransactionState.INVOKING) {
           step.changeState(TransactionState.INVOKING)
         }

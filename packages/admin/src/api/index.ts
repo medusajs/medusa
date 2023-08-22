@@ -1,25 +1,29 @@
+import { logger } from "@medusajs/admin-ui"
 import express, { Request, Response, Router } from "express"
 import fse from "fs-extra"
 import { ServerResponse } from "http"
 import { resolve } from "path"
-import colors from "picocolors"
-import { PluginOptions } from "../types"
-import { reporter } from "../utils"
+import { PluginOptions } from "../lib"
 
 export default function (_rootDirectory: string, options: PluginOptions) {
   const app = Router()
 
-  const { serve = true, path = "app", outDir } = options
+  const { serve = true, path = "/app", outDir } = options
+
+  const isDevelop = process.env.COMMAND_INITIATED_BY === "develop"
+
+  if (isDevelop) {
+    app.get(`${path}`, (_req, res) => {
+      res.send(
+        "Admin is running in development mode. See the terminal for the URL."
+      )
+    })
+
+    return app
+  }
 
   if (serve) {
-    let buildPath: string
-
-    // If an outDir is provided we use that, otherwise we default to "build".
-    if (outDir) {
-      buildPath = resolve(process.cwd(), outDir)
-    } else {
-      buildPath = resolve(process.cwd(), "build")
-    }
+    const buildPath: string = resolve(process.cwd(), outDir || "build")
 
     const htmlPath = resolve(buildPath, "index.html")
 
@@ -34,14 +38,8 @@ export default function (_rootDirectory: string, options: PluginOptions) {
     const indexExists = fse.existsSync(htmlPath)
 
     if (!indexExists) {
-      reporter.panic(
-        new Error(
-          `Could not find the admin UI build files. Please run ${colors.bold(
-            "`medusa-admin build`"
-          )} or enable ${colors.bold(
-            `autoRebuild`
-          )} in the plugin options to build the admin UI.`
-        )
+      logger.panic(
+        `Could not find the admin UI build files. Please run "medusa-admin build" or enable "autoRebuild" in the plugin options to build the admin UI.`
       )
     }
 
@@ -58,16 +56,16 @@ export default function (_rootDirectory: string, options: PluginOptions) {
       res.setHeader("Vary", "Origin, Cache-Control")
     }
 
-    app.get(`/${path}`, sendHtml)
+    app.get(`${path}`, sendHtml)
     app.use(
-      `/${path}`,
+      `${path}`,
       express.static(buildPath, {
         setHeaders: setStaticHeaders,
       })
     )
-    app.get(`/${path}/*`, sendHtml)
+    app.get(`${path}/*`, sendHtml)
   } else {
-    app.get(`/${path}`, (_req, res) => {
+    app.get(`${path}`, (_req, res) => {
       res.send("Admin not enabled")
     })
   }

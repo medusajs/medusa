@@ -14,17 +14,14 @@ const LearningPathIcon: React.FC<LearningPathIconProps> = ({
   return (
     <div
       className={clsx(
-        "tw-rounded-full tw-shadow-card-rest dark:tw-shadow-card-rest-dark tw-w-3 tw-h-3 tw-bg-button-neutral dark:tw-bg-button-neutral-dark",
-        "tw-flex tw-justify-center tw-items-center tw-flex-none",
+        "rounded-full shadow-card-rest dark:shadow-card-rest-dark w-3 h-3 bg-docs-button-neutral dark:bg-docs-button-neutral-dark",
+        "flex justify-center items-center flex-none",
         className
       )}
     >
       <img
         src={useBaseUrl("/img/learning-path-img.png")}
-        className={clsx(
-          "tw-rounded-full tw-w-[40px] tw-h-[40px] no-zoom-img",
-          imgClassName
-        )}
+        className={clsx("rounded-full w-2.5 h-2.5 no-zoom-img", imgClassName)}
       />
     </div>
   )

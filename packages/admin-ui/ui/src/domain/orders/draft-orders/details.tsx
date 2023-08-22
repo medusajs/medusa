@@ -13,6 +13,7 @@ import Avatar from "../../../components/atoms/avatar"
 import BackButton from "../../../components/atoms/back-button"
 import CopyToClipboard from "../../../components/atoms/copy-to-clipboard"
 import Spinner from "../../../components/atoms/spinner"
+import WidgetContainer from "../../../components/extensions/widget-container"
 import Button from "../../../components/fundamentals/button"
 import DetailsIcon from "../../../components/fundamentals/details-icon"
 import DollarSignIcon from "../../../components/fundamentals/icons/dollar-sign-icon"
@@ -24,6 +25,7 @@ import ConfirmationPrompt from "../../../components/organisms/confirmation-promp
 import DeletePrompt from "../../../components/organisms/delete-prompt"
 import { AddressType } from "../../../components/templates/address-form"
 import useNotification from "../../../hooks/use-notification"
+import { useWidgets } from "../../../providers/widget-provider"
 import { isoAlpha2Countries } from "../../../utils/countries"
 import { getErrorMessage } from "../../../utils/error-messages"
 import extractCustomerName from "../../../utils/extract-customer-name"
@@ -119,6 +121,11 @@ const DraftOrderDetails = () => {
     })
   }
 
+  const { getWidgets } = useWidgets()
+
+  const afterWidgets = getWidgets("draft_order.details.after")
+  const beforeWidgets = getWidgets("draft_order.details.before")
+
   const { cart } = draft_order || {}
   const { region } = cart || {}
 
@@ -136,6 +143,21 @@ const DraftOrderDetails = () => {
       ) : (
         <div className="flex space-x-4">
           <div className="flex h-full w-full flex-col">
+            {beforeWidgets?.length > 0 && (
+              <div className="mb-4 flex w-full flex-col gap-y-4">
+                {beforeWidgets.map((w, i) => {
+                  return (
+                    <WidgetContainer
+                      key={i}
+                      widget={w}
+                      injectionZone="draft_order.details.before"
+                      entity={draft_order}
+                    />
+                  )
+                })}
+              </div>
+            )}
+
             <BodyCard
               className={"mb-4 min-h-[200px] w-full"}
               title={`Order #${draft_order.display_id}`}
@@ -359,6 +381,20 @@ const DraftOrderDetails = () => {
                 </div>
               </div>
             </BodyCard>
+            {afterWidgets?.length > 0 && (
+              <div className="mb-4 flex w-full flex-col gap-y-4">
+                {afterWidgets.map((w, i) => {
+                  return (
+                    <WidgetContainer
+                      key={i}
+                      widget={w}
+                      injectionZone="draft_order.details.after"
+                      entity={draft_order}
+                    />
+                  )
+                })}
+              </div>
+            )}
             <BodyCard
               className={"mb-4 h-auto min-h-0 w-full pt-[15px]"}
               title="Raw Draft Order"

@@ -26,7 +26,7 @@ import RegionService from "../../../../services/region"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/regions/{id}' \
+ *       curl '{backend_url}/admin/regions/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

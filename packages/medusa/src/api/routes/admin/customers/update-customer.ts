@@ -48,7 +48,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/customers/{id}' \
+ *       curl -X POST '{backend_url}/admin/customers/{id}' \
  *       -H 'Authorization: Bearer {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
@@ -130,7 +130,7 @@ class Group {
  * properties:
  *   email:
  *     type: string
- *     description: The Customer's email.
+ *     description: The Customer's email. You can't update the email of a registered customer.
  *     format: email
  *   first_name:
  *     type: string

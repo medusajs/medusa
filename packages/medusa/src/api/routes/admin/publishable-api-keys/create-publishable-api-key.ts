@@ -33,7 +33,7 @@ import PublishableApiKeyService from "../../../../services/publishable-api-key"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/publishable-api-keys' \
+ *       curl -X POST '{backend_url}/admin/publishable-api-keys' \
  *       -H 'Authorization: Bearer {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
