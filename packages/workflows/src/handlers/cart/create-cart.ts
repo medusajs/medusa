@@ -20,7 +20,7 @@ export async function createCart({
 }: WorkflowArguments): Promise<HandlerOutputData> {
   const cartService = container.resolve("cartService")
   
-  return await cartService.createOnlyCart(data)
+  return await cartService.createCartFromData(data)
 }
 
 createCart.aliases = Aliases

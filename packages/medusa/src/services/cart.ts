@@ -445,7 +445,7 @@ class CartService extends TransactionBaseService {
     )
   }
 
-  async createOnlyCart(data: CartCreateProps): Promise<Cart> {
+  async createCartFromData(data: CartCreateProps): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cartRepo = transactionManager.withRepository(this.cartRepository_)
