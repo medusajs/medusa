@@ -40,9 +40,12 @@ type SearchHitWrapperProps = {
   configureProps: ConfigureProps
 }
 
+type IndexResults = {
+  [k: string]: boolean
+}
+
 const SearchHitsWrapper = ({ configureProps }: SearchHitWrapperProps) => {
   const { status } = useInstantSearch()
-  const [nbNoResults, setNbNoResults] = useState(0)
   const indices = useMemo(
     () => [
       process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME || "temp",
@@ -50,20 +53,19 @@ const SearchHitsWrapper = ({ configureProps }: SearchHitWrapperProps) => {
     ],
     []
   )
+  const [hasNoResults, setHashNoResults] = useState<IndexResults>({
+    [indices[0]]: false,
+    [indices[1]]: false,
+  })
   const showNoResults = useMemo(() => {
-    return nbNoResults === indices.length
-  }, [nbNoResults, indices])
+    return Object.values(hasNoResults).every((value) => value === true)
+  }, [hasNoResults])
 
-  const incrementNoResults = useCallback(() => {
-    setNbNoResults((prev) => {
-      return prev >= indices.length ? indices.length : prev + 1
-    })
-  }, [indices])
-
-  const decrementNoResults = () => {
-    setNbNoResults((prev) => {
-      return prev <= 0 ? 0 : prev - 1
-    })
+  const setNoResults = (index: string, value: boolean) => {
+    setHashNoResults((prev: IndexResults) => ({
+      ...prev,
+      [index]: value,
+    }))
   }
 
   return (
@@ -71,10 +73,7 @@ const SearchHitsWrapper = ({ configureProps }: SearchHitWrapperProps) => {
       {status !== "loading" && showNoResults && <SearchNoResult />}
       {indices.map((indexName, index) => (
         <Index indexName={indexName} key={index}>
-          <SearchHits
-            incrementNoResults={incrementNoResults}
-            decrementNoResults={decrementNoResults}
-          />
+          <SearchHits indexName={indexName} setNoResults={setNoResults} />
           <Configure {...configureProps} />
         </Index>
       ))}
@@ -83,14 +82,11 @@ const SearchHitsWrapper = ({ configureProps }: SearchHitWrapperProps) => {
 }
 
 type SearchHitsProps = {
-  incrementNoResults: () => void
-  decrementNoResults: () => void
+  indexName: string
+  setNoResults: (index: string, value: boolean) => void
 }
 
-const SearchHits = ({
-  incrementNoResults,
-  decrementNoResults,
-}: SearchHitsProps) => {
+const SearchHits = ({ indexName, setNoResults }: SearchHitsProps) => {
   const { hits } = useHits<HitType>()
   const { status } = useInstantSearch()
 
@@ -111,11 +107,7 @@ const SearchHits = ({
 
   useEffect(() => {
     if (status !== "loading") {
-      if (!hits.length) {
-        incrementNoResults()
-      } else {
-        decrementNoResults()
-      }
+      setNoResults(indexName, hits.length === 0)
     }
   }, [hits, status])
 

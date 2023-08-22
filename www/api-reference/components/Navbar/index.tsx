@@ -42,7 +42,7 @@ const Navbar = () => {
           </div>
         </div>
         <div className="hidden min-w-0 flex-1 items-center justify-end gap-0.5 lg:flex">
-          <div className="w-[240px] [&>*]:flex-1">
+          <div>
             <SearchModalOpener />
           </div>
           <NavbarColorModeToggle />
