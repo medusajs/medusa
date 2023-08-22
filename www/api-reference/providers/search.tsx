@@ -5,7 +5,7 @@ import SearchModal from "../components/Search/Modal"
 
 type SearchContextType = {
   isOpen: boolean
-  setIsOpen: (value: boolean) => void
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   defaultFilters: string[]
   setDefaultFilters: (value: string[]) => void
 }

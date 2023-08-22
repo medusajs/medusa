@@ -3,7 +3,7 @@
 import clsx from "clsx"
 import IconMagnifyingGlass from "../../Icons/MagnifyingGlass"
 import InputText from "../../Input/Text"
-import { MouseEvent, useMemo } from "react"
+import { MouseEvent, useEffect, useMemo } from "react"
 import Kbd from "../../MDXComponents/Kbd"
 import { useSearch } from "../../../providers/search"
 import { useMobile } from "../../../providers/mobile"
@@ -29,6 +29,36 @@ const SearchModalOpener = () => {
     }
     setIsOpen(true)
   }
+
+  useEffect(() => {
+    function isEditingContent(event: KeyboardEvent) {
+      const element = event.target as HTMLElement
+      const tagName = element.tagName
+      return (
+        element.isContentEditable ||
+        tagName === "INPUT" ||
+        tagName === "SELECT" ||
+        tagName === "TEXTAREA"
+      )
+    }
+
+    function sidebarShortcut(e: KeyboardEvent) {
+      if (
+        (e.metaKey || e.ctrlKey) &&
+        e.key.toLowerCase() === "k" &&
+        !isEditingContent(e)
+      ) {
+        e.preventDefault()
+        setIsOpen((prev) => !prev)
+      }
+    }
+
+    window.addEventListener("keydown", sidebarShortcut)
+
+    return () => {
+      window.removeEventListener("keydown", sidebarShortcut)
+    }
+  }, [])
 
   return (
     <>
