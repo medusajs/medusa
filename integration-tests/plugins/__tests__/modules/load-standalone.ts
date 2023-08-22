@@ -17,7 +17,7 @@ describe("Standalone Modules", () => {
     process.env.POSTGRES_URL = undefined
   })
 
-  it("Should migrate database an initialize Product module using connection string from enviroment variable ", async function () {
+  it("Should migrate database and initialize Product module using connection string from environment variable ", async function () {
     const { initialize, runMigrations } = require("@medusajs/product")
     await runMigrations()
 
