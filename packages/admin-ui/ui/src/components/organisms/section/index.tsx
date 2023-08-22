@@ -5,6 +5,7 @@ import Actionables, { ActionType } from "../../molecules/actionables"
 type SectionProps = {
   children?: React.ReactNode
   title?: string
+  title_ar?: string
   actions?: ActionType[]
   customActions?: React.ReactNode
   forceDropdown?: boolean
@@ -14,6 +15,7 @@ type SectionProps = {
 
 const Section = ({
   title,
+  title_ar,
   actions,
   customActions,
   forceDropdown = false,
@@ -34,6 +36,9 @@ const Section = ({
         <div className="flex items-center justify-between">
           {title && (
             <h1 className="text-grey-90 inter-xlarge-semibold">{title}</h1>
+          )}
+          {title_ar && (
+            <h1 className="text-grey-90 inter-xlarge-semibold text-right">{title_ar}</h1>
           )}
           <div className="flex items-center gap-x-2">
             {customActions && customActions}

@@ -28,7 +28,7 @@ const ProductsReviewsTable = () => {
     queryObject,
     representationObject,
   } = useCustomerFilters(location.search, defaultQueryProps)
-
+ 
   const offs = parseInt(queryObject.offset) || 0
   const lim = parseInt(queryObject.limit) || DEFAULT_PAGE_SIZE
 

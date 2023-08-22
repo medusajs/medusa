@@ -11,7 +11,7 @@ export const useProductReviewsColumns = () => {
       },
       {
         Header: "Product",
-        accessor: "product_id",
+        accessor: "product",
         // Cell: ({ row }) => (
         //   <CustomerAvatarItem
         //     customer={row.original}

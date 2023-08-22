@@ -71,7 +71,7 @@ const ProductGeneralSection = ({ product }: Props) => {
   return (
     <>
       <Section
-        title={product.title + "  " + product.title_ar}
+        title={product.title}
         actions={actions}
         forceDropdown
         status={
@@ -84,7 +84,7 @@ const ProductGeneralSection = ({ product }: Props) => {
         }
       >
         <p
-          className="inter-base-regular text-grey-50 mt-2 whitespace-pre-wrap"
+          className="inter-base-regular text-grey-50 mt-2 whitespace-pre-wrap text-right"
           dangerouslySetInnerHTML={{ __html: product.description_ar as string }}
         ></p>
         <br />
