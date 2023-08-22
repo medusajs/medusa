@@ -37,6 +37,14 @@ class ReturnReasonService extends TransactionBaseService {
         }
       }
 
+      const query = buildQuery({ value: data.value })
+      const existing = await rrRepo.findOne({ ...query, withDeleted: true })
+
+      if (existing?.deleted_at) {
+        await rrRepo.restore({ id: existing.id })
+        return await this.update(existing.id, data)
+      }
+
       const created = rrRepo.create(data)
 
       return await rrRepo.save(created)
