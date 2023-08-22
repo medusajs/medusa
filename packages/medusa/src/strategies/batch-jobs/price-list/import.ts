@@ -21,6 +21,8 @@ import {
   TBuiltPriceListImportLine,
   TParsedPriceListImportRowData,
 } from "./types"
+import { BatchJob } from "../../../models"
+import { TParsedProductImportRowData } from "../product/types"
 
 /*
  * Default strategy class used for a batch import of products/variants.
@@ -298,7 +300,7 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
 
       // Upload new prices for price list
       const priceImportOperations = await this.downloadImportOpsFile(
-        batchJobId,
+        batchJob,
         OperationType.PricesCreate
       )
 
@@ -328,14 +330,16 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
    */
   protected async uploadImportOpsFile(
     batchJobId: string,
-    results: Record<OperationType, PriceListImportOperation[]>
+    results: Record<OperationType, TParsedProductImportRowData[]>
   ): Promise<void> {
     const uploadPromises: Promise<void>[] = []
     const transactionManager = this.transactionManager_ ?? this.manager_
 
+    const files: Record<string, string> = {}
+
     for (const op in results) {
       if (results[op]?.length) {
-        const { writeStream, promise } = await this.fileService_
+        const { writeStream, fileKey, promise } = await this.fileService_
           .withTransaction(transactionManager)
           .getUploadStreamDescriptor({
             name: PriceListImportStrategy.buildFilename(batchJobId, op),
@@ -344,33 +348,38 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
 
         uploadPromises.push(promise)
 
+        files[op] = fileKey
         writeStream.write(JSON.stringify(results[op]))
         writeStream.end()
       }
     }
 
+    await this.batchJobService_
+      .withTransaction(transactionManager)
+      .update(batchJobId, {
+        result: { files },
+      })
+
     await Promise.all(uploadPromises)
   }
 
   /**
-   * Remove parsed ops JSON file.
+   * Download parsed ops JSON file.
    *
-   * @param batchJobId - An id of the current batch job being processed.
+   * @param batchJob - the current batch job being processed
    * @param op - Type of import operation.
    */
   protected async downloadImportOpsFile(
-    batchJobId: string,
+    batchJob: BatchJob,
     op: OperationType
-  ): Promise<PriceListImportOperation[]> {
+  ): Promise<TParsedProductImportRowData[]> {
     let data = ""
     const transactionManager = this.transactionManager_ ?? this.manager_
 
     const readableStream = await this.fileService_
       .withTransaction(transactionManager)
       .getDownloadStream({
-        fileKey: PriceListImportStrategy.buildFilename(batchJobId, op, {
-          appendExt: ".json",
-        }),
+        fileKey: batchJob.result.files![op],
       })
 
     return await new Promise((resolve) => {
@@ -382,7 +391,7 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
       })
       readableStream.on("error", () => {
         // TODO: maybe should throw
-        resolve([] as PriceListImportOperation[])
+        resolve([] as TParsedProductImportRowData[])
       })
     })
   }
@@ -390,18 +399,16 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
   /**
    * Delete parsed CSV ops files.
    *
-   * @param batchJobId - An id of the current batch job being processed.
+   * @param batchJob - the current batch job being processed
    */
-  protected async deleteOpsFiles(batchJobId: string): Promise<void> {
+  protected async deleteOpsFiles(batchJob: BatchJob): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
 
     const fileServiceTx = this.fileService_.withTransaction(transactionManager)
-    for (const op of Object.values(OperationType)) {
+    for (const fileName of Object.values(batchJob.result.files!)) {
       try {
         await fileServiceTx.delete({
-          fileKey: PriceListImportStrategy.buildFilename(batchJobId, op, {
-            appendExt: ".json",
-          }),
+          fileKey: fileName,
         })
       } catch (e) {
         // noop
@@ -432,7 +439,7 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
       .withTransaction(transactionManager)
       .delete({ fileKey })
 
-    await this.deleteOpsFiles(batchJob.id)
+    await this.deleteOpsFiles(batchJob)
   }
 
   private static buildFilename(

@@ -720,7 +720,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   }
 
   /**
-   * Remove parsed ops JSON file.
+   * Download parsed ops JSON file.
    *
    * @param batchJob - the current batch job being processed
    * @param op - Type of import operation.
