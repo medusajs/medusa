@@ -27,6 +27,8 @@ const SearchProvider = ({ children }: SearchProviderProps) => {
       resultFilter = "user-guide"
     } else if (currentPath.startsWith("/references")) {
       resultFilter = "reference"
+    } else if (currentPath.startsWith("/plugins")) {
+      resultFilter = "plugins"
     } else {
       resultFilter = "docs"
     }

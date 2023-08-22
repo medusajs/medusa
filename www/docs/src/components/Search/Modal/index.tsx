@@ -72,6 +72,10 @@ const SearchModal = () => {
         label: "User Guide",
       },
       {
+        value: "plugins",
+        label: "Plugins",
+      },
+      {
         value: "reference",
         label: "References",
       },
