@@ -282,7 +282,7 @@
   }
 
   .btn-clear {
-    @apply bg-transparent shadow-none border-0 outline-none;
+    @apply bg-transparent shadow-none border-0 outline-none cursor-pointer;
   }
 }
 

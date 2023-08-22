@@ -1,10 +1,10 @@
-import type IconProps from "../types"
+import React from "react"
+import { IconProps } from ".."
 
-const IconEllipseMiniSolid = ({
+const IconEllipseMiniSolid: React.FC<IconProps> = ({
   iconColorClassName,
-  containerClassName,
   ...props
-}: IconProps) => {
+}) => {
   return (
     <svg
       width={props.width || 20}
@@ -12,7 +12,6 @@ const IconEllipseMiniSolid = ({
       viewBox="0 0 20 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={containerClassName}
       {...props}
     >
       <circle

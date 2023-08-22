@@ -20,6 +20,7 @@ import SidebarProvider from "@site/src/providers/Sidebar"
 import NotificationProvider from "@site/src/providers/NotificationProvider"
 import UserProvider from "@site/src/providers/User"
 import ModalProvider from "../../providers/Modal"
+import SearchProvider from "../../providers/Search"
 
 function DocPageMetadata(props: Props): JSX.Element {
   const { versionMetadata } = props
@@ -67,9 +68,7 @@ export default function DocPage(props: Props): JSX.Element {
               <LearningPathProvider>
                 <SidebarProvider sidebarName={sidebarName}>
                   <NotificationProvider>
-                    <ModalProvider>
-                      <DocPageLayout>{docElement}</DocPageLayout>
-                    </ModalProvider>
+                    <DocPageLayout>{docElement}</DocPageLayout>
                   </NotificationProvider>
                 </SidebarProvider>
               </LearningPathProvider>

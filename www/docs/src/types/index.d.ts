@@ -154,6 +154,14 @@ declare module "@medusajs/docs" {
       magicComments: MagicCommentConfig[]
     }
     mobileLogo: NavbarLogo
+    algoliaConfig?: {
+      apiKey: string
+      indexNames: {
+        docs: string
+        api: string
+      }
+      appId: string
+    }
   } & DocusaurusThemeConfig
 
   export declare type MedusaDocusaurusConfig = {

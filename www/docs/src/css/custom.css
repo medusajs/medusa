@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  mark {
+    @apply bg-medusa-tag-orange-bg dark:bg-medusa-tag-orange-bg-dark;
+    @apply text-medusa-tag-orange-text dark:text-medusa-tag-orange-text-dark;
+  }
+}
+
 @layer components {
   .sidebar-title {
     @apply !m-0 !py-1 !px-0;
@@ -155,8 +162,8 @@
     @apply w-2 h-2 flex justify-center items-center cursor-pointer;
   }
 
-  .transparent-button {
-    @apply bg-transparent border-0 text-inherit cursor-pointer p-0;
+  .btn-clear {
+    @apply bg-transparent shadow-none border-0 outline-none cursor-pointer;
   }
 }
 
@@ -169,7 +176,7 @@
 @import url('./_variables.css');
 
 @import url('./_docusaurus.css');
-@import url('./components/docsearch.css');
+/* @import url('./components/docsearch.css'); */
 @import url('./components/sidebar.css');
 @import url('./components/toc.css');
 @import url('./components/tooltip.css');

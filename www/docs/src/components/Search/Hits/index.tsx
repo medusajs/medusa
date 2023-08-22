@@ -1,5 +1,5 @@
+import React, { useCallback } from "react"
 import clsx from "clsx"
-import Link from "next/link"
 import { Fragment, useEffect, useMemo, useState } from "react"
 import {
   Configure,
@@ -10,9 +10,12 @@ import {
   useInstantSearch,
 } from "react-instantsearch"
 import BorderedIcon from "../../BorderedIcon"
-import IconDocumentTextSolid from "../../Icons/DocumentTextSolid"
-import IconArrowDownLeftMini from "../../Icons/ArrowDownLeftMini"
 import SearchNoResult from "../NoResults"
+import Link from "@docusaurus/Link"
+import IconDocumentTextSolid from "../../../theme/Icon/DocumentTextSolid"
+import IconArrowDownLeftMini from "../../../theme/Icon/ArrowDownLeftMini"
+import { useThemeConfig } from "@docusaurus/theme-common"
+import { ThemeConfig } from "@medusajs/docs"
 
 type Hierarchy = "lvl0" | "lvl1" | "lvl2" | "lvl3" | "lvl4" | "lvl5"
 
@@ -48,13 +51,8 @@ type IndexResults = {
 
 const SearchHitsWrapper = ({ configureProps }: SearchHitWrapperProps) => {
   const { status } = useInstantSearch()
-  const indices = useMemo(
-    () => [
-      process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME || "temp",
-      process.env.NEXT_PUBLIC_DOCS_ALGOLIA_INDEX_NAME || "temp",
-    ],
-    []
-  )
+  const { algoliaConfig: algolia } = useThemeConfig() as ThemeConfig
+  const indices = useMemo(() => Object.values(algolia.indexNames), [])
   const [hasNoResults, setHashNoResults] = useState<IndexResults>({
     [indices[0]]: false,
     [indices[1]]: false,
@@ -129,7 +127,7 @@ const SearchHits = ({ indexName, setNoResults }: SearchHitsProps) => {
             className={clsx(
               "py-0.75 z-[5] block px-1.5 uppercase",
               "text-medusa-fg-muted dark:text-medusa-fg-muted-dark",
-              "border-medusa-border-base dark:border-medusa-border-base-dark border-b",
+              "border-medusa-border-base dark:border-medusa-border-base-dark border-solid border-0 border-b",
               "text-compact-x-small-plus sticky top-0 w-full",
               "bg-medusa-bg-base dark:bg-medusa-bg-base-dark"
             )}
@@ -140,7 +138,7 @@ const SearchHits = ({ indexName, setNoResults }: SearchHitsProps) => {
             <div
               className={clsx(
                 "hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark",
-                "border-medusa-border-base dark:border-medusa-border-base-dark relative w-full border-b",
+                "border-medusa-border-base dark:border-medusa-border-base-dark relative w-full border-solid border-0 border-b",
                 "group"
               )}
               key={index}
@@ -194,7 +192,8 @@ const SearchHits = ({ indexName, setNoResults }: SearchHitsProps) => {
                   className={clsx(
                     "bg-medusa-bg-base dark:bg-medusa-bg-base-dark",
                     "p-0.125 invisible rounded group-hover:!visible",
-                    "border-medusa-border-strong dark:border-medusa-border-strong-dark border"
+                    "border-medusa-border-strong dark:border-medusa-border-strong-dark border-solid border",
+                    "flex"
                   )}
                 >
                   <IconArrowDownLeftMini iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />

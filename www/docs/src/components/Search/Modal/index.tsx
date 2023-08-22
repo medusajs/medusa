@@ -2,48 +2,57 @@
 
 import React, { useEffect, useMemo, useState } from "react"
 import algoliasearch, { SearchClient } from "algoliasearch/lite"
-import { InstantSearch, SearchBox, Configure } from "react-instantsearch"
+import { InstantSearch, SearchBox } from "react-instantsearch"
 import Modal from "../../Modal"
 import clsx from "clsx"
-import IconMagnifyingGlass from "../../Icons/MagnifyingGlass"
 import Select, { OptionType } from "../../Select"
-import IconXMark from "../../Icons/XMark"
 import SearchEmptyQueryBoundary from "../EmptyQueryBoundary"
 import SearchSuggestions from "../Suggestions"
-import { useSearch } from "../../../providers/search"
-import checkArraySameElms from "../../../utils/array-same-elms"
 import SearchHitsWrapper from "../Hits"
 import Button from "../../Button"
-
-const algoliaClient = algoliasearch(
-  process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || "temp",
-  process.env.NEXT_PUBLIC_ALGOLIA_API_KEY || "temp"
-)
-
-const searchClient: SearchClient = {
-  ...algoliaClient,
-  async search(requests) {
-    if (requests.every(({ params }) => !params?.query)) {
-      return Promise.resolve({
-        results: requests.map(() => ({
-          hits: [],
-          nbHits: 0,
-          nbPages: 0,
-          page: 0,
-          processingTimeMS: 0,
-          hitsPerPage: 0,
-          exhaustiveNbHits: false,
-          query: "",
-          params: "",
-        })),
-      })
-    }
-
-    return algoliaClient.search(requests)
-  },
-}
+import IconMagnifyingGlass from "../../../theme/Icon/MagnifyingGlass"
+import IconXMark from "../../../theme/Icon/XMark"
+import checkArraySameElms from "../../../utils/array-same-elms"
+import { useSearch } from "../../../providers/Search"
+import { useThemeConfig } from "@docusaurus/theme-common"
+import { ThemeConfig } from "@medusajs/docs"
 
 const SearchModal = () => {
+  const { algoliaConfig: algolia } = useThemeConfig() as ThemeConfig
+
+  if (!algolia) {
+    throw new Error("Algolia configuration is not defined")
+  }
+
+  const algoliaClient = useMemo(() => {
+    return algoliasearch(algolia.appId, algolia.apiKey)
+  }, [])
+
+  const searchClient: SearchClient = useMemo(() => {
+    return {
+      ...algoliaClient,
+      async search(requests) {
+        if (requests.every(({ params }) => !params?.query)) {
+          return Promise.resolve({
+            results: requests.map(() => ({
+              hits: [],
+              nbHits: 0,
+              nbPages: 0,
+              page: 0,
+              processingTimeMS: 0,
+              hitsPerPage: 0,
+              exhaustiveNbHits: false,
+              query: "",
+              params: "",
+            })),
+          })
+        }
+
+        return algoliaClient.search(requests)
+      },
+    }
+  }, [])
+
   const options: OptionType[] = useMemo(() => {
     return [
       {
@@ -104,7 +113,7 @@ const SearchModal = () => {
       onClose={() => setIsOpen(false)}
     >
       <InstantSearch
-        indexName={process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME}
+        indexName={algolia.indexNames.docs}
         searchClient={searchClient}
       >
         <div className="flex">
@@ -128,19 +137,20 @@ const SearchModal = () => {
           <SearchBox
             classNames={{
               root: clsx(
-                "h-[56px] w-full rounded-tr relative border-b border-medusa-border-base dark:border-medusa-border-base-dark"
+                "h-[56px] w-full rounded-tr relative",
+                "border-solid border-0 border-b border-medusa-border-base dark:border-medusa-border-base-dark"
               ),
               form: clsx("h-full rounded-tr"),
               input: clsx(
                 "w-full h-full pl-[60px] text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
                 "placeholder:text-medusa-fg-muted dark:placeholder:text-medusa-fg-muted-dark",
-                "rounded-tr text-medium bg-medusa-bg-field dark:bg-medusa-bg-field-dark",
-                "appearance-none search-cancel:hidden active:outline-none focus:outline-none"
+                "md:rounded-tr text-medium bg-medusa-bg-field dark:bg-medusa-bg-field-dark",
+                "appearance-none search-cancel:hidden border-0 active:outline-none focus:outline-none"
               ),
-              submit: clsx("absolute top-[18px] left-1.5"),
+              submit: clsx("absolute top-[18px] left-1.5 btn-clear"),
               reset: clsx(
                 "absolute top-[18px] right-1 hover:bg-medusa-bg-field-hover dark:hover:bg-medusa-bg-field-hover-dark",
-                "p-0.125 rounded"
+                "p-0.125 rounded btn-clear"
               ),
               loadingIndicator: clsx("absolute top-[18px] right-1"),
             }}
@@ -160,8 +170,7 @@ const SearchModal = () => {
             variant="clear"
             className={clsx(
               "bg-medusa-bg-field dark:bg-medusa-bg-field-dark block md:hidden",
-              "border-medusa-border-base dark:border-medusa-border-base-dark border-b",
-              "pr-1"
+              "border-medusa-border-base dark:border-medusa-border-base-dark border-solid border-0 border-b"
             )}
             onClick={() => setIsOpen(false)}
           >

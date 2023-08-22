@@ -1,10 +1,11 @@
+import React from "react"
 import clsx from "clsx"
-import IconChevronUpDown from "../Icons/ChevronUpDown"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import IconCheckMini from "../Icons/CheckMini"
-import IconEllipseMiniSolid from "../Icons/EllipseMiniSolid"
 import Badge from "../Badge"
-import IconXMarkMini from "../Icons/XMarkMini"
+import IconChevronUpDown from "../../theme/Icon/ChevronUpDown"
+import IconCheckMini from "../../theme/Icon/CheckMini"
+import IconEllipseMiniSolid from "../../theme/Icon/EllipseMiniSolid"
+import IconXMarkMini from "../../theme/Icon/XMarkMini"
 
 export type OptionType = {
   value: string
@@ -14,6 +15,7 @@ export type OptionType = {
 }
 
 type SelectProps = {
+  value: string | string[]
   options: OptionType[]
   setSelected?: (value: string | string[]) => void
   addSelected?: (value: string) => void
@@ -21,6 +23,9 @@ type SelectProps = {
   multiple?: boolean
   addAll?: boolean
   showClearButton?: boolean
+  className?: string
+  placeholder?: string
+  name?: string
 } & React.ComponentProps<"input">
 
 const Select = ({
@@ -149,7 +154,7 @@ const Select = ({
     <div
       className={clsx(
         "px-0.75 relative appearance-none py-[9px]",
-        "border-medusa-border-base dark:border-medusa-border-base-dark rounded-sm border",
+        "border-medusa-border-base dark:border-medusa-border-base-dark rounded-sm border border-solid",
         "bg-medusa-bg-field dark:bg-medusa-bg-field-dark shadow-button-neutral dark:shadow-button-neutral-dark",
         "hover:bg-medusa-bg-field-hover dark:hover:bg-medusa-bg-field-hover-dark",
         "active:shadow-active dark:active:shadow-active-dark",

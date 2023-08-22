@@ -3,9 +3,6 @@ require("dotenv").config()
 const fs = require("fs")
 const reverseSidebar = require("./src/utils/reverseSidebar")
 
-const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
-const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
-
 const announcementBar = JSON.parse(fs.readFileSync("./announcement.json"))
 
 /** @type {import('@medusajs/docs').MedusaDocusaurusConfig} */
@@ -46,15 +43,23 @@ const config = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
-    algolia: {
-      apiKey: algoliaApiKey,
-      indexName: "medusa-commerce",
-      placeholder: "Search docs...",
-      appId: algoliaAppId,
-      contextualSearch: false,
-      externalUrlRegex: "https://medusajs.com,https://docs.medusajs.com/api/",
-      searchParameters: {
-        tagFilters: "-reference",
+    // algolia: {
+    //   apiKey: algoliaApiKey,
+    //   indexName: "medusa-commerce",
+    //   placeholder: "Search docs...",
+    //   appId: algoliaAppId,
+    //   contextualSearch: false,
+    //   externalUrlRegex: "https://medusajs.com,https://docs.medusajs.com/api/",
+    //   searchParameters: {
+    //     tagFilters: "-reference",
+    //   },
+    // },
+    algoliaConfig: {
+      appId: process.env.ALGOLIA_APP_ID || "temp",
+      apiKey: process.env.ALGOLIA_API_KEY || "temp",
+      indexNames: {
+        docs: process.env.NEXT_PUBLIC_DOCS_ALGOLIA_INDEX_NAME,
+        api: process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME,
       },
     },
     prism: {
