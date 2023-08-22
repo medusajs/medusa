@@ -12,6 +12,7 @@ export type ModalProps = {
   modalContainerClassName?: string
   contentClassName?: string
   onClose?: React.ReactEventHandler<HTMLDialogElement>
+  open?: boolean
 } & React.ComponentProps<"dialog">
 
 const Modal = ({
@@ -22,6 +23,7 @@ const Modal = ({
   contentClassName,
   modalContainerClassName,
   onClose,
+  open = true,
   ...props
 }: ModalProps) => {
   const { closeModal } = useModal()
@@ -52,6 +54,7 @@ const Modal = ({
       onClick={handleClick}
       ref={dialogRef}
       onClose={handleClose}
+      open={open}
     >
       <div
         className={clsx(
@@ -63,12 +66,7 @@ const Modal = ({
         )}
       >
         {title && <ModalHeader title={title} />}
-        <div
-          className={clsx(
-            "overflow-auto py-1.5 px-2 lg:max-h-[400px] lg:min-h-[400px]",
-            contentClassName
-          )}
-        >
+        <div className={clsx("overflow-auto py-1.5 px-2", contentClassName)}>
           {children}
         </div>
         {actions && actions?.length > 0 && <ModalFooter actions={actions} />}

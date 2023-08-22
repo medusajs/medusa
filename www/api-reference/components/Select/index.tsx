@@ -151,7 +151,7 @@ const Select = ({
         "px-0.75 relative appearance-none py-[9px]",
         "border-medusa-border-base dark:border-medusa-border-base-dark rounded-sm border",
         "bg-medusa-bg-field dark:bg-medusa-bg-field-dark shadow-button-neutral dark:shadow-button-neutral-dark",
-        "hover:bg-medusa-bg-field-hover dark:bg-medusa-bg-field-hover-dark",
+        "hover:bg-medusa-bg-field-hover dark:hover:bg-medusa-bg-field-hover-dark",
         "active:shadow-active dark:active:shadow-active-dark",
         "focus:shadow-active dark:focus:shadow-active-dark",
         "text-medusa-fg-base dark:text-medusa-fg-base-dark text-compact-medium",

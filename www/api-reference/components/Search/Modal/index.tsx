@@ -96,7 +96,9 @@ const SearchModal = () => {
 
   return (
     <Modal
-      contentClassName={"!p-0 overflow-hidden relative h-full md:h-[400px]"}
+      contentClassName={clsx(
+        "!p-0 overflow-hidden relative h-full md:h-[400px] lg:max-h-[400px] lg:min-h-[400px]"
+      )}
       modalContainerClassName="w-screen h-screen"
       open={isOpen}
       onClose={() => setIsOpen(false)}
@@ -119,7 +121,9 @@ const SearchModal = () => {
             }
             showClearButton={false}
             placeholder="Filters"
-            className="h-[56px] basis-1/3 rounded-b-none rounded-tr-none border-t-0 border-l-0 shadow-none"
+            className={clsx(
+              "h-[56px] basis-1/3 rounded-b-none rounded-tr-none border-t-0 border-l-0 !shadow-none"
+            )}
           />
           <SearchBox
             classNames={{
@@ -135,7 +139,7 @@ const SearchModal = () => {
               ),
               submit: clsx("absolute top-[18px] left-1.5"),
               reset: clsx(
-                "absolute top-[18px] right-1 hover:bg-medusa-bg-field-hover dark:bg-medusa-bg-field-hover-dark",
+                "absolute top-[18px] right-1 hover:bg-medusa-bg-field-hover dark:hover:bg-medusa-bg-field-hover-dark",
                 "p-0.125 rounded"
               ),
               loadingIndicator: clsx("absolute top-[18px] right-1"),

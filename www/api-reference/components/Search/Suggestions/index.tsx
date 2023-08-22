@@ -1,6 +1,7 @@
 import clsx from "clsx"
 import Badge from "../../Badge"
 import { useInstantSearch } from "react-instantsearch"
+import Button from "../../Button"
 
 const SearchSuggestions = () => {
   const { setIndexUiState } = useInstantSearch()
@@ -13,22 +14,35 @@ const SearchSuggestions = () => {
   ]
   return (
     <div className="p-1">
-      <span className="text-medium-plus mb-1 block">Search suggestions</span>
+      <span
+        className={clsx(
+          "text-medium-plus mb-1 block",
+          "text-medusa-fg-base dark:text-medusa-fg-base-dark"
+        )}
+      >
+        Search suggestions
+      </span>
       <div className={clsx("flex flex-wrap gap-1")}>
         {suggestions.map((suggestion, index) => (
-          <button
+          <Button
             onClick={() =>
               setIndexUiState({
                 query: suggestion,
               })
             }
-            className="btn-clear"
+            variant="clear"
             key={index}
           >
-            <Badge variant="neutral" className="text-small-plus cursor-pointer">
+            <Badge
+              variant="neutral"
+              className={clsx(
+                "text-small-plus cursor-pointer",
+                "hover:bg-medusa-tag-neutral-bg-hover dark:hover:bg-medusa-tag-neutral-bg-hover-dark"
+              )}
+            >
               {suggestion}
             </Badge>
-          </button>
+          </Button>
         ))}
       </div>
     </div>

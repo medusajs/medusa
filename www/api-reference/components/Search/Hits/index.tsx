@@ -1,6 +1,6 @@
 import clsx from "clsx"
 import Link from "next/link"
-import { Fragment, useCallback, useEffect, useMemo, useState } from "react"
+import { Fragment, useEffect, useMemo, useState } from "react"
 import {
   Configure,
   ConfigureProps,
@@ -106,7 +106,7 @@ const SearchHits = ({ indexName, setNoResults }: SearchHitsProps) => {
   }, [hits])
 
   useEffect(() => {
-    if (status !== "loading") {
+    if (status !== "loading" && status !== "stalled") {
       setNoResults(indexName, hits.length === 0)
     }
   }, [hits, status])
@@ -119,7 +119,7 @@ const SearchHits = ({ indexName, setNoResults }: SearchHitsProps) => {
             className={clsx(
               "py-0.75 z-[5] block px-1.5 uppercase",
               "text-medusa-fg-muted dark:text-medusa-fg-muted-dark",
-              "border-medusa-border-base dark:border-medusa-border-base border-b",
+              "border-medusa-border-base dark:border-medusa-border-base-dark border-b",
               "text-compact-x-small-plus sticky top-0 w-full",
               "bg-medusa-bg-base dark:bg-medusa-bg-base-dark"
             )}
@@ -129,8 +129,8 @@ const SearchHits = ({ indexName, setNoResults }: SearchHitsProps) => {
           {grouped[groupName].map((item, index) => (
             <div
               className={clsx(
-                "hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover",
-                "border-medusa-border-base dark:border-medusa-border-base relative w-full border-b",
+                "hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark",
+                "border-medusa-border-base dark:border-medusa-border-base-dark relative w-full border-b",
                 "group"
               )}
               key={index}

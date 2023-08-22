@@ -52,7 +52,8 @@
   }
 
   mark {
-    @apply bg-medusa-tag-orange-bg;
+    @apply bg-medusa-tag-orange-bg dark:bg-medusa-tag-orange-bg-dark;
+    @apply text-medusa-tag-orange-text dark:text-medusa-tag-orange-text-dark;
   }
 }
 
@@ -286,4 +287,3 @@
 }
 
 @import url('./tooltip.css');
-@import url('./docsearch.css');

@@ -7,6 +7,7 @@ import { MouseEvent, useEffect, useMemo } from "react"
 import Kbd from "../../MDXComponents/Kbd"
 import { useSearch } from "../../../providers/search"
 import { useMobile } from "../../../providers/mobile"
+import Button from "../../Button"
 
 const SearchModalOpener = () => {
   const { setIsOpen } = useSearch()
@@ -63,9 +64,9 @@ const SearchModalOpener = () => {
   return (
     <>
       {isMobile && (
-        <button className="btn-clear" onClick={handleOpen}>
+        <Button variant="clear" onClick={handleOpen}>
           <IconMagnifyingGlass iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark" />
-        </button>
+        </Button>
       )}
       {!isMobile && (
         <div
