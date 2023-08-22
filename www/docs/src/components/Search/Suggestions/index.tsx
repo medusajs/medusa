@@ -8,7 +8,7 @@ const SearchSuggestions = () => {
   const { setIndexUiState } = useInstantSearch()
   const suggestions = {
     gettingStarted: [
-      "Create Medusa project",
+      "Install Medusa with create-medusa-app",
       "Next.js quickstart",
       "Admin dashboard quickstart",
       "Commerce features",

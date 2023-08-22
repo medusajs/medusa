@@ -3,11 +3,12 @@
 import clsx from "clsx"
 import IconMagnifyingGlass from "../../Icons/MagnifyingGlass"
 import InputText from "../../Input/Text"
-import { MouseEvent, useEffect, useMemo } from "react"
+import { MouseEvent, useCallback, useEffect, useMemo } from "react"
 import Kbd from "../../MDXComponents/Kbd"
 import { useSearch } from "../../../providers/search"
 import { useMobile } from "../../../providers/mobile"
 import Button from "../../Button"
+import { usePageLoading } from "../../../providers/page-loading"
 
 const SearchModalOpener = () => {
   const { setIsOpen } = useSearch()
@@ -17,6 +18,7 @@ const SearchModalOpener = () => {
       ? navigator.userAgent.toLowerCase().indexOf("mac") !== 0
       : true
   }, [])
+  const { isLoading } = usePageLoading()
 
   const handleOpen = (
     e:
@@ -24,6 +26,9 @@ const SearchModalOpener = () => {
       | MouseEvent<HTMLInputElement, globalThis.MouseEvent>
       | MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => {
+    if (isLoading) {
+      return
+    }
     e.preventDefault()
     if ("blur" in e.target && typeof e.target.blur === "function") {
       e.target.blur()
@@ -31,19 +36,22 @@ const SearchModalOpener = () => {
     setIsOpen(true)
   }
 
-  useEffect(() => {
-    function isEditingContent(event: KeyboardEvent) {
-      const element = event.target as HTMLElement
-      const tagName = element.tagName
-      return (
-        element.isContentEditable ||
-        tagName === "INPUT" ||
-        tagName === "SELECT" ||
-        tagName === "TEXTAREA"
-      )
-    }
+  function isEditingContent(event: KeyboardEvent) {
+    const element = event.target as HTMLElement
+    const tagName = element.tagName
+    return (
+      element.isContentEditable ||
+      tagName === "INPUT" ||
+      tagName === "SELECT" ||
+      tagName === "TEXTAREA"
+    )
+  }
 
-    function sidebarShortcut(e: KeyboardEvent) {
+  const sidebarShortcut = useCallback(
+    (e: KeyboardEvent) => {
+      if (isLoading) {
+        return
+      }
       if (
         (e.metaKey || e.ctrlKey) &&
         e.key.toLowerCase() === "k" &&
@@ -52,14 +60,17 @@ const SearchModalOpener = () => {
         e.preventDefault()
         setIsOpen((prev) => !prev)
       }
-    }
+    },
+    [isLoading, setIsOpen]
+  )
 
+  useEffect(() => {
     window.addEventListener("keydown", sidebarShortcut)
 
     return () => {
       window.removeEventListener("keydown", sidebarShortcut)
     }
-  }, [])
+  }, [sidebarShortcut])
 
   return (
     <>

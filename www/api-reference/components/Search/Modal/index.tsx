@@ -187,6 +187,7 @@ const SearchModal = () => {
                 "hierarchy.lvl2",
               ],
               hitsPerPage: 10,
+              distinct: 1,
             }}
           />
         </SearchEmptyQueryBoundary>
