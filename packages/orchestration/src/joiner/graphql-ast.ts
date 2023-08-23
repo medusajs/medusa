@@ -24,9 +24,9 @@ interface Entity {
 class GraphQLParser {
   private ast: DocumentNode
 
-  constructor(input: string, private variables?: { [key: string]: unknown }) {
+  constructor(input: string, private variables: Record<string, unknown> = {}) {
     this.ast = parse(input)
-    this.variables = variables || {}
+    this.variables = variables
   }
 
   private parseValueNode(valueNode: ValueNode): unknown {

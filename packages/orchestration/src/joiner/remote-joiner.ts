@@ -12,6 +12,17 @@ import { isDefined } from "@medusajs/utils"
 import GraphQLParser from "./graphql-ast"
 
 const BASE_PATH = "_root"
+
+export type RemoteFetchDataCallback = (
+  expand: RemoteExpandProperty,
+  keyField: string,
+  ids?: (unknown | unknown[])[],
+  relationship?: any
+) => Promise<{
+  data: unknown[] | { [path: string]: unknown }
+  path?: string
+}>
+
 export class RemoteJoiner {
   private serviceConfigCache: Map<string, JoinerServiceConfig> = new Map()
 
@@ -80,37 +91,22 @@ export class RemoteJoiner {
     }, {})
   }
 
-  static parseQuery(graphqlQuery: string, variables?: any): RemoteJoinerQuery {
+  static parseQuery(
+    graphqlQuery: string,
+    variables?: Record<string, unknown>
+  ): RemoteJoinerQuery {
     const parser = new GraphQLParser(graphqlQuery, variables)
     return parser.parseQuery()
   }
 
   constructor(
     private serviceConfigs: ModuleJoinerConfig[],
-    private remoteFetchData: (
-      expand: RemoteExpandProperty,
-      keyField: string,
-      ids?: (unknown | unknown[])[],
-      relationship?: any
-    ) => Promise<{
-      data: unknown[] | { [path: string]: unknown }
-      path?: string
-    }>
+    private remoteFetchData: RemoteFetchDataCallback
   ) {
     this.serviceConfigs = this.buildReferences(serviceConfigs)
   }
 
-  public setFetchDataCallback(
-    remoteFetchData: (
-      expand: RemoteExpandProperty,
-      keyField: string,
-      ids?: (unknown | unknown[])[],
-      relationship?: any
-    ) => Promise<{
-      data: unknown[] | { [path: string]: unknown }
-      path?: string
-    }>
-  ): void {
+  public setFetchDataCallback(remoteFetchData: RemoteFetchDataCallback): void {
     this.remoteFetchData = remoteFetchData
   }
 

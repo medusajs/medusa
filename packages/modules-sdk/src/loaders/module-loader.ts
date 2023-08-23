@@ -12,9 +12,6 @@ import { loadInternalModule } from "./utils"
 
 export const moduleHelper = new ModulesHelper()
 
-/**
- * @deprecated The method should not be used. Use MedusaApp() instead.
- */
 export const moduleLoader = async ({
   container,
   moduleResolutions,
@@ -51,9 +48,7 @@ export const moduleLoader = async ({
     }, {})
   )
 
-  container.register({
-    modulesHelper: asValue(moduleHelper),
-  })
+  container.register("modulesHelper", asValue(moduleHelper))
 }
 
 async function loadModule(
@@ -83,9 +78,7 @@ async function loadModule(
       message = `The module ${resolution.definition.label} is missing its resources config`
     }
 
-    container.register({
-      [registrationName]: asValue(undefined),
-    })
+    container.register(registrationName, asValue(undefined))
 
     return {
       error: new Error(message),
@@ -93,9 +86,7 @@ async function loadModule(
   }
 
   if (resolution.resolutionPath === false) {
-    container.register({
-      [registrationName]: asValue(undefined),
-    })
+    container.register(registrationName, asValue(undefined))
 
     return
   }

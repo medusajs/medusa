@@ -194,6 +194,11 @@ export interface ModuleServiceInitializeOptions {
     connection?: any
     clientUrl?: string
     schema?: string
+    host?: string
+    port?: number
+    user?: string
+    password?: string
+    database?: string
     driverOptions?: Record<string, unknown>
     debug?: boolean
   }

@@ -1,8 +1,12 @@
+import { RemoteFetchDataCallback } from "@medusajs/orchestration"
 import {
   LoadedModule,
   MODULE_RESOURCE_TYPE,
   MODULE_SCOPE,
   ModuleConfig,
+  ModuleJoinerConfig,
+  ModuleServiceInitializeOptions,
+  RemoteJoinerQuery,
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
@@ -15,53 +19,76 @@ import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 
 declare global {
-  function query(query: string): Promise<any>
+  function query(
+    query: string | RemoteJoinerQuery,
+    variables?: Record<string, unknown>
+  ): Promise<any>
   var link: RemoteLink
 }
 
 export type MedusaModuleConfig = (Partial<ModuleConfig> | Modules)[]
+export type SharedResources = {
+  database?: ModuleServiceInitializeOptions["database"] & {
+    pool?: {
+      min?: number
+      max?: number
+      idleTimeoutMillis?: number
+      idleInTransactionSessionTimeout?: number
+    }
+  }
+}
 
 export async function MedusaApp({
   sharedResourcesConfig,
-  loadedModules,
+  modulesConfigPath,
+  modulesConfig,
+  linkModules,
+  remoteFetchData,
 }: {
-  sharedResourcesConfig?: any
+  sharedResourcesConfig?: SharedResources
   loadedModules?: LoadedModule[]
-} = {}) {
-  const { modules }: { modules: MedusaModuleConfig } = await import(
-    process.cwd() + "/modules-config"
-  )
+  modulesConfigPath?: string
+  modulesConfig?: MedusaModuleConfig
+  linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
+  remoteFetchData?: RemoteFetchDataCallback
+} = {}): Promise<{
+  modules: LoadedModule[]
+  link: RemoteLink
+  query: (
+    query: string | RemoteJoinerQuery,
+    variables?: Record<string, unknown>
+  ) => Promise<any>
+}> {
+  const { modules }: { modules: MedusaModuleConfig } =
+    modulesConfig ??
+    (await import(process.cwd() + (modulesConfigPath ?? "/modules-config")))
 
   const injectedDependencies: any = {}
 
-  if (sharedResourcesConfig?.database) {
-    const { knex } = await import("@mikro-orm/knex")
-    const { database } = sharedResourcesConfig
+  const dbData = ModulesSdkUtils.loadDatabaseConfig(
+    "medusa",
+    sharedResourcesConfig as ModuleServiceInitializeOptions
+  )!
+  const { pool } = sharedResourcesConfig?.database ?? {}
 
-    const dbData =
-      database?.clientUrl ??
-      ModulesSdkUtils.loadDatabaseConfig("medusa", database)!
+  const { knex } = await import("@mikro-orm/knex")
+  const dbConnection = knex({
+    client: "pg",
+    searchPath: dbData.schema || "public",
+    connection: {
+      connectionString: dbData.clientUrl,
+      ssl: (dbData.driverOptions?.connection as any).ssl! ?? false,
+      idle_in_transaction_session_timeout:
+        pool?.idleInTransactionSessionTimeout ?? undefined,
+    },
+    pool: {
+      min: pool?.min ?? 0,
+      max: pool?.max,
+      idleTimeoutMillis: pool?.idleTimeoutMillis ?? undefined,
+    },
+  })
 
-    const { driverOptions: extra } = database
-
-    const dbConnection = knex({
-      client: "pg",
-      searchPath: dbData.schema,
-      connection: {
-        connectionString: dbData.clientUrl,
-        ssl: (dbData.driverOptions?.connection as any).ssl! ?? false,
-        idle_in_transaction_session_timeout:
-          extra?.idle_in_transaction_session_timeout ?? undefined,
-      },
-      pool: {
-        min: 0,
-        max: extra?.max,
-        idleTimeoutMillis: extra?.idleTimeoutMillis ?? undefined,
-      },
-    })
-
-    injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] = dbConnection
-  }
+  injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] = dbConnection
 
   const allModules: LoadedModule[] = []
 
@@ -87,6 +114,10 @@ export async function MedusaApp({
         path = MODULE_PACKAGE_NAMES[mod as Modules]
       }
 
+      if (!path) {
+        throw new Error(`Module ${key} is missing path.`)
+      }
+
       declaration.scope ??= MODULE_SCOPE.INTERNAL
 
       if (
@@ -101,8 +132,8 @@ export async function MedusaApp({
         path,
         declaration,
         undefined,
-        injectedDependencies
-        //isObject(mod) ? mod.definition : undefined
+        injectedDependencies,
+        isObject(mod) ? mod.definition : undefined
       )
       allModules[key] = loaded[key]
 
@@ -114,16 +145,19 @@ export async function MedusaApp({
     const { initialize: initializeLinks } = await import(
       "@medusajs/link-modules" as string
     )
-    await initializeLinks()
+    await initializeLinks({}, linkModules, injectedDependencies)
 
     global.link = new RemoteLink()
   } catch (err) {
     console.warn("Error initializing link modules.")
   }
 
-  const remoteQuery = new RemoteQuery()
-  global.query = async (query: string) => {
-    return await remoteQuery.query(query)
+  const remoteQuery = new RemoteQuery(undefined, remoteFetchData)
+  global.query = async (
+    query: string | RemoteJoinerQuery,
+    variables?: Record<string, unknown>
+  ) => {
+    return await remoteQuery.query(query, variables)
   }
 
   return {

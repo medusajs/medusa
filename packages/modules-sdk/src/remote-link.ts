@@ -1,7 +1,6 @@
 import {
   ILinkModule,
   LoadedModule,
-  ModuleJoinerConfig,
   ModuleJoinerRelationship,
 } from "@medusajs/types"
 
@@ -52,64 +51,65 @@ export class RemoteLink {
       )
     }
 
-    const servicesConfig: ModuleJoinerConfig[] = []
-
     for (const mod of modulesLoaded) {
-      if (!mod.__definition.isQueryable || mod.__joinerConfig.isReadOnlyLink) {
-        continue
-      }
-
-      const joinerConfig = mod.__joinerConfig
-
-      const serviceName = joinerConfig.isLink
-        ? joinerConfig.serviceName!
-        : mod.__definition.key
-
-      if (this.modulesMap.has(serviceName)) {
-        throw new Error(
-          `Duplicated instance of module ${serviceName} is not allowed.`
-        )
-      }
-
-      if (joinerConfig.relationships?.length) {
-        if (joinerConfig.isLink) {
-          const [primary, foreign] = joinerConfig.relationships
-          const key = [
-            primary.serviceName,
-            primary.foreignKey,
-            foreign.serviceName,
-            foreign.foreignKey,
-          ].join("-")
-          this.relationsPairs.set(key, mod as unknown as LoadedLinkModule)
-        }
-        for (const relationship of joinerConfig.relationships) {
-          if (joinerConfig.isLink && !relationship.deleteCascade) {
-            continue
-          }
-
-          this.addRelationship(serviceName, {
-            ...relationship,
-            isPrimary: false,
-            isForeign: true,
-          })
-        }
-      }
-
-      if (joinerConfig.extends?.length) {
-        for (const service of joinerConfig.extends) {
-          const relationship = service.relationship
-          this.addRelationship(service.serviceName, {
-            ...relationship,
-            serviceName: serviceName,
-            isPrimary: true,
-            isForeign: false,
-          })
-        }
-      }
-
-      this.modulesMap.set(serviceName, mod as unknown as LoadedLinkModule)
-      servicesConfig.push(joinerConfig)
+      this.addModule(mod)
     }
+  }
+
+  public addModule(mod: LoadedModule): void {
+    if (!mod.__definition.isQueryable || mod.__joinerConfig.isReadOnlyLink) {
+      return
+    }
+
+    const joinerConfig = mod.__joinerConfig
+
+    const serviceName = joinerConfig.isLink
+      ? joinerConfig.serviceName!
+      : mod.__definition.key
+
+    if (this.modulesMap.has(serviceName)) {
+      throw new Error(
+        `Duplicated instance of module ${serviceName} is not allowed.`
+      )
+    }
+
+    if (joinerConfig.relationships?.length) {
+      if (joinerConfig.isLink) {
+        const [primary, foreign] = joinerConfig.relationships
+        const key = [
+          primary.serviceName,
+          primary.foreignKey,
+          foreign.serviceName,
+          foreign.foreignKey,
+        ].join("-")
+        this.relationsPairs.set(key, mod as unknown as LoadedLinkModule)
+      }
+      for (const relationship of joinerConfig.relationships) {
+        if (joinerConfig.isLink && !relationship.deleteCascade) {
+          continue
+        }
+
+        this.addRelationship(serviceName, {
+          ...relationship,
+          isPrimary: false,
+          isForeign: true,
+        })
+      }
+    }
+
+    if (joinerConfig.extends?.length) {
+      for (const service of joinerConfig.extends) {
+        const relationship = service.relationship
+        this.addRelationship(service.serviceName, {
+          ...relationship,
+          serviceName: serviceName,
+          isPrimary: true,
+          isForeign: false,
+        })
+      }
+    }
+
+    this.modulesMap.set(serviceName, mod as unknown as LoadedLinkModule)
   }
 
   private addRelationship(
@@ -330,8 +330,8 @@ export class RemoteLink {
     for (const rel of allLinks) {
       const extraFields = rel.data
       delete rel.data
-      
-      const mods = Object.keys(rel);
+
+      const mods = Object.keys(rel)
       if (mods.length > 2) {
         throw new Error(`Only two modules can be linked.`)
       }

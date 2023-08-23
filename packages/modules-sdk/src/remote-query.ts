@@ -4,27 +4,21 @@ import {
   LoadedModule,
   ModuleJoinerConfig,
   RemoteExpandProperty,
+  RemoteJoinerQuery,
 } from "@medusajs/types"
 
+import { RemoteFetchDataCallback, RemoteJoiner } from "@medusajs/orchestration"
+import { isString, toPascalCase } from "@medusajs/utils"
 import { MedusaModule } from "./medusa-module"
-import { RemoteJoiner } from "@medusajs/orchestration"
-import { toPascalCase } from "@medusajs/utils"
 
 export class RemoteQuery {
   private remoteJoiner: RemoteJoiner
   private modulesMap: Map<string, LoadedModule> = new Map()
+  private customRemoteFetchData?: RemoteFetchDataCallback
 
   constructor(
     modulesLoaded?: LoadedModule[],
-    remoteFetchData?: (
-      expand: RemoteExpandProperty,
-      keyField: string,
-      ids?: (unknown | unknown[])[],
-      relationship?: JoinerRelationship
-    ) => Promise<{
-      data: unknown[] | { [path: string]: unknown[] }
-      path?: string
-    }>
+    customRemoteFetchData?: RemoteFetchDataCallback
   ) {
     if (!modulesLoaded?.length) {
       modulesLoaded = MedusaModule.getLoadedModules().map(
@@ -50,9 +44,10 @@ export class RemoteQuery {
       servicesConfig.push(mod.__joinerConfig)
     }
 
+    this.customRemoteFetchData = customRemoteFetchData
     this.remoteJoiner = new RemoteJoiner(
       servicesConfig as JoinerServiceConfig[],
-      remoteFetchData ?? this.remoteFetchData.bind(this)
+      this.remoteFetchData.bind(this)
     )
   }
 
@@ -73,9 +68,14 @@ export class RemoteQuery {
   private static getAllFieldsAndRelations(
     data: any,
     prefix = ""
-  ): { select: string[]; relations: string[] } {
+  ): {
+    select: string[]
+    relations: string[]
+    args: Record<string, any[]>
+  } {
     let fields: Set<string> = new Set()
     let relations: string[] = []
+    let args: Record<string, any> = data?.args ?? {}
 
     data.fields?.forEach((field: string) => {
       fields.add(prefix ? `${prefix}.${field}` : field)
@@ -95,10 +95,11 @@ export class RemoteQuery {
 
         result.select.forEach(fields.add, fields)
         relations = relations.concat(result.relations)
+        args[newPrefix] = result.args
       }
     }
 
-    return { select: [...fields], relations }
+    return { select: [...fields], relations, args }
   }
 
   private hasPagination(options: { [attr: string]: unknown }): boolean {
@@ -129,6 +130,13 @@ export class RemoteQuery {
     data: unknown[] | { [path: string]: unknown }
     path?: string
   }> {
+    if (this.customRemoteFetchData) {
+      const resp = await this.customRemoteFetchData(expand, keyField, ids)
+      if (resp !== undefined) {
+        return resp
+      }
+    }
+
     const serviceConfig = expand.serviceConfig
     const service = this.modulesMap.get(serviceConfig.serviceName)!
 
@@ -199,9 +207,14 @@ export class RemoteQuery {
     }
   }
 
-  public async query(query: string, variables: any = {}): Promise<any> {
-    return await this.remoteJoiner.query(
-      RemoteJoiner.parseQuery(query, variables)
-    )
+  public async query(
+    query: string | RemoteJoinerQuery,
+    variables?: Record<string, unknown>
+  ): Promise<any> {
+    const finalQuery = isString(query)
+      ? RemoteJoiner.parseQuery(query, variables)
+      : query
+
+    return await this.remoteJoiner.query(finalQuery)
   }
 }
