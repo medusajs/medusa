@@ -14,6 +14,7 @@ import { useSearch } from "../../../providers/search"
 import checkArraySameElms from "../../../utils/array-same-elms"
 import SearchHitsWrapper from "../Hits"
 import Button from "../../Button"
+import Kbd from "../../MDXComponents/Kbd"
 
 const algoliaClient = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APP_ID || "temp",
@@ -107,8 +108,9 @@ const SearchModal = () => {
 
   return (
     <Modal
+      className={clsx("rounded-xl")}
       contentClassName={clsx(
-        "!p-0 overflow-hidden relative h-full md:h-[400px] lg:max-h-[400px] lg:min-h-[400px]"
+        "!p-0 overflow-hidden relative h-full md:h-[332px] lg:max-h-[332px] lg:min-h-[332px]"
       )}
       modalContainerClassName="w-screen h-screen"
       open={isOpen}
@@ -118,7 +120,9 @@ const SearchModal = () => {
         indexName={process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME}
         searchClient={searchClient}
       >
-        <div className="flex">
+        <div
+          className={clsx("bg-medusa-bg-base dark:bg-medusa-bg-base-dark flex")}
+        >
           <Select
             multiple
             options={options}
@@ -146,19 +150,20 @@ const SearchModal = () => {
           <SearchBox
             classNames={{
               root: clsx(
-                "h-[56px] w-full rounded-tr relative border-b border-medusa-border-base dark:border-medusa-border-base-dark"
+                "h-[56px] w-full rounded-t-xl relative border-b border-medusa-border-base dark:border-medusa-border-base-dark",
+                "bg-transparent"
               ),
-              form: clsx("h-full rounded-tr"),
+              form: clsx("h-full rounded-t-xl bg-transparent"),
               input: clsx(
-                "w-full h-full pl-[60px] text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+                "w-full h-full pl-3 text-medusa-fg-base dark:text-medusa-fg-base-dark",
                 "placeholder:text-medusa-fg-muted dark:placeholder:text-medusa-fg-muted-dark",
-                "rounded-tr text-medium bg-medusa-bg-field dark:bg-medusa-bg-field-dark",
+                "rounded-t-xl text-compact-medium bg-transparent",
                 "appearance-none search-cancel:hidden active:outline-none focus:outline-none"
               ),
-              submit: clsx("absolute top-[18px] left-1.5"),
+              submit: clsx("absolute top-[18px] left-1"),
               reset: clsx(
-                "absolute top-[18px] right-1 hover:bg-medusa-bg-field-hover dark:hover:bg-medusa-bg-field-hover-dark",
-                "p-0.125 rounded"
+                "absolute top-0.75 right-1 hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark",
+                "p-[5px] rounded"
               ),
               loadingIndicator: clsx("absolute top-[18px] right-1"),
             }}
@@ -178,7 +183,7 @@ const SearchModal = () => {
           <Button
             variant="clear"
             className={clsx(
-              "bg-medusa-bg-field dark:bg-medusa-bg-field-dark block md:hidden",
+              "bg-medusa-bg-base dark:bg-medusa-bg-base-dark block md:hidden",
               "border-medusa-border-base dark:border-medusa-border-base-dark border-b",
               "pr-1"
             )}
@@ -205,6 +210,48 @@ const SearchModal = () => {
           />
         </SearchEmptyQueryBoundary>
       </InstantSearch>
+      <div
+        className={clsx(
+          "py-0.75 flex items-center justify-between px-1",
+          "border-medusa-border-base dark:border-medusa-border-base-dark border-t"
+        )}
+      >
+        <Select
+          multiple
+          options={options}
+          value={filters}
+          setSelected={(value) =>
+            setFilters(Array.isArray(value) ? [...value] : [value])
+          }
+          addSelected={(value) => setFilters((prev) => [...prev, value])}
+          removeSelected={(value) =>
+            setFilters((prev) => prev.filter((v) => v !== value))
+          }
+          showClearButton={false}
+          placeholder="Filters"
+          className={clsx(
+            "h-[56px] basis-1/3 rounded-b-none rounded-tr-none border-t-0 border-l-0 !shadow-none"
+          )}
+          handleAddAll={(isAllSelected: boolean) => {
+            if (isAllSelected) {
+              setFilters(defaultFilters)
+            } else {
+              setFilters(options.map((option) => option.value))
+            }
+          }}
+        />
+        <div>
+          <span
+            className={clsx(
+              "text-medusa-fg-subtle dark:text-medusa-fg-subtle-dark",
+              "text-compact-x-small flex items-center gap-0.5"
+            )}
+          >
+            Open Result
+          </span>
+          <Kbd>↵</Kbd>
+        </div>
+      </div>
     </Modal>
   )
 }

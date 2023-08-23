@@ -14,6 +14,7 @@ export type ModalProps = {
   contentClassName?: string
   onClose?: React.ReactEventHandler<HTMLDialogElement>
   open?: boolean
+  footerContent?: React.ReactNode
 } & React.ComponentProps<"dialog">
 
 const Modal = ({
@@ -25,6 +26,7 @@ const Modal = ({
   modalContainerClassName,
   onClose,
   open = true,
+  footerContent,
   ...props
 }: ModalProps) => {
   const { closeModal } = useModal()
@@ -81,6 +83,7 @@ const Modal = ({
           {children}
         </div>
         {actions && actions?.length > 0 && <ModalFooter actions={actions} />}
+        {footerContent && <ModalFooter>{footerContent}</ModalFooter>}
       </div>
     </dialog>
   )
