@@ -16,6 +16,7 @@ type SelectProps = {
   removeSelected?: (value: string) => void
   multiple?: boolean
   addAll?: boolean
+  handleAddAll?: (isAllSelected: boolean) => void
   showClearButton?: boolean
   className?: string
   placeholder?: string
@@ -31,6 +32,7 @@ const Select = ({
   multiple,
   className,
   addAll = multiple,
+  handleAddAll,
   showClearButton = true,
   ...props
 }: SelectProps) => {
@@ -78,13 +80,17 @@ const Select = ({
     }
   }
 
-  const handleSelectAll = () => {
-    setSelected?.(options.map((option) => option.value))
-  }
-
   const isAllSelected = useMemo(() => {
     return Array.isArray(value) && value.length === options.length
   }, [options, value])
+
+  const handleSelectAll = () => {
+    if (handleAddAll) {
+      handleAddAll(isAllSelected)
+    } else {
+      setSelected?.(options.map((option) => option.value))
+    }
+  }
 
   const getSelectOption = (option: OptionType, index: number) => {
     const isSelected = option.isAllOption

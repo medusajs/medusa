@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from "react"
 import algoliasearch, { SearchClient } from "algoliasearch/lite"
-import { InstantSearch, SearchBox, Configure } from "react-instantsearch"
+import { InstantSearch, SearchBox } from "react-instantsearch"
 import Modal from "../../Modal"
 import clsx from "clsx"
 import IconMagnifyingGlass from "../../Icons/MagnifyingGlass"
@@ -128,6 +128,13 @@ const SearchModal = () => {
             className={clsx(
               "h-[56px] basis-1/3 rounded-b-none rounded-tr-none border-t-0 border-l-0 !shadow-none"
             )}
+            handleAddAll={(isAllSelected: boolean) => {
+              if (isAllSelected) {
+                setFilters(defaultFilters)
+              } else {
+                setFilters(options.map((option) => option.value))
+              }
+            }}
           />
           <SearchBox
             classNames={{
