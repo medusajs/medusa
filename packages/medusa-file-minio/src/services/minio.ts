@@ -1,11 +1,10 @@
+import { AbstractFileService, IFileService } from "@medusajs/medusa"
 import {
-  AbstractFileService,
   DeleteFileType,
   FileServiceUploadResult,
   GetUploadedFileType,
-  IFileService,
   UploadStreamDescriptorType,
-} from "@medusajs/medusa"
+} from "@medusajs/types"
 import { ClientConfiguration, PutObjectRequest } from "aws-sdk/clients/s3"
 
 import { MedusaError } from "medusa-core-utils"
