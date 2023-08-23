@@ -67,7 +67,7 @@ Check out our [local development documentation](https://docs.medusajs.com/usage/
 
 - We generally encourage to document your changes through comments in your code.
 - If you alter user-facing behaviour you must provide documentation for such changes.
-- All methods and endpoints should be documented using [JSDoc](https://jsdoc.app/) and [`swagger-inline`](https://www.npmjs.com/package/swagger-inline)
+- All methods and endpoints should be documented using [JSDoc](https://jsdoc.app/) and [`swaxgger-inline`](https://www.npmjs.com/package/swagger-inline)
 
 ### Release
 
