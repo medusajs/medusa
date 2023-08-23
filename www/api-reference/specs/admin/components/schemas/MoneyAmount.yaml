@@ -99,3 +99,9 @@ properties:
     nullable: true
     type: string
     format: date-time
+  metadata:
+    description: An optional key-value map with additional details
+    nullable: true
+    type: object
+    example:
+      car: white

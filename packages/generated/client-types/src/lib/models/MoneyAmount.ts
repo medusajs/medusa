@@ -72,4 +72,8 @@ export interface MoneyAmount {
    * The date with timezone at which the resource was deleted.
    */
   deleted_at: string | null
+  /**
+   * An optional key-value map with additional details
+   */
+  metadata: Record<string, any> | null
 }
