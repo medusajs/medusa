@@ -4,8 +4,8 @@
 
 @layer base {
   mark {
-    @apply bg-medusa-tag-orange-bg dark:bg-medusa-tag-orange-bg-dark;
-    @apply text-medusa-tag-orange-text dark:text-medusa-tag-orange-text-dark;
+    @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark;
+    @apply text-medusa-fg-interactive dark:text-medusa-fg-interactive-dark;
   }
 }
 
