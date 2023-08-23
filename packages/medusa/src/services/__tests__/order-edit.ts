@@ -243,12 +243,28 @@ describe("OrderEditService", () => {
     )
   })
 
-  it("should update a line item  and create an item change to an order edit", async () => {
+  it("should update a line items quantity and create an item change to an order edit", async () => {
     await orderEditService.updateLineItem(
       IdMap.getId("order-edit-update-line-item"),
       IdMap.getId("line-item-1"),
       {
         quantity: 3,
+      }
+    )
+
+    expect(orderEditItemChangeServiceMock.list).toHaveBeenCalledTimes(1)
+    expect(orderEditItemChangeServiceMock.create).toHaveBeenCalledTimes(1)
+    expect(
+      LineItemAdjustmentServiceMock.createAdjustments
+    ).toHaveBeenCalledTimes(1)
+  })
+
+  it("should update a line items unit price and create an item change to an order edit", async () => {
+    await orderEditService.updateLineItem(
+      IdMap.getId("order-edit-update-line-item"),
+      IdMap.getId("line-item-1"),
+      {
+        unit_price: 3000,
       }
     )
 

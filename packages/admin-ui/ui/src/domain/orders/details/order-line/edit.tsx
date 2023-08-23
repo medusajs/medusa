@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { LineItem, OrderItemChange, ProductVariant } from "@medusajs/medusa"
 import {
   useAdminDeleteOrderEditItemChange,
@@ -21,6 +21,7 @@ import { LayeredModalContext } from "../../../../components/molecules/modal/laye
 import { AddProductVariant } from "../../edit/modal"
 import Tooltip from "../../../../components/atoms/tooltip"
 import CopyToClipboard from "../../../../components/atoms/copy-to-clipboard"
+import InputField from "../../../../components/molecules/input"
 
 type OrderEditLineProps = {
   item: LineItem
@@ -45,6 +46,8 @@ const OrderEditLine = ({
   const isNew = change?.type === "item_add"
   const isModified = change?.type === "item_update"
   const isLocked = !!item.fulfilled_quantity
+
+  const [priceEdit, setPriceEdit] = useState(false);
 
   const { mutateAsync: addLineItem } = useAdminOrderEditAddLineItem(
     item.order_edit_id!
@@ -78,6 +81,24 @@ const OrderEditLine = ({
     }
   }
 
+  const onPriceUpdate = async (newPrice: string, priceEdit: boolean) => {
+
+    setPriceEdit(priceEdit);
+
+    const newPriceNumber = +newPrice;
+
+    if (isLoading) {
+      return
+    }
+
+    isLoading = true
+    try {
+      await updateItem({ unit_price: newPriceNumber })
+    } finally {
+      isLoading = false
+    }
+  }
+
   const onDuplicate = async () => {
     if (!item.variant) {
       notification(
@@ -90,7 +111,7 @@ const OrderEditLine = ({
 
     try {
       await addLineItem({
-        variant_id: item.variant_id,
+        variant_id: item.variant_id!,
         quantity: item.quantity,
       })
     } catch (e) {
@@ -234,7 +255,7 @@ const OrderEditLine = ({
             </div>
           </div>
         </div>
-        <div className="flex min-w-[312px] items-center justify-between">
+        <div className="flex min-w-[265px] items-center justify-between">
           <div
             className={clsx("flex flex-grow-0 items-center text-gray-400", {
               "pointer-events-none": isLocked,
@@ -251,7 +272,7 @@ const OrderEditLine = ({
               }
             />
             <span
-              className={clsx("min-w-[74px] px-8 text-center text-gray-900", {
+              className={clsx("min-w-[30px] px-1.5 text-center text-gray-900", {
                 "!text-gray-400": isLocked,
               })}
             >
@@ -273,19 +294,39 @@ const OrderEditLine = ({
               )}
             >
               <div
-                className={clsx("min-w-[60px] text-right text-gray-900", {
+                className={clsx("min-w-[60px] max-w-[130px] text-right text-gray-900", {
                   "pointer-events-none !text-gray-400": isLocked,
                 })}
               >
-                {formatAmountWithSymbol({
-                  amount: item.unit_price * item.quantity,
-                  currency: currencyCode,
-                  tax: item.includes_tax ? 0 : item.tax_lines,
-                  digits: 2,
-                })}
-                <span className="ml-2 text-gray-400">
+                {priceEdit ? (
+                  <InputField
+                    className="m-2"
+                    type="number"
+                    stepAmout={100}
+                    defaultValue={item.unit_price}
+                    onBlur={(event) => onPriceUpdate(event.target.value, false)}
+                    onChange={(event) => onPriceUpdate(event.target.value, true)}
+                  />
+                )
+                :
+                (
+                  <>
+                  <button onClick={() => {setPriceEdit(true)}}>
+                  {formatAmountWithSymbol({
+                    amount: item.unit_price,
+                    currency: currencyCode,
+                    tax: item.includes_tax ? 0 : item.tax_lines,
+                    digits: 2,
+                  })}
+                  </button>
+                  <span className="ml-2 text-gray-400">
                   {currencyCode.toUpperCase()}
-                </span>
+                  </span>
+                  </>
+                )
+              }
+                
+                
               </div>
             </div>
             <Actionables forceDropdown actions={actions} />

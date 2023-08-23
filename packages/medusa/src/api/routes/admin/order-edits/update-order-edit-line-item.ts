@@ -1,7 +1,7 @@
 import { EntityManager } from "typeorm"
 import { OrderEditService } from "../../../../services"
 import { Request, Response } from "express"
-import { IsNumber } from "class-validator"
+import { IsNumber, IsOptional } from "class-validator"
 import {
   defaultOrderEditFields,
   defaultOrderEditRelations,
@@ -32,7 +32,8 @@ import {
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
  *       medusa.admin.orderEdits.updateLineItem(orderEditId, lineItemId, {
- *           quantity: 5
+ *           quantity: 5,
+ *           unit_price: 1000
  *         })
  *         .then(({ order_edit }) => {
  *           console.log(order_edit.id)
@@ -111,8 +112,15 @@ export default async (req: Request, res: Response) => {
  *   quantity:
  *     description: The quantity to update
  *     type: number
+ *   unit_price:
+ *     description: The unit price to update
+ *     type: number
  */
 export class AdminPostOrderEditsEditLineItemsLineItemReq {
+  @IsOptional()
   @IsNumber()
-  quantity: number
+  quantity?: number
+  @IsOptional()
+  @IsNumber()
+  unit_price?: number
 }

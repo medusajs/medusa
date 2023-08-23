@@ -14,6 +14,7 @@ import PlusIcon from "../../fundamentals/icons/plus-icon"
 
 export type InputProps = Omit<React.ComponentPropsWithRef<"input">, "prefix"> &
   InputHeaderProps & {
+    stepAmout?: number
     small?: boolean
     label?: string
     deletable?: boolean
@@ -29,6 +30,7 @@ export type InputProps = Omit<React.ComponentPropsWithRef<"input">, "prefix"> &
 const InputField = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
+      stepAmout=1,
       small,
       placeholder,
       label,
@@ -57,7 +59,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
     )
 
     const onNumberIncrement = () => {
-      inputRef.current?.stepUp()
+      inputRef.current?.stepUp(stepAmout)
       if (onChange) {
         inputRef.current?.dispatchEvent(
           new InputEvent("change", {
@@ -70,7 +72,7 @@ const InputField = React.forwardRef<HTMLInputElement, InputProps>(
     }
 
     const onNumberDecrement = () => {
-      inputRef.current?.stepDown()
+      inputRef.current?.stepDown(stepAmout)
       if (onChange) {
         inputRef.current?.dispatchEvent(
           new InputEvent("change", {
