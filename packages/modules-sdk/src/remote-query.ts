@@ -67,19 +67,20 @@ export class RemoteQuery {
 
   private static getAllFieldsAndRelations(
     data: any,
-    prefix = ""
+    prefix = "",
+    args: Record<string, unknown[]> = {}
   ): {
     select: string[]
     relations: string[]
-    args: Record<string, any[]>
+    args: Record<string, unknown[]>
   } {
     let fields: Set<string> = new Set()
     let relations: string[] = []
-    let args: Record<string, any> = data?.args ?? {}
 
     data.fields?.forEach((field: string) => {
       fields.add(prefix ? `${prefix}.${field}` : field)
     })
+    args[prefix] = data.args
 
     if (data.expands) {
       for (const property in data.expands) {
@@ -90,12 +91,12 @@ export class RemoteQuery {
 
         const result = RemoteQuery.getAllFieldsAndRelations(
           data.expands[property],
-          newPrefix
+          newPrefix,
+          args
         )
 
         result.select.forEach(fields.add, fields)
         relations = relations.concat(result.relations)
-        args[newPrefix] = result.args
       }
     }
 

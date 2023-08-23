@@ -59,9 +59,10 @@ export async function MedusaApp({
     variables?: Record<string, unknown>
   ) => Promise<any>
 }> {
-  const { modules }: { modules: MedusaModuleConfig } =
+  const modules: MedusaModuleConfig =
     modulesConfig ??
     (await import(process.cwd() + (modulesConfigPath ?? "/modules-config")))
+      .default
 
   const injectedDependencies: any = {}
 
