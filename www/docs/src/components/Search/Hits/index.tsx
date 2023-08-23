@@ -202,6 +202,7 @@ const SearchHits = ({ indexName, setNoResults }: SearchHitsProps) => {
               <Link
                 href={item.url}
                 className="absolute top-0 left-0 h-full w-full"
+                target="_self"
               />
             </div>
           ))}
