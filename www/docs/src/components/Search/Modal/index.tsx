@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import algoliasearch, { SearchClient } from "algoliasearch/lite"
 import { InstantSearch, SearchBox } from "react-instantsearch"
 import Modal from "../../Modal"
@@ -69,12 +69,19 @@ const SearchModal = () => {
     })
     return formatted
   }, [filters])
+  const searchBoxRef = useRef<HTMLFormElement>(null)
 
   useEffect(() => {
     if (!checkArraySameElms(defaultFilters, filters)) {
       setFilters(defaultFilters)
     }
   }, [defaultFilters])
+
+  useEffect(() => {
+    if (isOpen && searchBoxRef.current) {
+      searchBoxRef.current.querySelector("input")?.focus()
+    }
+  }, [isOpen])
 
   return (
     <Modal
@@ -145,6 +152,7 @@ const SearchModal = () => {
             )}
             placeholder="Find something..."
             autoFocus
+            formRef={searchBoxRef}
           />
           <Button
             variant="clear"

@@ -1,12 +1,13 @@
 import React from "react"
 import clsx from "clsx"
 import InputText from "../../Input/Text"
-import { MouseEvent, useEffect, useMemo } from "react"
+import { MouseEvent, useMemo } from "react"
 import { useSearch } from "../../../providers/Search"
 import { useWindowSize } from "@docusaurus/theme-common"
 import Button from "../../Button"
 import IconMagnifyingGlass from "../../../theme/Icon/MagnifyingGlass"
 import Kbd from "../../../theme/MDXComponents/Kbd"
+import useKeyboardShortcut from "../../../hooks/use-keyboard-shortcut"
 
 const SearchModalOpener = () => {
   const { setIsOpen } = useSearch()
@@ -16,6 +17,10 @@ const SearchModalOpener = () => {
       ? navigator.userAgent.toLowerCase().indexOf("mac") !== 0
       : true
   }, [])
+  useKeyboardShortcut({
+    shortcutKey: "k",
+    action: () => setIsOpen((prev) => !prev),
+  })
 
   const handleOpen = (
     e:
@@ -29,36 +34,6 @@ const SearchModalOpener = () => {
     }
     setIsOpen(true)
   }
-
-  useEffect(() => {
-    function isEditingContent(event: KeyboardEvent) {
-      const element = event.target as HTMLElement
-      const tagName = element.tagName
-      return (
-        element.isContentEditable ||
-        tagName === "INPUT" ||
-        tagName === "SELECT" ||
-        tagName === "TEXTAREA"
-      )
-    }
-
-    function sidebarShortcut(e: KeyboardEvent) {
-      if (
-        (e.metaKey || e.ctrlKey) &&
-        e.key.toLowerCase() === "k" &&
-        !isEditingContent(e)
-      ) {
-        e.preventDefault()
-        setIsOpen((prev) => !prev)
-      }
-    }
-
-    window.addEventListener("keydown", sidebarShortcut)
-
-    return () => {
-      window.removeEventListener("keydown", sidebarShortcut)
-    }
-  }, [])
 
   return (
     <>

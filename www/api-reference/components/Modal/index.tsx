@@ -4,6 +4,7 @@ import { ButtonProps } from "../Button"
 import { useModal } from "../../providers/modal"
 import ModalHeader from "./Header"
 import ModalFooter from "./Footer"
+import useKeyboardShortcut from "../../hooks/use-keyboard-shortcut"
 
 export type ModalProps = {
   className?: string
@@ -28,6 +29,16 @@ const Modal = ({
 }: ModalProps) => {
   const { closeModal } = useModal()
   const dialogRef = useRef<HTMLDialogElement>(null)
+  useKeyboardShortcut({
+    metakey: false,
+    checkEditing: false,
+    shortcutKey: "escape",
+    action: () => {
+      if (open) {
+        dialogRef.current?.close()
+      }
+    },
+  })
 
   const handleClick = (e: React.MouseEvent<HTMLDialogElement, MouseEvent>) => {
     // close modal when the user clicks outside the content

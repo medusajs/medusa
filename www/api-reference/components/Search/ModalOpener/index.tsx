@@ -3,12 +3,13 @@
 import clsx from "clsx"
 import IconMagnifyingGlass from "../../Icons/MagnifyingGlass"
 import InputText from "../../Input/Text"
-import { MouseEvent, useCallback, useEffect, useMemo } from "react"
+import { MouseEvent, useMemo } from "react"
 import Kbd from "../../MDXComponents/Kbd"
 import { useSearch } from "../../../providers/search"
 import { useMobile } from "../../../providers/mobile"
 import Button from "../../Button"
 import { usePageLoading } from "../../../providers/page-loading"
+import useKeyboardShortcut from "../../../hooks/use-keyboard-shortcut"
 
 const SearchModalOpener = () => {
   const { setIsOpen } = useSearch()
@@ -19,6 +20,10 @@ const SearchModalOpener = () => {
       : true
   }, [])
   const { isLoading } = usePageLoading()
+  useKeyboardShortcut({
+    shortcutKey: "k",
+    action: () => setIsOpen((prev) => !prev),
+  })
 
   const handleOpen = (
     e:
@@ -35,42 +40,6 @@ const SearchModalOpener = () => {
     }
     setIsOpen(true)
   }
-
-  function isEditingContent(event: KeyboardEvent) {
-    const element = event.target as HTMLElement
-    const tagName = element.tagName
-    return (
-      element.isContentEditable ||
-      tagName === "INPUT" ||
-      tagName === "SELECT" ||
-      tagName === "TEXTAREA"
-    )
-  }
-
-  const sidebarShortcut = useCallback(
-    (e: KeyboardEvent) => {
-      if (isLoading) {
-        return
-      }
-      if (
-        (e.metaKey || e.ctrlKey) &&
-        e.key.toLowerCase() === "k" &&
-        !isEditingContent(e)
-      ) {
-        e.preventDefault()
-        setIsOpen((prev) => !prev)
-      }
-    },
-    [isLoading, setIsOpen]
-  )
-
-  useEffect(() => {
-    window.addEventListener("keydown", sidebarShortcut)
-
-    return () => {
-      window.removeEventListener("keydown", sidebarShortcut)
-    }
-  }, [sidebarShortcut])
 
   return (
     <>
