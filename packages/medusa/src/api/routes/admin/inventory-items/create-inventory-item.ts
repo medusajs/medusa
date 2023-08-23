@@ -15,7 +15,7 @@ import { validator } from "../../../../utils/validator"
  * @oas [post] /admin/inventory-items
  * operationId: "PostInventoryItems"
  * summary: "Create an Inventory Item"
- * description: "Create an Inventory Item."
+ * description: "Create an Inventory Item for a product variant."
  * x-authenticated: true
  * parameters:
  *   - (query) expand {string} Comma-separated relations that should be expanded in the returned inventory item.
@@ -130,7 +130,12 @@ export default async (req, res) => {
 /**
  * @schema AdminPostInventoryItemsReq
  * type: object
+ * required:
+ *   - variant_id
  * properties:
+ *   variant_id:
+ *     description: The ID of the variant to create the inventory item for.
+ *     type: string
  *   sku:
  *     description: The unique SKU of the associated Product Variant.
  *     type: string

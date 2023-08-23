@@ -174,7 +174,7 @@ export default function Admonition(props: Props): JSX.Element {
       className={clsx(
         "p-1 border border-solid border-medusa-border-base dark:border-medusa-border-base-dark rounded",
         "bg-medusa-bg-subtle dark:bg-medusa-bg-base-dark shadow-none",
-        "[&_a]:no-underline [&_a]:text-medusa-fg-base dark:[&_a]:text-medusa-fg-base-dark hover:[&_a]:text-medusa-fg-subtle dark:hover:[&_a]:text-medusa-fg-subtle-dark",
+        "[&_a]:no-underline [&_a]:text-medusa-fg-interactive dark:[&_a]:text-medusa-fg-interactive-dark hover:[&_a]:text-medusa-fg-interactive-hover dark:hover:[&_a]:text-medusa-fg-interactive-hover-dark",
         "mb-2 alert"
       )}
     >

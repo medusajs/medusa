@@ -39,7 +39,7 @@ If you want to use another Git Provider supported by DigitalOcean, it’s possib
 Change the `start` script in `package.json` to the following:
 
 ```json
-"start": "medusa migrations run && medusa start"
+"start": "npm run build && medusa migrations run && medusa start"
 ```
 
 This ensures that Migrations are run everytime the Medusa backend is restarted.
@@ -237,7 +237,7 @@ You can access `/health` to get health status of your deployed backend.
 
 :::note
 
-Make sure to either set the `autoRebuild` option of the admin plugin to `true` or add its [build](../../admin/quickstart.mdx#build-command-options) command as part of the start command of your backend.
+Make sure to either set the `autoRebuild` option of the admin plugin to `true` or add its [build](../../admin/configuration.md#build-command-options) command as part of the start command of your backend.
 
 :::
 

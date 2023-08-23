@@ -1,7 +1,8 @@
+import type { ConfigModule } from "@medusajs/medusa"
 import { getConfigFile } from "medusa-core-utils"
-import { ConfigModule, PluginOptions } from "../types"
+import { PluginOptions } from "../types"
 
-export const loadConfig = () => {
+export const loadConfig = (isDev?: boolean): PluginOptions | null => {
   const { configModule } = getConfigFile<ConfigModule>(
     process.cwd(),
     "medusa-config"
@@ -13,21 +14,45 @@ export const loadConfig = () => {
       (typeof p === "object" && p.resolve === "@medusajs/admin")
   )
 
-  let defaultConfig: PluginOptions = {
+  if (!plugin) {
+    return null
+  }
+
+  let config: PluginOptions = {
     serve: true,
     autoRebuild: false,
-    path: "app",
+    path: isDev ? "/" : "/app",
+    outDir: "build",
+    backend: isDev ? "http://localhost:9000" : "/",
+    develop: {
+      open: true,
+      port: 7001,
+    },
   }
 
   if (typeof plugin !== "string") {
-    const { options } = plugin as { options: PluginOptions }
-    defaultConfig = {
-      serve: options.serve ?? defaultConfig.serve,
-      autoRebuild: options.autoRebuild ?? defaultConfig.autoRebuild,
-      path: options.path ?? defaultConfig.path,
-      outDir: options.outDir ?? defaultConfig.outDir,
+    const options = (plugin as { options: PluginOptions }).options ?? {}
+
+    const serve = options.serve !== undefined ? options.serve : config.serve
+
+    const serverUrl = serve
+      ? config.backend
+      : options.backend
+      ? options.backend
+      : "/"
+
+    config = {
+      serve,
+      autoRebuild: options.autoRebuild ?? config.autoRebuild,
+      path: options.path ?? config.path,
+      outDir: options.outDir ?? config.outDir,
+      backend: serverUrl,
+      develop: {
+        open: options.develop?.open ?? config.develop.open,
+        port: options.develop?.port ?? config.develop.port,
+      },
     }
   }
 
-  return defaultConfig
+  return config
 }
