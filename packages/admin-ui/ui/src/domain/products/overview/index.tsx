@@ -16,10 +16,7 @@ import CollectionsTable from "../../../components/templates/collections-table"
 import ProductTable from "../../../components/templates/product-table"
 import useNotification from "../../../hooks/use-notification"
 import useToggleState from "../../../hooks/use-toggle-state"
-import {
-  useActiveProductImportBatchJob,
-  usePolling,
-} from "../../../providers/polling-provider"
+import { usePolling } from "../../../providers/polling-provider"
 import { useWidgets } from "../../../providers/widget-provider"
 import { getErrorMessage } from "../../../utils/error-messages"
 import ImportProducts from "../batch-job/import"
@@ -49,8 +46,6 @@ const Overview = () => {
 
   const { getWidgets } = useWidgets()
 
-  const activeImportJob = useActiveProductImportBatchJob()
-
   useEffect(() => {
     if (location.search.includes("?view=collections")) {
       setView("collections")
@@ -74,39 +69,32 @@ const Overview = () => {
     switch (view) {
       case "products":
         return (
-          <>
-            <div className="flex space-x-2">
-              <Button
-                variant="secondary"
-                size="small"
-                onClick={() => openImportModal()}
-              >
-                <UploadIcon size={20} />
-                Import Products
-              </Button>
-              <Button
-                variant="secondary"
-                size="small"
-                onClick={() => openExportModal()}
-              >
-                <ExportIcon size={20} />
-                Export Products
-              </Button>
-              <Button
-                variant="secondary"
-                size="small"
-                onClick={openProductCreate}
-              >
-                <PlusIcon size={20} />
-                New Product
-              </Button>
-            </div>
-            {!!activeImportJob && (
-              <div className="text-small flex items-center justify-end pt-4 text-red-500">
-                <span>Product import is currently in progress</span>
-              </div>
-            )}
-          </>
+          <div className="flex space-x-2">
+            <Button
+              variant="secondary"
+              size="small"
+              onClick={() => openImportModal()}
+            >
+              <UploadIcon size={20} />
+              Import Products
+            </Button>
+            <Button
+              variant="secondary"
+              size="small"
+              onClick={() => openExportModal()}
+            >
+              <ExportIcon size={20} />
+              Export Products
+            </Button>
+            <Button
+              variant="secondary"
+              size="small"
+              onClick={openProductCreate}
+            >
+              <PlusIcon size={20} />
+              New Product
+            </Button>
+          </div>
         )
 
       default:
