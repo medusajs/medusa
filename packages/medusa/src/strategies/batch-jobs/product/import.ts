@@ -8,30 +8,30 @@ import ProductCategoryFeatureFlag from "../../../loaders/feature-flags/product-c
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
 import { BatchJob, SalesChannel } from "../../../models"
 import {
-    BatchJobService,
-    ProductCategoryService,
-    ProductCollectionService,
-    ProductService,
-    ProductVariantService,
-    RegionService,
-    SalesChannelService,
-    ShippingProfileService,
+  BatchJobService,
+  ProductCategoryService,
+  ProductCollectionService,
+  ProductService,
+  ProductVariantService,
+  RegionService,
+  SalesChannelService,
+  ShippingProfileService,
 } from "../../../services"
 import CsvParser from "../../../services/csv-parser"
 import { CreateProductInput } from "../../../types/product"
 import { CreateProductVariantInput } from "../../../types/product-variant"
 import {
-    OperationType,
-    ProductImportBatchJob,
-    ProductImportCsvSchema,
-    ProductImportInjectedProps,
-    ProductImportJobContext,
-    TParsedProductImportRowData,
+  OperationType,
+  ProductImportBatchJob,
+  ProductImportCsvSchema,
+  ProductImportInjectedProps,
+  ProductImportJobContext,
+  TParsedProductImportRowData,
 } from "./types"
 import {
-    productImportColumnsDefinition,
-    productImportProductCategoriesColumnsDefinition,
-    productImportSalesChannelsColumnsDefinition,
+  productImportColumnsDefinition,
+  productImportProductCategoriesColumnsDefinition,
+  productImportSalesChannelsColumnsDefinition,
 } from "./types/columns-definition"
 import { transformProductData, transformVariantData } from "./utils"
 
@@ -420,7 +420,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     const transactionManager = this.transactionManager_ ?? this.manager_
 
     const productOps = await this.downloadImportOpsFile(
-      batchJob.id,
+      batchJob,
       OperationType.ProductCreate
     )
 
@@ -492,7 +492,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
     const transactionManager = this.transactionManager_ ?? this.manager_
     const productOps = await this.downloadImportOpsFile(
-      batchJob.id,
+      batchJob,
       OperationType.ProductUpdate
     )
 
@@ -568,7 +568,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     const transactionManager = this.transactionManager_ ?? this.manager_
 
     const variantOps = await this.downloadImportOpsFile(
-      batchJob.id,
+      batchJob,
       OperationType.VariantCreate
     )
 
@@ -624,7 +624,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     const transactionManager = this.transactionManager_ ?? this.manager_
 
     const variantOps = await this.downloadImportOpsFile(
-      batchJob.id,
+      batchJob,
       OperationType.VariantUpdate
     )
 
@@ -691,9 +691,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     const uploadPromises: Promise<void>[] = []
     const transactionManager = this.transactionManager_ ?? this.manager_
 
+    const files: Record<string, string> = {}
+
     for (const op in results) {
       if (results[op]?.length) {
-        const { writeStream, promise } = await this.fileService_
+        const { writeStream, fileKey, promise } = await this.fileService_
           .withTransaction(transactionManager)
           .getUploadStreamDescriptor({
             name: ProductImportStrategy.buildFilename(batchJobId, op),
@@ -702,22 +704,29 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
 
         uploadPromises.push(promise)
 
+        files[op] = fileKey
         writeStream.write(JSON.stringify(results[op]))
         writeStream.end()
       }
     }
 
+    await this.batchJobService_
+      .withTransaction(transactionManager)
+      .update(batchJobId, {
+        result: { files },
+      })
+
     await Promise.all(uploadPromises)
   }
 
   /**
-   * Remove parsed ops JSON file.
+   * Download parsed ops JSON file.
    *
-   * @param batchJobId - An id of the current batch job being processed.
+   * @param batchJob - the current batch job being processed
    * @param op - Type of import operation.
    */
   protected async downloadImportOpsFile(
-    batchJobId: string,
+    batchJob: BatchJob,
     op: OperationType
   ): Promise<TParsedProductImportRowData[]> {
     let data = ""
@@ -726,9 +735,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
     const readableStream = await this.fileService_
       .withTransaction(transactionManager)
       .getDownloadStream({
-        fileKey: ProductImportStrategy.buildFilename(batchJobId, op, {
-          appendExt: ".json",
-        }),
+        fileKey: batchJob.result.files![op],
       })
 
     return await new Promise((resolve) => {
@@ -748,18 +755,16 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
   /**
    * Delete parsed CSV ops files.
    *
-   * @param batchJobId - An id of the current batch job being processed.
+   * @param batchJob - the current batch job being processed
    */
-  protected async deleteOpsFiles(batchJobId: string): Promise<void> {
+  protected async deleteOpsFiles(batchJob: BatchJob): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
 
     const fileServiceTx = this.fileService_.withTransaction(transactionManager)
-    for (const op of Object.values(OperationType)) {
+    for (const fileName of Object.values(batchJob.result.files!)) {
       try {
         await fileServiceTx.delete({
-          fileKey: ProductImportStrategy.buildFilename(batchJobId, op, {
-            appendExt: ".json",
-          }),
+          fileKey: fileName,
         })
       } catch (e) {
         // noop
@@ -790,7 +795,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy {
       .withTransaction(transactionManager)
       .delete({ fileKey })
 
-    await this.deleteOpsFiles(batchJob.id)
+    await this.deleteOpsFiles(batchJob)
   }
 
   /**
