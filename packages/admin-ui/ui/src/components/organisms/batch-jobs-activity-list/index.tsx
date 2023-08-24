@@ -74,8 +74,6 @@ const BatchJobActivityCard = (props: { batchJob: BatchJob }) => {
 
   const batchJob = useBatchJob(props.batchJob)
 
-  console.log(batchJob)
-
   const { mutate: cancelBatchJob, error: cancelBatchJobError } =
     useAdminCancelBatchJob(batchJob.id)
   const { mutateAsync: deleteFile } = useAdminDeleteFile()
