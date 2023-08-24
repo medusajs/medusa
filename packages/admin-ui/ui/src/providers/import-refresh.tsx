@@ -29,7 +29,6 @@ export const ImportRefresh = ({ children }: PropsWithChildren) => {
       for (const job of completedJobs) {
         const jobCompletedTimestamp = new Date(job.completed_at).getTime()
         if (jobCompletedTimestamp > refreshedTimestamp) {
-          console.warn("Batch job finished: refreshing products list")
           queryClient.invalidateQueries(adminProductKeys.all)
         }
       }
