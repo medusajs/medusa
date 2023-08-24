@@ -22,6 +22,11 @@ import { nanoid } from "nanoid"
 import { displayFactBox, FactBoxOptions } from "../utils/facts.js"
 import { EOL } from "os"
 import { runCloneRepo } from "../utils/clone-repo.js"
+import checkYarnVersion, {
+  REQUIRED_YARN_CONFIG,
+  getYarnOriginalConfig,
+  setYarnConfig,
+} from "../utils/check-yarn-version.js"
 
 const slugify = slugifyType.default
 const isEmail = isEmailImported.default
@@ -56,6 +61,12 @@ export default async ({
     track("SEED_SELECTED", { seed })
   }
 
+  const isYarn3 = await checkYarnVersion()
+  const originalYarnConfig = isYarn3 ? await getYarnOriginalConfig() : null
+  if (isYarn3 && originalYarnConfig !== REQUIRED_YARN_CONFIG) {
+    await setYarnConfig(REQUIRED_YARN_CONFIG)
+  }
+
   const spinner: Ora = ora()
   const processManager = new ProcessManager()
   const abortController = createAbortController(processManager)
@@ -77,6 +88,11 @@ export default async ({
     // client hasn't been declared yet
     if (isDbInitialized && client) {
       await client.end()
+    }
+
+    // revert configurations to their original state
+    if (originalYarnConfig && originalYarnConfig !== REQUIRED_YARN_CONFIG) {
+      await setYarnConfig(originalYarnConfig)
     }
 
     // the SIGINT event is triggered twice once the backend runs

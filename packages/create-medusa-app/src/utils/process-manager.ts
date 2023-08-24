@@ -4,7 +4,7 @@ type ProcessOptions = {
 }
 
 export default class ProcessManager {
-  intervals: NodeJS.Timer[] = []
+  intervals: NodeJS.Timeout[] = []
   static MAX_RETRIES = 3
 
   constructor() {
@@ -16,11 +16,11 @@ export default class ProcessManager {
   }
 
   onTerminated(fn: () => Promise<void> | void) {
-    process.on("SIGTERM", () => fn())
-    process.on("SIGINT", () => fn())
+    process.on("SIGTERM", async () => fn())
+    process.on("SIGINT", async () => fn())
   }
 
-  addInterval(interval: NodeJS.Timer) {
+  addInterval(interval: NodeJS.Timeout) {
     this.intervals.push(interval)
   }
 
