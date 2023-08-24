@@ -2,11 +2,12 @@ import clsx from "clsx"
 import Button, { ButtonProps } from "../../Button"
 
 type ModalFooterProps = {
-  actions: ButtonProps[]
+  actions?: ButtonProps[]
+  children?: React.ReactNode
   className?: string
 }
 
-const ModalFooter = ({ actions, className }: ModalFooterProps) => {
+const ModalFooter = ({ actions, children, className }: ModalFooterProps) => {
   return (
     <div
       className={clsx(
@@ -16,9 +17,10 @@ const ModalFooter = ({ actions, className }: ModalFooterProps) => {
         className
       )}
     >
-      {actions.map((action, index) => (
+      {actions?.map((action, index) => (
         <Button {...action} key={index} />
       ))}
+      {children}
     </div>
   )
 }
