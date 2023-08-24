@@ -177,6 +177,10 @@ function ImportProducts(props: ImportProductsProps) {
     }
   }
 
+  const templateLink = process.env.ADMIN_PATH
+    ? `${process.env.ADMIN_PATH}/temp/product-import-template.csv`
+    : "/temp/product-import-template.csv"
+
   return (
     <UploadModal
       type="products"
@@ -190,7 +194,7 @@ function ImportProducts(props: ImportProductsProps) {
       onFileRemove={onFileRemove}
       processUpload={processUpload}
       fileTitle={"products list"}
-      templateLink="/temp/product-import-template.csv"
+      templateLink={templateLink}
       errorMessage={batchJob?.result?.errors?.join(" \n")}
       description2Title="Unsure about how to arrange your list?"
       description2Text="Download the template below to ensure you are following the correct format."

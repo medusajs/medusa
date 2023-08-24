@@ -1,34 +1,11 @@
-import stream from "stream"
 import { TransactionBaseService } from "./transaction-base-service"
-
-export type FileServiceUploadResult = {
-  url: string
-}
-
-export type FileServiceGetUploadStreamResult = {
-  writeStream: stream.PassThrough
-  promise: Promise<any>
-  url: string
-  fileKey: string
-  [x: string]: unknown
-}
-
-export type GetUploadedFileType = {
-  fileKey: string
-  [x: string]: unknown
-}
-
-export type DeleteFileType = {
-  fileKey: string
-  [x: string]: unknown
-}
-
-export type UploadStreamDescriptorType = {
-  name: string
-  ext?: string
-  acl?: string
-  [x: string]: unknown
-}
+import {
+  DeleteFileType,
+  FileServiceGetUploadStreamResult,
+  FileServiceUploadResult,
+  GetUploadedFileType,
+  UploadStreamDescriptorType,
+} from "@medusajs/types"
 
 export interface IFileService extends TransactionBaseService {
   /**

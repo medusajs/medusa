@@ -10,6 +10,7 @@ import {
   useReducer,
   useState,
 } from "react"
+import { usePageLoading } from "./page-loading"
 
 export enum SidebarItemSections {
   TOP = "top",
@@ -167,6 +168,7 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
   const [activePath, setActivePath] = useState<string | null>("")
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState<boolean>(false)
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true)
+  const { isLoading, setIsLoading } = usePageLoading()
 
   const findItemInSection = useCallback(
     (
@@ -287,6 +289,12 @@ const SidebarProvider = ({ children }: SidebarProviderProps) => {
       window.removeEventListener("hashchange", handleHashChange)
     }
   }, [handleHashChange])
+
+  useEffect(() => {
+    if (isLoading && items.top.length && items.bottom.length) {
+      setIsLoading(false)
+    }
+  }, [items, isLoading, setIsLoading])
 
   return (
     <SidebarContext.Provider

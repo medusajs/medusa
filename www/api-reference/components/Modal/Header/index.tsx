@@ -1,6 +1,7 @@
 import clsx from "clsx"
 import { useModal } from "../../../providers/modal"
 import IconXMark from "../../Icons/XMark"
+import Button from "../../Button"
 
 type ModalHeaderProps = {
   title?: string
@@ -23,9 +24,13 @@ const ModalHeader = ({ title }: ModalHeaderProps) => {
       >
         {title}
       </span>
-      <button className="btn-clear cursor-pointer" onClick={() => closeModal()}>
+      <Button
+        variant="clear"
+        className="cursor-pointer"
+        onClick={() => closeModal()}
+      >
         <IconXMark />
-      </button>
+      </Button>
     </div>
   )
 }

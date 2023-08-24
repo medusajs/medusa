@@ -32,6 +32,7 @@ declare module "@medusajs/docs" {
   import { DocContextValue as DocusaurusDocContextValue } from "@docusaurus/theme-common/internal"
   import { ReactNode } from "react"
   import { NavbarLogo } from "@docusaurus/theme-common"
+  import type { DocusaurusContext } from "@docusaurus/types"
 
   type ItemCustomProps = {
     customProps?: {
@@ -130,6 +131,12 @@ declare module "@medusajs/docs" {
 
   export declare type NavbarAction = NavbarActionLink | NavbarActionButton
 
+  export declare type OptionType = {
+    value: string
+    label: string
+    isAllOption?: boolean
+  }
+
   export declare type ThemeConfig = {
     reportCodeLinkPrefix?: string
     footerFeedback: {
@@ -153,6 +160,20 @@ declare module "@medusajs/docs" {
       magicComments: MagicCommentConfig[]
     }
     mobileLogo: NavbarLogo
+    algoliaConfig?: {
+      apiKey: string
+      indexNames: {
+        docs: string
+        api: string
+      }
+      appId: string
+      filters: OptionType[]
+      defaultFilters: string[]
+      defaultFiltersByPath: {
+        path: string
+        filters: string[]
+      }[]
+    }
   } & DocusaurusThemeConfig
 
   export declare type MedusaDocusaurusConfig = {
@@ -168,4 +189,8 @@ declare module "@medusajs/docs" {
       }
     }
   } & DocusaurusDocContextValue
+
+  export declare type MedusaDocusaurusContext = DocusaurusContext & {
+    siteConfig: MedusaDocusaurusConfig
+  }
 }

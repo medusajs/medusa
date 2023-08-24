@@ -6,25 +6,30 @@ import {
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import BackButton from "../../../components/atoms/back-button"
+import Spacer from "../../../components/atoms/spacer"
 import Spinner from "../../../components/atoms/spinner"
+import WidgetContainer from "../../../components/extensions/widget-container"
 import EditIcon from "../../../components/fundamentals/icons/edit-icon"
 import TrashIcon from "../../../components/fundamentals/icons/trash-icon"
 import Actionables from "../../../components/molecules/actionables"
 import JSONView from "../../../components/molecules/json-view"
 import DeletePrompt from "../../../components/organisms/delete-prompt"
 import { MetadataField } from "../../../components/organisms/metadata"
+import RawJSON from "../../../components/organisms/raw-json"
 import Section from "../../../components/organisms/section"
 import CollectionModal from "../../../components/templates/collection-modal"
 import AddProductsTable from "../../../components/templates/collection-product-table/add-product-table"
 import ViewProductsTable from "../../../components/templates/collection-product-table/view-products-table"
 import useNotification from "../../../hooks/use-notification"
+import { useWidgets } from "../../../providers/widget-provider"
 import Medusa from "../../../services/api"
 import { getErrorMessage } from "../../../utils/error-messages"
+import { getErrorStatus } from "../../../utils/get-error-status"
 
 const CollectionDetails = () => {
   const { id } = useParams()
 
-  const { collection, isLoading, refetch } = useAdminCollection(id!)
+  const { collection, isLoading, error, refetch } = useAdminCollection(id!)
   const deleteCollection = useAdminDeleteCollection(id!)
   const updateCollection = useAdminUpdateCollection(id!)
   const [showEdit, setShowEdit] = useState(false)
@@ -105,6 +110,32 @@ const CollectionDetails = () => {
     }
   }, [collection?.products])
 
+  const { getWidgets } = useWidgets()
+
+  if (error) {
+    const errorStatus = getErrorStatus(error)
+
+    if (errorStatus) {
+      // If the product is not found, redirect to the 404 page
+      if (errorStatus.status === 404) {
+        navigate("/404")
+        return null
+      }
+    }
+
+    // Let the error boundary handle the error
+    throw error
+  }
+
+  if (isLoading || !collection) {
+    // temp, perhaps use skeletons?
+    return (
+      <div className="flex h-[calc(100vh-64px)] w-full items-center justify-center">
+        <Spinner variant="secondary" />
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="flex flex-col">
@@ -113,12 +144,19 @@ const CollectionDetails = () => {
           path="/a/products?view=collections"
           label="Back to Collections"
         />
-        <div className="rounded-rounded py-large px-xlarge border-grey-20 bg-grey-0 mb-large border">
-          {isLoading || !collection ? (
-            <div className="flex h-12 w-full items-center">
-              <Spinner variant="secondary" size="large" />
-            </div>
-          ) : (
+        <div className="gap-y-xsmall flex flex-col">
+          {getWidgets("product_collection.details.before").map((w, i) => {
+            return (
+              <WidgetContainer
+                key={i}
+                entity={collection}
+                injectionZone="product_collection.details.before"
+                widget={w}
+              />
+            )
+          })}
+
+          <div className="rounded-rounded py-large px-xlarge border-grey-20 bg-grey-0 border">
             <div>
               <div>
                 <div className="flex items-center justify-between">
@@ -155,29 +193,44 @@ const CollectionDetails = () => {
                 </div>
               )}
             </div>
-          )}
+          </div>
+
+          <Section
+            title="Products"
+            actions={[
+              {
+                label: "Edit Products",
+                icon: <EditIcon size="20" />,
+                onClick: () => setShowAddProducts(!showAddProducts),
+              },
+            ]}
+          >
+            <p className="text-grey-50 inter-base-regular mt-xsmall mb-base">
+              Products in this collection
+            </p>
+            {collection && (
+              <ViewProductsTable
+                key={updates} // force re-render when collection is updated
+                collectionId={collection.id}
+                refetchCollection={refetch}
+              />
+            )}
+          </Section>
+
+          {getWidgets("product_collection.details.after").map((w, i) => {
+            return (
+              <WidgetContainer
+                key={i}
+                entity={collection}
+                injectionZone="product_collection.details.after"
+                widget={w}
+              />
+            )
+          })}
+
+          <RawJSON data={collection} title="Raw collection" />
         </div>
-        <Section
-          title="Products"
-          actions={[
-            {
-              label: "Edit Products",
-              icon: <EditIcon size="20" />,
-              onClick: () => setShowAddProducts(!showAddProducts),
-            },
-          ]}
-        >
-          <p className="text-grey-50 inter-base-regular mt-xsmall mb-base">
-            To start selling, all you need is a name, price, and image.
-          </p>
-          {collection && (
-            <ViewProductsTable
-              key={updates} // force re-render when collection is updated
-              collectionId={collection.id}
-              refetchCollection={refetch}
-            />
-          )}
-        </Section>
+        <Spacer />
       </div>
       {showEdit && (
         <CollectionModal

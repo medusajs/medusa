@@ -4,6 +4,7 @@ description: 'Learn what Plugins are and how they are used in Medusa. Plugins ar
 
 import DocCardList from '@theme/DocCardList';
 import Icons from '@theme/Icon';
+import LearningPath from '@site/src/components/LearningPath';
 
 # Plugins
 
@@ -22,6 +23,8 @@ An alternative approach is developing a custom way of handling payment on your e
 Plugins run within the same process as the core Medusa backend eliminating the need for extra backend capacity, infrastructure, and maintenance. As a result, plugins can use all other services as dependencies and access the database.
 
 Plugins can contain customizations to the Medusa backend or the admin dashboard.
+
+<LearningPath pathName="plugin" />
 
 ---
 
@@ -67,7 +70,7 @@ All plugins accept an option named `enableUI`. This option allows you to disable
 
 :::note
 
-Since admin customizations are still in `beta` mode, `enableUI`'s default value is `false` if not provided by the plugin users. This means that it must be enabled manually in a plugin's configuration for the customizations to appear in the admin dashboard. Once the admin customizations are out of beta, this behavior will be reversed.
+`enableUI`'s default value is `false` if not provided by the plugin users. This means that it must be enabled manually in a plugin's configuration for the customizations to appear in the admin dashboard.
 
 :::
 

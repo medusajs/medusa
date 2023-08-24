@@ -3,11 +3,13 @@ import { Tooltip as ReactTooltip } from "react-tooltip"
 import type { ITooltip } from "react-tooltip"
 import uuid from "react-uuid"
 import "react-tooltip/dist/react-tooltip.css"
+import clsx from "clsx"
 
 type TooltipProps = {
   text?: string
   tooltipClassName?: string
   html?: string
+  tooltipChildren?: React.ReactNode
 } & React.HTMLAttributes<HTMLSpanElement> &
   ITooltip
 
@@ -16,6 +18,8 @@ const Tooltip: React.FC<TooltipProps> = ({
   tooltipClassName = "",
   children,
   html = "",
+  tooltipChildren,
+  ...tooltipProps
 }) => {
   const [elementId, setElementId] = useState(null)
 
@@ -32,9 +36,12 @@ const Tooltip: React.FC<TooltipProps> = ({
       </span>
       <ReactTooltip
         anchorId={elementId}
-        className={tooltipClassName}
+        className={clsx(tooltipClassName, "z-[399]")}
         wrapper="span"
-      />
+        {...tooltipProps}
+      >
+        {tooltipChildren}
+      </ReactTooltip>
     </>
   )
 }
