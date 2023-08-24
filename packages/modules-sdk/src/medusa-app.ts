@@ -18,14 +18,6 @@ import { MedusaModule } from "./medusa-module"
 import { RemoteLink } from "./remote-link"
 import { RemoteQuery } from "./remote-query"
 
-declare global {
-  function query(
-    query: string | RemoteJoinerQuery,
-    variables?: Record<string, unknown>
-  ): Promise<any>
-  var link: RemoteLink
-}
-
 export type MedusaModuleConfig = (Partial<ModuleConfig> | Modules)[]
 export type SharedResources = {
   database?: ModuleServiceInitializeOptions["database"] & {
@@ -52,8 +44,8 @@ export async function MedusaApp({
   linkModules?: ModuleJoinerConfig | ModuleJoinerConfig[]
   remoteFetchData?: RemoteFetchDataCallback
 } = {}): Promise<{
-  modules: LoadedModule[]
-  link: RemoteLink
+  modules: Record<string, LoadedModule | LoadedModule[]>
+  link: RemoteLink | undefined
   query: (
     query: string | RemoteJoinerQuery,
     variables?: Record<string, unknown>
@@ -68,30 +60,33 @@ export async function MedusaApp({
 
   const dbData = ModulesSdkUtils.loadDatabaseConfig(
     "medusa",
-    sharedResourcesConfig as ModuleServiceInitializeOptions
+    sharedResourcesConfig as ModuleServiceInitializeOptions,
+    true
   )!
   const { pool } = sharedResourcesConfig?.database ?? {}
 
-  const { knex } = await import("@mikro-orm/knex")
-  const dbConnection = knex({
-    client: "pg",
-    searchPath: dbData.schema || "public",
-    connection: {
-      connectionString: dbData.clientUrl,
-      ssl: (dbData.driverOptions?.connection as any).ssl! ?? false,
-      idle_in_transaction_session_timeout:
-        pool?.idleInTransactionSessionTimeout ?? undefined,
-    },
-    pool: {
-      min: pool?.min ?? 0,
-      max: pool?.max,
-      idleTimeoutMillis: pool?.idleTimeoutMillis ?? undefined,
-    },
-  })
+  if (dbData?.clientUrl) {
+    const { knex } = await import("@mikro-orm/knex")
+    const dbConnection = knex({
+      client: "pg",
+      searchPath: dbData.schema || "public",
+      connection: {
+        connectionString: dbData.clientUrl,
+        ssl: (dbData.driverOptions?.connection as any).ssl! ?? false,
+        idle_in_transaction_session_timeout:
+          pool?.idleInTransactionSessionTimeout ?? undefined,
+      },
+      pool: {
+        min: pool?.min ?? 0,
+        max: pool?.max,
+        idleTimeoutMillis: pool?.idleTimeoutMillis ?? undefined,
+      },
+    })
 
-  injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] = dbConnection
+    injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] = dbConnection
+  }
 
-  const allModules: LoadedModule[] = []
+  const allModules: Record<string, LoadedModule | LoadedModule[]> = {}
 
   await Promise.all(
     modules.map(async (mod: Partial<ModuleConfig> | Modules) => {
@@ -128,19 +123,34 @@ export async function MedusaApp({
         declaration.resources = MODULE_RESOURCE_TYPE.SHARED
       }
 
-      const loaded = await MedusaModule.bootstrap(
+      const loaded = (await MedusaModule.bootstrap(
         key,
         path,
         declaration,
         undefined,
         injectedDependencies,
         isObject(mod) ? mod.definition : undefined
-      )
-      allModules[key] = loaded[key]
+      )) as LoadedModule
+
+      if (allModules[key] && !Array.isArray(allModules[key])) {
+        allModules[key] = []
+      }
+
+      if (allModules[key]) {
+        ;(allModules[key] as LoadedModule[]).push(loaded[key])
+      } else {
+        allModules[key] = loaded[key]
+      }
 
       return loaded
     })
   )
+
+  let link: RemoteLink | undefined = undefined
+  let query: (
+    query: string | RemoteJoinerQuery,
+    variables?: Record<string, unknown>
+  ) => Promise<any>
 
   try {
     const { initialize: initializeLinks } = await import(
@@ -148,13 +158,13 @@ export async function MedusaApp({
     )
     await initializeLinks({}, linkModules, injectedDependencies)
 
-    global.link = new RemoteLink()
+    link = new RemoteLink()
   } catch (err) {
     console.warn("Error initializing link modules.")
   }
 
   const remoteQuery = new RemoteQuery(undefined, remoteFetchData)
-  global.query = async (
+  query = async (
     query: string | RemoteJoinerQuery,
     variables?: Record<string, unknown>
   ) => {
@@ -163,7 +173,7 @@ export async function MedusaApp({
 
   return {
     modules: allModules,
-    link: global.link,
-    query: global.query,
+    link,
+    query,
   }
 }
