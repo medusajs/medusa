@@ -24,8 +24,8 @@ import { EOL } from "os"
 import { runCloneRepo } from "../utils/clone-repo.js"
 import checkYarnVersion, {
   REQUIRED_YARN_CONFIG,
+  checkIsYarn,
   getYarnOriginalConfig,
-  setYarnConfig,
 } from "../utils/check-yarn-version.js"
 
 const slugify = slugifyType.default
@@ -53,22 +53,14 @@ export default async ({
   migrations,
   directoryPath,
 }: CreateOptions) => {
+  await ensureYarnCompatability()
+
   track("CREATE_CLI")
   if (repoUrl) {
     track("STARTER_SELECTED", { starter: repoUrl })
   }
   if (seed) {
     track("SEED_SELECTED", { seed })
-  }
-
-  const isYarn3 = await checkYarnVersion()
-  const originalYarnConfig = isYarn3 ? await getYarnOriginalConfig() : null
-  if (isYarn3 && originalYarnConfig !== REQUIRED_YARN_CONFIG) {
-    logMessage({
-      message: `Please set your Yarn 3 nodeLinker configuration to ${REQUIRED_YARN_CONFIG} using the command:${EOL}${EOL}yarn config set nodeLinker ${REQUIRED_YARN_CONFIG}.${EOL}${EOL}Alternatively, you can pass the YARN_NODE_LINKER environment variable to the command:${EOL}${EOL}YARN_NODE_LINKER=${REQUIRED_YARN_CONFIG} yarn create medusa-app@latest${EOL}${EOL}Otherwise, the installation will fail.`,
-      type: "error",
-    })
-    process.exit()
   }
 
   const spinner: Ora = ora()
@@ -306,4 +298,22 @@ function getProjectPath(projectName: string, directoryPath?: string) {
 
 function getInviteUrl(inviteToken: string) {
   return `http://localhost:7001/invite?token=${inviteToken}&first_run=true`
+}
+
+async function ensureYarnCompatability() {
+  if (checkIsYarn()) {
+    const isYarnIncompatible = await checkYarnVersion()
+    if (isYarnIncompatible) {
+      const originalYarnConfig = isYarnIncompatible
+        ? await getYarnOriginalConfig()
+        : null
+      if (originalYarnConfig !== REQUIRED_YARN_CONFIG) {
+        logMessage({
+          message: `Please set your Yarn nodeLinker configuration to ${REQUIRED_YARN_CONFIG} by passing the YARN_NODE_LINKER environment variable to the command:${EOL}${EOL}YARN_NODE_LINKER=${REQUIRED_YARN_CONFIG} yarn create medusa-app@latest${EOL}${EOL}Then, try running the command again. Otherwise, the installation will fail.`,
+          type: "error",
+        })
+        process.exit()
+      }
+    }
+  }
 }
