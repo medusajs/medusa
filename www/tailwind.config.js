@@ -507,11 +507,13 @@ module.exports = {
         navbar: "0px 1px 0px 0px #E6E8EB",
       },
       borderRadius: {
-        DEFAULT: "8px",
-        sm: "6px",
-        xs: "4px",
         xxs: "2px",
-        lg: "16px",
+        xs: "4px",
+        sm: "6px",
+        DEFAULT: "8px",
+        md: "8px",
+        lg: "12px",
+        xl: "16px",
       },
       lineHeight: {
         DEFAULT: "24px",

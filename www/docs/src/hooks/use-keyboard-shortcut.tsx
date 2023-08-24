@@ -2,16 +2,18 @@ import { useCallback, useEffect } from "react"
 
 type useKeyboardShortcutOptions = {
   metakey?: boolean
-  shortcutKey: string
-  action: () => void
+  shortcutKeys: string[]
+  action: (e: KeyboardEvent) => void
   checkEditing?: boolean
+  preventDefault?: boolean
 }
 
 const useKeyboardShortcut = ({
   metakey = true,
-  shortcutKey,
+  shortcutKeys,
   action,
   checkEditing = true,
+  preventDefault = true,
 }: useKeyboardShortcutOptions) => {
   function isEditingContent(event: KeyboardEvent) {
     const element = event.target as HTMLElement
@@ -24,18 +26,30 @@ const useKeyboardShortcut = ({
     )
   }
 
+  const checkKeysPressed = useCallback(
+    (pressedKey: string) => {
+      const lowerPressedKey = pressedKey.toLowerCase()
+      return shortcutKeys.some(
+        (value) => lowerPressedKey === value.toLowerCase()
+      )
+    },
+    [shortcutKeys]
+  )
+
   const sidebarShortcut = useCallback(
     (e: KeyboardEvent) => {
       if (
         (!metakey || e.metaKey || e.ctrlKey) &&
-        e.key.toLowerCase() === shortcutKey.toLowerCase() &&
+        checkKeysPressed(e.key) &&
         (!checkEditing || !isEditingContent(e))
       ) {
-        e.preventDefault()
-        action()
+        if (preventDefault) {
+          e.preventDefault()
+        }
+        action(e)
       }
     },
-    [action, shortcutKey, metakey]
+    [metakey, checkKeysPressed, checkEditing, action, preventDefault]
   )
 
   useEffect(() => {

@@ -1,7 +1,6 @@
 import clsx from "clsx"
-import Badge from "../../Badge"
 import { useInstantSearch } from "react-instantsearch"
-import Button from "../../Button"
+import SearchHitGroupName from "../Hits/GroupName"
 
 const SearchSuggestions = () => {
   const { setIndexUiState } = useInstantSearch()
@@ -13,38 +12,36 @@ const SearchSuggestions = () => {
     "Query parameter types",
   ]
   return (
-    <div className="p-1">
-      <span
-        className={clsx(
-          "text-medium-plus mb-1 block",
-          "text-medusa-fg-base dark:text-medusa-fg-base-dark"
-        )}
-      >
-        Search suggestions
-      </span>
-      <div className={clsx("flex flex-wrap gap-1")}>
-        {suggestions.map((suggestion, index) => (
-          <Button
-            onClick={() =>
-              setIndexUiState({
-                query: suggestion,
-              })
-            }
-            variant="clear"
-            key={index}
+    <div className="h-full overflow-auto">
+      <SearchHitGroupName name={"Search suggestions"} />
+      {suggestions.map((suggestion, index) => (
+        <div
+          className={clsx(
+            "flex items-center justify-between",
+            "cursor-pointer rounded-sm p-0.5",
+            "hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark",
+            "focus:bg-medusa-bg-base-hover dark:focus:bg-medusa-bg-base-hover-dark",
+            "focus:outline-none"
+          )}
+          onClick={() =>
+            setIndexUiState({
+              query: suggestion,
+            })
+          }
+          key={index}
+          tabIndex={index}
+          data-hit
+        >
+          <span
+            className={clsx(
+              "text-medusa-fg-base dark:text-medusa-fg-base-dark",
+              "text-compact-small"
+            )}
           >
-            <Badge
-              variant="neutral"
-              className={clsx(
-                "text-small-plus cursor-pointer",
-                "hover:bg-medusa-tag-neutral-bg-hover dark:hover:bg-medusa-tag-neutral-bg-hover-dark"
-              )}
-            >
-              {suggestion}
-            </Badge>
-          </Button>
-        ))}
-      </div>
+            {suggestion}
+          </span>
+        </div>
+      ))}
     </div>
   )
 }

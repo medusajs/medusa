@@ -6,7 +6,7 @@ const Kbd = ({ children, className, ...props }: KbdProps) => {
   return (
     <kbd
       className={clsx(
-        "h-[20px] w-[20px] rounded-sm px-[6px] py-0",
+        "h-[22px] w-[22px] rounded-sm p-0",
         "inline-flex items-center justify-center",
         "border-medusa-tag-neutral-border dark:border-medusa-tag-neutral-border-dark border",
         "bg-medusa-tag-neutral-bg dark:bg-medusa-tag-neutral-bg-dark",

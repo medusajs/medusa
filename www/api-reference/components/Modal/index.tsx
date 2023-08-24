@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import React, { useRef } from "react"
+import React, { forwardRef, useCallback, useEffect, useRef } from "react"
 import { ButtonProps } from "../Button"
 import { useModal } from "../../providers/modal"
 import ModalHeader from "./Header"
@@ -15,36 +15,53 @@ export type ModalProps = {
   onClose?: React.ReactEventHandler<HTMLDialogElement>
   open?: boolean
   footerContent?: React.ReactNode
-} & React.ComponentProps<"dialog">
+} & Omit<React.ComponentProps<"dialog">, "ref">
 
-const Modal = ({
-  className,
-  title,
-  actions,
-  children,
-  contentClassName,
-  modalContainerClassName,
-  onClose,
-  open = true,
-  footerContent,
-  ...props
-}: ModalProps) => {
+const Modal = forwardRef<HTMLDialogElement, ModalProps>(function Modal(
+  {
+    className,
+    title,
+    actions,
+    children,
+    contentClassName,
+    modalContainerClassName,
+    onClose,
+    open = true,
+    footerContent,
+    ...props
+  },
+  passedRef
+) {
   const { closeModal } = useModal()
-  const dialogRef = useRef<HTMLDialogElement>(null)
+  const ref = useRef<HTMLDialogElement | null>(null)
+
+  const setRefs = useCallback(
+    (node: HTMLDialogElement) => {
+      // Ref's from useRef needs to have the node assigned to `current`
+      ref.current = node
+      if (typeof passedRef === "function") {
+        passedRef(node)
+      } else if (passedRef && "current" in passedRef) {
+        passedRef.current = node
+      }
+    },
+    [passedRef]
+  )
+
   useKeyboardShortcut({
     metakey: false,
     checkEditing: false,
-    shortcutKey: "escape",
+    shortcutKeys: ["escape"],
     action: () => {
       if (open) {
-        dialogRef.current?.close()
+        ref.current?.close()
       }
     },
   })
 
   const handleClick = (e: React.MouseEvent<HTMLDialogElement, MouseEvent>) => {
     // close modal when the user clicks outside the content
-    if (e.target === dialogRef.current) {
+    if (e.target === ref.current) {
       closeModal()
       onClose?.(e)
     }
@@ -54,6 +71,14 @@ const Modal = ({
     onClose?.(e)
     closeModal()
   }
+
+  useEffect(() => {
+    if (open) {
+      document.body.setAttribute("data-modal", "opened")
+    } else {
+      document.body.removeAttribute("data-modal")
+    }
+  }, [open])
 
   return (
     <dialog
@@ -65,7 +90,7 @@ const Modal = ({
         className
       )}
       onClick={handleClick}
-      ref={dialogRef}
+      ref={setRefs}
       onClose={handleClose}
       open={open}
     >
@@ -87,6 +112,6 @@ const Modal = ({
       </div>
     </dialog>
   )
-}
+})
 
 export default Modal

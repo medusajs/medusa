@@ -21,7 +21,7 @@ const SearchModalOpener = () => {
   }, [])
   const { isLoading } = usePageLoading()
   useKeyboardShortcut({
-    shortcutKey: "k",
+    shortcutKeys: ["k"],
     action: () => setIsOpen((prev) => !prev),
   })
 
