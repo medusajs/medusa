@@ -94,11 +94,6 @@ export default async ({
       await client.end()
     }
 
-    // revert configurations to their original state
-    if (originalYarnConfig && originalYarnConfig !== REQUIRED_YARN_CONFIG) {
-      await setYarnConfig(originalYarnConfig)
-    }
-
     // the SIGINT event is triggered twice once the backend runs
     // this ensures that the message isn't printed twice to the user
     if (!printedMessage && isProjectCreated) {
