@@ -297,7 +297,7 @@ export class RemoteJoiner {
       Map<string, RemoteExpandProperty>,
       string,
       Set<string>
-    ][] = [[items, query, parsedExpands, "", new Set()]]
+    ][] = [[items, query, parsedExpands, BASE_PATH, new Set()]]
 
     while (stack.length > 0) {
       const [
@@ -309,9 +309,7 @@ export class RemoteJoiner {
       ] = stack.pop()!
 
       for (const [expandedPath, expand] of currentParsedExpands.entries()) {
-        const isImmediateChildPath =
-          expandedPath.startsWith(basePath) &&
-          expandedPath.split(".").length === basePath.split(".").length + 1
+        const isImmediateChildPath = basePath === expand.parent
 
         if (!isImmediateChildPath || resolvedPaths.has(expandedPath)) {
           continue
@@ -545,13 +543,13 @@ export class RemoteJoiner {
             serviceConfig: currentServiceConfig,
             fields,
             args,
+            parent: [BASE_PATH, ...currentPath].join("."),
           })
         }
 
         currentPath.push(prop)
       }
     }
-
     return parsedExpands
   }
 
@@ -572,7 +570,7 @@ export class RemoteJoiner {
     for (const [path, expand] of sortedParsedExpands.entries()) {
       const currentServiceName = expand.serviceConfig.serviceName
 
-      let parentPath = path.split(".").slice(0, -1).join(".")
+      let parentPath = expand.parent
 
       // Check if the parentPath was merged before
       while (mergedPaths.has(parentPath)) {
@@ -586,6 +584,7 @@ export class RemoteJoiner {
 
         if (parentExpand.serviceConfig.serviceName === currentServiceName) {
           const nestedKeys = path.split(".").slice(parentPath.split(".").length)
+
           let targetExpand: any = parentExpand
 
           for (let key of nestedKeys) {
@@ -639,6 +638,7 @@ export class RemoteJoiner {
     const parsedExpands = this.parseExpands(
       {
         property: "",
+        parent: "",
         serviceConfig: serviceConfig,
         fields: queryObj.fields,
         args: otherArgs,
