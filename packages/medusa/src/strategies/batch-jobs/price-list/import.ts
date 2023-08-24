@@ -305,8 +305,8 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
         OperationType.PricesCreate
       )
 
-      await Promise.all(
-        priceImportOperations.map(async (op) => {
+      for (const op of priceImportOperations) {
+        try {
           await txPriceListService.addPrices(
             priceListId,
             (op.prices as PriceListPriceCreateInput[]).map((p) => {
@@ -316,8 +316,10 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
               }
             })
           )
-        })
-      )
+        } catch (e) {
+          PriceListImportStrategy.throwDescriptiveError(op, e.message)
+        }
+      }
 
       await this.finalize(batchJob)
     })
@@ -373,7 +375,7 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
   protected async downloadImportOpsFile(
     batchJob: BatchJob,
     op: OperationType
-  ): Promise<TParsedProductImportRowData[]> {
+  ): Promise<TParsedPriceListImportRowData[]> {
     let data = ""
     const transactionManager = this.transactionManager_ ?? this.manager_
 
@@ -392,7 +394,7 @@ class PriceListImportStrategy extends AbstractBatchJobStrategy {
       })
       readableStream.on("error", () => {
         // TODO: maybe should throw
-        resolve([] as TParsedProductImportRowData[])
+        resolve([] as TParsedPriceListImportRowData[])
       })
     })
   }
