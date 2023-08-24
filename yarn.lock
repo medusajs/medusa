@@ -731,6 +731,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/node@npm:^7.22.10":
+  version: 7.22.10
+  resolution: "@babel/node@npm:7.22.10"
+  dependencies:
+    "@babel/register": ^7.22.5
+    commander: ^4.0.1
+    core-js: ^3.30.2
+    node-environment-flags: ^1.0.5
+    regenerator-runtime: ^0.14.0
+    v8flags: ^3.1.1
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  bin:
+    babel-node: ./bin/babel-node.js
+  checksum: ebb7269d908a0f150a044fbba9282d946c4f43bea6007b685506a2d596de9c6798f98a61ee5de900a6784e36b7dcf14c84085213f0ef276e926915fea7e7780c
+  languageName: node
+  linkType: hard
+
 "@babel/parser@npm:7.22.5, @babel/parser@npm:^7.1.0, @babel/parser@npm:^7.12.11, @babel/parser@npm:^7.12.7, @babel/parser@npm:^7.14.0, @babel/parser@npm:^7.14.3, @babel/parser@npm:^7.14.7, @babel/parser@npm:^7.15.5, @babel/parser@npm:^7.16.8, @babel/parser@npm:^7.20.7, @babel/parser@npm:^7.22.5, @babel/parser@npm:^7.3.3":
   version: 7.22.5
   resolution: "@babel/parser@npm:7.22.5"
@@ -2241,7 +2259,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.14.8":
+"@babel/runtime@npm:^7.14.8, @babel/runtime@npm:^7.22.10":
   version: 7.22.10
   resolution: "@babel/runtime@npm:7.22.10"
   dependencies:
@@ -5292,7 +5310,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/client-types@workspace:packages/generated/client-types"
   dependencies:
-    "@medusajs/medusa-oas-cli": 0.2.15
+    "@medusajs/medusa-oas-cli": 0.2.16
     cross-env: ^7.0.3
     execa: ^5.1.1
     jest: ^27.4.7
@@ -5449,7 +5467,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-oas-cli@0.2.15, @medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli":
+"@medusajs/medusa-oas-cli@0.2.16, @medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli"
   dependencies:
@@ -5576,7 +5594,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/oas-github-ci@workspace:packages/oas/oas-github-ci"
   dependencies:
-    "@medusajs/medusa-oas-cli": 0.2.15
+    "@medusajs/medusa-oas-cli": 0.2.16
     execa: ^5.1.1
   languageName: unknown
   linkType: soft
@@ -5639,7 +5657,7 @@ __metadata:
   dependencies:
     "@medusajs/modules-sdk": ^1.9.2
     "@medusajs/types": ^1.10.2
-    "@medusajs/utils": ^1.9.6
+    "@medusajs/utils": ^1.9.7
     "@mikro-orm/cli": 5.7.12
     "@mikro-orm/core": 5.7.12
     "@mikro-orm/migrations": 5.7.12
@@ -5793,7 +5811,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@medusajs/utils@^1.9.1, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.4, @medusajs/utils@^1.9.6, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
+"@medusajs/utils@^1.9.1, @medusajs/utils@^1.9.2, @medusajs/utils@^1.9.4, @medusajs/utils@^1.9.6, @medusajs/utils@^1.9.7, @medusajs/utils@workspace:^, @medusajs/utils@workspace:packages/utils":
   version: 0.0.0-use.local
   resolution: "@medusajs/utils@workspace:packages/utils"
   dependencies:
@@ -29868,7 +29886,9 @@ __metadata:
   dependencies:
     "@babel/cli": ^7.14.3
     "@babel/core": ^7.14.3
+    "@babel/node": ^7.22.10
     "@babel/preset-typescript": ^7.15.0
+    "@babel/runtime": ^7.22.10
     axios: ^0.21.4
     axios-retry: ^3.1.9
     babel-preset-medusa-package: ^1.1.19
