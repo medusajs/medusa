@@ -13,7 +13,6 @@
     "prepublishOnly": "cross-env NODE_ENV=production tsc --build"
   },
   "dependencies": {
-    "@types/node": "^20.5.3",
     "boxen": "^5",
     "chalk": "^5.2.0",
     "commander": "^10.0.1",
