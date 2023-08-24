@@ -64,7 +64,11 @@ export default async ({
   const isYarn3 = await checkYarnVersion()
   const originalYarnConfig = isYarn3 ? await getYarnOriginalConfig() : null
   if (isYarn3 && originalYarnConfig !== REQUIRED_YARN_CONFIG) {
-    await setYarnConfig(REQUIRED_YARN_CONFIG)
+    logMessage({
+      message: `Please set your Yarn 3 nodeLinker configuration to ${REQUIRED_YARN_CONFIG} using the command:${EOL}${EOL}yarn config set nodeLinker ${REQUIRED_YARN_CONFIG}.${EOL}${EOL}Alternatively, you can pass the YARN_NODE_LINKER environment variable to the command:${EOL}${EOL}YARN_NODE_LINKER=${REQUIRED_YARN_CONFIG} yarn create medusa-app@latest${EOL}${EOL}Otherwise, the installation will fail.`,
+      type: "error",
+    })
+    process.exit()
   }
 
   const spinner: Ora = ora()
