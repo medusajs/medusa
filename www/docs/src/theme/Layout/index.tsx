@@ -15,8 +15,9 @@ import type { Props } from "@theme/Layout"
 import useIsBrowser from "@docusaurus/useIsBrowser"
 import { useLocation } from "@docusaurus/router"
 import "animate.css"
-import StructuredDataSearchbox from "@site/src/components/StructuredData/Searchbox"
 import { useUser } from "@site/src/providers/User"
+import SearchProvider from "../../providers/Search"
+import ModalProvider from "../../providers/Modal"
 
 export default function Layout(props: Props): JSX.Element {
   const {
@@ -54,24 +55,29 @@ export default function Layout(props: Props): JSX.Element {
 
   return (
     <LayoutProvider>
-      <PageMetadata title={title} description={description} />
-      {isBrowser && location.pathname === "/" && <StructuredDataSearchbox />}
-      <SkipToContent />
+      <ModalProvider>
+        <SearchProvider>
+          <PageMetadata title={title} description={description} />
+          <SkipToContent />
 
-      <Navbar />
+          <Navbar />
 
-      <div
-        id={SkipToContentFallbackId}
-        className={clsx(
-          ThemeClassNames.wrapper.main,
-          "flex-auto flex-grow flex-shrink-0",
-          wrapperClassName
-        )}
-      >
-        <ErrorBoundary fallback={(params) => <ErrorPageContent {...params} />}>
-          {children}
-        </ErrorBoundary>
-      </div>
+          <div
+            id={SkipToContentFallbackId}
+            className={clsx(
+              ThemeClassNames.wrapper.main,
+              "flex-auto flex-grow flex-shrink-0",
+              wrapperClassName
+            )}
+          >
+            <ErrorBoundary
+              fallback={(params) => <ErrorPageContent {...params} />}
+            >
+              {children}
+            </ErrorBoundary>
+          </div>
+        </SearchProvider>
+      </ModalProvider>
     </LayoutProvider>
   )
 }

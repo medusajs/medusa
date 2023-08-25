@@ -1,33 +1,13 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
 import NavbarMenuButton from "../MenuButton"
 import NavbarMobileLogo from "../MobileLogo"
-import SearchBar from "../../SearchBar"
 import NavbarColorModeToggle from "../ColorModeToggle"
+import SearchModalOpener from "../../Search/ModalOpener"
+import { useMobile } from "../../../providers/mobile"
 
 const MobileMenu = () => {
-  const [isMobile, setIsMobile] = useState(false)
-
-  const handleResize = useCallback(() => {
-    if (window.innerWidth < 1025 && !isMobile) {
-      setIsMobile(true)
-    } else if (window.innerWidth >= 1025 && isMobile) {
-      setIsMobile(false)
-    }
-  }, [isMobile])
-
-  useEffect(() => {
-    window.addEventListener("resize", handleResize)
-
-    return () => {
-      window.removeEventListener("resize", handleResize)
-    }
-  }, [handleResize])
-
-  useEffect(() => {
-    handleResize()
-  }, [])
+  const { isMobile } = useMobile()
 
   return (
     <div className="flex w-full items-center justify-between lg:hidden">
@@ -41,7 +21,7 @@ const MobileMenu = () => {
           />
           <NavbarMobileLogo />
           <div className="flex">
-            <SearchBar />
+            <SearchModalOpener />
             <NavbarColorModeToggle
               buttonProps={{
                 className:

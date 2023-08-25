@@ -12,7 +12,7 @@ const InputText = (props: InputTextProps) => {
       {...props}
       className={clsx(
         "bg-medusa-bg-field dark:bg-medusa-bg-field-dark shadow-button-secondary dark:shadow-button-secondary-dark",
-        "border-medusa-border-loud-muted dark:border-medusa-border-loud-muted-dark rounded-sm border border-solid",
+        "border-medusa-border-base dark:border-medusa-border-base-dark rounded-sm border border-solid",
         "px-0.75 py-[9px]",
         "hover:bg-medusa-bg-field-hover dark:hover:bg-medusa-bg-field-hover-dark",
         "focus:border-medusa-border-interactive dark:focus:border-medusa-border-interactive-dark",
