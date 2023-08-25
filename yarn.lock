@@ -5270,7 +5270,7 @@ __metadata:
     ts-dedent: ^2.2.0
     typescript: ^4.9.3
   peerDependencies:
-    "@medusajs/medusa": 1.14.0
+    "@medusajs/medusa": ^1.14.0
   bin:
     medusa-admin: ./bin/medusa-admin.js
   languageName: unknown
