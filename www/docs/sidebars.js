@@ -276,6 +276,14 @@ module.exports = {
                 },
               },
             },
+            {
+              type: "doc",
+              id: "deployments/server/general-guide",
+              label: "General Deployment",
+              customProps: {
+                iconName: "academic-cap-solid",
+              },
+            },
           ],
         },
         {
@@ -349,6 +357,15 @@ module.exports = {
       label: "Contribution Guidelines",
       customProps: {
         sidebar_icon: "document-text",
+      },
+      className: "homepage-sidebar-item",
+    },
+    {
+      type: "doc",
+      id: "glossary",
+      label: "Glossary",
+      customProps: {
+        sidebar_icon: "book-open",
       },
       className: "homepage-sidebar-item",
     },

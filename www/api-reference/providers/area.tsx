@@ -1,7 +1,8 @@
 "use client"
 
 import type { Area } from "@/types/openapi"
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
+import { useSearch } from "./search"
 
 type AreaContextType = {
   area: Area
@@ -17,6 +18,13 @@ type AreaProviderProps = {
 
 const AreaProvider = ({ area: passedArea, children }: AreaProviderProps) => {
   const [area, setArea] = useState<Area>(passedArea)
+  const { defaultFilters, setDefaultFilters } = useSearch()
+
+  useEffect(() => {
+    if (!defaultFilters.includes(area)) {
+      setDefaultFilters([area])
+    }
+  }, [area, defaultFilters, setDefaultFilters])
 
   return (
     <AreaContext.Provider

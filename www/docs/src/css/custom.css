@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body[data-modal="opened"] {
+    @apply !overflow-hidden;
+  }
+
+  mark {
+    @apply bg-medusa-bg-highlight dark:bg-medusa-bg-highlight-dark;
+    @apply text-medusa-fg-interactive dark:text-medusa-fg-interactive-dark;
+  }
+}
+
 @layer components {
   .sidebar-title {
     @apply !m-0 !py-1 !px-0;
@@ -116,13 +127,14 @@
     @apply inline-flex flex-row justify-center items-center;
     @apply py-[5px] px-0.75 rounded-sm cursor-pointer;
     @apply bg-button-neutral bg-medusa-button-neutral dark:bg-button-neutral-dark dark:bg-medusa-button-neutral-dark;
-    @apply hover:bg-medusa-button-neutral-hover hover:bg-button-neutral-hover dark:hover:bg-medusa-button-neutral-hover-dark dark:hover:bg-button-neutral-hover-dark hover:no-underline;
-    @apply active:bg-medusa-button-neutral-pressed active:bg-button-neutral-pressed dark:active:bg-medusa-button-neutral-pressed-dark dark:active:bg-button-neutral-pressed-dark;
-    @apply focus:bg-medusa-button-neutral-pressed focus:bg-button-neutral-pressed dark:focus:bg-medusa-button-neutral-pressed-dark dark:focus:bg-button-neutral-pressed-dark;
+    @apply hover:bg-medusa-button-neutral-hover hover:bg-no-image dark:hover:bg-medusa-button-neutral-hover-dark hover:no-underline;
+    @apply active:bg-medusa-button-neutral-pressed active:bg-no-image dark:active:bg-medusa-button-neutral-pressed-dark;
+    @apply focus:bg-medusa-button-neutral-pressed focus:bg-no-image dark:focus:bg-medusa-button-neutral-pressed-dark;
     @apply disabled:!bg-no-image disabled:bg-medusa-bg-disabled dark:disabled:bg-medusa-bg-disabled-dark;
     @apply disabled:cursor-not-allowed;
     @apply border border-solid border-medusa-border-base dark:border-medusa-border-base-dark;
     @apply text-compact-small-plus text-medusa-fg-base dark:text-medusa-fg-base-dark;
+    @apply hover:text-medusa-fg-base hover:dark:text-medusa-fg-base-dark;
     @apply shadow-button-neutral focus:shadow-button-neutral-focused active:shadow-button-neutral-focused transition-shadow;
     @apply dark:shadow-button-neutral dark:focus:shadow-button-neutral-focused dark:active:shadow-button-neutral-focused;
     @apply select-none;
@@ -132,9 +144,9 @@
     @apply inline-flex flex-row justify-center items-center;
     @apply py-[5px] px-0.75 rounded-sm cursor-pointer;
     @apply bg-button-inverted bg-medusa-button-inverted dark:bg-button-inverted-dark dark:bg-medusa-button-inverted-dark;
-    @apply hover:bg-medusa-button-inverted-hover hover:bg-button-inverted-hover dark:hover:bg-medusa-button-inverted-hover-dark dark:hover:bg-button-inverted-hover-dark hover:no-underline;
-    @apply active:bg-medusa-button-inverted-pressed active:bg-button-inverted-pressed dark:active:bg-medusa-button-inverted-pressed-dark dark:active:bg-button-inverted-pressed-dark;
-    @apply focus:bg-medusa-button-inverted-pressed focus:bg-button-inverted-pressed dark:focus:bg-medusa-button-inverted-pressed-dark dark:focus:bg-button-inverted-pressed-dark;
+    @apply hover:bg-medusa-button-inverted-hover hover:bg-no-image dark:hover:bg-medusa-button-inverted-hover-dark hover:no-underline;
+    @apply active:bg-medusa-button-inverted-pressed active:bg-no-image dark:active:bg-medusa-button-inverted-pressed-dark;
+    @apply focus:bg-medusa-button-inverted-pressed focus:bg-no-image dark:focus:bg-medusa-button-inverted-pressed-dark;
     @apply shadow-button-colored active:shadow-button-colored-focused focus:shadow-button-colored-focused transition-shadow;
     @apply dark:shadow-button-colored-dark dark:active:shadow-button-colored-focused-dark dark:focus:shadow-button-colored-focused-dark;
     @apply disabled:!bg-no-image disabled:bg-medusa-button-disabled dark:disabled:bg-medusa-button-disabled-dark;
@@ -146,15 +158,16 @@
   }
 
   .navbar-action-icon-item {
-    @apply lg:bg-docs-button-neutral lg:dark:bg-docs-button-neutral-dark hover:!bg-no-image lg:active:!bg-no-image hover:bg-medusa-button-neutral-hover dark:hover:bg-medusa-button-neutral-hover-dark;
-    @apply lg:active:bg-medusa-button-neutral-pressed lg:dark:active:bg-medusa-button-neutral-pressed-dark;
-    @apply lg:focus:shadow-button-secondary-focus lg:dark:focus:shadow-button-secondary-focus-dark;
-    @apply lg:border lg:border-solid lg:border-medusa-border-loud-muted lg:dark:border-medusa-border-loud-muted-dark rounded;
+    @apply lg:bg-button-neutral lg:bg-medusa-button-neutral lg:dark:bg-button-neutral-dark lg:dark:bg-medusa-button-neutral-dark;
+    @apply lg:hover:bg-medusa-button-neutral-hover lg:hover:bg-no-image lg:dark:hover:bg-medusa-button-neutral-hover-dark lg:hover:no-underline;
+    @apply lg:active:bg-medusa-button-neutral-pressed lg:active:bg-no-image lg:dark:active:bg-medusa-button-neutral-pressed-dark;
+    @apply lg:focus:bg-medusa-button-neutral-pressed lg:focus:bg-no-image lg:dark:focus:bg-medusa-button-neutral-pressed-dark;
+    @apply lg:lg:border lg:border-solid lg:border-medusa-border-base lg:dark:border-medusa-border-base-dark rounded;
     @apply w-2 h-2 flex justify-center items-center cursor-pointer;
   }
 
-  .transparent-button {
-    @apply bg-transparent border-0 text-inherit cursor-pointer p-0;
+  .btn-clear {
+    @apply bg-transparent shadow-none border-0 outline-none cursor-pointer;
   }
 }
 
@@ -167,7 +180,6 @@
 @import url('./_variables.css');
 
 @import url('./_docusaurus.css');
-@import url('./components/docsearch.css');
 @import url('./components/sidebar.css');
 @import url('./components/toc.css');
 @import url('./components/tooltip.css');
