@@ -93,7 +93,8 @@ export const initialize = async (
       !modulesLoadedKeys.includes(primary.serviceName) ||
       !modulesLoadedKeys.includes(foreign.serviceName)
     ) {
-      continue
+      // TODO: This should be uncommented when all modules are done
+      // continue
     }
 
     const moduleDefinition = getLinkModuleDefinition(
@@ -179,7 +180,8 @@ export async function runMigrations(
       !modulesLoadedKeys.includes(primary.serviceName) ||
       !modulesLoadedKeys.includes(foreign.serviceName)
     ) {
-      continue
+      // TODO: This should be uncommented when all modules are done
+      // continue
     }
 
     const migrate = getMigration(definition, serviceKey, primary, foreign)

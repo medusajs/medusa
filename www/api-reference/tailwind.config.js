@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import coreConfig from "../tailwind.config"
 
 /** @type {import('tailwindcss').Config} */
@@ -24,4 +25,9 @@ module.exports = {
       "magnifying-glass-dark": "url('/images/magnifying-glass-dark.svg')",
     },
   },
+  plugins: [
+    require("tailwindcss/plugin")(({ addVariant }) => {
+      addVariant("search-cancel", "&::-webkit-search-cancel-button")
+    }),
+  ],
 }
