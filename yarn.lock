@@ -5270,7 +5270,7 @@ __metadata:
     ts-dedent: ^2.2.0
     typescript: ^4.9.3
   peerDependencies:
-    "@medusajs/medusa": 1.14.0
+    "@medusajs/medusa": ^1.14.0
   bin:
     medusa-admin: ./bin/medusa-admin.js
   languageName: unknown
@@ -5310,7 +5310,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/client-types@workspace:packages/generated/client-types"
   dependencies:
-    "@medusajs/medusa-oas-cli": 0.2.16
+    "@medusajs/medusa-oas-cli": 0.2.17
     cross-env: ^7.0.3
     execa: ^5.1.1
     jest: ^27.4.7
@@ -5359,7 +5359,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/file-local@workspace:packages/medusa-file-local"
   dependencies:
-    "@medusajs/medusa": ^1.12.0
+    "@medusajs/medusa": ^1.15.0
     cross-env: ^5.2.1
     jest: ^25.5.4
     rimraf: ^5.0.1
@@ -5404,7 +5404,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-cli@^1.3.19, @medusajs/medusa-cli@workspace:packages/medusa-cli":
+"@medusajs/medusa-cli@^1.3.20, @medusajs/medusa-cli@workspace:packages/medusa-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-cli@workspace:packages/medusa-cli"
   dependencies:
@@ -5426,7 +5426,7 @@ __metadata:
     jest: ^25.5.4
     meant: ^1.0.3
     medusa-core-utils: ^1.2.0
-    medusa-telemetry: ^0.0.16
+    medusa-telemetry: ^0.0.17
     open: ^8.0.6
     ora: ^5.4.1
     pg: ^8.11.0
@@ -5467,11 +5467,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa-oas-cli@0.2.16, @medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli":
+"@medusajs/medusa-oas-cli@0.2.17, @medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa-oas-cli@workspace:packages/oas/medusa-oas-cli"
   dependencies:
-    "@medusajs/medusa": ^1.14.0
+    "@medusajs/medusa": ^1.15.0
     "@medusajs/openapi-typescript-codegen": ^0.2.1
     "@medusajs/types": "workspace:^"
     "@medusajs/utils": "workspace:^"
@@ -5495,14 +5495,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/medusa@*, @medusajs/medusa@^1.12.0, @medusajs/medusa@^1.12.1, @medusajs/medusa@^1.12.2, @medusajs/medusa@^1.12.3, @medusajs/medusa@^1.14.0, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
+"@medusajs/medusa@*, @medusajs/medusa@^1.12.1, @medusajs/medusa@^1.12.2, @medusajs/medusa@^1.12.3, @medusajs/medusa@^1.14.0, @medusajs/medusa@^1.15.0, @medusajs/medusa@workspace:*, @medusajs/medusa@workspace:packages/medusa":
   version: 0.0.0-use.local
   resolution: "@medusajs/medusa@workspace:packages/medusa"
   dependencies:
-    "@medusajs/medusa-cli": ^1.3.19
+    "@medusajs/medusa-cli": ^1.3.20
     "@medusajs/modules-sdk": ^1.9.2
     "@medusajs/orchestration": ^0.2.0
-    "@medusajs/types": ^1.10.2
+    "@medusajs/types": ^1.10.3
     "@medusajs/utils": ^1.9.6
     "@medusajs/workflows": ^0.2.0
     "@types/express": ^4.17.17
@@ -5539,7 +5539,7 @@ __metadata:
     lodash: ^4.17.21
     medusa-core-utils: ^1.2.0
     medusa-interfaces: ^1.3.7
-    medusa-telemetry: ^0.0.16
+    medusa-telemetry: ^0.0.17
     medusa-test-utils: ^1.1.40
     morgan: ^1.9.1
     multer: ^1.4.5-lts.1
@@ -5594,7 +5594,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@medusajs/oas-github-ci@workspace:packages/oas/oas-github-ci"
   dependencies:
-    "@medusajs/medusa-oas-cli": 0.2.16
+    "@medusajs/medusa-oas-cli": 0.2.17
     execa: ^5.1.1
   languageName: unknown
   linkType: soft
@@ -5700,7 +5700,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@medusajs/types@*, @medusajs/types@^1.10.0, @medusajs/types@^1.10.2, @medusajs/types@^1.8.10, @medusajs/types@^1.8.11, @medusajs/types@^1.8.8, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
+"@medusajs/types@*, @medusajs/types@^1.10.0, @medusajs/types@^1.10.2, @medusajs/types@^1.10.3, @medusajs/types@^1.8.10, @medusajs/types@^1.8.11, @medusajs/types@^1.8.8, @medusajs/types@workspace:^, @medusajs/types@workspace:packages/types":
   version: 0.0.0-use.local
   resolution: "@medusajs/types@workspace:packages/types"
   dependencies:
@@ -17638,7 +17638,7 @@ __metadata:
     eslint-plugin-prettier: ^4.2.1
     glob: ^7.1.6
     inquirer: ^9.2.2
-    medusa-telemetry: ^0.0.16
+    medusa-telemetry: ^0.0.17
     nanoid: ^4.0.2
     node-emoji: ^2.0.2
     node-fetch: ^3.3.1
@@ -29174,7 +29174,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-file-minio@workspace:packages/medusa-file-minio"
   dependencies:
-    "@medusajs/medusa": ^1.12.3
+    "@medusajs/medusa": ^1.15.0
     aws-sdk: ^2.983.0
     body-parser: ^1.19.0
     cross-env: ^5.2.1
@@ -29193,7 +29193,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "medusa-file-s3@workspace:packages/medusa-file-s3"
   dependencies:
-    "@medusajs/medusa": ^1.12.1
+    "@medusajs/medusa": ^1.15.0
     aws-sdk: ^2.983.0
     body-parser: ^1.19.0
     cross-env: ^5.2.1
@@ -29222,7 +29222,7 @@ __metadata:
     "@babel/preset-env": ^7.7.5
     "@babel/register": ^7.7.4
     "@babel/runtime": ^7.9.6
-    "@medusajs/medusa": ^1.12.1
+    "@medusajs/medusa": ^1.15.0
     aws-sdk: ^2.710.0
     body-parser: ^1.19.0
     client-sessions: ^0.8.0
@@ -29880,7 +29880,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"medusa-telemetry@^0.0.16, medusa-telemetry@workspace:packages/medusa-telemetry":
+"medusa-telemetry@^0.0.17, medusa-telemetry@workspace:packages/medusa-telemetry":
   version: 0.0.0-use.local
   resolution: "medusa-telemetry@workspace:packages/medusa-telemetry"
   dependencies:
