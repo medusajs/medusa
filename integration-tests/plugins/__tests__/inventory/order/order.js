@@ -160,7 +160,7 @@ describe("/store/carts", () => {
     })
 
     describe("canceling an order", () => {
-      it("cancels an order with many items should succeed", async () => {
+      it("should cancel an order with many items", async () => {
         const api = useApi()
 
         const stockLocation = await stockLocationService.create({
@@ -226,10 +226,6 @@ describe("/store/carts", () => {
         const completeRes = await api.post(`/store/carts/${cart.id}/complete`)
 
         const orderId = completeRes.data.data.id
-
-        const reservations = await inventoryService.listReservationItems({
-          line_item_id: items.map((i) => i.id),
-        })
 
         const response = await api
           .post(`/admin/orders/${orderId}/cancel`, {}, adminHeaders)
