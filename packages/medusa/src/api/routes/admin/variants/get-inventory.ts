@@ -36,7 +36,7 @@ import { joinLevels } from "../inventory-items/utils/join-levels"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl '{backend_url}/admin/variants' \
+ *       curl '{backend_url}/admin/variants/{id}/inventory' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
