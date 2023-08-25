@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import algoliasearch, { SearchClient } from "algoliasearch/lite"
 import { InstantSearch, SearchBox } from "react-instantsearch"
 import Modal from "../../Modal"
@@ -110,6 +110,17 @@ const SearchModal = () => {
   useEffect(() => {
     if (isOpen && searchBoxRef.current) {
       focusSearchInput()
+    } else if (!isOpen) {
+      const focusedItem = modalRef.current?.querySelector(
+        ":focus"
+      ) as HTMLElement
+      if (
+        focusedItem &&
+        focusedItem === searchBoxRef.current?.querySelector("input")
+      ) {
+        // remove focus
+        focusedItem.blur()
+      }
     }
   }, [isOpen])
 
@@ -179,13 +190,50 @@ const SearchModal = () => {
     }
   }
 
+  const shortcutKeys = useMemo(() => ["ArrowUp", "ArrowDown", "Enter"], [])
+
   useKeyboardShortcut({
     metakey: false,
-    shortcutKeys: ["ArrowUp", "ArrowDown", "Enter"],
+    shortcutKeys,
     action: handleKeyAction,
     checkEditing: false,
     preventDefault: false,
   })
+
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      if (!isOpen) {
+        return
+      }
+      // check if shortcut keys were pressed
+      const lowerPressedKey = e.key.toLowerCase()
+      const pressedShortcut = [...shortcutKeys, "Escape"].some(
+        (s) => s.toLowerCase() === lowerPressedKey
+      )
+      if (pressedShortcut) {
+        return
+      }
+
+      const focusedItem = modalRef.current?.querySelector(
+        ":focus"
+      ) as HTMLElement
+      const searchInput = searchBoxRef.current?.querySelector(
+        "input"
+      ) as HTMLInputElement
+      if (searchInput && focusedItem !== searchInput) {
+        searchInput.focus()
+      }
+    },
+    [shortcutKeys, isOpen]
+  )
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown)
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown)
+    }
+  }, [handleKeyDown])
 
   return (
     <Modal
