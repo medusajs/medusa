@@ -48,7 +48,13 @@ function useBatchJob(initialData: BatchJob): BatchJob {
     setBatchJob(batch_job)
   }, [batch_job])
 
-  return useMemo(() => batchJob!, [batchJob?.status, batchJob?.result])
+  return useMemo(
+    () =>
+      new Date(initialData.updated_at) > new Date(batch_job.updated_at)
+        ? initialData
+        : batchJob,
+    [initialData.updated_at, batchJob?.updated_at]
+  )
 }
 
 const BatchJobActivityList = ({ batchJobs }: { batchJobs?: BatchJob[] }) => {
