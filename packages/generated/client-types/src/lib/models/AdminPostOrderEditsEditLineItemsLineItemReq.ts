@@ -8,4 +8,8 @@ export interface AdminPostOrderEditsEditLineItemsLineItemReq {
    * The quantity to update
    */
   quantity: number
+  /**
+   * The unit price to update
+   */
+  unit_price?: number
 }

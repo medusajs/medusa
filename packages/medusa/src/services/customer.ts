@@ -66,6 +66,10 @@ class CustomerService extends TransactionBaseService {
    * @return {string} the generated JSON web token
    */
   async generateResetPasswordToken(customerId: string): Promise<string> {
+
+
+    console.log("testing")
+
     return await this.atomicPhase_(async (manager) => {
       const customer = await this.retrieve(customerId, {
         select: [
@@ -89,6 +93,7 @@ class CustomerService extends TransactionBaseService {
       const expiry = Math.floor(Date.now() / 1000) + 60 * 15 // 15 minutes ahead
       const payload = { customer_id: customer.id, exp: expiry }
       const token = jwt.sign(payload, secret)
+ 
       // Notify subscribers
       void this.eventBusService_
         .withTransaction(manager)

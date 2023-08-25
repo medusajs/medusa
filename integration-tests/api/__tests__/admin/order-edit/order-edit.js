@@ -2079,7 +2079,7 @@ describe("/admin/order-edits", () => {
 
       const response = await api.post(
         `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
-        { quantity: 2 },
+        { quantity: 2, unit_price: 3000 },
         adminHeaders
       )
 
@@ -2116,7 +2116,7 @@ describe("/admin/order-edits", () => {
                 should_merge: true,
                 allow_discounts: true,
                 has_shipping: null,
-                unit_price: 1000,
+                unit_price: 3000,
                 variant_id: expect.any(String),
                 quantity: 2,
                 fulfilled_quantity: 1,
@@ -2171,7 +2171,7 @@ describe("/admin/order-edits", () => {
               should_merge: true,
               allow_discounts: true,
               has_shipping: null,
-              unit_price: 1000,
+              unit_price: 3000,
               variant_id: expect.any(String),
               quantity: 2,
               fulfilled_quantity: 1,
@@ -2220,9 +2220,9 @@ describe("/admin/order-edits", () => {
           gift_card_total: 0,
           gift_card_tax_total: 0,
           shipping_total: 0,
-          subtotal: 3000,
-          tax_total: 375,
-          total: 3375,
+          subtotal: 7000,
+          tax_total: 875,
+          total: 7875,
         })
       )
     })
@@ -2248,13 +2248,13 @@ describe("/admin/order-edits", () => {
 
       await api.post(
         `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
-        { quantity: 2 },
+        { quantity: 2, unit_price: 1200 },
         adminHeaders
       )
 
       const response = await api.post(
         `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
-        { quantity: 3 },
+        { quantity: 3, unit_price: 1500 },
         adminHeaders
       )
 
@@ -2291,7 +2291,7 @@ describe("/admin/order-edits", () => {
                 should_merge: true,
                 allow_discounts: true,
                 has_shipping: null,
-                unit_price: 1000,
+                unit_price: 1500,
                 variant_id: expect.any(String),
                 quantity: 3,
                 fulfilled_quantity: 1,
@@ -2346,7 +2346,7 @@ describe("/admin/order-edits", () => {
               should_merge: true,
               allow_discounts: true,
               has_shipping: null,
-              unit_price: 1000,
+              unit_price: 1500,
               variant_id: expect.any(String),
               quantity: 3,
               fulfilled_quantity: 1,
@@ -2395,9 +2395,9 @@ describe("/admin/order-edits", () => {
           gift_card_total: 0,
           gift_card_tax_total: 0,
           shipping_total: 0,
-          subtotal: 4000,
-          tax_total: 500,
-          total: 4500,
+          subtotal: 5500,
+          tax_total: 688,
+          total: 6188,
         })
       )
     })
@@ -2465,7 +2465,7 @@ describe("/admin/order-edits", () => {
 
       let response = await api.post(
         `/admin/order-edits/${orderEditId}/items/${updateItemId}`,
-        { quantity: 2 },
+        { quantity: 2, unit_price: 4000 },
         adminHeaders
       )
 
@@ -2482,8 +2482,8 @@ describe("/admin/order-edits", () => {
       )
       expect(item2.adjustments).toHaveLength(1)
 
-      expect(item1.adjustments[0].amount).toBeCloseTo(1333, 0)
-      expect(item2.adjustments[0].amount).toBeCloseTo(667, 0)
+      expect(item1.adjustments[0].amount).toBeCloseTo(1777.777, 0)
+      expect(item2.adjustments[0].amount).toBeCloseTo(222.222, 0)
 
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
@@ -2519,7 +2519,7 @@ describe("/admin/order-edits", () => {
               should_merge: true,
               allow_discounts: true,
               has_shipping: null,
-              unit_price: 1000,
+              unit_price: 4000,
               variant_id: expect.any(String),
               quantity: 2,
               fulfilled_quantity: null,
@@ -2574,9 +2574,9 @@ describe("/admin/order-edits", () => {
           gift_card_total: 0,
           gift_card_tax_total: 0,
           shipping_total: 0,
-          subtotal: 3000,
-          tax_total: 100,
-          total: 1100,
+          subtotal: 9000,
+          tax_total: 700,
+          total: 7700,
         })
       )
 
@@ -2598,6 +2598,10 @@ describe("/admin/order-edits", () => {
         (item) => item.original_item_id === lineItemId2
       )
       expect(item2.adjustments).toHaveLength(1)
+
+      const closeTo = (expected, precision = 2) => ({
+        asymmetricMatch: (actual) => Math.abs(expected - actual) < Math.pow(10, -precision) / 2
+      });
 
       expect(response.data.order_edit).toEqual(
         expect.objectContaining({
@@ -2633,7 +2637,7 @@ describe("/admin/order-edits", () => {
               should_merge: true,
               allow_discounts: true,
               has_shipping: null,
-              unit_price: 1000,
+              unit_price: 4000,
               variant_id: expect.any(String),
               quantity: 3,
               fulfilled_quantity: null,
@@ -2648,7 +2652,7 @@ describe("/admin/order-edits", () => {
               adjustments: expect.arrayContaining([
                 expect.objectContaining({
                   discount_id: discount.id,
-                  amount: 1500,
+                  amount: closeTo(1846.1538461538462),
                 }),
               ]),
             }),
@@ -2681,7 +2685,7 @@ describe("/admin/order-edits", () => {
               adjustments: expect.arrayContaining([
                 expect.objectContaining({
                   discount_id: discount.id,
-                  amount: 500,
+                  amount: closeTo(153.8461534615387),
                 }),
               ]),
             }),
@@ -2690,9 +2694,9 @@ describe("/admin/order-edits", () => {
           gift_card_total: 0,
           gift_card_tax_total: 0,
           shipping_total: 0,
-          subtotal: 4000,
-          tax_total: 200,
-          total: 2200,
+          subtotal: 13000,
+          tax_total: 1100,
+          total: 12100,
         })
       )
     })

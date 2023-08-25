@@ -186,6 +186,8 @@ class NotificationService extends TransactionBaseService {
     eventName: string,
     data: Record<string, unknown>
   ): Promise<void | undefined | Notification[]> {
+
+    
     const subs = this.subscribers_[eventName]
     if (!subs) {
       return Promise.resolve()
@@ -196,7 +198,7 @@ class NotificationService extends TransactionBaseService {
 
     return Promise.all(
       subs.map(async (providerId) => {
-        return this.send(eventName, data, providerId).catch((err) => {
+        return this.send(eventName, data, providerId).catch((err) => { 
           console.log(err)
           this.logger_.warn(
             `An error occured while ${providerId} was processing a notification for ${eventName}: ${err.message}`
@@ -222,7 +224,7 @@ class NotificationService extends TransactionBaseService {
     return await this.atomicPhase_(async (transactionManager) => {
       const provider = this.retrieveProvider_(providerId)
       const result = await provider.sendNotification(
-        event,
+        event, 
         eventData,
         this.attachmentGenerator_
       )

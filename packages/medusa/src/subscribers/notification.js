@@ -8,7 +8,7 @@ class NotificationSubscriber {
   }
 
   onEvent = (data, eventName) => {
-    return this.notificationService_.handleEvent(eventName, data)
+    return this.notificationService_.handleEvent(eventName, data) 
   }
 }
 

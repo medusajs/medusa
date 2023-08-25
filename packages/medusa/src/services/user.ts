@@ -338,6 +338,7 @@ class UserService extends TransactionBaseService {
       await this.eventBus_
         .withTransaction(transactionManager)
         .emit(UserService.Events.PASSWORD_RESET, {
+          id: user.id,
           email: user.email,
           token,
         })
