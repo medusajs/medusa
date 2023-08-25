@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.4.0
+
+### Minor Changes
+
+- [`e91bd9e1c`](https://github.com/medusajs/medusa/commit/e91bd9e1c1746ff2fe915d169077bf9bf2710dcf) Thanks [@olivermrbl](https://github.com/olivermrbl)! - chore: Minor-bumping file plugins
+
 ## 1.3.8
 
 ### Patch Changes
