@@ -68,8 +68,6 @@ class CustomerService extends TransactionBaseService {
   async generateResetPasswordToken(customerId: string): Promise<string> {
 
 
-    console.log("testing")
-
     return await this.atomicPhase_(async (manager) => {
       const customer = await this.retrieve(customerId, {
         select: [
