@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.17
+
+### Patch Changes
+
+- [#4817](https://github.com/medusajs/medusa/pull/4817) [`c58588904`](https://github.com/medusajs/medusa/commit/c58588904c5631111603b15afacf7cdc4c738cc4) Thanks [@shahednasser](https://github.com/shahednasser)! - fix(medusa-telemetry): added missing babel dependencies
+
 ## 0.0.16
 
 ### Patch Changes

@@ -32,11 +32,7 @@ get:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              variant:
-                type: object
-                $ref: ../components/schemas/AdminGetVariantsVariantInventoryRes.yaml
+            $ref: ../components/schemas/AdminGetVariantsVariantInventoryRes.yaml
     '400':
       $ref: ../components/responses/400_error.yaml
     '401':

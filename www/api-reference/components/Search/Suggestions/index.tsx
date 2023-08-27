@@ -21,7 +21,7 @@ const SearchSuggestions = () => {
             "cursor-pointer rounded-sm p-0.5",
             "hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark",
             "focus:bg-medusa-bg-base-hover dark:focus:bg-medusa-bg-base-hover-dark",
-            "focus:outline-none"
+            "last:mb-1 focus:outline-none"
           )}
           onClick={() =>
             setIndexUiState({

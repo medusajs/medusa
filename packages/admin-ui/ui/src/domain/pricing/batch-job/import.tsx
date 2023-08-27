@@ -13,6 +13,7 @@ import {
 import UploadModal from "../../../components/organisms/upload-modal"
 import useNotification from "../../../hooks/use-notification"
 import { usePolling } from "../../../providers/polling-provider"
+import { downloadPricingImportCSVTemplate } from "./download-template"
 
 /**
  * Hook returns a batch job. The endpoint is polled every 2s while the job is processing.
@@ -171,10 +172,6 @@ function ImportPrices(props: ImportPricesProps) {
     }
   }
 
-  const templateLink = process.env.ADMIN_PATH
-    ? `${process.env.ADMIN_PATH}/temp/price-list-import-template.csv`
-    : `/temp/price-list-import-template.csv`
-
   return (
     <UploadModal
       type="prices"
@@ -190,7 +187,7 @@ function ImportPrices(props: ImportPricesProps) {
       summary={getSummary()}
       onFileRemove={onFileRemove}
       processUpload={processUpload}
-      templateLink={templateLink}
+      onDownloadTemplate={downloadPricingImportCSVTemplate}
     />
   )
 }
