@@ -22,10 +22,16 @@ export type MedusaModuleConfig = (Partial<ModuleConfig> | Modules)[]
 export type SharedResources = {
   database?: ModuleServiceInitializeOptions["database"] & {
     pool?: {
+      name?: string
+      afterCreate?: Function
       min?: number
       max?: number
+      refreshIdle?: boolean
       idleTimeoutMillis?: number
-      idleInTransactionSessionTimeout?: number
+      reapIntervalMillis?: number
+      returnToHead?: boolean
+      priorityRange?: number
+      log?: (message: string, logLevel: string) => void
     }
   }
 }
@@ -66,20 +72,18 @@ export async function MedusaApp({
   const { pool } = sharedResourcesConfig?.database ?? {}
 
   if (dbData?.clientUrl) {
-    const { knex } = await import("@mikro-orm/knex")
+    const { knex } = await import("knex")
     const dbConnection = knex({
       client: "pg",
       searchPath: dbData.schema || "public",
       connection: {
         connectionString: dbData.clientUrl,
         ssl: (dbData.driverOptions?.connection as any).ssl! ?? false,
-        idle_in_transaction_session_timeout:
-          pool?.idleInTransactionSessionTimeout ?? undefined,
       },
       pool: {
+        // https://knexjs.org/guide/#pool
+        ...(pool ?? {}),
         min: pool?.min ?? 0,
-        max: pool?.max,
-        idleTimeoutMillis: pool?.idleTimeoutMillis ?? undefined,
       },
     })
 
@@ -160,7 +164,7 @@ export async function MedusaApp({
 
     link = new RemoteLink()
   } catch (err) {
-    console.warn("Error initializing link modules.")
+    console.warn("Error initializing link modules.", err)
   }
 
   const remoteQuery = new RemoteQuery(undefined, remoteFetchData)
