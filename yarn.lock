@@ -5360,6 +5360,7 @@ __metadata:
   resolution: "@medusajs/file-local@workspace:packages/medusa-file-local"
   dependencies:
     "@medusajs/medusa": ^1.15.0
+    "@medusajs/types": "workspace:^"
     cross-env: ^5.2.1
     jest: ^25.5.4
     rimraf: ^5.0.1
@@ -29196,6 +29197,7 @@ __metadata:
   resolution: "medusa-file-minio@workspace:packages/medusa-file-minio"
   dependencies:
     "@medusajs/medusa": ^1.15.0
+    "@medusajs/types": "workspace:^"
     aws-sdk: ^2.983.0
     body-parser: ^1.19.0
     cross-env: ^5.2.1
@@ -29215,6 +29217,7 @@ __metadata:
   resolution: "medusa-file-s3@workspace:packages/medusa-file-s3"
   dependencies:
     "@medusajs/medusa": ^1.15.0
+    "@medusajs/types": "workspace:^"
     aws-sdk: ^2.983.0
     body-parser: ^1.19.0
     cross-env: ^5.2.1
