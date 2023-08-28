@@ -122,6 +122,27 @@ describe("/admin/products [MEDUSA_FF_PRODUCT_CATEGORIES=true]", () => {
       ])
     })
 
+    it("should return a list of products queried by category_id and q", async () => {
+      const api = useApi()
+      const productName = "Test product"
+      const params = `category_id[]=${categoryWithProductId}&q=${productName}&expand=categories`
+      const response = await api.get(`/admin/products?${params}`, adminHeaders)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toHaveLength(1)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: testProductId,
+          title: productName,
+          categories: [
+            expect.objectContaining({
+              id: categoryWithProductId,
+            }),
+          ],
+        }),
+      ])
+    })
+
     it("returns a list of products in product category without category children explicitly set to false", async () => {
       const api = useApi()
       const params = `category_id[]=${categoryWithProductId}&include_category_children=false`
