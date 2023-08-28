@@ -220,6 +220,15 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
+      type: "doc",
+      id: "beta",
+      label: "Beta Features",
+      customProps: {
+        sidebar_icon: "adjustments",
+      },
+      className: "homepage-sidebar-item",
+    },
+    {
       type: "category",
       label: "Deploy",
       customProps: {

@@ -141,7 +141,7 @@ const SearchHits = ({ indexName, setNoResults }: SearchHitsProps) => {
                 "overflow-x-hidden text-ellipsis whitespace-nowrap break-words",
                 "hover:bg-medusa-bg-base-hover dark:hover:bg-medusa-bg-base-hover-dark",
                 "focus:bg-medusa-bg-base-hover dark:focus:bg-medusa-bg-base-hover-dark",
-                "focus:outline-none"
+                "last:mb-1 focus:outline-none"
               )}
               key={index}
               tabIndex={index}
