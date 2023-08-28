@@ -57,6 +57,11 @@ module.exports = {
           id: "recipes/subscriptions",
           label: "Subscriptions",
         },
+        {
+          type: "doc",
+          id: "recipes/rbac",
+          label: "RBAC",
+        },
       ],
     },
     {
