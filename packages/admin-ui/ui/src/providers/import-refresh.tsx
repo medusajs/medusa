@@ -4,6 +4,9 @@ import { adminProductKeys } from "medusa-react"
 import { usePolling } from "./polling-provider"
 import { queryClient } from "../constants/query-client"
 import useNotification from "../hooks/use-notification"
+import { capitalize } from "lodash"
+
+let lastDisplayedNotificationAt = Date.now()
 
 /**
  * Provider for refreshing product/pricing lists after batch jobs are complete
@@ -25,14 +28,26 @@ export const ImportRefresh = ({ children }: PropsWithChildren) => {
       const refreshedTimestamp = productListQuery.state.dataUpdatedAt
 
       const completedJobs = batchJobs.filter(
-        (job) => job.status === "completed" && job.type === "product-import"
+        (job) => job.status === "completed"
       )
 
       for (const job of completedJobs) {
         const jobCompletedTimestamp = new Date(job.completed_at).getTime()
-        if (jobCompletedTimestamp > refreshedTimestamp) {
+
+        if (jobCompletedTimestamp > lastDisplayedNotificationAt) {
+          notification(
+            "Success",
+            capitalize(`${job.type.split("-").join(" ")} batch job completed`),
+            "success"
+          )
+          lastDisplayedNotificationAt = Date.now()
+        }
+
+        if (
+          job.type === "product-import" &&
+          jobCompletedTimestamp > refreshedTimestamp
+        ) {
           queryClient.invalidateQueries(adminProductKeys.all)
-          notification("Success", "Product import completed", "success")
         }
       }
     }
