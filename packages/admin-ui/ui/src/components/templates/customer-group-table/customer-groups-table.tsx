@@ -1,5 +1,8 @@
 import { CustomerGroup } from "@medusajs/medusa"
-import { useAdminCustomerGroups } from "medusa-react"
+import {
+  useAdminCustomerGroups,
+  useAdminDeleteCustomerGroup,
+} from "medusa-react"
 import { useNavigate } from "react-router-dom"
 import {
   HeaderGroup,
@@ -18,6 +21,7 @@ import { ActionType } from "../../molecules/actionables"
 import Table from "../../molecules/table"
 import TableContainer from "../../organisms/table-container"
 import { CUSTOMER_GROUPS_TABLE_COLUMNS } from "./config"
+import useNotification from "../../../hooks/use-notification"
 
 /**
  * Default filtering config for querying customer groups endpoint.
@@ -89,6 +93,8 @@ function CustomerGroupsTableRow(props: CustomerGroupsTableRowProps) {
   const { row } = props
 
   const navigate = useNavigate()
+  const notification = useNotification()
+  const { mutate } = useAdminDeleteCustomerGroup(row.original.id)
 
   const actions: ActionType[] = [
     {
@@ -98,7 +104,16 @@ function CustomerGroupsTableRow(props: CustomerGroupsTableRowProps) {
     },
     {
       label: "Delete",
-      onClick: () => {},
+      onClick: () => {
+        mutate(undefined, {
+          onSuccess: () => {
+            notification("Success", "Group deleted", "success")
+          },
+          onError: () => {
+            notification("Error", "Failed to delete the group", "error")
+          },
+        })
+      },
       icon: <TrashIcon size={20} />,
       variant: "danger",
     },
