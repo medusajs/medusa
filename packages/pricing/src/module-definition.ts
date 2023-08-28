@@ -1,10 +1,9 @@
 import { ModuleExports } from "@medusajs/types"
-import { CurrencyService } from "@services"
+import { PricingModuleService } from "@services"
 import loadConnection from "./loaders/connection"
 import loadContainer from "./loaders/container"
 
-// TODO: replace this with money amount service
-const service = CurrencyService
+const service = PricingModuleService
 const loaders = [loadContainer, loadConnection] as any
 
 export const moduleDefinition: ModuleExports = {

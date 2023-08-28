@@ -13,3 +13,5 @@ export const MikroOrmConfig = TestUtils.getMikroOrmConfig(
   mikroOrmEntities,
   pathToMigrations
 )
+
+export const DB_URL = TestUtils.getDatabaseURL()

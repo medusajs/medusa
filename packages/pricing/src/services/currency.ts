@@ -1,11 +1,4 @@
-import {
-  Context,
-  CreateCurrencyDTO,
-  DAL,
-  FindConfig,
-  PricingTypes,
-  UpdateCurrencyDTO,
-} from "@medusajs/types"
+import { Context, DAL, FindConfig, PricingTypes } from "@medusajs/types"
 import {
   InjectManager,
   InjectTransactionManager,
@@ -84,7 +77,7 @@ export default class CurrencyService<TEntity extends Currency = Currency> {
 
   @InjectTransactionManager(shouldForceTransaction, "currencyRepository_")
   async create(
-    data: CreateCurrencyDTO[],
+    data: PricingTypes.CreateCurrencyDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.currencyRepository_ as CurrencyRepository).create(
@@ -95,7 +88,7 @@ export default class CurrencyService<TEntity extends Currency = Currency> {
 
   @InjectTransactionManager(shouldForceTransaction, "currencyRepository_")
   async update(
-    data: UpdateCurrencyDTO[],
+    data: PricingTypes.UpdateCurrencyDTO[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
     return (await (this.currencyRepository_ as CurrencyRepository).update(
