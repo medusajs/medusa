@@ -1,14 +1,13 @@
 import fs from "fs"
 import aws from "aws-sdk"
 import { parse } from "path"
+import { AbstractFileService, IFileService } from "@medusajs/medusa"
 import {
-  AbstractFileService,
   DeleteFileType,
   FileServiceUploadResult,
   GetUploadedFileType,
-  IFileService,
   UploadStreamDescriptorType,
-} from "@medusajs/medusa"
+} from "@medusajs/types"
 import stream from "stream"
 import { PutObjectRequest } from "aws-sdk/clients/s3"
 import { ClientConfiguration } from "aws-sdk/clients/s3"
@@ -109,9 +108,11 @@ class S3Service extends AbstractFileService implements IFileService {
     const client = this.getClient()
     const pass = new stream.PassThrough()
 
+    const isPrivate = fileData.isPrivate ?? true // default to private
+
     const fileKey = `${fileData.name}.${fileData.ext}`
     const params: PutObjectRequest = {
-      ACL: fileData.acl ?? "private",
+      ACL: isPrivate ? "private" : "public-read",
       Bucket: this.bucket_,
       Body: pass,
       Key: fileKey,

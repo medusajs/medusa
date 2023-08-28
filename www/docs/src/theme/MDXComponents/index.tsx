@@ -5,6 +5,7 @@ import CloudinaryImage from "@site/src/components/CloudinaryImage"
 import MDXDetails from "./Details"
 import MDXSummary from "./Summary"
 import MDXA from "./A"
+import Kbd from "./Kbd"
 
 export default {
   // Re-use the default mapping
@@ -14,4 +15,5 @@ export default {
   details: MDXDetails,
   summary: MDXSummary,
   a: MDXA,
+  kbd: Kbd,
 }
