@@ -74,9 +74,9 @@ So, the first step would be to create the `Role` and `Permission` entities to re
   } from "typeorm"
   import { BaseEntity } from "@medusajs/medusa"
   import { generateEntityId } from "@medusajs/medusa/dist/utils"
-  import { Permission } from "./permission";
-  import { User } from "./user";
-  import { Store } from "./store";
+  import { Permission } from "./permission"
+  import { User } from "./user"
+  import { Store } from "./store"
   
   @Entity()
   export class Role extends BaseEntity {
@@ -86,7 +86,7 @@ So, the first step would be to create the `Role` and `Permission` entities to re
     // only helpful if you're integrating in a marketplace
     @Index()
     @Column({ nullable: true })
-    store_id: string;
+    store_id: string
   
     @ManyToMany(() => Permission)
     @JoinTable({
@@ -103,12 +103,12 @@ So, the first step would be to create the `Role` and `Permission` entities to re
     permissions: Permission[]
   
     @OneToMany(() => User, (user) => user.teamRole)
-    @JoinColumn({ name: 'id', referencedColumnName: 'role_id' })
-    users: User[];
+    @JoinColumn({ name: "id", referencedColumnName: "role_id" })
+    users: User[]
   
     @ManyToOne(() => Store, (store) => store.roles)
-    @JoinColumn({ name: 'store_id' })
-    store: Store;
+    @JoinColumn({ name: "store_id" })
+    store: Store
   
     @BeforeInsert()
     private beforeInsert(): void {
@@ -156,7 +156,10 @@ So, the first step would be to create the `Role` and `Permission` entities to re
     ManyToMany, 
   } from "typeorm"
   import { BaseEntity } from "@medusajs/medusa"
-  import { DbAwareColumn, generateEntityId } from "@medusajs/medusa/dist/utils"
+  import { 
+    DbAwareColumn,
+    generateEntityId,
+  } from "@medusajs/medusa/dist/utils"
   import { Role } from "./role"
   
   @Entity()
@@ -200,22 +203,28 @@ So, the first step would be to create the `Role` and `Permission` entities to re
   Create the file `src/models/user.ts` with the following content:
   
   ```ts title=src/models/user.ts
-  import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
+  import { 
+    Column,
+    Entity,
+    Index,
+    JoinColumn,
+    ManyToOne,
+  } from "typeorm"
   import {
     // alias the core entity to not cause a naming conflict
     User as MedusaUser,
   } from "@medusajs/medusa"
-  import { Role } from "./role";
+  import { Role } from "./role"
   
   @Entity()
   export class User extends MedusaUser {
     @Index()
     @Column({ nullable: true })
-    role_id: string | null;
+    role_id: string | null
   
     @ManyToOne(() => Role, (role) => role.users)
-    @JoinColumn({ name: 'role_id' })
-    teamRole: Role | null;
+    @JoinColumn({ name: "role_id" })
+    teamRole: Role | null
   }
   ```
   
@@ -224,18 +233,18 @@ So, the first step would be to create the `Role` and `Permission` entities to re
   Next, create the file `src/models/store.ts` with the following content:
   
   ```ts title=src/models/store.ts
-  import { Entity, JoinColumn, OneToMany } from "typeorm";
+  import { Entity, JoinColumn, OneToMany } from "typeorm"
   import {
     // alias the core entity to not cause a naming conflict
     Store as MedusaStore,
   } from "@medusajs/medusa"
-  import { Role } from "./role";
+  import { Role } from "./role"
   
   @Entity()
   export class Store extends MedusaStore {
     @OneToMany(() => Role, (role) => role.store)
-    @JoinColumn({ name: 'id', referencedColumnName: 'store_id' })
-    roles: Role[];
+    @JoinColumn({ name: "id", referencedColumnName: "store_id" })
+    roles: Role[]
   }
   ```
   
@@ -244,7 +253,7 @@ So, the first step would be to create the `Role` and `Permission` entities to re
   Optionally, if you’re using TypeScript, create the file `src/index.d.ts` with the following content:
   
   ```ts title=src/index.d.ts
-  import { Role } from "./models/role";
+  import { Role } from "./models/role"
   
   export declare module "@medusajs/medusa/dist/models/user" {
   
@@ -264,6 +273,8 @@ So, the first step would be to create the `Role` and `Permission` entities to re
   Finally, you need to create a migration to reflect these changes in the database.
   
   You can learn about creating migrations [here](../development/entities/migrations/create.md). An example of a migration file based on the entities created above:
+
+<!-- eslint-disable max-len -->
   
   ```ts title=src/migrations/1693225851284-AddRolesAndPermissions.ts
   import { MigrationInterface, QueryRunner, Table, TableIndex } from "typeorm"
@@ -271,34 +282,34 @@ So, the first step would be to create the `Role` and `Permission` entities to re
   export class AddRolesAndPermissions1693225851284 implements MigrationInterface {
   
       public async up(queryRunner: QueryRunner): Promise<void> {
-          await queryRunner.query(`ALTER TABLE "user" ADD "role_id" character varying`);
-          await queryRunner.query(`CREATE TABLE "permission" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "name" character varying NOT NULL, "metadata" jsonb, CONSTRAINT "PK_3b8b97af9d9d8807e41e6f48362" PRIMARY KEY ("id"))`);
-          await queryRunner.query(`CREATE TABLE "role" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "name" character varying NOT NULL, "store_id" character varying, CONSTRAINT "PK_b36bcfe02fc8de3c57a8b2391c2" PRIMARY KEY ("id"))`);
-          await queryRunner.query(`CREATE INDEX "IDX_29259dd58b1052aef9be56941d" ON "role" ("store_id") `);
-          await queryRunner.query(`CREATE TABLE "role_permissions" ("role_id" character varying NOT NULL, "permission_id" character varying NOT NULL, CONSTRAINT "PK_25d24010f53bb80b78e412c9656" PRIMARY KEY ("role_id", "permission_id"))`);
-          await queryRunner.query(`CREATE INDEX "IDX_178199805b901ccd220ab7740e" ON "role_permissions" ("role_id") `);
-          await queryRunner.query(`CREATE INDEX "IDX_17022daf3f885f7d35423e9971" ON "role_permissions" ("permission_id") `);
+          await queryRunner.query(`ALTER TABLE "user" ADD "role_id" character varying`)
+          await queryRunner.query(`CREATE TABLE "permission" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "name" character varying NOT NULL, "metadata" jsonb, CONSTRAINT "PK_3b8b97af9d9d8807e41e6f48362" PRIMARY KEY ("id"))`)
+          await queryRunner.query(`CREATE TABLE "role" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "name" character varying NOT NULL, "store_id" character varying, CONSTRAINT "PK_b36bcfe02fc8de3c57a8b2391c2" PRIMARY KEY ("id"))`)
+          await queryRunner.query(`CREATE INDEX "IDX_29259dd58b1052aef9be56941d" ON "role" ("store_id") `)
+          await queryRunner.query(`CREATE TABLE "role_permissions" ("role_id" character varying NOT NULL, "permission_id" character varying NOT NULL, CONSTRAINT "PK_25d24010f53bb80b78e412c9656" PRIMARY KEY ("role_id", "permission_id"))`)
+          await queryRunner.query(`CREATE INDEX "IDX_178199805b901ccd220ab7740e" ON "role_permissions" ("role_id") `)
+          await queryRunner.query(`CREATE INDEX "IDX_17022daf3f885f7d35423e9971" ON "role_permissions" ("permission_id") `)
   
-          await queryRunner.query(`ALTER TABLE "role_permissions" ADD CONSTRAINT "FK_178199805b901ccd220ab7740ec" FOREIGN KEY ("role_id") REFERENCES "role"("id") ON DELETE CASCADE ON UPDATE CASCADE`);
-          await queryRunner.query(`ALTER TABLE "role_permissions" ADD CONSTRAINT "FK_17022daf3f885f7d35423e9971e" FOREIGN KEY ("permission_id") REFERENCES "permission"("id") ON DELETE CASCADE ON UPDATE CASCADE`);
-          await queryRunner.query(`ALTER TABLE "user" ADD CONSTRAINT "FK_fb2e442d14add3cefbdf33c4561" FOREIGN KEY ("role_id") REFERENCES "role"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-          await queryRunner.query(`ALTER TABLE "role" ADD CONSTRAINT "FK_29259dd58b1052aef9be56941d4" FOREIGN KEY ("store_id") REFERENCES "store"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
-          await queryRunner.query(`CREATE INDEX "IDX_fb2e442d14add3cefbdf33c456" ON "user" ("role_id") `);
+          await queryRunner.query(`ALTER TABLE "role_permissions" ADD CONSTRAINT "FK_178199805b901ccd220ab7740ec" FOREIGN KEY ("role_id") REFERENCES "role"("id") ON DELETE CASCADE ON UPDATE CASCADE`)
+          await queryRunner.query(`ALTER TABLE "role_permissions" ADD CONSTRAINT "FK_17022daf3f885f7d35423e9971e" FOREIGN KEY ("permission_id") REFERENCES "permission"("id") ON DELETE CASCADE ON UPDATE CASCADE`)
+          await queryRunner.query(`ALTER TABLE "user" ADD CONSTRAINT "FK_fb2e442d14add3cefbdf33c4561" FOREIGN KEY ("role_id") REFERENCES "role"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
+          await queryRunner.query(`ALTER TABLE "role" ADD CONSTRAINT "FK_29259dd58b1052aef9be56941d4" FOREIGN KEY ("store_id") REFERENCES "store"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`)
+          await queryRunner.query(`CREATE INDEX "IDX_fb2e442d14add3cefbdf33c456" ON "user" ("role_id") `)
       }
   
       public async down(queryRunner: QueryRunner): Promise<void> {
-          await queryRunner.query(`ALTER TABLE "role_permissions" DROP CONSTRAINT "FK_17022daf3f885f7d35423e9971e"`);
-          await queryRunner.query(`ALTER TABLE "role_permissions" DROP CONSTRAINT "FK_178199805b901ccd220ab7740ec"`);
-          await queryRunner.query(`ALTER TABLE "role" DROP CONSTRAINT "FK_29259dd58b1052aef9be56941d4"`);
-          await queryRunner.query(`DROP INDEX "public"."IDX_fb2e442d14add3cefbdf33c456"`);
-          await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT "FK_fb2e442d14add3cefbdf33c4561"`);
-          await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "role_id"`);
-          await queryRunner.query(`DROP INDEX "public"."IDX_17022daf3f885f7d35423e9971"`);
-          await queryRunner.query(`DROP INDEX "public"."IDX_178199805b901ccd220ab7740e"`);
-          await queryRunner.query(`DROP TABLE "role_permissions"`);
-          await queryRunner.query(`DROP INDEX "public"."IDX_29259dd58b1052aef9be56941d"`);
-          await queryRunner.query(`DROP TABLE "role"`);
-          await queryRunner.query(`DROP TABLE "permission"`);
+          await queryRunner.query(`ALTER TABLE "role_permissions" DROP CONSTRAINT "FK_17022daf3f885f7d35423e9971e"`)
+          await queryRunner.query(`ALTER TABLE "role_permissions" DROP CONSTRAINT "FK_178199805b901ccd220ab7740ec"`)
+          await queryRunner.query(`ALTER TABLE "role" DROP CONSTRAINT "FK_29259dd58b1052aef9be56941d4"`)
+          await queryRunner.query(`DROP INDEX "public"."IDX_fb2e442d14add3cefbdf33c456"`)
+          await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT "FK_fb2e442d14add3cefbdf33c4561"`)
+          await queryRunner.query(`ALTER TABLE "user" DROP COLUMN "role_id"`)
+          await queryRunner.query(`DROP INDEX "public"."IDX_17022daf3f885f7d35423e9971"`)
+          await queryRunner.query(`DROP INDEX "public"."IDX_178199805b901ccd220ab7740e"`)
+          await queryRunner.query(`DROP TABLE "role_permissions"`)
+          await queryRunner.query(`DROP INDEX "public"."IDX_29259dd58b1052aef9be56941d"`)
+          await queryRunner.query(`DROP TABLE "role"`)
+          await queryRunner.query(`DROP TABLE "permission"`)
       }
   
   }
@@ -349,32 +360,45 @@ Since the Medusa backend uses Express, you can create a middleware and attach it
   import { UserService } from "@medusajs/medusa"
   import { NextFunction, Request, Response } from "express"
   
-  export default async (req: Request, res: Response, next: NextFunction) => {=
+  export default async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     if (!req.user || !req.user.userId) {
       next()
       return
     }
     // retrieve currently logged-in user
-    const userService = req.scope.resolve('userService') as UserService
-    const loggedInUser = await userService.retrieve(req.user.userId, {
-      select: ['id'],
-      relations: ['teamRole', 'teamRole.permissions']
-    })
+    const userService = req.scope.resolve(
+      "userService"
+    ) as UserService
+    const loggedInUser = await userService.retrieve(
+      req.user.userId,
+      {
+        select: ["id"],
+        relations: ["teamRole", "teamRole.permissions"],
+      })
   
     if (!loggedInUser.teamRole) {
-      //considered as super user
+      // considered as super user
       next()
       return
     }
   
-    const isAllowed = loggedInUser.teamRole?.permissions.some((permission) => {
-      const metadataKey = Object.keys(permission.metadata).find((key) => key === req.path)
-      if (!metadataKey) {
-        return false
+    const isAllowed = loggedInUser.teamRole?.permissions.some(
+      (permission) => {
+        const metadataKey = Object.keys(permission.metadata).find(
+          (key) => key === req.path
+        )
+        if (!metadataKey) {
+          return false
+        }
+    
+        // boolean value
+        return permission.metadata[metadataKey]
       }
-  
-      return permission.metadata[metadataKey] //boolean value
-    })
+    )
   
     if (isAllowed) {
       next()
@@ -405,13 +429,13 @@ Since the Medusa backend uses Express, you can create a middleware and attach it
   
   export default (rootDirectory: string): Router | Router[] => {
     // ...
-    const router = Router();
+    const router = Router()
     // ...
     
     // use middleware on admin routes
     router.use("/admin", permissionMiddleware)
   
-    return router;
+    return router
   }
   ```
   
@@ -475,21 +499,25 @@ Furthermore, you may need to extend core services if you need to perform actions
   import { Permission } from "../models/permission"
   import PermissionRepository from "../repositories/permission"
   
-  export type CreatePayload = Pick<Permission, "name" | "metadata">
+  export type CreatePayload = Pick<
+    Permission,
+    "name" | "metadata"
+  >
   
   type InjectedDependencies = {
     permissionRepository: typeof PermissionRepository
   }
   
   class PermissionService extends TransactionBaseService {
-    protected readonly permissionRepository_: typeof PermissionRepository
+    protected readonly permissionRepository_:
+      typeof PermissionRepository
     
     constructor(container: InjectedDependencies) {
       super(container)
       this.permissionRepository_ = container.permissionRepository
     }
   
-    async create (data: CreatePayload) {
+    async create(data: CreatePayload) {
       // omitting validation for simplicity
       return this.atomicPhase_(async (manager) => {
         const permissionRepo = manager.withRepository(
@@ -513,9 +541,11 @@ Furthermore, you may need to extend core services if you need to perform actions
   
   ```ts title=src/services/user.ts
   import {
-    UserService as MedusaUserService, User
+    UserService as MedusaUserService, User,
   } from "@medusajs/medusa"
-  import { UpdateUserInput } from "@medusajs/medusa/dist/types/user"
+  import { 
+    UpdateUserInput,
+  } from "@medusajs/medusa/dist/types/user"
   
   class UserService extends MedusaUserService {
     async update(userId: string, update: UpdateUserInput & {
@@ -536,7 +566,9 @@ Furthermore, you may need to extend core services if you need to perform actions
   import { TransactionBaseService } from "@medusajs/medusa"
   import { Role } from "../models/role"
   import RoleRepository from "../repositories/role"
-  import PermissionService, { CreatePayload as PermissionCreatePayload } from "./permission"
+  import PermissionService, { 
+    CreatePayload as PermissionCreatePayload,
+  } from "./permission"
   import UserService from "./user"
   
   type CreatePayload = Pick<Role, "name" | "store_id"> & {
@@ -554,7 +586,7 @@ Furthermore, you may need to extend core services if you need to perform actions
     protected readonly permissionService_: PermissionService
     protected readonly userService_: UserService
   
-    constructor (container: InjectedDependencies) {
+    constructor(container: InjectedDependencies) {
       super(container)
   
       this.roleRpository_ = container.roleRepository
@@ -562,7 +594,7 @@ Furthermore, you may need to extend core services if you need to perform actions
       this.userService_ = container.userService
     }
   
-    async retrieve (id: string): Promise<Role> {
+    async retrieve(id: string): Promise<Role> {
       // for simplicity, we retrieve all relations
       // however, it's best to supply the relations
       // as an optional method parameter
@@ -571,17 +603,17 @@ Furthermore, you may need to extend core services if you need to perform actions
       )
       return await roleRepo.findOne({
         where: {
-          id
+          id,
         },
         relations: [
           "permissions",
           "store",
-          "users"
-        ]
+          "users",
+        ],
       })
     }
   
-    async create (data: CreatePayload): Promise<Role> {
+    async create(data: CreatePayload): Promise<Role> {
       return this.atomicPhase_(async (manager) => {
         // omitting validation for simplicity
         const { permissions: permissionsData = [] } = data
@@ -594,8 +626,12 @@ Furthermore, you may need to extend core services if you need to perform actions
   
         role.permissions = []
   
-        for (let permissionData of permissionsData) {
-          role.permissions.push(await this.permissionService_.create({...permissionData}))
+        for (const permissionData of permissionsData) {
+          role.permissions.push(
+            await this.permissionService_.create(
+              permissionData
+            )
+          )
         }
         const result = await roleRepo.save(role)
   
@@ -603,11 +639,14 @@ Furthermore, you may need to extend core services if you need to perform actions
       })
     }
   
-    async associateUser (role_id: string, user_id: string): Promise<Role> {
+    async associateUser(
+      role_id: string,
+      user_id: string
+    ): Promise<Role> {
       return this.atomicPhase_(async () => {
         // omitting validation for simplicity
         await this.userService_.update(user_id, {
-          role_id
+          role_id,
         })
   
         return await this.retrieve(role_id)
@@ -637,15 +676,17 @@ Furthermore, you may need to extend core services if you need to perform actions
     const {
       name,
       store_id,
-      permissions = []
+      permissions = [],
     } = req.body
   
-    const roleService = req.scope.resolve("roleService") as RoleService
+    const roleService = req.scope.resolve(
+      "roleService"
+    ) as RoleService
   
     const role = await roleService.create({
       name,
       store_id,
-      permissions
+      permissions,
     })
   
     res.json(role)
@@ -657,17 +698,19 @@ Furthermore, you may need to extend core services if you need to perform actions
   Next, create the file `src/api/routes/admin/role/associate-user.ts` with the following content:
   
   ```ts title=src/api/routes/admin/role/associate-user.ts
-  import { Request, Response } from "express";
-  import RoleService from "../../../../services/role";
+  import { Request, Response } from "express"
+  import RoleService from "../../../../services/role"
   
   export default async (req: Request, res: Response) => {
     // omitting validation for simplicity purposes
     const {
       id,
-      user_id
+      user_id,
     } = req.params
   
-    const roleService = req.scope.resolve("roleService") as RoleService
+    const roleService = req.scope.resolve(
+      "roleService"
+    ) as RoleService
     const role = await roleService.associateUser(id, user_id)
   
     res.json(role)
@@ -681,19 +724,19 @@ Furthermore, you may need to extend core services if you need to perform actions
   To do that, create the file `src/api/routes/admin/role/index.ts` with the following content:
   
   ```ts title=src/api/routes/admin/role/index.ts
-  import { wrapHandler } from "@medusajs/utils";
-  import { Router } from "express";
-  import createRole from "./create-role";
-  import associateUser from "./associate-user";
+  import { wrapHandler } from "@medusajs/utils"
+  import { Router } from "express"
+  import createRole from "./create-role"
+  import associateUser from "./associate-user"
   
-  const router = Router();
+  const router = Router()
   
   export default (adminRouter: Router) => {
-    adminRouter.use("/roles", router);
+    adminRouter.use("/roles", router)
   
-    router.post("/", wrapHandler(createRole));
+    router.post("/", wrapHandler(createRole))
     router.post("/:id/user/:user_id", wrapHandler(associateUser))
-  };
+  }
   ```
   
   This adds the create role endpoint under the path `/admin/roles`, and the associate user endpoint under the path `/admin/roles/:id/user/:user_id`, where `:id` is the ID of the role and `:user_id` is the ID of the user to associate with the role.
@@ -703,7 +746,7 @@ Furthermore, you may need to extend core services if you need to perform actions
   ```ts title=src/api/routes/admin/index.ts
   import roleRouter from "./role"
   
-  const router = Router();
+  const router = Router()
   
   export function attachAdminRoutes(adminRouter: Router) {
     roleRouter(adminRouter)
