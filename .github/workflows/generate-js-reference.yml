@@ -1,5 +1,5 @@
 name: Generate JS Client Reference
-on: 
+on:
   workflow_dispatch:
   release:
     types: [published]
@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: "16.20.2"
           cache: "yarn"
 
       - name: Install dependencies
@@ -38,10 +38,10 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: 'chore(docs): Generated JS Client Reference (automated)'
-          base: 'develop'
-          title: 'chore(docs): Generated JS Client Reference'
-          labels: 'type: chore'
+          commit-message: "chore(docs): Generated JS Client Reference (automated)"
+          base: "develop"
+          title: "chore(docs): Generated JS Client Reference"
+          labels: "type: chore"
           add-paths: www/docs/content/references/js-client/**
-          branch: 'chore/generate-js-client'
-          branch-suffix: 'timestamp'
+          branch: "chore/generate-js-client"
+          branch-suffix: "timestamp"
