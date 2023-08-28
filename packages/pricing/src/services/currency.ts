@@ -37,6 +37,7 @@ export default class CurrencyService<TEntity extends Currency = Currency> {
   ): Promise<TEntity> {
     return (await retrieveEntity<Currency, PricingTypes.CurrencyDTO>({
       id: currencyId,
+      identifierColumn: "code",
       entityName: Currency.name,
       repository: this.currencyRepository_,
       config,
