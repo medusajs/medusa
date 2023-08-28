@@ -1,8 +1,8 @@
 # Checks for outdated documentation content and sends notification about it
 name: Docs Freshness Check
-on: 
+on:
   schedule:
-    - cron: '0 0 1 * *' # once a month
+    - cron: "0 0 1 * *" # once a month
 
 jobs:
   freshness-check:
@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: "16.20.2"
           cache: "yarn"
 
       - name: Install dependencies

@@ -1,5 +1,5 @@
 name: Generate Entity Reference
-on: 
+on:
   workflow_dispatch:
   release:
     types: [published]
@@ -21,7 +21,7 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: "16.20.2"
           cache: "yarn"
 
       - name: Install dependencies
@@ -38,10 +38,10 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
-          commit-message: 'chore(docs): Generated Entities Reference (automated)'
-          base: 'develop'
-          title: 'chore(docs): Generated Entities Reference (automated)'
-          labels: 'type: chore'
+          commit-message: "chore(docs): Generated Entities Reference (automated)"
+          base: "develop"
+          title: "chore(docs): Generated Entities Reference (automated)"
+          labels: "type: chore"
           add-paths: www/docs/content/references/entities/**
-          branch: 'chore/generate-entities'
-          branch-suffix: 'timestamp'
+          branch: "chore/generate-entities"
+          branch-suffix: "timestamp"
