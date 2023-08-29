@@ -109,8 +109,7 @@ class S3Service extends AbstractFileService implements IFileService {
     })
 
     try {
-      const response = await this.client_.send(command)
-      console.log(response)
+      await this.client_.send(command)
     } catch (e) {
       this.logger_.error(e)
     }
