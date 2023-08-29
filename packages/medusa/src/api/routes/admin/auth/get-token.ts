@@ -8,7 +8,7 @@ import { AdminPostAuthReq } from "./create-session"
 /**
  * @oas [post] /admin/token
  * operationId: "PostToken"
- * summary: "Get a bearer token for admin api"
+ * summary: "User JWT Token"
  * x-authenticated: false
  * description: "After a successful login, a bearer token is returned for subsequent authorization."
  * parameters:
