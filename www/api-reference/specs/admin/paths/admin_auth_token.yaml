@@ -1,0 +1,58 @@
+post:
+  operationId: "PostToken"
+  summary: "User JWT Token"
+  x-authenticated: false
+  description: "After a successful login, a bearer token is returned for subsequent authorization."
+  parameters:
+    - (body) email=* {string} The User's email.
+    - (body) password=* {string} The User's password.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "../components/schemas/AdminPostAuthReq.yaml"
+  x-codegen:
+    method: getToken
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source: |
+        import Medusa from "@medusajs/medusa-js"
+        const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
+        medusa.admin.auth.getToken({
+          email: 'user@example.com',
+          password: 'supersecret'
+        })
+        .then(({ accessToken }) => {
+          console.log(accessToekn);
+        });
+    - lang: Shell
+      label: cURL
+      source: |
+        curl --location --request POST 'https://medusa-url.com/admin/auth/token' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+          "email": "user@example.com",
+          "password": "supersecret"
+        }'
+  tags:
+    - Auth
+  responses:
+    "200":
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/AdminBearerAuthRes.yaml"
+    "400":
+      $ref: "../components/responses/400_error.yaml"
+    "401":
+      $ref: "../components/responses/incorrect_credentials.yaml"
+    "404":
+      $ref: "../components/responses/not_found_error.yaml"
+    "409":
+      $ref: "../components/responses/invalid_state_error.yaml"
+    "422":
+      $ref: "../components/responses/invalid_request_error.yaml"
+    "500":
+      $ref: "../components/responses/500_error.yaml"
