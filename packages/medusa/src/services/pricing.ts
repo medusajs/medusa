@@ -335,7 +335,7 @@ class PricingService extends TransactionBaseService {
       productsRatesMap = await this.taxProviderService
         .withTransaction(this.activeManager_)
         .getRegionRatesForProduct(productId, {
-          id: pricingContext.price_selection.region_id,
+          id: pricingContext.price_selection.region_id!,
           tax_rate: pricingContext.tax_rate,
         })
 

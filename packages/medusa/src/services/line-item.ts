@@ -6,10 +6,10 @@ import { FlagRouter } from "@medusajs/utils"
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
-    LineItem,
-    LineItemAdjustment,
-    LineItemTaxLine,
-    ProductVariant,
+  LineItem,
+  LineItemAdjustment,
+  LineItemTaxLine,
+  ProductVariant,
 } from "../models"
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
@@ -19,11 +19,11 @@ import { GenerateInputData, GenerateLineItemContext } from "../types/line-item"
 import { ProductVariantPricing } from "../types/pricing"
 import { buildQuery, isString, setMetadata } from "../utils"
 import {
-    PricingService,
-    ProductService,
-    ProductVariantService,
-    RegionService,
-    TaxProviderService,
+  PricingService,
+  ProductService,
+  ProductVariantService,
+  RegionService,
+  TaxProviderService,
 } from "./index"
 import LineItemAdjustmentService from "./line-item-adjustment"
 
@@ -298,7 +298,7 @@ class LineItemService extends TransactionBaseService {
           if (resolvedContext.cart) {
             const adjustments = await this.lineItemAdjustmentService_
               .withTransaction(transactionManager)
-              .generateAdjustments(resolvedContext.cart, lineItem, { variant })
+              .generateAdjustments(resolvedContext.cart!, lineItem, { variant })
             lineItem.adjustments =
               adjustments as unknown as LineItemAdjustment[]
           }

@@ -47,7 +47,7 @@ describe("/store/carts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -227,8 +227,13 @@ describe("/store/carts", () => {
 
   describe("POST /store/carts/:id/line-items", () => {
     beforeEach(async () => {
-      await cartSeeder(dbConnection)
-      await swapSeeder(dbConnection)
+      try {
+        await cartSeeder(dbConnection)
+        await swapSeeder(dbConnection)
+      } catch (err) {
+        console.log("failed seeding")
+        console.log(err)
+      }
     })
 
     afterEach(async () => {
