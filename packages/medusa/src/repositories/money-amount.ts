@@ -113,27 +113,24 @@ export const MoneyAmountRepository = dataSource
           ]
         : variantIdOrData
 
-      const maDeleteQueryBuilder = this.createQueryBuilder().delete()
+      const maDeleteQueryBuilder = this.createQueryBuilder("ma")
       const mavDeleteQueryBuilder = this.createQueryBuilder()
         .delete()
         .from("money_amount_variant")
 
       for (const data_ of data) {
         const maIdsForVariant = await this.createQueryBuilder("ma")
-          .leftJoinAndSelect(
+          .leftJoin(
             "money_amount_variant",
             "mav",
             "mav.money_amount_id = ma.id"
           )
+          .addSelect("mav.variant_id", "variant_id")
+          .addSelect("mav.money_amount_id", "money_amount_id")
           .where("mav.variant_id = :variant_id", {
             variant_id: data_.variantId,
           })
           .getMany()
-
-        mavDeleteQueryBuilder.orWhere({
-          money_amount_id: In(maIdsForVariant.map((ma) => ma.id)),
-          variant_id: data_.variantId,
-        })
 
         const where = {
           id: In(maIdsForVariant.map((ma) => ma.id)),
@@ -170,10 +167,21 @@ export const MoneyAmountRepository = dataSource
           })
         )
       }
+      const deleteAmounts = await maDeleteQueryBuilder.getMany()
+
+      if (!deleteAmounts.length) {
+        return
+      }
 
       await Promise.all([
-        maDeleteQueryBuilder.execute(),
-        mavDeleteQueryBuilder.execute(),
+        this.delete(deleteAmounts.map((mav) => mav.id)),
+        mavDeleteQueryBuilder
+          .where(
+            deleteAmounts.map((mav) => ({
+              money_amount_id: mav.id,
+            }))
+          )
+          .execute(),
       ])
     },
 
@@ -321,7 +329,33 @@ export const MoneyAmountRepository = dataSource
         )
       )
 
-      return await qb.getRawMany()
+      const rawAndEntities = await qb.getRawAndEntities()
+      return rawAndEntities.entities.map((e, i) => {
+        return { ...e, variant_id: rawAndEntities.raw[i].variant_id }
+      })
+    },
+
+    async findRegionMoneyAmounts(
+      where: { variant_id: string; region_id: string }[]
+    ) {
+      const qb = this.createQueryBuilder("ma")
+        .leftJoin("money_amount_variant", "mav", "mav.money_amount_id = ma.id")
+        .addSelect("mav.variant_id", "variant_id")
+
+      where.forEach((w, i) =>
+        qb.orWhere(
+          `(mav.variant_id = :variant_id_${i} AND ma.region_id = :region_id_${i} AND ma.price_list_id IS NULL)`,
+          {
+            [`variant_id_${i}`]: w.variant_id,
+            [`region_id_${i}`]: w.region_id,
+          }
+        )
+      )
+
+      const rawAndEntities = await qb.getRawAndEntities()
+      return rawAndEntities.entities.map((e, i) => {
+        return { ...e, variant_id: rawAndEntities.raw[i].variant_id }
+      })
     },
 
     async findManyForVariantsInRegion(

@@ -552,22 +552,17 @@ class ProductVariantService extends TransactionBaseService {
 
       // TODO: make custom query
       const where = data.map((data_) => ({
-        variant: { id: data_.variantId },
+        variant_id: data_.variantId,
         region_id: data_.price.region_id,
-        price_list_id: IsNull(),
       }))
 
-      const moneyAmounts = await moneyAmountRepo.find({
-        where,
-        relations: ["variant"],
-      })
+      const moneyAmounts = await moneyAmountRepo.findRegionMoneyAmounts(where)
 
       const moneyAmountsMapToVariantId = new Map()
       moneyAmounts.map((d) => {
-        const moneyAmounts =
-          moneyAmountsMapToVariantId.get(d.variant[0].id) ?? []
+        const moneyAmounts = moneyAmountsMapToVariantId.get(d.variant_id) ?? []
         moneyAmounts.push(d)
-        moneyAmountsMapToVariantId.set(d.variant[0].id, moneyAmounts)
+        moneyAmountsMapToVariantId.set(d.variant_id, moneyAmounts)
       })
 
       const variants = await productVariantRepo.find({
@@ -650,6 +645,11 @@ class ProductVariantService extends TransactionBaseService {
       }))
 
       const moneyAmounts = await moneyAmountRepo.findCurrencyMoneyAmounts(where)
+
+      // throw new MedusaError(
+      //   MedusaError.Types.INVALID_DATA,
+      //   JSON.stringify(moneyAmounts)
+      // )
 
       const moneyAmountsMapToVariantId = new Map()
       moneyAmounts.map((d) => {
