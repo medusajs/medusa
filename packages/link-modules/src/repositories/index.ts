@@ -1,2 +1,2 @@
 export { MikroOrmBaseRepository as BaseRepository } from "@medusajs/utils"
-export { getPivotRepository } from "./pivot"
+export { getLinkRepository } from "./link"

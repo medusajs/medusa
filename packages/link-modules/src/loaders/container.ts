@@ -1,5 +1,5 @@
-import { BaseRepository, getPivotRepository } from "@repositories"
-import { PivotService, getModuleService } from "@services"
+import { BaseRepository, getLinkRepository } from "@repositories"
+import { LinkService, getModuleService } from "@services"
 
 import { LoaderOptions } from "@medusajs/modules-sdk"
 import {
@@ -31,10 +31,10 @@ export function containerLoader(entity, joinerConfig: ModuleJoinerConfig) {
       ),
 
       linkModuleService: asClass(getModuleService(joinerConfig)).singleton(),
-      pivotService: asClass(PivotService).singleton(),
+      linkService: asClass(LinkService).singleton(),
 
       baseRepository: asClass(BaseRepository).singleton(),
-      pivotRepository: asClass(getPivotRepository(entity)).singleton(),
+      linkRepository: asClass(getLinkRepository(entity)).singleton(),
     })
   }
 }

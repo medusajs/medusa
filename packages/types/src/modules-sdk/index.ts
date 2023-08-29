@@ -130,7 +130,7 @@ export type ModuleJoinerConfig = Omit<
   primaryKeys?: string[]
   isLink?: boolean // If the module is a link module
   linkableKeys?: string[] // Keys that can be used to link to other modules
-  isReadOnlyLink?: boolean // If true it expands a RemoteQuery property but doesn't have a pivot table
+  isReadOnlyLink?: boolean // If true it expands a RemoteQuery property but doesn't create a pivot table
   databaseConfig?: {
     tableName?: string // Name of the pivot table. If not provided it is auto generated
     idPrefix?: string // Prefix for the id column. If not provided it is "link"
