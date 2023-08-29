@@ -1,4 +1,5 @@
 import { ModulesHelper } from "@medusajs/modules-sdk"
+import { FlagRouter } from "@medusajs/utils"
 import { defaultRelationsExtended } from "."
 import {
   FulfillmentProviderService,
@@ -6,7 +7,6 @@ import {
   StoreService,
 } from "../../../../services"
 import { ExtendedStoreDTO } from "../../../../types/store"
-import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
  * @oas [get] /admin/store
@@ -30,7 +30,7 @@ import { FlagRouter } from "../../../../utils/flag-router"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/store' \
+ *       curl '{backend_url}/admin/store' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

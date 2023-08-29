@@ -24,7 +24,7 @@ import { PaymentService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/payments/{id}/capture' \
+ *       curl -X POST '{backend_url}/admin/payments/{id}/capture' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

@@ -1,0 +1,18 @@
+type: object
+x-expanded-relations:
+  field: product
+  relations:
+    - collection
+    - images
+    - options
+    - tags
+    - type
+    - variants
+    - variants.options
+    - variants.prices
+required:
+  - product
+properties:
+  product:
+    description: Product details.
+    $ref: ./PricedProduct.yaml

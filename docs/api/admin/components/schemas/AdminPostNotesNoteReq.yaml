@@ -1,7 +1,0 @@
-type: object
-required:
-  - value
-properties:
-  value:
-    type: string
-    description: The updated description of the Note.

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useQueryStringValue } from "@docusaurus/theme-common/internal"
-import { useNotifications } from "../providers/NotificationProvider"
+import { useNotifications } from "../providers/Notification"
 import Rating from "../components/Rating"
 import { useUser } from "../providers/User"
 

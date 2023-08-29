@@ -35,7 +35,7 @@ const CopyButton: React.FC<CopyButtonProps> = ({
       tooltipClassName={tooltipClassName}
     >
       <span
-        className={clsx("tw-cursor-pointer", buttonClassName)}
+        className={clsx("cursor-pointer", buttonClassName)}
         onClick={handleCopy}
       >
         {children}

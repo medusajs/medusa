@@ -25,7 +25,7 @@ import InviteService from "../../../../services/invite"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/invites/{invite_id}' \
+ *       curl -X DELETE '{backend_url}/admin/invites/{invite_id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

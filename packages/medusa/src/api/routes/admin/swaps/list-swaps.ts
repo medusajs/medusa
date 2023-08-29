@@ -32,7 +32,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/swaps' \
+ *       curl '{backend_url}/admin/swaps' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

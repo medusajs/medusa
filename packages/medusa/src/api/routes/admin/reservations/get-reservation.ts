@@ -23,7 +23,7 @@ import { MedusaError } from "@medusajs/utils"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/reservations/{id}' \
+ *       curl '{backend_url}/admin/reservations/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

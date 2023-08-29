@@ -1,18 +1,18 @@
+import { FlagRouter } from "@medusajs/utils"
 import { asClass, asFunction, asValue, createContainer } from "awilix"
 import { MockManager, MockRepository } from "medusa-test-utils"
-import PaymentProviderService from "../payment-provider"
-import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
-import { CustomerServiceMock } from "../__mocks__/customer"
-import { FlagRouter } from "../../utils/flag-router"
-import Logger from "../../loaders/logger"
 import {
-  AbstractPaymentProcessor,
-  PaymentProcessorContext,
-  PaymentProcessorError,
-  PaymentProcessorSessionResponse,
+    AbstractPaymentProcessor,
+    PaymentProcessorContext,
+    PaymentProcessorError,
+    PaymentProcessorSessionResponse,
 } from "../../interfaces"
+import Logger from "../../loaders/logger"
 import { PaymentSessionStatus } from "../../models"
+import { CustomerServiceMock } from "../__mocks__/customer"
 import { PaymentServiceMock } from "../__mocks__/payment"
+import { PaymentProviderServiceMock } from "../__mocks__/payment-provider"
+import PaymentProviderService from "../payment-provider"
 
 export const defaultContainer = createContainer()
 defaultContainer.register(

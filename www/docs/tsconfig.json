@@ -18,6 +18,7 @@
     "docusaurus.config.js",
     "sidebars.js",
     "tailwind.config.js",
-    "postcss.config.js"
+    "postcss.config.js",
+    "content/**/*"
   ]
 }

@@ -29,7 +29,7 @@ import fs from "fs"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/uploads' \
+ *       curl -X POST '{backend_url}/admin/uploads' \
  *       -H 'Authorization: Bearer {api_token}' \
  *       -H 'Content-Type: image/jpeg' \
  *       --form 'files=@"<FILE_PATH_1>"' \

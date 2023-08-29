@@ -2,13 +2,14 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager, In } from "typeorm"
 import { DeepPartial } from "typeorm/common/DeepPartial"
 
+import { FlagRouter } from "@medusajs/utils"
 import { TransactionBaseService } from "../interfaces"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import {
-  LineItem,
-  LineItemAdjustment,
-  LineItemTaxLine,
-  ProductVariant,
+    LineItem,
+    LineItemAdjustment,
+    LineItemTaxLine,
+    ProductVariant,
 } from "../models"
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
@@ -17,13 +18,12 @@ import { FindConfig, Selector } from "../types/common"
 import { GenerateInputData, GenerateLineItemContext } from "../types/line-item"
 import { ProductVariantPricing } from "../types/pricing"
 import { buildQuery, isString, setMetadata } from "../utils"
-import { FlagRouter } from "../utils/flag-router"
 import {
-  PricingService,
-  ProductService,
-  ProductVariantService,
-  RegionService,
-  TaxProviderService,
+    PricingService,
+    ProductService,
+    ProductVariantService,
+    RegionService,
+    TaxProviderService,
 } from "./index"
 import LineItemAdjustmentService from "./line-item-adjustment"
 
@@ -485,10 +485,6 @@ class LineItemService extends TransactionBaseService {
   async deleteWithTaxLines(id: string): Promise<LineItem | undefined | null> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const lineItemRepository = transactionManager.withRepository(
-          this.lineItemRepository_
-        )
-
         await this.taxProviderService_
           .withTransaction(transactionManager)
           .clearLineItemsTaxLines([id])

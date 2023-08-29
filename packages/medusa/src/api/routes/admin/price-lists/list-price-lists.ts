@@ -132,7 +132,7 @@ import { Type } from "class-transformer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/price-lists' \
+ *       curl '{backend_url}/admin/price-lists' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

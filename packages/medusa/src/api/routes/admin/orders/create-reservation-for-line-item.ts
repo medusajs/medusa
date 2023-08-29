@@ -23,7 +23,7 @@ import {
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/orders/{id}/line-items/{line_item_id}/reserve' \
+ *       curl -X POST '{backend_url}/admin/orders/{id}/line-items/{line_item_id}/reserve' \
  *       -H 'Authorization: Bearer {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{

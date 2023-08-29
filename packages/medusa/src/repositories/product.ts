@@ -1,3 +1,7 @@
+import { ExtendedFindConfig } from "@medusajs/types"
+import { objectToStringPath } from "@medusajs/utils"
+import { cloneDeep } from "lodash"
+import { isDefined } from "medusa-core-utils"
 import {
   Brackets,
   FindOperator,
@@ -5,6 +9,7 @@ import {
   In,
   SelectQueryBuilder,
 } from "typeorm"
+import { dataSource } from "../loaders/database"
 import {
   PriceList,
   Product,
@@ -12,9 +17,6 @@ import {
   ProductTag,
   SalesChannel,
 } from "../models"
-import { dataSource } from "../loaders/database"
-import { objectToStringPath } from "@medusajs/utils"
-import { ExtendedFindConfig } from "@medusajs/types"
 import {
   applyOrdering,
   getGroupedRelations,
@@ -22,20 +24,21 @@ import {
   queryEntityWithIds,
   queryEntityWithoutRelations,
 } from "../utils/repository"
-import { cloneDeep } from "lodash"
 
 export type DefaultWithoutRelations = Omit<
   ExtendedFindConfig<Product>,
   "relations"
 >
 
+type CategoryQueryParams = {
+  value: string[]
+}
+
 export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
   where: DefaultWithoutRelations["where"] & {
     price_list_id?: FindOperator<PriceList>
     sales_channel_id?: FindOperator<SalesChannel>
-    category_id?: {
-      value: string[]
-    }
+    category_id?: CategoryQueryParams
     categories?: FindOptionsWhere<ProductCategory>
     tags?: FindOperator<ProductTag>
     include_category_children?: boolean
@@ -63,7 +66,7 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     const categoriesQuery = optionsWithoutRelations.where.categories || {}
     delete optionsWithoutRelations?.where?.categories
 
-    const include_category_children =
+    const includeCategoryChildren =
       optionsWithoutRelations?.where?.include_category_children
     delete optionsWithoutRelations?.where?.include_category_children
 
@@ -115,41 +118,10 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
           return
         },
         async (qb, alias) => {
-          let categoryIds: string[] = []
-          if (categoryId) {
-            categoryIds = categoryId?.value
-
-            if (include_category_children) {
-              const categoryRepository =
-                this.manager.getTreeRepository(ProductCategory)
-              const categories = await categoryRepository.find({
-                where: { id: In(categoryIds) },
-              })
-
-              for (const category of categories) {
-                const categoryChildren =
-                  await categoryRepository.findDescendantsTree(category)
-
-                const getAllIdsRecursively = (
-                  productCategory: ProductCategory
-                ) => {
-                  let result = [productCategory.id]
-
-                  ;(productCategory.category_children || []).forEach(
-                    (child) => {
-                      result = result.concat(getAllIdsRecursively(child))
-                    }
-                  )
-
-                  return result
-                }
-
-                categoryIds = categoryIds.concat(
-                  getAllIdsRecursively(categoryChildren)
-                )
-              }
-            }
-          }
+          const categoryIds: string[] = await this.getCategoryIdsFromInput(
+            categoryId,
+            includeCategoryChildren
+          )
 
           if (categoryIds.length || categoriesQuery) {
             const joinScope = {}
@@ -357,7 +329,13 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     const discount_condition_id = option_.where.discount_condition_id
     delete option_.where.discount_condition_id
 
-    const categoriesQuery = option_.where.categories
+    const categoryId = option_.where.category_id
+    delete option_.where.category_id
+
+    const includeCategoryChildren = option_?.where?.include_category_children
+    delete option_?.where?.include_category_children
+
+    const categoriesQuery = option_.where.categories || {}
     delete option_.where.categories
 
     let qb = this.createQueryBuilder(`${productAlias}`)
@@ -414,11 +392,25 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     }
 
     if (categoriesQuery) {
+      const joinScope = {}
+      const categoryIds: string[] = await this.getCategoryIdsFromInput(
+        categoryId,
+        includeCategoryChildren
+      )
+
+      if (categoryIds.length) {
+        Object.assign(joinScope, { id: categoryIds })
+      }
+
+      if (categoriesQuery) {
+        Object.assign(joinScope, categoriesQuery)
+      }
+
       this._applyCategoriesQuery(qb, {
         alias: productAlias,
         categoryAlias: "categories",
-        where: categoriesQuery,
-        joinName: "leftJoin",
+        where: joinScope,
+        joinName: categoryIds.length ? "innerJoin" : "leftJoin",
       })
     }
 
@@ -456,6 +448,46 @@ export const ProductRepository = dataSource.getRepository(Product).extend({
     })
 
     return [orderedProducts, count]
+  },
+
+  async getCategoryIdsFromInput(
+    categoryId?: CategoryQueryParams,
+    includeCategoryChildren = false
+  ): Promise<string[]> {
+    let categoryIds = categoryId?.value
+
+    if (!isDefined(categoryIds)) {
+      return []
+    }
+
+    if (includeCategoryChildren) {
+      const categoryRepository = this.manager.getTreeRepository(ProductCategory)
+      const categories = await categoryRepository.find({
+        where: { id: In(categoryIds) },
+      })
+
+      for (const category of categories) {
+        const categoryChildren = await categoryRepository.findDescendantsTree(
+          category
+        )
+
+        categoryIds = categoryIds.concat(
+          this.getCategoryIdsRecursively(categoryChildren)
+        )
+      }
+    }
+
+    return categoryIds
+  },
+
+  getCategoryIdsRecursively(productCategory: ProductCategory) {
+    let result = [productCategory.id]
+
+    ;(productCategory.category_children || []).forEach((child) => {
+      result = result.concat(this.getCategoryIdsRecursively(child))
+    })
+
+    return result
   },
 
   async _findWithRelations({

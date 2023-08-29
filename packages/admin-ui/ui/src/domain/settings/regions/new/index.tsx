@@ -141,7 +141,7 @@ const NewRegion = ({ onClose }: Props) => {
                 required
               >
                 <p className="inter-base-regular mb-xlarge text-grey-50">
-                  Add which fulfillment and payment providers shoulb be
+                  Add which fulfillment and payment providers should be
                   available in this region.
                 </p>
                 <RegionProvidersForm form={nestedForm(form, "providers")} />

@@ -6,18 +6,15 @@ import {
 import { Product, ProductOption } from "@models"
 import { Context, DAL, ProductTypes } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-import {
-  DALUtils,
-  InjectTransactionManager,
-  MedusaContext,
-  MedusaError,
-} from "@medusajs/utils"
+import { DALUtils, MedusaError } from "@medusajs/utils"
 
+// eslint-disable-next-line max-len
 export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseRepository<ProductOption> {
   protected readonly manager_: SqlEntityManager
 
   constructor({ manager }: { manager: SqlEntityManager }) {
     // @ts-ignore
+    // eslint-disable-next-line prefer-rest-params
     super(...arguments)
     this.manager_ = manager
   }
@@ -62,12 +59,7 @@ export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseReposi
     )
   }
 
-  @InjectTransactionManager()
-  async delete(
-    ids: string[],
-    @MedusaContext()
-    context: Context = {}
-  ): Promise<void> {
+  async delete(ids: string[], context: Context = {}): Promise<void> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
 
     await (manager as SqlEntityManager).nativeDelete(
@@ -77,10 +69,8 @@ export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseReposi
     )
   }
 
-  @InjectTransactionManager()
   async create(
     data: ProductTypes.CreateProductOptionDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductOption[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -113,15 +103,13 @@ export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseReposi
       return manager.create(ProductOption, optionData)
     })
 
-    await manager.persist(productOptions)
+    manager.persist(productOptions)
 
     return productOptions
   }
 
-  @InjectTransactionManager()
   async update(
     data: ProductTypes.UpdateProductOptionDTO[],
-    @MedusaContext()
     context: Context = {}
   ): Promise<ProductOption[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
@@ -157,7 +145,7 @@ export class ProductOptionRepository extends DALUtils.MikroOrmAbstractBaseReposi
       return manager.assign(existingOption, optionData)
     })
 
-    await manager.persist(productOptions)
+    manager.persist(productOptions)
 
     return productOptions
   }

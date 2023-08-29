@@ -2,3 +2,4 @@
 /build
 .vercel
 /ui/preview
+/ui/src/extensions

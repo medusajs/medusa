@@ -27,7 +27,7 @@ import { ProductVariantInventoryService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X DELETE 'https://medusa-url.com/admin/inventory-items/{id}' \
+ *       curl -X DELETE '{backend_url}/admin/inventory-items/{id}' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

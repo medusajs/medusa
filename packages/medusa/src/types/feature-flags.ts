@@ -21,7 +21,7 @@ export interface IFlagRouter {
  */
 export type FeatureFlagsResponse = {
   key: string
-  value: boolean
+  value: boolean | Record<string, boolean>
 }[]
 
 export type FlagSettings = {

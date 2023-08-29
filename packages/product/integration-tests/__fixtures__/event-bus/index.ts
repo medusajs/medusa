@@ -1,8 +1,7 @@
 import {
-  EmitData,
   EventBusTypes,
+  IEventBusModuleService,
   Subscriber,
-  IEventBusModuleService
 } from "@medusajs/types"
 
 export class EventBusService implements IEventBusModuleService {
@@ -11,7 +10,9 @@ export class EventBusService implements IEventBusModuleService {
     data: T,
     options: Record<string, unknown>
   ): Promise<void>
+
   async emit<T>(data: EventBusTypes.EmitData<T>[]): Promise<void>
+
   async emit<T, TInput extends string | EventBusTypes.EmitData<T>[] = string>(
     eventOrData: TInput,
     data?: T,
@@ -30,7 +31,5 @@ export class EventBusService implements IEventBusModuleService {
     return this
   }
 
-  withTransaction() {
-
-  }
+  withTransaction() {}
 }

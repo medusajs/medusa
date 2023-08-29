@@ -117,7 +117,7 @@ import { Type } from "class-transformer"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/customer-groups' \
+ *       curl '{backend_url}/admin/customer-groups' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
