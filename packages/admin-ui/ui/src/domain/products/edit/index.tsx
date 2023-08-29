@@ -63,6 +63,7 @@ const Edit = () => {
         })}
         <div className="gap-x-base grid grid-cols-12">
           <div className="gap-y-xsmall col-span-8 flex flex-col">
+            {/* @ts-ignore */}
             <ProductGeneralSection product={product} />
             <ProductVariantsSection product={product} />
             <ProductAttributesSection product={product} />
