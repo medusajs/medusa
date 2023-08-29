@@ -40,14 +40,14 @@ const Rating: React.FC<RatingProps> = ({
   }
 
   return (
-    <div className={clsx("tw-flex tw-gap-0.5", className)}>
+    <div className={clsx("flex gap-0.5", className)}>
       {starArr.map((i) => {
         const isSelected =
           (rating !== 0 && rating - 1 >= i) ||
           (hoverRating !== 0 && hoverRating - 1 >= i)
         return (
           <button
-            className="transparent-button"
+            className="btn-clear"
             ref={(element) => {
               if (starElms.current.length - 1 < i) {
                 starElms.current.push(element)
@@ -68,7 +68,7 @@ const Rating: React.FC<RatingProps> = ({
           >
             {!isSelected && <IconStar />}
             {isSelected && (
-              <IconStarSolid iconColorClassName="tw-fill-medusa-tag-orange-icon dark:tw-fill-medusa-tag-orange-icon-dark" />
+              <IconStarSolid iconColorClassName="fill-medusa-tag-orange-icon dark:fill-medusa-tag-orange-icon-dark" />
             )}
           </button>
         )

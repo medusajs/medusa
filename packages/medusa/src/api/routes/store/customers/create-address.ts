@@ -45,7 +45,7 @@ import { validator } from "../../../../utils/validator"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/customers/me/addresses' \
+ *       curl -X POST '{backend_url}/store/customers/me/addresses' \
  *       -H 'Cookie: connect.sid={sid}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{

@@ -146,8 +146,7 @@ describe("WorkflowManager", () => {
     expect(handlers.get("bar").invoke).toHaveBeenCalledTimes(0)
     expect(handlers.get("bar").compensate).toHaveBeenCalledTimes(0)
 
-    // Failed because the async is flagged as noCompensation
-    expect(continuation.getState()).toBe(TransactionState.FAILED)
+    expect(continuation.getState()).toBe(TransactionState.REVERTED)
   })
 
   it("should update a flow with a new step and a new handler", async () => {

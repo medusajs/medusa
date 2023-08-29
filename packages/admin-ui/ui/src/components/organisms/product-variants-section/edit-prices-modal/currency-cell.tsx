@@ -37,6 +37,12 @@ type CurrencyCellProps = {
   isRangeEnd: boolean
   isInRange: boolean
 
+  isRangeStartCol: boolean
+  isRangeEndCol: boolean
+  isInRangeCol: boolean
+
+  onColumnOver: (currencyOrRegion: string) => void
+
   onDragFillStart: (
     variantId: string,
     currencyCode?: string,
@@ -79,6 +85,7 @@ function CurrencyCell(props: CurrencyCellProps) {
     isInRange,
     isRangeStart,
     isRangeEnd,
+    onColumnOver,
   } = props
 
   const ref = useRef()
@@ -135,6 +142,15 @@ function CurrencyCell(props: CurrencyCellProps) {
        * If we use set timout it will work as expected.
        */
       setTimeout(() => ref.current.focus())
+
+      const onEnter = (e: KeyboardEvent) => {
+        if (e.key === "Enter") {
+          ref.current.blur()
+        }
+      }
+
+      document.addEventListener("keypress", onEnter)
+      return () => document.removeEventListener("keypress", onEnter)
     } else {
       // Format value back after edit
       setLocalValue({
@@ -179,14 +195,21 @@ function CurrencyCell(props: CurrencyCellProps) {
 
   return (
     <td
+      onMouseOver={() => onColumnOver(currencyCode || region)}
       onMouseDown={onCellMouseDown}
-      className={clsx("relative cursor-pointer pr-2 pl-4", {
-        border: !isInRange,
+      className={clsx("relative cursor-pointer border pr-2 pl-4", {
         "bg-blue-100": isSelected && !isAnchor,
-        "border-x border-double border-blue-400": isInRange,
-        "border-t border-blue-400": isRangeStart,
-        "border-b border-blue-400": isRangeEnd,
       })}
+      style={{
+        borderTop:
+          isRangeStart && props.isInRangeCol ? "1px double #3B82F6" : "",
+        borderBottom:
+          isRangeEnd && props.isInRangeCol ? "1px double #3B82F6" : "",
+        borderLeft:
+          props.isRangeStartCol && isInRange ? "1px double #3B82F6" : "",
+        borderRight:
+          props.isRangeEndCol && isInRange ? "1px double #3B82F6" : "",
+      }}
     >
       <div className="flex">
         <span className="text-gray-400">{currencyMeta?.symbol_native}</span>
@@ -203,10 +226,9 @@ function CurrencyCell(props: CurrencyCellProps) {
           customInput={isEditable ? currencyInput : currencySpan}
           allowNegativeValue={false}
           value={localValue.value}
-          decimalSeparator="."
           placeholder="-"
         />
-        {isRangeEnd && !isEditable && (
+        {isRangeEnd && props.isRangeEndCol && !isEditable && (
           <div
             style={{ bottom: -4, right: -4, zIndex: 9999 }}
             onMouseDown={onFillIndicatorMouseDown}

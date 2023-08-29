@@ -64,7 +64,7 @@ import { PriceList } from "../../../../models"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/admin/price-lists' \
+ *       curl -X POST '{backend_url}/admin/price-lists' \
  *       -H 'Authorization: Bearer {api_token}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{

@@ -23,7 +23,7 @@ import _ from "lodash"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/auth' \
+ *       curl '{backend_url}/admin/auth' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

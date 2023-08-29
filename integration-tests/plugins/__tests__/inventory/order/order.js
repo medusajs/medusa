@@ -8,11 +8,10 @@ const { setPort, useApi } = require("../../../../environment-helpers/use-api")
 
 const adminSeeder = require("../../../../helpers/admin-seeder")
 const {
+  simpleLineItemFactory,
+  simpleSalesChannelFactory,
   simpleProductFactory,
   simpleCustomerFactory,
-} = require("../../../../factories")
-const { simpleSalesChannelFactory } = require("../../../../factories")
-const {
   simpleOrderFactory,
   simpleRegionFactory,
   simpleCartFactory,
@@ -158,6 +157,85 @@ describe("/store/carts", () => {
           available_quantity: 100,
         })
       )
+    })
+
+    describe("canceling an order", () => {
+      it("should cancel an order with many items", async () => {
+        const api = useApi()
+
+        const stockLocation = await stockLocationService.create({
+          name: "test-location",
+        })
+        await salesChannelLocationService.associateLocation(
+          "test-channel",
+          stockLocation.id
+        )
+        const inventoryItem = await inventoryService.createInventoryItem({
+          sku: "cancel-me",
+        })
+        await inventoryService.createInventoryLevel({
+          inventory_item_id: inventoryItem.id,
+          location_id: stockLocation.id,
+          stocked_quantity: 100,
+        })
+
+        const customer = await simpleCustomerFactory(dbConnection, {})
+
+        const cart = await simpleCartFactory(dbConnection, {
+          email: "testme@email.com",
+          region: regionId,
+          line_items: items,
+          sales_channel_id: "test-channel",
+          shipping_address: {},
+          shipping_methods: [
+            {
+              shipping_option: {
+                region_id: regionId,
+              },
+            },
+          ],
+        })
+
+        const items = []
+        for (let i = 0; i < 13; i++) {
+          const product = await simpleProductFactory(dbConnection, {})
+          await prodVarInventoryService.attachInventoryItem(
+            product.variants[0].id,
+            inventoryItem.id
+          )
+          const lineItem = await simpleLineItemFactory(dbConnection, {
+            cart_id: cart.id,
+            fulfilled_quantity: 0,
+            returned_quantity: 0,
+            title: "Line Item",
+            description: "Line Item Desc",
+            thumbnail: "https://test.js/1234",
+            unit_price: 8000,
+            quantity: 1,
+            variant_id: product.variants[0].id,
+          })
+          items.push(lineItem)
+        }
+
+        await appContainer
+          .resolve("cartService")
+          .update(cart.id, { customer_id: customer.id })
+
+        await api.post(`/store/carts/${cart.id}/payment-sessions`)
+
+        const completeRes = await api.post(`/store/carts/${cart.id}/complete`)
+
+        const orderId = completeRes.data.data.id
+
+        const response = await api
+          .post(`/admin/orders/${orderId}/cancel`, {}, adminHeaders)
+          .catch((e) => {
+            console.log(e.response.data)
+            throw e
+          })
+
+        expect(response.status).toEqual(200)
+      })
     })
 
     describe("swaps", () => {

@@ -1,9 +1,9 @@
+import { FlagRouter } from "@medusajs/utils"
 import { Router } from "express"
 import { ShippingOption } from "../../../.."
+import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
-import { FlagRouter } from "../../../../utils/flag-router"
-import TaxInclusivePricingFeatureFlag from "../../../../loaders/feature-flags/tax-inclusive-pricing"
 
 const route = Router()
 
@@ -139,3 +139,4 @@ export * from "./delete-shipping-option"
 export * from "./get-shipping-option"
 export * from "./list-shipping-options"
 export * from "./update-shipping-option"
+

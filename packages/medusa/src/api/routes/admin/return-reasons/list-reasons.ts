@@ -28,7 +28,7 @@ import { Selector } from "../../../../types/common"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/return-reasons' \
+ *       curl '{backend_url}/admin/return-reasons' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

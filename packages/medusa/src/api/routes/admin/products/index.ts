@@ -1,14 +1,14 @@
 import "reflect-metadata"
 
-import { FindParams, PaginatedResponse } from "../../../../types/common"
 import { Product, ProductTag, ProductType, ProductVariant } from "../../../.."
+import { FindParams, PaginatedResponse } from "../../../../types/common"
 import middlewares, { transformQuery } from "../../../middlewares"
 
-import { AdminGetProductsParams } from "./list-products"
-import { FlagRouter } from "../../../../utils/flag-router"
+import { FlagRouter } from "@medusajs/utils"
 import { Router } from "express"
-import { validateSalesChannelsExist } from "../../../middlewares/validators/sales-channel-existence"
 import { PricedProduct } from "../../../../types/pricing"
+import { validateSalesChannelsExist } from "../../../middlewares/validators/sales-channel-existence"
+import { AdminGetProductsParams } from "./list-products"
 
 const route = Router()
 
@@ -407,3 +407,4 @@ export * from "./set-metadata"
 export * from "./update-option"
 export * from "./update-product"
 export * from "./update-variant"
+

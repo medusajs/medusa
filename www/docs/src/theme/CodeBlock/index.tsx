@@ -46,8 +46,8 @@ export default function CodeBlock({
         noCopy={noCopy}
         {...props}
         className={clsx(
-          !title && "tw-rounded",
-          title && "!tw-rounded-t-none !tw-rounded-b",
+          !title && "rounded",
+          title && "!rounded-t-none !rounded-b",
           props.className
         )}
         showLineNumbers={true}

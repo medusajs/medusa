@@ -1,0 +1,64 @@
+post:
+  operationId: PostCustomers
+  summary: Create a Customer
+  description: >-
+    Register a new customer. This will also automatically authenticate the
+    customer and set their login session in the response Cookie header. The
+    cookie session can be used in subsequent requests to authenticate the
+    customer. When using Medusa's JS or Medusa React clients, the cookie is
+    automatically attached to subsequent requests.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/StorePostCustomersReq.yaml
+  x-codegen:
+    method: create
+  x-codeSamples:
+    - lang: JavaScript
+      label: JS Client
+      source:
+        $ref: ../code_samples/JavaScript/store_customers/post.js
+    - lang: Shell
+      label: cURL
+      source:
+        $ref: ../code_samples/Shell/store_customers/post.sh
+  tags:
+    - Customers
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/StoreCustomersRes.yaml
+    '400':
+      $ref: ../components/responses/400_error.yaml
+    '404':
+      $ref: ../components/responses/not_found_error.yaml
+    '409':
+      $ref: ../components/responses/invalid_state_error.yaml
+    '422':
+      description: A customer with the same email exists
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+                description: The error code
+              type:
+                type: string
+                description: The type of error
+              message:
+                type: string
+                description: Human-readable message with details about the error
+          example:
+            code: invalid_request_error
+            type: duplicate_error
+            message: >-
+              A customer with the given email already has an account. Log in
+              instead
+    '500':
+      $ref: ../components/responses/500_error.yaml

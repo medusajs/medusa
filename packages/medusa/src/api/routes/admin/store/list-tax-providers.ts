@@ -22,7 +22,7 @@ import { TaxProviderService } from "../../../../services"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/store/tax-providers' \
+ *       curl '{backend_url}/admin/store/tax-providers' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

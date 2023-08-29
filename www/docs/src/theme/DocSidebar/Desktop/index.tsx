@@ -76,9 +76,9 @@ function DocSidebarDesktop({ path, sidebar }: Props) {
   return (
     <div
       className={clsx(
-        "lg:tw-flex lg:tw-flex-col lg:tw-max-h-screen lg:tw-h-full lg:tw-sticky lg:tw-top-0 lg:tw-transition-opacity lg:tw-duration-[50ms] lg:tw-ease-ease lg:tw-pt-1.5",
+        "lg:flex lg:flex-col lg:max-h-screen lg:h-full lg:sticky lg:top-0 lg:transition-opacity lg:duration-[50ms] lg:ease-ease lg:pt-1.5",
         "sidebar-desktop",
-        hideOnScroll && "lg:tw-pt-0"
+        hideOnScroll && "lg:pt-0"
       )}
       ref={sidebarRef}
     >
@@ -86,10 +86,7 @@ function DocSidebarDesktop({ path, sidebar }: Props) {
       <Content
         path={path}
         sidebar={sidebar}
-        className={clsx(
-          "main-sidebar",
-          "!tw-mt-0 !tw-pt-0 !tw-px-1.5 !tw-pb-4"
-        )}
+        className={clsx("main-sidebar", "!mt-0 !pt-0 !px-1.5 !pb-4")}
       />
     </div>
   )

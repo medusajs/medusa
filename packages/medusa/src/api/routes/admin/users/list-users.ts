@@ -22,7 +22,7 @@ import UserService from "../../../../services/user"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl 'https://medusa-url.com/admin/users' \
+ *       curl '{backend_url}/admin/users' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []

@@ -17,7 +17,7 @@ const IconExternalLink: React.FC<IconProps> = ({
         d="M12.0099 3.99023L3.94995 12.0502"
         className={
           iconColorClassName ||
-          "tw-stroke-medusa-icon-subtle dark:tw-stroke-medusa-icon-subtle"
+          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle-dark"
         }
         strokeWidth="1.5"
         strokeLinecap="round"
@@ -27,7 +27,7 @@ const IconExternalLink: React.FC<IconProps> = ({
         d="M6.35156 3.94971L12.0098 3.9896L12.0505 9.64865"
         className={
           iconColorClassName ||
-          "tw-stroke-medusa-icon-subtle dark:tw-stroke-medusa-icon-subtle"
+          "stroke-medusa-fg-subtle dark:stroke-medusa-fg-subtle-dark"
         }
         strokeWidth="1.5"
         strokeLinecap="round"

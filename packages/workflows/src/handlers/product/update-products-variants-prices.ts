@@ -7,18 +7,19 @@ type VariantIndexAndPrices = {
   index: number
   prices: WorkflowTypes.ProductWorkflow.CreateProductVariantPricesInputDTO[]
 }
-
-export async function updateProductsVariantsPrices({
-  container,
-  context,
-  data,
-}: WorkflowArguments<{
+type HandlerInput = {
   productsHandleVariantsIndexPricesMap: Map<
     ProductHandle,
     VariantIndexAndPrices[]
   >
   products: ProductTypes.ProductDTO[]
-}>) {
+}
+
+export async function updateProductsVariantsPrices({
+  container,
+  context,
+  data,
+}: WorkflowArguments<HandlerInput>) {
   const { manager } = context
   const products = data.products
   const productsHandleVariantsIndexPricesMap =

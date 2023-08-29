@@ -35,7 +35,7 @@ import { cleanResponseData } from "../../../../utils/clean-response-data"
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl -X POST 'https://medusa-url.com/store/carts/{id}/line-items/{line_id}' \
+ *       curl -X POST '{backend_url}/store/carts/{id}/line-items/{line_id}' \
  *       -H 'Content-Type: application/json' \
  *       --data-raw '{
  *           "quantity": 1
@@ -73,9 +73,9 @@ export default async (req, res) => {
     if (validated.quantity === 0) {
       await cartService.withTransaction(m).removeLineItem(id, line_id)
     } else {
-      const cart = await cartService
-        .withTransaction(m)
-        .retrieve(id, { relations: ["items", "items.variant"] })
+      const cart = await cartService.withTransaction(m).retrieve(id, {
+        relations: ["items", "items.variant", "shipping_methods"],
+      })
 
       const existing = cart.items.find((i) => i.id === line_id)
       if (!existing) {

@@ -17,8 +17,8 @@ export default function AnnouncementBarCloseButton(
       })}
       {...props}
       className={clsx(
-        "tw-p-0 tw-leading-[0] tw-self-start tw-opacity-100 hover:tw-opacity-100",
-        "tw-bg-transparent tw-border-0 tw-cursor-pointer",
+        "p-0 leading-[0] self-start opacity-100 hover:opacity-100",
+        "bg-transparent border-0 cursor-pointer",
         props.className
       )}
     >
@@ -26,7 +26,7 @@ export default function AnnouncementBarCloseButton(
         width={20}
         height={20}
         strokeWidth={1.5}
-        iconColorClassName="tw-stroke-medusa-icon-muted dark:tw-stroke-medusa-icon-muted-dark"
+        iconColorClassName="stroke-medusa-fg-muted dark:stroke-medusa-fg-muted-dark"
       />
     </button>
   )
