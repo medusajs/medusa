@@ -113,7 +113,10 @@ export const MoneyAmountRepository = dataSource
           ]
         : variantIdOrData
 
-      const queryBuilder = this.createQueryBuilder() // .delete()
+      const maDeleteQueryBuilder = this.createQueryBuilder().delete()
+      const mavDeleteQueryBuilder = this.createQueryBuilder()
+        .delete()
+        .from("money_amount_variant")
 
       for (const data_ of data) {
         const maIdsForVariant = await this.createQueryBuilder("ma")
@@ -127,13 +130,13 @@ export const MoneyAmountRepository = dataSource
           })
           .getMany()
 
+        mavDeleteQueryBuilder.orWhere({
+          money_amount_id: In(maIdsForVariant.map((ma) => ma.id)),
+          variant_id: data_.variantId,
+        })
+
         const where = {
           id: In(maIdsForVariant.map((ma) => ma.id)),
-          price_list_id: IsNull(),
-        }
-
-        const wheree = {
-          variant_id: data_.variantId,
           price_list_id: IsNull(),
         }
 
@@ -161,24 +164,17 @@ export const MoneyAmountRepository = dataSource
           }
         }
 
-        queryBuilder.orWhere(
+        maDeleteQueryBuilder.orWhere(
           new Brackets((localQueryBuild) => {
             localQueryBuild.where(where).andWhere(orWhere)
           })
         )
       }
 
-      // throw new MedusaError(
-      //   MedusaError.Types.INVALID_DATA,
-      //   JSON.stringify(await queryBuilder.getMany())
-      // )
-
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        queryBuilder.getQuery() + JSON.stringify(queryBuilder.getParameters())
-      )
-
-      await queryBuilder.execute()
+      await Promise.all([
+        maDeleteQueryBuilder.execute(),
+        mavDeleteQueryBuilder.execute(),
+      ])
     },
 
     async upsertVariantCurrencyPrice(
@@ -325,12 +321,7 @@ export const MoneyAmountRepository = dataSource
         )
       )
 
-      const b = await this.find({ where: { currency_code: "usd" } })
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, JSON.stringify(b))
-
-      const res = await qb.getRawMany()
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, JSON.stringify(res))
-      return res
+      return await qb.getRawMany()
     },
 
     async findManyForVariantsInRegion(
