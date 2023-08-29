@@ -96,8 +96,23 @@ const paths: LearningPathType[] = [
         ),
       },
       {
+        title: "Customize Admin",
+        path: "/admin/widgets",
+        descriptionJSX: (
+          <>
+            As you add marketplace features to your store, you&apos;ll most
+            likely need to customize the admin to provide an interface to manage
+            these features.
+            <br />
+            You can extend the admin plugin to add widgets,{" "}
+            <Link to="/admin/routes">UI routes</Link>, or{" "}
+            <Link to="/admin/setting-pages">setting pages</Link>.
+          </>
+        ),
+      },
+      {
         title: "Implement Role-Based Access Control",
-        path: "/recipes/rbac",
+        path: "/modules/users/backend/rbac",
         description:
           "In your marketplace, you may need to implement role-based access control (RBAC) within stores. This will restrict some users' permissions to specified functionalities or endpoints.",
       },
@@ -170,6 +185,21 @@ const paths: LearningPathType[] = [
         path: "/development/scheduled-jobs/create",
       },
       {
+        title: "Customize Admin",
+        path: "/admin/widgets",
+        descriptionJSX: (
+          <>
+            As you add subscription features to your store, you may need to
+            customize the admin to provide an interface to manage these
+            features.
+            <br />
+            You can extend the admin plugin to add widgets,{" "}
+            <Link to="/admin/routes">UI routes</Link>, or{" "}
+            <Link to="/admin/setting-pages">setting pages</Link>.
+          </>
+        ),
+      },
+      {
         title: "Create a storefront",
         path: "/starters/nextjs-medusa-starter",
         descriptionJSX: (
@@ -199,6 +229,227 @@ const paths: LearningPathType[] = [
       },
     },
   },
+  {
+    name: "b2b",
+    label: "Build a B2B store",
+    description:
+      "Utilize Medusa's features and customization capabilities to build a B2B store.",
+    steps: [
+      {
+        title: "Create a B2B Sales Channel",
+        path: "/user-guide/sales-channels/manage",
+        descriptionJSX: (
+          <>
+            You can create a B2B sales channel that will include only your
+            wholesale products.
+            <br />
+            You can either use the Medusa admin, or the{" "}
+            <Link to="/modules/sales-channels/admin/manage">
+              Admin REST APIs
+            </Link>
+            .
+          </>
+        ),
+      },
+      {
+        title: "Create a Publishable API Key",
+        path: "/user-guide/settings/publishable-api-keys",
+        descriptionJSX: (
+          <>
+            Publishable API keys can be associated with one or more sales
+            channels. You can then use the publishable API key in your
+            storefront or client.
+            <br />
+            You can either use the Medusa admin, or the{" "}
+            <Link to="/development/publishable-api-keys/admin/manage-publishable-api-keys">
+              Admin REST APIs
+            </Link>
+            .
+          </>
+        ),
+      },
+      {
+        title: "Add Wholesale Products",
+        path: "/user-guide/products/manage",
+        descriptionJSX: (
+          <>
+            You can add your wholesale products and make them only available in
+            the B2B sales channel.
+            <br />
+            You can use the Medusa admin to add the products. Other alternatives
+            are:
+            <ul>
+              <li>
+                <Link to="/modules/products/admin/manage-products">
+                  Add Products Using REST APIs
+                </Link>
+              </li>
+              <li>
+                <Link to="/user-guide/products/import">
+                  Import Products Using Medusa Admin
+                </Link>
+              </li>
+              <li>
+                <Link to="/modules/products/admin/import-products">
+                  Import Products Using REST APIs
+                </Link>
+              </li>
+            </ul>
+          </>
+        ),
+      },
+      {
+        title: "Create a B2B Customer Group",
+        path: "/user-guide/customers/groups",
+        descriptionJSX: (
+          <>
+            Customer groups can be used to apply different prices for different
+            subsets of customers, in this case B2B customers.
+            <br />
+            You can either use the Medusa admin, or the{" "}
+            <Link to="/modules/customers/admin/manage-customer-groups">
+              Admin REST APIs
+            </Link>
+            .
+          </>
+        ),
+      },
+      {
+        title: "Add B2B Customers",
+        path: "/user-guide/customers/manage",
+        descriptionJSX: (
+          <>
+            You can now add B2B customers and assign them to the B2B customer
+            group. Alternatively, if you want to allow B2B customers to register
+            themselves, you can implement that logic within your storefront.
+            <br />
+            You can either use the Medusa admin, or the{" "}
+            <Link to="/modules/customers/admin/manage-customer">
+              Admin REST APIs
+            </Link>
+            .
+          </>
+        ),
+      },
+      {
+        title: "Create B2B Price Lists",
+        path: "/user-guide/price-lists/manage",
+        descriptionJSX: (
+          <>
+            A price list allows you to set different prices on a set of products
+            for different conditions. You can use this when building a B2B store
+            to assign different prices for B2B customer groups.
+            <br />
+            You can use the Medusa admin to add the price list. Other
+            alternatives are:
+            <ul>
+              <li>
+                <Link to="/modules/price-lists/admin/manage-price-lists">
+                  Add Price List Using REST APIs
+                </Link>
+              </li>
+              <li>
+                <Link to="/user-guide/price-lists/import">
+                  Import Prices Using Medusa Admin
+                </Link>
+              </li>
+              <li>
+                <Link to="/modules/price-lists/admin/import-prices">
+                  Import Prices Using REST APIs
+                </Link>
+              </li>
+            </ul>
+          </>
+        ),
+      },
+      {
+        title: "Create Custom Entities",
+        path: "/development/entities/create",
+        descriptionJSX: (
+          <>
+            Your use case may be more elaborate than what is shown in this
+            recipe.
+            <br />
+            Medusa can be customized to add custom entities, endpoints,
+            services, and more.
+            <br />
+            You can find additional development resources in the{" "}
+            <Link to="/development/overview">Medusa development section</Link>.
+          </>
+        ),
+      },
+      {
+        title: "Create an Endpoint to Check Customers",
+        path: "/development/entities/create",
+        descriptionJSX: (
+          <>
+            On the clients communicating with your store, such as the
+            storefront, you’ll need to check if the currently logged-in customer
+            is a normal customer or a B2B customer.
+            <br />
+            To do that, you need to create a custom endpoint that handles the
+            checking based on the custom logic you&apos;ve chosen to indicate a
+            customer is a B2B customer.
+          </>
+        ),
+      },
+      {
+        title: "Customize Admin",
+        path: "/admin/widgets",
+        descriptionJSX: (
+          <>
+            As you add B2B features to your store, you may need to customize the
+            admin to provide an interface to manage these features.
+            <br />
+            You can extend the admin plugin to add widgets,{" "}
+            <Link to="/admin/routes">UI routes</Link>, or{" "}
+            <Link to="/admin/setting-pages">setting pages</Link>.
+          </>
+        ),
+      },
+      {
+        title: "Customize Storefront",
+        path: "/starter/nextjs-medusa-starter",
+        descriptionJSX: (
+          <>
+            You may need to customize your storefront to add different
+            interfaces for B2B and regular customers, or show products
+            differently.
+            <br />
+            You can customize the Next.js storefront, or you can{" "}
+            <Link to="/storefront/roadmap">build a custom storefront</Link>.
+            <br />
+            In your storefront, make sure to{" "}
+            <Link to="/development/publishable-api-keys/storefront/use-in-requests">
+              use publishable API keys
+            </Link>{" "}
+            in your requests.
+          </>
+        ),
+      },
+      {
+        title: "Deploy the B2B store",
+        path: "/deployments/server",
+        descriptionJSX: (
+          <>
+            Once you finish your development, you can deploy your B2B backend to
+            your preferred hosting provider. You can also{" "}
+            <Link to="/deployments/storefront">deploy your storefront</Link> to
+            your preferred hosting provider.
+          </>
+        ),
+      },
+    ],
+    finish: {
+      type: "rating",
+      step: {
+        title: "Congratulations on building a B2B store!",
+        description: "Please rate your experience using this recipe.",
+        eventName: "rating_path_b2b",
+      },
+    },
+  },
+  // TODO: Eventually remove these learning paths
   {
     name: "rbac",
     label: "Role-based access control (RBAC)",
@@ -274,7 +525,6 @@ const paths: LearningPathType[] = [
       },
     },
   },
-  // TODO: Eventually remove these learning paths
   {
     name: "entity-and-api",
     label: "Create Entity and Expose it with Endpoints",
