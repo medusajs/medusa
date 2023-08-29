@@ -113,6 +113,44 @@ Implementing the logic depends on your use case, but you'll mainly need to do tw
 
 ---
 
+## Customize Admin
+
+As you add subscription features to your store, you'll most likely need to customize the admin to provide an interface to manage these features.
+
+Medusa's [admin plugin](../admin/quickstart.mdx) can be extended to add widgets or new blocks to existing pages, add UI routes to add new pages, or add setting pages.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/admin/widgets',
+    label: 'Create Admin Widget',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to add widgets into existing admin pages.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/admin/routes',
+    label: 'Create Admin UI Routes',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to add new pages to your Medusa admin.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/admin/setting-pages',
+    label: 'Create Admin Setting Page',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to add new page to the Medusa admin settings.',
+    }
+  },
+]} />
+
+---
+
 ## Build a Storefront
 
 Medusa provides a Next.js Starter Template that you can use with Medusa. Since you've customized your Medusa project, you'll need to either customize the existing Next.js Starter Template, or create a custom storefront.

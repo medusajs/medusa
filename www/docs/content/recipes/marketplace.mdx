@@ -1,3 +1,7 @@
+---
+addHowToData: true
+---
+
 import DocCardList from '@theme/DocCardList';
 import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
@@ -349,6 +353,62 @@ Payment and fulfillment providers are associated with regions, which are not ass
     }
   },
 ]} />
+
+---
+
+## Customize Admin
+
+As you add marketplace features to your store, you'll most likely need to customize the admin to provide an interface to manage these features.
+
+Medusa's [admin plugin](../admin/quickstart.mdx) can be extended to add widgets or new blocks to existing pages, add UI routes to add new pages, or add setting pages.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/admin/widgets',
+    label: 'Create Admin Widget',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to add widgets into existing admin pages.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/admin/routes',
+    label: 'Create Admin UI Routes',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to add new pages to your Medusa admin.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/admin/setting-pages',
+    label: 'Create Admin Setting Page',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to add new page to the Medusa admin settings.',
+    }
+  },
+]} />
+
+---
+
+## Implement Role-Based Access Control
+
+In your marketplace, you may need to implement role-based access control (RBAC) within stores. This will restrict some users' permissions to specified functionalities or endpoints.
+
+If you want to implement this functionality, you can follow the RBAC recipe.
+
+<DocCard item={{
+  type: 'link',
+  href: '/recipes/rbac',
+  label: 'RBAC Recipe',
+  customProps: {
+    icon: Icons['academic-cap-solid'],
+    description: 'Learn how to implement role-based access control (RBAC) in Medusa.',
+  }
+}} />
 
 ---
 
