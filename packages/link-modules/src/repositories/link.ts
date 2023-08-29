@@ -12,8 +12,8 @@ import {
 } from "@medusajs/utils"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
 
-export function getPivotRepository(model: EntitySchema) {
-  return class PivotRepository extends MikroOrmAbstractBaseRepository<object> {
+export function getLinkRepository(model: EntitySchema) {
+  return class LinkRepository extends MikroOrmAbstractBaseRepository<object> {
     readonly manager_: SqlEntityManager
     readonly model_: EntitySchema
     readonly joinerConfig_: ModuleJoinerConfig

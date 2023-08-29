@@ -8,17 +8,17 @@ import {
 import { doNotForceTransaction } from "../utils"
 
 type InjectedDependencies = {
-  pivotRepository: any
+  linkRepository: any
 }
 
-export default class PivotService<TEntity> {
-  protected readonly pivotRepository_: any
+export default class LinkService<TEntity> {
+  protected readonly linkRepository_: any
 
-  constructor({ pivotRepository }: InjectedDependencies) {
-    this.pivotRepository_ = pivotRepository
+  constructor({ linkRepository }: InjectedDependencies) {
+    this.linkRepository_ = linkRepository
   }
 
-  @InjectManager("pivotRepository_")
+  @InjectManager("linkRepository_")
   async list(
     filters: unknown = {},
     config: FindConfig<unknown> = {},
@@ -28,30 +28,30 @@ export default class PivotService<TEntity> {
       filters as any,
       config
     )
-    return await this.pivotRepository_.find(queryOptions, sharedContext)
+    return await this.linkRepository_.find(queryOptions, sharedContext)
   }
 
-  @InjectManager("pivotRepository_")
+  @InjectManager("linkRepository_")
   async listAndCount(
     filters = {},
     config: FindConfig<unknown> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[TEntity[], number]> {
     const queryOptions = ModulesSdkUtils.buildQuery<unknown>(filters, config)
-    return await this.pivotRepository_.findAndCount(queryOptions, sharedContext)
+    return await this.linkRepository_.findAndCount(queryOptions, sharedContext)
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "pivotRepository_")
+  @InjectTransactionManager(doNotForceTransaction, "linkRepository_")
   async create(
     data: unknown[],
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity[]> {
-    return await this.pivotRepository_.create(data, {
+    return await this.linkRepository_.create(data, {
       transactionManager: sharedContext.transactionManager,
     })
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "pivotRepository_")
+  @InjectTransactionManager(doNotForceTransaction, "linkRepository_")
   async dismiss(
     data: unknown[],
     @MedusaContext() sharedContext: Context = {}
@@ -65,7 +65,7 @@ export default class PivotService<TEntity> {
       })
     }
 
-    const [rows] = await this.pivotRepository_.softDelete(
+    const [rows] = await this.linkRepository_.softDelete(
       { $or: filter },
       {
         transactionManager: sharedContext.transactionManager,
@@ -75,17 +75,17 @@ export default class PivotService<TEntity> {
     return rows
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "pivotRepository_")
+  @InjectTransactionManager(doNotForceTransaction, "linkRepository_")
   async delete(
     data: unknown,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<void> {
-    await this.pivotRepository_.delete(data, {
+    await this.linkRepository_.delete(data, {
       transactionManager: sharedContext.transactionManager,
     })
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "pivotRepository_")
+  @InjectTransactionManager(doNotForceTransaction, "linkRepository_")
   async softDelete(
     data: any,
     @MedusaContext() sharedContext: Context = {}
@@ -95,12 +95,12 @@ export default class PivotService<TEntity> {
       filter[key] = { $in: Array.isArray(data[key]) ? data[key] : [data[key]] }
     }
 
-    return await this.pivotRepository_.softDelete(filter, {
+    return await this.linkRepository_.softDelete(filter, {
       transactionManager: sharedContext.transactionManager,
     })
   }
 
-  @InjectTransactionManager(doNotForceTransaction, "pivotRepository_")
+  @InjectTransactionManager(doNotForceTransaction, "linkRepository_")
   async restore(
     data: any,
     @MedusaContext() sharedContext: Context = {}
@@ -110,7 +110,7 @@ export default class PivotService<TEntity> {
       filter[key] = { $in: Array.isArray(data[key]) ? data[key] : [data[key]] }
     }
 
-    return await this.pivotRepository_.restore(data, {
+    return await this.linkRepository_.restore(data, {
       transactionManager: sharedContext.transactionManager,
     })
   }
