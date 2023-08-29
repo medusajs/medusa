@@ -8,9 +8,9 @@ import { MedusaError } from "medusa-core-utils"
 /**
  * @oas [post] /store/token
  * operationId: "PostToken"
- * summary: "Customer JWT Token"
+ * summary: "Customer Login (JWT)"
  * x-authenticated: false
- * description: "After a successful login, a bearer token is returned for subsequent authorization."
+ * description: "After a successful login, a JWT token is returned for subsequent authorization."
  * parameters:
  *   - (body) email=* {string} The User's email.
  *   - (body) password=* {string} The User's password.
