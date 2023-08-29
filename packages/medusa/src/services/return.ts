@@ -486,11 +486,18 @@ class ReturnService extends TransactionBaseService {
           .withTransaction(manager)
           .createShippingTaxLines(shippingMethod, calculationContext)
 
+        const taxRate = taxLines.reduce((acc, curr) => {
+          return acc + curr.rate / 100
+        }, 0)
+
+        const shippingPrice = shippingMethod.price
+          ? Math.round(shippingMethod.price / (1 + taxRate))
+          : 0
+
         const shippingTotal =
-          shippingMethod.price +
+          shippingPrice +
           taxLines.reduce(
-            (acc, tl) =>
-              acc + Math.round(shippingMethod.price * (tl.rate / 100)),
+            (acc, tl) => acc + Math.round(shippingPrice * (tl.rate / 100)),
             0
           )
 
