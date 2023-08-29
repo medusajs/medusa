@@ -324,7 +324,7 @@ const paths: LearningPathType[] = [
             themselves, you can implement that logic within your storefront.
             <br />
             You can either use the Medusa admin, or the{" "}
-            <Link to="/modules/customers/admin/manage-customer">
+            <Link to="/modules/customers/admin/manage-customers">
               Admin REST APIs
             </Link>
             .
@@ -409,7 +409,7 @@ const paths: LearningPathType[] = [
       },
       {
         title: "Customize Storefront",
-        path: "/starter/nextjs-medusa-starter",
+        path: "/starters/nextjs-medusa-starter",
         descriptionJSX: (
           <>
             You may need to customize your storefront to add different
