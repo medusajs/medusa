@@ -53,7 +53,9 @@ export default class PricingModuleService<TCurrency extends Currency = Currency>
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(currency))
+    return this.baseRepository_.serialize<PricingTypes.CurrencyDTO>(currency, {
+      populate: true,
+    })
   }
 
   @InjectManager("baseRepository_")
@@ -68,7 +70,12 @@ export default class PricingModuleService<TCurrency extends Currency = Currency>
       sharedContext
     )
 
-    return JSON.parse(JSON.stringify(currencies))
+    return this.baseRepository_.serialize<PricingTypes.CurrencyDTO[]>(
+      currencies,
+      {
+        populate: true,
+      }
+    )
   }
 
   @InjectManager("baseRepository_")
@@ -83,7 +90,15 @@ export default class PricingModuleService<TCurrency extends Currency = Currency>
       sharedContext
     )
 
-    return [JSON.parse(JSON.stringify(currencies)), count]
+    return [
+      await this.baseRepository_.serialize<PricingTypes.CurrencyDTO[]>(
+        currencies,
+        {
+          populate: true,
+        }
+      ),
+      count,
+    ]
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
@@ -93,7 +108,12 @@ export default class PricingModuleService<TCurrency extends Currency = Currency>
   ) {
     const currencies = await this.currencyService_.create(data, sharedContext)
 
-    return JSON.parse(JSON.stringify(currencies))
+    return this.baseRepository_.serialize<PricingTypes.CurrencyDTO[]>(
+      currencies,
+      {
+        populate: true,
+      }
+    )
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
@@ -103,7 +123,12 @@ export default class PricingModuleService<TCurrency extends Currency = Currency>
   ) {
     const currencies = await this.currencyService_.update(data, sharedContext)
 
-    return JSON.parse(JSON.stringify(currencies))
+    return this.baseRepository_.serialize<PricingTypes.CurrencyDTO[]>(
+      currencies,
+      {
+        populate: true,
+      }
+    )
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
