@@ -88,12 +88,12 @@ export class CurrencyRepository extends DALUtils.MikroOrmBaseRepository {
     context: Context = {}
   ): Promise<Currency[]> {
     const manager = this.getActiveManager<SqlEntityManager>(context)
-    const currencyIds = data.map((currencyData) => currencyData.code)
+    const currencyCodes = data.map((currencyData) => currencyData.code)
     const existingCurrencies = await this.find(
       {
         where: {
           code: {
-            $in: currencyIds,
+            $in: currencyCodes,
           },
         },
       },

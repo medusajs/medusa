@@ -8,10 +8,10 @@ export async function createCurrencies(
 ): Promise<Currency[]> {
   const currencies: Currency[] = []
 
-  for (let categoryData of currencyData) {
-    const category = manager.create(Currency, categoryData)
+  for (let curr of currencyData) {
+    const currency = manager.create(Currency, curr)
 
-    currencies.push(category)
+    currencies.push(currency)
   }
 
   await manager.persistAndFlush(currencies)
