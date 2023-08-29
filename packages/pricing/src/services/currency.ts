@@ -24,12 +24,12 @@ export default class CurrencyService<TEntity extends Currency = Currency> {
 
   @InjectManager("currencyRepository_")
   async retrieve(
-    currencyId: string,
+    currencyCode: string,
     config: FindConfig<PricingTypes.CurrencyDTO> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<TEntity> {
     return (await retrieveEntity<Currency, PricingTypes.CurrencyDTO>({
-      id: currencyId,
+      id: currencyCode,
       identifierColumn: "code",
       entityName: Currency.name,
       repository: this.currencyRepository_,
