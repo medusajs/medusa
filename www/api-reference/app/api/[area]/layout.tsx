@@ -10,7 +10,10 @@ import { Roboto_Mono } from "next/font/google"
 import AnalyticsProvider from "@/providers/analytics"
 import NavbarProvider from "@/providers/navbar"
 import ModalProvider from "../../../providers/modal"
+import SearchProvider from "../../../providers/search"
 import { ScrollControllerProvider } from "../../../hooks/scroll-utils"
+import MobileProvider from "../../../providers/mobile"
+import PageLoadingProvider from "../../../providers/page-loading"
 
 export const metadata = {
   title: "Medusa API Reference",
@@ -46,23 +49,29 @@ export default function RootLayout({
         <AnalyticsProvider>
           <ModalProvider>
             <ColorModeProvider>
-              <BaseSpecsProvider>
-                <SidebarProvider>
-                  <NavbarProvider>
-                    <ScrollControllerProvider>
-                      <div className="w-full">
-                        <Navbar />
-                        <div className="max-w-xxl mx-auto flex w-full px-1.5">
-                          <Sidebar />
-                          <main className="lg:w-api-ref-main relative mt-4 w-full flex-1 lg:mt-7">
-                            {children}
-                          </main>
-                        </div>
-                      </div>
-                    </ScrollControllerProvider>
-                  </NavbarProvider>
-                </SidebarProvider>
-              </BaseSpecsProvider>
+              <PageLoadingProvider>
+                <BaseSpecsProvider>
+                  <SidebarProvider>
+                    <NavbarProvider>
+                      <ScrollControllerProvider>
+                        <SearchProvider>
+                          <MobileProvider>
+                            <div className="w-full">
+                              <Navbar />
+                              <div className="max-w-xxl mx-auto flex w-full px-1.5">
+                                <Sidebar />
+                                <main className="lg:w-api-ref-main relative mt-4 w-full flex-1 lg:mt-7">
+                                  {children}
+                                </main>
+                              </div>
+                            </div>
+                          </MobileProvider>
+                        </SearchProvider>
+                      </ScrollControllerProvider>
+                    </NavbarProvider>
+                  </SidebarProvider>
+                </BaseSpecsProvider>
+              </PageLoadingProvider>
             </ColorModeProvider>
           </ModalProvider>
         </AnalyticsProvider>

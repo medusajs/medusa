@@ -2,12 +2,10 @@ import clsx from "clsx"
 import NavbarLink from "./Link"
 import NavbarColorModeToggle from "./ColorModeToggle"
 import NavbarLogo from "./Logo"
-import SearchBar from "../SearchBar"
-import NavbarMenuButton from "./MenuButton"
 import getLinkWithBasePath from "../../utils/get-link-with-base-path"
 import FeedbackModal from "./FeedbackModal"
-import NavbarMobileLogo from "./MobileLogo"
 import MobileMenu from "./MobileMenu"
+import SearchModalOpener from "../Search/ModalOpener"
 
 const Navbar = () => {
   return (
@@ -40,11 +38,12 @@ const Navbar = () => {
               label="Admin API"
               activeValue="admin"
             />
+            <NavbarLink href="https://docs.medusajs.com/ui" label="UI" />
           </div>
         </div>
         <div className="hidden min-w-0 flex-1 items-center justify-end gap-0.5 lg:flex">
-          <div className="w-[240px] [&>*]:flex-1">
-            <SearchBar />
+          <div>
+            <SearchModalOpener />
           </div>
           <NavbarColorModeToggle />
           <FeedbackModal />

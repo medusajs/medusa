@@ -4,6 +4,8 @@ import MDXInlineCode from "@site/src/components/MDXComponents/InlineCode"
 import CloudinaryImage from "@site/src/components/CloudinaryImage"
 import MDXDetails from "./Details"
 import MDXSummary from "./Summary"
+import MDXA from "./A"
+import Kbd from "./Kbd"
 
 export default {
   // Re-use the default mapping
@@ -12,4 +14,6 @@ export default {
   img: CloudinaryImage,
   details: MDXDetails,
   summary: MDXSummary,
+  a: MDXA,
+  kbd: Kbd,
 }

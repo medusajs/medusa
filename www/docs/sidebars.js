@@ -57,6 +57,11 @@ module.exports = {
           id: "recipes/subscriptions",
           label: "Subscriptions",
         },
+        {
+          type: "doc",
+          id: "recipes/b2b",
+          label: "B2B / Wholesale",
+        },
       ],
     },
     {
@@ -97,6 +102,11 @@ module.exports = {
       },
       className: "homepage-sidebar-item",
       items: [
+        {
+          type: "doc",
+          label: "Admin Custom Configuration",
+          id: "admin/configuration",
+        },
         {
           type: "doc",
           label: "Admin Widgets",
@@ -215,6 +225,15 @@ module.exports = {
       className: "homepage-sidebar-item",
     },
     {
+      type: "doc",
+      id: "beta",
+      label: "Beta Features",
+      customProps: {
+        sidebar_icon: "adjustments",
+      },
+      className: "homepage-sidebar-item",
+    },
+    {
       type: "category",
       label: "Deploy",
       customProps: {
@@ -269,6 +288,14 @@ module.exports = {
                     "https://res.cloudinary.com/dza7lstvk/image/upload/v1681296578/Medusa%20Docs/Other/aF4ZuDS_t11rcu.png",
                   dark: "https://res.cloudinary.com/dza7lstvk/image/upload/v1681296612/Medusa%20Docs/Other/Lg7NHQk_qo6oax.png",
                 },
+              },
+            },
+            {
+              type: "doc",
+              id: "deployments/server/general-guide",
+              label: "General Deployment",
+              customProps: {
+                iconName: "academic-cap-solid",
               },
             },
           ],
@@ -344,6 +371,15 @@ module.exports = {
       label: "Contribution Guidelines",
       customProps: {
         sidebar_icon: "document-text",
+      },
+      className: "homepage-sidebar-item",
+    },
+    {
+      type: "doc",
+      id: "glossary",
+      label: "Glossary",
+      customProps: {
+        sidebar_icon: "book-open",
       },
       className: "homepage-sidebar-item",
     },
@@ -1116,6 +1152,11 @@ module.exports = {
           type: "doc",
           id: "modules/users/backend/send-invite",
           label: "Backend: Send Invite",
+        },
+        {
+          type: "doc",
+          id: "modules/users/backend/rbac",
+          label: "Backend: Implement RBAC",
         },
         {
           type: "doc",

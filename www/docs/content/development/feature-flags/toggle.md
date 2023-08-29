@@ -25,21 +25,21 @@ There are two ways to enable a feature flag.
 
 ### Method One: Using Environment Variables
 
-You can enable a feature by setting the value of its environment variable to `true`. You can find [the name of a feature flag’s environment variable in the loader file](https://github.com/medusajs/medusa/tree/master/packages/medusa/src/loaders/feature-flags) it’s defined in. It is defined under the property `env_key` in the exported object.
+You can enable a feature by setting the value of its environment variable to `true`. You can find [the name of a feature flag’s environment variable in the Beta Features documentation page](../../beta.md).
 
 For example, to enable the Tax-Inclusive Pricing beta feature, add the following environment variable:
 
-```jsx
+```bash
 MEDUSA_FF_TAX_INCLUSIVE_PRICING=true
 ```
 
 ### Method Two: Using Backend Configurations
 
-You can enable a feature by using the backend configurations in `medusa-config.js`. You can find [a feature flag’s key in the loader file](https://github.com/medusajs/medusa/tree/master/packages/medusa/src/loaders/feature-flags) it’s defined in. It is defined under the property `key` in the exported object.
+You can enable a feature by using the backend configurations in `medusa-config.js`. You can find [the feature flag’s key in the Beta Features documentation page](../../beta.md) it’s defined in. It is defined under the property `key` in the exported object.
 
 For example, to enable the Tax-Inclusive Pricing beta feature, add the following to the exported object in `medusa-config.js`:
 
-```jsx title=medusa-config.js
+```js title=medusa-config.js
 module.exports = {
   featureFlags: {
     tax_inclusive_pricing: true,

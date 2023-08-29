@@ -6,10 +6,6 @@ description: "In this document, you’ll learn about the directory structure of 
 
 In this document, you’ll learn about the directory structure of a Medusa backend. It’ll help you understand the purpose of each file and folder in your Medusa backend project.
 
-## Note about Beta
-
-Files that have the beta label are only available if you installed the Medusa backend using the `create-medusa-app` command.
-
 ---
 
 ## Root Files
@@ -54,17 +50,15 @@ Since the Medusa backend is an NPM package, this file defines its information as
 
 Provides general information about the Medusa backend.
 
-### tsconfig.admin.json (beta)
+### tsconfig.admin.json
 
-Defines the TypeScript configurations that are used to transpile admin customization files. So, it only works for files under the [src/admin directory](#admin-beta).
+Defines the TypeScript configurations that are used to transpile admin customization files. So, it only works for files under the [src/admin directory](#admin).
 
 ### tsconfig.json
 
 Defines the general TypeScript configurations used to transpile files from the `src` directory to the `dist` directory.
 
-If you have the beta configuration files, they will extend the configurations in this file along with the configurations they each define.
-
-### tsconfig.server.json (beta)
+### tsconfig.server.json
 
 Defines the TypeScript configurations that are used to transpile Medusa backend customization files. It works for all files except for the files under the `src/admin` directory.
 
@@ -133,7 +127,7 @@ Files under the `src` directory hold the Medusa backend and admin customizations
 
 If any of these directories are not available, you can create them yourself.
 
-### admin (beta)
+### admin
 
 This directory holds all Medusa admin customizations. The main subdirectories of this directory are:
 

@@ -1,17 +1,23 @@
 import fs from "fs"
-import aws from "aws-sdk"
+import type { S3ClientConfigType, PutObjectCommandInput, GetObjectCommandOutput } from "@aws-sdk/client-s3"
+import { Upload } from "@aws-sdk/lib-storage"
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
+import { 
+  S3Client, 
+  PutObjectCommand, 
+  DeleteObjectCommand, 
+  GetObjectCommand 
+} from "@aws-sdk/client-s3"
 import { parse } from "path"
+import { AbstractFileService, IFileService } from "@medusajs/medusa"
 import {
-  AbstractFileService,
   DeleteFileType,
   FileServiceUploadResult,
   GetUploadedFileType,
-  IFileService,
   UploadStreamDescriptorType,
-} from "@medusajs/medusa"
+  Logger
+} from "@medusajs/types"
 import stream from "stream"
-import { PutObjectRequest } from "aws-sdk/clients/s3"
-import { ClientConfiguration } from "aws-sdk/clients/s3"
 
 class S3Service extends AbstractFileService implements IFileService {
   protected bucket_: string
@@ -19,11 +25,13 @@ class S3Service extends AbstractFileService implements IFileService {
   protected accessKeyId_: string
   protected secretAccessKey_: string
   protected region_: string
-  protected endpoint_: string
   protected awsConfigObject_: any
-  protected downloadFileDuration_: string
+  protected downloadFileDuration_: number
+  protected cacheControl_: string
+  protected logger_: Logger
+  protected client_: S3Client
 
-  constructor({}, options) {
+  constructor({ logger }, options) {
     super({}, options)
 
     this.bucket_ = options.bucket
@@ -31,22 +39,26 @@ class S3Service extends AbstractFileService implements IFileService {
     this.accessKeyId_ = options.access_key_id
     this.secretAccessKey_ = options.secret_access_key
     this.region_ = options.region
-    this.endpoint_ = options.endpoint
     this.downloadFileDuration_ = options.download_file_duration
     this.awsConfigObject_ = options.aws_config_object ?? {}
+    this.cacheControl_ = options.cache_control ?? "max-age=31536000"
+    this.logger_ = logger
+    this.client_ = this.getClient()
   }
 
-  protected getClient(overwriteConfig: Partial<ClientConfiguration> = {}) {
-    const config: ClientConfiguration = {
-      accessKeyId: this.accessKeyId_,
-      secretAccessKey: this.secretAccessKey_,
+  protected getClient(overwriteConfig: Partial<S3ClientConfigType> = {}) {
+    const config: S3ClientConfigType = {
+      credentials: {
+         accessKeyId: this.accessKeyId_,
+         secretAccessKey: this.secretAccessKey_,
+      },
       region: this.region_,
-      endpoint: this.endpoint_,
       ...this.awsConfigObject_,
+      signatureVersion: 'v4',
       ...overwriteConfig,
     }
 
-    return new aws.S3(config)
+    return new S3Client(config)
   }
 
   async upload(file: Express.Multer.File): Promise<FileServiceUploadResult> {
@@ -64,63 +76,67 @@ class S3Service extends AbstractFileService implements IFileService {
       acl: undefined,
     }
   ) {
-    const client = this.getClient()
 
     const parsedFilename = parse(file.originalname)
 
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
-    const params = {
+    const command = new PutObjectCommand({
       ACL: options.acl ?? (options.isProtected ? "private" : "public-read"),
       Bucket: this.bucket_,
       Body: fs.createReadStream(file.path),
       Key: fileKey,
       ContentType: file.mimetype,
-    }
+      CacheControl: this.cacheControl_
+    })
 
-    const result = await client.upload(params).promise()
-
-    return {
-      url: result.Location,
-      key: result.Key,
+    try {
+      await this.client_.send(command)
+      return {
+        url: `${this.s3Url_}/${fileKey}`,
+        key: fileKey,
+      }
+    } catch (e) {
+      this.logger_.error(e)
+      throw e
     }
   }
 
   async delete(file: DeleteFileType): Promise<void> {
-    const client = this.getClient()
-
-    const params = {
+   const command = new DeleteObjectCommand({
       Bucket: this.bucket_,
-      Key: `${file}`,
-    }
-
-    return new Promise((resolve, reject) => {
-      client.deleteObject(params, (err, data) => {
-        if (err) {
-          reject(err)
-          return
-        }
-        resolve()
-      })
+      Key: `${file.file_key}`,
     })
+
+    try {
+      await this.client_.send(command)
+    } catch (e) {
+      this.logger_.error(e)
+    }
   }
 
   async getUploadStreamDescriptor(fileData: UploadStreamDescriptorType) {
-    const client = this.getClient()
     const pass = new stream.PassThrough()
 
+    const isPrivate = fileData.isPrivate ?? true // default to private
+
     const fileKey = `${fileData.name}.${fileData.ext}`
-    const params: PutObjectRequest = {
-      ACL: fileData.acl ?? "private",
+    const params: PutObjectCommandInput = {
+      ACL: isPrivate ? "private" : "public-read",
       Bucket: this.bucket_,
       Body: pass,
       Key: fileKey,
       ContentType: fileData.contentType as string,
     }
 
+    const uploadJob = new Upload({
+      client: this.client_,
+      params
+    })
+
     return {
       writeStream: pass,
-      promise: client.upload(params).promise(),
+      promise: uploadJob.done(),
       url: `${this.s3Url_}/${fileKey}`,
       fileKey,
     }
@@ -129,28 +145,25 @@ class S3Service extends AbstractFileService implements IFileService {
   async getDownloadStream(
     fileData: GetUploadedFileType
   ): Promise<NodeJS.ReadableStream> {
-    const client = this.getClient()
-
-    const params = {
+    const command = new GetObjectCommand({
       Bucket: this.bucket_,
       Key: `${fileData.fileKey}`,
-    }
+    })
 
-    return await client.getObject(params).createReadStream()
+    const response: GetObjectCommandOutput = await this.client_.send(command)
+
+    return response.Body as NodeJS.ReadableStream
   }
 
   async getPresignedDownloadUrl(
     fileData: GetUploadedFileType
   ): Promise<string> {
-    const client = this.getClient({ signatureVersion: "v4" })
-
-    const params = {
+    const command = new GetObjectCommand({
       Bucket: this.bucket_,
       Key: `${fileData.fileKey}`,
-      Expires: this.downloadFileDuration_,
-    }
+    })
 
-    return await client.getSignedUrlPromise("getObject", params)
+    return await getSignedUrl(this.client_, command, { expiresIn: this.downloadFileDuration_ })
   }
 }
 

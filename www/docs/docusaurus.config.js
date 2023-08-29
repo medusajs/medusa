@@ -3,9 +3,6 @@ require("dotenv").config()
 const fs = require("fs")
 const reverseSidebar = require("./src/utils/reverseSidebar")
 
-const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
-const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
-
 const announcementBar = JSON.parse(fs.readFileSync("./announcement.json"))
 
 /** @type {import('@medusajs/docs').MedusaDocusaurusConfig} */
@@ -46,16 +43,58 @@ const config = {
       disableSwitch: false,
       respectPrefersColorScheme: true,
     },
-    algolia: {
-      apiKey: algoliaApiKey,
-      indexName: "medusa-commerce",
-      placeholder: "Search docs...",
-      appId: algoliaAppId,
-      contextualSearch: false,
-      externalUrlRegex: "https://medusajs.com,https://docs.medusajs.com/api/",
-      searchParameters: {
-        tagFilters: "-reference",
+    algoliaConfig: {
+      appId: process.env.ALGOLIA_APP_ID || "temp",
+      apiKey: process.env.ALGOLIA_API_KEY || "temp",
+      indexNames: {
+        docs: process.env.NEXT_PUBLIC_DOCS_ALGOLIA_INDEX_NAME,
+        api: process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME,
       },
+      filters: [
+        {
+          value: "docs",
+          label: "Docs",
+        },
+        {
+          value: "user-guide",
+          label: "User Guide",
+        },
+        {
+          value: "admin",
+          label: "Admin API",
+        },
+        {
+          value: "store",
+          label: "Store API",
+        },
+        {
+          value: "plugins",
+          label: "Plugins",
+        },
+        {
+          value: "reference",
+          label: "References",
+        },
+        {
+          value: "ui",
+          label: "UI",
+        },
+      ],
+      defaultFiltersByPath: [
+        {
+          path: "/user-guide",
+          filters: ["user-guide"],
+        },
+        {
+          path: "/references",
+          filters: ["reference"],
+        },
+        {
+          path: "/plugins",
+          filters: ["plugins"],
+        },
+      ],
+      defaultFilters: ["docs"],
     },
     prism: {
       defaultLanguage: "js",
@@ -97,6 +136,13 @@ const config = {
         {
           href: `${process.env.API_URL}/api/admin`,
           label: "Admin API",
+          prependBaseUrlToHref: true,
+          target: "_blank",
+          position: "left",
+        },
+        {
+          href: `${process.env.API_URL}/ui`,
+          label: "UI",
           prependBaseUrlToHref: true,
           target: "_blank",
           position: "left",
@@ -170,8 +216,7 @@ const config = {
       {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl:
-            "https://github.com/medusajs/medusa/edit/develop/www/docs/content",
+          editUrl: "https://github.com/medusajs/medusa/edit/develop/www/docs",
           path: "content",
           routeBasePath: "/",
           remarkPlugins: [
