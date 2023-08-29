@@ -4,6 +4,8 @@ import {
   Entity,
   Index,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
 } from "typeorm"
 
@@ -43,17 +45,23 @@ export class MoneyAmount extends SoftDeletableEntity {
   @JoinColumn({ name: "price_list_id" })
   price_list: PriceList | null
 
-  @Index('idx_money_amount_variant_id')
-  @Column({ nullable: true })
-  variant_id: string
-
-  @ManyToOne(() => ProductVariant, (variant) => variant.prices, {
+  @ManyToMany(() => ProductVariant, {
     onDelete: "CASCADE",
   })
-  @JoinColumn({ name: "variant_id" })
+  @JoinTable({
+    name: "money_amount_variant",
+    joinColumn: {
+      name: "money_amount_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "variant_id",
+      referencedColumnName: "id",
+    },
+  })
   variant: ProductVariant
 
-  @Index('idx_money_amount_region_id')
+  @Index("idx_money_amount_region_id")
   @Column({ nullable: true })
   region_id: string
 

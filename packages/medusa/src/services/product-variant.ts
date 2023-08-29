@@ -54,6 +54,7 @@ import { ProductOptionValueRepository } from "../repositories/product-option-val
 import EventBusService from "./event-bus"
 import RegionService from "./region"
 import { buildRelations } from "@medusajs/utils"
+import { dropVariantIdFkMoneyAmount1680857773273 } from "../migrations/1680857773273-drop-variant-id-fk-money-amount"
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {
@@ -398,6 +399,7 @@ class ProductVariantService extends TransactionBaseService {
                 { id },
                 { id, ...toUpdate }
               )
+
               result = variantRepo.create({
                 ...variant,
                 ...rawResult.generatedMaps[0],
@@ -544,23 +546,34 @@ class ProductVariantService extends TransactionBaseService {
       const moneyAmountRepo = manager.withRepository(
         this.moneyAmountRepository_
       )
+      const productVariantRepo = this.activeManager_.withRepository(
+        this.productVariantRepository_
+      )
 
       const where = data.map((data_) => ({
-        variant_id: data_.variantId,
+        variant: { id: data_.variantId },
         region_id: data_.price.region_id,
         price_list_id: IsNull(),
       }))
 
       const moneyAmounts = await moneyAmountRepo.find({
         where,
+        relations: ["variant"],
       })
 
       const moneyAmountsMapToVariantId = new Map()
       moneyAmounts.map((d) => {
-        const moneyAmounts = moneyAmountsMapToVariantId.get(d.variant_id) ?? []
+        const moneyAmounts =
+          moneyAmountsMapToVariantId.get(d.variant[0].id) ?? []
         moneyAmounts.push(d)
-        moneyAmountsMapToVariantId.set(d.variant_id, moneyAmounts)
+        moneyAmountsMapToVariantId.set(d.variant[0].id, moneyAmounts)
       })
+
+      const variants = await productVariantRepo.find({
+        where: { id: In(data.map((d) => d.variantId)) },
+      })
+
+      const variantsMap = new Map(variants.map((v) => [v.id, v]))
 
       const dataToCreate: QueryDeepPartialEntity<MoneyAmount>[] = []
       const dataToUpdate: QueryDeepPartialEntity<MoneyAmount>[] = []
@@ -582,12 +595,12 @@ class ProductVariantService extends TransactionBaseService {
             })
           }
         } else {
-          dataToCreate.push(
-            moneyAmountRepo.create({
-              ...price,
-              variant_id: variantId,
-            }) as QueryDeepPartialEntity<MoneyAmount>
-          )
+          const variant = variantsMap.get(variantId)
+          const ma = moneyAmountRepo.create({
+            ...price,
+          }) as QueryDeepPartialEntity<MoneyAmount>
+          ma.variant = [variant]
+          dataToCreate.push(ma)
         }
       })
 
@@ -626,24 +639,38 @@ class ProductVariantService extends TransactionBaseService {
       const moneyAmountRepo = manager.withRepository(
         this.moneyAmountRepository_
       )
+      const productVariantRepo = this.activeManager_.withRepository(
+        this.productVariantRepository_
+      )
 
       const where = data.map((data_) => ({
         variant_id: data_.variantId,
         currency_code: data_.price.currency_code,
-        region_id: IsNull(),
-        price_list_id: IsNull(),
       }))
 
-      const moneyAmounts = await moneyAmountRepo.find({
-        where,
-      })
+      const moneyAmounts = await moneyAmountRepo.findCurrencyMoneyAmounts(where)
+      // .find({
+      //   where,
+      //   relations: ["variant"],
+      // })
+
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        JSON.stringify(moneyAmounts)
+      )
 
       const moneyAmountsMapToVariantId = new Map()
       moneyAmounts.map((d) => {
-        const moneyAmounts = moneyAmountsMapToVariantId.get(d.variant_id) ?? []
+        const moneyAmounts =
+          moneyAmountsMapToVariantId.get(d.variant[0].id) ?? []
         moneyAmounts.push(d)
-        moneyAmountsMapToVariantId.set(d.variant_id, moneyAmounts)
+        moneyAmountsMapToVariantId.set(d.variant[0].id, moneyAmounts)
       })
+
+      const variants = await productVariantRepo.find({
+        where: { id: In(data.map((d) => d.variantId)) },
+      })
+      const variantsMap = new Map(variants.map((v) => [v.id, v]))
 
       const dataToCreate: QueryDeepPartialEntity<MoneyAmount>[] = []
       const dataToUpdate: QueryDeepPartialEntity<MoneyAmount>[] = []
@@ -665,13 +692,13 @@ class ProductVariantService extends TransactionBaseService {
             })
           }
         } else {
-          dataToCreate.push(
-            moneyAmountRepo.create({
-              ...price,
-              variant_id: variantId,
-              currency_code: price.currency_code.toLowerCase(),
-            }) as QueryDeepPartialEntity<MoneyAmount>
-          )
+          const variant = variantsMap.get(variantId)
+          const ma = moneyAmountRepo.create({
+            ...price,
+            currency_code: price.currency_code.toLowerCase(),
+          }) as QueryDeepPartialEntity<MoneyAmount>
+          ma.variant = [variant]
+          dataToCreate.push(ma)
         }
       })
 
@@ -748,7 +775,7 @@ class ProductVariantService extends TransactionBaseService {
 
       let moneyAmount = await moneyAmountRepo.findOne({
         where: {
-          variant_id: variantId,
+          variant: { id: variantId },
           region_id: price.region_id,
           price_list_id: IsNull(),
         },
@@ -757,7 +784,7 @@ class ProductVariantService extends TransactionBaseService {
       if (!moneyAmount) {
         moneyAmount = moneyAmountRepo.create({
           ...price,
-          variant_id: variantId,
+          variant: { id: variantId },
         })
       } else {
         moneyAmount.amount = price.amount

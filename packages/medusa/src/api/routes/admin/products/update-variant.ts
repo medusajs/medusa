@@ -19,6 +19,7 @@ import { EntityManager } from "typeorm"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /admin/products/{id}/variants/{variant_id}

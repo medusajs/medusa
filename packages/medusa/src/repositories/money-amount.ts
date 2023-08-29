@@ -11,13 +11,14 @@ import {
   PriceListPriceUpdateInput,
 } from "../types/price-list"
 
-import { MoneyAmount } from "../models"
+import { MoneyAmount, ProductVariant } from "../models"
 import { ProductVariantPrice } from "../types/product-variant"
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { dataSource } from "../loaders/database"
 import { groupBy } from "lodash"
 import { isString } from "../utils"
 import partition from "lodash/partition"
+import { MedusaError } from "medusa-core-utils"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -36,15 +37,33 @@ export const MoneyAmountRepository = dataSource
         .into(MoneyAmount)
         .values(data)
 
+      let rawMoneyAmounts
       if (!queryBuilder.connection.driver.isReturningSqlSupported("insert")) {
-        const rawMoneyAmounts = await queryBuilder.execute()
-        return rawMoneyAmounts.generatedMaps.map((d) =>
-          this.create(d)
-        ) as MoneyAmount[]
+        rawMoneyAmounts = await queryBuilder.execute()
+      } else {
+        rawMoneyAmounts = await queryBuilder.returning("*").execute()
       }
 
-      const rawMoneyAmounts = await queryBuilder.returning("*").execute()
-      return rawMoneyAmounts.generatedMaps.map((d) => this.create(d))
+      const created = rawMoneyAmounts.generatedMaps.map((d) =>
+        this.create(d)
+      ) as MoneyAmount[]
+
+      await this.createQueryBuilder()
+        .insert()
+        .into("money_amount_variant")
+        .values(
+          data
+            .filter(
+              (d): d is { variant: ProductVariant[]; id: string } => !!d.variant
+            )
+            .map((d) => ({
+              variant_id: d.variant[0].id,
+              money_amount_id: d.id,
+            }))
+        )
+        .execute()
+
+      return created
     },
 
     /**
@@ -57,8 +76,15 @@ export const MoneyAmountRepository = dataSource
       prices: Price[]
     ): Promise<MoneyAmount[]> {
       const pricesNotInPricesPayload = await this.createQueryBuilder()
-        .where({
+        .leftJoinAndSelect(
+          "money_amount_variant",
+          "mav",
+          "mav.money_amount_id = ma.id"
+        )
+        .where("mav.variant_id = :variant_id", {
           variant_id: variantId,
+        })
+        .where({
           price_list_id: IsNull(),
         })
         .andWhere(
@@ -87,10 +113,26 @@ export const MoneyAmountRepository = dataSource
           ]
         : variantIdOrData
 
-      const queryBuilder = this.createQueryBuilder().delete()
+      const queryBuilder = this.createQueryBuilder() // .delete()
 
       for (const data_ of data) {
+        const maIdsForVariant = await this.createQueryBuilder("ma")
+          .leftJoinAndSelect(
+            "money_amount_variant",
+            "mav",
+            "mav.money_amount_id = ma.id"
+          )
+          .where("mav.variant_id = :variant_id", {
+            variant_id: data_.variantId,
+          })
+          .getMany()
+
         const where = {
+          id: In(maIdsForVariant.map((ma) => ma.id)),
+          price_list_id: IsNull(),
+        }
+
+        const wheree = {
           variant_id: data_.variantId,
           price_list_id: IsNull(),
         }
@@ -126,6 +168,16 @@ export const MoneyAmountRepository = dataSource
         )
       }
 
+      // throw new MedusaError(
+      //   MedusaError.Types.INVALID_DATA,
+      //   JSON.stringify(await queryBuilder.getMany())
+      // )
+
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        queryBuilder.getQuery() + JSON.stringify(queryBuilder.getParameters())
+      )
+
       await queryBuilder.execute()
     },
 
@@ -136,7 +188,7 @@ export const MoneyAmountRepository = dataSource
       let moneyAmount = await this.findOne({
         where: {
           currency_code: price.currency_code,
-          variant_id: variantId,
+          variant: { id: variantId },
           region_id: IsNull(),
           price_list_id: IsNull(),
         },
@@ -146,7 +198,7 @@ export const MoneyAmountRepository = dataSource
         moneyAmount = this.create({
           ...price,
           currency_code: price.currency_code?.toLowerCase(),
-          variant_id: variantId,
+          variant: { id: variantId },
         })
       } else {
         moneyAmount.amount = price.amount
@@ -256,6 +308,31 @@ export const MoneyAmountRepository = dataSource
       return [result[0][variant_id], result[1]]
     },
 
+    async findCurrencyMoneyAmounts(
+      where: { variant_id: string; currency_code: string }[]
+    ) {
+      const qb = this.createQueryBuilder("ma")
+        .leftJoin("money_amount_variant", "mav", "mav.money_amount_id = ma.id")
+        .addSelect("mav.variant_id", "variant_id")
+
+      where.forEach((w, i) =>
+        qb.orWhere(
+          `(mav.variant_id = :variant_id_${i} AND ma.currency_code = :currency_code_${i} AND ma.region_id IS NULL AND ma.price_list_id IS NULL)`,
+          {
+            [`variant_id_${i}`]: w.variant_id,
+            [`currency_code_${i}`]: w.currency_code,
+          }
+        )
+      )
+
+      const b = await this.find({ where: { currency_code: "usd" } })
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, JSON.stringify(b))
+
+      const res = await qb.getRawMany()
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, JSON.stringify(res))
+      return res
+    },
+
     async findManyForVariantsInRegion(
       variant_ids: string | string[],
       region_id?: string,
@@ -266,11 +343,22 @@ export const MoneyAmountRepository = dataSource
     ): Promise<[Record<string, MoneyAmount[]>, number]> {
       variant_ids = Array.isArray(variant_ids) ? variant_ids : [variant_ids]
 
+      if (!variant_ids.length) {
+        return [{}, 0]
+      }
       const date = new Date()
 
       const qb = this.createQueryBuilder("ma")
         .leftJoinAndSelect("ma.price_list", "price_list")
-        .where({ variant_id: In(variant_ids) })
+        .leftJoinAndSelect(
+          "money_amount_variant",
+          "mav",
+          "mav.money_amount_id = ma.id"
+        )
+        .addSelect("mav.variant_id", "variant_id")
+        .andWhere("mav.variant_id IN (:...variantIds)", {
+          variantIds: variant_ids,
+        })
         .andWhere("(ma.price_list_id is null or price_list.status = 'active')")
         .andWhere(
           "(price_list.ends_at is null OR price_list.ends_at > :date)",
@@ -326,7 +414,16 @@ export const MoneyAmountRepository = dataSource
         )
       }
 
-      const [prices, count] = await qb.getManyAndCount()
+      const count = await qb.getCount()
+      const res = await qb.getRawAndEntities()
+
+      const { entities, raw } = res
+
+      const prices = entities.map((p, i) => {
+        p["variant_id"] = raw[i]["variant_id"]
+        return p
+      })
+
       const groupedPrices = groupBy(prices, "variant_id")
 
       return [groupedPrices, count]

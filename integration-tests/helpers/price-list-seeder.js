@@ -28,7 +28,7 @@ module.exports = async (dataSource, data = {}) => {
     currency_code: "usd",
     min_quantity: 1,
     max_quantity: 100,
-    variant_id: "test-variant",
+    variant: { id: "test-variant" },
     price_list_id: "pl_no_customer_groups",
   })
 
@@ -40,7 +40,7 @@ module.exports = async (dataSource, data = {}) => {
     currency_code: "usd",
     min_quantity: 101,
     max_quantity: 500,
-    variant_id: "test-variant",
+    variant: { id: "test-variant" },
     price_list_id: "pl_no_customer_groups",
   })
 
@@ -52,7 +52,7 @@ module.exports = async (dataSource, data = {}) => {
     currency_code: "usd",
     min_quantity: 501,
     max_quantity: 1000,
-    variant_id: "test-variant",
+    variant: { id: "test-variant" },
     price_list_id: "pl_no_customer_groups",
   })
 
@@ -62,7 +62,7 @@ module.exports = async (dataSource, data = {}) => {
     id: "ma_test_4",
     amount: 70,
     currency_code: "usd",
-    variant_id: "test-variant",
+    variant: { id: "test-variant" },
   })
 
   await manager.save(moneyAmount4)

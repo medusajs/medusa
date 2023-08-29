@@ -41,6 +41,7 @@ describe("/admin/products", () => {
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({
       cwd,
+      verbose: true,
       env: { MEDUSA_FF_PRODUCT_CATEGORIES: true },
     })
   })
@@ -1665,6 +1666,7 @@ describe("/admin/products", () => {
 
     it("successfully updates a variant's price by changing an existing price (given a region_id)", async () => {
       const api = useApi()
+
       const data = {
         prices: [
           {
@@ -1704,7 +1706,7 @@ describe("/admin/products", () => {
       )
     })
 
-    it("successfully updates a variant's prices by adding a new price", async () => {
+    it.only("successfully updates a variant's prices by adding a new price", async () => {
       const api = useApi()
       const data = {
         title: "Test variant prices",
@@ -1721,6 +1723,31 @@ describe("/admin/products", () => {
           },
         ],
       }
+
+      const a = await dbConnection.manager.query(`SELECT "ma"."id" AS "ma_id",
+      "ma"."created_at" AS "ma_created_at",
+      "ma"."updated_at" AS "ma_updated_at",
+      "ma"."deleted_at" AS "ma_deleted_at",
+      "ma"."currency_code" AS "ma_currency_code",
+      "ma"."amount" AS "ma_amount",
+      "ma"."min_quantity" AS "ma_min_quantity",
+      "ma"."max_quantity" AS "ma_max_quantity",
+      "ma"."price_list_id" AS "ma_price_list_id",
+      "ma"."region_id" AS "ma_region_id",
+      "mav"."variant_id" AS "variant_id"
+FROM "public"."money_amount" "ma"
+LEFT JOIN "public"."money_amount_variant" "mav" ON "mav"."money_amount_id" = "ma"."id"
+WHERE (("mav"."variant_id" = 'test-variant'
+       AND "ma"."currency_code" = 'usd'
+       AND "ma"."region_id" IS NULL
+       AND "ma"."price_list_id" IS NULL)
+      OR ("mav"."variant_id" = 'test-variant'
+          AND "ma"."currency_code" = 'eur'
+          AND "ma"."region_id" IS NULL
+          AND "ma"."price_list_id" IS NULL))
+ AND ("ma"."deleted_at" IS NULL)`)
+
+      console.log(a)
 
       const response = await api
         .post(
@@ -1745,6 +1772,7 @@ describe("/admin/products", () => {
                   expect.objectContaining({
                     amount: 100,
                     currency_code: "usd",
+                    id: "test-price",
                   }),
                   expect.objectContaining({
                     amount: 4500,

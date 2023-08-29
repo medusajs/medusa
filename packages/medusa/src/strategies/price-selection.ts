@@ -1,13 +1,13 @@
 import {
-    AbstractPriceSelectionStrategy,
-    PriceSelectionContext,
-    PriceSelectionResult,
-    PriceType,
+  AbstractPriceSelectionStrategy,
+  PriceSelectionContext,
+  PriceSelectionResult,
+  PriceType,
 } from "../interfaces"
 
 import { ICacheService } from "@medusajs/types"
 import { FlagRouter } from "@medusajs/utils"
-import { isDefined } from "medusa-core-utils"
+import { MedusaError, isDefined } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
 import { MoneyAmountRepository } from "../repositories/money-amount"
@@ -265,7 +265,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
         if (
           isValidQuantity(ma, dataItem.quantity) &&
           (result.calculatedPrice === null ||
-            ma.amount < result.calculatedPrice) &&
+            ma.amount < result.calculatedPrice!) &&
           ((context.currency_code &&
             ma.currency_code === context.currency_code) ||
             (context.region_id && ma.region_id === context.region_id))
