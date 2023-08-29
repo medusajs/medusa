@@ -59,8 +59,8 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "recipes/rbac",
-          label: "RBAC",
+          id: "recipes/b2b",
+          label: "B2B / Wholesale",
         },
       ],
     },
@@ -1152,6 +1152,11 @@ module.exports = {
           type: "doc",
           id: "modules/users/backend/send-invite",
           label: "Backend: Send Invite",
+        },
+        {
+          type: "doc",
+          id: "modules/users/backend/rbac",
+          label: "Backend: Implement RBAC",
         },
         {
           type: "doc",
