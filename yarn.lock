@@ -5666,11 +5666,9 @@ __metadata:
     awilix: ^8.0.0
     cross-env: ^5.2.1
     dotenv: ^16.1.4
-    faker: ^6.6.6
     jest: ^25.5.4
     knex: 2.4.2
     lodash: ^4.17.21
-    medusa-test-utils: ^1.1.40
     pg-god: ^1.0.12
     rimraf: ^3.0.2
     ts-jest: ^25.5.1
