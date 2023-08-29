@@ -238,6 +238,7 @@ jobs:
         run: yarn test:integration:plugins
         env:
           DB_PASSWORD: postgres
+          NODE_OPTIONS: "--max_old_space_size=4096"
 
   integration-tests-repositories:
     needs: setup
