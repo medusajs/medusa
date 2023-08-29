@@ -98,7 +98,7 @@ class S3Service extends AbstractFileService implements IFileService {
       }
     } catch (e) {
       this.logger_.error(e)
-      throw(e) // rejects the promise
+      throw e
     }
   }
 
