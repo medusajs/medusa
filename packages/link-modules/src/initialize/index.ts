@@ -11,7 +11,11 @@ import {
   ModuleServiceInitializeCustomDataLayerOptions,
   ModuleServiceInitializeOptions,
 } from "@medusajs/types"
-import { lowerCaseFirst, simpleHash } from "@medusajs/utils"
+import {
+  ContainerRegistrationKeys,
+  lowerCaseFirst,
+  simpleHash,
+} from "@medusajs/utils"
 import * as linkDefinitions from "../definitions"
 import { getMigration } from "../migration"
 import { InitializeModuleInjectableDependencies } from "../types"
@@ -105,7 +109,11 @@ export const initialize = async (
       label: serviceKey,
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
-        resources: MODULE_RESOURCE_TYPE.ISOLATED,
+        resources: injectedDependencies?.[
+          ContainerRegistrationKeys.PG_CONNECTION
+        ]
+          ? MODULE_RESOURCE_TYPE.SHARED
+          : MODULE_RESOURCE_TYPE.ISOLATED,
       },
     }
 

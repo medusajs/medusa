@@ -15,6 +15,7 @@
   "license": "MIT",
   "devDependencies": {
     "@medusajs/medusa": "^1.15.0",
+    "@medusajs/types": "workspace:^",
     "cross-env": "^5.2.1",
     "jest": "^25.5.4",
     "rimraf": "^5.0.1",

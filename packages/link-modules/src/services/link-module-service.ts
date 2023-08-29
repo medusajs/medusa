@@ -15,20 +15,20 @@ import {
   ModulesSdkUtils,
   mapObjectTo,
 } from "@medusajs/utils"
-import { PivotService } from "@services"
+import { LinkService } from "@services"
 import { shouldForceTransaction } from "../utils"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
-  pivotService: PivotService<any>
+  linkService: LinkService<any>
   primaryKey: string | string[]
   foreignKey: string
   extraFields: string[]
 }
 
-export default class LinkModuleService<TPivot> implements ILinkModule {
+export default class LinkModuleService<TLink> implements ILinkModule {
   protected baseRepository_: DAL.RepositoryService
-  protected readonly pivotService_: PivotService<TPivot>
+  protected readonly linkService_: LinkService<TLink>
   protected primaryKey_: string[]
   protected foreignKey_: string
   protected extraFields_: string[]
@@ -36,7 +36,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
   constructor(
     {
       baseRepository,
-      pivotService,
+      linkService,
       primaryKey,
       foreignKey,
       extraFields,
@@ -44,7 +44,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     readonly moduleDeclaration: InternalModuleDeclaration
   ) {
     this.baseRepository_ = baseRepository
-    this.pivotService_ = pivotService
+    this.linkService_ = linkService
     this.primaryKey_ = !Array.isArray(primaryKey) ? [primaryKey] : primaryKey
     this.foreignKey_ = foreignKey
     this.extraFields_ = extraFields
@@ -103,7 +103,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
   ): Promise<unknown> {
     const filter = this.buildData(primaryKeyData, foreignKeyData)
     const queryOptions = ModulesSdkUtils.buildQuery<unknown>(filter)
-    const entry = await this.pivotService_.list(queryOptions, {}, sharedContext)
+    const entry = await this.linkService_.list(queryOptions, {}, sharedContext)
 
     if (!entry?.length) {
       const pk = this.primaryKey_.join(",")
@@ -124,7 +124,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     config: FindConfig<unknown> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<unknown[]> {
-    const rows = await this.pivotService_.list(filters, config, sharedContext)
+    const rows = await this.linkService_.list(filters, config, sharedContext)
 
     return await this.baseRepository_.serialize<object[]>(rows)
   }
@@ -135,7 +135,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     config: FindConfig<unknown> = {},
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[unknown[], number]> {
-    const [rows, count] = await this.pivotService_.listAndCount(
+    const [rows, count] = await this.linkService_.listAndCount(
       filters,
       config,
       sharedContext
@@ -175,7 +175,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
       )
     }
 
-    const links = await this.pivotService_.create(data, sharedContext)
+    const links = await this.linkService_.create(data, sharedContext)
 
     return await this.baseRepository_.serialize<object[]>(links)
   }
@@ -200,7 +200,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
       )
     }
 
-    const links = await this.pivotService_.dismiss(data, sharedContext)
+    const links = await this.linkService_.dismiss(data, sharedContext)
 
     return await this.baseRepository_.serialize<object[]>(links)
   }
@@ -212,7 +212,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
   ): Promise<void> {
     this.validateFields(data)
 
-    await this.pivotService_.delete(data, sharedContext)
+    await this.linkService_.delete(data, sharedContext)
   }
 
   async softDelete(
@@ -228,7 +228,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
 
     const pk = this.primaryKey_.join(",")
     const entityNameToLinkableKeysMap: MapToConfig = {
-      PivotModel: [
+      LinkModel: [
         { mapTo: pk, valueFrom: pk },
         { mapTo: this.foreignKey_, valueFrom: this.foreignKey_ },
       ],
@@ -253,7 +253,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     data: any,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[string[], Record<string, string[]>]> {
-    return await this.pivotService_.softDelete(data, sharedContext)
+    return await this.linkService_.softDelete(data, sharedContext)
   }
 
   async restore(
@@ -269,7 +269,7 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
 
     const pk = this.primaryKey_.join(",")
     const entityNameToLinkableKeysMap: MapToConfig = {
-      PivotModel: [
+      LinkModel: [
         { mapTo: pk, valueFrom: pk },
         { mapTo: this.foreignKey_, valueFrom: this.foreignKey_ },
       ],
@@ -294,6 +294,6 @@ export default class LinkModuleService<TPivot> implements ILinkModule {
     data: any,
     @MedusaContext() sharedContext: Context = {}
   ): Promise<[string[], Record<string, string[]>]> {
-    return await this.pivotService_.restore(data, sharedContext)
+    return await this.linkService_.restore(data, sharedContext)
   }
 }

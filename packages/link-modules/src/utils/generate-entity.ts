@@ -9,7 +9,7 @@ import { EntitySchema } from "@mikro-orm/core"
 import { composeTableName } from "./compose-link-name"
 
 function getClass(...properties) {
-  return class PivotModel {
+  return class LinkModel {
     constructor(...values) {
       properties.forEach((name, idx) => {
         this[name] = values[idx]

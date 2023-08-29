@@ -12,6 +12,17 @@ import { isDefined } from "@medusajs/utils"
 import GraphQLParser from "./graphql-ast"
 
 const BASE_PATH = "_root"
+
+export type RemoteFetchDataCallback = (
+  expand: RemoteExpandProperty,
+  keyField: string,
+  ids?: (unknown | unknown[])[],
+  relationship?: any
+) => Promise<{
+  data: unknown[] | { [path: string]: unknown }
+  path?: string
+}>
+
 export class RemoteJoiner {
   private serviceConfigCache: Map<string, JoinerServiceConfig> = new Map()
 
@@ -20,7 +31,7 @@ export class RemoteJoiner {
     fields: string[],
     expands?: RemoteNestedExpands
   ): Record<string, unknown> {
-    if (!fields) {
+    if (!fields || !data) {
       return data
     }
 
@@ -80,37 +91,22 @@ export class RemoteJoiner {
     }, {})
   }
 
-  static parseQuery(graphqlQuery: string, variables?: any): RemoteJoinerQuery {
+  static parseQuery(
+    graphqlQuery: string,
+    variables?: Record<string, unknown>
+  ): RemoteJoinerQuery {
     const parser = new GraphQLParser(graphqlQuery, variables)
     return parser.parseQuery()
   }
 
   constructor(
     private serviceConfigs: ModuleJoinerConfig[],
-    private remoteFetchData: (
-      expand: RemoteExpandProperty,
-      keyField: string,
-      ids?: (unknown | unknown[])[],
-      relationship?: any
-    ) => Promise<{
-      data: unknown[] | { [path: string]: unknown }
-      path?: string
-    }>
+    private remoteFetchData: RemoteFetchDataCallback
   ) {
     this.serviceConfigs = this.buildReferences(serviceConfigs)
   }
 
-  public setFetchDataCallback(
-    remoteFetchData: (
-      expand: RemoteExpandProperty,
-      keyField: string,
-      ids?: (unknown | unknown[])[],
-      relationship?: any
-    ) => Promise<{
-      data: unknown[] | { [path: string]: unknown }
-      path?: string
-    }>
-  ): void {
+  public setFetchDataCallback(remoteFetchData: RemoteFetchDataCallback): void {
     this.remoteFetchData = remoteFetchData
   }
 
@@ -301,7 +297,7 @@ export class RemoteJoiner {
       Map<string, RemoteExpandProperty>,
       string,
       Set<string>
-    ][] = [[items, query, parsedExpands, "", new Set()]]
+    ][] = [[items, query, parsedExpands, BASE_PATH, new Set()]]
 
     while (stack.length > 0) {
       const [
@@ -313,9 +309,7 @@ export class RemoteJoiner {
       ] = stack.pop()!
 
       for (const [expandedPath, expand] of currentParsedExpands.entries()) {
-        const isImmediateChildPath =
-          expandedPath.startsWith(basePath) &&
-          expandedPath.split(".").length === basePath.split(".").length + 1
+        const isImmediateChildPath = basePath === expand.parent
 
         if (!isImmediateChildPath || resolvedPaths.has(expandedPath)) {
           continue
@@ -549,13 +543,13 @@ export class RemoteJoiner {
             serviceConfig: currentServiceConfig,
             fields,
             args,
+            parent: [BASE_PATH, ...currentPath].join("."),
           })
         }
 
         currentPath.push(prop)
       }
     }
-
     return parsedExpands
   }
 
@@ -576,7 +570,7 @@ export class RemoteJoiner {
     for (const [path, expand] of sortedParsedExpands.entries()) {
       const currentServiceName = expand.serviceConfig.serviceName
 
-      let parentPath = path.split(".").slice(0, -1).join(".")
+      let parentPath = expand.parent
 
       // Check if the parentPath was merged before
       while (mergedPaths.has(parentPath)) {
@@ -590,6 +584,7 @@ export class RemoteJoiner {
 
         if (parentExpand.serviceConfig.serviceName === currentServiceName) {
           const nestedKeys = path.split(".").slice(parentPath.split(".").length)
+
           let targetExpand: any = parentExpand
 
           for (let key of nestedKeys) {
@@ -643,6 +638,7 @@ export class RemoteJoiner {
     const parsedExpands = this.parseExpands(
       {
         property: "",
+        parent: "",
         serviceConfig: serviceConfig,
         fields: queryObj.fields,
         args: otherArgs,

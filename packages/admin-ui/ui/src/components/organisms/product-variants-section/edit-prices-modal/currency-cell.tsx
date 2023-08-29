@@ -226,7 +226,6 @@ function CurrencyCell(props: CurrencyCellProps) {
           customInput={isEditable ? currencyInput : currencySpan}
           allowNegativeValue={false}
           value={localValue.value}
-          decimalSeparator="."
           placeholder="-"
         />
         {isRangeEnd && props.isRangeEndCol && !isEditable && (

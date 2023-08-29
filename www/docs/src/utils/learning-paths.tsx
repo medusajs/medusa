@@ -96,6 +96,12 @@ const paths: LearningPathType[] = [
         ),
       },
       {
+        title: "Implement Role-Based Access Control",
+        path: "/recipes/rbac",
+        description:
+          "In your marketplace, you may need to implement role-based access control (RBAC) within stores. This will restrict some users' permissions to specified functionalities or endpoints.",
+      },
+      {
         title: "Create a storefront",
         path: "/starters/nextjs-medusa-starter",
         descriptionJSX: (
@@ -193,6 +199,82 @@ const paths: LearningPathType[] = [
       },
     },
   },
+  {
+    name: "rbac",
+    label: "Role-based access control (RBAC)",
+    description: "Implement roles and permissions for admin users in Medusa",
+    steps: [
+      {
+        title: "Create Role and Permission Entities",
+        path: "/development/entities/create",
+        description:
+          "When implementing RBAC, you typically require the availability of roles and permissions, both of which would require new entities. A role would include different permissions, such as the ability to access the products’ route, and it can be assigned to one or more users.",
+      },
+      {
+        title: "Extend Entities",
+        path: "/development/entities/extend-entity",
+        descriptionJSX: (
+          <>
+            To associate roles with users, you need to extend the{" "}
+            <code>User</code> entity to add the relation between it and the new{" "}
+            <code>Role</code> entity. You can also extend other entities that
+            are associated with your custom one, such as the <code>Store</code>{" "}
+            entity.
+          </>
+        ),
+      },
+      {
+        title: "Create Guard Middleware",
+        path: "/development/endpoints/add-middleware",
+        description:
+          "To ensure that users who have the privilege can access an endpoint, you must create a middleware that guards admin routes. This middleware will run on all authenticated admin requests to ensure that only allowed users can access an endpoint.",
+      },
+      {
+        title: "Create Services",
+        path: "/development/services/create-service",
+        descriptionJSX: (
+          <>
+            For every entity you create, such as the <code>Role</code> and{" "}
+            <code>Permission</code> entities, you must create a service that
+            provides create, read, update, and delete (CRUD) functionalities at
+            the very least.
+            <br />
+            If you also extended entities, such as the <code>User</code> entity,
+            you may need to{" "}
+            <Link to="/development/services/extend-service">
+              extend its core service
+            </Link>{" "}
+            <code>UserService</code> as well to perform custom functionalities
+            related to your implementation.
+          </>
+        ),
+      },
+      {
+        title: "Create Endpoints",
+        path: "/development/endpoints/create",
+        descriptionJSX: (
+          <>
+            To manage the roles and permissions, you’ll need to create custom
+            endpoints, typically for Create, Read, Update, and Delete (CRUD)
+            operations.
+            <br />
+            After creating the endpoints, you may test adding roles and
+            permissions, and how they provide different access for different
+            roles and users.
+          </>
+        ),
+      },
+    ],
+    finish: {
+      type: "rating",
+      step: {
+        title: "Congratulations on implementing RBAC!",
+        description: "Please rate your experience using this recipe.",
+        eventName: "rating_path_rbac",
+      },
+    },
+  },
+  // TODO: Eventually remove these learning paths
   {
     name: "entity-and-api",
     label: "Create Entity and Expose it with Endpoints",
