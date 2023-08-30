@@ -36,27 +36,22 @@ const CreateReturnReasonModal = ({
     },
   })
   const notification = useNotification()
-  const { mutate, isLoading } = useAdminCreateReturnReason()
+  const { mutateAsync, isLoading } = useAdminCreateReturnReason()
 
-  const onCreate = (data: CreateReturnReasonFormData) => {
-    mutate(
-      {
+  const onCreate = async (data: CreateReturnReasonFormData) => {
+    try {
+      await mutateAsync({
         ...data,
         description: data.description || undefined,
-      },
-      {
-        onSuccess: () => {
-          notification("Success", "Created a new return reason", "success")
-        },
-        onError: () => {
-          notification(
-            "Error",
-            "Cant create a Return reason with an existing code",
-            "error"
-          )
-        },
-      }
-    )
+      })
+      notification("Success", "Created a new return reason", "success")
+    } catch {
+      notification(
+        "Error",
+        "Cannot create a return reason with an existing value",
+        "error"
+      )
+    }
     handleClose()
   }
 

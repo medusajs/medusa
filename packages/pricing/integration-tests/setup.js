@@ -1,3 +1,3 @@
-import { afterAllHookDropDatabase } from "@medusajs/utils"
+import { JestUtils } from "medusa-test-utils"
 
-afterAllHookDropDatabase()
+JestUtils.afterAllHookDropDatabase()
