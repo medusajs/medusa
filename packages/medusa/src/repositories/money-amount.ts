@@ -203,7 +203,8 @@ export const MoneyAmountRepository = dataSource
         .andWhere("ma.price_list_id IS NULL")
         .getOne()
 
-      const created = !!moneyAmount
+      const created = !moneyAmount
+
       if (!moneyAmount) {
         moneyAmount = this.create({
           ...price,
@@ -222,7 +223,7 @@ export const MoneyAmountRepository = dataSource
           .into("money_amount_variant")
           .values({
             variant_id: variantId,
-            money_amount_id: moneyAmount.id,
+            money_amount_id: createdAmount.id,
           })
           .execute()
       }

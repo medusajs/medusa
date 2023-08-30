@@ -758,13 +758,18 @@ class ProductVariantService extends TransactionBaseService {
         this.moneyAmountRepository_
       )
 
-      let moneyAmount = await moneyAmountRepo.findOne({
-        where: {
-          variant: { id: variantId },
-          region_id: price.region_id,
-          price_list_id: IsNull(),
-        },
-      })
+      let moneyAmount = await moneyAmountRepo
+        .createQueryBuilder()
+        .leftJoinAndSelect(
+          "money_amount_variant",
+          "mav",
+          "mav.money_amount_id = ma.id"
+        )
+        .where("mav.variant_id = :variantId", { variantId })
+        .where("ma.region_id = :region_id", { region_id: price.region_id })
+        .getOne()
+
+      const created = !moneyAmount
 
       if (!moneyAmount) {
         moneyAmount = moneyAmountRepo.create({
@@ -775,7 +780,21 @@ class ProductVariantService extends TransactionBaseService {
         moneyAmount.amount = price.amount
       }
 
-      return await moneyAmountRepo.save(moneyAmount)
+      const createdAmount = await moneyAmountRepo.save(moneyAmount)
+
+      if (created) {
+        await moneyAmountRepo
+          .createQueryBuilder()
+          .insert()
+          .into("money_amount_variant")
+          .values({
+            variant_id: variantId,
+            money_amount_id: createdAmount.id,
+          })
+          .execute()
+      }
+
+      return createdAmount
     })
   }
 
