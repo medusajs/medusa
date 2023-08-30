@@ -33,6 +33,7 @@ export async function mikroOrmCreateConnection(
     tsNode: process.env.APP_ENV === "development",
     type: "postgresql",
     migrations: {
+      // TODO: This path should come from the calling package
       path: __dirname + "/../migrations",
     },
   })
