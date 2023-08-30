@@ -266,7 +266,8 @@ export const MoneyAmountRepository = dataSource
     ): Promise<[MoneyAmount[], number]> {
       const qb = this.createQueryBuilder("ma")
         .leftJoinAndSelect("ma.price_list", "price_list")
-        .where("ma.variant_id = :variant_id", { variant_id })
+        .leftJoin("money_amount_variant", "mav", "mav.money_amount_id = ma.id")
+        .where("mav.variant_id = :variant_id", { variant_id })
 
       const getAndWhere = (subQb): WhereExpressionBuilder => {
         const andWhere = subQb.where("ma.price_list_id = :price_list_id", {

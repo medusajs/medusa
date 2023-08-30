@@ -47,7 +47,7 @@ describe("/store/carts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -144,13 +144,16 @@ describe("/store/carts", () => {
       await dbConnection.manager.save(priceList1)
 
       const ma_sale_1 = dbConnection.manager.create(MoneyAmount, {
-        variant_id: prodSale.variants[0].id,
         currency_code: "usd",
         amount: 800,
         price_list_id: "pl_current",
       })
 
       await dbConnection.manager.save(ma_sale_1)
+
+      await dbConnection.query(
+        `INSERT INTO money_amount_variant(variant_id, money_amount_id) VALUES ('${prodSale.variants[0].id}', '${ma_sale_1.id}')`
+      )
 
       const api = useApi()
 
@@ -227,13 +230,8 @@ describe("/store/carts", () => {
 
   describe("POST /store/carts/:id/line-items", () => {
     beforeEach(async () => {
-      try {
-        await cartSeeder(dbConnection)
-        await swapSeeder(dbConnection)
-      } catch (err) {
-        console.log("failed seeding")
-        console.log(err)
-      }
+      await cartSeeder(dbConnection)
+      await swapSeeder(dbConnection)
     })
 
     afterEach(async () => {

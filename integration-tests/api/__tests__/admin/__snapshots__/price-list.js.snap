@@ -21,7 +21,6 @@ Object {
       "price_list_id": "pl_no_customer_groups",
       "region_id": null,
       "updated_at": Any<String>,
-      "variant_id": "test-variant",
     },
     Object {
       "amount": 80,
@@ -34,7 +33,6 @@ Object {
       "price_list_id": "pl_no_customer_groups",
       "region_id": null,
       "updated_at": Any<String>,
-      "variant_id": "test-variant",
     },
     Object {
       "amount": 50,
@@ -47,7 +45,6 @@ Object {
       "price_list_id": "pl_no_customer_groups",
       "region_id": null,
       "updated_at": Any<String>,
-      "variant_id": "test-variant",
     },
   ],
   "starts_at": "2022-07-01T00:00:00.000Z",
@@ -87,7 +84,6 @@ Object {
       "price_list_id": "pl_no_customer_groups",
       "region_id": null,
       "updated_at": Any<String>,
-      "variant_id": "test-variant",
     },
     Object {
       "amount": 80,
@@ -100,7 +96,6 @@ Object {
       "price_list_id": "pl_no_customer_groups",
       "region_id": null,
       "updated_at": Any<String>,
-      "variant_id": "test-variant",
     },
     Object {
       "amount": 50,
@@ -113,7 +108,6 @@ Object {
       "price_list_id": "pl_no_customer_groups",
       "region_id": null,
       "updated_at": Any<String>,
-      "variant_id": "test-variant",
     },
     Object {
       "amount": 85,
@@ -126,7 +120,6 @@ Object {
       "price_list_id": "pl_no_customer_groups",
       "region_id": null,
       "updated_at": Any<String>,
-      "variant_id": "test-variant_1",
     },
     Object {
       "amount": 10,
@@ -139,7 +132,6 @@ Object {
       "price_list_id": "pl_no_customer_groups",
       "region_id": null,
       "updated_at": Any<String>,
-      "variant_id": "test-variant",
     },
   ],
   "starts_at": "2022-09-01T00:00:00.000Z",
@@ -161,7 +153,6 @@ Object {
   "price_list_id": "pl_no_customer_groups",
   "region_id": null,
   "updated_at": Any<String>,
-  "variant_id": "test-variant",
 }
 `;
 
@@ -178,7 +169,6 @@ Array [
     "price_list_id": "pl_no_customer_groups",
     "region_id": null,
     "updated_at": Any<String>,
-    "variant_id": "test-variant",
   },
   Object {
     "amount": 35,
@@ -191,7 +181,6 @@ Array [
     "price_list_id": "pl_no_customer_groups",
     "region_id": null,
     "updated_at": Any<String>,
-    "variant_id": "test-variant",
   },
   Object {
     "amount": 25,
@@ -204,7 +193,6 @@ Array [
     "price_list_id": "pl_no_customer_groups",
     "region_id": null,
     "updated_at": Any<String>,
-    "variant_id": "test-variant",
   },
 ]
 `;
@@ -222,7 +210,6 @@ Array [
     "price_list_id": "pl_no_customer_groups",
     "region_id": null,
     "updated_at": Any<String>,
-    "variant_id": "test-variant",
   },
   Object {
     "amount": 80,
@@ -235,7 +222,6 @@ Array [
     "price_list_id": "pl_no_customer_groups",
     "region_id": null,
     "updated_at": Any<String>,
-    "variant_id": "test-variant",
   },
   Object {
     "amount": 50,
@@ -248,7 +234,6 @@ Array [
     "price_list_id": "pl_no_customer_groups",
     "region_id": null,
     "updated_at": Any<String>,
-    "variant_id": "test-variant",
   },
   Object {
     "amount": 45,
@@ -261,7 +246,6 @@ Array [
     "price_list_id": "pl_no_customer_groups",
     "region_id": null,
     "updated_at": Any<String>,
-    "variant_id": "test-variant",
   },
   Object {
     "amount": 35,
@@ -274,7 +258,6 @@ Array [
     "price_list_id": "pl_no_customer_groups",
     "region_id": null,
     "updated_at": Any<String>,
-    "variant_id": "test-variant",
   },
   Object {
     "amount": 25,
@@ -287,8 +270,6 @@ Array [
     "price_list_id": "pl_no_customer_groups",
     "region_id": null,
     "updated_at": Any<String>,
-    "variant_id": "test-variant",
   },
 ]
 `;
-

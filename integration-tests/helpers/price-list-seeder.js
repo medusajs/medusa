@@ -28,7 +28,6 @@ module.exports = async (dataSource, data = {}) => {
     currency_code: "usd",
     min_quantity: 1,
     max_quantity: 100,
-    variant: { id: "test-variant" },
     price_list_id: "pl_no_customer_groups",
   })
 
@@ -40,7 +39,6 @@ module.exports = async (dataSource, data = {}) => {
     currency_code: "usd",
     min_quantity: 101,
     max_quantity: 500,
-    variant: { id: "test-variant" },
     price_list_id: "pl_no_customer_groups",
   })
 
@@ -52,7 +50,6 @@ module.exports = async (dataSource, data = {}) => {
     currency_code: "usd",
     min_quantity: 501,
     max_quantity: 1000,
-    variant: { id: "test-variant" },
     price_list_id: "pl_no_customer_groups",
   })
 
@@ -62,10 +59,18 @@ module.exports = async (dataSource, data = {}) => {
     id: "ma_test_4",
     amount: 70,
     currency_code: "usd",
-    variant: { id: "test-variant" },
   })
 
   await manager.save(moneyAmount4)
+
+  await manager.query(
+    `INSERT INTO "money_amount_variant"(money_amount_id, variant_id) VALUES 
+    ('ma_test_1', 'test-variant'), 
+    ('ma_test_2', 'test-variant'), 
+    ('ma_test_3', 'test-variant'), 
+    ('ma_test_4', 'test-variant');
+    `
+  )
 
   const priceListWithMA = await manager.create(PriceList, {
     id: "pl_with_some_ma",
