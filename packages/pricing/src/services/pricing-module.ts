@@ -3,7 +3,7 @@ import {
   DAL,
   FindConfig,
   InternalModuleDeclaration,
-  JoinerServiceConfig,
+  ModuleJoinerConfig,
   PricingTypes,
 } from "@medusajs/types"
 import { Currency, MoneyAmount } from "@models"
@@ -46,7 +46,7 @@ export default class PricingModuleService<
     this.moneyAmountService_ = moneyAmountService
   }
 
-  __joinerConfig(): JoinerServiceConfig {
+  __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
   }
 

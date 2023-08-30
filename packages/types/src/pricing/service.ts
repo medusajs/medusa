@@ -1,5 +1,5 @@
 import { FindConfig } from "../common"
-import { JoinerServiceConfig } from "../joiner"
+import { ModuleJoinerConfig } from "../modules-sdk"
 import { Context } from "../shared-context"
 import {
   CreateCurrencyDTO,
@@ -13,7 +13,7 @@ import {
 } from "./common"
 
 export interface IPricingModuleService {
-  __joinerConfig(): JoinerServiceConfig
+  __joinerConfig(): ModuleJoinerConfig
 
   retrieve(
     code: string,
