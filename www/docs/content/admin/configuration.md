@@ -21,13 +21,13 @@ The `build` command in the admin CLI allows you to manually build the admin dash
 }
 ```
 
-You can add the following options to the `medusa-admin build` command:
+You can add the following option to the `medusa-admin build` command:
 
 - `--deployment`: a boolean value indicating that the build should be ready for deployment. When this option is added, options are not loaded from `medusa-config.js` anymore, and it means the admin will be built to be hosted on an external host. This also means that the backend URL is loaded from the `MEDUSA_ADMIN_BACKEND_URL` environment variable. For example, `medusa-admin build --deployment`.
 
 ### Dev Command Options
 
-The `dev` command in the admin CLI allows you to run the admin dashboard in development separately from the Medusa backend. If you intend to use it, you should typically add it to the `package.json` of the Medusa backend:
+The `develop` command in the admin CLI allows you to run the admin dashboard in development separately from the Medusa backend. If you intend to use it, you should typically add it to the `package.json` of the Medusa backend:
 
 ```json title=package.json
 {
