@@ -29283,7 +29283,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest@npm:25.5.4, jest@npm:^25.5.2, jest@npm:^25.5.4":
+"jest@npm:25.5.4, jest@npm:^25.5.4":
   version: 25.5.4
   resolution: "jest@npm:25.5.4"
   dependencies:
