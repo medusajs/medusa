@@ -84,7 +84,7 @@ export const MoneyAmountRepository = dataSource
         .where("mav.variant_id = :variant_id", {
           variant_id: variantId,
         })
-        .where({
+        .andWhere({
           price_list_id: IsNull(),
         })
         .andWhere(
