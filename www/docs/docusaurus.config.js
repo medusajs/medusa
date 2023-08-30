@@ -216,8 +216,7 @@ const config = {
       {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl:
-            "https://github.com/medusajs/medusa/edit/develop/www/docs/content",
+          editUrl: "https://github.com/medusajs/medusa/edit/develop/www/docs",
           path: "content",
           routeBasePath: "/",
           remarkPlugins: [

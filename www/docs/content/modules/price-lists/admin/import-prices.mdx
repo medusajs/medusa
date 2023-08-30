@@ -39,6 +39,82 @@ Part of the process of importing prices is uploading a CSV file. This requires a
 
 You must have a CSV file that you will use to import prices into your Medusa backend. You can check [this CSV example file](https://medusa-doc-files.s3.amazonaws.com/price-list-import-template.csv) to see which format is required for your import.
 
+<details>
+<summary>
+Expected columns
+</summary>
+
+<table class="reference-table">
+<thead>
+<tr>
+<th>
+Column Name
+</th>
+<th>
+Description
+</th>
+<th>
+Is required?
+</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>
+Product Variant ID
+</td>
+<td>
+The ID of the product variant this price belongs to.
+</td>
+<td>
+Either this or the SKU column are required.
+</td>
+</tr>
+
+<tr>
+<td>
+SKU
+</td>
+<td>
+The SKU of the product variant this price belongs to.
+</td>
+<td>
+Either this or the Product Variant ID column are required.
+</td>
+</tr>
+
+<tr>
+<td>
+Price (region name)
+</td>
+<td>
+The price amount in a region, where (region name) is the name of the region.
+</td>
+<td>
+No
+</td>
+</tr>
+
+<tr>
+<td>
+Price (currency code)
+</td>
+<td>
+The price amount for a currency, where (currency code) is the 3 character iso code of the currency. For example, "Price USD".
+</td>
+<td>
+No
+</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</details>
+
 ### JS Client
 
 This guide includes code snippets to send requests to your Medusa backend using Medusa’s JS Client, among other methods.
