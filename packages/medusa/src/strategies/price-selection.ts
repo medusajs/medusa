@@ -265,7 +265,7 @@ class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
         if (
           isValidQuantity(ma, dataItem.quantity) &&
           (result.calculatedPrice === null ||
-            ma.amount < result.calculatedPrice!) &&
+            ma.amount < result.calculatedPrice) &&
           ((context.currency_code &&
             ma.currency_code === context.currency_code) ||
             (context.region_id && ma.region_id === context.region_id))

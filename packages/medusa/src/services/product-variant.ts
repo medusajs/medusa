@@ -550,7 +550,6 @@ class ProductVariantService extends TransactionBaseService {
         this.productVariantRepository_
       )
 
-      // TODO: make custom query
       const where = data.map((data_) => ({
         variant_id: data_.variantId,
         region_id: data_.price.region_id,
