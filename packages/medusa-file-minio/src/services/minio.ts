@@ -86,7 +86,7 @@ class MinioService extends AbstractFileService implements IFileService {
 
     const params = {
       Bucket: this.bucket_,
-      Key: `${file.fileKey}`,
+      Key: `${file.file_key}`,
     }
 
     await Promise.all([
