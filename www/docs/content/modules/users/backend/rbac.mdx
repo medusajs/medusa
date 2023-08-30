@@ -5,23 +5,18 @@ addHowToData: true
 import DocCardList from '@theme/DocCardList';
 import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
-import LearningPath from '@site/src/components/LearningPath';
 
-# Role-Based Access Control (RBAC) Recipe
+# Implement Role-Based Access Control (RBAC)
 
-This document guides you through the different documentation resources that will help you build a marketplace with Medusa.
+In this document, you'll get a high-level overview of how you can implement role-based access control (RBAC) in your Medusa backend.
 
 ## Overview
 
 Role-Based Access Control (RBAC) refers to the level of access a user has. Typically, in e-commerce, you may require RBAC if you want users to only be able to perform certain actions. 
 
-For example, you may want a content-manager user who can only access CMS functionalities and another manager user who can only access order functionalities. RBAC is also useful in [marketplace use cases](./marketplace.mdx).
+For example, you may want a content-manager user who can only access CMS functionalities and another manager user who can only access order functionalities. RBAC is also useful in [marketplace use cases](../../../recipes/marketplace.mdx).
 
-This recipe gives you a high-level approach to implementing RBAC in Medusa. The examples included in this recipe provide a simple implementation to give you an idea of how you can implement this functionality in your Medusa backend.
-
-You may also follow this path that takes you through the different documentation pages that will help you to implement RBAC in Medusa.
-
-<LearningPath pathName="rbac" />
+This guide gives you a high-level approach to implementing RBAC in Medusa. The examples included in this guide provide a simple implementation to give you an idea of how you can implement this functionality in your Medusa backend.
 
 ---
 
@@ -59,7 +54,7 @@ Example Implementation
 
 This is an example implementation of how you can create the Role and Permission entities, and extend the `User` and `Store` entities.
 
-Creating an entity requires creating an entity class, a repository, and a migration. You can learn more [here](../development/entities/create.mdx). You’ll be creating the migration at the end of this example section.
+Creating an entity requires creating an entity class, a repository, and a migration. You can learn more [here](../../../development/entities/create.mdx). You’ll be creating the migration at the end of this example section.
 
 Create the file `src/models/role.ts` with the following content:
 
@@ -275,7 +270,7 @@ This ensures that your TypeScript validation and editor autocomplete recognize t
 
 Finally, you need to create a migration to reflect these changes in the database.
 
-You can learn about creating migrations [here](../development/entities/migrations/create.md). An example of a migration file based on the entities created above:
+You can learn about creating migrations [here](../../../development/entities/migrations/create.md). An example of a migration file based on the entities created above:
 
 <!-- eslint-disable max-len -->
 
@@ -442,7 +437,7 @@ export default (rootDirectory: string): Router | Router[] => {
 }
 ```
 
-This assumes you already have a router with all necessary CORS configurations and body parsing middlewares. If not, you can refer to the [Create Endpoint documentation](../development/endpoints/create.mdx) for more details.
+This assumes you already have a router with all necessary CORS configurations and body parsing middlewares. If not, you can refer to the [Create Endpoint documentation](../../../development/endpoints/create.mdx) for more details.
 
 Make sure to use the permission middleware after all router configurations if you want the middleware to work on your custom admin routes.
 
@@ -802,4 +797,4 @@ Finally, login with the user you created, then try to access any endpoint other 
 
 ## Additional Development
 
-If your use case requires other changes or functionality implementations, check out the [Medusa Development section](../development/overview.mdx) of the documentation for all available development guides.
+If your use case requires other changes or functionality implementations, check out the [Medusa Development section](../../../development/overview.mdx) of the documentation for all available development guides.
