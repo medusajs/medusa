@@ -646,11 +646,6 @@ class ProductVariantService extends TransactionBaseService {
 
       const moneyAmounts = await moneyAmountRepo.findCurrencyMoneyAmounts(where)
 
-      // throw new MedusaError(
-      //   MedusaError.Types.INVALID_DATA,
-      //   JSON.stringify(moneyAmounts)
-      // )
-
       const moneyAmountsMapToVariantId = new Map()
       moneyAmounts.map((d) => {
         const moneyAmounts = moneyAmountsMapToVariantId.get(d.variant_id) ?? []
