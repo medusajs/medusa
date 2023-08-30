@@ -16,6 +16,7 @@ const {
   ShippingProfileType,
 } = require("@medusajs/medusa")
 const { simpleSalesChannelFactory } = require("../factories")
+const { ProductOption } = require("@medusajs/medusa")
 
 module.exports = async (dataSource, data = {}) => {
   const manager = dataSource.manager
@@ -34,14 +35,19 @@ module.exports = async (dataSource, data = {}) => {
     title: "test product",
     profile_id: defaultProfile.id,
     profiles: [{ id: defaultProfile.id }],
-    options: [{ id: "test-option", title: "Size" }],
   })
 
   await manager.query(
     `insert into product_sales_channel values ('test-product', '${salesChannel.id}');`
   )
 
-  await manager.insert(ProductVariant, {
+  await manager.save(ProductOption, {
+    id: "test-option",
+    title: "Size",
+    product_id: "test-product",
+  })
+
+  const variant = await manager.create(ProductVariant, {
     id: "test-variant",
     title: "test variant",
     product_id: "test-product",
@@ -52,9 +58,17 @@ module.exports = async (dataSource, data = {}) => {
         value: "Size",
       },
     ],
+    prices: [
+      {
+        currency_code: "usd",
+        amount: 8000,
+      },
+    ],
   })
 
-  await manager.insert(ProductVariant, {
+  await manager.save(variant)
+
+  const variant2 = await manager.create(ProductVariant, {
     id: "test-variant-2",
     title: "Swap product",
     product_id: "test-product",
@@ -65,21 +79,16 @@ module.exports = async (dataSource, data = {}) => {
         value: "Large",
       },
     ],
+    prices: [
+      {
+        variant_id: "test-variant-2",
+        currency_code: "usd",
+        amount: 8000,
+      },
+    ],
   })
 
-  const ma2 = manager.create(MoneyAmount, {
-    variant_id: "test-variant-2",
-    currency_code: "usd",
-    amount: 8000,
-  })
-  await manager.save(ma2)
-
-  const ma = manager.create(MoneyAmount, {
-    variant_id: "test-variant",
-    currency_code: "usd",
-    amount: 8000,
-  })
-  await manager.save(ma)
+  await manager.save(variant2)
 
   await manager.insert(Region, {
     id: "test-region",
