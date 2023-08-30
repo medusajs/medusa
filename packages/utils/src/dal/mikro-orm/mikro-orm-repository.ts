@@ -132,7 +132,7 @@ export abstract class MikroOrmAbstractTreeRepositoryBase<T = any>
 }
 
 /**
- * Priviliged extends of the abstract classes unless most of the methods can't be implemented
+ * Privileged extends of the abstract classes unless most of the methods can't be implemented
  * in your repository. This base repository is also used to provide a base repository
  * injection if needed to be able to use the common methods without being related to an entity.
  * In this case, none of the method will be implemented except the manager and transaction

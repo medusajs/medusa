@@ -605,7 +605,7 @@ class CartService extends TransactionBaseService {
    * @param cartId - the id of the cart that we will add to
    * @param lineItem - the line item to add.
    * @param config
-   *    validateSalesChannels - should check if product belongs to the same sales chanel as cart
+   *    validateSalesChannels - should check if product belongs to the same sales channel as cart
    *                            (if cart has associated sales channel)
    * @return the result of the update operation
    * @deprecated Use {@link addOrUpdateLineItems} instead.
@@ -746,7 +746,7 @@ class CartService extends TransactionBaseService {
    * @param cartId - the id of the cart that we will add to
    * @param lineItems - the line items to add.
    * @param config
-   *    validateSalesChannels - should check if product belongs to the same sales chanel as cart
+   *    validateSalesChannels - should check if product belongs to the same sales channel as cart
    *                            (if cart has associated sales channel)
    * @return the result of the update operation
    */
@@ -1985,7 +1985,7 @@ class CartService extends TransactionBaseService {
   /**
    * Removes a payment session from the cart.
    * @param cartId - the id of the cart to remove from
-   * @param providerId - the id of the provider whoose payment session
+   * @param providerId - the id of the provider whose payment session
    *    should be removed.
    * @return the resulting cart.
    */
@@ -2037,7 +2037,7 @@ class CartService extends TransactionBaseService {
   /**
    * Refreshes a payment session on a cart
    * @param cartId - the id of the cart to remove from
-   * @param providerId - the id of the provider whoose payment session
+   * @param providerId - the id of the provider whose payment session
    *    should be removed.
    * @return {Promise<void>} the resulting cart.
    */

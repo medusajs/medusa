@@ -94,7 +94,7 @@ const useEditProductActions = (productId: string) => {
   const onDeleteVariant = (
     variantId: string,
     onSuccess?: () => void,
-    successMessage = "Variant was succesfully deleted"
+    successMessage = "Variant was successfully deleted"
   ) => {
     deleteVariant.mutate(variantId, {
       onSuccess: () => {
