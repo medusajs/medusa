@@ -23,11 +23,7 @@ The `build` command in the admin CLI allows you to manually build the admin dash
 
 You can add the following options to the `medusa-admin build` command:
 
-- `--deployment`: a boolean value indicating that the build should be ready for deployment. When this option is added, options are not loaded from `medusa-config.js` anymore, and it means the admin will be built to be hosted on an external host. For example, `medusa-admin build --deployment`.
-- `--backend` or `-b`: a string specifying the URL of the Medusa backend. This can be useful with the `--deployment` option. The default here is the value of the environment variable `MEDUSA_ADMIN_BACKEND_URL`. For example, `medusa-admin build --deployment --backend example.com`
-- `--out-dir` or `-o`: a string specifying a custom path to output the build files to. By default, it will be the `build` directory. For example, `medusa-admin --deployment --out-dir public`.
-- `--include` or `-i`: a list of strings of paths to files you want to include in the build output. It can be useful if you want to inject files that are relevant to your external hosting, such as adding a `200.html` file that is needed for redirects on Surge. For example, `medusa-admin --deployment --include 200.html`
-- `--include-dist` or `-d`: a string specifying the path to copy the files specified in `--include` to. By default, the files are copied to the root of the build directory. You can use this option to change that. For example, `medusa-admin --deployment --include 200.html --include-dist static`.
+- `--deployment`: a boolean value indicating that the build should be ready for deployment. When this option is added, options are not loaded from `medusa-config.js` anymore, and it means the admin will be built to be hosted on an external host. This also means that the backend URL is loaded from the `MEDUSA_ADMIN_BACKEND_URL` environment variable. For example, `medusa-admin build --deployment`.
 
 ### Dev Command Options
 
@@ -37,7 +33,7 @@ The `dev` command in the admin CLI allows you to run the admin dashboard in deve
 {
   "scripts": {
     // other scripts...
-    "dev:admin": "medusa-admin dev"
+    "dev:admin": "medusa-admin develop"
   }
 }
 ```
