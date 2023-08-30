@@ -28,6 +28,7 @@ import {
 } from "./common"
 
 import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { ModuleJoinerConfig } from "../modules-sdk"
 import { Context } from "../shared-context"
 
@@ -241,13 +242,13 @@ export interface IProductModuleService {
 
   softDelete<TReturnableLinkableKeys extends string = string>(
     productIds: string[],
-    config?: { returnLinkableKeys?: TReturnableLinkableKeys[] },
+    config?: SoftDeleteReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 
   restore<TReturnableLinkableKeys extends string = string>(
     productIds: string[],
-    config?: { returnLinkableKeys?: TReturnableLinkableKeys[] },
+    config?: RestoreReturn<TReturnableLinkableKeys>,
     sharedContext?: Context
   ): Promise<Record<string, string[]> | void>
 }

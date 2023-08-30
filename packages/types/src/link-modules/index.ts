@@ -1,4 +1,5 @@
 import { FindConfig } from "../common"
+import { RestoreReturn, SoftDeleteReturn } from "../dal"
 import { ModuleJoinerConfig } from "../modules-sdk"
 import { Context } from "../shared-context"
 
@@ -36,13 +37,13 @@ export interface ILinkModule {
 
   softDelete(
     data: unknown | unknown[],
-    { returnLinkableKeys }?: { returnLinkableKeys?: string[] },
+    config?: SoftDeleteReturn,
     sharedContext?: Context
   ): Promise<Record<string, unknown[]> | void>
 
   restore(
     data: unknown | unknown[],
-    { returnLinkableKeys }?: { returnLinkableKeys?: string[] },
+    config?: RestoreReturn,
     sharedContext?: Context
   ): Promise<Record<string, unknown[]> | void>
 }

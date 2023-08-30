@@ -78,3 +78,11 @@ export interface TreeRepositoryService<T = any>
 
   delete(id: string, context?: Context): Promise<void>
 }
+
+export type SoftDeleteReturn<TReturnableLinkableKeys = string> = {
+  returnLinkableKeys?: TReturnableLinkableKeys[]
+}
+
+export type RestoreReturn<TReturnableLinkableKeys = string> = {
+  returnLinkableKeys?: TReturnableLinkableKeys[]
+}

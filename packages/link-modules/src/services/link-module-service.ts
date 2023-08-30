@@ -5,6 +5,8 @@ import {
   ILinkModule,
   InternalModuleDeclaration,
   ModuleJoinerConfig,
+  RestoreReturn,
+  SoftDeleteReturn,
 } from "@medusajs/types"
 import {
   InjectManager,
@@ -217,9 +219,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
 
   async softDelete(
     data: any,
-    { returnLinkableKeys }: { returnLinkableKeys?: string[] } = {
-      returnLinkableKeys: [],
-    },
+    { returnLinkableKeys }: SoftDeleteReturn = {},
     sharedContext: Context = {}
   ): Promise<Record<string, unknown[]> | void> {
     this.validateFields(data)
@@ -236,11 +236,13 @@ export default class LinkModuleService<TLink> implements ILinkModule {
 
     let mappedCascadedEntitiesMap
     if (returnLinkableKeys) {
+      // Map internal table/column names to their respective external linkable keys
+      // eg: product.id = product_id, variant.id = variant_id
       mappedCascadedEntitiesMap = mapObjectTo<Record<string, string[]>>(
         cascadedEntitiesMap,
         entityNameToLinkableKeysMap,
         {
-          pick: returnLinkableKeys as string[],
+          pick: returnLinkableKeys,
         }
       )
     }
@@ -258,9 +260,7 @@ export default class LinkModuleService<TLink> implements ILinkModule {
 
   async restore(
     data: any,
-    { returnLinkableKeys }: { returnLinkableKeys?: string[] } = {
-      returnLinkableKeys: [],
-    },
+    { returnLinkableKeys }: RestoreReturn = {},
     sharedContext: Context = {}
   ): Promise<Record<string, unknown[]> | void> {
     this.validateFields(data)
@@ -277,11 +277,13 @@ export default class LinkModuleService<TLink> implements ILinkModule {
 
     let mappedCascadedEntitiesMap
     if (returnLinkableKeys) {
+      // Map internal table/column names to their respective external linkable keys
+      // eg: product.id = product_id, variant.id = variant_id
       mappedCascadedEntitiesMap = mapObjectTo<Record<string, string[]>>(
         cascadedEntitiesMap,
         entityNameToLinkableKeysMap,
         {
-          pick: returnLinkableKeys as string[],
+          pick: returnLinkableKeys,
         }
       )
     }

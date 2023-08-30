@@ -7,6 +7,8 @@ import {
   InternalModuleDeclaration,
   ModuleJoinerConfig,
   ProductTypes,
+  RestoreReturn,
+  SoftDeleteReturn,
 } from "@medusajs/types"
 import {
   Image,
@@ -1071,11 +1073,7 @@ export default class ProductModuleService<
     >
   >(
     productIds: string[],
-    {
-      returnLinkableKeys,
-    }: { returnLinkableKeys?: TReturnableLinkableKeys[] } = {
-      returnLinkableKeys: [],
-    },
+    { returnLinkableKeys }: SoftDeleteReturn<TReturnableLinkableKeys> = {},
     sharedContext: Context = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const [products, cascadedEntitiesMap] = await this.softDelete_(
@@ -1098,10 +1096,12 @@ export default class ProductModuleService<
 
     let mappedCascadedEntitiesMap
     if (returnLinkableKeys) {
+      // Map internal table/column names to their respective external linkable keys
+      // eg: product.id = product_id, variant.id = variant_id
       mappedCascadedEntitiesMap = mapObjectTo<
         Record<Lowercase<keyof typeof LinkableKeys>, string[]>
       >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
-        pick: returnLinkableKeys as string[],
+        pick: returnLinkableKeys,
       })
     }
 
@@ -1122,11 +1122,7 @@ export default class ProductModuleService<
     >
   >(
     productIds: string[],
-    {
-      returnLinkableKeys,
-    }: { returnLinkableKeys?: TReturnableLinkableKeys[] } = {
-      returnLinkableKeys: [],
-    },
+    { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
     sharedContext: Context = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const [_, cascadedEntitiesMap] = await this.restore_(
@@ -1136,10 +1132,12 @@ export default class ProductModuleService<
 
     let mappedCascadedEntitiesMap
     if (returnLinkableKeys) {
+      // Map internal table/column names to their respective external linkable keys
+      // eg: product.id = product_id, variant.id = variant_id
       mappedCascadedEntitiesMap = mapObjectTo<
         Record<Lowercase<keyof typeof LinkableKeys>, string[]>
       >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
-        pick: returnLinkableKeys as string[],
+        pick: returnLinkableKeys,
       })
     }
 
