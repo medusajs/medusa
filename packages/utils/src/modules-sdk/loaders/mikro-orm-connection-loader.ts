@@ -51,7 +51,6 @@ export async function mikroOrmConnectionLoader({
   const shouldSwallowError = !!(
     options as ModulesSdkTypes.ModuleServiceInitializeOptions
   )?.database?.connection
-
   dbConfig = {
     ...loadDatabaseConfig(
       "product",
@@ -97,7 +96,7 @@ async function loadShared({ container, entities }) {
   )
   if (!sharedConnection) {
     throw new Error(
-      "The module is setup to use a shared resources but no shared connection is present. A new connection will be created"
+      "The module is setup to use a shared resources but no shared connection is present."
     )
   }
 

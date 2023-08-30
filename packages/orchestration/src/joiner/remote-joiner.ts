@@ -2,14 +2,27 @@ import {
   JoinerRelationship,
   JoinerServiceConfig,
   JoinerServiceConfigAlias,
+  ModuleJoinerConfig,
   RemoteExpandProperty,
   RemoteJoinerQuery,
   RemoteNestedExpands,
 } from "@medusajs/types"
+
 import { isDefined } from "@medusajs/utils"
 import GraphQLParser from "./graphql-ast"
 
 const BASE_PATH = "_root"
+
+export type RemoteFetchDataCallback = (
+  expand: RemoteExpandProperty,
+  keyField: string,
+  ids?: (unknown | unknown[])[],
+  relationship?: any
+) => Promise<{
+  data: unknown[] | { [path: string]: unknown }
+  path?: string
+}>
+
 export class RemoteJoiner {
   private serviceConfigCache: Map<string, JoinerServiceConfig> = new Map()
 
@@ -18,7 +31,7 @@ export class RemoteJoiner {
     fields: string[],
     expands?: RemoteNestedExpands
   ): Record<string, unknown> {
-    if (!fields) {
+    if (!fields || !data) {
       return data
     }
 
@@ -78,44 +91,29 @@ export class RemoteJoiner {
     }, {})
   }
 
-  static parseQuery(graphqlQuery: string, variables?: any): RemoteJoinerQuery {
+  static parseQuery(
+    graphqlQuery: string,
+    variables?: Record<string, unknown>
+  ): RemoteJoinerQuery {
     const parser = new GraphQLParser(graphqlQuery, variables)
     return parser.parseQuery()
   }
 
   constructor(
-    private serviceConfigs: JoinerServiceConfig[],
-    private remoteFetchData: (
-      expand: RemoteExpandProperty,
-      keyField: string,
-      ids?: (unknown | unknown[])[],
-      relationship?: any
-    ) => Promise<{
-      data: unknown[] | { [path: string]: unknown }
-      path?: string
-    }>
+    private serviceConfigs: ModuleJoinerConfig[],
+    private remoteFetchData: RemoteFetchDataCallback
   ) {
     this.serviceConfigs = this.buildReferences(serviceConfigs)
   }
 
-  public setFetchDataCallback(
-    remoteFetchData: (
-      expand: RemoteExpandProperty,
-      keyField: string,
-      ids?: (unknown | unknown[])[],
-      relationship?: any
-    ) => Promise<{
-      data: unknown[] | { [path: string]: unknown }
-      path?: string
-    }>
-  ): void {
+  public setFetchDataCallback(remoteFetchData: RemoteFetchDataCallback): void {
     this.remoteFetchData = remoteFetchData
   }
 
-  private buildReferences(serviceConfigs: JoinerServiceConfig[]) {
+  private buildReferences(serviceConfigs: ModuleJoinerConfig[]) {
     const expandedRelationships: Map<string, JoinerRelationship[]> = new Map()
     for (const service of serviceConfigs) {
-      if (this.serviceConfigCache.has(service.serviceName)) {
+      if (this.serviceConfigCache.has(service.serviceName!)) {
         throw new Error(`Service "${service.serviceName}" is already defined.`)
       }
 
@@ -124,37 +122,41 @@ export class RemoteJoiner {
       }
 
       // add aliases
-      if (!service.alias) {
-        service.alias = [{ name: service.serviceName.toLowerCase() }]
-      } else if (!Array.isArray(service.alias)) {
-        service.alias = [service.alias]
-      }
-
-      // self-reference
-      for (const alias of service.alias) {
-        if (this.serviceConfigCache.has(`alias_${alias.name}}`)) {
-          const defined = this.serviceConfigCache.get(`alias_${alias.name}}`)
-          throw new Error(
-            `Cannot add alias "${alias.name}" for "${service.serviceName}". It is already defined for Service "${defined?.serviceName}".`
-          )
+      const isReadOnlyDefinition =
+        service.serviceName === undefined || service.isReadOnlyLink
+      if (!isReadOnlyDefinition) {
+        if (!service.alias) {
+          service.alias = [{ name: service.serviceName!.toLowerCase() }]
+        } else if (!Array.isArray(service.alias)) {
+          service.alias = [service.alias]
         }
 
-        const args =
-          service.args || alias.args
-            ? { ...service.args, ...alias.args }
-            : undefined
+        // self-reference
+        for (const alias of service.alias) {
+          if (this.serviceConfigCache.has(`alias_${alias.name}}`)) {
+            const defined = this.serviceConfigCache.get(`alias_${alias.name}}`)
+            throw new Error(
+              `Cannot add alias "${alias.name}" for "${service.serviceName}". It is already defined for Service "${defined?.serviceName}".`
+            )
+          }
 
-        service.relationships?.push({
-          alias: alias.name,
-          foreignKey: alias.name + "_id",
-          primaryKey: "id",
-          serviceName: service.serviceName,
-          args,
-        })
-        this.cacheServiceConfig(serviceConfigs, undefined, alias.name)
+          const args =
+            service.args || alias.args
+              ? { ...service.args, ...alias.args }
+              : undefined
+
+          service.relationships?.push({
+            alias: alias.name,
+            foreignKey: alias.name + "_id",
+            primaryKey: "id",
+            serviceName: service.serviceName!,
+            args,
+          })
+          this.cacheServiceConfig(serviceConfigs, undefined, alias.name)
+        }
+
+        this.cacheServiceConfig(serviceConfigs, service.serviceName)
       }
-
-      this.cacheServiceConfig(serviceConfigs, service.serviceName)
 
       if (!service.extends) {
         continue
@@ -295,7 +297,7 @@ export class RemoteJoiner {
       Map<string, RemoteExpandProperty>,
       string,
       Set<string>
-    ][] = [[items, query, parsedExpands, "", new Set()]]
+    ][] = [[items, query, parsedExpands, BASE_PATH, new Set()]]
 
     while (stack.length > 0) {
       const [
@@ -307,9 +309,7 @@ export class RemoteJoiner {
       ] = stack.pop()!
 
       for (const [expandedPath, expand] of currentParsedExpands.entries()) {
-        const isImmediateChildPath =
-          expandedPath.startsWith(basePath) &&
-          expandedPath.split(".").length === basePath.split(".").length + 1
+        const isImmediateChildPath = basePath === expand.parent
 
         if (!isImmediateChildPath || resolvedPaths.has(expandedPath)) {
           continue
@@ -433,7 +433,8 @@ export class RemoteJoiner {
           item[relationship.alias] = item[field]
             .map((id) => {
               if (relationship.isList && !Array.isArray(relatedDataMap[id])) {
-                relatedDataMap[id] = [relatedDataMap[id]]
+                relatedDataMap[id] =
+                  relatedDataMap[id] !== undefined ? [relatedDataMap[id]] : []
               }
 
               return relatedDataMap[id]
@@ -441,7 +442,10 @@ export class RemoteJoiner {
             .filter((relatedItem) => relatedItem !== undefined)
         } else {
           if (relationship.isList && !Array.isArray(relatedDataMap[itemKey])) {
-            relatedDataMap[itemKey] = [relatedDataMap[itemKey]]
+            relatedDataMap[itemKey] =
+              relatedDataMap[itemKey] !== undefined
+                ? [relatedDataMap[itemKey]]
+                : []
           }
 
           item[relationship.alias] = relatedDataMap[itemKey]
@@ -539,13 +543,13 @@ export class RemoteJoiner {
             serviceConfig: currentServiceConfig,
             fields,
             args,
+            parent: [BASE_PATH, ...currentPath].join("."),
           })
         }
 
         currentPath.push(prop)
       }
     }
-
     return parsedExpands
   }
 
@@ -566,7 +570,7 @@ export class RemoteJoiner {
     for (const [path, expand] of sortedParsedExpands.entries()) {
       const currentServiceName = expand.serviceConfig.serviceName
 
-      let parentPath = path.split(".").slice(0, -1).join(".")
+      let parentPath = expand.parent
 
       // Check if the parentPath was merged before
       while (mergedPaths.has(parentPath)) {
@@ -580,6 +584,7 @@ export class RemoteJoiner {
 
         if (parentExpand.serviceConfig.serviceName === currentServiceName) {
           const nestedKeys = path.split(".").slice(parentPath.split(".").length)
+
           let targetExpand: any = parentExpand
 
           for (let key of nestedKeys) {
@@ -633,6 +638,7 @@ export class RemoteJoiner {
     const parsedExpands = this.parseExpands(
       {
         property: "",
+        parent: "",
         serviceConfig: serviceConfig,
         fields: queryObj.fields,
         args: otherArgs,
