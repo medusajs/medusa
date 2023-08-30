@@ -1186,13 +1186,11 @@ describe("/admin/order-edits", () => {
     it("creates line item that will be added to the order", async () => {
       const api = useApi()
 
-      const response = await api
-        .post(
-          `/admin/order-edits/${orderEditId}/items`,
-          { variant_id: toBeAddedVariantId, quantity: 2 },
-          adminHeaders
-        )
-        .catch(console.log)
+      const response = await api.post(
+        `/admin/order-edits/${orderEditId}/items`,
+        { variant_id: toBeAddedVariantId, quantity: 2 },
+        adminHeaders
+      )
 
       expect(response.status).toEqual(200)
       expect(response.data.order_edit).toEqual(
