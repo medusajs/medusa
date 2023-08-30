@@ -720,7 +720,7 @@ export default class NewTotalsService extends TransactionBaseService {
   }
 
   /**
-   * Calculate and return the shipping method totals legacy using teh tax rate
+   * Calculate and return the shipping method totals legacy using the tax rate
    * @param shippingMethod
    * @param calculationContext
    * @param taxRate

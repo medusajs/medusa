@@ -92,7 +92,7 @@ const EditDenominationsModal = ({
         onSuccess: () => {
           notification(
             "Denomination updated",
-            "A new denomination was succesfully updated",
+            "A new denomination was successfully updated",
             "success"
           )
           queryClient.invalidateQueries(adminProductKeys.all)

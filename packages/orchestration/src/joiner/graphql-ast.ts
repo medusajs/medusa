@@ -1,6 +1,7 @@
 import { RemoteJoinerQuery } from "@medusajs/types"
 import {
   ArgumentNode,
+  DirectiveNode,
   DocumentNode,
   FieldNode,
   Kind,
@@ -15,18 +16,24 @@ interface Argument {
   value?: unknown
 }
 
+interface Directive {
+  name: string
+  args?: Argument[]
+}
+
 interface Entity {
   property: string
   fields: string[]
   args?: Argument[]
+  directives?: { [field: string]: Directive[] }
 }
 
 class GraphQLParser {
   private ast: DocumentNode
 
-  constructor(input: string, private variables?: { [key: string]: unknown }) {
+  constructor(input: string, private variables: Record<string, unknown> = {}) {
     this.ast = parse(input)
-    this.variables = variables || {}
+    this.variables = variables
   }
 
   private parseValueNode(valueNode: ValueNode): unknown {
@@ -75,6 +82,33 @@ class GraphQLParser {
     })
   }
 
+  private parseDirectives(directives: readonly DirectiveNode[]): Directive[] {
+    return directives.map((directive) => ({
+      name: directive.name.value,
+      args: this.parseArguments(directive.arguments || []),
+    }))
+  }
+
+  private createDirectivesMap(selectionSet: SelectionSetNode):
+    | {
+        [field: string]: Directive[]
+      }
+    | undefined {
+    const directivesMap: { [field: string]: Directive[] } = {}
+    let hasDirectives = false
+    selectionSet.selections.forEach((field) => {
+      const fieldName = (field as FieldNode).name.value
+      const fieldDirectives = this.parseDirectives(
+        (field as FieldNode).directives || []
+      )
+      if (fieldDirectives.length > 0) {
+        hasDirectives = true
+        directivesMap[fieldName] = fieldDirectives
+      }
+    })
+    return hasDirectives ? directivesMap : undefined
+  }
+
   private extractEntities(
     node: SelectionSetNode,
     parentName = "",
@@ -98,7 +132,8 @@ class GraphQLParser {
           fields: fieldNode.selectionSet.selections.map(
             (field) => (field as FieldNode).name.value
           ),
-          args: this.parseArguments(fieldNode.arguments!),
+          args: this.parseArguments(fieldNode.arguments || []),
+          directives: this.createDirectivesMap(fieldNode.selectionSet),
         }
 
         entities.push(nestedEntity)
@@ -126,8 +161,8 @@ class GraphQLParser {
 
     const rootFieldNode = queryDefinition.selectionSet
       .selections[0] as FieldNode
-
     const propName = rootFieldNode.name.value
+
     const remoteJoinConfig: RemoteJoinerQuery = {
       alias: propName,
       fields: [],
@@ -142,7 +177,9 @@ class GraphQLParser {
       remoteJoinConfig.fields = rootFieldNode.selectionSet.selections.map(
         (field) => (field as FieldNode).name.value
       )
-
+      remoteJoinConfig.directives = this.createDirectivesMap(
+        rootFieldNode.selectionSet
+      )
       remoteJoinConfig.expands = this.extractEntities(
         rootFieldNode.selectionSet,
         propName,

@@ -10,6 +10,7 @@ export enum Modules {
   INVENTORY = "inventoryService",
   CACHE = "cacheService",
   PRODUCT = "productService",
+  PRICING = "pricingService",
 }
 
 export enum ModuleRegistrationName {
@@ -18,6 +19,7 @@ export enum ModuleRegistrationName {
   INVENTORY = "inventoryService",
   CACHE = "cacheService",
   PRODUCT = "productModuleService",
+  PRICING = "pricingModuleService",
 }
 
 export const MODULE_PACKAGE_NAMES = {
@@ -26,6 +28,7 @@ export const MODULE_PACKAGE_NAMES = {
   [Modules.STOCK_LOCATION]: "@medusajs/stock-location",
   [Modules.INVENTORY]: "@medusajs/inventory",
   [Modules.CACHE]: "@medusajs/cache-inmemory",
+  [Modules.PRICING]: "@medusajs/pricing",
 }
 
 export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
@@ -92,6 +95,20 @@ export const ModulesDefinition: { [key: string | Modules]: ModuleDefinition } =
       canOverride: true,
       isQueryable: true,
       dependencies: [ModuleRegistrationName.EVENT_BUS, "logger"],
+      defaultModuleDeclaration: {
+        scope: MODULE_SCOPE.INTERNAL,
+        resources: MODULE_RESOURCE_TYPE.SHARED,
+      },
+    },
+    [Modules.PRICING]: {
+      key: Modules.PRICING,
+      registrationName: ModuleRegistrationName.PRICING,
+      defaultPackage: false,
+      label: "PricingModuleService",
+      isRequired: false,
+      canOverride: true,
+      isQueryable: true,
+      dependencies: ["logger"],
       defaultModuleDeclaration: {
         scope: MODULE_SCOPE.INTERNAL,
         resources: MODULE_RESOURCE_TYPE.SHARED,

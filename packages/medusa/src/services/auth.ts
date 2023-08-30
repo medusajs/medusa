@@ -46,7 +46,7 @@ class AuthService extends TransactionBaseService {
    * @param {string} token - the api_token of the user to authenticate
    * @return {AuthenticateResult}
    *    success: whether authentication succeeded
-   *    user: the user document if authentication succeded
+   *    user: the user document if authentication succeeded
    *    error: a string with the error message
    */
   async authenticateAPIToken(token: string): Promise<AuthenticateResult> {
@@ -89,7 +89,7 @@ class AuthService extends TransactionBaseService {
    * @param {string} password - the password of the user
    * @return {AuthenticateResult}
    *    success: whether authentication succeeded
-   *    user: the user document if authentication succeded
+   *    user: the user document if authentication succeeded
    *    error: a string with the error message
    */
   async authenticate(
@@ -138,7 +138,7 @@ class AuthService extends TransactionBaseService {
    * @param {string} password - the password of the user
    * @return {{ success: (bool), customer: (object | undefined) }}
    *    success: whether authentication succeeded
-   *    user: the user document if authentication succeded
+   *    user: the user document if authentication succeeded
    *    error: a string with the error message
    */
   async authenticateCustomer(

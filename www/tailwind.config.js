@@ -534,7 +534,7 @@ module.exports = {
         "button-danger-pressed": "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.16) 100%)",
         "button-danger-pressed-dark": "linear-gradient(180deg, rgba(255, 255, 255, 0.00) 0%, rgba(255, 255, 255, 0.14) 100%)",
         "code-fade": "linear-gradient(90deg, #11182700, #111827 24px)",
-        "code-fade-dark": "linear-gradient(90deg, #1E1E1E00, #1E1E1E 24px)",
+        "code-fade-dark": "linear-gradient(90deg, #1B1B1F00, #1B1B1F 24px)",
         "fade": "linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0))",
         "fade-dark": "linear-gradient(to top, rgba(27, 27, 31, 1), rgba(27, 27, 31, 0))",
       },

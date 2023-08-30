@@ -20,9 +20,9 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: "16.10.0"
+          node-version: "16.20.2"
           cache: "yarn"
-          
+
       - name: Post to Slack channel
         id: slack
         uses: slackapi/slack-github-action@v1.23.0

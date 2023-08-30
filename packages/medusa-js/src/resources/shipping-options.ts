@@ -8,7 +8,7 @@ import BaseResource from "./base"
 
 class ShippingOptionsResource extends BaseResource {
   /**
-   * @description Lists shiping options available for a cart
+   * @description Lists shipping options available for a cart
    * @param {string} cart_id
    * @param customHeaders
    * @return {ResponsePromise<StoreShippingOptionsListRes>}
@@ -19,7 +19,7 @@ class ShippingOptionsResource extends BaseResource {
   }
 
   /**
-   * @description Lists shiping options available
+   * @description Lists shipping options available
    * @param {StoreGetShippingOptionsParams} query
    * @param customHeaders
    * @return {ResponsePromise<StoreShippingOptionsListRes>}
