@@ -1,17 +1,16 @@
+import { IPricingModuleService } from "@medusajs/types"
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
 import { Currency, MoneyAmount } from "@models"
-import { MoneyAmountRepository } from "@repositories"
-import { MoneyAmountService } from "@services"
 
+import { initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { createMoneyAmounts } from "../../../__fixtures__/money-amount"
-import { MikroOrmWrapper } from "../../../utils"
+import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
 jest.setTimeout(30000)
 
 describe("MoneyAmount Service", () => {
-  let service: MoneyAmountService
+  let service: IPricingModuleService
   let testManager: SqlEntityManager
   let repositoryManager: SqlEntityManager
   let data!: MoneyAmount[]
@@ -19,15 +18,16 @@ describe("MoneyAmount Service", () => {
 
   beforeEach(async () => {
     await MikroOrmWrapper.setupDatabase()
-    repositoryManager = await MikroOrmWrapper.forkManager()
+    repositoryManager = MikroOrmWrapper.forkManager()
 
-    const moneyAmountRepository = new MoneyAmountRepository({
-      manager: repositoryManager,
+    service = await initialize({
+      database: {
+        clientUrl: DB_URL,
+        schema: process.env.MEDUSA_PRICING_DB_SCHEMA,
+      },
     })
 
-    service = new MoneyAmountService({
-      moneyAmountRepository,
-    })
+    testManager = MikroOrmWrapper.forkManager()
 
     testManager = await MikroOrmWrapper.forkManager()
     currencyData = await createCurrencies(testManager)
@@ -279,7 +279,9 @@ describe("MoneyAmount Service", () => {
         },
       ])
 
-      const moneyAmount = await service.retrieve(id)
+      const moneyAmount = await service.retrieve(id, {
+        relations: ["currency"],
+      })
 
       expect(moneyAmount.currency_code).toEqual("EUR")
       expect(moneyAmount.currency?.code).toEqual("EUR")

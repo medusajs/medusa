@@ -14,14 +14,14 @@ export const entityNameToLinkableKeysMap: MapToConfig = {
 
 export const joinerConfig: JoinerServiceConfig = {
   serviceName: Modules.PRICING,
-  primaryKeys: ["code"],
+  primaryKeys: ["id", "code"],
   alias: [
-    // {
-    //   name: "money_amount",
-    // },
-    // {
-    //   name: "money_amounts",
-    // },
+    {
+      name: "money_amount",
+    },
+    {
+      name: "money_amounts",
+    },
     {
       name: "currency",
       args: {
