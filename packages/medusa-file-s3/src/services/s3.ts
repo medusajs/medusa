@@ -1,5 +1,11 @@
 import fs from "fs"
-import type { S3ClientConfigType, PutObjectCommandInput, GetObjectCommandOutput } from "@aws-sdk/client-s3"
+import type { 
+   S3ClientConfigType, 
+   PutObjectCommandInput, 
+   DeleteObjectCommandInput, 
+   GetObjectCommandInput, 
+   GetObjectCommandOutput 
+} from "@aws-sdk/client-s3"
 import { Upload } from "@aws-sdk/lib-storage"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner"
 import { 
@@ -21,6 +27,7 @@ import stream from "stream"
 
 class S3Service extends AbstractFileService implements IFileService {
   protected bucket_: string
+  protected prefix_: string
   protected s3Url_: string
   protected accessKeyId_: string
   protected secretAccessKey_: string
@@ -35,6 +42,7 @@ class S3Service extends AbstractFileService implements IFileService {
     super({}, options)
 
     this.bucket_ = options.bucket
+    this.prefix_ = options.prefix || ''
     this.s3Url_ = options.s3_url
     this.accessKeyId_ = options.access_key_id
     this.secretAccessKey_ = options.secret_access_key
@@ -47,7 +55,7 @@ class S3Service extends AbstractFileService implements IFileService {
   }
 
   protected getClient(overwriteConfig: Partial<S3ClientConfigType> = {}) {
-    const config: S3ClientConfigType = {
+    const config = {
       credentials: {
          accessKeyId: this.accessKeyId_,
          secretAccessKey: this.secretAccessKey_,
@@ -56,7 +64,7 @@ class S3Service extends AbstractFileService implements IFileService {
       ...this.awsConfigObject_,
       signatureVersion: 'v4',
       ...overwriteConfig,
-    }
+    } satisfies S3ClientConfigType
 
     return new S3Client(config)
   }
@@ -79,7 +87,7 @@ class S3Service extends AbstractFileService implements IFileService {
 
     const parsedFilename = parse(file.originalname)
 
-    const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
+    const fileKey = `${this.prefix_}${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
 
     const command = new PutObjectCommand({
       ACL: options.acl ?? (options.isProtected ? "private" : "public-read"),
@@ -88,7 +96,7 @@ class S3Service extends AbstractFileService implements IFileService {
       Key: fileKey,
       ContentType: file.mimetype,
       CacheControl: this.cacheControl_
-    })
+    } satisfies PutObjectCommandInput)
 
     try {
       await this.client_.send(command)
@@ -106,7 +114,7 @@ class S3Service extends AbstractFileService implements IFileService {
    const command = new DeleteObjectCommand({
       Bucket: this.bucket_,
       Key: `${file.file_key}`,
-    })
+    } satisfies DeleteObjectCommandInput)
 
     try {
       await this.client_.send(command)
@@ -120,14 +128,14 @@ class S3Service extends AbstractFileService implements IFileService {
 
     const isPrivate = fileData.isPrivate ?? true // default to private
 
-    const fileKey = `${fileData.name}.${fileData.ext}`
-    const params: PutObjectCommandInput = {
+    const fileKey = `${this.prefix_}${fileData.name}.${fileData.ext}`
+    const params = {
       ACL: isPrivate ? "private" : "public-read",
       Bucket: this.bucket_,
       Body: pass,
       Key: fileKey,
       ContentType: fileData.contentType as string,
-    }
+    } satisfies PutObjectCommandInput
 
     const uploadJob = new Upload({
       client: this.client_,
@@ -148,7 +156,7 @@ class S3Service extends AbstractFileService implements IFileService {
     const command = new GetObjectCommand({
       Bucket: this.bucket_,
       Key: `${fileData.fileKey}`,
-    })
+    } satisfies GetObjectCommandInput)
 
     const response: GetObjectCommandOutput = await this.client_.send(command)
 
@@ -161,7 +169,7 @@ class S3Service extends AbstractFileService implements IFileService {
     const command = new GetObjectCommand({
       Bucket: this.bucket_,
       Key: `${fileData.fileKey}`,
-    })
+    } satisfies GetObjectCommandInput)
 
     return await getSignedUrl(this.client_, command, { expiresIn: this.downloadFileDuration_ })
   }
