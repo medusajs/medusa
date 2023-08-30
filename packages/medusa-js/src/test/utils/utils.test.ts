@@ -1,4 +1,4 @@
-import { stringifyNullProperties } from "../../src/utils"
+const { stringifyNullProperties } = require("../../utils")
 
 describe("stringifyNullProperties", () => {
   test("returns empty object on no props", () => {

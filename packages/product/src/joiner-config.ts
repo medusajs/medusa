@@ -1,5 +1,6 @@
 import { Modules } from "@medusajs/modules-sdk"
-import { JoinerServiceConfig } from "@medusajs/types"
+import { ModuleJoinerConfig } from "@medusajs/types"
+import { MapToConfig } from "@medusajs/utils"
 import {
   Product,
   ProductCategory,
@@ -10,10 +11,9 @@ import {
   ProductVariant,
 } from "@models"
 import ProductImage from "./models/product-image"
-import { MapToConfig } from "@medusajs/utils"
 
 export enum LinkableKeys {
-  PRODUCT_ID = "product_id",
+  PRODUCT_ID = "product_id", // Main service ID must the first
   PRODUCT_HANDLE = "product_handle",
   VARIANT_ID = "variant_id",
   VARIANT_SKU = "variant_sku",
@@ -55,9 +55,10 @@ export const entityNameToLinkableKeysMap: MapToConfig = {
   ],
 }
 
-export const joinerConfig: JoinerServiceConfig = {
+export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.PRODUCT,
   primaryKeys: ["id", "handle"],
+  linkableKeys: Object.values(LinkableKeys),
   alias: [
     {
       name: "product",
