@@ -42,7 +42,7 @@ Change the `start` script in `package.json` to the following:
 "start": "npm run build && medusa migrations run && medusa start"
 ```
 
-This ensures that Migrations are run everytime the Medusa backend is restarted.
+This ensures that Migrations are run every time the Medusa backend is restarted.
 
 ---
 

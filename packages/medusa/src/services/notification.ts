@@ -211,7 +211,7 @@ class NotificationService extends TransactionBaseService {
    * method. Persists the Notification in the database.
    * @param event - the name of the event
    * @param eventData - the data the event was sent with
-   * @param providerId - the provider that should hande the event.
+   * @param providerId - the provider that should handle the event.
    * @return the created notification
    */
   async send(
