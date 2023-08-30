@@ -189,15 +189,21 @@ export const MoneyAmountRepository = dataSource
       variantId: string,
       price: Price
     ): Promise<MoneyAmount> {
-      let moneyAmount = await this.findOne({
-        where: {
-          currency_code: price.currency_code,
-          variant: { id: variantId },
-          region_id: IsNull(),
-          price_list_id: IsNull(),
-        },
-      })
+      let moneyAmount = await this.createQueryBuilder()
+        .leftJoinAndSelect(
+          "money_amount_variant",
+          "mav",
+          "mav.money_amount_id = ma.id"
+        )
+        .where("mav.variant_id = :variantId", { variantId })
+        .andWhere("ma.currency_code = :currencyCode", {
+          currencyCode: price.currency_code,
+        })
+        .andWhere("ma.region_id IS NULL")
+        .andWhere("ma.price_list_id IS NULL")
+        .getOne()
 
+      const created = !!moneyAmount
       if (!moneyAmount) {
         moneyAmount = this.create({
           ...price,
@@ -208,7 +214,20 @@ export const MoneyAmountRepository = dataSource
         moneyAmount.amount = price.amount
       }
 
-      return await this.save(moneyAmount)
+      const createdAmount = await this.save(moneyAmount)
+
+      if (created) {
+        await this.createQueryBuilder()
+          .insert()
+          .into("money_amount_variant")
+          .values({
+            variant_id: variantId,
+            money_amount_id: moneyAmount.id,
+          })
+          .execute()
+      }
+
+      return createdAmount
     },
 
     async addPriceListPrices(
