@@ -1,12 +1,15 @@
 import {
-  ProductCategoryService,
-  ProductCollectionService,
-  ProductOptionService,
-  ProductService,
-  ProductTagService,
-  ProductTypeService,
-  ProductVariantService,
-} from "@services"
+  Context,
+  CreateProductOnlyDTO,
+  DAL,
+  FindConfig,
+  IEventBusModuleService,
+  InternalModuleDeclaration,
+  ModuleJoinerConfig,
+  ProductTypes,
+  RestoreReturn,
+  SoftDeleteReturn,
+} from "@medusajs/types"
 import {
   Image,
   Product,
@@ -18,15 +21,14 @@ import {
   ProductVariant,
 } from "@models"
 import {
-  Context,
-  CreateProductOnlyDTO,
-  DAL,
-  FindConfig,
-  IEventBusModuleService,
-  InternalModuleDeclaration,
-  JoinerServiceConfig,
-  ProductTypes,
-} from "@medusajs/types"
+  ProductCategoryService,
+  ProductCollectionService,
+  ProductOptionService,
+  ProductService,
+  ProductTagService,
+  ProductTypeService,
+  ProductVariantService,
+} from "@services"
 
 import ProductImageService from "./product-image"
 
@@ -136,7 +138,7 @@ export default class ProductModuleService<
     this.eventBusModuleService_ = eventBusModuleService
   }
 
-  __joinerConfig(): JoinerServiceConfig {
+  __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
   }
 
@@ -1071,11 +1073,7 @@ export default class ProductModuleService<
     >
   >(
     productIds: string[],
-    {
-      returnLinkableKeys,
-    }: { returnLinkableKeys?: TReturnableLinkableKeys[] } = {
-      returnLinkableKeys: [],
-    },
+    { returnLinkableKeys }: SoftDeleteReturn<TReturnableLinkableKeys> = {},
     sharedContext: Context = {}
   ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
     const [products, cascadedEntitiesMap] = await this.softDelete_(
@@ -1098,10 +1096,12 @@ export default class ProductModuleService<
 
     let mappedCascadedEntitiesMap
     if (returnLinkableKeys) {
+      // Map internal table/column names to their respective external linkable keys
+      // eg: product.id = product_id, variant.id = variant_id
       mappedCascadedEntitiesMap = mapObjectTo<
         Record<Lowercase<keyof typeof LinkableKeys>, string[]>
       >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
-        pick: returnLinkableKeys as string[],
+        pick: returnLinkableKeys,
       })
     }
 
@@ -1116,22 +1116,39 @@ export default class ProductModuleService<
     return await this.productService_.softDelete(productIds, sharedContext)
   }
 
-  async restore(
+  async restore<
+    TReturnableLinkableKeys extends string = Lowercase<
+      keyof typeof LinkableKeys
+    >
+  >(
     productIds: string[],
+    { returnLinkableKeys }: RestoreReturn<TReturnableLinkableKeys> = {},
     sharedContext: Context = {}
-  ): Promise<ProductTypes.ProductDTO[]> {
-    const products = await this.restore_(productIds, sharedContext)
+  ): Promise<Record<Lowercase<keyof typeof LinkableKeys>, string[]> | void> {
+    const [_, cascadedEntitiesMap] = await this.restore_(
+      productIds,
+      sharedContext
+    )
 
-    return this.baseRepository_.serialize<ProductTypes.ProductDTO[]>(products, {
-      populate: true,
-    })
+    let mappedCascadedEntitiesMap
+    if (returnLinkableKeys) {
+      // Map internal table/column names to their respective external linkable keys
+      // eg: product.id = product_id, variant.id = variant_id
+      mappedCascadedEntitiesMap = mapObjectTo<
+        Record<Lowercase<keyof typeof LinkableKeys>, string[]>
+      >(cascadedEntitiesMap, entityNameToLinkableKeysMap, {
+        pick: returnLinkableKeys,
+      })
+    }
+
+    return mappedCascadedEntitiesMap ? mappedCascadedEntitiesMap : void 0
   }
 
   @InjectTransactionManager(shouldForceTransaction, "baseRepository_")
   async restore_(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TProduct[]> {
+  ): Promise<[TProduct[], Record<string, unknown[]>]> {
     return await this.productService_.restore(productIds, sharedContext)
   }
 }

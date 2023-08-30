@@ -11,8 +11,8 @@ import {
   IInventoryService,
   InventoryItemDTO,
   InventoryLevelDTO,
-  JoinerServiceConfig,
   MODULE_RESOURCE_TYPE,
+  ModuleJoinerConfig,
   ReservationItemDTO,
   SharedContext,
   UpdateInventoryLevelInput,
@@ -59,7 +59,7 @@ export default class InventoryService implements IInventoryService {
     this.reservationItemService_ = reservationItemService
   }
 
-  __joinerConfig(): JoinerServiceConfig {
+  __joinerConfig(): ModuleJoinerConfig {
     return joinerConfig
   }
 
