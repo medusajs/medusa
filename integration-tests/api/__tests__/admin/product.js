@@ -2162,18 +2162,13 @@ describe("/admin/products", () => {
 
   describe("testing for soft-deletion + uniqueness on handles, collection and variant properties", () => {
     beforeEach(async () => {
-      try {
-        await productSeeder(dbConnection)
-        await adminSeeder(dbConnection)
-        await simpleSalesChannelFactory(dbConnection, {
-          name: "Default channel",
-          id: "default-channel",
-          is_default: true,
-        })
-      } catch (err) {
-        console.log("failed seeding")
-        console.log(err)
-      }
+      await productSeeder(dbConnection)
+      await adminSeeder(dbConnection)
+      await simpleSalesChannelFactory(dbConnection, {
+        name: "Default channel",
+        id: "default-channel",
+        is_default: true,
+      })
     })
 
     afterEach(async () => {

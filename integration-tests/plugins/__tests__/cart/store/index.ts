@@ -125,7 +125,6 @@ describe("/store/carts", () => {
       await dbConnection.manager.save(priceList1)
 
       const ma_sale_1 = dbConnection.manager.create(MoneyAmount, {
-        variant_id: prodSale.variants[0].id,
         currency_code: "usd",
         amount: 800,
         price_list_id: "pl_current",
@@ -133,6 +132,11 @@ describe("/store/carts", () => {
 
       await dbConnection.manager.save(ma_sale_1)
 
+      await dbConnection.manager.query(
+        `INSERT INTO "money_amount_variant"(money_amount_id, variant_id) VALUES 
+        ('${ma_sale_1.id}', '${prodSale.variants[0].id}');
+        `
+      )
       const api = useApi()
 
       const response = await api

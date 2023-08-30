@@ -1183,7 +1183,7 @@ describe("/admin/order-edits", () => {
       return await db.teardown()
     })
 
-    it.only("creates line item that will be added to the order", async () => {
+    it("creates line item that will be added to the order", async () => {
       const api = useApi()
 
       const response = await api
