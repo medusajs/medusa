@@ -1,7 +1,7 @@
 import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
-import * as ProductModels from "@models"
-import { EntitySchema } from "@mikro-orm/core"
 import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
+import { EntitySchema } from "@mikro-orm/core"
+import * as ProductModels from "@models"
 
 /**
  * This script is only valid for mikro orm managers. If a user provide a custom manager
@@ -21,8 +21,13 @@ export async function runMigrations({
 
   const dbData = ModulesSdkUtils.loadDatabaseConfig("product", options)!
   const entities = Object.values(ProductModels) as unknown as EntitySchema[]
+  const pathToMigrations = __dirname + "/../migrations"
 
-  const orm = await DALUtils.mikroOrmCreateConnection(dbData, entities)
+  const orm = await DALUtils.mikroOrmCreateConnection(
+    dbData,
+    entities,
+    pathToMigrations
+  )
 
   try {
     const migrator = orm.getMigrator()

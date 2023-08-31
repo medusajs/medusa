@@ -1,11 +1,8 @@
-import { initialize } from "../../../../src"
-
 import { IPricingModuleService } from "@medusajs/types"
-
 import { SqlEntityManager } from "@mikro-orm/postgresql"
-
 import { Currency } from "@models"
 
+import { initialize } from "../../../../src"
 import { createCurrencies } from "../../../__fixtures__/currency"
 import { DB_URL, MikroOrmWrapper } from "../../../utils"
 
