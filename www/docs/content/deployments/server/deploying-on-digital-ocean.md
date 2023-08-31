@@ -13,7 +13,7 @@ DigitalOcean is a reliable hosting provider that provides different ways to host
 
 ### Medusa Backend
 
-It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../development/backend/install.mdx).
+It is assumed that you already have a Medusa backend installed locally. If you don’t, please follow the [quickstart guide](../../create-medusa-app.mdx).
 
 Furthermore, your Medusa backend should be configured to work with PostgreSQL and Redis. You can follow the [Configure your Backend documentation](../../development/backend/configurations.md) to learn how to do that.
 
@@ -48,7 +48,7 @@ This ensures that Migrations are run every time the Medusa backend is restarted.
 
 ## Changes to medusa-config.js
 
-In `medusa-config.js`, the `DATABASE_URL` variable is set to the environment variable `DATABASE_URL`. This needs to be changed as DigitalOcean provides the different details of the database connection separately.
+In `medusa-config.js`, add to `projectConfig` in the exported object a new property `database_extra`:
 
 Replace the previous declaration of `DATABASE_URL` in `medusa-config.js` with the following:
 
@@ -66,7 +66,7 @@ const DATABASE_URL =
 
 In addition, you must add to `projectConfig` in the exported object a new property `database_extra`:
 
-```js
+```js title=medusa-config.js
 module.exports = {
   projectConfig: {
     // ...
@@ -74,6 +74,31 @@ module.exports = {
   },
 }
 ```
+
+Also, if you're planning on using scheduled jobs, you need to set the `redis_url` configurations:
+
+```js title=medusa-config.js
+module.exports = {
+  projectConfig: {
+    // ...
+    redis_url: process.env.REDIS_URL,
+  },
+}
+```
+
+---
+
+## Changes to .gitignore
+
+Your `.gitignore` may have `yarn.lock` and `package-lock.json` in it. If so, remove both or one of them to ensure they're committed with your code. Otherwise, you may face build errors after deployment.
+
+---
+
+## (Optional) Use Production Modules
+
+If you're using development modules, such as the Local Event Bus or the In-Memory Cache Modules, it's highly recommended to use a production module instead.
+
+Medusa provides a [Redis Event Bus](../../development/events/modules/redis.md) and a [Redis Cache Module](../../development/cache/modules/redis.md) that you can install and configure. Alternatively, you can use custom modules that integrate other services for these functionalities.
 
 ---
 
@@ -96,17 +121,23 @@ Copy the link. Then, open your terminal in the directory that holds your Medusa 
 ```bash
 git init
 git remote add origin <GITHUB_URL>
+git branch -M <BRANCH>
 ```
 
-Where `<GITHUB_URL>` is the URL you just copied.
+Where:
+
+- `<GITHUB_URL>` is the URL you just copied.
+- `<BRANCH>` is the name of your default branch. Typically, it's either `main` or `master`. If you're unsure, you can find it on the repository's main page.
 
 Then, add, commit, and push the changes into the repository:
 
 ```bash
 git add .
 git commit -m "initial commit"
-git push
+git push origin <BRANCH>
 ```
+
+Where, `<BRANCH>` is the default repository branch.
 
 After pushing the changes, you can find the files in your GitHub repository.
 
@@ -114,7 +145,7 @@ After pushing the changes, you can find the files in your GitHub repository.
 
 ## Deploy to DigitalOcean App
 
-After logging into your account, click on the Create button at the top right, then choose App.
+After logging into your account, click on the Create button at the top right, then choose Apps.
 
 ### Choose Repository
 
@@ -134,13 +165,19 @@ Once you’re done, click Next to move on to the next step.
 
 In the next step, you’ll see the resources to create.
 
+:::note
+
 If you have a Dockerfile available in the backend’s codebase, you’ll have two resources showing. You can remove it by clicking on the trash icon at the right of the resource.
 
-By default, DigitalOcean hosts the web service in a sub-path of the domain name of the created App. To change it to the root of the domain, click on the edit icon at the right of the Web Service resource.
+:::
 
-Then, scroll to HTTP Request Routes and expand it by clicking on Edit at its right. Change the value of the Routes input to `/`.
+Click on the Edit button next to the Web Service, and ensure the following information is set correctly:
 
-Once you’re done click Save. You’ll be taken back to the Resources page.
+- Resource Type is set to Node.js
+- HTTP Port is set to 9000
+- HTTP Request Routes is set to `/`
+
+Once you've set up everything correctly, click the Back button at the end of the form.
 
 ### Specify Database Resources
 
@@ -170,6 +207,7 @@ REDIS_URL=${redis.DATABASE_URL}
 JWT_SECRET=secret
 COOKIE_SECRET=secret
 NPM_CONFIG_PRODUCTION=false
+YARN_PRODUCTION=false
 NODE_ENV=production
 ```
 
@@ -181,15 +219,11 @@ It’s highly recommended to use strong, randomly generated secrets for `JWT_SEC
 
 Notice how for database environment variables you access the values from the database you created earlier `db`. If you changed the name of the database, you must change `db` here to the name you supplied to the PostgreSQL database.
 
-Another thing to note here is that you added a `REDIS_URL` environment variable that uses a `redis` resource to retrieve the URL. You’ll be creating this resource in a later section.
+Another thing to note here is that you added a `REDIS_URL` environment variable that uses a `redis` resource to retrieve the URL. Redis is necessary if you're using Scheduled Jobs and if you're using Redis modules, such as the Redis Event Bus module. You’ll be creating the Redis resource in a later section.
 
-:::note
+If you're using modules that require setting other environment variables, make sure to set them here. You can also add them later.
 
-If you're using modules that require setting environment variables, make sure to set them here. You can also add them later. For example, if you're using the Redis Event Bus module, you can set the environment variable for it here or use the same `REDIS_URL` variable. Your module may also require setting up other resources than those explained in this guide so make sure to add them as well.
-
-:::
-
-Once you’re done click Save.
+Once you’re done click Save, then click Next to proceed to the next section.
 
 ### Finalize App
 
@@ -201,25 +235,36 @@ In the final step, you can see a review of everything you created. If everything
 
 ### Create Redis Resource
 
-While the backend is being deployed, you can create the Redis resource.
+While the backend is being deployed, you can create the Redis resource. To do that:
 
-Click the Create button at the top right and choose Database from the dropdown.
-
-In the new page under Choose a database engine, choose Redis.
-
-Then, scroll down to the “Choose a name” input. Since you used the name `redis` in the `REDIS_URL` environment variables, change the value to `redis` here.
-
-Once you’re done, click on Create Database Cluster.
+1. Click the Create button at the top right and choose Database from the dropdown.
+2. In the new page under Choose a database engine, choose Redis.
+3. Scroll down to the “Choose a unique database cluster name” input. Since you used the name `redis` in the `REDIS_URL` environment variables, change the value to `redis` here.
+4. Once you’re done, click on Create Database Cluster.
 
 ### Attach Redis Database
 
-Once the Redis database is created go back to the App you created earlier by choose Apps in the sidebar then clicking on the App name.
+Once the Redis database is created, you need to attach it to your app. To do that:
 
-Click at the white Create button at the top right and choose Create/Attach Database.
+1. Go back to the App you created earlier by choose Apps in the sidebar then clicking on the App name.
+2. Click at the white Create button at the top right and choose Create/Attach Database.
+3. In the new page, click on the Previously Created DigitalOcean Database radio button. Then, under Database Cluster select the Redis database you just created.
+4. Once you’re done click Attach Database. This will add the Redis database to the list of resources of your App and will trigger a redeploy of the App.
 
-In the new page, click on the Previously Created DigitalOcean Database radio button. Then, under Database Cluster select the Redis database you just created.
+### Change Health Check Settings
 
-Once you’re done click Attach Database. This will add the Redis database to the list of resources of your App and will trigger a redeploy of the App.
+By default, DigitalOcean will perform a health check immediately as the app runs. However, the Medusa backend requires some initial load-time before it's ready for a health check.
+
+So, you must delay the app's health check to enure that the deployment doesn't fail. To do that:
+
+1. On your app's page, click on the Settings page.
+2. From the tabs before the settings section, choose the name of your web service resource.
+3. Scroll down and find the "Health Checks" section, then click on "Edit" next to it.
+4. In the section that opens, expand the "Show Advanced Parameters" section.
+5. Find the "Initial Delay (s)" input and set its value to `300`.
+6. Once done, click on the Save button.
+
+This will redeploy your app, which should finish successfully.
 
 ---
 
@@ -245,6 +290,16 @@ If you deployed the admin dashboard alongside the backend, you can test it by go
 
 ---
 
+## Troubleshooting
+
+If errors occur in your deployment, you can find the logs by going to the Activity tab in your DigitalOcean App.
+
+### ERROR: Failed to build / Project does not contain a package manager
+
+If you find this error in your logs, make sure to remove `yarn.lock` or `package-lock.json` from the `.gitignore` file in your project, then commit the changes.
+
+---
+
 ## Run Commands on Your Backend
 
 To run commands on your backend, you can access the console on the App’s page by choosing the Console tab. This opens a console in your browser where you can run commands on your backend.
@@ -252,8 +307,7 @@ To run commands on your backend, you can access the console on the App’s page 
 For example, you can run the following commands to create a new admin user:
 
 ```bash
-npm install @medusajs/medusa-cli -g
-medusa user --email <EMAIL> --password <PASSWORD>
+npx @medusajs/medusa-cli user --email <EMAIL> --password <PASSWORD>
 ```
 
 Make sure to replace `<EMAIL>` and `<PASSWORD>` with the credentials you want to give the user.
