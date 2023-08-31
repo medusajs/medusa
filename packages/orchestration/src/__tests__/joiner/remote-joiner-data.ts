@@ -449,11 +449,6 @@ describe("RemoteJoiner", () => {
                       id: 103,
                     },
                   ],
-                  variant: {
-                    id: 993,
-                    name: "Product variant 33",
-                    product_id: 103,
-                  },
                 },
               ],
               id: 205,
@@ -484,11 +479,6 @@ describe("RemoteJoiner", () => {
                     id: 103,
                   },
                 ],
-                variant: {
-                  id: 993,
-                  name: "Product variant 33",
-                  product_id: 103,
-                },
               },
             ],
             id: 205,

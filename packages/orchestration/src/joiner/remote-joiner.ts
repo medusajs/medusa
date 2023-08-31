@@ -307,10 +307,6 @@ export class RemoteJoiner {
 
         resolvedPaths.add(expandedPath)
         const property = expand.property || ""
-        const parentServiceConfig = this.getServiceConfig(
-          currentQuery.service,
-          currentQuery.alias
-        )
 
         let curItems = currentItems
         const expandedPathLevels = expandedPath.split(".")
@@ -321,7 +317,7 @@ export class RemoteJoiner {
           )
         }
 
-        await this.expandProperty(curItems, parentServiceConfig!, expand)
+        await this.expandProperty(curItems, expand.parentConfig!, expand)
         const nestedItems = RemoteJoiner.getNestedItems(currentItems, property)
 
         if (nestedItems.length > 0) {
@@ -527,12 +523,14 @@ export class RemoteJoiner {
         }
 
         if (!parsedExpands.has(fullPath)) {
+          const parentPath = [BASE_PATH, ...currentPath].join(".")
           parsedExpands.set(fullPath, {
             property: prop,
             serviceConfig: currentServiceConfig,
             fields,
             args,
-            parent: [BASE_PATH, ...currentPath].join("."),
+            parent: parentPath,
+            parentConfig: parsedExpands.get(parentPath).serviceConfig,
           })
         }
 
@@ -545,15 +543,10 @@ export class RemoteJoiner {
   private groupExpands(
     parsedExpands: Map<string, RemoteExpandProperty>
   ): Map<string, RemoteExpandProperty> {
-    const sortedParsedExpands = new Map(
-      Array.from(parsedExpands.entries()).sort()
-    )
-    const mergedExpands = new Map<string, RemoteExpandProperty>(
-      sortedParsedExpands
-    )
+    const mergedExpands = new Map<string, RemoteExpandProperty>(parsedExpands)
     const mergedPaths = new Map<string, string>()
 
-    for (const [path, expand] of sortedParsedExpands.entries()) {
+    for (const [path, expand] of mergedExpands.entries()) {
       const currentServiceName = expand.serviceConfig.serviceName
       let parentPath = expand.parent
 
