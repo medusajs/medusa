@@ -290,46 +290,42 @@ export class RemoteJoiner {
     if (!parsedExpands) {
       return
     }
-
-    const stack: [
-      any[],
-      Partial<RemoteJoinerQuery>,
-      Map<string, RemoteExpandProperty>,
-      string,
-      Set<string>
-    ][] = [[items, query, parsedExpands, BASE_PATH, new Set()]]
+    const resolvedPaths = new Set<string>()
+    const stack: [any[], Partial<RemoteJoinerQuery>, string][] = [
+      [items, query, BASE_PATH],
+    ]
 
     while (stack.length > 0) {
-      const [
-        currentItems,
-        currentQuery,
-        currentParsedExpands,
-        basePath,
-        resolvedPaths,
-      ] = stack.pop()!
+      const [currentItems, currentQuery, basePath] = stack.pop()!
 
-      for (const [expandedPath, expand] of currentParsedExpands.entries()) {
-        const isImmediateChildPath = basePath === expand.parent
+      for (const [expandedPath, expand] of parsedExpands.entries()) {
+        const isParentPath = expandedPath.startsWith(basePath)
 
-        if (!isImmediateChildPath || resolvedPaths.has(expandedPath)) {
+        if (!isParentPath || resolvedPaths.has(expandedPath)) {
           continue
         }
 
         resolvedPaths.add(expandedPath)
-
         const property = expand.property || ""
         const parentServiceConfig = this.getServiceConfig(
           currentQuery.service,
           currentQuery.alias
         )
 
-        await this.expandProperty(currentItems, parentServiceConfig!, expand)
+        let curItems = currentItems
+        const expandedPathLevels = expandedPath.split(".")
+        for (let idx = 1; idx < expandedPathLevels.length - 1; idx++) {
+          curItems = RemoteJoiner.getNestedItems(
+            curItems,
+            expandedPathLevels[idx]
+          )
+        }
 
+        await this.expandProperty(curItems, parentServiceConfig!, expand)
         const nestedItems = RemoteJoiner.getNestedItems(currentItems, property)
 
         if (nestedItems.length > 0) {
           const relationship = expand.serviceConfig
-
           let nextProp = currentQuery
           if (relationship) {
             const relQuery = {
@@ -337,14 +333,7 @@ export class RemoteJoiner {
             }
             nextProp = relQuery
           }
-
-          stack.push([
-            nestedItems,
-            nextProp,
-            currentParsedExpands,
-            expandedPath,
-            new Set(),
-          ])
+          stack.push([nestedItems, nextProp, expandedPath])
         }
       }
     }
@@ -559,50 +548,48 @@ export class RemoteJoiner {
     const sortedParsedExpands = new Map(
       Array.from(parsedExpands.entries()).sort()
     )
-
     const mergedExpands = new Map<string, RemoteExpandProperty>(
       sortedParsedExpands
     )
     const mergedPaths = new Map<string, string>()
 
-    let lastServiceName = ""
-
     for (const [path, expand] of sortedParsedExpands.entries()) {
       const currentServiceName = expand.serviceConfig.serviceName
-
       let parentPath = expand.parent
 
-      // Check if the parentPath was merged before
-      while (mergedPaths.has(parentPath)) {
-        parentPath = mergedPaths.get(parentPath)!
-      }
-
-      const canMerge = currentServiceName === lastServiceName
-
-      if (mergedExpands.has(parentPath) && canMerge) {
-        const parentExpand = mergedExpands.get(parentPath)!
-
-        if (parentExpand.serviceConfig.serviceName === currentServiceName) {
-          const nestedKeys = path.split(".").slice(parentPath.split(".").length)
-
-          let targetExpand: any = parentExpand
-
-          for (let key of nestedKeys) {
-            if (!targetExpand.expands) {
-              targetExpand.expands = {}
-            }
-            if (!targetExpand.expands[key]) {
-              targetExpand.expands[key] = {} as any
-            }
-            targetExpand = targetExpand.expands[key]
-          }
-
-          targetExpand.fields = expand.fields
-          targetExpand.args = expand.args
-          mergedPaths.set(path, parentPath)
+      while (parentPath) {
+        const parentExpand = mergedExpands.get(parentPath)
+        if (
+          !parentExpand ||
+          parentExpand.serviceConfig.serviceName !== currentServiceName
+        ) {
+          break
         }
-      } else {
-        lastServiceName = currentServiceName
+
+        // Merge the current expand into its parent
+        const nestedKeys = path.split(".").slice(parentPath.split(".").length)
+        let targetExpand = parentExpand as Omit<
+          RemoteExpandProperty,
+          "expands"
+        > & { expands?: {} }
+
+        for (const key of nestedKeys) {
+          if (!targetExpand.expands) {
+            targetExpand.expands = {}
+          }
+          if (!targetExpand.expands[key]) {
+            targetExpand.expands[key] = {}
+          }
+          targetExpand = targetExpand.expands[key]
+        }
+
+        targetExpand.fields = expand.fields
+        targetExpand.args = expand.args
+
+        mergedExpands.delete(path)
+        mergedPaths.set(path, parentPath)
+
+        parentPath = parentExpand.parent
       }
     }
 
