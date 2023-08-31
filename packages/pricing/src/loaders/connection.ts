@@ -16,6 +16,7 @@ export default async (
   moduleDeclaration?: InternalModuleDeclaration
 ): Promise<void> => {
   const entities = Object.values(PricingModels) as unknown as EntitySchema[]
+  const pathToMigrations = __dirname + "/../migrations"
 
   await ModulesSdkUtils.mikroOrmConnectionLoader({
     entities,
@@ -23,5 +24,6 @@ export default async (
     options,
     moduleDeclaration,
     logger,
+    pathToMigrations,
   })
 }
