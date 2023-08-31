@@ -28,8 +28,13 @@ export function getMigration(
 
     const dbData = ModulesSdkUtils.loadDatabaseConfig("link_modules", options)
     const entity = generateEntity(joinerConfig, primary, foreign)
+    const pathToMigrations = __dirname + "/../migrations"
 
-    const orm = await DALUtils.mikroOrmCreateConnection(dbData, [entity])
+    const orm = await DALUtils.mikroOrmCreateConnection(
+      dbData,
+      [entity],
+      pathToMigrations
+    )
 
     const tableName = entity.meta.collection
 

@@ -33,8 +33,13 @@ export async function run({
 
   const dbData = ModulesSdkUtils.loadDatabaseConfig("pricing", options)!
   const entities = Object.values(PricingModels) as unknown as EntitySchema[]
+  const pathToMigrations = __dirname + "/../migrations"
 
-  const orm = await DALUtils.mikroOrmCreateConnection(dbData, entities)
+  const orm = await DALUtils.mikroOrmCreateConnection(
+    dbData,
+    entities,
+    pathToMigrations
+  )
   const manager = orm.em.fork()
 
   try {

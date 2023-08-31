@@ -16,6 +16,7 @@ export async function mikroOrmConnectionLoader({
   options,
   moduleDeclaration,
   entities,
+  pathToMigrations,
 }: {
   entities: any[]
   container: MedusaContainer
@@ -24,6 +25,7 @@ export async function mikroOrmConnectionLoader({
     | ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
   moduleDeclaration?: ModulesSdkTypes.InternalModuleDeclaration
   logger?: Logger
+  pathToMigrations: string
 }) {
   let manager = (
     options as ModulesSdkTypes.ModuleServiceInitializeCustomDataLayerOptions
@@ -41,7 +43,7 @@ export async function mikroOrmConnectionLoader({
     moduleDeclaration?.scope === MODULE_SCOPE.INTERNAL &&
     moduleDeclaration.resources === MODULE_RESOURCE_TYPE.SHARED
   ) {
-    return await loadShared({ container, entities })
+    return await loadShared({ container, entities, pathToMigrations })
   }
 
   /**
@@ -64,6 +66,7 @@ export async function mikroOrmConnectionLoader({
   manager ??= await loadDefault({
     database: dbConfig,
     entities,
+    pathToMigrations,
   })
 
   container.register({
@@ -74,6 +77,7 @@ export async function mikroOrmConnectionLoader({
 async function loadDefault({
   database,
   entities,
+  pathToMigrations,
 }): Promise<SqlEntityManager<PostgreSqlDriver>> {
   if (!database) {
     throw new MedusaError(
@@ -82,12 +86,16 @@ async function loadDefault({
     )
   }
 
-  const orm = await mikroOrmCreateConnection(database, entities)
+  const orm = await mikroOrmCreateConnection(
+    database,
+    entities,
+    pathToMigrations
+  )
 
   return orm.em.fork()
 }
 
-async function loadShared({ container, entities }) {
+async function loadShared({ container, entities, pathToMigrations }) {
   const sharedConnection = container.resolve(
     ContainerRegistrationKeys.PG_CONNECTION,
     {
@@ -105,6 +113,7 @@ async function loadShared({ container, entities }) {
     database: {
       connection: sharedConnection,
     },
+    pathToMigrations,
   })
   container.register({
     manager: asValue(manager),
