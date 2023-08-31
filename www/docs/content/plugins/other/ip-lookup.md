@@ -81,30 +81,38 @@ You can learn more about creating an endpoint [here](../../development/endpoints
 :::
 
 ```ts title=src/api/index.ts
-import { Request, Response, Router } from "express";
+import { Request, Response, Router } from "express"
 
 export default (rootDirectory: string): Router | Router[] => {
-  const router = Router();
+  const router = Router()
   // ...
-  router.use("/store/customer-region", async (req: Request, res: Response) => {
-    const ipLookupService = req.scope.resolve("ipLookupService")
-    const regionService = req.scope.resolve<RegionService>("regionService")
-    
-    const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress
+  router.get(
+    "/store/customer-region", 
+    async (req: Request, res: Response) => {
+      const ipLookupService = req.scope.resolve(
+        "ipLookupService"
+      )
+      const regionService = req.scope.resolve<RegionService>(
+        "regionService"
+      )
+      
+      const ip = req.headers["x-forwarded-for"] || 
+        req.socket.remoteAddress
 
-    const { data } = await ipLookupService.lookupIp(ip)
+      const { data } = await ipLookupService.lookupIp(ip)
 
-    if (!data.country_code) {
-      throw new Error ("Couldn't detect country code.")
+      if (!data.country_code) {
+        throw new Error ("Couldn't detect country code.")
+      }
+
+      const region = await regionService
+      .retrieveByCountryCode(data.country_code)
+
+      res.json({
+        region,
+      })
     }
-
-    const region = await regionService
-    .retrieveByCountryCode(data.country_code)
-
-    res.json({
-      region
-    })
-  })
+  )
 }
 ```
 
@@ -114,13 +122,19 @@ The `preCartCreation` middleware can be added as a middleware to any route to at
 
 For example, you can attach it to all `/store` routes to ensure the customer’s region is always detected:
 
+<!-- eslint-disable @typescript-eslint/no-var-requires -->
+
 ```ts title=src/api/index.ts
-import { Router } from "express";
+import { Router } from "express"
 
-const { preCartCreation } = require("medusa-plugin-ip-lookup/api/medusa-middleware").default
+const { preCartCreation } = require(
+  "medusa-plugin-ip-lookup/api/medusa-middleware"
+).default
 
-export default (rootDirectory: string): Router | Router[] => {
-  const router = Router();
+export default (
+  rootDirectory: string
+): Router | Router[] => {
+  const router = Router()
   // ...
   router.use("/store", preCartCreation)
 
