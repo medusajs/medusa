@@ -2296,7 +2296,7 @@ module.exports = {
         collapsible: false,
         link: {
           type: "doc",
-          id: "plugins/search/index",
+          id: "plugins/other/index",
         },
         customProps: {
           sidebar_is_group_headline: true,
