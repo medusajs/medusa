@@ -1,7 +1,11 @@
 import { ModulesSdkTypes } from "@medusajs/types"
 import * as defaultRepositories from "@repositories"
-import { BaseRepository, CurrencyRepository } from "@repositories"
-import { CurrencyService } from "@services"
+import {
+  BaseRepository,
+  CurrencyRepository,
+  MoneyAmountRepository,
+} from "@repositories"
+import { CurrencyService, MoneyAmountService } from "@services"
 
 import { LoaderOptions } from "@medusajs/modules-sdk"
 import { loadCustomRepositories } from "@medusajs/utils"
@@ -20,6 +24,7 @@ export default async ({
 
   container.register({
     currencyService: asClass(CurrencyService).singleton(),
+    moneyAmountService: asClass(MoneyAmountService).singleton(),
   })
 
   if (customRepositories) {
@@ -37,5 +42,6 @@ function loadDefaultRepositories({ container }) {
   container.register({
     baseRepository: asClass(BaseRepository).singleton(),
     currencyRepository: asClass(CurrencyRepository).singleton(),
+    moneyAmountRepository: asClass(MoneyAmountRepository).singleton(),
   })
 }
