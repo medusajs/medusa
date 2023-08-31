@@ -8,7 +8,7 @@ In this document, you’ll learn how to install the IP Lookup plugin on your Med
 
 ## Overview
 
-Location detection in a commerce store is essential for multi-region support. Medusa provides an IP Lookup plugin that integrates the backend with ipstack to allow you to detect a customer’s location and, ultimately, their region.
+Location detection in a commerce store is essential for multi-region support. Medusa provides an IP Lookup plugin that integrates the backend with [ipstack](https://ipstack.com/) to allow you to detect a customer’s location and, ultimately, their region.
 
 This guide explains how you can install and use this plugin.
 
