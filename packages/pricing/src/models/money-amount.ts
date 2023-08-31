@@ -15,7 +15,7 @@ class MoneyAmount {
   id!: string
 
   @Property({ columnType: "text", nullable: true })
-  currency_code!: string
+  currency_code?: string
 
   @ManyToOne(() => Currency, {
     nullable: true,
