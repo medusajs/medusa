@@ -14,7 +14,7 @@ export interface CreateProductSalesChannelInputDTO {
   id: string
 }
 
-export interface CraeteProductProductCategoryInputDTO {
+export interface CreateProductProductCategoryInputDTO {
   id: string
 }
 
@@ -73,7 +73,7 @@ export interface CreateProductInputDTO {
   type?: CreateProductTypeInputDTO
   collection_id?: string
   tags?: CreateProductTagInputDTO[]
-  categories?: CraeteProductProductCategoryInputDTO[]
+  categories?: CreateProductProductCategoryInputDTO[]
   options?: CreateProductOptionInputDTO[]
   variants?: CreateProductVariantInputDTO[]
   weight?: number

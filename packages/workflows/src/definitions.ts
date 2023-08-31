@@ -1,6 +1,7 @@
 export enum Workflows {
   // Product workflows
   CreateProducts = "create-products",
+  UpdateProducts = "update-products",
 
   // Cart workflows
   CreateCart = "create-cart",
