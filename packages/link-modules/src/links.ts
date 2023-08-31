@@ -8,4 +8,10 @@ export const LINKS = {
     Modules.INVENTORY,
     "inventory_item_id"
   ),
+  ProductShippingProfile: composeLinkName(
+    Modules.PRODUCT,
+    "variant_id",
+    "shippingProfileService",
+    "profile_id"
+  ),
 }
