@@ -63,13 +63,14 @@ export interface FulfillmentService {
 
   /**
    * Create a fulfillment using data from shipping method, line items, and fulfillment. All from the order.
+   * The returned value of this method will populate the `fulfillment.data` field.
    */
   createFulfillment(
     data: ShippingMethodData,
     items: LineItem,
     order: Order,
     fulfillment: Fulfillment
-  ): Promise<any>
+  ): Promise<FulfillmentProviderData>
 
   /**
    * Cancel a fulfillment using data from the fulfillment
@@ -145,7 +146,7 @@ export abstract class AbstractFulfillmentService implements FulfillmentService {
     items: LineItem,
     order: Order,
     fulfillment: Fulfillment
-  )
+  ): Promise<FulfillmentProviderData>
 
   abstract cancelFulfillment(fulfillment: FulfillmentProviderData): Promise<any>
 
