@@ -39,7 +39,7 @@ If you want to use another Git Provider supported by DigitalOcean, it’s possib
 Change the `start` script in `package.json` to the following:
 
 ```json
-"start": "npm run build && medusa migrations run && medusa start"
+"start": "medusa migrations run && medusa start"
 ```
 
 This ensures that Migrations are run every time the Medusa backend is restarted.
@@ -52,7 +52,7 @@ In `medusa-config.js`, add to `projectConfig` in the exported object a new prope
 
 Replace the previous declaration of `DATABASE_URL` in `medusa-config.js` with the following:
 
-```js
+```js title="medusa-config.js"
 const DB_USERNAME = process.env.DB_USERNAME
 const DB_PASSWORD = process.env.DB_PASSWORD
 const DB_HOST = process.env.DB_HOST
