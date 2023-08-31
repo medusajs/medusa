@@ -48,7 +48,7 @@ This ensures that Migrations are run every time the Medusa backend is restarted.
 
 ## Changes to medusa-config.js
 
-In `medusa-config.js`, add to `projectConfig` in the exported object a new property `database_extra`:
+In `medusa-config.js`, the `DATABASE_URL` variable is set to the environment variable `DATABASE_URL`. This needs to be changed as DigitalOcean provides the different details of the database connection separately.
 
 Replace the previous declaration of `DATABASE_URL` in `medusa-config.js` with the following:
 
