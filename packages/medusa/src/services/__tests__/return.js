@@ -1,8 +1,12 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import { FlagRouter } from "@medusajs/utils"
+
 import idMap from "medusa-test-utils/dist/id-map"
 import ReturnService from "../return"
 import { ProductVariantInventoryServiceMock } from "../__mocks__/product-variant-inventory"
 import { ShippingOptionServiceMock } from "../__mocks__/shipping-option"
+
+import TaxInclusivePricingFeatureFlag from "../../loaders/feature-flags/tax-inclusive-pricing"
 
 describe("ReturnService", () => {
   describe("receive", () => {
@@ -439,6 +443,10 @@ describe("ReturnService", () => {
       }),
     }
 
+    const featureFlagRouter = new FlagRouter({
+      [TaxInclusivePricingFeatureFlag.key]: false,
+    })
+
     const returnService = new ReturnService({
       manager: MockManager,
       lineItemService,
@@ -449,6 +457,7 @@ describe("ReturnService", () => {
       returnItemRepository,
       shippingOptionService,
       taxProviderService,
+      featureFlagRouter,
     })
 
     beforeEach(async () => {
@@ -466,7 +475,7 @@ describe("ReturnService", () => {
         ],
         shipping_method: {
           option_id: "taxincl-option",
-          price: 100,
+          price: 80,
         },
       })
 
