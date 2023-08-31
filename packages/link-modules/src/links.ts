@@ -8,4 +8,10 @@ export const LINKS = {
     Modules.INVENTORY,
     "inventory_item_id"
   ),
+  ProductVariantMoneyAmount: composeLinkName(
+    Modules.PRODUCT,
+    "variant_id",
+    Modules.PRICING,
+    "money_amount_id"
+  ),
 }
