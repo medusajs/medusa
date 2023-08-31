@@ -16,7 +16,7 @@ export interface IPricingModuleService {
   __joinerConfig(): ModuleJoinerConfig
 
   retrieve(
-    code: string,
+     id: string,
     config?: FindConfig<MoneyAmountDTO>,
     sharedContext?: Context
   ): Promise<MoneyAmountDTO>
