@@ -6578,6 +6578,7 @@ __metadata:
   dependencies:
     "@medusajs/types": ^1.10.2
     "@medusajs/utils": ^1.9.6
+    awilix: ^8.0.0
     cross-env: ^5.2.1
     graphql: ^16.6.0
     jest: ^29.6.3
