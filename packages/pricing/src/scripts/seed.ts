@@ -1,9 +1,11 @@
-import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
+import * as PricingModels from "@models"
+
 import { DALUtils, ModulesSdkUtils } from "@medusajs/utils"
 import { EntitySchema, RequiredEntityData } from "@mikro-orm/core"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-import * as PricingModels from "@models"
+import { LoaderOptions, Logger, ModulesSdkTypes } from "@medusajs/types"
+
 import { EOL } from "os"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { resolve } from "path"
 
 export async function run({
@@ -27,6 +29,7 @@ export async function run({
     moneyAmountsData,
     priceSetsData,
     priceSetMoneyAmountsData,
+    priceListData
   } = await import(resolve(process.cwd(), path)).catch((e) => {
     logger?.error(
       `Failed to load seed data from ${path}. Please, provide a relative path and check that you export the following: priceSetsData, currenciesData, moneyAmountsData and priceSetMoneyAmountsData.${EOL}${e}`
@@ -50,6 +53,7 @@ export async function run({
     logger.info("Inserting price_sets, currencies & money_amounts")
 
     await createCurrencies(manager, currenciesData)
+    await createPriceLists(manager, priceListData)
     await createMoneyAmounts(manager, moneyAmountsData)
     await createPriceSets(manager, priceSetsData)
     await createPriceSetMoneyAmounts(manager, priceSetMoneyAmountsData)
@@ -73,6 +77,19 @@ async function createCurrencies(
   await manager.persistAndFlush(currencies)
 
   return currencies
+}
+
+async function createPriceLists(
+  manager: SqlEntityManager,
+  data: RequiredEntityData<PricingModels.PriceList>[]
+) {
+  const priceLists = data.map((priceListData) => {
+    return manager.create(PricingModels.PriceList, priceListData)
+  })
+
+  await manager.persistAndFlush(priceLists)
+
+  return priceLists
 }
 
 async function createMoneyAmounts(
