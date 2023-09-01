@@ -89,6 +89,21 @@ export default class MoneyAmountService<
       sharedContext
     )) as TEntity[]
   }
+  
+  @InjectTransactionManager(shouldForceTransaction, "moneyAmountRepository_")
+  async addPriceListPrices(
+    priceListId: string,
+    data: PricingTypes.CreateMoneyAmountDTO[],
+    overrideExisting = false,
+    @MedusaContext() sharedContext: Context = {}
+  ): Promise<TEntity[]> {
+    return (await (this.moneyAmountRepository_ as MoneyAmountRepository).addPriceListPrices(
+      priceListId,
+      data,
+      overrideExisting,
+      sharedContext
+    )) as TEntity[]
+  }
 
   @InjectTransactionManager(shouldForceTransaction, "moneyAmountRepository_")
   async update(

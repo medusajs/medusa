@@ -17,6 +17,7 @@ export interface CreateMoneyAmountDTO {
   amount?: number
   min_quantity?: number
   max_quantity?: number
+  price_list_id?: string
 }
 
 export interface UpdateMoneyAmountDTO {
@@ -25,6 +26,7 @@ export interface UpdateMoneyAmountDTO {
   amount?: number
   min_quantity?: number
   max_quantity?: number
+  price_list_id?: string
 }
 
 export interface FilterableMoneyAmountProps

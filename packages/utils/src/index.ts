@@ -8,3 +8,4 @@ export * from "./modules-sdk"
 export * from "./product"
 export * from "./search"
 export * from "./shipping"
+export * from './price-list'
