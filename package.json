@@ -89,7 +89,8 @@
     "version:next": "changeset version --snapshot next",
     "release": "changeset publish",
     "version": "changeset version && yarn install --no-immutable",
-    "check:freshness": "node ./scripts/freshness-check.js"
+    "check:freshness": "node ./scripts/freshness-check.js",
+    "depcheck-all": "sh ./scripts/depcheck.sh"
   },
   "dependencies": {
     "@changesets/changelog-github": "^0.4.8",
