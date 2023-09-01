@@ -8,7 +8,7 @@ export class dropMoneyAmountConstraintsForPricingModule1692953518123
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `
-        CREATE TABLE IF NOT EXISTS "money_amount_variant"
+        CREATE TABLE IF NOT EXISTS "product_variant_money_amount"
         (
             "money_amount_id" text NOT NULL,
             "variant_id" text NOT NULL
