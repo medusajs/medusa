@@ -27,6 +27,7 @@
     "@medusajs/orchestration": "^0.2.0",
     "@medusajs/types": "^1.10.2",
     "@medusajs/utils": "^1.9.6",
+    "@mikro-orm/postgresql": "5.7.12",
     "awilix": "^8.0.0",
     "resolve-cwd": "^3.0.0"
   },
