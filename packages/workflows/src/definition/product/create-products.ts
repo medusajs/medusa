@@ -22,7 +22,7 @@ export enum CreateProductsActions {
   attachInventoryItems = "attachInventoryItems",
 }
 
-export const workflowSteps: TransactionStepsDefinition = {
+export const createProductsWorkflowSteps: TransactionStepsDefinition = {
   next: {
     action: CreateProductsActions.prepare,
     noCompensation: true,
@@ -264,7 +264,11 @@ const handlers = new Map([
   ],
 ])
 
-WorkflowManager.register(Workflows.CreateProducts, workflowSteps, handlers)
+WorkflowManager.register(
+  Workflows.CreateProducts,
+  createProductsWorkflowSteps,
+  handlers
+)
 
 export const createProducts = exportWorkflow<
   WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO,

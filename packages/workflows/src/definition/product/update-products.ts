@@ -17,7 +17,7 @@ export enum UpdateProductsActions {
   updateProducts = "updateProducts",
 }
 
-export const workflowSteps: TransactionStepsDefinition = {
+export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
   next: {
     action: UpdateProductsActions.prepare,
     noCompensation: true,
@@ -75,9 +75,13 @@ const handlers = new Map([
   ],
 ])
 
-WorkflowManager.register(Workflows.UpdateProducts, workflowSteps, handlers)
+WorkflowManager.register(
+  Workflows.UpdateProducts,
+  updateProductsWorkflowSteps,
+  handlers
+)
 
-export const createProducts = exportWorkflow<
+export const updateProducts = exportWorkflow<
   WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO,
   ProductTypes.ProductDTO[]
 >(Workflows.UpdateProducts, UpdateProductsActions.updateProducts)

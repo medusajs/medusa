@@ -16,6 +16,12 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
+import { updateProducts, Workflows } from "@medusajs/workflows"
+import { DistributedTransaction } from "@medusajs/orchestration"
+import { FlagRouter, MedusaError } from "@medusajs/utils"
+import { Type } from "class-transformer"
+import { EntityManager } from "typeorm"
+
 import {
   PricingService,
   ProductService,
@@ -35,15 +41,11 @@ import {
 } from "./transaction/create-product-variant"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 
-import { DistributedTransaction } from "@medusajs/orchestration"
-import { EntityManager } from "typeorm"
 import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
-import { IInventoryService } from "@medusajs/types"
+import { IInventoryService, WorkflowTypes } from "@medusajs/types"
 import { Logger } from "../../../../types/global"
-import { MedusaError } from "@medusajs/utils"
 import { ProductVariantRepository } from "../../../../repositories/product-variant"
 import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
-import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -128,132 +130,175 @@ export default async (req, res) => {
     req.scope.resolve("inventoryService")
 
   const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transactionManager) => {
-    const productServiceTx = productService.withTransaction(transactionManager)
 
-    const { variants } = validated
-    delete validated.variants
+  const productModuleService = req.scope.resolve("productModuleService")
 
-    const product = await productServiceTx.update(id, validated)
-
-    if (!variants) {
-      return
-    }
-
-    const variantRepo = manager.withRepository(productVariantRepo)
-    const productVariants = await productVariantService
-      .withTransaction(transactionManager)
-      .list(
-        { product_id: id },
-        {
-          select: variantRepo.metadata.columns.map(
-            (c) => c.propertyName
-          ) as (keyof ProductVariant)[],
-        }
-      )
-
-    const productVariantMap = new Map(productVariants.map((v) => [v.id, v]))
-    const variantWithIdSet = new Set()
-
-    const variantIdsNotBelongingToProduct: string[] = []
-    const variantsToUpdate: {
-      variant: ProductVariant
-      updateData: UpdateProductVariantInput
-    }[] = []
-    const variantsToCreate: ProductVariantReq[] = []
-
-    // Preparing the data step
-    for (const [variantRank, variant] of variants.entries()) {
-      if (!variant.id) {
-        Object.assign(variant, {
-          variant_rank: variantRank,
-          options: variant.options || [],
-          prices: variant.prices || [],
-        })
-        variantsToCreate.push(variant)
-        continue
-      }
-
-      // Will be used to find the variants that should be removed during the next steps
-      variantWithIdSet.add(variant.id)
-
-      if (!productVariantMap.has(variant.id)) {
-        variantIdsNotBelongingToProduct.push(variant.id)
-        continue
-      }
-
-      const productVariant = productVariantMap.get(variant.id)!
-      Object.assign(variant, {
-        variant_rank: variantRank,
-        product_id: productVariant.product_id,
-      })
-      variantsToUpdate.push({ variant: productVariant, updateData: variant })
-    }
-
-    if (variantIdsNotBelongingToProduct.length) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Variants with id: ${variantIdsNotBelongingToProduct.join(
-          ", "
-        )} are not associated with this product`
-      )
-    }
-
-    const allVariantTransactions: DistributedTransaction[] = []
-    const transactionDependencies = {
-      manager: transactionManager,
-      inventoryService,
-      productVariantInventoryService,
-      productVariantService,
-    }
-
-    const productVariantServiceTx =
-      productVariantService.withTransaction(transactionManager)
-
-    // Delete the variant that does not exist anymore from the provided variants
-    const variantIdsToDelete = [...productVariantMap.keys()].filter(
-      (variantId) => !variantWithIdSet.has(variantId)
-    )
-
-    if (variantIdsToDelete) {
-      await productVariantServiceTx.delete(variantIdsToDelete)
-    }
-
-    if (variantsToUpdate.length) {
-      await productVariantServiceTx.update(variantsToUpdate)
-    }
-
-    if (variantsToCreate.length) {
-      try {
-        const varTransaction = await createVariantsTransaction(
-          transactionDependencies,
-          product.id,
-          variantsToCreate as CreateProductVariantInput[]
-        )
-        allVariantTransactions.push(varTransaction)
-      } catch (e) {
-        await Promise.all(
-          allVariantTransactions.map(async (transaction) => {
-            await revertVariantTransaction(
-              transactionDependencies,
-              transaction
-            ).catch(() => logger.warn("Transaction couldn't be reverted."))
-          })
-        )
-
-        throw e
-      }
-    }
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+  const isWorkflowEnabled = featureFlagRouter.isFeatureEnabled({
+    workflows: Workflows.CreateProducts,
   })
 
-  const rawProduct = await productService.retrieve(id, {
+  if (isWorkflowEnabled && !productModuleService) {
+    logger.warn(
+      `Cannot run ${Workflows.UpdateProducts} workflow without '@medusajs/product' installed`
+    )
+  }
+
+  let product
+
+  if (isWorkflowEnabled && !!productModuleService) {
+    const updateProductWorkflow = updateProducts(req.scope)
+
+    const input = {
+      products: [
+        validated,
+      ] as WorkflowTypes.ProductWorkflow.UpdateProductInputDTO[],
+      config: {
+        listConfig: {
+          select: defaultAdminProductFields,
+          relations: defaultAdminProductRelations,
+        },
+      },
+    }
+
+    const { result } = await updateProductWorkflow.run({
+      input,
+      context: {
+        manager: manager,
+      },
+    })
+    product = result[0]
+  } else {
+    product = await manager.transaction(async (transactionManager) => {
+      const productServiceTx =
+        productService.withTransaction(transactionManager)
+
+      const { variants } = validated
+      delete validated.variants
+
+      const product = await productServiceTx.update(id, validated)
+
+      if (!variants) {
+        return
+      }
+
+      const variantRepo = manager.withRepository(productVariantRepo)
+      const productVariants = await productVariantService
+        .withTransaction(transactionManager)
+        .list(
+          { product_id: id },
+          {
+            select: variantRepo.metadata.columns.map(
+              (c) => c.propertyName
+            ) as (keyof ProductVariant)[],
+          }
+        )
+
+      const productVariantMap = new Map(productVariants.map((v) => [v.id, v]))
+      const variantWithIdSet = new Set()
+
+      const variantIdsNotBelongingToProduct: string[] = []
+      const variantsToUpdate: {
+        variant: ProductVariant
+        updateData: UpdateProductVariantInput
+      }[] = []
+      const variantsToCreate: ProductVariantReq[] = []
+
+      // Preparing the data step
+      for (const [variantRank, variant] of variants.entries()) {
+        if (!variant.id) {
+          Object.assign(variant, {
+            variant_rank: variantRank,
+            options: variant.options || [],
+            prices: variant.prices || [],
+          })
+          variantsToCreate.push(variant)
+          continue
+        }
+
+        // Will be used to find the variants that should be removed during the next steps
+        variantWithIdSet.add(variant.id)
+
+        if (!productVariantMap.has(variant.id)) {
+          variantIdsNotBelongingToProduct.push(variant.id)
+          continue
+        }
+
+        const productVariant = productVariantMap.get(variant.id)!
+        Object.assign(variant, {
+          variant_rank: variantRank,
+          product_id: productVariant.product_id,
+        })
+        variantsToUpdate.push({ variant: productVariant, updateData: variant })
+      }
+
+      if (variantIdsNotBelongingToProduct.length) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Variants with id: ${variantIdsNotBelongingToProduct.join(
+            ", "
+          )} are not associated with this product`
+        )
+      }
+
+      const allVariantTransactions: DistributedTransaction[] = []
+      const transactionDependencies = {
+        manager: transactionManager,
+        inventoryService,
+        productVariantInventoryService,
+        productVariantService,
+      }
+
+      const productVariantServiceTx =
+        productVariantService.withTransaction(transactionManager)
+
+      // Delete the variant that does not exist anymore from the provided variants
+      const variantIdsToDelete = [...productVariantMap.keys()].filter(
+        (variantId) => !variantWithIdSet.has(variantId)
+      )
+
+      if (variantIdsToDelete) {
+        await productVariantServiceTx.delete(variantIdsToDelete)
+      }
+
+      if (variantsToUpdate.length) {
+        await productVariantServiceTx.update(variantsToUpdate)
+      }
+
+      if (variantsToCreate.length) {
+        try {
+          const varTransaction = await createVariantsTransaction(
+            transactionDependencies,
+            product.id,
+            variantsToCreate as CreateProductVariantInput[]
+          )
+          allVariantTransactions.push(varTransaction)
+        } catch (e) {
+          await Promise.all(
+            allVariantTransactions.map(async (transaction) => {
+              await revertVariantTransaction(
+                transactionDependencies,
+                transaction
+              ).catch(() => logger.warn("Transaction couldn't be reverted."))
+            })
+          )
+
+          throw e
+        }
+      }
+    })
+  }
+
+  const rawProduct = await productService.retrieve(product.id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
   })
 
-  const [product] = await pricingService.setProductPrices([rawProduct])
+  const [productWithPrices] = await pricingService.setProductPrices([
+    rawProduct,
+  ])
 
-  res.json({ product })
+  res.json({ product: productWithPrices })
 }
 
 class ProductVariantOptionReq {
