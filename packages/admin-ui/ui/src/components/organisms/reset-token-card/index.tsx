@@ -93,7 +93,7 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
             </div>
             <div className="gap-y-2xsmall flex flex-col">
               <span className="inter-base-regular">
-                Succesfully sent you an email
+                Successfully sent you an email
               </span>
             </div>
           </div>

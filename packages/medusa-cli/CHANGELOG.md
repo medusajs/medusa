@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.3.20
+
+### Patch Changes
+
+- Updated dependencies [[`c58588904`](https://github.com/medusajs/medusa/commit/c58588904c5631111603b15afacf7cdc4c738cc4)]:
+  - medusa-telemetry@0.0.17
+
 ## 1.3.19
 
 ### Patch Changes

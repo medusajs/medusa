@@ -29,14 +29,14 @@ import { joinLevels } from "../inventory-items/utils/join-levels"
  *       import Medusa from "@medusajs/medusa-js"
  *       const medusa = new Medusa({ baseUrl: MEDUSA_BACKEND_URL, maxRetries: 3 })
  *       // must be previously logged in or use api token
- *       medusa.admin.variants.list()
- *       .then(({ variants, limit, offset, count }) => {
- *         console.log(variants.length)
+ *       medusa.admin.variants.getInventory(variantId)
+ *       .then(({ variant }) => {
+ *         console.log(variant.inventory, variant.sales_channel_availability)
  *       })
  *   - lang: Shell
  *     label: cURL
  *     source: |
- *       curl '{backend_url}/admin/variants' \
+ *       curl '{backend_url}/admin/variants/{id}/inventory' \
  *       -H 'Authorization: Bearer {api_token}'
  * security:
  *   - api_token: []
@@ -49,11 +49,7 @@ import { joinLevels } from "../inventory-items/utils/join-levels"
  *     content:
  *       application/json:
  *         schema:
- *           type: object
- *           properties:
- *             variant:
- *               type: object
- *               $ref: "#/components/schemas/AdminGetVariantsVariantInventoryRes"
+ *           $ref: "#/components/schemas/AdminGetVariantsVariantInventoryRes"
  *   "400":
  *     $ref: "#/components/responses/400_error"
  *   "401":

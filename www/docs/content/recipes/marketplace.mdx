@@ -1,3 +1,7 @@
+---
+addHowToData: true
+---
+
 import DocCardList from '@theme/DocCardList';
 import DocCard from '@theme/DocCard';
 import Icons from '@theme/Icon';
@@ -38,102 +42,102 @@ To associate these entities with the `Store` entity, you need to extend and cust
 }} />
 
 <details>
-  <summary>Example: Associate User with Store</summary>
+<summary>Example: Associate User with Store</summary>
 
-  For example, to associate the `User` entity with the `Store` entity, create the file `src/models/user.ts` with the following content:
+For example, to associate the `User` entity with the `Store` entity, create the file `src/models/user.ts` with the following content:
 
-  ```ts title=src/models/user.ts
-  import { 
-    Column,
-    Entity,
-    Index,
-    JoinColumn,
-    ManyToOne,
-  } from "typeorm"
-  import {
-    User as MedusaUser,
-  } from "@medusajs/medusa"
-  import { Store } from "./store"
-  
-  @Entity()
-  export class User extends MedusaUser {
-    @Index("UserStoreId")
-    @Column({ nullable: true })
-    store_id?: string
-  
-    @ManyToOne(() => Store, (store) => store.members)
-    @JoinColumn({ name: "store_id", referencedColumnName: "id" })
-    store?: Store
-  }
-  ```
+```ts title=src/models/user.ts
+import { 
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+} from "typeorm"
+import {
+  User as MedusaUser,
+} from "@medusajs/medusa"
+import { Store } from "./store"
 
-  Then, you need to extend the `UserRepository` to point to your extended entity. To do that, create the file `src/repositories/user.ts` with the following content:
+@Entity()
+export class User extends MedusaUser {
+  @Index("UserStoreId")
+  @Column({ nullable: true })
+  store_id?: string
 
-  ```ts title=src/repositories/user.ts
-  import { User } from "../models/user"
-  import { 
-    dataSource,
-  } from "@medusajs/medusa/dist/loaders/database"
-  import {
-    UserRepository as MedusaUserRepository,
-  } from "@medusajs/medusa/dist/repositories/user"
+  @ManyToOne(() => Store, (store) => store.members)
+  @JoinColumn({ name: "store_id", referencedColumnName: "id" })
+  store?: Store
+}
+```
 
-  export const UserRepository = dataSource
-    .getRepository(User)
-    .extend({
-      ...Object.assign(
-        MedusaUserRepository, 
-        { target: User }
-      ),
-    })
+Then, you need to extend the `UserRepository` to point to your extended entity. To do that, create the file `src/repositories/user.ts` with the following content:
 
-  export default UserRepository
-  ```
+```ts title=src/repositories/user.ts
+import { User } from "../models/user"
+import { 
+  dataSource,
+} from "@medusajs/medusa/dist/loaders/database"
+import {
+  UserRepository as MedusaUserRepository,
+} from "@medusajs/medusa/dist/repositories/user"
 
-  Next, you need to create a migration that reflects the changes on the `User` entity in your database. To do that, run the following command to create a migration file:
+export const UserRepository = dataSource
+  .getRepository(User)
+  .extend({
+    ...Object.assign(
+      MedusaUserRepository, 
+      { target: User }
+    ),
+  })
 
-  ```bash
-  npx typeorm migration:create src/migrations/add-user-store-id
-  ```
+export default UserRepository
+```
 
-  This creates a file in the `src/migrations` directory of the format `<TIMESTAMP>_add-user-store-id.ts`. Replace the `up` and `down` methods in that file with the methods here:
+Next, you need to create a migration that reflects the changes on the `User` entity in your database. To do that, run the following command to create a migration file:
 
-  ```ts title=src/migrations/<TIMESTAMP>_add-user-store-id.ts
-  // ...
+```bash
+npx typeorm migration:create src/migrations/add-user-store-id
+```
 
-  export class AddUserStoreId1681287255173 
-    implements MigrationInterface {
-      // ...
+This creates a file in the `src/migrations` directory of the format `<TIMESTAMP>_add-user-store-id.ts`. Replace the `up` and `down` methods in that file with the methods here:
 
-      public async up(queryRunner: QueryRunner): Promise<void> {
-          await queryRunner.query(
-            `ALTER TABLE "user" ADD "store_id" character varying`
-          )
-          await queryRunner.query(
-            `CREATE INDEX "UserStoreId" ON "user" ("store_id")`
-          )
-      }
+```ts title=src/migrations/<TIMESTAMP>_add-user-store-id.ts
+// ...
 
-      public async down(queryRunner: QueryRunner): Promise<void> {
-          await queryRunner.query(
-            `DROP INDEX "public"."UserStoreId"`
-          )
-          await queryRunner.query(
-            `ALTER TABLE "user" DROP COLUMN "store_id"`
-          )
-      }
+export class AddUserStoreId1681287255173 
+  implements MigrationInterface {
+    // ...
 
-  }
-  ```
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(
+          `ALTER TABLE "user" ADD "store_id" character varying`
+        )
+        await queryRunner.query(
+          `CREATE INDEX "UserStoreId" ON "user" ("store_id")`
+        )
+    }
 
-  Finally, to reflect these changes and start using them, `build` your changes and run migrations with the following commands:
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(
+          `DROP INDEX "public"."UserStoreId"`
+        )
+        await queryRunner.query(
+          `ALTER TABLE "user" DROP COLUMN "store_id"`
+        )
+    }
 
-  ```bash npm2yarn
-  npm run build
-  npx medusa migrations run
-  ```
+}
+```
 
-  You can extend other entities in a similar manner to associate them with a store.
+Finally, to reflect these changes and start using them, `build` your changes and run migrations with the following commands:
+
+```bash npm2yarn
+npm run build
+npx medusa migrations run
+```
+
+You can extend other entities in a similar manner to associate them with a store.
 
 </details>
 
@@ -176,73 +180,73 @@ You can also extend services if you need to customize a functionality implemente
 }} />
 
 <details>
-  <summary>Example: Extend User Service</summary>
+<summary>Example: Extend User Service</summary>
 
-  You can extend the user service to change how the `create` method is implemented.
+You can extend the user service to change how the `create` method is implemented.
 
-  To extend the user service, create the file `src/services/user.ts` with the following content:
+To extend the user service, create the file `src/services/user.ts` with the following content:
 
 <!-- eslint-disable prefer-rest-params -->
 
-  ```ts
-  import { Lifetime } from "awilix"
-  import { 
-    UserService as MedusaUserService,
-  } from "@medusajs/medusa"
-  import { User } from "../models/user"
-  import { 
-    CreateUserInput as MedusaCreateUserInput,
-  } from "@medusajs/medusa/dist/types/user"
-  import StoreRepository from "../repositories/store"
+```ts
+import { Lifetime } from "awilix"
+import { 
+  UserService as MedusaUserService,
+} from "@medusajs/medusa"
+import { User } from "../models/user"
+import { 
+  CreateUserInput as MedusaCreateUserInput,
+} from "@medusajs/medusa/dist/types/user"
+import StoreRepository from "../repositories/store"
 
-  type CreateUserInput = {
-    store_id?: string
-  } & MedusaCreateUserInput
+type CreateUserInput = {
+  store_id?: string
+} & MedusaCreateUserInput
 
-  class UserService extends MedusaUserService {
-    static LIFE_TIME = Lifetime.SCOPED
-    protected readonly loggedInUser_: User | null
-    protected readonly storeRepository_: typeof StoreRepository
-  
-    constructor(container, options) {
-      super(...arguments)
-      this.storeRepository_ = container.storeRepository
+class UserService extends MedusaUserService {
+  static LIFE_TIME = Lifetime.SCOPED
+  protected readonly loggedInUser_: User | null
+  protected readonly storeRepository_: typeof StoreRepository
 
-      try {
-        this.loggedInUser_ = container.loggedInUser
-      } catch (e) {
-        // avoid errors when backend first runs
-      }
-    }
+  constructor(container, options) {
+    super(...arguments)
+    this.storeRepository_ = container.storeRepository
 
-    async create(
-      user: CreateUserInput,
-      password: string
-    ): Promise<User> {
-      if (!user.store_id) {
-        const storeRepo = this.manager_.withRepository(
-          this.storeRepository_
-        )
-        let newStore = storeRepo.create()
-        newStore = await storeRepo.save(newStore)
-        user.store_id = newStore.id
-      }
-
-      return await super.create(user, password)
+    try {
+      this.loggedInUser_ = container.loggedInUser
+    } catch (e) {
+      // avoid errors when backend first runs
     }
   }
 
-  export default UserService
-  ```
+  async create(
+    user: CreateUserInput,
+    password: string
+  ): Promise<User> {
+    if (!user.store_id) {
+      const storeRepo = this.manager_.withRepository(
+        this.storeRepository_
+      )
+      let newStore = storeRepo.create()
+      newStore = await storeRepo.save(newStore)
+      user.store_id = newStore.id
+    }
 
-  In the `create` method of this extended service, you create a new store if the user being created doesn't have a store associated with it.
+    return await super.create(user, password)
+  }
+}
 
-  You can then test out your customization by running the `build` command and starting the backend:
+export default UserService
+```
 
-  ```bash
-  npm run build
-  npx medusa develop
-  ```
+In the `create` method of this extended service, you create a new store if the user being created doesn't have a store associated with it.
+
+You can then test out your customization by running the `build` command and starting the backend:
+
+```bash
+npm run build
+npx medusa develop
+```
 </details>
 
 ---
@@ -264,32 +268,32 @@ To listen to events, you need to create Subscribers that subscribe a handler met
 }} />
 
 <details>
-  <summary>Example: Listen to Order Created Event</summary>
+<summary>Example: Listen to Order Created Event</summary>
 
-  To listen to the `order.placed` event, create the file `src/subscribers/orderNotifier.ts` with the following content:
+To listen to the `order.placed` event, create the file `src/subscribers/orderNotifier.ts` with the following content:
 
-  ```ts
-  class OrderNotifierSubscriber {
-    constructor({ eventBusService }) {
-      eventBusService.subscribe("order.placed", this.handleOrder)
-    }
-
-    handleOrder = async (data) => {
-      // TODO perform functionality
-    }
+```ts
+class OrderNotifierSubscriber {
+  constructor({ eventBusService }) {
+    eventBusService.subscribe("order.placed", this.handleOrder)
   }
 
-  export default OrderNotifierSubscriber
-  ```
+  handleOrder = async (data) => {
+    // TODO perform functionality
+  }
+}
 
-  This subscribes the `handleOrder` method to be executed whenever the `order.placed` event is emitted.
+export default OrderNotifierSubscriber
+```
 
-  You can then test out your subscriber by running the `build` command and starting the backend:
+This subscribes the `handleOrder` method to be executed whenever the `order.placed` event is emitted.
 
-  ```bash
-  npm run build
-  npx medusa develop
-  ```
+You can then test out your subscriber by running the `build` command and starting the backend:
+
+```bash
+npm run build
+npx medusa develop
+```
 </details>
 
 ---
@@ -349,6 +353,62 @@ Payment and fulfillment providers are associated with regions, which are not ass
     }
   },
 ]} />
+
+---
+
+## Customize Admin
+
+As you add marketplace features to your store, you'll most likely need to customize the admin to provide an interface to manage these features.
+
+Medusa's [admin plugin](../admin/quickstart.mdx) can be extended to add widgets or new blocks to existing pages, add UI routes to add new pages, or add setting pages.
+
+<DocCardList colSize={4} items={[
+  {
+    type: 'link',
+    href: '/admin/widgets',
+    label: 'Create Admin Widget',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to add widgets into existing admin pages.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/admin/routes',
+    label: 'Create Admin UI Routes',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to add new pages to your Medusa admin.',
+    }
+  },
+  {
+    type: 'link',
+    href: '/admin/setting-pages',
+    label: 'Create Admin Setting Page',
+    customProps: {
+      icon: Icons['academic-cap-solid'],
+      description: 'Learn how to add new page to the Medusa admin settings.',
+    }
+  },
+]} />
+
+---
+
+## Implement Role-Based Access Control
+
+In your marketplace, you may need to implement role-based access control (RBAC) within stores. This will restrict some users' permissions to specified functionalities or endpoints.
+
+If you want to implement this functionality, you can follow the RBAC recipe.
+
+<DocCard item={{
+  type: 'link',
+  href: '/modules/users/backend/rbac',
+  label: 'Implement Role-Based Access Control',
+  customProps: {
+    icon: Icons['academic-cap-solid'],
+    description: 'Learn how to implement role-based access control (RBAC) in Medusa.',
+  }
+}} />
 
 ---
 

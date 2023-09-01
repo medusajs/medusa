@@ -13,12 +13,12 @@ import {
 } from "../../../__fixtures__/product/data"
 
 import { ProductDTO, ProductTypes } from "@medusajs/types"
+import { kebabCase } from "@medusajs/utils"
+import { SqlEntityManager } from "@mikro-orm/postgresql"
 import { ProductRepository } from "@repositories"
 import { ProductService } from "@services"
-import { SqlEntityManager } from "@mikro-orm/postgresql"
-import { TestDatabase } from "../../../utils"
 import { createProductCategories } from "../../../__fixtures__/product-category"
-import { kebabCase } from "@medusajs/utils"
+import { TestDatabase } from "../../../utils"
 
 jest.setTimeout(30000)
 
@@ -513,7 +513,7 @@ describe("Product Service", () => {
       const products = await service.create([data])
       const product = products[0]
       await service.softDelete([product.id])
-      const restoreProducts = await service.restore([product.id])
+      const [restoreProducts] = await service.restore([product.id])
 
       expect(restoreProducts).toHaveLength(1)
       expect(restoreProducts[0].deleted_at).toBeNull()

@@ -15,7 +15,7 @@ export async function GET() {
     process.env.ALGOLIA_WRITE_API_KEY || ""
   )
   const index = algoliaClient.initIndex(
-    process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME || ""
+    process.env.NEXT_PUBLIC_API_ALGOLIA_INDEX_NAME || ""
   )
 
   // retrieve tags and their operations to index them

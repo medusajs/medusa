@@ -123,6 +123,45 @@ If you need to change the URL of your Medusa backend because you changed the bac
 NEXT_PUBLIC_MEDUSA_BACKEND_URL=http://localhost:9001
 ```
 
+### Using Product Module
+
+:::note
+
+The Product Module is currently in beta. You can learn more about it [here](../modules/products/serverless-module.md). In addition, the product module in the Next.js storefront can't be used without the Medusa backend at the moment.
+
+:::
+
+This starter has full support for the serverless Product Module for retrieving and manipulating product data directly from a serverless function. This keeps your product logic close to the frontend, making it easy to customize or extend Medusa's core functionality from within your Next.js project.
+
+By default, this starter uses the standard Medusa API for product and collection retrieval.
+
+To enable the Product Module, first, make sure to set the following environment variables:
+
+- `PRODUCT_POSTGRES_URL`: the URL of your PostgreSQL databsae.
+- `NEXT_PUBLIC_BASE_URL`: the URL of your storefront's base URL. For exmaple, if you're running it locally, it should be `http://localhost:8000`.
+
+Then, enable the `productModule` feature flag in `store.config.json`:
+
+```json title=store.config.json
+{
+  "features": {
+    // other features...
+    "productModule": true
+  }
+}
+
+```
+
+You can now test it out now. Make sure the Medusa backend is running, then start (or restart) your Next.js storefront:
+
+```bash npm2yarn
+npm run start
+```
+
+If you go to `localhost:8000`, all product and collection data should now be coming from the module. The Product Module routes are all in the `src/app/api` directory for you to customize to your use case.
+
+To opt out of using the product module, simply set the `productModule` feature flag in `store.config.json` to `false` and restart the server.
+
 ### Toggle Search Engine Feature
 
 The Next.js Starter Template by default is compatible with MeiliSearch.

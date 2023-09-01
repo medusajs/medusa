@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import { createContext } from "react"
 import Modal, { ModalProps } from "../components/Modal"
 
@@ -22,14 +22,6 @@ const ModalProvider = ({ children }: ModalProviderProps) => {
   const closeModal = () => {
     setModalProps(null)
   }
-
-  useEffect(() => {
-    if (modalProps) {
-      document.body.setAttribute("data-modal", "opened")
-    } else {
-      document.body.removeAttribute("data-modal")
-    }
-  }, [modalProps])
 
   return (
     <ModalContext.Provider

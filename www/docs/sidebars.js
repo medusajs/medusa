@@ -57,6 +57,16 @@ module.exports = {
           id: "recipes/subscriptions",
           label: "Subscriptions",
         },
+        {
+          type: "doc",
+          id: "recipes/b2b",
+          label: "B2B / Wholesale",
+        },
+        {
+          type: "doc",
+          id: "recipes/multi-region",
+          label: "Multi-Region Store",
+        },
       ],
     },
     {
@@ -216,6 +226,15 @@ module.exports = {
       value: "Additional Resources",
       customProps: {
         sidebar_is_group_divider: true,
+      },
+      className: "homepage-sidebar-item",
+    },
+    {
+      type: "doc",
+      id: "beta",
+      label: "Beta Features",
+      customProps: {
+        sidebar_icon: "adjustments",
       },
       className: "homepage-sidebar-item",
     },
@@ -1138,6 +1157,11 @@ module.exports = {
           type: "doc",
           id: "modules/users/backend/send-invite",
           label: "Backend: Send Invite",
+        },
+        {
+          type: "doc",
+          id: "modules/users/backend/rbac",
+          label: "Backend: Implement RBAC",
         },
         {
           type: "doc",
@@ -2262,6 +2286,30 @@ module.exports = {
               iconName: "bolt-solid",
               description:
                 "Learn how to use local file storage in your Medusa backend",
+            },
+          },
+        ],
+      },
+      {
+        type: "category",
+        label: "Other",
+        collapsible: false,
+        link: {
+          type: "doc",
+          id: "plugins/other/index",
+        },
+        customProps: {
+          sidebar_is_group_headline: true,
+        },
+        items: [
+          {
+            type: "doc",
+            id: "plugins/other/ip-lookup",
+            label: "IP Lookup",
+            customProps: {
+              iconName: "bolt-solid",
+              description:
+                "Learn how to integrate ipstack to access the user's region.",
             },
           },
         ],

@@ -47,7 +47,7 @@ const Rating: React.FC<RatingProps> = ({
           (hoverRating !== 0 && hoverRating - 1 >= i)
         return (
           <button
-            className="transparent-button"
+            className="btn-clear"
             ref={(element) => {
               if (starElms.current.length - 1 < i) {
                 starElms.current.push(element)
