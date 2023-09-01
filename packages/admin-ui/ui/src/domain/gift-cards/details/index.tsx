@@ -62,7 +62,7 @@ const GiftCardDetails = () => {
         onSuccess: () => {
           notification(
             "Updated status",
-            "Succesfully updated the status of the Gift Card",
+            "Successfully updated the status of the Gift Card",
             "success"
           )
         },

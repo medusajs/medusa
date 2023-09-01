@@ -169,7 +169,7 @@ export default function NewsletterForm() {
       email,
     })
       .then((e) => {
-        alert("Subscribed sucessfully!")
+        alert("Subscribed successfully!")
         setEmail("")
       })
       .catch((e) => {
