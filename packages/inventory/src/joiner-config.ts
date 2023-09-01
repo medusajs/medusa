@@ -1,9 +1,14 @@
 import { Modules } from "@medusajs/modules-sdk"
-import { JoinerServiceConfig } from "@medusajs/types"
+import { ModuleJoinerConfig } from "@medusajs/types"
 
-export const joinerConfig: JoinerServiceConfig = {
+export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.INVENTORY,
   primaryKeys: ["id"],
+  linkableKeys: [
+    "inventory_item_id",
+    "inventory_level_id",
+    "reservation_item_id",
+  ],
   alias: [
     {
       name: "inventory_items",
