@@ -25,6 +25,7 @@ import {
 
 import { joinerConfig } from "../joiner-config"
 import PriceListService from "./price-list"
+import { partition } from "lodash"
 
 type InjectedDependencies = {
   baseRepository: DAL.RepositoryService
@@ -627,10 +628,32 @@ export default class PricingModuleService<
     data: PricingTypes.UpdatePriceListDTO[],
     @MedusaContext() sharedContext: Context = {}
   ) {
-    const priceLists = await this.priceListService_.update(data, sharedContext)
+    const [priceLists, prices] = data.reduce(
+      (acc, priceList) => {
+        const { prices, ...rest } = priceList
+        acc[0].push(rest)
+        acc[1].push(
+          ...prices.map((p) => ({ ...p, price_list_id: priceList.id }))
+        )
+        return acc
+      },
+      [[], []]
+    )
+
+    const updatedPriceLists = await this.priceListService_.update(
+      priceLists,
+      sharedContext
+    )
+
+    const [existingPrices, newPrices] = partition(prices, (p) => p.id)
+
+    await Promise.all([
+      this.moneyAmountService_.update(existingPrices, sharedContext),
+      this.moneyAmountService_.create(newPrices, sharedContext),
+    ])
 
     return this.baseRepository_.serialize<PricingTypes.PriceListDTO[]>(
-      priceLists,
+      updatedPriceLists,
       {
         populate: true,
       }
