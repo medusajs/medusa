@@ -21,6 +21,18 @@ export const joinerConfig: ModuleJoinerConfig[] = [
           methodSuffix: "Variants",
         },
       },
+      {
+        serviceName: "regionService",
+        primaryKey: "id",
+        foreignKey: "region_id",
+        alias: "region",
+      },
+      {
+        serviceName: "customerService",
+        primaryKey: "id",
+        foreignKey: "customer_id",
+        alias: "customer",
+      },
     ],
   },
   {
