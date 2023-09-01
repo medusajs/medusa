@@ -8,7 +8,6 @@ import {
   FindOptionsWhere,
   ILike,
   In,
-  IsNull,
   SelectQueryBuilder,
 } from "typeorm"
 import {
@@ -54,7 +53,6 @@ import { ProductOptionValueRepository } from "../repositories/product-option-val
 import EventBusService from "./event-bus"
 import RegionService from "./region"
 import { buildRelations } from "@medusajs/utils"
-import { dropVariantIdFkMoneyAmount1680857773273 } from "../migrations/1680857773273-drop-variant-id-fk-money-amount"
 
 class ProductVariantService extends TransactionBaseService {
   static Events = {
@@ -761,7 +759,7 @@ class ProductVariantService extends TransactionBaseService {
       let moneyAmount = await moneyAmountRepo
         .createQueryBuilder()
         .leftJoinAndSelect(
-          "money_amount_variant",
+          "product_variant_money_amount",
           "mav",
           "mav.money_amount_id = ma.id"
         )
@@ -786,7 +784,7 @@ class ProductVariantService extends TransactionBaseService {
         await moneyAmountRepo
           .createQueryBuilder()
           .insert()
-          .into("money_amount_variant")
+          .into("product_variant_money_amount")
           .values({
             variant_id: variantId,
             money_amount_id: createdAmount.id,

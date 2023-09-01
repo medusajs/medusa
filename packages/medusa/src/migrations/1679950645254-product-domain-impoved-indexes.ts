@@ -10,7 +10,7 @@ export class productDomainImprovedIndexes1679950645254
       /* You can turn of this settings if you are in a context with lots of variants) set enable_nestloop to off; */
       
       DROP INDEX IF EXISTS "IDX_17a06d728e4cfbc5bd2ddb70af";
-      CREATE INDEX IF NOT EXISTS idx_money_amount_variant_id ON money_amount (variant_id);
+      CREATE INDEX IF NOT EXISTS idx_product_variant_money_amount_id ON money_amount (variant_id);
 
       DROP INDEX IF EXISTS "IDX_b433e27b7a83e6d12ab26b15b0";
       CREATE INDEX IF NOT EXISTS idx_money_amount_region_id ON money_amount (region_id);
@@ -25,7 +25,7 @@ export class productDomainImprovedIndexes1679950645254
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
-      DROP INDEX IF EXISTS idx_money_amount_variant_id;
+      DROP INDEX IF EXISTS idx_product_variant_money_amount_id;
       DROP INDEX IF EXISTS idx_money_amount_region_id;
       DROP INDEX IF EXISTS idx_product_option_value_variant_id;
       DROP INDEX IF EXISTS idx_product_option_value_option_id;

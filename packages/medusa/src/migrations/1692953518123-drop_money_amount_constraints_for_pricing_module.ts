@@ -10,16 +10,21 @@ export class dropMoneyAmountConstraintsForPricingModule1692953518123
       `
         CREATE TABLE IF NOT EXISTS "product_variant_money_amount"
         (
+            "id" character varying NOT NULL,
             "money_amount_id" text NOT NULL,
-            "variant_id" text NOT NULL
+            "variant_id" text NOT NULL,
+            "deleted_at" TIMESTAMP WITH TIME ZONE,
+            "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+            "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+            CONSTRAINT "PK_product_variant_money_amount" PRIMARY KEY ("id")
         );
 
-        INSERT INTO "money_amount_variant" ("money_amount_id", "variant_id")
-          SELECT "id", "variant_id" FROM "money_amount";
+        INSERT INTO "product_variant_money_amount"("id", "money_amount_id", "variant_id")
+          SELECT CONCAT('pv', ma.id), "id", "variant_id" FROM "money_amount" ma;
 
         ALTER TABLE "money_amount" DROP COLUMN IF EXISTS "variant_id";
-        CREATE UNIQUE INDEX IF NOT EXISTS "idx_money_amount_variant_money_amount_id_unique" ON "money_amount_variant" ("money_amount_id");
-        CREATE INDEX IF NOT EXISTS "idx_money_amount_variant_variant_id" ON "money_amount_variant" ("variant_id");
+        CREATE UNIQUE INDEX IF NOT EXISTS "idx_product_variant_money_amount_money_amount_id_unique" ON "product_variant_money_amount" ("money_amount_id");
+        CREATE INDEX IF NOT EXISTS "idx_product_variant_money_amount_variant_id" ON "product_variant_money_amount" ("variant_id");
       `
     )
   }
@@ -27,18 +32,18 @@ export class dropMoneyAmountConstraintsForPricingModule1692953518123
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `
-        DROP INDEX IF EXISTS "idx_money_amount_variant_money_amount_id_unique";
-        DROP INDEX IF EXISTS "idx_money_amount_variant_variant_id";
+        DROP INDEX IF EXISTS "idx_product_variant_money_amount_money_amount_id_unique";
+        DROP INDEX IF EXISTS "idx_product_variant_money_amount_variant_id";
 
-        ALTER TABLE "money_amount_variant" ADD COLUMN IF NOT EXISTS "variant_id";
+        ALTER TABLE "product_variant_money_amount" ADD COLUMN IF NOT EXISTS "variant_id";
 
-        UPDATE "money_amount" SET "variant_id" = "money_amount_variant"."variant_id"
-          FROM "money_amount_variant"
-          WHERE "money_amount"."id" = "money_amount_variant"."money_amount_id";
+        UPDATE "money_amount" SET "variant_id" = "product_variant_money_amount"."variant_id"
+          FROM "product_variant_money_amount"
+          WHERE "money_amount"."id" = "product_variant_money_amount"."money_amount_id";
 
-        DROP TABLE IF EXISTS "money_amount_variant";
+        DROP TABLE IF EXISTS "product_variant_money_amount";
 
-        CREATE INDEX IF NOT EXISTS idx_money_amount_variant_id ON money_amount (variant_id);
+        CREATE INDEX IF NOT EXISTS idx_product_variant_money_amount_id ON money_amount (variant_id);
       `
     )
   }

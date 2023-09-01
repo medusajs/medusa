@@ -133,7 +133,7 @@ describe("/store/carts", () => {
       await dbConnection.manager.save(ma_sale_1)
 
       await dbConnection.manager.query(
-        `INSERT INTO "money_amount_variant"(money_amount_id, variant_id) VALUES 
+        `INSERT INTO "product_variant_money_amount"(money_amount_id, variant_id) VALUES 
         ('${ma_sale_1.id}', '${prodSale.variants[0].id}');
         `
       )

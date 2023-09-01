@@ -76,7 +76,7 @@ export const simplePriceListFactory = async (
       await manager.save(toSave)
       
       await manager.query(
-        `INSERT INTO money_amount_variant(variant_id, money_amount_id) VALUES ('${ma.variant_id}', '${toSave.id}')`
+        `INSERT INTO product_variant_money_amount(variant_id, money_amount_id) VALUES ('${ma.variant_id}', '${toSave.id}')`
       )
     }
   }

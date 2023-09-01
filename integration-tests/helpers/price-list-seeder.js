@@ -1,3 +1,4 @@
+const { ProductVariantMoneyAmount } = require("@medusajs/medusa")
 const { Region, PriceList, MoneyAmount } = require("@medusajs/medusa")
 
 module.exports = async (dataSource, data = {}) => {
@@ -63,14 +64,26 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(moneyAmount4)
 
-  await manager.query(
-    `INSERT INTO "money_amount_variant"(money_amount_id, variant_id) VALUES 
-    ('ma_test_1', 'test-variant'), 
-    ('ma_test_2', 'test-variant'), 
-    ('ma_test_3', 'test-variant'), 
-    ('ma_test_4', 'test-variant');
-    `
-  )
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma1",
+    money_amount_id: "ma_test_1",
+    variant_id: "test-variant",
+  })
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma2",
+    money_amount_id: "ma_test_2",
+    variant_id: "test-variant",
+  })
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma3",
+    money_amount_id: "ma_test_3",
+    variant_id: "test-variant",
+  })
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma4",
+    money_amount_id: "ma_test_4",
+    variant_id: "test-variant",
+  })
 
   const priceListWithMA = await manager.create(PriceList, {
     id: "pl_with_some_ma",

@@ -49,7 +49,7 @@ export class MoneyAmount extends SoftDeletableEntity {
     onDelete: "CASCADE",
   })
   @JoinTable({
-    name: "money_amount_variant",
+    name: "product_variant_money_amount",
     joinColumn: {
       name: "money_amount_id",
       referencedColumnName: "id",

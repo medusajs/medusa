@@ -50,7 +50,7 @@ export const MoneyAmountRepository = dataSource
 
       await this.createQueryBuilder()
         .insert()
-        .into("money_amount_variant")
+        .into("product_variant_money_amount")
         .values(
           data
             .filter(
@@ -77,7 +77,7 @@ export const MoneyAmountRepository = dataSource
     ): Promise<MoneyAmount[]> {
       const pricesNotInPricesPayload = await this.createQueryBuilder()
         .leftJoinAndSelect(
-          "money_amount_variant",
+          "product_variant_money_amount",
           "mav",
           "mav.money_amount_id = ma.id"
         )
@@ -116,12 +116,12 @@ export const MoneyAmountRepository = dataSource
       const maDeleteQueryBuilder = this.createQueryBuilder("ma")
       const mavDeleteQueryBuilder = this.createQueryBuilder()
         .delete()
-        .from("money_amount_variant")
+        .from("product_variant_money_amount")
 
       for (const data_ of data) {
         const maIdsForVariant = await this.createQueryBuilder("ma")
           .leftJoin(
-            "money_amount_variant",
+            "product_variant_money_amount",
             "mav",
             "mav.money_amount_id = ma.id"
           )
@@ -191,7 +191,7 @@ export const MoneyAmountRepository = dataSource
     ): Promise<MoneyAmount> {
       let moneyAmount = await this.createQueryBuilder()
         .leftJoinAndSelect(
-          "money_amount_variant",
+          "product_variant_money_amount",
           "mav",
           "mav.money_amount_id = ma.id"
         )
@@ -220,7 +220,7 @@ export const MoneyAmountRepository = dataSource
       if (created) {
         await this.createQueryBuilder()
           .insert()
-          .into("money_amount_variant")
+          .into("product_variant_money_amount")
           .values({
             variant_id: variantId,
             money_amount_id: createdAmount.id,
@@ -286,7 +286,11 @@ export const MoneyAmountRepository = dataSource
     ): Promise<[MoneyAmount[], number]> {
       const qb = this.createQueryBuilder("ma")
         .leftJoinAndSelect("ma.price_list", "price_list")
-        .leftJoin("money_amount_variant", "mav", "mav.money_amount_id = ma.id")
+        .leftJoin(
+          "product_variant_money_amount",
+          "mav",
+          "mav.money_amount_id = ma.id"
+        )
         .where("mav.variant_id = :variant_id", { variant_id })
 
       const getAndWhere = (subQb): WhereExpressionBuilder => {
@@ -337,7 +341,11 @@ export const MoneyAmountRepository = dataSource
       where: { variant_id: string; currency_code: string }[]
     ) {
       const qb = this.createQueryBuilder("ma")
-        .leftJoin("money_amount_variant", "mav", "mav.money_amount_id = ma.id")
+        .leftJoin(
+          "product_variant_money_amount",
+          "mav",
+          "mav.money_amount_id = ma.id"
+        )
         .addSelect("mav.variant_id", "variant_id")
 
       where.forEach((w, i) =>
@@ -360,7 +368,11 @@ export const MoneyAmountRepository = dataSource
       where: { variant_id: string; region_id: string }[]
     ) {
       const qb = this.createQueryBuilder("ma")
-        .leftJoin("money_amount_variant", "mav", "mav.money_amount_id = ma.id")
+        .leftJoin(
+          "product_variant_money_amount",
+          "mav",
+          "mav.money_amount_id = ma.id"
+        )
         .addSelect("mav.variant_id", "variant_id")
 
       where.forEach((w, i) =>
@@ -397,7 +409,7 @@ export const MoneyAmountRepository = dataSource
       const qb = this.createQueryBuilder("ma")
         .leftJoinAndSelect("ma.price_list", "price_list")
         .leftJoinAndSelect(
-          "money_amount_variant",
+          "product_variant_money_amount",
           "mav",
           "mav.money_amount_id = ma.id"
         )

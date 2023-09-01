@@ -34,7 +34,7 @@ export class ProductVariant extends SoftDeletableEntity {
     cascade: ["insert", "remove", "soft-remove", "recover"],
   })
   @JoinTable({
-    name: "money_amount_variant",
+    name: "product_variant_money_amount",
     joinColumn: {
       name: "variant_id",
       referencedColumnName: "id",
