@@ -1,4 +1,4 @@
-import { InputAlias, Workflows } from "../../definitions"
+import { Workflows } from "../../definitions"
 import {
   TransactionStepsDefinition,
   WorkflowManager,
@@ -17,40 +17,33 @@ export enum UpdateProductsActions {
   updateProducts = "updateProducts",
 }
 
+/**
+ *  ******* STEPS *******
+ *
+ *  1. Update product (without variants)
+ *  2. Prepare variants update
+ *    2.1) delete variants not in payload
+ *    2.2) update variants in payload
+ *    2.3) create variants
+ *      2.3.1) * TODO: handle inventory items
+ *
+ */
+
 export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
   next: {
-    action: UpdateProductsActions.prepare,
-    noCompensation: true,
-    next: {
-      action: UpdateProductsActions.updateProducts,
-      // next: {
-      //   action: UpdateProductsActions.createInventoryItems,
-      //   next: {
-      //     action: UpdateProductsActions.attachInventoryItems,
-      //   },
-      // },
-    },
+    action: UpdateProductsActions.updateProducts,
+    // next: {
+    //   action: UpdateProductsActions.createInventoryItems,
+    //   next: {
+    //     action: UpdateProductsActions.attachInventoryItems,
+    //   },
+    // },
   },
 }
 
 const handlers = new Map([
   [
-    UpdateProductsActions.prepare,
-    {
-      invoke: pipe(
-        {
-          merge: true,
-          inputAlias: InputAlias.ProductsInputData,
-          invoke: {
-            from: InputAlias.ProductsInputData,
-          },
-        },
-        ProductHandlers.createProductsPrepareData
-      ),
-    },
-  ],
-  [
-    UpdateProductsActions.prepare,
+    UpdateProductsActions.updateProducts,
     {
       invoke: pipe(
         {
