@@ -29,6 +29,7 @@
     "@medusajs/utils": "^1.9.6",
     "@mikro-orm/postgresql": "5.7.12",
     "awilix": "^8.0.0",
+    "knex": "2.4.2",
     "resolve-cwd": "^3.0.0"
   },
   "scripts": {
