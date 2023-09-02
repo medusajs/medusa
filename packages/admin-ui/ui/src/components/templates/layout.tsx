@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Toaster } from "react-hot-toast"
+import { useWindowDimensions } from "../../hooks/use-window-dimensions"
 import Sidebar from "../organisms/sidebar"
 import Topbar from "../organisms/topbar"
-import { useWindowDimensions } from "../../hooks/use-window-dimensions"
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { width } = useWindowDimensions()
@@ -13,7 +13,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   }, [width, toggleSidebar])
 
   return (
-    <div className="inter-base-regular text-grey-90 flex h-full w-full md:h-screen">
+    <div className="inter-base-regular text-grey-90 medium:w-full flex h-screen w-screen">
       <Toaster
         containerStyle={{
           top: 74,
