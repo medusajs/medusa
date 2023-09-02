@@ -189,7 +189,7 @@ describe("/admin/orders", () => {
     )
   })
 
-  test("creates a store return w. new tax system + shipping", async () => {
+  test("creates a store return with tax exclusive shipping option", async () => {
     await adminSeeder(dbConnection)
     const order = await createReturnableOrder(dbConnection, { oldTaxes: false })
     const returnOption = await simpleShippingOptionFactory(dbConnection, {
