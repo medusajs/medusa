@@ -26,10 +26,8 @@ const defaultQueryProps = {
 
 const ProductTable = () => {
   const location = useLocation()
-
   const { isFeatureEnabled } = useFeatureFlag()
   const { trackNumberOfProducts } = useAnalytics()
-
   let hiddenColumns = ["sales_channel"]
   if (isFeatureEnabled("sales_channels")) {
     defaultQueryProps.expand =
@@ -115,7 +113,7 @@ const ProductTable = () => {
     setListView,
     showList,
   })
-
+  console.log({ columns },'sdfsdf asdas')
   const {
     getTableProps,
     getTableBodyProps,

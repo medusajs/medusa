@@ -14,7 +14,7 @@ const getDevServerConfig = () => {
     entry: path.resolve(__dirname, "ui", "src", "main.tsx"),
     env: "development",
     options: {
-      backend: "http://localhost:9000",
+      backend: "http://localhost:7001",
       path: "/",
     },
     template: path.resolve(__dirname, "ui", "index.html"),
@@ -32,7 +32,7 @@ const getDevServerConfig = () => {
     ...devConfig,
     ...{
       devServer: {
-        port: 7001,
+        port: 7002,
         historyApiFallback: true,
       } as Configuration,
     },

@@ -7,8 +7,9 @@ import NotificationBell from "../../molecules/notification-bell"
 import SearchBar from "../../molecules/search-bar"
 import ActivityDrawer from "../activity-drawer"
 import MailDialog from "../help-dialog"
+import MenuIcon from "../../fundamentals/icons/menu-icon"
 
-const Topbar: React.FC = () => {
+const Topbar: any = ({ isSidebarOpen, toggleSidebar }: any) => {
   const {
     state: activityDrawerState,
     toggle: toggleActivityDrawer,
@@ -29,6 +30,14 @@ const Topbar: React.FC = () => {
 
   return (
     <div className="min-h-topbar max-h-topbar pr-xlarge pl-base bg-grey-0 border-grey-20 sticky top-0 z-40 flex w-full items-center justify-between border-b">
+      {!isSidebarOpen && (
+        <div
+          className="lg:hidden"
+          onClick={() => toggleSidebar((prev: boolean) => !prev)}
+        >
+          <MenuIcon />
+        </div>
+      )}
       <SearchBar />
       <div className="flex items-center">
         <Button

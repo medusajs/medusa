@@ -15,10 +15,11 @@ import TagIcon from "../../fundamentals/icons/tag-icon"
 import UsersIcon from "../../fundamentals/icons/users-icon"
 import SidebarMenuItem from "../../molecules/sidebar-menu-item"
 import UserMenu from "../../molecules/user-menu"
+import ArrowLeftIcon from "../../fundamentals/icons/arrow-left-icon"
 
 const ICON_SIZE = 20
 
-const Sidebar: React.FC = () => {
+const Sidebar: any = ({ toggleSidebar }: any) => {
   const [currentlyOpen, setCurrentlyOpen] = useState(-1)
 
   const { isFeatureEnabled } = useFeatureFlag()
@@ -47,6 +48,9 @@ const Sidebar: React.FC = () => {
         <div className="flex justify-between px-2">
           <div className="rounded-circle flex h-8 w-8 items-center justify-center border border-solid border-gray-300">
             <UserMenu />
+          </div>
+          <div onClick={() => toggleSidebar((prev: boolean) => !prev)}>
+            <ArrowLeftIcon />
           </div>
         </div>
         <div className="my-base flex flex-col px-2">

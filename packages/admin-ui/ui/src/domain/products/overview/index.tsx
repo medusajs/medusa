@@ -69,7 +69,7 @@ const Overview = () => {
     switch (view) {
       case "products":
         return (
-          <div className="flex space-x-2">
+          <div className="medium:space-x-2 medium:flex-row flex flex-col space-y-2">
             <Button
               variant="secondary"
               size="small"

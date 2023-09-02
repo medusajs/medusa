@@ -61,7 +61,7 @@ const Edit = () => {
             />
           )
         })}
-        <div className="gap-x-base grid grid-cols-12">
+        <div className="gap-x-base medium:grid-cols-12 medium:grid flex flex-col">
           <div className="gap-y-xsmall col-span-8 flex flex-col">
             {/* @ts-ignore */}
             <ProductGeneralSection product={product} />
