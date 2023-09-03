@@ -16,6 +16,8 @@ export async function updateProducts({
   const productModuleService: ProductTypes.IProductModuleService =
     container.resolve(ModulesDefinition[Modules.PRODUCT].registrationName)
 
+  data.products.forEach((product) => delete product.variants)
+
   await productModuleService.update(data.products)
 }
 

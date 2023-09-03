@@ -1,26 +1,24 @@
-import { Workflows } from "../../definitions"
+import { ProductTypes, WorkflowTypes } from "@medusajs/types"
+
+import { InputAlias, Workflows } from "../../definitions"
 import {
   TransactionStepsDefinition,
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { exportWorkflow, pipe } from "../../helper"
-
-import { ProductTypes, WorkflowTypes } from "@medusajs/types"
-import {
-  InventoryHandlers,
-  MiddlewaresHandlers,
-  ProductHandlers,
-} from "../../handlers"
+import { ProductHandlers } from "../../handlers"
 
 export enum UpdateProductsActions {
-  prepare = "prepare",
   updateProducts = "updateProducts",
+  updateProductsVariantsPrepareData = "updateProductsVariantsPrepareData",
+  updateProductsVariants = "updateProductsVariants",
 }
 
 /**
  *  ******* STEPS *******
  *
  *  1. Update product (without variants)
+ *   --- if no variants in the payload -> stop here
  *  2. Prepare variants update
  *    2.1) delete variants not in payload
  *    2.2) update variants in payload
@@ -32,12 +30,19 @@ export enum UpdateProductsActions {
 export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
   next: {
     action: UpdateProductsActions.updateProducts,
-    // next: {
-    //   action: UpdateProductsActions.createInventoryItems,
-    //   next: {
-    //     action: UpdateProductsActions.attachInventoryItems,
-    //   },
-    // },
+    noCompensation: true, // TODO: compensate - revert TX
+    next: {
+      action: UpdateProductsActions.updateProductsVariantsPrepareData,
+      next: {
+        action: UpdateProductsActions.updateProductsVariants,
+        // next: {
+        //   action: UpdateProductsActions.createInventoryItems,
+        //   next: {
+        //     action: UpdateProductsActions.attachInventoryItems,
+        //   },
+        // },
+      },
+    },
   },
 }
 
@@ -48,22 +53,13 @@ const handlers = new Map([
       invoke: pipe(
         {
           merge: true,
+          inputAlias: InputAlias.ProductsInputData,
           invoke: {
-            from: UpdateProductsActions.prepare,
+            from: InputAlias.ProductsInputData,
           },
         },
         ProductHandlers.updateProducts
       ),
-      // compensate: pipe(
-      //   {
-      //     merge: true,
-      //     invoke: {
-      //       from: UpdateProductsActions.updateProducts,
-      //       alias: ProductHandlers.removeProducts.aliases.products,
-      //     },
-      //   },
-      //   ProductHandlers.removeProducts
-      // ),
     },
   ],
 ])
