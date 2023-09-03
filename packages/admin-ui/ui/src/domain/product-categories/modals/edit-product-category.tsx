@@ -81,6 +81,9 @@ function EditProductCategoriesSideModal(
         name,
         handle,
         description,
+        name_ar,
+        description_ar,
+        handle_ar,
         is_active: isActive,
         is_internal: !isPublic,
       })

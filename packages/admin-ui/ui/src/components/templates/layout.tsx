@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { useState, useEffect } from "react"
 import { Toaster } from "react-hot-toast"
-import { useWindowDimensions } from "../../hooks/use-window-dimensions"
 import Sidebar from "../organisms/sidebar"
 import Topbar from "../organisms/topbar"
+import { useWindowDimensions } from "../../hooks/use-window-dimensions"
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const { width } = useWindowDimensions()
@@ -13,7 +13,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   }, [width, toggleSidebar])
 
   return (
-    <div className="inter-base-regular text-grey-90 medium:w-full flex h-screen w-screen">
+    <div className="inter-base-regular text-grey-90 flex h-full w-full md:h-screen">
       <Toaster
         containerStyle={{
           top: 74,
@@ -22,7 +22,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
           right: 24,
         }}
       />
-      {isSidebarOpen && <Sidebar toggleSidebar={toggleSidebar} />}
+      <Sidebar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
       <div className="flex flex-1 flex-col">
         <Topbar isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
         <div className="large:px-xlarge py-xlarge bg-grey-5 min-h-content overflow-y-auto">

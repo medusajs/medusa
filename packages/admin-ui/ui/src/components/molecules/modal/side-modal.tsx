@@ -7,13 +7,21 @@ const MODAL_WIDTH = 560
 type SideModalProps = PropsWithChildren<{
   close: () => void
   isVisible: boolean
+  direction?: string
+  customWidth?: number
 }>
 
 /**
  * Side modal displayed as right drawer on open.
  */
 function SideModal(props: SideModalProps) {
-  const { isVisible, children, close } = props
+  const {
+    isVisible,
+    children,
+    close,
+    direction = "right",
+    customWidth = 0,
+  } = props
   return (
     <Portal.Root>
       <AnimatePresence>
@@ -37,19 +45,19 @@ function SideModal(props: SideModalProps) {
             ></motion.div>
             <motion.div
               transition={{ ease: "easeInOut" }}
-              initial={{ right: -MODAL_WIDTH }}
+              initial={{ [direction]: -MODAL_WIDTH - customWidth }}
               style={{
                 position: "fixed",
                 height: "100%",
-                width: MODAL_WIDTH,
+                width: MODAL_WIDTH - customWidth,
                 background: "white",
-                right: 0,
+                [direction]: 0,
                 top: 0,
                 zIndex: 200,
               }}
-              className="overflow-hidden rounded border"
-              animate={{ right: 0 }}
-              exit={{ right: -MODAL_WIDTH }}
+              className="overflow-scroll rounded border"
+              animate={{ [direction]: 0 }}
+              exit={{ [direction]: -MODAL_WIDTH - customWidth }}
             >
               {children}
             </motion.div>

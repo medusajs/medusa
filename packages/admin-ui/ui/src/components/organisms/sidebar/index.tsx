@@ -16,10 +16,12 @@ import UsersIcon from "../../fundamentals/icons/users-icon"
 import SidebarMenuItem from "../../molecules/sidebar-menu-item"
 import UserMenu from "../../molecules/user-menu"
 import ArrowLeftIcon from "../../fundamentals/icons/arrow-left-icon"
+import { useWindowDimensions } from "../../../hooks/use-window-dimensions"
+import SideModal from "../../molecules/modal/side-modal"
 
 const ICON_SIZE = 20
 
-const Sidebar: any = ({ toggleSidebar }: any) => {
+const SidebarBase: any = () => {
   const [currentlyOpen, setCurrentlyOpen] = useState(-1)
 
   const { isFeatureEnabled } = useFeatureFlag()
@@ -48,9 +50,6 @@ const Sidebar: any = ({ toggleSidebar }: any) => {
         <div className="flex justify-between px-2">
           <div className="rounded-circle flex h-8 w-8 items-center justify-center border border-solid border-gray-300">
             <UserMenu />
-          </div>
-          <div onClick={() => toggleSidebar((prev: boolean) => !prev)}>
-            <ArrowLeftIcon />
           </div>
         </div>
         <div className="my-base flex flex-col px-2">
@@ -142,6 +141,29 @@ const Sidebar: any = ({ toggleSidebar }: any) => {
         </div>
       </div>
     </div>
+  )
+}
+
+function Sidebar({ toggleSidebar, isSidebarOpen }: any) {
+  const { width } = useWindowDimensions()
+  function onClose() {
+    toggleSidebar(false)
+  }
+  if (width < 1024) {
+    return (
+      <SideModal
+        close={onClose}
+        isVisible={!!isSidebarOpen}
+        direction="left"
+        customWidth={360}
+      >
+        <SidebarBase />
+      </SideModal>
+    )
+  }
+
+  return (
+    <SidebarBase toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
   )
 }
 
