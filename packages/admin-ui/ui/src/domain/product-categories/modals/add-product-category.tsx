@@ -100,7 +100,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
         </div>
       </FocusModal.Header>
 
-      <FocusModal.Main className="no-scrollbar flex w-full justify-center">
+      <FocusModal.Main className="flex w-full justify-center">
         <div className="small:w-4/5 medium:w-7/12 large:w-6/12 my-16 max-w-[700px]">
           <h1 className="inter-xlarge-semibold text-grey-90 pb-6">
             Add category {parentCategory && `to ${parentCategory.name}`}
@@ -119,7 +119,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
 
           <h4 className="inter-large-semibold text-grey-90 pb-1">Details</h4>
 
-          <div className="mb-8 flex justify-between gap-6">
+          <div className="medium:flex-row mb-8 flex flex-col justify-between gap-6">
             <InputField
               required
               label="Name"
@@ -141,7 +141,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
               onChange={(ev) => setHandle(ev.target.value)}
             />
           </div>
-          <div className="mb-8 flex justify-between gap-6">
+          <div className="medium:flex-row mb-8 flex flex-col justify-between gap-6">
             <InputField
               required
               label="Name in arabic"
@@ -182,7 +182,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
             />
           </div>
 
-          <div className="mb-8 flex justify-between gap-6">
+          <div className="medium:flex-row mb-8 flex flex-col justify-between gap-6">
             <div className="flex-1">
               <NextSelect
                 label="Status"

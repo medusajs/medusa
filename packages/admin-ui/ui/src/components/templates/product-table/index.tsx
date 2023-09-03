@@ -113,7 +113,7 @@ const ProductTable = () => {
     setListView,
     showList,
   })
-  console.log({ columns },'sdfsdf asdas')
+
   const {
     getTableProps,
     getTableBodyProps,

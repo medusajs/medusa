@@ -13,7 +13,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   }, [width, toggleSidebar])
 
   return (
-    <div className="inter-base-regular text-grey-90 flex h-full w-full md:h-screen">
+    <div className="inter-base-regular text-grey-90 flex h-screen w-full">
       <Toaster
         containerStyle={{
           top: 74,

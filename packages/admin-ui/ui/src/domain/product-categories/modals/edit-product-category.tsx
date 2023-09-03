@@ -101,7 +101,7 @@ function EditProductCategoriesSideModal(
   }
 
   return (
-    <SideModal close={onClose} isVisible={!!isVisible}>
+    <SideModal close={onClose} isVisible={!!isVisible} customWidth={200}>
       <div className="flex h-full flex-col justify-between">
         {/* === HEADER === */}
         <div className="flex items-center justify-between p-6">
@@ -149,7 +149,7 @@ function EditProductCategoriesSideModal(
             onChange={(ev) => setHandle(ev.target.value)}
           />
 
-          <div className="mb-8 flex justify-between gap-6">
+          <div className="medium:flex-row mb-8 flex flex-col justify-between gap-6">
             <InputField
               required
               label="Name in arabic"
