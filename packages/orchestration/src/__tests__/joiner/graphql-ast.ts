@@ -274,4 +274,85 @@ describe("RemoteJoiner.parseQuery", () => {
       ],
     })
   })
+
+  it("Nested query with fields and directives", async () => {
+    const graphqlQuery = `
+      query {
+        order(regularArgs: 123) {
+          id
+          number @include(if: "date > '2020-01-01'")
+          date
+          products {
+            product_id 
+            variant_id
+            variant @count {
+              name @lowerCase
+              sku @include(if: "name == 'test'")
+            }
+          }
+        }
+      }
+    `
+    const parser = new GraphQLParser(graphqlQuery)
+    const rjQuery = parser.parseQuery()
+
+    expect(rjQuery).toEqual({
+      alias: "order",
+      fields: ["id", "number", "date", "products"],
+      expands: [
+        {
+          property: "products",
+          fields: ["product_id", "variant_id", "variant"],
+          directives: {
+            variant: [
+              {
+                name: "count",
+              },
+            ],
+          },
+        },
+        {
+          property: "products.variant",
+          fields: ["name", "sku"],
+          directives: {
+            name: [
+              {
+                name: "lowerCase",
+              },
+            ],
+            sku: [
+              {
+                name: "include",
+                args: [
+                  {
+                    name: "if",
+                    value: "name == 'test'",
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      ],
+      args: [
+        {
+          name: "regularArgs",
+          value: 123,
+        },
+      ],
+      directives: {
+        number: [
+          {
+            name: "include",
+            args: [
+              {
+                name: "if",
+                value: "date > '2020-01-01'",
+              },
+            ],
+          },
+        ],
+      },
+    })
+  })
 })

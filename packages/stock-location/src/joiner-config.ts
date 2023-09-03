@@ -1,9 +1,10 @@
+import { ModuleJoinerConfig } from "@medusajs/types"
 import { Modules } from "@medusajs/modules-sdk"
-import { JoinerServiceConfig } from "@medusajs/types"
 
-export const joinerConfig: JoinerServiceConfig = {
+export const joinerConfig: ModuleJoinerConfig = {
   serviceName: Modules.STOCK_LOCATION,
   primaryKeys: ["id"],
+  linkableKeys: ["stock_location_id"],
   alias: [
     {
       name: "stock_location",
