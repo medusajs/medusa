@@ -5,9 +5,9 @@ import {
   StockLocationDTO,
 } from "@medusajs/types"
 import MetadataForm, {
-  MetadataFormType,
   getMetadataFormValues,
   getSubmittableMetadata,
+  MetadataFormType,
 } from "../../../../components/forms/general/metadata-form"
 import {
   useAdminDeleteReservation,
@@ -95,13 +95,23 @@ const EditReservationDrawer = ({
       onSuccess: () => {
         notification(
           t("reservation.reservation-was-deleted", "Reservation was deleted"),
-          t("reservation.the-allocated-items-have-been-released", "The allocated items have been released."),
+          t(
+            "reservation.the-allocated-items-have-been-released",
+            "The allocated items have been released."
+          ),
           "success"
         )
         close()
       },
       onError: () => {
-        notification(t("reservation.error", "Error"), t("reservation.failed-to-delete-the-reservation", "Failed to delete the reservation "), "error")
+        notification(
+          t("reservation.error", "Error"),
+          t(
+            "reservation.failed-to-delete-the-reservation",
+            "Failed to delete the reservation "
+          ),
+          "error"
+        )
       },
     })
   }
@@ -150,13 +160,23 @@ const EditReservationDrawer = ({
         onSuccess: () => {
           notification(
             t("reservation.reservation-was-updated", "Reservation was updated"),
-            t("reservation.the-reservation-change-was-saved", "The reservation change was saved."),
+            t(
+              "reservation.the-reservation-change-was-saved",
+              "The reservation change was saved."
+            ),
             "success"
           )
           close()
         },
         onError: () => {
-          notification(t("reservation.errors", "Errors"), t("reservation.failed-to-update-reservation", "Failed to update reservation"), "error")
+          notification(
+            t("reservation.errors", "Errors"),
+            t(
+              "reservation.failed-to-update-reservation",
+              "Failed to update reservation"
+            ),
+            "error"
+          )
         },
       }
     )
@@ -212,7 +232,9 @@ const EditReservationDrawer = ({
       >
         <div className="flex h-full flex-col justify-between">
           <div className="border-grey-20 flex items-center justify-between border-b px-8 py-6">
-            <h1 className="inter-large-semibold ">{t("reservation.edit-reservation", "Edit Reservation")}</h1>
+            <h1 className="inter-large-semibold ">
+              {t("reservation.edit-reservation", "Edit Reservation")}
+            </h1>
             <Button
               variant="ghost"
               className="p-1.5"
@@ -226,7 +248,9 @@ const EditReservationDrawer = ({
             <div className="flex h-full flex-col justify-between gap-y-8 px-8 pb-8 pt-6">
               <div className="flex flex-col gap-y-6">
                 <div>
-                  <h2 className="inter-base-semibold">{t("reservation.location", "Location")}</h2>
+                  <h2 className="inter-base-semibold">
+                    {t("reservation.location", "Location")}
+                  </h2>
                   <span className="inter-base-regular text-grey-50">
                     {t(
                       "Choose which location you want to ship the items from."
@@ -249,10 +273,16 @@ const EditReservationDrawer = ({
 
                 <div>
                   <h2 className="inter-base-semibold">
-                    {t("reservation.items-to-allocate", "Items to Allocate")}
+                    {t(
+                      "reservation.items-to-allocate.title",
+                      "Items to Allocate"
+                    )}
                   </h2>
                   <span className="inter-base-regular text-grey-50">
-                    {t("reservation.select-the-number-of-items-that-you-wish-to-allocate", "Select the number of items that you wish to allocate.")}
+                    {t(
+                      "reservation.select-the-number-of-items-that-you-wish-to-allocate",
+                      "Select the number of items that you wish to allocate."
+                    )}
                   </span>
                   <div
                     className={`
@@ -303,9 +333,14 @@ const EditReservationDrawer = ({
                   </div>
                 </div>
                 <div className="border-grey-20 inter-base-regular border-t pt-6">
-                  <p className="inter-base-semibold">{t("reservation.description", "Description")}</p>
+                  <p className="inter-base-semibold">
+                    {t("reservation.description", "Description")}
+                  </p>
                   <p className="text-grey-50 mb-6">
-                    {t("reservation.what-type-of-reservation-is-this", "What type of reservation is this?")}
+                    {t(
+                      "reservation.what-type-of-reservation-is-this",
+                      "What type of reservation is this?"
+                    )}
                   </p>
                   <InputField
                     {...register("item.description")}
@@ -314,7 +349,9 @@ const EditReservationDrawer = ({
                 </div>
                 <div className="border-grey border-grey-20 w-full items-center border-t pt-6">
                   <div className="mb-2 flex justify-between">
-                    <p className="inter-base-semibold ">{t("reservation.metadata", "Metadata")}</p>
+                    <p className="inter-base-semibold ">
+                      {t("reservation.metadata", "Metadata")}
+                    </p>
                     <Button
                       size="small"
                       variant="ghost"
@@ -322,7 +359,9 @@ const EditReservationDrawer = ({
                       className="border"
                       onClick={toggleHasMetadata}
                     >
-                      {hasMetadata ? t("reservation.remove-metadata", "Remove metadata") : t("reservation.add-metadata", "Add metadata")}
+                      {hasMetadata
+                        ? t("reservation.remove-metadata", "Remove metadata")
+                        : t("reservation.add-metadata", "Add metadata")}
                     </Button>
                   </div>
                   {hasMetadata && (

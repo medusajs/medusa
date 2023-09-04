@@ -46,7 +46,7 @@ const CreateReturnReasonModal = ({
         ...data,
         description: data.description || undefined,
       })
-      notification(t("return-reasons.success", "Success"), t("return-reasons.created-a-new-return-reason", "Created a new return reason"), t("return-reasons.success", "success"))
+      notification(t("return-reasons.notification.success", "Success"), t("return-reasons.created-a-new-return-reason", "Created a new return reason"), t("return-reasons.success", "success"))
     } catch {
       notification(
         t("return-reasons.error", "Error"),

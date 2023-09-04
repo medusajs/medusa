@@ -11,18 +11,39 @@ import StatusIndicator from "../../fundamentals/status-indicator"
 
 const useProductTableColumn = ({ setTileView, setListView, showList }) => {
   const { t } = useTranslation()
+
   const getProductStatus = (status) => {
     switch (status) {
       case "proposed":
-        return <StatusIndicator title={t("product-table.proposed", "Proposed")} variant={"warning"} />
+        return (
+          <StatusIndicator
+            title={t("product-table.proposed", "Proposed")}
+            variant={"warning"}
+          />
+        )
       case "published":
-        return <StatusIndicator title={t("product-table.published", "Published")} variant={"success"} />
+        return (
+          <StatusIndicator
+            title={t("product-table.published.title", "Published")}
+            variant={"success"}
+          />
+        )
       case "rejected":
-        return <StatusIndicator title={t("product-table.rejected", "Rejected")} variant={"danger"} />
+        return (
+          <StatusIndicator
+            title={t("product-table.rejected", "Rejected")}
+            variant={"danger"}
+          />
+        )
       case "draft":
-        return <StatusIndicator title={t("product-table.draft", "Draft")} variant={"default"} />
+        return (
+          <StatusIndicator
+            title={t("product-table.draft.title", "Draft")}
+            variant={"default"}
+          />
+        )
       default:
-        return <StatusIndicator title={t(status)} variant={"default"} />
+        return <StatusIndicator title={status} variant={"default"} />
     }
   }
 

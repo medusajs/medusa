@@ -11,7 +11,7 @@ export const PaymentStatusComponent = ({ status }) => {
     case "canceled":
       return <StatusDot title={t("templates.canceled", "Canceled")} variant="danger" />
     case "requires_action":
-      return <StatusDot title={t("templates.requires-action", "Requires Action")} variant="danger" />
+      return <StatusDot title={t("templates.payment-status.requires-action", "Requires Action")} variant="danger" />
     default:
       return null
   }

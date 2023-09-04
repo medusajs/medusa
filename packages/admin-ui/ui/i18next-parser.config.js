@@ -68,7 +68,7 @@ module.exports = {
   verbose: false,
   // Display info about the parsing including some stats
 
-  failOnWarnings: false,
+  failOnWarnings: true,
   // Exit with an exit code of 1 on warnings
 
   failOnUpdate: false,

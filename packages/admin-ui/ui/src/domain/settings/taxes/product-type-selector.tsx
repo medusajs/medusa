@@ -29,7 +29,7 @@ export const ProductTypeSelector = ({ items, onChange }) => {
   return (
     <SelectableTable
       showSearch={false}
-      label={t("taxes.select-product-types", "Select Product Types")}
+      label={t("taxes.select-product-types.label", "Select Product Types")}
       objectName={t("taxes.product-types", "Product Types")}
       totalCount={count}
       pagination={pagination}

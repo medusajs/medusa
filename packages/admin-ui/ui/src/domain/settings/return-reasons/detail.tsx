@@ -56,7 +56,7 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
       {
         onSuccess: () => {
           notification(
-            t("return-reasons.success", "Success"),
+            t("return-reasons.success.title", "Success"),
             t("return-reasons.successfully-updated-return-reason", "Successfully updated return reason"),
             "success"
           )

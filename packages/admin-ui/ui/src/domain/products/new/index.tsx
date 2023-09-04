@@ -270,7 +270,7 @@ const NewProduct = ({ onClose }: Props) => {
             <Accordion defaultValue={["general"]} type="multiple">
               <Accordion.Item
                 value={"general"}
-                title={t("new.general-information", "General information")}
+                title={t("new.general-information.title", "General information")}
                 required
               >
                 <p className="inter-base-regular text-grey-50">

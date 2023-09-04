@@ -189,12 +189,22 @@ const OrderDetails = () => {
 
   const [, handleCopy] = useClipboard(`${order?.display_id!}`, {
     successDuration: 5500,
-    onCopied: () => notification(t("details.success", "Success"), t("details.order-id-copied", "Order ID copied"), "success"),
+    onCopied: () =>
+      notification(
+        t("details.success", "Success"),
+        t("details.order-id-copied", "Order ID copied"),
+        "success"
+      ),
   })
 
   const [, handleCopyEmail] = useClipboard(order?.email!, {
     successDuration: 5500,
-    onCopied: () => notification(t("details.success", "Success"), t("details.email-copied", "Email copied"), "success"),
+    onCopied: () =>
+      notification(
+        t("details.success", "Success"),
+        t("details.email-copied", "Email copied"),
+        "success"
+      ),
   })
 
   // @ts-ignore
@@ -205,8 +215,11 @@ const OrderDetails = () => {
 
   const handleDeleteOrder = async () => {
     const shouldDelete = await dialog({
-      heading: t("details.cancel-order", "Cancel order"),
-      text: t("details.are-you-sure-you-want-to-cancel-the-order", "Are you sure you want to cancel the order?"),
+      heading: t("details.cancel-order.heading", "Cancel order"),
+      text: t(
+        "details.are-you-sure-you-want-to-cancel-the-order",
+        "Are you sure you want to cancel the order?"
+      ),
       extraConfirmation: true,
       entityName: t("order #{display_id}", { display_id: order.display_id }),
     })
@@ -217,8 +230,20 @@ const OrderDetails = () => {
 
     return cancelOrder.mutate(undefined, {
       onSuccess: () =>
-        notification(t("details.success", "Success"), t("details.successfully-canceled-order", "Successfully canceled order"), "success"),
-      onError: (err) => notification(t("details.error", "Error"), getErrorMessage(err), "error"),
+        notification(
+          t("details.success", "Success"),
+          t(
+            "details.successfully-canceled-order",
+            "Successfully canceled order"
+          ),
+          "success"
+        ),
+      onError: (err) =>
+        notification(
+          t("details.error", "Error"),
+          getErrorMessage(err),
+          "error"
+        ),
     })
   }
 
@@ -556,7 +581,10 @@ const OrderDetails = () => {
                     )
                   })}
                 </div>
-                <RawJSON data={order} title={t("details.raw-order", "Raw order")} />
+                <RawJSON
+                  data={order}
+                  title={t("details.raw-order", "Raw order")}
+                />
                 <Spacer />
               </div>
               <Timeline orderId={order.id} />

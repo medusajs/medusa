@@ -90,7 +90,7 @@ const HeadingBodyCard = ({ priceList, setIsOpen, ...props }) => {
 
   const onDelete = async () => {
     const shouldDelete = await dialog({
-      heading: t("sections.delete-price-list", "Delete Price list"),
+      heading: t("sections.delete-price-list.heading", "Delete Price list"),
       text: t("sections.are-you-sure-you-want-to-delete-this-price-list", "Are you sure you want to delete this price list?"),
     })
     if (shouldDelete) {

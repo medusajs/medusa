@@ -54,8 +54,11 @@ export const FormattedFulfillment = ({
     const { resourceId, resourceType } = getData()
 
     const shouldCancel = await dialog({
-      heading: t("templates.cancel-fulfillment", "Cancel fulfillment?"),
-      text: t("templates.are-you-sure-you-want-to-cancel-the-fulfillment", "Are you sure you want to cancel the fulfillment?"),
+      heading: t("templates.cancel-fulfillment.heading", "Cancel fulfillment?"),
+      text: t(
+        "templates.are-you-sure-you-want-to-cancel-the-fulfillment",
+        "Are you sure you want to cancel the fulfillment?"
+      ),
     })
 
     if (!shouldCancel) {
@@ -70,11 +73,18 @@ export const FormattedFulfillment = ({
             onSuccess: () =>
               notification(
                 t("templates.success", "Success"),
-                t("templates.successfully-canceled-swap", "Successfully canceled swap"),
+                t(
+                  "templates.successfully-canceled-swap",
+                  "Successfully canceled swap"
+                ),
                 "success"
               ),
             onError: (err) =>
-              notification(t("templates.error", "Error"), getErrorMessage(err), "error"),
+              notification(
+                t("templates.error", "Error"),
+                getErrorMessage(err),
+                "error"
+              ),
           }
         )
       case "claim":
@@ -84,11 +94,18 @@ export const FormattedFulfillment = ({
             onSuccess: () =>
               notification(
                 t("templates.success", "Success"),
-                t("templates.successfully-canceled-claim", "Successfully canceled claim"),
+                t(
+                  "templates.successfully-canceled-claim",
+                  "Successfully canceled claim"
+                ),
                 "success"
               ),
             onError: (err) =>
-              notification(t("templates.error", "Error"), getErrorMessage(err), "error"),
+              notification(
+                t("templates.error", "Error"),
+                getErrorMessage(err),
+                "error"
+              ),
           }
         )
       default:
@@ -96,11 +113,18 @@ export const FormattedFulfillment = ({
           onSuccess: () =>
             notification(
               t("templates.success", "Success"),
-              t("templates.successfully-canceled-fulfillment", "Successfully canceled fulfillment"),
+              t(
+                "templates.successfully-canceled-fulfillment",
+                "Successfully canceled fulfillment"
+              ),
               "success"
             ),
           onError: (err) =>
-            notification(t("templates.error", "Error"), getErrorMessage(err), "error"),
+            notification(
+              t("templates.error", "Error"),
+              getErrorMessage(err),
+              "error"
+            ),
         })
     }
   }
@@ -110,14 +134,19 @@ export const FormattedFulfillment = ({
       <div className="flex flex-col space-y-1 py-4">
         <div className="text-grey-90">
           {fulfillment.canceled_at
-            ? t("templates.fulfillment-has-been-canceled", "Fulfillment has been canceled")
+            ? t(
+                "templates.fulfillment-has-been-canceled",
+                "Fulfillment has been canceled"
+              )
             : t("{title} Fulfilled by {provider}", {
                 title: fulfillmentObj.title,
                 provider: capitalize(fulfillment.provider_id),
               })}
         </div>
         <div className="text-grey-50 flex">
-          {!fulfillment.shipped_at ? t("templates.not-shipped", "Not shipped") : t("templates.tracking", "Tracking")}
+          {!fulfillment.shipped_at
+            ? t("templates.not-shipped", "Not shipped")
+            : t("templates.tracking", "Tracking")}
           {hasLinks &&
             fulfillment.tracking_links.map((tl, j) => (
               <TrackingLink key={j} trackingLink={tl} />
@@ -126,7 +155,9 @@ export const FormattedFulfillment = ({
         {!fulfillment.canceled_at && fulfillment.location_id && (
           <div className="flex flex-col">
             <div className="text-grey-50 font-semibold">
-              {fulfillment.shipped_at ? t("templates.shipped-from", "Shipped from") : t("templates.shipping-from", "Shipping from")}{" "}
+              {fulfillment.shipped_at
+                ? t("templates.shipped-from", "Shipped from")
+                : t("templates.shipping-from", "Shipping from")}{" "}
             </div>
             <div className="flex items-center pt-2">
               <IconBadge className="mr-2">

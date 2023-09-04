@@ -31,7 +31,9 @@ export const useVariantsTableColumns = (inventoryIsEnabled = false) => {
         Header: () => {
           return (
             <div className="text-right">
-              <span>{t("product-variants-section.inventory", "Inventory")}</span>
+              <span>
+                {t("product-variants-section.inventory", "Inventory")}
+              </span>
             </div>
           )
         },
@@ -115,7 +117,10 @@ const VariantsTable = ({ variants, actions }: Props) => {
     const inventoryManagementActions = []
     if (hasInventoryService) {
       inventoryManagementActions.push({
-        label: t("product-variants-section.manage-inventory", "Manage inventory"),
+        label: t(
+          "product-variants-section.manage-inventory",
+          "Manage inventory"
+        ),
         icon: <BuildingsIcon size="20" />,
         onClick: () => updateVariantInventory(variant),
       })
@@ -128,7 +133,10 @@ const VariantsTable = ({ variants, actions }: Props) => {
       },
       ...inventoryManagementActions,
       {
-        label: t("product-variants-section.duplicate-variant", "Duplicate Variant"),
+        label: t(
+          "product-variants-section.duplicate-variant",
+          "Duplicate Variant"
+        ),
         onClick: () =>
           // @ts-ignore
           duplicateVariant({
@@ -138,7 +146,10 @@ const VariantsTable = ({ variants, actions }: Props) => {
         icon: <DuplicateIcon size="20" />,
       },
       {
-        label: t("product-variants-section.delete-variant", "Delete Variant"),
+        label: t(
+          "product-variants-section.delete-variant.label",
+          "Delete Variant"
+        ),
         onClick: () => setVariantToRemove(variant),
         icon: <TrashIcon size="20" />,
         variant: "danger",
@@ -188,8 +199,14 @@ const VariantsTable = ({ variants, actions }: Props) => {
                     <DeletePrompt
                       onDelete={async () => deleteVariant(variantToRemove.id)}
                       handleClose={() => setVariantToRemove(null)}
-                      confirmText={t("product-variants-section.yes-delete", "Yes, delete")}
-                      heading={t("product-variants-section.delete-variant", "Delete variant")}
+                      confirmText={t(
+                        "product-variants-section.yes-delete",
+                        "Yes, delete"
+                      )}
+                      heading={t(
+                        "product-variants-section.delete-variant.heading",
+                        "Delete variant"
+                      )}
                       text={`${t(
                         "Are you sure you want to delete this variant? "
                       )}${

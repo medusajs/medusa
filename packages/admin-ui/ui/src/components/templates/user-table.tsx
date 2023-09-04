@@ -128,7 +128,10 @@ const UserTable: React.FC<UserTableProps> = ({
                 .then(() => {
                   notification(
                     t("templates.success", "Success"),
-                    t("templates.invitiation-link-has-been-resent", "Invitiation link has been resent"),
+                    t(
+                      "templates.invitiation-link-has-been-resent",
+                      "Invitiation link has been resent"
+                    ),
                     "success"
                   )
                 })
@@ -143,7 +146,10 @@ const UserTable: React.FC<UserTableProps> = ({
               copy(inviteLink.replace("{invite_token}", invite.token))
               notification(
                 t("templates.success", "Success"),
-                t("templates.invite-link-copied-to-clipboard", "Invite link copied to clipboard"),
+                t(
+                  "templates.invite-link-copied-to-clipboard",
+                  "Invite link copied to clipboard"
+                ),
                 "success"
               )
             },
@@ -168,9 +174,15 @@ const UserTable: React.FC<UserTableProps> = ({
         <Table.Cell></Table.Cell>
         <Table.Cell>
           {new Date(invite?.expires_at) < new Date() ? (
-            <StatusIndicator title={t("templates.expired", "Expired")} variant={"danger"} />
+            <StatusIndicator
+              title={t("templates.expired", "Expired")}
+              variant={"danger"}
+            />
           ) : (
-            <StatusIndicator title={t("templates.pending", "Pending")} variant={"success"} />
+            <StatusIndicator
+              title={t("templates.pending", "Pending")}
+              variant={"success"}
+            />
           )}
         </Table.Cell>
       </Table.Row>
@@ -289,8 +301,12 @@ const UserTable: React.FC<UserTableProps> = ({
       >
         <Table.Head>
           <Table.HeadRow>
-            <Table.HeadCell className="w-72">{t("templates.name", "Name")}</Table.HeadCell>
-            <Table.HeadCell className="w-80">{t("templates.email", "Email")}</Table.HeadCell>
+            <Table.HeadCell className="w-72">
+              {t("templates.name", "Name")}
+            </Table.HeadCell>
+            <Table.HeadCell className="w-80">
+              {t("templates.email", "Email")}
+            </Table.HeadCell>
             <Table.HeadCell className="w-72">
               {t("templates.team-permissions", "Team permissions")}
             </Table.HeadCell>
@@ -302,8 +318,11 @@ const UserTable: React.FC<UserTableProps> = ({
       {selectedUser &&
         (deleteUser ? (
           <DeletePrompt
-            text={t("templates.are-you-sure-you-want-to-remove-this-user", "Are you sure you want to remove this user?")}
-            heading={t("templates.remove-user", "Remove user")}
+            text={t(
+              "templates.are-you-sure-you-want-to-remove-this-user",
+              "Are you sure you want to remove this user?"
+            )}
+            heading={t("templates.remove-user.heading", "Remove user")}
             onDelete={() =>
               Medusa.users.delete(selectedUser.id).then(() => {
                 notification(
@@ -325,13 +344,19 @@ const UserTable: React.FC<UserTableProps> = ({
         ))}
       {selectedInvite && (
         <DeletePrompt
-          text={t("templates.are-you-sure-you-want-to-remove-this-invite", "Are you sure you want to remove this invite?")}
+          text={t(
+            "templates.are-you-sure-you-want-to-remove-this-invite",
+            "Are you sure you want to remove this invite?"
+          )}
           heading={t("templates.remove-invite", "Remove invite")}
           onDelete={() =>
             Medusa.invites.delete(selectedInvite.id).then(() => {
               notification(
                 t("templates.success", "Success"),
-                t("templates.invitiation-has-been-removed", "Invitiation has been removed"),
+                t(
+                  "templates.invitiation-has-been-removed",
+                  "Invitiation has been removed"
+                ),
                 "success"
               )
               triggerRefetch()

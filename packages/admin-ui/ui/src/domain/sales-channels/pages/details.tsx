@@ -266,7 +266,7 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
       text: t(
         "Are you sure you want to delete this sales channel? The setup you made will be gone forever."
       ),
-      heading: t("pages.delete-channel", "Delete Channel"),
+      heading: t("pages.delete-channel.heading", "Delete Channel"),
       extraConfirmation: true,
       entityName: salesChannel.name,
     })

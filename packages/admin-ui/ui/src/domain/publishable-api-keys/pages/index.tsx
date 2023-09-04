@@ -222,7 +222,7 @@ function Index() {
 
   const actions = [
     {
-      label: t("pages.create-api-key", "Create API key"),
+      label: t("pages.create-api-key.label", "Create API key"),
       onClick: openCreateModal,
     },
   ]

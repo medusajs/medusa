@@ -62,7 +62,7 @@ const ProductPrices = ({
   const getVariantActions = (variant) => {
     return [
       {
-        label: t("sections.edit-prices", "Edit prices"),
+        label: t("sections.edit-prices.label", "Edit prices"),
         icon: <EditIcon />,
         onClick: () => {
           setSelectedVariant(variant)

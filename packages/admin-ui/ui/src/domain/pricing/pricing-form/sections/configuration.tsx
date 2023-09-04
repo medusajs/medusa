@@ -183,7 +183,7 @@ const Configuration: React.FC<ConfigurationProps> = () => {
                           value: cg.id,
                         })) || []
                       }
-                      label={t("sections.customer-groups", "Customer Groups")}
+                      label={t("sections.customer-groups.label", "Customer Groups")}
                       onChange={onChange}
                       isMulti={true}
                       selectAll={true}

@@ -76,7 +76,9 @@ const AddReasonScreen = ({
     <>
       <Modal.Content>
         <div className="gap-y-base flex flex-col">
-          <h2 className="inter-base-semibold">{t("add-return-reason.reason-for-return", "Reason for Return")}</h2>
+          <h2 className="inter-base-semibold">
+            {t("add-return-reason.reason-for-return", "Reason for Return")}
+          </h2>
           <Controller
             control={control}
             name="reason"
@@ -84,7 +86,10 @@ const AddReasonScreen = ({
               return (
                 <NextSelect
                   label={t("add-return-reason.reason", "Reason")}
-                  placeholder={t("add-return-reason.choose-a-return-reason", "Choose a return reason")}
+                  placeholder={t(
+                    "add-return-reason.choose-a-return-reason",
+                    "Choose a return reason"
+                  )}
                   {...field}
                   options={returnReasonOptions}
                   isClearable
@@ -94,7 +99,10 @@ const AddReasonScreen = ({
           />
           <TextArea
             label={t("add-return-reason.note", "Note")}
-            placeholder={t("add-return-reason.product-was-damaged-during-shipping", "Product was damaged during shipping")}
+            placeholder={t(
+              "add-return-reason.product-was-damaged-during-shipping",
+              "Product was damaged during shipping"
+            )}
             {...register("note")}
           />
         </div>
@@ -125,7 +133,7 @@ export const useAddReasonScreen = () => {
 
   const pushScreen = (props: Props) => {
     push({
-      title: t("add-return-reason.select-reason", "Select Reason"),
+      title: t("add-return-reason.select-reason.title", "Select Reason"),
       onBack: () => pop(),
       view: <AddReasonScreen {...props} />,
     })

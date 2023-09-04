@@ -42,7 +42,7 @@ const ReturnReasons = () => {
           title={t("return-reasons.return-reasons", "Return Reasons")}
           actionables={[
             {
-              label: t("return-reasons.add-reason", "Add reason"),
+              label: t("return-reasons.add-reason.label", "Add reason"),
               icon: (
                 <span className="text-grey-90">
                   <PlusIcon size={20} />

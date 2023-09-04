@@ -31,7 +31,7 @@ const DiscountDetailsConditions: React.FC<DiscountDetailsConditionsProps> = ({
           forceDropdown
           actionables={[
             {
-              label: t("conditions.add-condition", "Add condition"),
+              label: t("conditions.add-condition.label", "Add condition"),
               icon: <PlusIcon size={16} />,
               onClick: () => setShow(true),
             },
@@ -59,7 +59,10 @@ const DiscountDetailsConditions: React.FC<DiscountDetailsConditionsProps> = ({
           ) : (
             <div className="gap-y-small flex flex-1 flex-col items-center justify-center">
               <span className="inter-base-regular text-grey-50">
-                {t("conditions.this-discount-has-no-conditions", "This discount has no conditions")}
+                {t(
+                  "conditions.this-discount-has-no-conditions",
+                  "This discount has no conditions"
+                )}
               </span>
             </div>
           )}

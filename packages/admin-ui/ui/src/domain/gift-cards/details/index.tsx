@@ -51,7 +51,7 @@ const GiftCardDetails = () => {
       icon: <EditIcon size={20} />,
     },
     {
-      label: t("details.update-balance", "Update balance"),
+      label: t("details.update-balance.label", "Update balance"),
       onClick: openBalance,
       icon: <DollarSignIcon size={20} />,
     },
@@ -64,12 +64,19 @@ const GiftCardDetails = () => {
         onSuccess: () => {
           notification(
             t("details.updated-status", "Updated status"),
-            t("details.successfully-updated-the-status-of-the-gift-card", "Successfully updated the status of the Gift Card"),
+            t(
+              "details.successfully-updated-the-status-of-the-gift-card",
+              "Successfully updated the status of the Gift Card"
+            ),
             "success"
           )
         },
         onError: (err) =>
-          notification(t("details.error", "Error"), getErrorMessage(err), "error"),
+          notification(
+            t("details.error", "Error"),
+            getErrorMessage(err),
+            "error"
+          ),
       }
     )
   }
@@ -177,7 +184,10 @@ const GiftCardDetails = () => {
               )
             })}
 
-            <RawJSON data={giftCard} title={t("details.raw-gift-card", "Raw gift card")} />
+            <RawJSON
+              data={giftCard}
+              title={t("details.raw-gift-card", "Raw gift card")}
+            />
           </div>
 
           <UpdateBalanceModal

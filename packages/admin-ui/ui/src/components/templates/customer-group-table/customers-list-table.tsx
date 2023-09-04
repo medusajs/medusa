@@ -96,7 +96,10 @@ function CustomersListTableRow(props: CustomersListTableRowProps) {
     //   icon: <MailIcon size={20} />,
     // },
     {
-      label: t("customer-group-table.delete-from-the-group", "Delete from the group"),
+      label: t(
+        "customer-group-table.delete-from-the-group",
+        "Delete from the group"
+      ),
       variant: "danger",
       onClick: () =>
         removeCustomers({
@@ -189,7 +192,10 @@ function CustomersListTable(props: CustomersListTableProps) {
         count: count!,
         offset: queryObject.offset,
         pageSize: queryObject.offset + table.rows.length,
-        title: t("customer-group-table.customer-groups", "Customer Groups"),
+        title: t(
+          "customer-group-table.customer-groups.title",
+          "Customer Groups"
+        ),
         currentPage: table.state.pageIndex + 1,
         pageCount: table.pageCount,
         nextPage: handleNext,

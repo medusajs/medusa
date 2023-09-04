@@ -315,7 +315,10 @@ const InventoryRow = ({
 
     const actions = [
       {
-        label: t("inventory-table.adjust-availability", "Adjust Availability"),
+        label: t(
+          "inventory-table.actions.adjust-availability",
+          "Adjust Availability"
+        ),
         onClick: showAdjustAvailabilityModal,
       },
     ]
@@ -401,7 +404,10 @@ const AdjustAvailabilityModal = ({
         onSuccess: () => {
           notification(
             t("inventory-table.success", "Success"),
-            t("inventory-table.inventory-item-updated-successfully", "Inventory item updated successfully"),
+            t(
+              "inventory-table.inventory-item-updated-successfully",
+              "Inventory item updated successfully"
+            ),
             "success"
           )
           handleClose()
@@ -416,7 +422,9 @@ const AdjustAvailabilityModal = ({
     <Modal handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <h1 className="inter-large-semibold">{t("inventory-table.adjust-availability", "Adjust availability")}</h1>
+          <h1 className="inter-large-semibold">
+            {t("inventory-table.adjust-availability", "Adjust availability")}
+          </h1>
         </Modal.Header>
         <Modal.Content>
           {isLoading ? (
