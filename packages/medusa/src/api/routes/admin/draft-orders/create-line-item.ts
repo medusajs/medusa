@@ -1,19 +1,19 @@
-import {
-  CartService,
-  DraftOrderService,
-  LineItemService,
-} from "../../../../services"
 import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
 import {
   defaultAdminDraftOrdersCartFields,
   defaultAdminDraftOrdersCartRelations,
   defaultAdminDraftOrdersFields,
 } from "."
+import {
+  CartService,
+  DraftOrderService,
+  LineItemService,
+} from "../../../../services"
 
-import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
-import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 import { cleanResponseData } from "../../../../utils/clean-response-data"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /admin/draft-orders/{id}/line-items
@@ -119,7 +119,9 @@ export default async (req, res) => {
 
       await cartService
         .withTransaction(manager)
-        .addLineItem(draftOrder.cart_id, line, { validateSalesChannels: false })
+        .addOrUpdateLineItems(draftOrder.cart_id, line, {
+          validateSalesChannels: false,
+        })
     } else {
       // custom line items can be added to a draft order
       await lineItemService.withTransaction(manager).create({

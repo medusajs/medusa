@@ -1,14 +1,14 @@
 import { isDefined, MedusaError } from "medusa-core-utils"
 import { EntityManager, FindOperator, In } from "typeorm"
 
+import { TransactionBaseService } from "../interfaces"
 import { Cart, DiscountRuleType, LineItem, LineItemAdjustment } from "../models"
 import { LineItemAdjustmentRepository } from "../repositories/line-item-adjustment"
 import { FindConfig } from "../types/common"
 import { FilterableLineItemAdjustmentProps } from "../types/line-item-adjustment"
-import DiscountService from "./discount"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata } from "../utils"
 import { CalculationContextData } from "../types/totals"
+import { buildQuery, setMetadata } from "../utils"
+import DiscountService from "./discount"
 
 type LineItemAdjustmentServiceProps = {
   manager: EntityManager
@@ -17,7 +17,7 @@ type LineItemAdjustmentServiceProps = {
 }
 
 type AdjustmentContext = {
-  variant: { product_id: string }
+  product_id: string
 }
 
 type GeneratedAdjustment = {
@@ -218,11 +218,11 @@ class LineItemAdjustmentService extends TransactionBaseService {
 
       const discountServiceTx = this.discountService.withTransaction(manager)
 
-      const lineItemProduct = context.variant.product_id
+      const lineItemProduct = context.product_id
 
       const isValid = await discountServiceTx.validateDiscountForProduct(
         discount.rule_id,
-        lineItemProduct
+        lineItemProduct as string
       )
 
       // if discount is not valid for line item, then do nothing
@@ -264,7 +264,8 @@ class LineItemAdjustmentService extends TransactionBaseService {
     lineItem: LineItem
   ): Promise<LineItemAdjustment[]> {
     const adjustments = await this.generateAdjustments(cart, lineItem, {
-      variant: lineItem.variant,
+      product_id:
+        lineItem.variant?.product_id ?? lineItem.metadata?._product_id,
     })
 
     const createdAdjustments: LineItemAdjustment[] = []

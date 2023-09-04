@@ -18,11 +18,13 @@ import {
   RegionService,
   SalesChannelService,
   ShippingOptionService,
+  ShippingProfileService,
   StoreService,
   TaxProviderService,
   TotalsService,
 } from "."
 import { IPriceSelectionStrategy, TransactionBaseService } from "../interfaces"
+import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
 import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
@@ -79,6 +81,7 @@ type InjectedDependencies = {
   regionService: RegionService
   lineItemService: LineItemService
   shippingOptionService: ShippingOptionService
+  shippingProfileService: ShippingProfileService
   customerService: CustomerService
   discountService: DiscountService
   giftCardService: GiftCardService
@@ -119,6 +122,7 @@ class CartService extends TransactionBaseService {
   protected readonly paymentProviderService_: PaymentProviderService
   protected readonly customerService_: CustomerService
   protected readonly shippingOptionService_: ShippingOptionService
+  protected readonly shippingProfileService_: ShippingProfileService
   protected readonly discountService_: DiscountService
   protected readonly giftCardService_: GiftCardService
   protected readonly taxProviderService_: TaxProviderService
@@ -143,6 +147,7 @@ class CartService extends TransactionBaseService {
     regionService,
     lineItemService,
     shippingOptionService,
+    shippingProfileService,
     customerService,
     discountService,
     giftCardService,
@@ -172,6 +177,7 @@ class CartService extends TransactionBaseService {
     this.paymentProviderService_ = paymentProviderService
     this.customerService_ = customerService
     this.shippingOptionService_ = shippingOptionService
+    this.shippingProfileService_ = shippingProfileService
     this.discountService_ = discountService
     this.giftCardService_ = giftCardService
     this.totalsService_ = totalsService
@@ -222,6 +228,20 @@ class CartService extends TransactionBaseService {
       )
     }
 
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(
+        IsolateProductDomainFeatureFlag.key
+      )
+    ) {
+      if (Array.isArray(options.relations)) {
+        for (let i = 0; i < options.relations.length; i++) {
+          if (options.relations[i].startsWith("items.variant")) {
+            options.relations[i] = "items"
+          }
+        }
+      }
+    }
+
     const { totalsToSelect } = this.transformQueryForTotals_(options)
 
     if (totalsToSelect.length) {
@@ -268,6 +288,20 @@ class CartService extends TransactionBaseService {
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals_(options)
 
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(
+        IsolateProductDomainFeatureFlag.key
+      )
+    ) {
+      if (Array.isArray(relations)) {
+        for (let i = 0; i < relations.length; i++) {
+          if (relations[i].startsWith("items.variant")) {
+            relations[i] = "items"
+          }
+        }
+      }
+    }
+
     const query = buildQuery({ id: cartId }, {
       ...options,
       select,
@@ -293,10 +327,23 @@ class CartService extends TransactionBaseService {
   ): Promise<WithRequiredProperty<Cart, "total">> {
     const relations = this.getTotalsRelations(options)
 
-    const cart = await this.retrieve(cartId, {
-      ...options,
-      relations,
-    })
+    const opt = { ...options, relations }
+
+    if (
+      this.featureFlagRouter_.isFeatureEnabled(
+        IsolateProductDomainFeatureFlag.key
+      )
+    ) {
+      if (Array.isArray(opt.relations)) {
+        for (let i = 0; i < opt.relations.length; i++) {
+          if (opt.relations[i].startsWith("items.variant")) {
+            opt.relations[i] = "items"
+          }
+        }
+      }
+    }
+
+    const cart = await this.retrieve(cartId, opt)
 
     return await this.decorateTotals(cart, totalsConfig)
   }
@@ -547,23 +594,21 @@ class CartService extends TransactionBaseService {
    */
   protected validateLineItemShipping_(
     shippingMethods: ShippingMethod[],
-    lineItem: LineItem
+    productShippingProfiledId: string
   ): boolean {
-    if (!lineItem.variant_id) {
+    if (!productShippingProfiledId) {
       return true
     }
 
     if (
       shippingMethods &&
       shippingMethods.length &&
-      lineItem.variant &&
-      lineItem.variant.product
+      productShippingProfiledId
     ) {
-      const productProfile = lineItem.variant.product.profile_id
       const selectedProfiles = shippingMethods.map(
         ({ shipping_option }) => shipping_option.profile_id
       )
-      return selectedProfiles.includes(productProfile)
+      return selectedProfiles.includes(productShippingProfiledId)
     }
 
     return false
@@ -1083,15 +1128,6 @@ class CartService extends TransactionBaseService {
           "discounts.rule",
         ]
 
-        if (
-          this.featureFlagRouter_.isFeatureEnabled(
-            SalesChannelFeatureFlag.key
-          ) &&
-          data.sales_channel_id
-        ) {
-          relations.push("items.variant.product.profiles")
-        }
-
         const cart = await this.retrieve(cartId, {
           relations,
         })
@@ -1244,7 +1280,10 @@ class CartService extends TransactionBaseService {
   ): Promise<void> {
     await this.getValidatedSalesChannel(newSalesChannelId)
 
-    const productIds = cart.items.map((item) => item.variant.product_id)
+    const productIds = cart.items.map(
+      (item) =>
+        (item.metadata?._product_id as string) ?? item.variant.product_id
+    )
     const productsToKeep = await this.productService_
       .withTransaction(this.activeManager_)
       .filterProductsBySalesChannel(productIds, newSalesChannelId, {
@@ -1255,7 +1294,9 @@ class CartService extends TransactionBaseService {
       productsToKeep.map((product) => product.id)
     )
     const itemsToRemove = cart.items.filter((item) => {
-      return !productIdsToKeep.has(item.variant.product_id)
+      return !productIdsToKeep.has(
+        (item.metadata?._product_id as string) ?? item.variant.product_id
+      )
     })
 
     if (itemsToRemove.length) {
@@ -2163,10 +2204,33 @@ class CartService extends TransactionBaseService {
           const lineItemServiceTx =
             this.lineItemService_.withTransaction(transactionManager)
 
+          let productShippinProfileMap = new Map<string, string>(
+            cart.items.map((item) => [
+              item.variant?.product?.id,
+              item.variant?.product?.profile_id,
+            ])
+          )
+          if (
+            this.featureFlagRouter_.isFeatureEnabled(
+              IsolateProductDomainFeatureFlag.key
+            )
+          ) {
+            productShippinProfileMap =
+              await this.shippingProfileService_.listProfileByProductId(
+                cart.items.map((item) => item.metadata?._product_id as string)
+              )
+          }
+
           await Promise.all(
             cart.items.map(async (item) => {
               return lineItemServiceTx.update(item.id, {
-                has_shipping: this.validateLineItemShipping_(methods, item),
+                has_shipping: this.validateLineItemShipping_(
+                  methods,
+                  productShippinProfileMap.get(
+                    item.variant?.product?.id ??
+                      (item.metadata?._product_id as string)
+                  )!
+                ),
               })
             })
           )
