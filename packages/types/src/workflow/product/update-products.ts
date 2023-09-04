@@ -14,6 +14,7 @@ export interface UpdateProductInputDTO {
    * TODO: check this fields
    */
 
+  id: string
   title: string
   subtitle?: string
   description?: string

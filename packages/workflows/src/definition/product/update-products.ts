@@ -20,7 +20,7 @@ export enum UpdateProductsActions {
  *  1. Update product (without variants)
  *   --- if no variants in the payload -> stop here
  *  2. Prepare variants update
- *    2.1) delete variants not in payload
+ *    2.1) delete variants not in payload // in that order
  *    2.2) update variants in payload
  *    2.3) create variants
  *      2.3.1) * TODO: handle inventory items
