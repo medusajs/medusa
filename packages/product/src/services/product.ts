@@ -1,4 +1,3 @@
-import { Product } from "@models"
 import {
   Context,
   DAL,
@@ -9,12 +8,13 @@ import {
 import {
   InjectManager,
   InjectTransactionManager,
-  isDefined,
   MedusaContext,
   MedusaError,
   ModulesSdkUtils,
   ProductUtils,
+  isDefined,
 } from "@medusajs/utils"
+import { Product } from "@models"
 import { ProductRepository } from "@repositories"
 
 import { ProductServiceTypes } from "../types/services"
@@ -178,7 +178,7 @@ export default class ProductService<TEntity extends Product = Product> {
   async restore(
     productIds: string[],
     @MedusaContext() sharedContext: Context = {}
-  ): Promise<TEntity[]> {
+  ): Promise<[TEntity[], Record<string, unknown[]>]> {
     return await this.productRepository_.restore(productIds, {
       transactionManager: sharedContext.transactionManager,
     })
