@@ -11,7 +11,7 @@ export const TagColumns: Column<ProductTag>[] = [
         <Translation>
           {(t) => (
             <>
-              {t("Tag")} <SortingIcon size={16} />
+              {t("shared.tag", "Tag")} <SortingIcon size={16} />
             </>
           )}
         </Translation>

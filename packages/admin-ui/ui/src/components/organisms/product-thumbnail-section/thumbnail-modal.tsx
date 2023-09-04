@@ -67,7 +67,7 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
           )
       }
 
-      notification(t("Error"), errorMessage, "error")
+      notification(t("product-thumbnail-section.error", "Error"), errorMessage, "error")
       return
     }
     const url = preppedImages?.[0]?.url
@@ -85,12 +85,12 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
     <Modal open={open} handleClose={onReset} isLargeModal>
       <Modal.Body>
         <Modal.Header handleClose={onReset}>
-          <h1 className="inter-xlarge-semibold m-0">{t("Upload Thumbnail")}</h1>
+          <h1 className="inter-xlarge-semibold m-0">{t("product-thumbnail-section.upload-thumbnail", "Upload Thumbnail")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <h2 className="inter-large-semibold mb-2xsmall">
-              {t("Thumbnail")}
+              {t("product-thumbnail-section.thumbnail", "Thumbnail")}
             </h2>
             <p className="inter-base-regular text-grey-50 mb-large">
               {t(
@@ -107,7 +107,7 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
                 type="button"
                 onClick={onReset}
               >
-                {t("Cancel")}
+                {t("product-thumbnail-section.cancel", "Cancel")}
               </Button>
               <Button
                 size="small"
@@ -116,7 +116,7 @@ const ThumbnailModal = ({ product, open, onClose }: Props) => {
                 disabled={!isDirty}
                 loading={updating}
               >
-                {t("Save and close")}
+                {t("product-thumbnail-section.save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

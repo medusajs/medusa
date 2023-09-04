@@ -78,8 +78,8 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
 
     if (!trimmedName) {
       notification(
-        t("Error"),
-        t("Please enter a name for the Gift Card"),
+        t("gift-cards.error", "Error"),
+        t("gift-cards.please-enter-a-name-for-the-gift-card", "Please enter a name for the Gift Card"),
         "error"
       )
       focusByName("name")
@@ -88,8 +88,8 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
 
     if (!data.denominations?.length) {
       notification(
-        t("Error"),
-        t("Please add at least one denomination"),
+        t("gift-cards.error", "Error"),
+        t("gift-cards.please-add-at-least-one-denomination", "Please add at least one denomination"),
         "error"
       )
       focusByName("add-denomination")
@@ -115,7 +115,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
         title: data.title,
         description: data.description,
         discountable: false,
-        options: [{ title: t("Denominations") }],
+        options: [{ title: t("gift-cards.denominations", "Denominations") }],
         variants: data.denominations.map((d, i) => ({
           title: `${i + 1}`,
           inventory_quantity: 0,
@@ -132,15 +132,15 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
       {
         onSuccess: () => {
           notification(
-            t("Success"),
-            t("Successfully created Gift Card"),
+            t("gift-cards.success", "Success"),
+            t("gift-cards.successfully-created-gift-card", "Successfully created Gift Card"),
             "success"
           )
           refetch()
           navigate("/a/gift-cards/manage")
         },
         onError: (err) => {
-          notification(t("Error"), getErrorMessage(err), "error")
+          notification(t("gift-cards.error", "Error"), getErrorMessage(err), "error")
         },
       }
     )
@@ -152,28 +152,28 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
         <Modal.Body>
           <Modal.Header handleClose={onClose}>
             <div>
-              <h1 className="inter-xlarge-semibold">{t("Create Gift Card")}</h1>
+              <h1 className="inter-xlarge-semibold">{t("gift-cards.create-gift-card", "Create Gift Card")}</h1>
             </div>
           </Modal.Header>
           <Modal.Content>
             <div className="mb-base">
-              <h3 className="inter-base-semibold">{t("Gift Card Details")}</h3>
+              <h3 className="inter-base-semibold">{t("gift-cards.gift-card-details", "Gift Card Details")}</h3>
             </div>
             <div className="gap-y-base flex flex-col">
               <InputField
-                label={t("Name")}
+                label={t("gift-cards.name", "Name")}
                 required
-                placeholder={t("The best Gift Card")}
+                placeholder={t("gift-cards.the-best-gift-card", "The best Gift Card")}
                 {...register("title", { required: true })}
               />
               <TextArea
-                label={t("Description")}
-                placeholder={t("The best Gift Card of all time")}
+                label={t("gift-cards.description", "Description")}
+                placeholder={t("gift-cards.the-best-gift-card-of-all-time", "The best Gift Card of all time")}
                 {...register("description")}
               />
             </div>
             <div className="mt-xlarge">
-              <h3 className="inter-base-semibold">{t("Thumbnail")}</h3>
+              <h3 className="inter-base-semibold">{t("gift-cards.thumbnail", "Thumbnail")}</h3>
               <div className="mt-base h-[80px]">
                 {thumbnail ? (
                   <div className="flex items-center gap-x-6">
@@ -192,7 +192,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                           type="button"
                           onClick={() => setValue("thumbnail", null)}
                         >
-                          {t("Delete")}
+                          {t("gift-cards.delete", "Delete")}
                         </button>
                       </div>
                     </div>
@@ -215,7 +215,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
             </div>
             <div className="mt-xlarge">
               <h3 className="inter-base-semibold mb-base">
-                {t("Denominations")}
+                {t("gift-cards.denominations", "Denominations")}
                 <span className="text-rose-50">*</span>
               </h3>
               <div className="gap-y-xsmall flex flex-col">
@@ -240,7 +240,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                           render={({ field: { value, onChange, ref } }) => {
                             return (
                               <CurrencyInput.Amount
-                                label={t("Amount")}
+                                label={t("gift-cards.amount", "Amount")}
                                 amount={value || undefined}
                                 onChange={onChange}
                                 ref={ref}
@@ -274,7 +274,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                 type="button"
               >
                 <PlusIcon size={20} />
-                {t("Add Denomination")}
+                {t("gift-cards.add-denomination", "Add Denomination")}
               </Button>
             </div>
           </Modal.Content>
@@ -287,7 +287,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                 className="w-eventButton"
                 onClick={onClose}
               >
-                {t("Cancel")}
+                {t("gift-cards.cancel", "Cancel")}
               </Button>
               <Button
                 type="submit"
@@ -297,7 +297,7 @@ const NewGiftCard = ({ onClose }: NewGiftCardProps) => {
                 loading={isLoading}
                 disabled={isLoading}
               >
-                {t("Create & Publish")}
+                {t("gift-cards.create-publish", "Create & Publish")}
               </Button>
             </div>
           </Modal.Footer>

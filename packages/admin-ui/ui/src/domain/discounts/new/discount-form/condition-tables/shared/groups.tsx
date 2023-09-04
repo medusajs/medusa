@@ -45,7 +45,7 @@ export const useGroupColumns = () => {
       {
         Header: () => (
           <div className="flex min-w-[540px] items-center gap-1">
-            {t("Title")} <SortingIcon size={16} />
+            {t("shared.title", "Title")} <SortingIcon size={16} />
           </div>
         ),
         accessor: "name",
@@ -53,7 +53,7 @@ export const useGroupColumns = () => {
       {
         Header: () => (
           <div className="flex items-center justify-end gap-1">
-            {t("Members")} <SortingIcon size={16} />
+            {t("shared.members", "Members")} <SortingIcon size={16} />
           </div>
         ),
         id: "members",

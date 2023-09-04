@@ -14,8 +14,8 @@ const Type = () => {
       forceMountContent
       required
       value="type"
-      title={t("Price list type")}
-      description={t("Select the type of the price list")}
+      title={t("sections.price-list-type", "Price list type")}
+      description={t("sections.select-the-type-of-the-price-list", "Select the type of the price list")}
       tooltip={t(
         "Unlike with sale prices a price override will not communicate to the customer that the price is part of a sale."
       )}
@@ -34,7 +34,7 @@ const Type = () => {
               <RadioGroup.Item
                 value={PriceListType.SALE}
                 className="flex-1"
-                label={t("Sale")}
+                label={t("sections.sale", "Sale")}
                 description={t(
                   "Use this if you are creating prices for a sale."
                 )}
@@ -42,8 +42,8 @@ const Type = () => {
               <RadioGroup.Item
                 value={PriceListType.OVERRIDE}
                 className="flex-1"
-                label={t("Override")}
-                description={t("Use this to override prices.")}
+                label={t("sections.override", "Override")}
+                description={t("sections.use-this-to-override-prices", "Use this to override prices.")}
               />
             </RadioGroup.Root>
           )

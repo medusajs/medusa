@@ -27,7 +27,7 @@ const EditConditionFooter: React.FC<EditConditionFooterProps> = ({
   return (
     <div className="gap-x-xsmall flex w-full items-center justify-end">
       <Button variant="secondary" size="small" onClick={onClose}>
-        {t("Cancel")}
+        {t("edit-condition-tables.cancel", "Cancel")}
       </Button>
       <Button
         variant="danger"
@@ -41,7 +41,7 @@ const EditConditionFooter: React.FC<EditConditionFooterProps> = ({
           onClose()
         }}
       >
-        {t("Delete condition")}
+        {t("edit-condition-tables.delete-condition", "Delete condition")}
       </Button>
       <Button
         variant="primary"
@@ -56,7 +56,7 @@ const EditConditionFooter: React.FC<EditConditionFooterProps> = ({
         }}
         className="min-w-[128px]"
       >
-        {t("Save")}
+        {t("edit-condition-tables.save", "Save")}
       </Button>
     </div>
   )

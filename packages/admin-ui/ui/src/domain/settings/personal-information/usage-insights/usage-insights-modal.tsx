@@ -45,14 +45,14 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
     mutate(data, {
       onSuccess: () => {
         notification(
-          t("Success"),
-          t("Your information was successfully updated"),
+          t("usage-insights.success", "Success"),
+          t("usage-insights.your-information-was-successfully-updated", "Your information was successfully updated"),
           "success"
         )
         onClose()
       },
       onError: (err) => {
-        notification(t("Error"), getErrorMessage(err), "error")
+        notification(t("usage-insights.error", "Error"), getErrorMessage(err), "error")
       },
     })
   })
@@ -60,7 +60,7 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
   return (
     <Modal handleClose={onClose} open={open} isLargeModal={true}>
       <Modal.Header handleClose={onClose}>
-        <h1 className="inter-xlarge-semibold">{t("Edit preferences")}</h1>
+        <h1 className="inter-xlarge-semibold">{t("usage-insights.edit-preferences", "Edit preferences")}</h1>
       </Modal.Header>
       <Modal.Body>
         <Modal.Content>
@@ -69,7 +69,7 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
         <Modal.Footer className="border-grey-20 pt-base border-t">
           <div className="gap-x-xsmall flex w-full items-center justify-end">
             <Button variant="secondary" size="small" onClick={onClose}>
-              {t("Cancel")}
+              {t("usage-insights.cancel", "Cancel")}
             </Button>
             <Button
               variant="primary"
@@ -78,7 +78,7 @@ const UsageInsightsModal = ({ config, open, onClose }: Props) => {
               disabled={isSubmitting}
               onClick={onSubmit}
             >
-              {t("Submit and close")}
+              {t("usage-insights.submit-and-close", "Submit and close")}
             </Button>
           </div>
         </Modal.Footer>

@@ -114,12 +114,12 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
     <Table>
       <Table.Head className="border-none">
         <Table.HeadRow className="text-grey-50 inter-small-semibold">
-          <Table.HeadCell colSpan={2}>{t("Product Details")}</Table.HeadCell>
+          <Table.HeadCell colSpan={2}>{t("rma-select-product-table.product-details", "Product Details")}</Table.HeadCell>
           <Table.HeadCell className="pr-8 text-right">
-            {t("Quantity")}
+            {t("rma-select-product-table.quantity", "Quantity")}
           </Table.HeadCell>
           <Table.HeadCell className="text-right">
-            {t("Refundable")}
+            {t("rma-select-product-table.refundable", "Refundable")}
           </Table.HeadCell>
           <Table.HeadCell></Table.HeadCell>
         </Table.HeadRow>
@@ -267,7 +267,7 @@ const RMASelectProductTable: React.FC<RMASelectProductTableProps> = ({
                         size="small"
                         className="border-grey-20 border"
                       >
-                        {t("Select Reason")}
+                        {t("rma-select-product-table.select-reason", "Select Reason")}
                       </Button>
                     </div>
                   </Table.Cell>

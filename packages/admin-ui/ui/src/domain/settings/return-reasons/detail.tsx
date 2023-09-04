@@ -56,13 +56,13 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
       {
         onSuccess: () => {
           notification(
-            t("Success"),
-            t("Successfully updated return reason"),
+            t("return-reasons.success", "Success"),
+            t("return-reasons.successfully-updated-return-reason", "Successfully updated return reason"),
             "success"
           )
         },
         onError: (error) => {
-          notification(t("Error"), getErrorMessage(error), "error")
+          notification(t("return-reasons.error", "Error"), getErrorMessage(error), "error")
         },
       }
     )
@@ -89,12 +89,12 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
       <BodyCard
         actionables={[
           {
-            label: t("Duplicate reason"),
+            label: t("return-reasons.duplicate-reason", "Duplicate reason"),
             icon: <DuplicateIcon size={20} />,
             onClick: () => handleOpenDuplicateModal(),
           },
           {
-            label: t("Delete reason"),
+            label: t("return-reasons.delete-reason", "Delete reason"),
             variant: "danger",
             icon: <TrashIcon size={20} />,
             onClick: () => handleOpenPrompt(),
@@ -102,24 +102,24 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
         ]}
         events={[
           {
-            label: t("Save"),
+            label: t("return-reasons.save", "Save"),
             onClick: handleSubmit(onSave),
           },
           {
-            label: t("Cancel"),
+            label: t("return-reasons.cancel", "Cancel"),
             onClick: handleCancel,
           },
         ]}
-        title={t("Details")}
+        title={t("return-reasons.details", "Details")}
         subtitle={reason?.value}
       >
         <form onSubmit={handleSubmit(onSave)}>
-          <Input {...register("label")} label={t("Label")} />
+          <Input {...register("label")} label={t("return-reasons.label", "Label")} />
           <Input
             {...register("description")}
-            label={t("Description")}
+            label={t("return-reasons.description", "Description")}
             className="mt-base"
-            placeholder={t("Customer received the wrong size")}
+            placeholder={t("return-reasons.customer-received-the-wrong-size", "Customer received the wrong size")}
           />
         </form>
       </BodyCard>
@@ -131,8 +131,8 @@ const ReturnReasonDetail = ({ reason }: ReturnReasonDetailsProps) => {
       )}
       {showDanger && (
         <DeletePrompt
-          heading={t("Delete Return Reason")}
-          text={t("Are you sure you want to delete this return reason?")}
+          heading={t("return-reasons.delete-return-reason", "Delete Return Reason")}
+          text={t("return-reasons.are-you-sure-you-want-to-delete-this-return-reason", "Are you sure you want to delete this return reason?")}
           handleClose={handleClosePrompt}
           onDelete={handleDeletion}
         />

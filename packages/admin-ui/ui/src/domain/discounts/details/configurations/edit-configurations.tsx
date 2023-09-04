@@ -52,15 +52,15 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
       {
         onSuccess: ({ discount }) => {
           notification(
-            t("Success"),
-            t("Discount updated successfully"),
+            t("configurations.success", "Success"),
+            t("configurations.discount-updated-successfully", "Discount updated successfully"),
             "success"
           )
           reset(getDefaultValues(discount))
           onClose()
         },
         onError: (error) => {
-          notification(t("Error"), getErrorMessage(error), "error")
+          notification(t("configurations.error", "Error"), getErrorMessage(error), "error")
         },
       }
     )
@@ -76,7 +76,7 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
     <Modal open={open} handleClose={onClose} isLargeModal>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h1 className="inter-xlarge-semibold">{t("Edit configurations")}</h1>
+          <h1 className="inter-xlarge-semibold">{t("configurations.edit-configurations", "Edit configurations")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
@@ -91,7 +91,7 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
                 type="button"
                 onClick={onClose}
               >
-                {t("Cancel")}
+                {t("configurations.cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -101,7 +101,7 @@ const EditConfigurations: React.FC<EditConfigurationsProps> = ({
                 loading={isLoading}
                 disabled={isLoading}
               >
-                {t("Save")}
+                {t("configurations.save", "Save")}
               </Button>
             </div>
           </Modal.Footer>

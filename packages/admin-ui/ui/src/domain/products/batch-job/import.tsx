@@ -87,7 +87,7 @@ function ImportProducts(props: ImportProductsProps) {
   const onSubmit = async () => {
     await confirmBatchJob()
     notification(
-      t("Success"),
+      t("batch-job.success", "Success"),
       t(
         "Import confirmed for processing. Progress info is available in the activity drawer."
       ),
@@ -115,7 +115,7 @@ function ImportProducts(props: ImportProductsProps) {
 
       setBatchJobId(batchJob.batch_job.id)
     } catch (e) {
-      notification(t("Error"), t("Import failed."), "error")
+      notification(t("batch-job.error", "Error"), t("batch-job.import-failed", "Import failed."), "error")
       if (fileKey) {
         await deleteFile({ file_key: fileKey })
       }
@@ -150,14 +150,14 @@ function ImportProducts(props: ImportProductsProps) {
       try {
         deleteFile({ file_key: fileKey })
       } catch (e) {
-        notification(t("Error"), t("Failed to delete the CSV file"), "error")
+        notification(t("batch-job.error", "Error"), t("batch-job.failed-to-delete-the-csv-file", "Failed to delete the CSV file"), "error")
       }
     }
 
     try {
       cancelBathJob()
     } catch (e) {
-      notification(t("Error"), t("Failed to cancel the batch job"), "error")
+      notification(t("batch-job.error", "Error"), t("batch-job.failed-to-cancel-the-batch-job", "Failed to cancel the batch job"), "error")
     }
 
     setBatchJobId(undefined)
@@ -194,10 +194,10 @@ function ImportProducts(props: ImportProductsProps) {
       summary={getSummary()}
       onFileRemove={onFileRemove}
       processUpload={processUpload}
-      fileTitle={t("products list")}
+      fileTitle={t("batch-job.products-list", "products list")}
       onDownloadTemplate={downloadProductImportCSVTemplate}
       errorMessage={batchJob?.result?.errors?.join(" \n")}
-      description2Title={t("Unsure about how to arrange your list?")}
+      description2Title={t("batch-job.unsure-about-how-to-arrange-your-list", "Unsure about how to arrange your list?")}
       description2Text={t(
         "Download the template below to ensure you are following the correct format."
       )}

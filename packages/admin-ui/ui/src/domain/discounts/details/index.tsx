@@ -37,10 +37,10 @@ const Edit = () => {
   const handleDelete = () => {
     deleteDiscount.mutate(undefined, {
       onSuccess: () => {
-        notification(t("Success"), t("Discount deleted"), "success")
+        notification(t("details.success", "Success"), t("details.discount-deleted", "Discount deleted"), "success")
       },
       onError: (error) => {
-        notification(t("Error"), getErrorMessage(error), "error")
+        notification(t("details.error", "Error"), getErrorMessage(error), "error")
       },
     })
   }
@@ -74,15 +74,15 @@ const Edit = () => {
         <DeletePrompt
           handleClose={() => setShowDelete(!showDelete)}
           onDelete={async () => handleDelete()}
-          successText={t("Discount deleted")}
-          confirmText={t("Yes, delete")}
-          text={t("Are you sure you want to delete this discount?")}
-          heading={t("Delete discount")}
+          successText={t("details.discount-deleted", "Discount deleted")}
+          confirmText={t("details.yes-delete", "Yes, delete")}
+          text={t("details.are-you-sure-you-want-to-delete-this-discount", "Are you sure you want to delete this discount?")}
+          heading={t("details.delete-discount", "Delete discount")}
         />
       )}
 
       <BackButton
-        label={t("Back to Discounts")}
+        label={t("details.back-to-discounts", "Back to Discounts")}
         path="/a/discounts"
         className="mb-xsmall"
       />
@@ -111,7 +111,7 @@ const Edit = () => {
               />
             )
           })}
-          <RawJSON data={discount} title={t("Raw discount")} />
+          <RawJSON data={discount} title={t("details.raw-discount", "Raw discount")} />
         </DiscountFormProvider>
       </div>
     </div>

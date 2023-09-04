@@ -133,10 +133,10 @@ function EditCustomersTable(props: EditCustomersTableProps) {
 
   const filteringOptions = [
     {
-      title: t("Groups"),
+      title: t("customer-group-table.groups", "Groups"),
       options: [
         {
-          title: t("All"),
+          title: t("customer-group-table.all", "All"),
           onClick: () => setActiveGroupId(null),
         },
         ...(customer_groups || []).map((g) => ({
@@ -178,7 +178,7 @@ function EditCustomersTable(props: EditCustomersTableProps) {
     <Modal handleClose={onClose}>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h3 className="inter-xlarge-semibold">{t("Edit Customers")}</h3>
+          <h3 className="inter-xlarge-semibold">{t("customer-group-table.edit-customers", "Edit Customers")}</h3>
         </Modal.Header>
 
         <Modal.Content>
@@ -190,7 +190,7 @@ function EditCustomersTable(props: EditCustomersTableProps) {
               count: count!,
               offset: queryObject.offset,
               pageSize: queryObject.offset + table.rows.length,
-              title: t("Customers"),
+              title: t("customer-group-table.customers", "Customers"),
               currentPage: table.state.pageIndex + 1,
               pageCount: table.pageCount,
               nextPage: handleNext,
@@ -230,7 +230,7 @@ function EditCustomersTable(props: EditCustomersTableProps) {
               className="w-eventButton"
               onClick={onClose}
             >
-              {t("Cancel")}
+              {t("customer-group-table.cancel", "Cancel")}
             </Button>
             <Button
               variant="primary"
@@ -238,7 +238,7 @@ function EditCustomersTable(props: EditCustomersTableProps) {
               className="w-eventButton"
               onClick={handleSubmit}
             >
-              {t("Save")}
+              {t("customer-group-table.save", "Save")}
             </Button>
           </div>
         </Modal.Footer>

@@ -28,7 +28,7 @@ export const AddAdditionalItemsTable = ({
     <LoadingContainer isLoading={isLoadingData}>
       <Table
         enableSearch
-        searchPlaceholder={t("Search products")}
+        searchPlaceholder={t("add-additional-items-screen.search-products", "Search products")}
         searchValue={query}
         handleSearch={setQuery}
       >

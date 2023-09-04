@@ -68,7 +68,7 @@ const SelectShippingMethod = () => {
               <AlertIcon size={20} />
             </div>
             <div className="flex flex-col">
-              <span className="inter-small-semibold">{t("Attention!")}</span>
+              <span className="inter-small-semibold">{t("components.attention", "Attention!")}</span>
               {t(
                 "You don't have any options for orders without shipping. Please add one (e.g. \"In-store fulfillment\") with \"Show on website\" unchecked in region settings and continue."
               )}
@@ -82,7 +82,7 @@ const SelectShippingMethod = () => {
               render={({ field: { value, onChange } }) => {
                 return (
                   <Select
-                    label={t("Choose a shipping method")}
+                    label={t("components.choose-a-shipping-method", "Choose a shipping method")}
                     onChange={onChange}
                     value={value}
                     options={
@@ -108,7 +108,7 @@ const SelectShippingMethod = () => {
                     disabled={!selectedShippingOption}
                     onClick={() => setShowCustomPrice(true)}
                   >
-                    {t("Set custom price")}
+                    {t("components.set-custom-price", "Set custom price")}
                   </Button>
                 </div>
               )}
@@ -126,7 +126,7 @@ const SelectShippingMethod = () => {
                             currentCurrency={region.currency_code}
                           >
                             <CurrencyInput.Amount
-                              label={t("Custom Price")}
+                              label={t("components.custom-price", "Custom Price")}
                               amount={value}
                               onChange={onChange}
                             />

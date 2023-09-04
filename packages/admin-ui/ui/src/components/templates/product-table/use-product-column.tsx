@@ -14,13 +14,13 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
   const getProductStatus = (status) => {
     switch (status) {
       case "proposed":
-        return <StatusIndicator title={t("Proposed")} variant={"warning"} />
+        return <StatusIndicator title={t("product-table.proposed", "Proposed")} variant={"warning"} />
       case "published":
-        return <StatusIndicator title={t("Published")} variant={"success"} />
+        return <StatusIndicator title={t("product-table.published", "Published")} variant={"success"} />
       case "rejected":
-        return <StatusIndicator title={t("Rejected")} variant={"danger"} />
+        return <StatusIndicator title={t("product-table.rejected", "Rejected")} variant={"danger"} />
       case "draft":
-        return <StatusIndicator title={t("Draft")} variant={"default"} />
+        return <StatusIndicator title={t("product-table.draft", "Draft")} variant={"default"} />
       default:
         return <StatusIndicator title={t(status)} variant={"default"} />
     }
@@ -39,7 +39,7 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
   const columns = useMemo(
     () => [
       {
-        Header: t("Name"),
+        Header: t("product-table.name", "Name"),
         accessor: "title",
         Cell: ({ row: { original } }) => {
           return (
@@ -60,24 +60,24 @@ const useProductTableColumn = ({ setTileView, setListView, showList }) => {
         },
       },
       {
-        Header: t("Collection"),
+        Header: t("product-table.collection", "Collection"),
         accessor: "collection", // accessor is the "key" in the data
         Cell: ({ cell: { value } }) => {
           return <div>{value?.title || "-"}</div>
         },
       },
       {
-        Header: t("Status"),
+        Header: t("product-table.status", "Status"),
         accessor: "status",
         Cell: ({ cell: { value } }) => getProductStatus(value),
       },
       {
-        Header: t("Availability"),
+        Header: t("product-table.availability", "Availability"),
         accessor: "sales_channels",
         Cell: ({ cell: { value } }) => getProductSalesChannels(value),
       },
       {
-        Header: t("Inventory"),
+        Header: t("product-table.inventory", "Inventory"),
         accessor: "variants",
         Cell: ({ cell: { value } }) => (
           <div>

@@ -73,12 +73,12 @@ const NewRegion = ({ onClose }: Props) => {
 
       mutate(payload, {
         onSuccess: ({ region }) => {
-          notification(t("Success"), t("Region created"), "success")
+          notification(t("new.success", "Success"), t("new.region-created", "Region created"), "success")
           navigate(`/a/settings/regions/${region.id}`)
           closeAndReset()
         },
         onError: (error) => {
-          notification(t("Error"), getErrorMessage(error), "error")
+          notification(t("new.error", "Error"), getErrorMessage(error), "error")
         },
       })
     },
@@ -110,7 +110,7 @@ const NewRegion = ({ onClose }: Props) => {
                 disabled={!isDirty || isLoading}
                 type="submit"
               >
-                {t("Create region")}
+                {t("new.create-region", "Create region")}
               </Button>
             </div>
           </div>
@@ -123,13 +123,13 @@ const NewRegion = ({ onClose }: Props) => {
               type="multiple"
             >
               <Accordion.Item
-                title={t("Details")}
+                title={t("new.details", "Details")}
                 value="details"
                 forceMountContent
                 required
               >
                 <p className="inter-base-regular mb-xlarge text-grey-50">
-                  {t("Add the region details.")}
+                  {t("new.add-the-region-details", "Add the region details.")}
                 </p>
                 <RegionDetailsForm
                   form={nestedForm(form, "details")}
@@ -137,7 +137,7 @@ const NewRegion = ({ onClose }: Props) => {
                 />
               </Accordion.Item>
               <Accordion.Item
-                title={t("Providers")}
+                title={t("new.providers", "Providers")}
                 value="providers"
                 forceMountContent
                 required

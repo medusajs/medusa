@@ -58,8 +58,8 @@ const AnalyticsPreferencesModal = () => {
     mutate(config, {
       onSuccess: () => {
         notification(
-          t("Success"),
-          t("Your preferences were successfully updated"),
+          t("analytics-preferences.success", "Success"),
+          t("analytics-preferences.your-preferences-were-successfully-updated", "Your preferences were successfully updated"),
           "success"
         )
 
@@ -70,7 +70,7 @@ const AnalyticsPreferencesModal = () => {
         setSubmittingConfig(false)
       },
       onError: (err) => {
-        notification(t("Error"), getErrorMessage(err), "error")
+        notification(t("analytics-preferences.error", "Error"), getErrorMessage(err), "error")
         setSubmittingConfig(false)
       },
     })
@@ -82,7 +82,7 @@ const AnalyticsPreferencesModal = () => {
         <div className="flex flex-col items-center">
           <div className="mt-5xlarge flex w-full max-w-[664px] flex-col">
             <h1 className="inter-xlarge-semibold mb-large">
-              {t("Help us get better")}
+              {t("analytics-preferences.help-us-get-better", "Help us get better")}
             </h1>
             <p className="text-grey-50">
               {t(
@@ -94,7 +94,7 @@ const AnalyticsPreferencesModal = () => {
                 target="_blank"
                 className="text-violet-60"
               >
-                {t("documentation")}
+                {t("analytics-preferences.documentation", "documentation")}
               </a>
               .
             </p>
@@ -108,7 +108,7 @@ const AnalyticsPreferencesModal = () => {
                 })}
                 {...register("email", {
                   pattern: {
-                    message: t("Please enter a valid email"),
+                    message: t("analytics-preferences.please-enter-a-valid-email", "Please enter a valid email"),
                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                   },
                 })}
@@ -123,7 +123,7 @@ const AnalyticsPreferencesModal = () => {
                 loading={isLoading}
                 onClick={onSubmit}
               >
-                {t("Continue")}
+                {t("analytics-preferences.continue", "Continue")}
               </Button>
             </div>
           </div>

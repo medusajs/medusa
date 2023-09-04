@@ -99,7 +99,7 @@ export const useItemsToReturnColumns = ({ form, orderCurrency }: Props) => {
         },
       }),
       columnHelper.accessor("variant_title", {
-        header: t("Product"),
+        header: t("items-to-return-form.product", "Product"),
         cell: ({ getValue, row: { original } }) => {
           const value = getValue()
 
@@ -129,7 +129,7 @@ export const useItemsToReturnColumns = ({ form, orderCurrency }: Props) => {
       }),
       columnHelper.display({
         id: "quantity",
-        header: () => <p className="text-right">{t("Quantity")}</p>,
+        header: () => <p className="text-right">{t("items-to-return-form.quantity", "Quantity")}</p>,
         maxSize: 50,
         cell: ({
           row: {
@@ -156,7 +156,7 @@ export const useItemsToReturnColumns = ({ form, orderCurrency }: Props) => {
       }),
       columnHelper.accessor("refundable", {
         maxSize: 80,
-        header: () => <p className="text-right">{t("Refundable")}</p>,
+        header: () => <p className="text-right">{t("items-to-return-form.refundable", "Refundable")}</p>,
         cell: ({ getValue }) => {
           return (
             <p className="text-right">

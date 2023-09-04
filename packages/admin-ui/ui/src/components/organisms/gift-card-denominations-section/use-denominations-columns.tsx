@@ -29,7 +29,7 @@ export const useDenominationColumns = () => {
 
     return [
       columnHelper.display({
-        header: t("Denomination"),
+        header: t("gift-card-denominations-section.denomination", "Denomination"),
         id: "denomination",
         cell: ({ row }) => {
           const defaultDenomination = row.original.prices.find(
@@ -52,7 +52,7 @@ export const useDenominationColumns = () => {
         },
       }),
       columnHelper.display({
-        header: t("In other currencies"),
+        header: t("gift-card-denominations-section.in-other-currencies", "In other currencies"),
         id: "other_currencies",
         cell: ({ row }) => {
           const otherCurrencies = row.original.prices.filter(
@@ -132,21 +132,21 @@ const Actions = ({ original }: { original: ProductVariant }) => {
 
   const onDelete = async () => {
     const shouldDelete = await dialog({
-      heading: t("Delete denomination"),
-      text: t("Are you sure you want to delete this denomination?"),
+      heading: t("gift-card-denominations-section.delete-denomination", "Delete denomination"),
+      text: t("gift-card-denominations-section.are-you-sure-you-want-to-delete-this-denomination", "Are you sure you want to delete this denomination?"),
     })
 
     if (shouldDelete) {
       mutateAsync(original.id, {
         onSuccess: () => {
           notification(
-            t("Denomination deleted"),
-            t("Denomination was successfully deleted"),
+            t("gift-card-denominations-section.denomination-deleted", "Denomination deleted"),
+            t("gift-card-denominations-section.denomination-was-successfully-deleted", "Denomination was successfully deleted"),
             "success"
           )
         },
         onError: (error) => {
-          notification(t("Error"), getErrorMessage(error), "error")
+          notification(t("gift-card-denominations-section.error", "Error"), getErrorMessage(error), "error")
         },
       })
     }
@@ -154,12 +154,12 @@ const Actions = ({ original }: { original: ProductVariant }) => {
 
   const actions: ActionType[] = [
     {
-      label: t("Edit"),
+      label: t("gift-card-denominations-section.edit", "Edit"),
       onClick: open,
       icon: <EditIcon size={20} />,
     },
     {
-      label: t("Delete"),
+      label: t("gift-card-denominations-section.delete", "Delete"),
       onClick: onDelete,
       icon: <TrashIcon size={20} />,
       variant: "danger",

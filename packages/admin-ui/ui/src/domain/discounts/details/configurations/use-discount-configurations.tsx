@@ -40,17 +40,17 @@ const useDiscountConfigurations = (discount: Discount) => {
   const conditions: displaySetting[] = []
 
   conditions.push({
-    title: t("Start date"),
+    title: t("configurations.start-date", "Start date"),
     description: <DisplaySettingsDateDescription date={discount.starts_at} />,
   })
 
   if (discount.ends_at) {
     conditions.push({
-      title: t("End date"),
+      title: t("configurations.end-date", "End date"),
       description: <DisplaySettingsDateDescription date={discount.ends_at} />,
       actions: [
         {
-          label: t("Delete configuration"),
+          label: t("configurations.delete-configuration", "Delete configuration"),
           icon: <TrashIcon size={20} />,
           variant: "danger",
           onClick: async () =>
@@ -59,13 +59,13 @@ const useDiscountConfigurations = (discount: Discount) => {
               {
                 onSuccess: () => {
                   notification(
-                    t("Success"),
-                    t("Discount end date removed"),
+                    t("configurations.success", "Success"),
+                    t("configurations.discount-end-date-removed", "Discount end date removed"),
                     "success"
                   )
                 },
                 onError: (error) => {
-                  notification(t("Error"), getErrorMessage(error), "error")
+                  notification(t("configurations.error", "Error"), getErrorMessage(error), "error")
                 },
               }
             ),
@@ -75,13 +75,13 @@ const useDiscountConfigurations = (discount: Discount) => {
   }
   if (discount.usage_limit) {
     conditions.push({
-      title: t("Number of redemptions"),
+      title: t("configurations.number-of-redemptions", "Number of redemptions"),
       description: (
         <CommonDescription text={discount.usage_limit.toLocaleString("en")} />
       ),
       actions: [
         {
-          label: t("Delete configuration"),
+          label: t("configurations.delete-configuration", "Delete configuration"),
           icon: <TrashIcon size={20} />,
           variant: "danger",
           onClick: async () =>
@@ -90,13 +90,13 @@ const useDiscountConfigurations = (discount: Discount) => {
               {
                 onSuccess: () => {
                   notification(
-                    t("Success"),
-                    t("Redemption limit removed"),
+                    t("configurations.success", "Success"),
+                    t("configurations.redemption-limit-removed", "Redemption limit removed"),
                     "success"
                   )
                 },
                 onError: (error) => {
-                  notification(t("Error"), getErrorMessage(error), "error")
+                  notification(t("configurations.error", "Error"), getErrorMessage(error), "error")
                 },
               }
             ),
@@ -116,7 +116,7 @@ const useDiscountConfigurations = (discount: Discount) => {
       ),
       actions: [
         {
-          label: t("Delete setting"),
+          label: t("configurations.delete-setting", "Delete setting"),
           icon: <TrashIcon size={20} />,
           variant: "danger",
           onClick: async () =>
@@ -125,13 +125,13 @@ const useDiscountConfigurations = (discount: Discount) => {
               {
                 onSuccess: () => {
                   notification(
-                    t("Success"),
-                    t("Discount duration removed"),
+                    t("configurations.success", "Success"),
+                    t("configurations.discount-duration-removed", "Discount duration removed"),
                     "success"
                   )
                 },
                 onError: (error) => {
-                  notification(t("Error"), getErrorMessage(error), "error")
+                  notification(t("configurations.error", "Error"), getErrorMessage(error), "error")
                 },
               }
             ),

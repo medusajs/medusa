@@ -159,7 +159,7 @@ const DiscountTable: React.FC = () => {
         count: count!,
         offset: queryObject.offset,
         pageSize: queryObject.offset + rows.length,
-        title: t("Discounts"),
+        title: t("discount-table.discounts", "Discounts"),
         currentPage: pageIndex + 1,
         pageCount: pageCount,
         nextPage: handleNext,
@@ -183,7 +183,7 @@ const DiscountTable: React.FC = () => {
         }
         enableSearch
         handleSearch={setQuery}
-        searchPlaceholder={t("Search by code or description...")}
+        searchPlaceholder={t("discount-table.search-by-code-or-description", "Search by code or description...")}
         searchValue={query}
         {...getTableProps()}
       >

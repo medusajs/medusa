@@ -66,10 +66,10 @@ function CustomerGroupModal({
     const { general, metadata } = data
 
     const onSuccess = () => {
-      const title = customerGroup ? t("Group Updated") : t("Group Created")
+      const title = customerGroup ? t("groups.group-updated", "Group Updated") : t("groups.group-created", "Group Created")
       const msg = customerGroup
-        ? t("The customer group has been updated")
-        : t("The customer group has been created")
+        ? t("groups.the-customer-group-has-been-updated", "The customer group has been updated")
+        : t("groups.the-customer-group-has-been-created", "The customer group has been created")
 
       notification(title, msg, "success")
 
@@ -113,8 +113,8 @@ function CustomerGroupModal({
         <Modal.Header handleClose={onClose}>
           <span className="inter-xlarge-semibold">
             {customerGroup
-              ? t("Edit Customer Group")
-              : t("Create a New Customer Group")}
+              ? t("groups.edit-customer-group", "Edit Customer Group")
+              : t("groups.create-a-new-customer-group", "Create a New Customer Group")}
           </span>
         </Modal.Header>
 
@@ -122,11 +122,11 @@ function CustomerGroupModal({
           <Modal.Content>
             <div className="gap-y-xlarge flex flex-col">
               <div>
-                <h2 className="inter-base-semibold mb-base">{t("Details")}</h2>
+                <h2 className="inter-base-semibold mb-base">{t("groups.details", "Details")}</h2>
                 <CustomerGroupGeneralForm form={nestedForm(form, "general")} />
               </div>
               <div>
-                <h2 className="inter-base-semibold mb-base">{t("Metadata")}</h2>
+                <h2 className="inter-base-semibold mb-base">{t("groups.metadata", "Metadata")}</h2>
                 <MetadataForm form={nestedForm(form, "metadata")} />
               </div>
             </div>
@@ -141,11 +141,11 @@ function CustomerGroupModal({
                 type="button"
                 onClick={onClose}
               >
-                {t("Cancel")}
+                {t("groups.cancel", "Cancel")}
               </Button>
               <Button size="small" variant="primary" type="submit">
                 <span>
-                  {customerGroup ? t("Edit Group") : t("Publish Group")}
+                  {customerGroup ? t("groups.edit-group", "Edit Group") : t("groups.publish-group", "Publish Group")}
                 </span>
               </Button>
             </div>

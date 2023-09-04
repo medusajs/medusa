@@ -22,10 +22,10 @@ const ReturnShippingOptions = ({ region }: Props) => {
   return (
     <>
       <Section
-        title={t("Return Shipping Options")}
+        title={t("return-shipping-options.return-shipping-options", "Return Shipping Options")}
         actions={[
           {
-            label: t("Add Option"),
+            label: t("return-shipping-options.add-option", "Add Option"),
             onClick: toggle,
           },
         ]}

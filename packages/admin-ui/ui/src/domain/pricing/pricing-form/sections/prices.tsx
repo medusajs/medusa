@@ -34,11 +34,11 @@ const PricesSection = ({ isEdit = false, id }: PricesSectionProps) => {
       forceMountContent
       required
       value="prices"
-      title={t("Prices")}
+      title={t("sections.prices", "Prices")}
       description={t(
         "You will be able to override the prices for the products you add here"
       )}
-      tooltip={t("Define the price overrides for the price list")}
+      tooltip={t("sections.define-the-price-overrides-for-the-price-list", "Define the price overrides for the price list")}
     >
       <ProductPrices
         products={mergedProducts}

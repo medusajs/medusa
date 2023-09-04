@@ -64,7 +64,7 @@ const AddProductsModal = ({
     <Modal open handleClose={close}>
       <Modal.Body>
         <Modal.Header handleClose={close}>
-          <h2 className="inter-xlarge-semibold">{t("Add Products")}</h2>
+          <h2 className="inter-xlarge-semibold">{t("add-products-modal.add-products", "Add Products")}</h2>
         </Modal.Header>
         <Modal.Content>
           <div className="flex h-full min-h-[300px] w-full flex-col justify-between ">
@@ -80,7 +80,7 @@ const AddProductsModal = ({
               totalCount={count}
               options={{
                 enableSearch: true,
-                searchPlaceholder: t("Search by name or description..."),
+                searchPlaceholder: t("add-products-modal.search-by-name-or-description", "Search by name or description..."),
               }}
               {...params}
             />
@@ -93,14 +93,14 @@ const AddProductsModal = ({
               className="rounded-rounded h-8 w-[128px]"
               onClick={close}
             >
-              {t("Cancel")}
+              {t("add-products-modal.cancel", "Cancel")}
             </Button>
             <Button
               variant="primary"
               className="rounded-rounded h-8 w-[128px]"
               onClick={handleSave}
             >
-              {t("Save")}
+              {t("add-products-modal.save", "Save")}
             </Button>
           </div>
         </Modal.Footer>

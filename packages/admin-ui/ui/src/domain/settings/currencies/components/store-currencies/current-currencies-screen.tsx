@@ -33,13 +33,13 @@ const CurrentCurrenciesScreen = () => {
       {
         onSuccess: () => {
           notification(
-            t("Success"),
-            t("Successfully updated currencies"),
+            t("store-currencies.success", "Success"),
+            t("store-currencies.successfully-updated-currencies", "Successfully updated currencies"),
             "success"
           )
         },
         onError: (err) => {
-          notification(t("Error"), getErrorMessage(err), "error")
+          notification(t("store-currencies.error", "Error"), getErrorMessage(err), "error")
         },
       }
     )
@@ -87,7 +87,7 @@ const CurrentCurrenciesScreen = () => {
     <>
       <Modal.Header handleClose={onClose}>
         <h1 className="inter-xlarge-semibold">
-          {t("Current Store Currencies")}
+          {t("store-currencies.current-store-currencies", "Current Store Currencies")}
         </h1>
       </Modal.Header>
       <Modal.Content>
@@ -111,7 +111,7 @@ const CurrentCurrenciesScreen = () => {
       <Modal.Footer>
         <div className="flex w-full items-center justify-end">
           <Button variant="primary" size="small" onClick={onClose}>
-            {t("Close")}
+            {t("store-currencies.close", "Close")}
           </Button>
         </div>
       </Modal.Footer>
@@ -154,7 +154,7 @@ const TableActions = ({
               variant="ghost"
               className="border-grey-20 border"
             >
-              {t("Deselect")}
+              {t("store-currencies.deselect", "Deselect")}
             </Button>
             <Button
               onClick={onRemove}
@@ -162,7 +162,7 @@ const TableActions = ({
               variant="ghost"
               className="border-grey-20 border text-rose-50"
             >
-              {t("Remove")}
+              {t("store-currencies.remove", "Remove")}
             </Button>
           </div>
         </div>
@@ -173,7 +173,7 @@ const TableActions = ({
             className="border-grey-20 border"
             onClick={() => push(screen)}
           >
-            <PlusIcon size={20} /> {t("Add Currencies")}
+            <PlusIcon size={20} /> {t("store-currencies.add-currencies", "Add Currencies")}
           </Button>
         </div>
       </div>

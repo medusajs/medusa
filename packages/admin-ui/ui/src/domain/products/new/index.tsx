@@ -135,7 +135,7 @@ const NewProduct = ({ onClose }: Props) => {
               )
           }
 
-          notification(t("Error"), errorMessage, "error")
+          notification(t("new.error", "Error"), errorMessage, "error")
           return
         }
         const urls = preppedImages.map((image) => image.url)
@@ -163,7 +163,7 @@ const NewProduct = ({ onClose }: Props) => {
               )
           }
 
-          notification(t("Error"), errorMessage, "error")
+          notification(t("new.error", "Error"), errorMessage, "error")
           return
         }
         const urls = preppedImages.map((image) => image.url)
@@ -182,7 +182,7 @@ const NewProduct = ({ onClose }: Props) => {
           })
         },
         onError: (err) => {
-          notification(t("Error"), getErrorMessage(err), "error")
+          notification(t("new.error", "Error"), getErrorMessage(err), "error")
         },
       })
     })
@@ -251,7 +251,7 @@ const NewProduct = ({ onClose }: Props) => {
                 disabled={!isDirty}
                 onClick={onSubmit(false)}
               >
-                {t("Save as draft")}
+                {t("new.save-as-draft", "Save as draft")}
               </Button>
               <Button
                 size="small"
@@ -260,7 +260,7 @@ const NewProduct = ({ onClose }: Props) => {
                 disabled={!isDirty}
                 onClick={onSubmit(true)}
               >
-                {t("Publish product")}
+                {t("new.publish-product", "Publish product")}
               </Button>
             </div>
           </div>
@@ -270,11 +270,11 @@ const NewProduct = ({ onClose }: Props) => {
             <Accordion defaultValue={["general"]} type="multiple">
               <Accordion.Item
                 value={"general"}
-                title={t("General information")}
+                title={t("new.general-information", "General information")}
                 required
               >
                 <p className="inter-base-regular text-grey-50">
-                  {t("To start selling, all you need is a name and a price.")}
+                  {t("new.to-start-selling-all-you-need-is-a-name-and-a-price", "To start selling, all you need is a name and a price.")}
                 </p>
                 <div className="mt-xlarge gap-y-xlarge flex flex-col">
                   <GeneralForm
@@ -286,12 +286,12 @@ const NewProduct = ({ onClose }: Props) => {
               </Accordion.Item>
               <Accordion.Item title="Organize" value="organize">
                 <p className="inter-base-regular text-grey-50">
-                  {t("To start selling, all you need is a name and a price.")}
+                  {t("new.to-start-selling-all-you-need-is-a-name-and-a-price", "To start selling, all you need is a name and a price.")}
                 </p>
                 <div className="mt-xlarge gap-y-xlarge pb-xsmall flex flex-col">
                   <div>
                     <h3 className="inter-base-semibold mb-base">
-                      {t("Organize Product")}
+                      {t("new.organize-product", "Organize Product")}
                     </h3>
                     <OrganizeForm form={nestedForm(form, "organize")} />
                     <FeatureToggle featureFlag="sales_channels">
@@ -306,7 +306,7 @@ const NewProduct = ({ onClose }: Props) => {
               </Accordion.Item>
               <Accordion.Item title="Variants" value="variants">
                 <p className="inter-base-regular text-grey-50">
-                  {t("Add variations of this product.")}
+                  {t("new.add-variations-of-this-product", "Add variations of this product.")}
                   <br />
                   {t(
                     "Offer your customers different options for color, format, size, shape, etc."
@@ -322,17 +322,17 @@ const NewProduct = ({ onClose }: Props) => {
               </Accordion.Item>
               <Accordion.Item title="Attributes" value="attributes">
                 <p className="inter-base-regular text-grey-50">
-                  {t("Used for shipping and customs purposes.")}
+                  {t("new.used-for-shipping-and-customs-purposes", "Used for shipping and customs purposes.")}
                 </p>
                 <div className="my-xlarge">
                   <h3 className="inter-base-semibold mb-base">
-                    {t("Dimensions")}
+                    {t("new.dimensions", "Dimensions")}
                   </h3>
                   <DimensionsForm form={nestedForm(form, "dimensions")} />
                 </div>
                 <div>
                   <h3 className="inter-base-semibold mb-base">
-                    {t("Customs")}
+                    {t("new.customs", "Customs")}
                   </h3>
                   <CustomsForm form={nestedForm(form, "customs")} />
                 </div>
@@ -345,9 +345,9 @@ const NewProduct = ({ onClose }: Props) => {
                 </p>
                 <ThumbnailForm form={nestedForm(form, "thumbnail")} />
               </Accordion.Item>
-              <Accordion.Item title={t("Media")} value="media">
+              <Accordion.Item title={t("new.media", "Media")} value="media">
                 <p className="inter-base-regular mb-large text-grey-50">
-                  {t("Add images to your product.")}
+                  {t("new.add-images-to-your-product", "Add images to your product.")}
                 </p>
                 <MediaForm form={nestedForm(form, "media")} />
               </Accordion.Item>

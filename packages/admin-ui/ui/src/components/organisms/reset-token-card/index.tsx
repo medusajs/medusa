@@ -44,7 +44,7 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
           setSentMail(true)
         },
         onError: (error) => {
-          notification(t("Error"), getErrorMessage(error), "error")
+          notification(t("reset-token-card.error", "Error"), getErrorMessage(error), "error")
         },
       }
     )
@@ -54,25 +54,25 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
     <form onSubmit={onSubmit}>
       <div className="flex flex-col items-center">
         <h1 className="inter-xlarge-semibold text-grey-90 mb-xsmall text-[20px]">
-          {t("Reset your password")}
+          {t("reset-token-card.reset-your-password", "Reset your password")}
         </h1>
         <span className="inter-base-regular text-grey-50 mb-large text-center">
-          {t("Enter your email address below, and we&apos;ll")}
+          {t("reset-token-card.enter-your-email-address-below-and-we-apos-ll", "Enter your email address below, and we&apos;ll")}
           <br />
-          {t("send you instructions on how to reset")}
+          {t("reset-token-card.send-you-instructions-on-how-to-reset", "send you instructions on how to reset")}
           <br />
-          {t("your password.")}
+          {t("reset-token-card.your-password", "your password.")}
         </span>
         {!mailSent ? (
           <>
             <div className="w-[280px]">
               <SigninInput
-                placeholder={t("Email")}
+                placeholder={t("reset-token-card.email", "Email")}
                 {...register("email", {
                   required: FormValidator.required("Email"),
                   pattern: {
                     value: emailRegex,
-                    message: t("This is not a valid email"),
+                    message: t("reset-token-card.this-is-not-a-valid-email", "This is not a valid email"),
                   },
                 })}
               />
@@ -85,7 +85,7 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
               type="submit"
               loading={isLoading}
             >
-              {t("Send reset instructions")}
+              {t("reset-token-card.send-reset-instructions", "Send reset instructions")}
             </Button>
           </>
         ) : (
@@ -95,7 +95,7 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
             </div>
             <div className="gap-y-2xsmall flex flex-col">
               <span className="inter-base-regular">
-                {t("Successfully sent you an email")}
+                {t("reset-token-card.successfully-sent-you-an-email", "Successfully sent you an email")}
               </span>
             </div>
           </div>
@@ -104,7 +104,7 @@ const ResetTokenCard: React.FC<ResetTokenCardProps> = ({ goBack }) => {
           className="inter-small-regular text-grey-50 mt-8 cursor-pointer"
           onClick={goBack}
         >
-          {t("Go back to sign in")}
+          {t("reset-token-card.go-back-to-sign-in", "Go back to sign in")}
         </span>
       </div>
     </form>

@@ -30,7 +30,7 @@ const COLUMNS: Column<PublishableApiKey>[] = [
     accessor: "title",
     Header: (
       <div className="text-small font-semibold text-gray-500">
-        <Translation>{(t) => t("Name")}</Translation>
+        <Translation>{(t) => t("tables.name", "Name")}</Translation>
       </div>
     ),
     Cell: ({ row: { original } }) => {
@@ -42,7 +42,7 @@ const COLUMNS: Column<PublishableApiKey>[] = [
     Header: (
       <div className="text-small font-semibold text-gray-500">
         {" "}
-        <Translation>{(t) => t("Token")}</Translation>
+        <Translation>{(t) => t("tables.token", "Token")}</Translation>
       </div>
     ),
     Cell: ({ row: { original } }) => {
@@ -61,11 +61,11 @@ const COLUMNS: Column<PublishableApiKey>[] = [
             copied ? (
               <span className="flex flex-row items-center justify-between gap-1">
                 <CheckIcon size={16} className="text-green-700" />{" "}
-                <Translation>{(t) => t("done")}</Translation>
+                <Translation>{(t) => t("tables.done", "done")}</Translation>
               </span>
             ) : (
               <span onClick={onClick} className="cursor-pointer">
-                <Translation>{(t) => t("Copy to clipboard")}</Translation>
+                <Translation>{(t) => t("tables.copy-to-clipboard", "Copy to clipboard")}</Translation>
               </span>
             )
           }
@@ -80,7 +80,7 @@ const COLUMNS: Column<PublishableApiKey>[] = [
     Header: (
       <div className="text-small font-semibold text-gray-500">
         {" "}
-        <Translation>{(t) => t("Created")}</Translation>
+        <Translation>{(t) => t("tables.created", "Created")}</Translation>
       </div>
     ),
     Cell: ({ row: { original } }) => {
@@ -96,7 +96,7 @@ const COLUMNS: Column<PublishableApiKey>[] = [
     Header: (
       <div className="text-small font-semibold text-gray-500">
         {" "}
-        <Translation>{(t) => t("Status")}</Translation>
+        <Translation>{(t) => t("tables.status", "Status")}</Translation>
       </div>
     ),
     Cell: ({ row: { original } }) => {
@@ -104,9 +104,9 @@ const COLUMNS: Column<PublishableApiKey>[] = [
       return (
         <span className="min-w-[50px] text-gray-900">
           {original.revoked_at ? (
-            <StatusIndicator title={t("Revoked")} variant="danger" />
+            <StatusIndicator title={t("tables.revoked", "Revoked")} variant="danger" />
           ) : (
-            <StatusIndicator title={t("Live")} variant="success" />
+            <StatusIndicator title={t("tables.live", "Live")} variant="success" />
           )}
         </span>
       )
@@ -140,28 +140,28 @@ function PublishableKeyTableRow(props: PublishableKeyTableRowProps) {
 
   const actions: ActionType[] = [
     {
-      label: t("Edit API key details"),
+      label: t("tables.edit-api-key-details", "Edit API key details"),
       onClick: showDetails,
       icon: <EditIcon size={16} />,
     },
     {
-      label: t("Edit sales channels"),
+      label: t("tables.edit-sales-channels", "Edit sales channels"),
       onClick: showChannelsModal,
       icon: <EditIcon size={16} />,
     },
     {
-      label: t("Copy token"),
+      label: t("tables.copy-token", "Copy token"),
       onClick: () => navigator.clipboard.writeText(pubKeyId),
       icon: <ClipboardCopyIcon size={16} />,
     },
     {
-      label: t("Revoke token"),
+      label: t("tables.revoke-token", "Revoke token"),
       onClick: () => setShowRevoke(true),
       icon: <StopIcon size={16} />,
       disabled: isRevoked,
     },
     {
-      label: t("Delete API key"),
+      label: t("tables.delete-api-key", "Delete API key"),
       onClick: () => setShowDelete(true),
       icon: <TrashIcon size={16} />,
       variant: "danger",
@@ -182,10 +182,10 @@ function PublishableKeyTableRow(props: PublishableKeyTableRowProps) {
         <DeletePrompt
           handleClose={() => setShowDelete(false)}
           onDelete={async () => deletePublicKey()}
-          confirmText={t("Yes, delete")}
-          successText={t("API key deleted")}
-          text={t("Are you sure you want to delete this public key?")}
-          heading={t("Delete key")}
+          confirmText={t("tables.yes-delete", "Yes, delete")}
+          successText={t("tables.api-key-deleted", "API key deleted")}
+          text={t("tables.are-you-sure-you-want-to-delete-this-public-key", "Are you sure you want to delete this public key?")}
+          heading={t("tables.delete-key", "Delete key")}
         />
       )}
 
@@ -193,10 +193,10 @@ function PublishableKeyTableRow(props: PublishableKeyTableRowProps) {
         <DeletePrompt
           handleClose={() => setShowRevoke(false)}
           onDelete={async () => revokePublicKey()}
-          confirmText={t("Yes, revoke")}
-          successText={t("API key revoked")}
-          text={t("Are you sure you want to revoke this public key?")}
-          heading={t("Revoke key")}
+          confirmText={t("tables.yes-revoke", "Yes, revoke")}
+          successText={t("tables.api-key-revoked", "API key revoked")}
+          text={t("tables.are-you-sure-you-want-to-revoke-this-public-key", "Are you sure you want to revoke this public key?")}
+          heading={t("tables.revoke-key", "Revoke key")}
         />
       )}
     </>
@@ -271,7 +271,7 @@ function PublishableApiKeysTable(props: PublishableApiKeysTableProps) {
       pagingState={{
         count,
         offset,
-        title: t("API Keys"),
+        title: t("tables.api-keys", "API Keys"),
         pageCount: table.pageCount,
         pageSize: offset + table.rows.length,
         currentPage: table.state.pageIndex + 1,

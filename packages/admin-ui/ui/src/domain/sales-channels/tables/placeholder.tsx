@@ -11,7 +11,7 @@ function Placeholder({ showAddModal }) {
       </span>
 
       <h3 className="text-large text-gray-90 mt-6 font-semibold">
-        {t("Start building your channels setup...")}
+        {t("tables.start-building-your-channels-setup", "Start building your channels setup...")}
       </h3>
       <p className="text-grey-50 mt-2 mb-8 w-[358px] text-center">
         {t(
@@ -20,7 +20,7 @@ function Placeholder({ showAddModal }) {
       </p>
 
       <Button onClick={showAddModal} variant="primary" size="small">
-        {t("Add products")}
+        {t("tables.add-products", "Add products")}
       </Button>
     </div>
   )

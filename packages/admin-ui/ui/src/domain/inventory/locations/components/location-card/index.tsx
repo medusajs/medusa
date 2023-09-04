@@ -38,7 +38,7 @@ const LocationCard: React.FC<Props> = ({ location }) => {
 
   const onDelete = async () => {
     const shouldDelete = await dialog({
-      heading: t("Delete Location"),
+      heading: t("location-card.delete-location", "Delete Location"),
       text: t(
         "Are you sure you want to delete this location. This will also delete all inventory levels and reservations associated with this location."
       ),
@@ -49,13 +49,13 @@ const LocationCard: React.FC<Props> = ({ location }) => {
       deleteLocation(undefined, {
         onSuccess: () => {
           notification(
-            t("Success"),
-            t("Location deleted successfully"),
+            t("location-card.success", "Success"),
+            t("location-card.location-deleted-successfully", "Location deleted successfully"),
             "success"
           )
         },
         onError: (err) => {
-          notification(t("Error"), getErrorMessage(err), "error")
+          notification(t("location-card.error", "Error"), getErrorMessage(err), "error")
         },
       })
     }
@@ -63,13 +63,13 @@ const LocationCard: React.FC<Props> = ({ location }) => {
 
   const DropdownActions: ActionType[] = [
     {
-      label: t("Edit details"),
+      label: t("location-card.edit-details", "Edit details"),
       onClick: openLocationEdit,
       variant: "normal",
       icon: <EditIcon size="20px" />,
     },
     {
-      label: t("Delete"),
+      label: t("location-card.delete", "Delete"),
       onClick: onDelete,
       variant: "danger",
       icon: <TrashIcon size="20px" />,
@@ -98,7 +98,7 @@ const LocationCard: React.FC<Props> = ({ location }) => {
       {isFeatureEnabled("sales_channels") && (
         <div className="py-base border-grey-20 border-t border-solid px-6">
           <h2 className="inter-small-semibold text-gray-500">
-            {t("Connected sales channels")}
+            {t("location-card.connected-sales-channels", "Connected sales channels")}
           </h2>
           <SalesChannelsSection location={location} />
         </div>

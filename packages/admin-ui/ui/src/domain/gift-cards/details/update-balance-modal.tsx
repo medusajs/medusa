@@ -50,8 +50,8 @@ const UpdateBalanceModal = ({
       {
         onSuccess: () => {
           notification(
-            t("Balance updated"),
-            t("Gift card balance was updated"),
+            t("details.balance-updated", "Balance updated"),
+            t("details.gift-card-balance-was-updated", "Gift card balance was updated"),
             "success"
           )
 
@@ -59,7 +59,7 @@ const UpdateBalanceModal = ({
         },
         onError: (err) => {
           notification(
-            t("Failed to update balance"),
+            t("details.failed-to-update-balance", "Failed to update balance"),
             getErrorMessage(err),
             "error"
           )
@@ -78,7 +78,7 @@ const UpdateBalanceModal = ({
     <Modal open={open} handleClose={onClose}>
       <Modal.Body>
         <Modal.Header handleClose={onClose}>
-          <h1 className="inter-xlarge-semibold">{t("Update Balance")}</h1>
+          <h1 className="inter-xlarge-semibold">{t("details.update-balance", "Update Balance")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
@@ -96,7 +96,7 @@ const UpdateBalanceModal = ({
                 onClick={onClose}
                 type="button"
               >
-                {t("Cancel")}
+                {t("details.cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -105,7 +105,7 @@ const UpdateBalanceModal = ({
                 loading={isLoading}
                 disabled={isLoading || !isDirty}
               >
-                {t("Save and close")}
+                {t("details.save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

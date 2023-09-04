@@ -114,14 +114,14 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
       )
         .then(() => {
           notification(
-            t("Success"),
-            t("Location added successfully"),
+            t("new.success", "Success"),
+            t("new.location-added-successfully", "Location added successfully"),
             "success"
           )
         })
         .catch(() => {
           notification(
-            t("Error"),
+            t("new.error", "Error"),
             t(
               "Location was created successfully, but there was an error associating sales channels"
             ),
@@ -132,7 +132,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
           onClose()
         })
     } catch (err) {
-      notification(t("Error"), getErrorMessage(err), "error")
+      notification(t("new.error", "Error"), getErrorMessage(err), "error")
     }
   }
 
@@ -154,8 +154,8 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 heading={t(
                   "Are you sure you want to cancel with unsaved changes"
                 )}
-                confirmText={t("Yes, cancel")}
-                cancelText={t("No, continue creating")}
+                confirmText={t("new.yes-cancel", "Yes, cancel")}
+                cancelText={t("new.no-continue-creating", "No, continue creating")}
                 successText={false}
                 handleClose={closeClosePrompt}
                 onDelete={async () => onClose()}
@@ -168,7 +168,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
                 type="submit"
                 disabled={!isDirty}
               >
-                {t("Add location")}
+                {t("new.add-location", "Add location")}
               </Button>
             </div>
           </div>
@@ -176,7 +176,7 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
         <FocusModal.Main className="no-scrollbar flex w-full justify-center">
           <div className="medium:w-7/12 large:w-6/12 small:w-4/5 my-16 max-w-[700px]">
             <h1 className="mb-base text-grey-90 text-xlarge px-1 font-semibold">
-              {t("Add new location")}
+              {t("new.add-new-location", "Add new location")}
             </h1>
             <Accordion
               value={accordionValue}
@@ -185,18 +185,18 @@ const NewLocation = ({ onClose }: { onClose: () => void }) => {
             >
               <Accordion.Item
                 value={"general"}
-                title={t("General Information")}
+                title={t("new.general-information", "General Information")}
                 required
               >
                 <p className="inter-base-regular text-grey-50">
-                  {t("Specify the details about this location")}
+                  {t("new.specify-the-details-about-this-location", "Specify the details about this location")}
                 </p>
                 <div className="mt-xlarge gap-y-xlarge flex flex-col pb-0.5">
                   <GeneralForm form={nestedForm(form, "general")} />
                   <AddressForm form={nestedForm(form, "address")} />
                   <div>
                     <h2 className="inter-base-semibold mb-base">
-                      {t("Metadata")}
+                      {t("new.metadata", "Metadata")}
                     </h2>
                     <MetadataForm form={nestedForm(form, "metadata")} />
                   </div>

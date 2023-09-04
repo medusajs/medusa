@@ -75,14 +75,14 @@ const EditTaxRate = ({
     mutate(toSubmit, {
       onSuccess: () => {
         notification(
-          t("Success"),
-          t("Successfully updated Tax Rate."),
+          t("taxes.success", "Success"),
+          t("taxes.successfully-updated-tax-rate", "Successfully updated Tax Rate."),
           "success"
         )
         onDismiss()
       },
       onError: (error) => {
-        notification(t("Error"), getErrorMessage(error), "error")
+        notification(t("taxes.error", "Error"), getErrorMessage(error), "error")
       },
     })
   })
@@ -126,7 +126,7 @@ const EditTaxRate = ({
           <EditTaxRateDetails form={nestedForm(form, "details")} />
         </div>
         <div>
-          <p className="inter-base-semibold mb-base">{t("Overrides")}</p>
+          <p className="inter-base-semibold mb-base">{t("taxes.overrides", "Overrides")}</p>
           {(product_types.length > 0 ||
             products.length > 0 ||
             shipping_options.length > 0) && (
@@ -150,7 +150,7 @@ const EditTaxRate = ({
                     )
                   }}
                   index={1}
-                  name={t("Product Rules")}
+                  name={t("taxes.product-rules", "Product Rules")}
                   description={t("Applies to {count} productWithCount", {
                     count: products.length,
                   })}
@@ -178,7 +178,7 @@ const EditTaxRate = ({
                     )
                   }}
                   index={2}
-                  name={t("Product Type Rules")}
+                  name={t("taxes.product-type-rules", "Product Type Rules")}
                   description={t("Applies to {count} product typeWithCount", {
                     count: product_types.length,
                   })}
@@ -206,7 +206,7 @@ const EditTaxRate = ({
                     )
                   }}
                   index={3}
-                  name={t("Shipping Option Rules")}
+                  name={t("taxes.shipping-option-rules", "Shipping Option Rules")}
                   description={t(
                     "Applies to {count} shipping optionWithCount",
                     {
@@ -237,7 +237,7 @@ const EditTaxRate = ({
               size="medium"
               variant="secondary"
             >
-              <PlusIcon /> {t("Add Overrides")}
+              <PlusIcon /> {t("taxes.add-overrides", "Add Overrides")}
             </Button>
           )}
         </div>
@@ -251,7 +251,7 @@ const EditTaxRate = ({
             size="small"
             className="w-eventButton justify-center"
           >
-            {t("Cancel")}
+            {t("taxes.cancel", "Cancel")}
           </Button>
           <Button
             type="submit"
@@ -261,7 +261,7 @@ const EditTaxRate = ({
             loading={isLoading}
             disabled={isLoading}
           >
-            {t("Save")}
+            {t("taxes.save", "Save")}
           </Button>
         </div>
       </Modal.Footer>

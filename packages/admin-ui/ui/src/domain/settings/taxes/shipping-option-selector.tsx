@@ -19,7 +19,7 @@ export const ShippingOptionSelector = ({ regionId, items, onChange }) => {
   const columns = useMemo(() => {
     return [
       {
-        Header: t("Name"),
+        Header: t("taxes.name", "Name"),
         accessor: "name",
         Cell: ({ row: { original } }) => {
           return <div className="w-[200px]">{original.name}</div>
@@ -31,8 +31,8 @@ export const ShippingOptionSelector = ({ regionId, items, onChange }) => {
   return (
     <SelectableTable
       showSearch={false}
-      label={t("Select Shipping Option")}
-      objectName={t("Shipping Options")}
+      label={t("taxes.select-shipping-option", "Select Shipping Option")}
+      objectName={t("taxes.shipping-options", "Shipping Options")}
       totalCount={count}
       pagination={pagination}
       onPaginationChange={setPagination}

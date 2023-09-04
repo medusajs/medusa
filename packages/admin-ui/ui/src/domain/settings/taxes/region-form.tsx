@@ -53,7 +53,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
       tax_provider_id: {
         label:
           region.tax_provider_id === null
-            ? t("System Tax Provider")
+            ? t("taxes.system-tax-provider", "System Tax Provider")
             : region.tax_provider_id,
         value: region.tax_provider_id,
       },
@@ -69,7 +69,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
     if (tax_providers) {
       return [
         {
-          label: t("System Tax Provider"),
+          label: t("taxes.system-tax-provider", "System Tax Provider"),
           value: null,
         },
         ...tax_providers.map((tp) => ({
@@ -81,7 +81,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
 
     return [
       {
-        label: t("System Tax Provider"),
+        label: t("taxes.system-tax-provider", "System Tax Provider"),
         value: null,
       },
     ]
@@ -96,13 +96,13 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
     updateRegion.mutate(toSubmit, {
       onSuccess: () => {
         notification(
-          t("Success"),
-          t("Region tax settings were successfully updated."),
+          t("taxes.success", "Success"),
+          t("taxes.region-tax-settings-were-successfully-updated", "Region tax settings were successfully updated."),
           "success"
         )
       },
       onError: (error) => {
-        notification(t("Error"), getErrorMessage(error), "error")
+        notification(t("taxes.error", "Error"), getErrorMessage(error), "error")
       },
     })
   }
@@ -117,7 +117,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
           render={({ field: { value, onChange } }) => (
             <Select
               disabled={isProvidersLoading}
-              label={t("Tax Provider")}
+              label={t("taxes.tax-provider", "Tax Provider")}
               options={providerOptions}
               value={value}
               onChange={onChange}
@@ -129,7 +129,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
           <Checkbox
             className="inter-base-regular"
             {...register("automatic_taxes")}
-            label={t("Calculate taxes automatically?")}
+            label={t("taxes.calculate-taxes-automatically", "Calculate taxes automatically?")}
           />
           <IconTooltip
             content={t(
@@ -141,7 +141,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
           <Checkbox
             className="inter-base-regular"
             {...register("gift_cards_taxable")}
-            label={t("Apply tax to gift cards?")}
+            label={t("taxes.apply-tax-to-gift-cards", "Apply tax to gift cards?")}
           />
           <IconTooltip
             content={t(
@@ -158,7 +158,7 @@ export const RegionTaxForm = ({ region }: RegionTaxFormProps) => {
             size="medium"
             type="submit"
           >
-            {t("Save")}
+            {t("taxes.save", "Save")}
           </Button>
         )}
       </div>

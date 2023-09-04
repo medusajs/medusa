@@ -65,7 +65,7 @@ const MediaModal = ({ product, open, onClose }: Props) => {
           )
       }
 
-      notification(t("Error"), errorMessage, "error")
+      notification(t("product-media-section.error", "Error"), errorMessage, "error")
       return
     }
     const urls = preppedImages.map((image) => image.url)
@@ -82,14 +82,14 @@ const MediaModal = ({ product, open, onClose }: Props) => {
     <Modal open={open} handleClose={onReset} isLargeModal>
       <Modal.Body>
         <Modal.Header handleClose={onReset}>
-          <h1 className="inter-xlarge-semibold m-0">{t("Edit Media")}</h1>
+          <h1 className="inter-xlarge-semibold m-0">{t("product-media-section.edit-media", "Edit Media")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div>
-              <h2 className="inter-large-semibold mb-2xsmall">{t("Media")}</h2>
+              <h2 className="inter-large-semibold mb-2xsmall">{t("product-media-section.media", "Media")}</h2>
               <p className="inter-base-regular text-grey-50 mb-large">
-                {t("Add images to your product.")}
+                {t("product-media-section.add-images-to-your-product", "Add images to your product.")}
               </p>
               <div>
                 <MediaForm form={nestedForm(form, "media")} />
@@ -104,7 +104,7 @@ const MediaModal = ({ product, open, onClose }: Props) => {
                 type="button"
                 onClick={onReset}
               >
-                {t("Cancel")}
+                {t("product-media-section.cancel", "Cancel")}
               </Button>
               <Button
                 size="small"
@@ -113,7 +113,7 @@ const MediaModal = ({ product, open, onClose }: Props) => {
                 disabled={!isDirty}
                 loading={updating}
               >
-                {t("Save and close")}
+                {t("product-media-section.save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

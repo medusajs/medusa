@@ -61,7 +61,7 @@ const AddCustomerGroupConditionSelector = ({
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("Search groups..."),
+            searchPlaceholder: t("add-condition-tables.search-groups", "Search groups..."),
           }}
           resourceName="Customer groups"
           totalCount={count || 0}

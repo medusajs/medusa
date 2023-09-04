@@ -65,8 +65,8 @@ const EditSalesChannels = ({
         onClick={openSalesChannelsModal}
       >
         {location.sales_channels?.length
-          ? t("Edit channels")
-          : t("Add channels")}
+          ? t("edit-sales-channels.edit-channels", "Edit channels")
+          : t("edit-sales-channels.add-channels", "Add channels")}
       </Button>
       <SalesChannelsModal
         open={showSalesChannelsModal}

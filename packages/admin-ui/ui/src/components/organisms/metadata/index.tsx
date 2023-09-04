@@ -81,7 +81,7 @@ const Metadata: React.FC<AddMetadataProps> = ({
             onClick={addKeyPair}
           >
             <PlusIcon size={20} />
-            {t("Add Metadata")}
+            {t("metadata.add-metadata", "Add Metadata")}
           </Button>
         </div>
       </div>

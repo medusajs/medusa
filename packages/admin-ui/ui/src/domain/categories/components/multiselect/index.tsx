@@ -102,7 +102,7 @@ function Input(props: InputProps) {
         )}
         {selectedCount === 0 ? (
           <span className="text-grey-50">
-            {placeholder ? placeholder : t("Choose categories")}
+            {placeholder ? placeholder : t("multiselect.choose-categories", "Choose categories")}
           </span>
         ) : null}
       </div>

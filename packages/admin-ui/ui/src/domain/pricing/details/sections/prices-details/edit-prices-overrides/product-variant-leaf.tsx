@@ -30,7 +30,7 @@ const ProductVariantLeaf = ({
             <span>{t("priceWithCount", { count: prices.length })}</span>
           ) : (
             <span className="inter-small-semibold text-orange-40">
-              {t("Add prices")}
+              {t("edit-prices-overrides.add-prices", "Add prices")}
             </span>
           )}
         </div>

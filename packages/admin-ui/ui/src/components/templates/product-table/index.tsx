@@ -187,7 +187,7 @@ const ProductTable = () => {
         count: count!,
         offset: offs,
         pageSize: offs + rows.length,
-        title: t("Products"),
+        title: t("product-table.products", "Products"),
         currentPage: pageIndex + 1,
         pageCount: pageCount,
         nextPage: handleNext,

@@ -80,7 +80,7 @@ const ItemsToReturnForm = ({ form, order, isClaim = false }: Props) => {
   return (
     <div className="gap-y-base flex flex-col">
       <h2 className="inter-base-semibold">
-        {isClaim ? t("Items to claim") : t("Items to return")}
+        {isClaim ? t("items-to-return-form.items-to-claim", "Items to claim") : t("items-to-return-form.items-to-return", "Items to return")}
       </h2>
       <ItemsToReturnTable form={form} instance={table} isClaim={isClaim} />
       <InputError errors={errors} name={path("items")} />

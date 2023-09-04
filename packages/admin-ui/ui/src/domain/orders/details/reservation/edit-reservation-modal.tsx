@@ -94,14 +94,14 @@ const EditReservationDrawer = ({
     deleteReservation(undefined, {
       onSuccess: () => {
         notification(
-          t("Reservation was deleted"),
-          t("The allocated items have been released."),
+          t("reservation.reservation-was-deleted", "Reservation was deleted"),
+          t("reservation.the-allocated-items-have-been-released", "The allocated items have been released."),
           "success"
         )
         close()
       },
       onError: () => {
-        notification(t("Error"), t("Failed to delete the reservation "), "error")
+        notification(t("reservation.error", "Error"), t("reservation.failed-to-delete-the-reservation", "Failed to delete the reservation "), "error")
       },
     })
   }
@@ -149,14 +149,14 @@ const EditReservationDrawer = ({
       {
         onSuccess: () => {
           notification(
-            t("Reservation was updated"),
-            t("The reservation change was saved."),
+            t("reservation.reservation-was-updated", "Reservation was updated"),
+            t("reservation.the-reservation-change-was-saved", "The reservation change was saved."),
             "success"
           )
           close()
         },
         onError: () => {
-          notification(t("Errors"), t("Failed to update reservation"), "error")
+          notification(t("reservation.errors", "Errors"), t("reservation.failed-to-update-reservation", "Failed to update reservation"), "error")
         },
       }
     )
@@ -212,7 +212,7 @@ const EditReservationDrawer = ({
       >
         <div className="flex h-full flex-col justify-between">
           <div className="border-grey-20 flex items-center justify-between border-b px-8 py-6">
-            <h1 className="inter-large-semibold ">{t("Edit Reservation")}</h1>
+            <h1 className="inter-large-semibold ">{t("reservation.edit-reservation", "Edit Reservation")}</h1>
             <Button
               variant="ghost"
               className="p-1.5"
@@ -226,7 +226,7 @@ const EditReservationDrawer = ({
             <div className="flex h-full flex-col justify-between gap-y-8 px-8 pb-8 pt-6">
               <div className="flex flex-col gap-y-6">
                 <div>
-                  <h2 className="inter-base-semibold">{t("Location")}</h2>
+                  <h2 className="inter-base-semibold">{t("reservation.location", "Location")}</h2>
                   <span className="inter-base-regular text-grey-50">
                     {t(
                       "Choose which location you want to ship the items from."
@@ -249,10 +249,10 @@ const EditReservationDrawer = ({
 
                 <div>
                   <h2 className="inter-base-semibold">
-                    {t("Items to Allocate")}
+                    {t("reservation.items-to-allocate", "Items to Allocate")}
                   </h2>
                   <span className="inter-base-regular text-grey-50">
-                    {t("Select the number of items that you wish to allocate.")}
+                    {t("reservation.select-the-number-of-items-that-you-wish-to-allocate", "Select the number of items that you wish to allocate.")}
                   </span>
                   <div
                     className={`
@@ -297,24 +297,24 @@ const EditReservationDrawer = ({
                           ? t(" / {maxReservation} requested", {
                               maxReservation,
                             })
-                          : t(" reserved")}
+                          : t("reservation.reserved", " reserved")}
                       </span>
                     </div>
                   </div>
                 </div>
                 <div className="border-grey-20 inter-base-regular border-t pt-6">
-                  <p className="inter-base-semibold">{t("Description")}</p>
+                  <p className="inter-base-semibold">{t("reservation.description", "Description")}</p>
                   <p className="text-grey-50 mb-6">
-                    {t("What type of reservation is this?")}
+                    {t("reservation.what-type-of-reservation-is-this", "What type of reservation is this?")}
                   </p>
                   <InputField
                     {...register("item.description")}
-                    placeholder={t("Description")}
+                    placeholder={t("reservation.description", "Description")}
                   />
                 </div>
                 <div className="border-grey border-grey-20 w-full items-center border-t pt-6">
                   <div className="mb-2 flex justify-between">
-                    <p className="inter-base-semibold ">{t("Metadata")}</p>
+                    <p className="inter-base-semibold ">{t("reservation.metadata", "Metadata")}</p>
                     <Button
                       size="small"
                       variant="ghost"
@@ -322,7 +322,7 @@ const EditReservationDrawer = ({
                       className="border"
                       onClick={toggleHasMetadata}
                     >
-                      {hasMetadata ? t("Remove metadata") : t("Add metadata")}
+                      {hasMetadata ? t("reservation.remove-metadata", "Remove metadata") : t("reservation.add-metadata", "Add metadata")}
                     </Button>
                   </div>
                   {hasMetadata && (
@@ -338,7 +338,7 @@ const EditReservationDrawer = ({
                 onClick={handleDelete}
                 type="button"
               >
-                {t("Delete reservation")}
+                {t("reservation.delete-reservation", "Delete reservation")}
               </Button>
             </div>
           </div>
@@ -349,10 +349,10 @@ const EditReservationDrawer = ({
               className="border"
               onClick={close}
             >
-              {t("Cancel")}
+              {t("reservation.cancel", "Cancel")}
             </Button>
             <Button variant="primary" size="small" type="submit">
-              {t("Save and close")}
+              {t("reservation.save-and-close", "Save and close")}
             </Button>
           </div>
         </div>

@@ -22,11 +22,11 @@ const GeneralForm = ({ form }: Props) => {
     <div>
       <div className="gap-x-large mb-small grid grid-cols-2">
         <InputField
-          label={t("Location name")}
-          placeholder={t("Flagship store, warehouse")}
+          label={t("general-form.location-name", "Location name")}
+          placeholder={t("general-form.flagship-store-warehouse", "Flagship store, warehouse")}
           required
           {...register(path("name"), {
-            required: t("Name is required"),
+            required: t("general-form.name-is-required", "Name is required"),
             pattern: FormValidator.whiteSpaceRule("Location name"),
           })}
           errors={errors}

@@ -114,8 +114,8 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
   const createFulfillment = () => {
     if (isLocationFulfillmentEnabled && !locationSelectValue.value) {
       notification(
-        t("Error"),
-        t("Please select a location to fulfill from"),
+        t("create-fulfillment.error", "Error"),
+        t("create-fulfillment.please-select-a-location-to-fulfill-from", "Please select a location to fulfill from"),
         "error"
       )
       return
@@ -123,8 +123,8 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
 
     if (Object.keys(errors).length > 0) {
       notification(
-        t("Can't allow this action"),
-        t("Trying to fulfill more than in stock"),
+        t("create-fulfillment.cant-allow-this-action", "Can't allow this action"),
+        t("create-fulfillment.trying-to-fulfill-more-than-in-stock", "Trying to fulfill more than in stock"),
         "error"
       )
       return
@@ -138,7 +138,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
       | typeof createClaimFulfillment
 
     let action: actionType = createOrderFulfillment
-    let successText = t("Successfully fulfilled order")
+    let successText = t("create-fulfillment.successfully-fulfilled-order", "Successfully fulfilled order")
     let requestObj
 
     const preparedMetadata = metadata.reduce((acc, next) => {
@@ -155,7 +155,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
     switch (type) {
       case "swap":
         action = createSwapFulfillment
-        successText = t("Successfully fulfilled swap")
+        successText = t("create-fulfillment.successfully-fulfilled-swap", "Successfully fulfilled swap")
         requestObj = {
           swap_id: orderToFulfill.id,
           metadata: preparedMetadata,
@@ -165,7 +165,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
 
       case "claim":
         action = createClaimFulfillment
-        successText = t("Successfully fulfilled claim")
+        successText = t("create-fulfillment.successfully-fulfilled-claim", "Successfully fulfilled claim")
         requestObj = {
           claim_id: orderToFulfill.id,
           metadata: preparedMetadata,
@@ -194,11 +194,11 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
 
     action.mutate(requestObj, {
       onSuccess: () => {
-        notification(t("Success"), successText, "success")
+        notification(t("create-fulfillment.success", "Success"), successText, "success")
         handleCancel()
         onComplete && onComplete()
       },
-      onError: (err) => notification(t("Error"), getErrorMessage(err), "error"),
+      onError: (err) => notification(t("create-fulfillment.error", "Error"), getErrorMessage(err), "error"),
     })
   }
 
@@ -221,7 +221,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
               type="button"
               onClick={handleCancel}
             >
-              {t("Cancel")}
+              {t("create-fulfillment.cancel", "Cancel")}
             </Button>
             <Button
               size="small"
@@ -233,21 +233,21 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
                 !Object.values(quantities).some((quantity) => quantity > 0)
               }
             >
-              {t("Create fulfillment")}
+              {t("create-fulfillment.create-fulfillment", "Create fulfillment")}
             </Button>
           </div>
         </div>
       </FocusModal.Header>
       <FocusModal.Main className="medium:w-6/12">
         <div className="pt-16">
-          <h1 className="inter-xlarge-semibold">{t("Create Fulfillment")}</h1>
+          <h1 className="inter-xlarge-semibold">{t("create-fulfillment.create-fulfillment", "Create Fulfillment")}</h1>
           <div className="grid-col-1 grid gap-y-8 divide-y [&>*]:pt-8">
             <FeatureToggle featureFlag="inventoryService">
               <div className="grid grid-cols-2">
                 <div>
-                  <h2 className="inter-base-semibold">{t("Locations")}</h2>
+                  <h2 className="inter-base-semibold">{t("create-fulfillment.locations", "Locations")}</h2>
                   <span className="text-grey-50">
-                    {t("Choose where you wish to fulfill from.")}
+                    {t("create-fulfillment.choose-where-you-wish-to-fulfill-from", "Choose where you wish to fulfill from.")}
                   </span>
                 </div>
                 <Select
@@ -265,10 +265,10 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
             </FeatureToggle>
             <div className="flex flex-col">
               <span className="inter-base-semibold ">
-                {t("Items to fulfill")}
+                {t("create-fulfillment.items-to-fulfill", "Items to fulfill")}
               </span>
               <span className="text-grey-50 mb-6">
-                {t("Select the number of items that you wish to fulfill.")}
+                {t("create-fulfillment.select-the-number-of-items-that-you-wish-to-fulfill", "Select the number of items that you wish to fulfill.")}
               </span>
               <CreateFulfillmentItemsTable
                 items={items}
@@ -284,7 +284,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
             <div>
               <div className="mb-2xsmall flex items-center justify-between">
                 <h2 className="inter-base-semibold">
-                  {t("Send notifications")}
+                  {t("create-fulfillment.send-notifications", "Send notifications")}
                 </h2>
                 <Switch
                   checked={!noNotis}
@@ -292,7 +292,7 @@ const CreateFulfillmentModal: React.FC<CreateFulfillmentModalProps> = ({
                 />
               </div>
               <p className="inter-base-regular text-grey-50">
-                {t("When toggled, notification emails will be sent.")}
+                {t("create-fulfillment.when-toggled-notification-emails-will-be-sent", "When toggled, notification emails will be sent.")}
               </p>
             </div>
           </div>

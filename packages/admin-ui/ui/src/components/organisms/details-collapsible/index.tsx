@@ -23,8 +23,8 @@ const DetailsCollapsible = ({
 
   const Icon = open ? ArrowUpIcon : ArrowDownIcon
   const label = open
-    ? t("Hide additional details")
-    : t("Show additional details")
+    ? t("details-collapsible.hide-additional-details", "Hide additional details")
+    : t("details-collapsible.show-additional-details", "Show additional details")
 
   return (
     <RadixCollapsible.Root

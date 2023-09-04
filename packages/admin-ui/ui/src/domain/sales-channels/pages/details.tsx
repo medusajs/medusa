@@ -69,7 +69,7 @@ function DisabledLabel() {
       h-[28px] w-[54px] items-center
       justify-center rounded-xl font-semibold"
     >
-      {t("Draft")}
+      {t("pages.draft", "Draft")}
     </div>
   )
 }
@@ -149,7 +149,7 @@ function SalesChannelsHeader(props: SalesChannelsHeaderProps) {
         <div className="h-[55px]">
           <div className="mb-1 flex items-center justify-between">
             <h2 className="text-xlarge text-grey-90 font-semibold">
-              {t("Sales channels")}
+              {t("pages.sales-channels", "Sales channels")}
             </h2>
             <div className="flex items-center justify-between gap-4">
               <SearchIcon
@@ -165,7 +165,7 @@ function SalesChannelsHeader(props: SalesChannelsHeaderProps) {
             </div>
           </div>
           <div className="text-grey-50 text-small mb-6 block max-w-[100%] overflow-hidden truncate">
-            {t("Control which products are available in which channels")}
+            {t("pages.control-which-products-are-available-in-which-channels", "Control which products are available in which channels")}
           </div>
         </div>
 
@@ -175,7 +175,7 @@ function SalesChannelsHeader(props: SalesChannelsHeaderProps) {
             ref={inputRef}
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
-            placeholder={t("Search by title or description")}
+            placeholder={t("pages.search-by-title-or-description", "Search by title or description")}
             className="remove-number-spinner leading-base text-grey-90 caret-violet-60 placeholder-grey-40 w-full bg-inherit font-normal outline-none outline-0"
             onBlur={() => setShowFilter(!!filterText)}
             autoComplete="off"
@@ -266,7 +266,7 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
       text: t(
         "Are you sure you want to delete this sales channel? The setup you made will be gone forever."
       ),
-      heading: t("Delete Channel"),
+      heading: t("pages.delete-channel", "Delete Channel"),
       extraConfirmation: true,
       entityName: salesChannel.name,
     })
@@ -280,12 +280,12 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
   const actions = useMemo(() => {
     const _actions: ActionType[] = [
       {
-        label: t("Edit general info"),
+        label: t("pages.edit-general-info", "Edit general info"),
         icon: <EditIcon size="20" />,
         onClick: openUpdateModal,
       },
       {
-        label: t("Add products"),
+        label: t("pages.add-products", "Add products"),
         icon: <PlusIcon />,
         onClick: () => showProductsAdd(),
       },
@@ -293,7 +293,7 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
 
     if (!isDefault) {
       _actions.push({
-        label: t("Delete channel"),
+        label: t("pages.delete-channel", "Delete channel"),
         icon: <TrashIcon size={20} />,
         variant: "danger",
         onClick: onDelete,
@@ -314,8 +314,8 @@ function SalesChannelDetailsHeader(props: SalesChannelDetailsHeaderProps) {
             updateSalesChannel({ is_disabled: !salesChannel.is_disabled })
           }
           isDraft={salesChannel.is_disabled}
-          draftState={t("Disabled")}
-          activeState={t("Enabled")}
+          draftState={t("pages.disabled", "Disabled")}
+          activeState={t("pages.enabled", "Enabled")}
         />
         <Actionables forceDropdown={true} actions={actions} />
       </div>
@@ -455,7 +455,7 @@ function Details() {
     <div>
       <BackButton
         path="/a/settings"
-        label={t("Back to settings")}
+        label={t("pages.back-to-settings", "Back to settings")}
         className="mb-xsmall"
       />
 

@@ -20,7 +20,7 @@ const Oauth = () => {
           })
         }
       >
-        {t("Complete Installation")}
+        {t("oauth.complete-installation", "Complete Installation")}
       </Button>
     </>
   )

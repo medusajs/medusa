@@ -126,13 +126,13 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
         const errorMessage = () => {
           // @ts-ignore
           if (error.response?.data?.type === "duplicate_error") {
-            return t("A denomination with that default value already exists")
+            return t("gift-card-denominations-section.a-denomination-with-that-default-value-already-exists", "A denomination with that default value already exists")
           } else {
             return getErrorMessage(error)
           }
         }
 
-        notification(t("Error"), errorMessage(), "error")
+        notification(t("gift-card-denominations-section.error", "Error"), errorMessage(), "error")
       },
     })
   })
@@ -141,7 +141,7 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
     <Modal open={open} handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <h1 className="inter-xlarge-semibold">{t("Add Denomination")}</h1>
+          <h1 className="inter-xlarge-semibold">{t("gift-card-denominations-section.add-denomination", "Add Denomination")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
@@ -155,7 +155,7 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
                 type="button"
                 onClick={handleClose}
               >
-                {t("Cancel")}
+                {t("gift-card-denominations-section.cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -164,7 +164,7 @@ const AddDenominationModal = ({ open, onClose, giftCard }: Props) => {
                 disabled={isMutating || !isDirty}
                 loading={isMutating}
               >
-                {t("Save and close")}
+                {t("gift-card-denominations-section.save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

@@ -60,11 +60,11 @@ const EditModal = ({ open, onClose, option }: Props) => {
       },
       {
         onSuccess: () => {
-          notification(t("Success"), t("Shipping option updated"), "success")
+          notification(t("shipping-option-card.success", "Success"), t("shipping-option-card.shipping-option-updated", "Shipping option updated"), "success")
           closeAndReset()
         },
         onError: (error) => {
-          notification(t("Error"), getErrorMessage(error), "error")
+          notification(t("shipping-option-card.error", "Error"), getErrorMessage(error), "error")
         },
       }
     )
@@ -74,12 +74,12 @@ const EditModal = ({ open, onClose, option }: Props) => {
     <Modal open={open} handleClose={closeAndReset}>
       <Modal.Body>
         <Modal.Header handleClose={closeAndReset}>
-          <h1 className="inter-xlarge-semibold">{t("Edit Shipping Option")}</h1>
+          <h1 className="inter-xlarge-semibold">{t("shipping-option-card.edit-shipping-option", "Edit Shipping Option")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
             <div>
-              <p className="inter-base-semibold">{t("Fulfillment Method")}</p>
+              <p className="inter-base-semibold">{t("shipping-option-card.fulfillment-method", "Fulfillment Method")}</p>
               <p className="inter-base-regular text-grey-50">
                 {option.data.id as string} via {option.provider_id}
               </p>
@@ -94,7 +94,7 @@ const EditModal = ({ open, onClose, option }: Props) => {
           <Modal.Footer>
             <div className="gap-x-xsmall flex w-full items-center justify-end">
               <Button variant="secondary" size="small" onClick={closeAndReset}>
-                {t("Cancel")}
+                {t("shipping-option-card.cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -103,7 +103,7 @@ const EditModal = ({ open, onClose, option }: Props) => {
                 loading={isLoading}
                 disabled={isLoading || !isDirty}
               >
-                {t("Save and close")}
+                {t("shipping-option-card.save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

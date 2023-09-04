@@ -59,14 +59,14 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
       {
         onSuccess: () => {
           notification(
-            t("Success"),
-            t("Successfully created tax rate."),
+            t("taxes.success", "Success"),
+            t("taxes.successfully-created-tax-rate", "Successfully created tax rate."),
             "success"
           )
           onDismiss()
         },
         onError: (error) => {
-          notification(t("Error"), getErrorMessage(error), "error")
+          notification(t("taxes.error", "Error"), getErrorMessage(error), "error")
         },
       }
     )
@@ -104,13 +104,13 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
         <Modal.Body>
           <Modal.Header handleClose={onDismiss}>
             <div>
-              <h1 className="inter-xlarge-semibold">{t("Add Tax Rate")}</h1>
+              <h1 className="inter-xlarge-semibold">{t("taxes.add-tax-rate", "Add Tax Rate")}</h1>
             </div>
           </Modal.Header>
           <Modal.Content>
             <EditTaxRateDetails form={nestedForm(form, "details")} />
             <div>
-              <p className="inter-base-semibold mb-base">{t("Overrides")}</p>
+              <p className="inter-base-semibold mb-base">{t("taxes.overrides", "Overrides")}</p>
               {(product_types.length > 0 ||
                 products.length > 0 ||
                 shipping_options.length > 0) && (
@@ -134,7 +134,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                         )
                       }}
                       index={1}
-                      name={t("Product Rules")}
+                      name={t("taxes.product-rules", "Product Rules")}
                       description={t("Applies to {count} productWithCount", {
                         count: products.length,
                       })}
@@ -162,7 +162,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                         )
                       }}
                       index={2}
-                      name={t("Product Type Rules")}
+                      name={t("taxes.product-type-rules", "Product Type Rules")}
                       description={t(
                         "Applies to {count} product typeWithCount",
                         {
@@ -193,7 +193,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                         )
                       }}
                       index={3}
-                      name={t("Shipping Option Rules")}
+                      name={t("taxes.shipping-option-rules", "Shipping Option Rules")}
                       description={t(
                         "Applies to {count} shipping optionWithCount",
                         {
@@ -224,7 +224,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                   size="medium"
                   variant="secondary"
                 >
-                  <PlusIcon /> {t("Add Overrides")}
+                  <PlusIcon /> {t("taxes.add-overrides", "Add Overrides")}
                 </Button>
               )}
             </div>
@@ -238,7 +238,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                 size="small"
                 className="w-eventButton justify-center"
               >
-                {t("Cancel")}
+                {t("taxes.cancel", "Cancel")}
               </Button>
               <Button
                 type="submit"
@@ -248,7 +248,7 @@ const NewTaxRate = ({ regionId, onDismiss }: NewTaxRateProps) => {
                 loading={isLoading}
                 disabled={isLoading}
               >
-                {t("Create")}
+                {t("taxes.create", "Create")}
               </Button>
             </div>
           </Modal.Footer>

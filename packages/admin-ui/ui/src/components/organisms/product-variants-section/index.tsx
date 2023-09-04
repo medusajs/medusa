@@ -71,22 +71,22 @@ const ProductVariantsSection = ({ product }: Props) => {
 
   const actions: ActionType[] = [
     {
-      label: t("Add Variant"),
+      label: t("product-variants-section.add-variant", "Add Variant"),
       onClick: toggleAddVariant,
       icon: <PlusIcon size="20" />,
     },
     {
-      label: t("Edit Prices"),
+      label: t("product-variants-section.edit-prices", "Edit Prices"),
       onClick: toggleEditPrices,
       icon: <DollarSignIcon size="20" />,
     },
     {
-      label: t("Edit Variants"),
+      label: t("product-variants-section.edit-variants", "Edit Variants"),
       onClick: toggleEditVariants,
       icon: <EditIcon size="20" />,
     },
     {
-      label: t("Edit Options"),
+      label: t("product-variants-section.edit-options", "Edit Options"),
       onClick: toggleOptions,
       icon: <GearIcon size="20" />,
     },
@@ -132,7 +132,7 @@ const ProductVariantsSection = ({ product }: Props) => {
         <ProductOptions />
         <div className="mt-xlarge">
           <h2 className="inter-large-semibold mb-base">
-            {t("Product variants")}{" "}
+            {t("product-variants-section.product-variants", "Product variants")}{" "}
             <span className="inter-large-regular text-grey-50">
               ({product.variants.length})
             </span>

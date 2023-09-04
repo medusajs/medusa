@@ -59,10 +59,10 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
     mutate(payload, {
       onSuccess: () => {
         onClose()
-        notification(t("Success"), t("Location edited successfully"), "success")
+        notification(t("edit.success", "Success"), t("edit.location-edited-successfully", "Location edited successfully"), "success")
       },
       onError: (err) => {
-        notification(t("Error"), getErrorMessage(err), "error")
+        notification(t("edit.error", "Error"), getErrorMessage(err), "error")
       },
     })
   })
@@ -72,7 +72,7 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
       <Modal.Body className="top-20">
         <Modal.Header handleClose={onClose}>
           <h1 className="text-xl font-semibold">
-            {t("Edit Location Details")}
+            {t("edit.edit-location-details", "Edit Location Details")}
           </h1>
         </Modal.Header>
         <Modal.Content>
@@ -81,7 +81,7 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
               <GeneralForm form={nestedForm(form, "general")} />
               <AddressForm form={nestedForm(form, "address")} />
               <div>
-                <h2 className="inter-base-semibold mb-base">{t("Metadata")}</h2>
+                <h2 className="inter-base-semibold mb-base">{t("edit.metadata", "Metadata")}</h2>
                 <MetadataForm form={nestedForm(form, "metadata")} />
               </div>
             </div>
@@ -96,7 +96,7 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
             type="button"
             onClick={onClose}
           >
-            {t("Cancel")}
+            {t("edit.cancel", "Cancel")}
           </Button>
           <Button
             size="small"
@@ -105,7 +105,7 @@ const LocationEditModal = ({ onClose, location }: LocationEditModalProps) => {
             disabled={!isDirty || isLoading}
             onClick={onSubmit}
           >
-            {t("Save and close")}
+            {t("edit.save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>

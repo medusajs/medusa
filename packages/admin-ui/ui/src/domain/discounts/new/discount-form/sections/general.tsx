@@ -61,7 +61,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
             name="regions"
             control={control}
             rules={{
-              required: t("At least one region is required"),
+              required: t("sections.at-least-one-region-is-required", "At least one region is required"),
               validate: (value) =>
                 Array.isArray(value) ? value.length > 0 : !!value,
             }}
@@ -72,7 +72,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                   onChange={(value) => {
                     onChange(type === "fixed" ? [value] : value)
                   }}
-                  label={t("Choose valid regions")}
+                  label={t("sections.choose-valid-regions", "Choose valid regions")}
                   isMulti={type !== "fixed"}
                   selectAll={type !== "fixed"}
                   isSearchable
@@ -84,11 +84,11 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
           />
           <div className="gap-x-base gap-y-base my-base flex">
             <InputField
-              label={t("Code")}
+              label={t("sections.code", "Code")}
               className="flex-1"
-              placeholder={t("SUMMERSALE10")}
+              placeholder={t("sections.summersale-10", "SUMMERSALE10")}
               required
-              {...register("code", { required: t("Code is required") })}
+              {...register("code", { required: t("sections.code-is-required", "Code is required") })}
             />
 
             {type !== "free_shipping" && (
@@ -105,13 +105,13 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                         name="rule.value"
                         control={control}
                         rules={{
-                          required: t("Amount is required"),
+                          required: t("sections.amount-is-required", "Amount is required"),
                           min: 1,
                         }}
                         render={({ field: { value, onChange } }) => {
                           return (
                             <CurrencyInput.Amount
-                              label={t("Amount")}
+                              label={t("sections.amount", "Amount")}
                               required
                               amount={value}
                               onChange={onChange}
@@ -124,7 +124,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                 ) : (
                   <div className="flex-1">
                     <InputField
-                      label={t("Percentage")}
+                      label={t("sections.percentage", "Percentage")}
                       min={0}
                       required
                       type="number"
@@ -147,12 +147,12 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
                 "The code your customers will enter during checkout. This will appear on your customer’s invoice."
               )}
             </span>
-            <span>{t("Uppercase letters and numbers only.")}</span>
+            <span>{t("sections.uppercase-letters-and-numbers-only", "Uppercase letters and numbers only.")}</span>
           </div>
           <TextArea
-            label={t("Description")}
+            label={t("sections.description", "Description")}
             required
-            placeholder={t("Summer Sale 2022")}
+            placeholder={t("sections.summer-sale-2022", "Summer Sale 2022")}
             rows={1}
             {...register("rule.description", {
               required: true,
@@ -165,7 +165,7 @@ const General: React.FC<GeneralProps> = ({ discount }) => {
               render={({ field: { onChange, value } }) => {
                 return (
                   <Checkbox
-                    label={t("This is a template discount")}
+                    label={t("sections.this-is-a-template-discount", "This is a template discount")}
                     name="is_dynamic"
                     id="is_dynamic"
                     checked={value}

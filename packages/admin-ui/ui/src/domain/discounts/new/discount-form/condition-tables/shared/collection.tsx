@@ -45,7 +45,7 @@ export const useCollectionColumns = () => {
       {
         Header: () => (
           <div className="flex min-w-[546px] items-center gap-1">
-            {t("Title")} <SortingIcon size={16} />
+            {t("shared.title", "Title")} <SortingIcon size={16} />
           </div>
         ),
         accessor: "title",
@@ -56,7 +56,7 @@ export const useCollectionColumns = () => {
       {
         Header: () => (
           <div className="flex items-center justify-end gap-1">
-            {t("Products")} <SortingIcon size={16} />
+            {t("shared.products", "Products")} <SortingIcon size={16} />
           </div>
         ),
         id: "products",

@@ -51,11 +51,11 @@ const AddConditionsModal = ({
     <LayeredModal context={layeredModalContext} handleClose={onClose}>
       <Modal.Body className="flex h-[calc(100vh-134px)] flex-col">
         <Modal.Header handleClose={onClose}>
-          <span className="inter-xlarge-semibold">{t("Add Conditions")}</span>
+          <span className="inter-xlarge-semibold">{t("discount-form.add-conditions", "Add Conditions")}</span>
           <span className="text-grey-90 mt-6 flex items-center gap-1 font-semibold">
-            {t("Choose a condition type")}{" "}
+            {t("discount-form.choose-a-condition-type", "Choose a condition type")}{" "}
             <IconTooltip
-              content={t("You can only add one of each type of condition")}
+              content={t("discount-form.you-can-only-add-one-of-each-type-of-condition", "You can only add one of each type of condition")}
             />
           </span>
         </Modal.Header>
@@ -66,7 +66,7 @@ const AddConditionsModal = ({
           ) : (
             <div className="flex h-full flex-1 flex-col items-center justify-center">
               <span className="inter-base-regular text-grey-40">
-                {t("You cannot add any more conditions")}
+                {t("discount-form.you-cannot-add-any-more-conditions", "You cannot add any more conditions")}
               </span>
             </div>
           )}
@@ -80,7 +80,7 @@ const AddConditionsModal = ({
               size="small"
               onClick={onClose}
             >
-              {t("Cancel")}
+              {t("discount-form.cancel", "Cancel")}
             </Button>
             <Button
               onClick={() => {
@@ -93,7 +93,7 @@ const AddConditionsModal = ({
               className="text-small w-32 justify-center"
               variant="primary"
             >
-              {t("Save")}
+              {t("discount-form.save", "Save")}
             </Button>
           </div>
         </Modal.Footer>

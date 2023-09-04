@@ -32,7 +32,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
             overview.
           </div> */}
           <div className="inter-small-regular text-grey-50 mb-4 flex">
-            {t("Initialize an export of your data")}
+            {t("export-modal.initialize-an-export-of-your-data", "Initialize an export of your data")}
           </div>
         </Modal.Content>
         <Modal.Footer>
@@ -43,7 +43,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
               onClick={handleClose}
               className="mr-2"
             >
-              {t("Cancel")}
+              {t("export-modal.cancel", "Cancel")}
             </Button>
             <Button
               loading={loading}
@@ -52,7 +52,7 @@ const ExportModal: React.FC<ExportModalProps> = ({
               size="small"
               onClick={onSubmit}
             >
-              {t("Export")}
+              {t("export-modal.export", "Export")}
             </Button>
           </div>
         </Modal.Footer>

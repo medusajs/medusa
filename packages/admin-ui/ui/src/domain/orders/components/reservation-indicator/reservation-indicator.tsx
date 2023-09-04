@@ -78,7 +78,7 @@ const ReservationIndicator = ({
               </div>
             ) : (
               <span className="flex w-full items-center">
-                {t("This item has been fulfilled.")}
+                {t("reservation-indicator.this-item-has-been-fulfilled", "This item has been fulfilled.")}
               </span>
             )}
           </div>
@@ -132,7 +132,7 @@ const EditReservationButton = ({
         size="small"
         className="mt-2 w-full border"
       >
-        {t("Edit reservation")}
+        {t("reservation-indicator.edit-reservation", "Edit reservation")}
       </Button>
     </div>
   )

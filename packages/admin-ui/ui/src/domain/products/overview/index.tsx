@@ -78,7 +78,7 @@ const Overview = () => {
               onClick={() => openImportModal()}
             >
               <UploadIcon size={20} />
-              {t("Import Products")}
+              {t("overview.import-products", "Import Products")}
             </Button>
             <Button
               variant="secondary"
@@ -86,7 +86,7 @@ const Overview = () => {
               onClick={() => openExportModal()}
             >
               <ExportIcon size={20} />
-              {t("Export Products")}
+              {t("overview.export-products", "Export Products")}
             </Button>
             <Button
               variant="secondary"
@@ -94,7 +94,7 @@ const Overview = () => {
               onClick={openProductCreate}
             >
               <PlusIcon size={20} />
-              {t("New Product")}
+              {t("overview.new-product", "New Product")}
             </Button>
           </div>
         )
@@ -108,7 +108,7 @@ const Overview = () => {
               onClick={() => setShowNewCollection(!showNewCollection)}
             >
               <PlusIcon size={20} />
-              {t("New Collection")}
+              {t("overview.new-collection", "New Collection")}
             </Button>
           </div>
         )
@@ -149,15 +149,15 @@ const Overview = () => {
       {
         onSuccess: ({ collection }) => {
           notification(
-            t("Success"),
-            t("Successfully created collection"),
+            t("overview.success", "Success"),
+            t("overview.successfully-created-collection", "Successfully created collection"),
             "success"
           )
           navigate(`/a/collections/${collection.id}`)
           setShowNewCollection(false)
         },
         onError: (err) =>
-          notification(t("Error"), getErrorMessage(err), "error"),
+          notification(t("overview.error", "Error"), getErrorMessage(err), "error"),
       }
     )
   }
@@ -173,13 +173,13 @@ const Overview = () => {
       onSuccess: () => {
         resetInterval()
         notification(
-          t("Success"),
-          t("Successfully initiated export"),
+          t("overview.success", "Success"),
+          t("overview.successfully-initiated-export", "Successfully initiated export"),
           "success"
         )
       },
       onError: (err) => {
-        notification(t("Error"), getErrorMessage(err), "error")
+        notification(t("overview.error", "Error"), getErrorMessage(err), "error")
       },
     })
 

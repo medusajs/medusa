@@ -10,7 +10,7 @@ export const columns: Column<Product>[] = [
   {
     Header: (
       <div className="pl-4">
-        <Translation>{(t) => t("Product Details")}</Translation>
+        <Translation>{(t) => t("add-products-modal.product-details", "Product Details")}</Translation>
       </div>
     ),
     accessor: "title",
@@ -40,7 +40,7 @@ export const columns: Column<Product>[] = [
   {
     Header: (
       <div>
-        <Translation>{(t) => t("Status")}</Translation>
+        <Translation>{(t) => t("add-products-modal.status", "Status")}</Translation>
       </div>
     ),
     accessor: "status",
@@ -53,7 +53,7 @@ export const columns: Column<Product>[] = [
   {
     Header: (
       <div className="flex items-center justify-end pr-4">
-        <Translation>{(t) => t("Variants")}</Translation>
+        <Translation>{(t) => t("add-products-modal.variants", "Variants")}</Translation>
       </div>
     ),
     accessor: "variants",

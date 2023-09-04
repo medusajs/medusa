@@ -29,14 +29,14 @@ const DiscountType = () => {
             <RadioGroup.Item
               value={DiscountRuleType.PERCENTAGE}
               className="flex-1"
-              label={t("Percentage")}
+              label={t("sections.percentage", "Percentage")}
               description={"Discount applied in %"}
             />
             <RadioGroup.Item
               value={DiscountRuleType.FIXED}
               className="flex-1"
-              label={t("Fixed amount")}
-              description={t("Discount in whole numbers")}
+              label={t("sections.fixed-amount", "Fixed amount")}
+              description={t("sections.discount-in-whole-numbers", "Discount in whole numbers")}
               disabled={Array.isArray(regions) && regions.length > 1}
               disabledTooltip={t(
                 "You can only select one valid region if you want to use the fixed amount type"
@@ -45,8 +45,8 @@ const DiscountType = () => {
             <RadioGroup.Item
               value={DiscountRuleType.FREE_SHIPPING}
               className="flex-1"
-              label={t("Free shipping")}
-              description={t("Override delivery amount")}
+              label={t("sections.free-shipping", "Free shipping")}
+              description={t("sections.override-delivery-amount", "Override delivery amount")}
             />
           </RadioGroup.Root>
         )

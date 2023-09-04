@@ -41,7 +41,7 @@ export const useAdditionalItemsColumns = ({
     return [
       columnHelper.display({
         id: "product_display",
-        header: t("Product"),
+        header: t("items-to-send-form.product", "Product"),
         cell: ({
           row: {
             original: { thumbnail, product_title, variant_title, sku },
@@ -73,7 +73,7 @@ export const useAdditionalItemsColumns = ({
       }),
       columnHelper.display({
         id: "quantity",
-        header: () => <p className="text-right">{t("Quantity")}</p>,
+        header: () => <p className="text-right">{t("items-to-send-form.quantity", "Quantity")}</p>,
         maxSize: 50,
         cell: ({
           row: {
@@ -98,7 +98,7 @@ export const useAdditionalItemsColumns = ({
       }),
       columnHelper.accessor("price", {
         maxSize: 50,
-        header: () => <p className="text-right">{t("Price")}</p>,
+        header: () => <p className="text-right">{t("items-to-send-form.price", "Price")}</p>,
         cell: ({
           getValue,
           row: {

@@ -36,23 +36,23 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
       {
         onSuccess: () => {
           notification(
-            t("Success"),
+            t("invite-modal.success", "Success"),
             t("Invitation sent to {user}", { user: data.user }),
             "success"
           )
           handleClose()
         },
         onError: (error) => {
-          notification(t("Error"), getErrorMessage(error), "error")
+          notification(t("invite-modal.error", "Error"), getErrorMessage(error), "error")
         },
       }
     )
   }
 
   const roleOptions: Role[] = [
-    { value: "member", label: t("Member") },
-    { value: "admin", label: t("Admin") },
-    { value: "developer", label: t("Developer") },
+    { value: "member", label: t("invite-modal.member", "Member") },
+    { value: "admin", label: t("invite-modal.admin", "Admin") },
+    { value: "developer", label: t("invite-modal.developer", "Developer") },
   ]
 
   return (
@@ -60,12 +60,12 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Body>
           <Modal.Header handleClose={handleClose}>
-            <span className="inter-xlarge-semibold">{t("Invite Users")}</span>
+            <span className="inter-xlarge-semibold">{t("invite-modal.invite-users", "Invite Users")}</span>
           </Modal.Header>
           <Modal.Content>
             <div className="gap-y-base flex flex-col">
               <InputField
-                label={t("Email")}
+                label={t("invite-modal.email", "Email")}
                 placeholder="lebron@james.com"
                 required
                 {...register("user", { required: true })}
@@ -73,12 +73,12 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
               <Controller
                 name="role"
                 control={control}
-                defaultValue={{ label: t("Member"), value: "member" }}
+                defaultValue={{ label: t("invite-modal.member", "Member"), value: "member" }}
                 render={({ field: { value, onChange, onBlur, ref } }) => {
                   return (
                     <NextSelect
-                      label={t("Role")}
-                      placeholder={t("Select role")}
+                      label={t("invite-modal.role", "Role")}
+                      placeholder={t("invite-modal.select-role", "Select role")}
                       onBlur={onBlur}
                       ref={ref}
                       onChange={onChange}
@@ -99,7 +99,7 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
                 type="button"
                 onClick={handleClose}
               >
-                {t("Cancel")}
+                {t("invite-modal.cancel", "Cancel")}
               </Button>
               <Button
                 loading={isLoading}
@@ -108,7 +108,7 @@ const InviteModal: React.FC<InviteModalProps> = ({ handleClose }) => {
                 className="text-small w-32 justify-center"
                 variant="primary"
               >
-                {t("Invite")}
+                {t("invite-modal.invite", "Invite")}
               </Button>
             </div>
           </Modal.Footer>

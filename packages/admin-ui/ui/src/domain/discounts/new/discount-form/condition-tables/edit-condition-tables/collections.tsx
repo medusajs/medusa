@@ -57,8 +57,8 @@ const EditCollectionConditionSelector = ({ onClose }) => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("Search by title..."),
-            filters: [{ title: t("Title"), name: "title" }],
+            searchPlaceholder: t("edit-condition-tables.search-by-title", "Search by title..."),
+            filters: [{ title: t("edit-condition-tables.title", "Title"), name: "title" }],
           }}
           resourceName="Collections"
           totalCount={count || 0}

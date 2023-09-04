@@ -22,17 +22,17 @@ const ShippingOptions = ({ region }: Props) => {
   return (
     <>
       <Section
-        title={t("Shipping Options")}
+        title={t("shipping-options.shipping-options", "Shipping Options")}
         actions={[
           {
-            label: t("Add Option"),
+            label: t("shipping-options.add-option", "Add Option"),
             onClick: toggle,
           },
         ]}
       >
         <div className="gap-y-large flex flex-col">
           <p className="inter-base-regular text-grey-50">
-            {t("Enter specifics about available regional shipment methods.")}
+            {t("shipping-options.enter-specifics-about-available-regional-shipment-methods", "Enter specifics about available regional shipment methods.")}
           </p>
           <div className="gap-y-small flex flex-col">
             {shippingOptions?.map((option) => {

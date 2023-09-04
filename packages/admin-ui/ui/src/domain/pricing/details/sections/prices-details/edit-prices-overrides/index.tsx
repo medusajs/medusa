@@ -62,8 +62,8 @@ const EditPricesOverridesModal = ({
                   context.pop()
                   close()
                   notification(
-                    t("Success"),
-                    t("Price overrides updated"),
+                    t("edit-prices-overrides.success", "Success"),
+                    t("edit-prices-overrides.price-overrides-updated", "Price overrides updated"),
                     "success"
                   )
                 },
@@ -120,7 +120,7 @@ const EditPricesOverridesModal = ({
               size="large"
               onClick={close}
             >
-              {t("Cancel")}
+              {t("edit-prices-overrides.cancel", "Cancel")}
             </Button>
             <Button
               disabled
@@ -128,7 +128,7 @@ const EditPricesOverridesModal = ({
               className="text-small rounded-rounded w-32 justify-center"
               variant="primary"
             >
-              {t("Save")}
+              {t("edit-prices-overrides.save", "Save")}
             </Button>
           </div>
         </Modal.Footer>

@@ -12,22 +12,22 @@ const useReservationsTableColumns = () => {
         Cell: ({ cell: { value } }) => value,
       },
       {
-        Header: t("Order ID"),
+        Header: t("reservations-table.order-id", "Order ID"),
         accessor: "line_item.order.display_id",
         Cell: ({ cell: { value } }) => value ?? "-",
       },
       {
-        Header: t("Description"),
+        Header: t("reservations-table.description", "Description"),
         accessor: "description",
         Cell: ({ cell: { value } }) => value,
       },
       {
-        Header: t("Created"),
+        Header: t("reservations-table.created", "Created"),
         accessor: "created_at",
         Cell: ({ cell: { value } }) => moment(value).format("MMM Do YYYY"),
       },
       {
-        Header: () => <div className="pr-2 text-right">{t("Quantity")}</div>,
+        Header: () => <div className="pr-2 text-right">{t("reservations-table.quantity", "Quantity")}</div>,
         accessor: "quantity",
         Cell: ({ cell: { value } }) => (
           <div className="w-full pr-2 text-right">{value}</div>

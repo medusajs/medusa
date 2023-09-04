@@ -45,10 +45,10 @@ function AddSalesChannelsSection(props: AddSalesChannelsSectionProps) {
       <div className="flex items-center justify-between">
         <div>
           <h5 className="inter-base-semibold text-grey-90 pb-1">
-            {t("Sales channels")}
+            {t("pages.sales-channels", "Sales channels")}
           </h5>
           <p className="text-grey-50">
-            {t("Connect as many sales channels to your API key as you need.")}
+            {t("pages.connect-as-many-sales-channels-to-your-api-key-as-you-need", "Connect as many sales channels to your API key as you need.")}
           </p>
         </div>
         {!hasSelectedChannels && (
@@ -58,7 +58,7 @@ function AddSalesChannelsSection(props: AddSalesChannelsSectionProps) {
             className="h-[40px]"
             onClick={showModal}
           >
-            {t("Add sales channels")}
+            {t("pages.add-sales-channels", "Add sales channels")}
           </Button>
         )}
       </div>
@@ -81,7 +81,7 @@ function AddSalesChannelsSection(props: AddSalesChannelsSectionProps) {
             className="h-[40px]"
             onClick={showModal}
           >
-            {t("Edit sales channels")}
+            {t("pages.edit-sales-channels", "Edit sales channels")}
           </Button>
         </div>
       )}
@@ -122,9 +122,9 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
     try {
       const res = await createPublishableApiKey({ title: name })
       setKeyId(res.publishable_api_key.id)
-      notification(t("Success"), t("Created a new API key"), "success")
+      notification(t("pages.success", "Success"), t("pages.created-a-new-api-key", "Created a new API key"), "success")
     } catch (e) {
-      notification(t("Error"), t("Failed to create a new API key"), "error")
+      notification(t("pages.error", "Error"), t("pages.failed-to-create-a-new-api-key", "Failed to create a new API key"), "error")
     }
   }
 
@@ -135,14 +135,14 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
       })
         .then(() => {
           notification(
-            t("Success"),
-            t("Sales channels added to the scope"),
+            t("pages.success", "Success"),
+            t("pages.sales-channels-added-to-the-scope", "Sales channels added to the scope"),
             "success"
           )
         })
         .catch(() => {
           notification(
-            t("Error"),
+            t("pages.error", "Error"),
             t(
               "Error occurred while adding sales channels to the scope of the key"
             ),
@@ -168,7 +168,7 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
               disabled={!name}
               className="rounded-rounded"
             >
-              {t("Publish API key")}
+              {t("pages.publish-api-key", "Publish API key")}
             </Button>
           </div>
         </div>
@@ -177,7 +177,7 @@ function CreatePublishableKey(props: CreatePublishableKeyProps) {
       <FocusModal.Main className="no-scrollbar flex w-full justify-center">
         <div className="medium:w-7/12 large:w-6/12 small:w-4/5 my-16 max-w-[700px]">
           <h1 className="inter-xlarge-semibold text-grey-90 pb-8">
-            {t("Create API Key")}
+            {t("pages.create-api-key", "Create API Key")}
           </h1>
           <h5 className="inter-base-semibold text-grey-90 pb-1">
             General Information
@@ -222,7 +222,7 @@ function Index() {
 
   const actions = [
     {
-      label: t("Create API key"),
+      label: t("pages.create-api-key", "Create API key"),
       onClick: openCreateModal,
     },
   ]
@@ -238,12 +238,12 @@ function Index() {
   return (
     <div>
       <BackButton
-        label={t("Back to settings")}
+        label={t("pages.back-to-settings", "Back to settings")}
         path="/a/settings"
         className="mb-xsmall"
       />
       <BodyCard
-        title={t("Publishable API keys")}
+        title={t("pages.publishable-api-keys", "Publishable API keys")}
         subtitle={t(
           "These publishable keys will allow you to authenticate API requests."
         )}

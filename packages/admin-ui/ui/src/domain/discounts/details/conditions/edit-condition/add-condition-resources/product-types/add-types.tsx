@@ -42,7 +42,7 @@ const AddTypesConditionsScreen = () => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("Search..."),
+            searchPlaceholder: t("product-types.search", "Search..."),
           }}
           resourceName="Types"
           totalCount={count ?? 0}
@@ -59,21 +59,21 @@ const AddTypesConditionsScreen = () => {
       <Modal.Footer>
         <div className="space-x-xsmall flex w-full justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
-            {t("Cancel")}
+            {t("product-types.cancel", "Cancel")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndGoBack(selectedResources, () => refetch())}
           >
-            {t("Save and go back")}
+            {t("product-types.save-and-go-back", "Save and go back")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndClose(selectedResources)}
           >
-            {t("Save and close")}
+            {t("product-types.save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>

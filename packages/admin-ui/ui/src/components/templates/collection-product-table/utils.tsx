@@ -14,25 +14,25 @@ export const decideStatus = (status: string) => {
     case "published":
       return (
         <Translation>
-          {(t) => <StatusIndicator title={t("Published")} variant="success" />}
+          {(t) => <StatusIndicator title={t("collection-product-table.published", "Published")} variant="success" />}
         </Translation>
       )
     case "draft":
       return (
         <Translation>
-          {(t) => <StatusIndicator title={t("Draft")} variant="default" />}
+          {(t) => <StatusIndicator title={t("collection-product-table.draft", "Draft")} variant="default" />}
         </Translation>
       )
     case "proposed":
       return (
         <Translation>
-          {(t) => <StatusIndicator title={t("Proposed")} variant="warning" />}
+          {(t) => <StatusIndicator title={t("collection-product-table.proposed", "Proposed")} variant="warning" />}
         </Translation>
       )
     case "rejected":
       return (
         <Translation>
-          {(t) => <StatusIndicator title={t("Rejected")} variant="danger" />}
+          {(t) => <StatusIndicator title={t("collection-product-table.rejected", "Rejected")} variant="danger" />}
         </Translation>
       )
     default:

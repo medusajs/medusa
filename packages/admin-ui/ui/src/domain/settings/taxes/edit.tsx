@@ -31,7 +31,7 @@ const EditTaxRate = ({ taxRate, taxRateId, regionId, onDismiss }) => {
       <Modal.Body>
         <Modal.Header handleClose={onDismiss}>
           <div>
-            <h1 className="inter-xlarge-semibold">{t("Edit Tax Rate")}</h1>
+            <h1 className="inter-xlarge-semibold">{t("taxes.edit-tax-rate", "Edit Tax Rate")}</h1>
           </div>
         </Modal.Header>
         {taxRate.type === "region" ? (

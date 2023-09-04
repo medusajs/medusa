@@ -20,15 +20,15 @@ import TreeCrumbs from "../components/tree-crumbs"
 
 const visibilityOptions = (t) => [
   {
-    label: t("Public"),
+    label: t("modals.public", "Public"),
     value: "public",
   },
-  { label: t("Private"), value: "private" },
+  { label: t("modals.private", "Private"), value: "private" },
 ]
 
 const statusOptions = (t) => [
-  { label: t("Active"), value: "active" },
-  { label: t("Inactive"), value: "inactive" },
+  { label: t("modals.active", "Active"), value: "active" },
+  { label: t("modals.inactive", "Inactive"), value: "inactive" },
 ]
 
 type CreateProductCategoryProps = {
@@ -67,14 +67,14 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
       await queryClient.invalidateQueries(adminProductCategoryKeys.lists())
       closeModal()
       notification(
-        t("Success"),
-        t("Successfully created a category"),
+        t("modals.success", "Success"),
+        t("modals.successfully-created-a-category", "Successfully created a category"),
         "success"
       )
     } catch (e) {
       const errorMessage =
-        getErrorMessage(e) || t("Failed to create a new category")
-      notification(t("Error"), errorMessage, "error")
+        getErrorMessage(e) || t("modals.failed-to-create-a-new-category", "Failed to create a new category")
+      notification(t("modals.error", "Error"), errorMessage, "error")
     }
   }
 
@@ -93,7 +93,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
               disabled={!name}
               className="rounded-rounded"
             >
-              {t("Save category")}
+              {t("modals.save-category", "Save category")}
             </Button>
           </div>
         </div>
@@ -104,7 +104,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
           <h1 className="inter-xlarge-semibold text-grey-90 pb-6">
             {parentCategory
               ? t("Add category to {name}", { name: parentCategory.name })
-              : t("Add category")}
+              : t("modals.add-category", "Add category")}
           </h1>
 
           {parentCategory && (
@@ -119,38 +119,38 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
           )}
 
           <h4 className="inter-large-semibold text-grey-90 pb-1">
-            {t("Details")}
+            {t("modals.details", "Details")}
           </h4>
 
           <div className="mb-8 flex justify-between gap-6">
             <InputField
               required
-              label={t("Name")}
+              label={t("modals.name", "Name")}
               type="string"
               name="name"
               value={name}
               className="w-[338px]"
-              placeholder={t("Give this category a name")}
+              placeholder={t("modals.give-this-category-a-name", "Give this category a name")}
               onChange={(ev) => setName(ev.target.value)}
             />
 
             <InputField
-              label={t("Handle")}
+              label={t("modals.handle", "Handle")}
               type="string"
               name="handle"
               value={handle}
               className="w-[338px]"
-              placeholder={t("Custom handle")}
+              placeholder={t("modals.custom-handle", "Custom handle")}
               onChange={(ev) => setHandle(ev.target.value)}
             />
           </div>
 
           <div className="mb-8">
             <TextArea
-              label={t("Description")}
+              label={t("modals.description", "Description")}
               name="description"
               value={description}
-              placeholder={t("Give this category a description")}
+              placeholder={t("modals.give-this-category-a-description", "Give this category a description")}
               onChange={(ev) => setDescription(ev.target.value)}
             />
           </div>
@@ -158,7 +158,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
           <div className="mb-8 flex justify-between gap-6">
             <div className="flex-1">
               <NextSelect
-                label={t("Status")}
+                label={t("modals.status", "Status")}
                 options={statusOptions(t)}
                 value={statusOptions(t)[isActive ? 0 : 1]}
                 onChange={(o) => setIsActive(o.value === "active")}
@@ -167,7 +167,7 @@ function CreateProductCategory(props: CreateProductCategoryProps) {
 
             <div className="flex-1">
               <NextSelect
-                label={t("Visibility")}
+                label={t("modals.visibility", "Visibility")}
                 options={visibilityOptions(t)}
                 value={visibilityOptions(t)[isPublic ? 0 : 1]}
                 onChange={(o) => setIsPublic(o.value === "public")}

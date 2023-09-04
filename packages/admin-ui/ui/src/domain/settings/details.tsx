@@ -39,26 +39,26 @@ const AccountDetails = () => {
     const validateInviteLinkTemplate = validateUrl(data.invite_link_template)
 
     if (!validateSwapLinkTemplate) {
-      notification(t("Error"), t("Malformed swap url"), "error")
+      notification(t("settings.error", "Error"), t("settings.malformed-swap-url", "Malformed swap url"), "error")
       return
     }
 
     if (!validatePaymentLinkTemplate) {
-      notification(t("Error"), t("Malformed payment url"), "error")
+      notification(t("settings.error", "Error"), t("settings.malformed-payment-url", "Malformed payment url"), "error")
       return
     }
 
     if (!validateInviteLinkTemplate) {
-      notification(t("Error"), t("Malformed invite url"), "error")
+      notification(t("settings.error", "Error"), t("settings.malformed-invite-url", "Malformed invite url"), "error")
       return
     }
 
     mutate(data, {
       onSuccess: () => {
-        notification(t("Success"), t("Successfully updated store"), "success")
+        notification(t("settings.success", "Success"), t("settings.successfully-updated-store", "Successfully updated store"), "success")
       },
       onError: (error) => {
-        notification(t("Error"), getErrorMessage(error), "error")
+        notification(t("settings.error", "Error"), getErrorMessage(error), "error")
       },
     })
   }
@@ -68,48 +68,48 @@ const AccountDetails = () => {
       <div className="max-w-[632px]">
         <BackButton
           path="/a/settings/"
-          label={t("Back to settings")}
+          label={t("settings.back-to-settings", "Back to settings")}
           className="mb-xsmall"
         />
         <BodyCard
           events={[
             {
-              label: t("Save"),
+              label: t("settings.save", "Save"),
               type: "button",
               onClick: handleSubmit(onSubmit),
             },
-            { label: t("Cancel"), type: "button", onClick: handleCancel },
+            { label: t("settings.cancel", "Cancel"), type: "button", onClick: handleCancel },
           ]}
-          title={t("Store Details")}
-          subtitle={t("Manage your business details")}
+          title={t("settings.store-details", "Store Details")}
+          subtitle={t("settings.manage-your-business-details", "Manage your business details")}
         >
           <div className="gap-y-xlarge mb-large flex flex-col">
             <div>
-              <h2 className="inter-base-semibold mb-base">{t("General")}</h2>
+              <h2 className="inter-base-semibold mb-base">{t("settings.general", "General")}</h2>
               <Input
-                label={t("Store name")}
+                label={t("settings.store-name", "Store name")}
                 {...register("name")}
-                placeholder={t("Medusa Store")}
+                placeholder={t("settings.medusa-store", "Medusa Store")}
               />
             </div>
             <div>
               <h2 className="inter-base-semibold mb-base">
-                {t("Advanced settings")}
+                {t("settings.advanced-settings", "Advanced settings")}
               </h2>
               <Input
-                label={t("Swap link template")}
+                label={t("settings.swap-link-template", "Swap link template")}
                 {...register("swap_link_template")}
                 placeholder="https://acme.inc/swap={swap_id}"
               />
               <Input
                 className="mt-base"
-                label={t("Draft order link template")}
+                label={t("settings.draft-order-link-template", "Draft order link template")}
                 {...register("payment_link_template")}
                 placeholder="https://acme.inc/payment={payment_id}"
               />
               <Input
                 className="mt-base"
-                label={t("Invite link template")}
+                label={t("settings.invite-link-template", "Invite link template")}
                 {...register("invite_link_template")}
                 placeholder="https://acme-admin.inc/invite?token={invite_token}"
               />

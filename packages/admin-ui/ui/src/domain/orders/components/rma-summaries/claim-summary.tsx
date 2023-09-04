@@ -79,7 +79,7 @@ export const ClaimSummary = ({ form, order }: Props) => {
       <div className="gap-y-base border-grey-20 py-large flex flex-col border-y">
         {selectedClaimItems.length > 0 && (
           <div>
-            <p className="inter-base-semibold mb-small">{t("Claimed items")}</p>
+            <p className="inter-base-semibold mb-small">{t("rma-summaries.claimed-items", "Claimed items")}</p>
             <div className="gap-y-xsmall flex flex-col">
               {selectedClaimItems.map((item, index) => {
                 return (
@@ -112,7 +112,7 @@ export const ClaimSummary = ({ form, order }: Props) => {
         {claimType !== "refund" && replacementItems.length > 0 && (
           <div>
             <div className="mb-small gap-x-2xsmall flex items-center">
-              <p className="inter-base-semibold">{t("Replacement items")}</p>
+              <p className="inter-base-semibold">{t("rma-summaries.replacement-items", "Replacement items")}</p>
               <IconTooltip
                 type="warning"
                 content={t(
@@ -155,7 +155,7 @@ export const ClaimSummary = ({ form, order }: Props) => {
           data-testid="refund-amount-container"
         >
           <div className="gap-x-2xsmall flex items-center">
-            <p className="inter-base-semibold">{t("Refund amount")}</p>
+            <p className="inter-base-semibold">{t("rma-summaries.refund-amount", "Refund amount")}</p>
             <IconTooltip
               type="info"
               content={
@@ -163,7 +163,7 @@ export const ClaimSummary = ({ form, order }: Props) => {
                   ? t(
                       "The customer will be refunded once the returned items are received"
                     )
-                  : t("The customer will be refunded immediately")
+                  : t("rma-summaries.the-customer-will-be-refunded-immediately", "The customer will be refunded immediately")
               }
             />
           </div>

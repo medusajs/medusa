@@ -193,7 +193,7 @@ const EditVariantInventoryModal = ({ onClose, product, variant }: Props) => {
   return (
     <LayeredModal context={layeredModalContext} handleClose={handleClose}>
       <Modal.Header handleClose={handleClose}>
-        <h1 className="inter-xlarge-semibold">{t("Edit stock & inventory")}</h1>
+        <h1 className="inter-xlarge-semibold">{t("product-variants-section.edit-stock-inventory", "Edit stock & inventory")}</h1>
       </Modal.Header>
       {!isLoadingInventory && (
         <StockForm
@@ -262,7 +262,7 @@ const StockForm = ({
               handleClose()
             }}
           >
-            {t("Cancel")}
+            {t("product-variants-section.cancel", "Cancel")}
           </Button>
           <Button
             variant="primary"
@@ -271,7 +271,7 @@ const StockForm = ({
             disabled={!isDirty}
             loading={updatingVariant}
           >
-            {t("Save and close")}
+            {t("product-variants-section.save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>

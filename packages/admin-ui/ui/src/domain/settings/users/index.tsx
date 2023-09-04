@@ -35,7 +35,7 @@ const Users: React.FC = () => {
 
   const actionables = [
     {
-      label: t("Invite Users"),
+      label: t("users.invite-users", "Invite Users"),
       onClick: () => setShowInviteModal(true),
       icon: (
         <span className="text-grey-90">
@@ -50,12 +50,12 @@ const Users: React.FC = () => {
       <div className="flex w-full grow flex-col">
         <BackButton
           path="/a/settings"
-          label={t("Back to settings")}
+          label={t("users.back-to-settings", "Back to settings")}
           className="mb-xsmall"
         />
         <BodyCard
-          title={t("The Team")}
-          subtitle={t("Manage users of your Medusa Store")}
+          title={t("users.the-team", "The Team")}
+          subtitle={t("users.manage-users-of-your-medusa-store", "Manage users of your Medusa Store")}
           actionables={actionables}
         >
           <div className="flex grow flex-col justify-between">

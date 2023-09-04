@@ -166,7 +166,7 @@ export function PriceListTable(props: PriceListTableProps) {
         count: count!,
         offset: queryObject.offset,
         pageSize: queryObject.offset + table.rows.length,
-        title: t("Price Lists"),
+        title: t("price-list-table.price-lists", "Price Lists"),
         currentPage: table.state.pageIndex + 1,
         pageCount: table.pageCount,
         nextPage: handleNext,

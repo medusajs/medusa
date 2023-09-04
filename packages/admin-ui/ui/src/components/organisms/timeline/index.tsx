@@ -78,17 +78,17 @@ const Timeline: React.FC<TimelineProps> = ({ orderId }) => {
   const actions: ActionType[] = [
     {
       icon: <BackIcon size={20} />,
-      label: t("Request Return"),
+      label: t("timeline.request-return", "Request Return"),
       onClick: () => setShowRequestReturn(true),
     },
     {
       icon: <RefreshIcon size={20} />,
-      label: t("Register Exchange"),
+      label: t("timeline.register-exchange", "Register Exchange"),
       onClick: () => setshowCreateSwap(true),
     },
     {
       icon: <AlertIcon size={20} />,
-      label: t("Register Claim"),
+      label: t("timeline.register-claim", "Register Claim"),
       onClick: openRegisterClaim,
     },
   ]
@@ -104,9 +104,9 @@ const Timeline: React.FC<TimelineProps> = ({ orderId }) => {
         value: value,
       },
       {
-        onSuccess: () => notification(t("Success"), t("Added note"), "success"),
+        onSuccess: () => notification(t("timeline.success", "Success"), t("timeline.added-note", "Added note"), "success"),
         onError: (err) =>
-          notification(t("Error"), getErrorMessage(err), "error"),
+          notification(t("timeline.error", "Error"), getErrorMessage(err), "error"),
       }
     )
   }
@@ -116,7 +116,7 @@ const Timeline: React.FC<TimelineProps> = ({ orderId }) => {
       <div className="rounded-rounded border-grey-20 bg-grey-0 h-full w-5/12 border">
         <div className="border-grey-20 py-large px-xlarge border-b">
           <div className="flex items-center justify-between">
-            <h3 className="inter-xlarge-semibold">{t("Timeline")}</h3>
+            <h3 className="inter-xlarge-semibold">{t("timeline.timeline", "Timeline")}</h3>
             <div
               className={clsx({
                 "pointer-events-none opacity-50": !events,

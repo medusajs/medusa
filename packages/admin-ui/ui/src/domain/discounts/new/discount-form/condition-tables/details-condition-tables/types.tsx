@@ -52,7 +52,7 @@ const DetailsTypeConditionSelector = ({
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("Search by type..."),
+            searchPlaceholder: t("details-condition-tables.search-by-type", "Search by type..."),
           }}
           resourceName="Types"
           totalCount={count || 0}

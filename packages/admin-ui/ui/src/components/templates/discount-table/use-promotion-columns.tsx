@@ -39,15 +39,15 @@ const getPromotionStatusDot = (promotion, t) => {
   const status = getPromotionStatus(promotion)
   switch (status) {
     case PromotionStatus.SCHEDULED:
-      return <StatusDot title={t("Scheduled")} variant="warning" />
+      return <StatusDot title={t("discount-table.scheduled", "Scheduled")} variant="warning" />
     case PromotionStatus.EXPIRED:
-      return <StatusDot title={t("Expired")} variant="danger" />
+      return <StatusDot title={t("discount-table.expired", "Expired")} variant="danger" />
     case PromotionStatus.ACTIVE:
-      return <StatusDot title={t("Active")} variant="success" />
+      return <StatusDot title={t("discount-table.active", "Active")} variant="success" />
     case PromotionStatus.DISABLED:
-      return <StatusDot title={t("Disabled")} variant="default" />
+      return <StatusDot title={t("discount-table.disabled", "Disabled")} variant="default" />
     default:
-      return <StatusDot title={t("Disabled")} variant="default" />
+      return <StatusDot title={t("discount-table.disabled", "Disabled")} variant="default" />
   }
 }
 
@@ -74,7 +74,7 @@ const getPromotionAmount = (promotion, t) => {
     case "percentage":
       return `${promotion.rule.value}%`
     case "free_shipping":
-      return t("Free Shipping")
+      return t("discount-table.free-shipping", "Free Shipping")
     default:
       return ""
   }
@@ -85,7 +85,7 @@ export const usePromotionTableColumns = () => {
   const columns = useMemo(
     () => [
       {
-        Header: <div className="pl-2">{t("Code")}</div>,
+        Header: <div className="pl-2">{t("discount-table.code", "Code")}</div>,
         accessor: "code",
         Cell: ({ cell: { value } }) => (
           <div className="overflow-hidden">
@@ -96,12 +96,12 @@ export const usePromotionTableColumns = () => {
         ),
       },
       {
-        Header: t("Description"),
+        Header: t("discount-table.description", "Description"),
         accessor: "rule.description",
         Cell: ({ cell: { value } }) => value,
       },
       {
-        Header: <div className="text-right">{t("Amount")}</div>,
+        Header: <div className="text-right">{t("discount-table.amount", "Amount")}</div>,
         id: "amount",
         Cell: ({ row: { original } }) => {
           return (
@@ -117,14 +117,14 @@ export const usePromotionTableColumns = () => {
         ),
       },
       {
-        Header: t("Status"),
+        Header: t("discount-table.status", "Status"),
         accessor: "ends_at",
         Cell: ({ row: { original } }) => (
           <div>{getPromotionStatusDot(original, t)}</div>
         ),
       },
       {
-        Header: () => <div className="text-right">{t("Redemptions")}</div>,
+        Header: () => <div className="text-right">{t("discount-table.redemptions", "Redemptions")}</div>,
         accessor: "usage_count",
         Cell: ({ row: { original } }) => {
           return (

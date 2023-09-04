@@ -48,7 +48,7 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
         },
       },
       {
-        Header: () => <span>{t("File name")}</span>,
+        Header: () => <span>{t("image-table.file-name", "File name")}</span>,
         accessor: "nativeFile",
         Cell: ({ cell }) => {
           return (
@@ -74,7 +74,7 @@ const ImageTable = ({ data, form, onDelete }: ImageTableProps) => {
       {
         Header: () => (
           <div className="flex items-center justify-center gap-x-[6px]">
-            <span>{t("Thumbnail")}</span>
+            <span>{t("image-table.thumbnail", "Thumbnail")}</span>
             <IconTooltip
               content={t(
                 "Select which image you want to use as the thumbnail for this product"

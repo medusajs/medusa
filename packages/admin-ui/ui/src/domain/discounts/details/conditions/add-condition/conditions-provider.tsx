@@ -133,8 +133,8 @@ export const ConditionsProvider = ({
       {
         onSuccess: () => {
           notification(
-            t("Conditions were successfully added"),
-            t("Discount conditions updated"),
+            t("add-condition.conditions-were-successfully-added", "Conditions were successfully added"),
+            t("add-condition.discount-conditions-updated", "Discount conditions updated"),
             "success"
           )
         },
@@ -181,7 +181,7 @@ export const useConditions = () => {
   const { t } = useTranslation()
   const context = useContext(ConditionsContext)
   if (context === null) {
-    throw new Error(t("useConditions must be used within a ConditionsProvider"))
+    throw new Error(t("add-condition.use-conditions-must-be-used-within-a-conditions-provider", "useConditions must be used within a ConditionsProvider"))
   }
   return context
 }

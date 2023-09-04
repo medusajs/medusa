@@ -63,12 +63,12 @@ function ProductCategoriesList(props: ProductCategoriesListProps) {
           rank,
         })
         notification(
-          t("Success"),
-          t("Successfully updated category tree"),
+          t("components.success", "Success"),
+          t("components.successfully-updated-category-tree", "Successfully updated category tree"),
           "success"
         )
       } catch (e) {
-        notification(t("Error"), t("Failed to update category tree"), "error")
+        notification(t("components.error", "Error"), t("components.failed-to-update-category-tree", "Failed to update category tree"), "error")
         enableError()
       } finally {
         await queryClient.invalidateQueries(adminProductCategoryKeys.lists())

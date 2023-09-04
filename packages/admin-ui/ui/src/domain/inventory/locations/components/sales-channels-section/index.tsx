@@ -14,7 +14,7 @@ const SalesChannelsSection = ({
       <div className="flex w-full items-center justify-between">
         {!location.sales_channels?.length ? (
           <span className="inter-base-regular text-grey-40">
-            {t("Not connected to any sales channels yet")}
+            {t("sales-channels-section.not-connected-to-any-sales-channels-yet", "Not connected to any sales channels yet")}
           </span>
         ) : (
           <SalesChannelsList salesChannels={location.sales_channels} />

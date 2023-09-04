@@ -73,7 +73,7 @@ const ProductVariantLeaf = ({ sku, title, prices = [] }: LeafProps) => {
             <span>{t("priceWithCount", { count: filteredPrices.length })}</span>
           ) : (
             <span className="inter-small-semibold text-orange-40">
-              {t("Add prices")}
+              {t("product-variant-tree.add-prices", "Add prices")}
             </span>
           )}
         </div>

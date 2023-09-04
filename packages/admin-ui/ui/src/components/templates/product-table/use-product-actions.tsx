@@ -24,8 +24,8 @@ const useProductActions = (product: Product) => {
 
   const handleDelete = async () => {
     const shouldDelete = await dialog({
-      heading: t("Delete Product"),
-      text: t("Are you sure you want to delete this product?"),
+      heading: t("product-table.delete-product", "Delete Product"),
+      text: t("product-table.are-you-sure-you-want-to-delete-this-product", "Are you sure you want to delete this product?"),
     })
 
     if (shouldDelete) {
@@ -35,15 +35,15 @@ const useProductActions = (product: Product) => {
 
   const getActions = (): ActionType[] => [
     {
-      label: t("Edit"),
+      label: t("product-table.edit", "Edit"),
       onClick: () => navigate(`/a/products/${product.id}`),
       icon: <EditIcon size={20} />,
     },
     {
-      label: product.status === "published" ? t("Unpublish") : t("Publish"),
+      label: product.status === "published" ? t("product-table.unpublish", "Unpublish") : t("product-table.publish", "Publish"),
       onClick: () => {
         const newStatus =
-          product.status === "published" ? t("draft") : t("published")
+          product.status === "published" ? t("product-table.draft", "draft") : t("product-table.published", "published")
         updateProduct.mutate(
           {
             status: newStatus,
@@ -51,15 +51,15 @@ const useProductActions = (product: Product) => {
           {
             onSuccess: () => {
               notification(
-                t("Success"),
+                t("product-table.success", "Success"),
                 product.status === "published"
-                  ? t("Successfully unpublished product")
-                  : t("Successfully published product"),
+                  ? t("product-table.successfully-unpublished-product", "Successfully unpublished product")
+                  : t("product-table.successfully-published-product", "Successfully published product"),
                 "success"
               )
             },
             onError: (err) =>
-              notification(t("Error"), getErrorMessage(err), "error"),
+              notification(t("product-table.error", "Error"), getErrorMessage(err), "error"),
           }
         )
       },
@@ -71,12 +71,12 @@ const useProductActions = (product: Product) => {
         ),
     },
     {
-      label: t("Duplicate"),
+      label: t("product-table.duplicate", "Duplicate"),
       onClick: () => copyProduct(product),
       icon: <DuplicateIcon size={20} />,
     },
     {
-      label: t("Delete"),
+      label: t("product-table.delete", "Delete"),
       variant: "danger",
       onClick: handleDelete,
       icon: <TrashIcon size={20} />,

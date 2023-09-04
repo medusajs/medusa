@@ -45,7 +45,7 @@ const EditTypeConditionSelector = ({ onClose }) => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("Search by type..."),
+            searchPlaceholder: t("edit-condition-tables.search-by-type", "Search by type..."),
           }}
           resourceName="Types"
           totalCount={count || 0}

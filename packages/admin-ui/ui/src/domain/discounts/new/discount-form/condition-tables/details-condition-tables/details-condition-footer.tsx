@@ -30,7 +30,7 @@ const DetailsConditionFooter: React.FC<AddConditionFooterProps> = ({
   return (
     <div className="gap-x-xsmall flex w-full justify-end">
       <Button variant="ghost" size="small" onClick={onClose}>
-        {t("Cancel")}
+        {t("details-condition-tables.cancel", "Cancel")}
       </Button>
       <Button
         variant="primary"
@@ -44,7 +44,7 @@ const DetailsConditionFooter: React.FC<AddConditionFooterProps> = ({
           pop()
         }}
       >
-        {t("Save and add more")}
+        {t("details-condition-tables.save-and-add-more", "Save and add more")}
       </Button>
       <Button
         variant="primary"
@@ -55,7 +55,7 @@ const DetailsConditionFooter: React.FC<AddConditionFooterProps> = ({
           reset()
         }}
       >
-        {t("Save and close")}
+        {t("details-condition-tables.save-and-close", "Save and close")}
       </Button>
     </div>
   )

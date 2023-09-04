@@ -18,9 +18,9 @@ const SendNotificationForm = ({ form, type }: Props) => {
   const { control, path } = form
 
   const subject = {
-    return: t("return"),
-    swap: t("exchange"),
-    claim: t("claim"),
+    return: t("send-notification-form.return", "return"),
+    swap: t("send-notification-form.exchange", "exchange"),
+    claim: t("send-notification-form.claim", "claim"),
   }[type]
 
   return (
@@ -34,7 +34,7 @@ const SendNotificationForm = ({ form, type }: Props) => {
               <IndeterminateCheckbox checked={value} onChange={onChange} />
             </div>
             <p className="inter-small-semibold mr-1.5">
-              {t("Send notifications")}
+              {t("send-notification-form.send-notifications", "Send notifications")}
             </p>
             <IconTooltip
               type="info"

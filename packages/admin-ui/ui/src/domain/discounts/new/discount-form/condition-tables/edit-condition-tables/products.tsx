@@ -51,7 +51,7 @@ const EditProductConditionSelector = ({ onClose }) => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("Search products..."),
+            searchPlaceholder: t("edit-condition-tables.search-products", "Search products..."),
           }}
           resourceName="Products"
           totalCount={count || 0}

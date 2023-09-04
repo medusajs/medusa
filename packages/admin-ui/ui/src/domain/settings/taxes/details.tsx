@@ -90,10 +90,10 @@ const TaxDetails = ({ id }) => {
   return (
     <>
       <BodyCard
-        title={t("Details")}
+        title={t("taxes.details", "Details")}
         actionables={[
           {
-            label: t("New Tax Rate"),
+            label: t("taxes.new-tax-rate", "New Tax Rate"),
             onClick: () => setShowNew(true),
             icon: <PlusIcon />,
           },
@@ -136,7 +136,7 @@ const TaxDetails = ({ id }) => {
           )}
         </Table>
         <h3 className="inter-large-semibold mt-2xlarge mb-base">
-          {t("Tax Calculation Settings")}
+          {t("taxes.tax-calculation-settings", "Tax Calculation Settings")}
         </h3>
         <div className="flex flex-1">
           {!regionIsLoading && region && <RegionTaxForm region={region} />}

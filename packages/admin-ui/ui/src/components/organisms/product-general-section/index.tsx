@@ -41,12 +41,12 @@ const ProductGeneralSection = ({ product }: Props) => {
 
   const actions: ActionType[] = [
     {
-      label: t("Edit General Information"),
+      label: t("product-general-section.edit-general-information", "Edit General Information"),
       onClick: toggleInfo,
       icon: <EditIcon size={20} />,
     },
     {
-      label: t("Delete"),
+      label: t("product-general-section.delete", "Delete"),
       onClick: onDelete,
       variant: "danger",
       icon: <TrashIcon size={20} />,
@@ -55,7 +55,7 @@ const ProductGeneralSection = ({ product }: Props) => {
 
   if (isFeatureEnabled("sales_channels")) {
     actions.splice(1, 0, {
-      label: t("Edit Sales Channels"),
+      label: t("product-general-section.edit-sales-channels", "Edit Sales Channels"),
       onClick: toggleChannels,
       icon: <ChannelsIcon size={20} />,
     })
@@ -70,8 +70,8 @@ const ProductGeneralSection = ({ product }: Props) => {
         status={
           <StatusSelector
             isDraft={product?.status === "draft"}
-            activeState={t("Published")}
-            draftState={t("Draft")}
+            activeState={t("product-general-section.published", "Published")}
+            draftState={t("product-general-section.draft", "Draft")}
             onChange={() => onStatusChange(product.status)}
           />
         }
@@ -129,23 +129,23 @@ const ProductDetails = ({ product }: Props) => {
 
   return (
     <div className="mt-8 flex flex-col gap-y-3">
-      <h2 className="inter-base-semibold">{t("Details")}</h2>
-      <Detail title={t("Subtitle")} value={product.subtitle} />
-      <Detail title={t("Handle")} value={product.handle} />
-      <Detail title={t("Type")} value={product.type?.value} />
-      <Detail title={t("Collection")} value={product.collection?.title} />
+      <h2 className="inter-base-semibold">{t("product-general-section.details", "Details")}</h2>
+      <Detail title={t("product-general-section.subtitle", "Subtitle")} value={product.subtitle} />
+      <Detail title={t("product-general-section.handle", "Handle")} value={product.handle} />
+      <Detail title={t("product-general-section.type", "Type")} value={product.type?.value} />
+      <Detail title={t("product-general-section.collection", "Collection")} value={product.collection?.title} />
       {isFeatureEnabled(FeatureFlag.PRODUCT_CATEGORIES) && (
         <Detail
-          title={t("Category")}
+          title={t("product-general-section.category", "Category")}
           value={product.categories.map((c) => c.name)}
         />
       )}
       <Detail
-        title={t("Discountable")}
-        value={product.discountable ? t("True") : t("False")}
+        title={t("product-general-section.discountable", "Discountable")}
+        value={product.discountable ? t("product-general-section.true", "True") : t("product-general-section.false", "False")}
       />
       <Detail
-        title={t("Metadata")}
+        title={t("product-general-section.metadata", "Metadata")}
         value={
           Object.entries(product.metadata || {}).length > 0
             ? t("itemsWithCount", {
@@ -181,7 +181,7 @@ const ProductSalesChannels = ({ product }: Props) => {
   return (
     <FeatureToggle featureFlag="sales_channels">
       <div className="mt-xlarge">
-        <h2 className="inter-base-semibold mb-xsmall">{t("Sales channels")}</h2>
+        <h2 className="inter-base-semibold mb-xsmall">{t("product-general-section.sales-channels", "Sales channels")}</h2>
         <SalesChannelsDisplay channels={product.sales_channels} />
       </div>
     </FeatureToggle>

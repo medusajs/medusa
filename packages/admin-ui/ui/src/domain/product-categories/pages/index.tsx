@@ -60,7 +60,7 @@ function ProductCategoryPage() {
 
   const actions = [
     {
-      label: t("Add category"),
+      label: t("pages.add-category", "Add category"),
       onClick: showCreateModal,
     },
   ]
@@ -92,8 +92,8 @@ function ProductCategoryPage() {
         <div className="flex w-full grow flex-col">
           <BodyCard
             className="h-full"
-            title={t("Product Categories")}
-            subtitle={t("Helps you to keep your products organized.")}
+            title={t("pages.product-categories", "Product Categories")}
+            subtitle={t("pages.helps-you-to-keep-your-products-organized", "Helps you to keep your products organized.")}
             actionables={actions}
             footerMinHeight={40}
             setBorders

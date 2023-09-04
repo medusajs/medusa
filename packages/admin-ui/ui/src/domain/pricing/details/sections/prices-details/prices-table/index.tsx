@@ -68,7 +68,7 @@ const PricesTable = ({ id, selectProduct }: PricesTableProps) => {
         totalCount={count}
         options={{
           enableSearch: false,
-          searchPlaceholder: t("Search by name or SKU..."),
+          searchPlaceholder: t("prices-table.search-by-name-or-sku", "Search by name or SKU..."),
         }}
         {...params}
       />
@@ -108,25 +108,25 @@ const PricesTableRow = ({
 
   const actions = [
     {
-      label: t("Edit prices"),
+      label: t("prices-table.edit-prices", "Edit prices"),
       icon: <EditIcon size={20} />,
       onClick: onClick,
     },
     {
-      label: t("Remove product"),
+      label: t("prices-table.remove-product", "Remove product"),
       icon: <CancelIcon size={20} />,
       variant: "danger" as const,
       onClick: () => {
         deleteProductPrices.mutate(undefined, {
           onSuccess: () => {
             notification(
-              t("Success"),
+              t("prices-table.success", "Success"),
               t(`Deleted prices of product: {title}`, { title: product.title }),
               "success"
             )
           },
           onError: (err) =>
-            notification(t("Error"), getErrorMessage(err), "error"),
+            notification(t("prices-table.error", "Error"), getErrorMessage(err), "error"),
         })
       },
     },

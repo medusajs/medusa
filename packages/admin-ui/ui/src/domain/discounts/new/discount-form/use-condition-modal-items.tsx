@@ -35,12 +35,12 @@ const useConditionModalItems = ({
   const items: ConditionItem[] = useMemo(
     () => [
       {
-        label: t("Product"),
+        label: t("discount-form.product", "Product"),
         value: DiscountConditionType.PRODUCTS,
-        description: t("Only for specific products"),
+        description: t("discount-form.only-for-specific-products", "Only for specific products"),
         onClick: () =>
           layeredModalContext.push({
-            title: t("Choose products"),
+            title: t("discount-form.choose-products", "Choose products"),
             onBack: () => layeredModalContext.pop(),
             view: isDetails ? (
               <DetailsProductConditionSelector onClose={onClose} />
@@ -50,12 +50,12 @@ const useConditionModalItems = ({
           }),
       },
       {
-        label: t("Customer group"),
+        label: t("discount-form.customer-group", "Customer group"),
         value: DiscountConditionType.CUSTOMER_GROUPS,
-        description: t("Only for specific customer groups"),
+        description: t("discount-form.only-for-specific-customer-groups", "Only for specific customer groups"),
         onClick: () => {
           layeredModalContext.push({
-            title: t("Choose groups"),
+            title: t("discount-form.choose-groups", "Choose groups"),
             onBack: () => layeredModalContext.pop(),
             view: isDetails ? (
               <DetailsCustomerGroupConditionSelector onClose={onClose} />
@@ -66,9 +66,9 @@ const useConditionModalItems = ({
         },
       },
       {
-        label: t("Tag"),
+        label: t("discount-form.tag", "Tag"),
         value: DiscountConditionType.PRODUCT_TAGS,
-        description: t("Only for specific tags"),
+        description: t("discount-form.only-for-specific-tags", "Only for specific tags"),
         onClick: () =>
           layeredModalContext.push({
             title: "Choose tags",
@@ -81,12 +81,12 @@ const useConditionModalItems = ({
           }),
       },
       {
-        label: t("Collection"),
+        label: t("discount-form.collection", "Collection"),
         value: DiscountConditionType.PRODUCT_COLLECTIONS,
-        description: t("Only for specific product collections"),
+        description: t("discount-form.only-for-specific-product-collections", "Only for specific product collections"),
         onClick: () =>
           layeredModalContext.push({
-            title: t("Choose collections"),
+            title: t("discount-form.choose-collections", "Choose collections"),
             onBack: () => layeredModalContext.pop(),
             view: isDetails ? (
               <DetailsCollectionConditionSelector onClose={onClose} />
@@ -96,12 +96,12 @@ const useConditionModalItems = ({
           }),
       },
       {
-        label: t("Type"),
+        label: t("discount-form.type", "Type"),
         value: DiscountConditionType.PRODUCT_TYPES,
-        description: t("Only for specific product types"),
+        description: t("discount-form.only-for-specific-product-types", "Only for specific product types"),
         onClick: () =>
           layeredModalContext.push({
-            title: t("Choose types"),
+            title: t("discount-form.choose-types", "Choose types"),
             onBack: () => layeredModalContext.pop(),
             view: isDetails ? (
               <DetailsTypeConditionSelector onClose={onClose} />

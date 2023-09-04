@@ -87,7 +87,7 @@ const CustomerOrdersTable = ({ id }: Props) => {
           count: count!,
           offset,
           pageSize: offset + rows.length,
-          title: t("Orders"),
+          title: t("customer-orders-table.orders", "Orders"),
           currentPage: pageIndex + 1,
           pageCount: pageCount,
           nextPage: handleNext,
@@ -120,7 +120,7 @@ const CustomerOrdersTable = ({ id }: Props) => {
                   forceDropdown
                   actions={[
                     {
-                      label: t("Transfer order"),
+                      label: t("customer-orders-table.transfer-order", "Transfer order"),
                       icon: <RefreshIcon size={"20"} />,
                       onClick: () => {
                         setSelectedOrderForTransfer(row.original as Order)

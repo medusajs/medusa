@@ -37,8 +37,8 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
       .then(() => {
         if (successText) {
           notification(
-            t("Success"),
-            successText || t("Delete successful"),
+            t("organisms.success", "Success"),
+            successText || t("organisms.delete-successful", "Delete successful"),
             "success"
           )
         }
@@ -56,7 +56,7 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
         <Modal.Content>
           <div className="flex flex-col">
             <span className="inter-large-semibold">
-              {heading || t("Are you sure you want to delete?")}
+              {heading || t("organisms.are-you-sure-you-want-to-delete", "Are you sure you want to delete?")}
             </span>
             <span className="inter-base-regular text-grey-50 mt-1">{text}</span>
           </div>
@@ -69,7 +69,7 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
               size="small"
               onClick={handleClose}
             >
-              {cancelText || t("No, cancel")}
+              {cancelText || t("organisms.no-cancel", "No, cancel")}
             </Button>
             <Button
               loading={isLoading}
@@ -79,7 +79,7 @@ const DeletePrompt: React.FC<DeletePromptProps> = ({
               onClick={handleSubmit}
               disabled={isLoading}
             >
-              {confirmText || t("Yes, remove")}
+              {confirmText || t("organisms.yes-remove", "Yes, remove")}
             </Button>
           </div>
         </Modal.Footer>

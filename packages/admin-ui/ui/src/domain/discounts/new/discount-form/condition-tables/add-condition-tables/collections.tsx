@@ -65,7 +65,7 @@ const AddCollectionConditionSelector = ({
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("Search by title..."),
+            searchPlaceholder: t("add-condition-tables.search-by-title", "Search by title..."),
           }}
           resourceName="Collections"
           totalCount={count || 0}

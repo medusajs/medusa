@@ -36,16 +36,16 @@ function EditSalesChannel(props: EditSalesChannelProps) {
       {
         onSuccess: () => {
           notification(
-            t("Success"),
-            t("The sales channel is successfully updated"),
+            t("form.success", "Success"),
+            t("form.the-sales-channel-is-successfully-updated", "The sales channel is successfully updated"),
             "success"
           )
           handleClose()
         },
         onError: () =>
           notification(
-            t("Error"),
-            t("Failed to update the sales channel"),
+            t("form.error", "Error"),
+            t("form.failed-to-update-the-sales-channel", "Failed to update the sales channel"),
             "error"
           ),
       }
@@ -57,23 +57,23 @@ function EditSalesChannel(props: EditSalesChannelProps) {
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
           <span className="inter-xlarge-semibold">
-            {t("Sales channel details")}
+            {t("form.sales-channel-details", "Sales channel details")}
           </span>
         </Modal.Header>
         <Modal.Content>
           <div className="inter-base-semibold text-grey-90 mb-4">
-            {t("General info")}
+            {t("form.general-info", "General info")}
           </div>
 
           <div className="flex w-full flex-col gap-3">
             <InputField
-              label={t("Name")}
+              label={t("form.name", "Name")}
               name="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
             <InputField
-              label={t("Description")}
+              label={t("form.description", "Description")}
               name="description"
               value={description!}
               onChange={(e) => setDescription(e.target.value)}
@@ -88,7 +88,7 @@ function EditSalesChannel(props: EditSalesChannelProps) {
               onClick={handleClose}
               className="mr-2"
             >
-              {t("Close")}
+              {t("form.close", "Close")}
             </Button>
             <Button
               disabled={!name.length || isLoading}
@@ -98,7 +98,7 @@ function EditSalesChannel(props: EditSalesChannelProps) {
               onClick={handleSubmit}
               loading={isLoading}
             >
-              {t("Save")}
+              {t("form.save", "Save")}
             </Button>
           </div>
         </Modal.Footer>

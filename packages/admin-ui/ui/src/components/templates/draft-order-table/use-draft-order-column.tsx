@@ -11,16 +11,16 @@ const useDraftOrderTableColumns = () => {
   const decideStatus = (status) => {
     switch (status) {
       case "completed":
-        return <StatusDot variant="success" title={t("Completed")} />
+        return <StatusDot variant="success" title={t("draft-order-table.completed", "Completed")} />
       default:
-        return <StatusDot variant="primary" title={t("Open")} />
+        return <StatusDot variant="primary" title={t("draft-order-table.open", "Open")} />
     }
   }
 
   const columns = useMemo(
     () => [
       {
-        Header: t("Draft"),
+        Header: t("draft-order-table.draft", "Draft"),
         accessor: "display_id",
         Cell: ({ cell: { value, getCellProps } }) => (
           <Table.Cell
@@ -30,7 +30,7 @@ const useDraftOrderTableColumns = () => {
         ),
       },
       {
-        Header: t("Order"),
+        Header: t("draft-order-table.order", "Order"),
         accessor: "order",
         Cell: ({ cell: { value, getCellProps } }) => {
           return (
@@ -41,7 +41,7 @@ const useDraftOrderTableColumns = () => {
         },
       },
       {
-        Header: t("Date added"),
+        Header: t("draft-order-table.date-added", "Date added"),
         accessor: "created_at",
         Cell: ({ cell: { value, getCellProps } }) => (
           <Table.Cell {...getCellProps()}>
@@ -50,7 +50,7 @@ const useDraftOrderTableColumns = () => {
         ),
       },
       {
-        Header: t("Customer"),
+        Header: t("draft-order-table.customer", "Customer"),
         accessor: "cart",
         Cell: ({ row, cell: { value, getCellProps } }) => (
           <Table.Cell {...getCellProps()}>
@@ -66,7 +66,7 @@ const useDraftOrderTableColumns = () => {
         ),
       },
       {
-        Header: t("Status"),
+        Header: t("draft-order-table.status", "Status"),
         accessor: "status",
         Cell: ({ cell: { value, getCellProps } }) => (
           <Table.Cell {...getCellProps()} className="pr-2">

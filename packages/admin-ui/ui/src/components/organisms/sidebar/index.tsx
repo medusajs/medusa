@@ -53,7 +53,7 @@ const Sidebar: React.FC = () => {
         </div>
         <div className="my-base flex flex-col px-2">
           <span className="text-grey-50 text-small font-medium">
-            {t("Store")}
+            {t("sidebar.store", "Store")}
           </span>
           <span className="text-grey-90 text-medium font-medium">
             {store?.name}
@@ -64,19 +64,19 @@ const Sidebar: React.FC = () => {
             pageLink={"/a/orders"}
             icon={<CartIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
-            text={t("Orders")}
+            text={t("sidebar.orders", "Orders")}
           />
           <SidebarMenuItem
             pageLink={"/a/products"}
             icon={<TagIcon size={ICON_SIZE} />}
-            text={t("Products")}
+            text={t("sidebar.products", "Products")}
             triggerHandler={triggerHandler}
           />
           {isFeatureEnabled("product_categories") && (
             <SidebarMenuItem
               pageLink={"/a/product-categories"}
               icon={<SwatchIcon size={ICON_SIZE} />}
-              text={t("Categories")}
+              text={t("sidebar.categories", "Categories")}
               triggerHandler={triggerHandler}
             />
           )}
@@ -84,33 +84,33 @@ const Sidebar: React.FC = () => {
             pageLink={"/a/customers"}
             icon={<UsersIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
-            text={t("Customers")}
+            text={t("sidebar.customers", "Customers")}
           />
           {inventoryEnabled && (
             <SidebarMenuItem
               pageLink={"/a/inventory"}
               icon={<BuildingsIcon size={ICON_SIZE} />}
               triggerHandler={triggerHandler}
-              text={t("Inventory")}
+              text={t("sidebar.inventory", "Inventory")}
             />
           )}
           <SidebarMenuItem
             pageLink={"/a/discounts"}
             icon={<SaleIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
-            text={t("Discounts")}
+            text={t("sidebar.discounts", "Discounts")}
           />
           <SidebarMenuItem
             pageLink={"/a/gift-cards"}
             icon={<GiftIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
-            text={t("Gift Cards")}
+            text={t("sidebar.gift-cards", "Gift Cards")}
           />
           <SidebarMenuItem
             pageLink={"/a/pricing"}
             icon={<CashIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
-            text={t("Pricing")}
+            text={t("sidebar.pricing", "Pricing")}
           />
           {getLinks().map(({ path, label, icon }, index) => {
             const cleanLink = path.replace("/a/", "")
@@ -131,7 +131,7 @@ const Sidebar: React.FC = () => {
             pageLink={"/a/settings"}
             icon={<GearIcon size={ICON_SIZE} />}
             triggerHandler={triggerHandler}
-            text={t("Settings")}
+            text={t("sidebar.settings", "Settings")}
           />
         </div>
       </div>

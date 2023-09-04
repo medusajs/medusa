@@ -126,7 +126,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
       }),
       columnHelper.accessor("inventory_quantity", {
         maxSize: 20,
-        header: () => <p className="select-none text-right">{t("Stock")}</p>,
+        header: () => <p className="select-none text-right">{t("add-additional-items-screen.stock", "Stock")}</p>,
         cell: ({ cell: { getValue }, row: { getCanSelect } }) => {
           const isSelectable = getCanSelect()
 
@@ -143,7 +143,7 @@ export const useAddAdditionalItemsColumns = (order: Order) => {
       }),
       columnHelper.accessor("calculated_price_incl_tax", {
         maxSize: 80,
-        header: () => <p className="text-right">{t("Price")}</p>,
+        header: () => <p className="text-right">{t("add-additional-items-screen.price", "Price")}</p>,
         cell: ({
           getValue,
           row: {

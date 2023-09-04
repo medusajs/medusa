@@ -20,11 +20,11 @@ const Configurations: React.FC<ConfigurationsProps> = ({ discount }) => {
   return (
     <>
       <BodyCard
-        title={t("Configurations")}
+        title={t("configurations.configurations", "Configurations")}
         className="min-h-[200px]"
         actionables={[
           {
-            label: t("Edit configurations"),
+            label: t("configurations.edit-configurations", "Edit configurations"),
             onClick: open,
             icon: <EditIcon size={20} />,
           },

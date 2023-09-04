@@ -136,7 +136,7 @@ const FulfillmentLine = ({
         return errors
       }
 
-      errors[item.id] = t("Quantity is not valid")
+      errors[item.id] = t("create-fulfillment.quantity-is-not-valid", "Quantity is not valid")
       return errors
     })
   }, [validQuantity, setErrors, item.id])
@@ -221,7 +221,7 @@ const FulfillmentLine = ({
             handleQuantityUpdate(e.target.valueAsNumber, item.id)
           }
           errors={
-            validQuantity ? undefined : { quantity: t("Quantity is not valid") }
+            validQuantity ? undefined : { quantity: t("create-fulfillment.quantity-is-not-valid", "Quantity is not valid") }
           }
         />
       </div>

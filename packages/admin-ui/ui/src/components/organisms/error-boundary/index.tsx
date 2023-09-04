@@ -94,7 +94,7 @@ class ErrorBoundary extends React.Component<Props, State> {
                   variant="primary"
                   onClick={this.dismissError}
                 >
-                  <Translation>{(t) => t("Back to dashboard")}</Translation>
+                  <Translation>{(t) => t("error-boundary.back-to-dashboard", "Back to dashboard")}</Translation>
                 </Button>
               </div>
             </div>
@@ -122,19 +122,19 @@ const shouldTrackEvent = async (error: Error) => {
 }
 
 const errorMessage = (t: TFunction, status?: number) => {
-  const defaultMessage = t("An unknown error occured")
+  const defaultMessage = t("error-boundary.an-unknown-error-occured", "An unknown error occured")
 
   if (!status) {
     return defaultMessage
   }
 
   const message = {
-    400: t("Bad request"),
-    401: t("You are not logged in"),
-    403: t("You do not have permission perform this action"),
-    404: t("Page was not found"),
-    500: t("An unknown server error occured"),
-    503: t("Server is currently unavailable"),
+    400: t("error-boundary.bad-request", "Bad request"),
+    401: t("error-boundary.you-are-not-logged-in", "You are not logged in"),
+    403: t("error-boundary.you-do-not-have-permission-perform-this-action", "You do not have permission perform this action"),
+    404: t("error-boundary.page-was-not-found", "Page was not found"),
+    500: t("error-boundary.an-unknown-server-error-occured", "An unknown server error occured"),
+    503: t("error-boundary.server-is-currently-unavailable", "Server is currently unavailable"),
   }[status]
 
   return message || defaultMessage
@@ -150,8 +150,8 @@ const errorDescription = (t: TFunction, status?: number) => {
   }
 
   const description = {
-    400: t("The request was malformed, fix your request and please try again."),
-    401: t("You are not logged in, please log in to proceed."),
+    400: t("error-boundary.the-request-was-malformed-fix-your-request-and-please-try-again", "The request was malformed, fix your request and please try again."),
+    401: t("error-boundary.you-are-not-logged-in-please-log-in-to-proceed", "You are not logged in, please log in to proceed."),
     403: t(
       "You do not have permission perform this action, if you think this is a mistake, contact your administrator."
     ),

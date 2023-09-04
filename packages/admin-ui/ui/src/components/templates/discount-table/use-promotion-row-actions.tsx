@@ -24,8 +24,8 @@ const usePromotionActions = (promotion) => {
 
   const handleDelete = async () => {
     const shouldDelete = await dialog({
-      heading: t("Delete Discount"),
-      text: t("Are you sure you want to delete this Discount?"),
+      heading: t("discount-table.delete-discount", "Delete Discount"),
+      text: t("discount-table.are-you-sure-you-want-to-delete-this-discount", "Are you sure you want to delete this Discount?"),
     })
 
     if (shouldDelete) {
@@ -41,7 +41,7 @@ const usePromotionActions = (promotion) => {
         onClick: () => navigate(`/a/discounts/${promotion.id}`),
       },
       {
-        label: promotion.is_disabled ? t("Publish") : t("Unpublish"),
+        label: promotion.is_disabled ? t("discount-table.publish", "Publish") : t("discount-table.unpublish", "Unpublish"),
         icon: promotion.is_disabled ? (
           <PublishIcon size={20} />
         ) : (
@@ -55,26 +55,26 @@ const usePromotionActions = (promotion) => {
             {
               onSuccess: () => {
                 notification(
-                  t("Success"),
+                  t("discount-table.success", "Success"),
                   promotion.is_disabled
-                    ? t("Successfully published discount")
-                    : t("Successfully unpublished discount"),
+                    ? t("discount-table.successfully-published-discount", "Successfully published discount")
+                    : t("discount-table.successfully-unpublished-discount", "Successfully unpublished discount"),
                   "success"
                 )
               },
               onError: (err) =>
-                notification(t("Error"), getErrorMessage(err), "error"),
+                notification(t("discount-table.error", "Error"), getErrorMessage(err), "error"),
             }
           )
         },
       },
       {
-        label: t("Duplicate"),
+        label: t("discount-table.duplicate", "Duplicate"),
         icon: <DuplicateIcon size={20} />,
         onClick: () => copyPromotion(promotion),
       },
       {
-        label: t("Delete"),
+        label: t("discount-table.delete", "Delete"),
         icon: <TrashIcon size={20} />,
         variant: "danger",
         onClick: handleDelete,

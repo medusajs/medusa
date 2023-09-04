@@ -37,11 +37,11 @@ const fulfillmentFilters = [
 ]
 
 const dateFilters = (t: TFunction) => [
-  t("is in the last"),
-  t("is older than"),
-  t("is after"),
-  t("is before"),
-  t("is equal to"),
+  t("gift-card-filter-dropdown.is-in-the-last", "is in the last"),
+  t("gift-card-filter-dropdown.is-older-than", "is older than"),
+  t("gift-card-filter-dropdown.is-after", "is after"),
+  t("gift-card-filter-dropdown.is-before", "is before"),
+  t("gift-card-filter-dropdown.is-equal-to", "is equal to"),
 ]
 
 const OrderFilters = ({
@@ -117,7 +117,7 @@ const OrderFilters = ({
             )}
           >
             <div className="rounded-rounded bg-grey-5 border-grey-20 inter-small-semibold flex h-6 items-center border px-2">
-              {t("Filters")}
+              {t("gift-card-filter-dropdown.filters", "Filters")}
               <div className="text-grey-40 ml-1 flex items-center rounded">
                 <span className="text-violet-60 inter-small-semibold">
                   {numberOfFilters ? numberOfFilters : "0"}
@@ -131,28 +131,28 @@ const OrderFilters = ({
         }
       >
         <FilterDropdownItem
-          filterTitle={t("Status")}
+          filterTitle={t("gift-card-filter-dropdown.status", "Status")}
           options={statusFilters}
           filters={tempState.status.filter}
           open={tempState.status.open}
           setFilter={(val) => setSingleFilter("status", val)}
         />
         <FilterDropdownItem
-          filterTitle={t("Payment Status")}
+          filterTitle={t("gift-card-filter-dropdown.payment-status", "Payment Status")}
           options={paymentFilters}
           filters={tempState.payment.filter}
           open={tempState.payment.open}
           setFilter={(val) => setSingleFilter("payment", val)}
         />
         <FilterDropdownItem
-          filterTitle={t("Fulfillment Status")}
+          filterTitle={t("gift-card-filter-dropdown.fulfillment-status", "Fulfillment Status")}
           options={fulfillmentFilters}
           filters={tempState.fulfillment.filter}
           open={tempState.fulfillment.open}
           setFilter={(val) => setSingleFilter("fulfillment", val)}
         />
         <FilterDropdownItem
-          filterTitle={t("Date")}
+          filterTitle={t("gift-card-filter-dropdown.date", "Date")}
           options={dateFilters(t)}
           filters={tempState.date.filter}
           open={tempState.date.open}

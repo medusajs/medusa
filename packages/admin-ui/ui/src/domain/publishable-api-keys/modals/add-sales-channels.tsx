@@ -79,7 +79,7 @@ function AddSalesChannelsSideModal(props: AddSalesChannelsSideModalProps) {
 
         <div className="flex items-center justify-between">
           <h3 className="inter-large-semibold flex items-center gap-2 text-xl text-gray-900">
-            {t("Add sales channels")}
+            {t("modals.add-sales-channels", "Add sales channels")}
           </h3>
           <Button
             variant="secondary"
@@ -99,7 +99,7 @@ function AddSalesChannelsSideModal(props: AddSalesChannelsSideModalProps) {
               type="string"
               value={search}
               className="h-[32px]"
-              placeholder={t("Find channels")}
+              placeholder={t("modals.find-channels", "Find channels")}
               prefix={<SearchIcon size={16} />}
               onChange={(ev) => setSearch(ev.target.value)}
             />
@@ -127,7 +127,7 @@ function AddSalesChannelsSideModal(props: AddSalesChannelsSideModalProps) {
 
         <div className="flex justify-end gap-2">
           <Button size="small" variant="ghost" onClick={onClose}>
-            {t("Cancel")}
+            {t("modals.cancel", "Cancel")}
           </Button>
           <Button
             size="small"
@@ -138,7 +138,7 @@ function AddSalesChannelsSideModal(props: AddSalesChannelsSideModalProps) {
               selectedChannels
             )}
           >
-            {t("Save and close")}
+            {t("modals.save-and-close", "Save and close")}
           </Button>
         </div>
       </div>

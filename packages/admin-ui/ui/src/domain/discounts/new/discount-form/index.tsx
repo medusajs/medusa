@@ -47,7 +47,7 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
         handleReset()
       })
       .catch((error) => {
-        notification(t("Error"), getErrorMessage(error), "error")
+        notification(t("discount-form.error", "Error"), getErrorMessage(error), "error")
       })
   }
 
@@ -57,7 +57,7 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
       closeFormModal()
       handleReset()
     } catch (error) {
-      notification(t("Error"), getErrorMessage(error), "error")
+      notification(t("discount-form.error", "Error"), getErrorMessage(error), "error")
     }
   }
 
@@ -85,7 +85,7 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
               variant="ghost"
               className="rounded-rounded border"
             >
-              {t("Save as draft")}
+              {t("discount-form.save-as-draft", "Save as draft")}
             </Button>
             <Button
               size="small"
@@ -93,7 +93,7 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
               onClick={handleSubmit(submitCTA)}
               className="rounded-rounded"
             >
-              {t("Publish discount")}
+              {t("discount-form.publish-discount", "Publish discount")}
             </Button>
           </div>
         </div>
@@ -102,7 +102,7 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
         <div className="mb-[25%] flex justify-center">
           <div className="w-full max-w-[700px] pt-16">
             <h1 className="inter-xlarge-semibold">
-              {t("Create new discount")}
+              {t("discount-form.create-new-discount", "Create new discount")}
             </h1>
             <Accordion
               className="text-grey-90 pt-7"
@@ -111,16 +111,16 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
             >
               <Accordion.Item
                 forceMountContent
-                title={t("Discount type")}
+                title={t("discount-form.discount-type", "Discount type")}
                 required
-                tooltip={t("Select a discount type")}
+                tooltip={t("discount-form.select-a-discount-type", "Select a discount type")}
                 value="promotion-type"
               >
                 <DiscountType />
                 {discountType === DiscountRuleType.FIXED && (
                   <div className="mt-xlarge">
                     <h3 className="inter-base-semibold">
-                      {t("Allocation")}
+                      {t("discount-form.allocation", "Allocation")}
                       <span className="text-rose-50">*</span>
                     </h3>
                     <DiscountAllocation />
@@ -128,7 +128,7 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
                 )}
               </Accordion.Item>
               <Accordion.Item
-                title={t("General")}
+                title={t("discount-form.general", "General")}
                 required
                 value="general"
                 forceMountContent
@@ -137,7 +137,7 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
               </Accordion.Item>
               <Accordion.Item
                 forceMountContent
-                title={t("Configuration")}
+                title={t("discount-form.configuration", "Configuration")}
                 value="configuration"
                 description={t(
                   "Discount code applies from you hit the publish button and forever if left untouched."
@@ -147,17 +147,17 @@ const DiscountForm = ({ closeForm }: DiscountFormProps) => {
               </Accordion.Item>
               <Accordion.Item
                 forceMountContent
-                title={t("Conditions")}
+                title={t("discount-form.conditions", "Conditions")}
                 description={t(
                   "Discount code apply to all products if left untouched."
                 )}
                 value="conditions"
-                tooltip={t("Add conditions to your Discount")}
+                tooltip={t("discount-form.add-conditions-to-your-discount", "Add conditions to your Discount")}
               >
                 <DiscountNewConditions />
               </Accordion.Item>
               <Accordion.Item
-                title={t("Metadata")}
+                title={t("discount-form.metadata", "Metadata")}
                 subtitle={t(
                   "Metadata allows you to add additional information to your discount."
                 )}

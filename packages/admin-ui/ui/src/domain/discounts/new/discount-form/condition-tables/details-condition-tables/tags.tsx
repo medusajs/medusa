@@ -49,7 +49,7 @@ const DetailsTagConditionSelector = ({
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("Search by tag..."),
+            searchPlaceholder: t("details-condition-tables.search-by-tag", "Search by tag..."),
           }}
           resourceName="Tags"
           totalCount={count || 0}

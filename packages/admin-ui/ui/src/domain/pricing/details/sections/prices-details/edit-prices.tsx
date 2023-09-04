@@ -45,10 +45,10 @@ const EditPrices = ({ close, id }) => {
       <FocusModal.Main>
         <div className="mb-[25%] flex justify-center">
           <div className="medium:w-7/12 large:w-6/12 small:w-4/5 w-full pt-16">
-            <h1 className="inter-xlarge-semibold">{t("Edit prices")}</h1>
+            <h1 className="inter-xlarge-semibold">{t("prices-details.edit-prices", "Edit prices")}</h1>
             <div className="mt-7">
               <div className="flex items-center gap-1.5">
-                <h6 className="inter-large-semibold">{t("Prices")}</h6>
+                <h6 className="inter-large-semibold">{t("prices-details.prices", "Prices")}</h6>
                 <Tooltip content="info tooltip">
                   <InfoIcon size={16} className="text-grey-40" />
                 </Tooltip>
@@ -78,14 +78,14 @@ const VariantActions = (product: Product) => {
   const { t } = useTranslation()
   return [
     {
-      label: t("Edit prices"),
+      label: t("prices-details.edit-prices", "Edit prices"),
       icon: <EditIcon size={20} />,
       onClick: () => {
         // open grid ui
       },
     },
     {
-      label: t("Remove from list"),
+      label: t("prices-details.remove-from-list", "Remove from list"),
       icon: <TrashIcon size={20} />,
       onClick: () => {
         // missing core support

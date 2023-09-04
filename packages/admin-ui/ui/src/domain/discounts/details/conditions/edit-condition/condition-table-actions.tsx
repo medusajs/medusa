@@ -46,7 +46,7 @@ const ExistingConditionTableActions = ({
               variant="ghost"
               className="border-grey-20 border"
             >
-              {t("Deselect")}
+              {t("edit-condition.deselect", "Deselect")}
             </Button>
             <Button
               onClick={onRemove}
@@ -54,7 +54,7 @@ const ExistingConditionTableActions = ({
               variant="ghost"
               className="border-grey-20 border text-rose-50"
             >
-              {t("Remove")}
+              {t("edit-condition.remove", "Remove")}
             </Button>
           </div>
         </div>
@@ -65,7 +65,7 @@ const ExistingConditionTableActions = ({
             className="border-grey-20 border"
             onClick={() => push(addConditionsModalScreen)}
           >
-            <PlusIcon size={20} /> {t("Add")}
+            <PlusIcon size={20} /> {t("edit-condition.add", "Add")}
           </Button>
         </div>
       </div>

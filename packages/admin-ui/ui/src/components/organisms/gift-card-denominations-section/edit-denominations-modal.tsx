@@ -93,15 +93,15 @@ const EditDenominationsModal = ({
       {
         onSuccess: () => {
           notification(
-            t("Denomination updated"),
-            t("A new denomination was successfully updated"),
+            t("gift-card-denominations-section.denomination-updated", "Denomination updated"),
+            t("gift-card-denominations-section.a-new-denomination-was-successfully-updated", "A new denomination was successfully updated"),
             "success"
           )
           queryClient.invalidateQueries(adminProductKeys.all)
           handleClose()
         },
         onError: (error) => {
-          notification(t("Error"), getErrorMessage(error), "error")
+          notification(t("gift-card-denominations-section.error", "Error"), getErrorMessage(error), "error")
         },
       }
     )
@@ -111,7 +111,7 @@ const EditDenominationsModal = ({
     <Modal open={open} handleClose={handleClose}>
       <Modal.Body>
         <Modal.Header handleClose={handleClose}>
-          <h1 className="inter-xlarge-semibold">{t("Edit Denomination")}</h1>
+          <h1 className="inter-xlarge-semibold">{t("gift-card-denominations-section.edit-denomination", "Edit Denomination")}</h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
           <Modal.Content>
@@ -125,7 +125,7 @@ const EditDenominationsModal = ({
                 type="button"
                 onClick={handleClose}
               >
-                {t("Cancel")}
+                {t("gift-card-denominations-section.cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -134,7 +134,7 @@ const EditDenominationsModal = ({
                 loading={isLoading}
                 disabled={!isDirty || isLoading}
               >
-                {t("Save and close")}
+                {t("gift-card-denominations-section.save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

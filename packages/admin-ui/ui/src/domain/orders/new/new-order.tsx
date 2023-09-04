@@ -101,14 +101,14 @@ const NewOrder = ({ onDismiss }: NewOrderProps) => {
       },
       {
         onSuccess: ({ draft_order }) => {
-          notification(t("Success"), t("Order created"), "success")
+          notification(t("new.success", "Success"), t("new.order-created", "Order created"), "success")
           reset()
           onDismiss()
           steppedContext.reset()
           navigate(`/a/draft-orders/${draft_order.id}`)
         },
         onError: (error) => {
-          notification(t("Error"), error.message, "error")
+          notification(t("new.error", "Error"), error.message, "error")
         },
       }
     )
@@ -128,7 +128,7 @@ const NewOrder = ({ onDismiss }: NewOrderProps) => {
         <Summary />,
       ]}
       lastScreenIsSummary={true}
-      title={t("Create Draft Order")}
+      title={t("new.create-draft-order", "Create Draft Order")}
       handleClose={onDismiss}
     />
   )

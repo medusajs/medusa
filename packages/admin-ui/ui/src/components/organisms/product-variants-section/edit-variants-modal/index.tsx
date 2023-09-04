@@ -111,7 +111,7 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
       () => {
         resetAndClose()
       },
-      t("Variants were successfully updated")
+      t("edit-variants-modal.variants-were-successfully-updated", "Variants were successfully updated")
     )
   })
 
@@ -124,23 +124,23 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
       <LayeredModal handleClose={resetAndClose} open={open} context={context}>
         <Modal.Body>
           <Modal.Header handleClose={resetAndClose}>
-            <h1 className="inter-xlarge-semibold">{t("Edit Variants")}</h1>
+            <h1 className="inter-xlarge-semibold">{t("edit-variants-modal.edit-variants", "Edit Variants")}</h1>
           </Modal.Header>
           <FormProvider {...form}>
             <form onSubmit={onSubmit}>
               <Modal.Content>
                 <h2 className="inter-base-semibold mb-small">
-                  {t("Product variants")}{" "}
+                  {t("edit-variants-modal.product-variants", "Product variants")}{" "}
                   <span className="inter-base-regular text-grey-50">
                     ({product.variants.length})
                   </span>
                 </h2>
                 <div className="pr-base inter-small-semibold text-grey-50 mb-small grid grid-cols-[1fr_1fr_48px]">
                   <p className="col-start-1 col-end-1 text-left">
-                    {t("Variant")}
+                    {t("edit-variants-modal.variant", "Variant")}
                   </p>
                   <p className="col-start-2 col-end-2 text-right">
-                    {t("Inventory")}
+                    {t("edit-variants-modal.inventory", "Inventory")}
                   </p>
                 </div>
                 <div>{fields.map((card, i) => renderCard(card, i))}</div>
@@ -153,7 +153,7 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
                     type="button"
                     onClick={resetAndClose}
                   >
-                    {t("Cancel")}
+                    {t("edit-variants-modal.cancel", "Cancel")}
                   </Button>
                   <Button
                     variant="primary"
@@ -162,7 +162,7 @@ const EditVariantsModal = ({ open, onClose, product }: Props) => {
                     loading={updating}
                     disabled={updating || !isDirty}
                   >
-                    {t("Save and close")}
+                    {t("edit-variants-modal.save-and-close", "Save and close")}
                   </Button>
                 </div>
               </Modal.Footer>

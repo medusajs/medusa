@@ -104,7 +104,7 @@ const Summary = () => {
     }
 
     if (!discount.regions.find((d) => d.id === regionObj.id)) {
-      setDiscError(t("The discount is not applicable to the selected region"))
+      setDiscError(t("components.the-discount-is-not-applicable-to-the-selected-region", "The discount is not applicable to the selected region"))
       setCode(undefined)
       form.setValue("discount_code", undefined)
       setShowAddDiscount(true)
@@ -113,7 +113,7 @@ const Summary = () => {
 
   useEffect(() => {
     if (status === "error") {
-      setDiscError(t("The discount code is invalid"))
+      setDiscError(t("components.the-discount-code-is-invalid", "The discount code is invalid"))
       setCode(undefined)
       form.setValue("discount_code", undefined)
       setShowAddDiscount(true)
@@ -134,10 +134,10 @@ const Summary = () => {
             <Table.HeadRow className="inter-small-semibold text-grey-50 border-t">
               <Table.HeadCell>Details</Table.HeadCell>
               <Table.HeadCell className="text-right">
-                {t("Quantity")}
+                {t("components.quantity", "Quantity")}
               </Table.HeadCell>
               <Table.HeadCell className="text-right">
-                {t("Price (excl. Taxes)")}
+                {t("components.price-excl-taxes", "Price (excl. Taxes)")}
               </Table.HeadCell>
               <Table.HeadCell></Table.HeadCell>
             </Table.HeadRow>
@@ -193,7 +193,7 @@ const Summary = () => {
               onClick={() => setShowAddDiscount(true)}
             >
               <PlusIcon size={20} />
-              {t("Add Discount")}
+              {t("components.add-discount", "Add Discount")}
             </Button>
           </div>
         )}
@@ -203,7 +203,7 @@ const Summary = () => {
               <div className="gap-x-base flex w-full items-center">
                 <Input
                   type="text"
-                  placeholder={t("SUMMER10")}
+                  placeholder={t("components.summer-10", "SUMMER10")}
                   onFocus={() => setDiscError(undefined)}
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
@@ -232,7 +232,7 @@ const Summary = () => {
                 onClick={() => handleAddDiscount()}
               >
                 <PlusIcon size={20} />
-                {t("Add Discount")}
+                {t("components.add-discount", "Add Discount")}
               </Button>
             </div>
           </>
@@ -241,7 +241,7 @@ const Summary = () => {
           <div className="inter-small-regular border-grey-20 mt-4 flex w-full flex-col border-b border-t pt-4 last:border-b-0 ">
             <div className="inter-base-semibold mb-4 flex w-full justify-between">
               <span>
-                {t("Discount")}
+                {t("components.discount", "Discount")}
                 <span className="inter-base-regular text-grey-50 ml-0.5">
                   {t("(Code: {code})", { code: discount.code })}
                 </span>
@@ -259,7 +259,7 @@ const Summary = () => {
                   "border-r": discount.rule.type !== "free_shipping",
                 })}
               >
-                <span className="text-grey-50">{t("Type")}</span>
+                <span className="text-grey-50">{t("components.type", "Type")}</span>
                 <span>
                   {discount.rule.type !== "free_shipping"
                     ? `${discount.rule.type
@@ -270,7 +270,7 @@ const Summary = () => {
               </div>
               {discount.rule.type !== "free_shipping" && (
                 <div className="flex flex-col pl-6">
-                  <span className="text-grey-50">{t("Value")}</span>
+                  <span className="text-grey-50">{t("components.value", "Value")}</span>
                   <span>
                     {discount.rule.type === "fixed"
                       ? `${displayAmount(
@@ -307,7 +307,7 @@ const Summary = () => {
           <div className="grid w-full grid-cols-2 gap-x-6">
             {!isNullishObject(shipping) && shipping && (
               <div className="border-grey-20 flex flex-col border-r pr-6">
-                <span className="text-grey-50">{t("Address")}</span>
+                <span className="text-grey-50">{t("components.address", "Address")}</span>
                 <span>
                   {shipping.address_1}, {shipping.address_2}
                 </span>
@@ -319,7 +319,7 @@ const Summary = () => {
             )}
             {regionObj && (
               <div className="flex flex-col">
-                <span className="text-grey-50">{t("Shipping method")}</span>
+                <span className="text-grey-50">{t("components.shipping-method", "Shipping method")}</span>
                 <span>
                   {selectedShippingOption.name} -{" "}
                   {customShippingPrice && regionObj ? (
@@ -344,8 +344,8 @@ const Summary = () => {
       )}
 
       {!isNullishObject(billing) && billing && (
-        <SummarySection title={t("Billing details")} editIndex={3}>
-          <span className="text-grey-50">{t("Address")}</span>
+        <SummarySection title={t("components.billing-details", "Billing details")} editIndex={3}>
+          <span className="text-grey-50">{t("components.address", "Address")}</span>
           <span>
             {billing.address_1}, {billing.address_2}
           </span>
@@ -371,7 +371,7 @@ const SummarySection = ({ title, editIndex, children }) => {
           onClick={() => setPage(editIndex)}
           className="inter-small-semibold text-violet-60 cursor-pointer"
         >
-          {t("Edit")}
+          {t("components.edit", "Edit")}
         </span>
       </div>
       {children}

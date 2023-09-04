@@ -68,14 +68,14 @@ function AddScreen(props: {
     })
       .then(() => {
         notification(
-          t("Success"),
-          t("Sales channels added to the scope"),
+          t("modals.success", "Success"),
+          t("modals.sales-channels-added-to-the-scope", "Sales channels added to the scope"),
           "success"
         )
       })
       .catch(() => {
         notification(
-          t("Error"),
+          t("modals.error", "Error"),
           t(
             "Error occurred while adding sales channels to the scope of the key"
           ),
@@ -98,7 +98,7 @@ function AddScreen(props: {
           >
             <UTurnIcon size={18} />
           </Button>
-          {t("Add sales channels")}
+          {t("modals.add-sales-channels", "Add sales channels")}
         </h3>
         <Button
           variant="secondary"
@@ -118,7 +118,7 @@ function AddScreen(props: {
             type="string"
             value={search}
             className="h-[32px]"
-            placeholder={t("Find channels")}
+            placeholder={t("modals.find-channels", "Find channels")}
             prefix={<SearchIcon size={16} />}
             onChange={(ev) => setSearch(ev.target.value)}
           />
@@ -146,7 +146,7 @@ function AddScreen(props: {
 
       <div className="flex justify-end gap-2">
         <Button size="small" variant="ghost" onClick={props.close}>
-          {t("Cancel")}
+          {t("modals.cancel", "Cancel")}
         </Button>
         <Button
           size="small"
@@ -154,7 +154,7 @@ function AddScreen(props: {
           onClick={onSave(props.goBack)}
           disabled={!Object.keys(selectedSalesChannels).length}
         >
-          {t("Add and go back")}
+          {t("modals.add-and-go-back", "Add and go back")}
         </Button>
         <Button
           size="small"
@@ -162,7 +162,7 @@ function AddScreen(props: {
           onClick={onSave(props.close)}
           disabled={!Object.keys(selectedSalesChannels).length}
         >
-          {t("Add and close")}
+          {t("modals.add-and-close", "Add and close")}
         </Button>
       </div>
     </div>
@@ -221,8 +221,8 @@ function EditScreen(props: {
     })
       .then(() => {
         notification(
-          t("Success"),
-          t("Sales channels removed from the scope"),
+          t("modals.success", "Success"),
+          t("modals.sales-channels-removed-from-the-scope", "Sales channels removed from the scope"),
           "success"
         )
         setSelectedChannels({})
@@ -230,7 +230,7 @@ function EditScreen(props: {
       })
       .catch(() => {
         notification(
-          t("Error"),
+          t("modals.error", "Error"),
           t(
             "Error occurred while removing sales channels from the scope of the key"
           ),
@@ -260,7 +260,7 @@ function EditScreen(props: {
 
       <div className="flex items-center justify-between">
         <h3 className="inter-large-semibold flex items-center gap-2 text-xl text-gray-900">
-          {t("Edit sales channels")}
+          {t("modals.edit-sales-channels", "Edit sales channels")}
         </h3>
         <Button
           variant="secondary"
@@ -280,7 +280,7 @@ function EditScreen(props: {
             type="string"
             value={search}
             className="h-[32px]"
-            placeholder={t("Find channels")}
+            placeholder={t("modals.find-channels", "Find channels")}
             prefix={<SearchIcon size={14} />}
             onChange={(ev) => setSearch(ev.target.value)}
           />
@@ -296,7 +296,7 @@ function EditScreen(props: {
                 variant="secondary"
                 onClick={onDeselect}
               >
-                {t("Deselect")}
+                {t("modals.deselect", "Deselect")}
               </Button>
               <Button
                 size="small"
@@ -304,7 +304,7 @@ function EditScreen(props: {
                 variant="secondary"
                 onClick={onRemove}
               >
-                {t("Remove")}
+                {t("modals.remove", "Remove")}
               </Button>
             </div>
           ) : (
@@ -314,7 +314,7 @@ function EditScreen(props: {
               variant="secondary"
               onClick={props.goAdd}
             >
-              {t("Add channels")}
+              {t("modals.add-channels", "Add channels")}
             </Button>
           )}
         </div>
@@ -341,7 +341,7 @@ function EditScreen(props: {
 
       <div className="flex justify-end gap-2">
         <Button size="small" variant="secondary" onClick={close}>
-          {t("Close")}
+          {t("modals.close", "Close")}
         </Button>
       </div>
     </div>

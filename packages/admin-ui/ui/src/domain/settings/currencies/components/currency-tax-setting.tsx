@@ -41,8 +41,8 @@ const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
     mutate(data, {
       onSuccess: () => {
         notification(
-          t("Success"),
-          t("Successfully updated currency"),
+          t("components.success", "Success"),
+          t("components.successfully-updated-currency", "Successfully updated currency"),
           "success"
         )
 
@@ -50,7 +50,7 @@ const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
         queryClient.invalidateQueries(adminStoreKeys.all)
       },
       onError: (error) => {
-        notification(t("Error"), getErrorMessage(error), "error")
+        notification(t("components.error", "Error"), getErrorMessage(error), "error")
         reset({
           includes_tax: currency.includes_tax,
         })
@@ -74,7 +74,7 @@ const CurrencyTaxSetting = ({ currency, isDefault }: Props) => {
           {isDefault && (
             <div className="bg-grey-10 rounded-rounded px-xsmall py-[2px]">
               <p className="inter-small-semibold text-grey-50">
-                {t("Default")}
+                {t("components.default", "Default")}
               </p>
             </div>
           )}

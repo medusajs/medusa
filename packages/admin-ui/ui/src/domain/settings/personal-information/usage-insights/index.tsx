@@ -24,13 +24,13 @@ const UsageInsights = ({ user }: Props) => {
             {isLoading ? (
               <div className="badge bg-grey-10 h-large w-16 animate-pulse" />
             ) : !analytics_config || analytics_config?.opt_out ? (
-              <Badge variant="disabled">{t("Disabled")}</Badge>
+              <Badge variant="disabled">{t("usage-insights.disabled", "Disabled")}</Badge>
             ) : (
-              <Badge variant="success">{t("Active")}</Badge>
+              <Badge variant="success">{t("usage-insights.active", "Active")}</Badge>
             )}
           </div>
           <p className="inter-base-regular text-grey-50">
-            {t("Share usage insights and help us improve Medusa")}
+            {t("usage-insights.share-usage-insights-and-help-us-improve-medusa", "Share usage insights and help us improve Medusa")}
           </p>
         </div>
         <Button
@@ -39,7 +39,7 @@ const UsageInsights = ({ user }: Props) => {
           onClick={toggle}
           disabled={!analytics_config}
         >
-          {t("Edit preferences")}
+          {t("usage-insights.edit-preferences", "Edit preferences")}
         </Button>
       </div>
       {analytics_config && user && (

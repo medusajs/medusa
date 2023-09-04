@@ -23,11 +23,11 @@ const GiftCardDenominationsSection = ({
   return (
     <>
       <Section
-        title={t("Denominations")}
+        title={t("gift-card-denominations-section.denominations", "Denominations")}
         forceDropdown
         actions={[
           {
-            label: t("Add Denomination"),
+            label: t("gift-card-denominations-section.add-denomination", "Add Denomination"),
             onClick: openAddDenomination,
             icon: <PlusIcon size={20} />,
           },

@@ -54,7 +54,7 @@ const EditCustomerGroupConditionSelector = ({ onClose }) => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("Search groups..."),
+            searchPlaceholder: t("edit-condition-tables.search-groups", "Search groups..."),
           }}
           resourceName="Customer groups"
           totalCount={count || 0}

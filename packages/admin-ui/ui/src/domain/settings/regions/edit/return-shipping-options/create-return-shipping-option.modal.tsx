@@ -58,11 +58,11 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
       },
       {
         onSuccess: () => {
-          notifcation(t("Success"), t("Shipping option created"), "success")
+          notifcation(t("return-shipping-options.success", "Success"), t("return-shipping-options.shipping-option-created", "Shipping option created"), "success")
           closeAndReset()
         },
         onError: (error) => {
-          notifcation(t("Error"), getErrorMessage(error), "error")
+          notifcation(t("return-shipping-options.error", "Error"), getErrorMessage(error), "error")
         },
       }
     )
@@ -73,7 +73,7 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
       <Modal.Body>
         <Modal.Header handleClose={closeAndReset}>
           <h1 className="inter-xlarge-semibold">
-            {t("Add Return Shipping Option")}
+            {t("return-shipping-options.add-return-shipping-option", "Add Return Shipping Option")}
           </h1>
         </Modal.Header>
         <form onSubmit={onSubmit}>
@@ -88,7 +88,7 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
                 type="button"
                 onClick={closeAndReset}
               >
-                {t("Cancel")}
+                {t("return-shipping-options.cancel", "Cancel")}
               </Button>
               <Button
                 variant="primary"
@@ -97,7 +97,7 @@ const CreateReturnShippingOptionModal = ({ open, onClose, region }: Props) => {
                 loading={isLoading}
                 disabled={isLoading || !isDirty}
               >
-                {t("Save and close")}
+                {t("return-shipping-options.save-and-close", "Save and close")}
               </Button>
             </div>
           </Modal.Footer>

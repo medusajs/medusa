@@ -75,7 +75,7 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
         <div className="min-h-[680px]">
           {!isLocked && (
             <>
-              <div className="inter-base-semibold mb-large">{t("Type")}</div>
+              <div className="inter-base-semibold mb-large">{t("taxes.type", "Type")}</div>
               <RadioGroup.Root
                 className="gap-base flex"
                 value={selectedType}
@@ -83,20 +83,20 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
               >
                 <RadioGroup.Item
                   className="flex-1"
-                  label={t("Products")}
-                  description={t("Select individual products")}
+                  label={t("taxes.products", "Products")}
+                  description={t("taxes.select-individual-products", "Select individual products")}
                   value={TaxRuleType.PRODUCTS}
                 />
                 <RadioGroup.Item
                   className="flex-1"
-                  label={t("Product Types")}
-                  description={t("Select product types")}
+                  label={t("taxes.product-types", "Product Types")}
+                  description={t("taxes.select-product-types", "Select product types")}
                   value={TaxRuleType.PRODUCT_TYPES}
                 />
                 <RadioGroup.Item
                   className="flex-1"
-                  label={t("Shipping Options")}
-                  description={t("Select shipping options")}
+                  label={t("taxes.shipping-options", "Shipping Options")}
+                  description={t("taxes.select-shipping-options", "Select shipping options")}
                   value={TaxRuleType.SHIPPING_OPTIONS}
                 />
               </RadioGroup.Root>
@@ -131,7 +131,7 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
             className="w-[112px]"
             onClick={() => pop()}
           >
-            {t("Back")}
+            {t("taxes.back", "Back")}
           </Button>
           <Button
             variant="primary"
@@ -139,7 +139,7 @@ const TaxRuleSelector: React.FC<TaxRuleSelectorProps> = ({
             size="small"
             onClick={handleSubmit}
           >
-            {t("Add")}
+            {t("taxes.add", "Add")}
           </Button>
         </div>
       </Modal.Footer>

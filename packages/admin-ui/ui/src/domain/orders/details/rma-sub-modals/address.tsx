@@ -79,74 +79,74 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
         <Modal.Content>
           <div className="h-full">
             <h2 className="inter-base-semibold mb-4">
-              {t("Search for additional")}{" "}
+              {t("rma-sub-modals.search-for-additional", "Search for additional")}{" "}
             </h2>
           </div>
           <div>
             <div>
               <div>
-                <span className="inter-base-semibold">{t("General")}</span>
+                <span className="inter-base-semibold">{t("rma-sub-modals.general", "General")}</span>
 
                 <div className="gap-x-base gap-y-base grid grid-cols-2">
                   <Input
                     {...register("first_name", {
                       required: true,
                     })}
-                    placeholder={t("First Name")}
-                    label={t("First Name")}
+                    placeholder={t("rma-sub-modals.first-name", "First Name")}
+                    label={t("rma-sub-modals.first-name", "First Name")}
                     required
                   />
                   <Input
                     {...register("last_name", {
                       required: true,
                     })}
-                    placeholder={t("Last Name")}
-                    label={t("Last Name")}
+                    placeholder={t("rma-sub-modals.last-name", "Last Name")}
+                    label={t("rma-sub-modals.last-name", "Last Name")}
                     required
                   />
                   <Input
                     {...register("phone")}
-                    placeholder={t("Phone")}
-                    label={t("Phone")}
+                    placeholder={t("rma-sub-modals.phone", "Phone")}
+                    label={t("rma-sub-modals.phone", "Phone")}
                   />
                 </div>
               </div>
               <div className="mt-8">
                 <span className="inter-base-semibold">
-                  {t("Shipping Address")}
+                  {t("rma-sub-modals.shipping-address", "Shipping Address")}
                 </span>
                 <div className="gap-y-base my-4 grid">
                   <Input
                     {...register("address_1", {
                       required: true,
                     })}
-                    placeholder={t("Address 1")}
-                    label={t("Address 1")}
+                    placeholder={t("rma-sub-modals.address-1", "Address 1")}
+                    label={t("rma-sub-modals.address-1", "Address 1")}
                     required
                   />
                   <Input
                     {...register("address_2")}
-                    placeholder={t("Address 2")}
-                    label={t("Address 2")}
+                    placeholder={t("rma-sub-modals.address-2", "Address 2")}
+                    label={t("rma-sub-modals.address-2", "Address 2")}
                   />
                 </div>
                 <div className="gap-x-base gap-y-base grid grid-cols-2">
                   <Input
                     {...register("province")}
-                    placeholder={t("Province")}
-                    label={t("Province")}
+                    placeholder={t("rma-sub-modals.province", "Province")}
+                    label={t("rma-sub-modals.province", "Province")}
                   />
                   <Input
                     {...register("postal_code", {
                       required: true,
                     })}
-                    placeholder={t("Postal code")}
-                    label={t("Postal code")}
+                    placeholder={t("rma-sub-modals.postal-code", "Postal code")}
+                    label={t("rma-sub-modals.postal-code", "Postal code")}
                     required
                   />
                   <Input
-                    placeholder={t("City")}
-                    label={t("City")}
+                    placeholder={t("rma-sub-modals.city", "City")}
+                    label={t("rma-sub-modals.city", "City")}
                     {...register("city", {
                       required: true,
                     })}
@@ -162,7 +162,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
                       return (
                         <Select
                           {...field}
-                          label={t("Country")}
+                          label={t("rma-sub-modals.country", "Country")}
                           options={countryOptions}
                           required
                         />
@@ -183,7 +183,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
               onClick={() => pop()}
               type="button"
             >
-              {t("Back")}
+              {t("rma-sub-modals.back", "Back")}
             </Button>
             <Button
               variant="primary"
@@ -191,7 +191,7 @@ const RMAEditAddressSubModal: React.FC<RMAEditAddressSubModalProps> = ({
               size="small"
               type="submit"
             >
-              {t("Add")}
+              {t("rma-sub-modals.add", "Add")}
             </Button>
           </div>
         </Modal.Footer>

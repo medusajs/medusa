@@ -17,14 +17,14 @@ const StoreCurrencies = ({ store }: Props) => {
       <div className="flex items-start justify-between">
         <div>
           <h3 className="inter-large-semibold mb-2xsmall">
-            {t("Store currencies")}
+            {t("store-currencies.store-currencies", "Store currencies")}
           </h3>
           <p className="inter-base-regular text-grey-50">
-            {t("All the currencies available in your store.")}
+            {t("store-currencies.all-the-currencies-available-in-your-store", "All the currencies available in your store.")}
           </p>
         </div>
         <Button variant="secondary" size="small" onClick={toggle}>
-          {t("Edit currencies")}
+          {t("store-currencies.edit-currencies", "Edit currencies")}
         </Button>
       </div>
       <EditCurrenciesModal store={store} open={state} onClose={close} />

@@ -18,20 +18,20 @@ const usePriceListActions = (priceList) => {
 
   const onDelete = async () => {
     const shouldDelete = await dialog({
-      heading: t("Delete Price List"),
-      text: t("Are you sure you want to delete this price list?"),
+      heading: t("price-list-table.delete-price-list", "Delete Price List"),
+      text: t("price-list-table.are-you-sure-you-want-to-delete-this-price-list", "Are you sure you want to delete this price list?"),
     })
     if (shouldDelete) {
       deletePrice.mutate(undefined, {
         onSuccess: () => {
           notification(
-            t("Success"),
-            t("Successfully deleted the price list"),
+            t("price-list-table.success", "Success"),
+            t("price-list-table.successfully-deleted-the-price-list", "Successfully deleted the price list"),
             "success"
           )
         },
         onError: (err) =>
-          notification(t("Error"), getErrorMessage(err), "error"),
+          notification(t("price-list-table.error", "Error"), getErrorMessage(err), "error"),
       })
     }
   }
@@ -44,10 +44,10 @@ const usePriceListActions = (priceList) => {
       {
         onSuccess: () => {
           notification(
-            t("Success"),
+            t("price-list-table.success", "Success"),
             isActive(priceList)
-              ? t("Successfully unpublished price list")
-              : t("Successfully published price list"),
+              ? t("price-list-table.successfully-unpublished-price-list", "Successfully unpublished price list")
+              : t("price-list-table.successfully-published-price-list", "Successfully published price list"),
             "success"
           )
         },
@@ -57,7 +57,7 @@ const usePriceListActions = (priceList) => {
 
   const getActions = (): ActionType[] => [
     {
-      label: isActive(priceList) ? t("Unpublish") : t("Publish"),
+      label: isActive(priceList) ? t("price-list-table.unpublish", "Unpublish") : t("price-list-table.publish", "Publish"),
       onClick: onUpdate,
       icon: isActive(priceList) ? (
         <UnpublishIcon size={20} />
@@ -66,7 +66,7 @@ const usePriceListActions = (priceList) => {
       ),
     },
     {
-      label: t("Delete"),
+      label: t("price-list-table.delete", "Delete"),
       onClick: onDelete,
       icon: <TrashIcon size={20} />,
       variant: "danger",

@@ -38,7 +38,7 @@ const AddTagsConditionsScreen = () => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("Search..."),
+            searchPlaceholder: t("tags.search", "Search..."),
           }}
           resourceName="Tags"
           totalCount={count ?? 0}
@@ -55,21 +55,21 @@ const AddTagsConditionsScreen = () => {
       <Modal.Footer>
         <div className="space-x-xsmall flex w-full justify-end">
           <Button variant="secondary" size="small" onClick={pop}>
-            {t("Cancel")}
+            {t("tags.cancel", "Cancel")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndGoBack(selectedResources)}
           >
-            {t("Save and go back")}
+            {t("tags.save-and-go-back", "Save and go back")}
           </Button>
           <Button
             variant="primary"
             size="small"
             onClick={() => saveAndClose(selectedResources)}
           >
-            {t("Save and close")}
+            {t("tags.save-and-close", "Save and close")}
           </Button>
         </div>
       </Modal.Footer>

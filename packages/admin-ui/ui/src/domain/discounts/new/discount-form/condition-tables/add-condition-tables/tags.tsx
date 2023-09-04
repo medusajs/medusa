@@ -47,7 +47,7 @@ const AddTagConditionSelector = ({ onClose }: AddConditionSelectorProps) => {
           options={{
             enableSearch: true,
             immediateSearchFocus: true,
-            searchPlaceholder: t("Search by tag..."),
+            searchPlaceholder: t("add-condition-tables.search-by-tag", "Search by tag..."),
           }}
           resourceName="Tags"
           totalCount={count || 0}

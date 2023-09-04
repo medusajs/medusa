@@ -11,7 +11,7 @@ const useGiftCardTableColums = () => {
   const columns = useMemo(
     () => [
       {
-        Header: <div className="pl-2">{t("Code")}</div>,
+        Header: <div className="pl-2">{t("gift-card-table.code", "Code")}</div>,
         accessor: "code",
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell
@@ -23,7 +23,7 @@ const useGiftCardTableColums = () => {
         ),
       },
       {
-        Header: t("Order"),
+        Header: t("gift-card-table.order", "Order"),
         accessor: "order",
         Cell: ({ cell: { value }, index }) => (
           <Table.Cell
@@ -39,7 +39,7 @@ const useGiftCardTableColums = () => {
         ),
       },
       {
-        Header: t("Original Amount"),
+        Header: t("gift-card-table.original-amount", "Original Amount"),
         accessor: "value",
         Cell: ({ row, cell: { value }, index }) => (
           <Table.Cell key={index}>
@@ -58,7 +58,7 @@ const useGiftCardTableColums = () => {
         ),
       },
       {
-        Header: t("Balance"),
+        Header: t("gift-card-table.balance", "Balance"),
         accessor: "balance",
         Cell: ({ row, cell: { value }, index }) => (
           <Table.Cell key={index}>
@@ -71,11 +71,11 @@ const useGiftCardTableColums = () => {
               ) : (
                 <div className="flex items-center space-x-2">
                   <span>N / A</span>
-                  <IconTooltip content={t("Region has been deleted")} />
+                  <IconTooltip content={t("gift-card-table.region-has-been-deleted", "Region has been deleted")} />
                 </div>
               )
             ) : (
-              <StatusIndicator title={t("None")} variant="danger" />
+              <StatusIndicator title={t("gift-card-table.none", "None")} variant="danger" />
             )}
           </Table.Cell>
         ),
@@ -83,7 +83,7 @@ const useGiftCardTableColums = () => {
       {
         Header: () => (
           <div className="rounded-rounded flex w-full justify-end pr-2">
-            {t("Created")}
+            {t("gift-card-table.created", "Created")}
           </div>
         ),
         accessor: "created_at",

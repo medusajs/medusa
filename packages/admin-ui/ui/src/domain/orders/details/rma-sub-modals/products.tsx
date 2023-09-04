@@ -64,7 +64,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
   const columns = useMemo(() => {
     return [
       {
-        Header: t("Name"),
+        Header: t("rma-sub-modals.name", "Name"),
         accessor: "title",
         Cell: ({ row: { original } }) => {
           return (
@@ -88,7 +88,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
         },
       },
       {
-        Header: t("Status"),
+        Header: t("rma-sub-modals.status", "Status"),
         accessor: "status",
         Cell: ({ row: { original } }) => (
           <StatusIndicator
@@ -100,7 +100,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
         ),
       },
       {
-        Header: <div className="text-right">{t("In Stock")}</div>,
+        Header: <div className="text-right">{t("rma-sub-modals.in-stock", "In Stock")}</div>,
         accessor: "inventory_quantity",
         Cell: ({ row: { original } }) => (
           <div className="text-right">{original.inventory_quantity}</div>
@@ -221,7 +221,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
             count: count!,
             offset: offset,
             pageSize: offset + rows.length,
-            title: t("Products"),
+            title: t("rma-sub-modals.products", "Products"),
             currentPage: pageIndex + 1,
             pageCount: pageCount,
             nextPage: handleNext,
@@ -233,7 +233,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
           <Table
             immediateSearchFocus
             enableSearch
-            searchPlaceholder={t("Search Products..")}
+            searchPlaceholder={t("rma-sub-modals.search-products", "Search Products..")}
             searchValue={query}
             handleSearch={handleSearch}
             {...getTableProps()}
@@ -276,7 +276,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
             className="w-[112px]"
             onClick={() => pop()}
           >
-            {t("Back")}
+            {t("rma-sub-modals.back", "Back")}
           </Button>
           <Button
             variant="primary"
@@ -284,7 +284,7 @@ const RMASelectProductSubModal: React.FC<RMASelectProductSubModalProps> = ({
             size="small"
             onClick={handleSubmit}
           >
-            {t("Add")}
+            {t("rma-sub-modals.add", "Add")}
           </Button>
         </div>
       </Modal.Footer>

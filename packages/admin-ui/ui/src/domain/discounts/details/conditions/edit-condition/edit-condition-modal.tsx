@@ -65,7 +65,7 @@ const EditConditionsModal = ({ open, condition, discount, onClose }: Props) => {
                 type="button"
                 onClick={onClose}
               >
-                {t("Close")}
+                {t("edit-condition.close", "Close")}
               </Button>
             </div>
           </Modal.Footer>

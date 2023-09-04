@@ -79,7 +79,7 @@ const AddSalesChannelsForm = ({ form }: Props) => {
       <div>
         <div>
           <div className="flex items-center justify-between">
-            <h2 className="inter-base-semibold">{t("Sales channels")}</h2>
+            <h2 className="inter-base-semibold">{t("new.sales-channels", "Sales channels")}</h2>
             <Switch checked={isEnabled} onCheckedChange={toggleEnabled} />
           </div>
           <p className="inter-base-regular text-grey-50 mt-2xsmall">
@@ -103,7 +103,7 @@ const AddSalesChannelsForm = ({ form }: Props) => {
             onClick={toggleModal}
           >
             <ChannelsIcon size={20} />
-            <span>{t("Change availablity")}</span>
+            <span>{t("new.change-availablity", "Change availablity")}</span>
           </Button>
         </div>
       </div>
