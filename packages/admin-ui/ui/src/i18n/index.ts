@@ -1,6 +1,5 @@
 import i18n from "i18next"
 import { initReactI18next } from "react-i18next"
-
 import Backend from "i18next-http-backend"
 import LanguageDetector from "i18next-browser-languagedetector"
 
@@ -8,21 +7,17 @@ void i18n
   .use(Backend)
   .use(LanguageDetector)
   .use(initReactI18next)
-  // init i18next
-  // for all options read: https://www.i18next.com/overview/configuration-options
+  // https://www.i18next.com/overview/configuration-options
   .init({
+    fallbackLng: ["en-US"],
     returnNull: false,
-    fallbackLng: ["fa-IR", "en-US"],
     debug: true,
     interpolation: {
-      escapeValue: false, // not needed for react as it escapes by default
+      escapeValue: false,
     },
     load: "currentOnly",
+    // https://github.com/i18next/i18next-browser-languageDetector#detector-options
+    detection: {
+      convertDetectedLanguage: (lng) => lng.split("-")[0],
+    },
   })
-
-export default i18n
-declare module "i18next" {
-  interface CustomTypeOptions {
-    returnNull: false
-  }
-}
