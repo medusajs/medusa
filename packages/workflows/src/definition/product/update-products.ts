@@ -12,6 +12,8 @@ export enum UpdateProductsActions {
   updateProducts = "updateProducts",
   updateProductsVariantsPrepareData = "updateProductsVariantsPrepareData",
   updateProductsVariants = "updateProductsVariants",
+  removeProductsVariants = "removeProductsVariants",
+  createProductsVariants = "createProductsVariants",
 }
 
 /**
@@ -33,15 +35,23 @@ export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
     noCompensation: true, // TODO: compensate - revert TX
     next: {
       action: UpdateProductsActions.updateProductsVariantsPrepareData,
-      next: {
-        action: UpdateProductsActions.updateProductsVariants,
-        // next: {
-        //   action: UpdateProductsActions.createInventoryItems,
-        //   next: {
-        //     action: UpdateProductsActions.attachInventoryItems,
-        //   },
-        // },
-      },
+      next: [
+        {
+          action: UpdateProductsActions.removeProductsVariants,
+        },
+        {
+          action: UpdateProductsActions.updateProductsVariants,
+        },
+        {
+          action: UpdateProductsActions.createProductsVariants,
+          // next: {
+          //   action: UpdateProductsActions.createInventoryItems,
+          //   next: {
+          //     action: UpdateProductsActions.attachInventoryItems,
+          //   },
+          // },
+        },
+      ],
     },
   },
 }

@@ -1,21 +1,28 @@
-import { ProductTypes, WorkflowTypes } from "@medusajs/types"
+import { ProductVariantDTO } from "@medusajs/types"
 import { WorkflowArguments } from "../../helper"
 
+type ProductId = string
+
 export type UpdateProductsVariantsData = {
-  products: ProductTypes.UpdateProductDTO[]
-  // TODO
+  productsVariantsToUpdate: Map<ProductId, ProductVariantDTO[]>
 }
 
 export async function updateProductsVariants({
+  context: { manager },
   container,
-  context,
   data,
-}: WorkflowArguments<WorkflowTypes.ProductWorkflow.CreateProductsWorkflowInputDTO>): Promise<UpdateProductsVariantsData> {
-  const { manager } = context
-  let products = data.products
+}: WorkflowArguments<UpdateProductsVariantsData>): Promise<void> {
+  const productVariantService = container.resolve("productVariantService")
+  const productVariantServiceTx = productVariantService.withTransaction(manager)
 
-  return {
-    products: products as ProductTypes.UpdateProductDTO[],
+  for (const [productId, variants] of data.productsVariantsToUpdate.entries()) {
+    if (!variants.length) {
+      return
+    }
+
+    for (const variant of variants) {
+      await productVariantServiceTx.update(variant.id, variant)
+    }
   }
 }
 
