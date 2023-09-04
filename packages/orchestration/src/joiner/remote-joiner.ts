@@ -567,13 +567,8 @@ export class RemoteJoiner {
         > & { expands?: {} }
 
         for (const key of nestedKeys) {
-          if (!targetExpand.expands) {
-            targetExpand.expands = {}
-          }
-          if (!targetExpand.expands[key]) {
-            targetExpand.expands[key] = {}
-          }
-          targetExpand = targetExpand.expands[key]
+          targetExpand.expands ??= {}
+          targetExpand = targetExpand.expands[key] ??= {}
         }
 
         targetExpand.fields = expand.fields
