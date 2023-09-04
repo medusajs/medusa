@@ -20,12 +20,15 @@ export function connectionLoader(entity: EntitySchema) {
     >,
     moduleDeclaration?: InternalModuleDeclaration
   ): Promise<void> => {
+    const pathToMigrations = __dirname + "/../migrations"
+
     await ModulesSdkUtils.mikroOrmConnectionLoader({
       entities: [entity],
       container,
       options,
       moduleDeclaration,
       logger,
+      pathToMigrations,
     })
   }
 }
