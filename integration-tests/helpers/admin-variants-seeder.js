@@ -1,3 +1,5 @@
+const { ProductVariantMoneyAmount } = require("@medusajs/medusa")
+const { MoneyAmount } = require("@medusajs/medusa")
 const {
   Region,
   Product,
@@ -137,49 +139,6 @@ module.exports = async (dataSource, data = {}) => {
     upc: "test-upc",
     barcode: "test-barcode",
     product_id: "test-product",
-    prices: [
-      {
-        id: "test-price-multi-usd",
-        currency_code: "usd",
-        type: "default",
-        amount: 100,
-      },
-      {
-        id: "test-price-discount-multi-usd",
-        currency_code: "usd",
-        amount: 80,
-        price_list_id: "pl",
-      },
-      {
-        id: "test-price-discount-expired-multi-usd",
-        currency_code: "usd",
-        amount: 70,
-        price_list_id: "pl_expired",
-      },
-      {
-        id: "test-price-multi-eur",
-        currency_code: "eur",
-        amount: 100,
-      },
-      {
-        id: "test-price-discount-multi-eur",
-        currency_code: "eur",
-        amount: 80,
-        price_list_id: "pl",
-      },
-      {
-        id: "test-price-discount-multi-eur-with-customer",
-        currency_code: "eur",
-        amount: 40,
-        price_list_id: "pl_with_customers",
-      },
-      {
-        id: "test-price-discount-expired-multi-eur",
-        currency_code: "eur",
-        amount: 70,
-        price_list_id: "pl_expired",
-      },
-    ],
     options: [
       {
         id: "test-variant-option-reg",
@@ -187,6 +146,95 @@ module.exports = async (dataSource, data = {}) => {
         option_id: "test-option",
       },
     ],
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-multi-usd",
+    currency_code: "usd",
+    amount: 100,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma",
+    money_amount_id: "test-price-multi-usd",
+    variant_id: "test-variant",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-discount-multi-usd",
+    currency_code: "usd",
+    amount: 80,
+    price_list_id: "pl",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma1",
+    money_amount_id: "test-price-discount-multi-usd",
+    variant_id: "test-variant",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-discount-expired-multi-usd",
+    currency_code: "usd",
+    amount: 70,
+    price_list_id: "pl_expired",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma2",
+    money_amount_id: "test-price-discount-expired-multi-usd",
+    variant_id: "test-variant",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-multi-eur",
+    currency_code: "eur",
+    amount: 100,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma3",
+    money_amount_id: "test-price-multi-eur",
+    variant_id: "test-variant",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-discount-multi-eur",
+    currency_code: "eur",
+    amount: 80,
+    price_list_id: "pl",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma4",
+    money_amount_id: "test-price-discount-multi-eur",
+    variant_id: "test-variant",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-discount-multi-eur-with-customer",
+    currency_code: "eur",
+    amount: 40,
+    price_list_id: "pl_with_customers",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma5",
+    money_amount_id: "test-price-discount-multi-eur-with-customer",
+    variant_id: "test-variant",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-discount-expired-multi-eur",
+    currency_code: "eur",
+    amount: 70,
+    price_list_id: "pl_expired",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma6",
+    money_amount_id: "test-price-discount-expired-multi-eur",
+    variant_id: "test-variant",
   })
 
   await manager.save(variantMultiReg)

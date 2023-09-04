@@ -1654,7 +1654,7 @@ describe("/admin/orders", () => {
       )
     })
 
-    it.only("fails to lists all orders with an invalid status", async () => {
+    it("fails to lists all orders with an invalid status", async () => {
       expect.assertions(3)
       const api = useApi()
 

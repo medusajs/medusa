@@ -1,10 +1,12 @@
-import { DataSource } from "typeorm"
-import faker from "faker"
 import {
   MoneyAmount,
   ProductOptionValue,
   ProductVariant,
+  ProductVariantMoneyAmount,
 } from "@medusajs/medusa"
+
+import { DataSource } from "typeorm"
+import faker from "faker"
 
 export type ProductVariantFactoryData = {
   product_id: string
@@ -32,21 +34,11 @@ export const simpleProductVariantFactory = async (
 
   const id = data.id || `simple-variant-${Math.random() * 1000}`
 
-  const prices = (data.prices || [{ currency: "usd", amount: 100 }]).map((p) => { 
-    return {
-      id: `${p.currency}-${p.amount}-${Math.random()}`,
-      currency_code: p.currency,
-      amount: p.amount,
-      region_id: p.region_id,
-    }
-  })
-
   const toSave = manager.create(ProductVariant, {
     id,
     product_id: data.product_id,
     sku: data.sku,
     allow_backorder: data.allow_backorder ?? false,
-    prices,
     manage_inventory:
       typeof data.manage_inventory !== "undefined"
         ? data.manage_inventory
@@ -67,6 +59,23 @@ export const simpleProductVariantFactory = async (
       value: o.value,
       variant_id: id,
       option_id: o.option_id,
+    })
+  }
+
+  const prices = data.prices || [{ currency: "usd", amount: 100 }]
+  for (const p of prices) {
+    const ma_id = `${p.currency}-${p.amount}-${Math.random()}`
+    await manager.insert(MoneyAmount, {
+      id: ma_id,
+      currency_code: p.currency,
+      amount: p.amount,
+      region_id: p.region_id,
+    })
+
+    await manager.insert(ProductVariantMoneyAmount, {
+      id: `${ma_id}-${id}-${Math.random()}`,
+      money_amount_id: ma_id,
+      variant_id: id,
     })
   }
 

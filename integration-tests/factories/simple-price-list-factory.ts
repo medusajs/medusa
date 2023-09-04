@@ -5,8 +5,9 @@ import {
   PriceListStatus,
   PriceListType,
 } from "@medusajs/medusa"
-import faker from "faker"
+
 import { DataSource } from "typeorm"
+import faker from "faker"
 import { simpleCustomerGroupFactory } from "./simple-customer-group-factory"
 
 type ProductListPrice = {
@@ -64,10 +65,10 @@ export const simplePriceListFactory = async (
   }
 
   const toSave = manager.create(PriceList, toCreate)
-  const toReturn = await manager.save(toSave)
+  const toReturn = await manager.save(toSave) as PriceList
 
   if (typeof data.prices !== "undefined") {
-    for (const ma of data.prices) {
+    toReturn.prices = await Promise.all(data.prices.map(async (ma) => {
       const factoryData = {
         ...ma,
         price_list_id: listId,
@@ -76,10 +77,12 @@ export const simplePriceListFactory = async (
       await manager.save(toSave)
       
       await manager.query(
-        `INSERT INTO product_variant_money_amount(variant_id, money_amount_id) VALUES ('${ma.variant_id}', '${toSave.id}')`
+        `INSERT INTO product_variant_money_amount(id, variant_id, money_amount_id) VALUES ('${ma.variant_id}-${toSave.id}', '${ma.variant_id}', '${toSave.id}')`
       )
-    }
+      return toSave
+    }))
   }
+
 
   return toReturn
 }

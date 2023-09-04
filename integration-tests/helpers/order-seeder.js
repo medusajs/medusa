@@ -17,6 +17,7 @@ const {
 } = require("@medusajs/medusa")
 const { simpleSalesChannelFactory } = require("../factories")
 const { ProductOption } = require("@medusajs/medusa")
+const { ProductVariantMoneyAmount } = require("@medusajs/medusa")
 
 module.exports = async (dataSource, data = {}) => {
   const manager = dataSource.manager
@@ -58,15 +59,21 @@ module.exports = async (dataSource, data = {}) => {
         value: "Size",
       },
     ],
-    prices: [
-      {
-        currency_code: "usd",
-        amount: 8000,
-      },
-    ],
   })
 
   await manager.save(variant)
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price",
+    currency_code: "usd",
+    amount: 8000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma",
+    money_amount_id: "test-price",
+    variant_id: "test-variant",
+  })
 
   const variant2 = await manager.create(ProductVariant, {
     id: "test-variant-2",
@@ -79,16 +86,21 @@ module.exports = async (dataSource, data = {}) => {
         value: "Large",
       },
     ],
-    prices: [
-      {
-        variant_id: "test-variant-2",
-        currency_code: "usd",
-        amount: 8000,
-      },
-    ],
   })
 
   await manager.save(variant2)
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_2",
+    currency_code: "usd",
+    amount: 8000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma4",
+    money_amount_id: "test-price_2",
+    variant_id: "test-variant-2",
+  })
 
   await manager.insert(Region, {
     id: "test-region",

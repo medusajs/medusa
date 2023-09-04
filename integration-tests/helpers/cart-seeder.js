@@ -1,3 +1,4 @@
+const { ProductVariantMoneyAmount } = require("@medusajs/medusa")
 const { ProductOption } = require("@medusajs/medusa")
 const {
   Customer,
@@ -473,15 +474,20 @@ module.exports = async (dataSource, data = {}) => {
         value: "1000",
       },
     ],
-    prices: [
-      {
-        currency_code: "usd",
-        type: "default",
-        amount: 1000,
-      },
-    ],
   })
   await manager.save(denom)
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_denom",
+    currency_code: "usd",
+    amount: 1000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-denom",
+    money_amount_id: "test-price_denom",
+    variant_id: "giftcard-denom",
+  })
 
   const op_1 = await manager.create(ProductOption, {
     id: "test-option",
@@ -509,29 +515,48 @@ module.exports = async (dataSource, data = {}) => {
         value: "Size",
       },
     ],
-    prices: [
-      {
-        currency_code: "usd",
-        type: "default",
-        amount: 1000,
-      },
-      {
-        currency_code: "usd",
-        type: "sale",
-        min_quantity: 10,
-        max_quantity: 100,
-        amount: 800,
-      },
-      {
-        currency_code: "usd",
-        type: "sale",
-        min_quantity: 100,
-        amount: 700,
-      },
-    ],
   })
 
   await manager.save(quantityVariant)
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_quantity-1",
+    currency_code: "usd",
+    amount: 1000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-quantity-1",
+    money_amount_id: "test-price_quantity-1",
+    variant_id: "test-variant-quantity",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_quantity-2",
+    currency_code: "usd",
+    min_quantity: 10,
+    max_quantity: 100,
+    amount: 800,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-quantity-2",
+    money_amount_id: "test-price_quantity-2",
+    variant_id: "test-variant-quantity",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_quantity-3",
+    currency_code: "usd",
+    min_quantity: 100,
+    amount: 700,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-quantity-3",
+    money_amount_id: "test-price_quantity-3",
+    variant_id: "test-variant-quantity",
+  })
 
   const variantSale = await manager.create(ProductVariant, {
     id: "test-variant-sale",
@@ -544,20 +569,34 @@ module.exports = async (dataSource, data = {}) => {
         value: "Size",
       },
     ],
-    prices: [
-      {
-        currency_code: "usd",
-        amount: 1000,
-      },
-      {
-        currency_code: "usd",
-        amount: 800,
-        price_list_id: "pl_current",
-      },
-    ],
   })
 
   await manager.save(variantSale)
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_sale-1",
+    currency_code: "usd",
+    amount: 1000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-sale-1",
+    money_amount_id: "test-price_sale-1",
+    variant_id: "test-variant-sale",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-sale-2",
+    currency_code: "usd",
+    amount: 800,
+    price_list_id: "pl_current",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-sale-2",
+    money_amount_id: "test-price-sale-2",
+    variant_id: "test-variant-sale",
+  })
 
   const variantSaleCustomer = await manager.create(ProductVariant, {
     id: "test-variant-sale-customer",
@@ -570,24 +609,46 @@ module.exports = async (dataSource, data = {}) => {
         value: "Size",
       },
     ],
-    prices: [
-      {
-        currency_code: "usd",
-        amount: 1000,
-      },
-      {
-        currency_code: "usd",
-        amount: 700,
-        price_list_id: "pl_customer",
-      },
-      {
-        currency_code: "usd",
-        amount: 800,
-        price_list_id: "pl_current",
-      },
-    ],
   })
   await manager.save(variantSaleCustomer)
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_sale-customer-1",
+    currency_code: "usd",
+    amount: 1000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-sale-customer-1",
+    money_amount_id: "test-price_sale-customer-1",
+    variant_id: "test-variant-sale-customer",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price_sale-customer-2",
+    currency_code: "usd",
+    amount: 700,
+    price_list_id: "pl_customer",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-sale-customer-2",
+    money_amount_id: "test-price_sale-customer-2",
+    variant_id: "test-variant-sale-customer",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-sale-customer-3",
+    currency_code: "usd",
+    amount: 800,
+    price_list_id: "pl_current",
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-sale-customer-3",
+    money_amount_id: "test-price_sale-customer-3",
+    variant_id: "test-variant-sale-customer",
+  })
 
   const testVariant = await manager.create(ProductVariant, {
     id: "test-variant",
@@ -600,20 +661,32 @@ module.exports = async (dataSource, data = {}) => {
         value: "Size",
       },
     ],
-    prices: [
-      {
-        currency_code: "usd",
-        type: "default",
-        amount: 1000,
-      },
-      {
-        currency_code: "eur",
-        type: "default",
-        amount: 2000,
-      },
-    ],
   })
   await manager.save(testVariant)
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-1",
+    currency_code: "usd",
+    amount: 1000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-variant-1",
+    money_amount_id: "test-price-1",
+    variant_id: "test-variant",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-2",
+    currency_code: "eur",
+    amount: 2000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-variant-2",
+    money_amount_id: "test-price-2",
+    variant_id: "test-variant",
+  })
 
   const variant2 = await manager.insert(ProductVariant, {
     id: "test-variant-2",
@@ -626,13 +699,18 @@ module.exports = async (dataSource, data = {}) => {
         value: "Size",
       },
     ],
-    prices: [
-      {
-        currency_code: "usd",
-        type: "default",
-        amount: 8000,
-      },
-    ],
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-price-2-2",
+    currency_code: "usd",
+    amount: 8000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-variant-2-1",
+    money_amount_id: "test-price-2-2",
+    variant_id: "test-variant-2",
   })
 
   const cart = manager.create(Cart, {
@@ -909,24 +987,45 @@ module.exports = async (dataSource, data = {}) => {
         value: "Size",
       },
     ],
-    prices: [
-      {
-        currency_code: "usd",
-        amount: 1000,
-      },
-      {
-        currency_code: "usd",
-        price_list_id: "pl",
-        amount: 500,
-      },
-      {
-        region_id: "test-region-multiple",
-        currency_code: "eur",
-        amount: 700,
-      },
-    ],
   })
   await manager.save(variantSaleCG)
+
+  await manager.insert(MoneyAmount, {
+    id: "test-test-variant-sale-cg-1",
+    currency_code: "usd",
+    amount: 1000,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-variant-sale-cg-1",
+    money_amount_id: "test-test-variant-sale-cg-1",
+    variant_id: "test-variant-sale-cg",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-test-variant-sale-cg-2",
+    currency_code: "usd",
+    price_list_id: "pl",
+    amount: 500,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-variant-sale-cg-2",
+    money_amount_id: "test-test-variant-sale-cg-2",
+    variant_id: "test-variant-sale-cg",
+  })
+
+  await manager.insert(MoneyAmount, {
+    id: "test-test-variant-sale-cg-3",
+    currency_code: "eur",
+    amount: 700,
+  })
+
+  await manager.insert(ProductVariantMoneyAmount, {
+    id: "pvma-variant-sale-cg-3",
+    money_amount_id: "test-test-variant-sale-cg-3",
+    variant_id: "test-variant-sale-cg",
+  })
 
   const li3 = await manager.create(LineItem, {
     id: "test-item3",

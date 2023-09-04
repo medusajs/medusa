@@ -127,11 +127,9 @@ describe("/admin/price-lists", () => {
 
   describe("GET /admin/price-lists", () => {
     beforeEach(async () => {
-      console.log("before seeder")
       await adminSeeder(dbConnection)
       await productSeeder(dbConnection)
       await priceListSeeder(dbConnection)
-      console.log("after seeder")
     })
 
     afterEach(async () => {

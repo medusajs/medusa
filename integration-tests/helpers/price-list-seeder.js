@@ -65,22 +65,22 @@ module.exports = async (dataSource, data = {}) => {
   await manager.save(moneyAmount4)
 
   await manager.insert(ProductVariantMoneyAmount, {
-    id: "pvma1",
+    id: "pvma1-pl",
     money_amount_id: "ma_test_1",
     variant_id: "test-variant",
   })
   await manager.insert(ProductVariantMoneyAmount, {
-    id: "pvma2",
+    id: "pvma2-pl",
     money_amount_id: "ma_test_2",
     variant_id: "test-variant",
   })
   await manager.insert(ProductVariantMoneyAmount, {
-    id: "pvma3",
+    id: "pvma3-pl",
     money_amount_id: "ma_test_3",
     variant_id: "test-variant",
   })
   await manager.insert(ProductVariantMoneyAmount, {
-    id: "pvma4",
+    id: "pvma4-pl",
     money_amount_id: "ma_test_4",
     variant_id: "test-variant",
   })

@@ -31,7 +31,7 @@ export class ProductVariant extends SoftDeletableEntity {
   product: Product
 
   @ManyToMany(() => MoneyAmount, {
-    cascade: ["insert", "remove", "soft-remove", "recover"],
+    cascade: ["remove", "soft-remove", "recover"],
   })
   @JoinTable({
     name: "product_variant_money_amount",

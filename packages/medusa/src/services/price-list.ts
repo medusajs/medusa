@@ -1,27 +1,28 @@
-import { FlagRouter } from "@medusajs/utils"
-import { isDefined, MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager } from "typeorm"
-import { CustomerGroupService } from "."
-import { TransactionBaseService } from "../interfaces"
-import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
-import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
-import { MoneyAmountRepository } from "../repositories/money-amount"
-import { PriceListRepository } from "../repositories/price-list"
-import { ProductVariantRepository } from "../repositories/product-variant"
-import { FindConfig, Selector } from "../types/common"
 import {
-    CreatePriceListInput,
-    FilterablePriceListProps,
-    PriceListPriceCreateInput,
-    PriceListPriceUpdateInput,
-    UpdatePriceListInput,
+  CreatePriceListInput,
+  FilterablePriceListProps,
+  PriceListPriceCreateInput,
+  PriceListPriceUpdateInput,
+  UpdatePriceListInput,
 } from "../types/price-list"
+import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
+import { DeepPartial, EntityManager } from "typeorm"
+import { FindConfig, Selector } from "../types/common"
+import { MedusaError, isDefined } from "medusa-core-utils"
+
+import { CustomerGroupService } from "."
 import { FilterableProductProps } from "../types/product"
 import { FilterableProductVariantProps } from "../types/product-variant"
-import { buildQuery } from "../utils"
+import { FlagRouter } from "@medusajs/utils"
+import { MoneyAmountRepository } from "../repositories/money-amount"
+import { PriceListRepository } from "../repositories/price-list"
 import ProductService from "./product"
+import { ProductVariantRepository } from "../repositories/product-variant"
 import ProductVariantService from "./product-variant"
 import RegionService from "./region"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery } from "../utils"
 
 type PriceListConstructorProps = {
   manager: EntityManager
@@ -366,10 +367,12 @@ class PriceListService extends TransactionBaseService {
                     requiresPriceList
                   )
 
-                return productVariantRepo.create({
+                const variant = productVariantRepo.create({
                   ...v,
-                  prices,
                 })
+
+                variant.prices = prices
+                return variant
               })
             )
           }

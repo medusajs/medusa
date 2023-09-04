@@ -372,10 +372,10 @@ describe("/admin/products", () => {
       expect(expectedVariantPrices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-price4",
+            id: "test-price_4",
           }),
           expect.objectContaining({
-            id: "test-price3",
+            id: "test-price_3",
           }),
         ])
       )
