@@ -2210,13 +2210,14 @@ class CartService extends TransactionBaseService {
               item.variant?.product?.profile_id,
             ])
           )
+
           if (
             this.featureFlagRouter_.isFeatureEnabled(
               IsolateProductDomainFeatureFlag.key
             )
           ) {
             productShippinProfileMap =
-              await this.shippingProfileService_.listProfileByProductId(
+              await this.shippingProfileService_.getMapProfileIdsByProductIds(
                 cart.items.map((item) => item.metadata?._product_id as string)
               )
           }

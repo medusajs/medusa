@@ -1,5 +1,5 @@
 import { FlagRouter } from "@medusajs/utils"
-import { isDefined, MedusaError } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import IsolateProductDomainFeatureFlag from "../loaders/feature-flags/isolate-product-domain"
@@ -13,10 +13,6 @@ import {
 import { ProductRepository } from "../repositories/product"
 import { ShippingProfileRepository } from "../repositories/shipping-profile"
 import { FindConfig, Selector } from "../types/common"
-import {
-  CreateShippingProfile,
-  UpdateShippingProfile,
-} from "../types/shipping-profile"
 import { buildQuery, isString, setMetadata } from "../utils"
 import CustomShippingOptionService from "./custom-shipping-option"
 import ProductService from "./product"
@@ -85,22 +81,17 @@ class ShippingProfileService extends TransactionBaseService {
     return shippingProfileRepo.find(query)
   }
 
-  async listProfileByProductId(
+  async getMapProfileIdsByProductIds(
     selectorOrIds: string[] | Selector<ShippingProfile>
-  ): Promise<ShippingProfile[]> {
+  ): Promise<Map<string, string>> {
+    const mappedProfiles = new Map<string, string>()
     const productIds = (selectorOrIds as any)?.product_id ?? selectorOrIds
 
     if (!productIds?.length) {
-      return []
+      return mappedProfiles
     }
 
     const shippingProfiles = await this.shippingProfileRepository_.find({
-      select: {
-        id: true,
-        products: {
-          id: true,
-        },
-      },
       where: {
         products: {
           id: productIds,
@@ -111,16 +102,10 @@ class ShippingProfileService extends TransactionBaseService {
       },
     })
 
-    const mappedProfiles: any = []
-
     shippingProfiles.forEach((profile) => {
       profile.products.forEach((product) => {
         if (productIds.includes(product.id)) {
-          const mappedProfile = {
-            ...profile,
-            product_id: product.id,
-          }
-          mappedProfiles.push(mappedProfile)
+          mappedProfiles.set(product.id, profile.id)
         }
       })
     })
@@ -501,7 +486,7 @@ class ShippingProfileService extends TransactionBaseService {
         IsolateProductDomainFeatureFlag.key
       )
     ) {
-      const productShippinProfileMap = await this.listProfileByProductId(
+      const productShippinProfileMap = await this.getMapProfileIdsByProductIds(
         cart.items.map((item) => item.metadata?._product_id as string)
       )
 

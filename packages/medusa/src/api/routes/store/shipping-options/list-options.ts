@@ -90,16 +90,15 @@ export default async (req, res) => {
       featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)
     ) {
       const productShippinProfileMap =
-        await shippingProfileService.listProfileByProductId(productIds)
+        await shippingProfileService.getMapProfileIdsByProductIds(productIds)
 
-      query.profile_id = Object.values(productShippinProfileMap)
+      query.profile_id = [...productShippinProfileMap.values()]
     } else {
       const prods = await productService.list({ id: productIds })
       query.profile_id = prods.map((p) => p.profile_id)
     }
   }
 
-  console.log(query, "******************************")
   const options = await shippingOptionService.list(query, {
     relations: defaultRelations,
   })
