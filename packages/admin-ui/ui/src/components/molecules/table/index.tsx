@@ -22,7 +22,7 @@ type TableCellProps = React.TdHTMLAttributes<HTMLTableCellElement> & {
 type SortingHeadCellProps = {
   onSortClicked: () => void
   sortDirection?: "ASC" | "DESC"
-  setSortDirection: (string) => void
+  setSortDirection: (direction: string | undefined) => void
 } & React.HTMLAttributes<HTMLTableCellElement>
 
 export type TableProps = {
@@ -78,7 +78,9 @@ const Table = React.forwardRef<HTMLTableElement, TableProps>(
           {filteringOptions ? (
             <div className="mb-2 flex self-end">
               {Array.isArray(filteringOptions)
-                ? filteringOptions.map((fo) => <FilteringOptions {...fo} />)
+                ? filteringOptions.map((fo, index) => (
+                    <FilteringOptions {...fo} key={index} />
+                  ))
                 : filteringOptions}
             </div>
           ) : (
@@ -261,5 +263,14 @@ Table.Row = React.forwardRef<HTMLTableRowElement, TableRowProps>(
     )
   }
 )
+
+Table.displayName = "Table"
+Table.Row.displayName = "TableRow"
+Table.Cell.displayName = "TableCell"
+Table.Body.displayName = "TableBody"
+Table.Head.displayName = "TableHead"
+Table.HeadRow.displayName = "TableHeadRow"
+Table.HeadCell.displayName = "TableHeadCell"
+Table.SortingHeadCell.displayName = "TableSortingHeadCell"
 
 export default Table
