@@ -1,8 +1,8 @@
 import { humanizeAmount } from "medusa-core-utils"
-import { FulfillmentService } from "medusa-interfaces"
 import Webshipper from "../utils/webshipper"
+import { AbstractFulfillmentService } from "@medusajs/medusa"
 
-class WebshipperFulfillmentService extends FulfillmentService {
+class WebshipperFulfillmentService extends AbstractFulfillmentService {
   static identifier = "webshipper"
 
   constructor(
@@ -97,10 +97,6 @@ class WebshipperFulfillmentService extends FulfillmentService {
     // Calculate prices
   }
 
-  /**
-   * Creates a return shipment in webshipper using the given method data, and
-   * return lines.
-   */
   async createReturn(returnOrder) {
     let orderId
     if (returnOrder.order_id) {
@@ -477,13 +473,11 @@ class WebshipperFulfillmentService extends FulfillmentService {
     }
   }
 
-  /**
-   * This plugin doesn't support shipment documents.
-   */
   async retrieveDocuments(fulfillmentData, documentType) {
+    const labelRelation = fulfillmentData?.relationships?.labels
+    const docRelation = fulfillmentData?.relationships?.documents
     switch (documentType) {
       case "label":
-        const labelRelation = fulfillmentData?.relationships?.labels
         if (labelRelation) {
           const docs = await this.retrieveRelationship(labelRelation)
             .then(({ data }) => data)
@@ -498,7 +492,6 @@ class WebshipperFulfillmentService extends FulfillmentService {
         return []
 
       case "invoice":
-        const docRelation = fulfillmentData?.relationships?.documents
         if (docRelation) {
           const docs = await this.retrieveRelationship(docRelation)
             .then(({ data }) => data)
@@ -517,11 +510,6 @@ class WebshipperFulfillmentService extends FulfillmentService {
     }
   }
 
-  /**
-   * Retrieves the documents associated with an order.
-   * @return {Promise<Array<_>>} an array of document objects to store in the
-   *   database.
-   */
   async getFulfillmentDocuments(data) {
     const order = await this.client_.orders.retrieve(data.id)
     const docs = await this.retrieveRelationship(
