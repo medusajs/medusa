@@ -7,7 +7,7 @@ import UnpublishIcon from "../../fundamentals/icons/unpublish-icon"
 import StatusIndicator from "../../fundamentals/status-indicator"
 import { ActionType } from "../../molecules/actionables"
 import BannerCard from "../../molecules/banner-card"
-import TagGrid from "../../molecules/tag-grid.tsx"
+import TagGrid from "../../molecules/tag-grid"
 
 type GiftCardVariant = {
   prices: {
