@@ -2753,7 +2753,7 @@ describe("/store/carts", () => {
       await doAfterEach()
     })
 
-    it.only("it fetches prices with calculated amount", async () => {
+    it("it fetches prices with calculated amount", async () => {
       const region = await simpleRegionFactory(dbConnection)
       const product = await simpleProductFactory(dbConnection)
       const cart = await simpleCartFactory(dbConnection, {
