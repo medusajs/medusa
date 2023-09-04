@@ -240,6 +240,7 @@ class CartService extends TransactionBaseService {
           }
         }
       }
+      options.relations = [...new Set(options.relations)]
     }
 
     const { totalsToSelect } = this.transformQueryForTotals_(options)
@@ -288,20 +289,6 @@ class CartService extends TransactionBaseService {
     const { select, relations, totalsToSelect } =
       this.transformQueryForTotals_(options)
 
-    if (
-      this.featureFlagRouter_.isFeatureEnabled(
-        IsolateProductDomainFeatureFlag.key
-      )
-    ) {
-      if (Array.isArray(relations)) {
-        for (let i = 0; i < relations.length; i++) {
-          if (relations[i].startsWith("items.variant")) {
-            relations[i] = "items"
-          }
-        }
-      }
-    }
-
     const query = buildQuery({ id: cartId }, {
       ...options,
       select,
@@ -341,6 +328,8 @@ class CartService extends TransactionBaseService {
           }
         }
       }
+
+      opt.relations = [...new Set(opt.relations)]
     }
 
     const cart = await this.retrieve(cartId, opt)
@@ -594,21 +583,21 @@ class CartService extends TransactionBaseService {
    */
   protected validateLineItemShipping_(
     shippingMethods: ShippingMethod[],
-    productShippingProfiledId: string
+    lineItemShippingProfiledId: string
   ): boolean {
-    if (!productShippingProfiledId) {
+    if (!lineItemShippingProfiledId) {
       return true
     }
 
     if (
       shippingMethods &&
       shippingMethods.length &&
-      productShippingProfiledId
+      lineItemShippingProfiledId
     ) {
       const selectedProfiles = shippingMethods.map(
         ({ shipping_option }) => shipping_option.profile_id
       )
-      return selectedProfiles.includes(productShippingProfiledId)
+      return selectedProfiles.includes(lineItemShippingProfiledId)
     }
 
     return false
