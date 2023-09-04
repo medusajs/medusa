@@ -131,6 +131,7 @@ export const DiscountConditionRepository = dataSource
         resourceKey,
         joinTableForeignKey,
         conditionTable,
+        relatedTable,
       }
     },
 
