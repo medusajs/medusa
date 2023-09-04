@@ -14,4 +14,12 @@ export const LINKS = {
     Modules.PRICING,
     "money_amount_id"
   ),
+
+  // Internal services
+  ProductShippingProfile: composeLinkName(
+    Modules.PRODUCT,
+    "variant_id",
+    "shippingProfileService",
+    "profile_id"
+  ),
 }
