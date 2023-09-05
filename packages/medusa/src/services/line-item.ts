@@ -372,9 +372,7 @@ class LineItemService extends TransactionBaseService {
         IsolateProductDomainFeatureFlag.key
       )
     ) {
-      rawLineItem.metadata = setMetadata(rawLineItem as LineItem, {
-        _product_id: variant.product_id,
-      })
+      rawLineItem.product_id = variant.product_id
     }
 
     if (

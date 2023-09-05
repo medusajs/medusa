@@ -77,7 +77,7 @@ export const simpleLineItemFactory = async (
     includes_tax: data.includes_tax,
     order_edit_id: data.order_edit_id,
     is_giftcard: data.is_giftcard || false,
-    metadata: { _product_id: data.product_id },
+    product_id: data.product_id,
   })
 
   const line = await manager.save(toSave)
