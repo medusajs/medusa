@@ -1,5 +1,8 @@
 import {
+  AfterLoad,
+  AfterUpdate,
   BeforeInsert,
+  BeforeUpdate,
   Check,
   Column,
   Entity,
@@ -155,6 +158,40 @@ export class LineItem extends BaseEntity {
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "item")
+
+    // This is to maintain compatibility while isolating the product domain
+    if (
+      this.variant &&
+      Object.keys(this.variant).length === 1 &&
+      this.variant.product_id
+    ) {
+      this.variant = undefined as any
+    }
+  }
+
+  @BeforeUpdate()
+  beforeUpdate(): void {
+    // This is to maintain compatibility while isolating the product domain
+    if (
+      this.variant &&
+      Object.keys(this.variant).length === 1 &&
+      this.variant.product_id
+    ) {
+      this.variant = undefined as any
+    }
+  }
+
+  // This is to maintain compatibility while isolating the product domain
+  @AfterLoad()
+  @AfterUpdate()
+  afterUpdateOrLoad(): void {
+    if (this.variant) {
+      return
+    }
+
+    if (this.metadata._product_id) {
+      this.variant = { product_id: this.metadata._product_id as string } as any
+    }
   }
 }
 
