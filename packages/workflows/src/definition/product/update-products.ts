@@ -6,7 +6,7 @@ import {
   WorkflowManager,
 } from "@medusajs/orchestration"
 import { exportWorkflow, pipe } from "../../helper"
-import { ProductHandlers } from "../../handlers"
+import { InventoryHandlers, ProductHandlers } from "../../handlers"
 
 export enum UpdateProductsActions {
   updateProducts = "updateProducts",
@@ -60,6 +60,118 @@ const handlers = new Map([
           },
         },
         ProductHandlers.updateProducts
+      ),
+      // compensate: TODO
+    },
+  ],
+  [
+    UpdateProductsActions.updateProductsVariantsPrepareData,
+    {
+      invoke: pipe(
+        {
+          merge: true,
+          invoke: {
+            from: UpdateProductsActions.updateProducts,
+          },
+        },
+        ProductHandlers.updateProductsVariantsPrepareData
+      ),
+    },
+  ],
+  [
+    UpdateProductsActions.removeProductsVariants,
+    {
+      invoke: pipe(
+        {
+          merge: true,
+          invoke: {
+            from: UpdateProductsActions.updateProductsVariantsPrepareData,
+          },
+        },
+        ProductHandlers.removeProductsVariants
+      ),
+      // compensate: TODO
+    },
+  ],
+  [
+    UpdateProductsActions.updateProductsVariants,
+    {
+      invoke: pipe(
+        {
+          merge: true,
+          invoke: {
+            from: UpdateProductsActions.updateProductsVariantsPrepareData,
+          },
+        },
+        ProductHandlers.updateProductsVariants
+      ),
+      // compensate: TODO
+    },
+  ],
+  [
+    UpdateProductsActions.createProductsVariants,
+    {
+      invoke: pipe(
+        {
+          merge: true,
+          invoke: {
+            from: UpdateProductsActions.updateProductsVariantsPrepareData,
+          },
+        },
+        ProductHandlers.createProductsVariants
+      ),
+      // compensate: TODO
+    },
+  ],
+  [
+    UpdateProductsActions.createInventoryItems,
+    {
+      invoke: pipe(
+        {
+          merge: true,
+          invoke: {
+            from: UpdateProductsActions.createProductsVariants,
+          },
+        },
+        InventoryHandlers.createInventoryItems
+      ),
+      compensate: pipe(
+        {
+          merge: true,
+          invoke: {
+            from: UpdateProductsActions.createInventoryItems,
+            alias:
+              InventoryHandlers.removeInventoryItems.aliases.inventoryItems,
+          },
+        },
+        InventoryHandlers.removeInventoryItems
+      ),
+    },
+  ],
+  [
+    UpdateProductsActions.attachInventoryItems,
+    {
+      invoke: pipe(
+        {
+          merge: true,
+          invoke: {
+            from: UpdateProductsActions.createInventoryItems,
+            alias:
+              InventoryHandlers.attachInventoryItems.aliases.inventoryItems,
+          },
+        },
+        InventoryHandlers.attachInventoryItems
+      ),
+      compensate: pipe(
+        {
+          merge: true,
+          invoke: {
+            from: UpdateProductsActions.createInventoryItems,
+            alias:
+              InventoryHandlers.detachInventoryItems.aliases.inventoryItems,
+          },
+        },
+        InventoryHandlers.detachInventoryItems
       ),
     },
   ],
