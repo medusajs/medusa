@@ -1,26 +1,27 @@
 import { FlagRouter } from "@medusajs/utils"
 import { AwilixContainer } from "awilix"
 import {
-    BaseFulfillmentService,
-    BaseNotificationService,
-    BasePaymentService,
+  BaseFulfillmentService,
+  BaseNotificationService,
+  BasePaymentService,
 } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import {
-    AbstractPaymentProcessor,
-    AbstractPaymentService,
-    AbstractTaxService,
+  AbstractFulfillmentService,
+  AbstractPaymentProcessor,
+  AbstractPaymentService,
+  AbstractTaxService,
 } from "../interfaces"
 import { CountryRepository } from "../repositories/country"
 import { CurrencyRepository } from "../repositories/currency"
 import {
-    FulfillmentProviderService,
-    NotificationService,
-    PaymentProviderService,
-    SalesChannelService,
-    ShippingProfileService,
-    StoreService,
-    TaxProviderService,
+  FulfillmentProviderService,
+  NotificationService,
+  PaymentProviderService,
+  SalesChannelService,
+  ShippingProfileService,
+  StoreService,
+  TaxProviderService,
 } from "../services"
 import { Logger } from "../types/global"
 import { countries } from "../utils/countries"
@@ -227,7 +228,7 @@ async function registerNotificationProvider({
   logger: Logger
 }): Promise<void> {
   const notiProviders =
-    silentResolution<typeof BaseNotificationService[]>(
+    silentResolution<(typeof BaseNotificationService)[]>(
       container,
       "notificationProviders",
       logger
@@ -252,11 +253,9 @@ async function registerFulfillmentProvider({
   logger: Logger
 }): Promise<void> {
   const fulfilProviders =
-    silentResolution<typeof BaseFulfillmentService[]>(
-      container,
-      "fulfillmentProviders",
-      logger
-    ) || []
+    silentResolution<
+      (typeof BaseFulfillmentService | AbstractFulfillmentService)[]
+    >(container, "fulfillmentProviders", logger) || []
   const fulfilIds = fulfilProviders.map((p) => p.getIdentifier())
 
   const fProviderService = container.resolve<FulfillmentProviderService>(
