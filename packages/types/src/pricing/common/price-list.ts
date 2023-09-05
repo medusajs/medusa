@@ -1,7 +1,6 @@
 import { BaseFilterable } from "../../dal"
-import { CreateCurrencyDTO } from "./currency"
 import { MoneyAmountDTO, UpdateMoneyAmountDTO } from "./money-amount"
-import { generateEntityId, PriceListUtils } from "@medusajs/utils"
+import { PriceListUtils } from "@medusajs/utils"
 
 export interface PriceListDTO {
   id: string
