@@ -231,10 +231,11 @@ export const DiscountConditionRepository = dataSource
         type !== DiscountConditionType.CUSTOMER_GROUPS &&
         featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)
       ) {
-        const prop = relatedTable
-        const resource = await MedusaModule.getModuleInstance(
+        const module = MedusaModule.getModuleInstance(Modules.PRODUCT)[
           Modules.PRODUCT
-        ).retrieve(resourceId, {
+        ]
+        const prop = relatedTable
+        const resource = await module.retrieve(resourceId, {
           select: [`${prop ? prop + "." : ""}id`],
           relations: prop ? [prop] : [],
         })
