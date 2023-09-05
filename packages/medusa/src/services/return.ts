@@ -21,7 +21,9 @@ import {
   ReturnStatus,
 } from "../models"
 import { MedusaError, isDefined } from "medusa-core-utils"
-import { buildQuery, setMetadata } from "../utils"
+import { FlagRouter } from "@medusajs/utils"
+import TaxInclusivePricingFeatureFlag from "../loaders/feature-flags/tax-inclusive-pricing"
+import { buildQuery, setMetadata, calculatePriceTaxAmount } from "../utils"
 
 import { OrdersReturnItem } from "../types/orders"
 import { ReturnItemRepository } from "../repositories/return-item"
@@ -40,6 +42,7 @@ type InjectedDependencies = {
   fulfillmentProviderService: FulfillmentProviderService
   orderService: OrderService
   productVariantInventoryService: ProductVariantInventoryService
+  featureFlagRouter: FlagRouter
 }
 
 type Transformer = (
@@ -60,6 +63,7 @@ class ReturnService extends TransactionBaseService {
   protected readonly orderService_: OrderService
   // eslint-disable-next-line
   protected readonly productVariantInventoryService_: ProductVariantInventoryService
+  protected readonly featureFlagRouter_: FlagRouter
 
   constructor({
     totalsService,
@@ -72,6 +76,7 @@ class ReturnService extends TransactionBaseService {
     fulfillmentProviderService,
     orderService,
     productVariantInventoryService,
+    featureFlagRouter,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -86,6 +91,7 @@ class ReturnService extends TransactionBaseService {
     this.returnReasonService_ = returnReasonService
     this.orderService_ = orderService
     this.productVariantInventoryService_ = productVariantInventoryService
+    this.featureFlagRouter_ = featureFlagRouter
   }
 
   /**
@@ -486,11 +492,33 @@ class ReturnService extends TransactionBaseService {
           .withTransaction(manager)
           .createShippingTaxLines(shippingMethod, calculationContext)
 
+        const includesTax =
+          this.featureFlagRouter_.isFeatureEnabled(
+            TaxInclusivePricingFeatureFlag.key
+          ) && shippingMethod.includes_tax
+
+        const taxRate = taxLines.reduce((acc, curr) => {
+          return acc + curr.rate / 100
+        }, 0)
+
+        const taxAmountIncludedInPrice = !includesTax
+          ? 0
+          : Math.round(
+              calculatePriceTaxAmount({
+                price: shippingMethod.price,
+                taxRate,
+                includesTax,
+              })
+            )
+
+        const shippingPriceWithoutTax =
+          shippingMethod.price - taxAmountIncludedInPrice
+
         const shippingTotal =
-          shippingMethod.price +
+          shippingPriceWithoutTax +
           taxLines.reduce(
             (acc, tl) =>
-              acc + Math.round(shippingMethod.price * (tl.rate / 100)),
+              acc + Math.round(shippingPriceWithoutTax * (tl.rate / 100)),
             0
           )
 
