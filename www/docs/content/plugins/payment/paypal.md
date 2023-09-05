@@ -75,6 +75,8 @@ const plugins = [
 ]
 ```
 
+The endpoint for PayPal webhook integration with your Medusa backend should be set to `{BACKEND_URL}/paypal/hooks`. Make sure to replace `{BACKEND_URL}` with the URL to your backend.
+
 That’s all you need to install PayPal on your Medusa backend!
 
 The PayPal plugin also accepts the following optional configurations:
