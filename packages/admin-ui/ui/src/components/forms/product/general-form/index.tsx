@@ -33,7 +33,7 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
 
   return (
     <div>
-      <div className="gap-x-large mb-small grid grid-cols-2">
+      <div className="gap-x-large mb-small medium:grid medium:grid-cols-2 flex flex-col">
         <InputField
           label="Title"
           placeholder={isGiftCard ? "Gift Card" : "Winter Jacket"}
@@ -63,7 +63,7 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
         <br />
         50-60 characters is the recommended length for search engines.
       </p>
-      <div className="gap-x-large mb-small grid grid-cols-2">
+      <div className="gap-x-large mb-smallflex medium:grid medium:grid-cols-2 flex-col">
         <InputField
           label="العنوان"
           placeholder={isGiftCard ? "كرت هدية" : "سترة الشتاء"}
@@ -87,7 +87,7 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
           errors={errors}
         />
       </div>
-      <div className="gap-x-large mb-large grid grid-cols-2">
+      <div className="gap-x-large mb-largeflex medium:grid medium:grid-cols-2 flex-col">
         <InputField
           label="Handle"
           tooltipContent={
@@ -117,9 +117,9 @@ const GeneralForm = ({ form, requireHandle = true, isGiftCard }: Props) => {
           errors={errors}
         />
       </div>
-      <div className="gap-x-large mb-large grid grid-cols-2">
+      <div className="gap-x-large mb-largeflex medium:grid medium:grid-cols-2 flex-col">
         <InputField
-          label="مقبض"
+          label="handle arabic"
           {...register(path("handle_ar"), {
             required: requireHandle ? "Handle is required" : undefined,
             minLength: FormValidator.minOneCharRule("Handle"),
