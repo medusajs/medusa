@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@medusajs/utils": "^1.9.6",
+    "awilix": "^8.0.1",
     "graphql": "^16.6.0"
   },
   "scripts": {

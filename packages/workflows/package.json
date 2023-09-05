@@ -30,6 +30,7 @@
     "@medusajs/orchestration": "^0.2.0",
     "@medusajs/utils": "^1.9.6",
     "awilix": "^8.0.1",
+    "medusa-core-utils": "workspace:^",
     "ulid": "^2.3.0"
   },
   "scripts": {
