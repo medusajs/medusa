@@ -264,8 +264,7 @@ class LineItemAdjustmentService extends TransactionBaseService {
     lineItem: LineItem
   ): Promise<LineItemAdjustment[]> {
     const adjustments = await this.generateAdjustments(cart, lineItem, {
-      product_id:
-        lineItem.variant?.product_id ?? lineItem.metadata?._product_id,
+      product_id: lineItem.variant?.product_id,
     })
 
     const createdAdjustments: LineItemAdjustment[] = []

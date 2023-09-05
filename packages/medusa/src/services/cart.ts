@@ -1,10 +1,10 @@
 import { FlagRouter } from "@medusajs/utils"
 import { isEmpty, isEqual } from "lodash"
-import { MedusaError, isDefined } from "medusa-core-utils"
+import { isDefined, MedusaError } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In, IsNull, Not } from "typeorm"
 import {
-  CustomShippingOptionService,
   CustomerService,
+  CustomShippingOptionService,
   DiscountService,
   EventBusService,
   GiftCardService,
@@ -29,8 +29,8 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import {
   Address,
   Cart,
-  CustomShippingOption,
   Customer,
+  CustomShippingOption,
   Discount,
   DiscountRule,
   DiscountRuleType,
@@ -49,9 +49,9 @@ import {
   CartCreateProps,
   CartUpdateProps,
   FilterableCartProps,
+  isCart,
   LineItemUpdate,
   LineItemValidateData,
-  isCart,
 } from "../types/cart"
 import {
   AddressPayload,
@@ -1269,10 +1269,7 @@ class CartService extends TransactionBaseService {
   ): Promise<void> {
     await this.getValidatedSalesChannel(newSalesChannelId)
 
-    const productIds = cart.items.map(
-      (item) =>
-        (item.metadata?._product_id as string) ?? item.variant.product_id
-    )
+    const productIds = cart.items.map((item) => item.variant.product_id)
     const productsToKeep = await this.productService_
       .withTransaction(this.activeManager_)
       .filterProductsBySalesChannel(productIds, newSalesChannelId, {
@@ -1283,9 +1280,7 @@ class CartService extends TransactionBaseService {
       productsToKeep.map((product) => product.id)
     )
     const itemsToRemove = cart.items.filter((item) => {
-      return !productIdsToKeep.has(
-        (item.metadata?._product_id as string) ?? item.variant.product_id
-      )
+      return !productIdsToKeep.has(item.variant.product_id)
     })
 
     if (itemsToRemove.length) {
@@ -2207,7 +2202,7 @@ class CartService extends TransactionBaseService {
           ) {
             productShippinProfileMap =
               await this.shippingProfileService_.getMapProfileIdsByProductIds(
-                cart.items.map((item) => item.metadata?._product_id as string)
+                cart.items.map((item) => item.variant.product_id)
               )
           }
 
@@ -2216,10 +2211,7 @@ class CartService extends TransactionBaseService {
               return lineItemServiceTx.update(item.id, {
                 has_shipping: this.validateLineItemShipping_(
                   methods,
-                  productShippinProfileMap.get(
-                    item.variant?.product?.id ??
-                      (item.metadata?._product_id as string)
-                  )!
+                  productShippinProfileMap.get(item.variant?.product_id)!
                 ),
               })
             })

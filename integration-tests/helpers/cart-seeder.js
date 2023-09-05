@@ -834,7 +834,7 @@ module.exports = async (dataSource, data = {}) => {
     unit_price: 8000,
     quantity: 1,
     variant_id: "test-variant",
-    metadata: { _product_id: "test-product" },
+    product_id: "test-product",
     cart_id: "test-cart-2",
   })
   await manager.save(li)
@@ -888,7 +888,7 @@ module.exports = async (dataSource, data = {}) => {
     unit_price: 8000,
     quantity: 1,
     variant_id: "test-variant",
-    metadata: { _product_id: "test-product" },
+    product_id: "test-product",
     cart_id: "test-cart-3",
   })
   await manager.save(li2)
@@ -953,7 +953,8 @@ module.exports = async (dataSource, data = {}) => {
     quantity: 1,
     variant_id: "test-variant-sale-cg",
     cart_id: "test-cart-3",
-    metadata: { "some-existing": "prop", _product_id: "test-product" },
+    product_id: "test-product",
+    metadata: { "some-existing": "prop" },
   })
   await manager.save(li3)
 }

@@ -25,6 +25,7 @@ import { Order } from "./order"
 import { OrderEdit } from "./order-edit"
 import { ProductVariant } from "./product-variant"
 import { Swap } from "./swap"
+import IsolateProductDomain from "../loaders/feature-flags/isolate-product-domain"
 
 @Check(`"fulfilled_quantity" <= "quantity"`)
 @Check(`"shipped_quantity" <= "fulfilled_quantity"`)
@@ -127,6 +128,9 @@ export class LineItem extends BaseEntity {
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
+  @FeatureFlagColumn(IsolateProductDomain.key, { nullable: true, type: "text" })
+  product_id: string | null
+
   @Column({ type: "int" })
   quantity: number
 
@@ -189,8 +193,8 @@ export class LineItem extends BaseEntity {
       return
     }
 
-    if (this.metadata._product_id) {
-      this.variant = { product_id: this.metadata._product_id as string } as any
+    if (this.product_id) {
+      this.variant = { product_id: this.product_id } as any
     }
   }
 }
