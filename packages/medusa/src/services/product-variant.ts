@@ -1,4 +1,3 @@
-import { isDefined, MedusaError } from "medusa-core-utils"
 import {
   Brackets,
   EntityManager,
@@ -11,22 +10,6 @@ import {
   SelectQueryBuilder,
 } from "typeorm"
 import {
-  IPriceSelectionStrategy,
-  PriceSelectionContext,
-  TransactionBaseService,
-} from "../interfaces"
-import {
-  MoneyAmount,
-  Product,
-  ProductOptionValue,
-  ProductVariant,
-} from "../models"
-import {
-  FindWithRelationsOptions,
-  ProductVariantRepository,
-} from "../repositories/product-variant"
-import { FindConfig, WithRequiredProperty } from "../types/common"
-import {
   CreateProductVariantInput,
   FilterableProductVariantProps,
   GetRegionPriceContext,
@@ -37,6 +20,23 @@ import {
   UpdateVariantPricesData,
   UpdateVariantRegionPriceData,
 } from "../types/product-variant"
+import { FindConfig, WithRequiredProperty } from "../types/common"
+import {
+  FindWithRelationsOptions,
+  ProductVariantRepository,
+} from "../repositories/product-variant"
+import {
+  IPriceSelectionStrategy,
+  PriceSelectionContext,
+  TransactionBaseService,
+} from "../interfaces"
+import { MedusaError, isDefined } from "medusa-core-utils"
+import {
+  MoneyAmount,
+  Product,
+  ProductOptionValue,
+  ProductVariant,
+} from "../models"
 import {
   buildQuery,
   hasChanges,
@@ -45,12 +45,12 @@ import {
   setMetadata,
 } from "../utils"
 
-import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import { CartRepository } from "../repositories/cart"
-import { MoneyAmountRepository } from "../repositories/money-amount"
-import { ProductRepository } from "../repositories/product"
-import { ProductOptionValueRepository } from "../repositories/product-option-value"
 import EventBusService from "./event-bus"
+import { MoneyAmountRepository } from "../repositories/money-amount"
+import { ProductOptionValueRepository } from "../repositories/product-option-value"
+import { ProductRepository } from "../repositories/product"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import RegionService from "./region"
 import { buildRelations } from "@medusajs/utils"
 
@@ -592,7 +592,7 @@ class ProductVariantService extends TransactionBaseService {
           const ma = moneyAmountRepo.create({
             ...price,
           }) as QueryDeepPartialEntity<MoneyAmount>
-          ma.variant = [variant]
+          ma.variant = variant as QueryDeepPartialEntity<ProductVariant>
           dataToCreate.push(ma)
         }
       })
@@ -680,7 +680,7 @@ class ProductVariantService extends TransactionBaseService {
             ...price,
             currency_code: price.currency_code.toLowerCase(),
           }) as QueryDeepPartialEntity<MoneyAmount>
-          ma.variant = [variant]
+          ma.variant = variant as QueryDeepPartialEntity<ProductVariant>
           dataToCreate.push(ma)
         }
       })

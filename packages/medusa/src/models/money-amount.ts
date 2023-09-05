@@ -1,5 +1,7 @@
 import {
+  AfterLoad,
   BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   Index,
@@ -59,7 +61,11 @@ export class MoneyAmount extends SoftDeletableEntity {
       referencedColumnName: "id",
     },
   })
+  variants: ProductVariant[]
+
   variant: ProductVariant
+
+  variant_id: string
 
   @Index("idx_money_amount_region_id")
   @Column({ nullable: true })
@@ -72,6 +78,27 @@ export class MoneyAmount extends SoftDeletableEntity {
   @BeforeInsert()
   private beforeInsert(): undefined | void {
     this.id = generateEntityId(this.id, "ma")
+
+    if (this.variant || this.variant_id) {
+      this.variants = [
+        { id: this.variant.id || this.variant_id },
+      ] as ProductVariant[]
+    }
+  }
+
+  @BeforeUpdate()
+  private beforeUpdate(): void {
+    if (this.variant || this.variant_id) {
+      this.variants = [
+        { id: this.variant.id || this.variant_id },
+      ] as ProductVariant[]
+    }
+  }
+
+  @AfterLoad()
+  private afterLoad() {
+    this.variant = this.variants?.[0]
+    this.variant_id = this.variant?.id
   }
 }
 

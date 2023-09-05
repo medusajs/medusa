@@ -56,10 +56,15 @@ export const MoneyAmountRepository = dataSource
         ProductVariantMoneyAmount,
         data
           .filter(
-            (d): d is { variant: ProductVariant[]; id: string } => !!d.variant
+            (
+              d
+            ): d is {
+              variant: QueryDeepPartialEntity<ProductVariant>
+              id: string
+            } => !!d.variant
           )
           .map((d) => ({
-            variant_id: d.variant[0].id,
+            variant_id: d.variant.id,
             money_amount_id: d.id,
           }))
       )
