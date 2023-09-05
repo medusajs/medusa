@@ -247,10 +247,14 @@ export const DiscountConditionRepository = dataSource
           ? resource[prop].map((relatedResource) => relatedResource.id)
           : [resource.id]
 
+        if (!relatedResourceIds.length) {
+          return 0
+        }
+
         return await this.manager
           .createQueryBuilder(conditionTable, "dc")
           .where(
-            `dc.condition_id = :conditionId AND dc.${joinTableForeignKey} IN (...relatedResourceIds)`,
+            `dc.condition_id = :conditionId AND dc.${joinTableForeignKey} IN (:...relatedResourceIds)`,
             {
               conditionId,
               relatedResourceIds,
