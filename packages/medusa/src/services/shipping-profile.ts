@@ -494,7 +494,7 @@ class ShippingProfileService extends TransactionBaseService {
       )
     ) {
       const productShippinProfileMap = await this.getMapProfileIdsByProductIds(
-        cart.items.map((item) => item.metadata?._product_id as string)
+        cart.items.map((item) => item.variant?.product_id)
       )
       profileIds = new Set([...productShippinProfileMap.values()])
     } else {

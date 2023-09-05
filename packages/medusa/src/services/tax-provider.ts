@@ -249,13 +249,7 @@ class TaxProviderService extends TransactionBaseService {
   ): Promise<(ShippingMethodTaxLine | LineItemTaxLine)[]> {
     const productIds = [
       ...new Set(
-        lineItems
-          .map(
-            (item) =>
-              item?.variant?.product_id ??
-              (item?.metadata?._product_id as string)
-          )
-          .filter((p) => p)
+        lineItems.map((item) => item?.variant?.product_id).filter((p) => p)
       ),
     ]
 
@@ -269,13 +263,10 @@ class TaxProviderService extends TransactionBaseService {
         return null
       }
 
-      if (item.variant?.product_id ?? item.metadata?._product_id) {
+      if (item.variant?.product_id) {
         return {
           item: item,
-          rates:
-            productRatesMap.get(
-              item.variant?.product_id ?? (item.metadata?._product_id as string)
-            ) ?? [],
+          rates: productRatesMap.get(item.variant?.product_id) ?? [],
         }
       }
 
