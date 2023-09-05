@@ -50,7 +50,7 @@ module.exports = async (dataSource, data = {}) => {
     tax_rate: 0,
   })
 
-  const customer = await manager.create(Customer, {
+  const customer = manager.create(Customer, {
     id: "test-customer",
     email: "john@doe.com",
     first_name: "John",
@@ -60,7 +60,7 @@ module.exports = async (dataSource, data = {}) => {
     has_account: true,
   })
 
-  const customerGroup = await manager.create(CustomerGroup, {
+  const customerGroup = manager.create(CustomerGroup, {
     id: "test-group",
     name: "test-group",
   })
@@ -69,7 +69,7 @@ module.exports = async (dataSource, data = {}) => {
   customer.groups = [customerGroup]
   await manager.save(customer)
 
-  const priceListActive = await manager.create(PriceList, {
+  const priceListActive = manager.create(PriceList, {
     id: "pl",
     name: "VIP sale",
     description: "All year sale for VIP customers.",
@@ -79,7 +79,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceListActive)
 
-  const priceListExpired = await manager.create(PriceList, {
+  const priceListExpired = manager.create(PriceList, {
     id: "pl_expired",
     name: "VIP summer sale",
     description: "Summer sale for VIP customers.",
@@ -91,7 +91,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceListExpired)
 
-  const priceListWithCustomers = await manager.create(PriceList, {
+  const priceListWithCustomers = manager.create(PriceList, {
     id: "pl_with_customers",
     name: "VIP winter sale",
     description: "Winter sale for VIP customers.",
@@ -129,7 +129,7 @@ module.exports = async (dataSource, data = {}) => {
     product_id: "test-product",
   })
 
-  const variantMultiReg = await manager.create(ProductVariant, {
+  const variantMultiReg = manager.create(ProductVariant, {
     id: "test-variant",
     inventory_quantity: 10,
     title: "Test variant",

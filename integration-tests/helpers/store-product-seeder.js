@@ -28,7 +28,7 @@ module.exports = async (dataSource, defaultSalesChannel) => {
     new Date()
   )
 
-  const priceList = await manager.create(PriceList, {
+  const priceList = manager.create(PriceList, {
     id: "pl",
     name: "VIP winter sale",
     description: "Winter sale for VIP customers.",
@@ -38,7 +38,7 @@ module.exports = async (dataSource, defaultSalesChannel) => {
 
   await manager.save(priceList)
 
-  const priceList1 = await manager.create(PriceList, {
+  const priceList1 = manager.create(PriceList, {
     id: "pl_expired",
     name: "Past winter sale",
     description: "Winter sale for key accounts.",
@@ -154,7 +154,7 @@ module.exports = async (dataSource, defaultSalesChannel) => {
     product_id: "test-product",
   })
 
-  const variant1 = await manager.create(ProductVariant, {
+  const variant1 = manager.create(ProductVariant, {
     id: "test-variant",
     inventory_quantity: 10,
     title: "Test variant",
@@ -214,7 +214,7 @@ module.exports = async (dataSource, defaultSalesChannel) => {
     variant_id: "test-variant",
   })
 
-  const variant2 = await manager.create(ProductVariant, {
+  const variant2 = manager.create(ProductVariant, {
     id: "test-variant_1",
     inventory_quantity: 10,
     title: "Test variant rank (1)",
@@ -274,7 +274,7 @@ module.exports = async (dataSource, defaultSalesChannel) => {
     variant_id: "test-variant_1",
   })
 
-  const variant3 = await manager.create(ProductVariant, {
+  const variant3 = manager.create(ProductVariant, {
     id: "test-variant_2",
     inventory_quantity: 10,
     title: "Test variant rank (2)",
@@ -351,7 +351,7 @@ module.exports = async (dataSource, defaultSalesChannel) => {
 
   await manager.save(p1)
 
-  const variant4 = await manager.create(ProductVariant, {
+  const variant4 = manager.create(ProductVariant, {
     id: "test-variant_3",
     inventory_quantity: 10,
     title: "Test variant rank (2)",
@@ -383,7 +383,7 @@ module.exports = async (dataSource, defaultSalesChannel) => {
     variant_id: "test-variant_3",
   })
 
-  const variant5 = await manager.create(ProductVariant, {
+  const variant5 = manager.create(ProductVariant, {
     id: "test-variant_4",
     inventory_quantity: 10,
     title: "Test variant rank (2)",

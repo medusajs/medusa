@@ -48,7 +48,7 @@ module.exports = async (dataSource, data = {}) => {
     product_id: "test-product",
   })
 
-  const variant = await manager.create(ProductVariant, {
+  const variant = manager.create(ProductVariant, {
     id: "test-variant",
     title: "test variant",
     product_id: "test-product",
@@ -75,7 +75,7 @@ module.exports = async (dataSource, data = {}) => {
     variant_id: "test-variant",
   })
 
-  const variant2 = await manager.create(ProductVariant, {
+  const variant2 = manager.create(ProductVariant, {
     id: "test-variant-2",
     title: "Swap product",
     product_id: "test-product",

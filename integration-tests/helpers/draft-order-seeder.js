@@ -32,7 +32,7 @@ module.exports = async (dataSource, data = {}) => {
     is_default: true,
   })
 
-  const op = await manager.create(ProductOption, {
+  const op = manager.create(ProductOption, {
     id: "test-option",
     title: "Size",
   })
@@ -57,7 +57,7 @@ module.exports = async (dataSource, data = {}) => {
     country_code: "us",
   })
 
-  const op1 = await manager.create(ProductOption, {
+  const op1 = manager.create(ProductOption, {
     id: "test-option-color",
     title: "Color",
   })
@@ -88,7 +88,7 @@ module.exports = async (dataSource, data = {}) => {
     ],
   })
 
-  const pv1 = await manager.create(ProductVariant, {
+  const pv1 = manager.create(ProductVariant, {
     id: "test-variant",
     title: "test variant",
     product_id: "test-product",
@@ -114,7 +114,7 @@ module.exports = async (dataSource, data = {}) => {
     variant_id: "test-variant",
   })
 
-  const pv2 = await manager.create(ProductVariant, {
+  const pv2 = manager.create(ProductVariant, {
     id: "test-variant-2",
     title: "test variant-2",
     product_id: "test-product-2",

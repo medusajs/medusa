@@ -4,7 +4,7 @@ const { Region, PriceList, MoneyAmount } = require("@medusajs/medusa")
 module.exports = async (dataSource, data = {}) => {
   const manager = dataSource.manager
 
-  const priceListNoCustomerGroups = await manager.create(PriceList, {
+  const priceListNoCustomerGroups = manager.create(PriceList, {
     id: "pl_no_customer_groups",
     name: "VIP winter sale",
     description: "Winter sale for VIP customers. 25% off selected items.",
@@ -23,7 +23,7 @@ module.exports = async (dataSource, data = {}) => {
     tax_rate: 0,
   })
 
-  const moneyAmount1 = await manager.create(MoneyAmount, {
+  const moneyAmount1 = manager.create(MoneyAmount, {
     id: "ma_test_1",
     amount: 100,
     currency_code: "usd",
@@ -34,7 +34,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(moneyAmount1)
 
-  const moneyAmount2 = await manager.create(MoneyAmount, {
+  const moneyAmount2 = manager.create(MoneyAmount, {
     id: "ma_test_2",
     amount: 80,
     currency_code: "usd",
@@ -45,7 +45,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(moneyAmount2)
 
-  const moneyAmount3 = await manager.create(MoneyAmount, {
+  const moneyAmount3 = manager.create(MoneyAmount, {
     id: "ma_test_3",
     amount: 50,
     currency_code: "usd",
@@ -56,7 +56,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(moneyAmount3)
 
-  const moneyAmount4 = await manager.create(MoneyAmount, {
+  const moneyAmount4 = manager.create(MoneyAmount, {
     id: "ma_test_4",
     amount: 70,
     currency_code: "usd",
@@ -85,7 +85,7 @@ module.exports = async (dataSource, data = {}) => {
     variant_id: "test-variant",
   })
 
-  const priceListWithMA = await manager.create(PriceList, {
+  const priceListWithMA = manager.create(PriceList, {
     id: "pl_with_some_ma",
     name: "Weeken sale",
     description: "Desc. of the list",

@@ -61,7 +61,7 @@ module.exports = async (dataSource, data = {}) => {
   })
   await manager.save(coll)
 
-  const customer5 = await manager.create(Customer, {
+  const customer5 = manager.create(Customer, {
     id: "test-customer-5",
     email: "test5@email.com",
     first_name: "John",
@@ -72,7 +72,7 @@ module.exports = async (dataSource, data = {}) => {
   })
   await manager.save(customer5)
 
-  const customer6 = await manager.create(Customer, {
+  const customer6 = manager.create(Customer, {
     id: "test-customer-6",
     password_hash:
       "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
@@ -81,7 +81,7 @@ module.exports = async (dataSource, data = {}) => {
   })
   await manager.save(customer6)
 
-  const customer7 = await manager.create(Customer, {
+  const customer7 = manager.create(Customer, {
     id: "test-customer-7",
     password_hash:
       "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
@@ -90,13 +90,13 @@ module.exports = async (dataSource, data = {}) => {
   })
   await manager.save(customer7)
 
-  const c_group_5 = await manager.create(CustomerGroup, {
+  const c_group_5 = manager.create(CustomerGroup, {
     id: "test-group-5",
     name: "test-group-5",
   })
   await manager.save(c_group_5)
 
-  const c_group_6 = await manager.create(CustomerGroup, {
+  const c_group_6 = manager.create(CustomerGroup, {
     id: "test-group-6",
     name: "test-group-6",
   })
@@ -111,7 +111,7 @@ module.exports = async (dataSource, data = {}) => {
   customer7.groups = [c_group_5, c_group_6]
   await manager.save(customer7)
 
-  const priceList = await manager.create(PriceList, {
+  const priceList = manager.create(PriceList, {
     id: "pl",
     name: "VIP winter sale",
     description: "Winter sale for VIP customers.",
@@ -121,7 +121,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceList)
 
-  const priceList1 = await manager.create(PriceList, {
+  const priceList1 = manager.create(PriceList, {
     id: "pl_1",
     name: "VIP winter sale",
     description: "Winter sale for VIP customers.",
@@ -133,7 +133,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceList1)
 
-  const priceList2 = await manager.create(PriceList, {
+  const priceList2 = manager.create(PriceList, {
     id: "pl_2",
     name: "VVIP winter sale",
     description: "Winter sale for key accounts.",
@@ -145,7 +145,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceList2)
 
-  const priceList3 = await manager.create(PriceList, {
+  const priceList3 = manager.create(PriceList, {
     id: "pl_expired",
     name: "Past winter sale",
     description: "Winter sale for key accounts.",
@@ -157,7 +157,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceList3)
 
-  const priceList4 = await manager.create(PriceList, {
+  const priceList4 = manager.create(PriceList, {
     id: "pl_upcoming",
     name: "Past winter sale",
     description: "Winter sale for key accounts.",
@@ -169,7 +169,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceList4)
 
-  const priceList5 = await manager.create(PriceList, {
+  const priceList5 = manager.create(PriceList, {
     id: "pl_current",
     name: "Past winter sale",
     description: "Winter sale for key accounts.",
@@ -181,7 +181,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceList5)
 
-  const priceList6 = await manager.create(PriceList, {
+  const priceList6 = manager.create(PriceList, {
     id: "pl_current_1",
     name: "Past winter sale",
     description: "Winter sale for key accounts.",
@@ -193,7 +193,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceList6)
 
-  const priceList7 = await manager.create(PriceList, {
+  const priceList7 = manager.create(PriceList, {
     id: "pl_upcoming-customer",
     name: "Past winter sale",
     description: "Winter sale for key accounts.",
@@ -207,7 +207,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceList7)
 
-  const priceList8 = await manager.create(PriceList, {
+  const priceList8 = manager.create(PriceList, {
     id: "pl_current-customer",
     name: "Past winter sale",
     description: "Winter sale for key accounts.",
@@ -221,7 +221,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceList8)
 
-  const priceList9 = await manager.create(PriceList, {
+  const priceList9 = manager.create(PriceList, {
     id: "pl_expired-customer",
     name: "Past winter sale",
     description: "Winter sale for key accounts.",
@@ -235,7 +235,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceList9)
 
-  const p1 = await manager.create(Product, {
+  const p1 = manager.create(Product, {
     id: "test-product",
     handle: "test-product",
     title: "Test product",
@@ -254,7 +254,7 @@ module.exports = async (dataSource, data = {}) => {
     product_id: "test-product",
   })
 
-  const variant4 = await manager.create(ProductVariant, {
+  const variant4 = manager.create(ProductVariant, {
     id: "test-variant",
     inventory_quantity: 10,
     title: "Test variant",
@@ -329,7 +329,7 @@ module.exports = async (dataSource, data = {}) => {
     variant_id: "test-variant",
   })
 
-  const p2 = await manager.create(Product, {
+  const p2 = manager.create(Product, {
     id: "test-product-quantity",
     handle: "test-product-quantity",
     title: "Test product",
@@ -348,7 +348,7 @@ module.exports = async (dataSource, data = {}) => {
     product_id: "test-product-quantity",
   })
 
-  const variant_quantity = await manager.create(ProductVariant, {
+  const variant_quantity = manager.create(ProductVariant, {
     id: "test-variant-quantity",
     inventory_quantity: 10,
     title: "Test variant",
@@ -493,7 +493,7 @@ module.exports = async (dataSource, data = {}) => {
     variant_id: "test-variant-quantity",
   })
 
-  const p3 = await manager.create(Product, {
+  const p3 = manager.create(Product, {
     id: "test-product-sale",
     handle: "test-product-sale",
     title: "Test product sale",
@@ -512,7 +512,7 @@ module.exports = async (dataSource, data = {}) => {
     product_id: "test-product-sale",
   })
 
-  const variant_sale = await manager.create(ProductVariant, {
+  const variant_sale = manager.create(ProductVariant, {
     id: "test-variant-sale",
     inventory_quantity: 10,
     title: "Test variant",
@@ -587,7 +587,7 @@ module.exports = async (dataSource, data = {}) => {
     variant_id: "test-variant-sale",
   })
 
-  const p4 = await manager.create(Product, {
+  const p4 = manager.create(Product, {
     id: "test-product-sale-overlap",
     handle: "test-product-sale-overlap",
     title: "Test product sale",
@@ -606,7 +606,7 @@ module.exports = async (dataSource, data = {}) => {
     product_id: "test-product-sale-overlap",
   })
 
-  const variant_sale_overlap = await manager.create(ProductVariant, {
+  const variant_sale_overlap = manager.create(ProductVariant, {
     id: "test-variant-sale-overlap",
     inventory_quantity: 10,
     title: "Test variant",
@@ -667,7 +667,7 @@ module.exports = async (dataSource, data = {}) => {
     variant_id: "test-variant-sale-overlap",
   })
 
-  const multiRegionProduct = await manager.create(Product, {
+  const multiRegionProduct = manager.create(Product, {
     id: "test-product-multi-region",
     handle: "test-product-multi-region",
     title: "Test product",
@@ -686,7 +686,7 @@ module.exports = async (dataSource, data = {}) => {
     product_id: "test-product-multi-region",
   })
 
-  const variant_multi_region = await manager.create(ProductVariant, {
+  const variant_multi_region = manager.create(ProductVariant, {
     id: "test-variant-multi-region",
     inventory_quantity: 10,
     title: "Test variant",
@@ -760,7 +760,7 @@ module.exports = async (dataSource, data = {}) => {
     variant_id: "test-variant-multi-region",
   })
 
-  const p5 = await manager.create(Product, {
+  const p5 = manager.create(Product, {
     id: "test-product-quantity-customer",
     handle: "test-product-quantity-customer",
     title: "Test product",
@@ -779,7 +779,7 @@ module.exports = async (dataSource, data = {}) => {
     product_id: "test-product-quantity-customer",
   })
 
-  const variant_quantity_customer = await manager.create(ProductVariant, {
+  const variant_quantity_customer = manager.create(ProductVariant, {
     id: "test-variant-quantity-customer",
     inventory_quantity: 10,
     title: "Test variant",
@@ -922,7 +922,7 @@ module.exports = async (dataSource, data = {}) => {
     variant_id: "test-variant-quantity-customer",
   })
 
-  const p6 = await manager.create(Product, {
+  const p6 = manager.create(Product, {
     id: "test-product-sale-customer",
     handle: "test-product-sale-customer",
     title: "Test product sale",
@@ -941,7 +941,7 @@ module.exports = async (dataSource, data = {}) => {
     product_id: "test-product-sale-customer",
   })
 
-  const variant_sale_customer = await manager.create(ProductVariant, {
+  const variant_sale_customer = manager.create(ProductVariant, {
     id: "test-variant-sale-customer",
     inventory_quantity: 10,
     title: "Test variant",
@@ -1017,7 +1017,7 @@ module.exports = async (dataSource, data = {}) => {
     variant_id: "test-variant-sale-customer",
   })
 
-  const p7 = await manager.create(Product, {
+  const p7 = manager.create(Product, {
     id: "test-product-sale-customer-quantity",
     handle: "test-product-sale-customer-quantity",
     title: "Test product sale",
@@ -1036,7 +1036,7 @@ module.exports = async (dataSource, data = {}) => {
     product_id: "test-product-sale-customer-quantity",
   })
 
-  const variant_sale_customer_quantity = await manager.create(ProductVariant, {
+  const variant_sale_customer_quantity = manager.create(ProductVariant, {
     id: "test-variant-sale-customer-quantity",
     inventory_quantity: 10,
     title: "Test variant",
@@ -1130,7 +1130,7 @@ module.exports = async (dataSource, data = {}) => {
     variant_id: "test-variant-sale-customer-quantity",
   })
 
-  const cart = await manager.create(Cart, {
+  const cart = manager.create(Cart, {
     id: "test-cart",
     region_id: "test-region",
     currency_code: "usd",
@@ -1139,7 +1139,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(cart)
 
-  const cart_region2 = await manager.create(Cart, {
+  const cart_region2 = manager.create(Cart, {
     id: "test-cart-1",
     region_id: "test-region-2",
     currency_code: "dkk",
@@ -1148,7 +1148,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(cart_region2)
 
-  const cart_region1 = await manager.create(Cart, {
+  const cart_region1 = manager.create(Cart, {
     id: "test-cart-2",
     region_id: "test-region-1",
     currency_code: "usd",
@@ -1157,7 +1157,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(cart_region1)
 
-  const customerPl = await manager.create(Customer, {
+  const customerPl = manager.create(Customer, {
     id: "test-customer-5-pl",
     email: "test5@email-pl.com",
     first_name: "John",
@@ -1168,7 +1168,7 @@ module.exports = async (dataSource, data = {}) => {
   })
   await manager.save(customerPl)
 
-  const pPl = await manager.create(Product, {
+  const pPl = manager.create(Product, {
     id: "test-product-pl",
     handle: "test-product-pl",
     title: "Test product",
@@ -1186,7 +1186,7 @@ module.exports = async (dataSource, data = {}) => {
     product_id: "test-product-pl",
   })
 
-  const c_group_pl = await manager.create(CustomerGroup, {
+  const c_group_pl = manager.create(CustomerGroup, {
     id: "test-group-pl",
     name: "test-group-pl",
   })
@@ -1195,13 +1195,13 @@ module.exports = async (dataSource, data = {}) => {
   customerPl.groups = [c_group_pl]
   await manager.save(customerPl)
 
-  const c_group_not_pl = await manager.create(CustomerGroup, {
+  const c_group_not_pl = manager.create(CustomerGroup, {
     id: "test-group-not-pl",
     name: "test-group-not-pl",
   })
   await manager.save(c_group_not_pl)
 
-  const priceListPl = await manager.create(PriceList, {
+  const priceListPl = manager.create(PriceList, {
     id: "pl_current_pl",
     name: "Past winter sale",
     description: "Winter sale for key accounts.",
@@ -1212,7 +1212,7 @@ module.exports = async (dataSource, data = {}) => {
   priceListPl.customer_groups = [c_group_pl]
   await manager.save(priceListPl)
 
-  const priceListNotPL = await manager.create(PriceList, {
+  const priceListNotPL = manager.create(PriceList, {
     id: "pl_current_not_pl",
     name: "Past winter sale",
     description: "Winter sale for key accounts.",
@@ -1223,7 +1223,7 @@ module.exports = async (dataSource, data = {}) => {
 
   await manager.save(priceListNotPL)
 
-  const variantPl = await manager.create(ProductVariant, {
+  const variantPl = manager.create(ProductVariant, {
     id: "test-variant-pl",
     inventory_quantity: 10,
     title: "Test variant",
