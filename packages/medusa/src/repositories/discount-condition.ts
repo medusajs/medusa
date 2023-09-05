@@ -231,10 +231,11 @@ export const DiscountConditionRepository = dataSource
         type !== DiscountConditionType.CUSTOMER_GROUPS &&
         featureFlagRouter.isFeatureEnabled(IsolateProductDomainFeatureFlag.key)
       ) {
-        const prop = relatedTable
-        const resource = await MedusaModule.getModuleInstance(
+        const module = MedusaModule.getModuleInstance(Modules.PRODUCT)[
           Modules.PRODUCT
-        ).retrieve(resourceId, {
+        ]
+        const prop = relatedTable
+        const resource = await module.retrieve(resourceId, {
           select: [`${prop ? prop + "." : ""}id`],
           relations: prop ? [prop] : [],
         })
@@ -246,10 +247,14 @@ export const DiscountConditionRepository = dataSource
           ? resource[prop].map((relatedResource) => relatedResource.id)
           : [resource.id]
 
+        if (!relatedResourceIds.length) {
+          return 0
+        }
+
         return await this.manager
           .createQueryBuilder(conditionTable, "dc")
           .where(
-            `dc.condition_id = :conditionId AND dc.${joinTableForeignKey} IN (...relatedResourceIds)`,
+            `dc.condition_id = :conditionId AND dc.${joinTableForeignKey} IN (:...relatedResourceIds)`,
             {
               conditionId,
               relatedResourceIds,
