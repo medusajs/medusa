@@ -60,6 +60,7 @@ export interface RemoteNestedExpands {
 export interface RemoteExpandProperty {
   property: string
   parent: string
+  parentConfig?: JoinerServiceConfig
   serviceConfig: JoinerServiceConfig
   fields: string[]
   args?: JoinerArgument[]
