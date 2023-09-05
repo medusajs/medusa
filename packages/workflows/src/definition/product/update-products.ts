@@ -10,24 +10,15 @@ import { ProductHandlers } from "../../handlers"
 
 export enum UpdateProductsActions {
   updateProducts = "updateProducts",
+  // variants
   updateProductsVariantsPrepareData = "updateProductsVariantsPrepareData",
   updateProductsVariants = "updateProductsVariants",
   removeProductsVariants = "removeProductsVariants",
   createProductsVariants = "createProductsVariants",
+  // inventory
+  createInventoryItems = "createInventoryItems",
+  attachInventoryItems = "attachInventoryItems",
 }
-
-/**
- *  ******* STEPS *******
- *
- *  1. Update product (without variants)
- *   --- if no variants in the payload -> stop here
- *  2. Prepare variants update
- *    2.1) delete variants not in payload // in that order
- *    2.2) update variants in payload
- *    2.3) create variants
- *      2.3.1) * TODO: handle inventory items
- *
- */
 
 export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
   next: {
@@ -44,12 +35,12 @@ export const updateProductsWorkflowSteps: TransactionStepsDefinition = {
         },
         {
           action: UpdateProductsActions.createProductsVariants,
-          // next: {
-          //   action: UpdateProductsActions.createInventoryItems,
-          //   next: {
-          //     action: UpdateProductsActions.attachInventoryItems,
-          //   },
-          // },
+          next: {
+            action: UpdateProductsActions.createInventoryItems,
+            next: {
+              action: UpdateProductsActions.attachInventoryItems,
+            },
+          },
         },
       ],
     },
