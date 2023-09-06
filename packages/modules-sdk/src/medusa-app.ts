@@ -10,8 +10,8 @@ import {
 } from "@medusajs/types"
 import {
   ContainerRegistrationKeys,
-  ModulesSdkUtils,
   isObject,
+  ModulesSdkUtils,
 } from "@medusajs/utils"
 import { MODULE_PACKAGE_NAMES, Modules } from "./definitions"
 import { MedusaModule } from "./medusa-module"
@@ -81,25 +81,18 @@ export async function MedusaApp(
     sharedResourcesConfig as ModuleServiceInitializeOptions,
     true
   )!
-  const { pool } = sharedResourcesConfig?.database ?? {}
 
-  if (dbData?.clientUrl) {
-    const { knex } = await import("knex")
-    const dbConnection = knex({
-      client: "pg",
-      searchPath: dbData.schema || "public",
-      connection: {
-        connectionString: dbData.clientUrl,
-        ssl: (dbData.driverOptions?.connection as any).ssl! ?? false,
-      },
-      pool: {
-        // https://knexjs.org/guide/#pool
-        ...(pool ?? {}),
-        min: pool?.min ?? 0,
-      },
-    })
+  if (
+    dbData?.clientUrl &&
+    !injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION]
+  ) {
+    const { pool } = sharedResourcesConfig?.database ?? {}
 
-    injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] = dbConnection
+    injectedDependencies[ContainerRegistrationKeys.PG_CONNECTION] =
+      ModulesSdkUtils.createPgConnection({
+        database: sharedResourcesConfig?.database ?? {},
+        pool,
+      })
   }
 
   const allModules: Record<string, LoadedModule | LoadedModule[]> = {}
