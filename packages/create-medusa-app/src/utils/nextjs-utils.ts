@@ -1,6 +1,10 @@
 import inquirer from "inquirer"
 import promiseExec from "./promise-exec.js"
 import { FactBoxOptions, displayFactBox } from "./facts.js"
+import fs from "fs"
+import { customAlphabet, nanoid } from "nanoid"
+import { isAbortError } from "./create-abort-controller.js"
+import logMessage from "./log-message.js"
 
 const NEXTJS_REPO = "https://github.com/medusajs/nextjs-starter-medusa"
 
@@ -34,18 +38,41 @@ export async function installNextjsStarter({
     title: "Installing Next.js Storefront...",
   })
 
-  const nextjsDirectory = `${directoryName}-storefront`
+  let nextjsDirectory = `${directoryName}-storefront`
 
-  await promiseExec(
-    `npx create-next-app -e ${NEXTJS_REPO} ${nextjsDirectory}`,
-    {
-      signal: abortController?.signal,
-      env: {
-        ...process.env,
-        npm_config_yes: "yes",
-      },
+  if (
+    fs.existsSync(nextjsDirectory) &&
+    fs.lstatSync(nextjsDirectory).isDirectory()
+  ) {
+    // append a random number to the directory name
+    nextjsDirectory += `-${customAlphabet(
+      // npm throws an error if the directory name has an uppercase letter
+      "123456789abcdefghijklmnopqrstuvwxyz",
+      4
+    )()}`
+  }
+
+  try {
+    await promiseExec(
+      `npx create-next-app -e ${NEXTJS_REPO} ${nextjsDirectory}`,
+      {
+        signal: abortController?.signal,
+        env: {
+          ...process.env,
+          npm_config_yes: "yes",
+        },
+      }
+    )
+  } catch (e) {
+    if (isAbortError(e)) {
+      process.exit()
     }
-  )
+
+    logMessage({
+      message: `An error occurred while installing Next.js storefront: ${e}`,
+      type: "error",
+    })
+  }
 
   await promiseExec(`mv .env.template .env.local`, {
     cwd: nextjsDirectory,

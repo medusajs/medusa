@@ -254,7 +254,7 @@ async function askForProjectName(directoryPath?: string): Promise<string> {
       message: "What's the name of your project?",
       default: "my-medusa-store",
       filter: (input) => {
-        return slugify(input)
+        return slugify(input).toLowerCase()
       },
       validate: (input) => {
         if (!input.length) {
